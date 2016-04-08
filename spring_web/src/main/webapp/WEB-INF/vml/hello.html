@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Insert title here</title>
+</head>
+<body>
+显示对象的属性<br>
+$person.id<br>
+$person.name<br>
+$person.password<br>
+$person.age<br>
+if语句<br>
+#if($person.id <2)
+id大于2
+#else
+id小于2
+#end
+#if($person.password=="123456")
+密码等于123456
+#end
+<hr>
+foreach语句<br>
+#foreach($p in $persons)
+$p.id<br>
+$p.name<br>
+$!p.email<br>
+$dateTool.format("yyyy-MM-dd HH:mm:ss", $p.birthday)<br>
+#end
+<hr>
+request范围数据<br>
+$requestData<br>
+session范围数据<br>
+$sessionData<br>
+</body>
+</html>
