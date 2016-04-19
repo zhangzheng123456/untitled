@@ -10,62 +10,35 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <jdk.version>1.8</jdk.version>
-        <!--hsqldb-->
-        <hsqldb.version>2.3.2</hsqldb.version>
-        <spring-data-jpa.version>1.8.0.RELEASE</spring-data-jpa.version>
-        <!--log4j -->
-        <slf4j-log4j12>1.7.16</slf4j-log4j12>
-        <log4j.version>1.2.17</log4j.version>
-        <!--jsoup-->
-        <jsoup.version>1.8.1</jsoup.version>
-        <!--el-impl-->
-        <el-impl.version>2.2</el-impl.version>
-        <!--javax.el-api-->
-        <javax.el-api.version>3.0.0</javax.el-api.version>
-        <!--hamcrest-all-->
-        <hamcrest-all.version>1.3</hamcrest-all.version>
-        <!-- JACKSON -->
-        <jackson.version>2.7.1</jackson.version>
-        <jackson-databind.version>2.7.1-1</jackson-databind.version>
-        <!--json-->
-        <json.version>20151123</json.version>
-        <!-- gson -->
-        <gson.version>2.6.1</gson.version>
-        <!-- spring版本号 -->
+
         <spring.version>4.2.4.RELEASE</spring.version>
-        <!-- mybatis版本号 -->
+        <jdk.version>1.8</jdk.version>
+        <slf4j-log4j12>1.7.16</slf4j-log4j12>
+        <log4j.version>2.5</log4j.version>
+        <druid.version>1.0.16</druid.version>
+        <jackson.version>2.7.3</jackson.version>
+        <jackson-databind.version>2.7.3</jackson-databind.version>
+        <jsoup.version>1.9.1</jsoup.version>
+        <json.version>20160212</json.version>
+        <gson.version>2.6.2</gson.version>
         <mybatis.version>3.3.0</mybatis.version>
-        <mybatis-spring.version>1.2.3</mybatis-spring.version>
-        <!-- mysql -->
-        <mysql.version>5.1.29</mysql.version>
-        <!-- junit测试包 -->
-        <junit.version>4.11</junit.version>
-        <!-- redis -->
-        <spring-data-redis.version>1.6.1.RELEASE</spring-data-redis.version>
-        <redis.clients.version>2.7.3</redis.clients.version>
-        <!-- velocity 版本 -->
+        <mybatis-spring.version>1.3.0</mybatis-spring.version>
+        <mysql-connector.version>6.0.2</mysql-connector.version>
+        <junit.version>4.12</junit.version>
+        <spring-data-redis.version>1.7.1.RELEASE</spring-data-redis.version>
+        <redis.clients.version>2.8.1</redis.clients.version>
         <velocity.version>1.7</velocity.version>
         <velocity-tools.version>2.0</velocity-tools.version>
-        <!--1.2-->
         <jstl.version>1.2</jstl.version>
-        <!--alibaba-->
-        <alibaba.version>1.0.15</alibaba.version>
-        <!--fileupload-->
         <commons-fileupload.version>1.3.1</commons-fileupload.version>
-        <txtmark.version>0.13</txtmark.version>
-        <javax.servlet-api.version>3.0.1</javax.servlet-api.version>
         <commons-dbcp.version>1.4</commons-dbcp.version>
-        <hibernate-validator.version>5.0.3.Final</hibernate-validator.version>
         <mockito-core.version>1.10.19</mockito-core.version>
-        <jackson-core.version>1.9.6</jackson-core.version>
-        <jackson-core-asl.version>1.9.4</jackson-core-asl.version>
-        <jackson-mapper.version>1.9.13</jackson-mapper.version>
+        <javax.servlet-api.version>3.1.0</javax.servlet-api.version>
+
     </properties>
 
     <dependencies>
         <!-- spring核心包 -->
-        <!-- springframe start -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-core</artifactId>
@@ -113,15 +86,7 @@
             <artifactId>spring-context-support</artifactId>
             <version>${spring.version}</version>
         </dependency>
-        <!-- <dependency> <groupId>org.springframework.security</groupId> <artifactId>spring-security-test</artifactId>
-            <version></version> </dependency> -->
-        <!-- springframe end -->
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-            <version>${javax.servlet-api.version}</version>
-            <scope>provided</scope>
-        </dependency>
+
         <!-- mybatis核心包 -->
         <dependency>
             <groupId>org.mybatis</groupId>
@@ -134,12 +99,14 @@
             <artifactId>mybatis-spring</artifactId>
             <version>${mybatis-spring.version}</version>
         </dependency>
+
         <!-- mysql驱动包 -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
+            <version>${mysql-connector.version}</version>
         </dependency>
+
         <!-- junit测试包 -->
         <dependency>
             <groupId>junit</groupId>
@@ -147,6 +114,7 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
         <!-- db pool -->
         <dependency>
             <groupId>commons-dbcp</groupId>
@@ -154,24 +122,17 @@
             <version>${commons-dbcp.version}</version>
         </dependency>
 
-        <!-- Spring Data JPA -->
-
-        <dependency>
-            <groupId>org.springframework.data</groupId>
-            <artifactId>spring-data-jpa</artifactId>
-            <version>${spring-data-jpa.version}</version>
-        </dependency>
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
             <version>${velocity.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity-tools</artifactId>
             <version>${velocity-tools.version}</version>
         </dependency>
+
         <dependency>
             <groupId>jstl</groupId>
             <artifactId>jstl</artifactId>
@@ -181,7 +142,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>druid</artifactId>
-            <version>${alibaba.version}</version>
+            <version>${druid.version}</version>
         </dependency>
 
         <dependency>
@@ -189,66 +150,35 @@
             <artifactId>commons-fileupload</artifactId>
             <version>${commons-fileupload.version}</version>
         </dependency>
-        <!--log4j -->
+
+        <!-- log start -->
         <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
             <version>${log4j.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-slf4j-impl</artifactId>
+            <version>${log4j.version}</version>
+        </dependency>
+        <!-- log end -->
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
             <version>${slf4j-log4j12}</version>
         </dependency>
-        <!-- HSQLDB -->
-
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>${hsqldb.version}</version>
-        </dependency>
-        <!-- markdown -->
-
-        <dependency>
-            <groupId>com.github.rjeschke</groupId>
-            <artifactId>txtmark</artifactId>
-            <version>${txtmark.version}</version>
-        </dependency>
-        <!-- validator -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <version>${hibernate-validator.version}</version>
-        </dependency>
-        <!-- Jsoup -->
 
         <dependency>
             <groupId>org.jsoup</groupId>
             <artifactId>jsoup</artifactId>
             <version>${jsoup.version}</version>
-        </dependency>
-
-        <!-- testing -->
-
-        <dependency>
-            <groupId>org.hamcrest</groupId>
-            <artifactId>hamcrest-all</artifactId>
-            <version>${hamcrest-all.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.el</groupId>
-            <artifactId>javax.el-api</artifactId>
-            <version>${javax.el-api.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.glassfish.web</groupId>
-            <artifactId>el-impl</artifactId>
-            <version>${el-impl.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -263,26 +193,13 @@
             <version>${mockito-core.version}</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-lgpl</artifactId>
-            <version>${jackson-core.version}</version>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+            <version>${javax.servlet-api.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-core-asl</artifactId>
-            <version>${jackson-core-asl.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-lgpl</artifactId>
-            <version>${jackson-core.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>${jackson-mapper.version}</version>
-        </dependency>
+
 
         <!--Redis start -->
         <dependency>
@@ -313,21 +230,16 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson-databind.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-            <artifactId>jackson-annotations</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
         <!-- jackson end -->
+
     </dependencies>
+
     <build>
-        <finalName>Spring-web</finalName>
+        <finalName>iShop</finalName>
     </build>
 </project>
