@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+ <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>登录</title>
+<link rel="stylesheet" type="text/css" href="js/themes/default/easyui.css">
+	<link rel="stylesheet" type="text/css" href="js/themes/icon.css">
+	
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/jquery.easyui.min.js"></script>
+</head>
+<style>
+	
+	#div_all{
+		margin-left:auto;
+		margin-right:auto;
+		width:1280px;
+		height:600px;
+		
+		background-image:url(img/bg-Login.jpg);
+	}
+	#div_login_content{
+		width:400px;
+		height:400px;
+		margin-left:auto;
+		margin-right:auto;
+		
+	}
+	.div_login_name{
+		background-image:url(img/name-Login.jpg);
+		width:260px;
+		height:48px;
+		border:0px;
+		margin-left:13px;
+	}
+	.div_login_pwd{
+		background-image:url(img/pwd-Login.jpg);
+		width:260px;
+		height:48px;
+		border:0px;
+		margin-left:13px;
+	}
+	.txt_login_name{
+		background-color:#919191;
+		height:35px;
+		border:0px;
+		margin-top:5px;
+		margin-left:40px;
+		width:200px;
+		font-size: 18px;
+		font-weight: bold;
+	}
+	.div_login_yz{
+		background-image:url(img/yanzheng-Login.jpg);
+		width:120px;
+		height:50px;
+		border:0px;
+		margin-left:13px;
+		float:left;
+		
+	}
+	.txt_login_yz{
+		background-color:#919191;
+		height:35px;
+		border:0px;
+		font-size: 18px;
+		font-weight: bold;
+		margin-top:5px;
+		margin-left:10px;
+		width:100px;
+	}
+	#btn_submit{
+		background-image: url("img/btn-Login.jpg");
+		width: 252px;
+		height: 42px;
+		border: 0px;
+		cursor: pointer;
+	}
+</style>
+
+<body>
+<div id="div_all">
+    	<div style="height:130px;">
+        </div>
+   		<div id="div_login_content">
+   		<form action="user.html" method="post" id="form_login">
+        	<table style="margin-left:auto; margin-right:auto; background-color:#C3C4BF; text-align:center;">
+            	<tr>
+                	<td>
+                    <img src="img/top-Login.jpg" />
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                    	<div class="div_login_name">
+                          <input type="text" name="userinfo.userid" class="easyui-validatebox txt_login_name" data-options="required:true,missingMessage:'请输入用户名'" />
+                        </div>
+                  
+                   
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                    <div class="div_login_pwd">
+                          <input type="password" name="userinfo.password" class="easyui-validatebox txt_login_name" data-options="required:true,missingMessage:'请输入密码',validType:{length:[6,18]},invalidMessage:'密码长度为6-18位'" />
+                        </div>
+                  
+                    </td>
+                </tr>
+                <tr>
+                	<td align="left" >
+                    <div>
+                    <div class="div_login_yz">
+                    
+                   	 <input type="text" name="param"  class="easyui-validatebox txt_login_yz" data-options="required:true,missingMessage:'',validType:{length:[4,4]},invalidMessage:'验证码长度为4位'"/>
+                    </div>
+                    <div >
+                    	<a href="javascript:changeImg()">
+                    	<img id="img_code" src="code.html" height="35px" width="80px" style="margin-top:8px;margin-left: 10px"/>
+                    	</a>
+                    </div>
+                    </div>
+                    </td>
+                </tr>
+                <tr>
+                	<td>
+                	
+                	<input type="button" id="btn_submit"/>
+                    
+                    </td>
+                </tr>
+            </table>
+            </form>
+        </div>
+    
+    </div>
+
+</body>
+<script type="text/javascript">
+    function changeImg() {
+        var imgSrc = $("#img_code");
+        var src = imgSrc.attr("src");
+        imgSrc.attr("src", chgUrl(src));
+    }
+    //时间戳
+    //为了使每次生成图片不一致，即不让浏览器读缓存，所以需要加上时间戳
+    function chgUrl(url) {
+        var timestamp = (new Date()).valueOf();
+        url = url.substring(0, 17);
+        if ((url.indexOf("&") >= 0)) {
+            url = url + "×tamp=" + timestamp;
+        } else {
+            url = url + "?timestamp=" + timestamp;
+        }
+        return url;
+    }
+</script>
+</html>
