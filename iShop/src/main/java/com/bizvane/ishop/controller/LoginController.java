@@ -33,7 +33,7 @@ public class LoginController {
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
     public String printWelcome() {
-        return "login";
+        return "index";
     }
     
     @RequestMapping("/user")
