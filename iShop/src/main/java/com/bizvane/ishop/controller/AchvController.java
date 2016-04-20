@@ -93,7 +93,7 @@ public class AchvController {
      * 员工业绩目标
      * 查找
      */
-    @RequestMapping(value = "/shop_goal/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/staff_goal/find",method = RequestMethod.GET)
     @ResponseBody
     public String findStaffGoal(HttpServletRequest request) {
         return "shop_goal";
