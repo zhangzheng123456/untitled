@@ -3,20 +3,21 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>反馈详情</title>
+    <title>编辑商品培训(FAB)</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../demo-files/demo.css">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
 </head>
 <body>
     <div id="wrapper">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="back_detail.html#">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="editor_fba.html#">
                         </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
@@ -111,7 +112,7 @@
                                 <li>
                                     <div class="text-center link-block">
                                         <a href="mailbox.html">
-                                            <i class="fa fa-envelope"></i>  <strong> 查看所有消息</strong>
+                                            <i class="fa fa-envelope"></i> <strong> 查看所有消息</strong>
                                         </a>
                                     </div>
                                 </li>
@@ -175,7 +176,7 @@
                         <a href="#"><i class="icon-ishop_2-03"></i> <span class="nav-label">会员管理</span><span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
-                            <li ><a href="会员列表.html">会员列表</a>
+                            <li><a href="会员列表.html">会员列表</a>
                             </li>
                             <li><a href="会员标签管理.html">会员标签管理</a>
                             </li>
@@ -183,14 +184,15 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li  class="active">
                         <a href="#"><i class="icon-ishop_2-04"></i> <span class="nav-label">商品管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li><a href="商品培训.html">商品培训(FAB)</a>
+                            <li class="select_index"><a href="商品培训.html"><i class="icon-ishop_8-01"></i>商品培训(FAB)</a>
                             </li>
                             <li><a href="秀搭管理.html">秀搭管理</a>
                             </li>
                         </ul>
+                    </li>
                     </li>
                     <li>
                         <a href="#"><i class="icon-ishop_2-05"></i> <span class="nav-label">消息管理</span><span class="fa arrow"></span></a>
@@ -212,12 +214,12 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="#"><i class="icon-ishop_2-09"></i> <span class="nav-label">系统管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li class="select_index"><a href="用户反馈.html"><i class="icon-ishop_8-01"></i>用户反馈</a>
+                            <li><a href="用户反馈.html">用户反馈</a>
                             </li>
-                            <li><a href="APP版本控制.html">APP版本控制</a>
+                            <li><a href="APP">APP版本控制</a>
                             </li>
                             <li><a href="缓存管理.html">缓存管理</a>
                             </li>
@@ -241,7 +243,7 @@
         </nav>
 
         <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>用户反馈<i class="icon-ishop_8-03"></i>反馈详情</div>
+            <div class="col-lg-12 pre_title">商品管理<i class="icon-ishop_8-03"></i>商品培训(FAB)<i class="icon-ishop_8-03"></i>编辑商品培训(FAB)</div>
             <div class="editor_em col-lg-7  animated fadeInRight">
                 <div class="operation_conpany">
                     <ul>
@@ -250,24 +252,53 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label style="color:#c26555;">用户ID*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">所属企业*</label><input type="text" /></span>
                     </div>
                     <div>
-                        <span><label>反馈时间</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">商品编号*</label><input type="text" /></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">手机号码*</label><input type="text" /></span>
+                        <span><label>商品名称</label><input type="text" /></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">反馈内容</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px"></textarea></span></span>
+                        <span><label style="color:#c26555;">价格*</label><input type="text" /></span>
                     </div>
-                    <div id="dropdown" class="item_1">
-                        <span><label>处理状态</label><input class="input_select" type="text" placeholder="请选择处理状态" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
-                            <ul>
-                                <li>已解决</li>
-                                <li>待解决</li>
-                            </ul>
+                    <div>
+                        <span><label style="margin-right:14px;">商品图片</label></span>
+                        <span class="good_imgs" style="display: inline-block;width:420px">
+                            <span class="parentFileBox" style="display:inline-flex;vertical-align: middle;">
+                                <ul class="fileBoxUl">
+                                    <li id="fileBox_WU_FILE_10" class="diyUploadHover">
+                                        <div class="viewThumb"><img src="../img/p1.jpg"></div>                    <div class="diyCancel"></div>
+                                        <div class="diySuccess"></div>
+                                        <div class="diyFileName">p1.jpg</div>
+                                        <div class="diyBar">
+                                            <div class="diyProgress"></div>
+                                            <div class="diyProgressText">0%</div>
+                                        </div>
+                                    </li>
+                                    <li id="fileBox_WU_FILE_11" class="diyUploadHover">
+                                        <div class="viewThumb"><img src="../img/p2.jpg"></div>                    <div class="diyCancel"></div>
+                                        <div class="diySuccess"></div>
+                                        <div class="diyFileName">p2.jpg</div>
+                                        <div class="diyBar">
+                                            <div class="diyProgress"></div>
+                                            <div class="diyProgressText">0%</div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </span>
+                            <span class="add_new_touxiang" style="position: relative;"><span id="test"></span></span>
                         </span>
+                    </div>
+                    <div>
+                        <span><label>季度</label><input type="text" /></span>
+                    </div>
+                    <div>
+                        <span><label>波段</label><input type="text" /></span>
+                    </div>
+                    <div>
+                    <span style="display: inline-flex;width:100%"><label style="height:180px;">商品买点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px"></textarea></span></span>
                     </div>
                 </form>
             </div>
@@ -310,6 +341,20 @@
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>
+    <!-- 图片上传(支持批量) -->
+    <script type="text/javascript" src="../js/webuploader.html5only.min.js"></script>
+    <script type="text/javascript" src="../js/diyUpload.js"></script>
+    <script type="text/javascript">
+        $('#test').diyUpload({
+            url:'server/fileupload.php',
+            success:function( data ) {
+                console.info( data );
+            },
+            error:function( err ) {
+                console.info( err );
+            }
+        });
+    </script>
 </body>
 
 </html>

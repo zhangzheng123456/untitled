@@ -760,3 +760,31 @@ input::-webkit-input-placeholder{
 	border-radius: 5px;
 	margin-left: 20px;
 }
+/**回到顶部按钮 回到底部按钮**/
+.side_bar{
+	position: fixed;
+	top:300px;
+	z-index: 5;
+	right: 0;
+	font-size: 20px;
+	color: #6a7c91;
+	text-align: center;
+	vertical-align: middle;
+}
+.side_bar .gotop{
+	width: 20px;
+	height: 20px;
+	background-color: #fff;
+	border-radius: 3px;
+	display: block;
+	margin-bottom: 2px;
+}
+.side_bar .gobottom{
+	width: 20px;
+	height: 20px;
+	background-color: #fff;
+	margin-top: 10px;
+	border-radius: 3px;
+	display: block;
+	margin-bottom: 2px;
+}

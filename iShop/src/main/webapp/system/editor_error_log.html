@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>反馈详情</title>
+    <title>编辑错误日志</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -16,7 +16,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="back_detail.html#">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="editor_error_log.html#">
                         </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
@@ -175,7 +175,7 @@
                         <a href="#"><i class="icon-ishop_2-03"></i> <span class="nav-label">会员管理</span><span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
-                            <li ><a href="会员列表.html">会员列表</a>
+                            <li><a href="会员列表.html">会员列表</a>
                             </li>
                             <li><a href="会员标签管理.html">会员标签管理</a>
                             </li>
@@ -212,20 +212,20 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li  class="active">
                         <a href="#"><i class="icon-ishop_2-09"></i> <span class="nav-label">系统管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li class="select_index"><a href="用户反馈.html"><i class="icon-ishop_8-01"></i>用户反馈</a>
+                            <li><a href="用户反馈.html">用户反馈</a>
                             </li>
-                            <li><a href="APP版本控制.html">APP版本控制</a>
+                            <li><a href="APP.html">APP版本控制</a>
                             </li>
                             <li><a href="缓存管理.html">缓存管理</a>
                             </li>
                             <li><a href="接口管理.html">接口管理</a>
                             </li>
-                            <li><a>日志管理<span class="fa arrow" style="display:none"></span></a>
-                                <ul class="nav nav-third-level">
-                                    <li><a href="错误日志.html">错误日志</a>
+                            <li class="active_s"><a>日志管理<span class="fa arrow"></span></a>
+                                <ul class="nav nav-third-level in">
+                                    <li class="select_index"><a href="#"><i class="icon-ishop_8-01"></i>错误日志</a>
                                     </li>
                                     <li><a href="登录日志.html">登录日志</a>
                                     </li>
@@ -241,7 +241,7 @@
         </nav>
 
         <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>用户反馈<i class="icon-ishop_8-03"></i>反馈详情</div>
+            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>日志管理<i class="icon-ishop_8-03"></i>错误日志<i class="icon-ishop_8-03"></i>编辑错误日志</div>
             <div class="editor_em col-lg-7  animated fadeInRight">
                 <div class="operation_conpany">
                     <ul>
@@ -249,25 +249,16 @@
                     </ul>
                 </div>
                 <form class="conpany_msg">
-                    <div>
-                        <span><label style="color:#c26555;">用户ID*</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>反馈时间</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label style="color:#c26555;">手机号码*</label><input type="text" /></span>
-                    </div>
-                    <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">反馈内容</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px"></textarea></span></span>
-                    </div>
                     <div id="dropdown" class="item_1">
-                        <span><label>处理状态</label><input class="input_select" type="text" placeholder="请选择处理状态" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                        <span><label style="color:#c26555;">运行平台*</label><input class="input_select" type="text" placeholder="请选择运行平台" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
                             <ul>
-                                <li>已解决</li>
-                                <li>待解决</li>
+                                <li>运行平台1</li>
+                                <li>运行平台2</li>
                             </ul>
                         </span>
+                    </div>
+                    <div>
+                    <span style="display: inline-flex;width:100%"><label style="height:480px;">日志内容</label><span class="tempalte_area" style="height: 480px"><textarea style="height: 460px"></textarea></span></span>
                     </div>
                 </form>
             </div>

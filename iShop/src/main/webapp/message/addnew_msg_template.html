@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>反馈详情</title>
+    <title>新增短信模板</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -16,7 +16,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="back_detail.html#">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="addnew_msg_template.html#">
                         </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
@@ -161,7 +161,6 @@
                             </li>
                         </ul>
                     </li>
-
                     <li>
                         <a href="#"><i class="icon-ishop_2-08"></i> <span class="nav-label">业绩管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
@@ -174,8 +173,8 @@
                     <li>
                         <a href="#"><i class="icon-ishop_2-03"></i> <span class="nav-label">会员管理</span><span class="fa arrow"></span>
                         </a>
-                        <ul class="nav nav-second-level">
-                            <li ><a href="会员列表.html">会员列表</a>
+                         <ul class="nav nav-second-level">
+                            <li><a href="会员列表.html">会员列表</a>
                             </li>
                             <li><a href="会员标签管理.html">会员标签管理</a>
                             </li>
@@ -192,12 +191,12 @@
                             </li>
                         </ul>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="#"><i class="icon-ishop_2-05"></i> <span class="nav-label">消息管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
                             <li><a href="爱秀消息.html">爱秀消息</a>
                             </li>
-                            <li><a href="手机短信.html">手机短信</a>
+                            <li class="select_index"><a href="手机短信.html"><i class="icon-ishop_8-01"></i>手机短信</a>
                             </li>
                         </ul>
                     </li>
@@ -212,12 +211,12 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="#"><i class="icon-ishop_2-09"></i> <span class="nav-label">系统管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li class="select_index"><a href="用户反馈.html"><i class="icon-ishop_8-01"></i>用户反馈</a>
+                            <li><a href="用户反馈.html">用户反馈</a>
                             </li>
-                            <li><a href="APP版本控制.html">APP版本控制</a>
+                            <li><a href="APP.html">APP版本控制</a>
                             </li>
                             <li><a href="缓存管理.html">缓存管理</a>
                             </li>
@@ -241,37 +240,26 @@
         </nav>
 
         <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>用户反馈<i class="icon-ishop_8-03"></i>反馈详情</div>
-            <div class="editor_em col-lg-7  animated fadeInRight">
-                <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div>
-                <form class="conpany_msg">
+            <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>手机短信<i class="icon-ishop_8-03"></i>新增短信模板</div>
+            <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
+                <form class="conpany_msg" style="margin-left:0px">
                     <div>
-                        <span><label style="color:#c26555;">用户ID*</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>反馈时间</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label style="color:#c26555;">手机号码*</label><input type="text" /></span>
-                    </div>
-                    <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">反馈内容</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px"></textarea></span></span>
+                        <span><label>模板名称</label><input type="text" /></span>
                     </div>
                     <div id="dropdown" class="item_1">
-                        <span><label>处理状态</label><input class="input_select" type="text" placeholder="请选择处理状态" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                        <span><label>模板类型</label><input class="input_select" type="text" placeholder="请选择模板类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
                             <ul>
-                                <li>已解决</li>
-                                <li>待解决</li>
+                                <li>祝福</li>
+                                <li>通知</li>
                             </ul>
                         </span>
                     </div>
+                    <div>
+                    <span style="display: inline-flex;width:100%"><label style="height:100px;">模板内容</label><span class="tempalte_area"><textarea></textarea></span></span>
+                    </div>
                 </form>
             </div>
-            <div class="editor_detail_em col-lg-4  animated fadeInRight">
+            <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
@@ -279,18 +267,6 @@
                     </ul>
                 </div>
                  <form class="msg_detail">
-                    <div>
-                        <span><label>创建时间</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input type="text" /></span>
-                    </div>
                     <div>
                     <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
                     </div>
@@ -306,7 +282,7 @@
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
     <script src="../js/plugins/pace/pace.min.js"></script>
-    <!-- moni select -->
+     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>

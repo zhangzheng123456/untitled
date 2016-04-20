@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>反馈详情</title>
+    <title>编辑缓存信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -16,7 +16,7 @@
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="back_detail.html#">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="editor_cache_msg.html#">
                         </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
@@ -142,7 +142,7 @@
         <nav class="navbar-default navbar-static-side" role="navigation">
             <div class="sidebar-collapse">
                 <ul class="nav" id="side-menu">
-                    <li>
+                   <li>
                         <a href="企业管理.html">
                             <i class="icon-ishop_2-07"></i>
                             <span class="nav-label">企业管理</span>
@@ -215,11 +215,11 @@
                     <li class="active">
                         <a href="#"><i class="icon-ishop_2-09"></i> <span class="nav-label">系统管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li class="select_index"><a href="用户反馈.html"><i class="icon-ishop_8-01"></i>用户反馈</a>
+                            <li><a href="用户反馈.html">用户反馈</a>
                             </li>
                             <li><a href="APP版本控制.html">APP版本控制</a>
                             </li>
-                            <li><a href="缓存管理.html">缓存管理</a>
+                            <li class="select_index"><a href="缓存管理.html"><i class="icon-ishop_8-01"></i>缓存管理</a>
                             </li>
                             <li><a href="接口管理.html">接口管理</a>
                             </li>
@@ -241,7 +241,7 @@
         </nav>
 
         <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>用户反馈<i class="icon-ishop_8-03"></i>反馈详情</div>
+            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>缓存管理<i class="icon-ishop_8-03"></i>编辑缓存信息</div>
             <div class="editor_em col-lg-7  animated fadeInRight">
                 <div class="operation_conpany">
                     <ul>
@@ -250,24 +250,22 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label style="color:#c26555;">用户ID*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">版本号*</label><input type="text" /></span>
                     </div>
                     <div>
-                        <span><label>反馈时间</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">企业编号*</label><input type="text" /></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">手机号码*</label><input type="text" /></span>
+                        <span><label>缓存标识</label><input type="text" /></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">反馈内容</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px"></textarea></span></span>
+                        <span><label>配置时间</label><input type="text" /></span>
                     </div>
-                    <div id="dropdown" class="item_1">
-                        <span><label>处理状态</label><input class="input_select" type="text" placeholder="请选择处理状态" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
-                            <ul>
-                                <li>已解决</li>
-                                <li>待解决</li>
-                            </ul>
-                        </span>
+                    <div>
+                    <span style="display: inline-flex;width:100%"><label style="height:80px;">缓存描述</label><span class="tempalte_area" style="height: 80px"><textarea style="height:60px"></textarea></span></span>
+                    </div>
+                    <div>
+                    <span style="display: inline-flex;width:100%"><label style="height:180px;">缓存描述</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px"></textarea></span></span>
                     </div>
                 </form>
             </div>

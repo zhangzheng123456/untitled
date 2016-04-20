@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>反馈详情</title>
+    <title>新增签到信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -11,12 +11,13 @@
     <link rel="stylesheet" href="../demo-files/demo.css">
     <link rel="stylesheet" href="../css/font_style.css">
 </head>
-<body>
+
+<body>../
     <div id="wrapper">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="back_detail.html#">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="addnew_sign.html#">
                         </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
@@ -152,12 +153,12 @@
                         <a href="店铺管理.html"><i class="icon-ishop_2-01"></i> <span class="nav-label">店铺管理</span>
                         </a>
                     </li>
-                    <li>
+                    <li class="active">
                         <a href="#"><i class="icon-ishop_2-02"></i> <span class="nav-label">员工管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li ><a href="员工列表.html">员工列表</a>
+                            <li><a href="员工列表.html">员工列表</a>
                             </li>
-                            <li><a href="签到管理.html">签到管理</a>
+                            <li class="select_index"><a href="签到管理.html"><i class="icon-ishop_8-01"></i>签到管理</a>
                             </li>
                         </ul>
                     </li>
@@ -175,7 +176,7 @@
                         <a href="#"><i class="icon-ishop_2-03"></i> <span class="nav-label">会员管理</span><span class="fa arrow"></span>
                         </a>
                         <ul class="nav nav-second-level">
-                            <li ><a href="会员列表.html">会员列表</a>
+                            <li><a href="会员列表.html">会员列表</a>
                             </li>
                             <li><a href="会员标签管理.html">会员标签管理</a>
                             </li>
@@ -212,10 +213,10 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="active">
+                    <li>
                         <a href="#"><i class="icon-ishop_2-09"></i> <span class="nav-label">系统管理</span><span class="fa arrow"></span></a>
                         <ul class="nav nav-second-level">
-                            <li class="select_index"><a href="用户反馈.html"><i class="icon-ishop_8-01"></i>用户反馈</a>
+                            <li><a href="用户反馈.html">用户反馈</a>
                             </li>
                             <li><a href="APP版本控制.html">APP版本控制</a>
                             </li>
@@ -241,37 +242,79 @@
         </nav>
 
         <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>用户反馈<i class="icon-ishop_8-03"></i>反馈详情</div>
-            <div class="editor_em col-lg-7  animated fadeInRight">
-                <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div>
-                <form class="conpany_msg">
+            <div class="col-lg-12 pre_title">员工管理<i class="icon-ishop_8-03"></i>签到管理<i class="icon-ishop_8-03"></i>新增签到信息</div>
+            <div class="editor_em editor_sign col-lg-6 editor_line  animated fadeInRight">
+                <form class="conpany_msg" style="margin-left:0px">
                     <div>
-                        <span><label style="color:#c26555;">用户ID*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">用户编号*</label><input type="text" /></span>
                     </div>
                     <div>
-                        <span><label>反馈时间</label><input type="text" /></span>
+                        <span><label>员工名称</label><input type="text" /></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">手机号码*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">连续签到天数*</label><input type="text" /></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">反馈内容</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px"></textarea></span></span>
+                        <span><label style="color:#c26555;">签到总天数*</label><input type="text" /></span>
                     </div>
-                    <div id="dropdown" class="item_1">
-                        <span><label>处理状态</label><input class="input_select" type="text" placeholder="请选择处理状态" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
-                            <ul>
-                                <li>已解决</li>
-                                <li>待解决</li>
-                            </ul>
-                        </span>
+                    <div style="margin-bottom:10px">
+                    <span><label>签到记录</label><span class="add_record" id="add_record">添加记录<i class="icon-ishop_6-01"></i></span></span>
+                    </div>
+                    <div class="sign_record" id="sign_record" style="margin-bottom:0px;">
+                        <ul id="sign_ul">
+                            <li>
+                                <span>
+                                    <div class="s_item"><em>时间</em><input type="text" /><em>状态</em><span class="select_state" onclick="onclick_select(this)">
+                                            <input class="input_select" type="text" readonly/><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
+                                            <ul>
+                                                <li>日</li>
+                                                <li>周</li>
+                                                <li>月</li>
+                                                <li>年</li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                    <div class="address"><em>地点</em><input type="text" /></div>
+                                </span>
+                                <span class="delete_record"><i class="icon-ishop_6-12"></i></span>
+                            </li>
+                            <li>
+                                <span>
+                                    <div class="s_item"><em>时间</em><input type="text" /><em>状态</em><span class="select_state" onclick="onclick_select(this)">
+                                            <input class="input_select" type="text" readonly/><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
+                                            <ul>
+                                                <li>日</li>
+                                                <li>周</li>
+                                                <li>月</li>
+                                                <li>年</li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                    <div class="address"><em>地点</em><input type="text" /></div>
+                                </span>
+                                <span class="delete_record"><i class="icon-ishop_6-12"></i></span>
+                            </li>
+                            <li>
+                                <span>
+                                    <div class="s_item"><em>时间</em><input type="text" /><em>状态</em><span class="select_state" onclick="onclick_select(this)">
+                                            <input class="input_select" type="text" readonly/><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
+                                            <ul>
+                                                <li>日</li>
+                                                <li>周</li>
+                                                <li>月</li>
+                                                <li>年</li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                    <div class="address"><em>地点</em><input type="text" /></div>
+                                </span>
+                                <span class="delete_record"><i class="icon-ishop_6-12"></i></span>
+                            </li>
+                        </ul>
                     </div>
                 </form>
             </div>
-            <div class="editor_detail_em col-lg-4  animated fadeInRight">
+            <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
@@ -279,18 +322,6 @@
                     </ul>
                 </div>
                  <form class="msg_detail">
-                    <div>
-                        <span><label>创建时间</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input type="text" /></span>
-                    </div>
                     <div>
                     <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
                     </div>
@@ -306,8 +337,8 @@
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
     <script src="../js/plugins/pace/pace.min.js"></script>
-    <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js"></script>
+    <!-- cycle_select -->
+    <script type="text/javascript" src="../js/cycle_select.js"></script>
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>
 </body>
