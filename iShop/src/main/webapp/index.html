@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>系统管理员主页</title>
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="demo-files/demo.css">
+    <link rel="stylesheet" href="css/font_style.css">
+</head>
+<body>
+    <div id="wrapper">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="index.html#">
+                        </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">
+                            <a href="#" title="返回首页">
+                             <div class="glyph fs1">
+                                <div class="clearfix bshadow0 pbs">
+                                    <span class="icon-ishop_3-01">
+                                    </span>
+                                </div>
+                            </div>
+                            </a></span>
+                        </li>
+                         <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                                 <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-02">
+                                        </span>
+                                         <span class="label label-primary">2</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-alerts">
+                                <li>
+                                    <a href="#">
+                                        <div>
+                                            <i class="fa fa-envelope fa-fw"></i> 您有16条未读消息
+                                            <span class="pull-right text-muted small">4分钟前</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">
+                                        <div>
+                                            <i class="fa fa-qq fa-fw"></i> 3条新回复
+                                            <span class="pull-right text-muted small">12分钟钱</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="#">
+                                            <strong>查看所有 </strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                               <!--  <i class="fa fa-envelope"></i> -->
+                                <!-- <span class="label label-warning">16</span> -->
+                                 <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-03">
+                                        </span>
+                                        <!-- <span class="mls"> icon-ishop_3-03</span> -->
+                                    </div>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-messages">
+                                <li>
+                                    <div class="dropdown-messages-box">
+                                        <a href="#" class="pull-left">
+                                            <img alt="image" class="img-circle" src="img/a7.jpg">
+                                        </a>
+                                        <div class="media-body">
+                                            <small class="pull-right">46小时前</small>
+                                            <strong>小四</strong> 项目已处理完结
+                                            <br>
+                                            <small class="text-muted">3天前 2014.11.8</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="dropdown-messages-box">
+                                        <a href="#" class="pull-left">
+                                            <img alt="image" class="img-circle" src="img/a4.jpg">
+                                        </a>
+                                        <div class="media-body ">
+                                            <small class="pull-right text-navy">25小时前</small>
+                                            <strong>国民岳父</strong> 这是一条测试信息
+                                            <br>
+                                            <small class="text-muted">昨天</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="#">
+                                            <i class="fa fa-envelope"></i>  <strong> 查看所有消息</strong>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-04">
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="search_box">
+                             <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                            <div class="form-group">
+                                <input type="text" placeholder="" class="form-control" name="top-search" id="top-search">
+                                <i class="icon-ishop_3-05" id="search_icon"></i>
+                            </div>
+                        </form>
+                        </li>
+                    </ul>
+            </nav>
+        </div>
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+
+                        <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                             </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                                <span class="clear"> <span class="block m-t-xs"> <strong class="font-bold">系统管理员</strong>
+                             </span>  <span class="text-muted text-xs block"> <b class="caret"></b></span> </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="#">修改头像</a>
+                                </li>
+                                <li><a href="#">个人资料</a>
+                                </li>
+                                <li><a href="#">联系我们</a>
+                                </li>
+                                <li><a href="#">信箱</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="#">安全退出</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            菜单
+                        </div>
+
+                    </li>
+                    <li>
+                        <a href="index.html">
+                            <i class="icon-ishop_2-01"></i>
+                            <span class="nav-label">商家管理</span> <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-02"></i> <span class="nav-label">用户管理</span>
+                        <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">店员列表</a>
+                            </li>
+                            <li><a href="#">店员资料管理</a>
+                            </li>
+                            <li><a href="table.html">业绩目标管理</a>
+                            </li>
+                            <li><a href="#">签到管理</a>
+                            </li>
+                            <li><a href="#">点赞管理</a>
+                            </li>
+                            <li><a href="#">验证码管理</a>
+                            </li>
+                            <li><a href="#">银行卡管理</a>
+                            </li>
+                            <li><a href="#">银行卡类型管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-03"></i> <span class="nav-label">会员管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-04"></i> <span class="nav-label">商品管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-05"></i> <span class="nav-label">消息管理</span>
+                        <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-06"></i> <span class="nav-label">app管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <i class="icon-ishop_1-01" style="font-size: 90px;color:#6cc1c8;background: #434960;float: left;"></i>
+                                <div class="index_title"><label class="shop_count">商家总数</label><span class="new_add">昨日新增<label>2</label></span></div>
+                                <div class="shop_num">1980</div>
+                            </div>
+                        </div>
+                         <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <i class="icon-ishop_1-02" style="font-size: 90px;color:#6cc1c8;background: #434960;float: left;"></i>
+                                <div class="index_title"><label class="shop_count">店仓总数</label><span class="new_add">昨日新增<label>20</label></span></div>
+                                <div class="shop_num">980063</div>
+                            </div>
+                        </div>
+                         <div class="ibox float-e-margins">
+                            <div class="ibox-content">
+                                <i class="icon-ishop_1-03" style="font-size: 90px;color:#6cc1c8;background: #434960;float: left;"></i>
+                                <div class="index_title"><label class="shop_count">用户总数</label><span class="new_add">昨日新增<label>300</label></span></div>
+                                <div class="shop_num">2850269</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="customer_add_cart">
+                        <label class="cart_title">用户总数增长率</label><label class="rec_week">最近一周<i class="icon-ishop_8-02" style="color:#6cc1c8; margin-left:10px;"></i></label>
+                            <canvas id="canvas_circle" width="800"height="550">
+                                <p>Your browserdoes not support the canvas element!</p>
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                   <div class="col-lg-4">
+                       <div class="ibox float-e-margins">
+                            <div class="ibox-list">
+                              <label class="list_title">最新用户反馈</label>
+                              <label class="list_more">更多 ></label>
+                            </div>
+                            <div class="list_titles">
+                                <ul>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>=============异常崩溃报告=============</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>=============异常崩溃报告=============</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                   </div>
+                    <div class="col-lg-4">
+                       <div class="ibox float-e-margins">
+                            <div class="ibox-list">
+                                <label class="list_title">最新错误日志</label>
+                              <label class="list_more">更多 ></label>
+                            </div>
+                            <div class="list_titles">
+                                <ul>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>店铺怎么重复啊,店员也不能删除,一天的业绩怎么出来两个</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>店铺怎么重复啊,店员也不能删除,一天的业绩怎么出来两个</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>店铺怎么重复啊,店员也不能删除,一天的业绩怎么出来两个</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>店铺怎么重复啊,店员也不能删除,一天的业绩怎么出来两个</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>店铺怎么重复啊,店员也不能删除,一天的业绩怎么出来两个</div>
+                                    </li>
+                                    <li>
+                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
+                                        <div>店铺怎么重复啊,店员也不能删除,一天的业绩怎么出来两个</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                   </div>
+                   <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="wearther-list">
+                                <label class="list_title">天气预报</label>
+                            </div>
+                            <div class="wearther_content">
+                                <ul class="tree_W">
+                                </ul>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/hplus.js?v=2.2.0"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+
+    <!-- iCheck -->
+    <script src="js/plugins/iCheck/icheck.min.js"></script>
+
+    <!-- Peity -->
+    <!-- <script src="js/demo/peity-demo.js"></script> -->
+    <script type="text/javascript" src="js/onvertToPinyin.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+            //调用天气预报数据
+            $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function(_result) {
+                if (remote_ip_info.ret == '1') {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://wthrcdn.etouch.cn/weather_mini?city="+remote_ip_info.city,
+                        data: "",
+                        success: function(msg){
+                            var w_type=JSON.parse(msg)["data"]["forecast"];
+                            var w_date=["今天","明天","后天"];
+                            for(var i=0;i<w_type.length-2;i++){
+                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="http://php.weather.sina.com.cn/images/yb3/78_78/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <!-- 业绩看板 -->
+    <script type="text/javascript">
+        //转换成纵坐标
+        function trans(degree){
+            return 60+(40-degree)*10;
+        }
+        //简单版绘制图表
+        function drawChart(canvasId,perArr, dateArr) {
+            var inint_num=$('.customer_add_cart').width()/10;
+            var mul_num=$('.customer_add_cart').width()/7;
+            var init_height=$('.customer_add_cart').height();
+            var end_num=$('.customer_add_cart').width()-20;
+            var pi2 = Math.PI*2;
+            //获取canva的dom对象
+            var canvas =document.getElementById(canvasId);//画布
+            //获取画布的上下文：使用画布的getContext方法获取
+            var c =canvas.getContext("2d");//画笔
+            //绘制横线
+            c.moveTo(20,220); //起始点坐标
+            c.lineTo(end_num,220);//终点坐标
+            c.strokeStyle = '#a3adbc';
+            c.stroke();
+            //绘制文字
+            c.font ="12px Times New Roman";
+            c.fillStyle="rgba(255,255,255,0.5)";
+            c.textAlign = "center";
+            for(var i=0; i< 7; i++){
+                c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.8 );
+            }
+            //绘制曲线图
+            c.beginPath();
+            c.moveTo(inint_num, trans(perArr[0]));
+            for(var i=1; i< 7; i++){
+                c.lineTo(inint_num+mul_num*i, trans(perArr[i]));
+            }
+            c.strokeStyle="#6cc1c8";
+            c.stroke();
+            //顶点的阴影部分
+            c.fillStyle="rgba(108,193,200,0.3)";
+            c.beginPath();
+            for(var i=0; i< 7; i++){
+                c.moveTo(inint_num+mul_num*i, trans(perArr[i]));
+                c.arc(inint_num+mul_num*i,trans(perArr[i]),6,0,pi2);
+            }
+            c.fill();
+            //绘制点
+            c.fillStyle = "#6cc1c8";
+            c.beginPath();
+            for(var i=0; i< 7; i++){
+                c.moveTo(inint_num+mul_num*i, trans(perArr[i]));
+                c.arc(inint_num+mul_num*i, trans(perArr[i]),2, 0, pi2);
+            }
+            c.fill();
+        }
+        function init() {
+                var myCanvas =document.getElementById('canvas_circle');
+                var avail_width=$('.customer_add_cart').width();
+                var avail_height=$('.customer_add_cart').height()*0.8;
+                myCanvas.setAttribute("width", avail_width);
+                myCanvas.setAttribute("height", avail_height);
+                var perArr = [26,29,26,32,30,34,40];//顶点
+                var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
+                drawChart("canvas_circle", perArr, dateArr);
+        }
+        window.onresize=function(){
+            init();
+        }
+        window.onload = init;
+    </script>
+</body>
+
+</html>

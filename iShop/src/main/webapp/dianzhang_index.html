@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>店长主页</title>
+    <link href="css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="css/plugins/iCheck/custom.css" rel="stylesheet">
+    <link href="css/animate.css" rel="stylesheet">
+    <link href="css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="demo-files/demo.css">
+    <link rel="stylesheet" href="css/font_style.css">
+    <link rel="stylesheet" href="css/liandong_select.css">
+</head>
+<body>
+    <div id="wrapper">
+        <div class="row border-bottom">
+            <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
+                    <div class="navbar-header">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="dianzhang_index.html#">
+                        </a>
+                    </div>
+                    <ul class="nav navbar-top-links navbar-right">
+                        <li>
+                            <span class="m-r-sm text-muted welcome-message">
+                            <a href="#" title="返回首页">
+                             <div class="glyph fs1">
+                                <div class="clearfix bshadow0 pbs">
+                                    <span class="icon-ishop_3-01">
+                                    </span>
+                                </div>
+                            </div>
+                            </a></span>
+                        </li>
+                         <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                                 <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-02">
+                                        </span>
+                                         <span class="label label-primary">2</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-alerts">
+                                <li>
+                                    <a href="#">
+                                        <div>
+                                            <i class="fa fa-envelope fa-fw"></i> 您有16条未读消息
+                                            <span class="pull-right text-muted small">4分钟前</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <a href="#">
+                                        <div>
+                                            <i class="fa fa-qq fa-fw"></i> 3条新回复
+                                            <span class="pull-right text-muted small">12分钟钱</span>
+                                        </div>
+                                    </a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="#">
+                                            <strong>查看所有 </strong>
+                                            <i class="fa fa-angle-right"></i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle count-info" data-toggle="dropdown" href="index.html#">
+                                 <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-03">
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                            <ul class="dropdown-menu dropdown-messages">
+                                <li>
+                                    <div class="dropdown-messages-box">
+                                        <a href="#" class="pull-left">
+                                            <img alt="image" class="img-circle" src="img/a7.jpg">
+                                        </a>
+                                        <div class="media-body">
+                                            <small class="pull-right">46小时前</small>
+                                            <strong>小四</strong> 项目已处理完结
+                                            <br>
+                                            <small class="text-muted">3天前 2014.11.8</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="dropdown-messages-box">
+                                        <a href="#" class="pull-left">
+                                            <img alt="image" class="img-circle" src="img/a4.jpg">
+                                        </a>
+                                        <div class="media-body ">
+                                            <small class="pull-right text-navy">25小时前</small>
+                                            <strong>国民岳父</strong> 这是一条测试信息
+                                            <br>
+                                            <small class="text-muted">昨天</small>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <div class="text-center link-block">
+                                        <a href="#">
+                                            <i class="fa fa-envelope"></i>  <strong> 查看所有消息</strong>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <div class="glyph fs1">
+                                    <div class="clearfix bshadow0 pbs">
+                                        <span class="icon-ishop_3-04">
+                                        </span>
+                                    </div>
+                                </div>
+                            </a>
+                        </li>
+                        <li class="search_box">
+                             <form role="search" class="navbar-form-custom" method="post" action="search_results.html">
+                            <div class="form-group">
+                                <input type="text" placeholder="" class="form-control" name="top-search" id="top-search">
+                                <i class="icon-ishop_3-05" id="search_icon"></i>
+                            </div>
+                        </form>
+                        </li>
+                    </ul>
+            </nav>
+        </div>
+        <nav class="navbar-default navbar-static-side" role="navigation">
+            <div class="sidebar-collapse">
+                <ul class="nav" id="side-menu">
+                    <li class="nav-header">
+
+                        <div class="dropdown profile-element"> <span>
+                            <img alt="image" class="img-circle" src="img/profile_small.jpg" />
+                             </span>
+                            <a data-toggle="dropdown" class="dropdown-toggle" href="index.html#">
+                                <span class="clear">
+                                    <span class="block m-t-xs">
+                                    <strong class="font-bold">唐亚奇<label style="color: #97a4b6;margin-left:5px;">店长</label></strong>
+                                    </span>
+                                <span class="text-muted text-xs block"> <b class="caret"></b></span>
+                            </span>
+                            </a>
+                            <ul class="dropdown-menu animated fadeInRight m-t-xs">
+                                <li><a href="#">修改头像</a>
+                                </li>
+                                <li><a href="#">个人资料</a>
+                                </li>
+                                <li><a href="#">联系我们</a>
+                                </li>
+                                <li><a href="#">信箱</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li><a href="#">安全退出</a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="logo-element">
+                            菜单
+                        </div>
+
+                    </li>
+                    <li>
+                        <a href="index.html">
+                            <i class="icon-ishop_2-01"></i>
+                            <span class="nav-label">商家管理</span> <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-02"></i> <span class="nav-label">用户管理</span>
+                        <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">店员列表</a>
+                            </li>
+                            <li><a href="#">店员资料管理</a>
+                            </li>
+                            <li><a href="table.html">业绩目标管理</a>
+                            </li>
+                            <li><a href="#">签到管理</a>
+                            </li>
+                            <li><a href="#">点赞管理</a>
+                            </li>
+                            <li><a href="#">验证码管理</a>
+                            </li>
+                            <li><a href="#">银行卡管理</a>
+                            </li>
+                            <li><a href="#">银行卡类型管理</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-03"></i> <span class="nav-label">会员管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-04"></i> <span class="nav-label">商品管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-05"></i> <span class="nav-label">消息管理</span>
+                        <span class="fa arrow"></span>
+                        </a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><i class="icon-ishop_2-06"></i> <span class="nav-label">app管理</span><span class="fa arrow"></span></a>
+                        <ul class="nav nav-second-level">
+                            <li><a href="#">示例一</a>
+                            </li>
+                            <li><a href="#">示例二</a>
+                            </li>
+                            <li><a href="#">示例三</a>
+                            </li>
+                            <li><a href="#">示例四</a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="gray-bg dashbard-1">
+            <div class="wrapper wrapper-content">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="ibox float-e-margins">
+                            <div class="ibox-content_per">
+                                <label class="c_a_shoppe"><i>尹墨IMM女装</i><img src="img/img_spot_white.png"><i>华东一区</i><img src="img/img_spot_white.png"><i>贵阳荔星名店尹墨专柜</i></label>
+                                <div class="check_select">
+                                    <div class="select_1 reg_testdate" onclick="CDT(this);">
+                                        <span class="choose item" style="width:70px">
+                                            <div class="title" style="width:70px">按日查看</div>
+                                            <ul>
+                                                <li>按日查看</li>
+                                                <li>按周查看</li>
+                                                <li>按月查看</li>
+                                                <li>按年查看</li>
+                                            </ul>
+                                        </span>
+                                        <span class="Year item" style="width:65px">
+                                            <div class="title" style="width:65px"></div>
+                                            <ul onclick="YYYYDD()">
+                                            </ul>
+                                        </span>
+                                        <span class="Month item" style="width:50px">
+                                            <div class="title" style="width:50px"></div>
+                                            <ul onclick="MMDD()">
+                                            </ul>
+                                        </span>
+                                        <span class="Week item" style="width:140px;display:none">
+                                            <div class="title" style="width:140px">第1周<label>03-01至03-06</label></div>
+                                            <ul>
+                                                <li>第1周<label>03-01至03-06</label></li>
+                                                <li>第2周<label>03-07至03-13</label></li>
+                                                <li>第3周<label>03-14至03-20</label></li>
+                                                <li>第4周<label>03-21至03-27</label></li>
+                                                <li>第5周<label>03-28至04-03</label></li>
+                                            </ul>
+                                        </span>
+                                        <span class="Day item" style="width:90px">
+                                            <div class="title" style="width:90px"></div>
+                                                <ul>
+                                                </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="performance">
+                                    <ul>
+                                        <li class="total_num">
+                                            <div class="t_num">21114.00</div>
+                                            <div class="ranking">业绩总额（元）</div>
+                                            <div class="shop_r">店铺排名<label>1</label></div>
+                                        </li>
+                                        <li class="yield_rate">
+                                            <span class="chart" data-percent="73">
+                                                <span class="percent"></span>
+                                            </span>
+                                        </li>
+
+                                    </ul>
+                                </div>
+                                <div class="item_list_1">
+                                    <ul>
+                                        <li>
+                                            <div><span>销售件数</span></div>
+                                            <div class="item_1">7</div>
+                                        </li>
+                                        <li>
+                                            <div><span>成交笔数</span></div>
+                                            <div class="item_1">4</div>
+                                        </li>
+                                        <li>
+                                            <div><span>客单价</span></div>
+                                            <div class="item_1"><em>￥</em>5279</div>
+                                        </li>
+                                        <li>
+                                            <div><span>件单价</span></div>
+                                            <div class="item_1"><em>￥</em>3016</div>
+                                        </li>
+                                    </ul>
+                                     <ul>
+                                        <li>
+                                            <div><span>连带率</span></div>
+                                            <div class="item_1">1.75</div>
+                                        </li>
+                                        <li>
+                                            <div><span>平均折扣</span></div>
+                                            <div class="item_1">0.9</div>
+                                        </li>
+                                        <li>
+                                            <div><span>新增会员</span></div>
+                                            <div class="item_1">5</div>
+                                        </li>
+                                        <li>
+                                            <div><span>会销占比</span></div>
+                                            <div class="item_1">100%</div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-7">
+                        <div class="customer_add_cart">
+                            <div class="cart_tab">
+                                <ul>
+                                    <li><label class="select">业绩趋势</label></li>
+                                    <li><label>能力分析</label></li>
+                                </ul>
+                            </div>
+                            <div class="check_chart">
+                                 <div class="select_2 reg_testdate"  onclick="CDT(this);">
+                                    <span class="choose item" style="width:70px">
+                                        <div class="title" style="width:70px">按周查看</div>
+                                        <ul>
+                                            <li>按周查看</li>
+                                            <li>按月查看</li>
+                                            <li>按年查看</li>
+                                        </ul>
+                                    </span>
+                                    <span class="Year item" style="width:65px">
+                                        <div class="title" style="width:65px"></div>
+                                        <ul>
+                                        </ul>
+                                    </span>
+                                    <span class="Month item" style="width:50px;display:none">
+                                        <div class="title" style="width:50px"></div>
+                                        <ul>
+                                        </ul>
+                                    </span>
+                                    <span class="Week item" style="width:140px;" >
+                                        <div class="title" style="width:140px">第1周<label>03-01至03-06</label></div>
+                                        <ul>
+                                            <li>第1周<label>03-01至03-06</label></li>
+                                            <li>第2周<label>03-07至03-13</label></li>
+                                            <li>第3周<label>03-14至03-20</label></li>
+                                            <li>第4周<label>03-21至03-27</label></li>
+                                            <li>第5周<label>03-28至04-03</label></li>
+                                        </ul>
+                                    </span>
+                                </div>
+                                <span style="margin-right:10px;margin-top:20px;">业绩总额<label style="font-size:20px">21114.00</label>元</span>
+                            </div>
+                            <canvas id="canvas_circle">
+                                <p>Your browserdoes not support the canvas element!</p>
+                            </canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                   <div class="col-lg-4">
+                       <div class="ibox float-e-margins">
+                            <div class="ibox-list_daogou_paihang">
+                                <div class="item_title">
+                                    <label>导购排行</label>
+                                    <span><img src="img/icon_hp_more.png" alt="更多" /></span>
+                                    <span><img src="img/icon_search_small.png" alt="搜索"/></span>
+                                </div>
+                                <div class="item_total">
+                                    <span>导购总数<label>25</label></span>
+                                    <span class="average_per">平均业绩<label>30963</label></span>
+                                </div>
+                                <div class="check_chart">
+                                    <div class="select_3 reg_testdate"  onclick="CDT(this);">
+                                        <span class="choose item" style="width:70px">
+                                            <div class="title" style="width:70px">按周查看</div>
+                                            <ul>
+                                                <li>按周查看</li>
+                                                <li>按月查看</li>
+                                                <li>按年查看</li>
+                                            </ul>
+                                        </span>
+                                        <span class="Year item" style="width:65px">
+                                            <div class="title" style="width:65px"></div>
+                                            <ul>
+                                            </ul>
+                                        </span>
+                                        <span class="Month item" style="width:50px;display:none">
+                                            <div class="title" style="width:50px"></div>
+                                            <ul>
+                                            </ul>
+                                        </span>
+                                        <span class="Week item" style="width:140px;" >
+                                            <div class="title" style="width:140px">第1周<label>03-01至03-06</label></div>
+                                            <ul>
+                                                <li>第1周<label>03-01至03-06</label></li>
+                                                <li>第2周<label>03-07至03-13</label></li>
+                                                <li>第3周<label>03-14至03-20</label></li>
+                                                <li>第4周<label>03-21至03-27</label></li>
+                                                <li>第5周<label>03-28至04-03</label></li>
+                                            </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list_titles_daogou_paihang">
+                                <table style="width:100%">
+                                    <tr>
+                                       <th>排名</th>
+                                       <th>姓名</th>
+                                       <th>业绩</th>
+                                       <th>目标</th>
+                                       <th>完成度</th>
+                                       <th>贡献度</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:11%">1</td>
+                                        <td style="width:16%">朱亚晓</td>
+                                        <td style="width:21%"><em>￥</em>165395</td>
+                                        <td style="width:21%"><em>￥</em>165395</td>
+                                        <td style="width:18%"><img src="img/completion_80.png" style="width:20px;height: 20px"/>81%</td>
+                                        <td style="width:13%"><img src="img/contribution_30.png" style="width:4px;height: 20px" />32%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:11%">2</td>
+                                        <td style="width:16%">姚思婷</td>
+                                        <td style="width:21%"><em>￥</em>55659</td>
+                                        <td style="width:21%"><em>￥</em>55659</td>
+                                        <td style="width:18%"><img src="img/completion_70.png" style="width:20px;height: 20px"/>70%</td>
+                                        <td style="width:13%"><img src="img/contribution_20.png" style="width:4px;height: 20px" />16%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:11%">3</td>
+                                        <td style="width:16%">林思敏</td>
+                                        <td style="width:21%"><em>￥</em>46740</td>
+                                        <td style="width:21%"><em>￥</em>46740</td>
+                                        <td style="width:18%"><img src="img/completion_70.png" style="width:20px;height: 20px"/>68%</td>
+                                        <td style="width:13%"><img src="img/contribution_10.png" style="width:4px;height: 20px" />14%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:11%">4</td>
+                                        <td style="width:16%">贺明云</td>
+                                        <td style="width:21%"><em>￥</em>17989</td>
+                                        <td style="width:21%"><em>￥</em>17989</td>
+                                        <td style="width:18%"><img src="img/completion_60.png" style="width:20px;height: 20px"/>60%</td>
+                                        <td style="width:13%"><img src="img/contribution_0.png" style="width:4px;height: 20px" />4%</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:11%">5</td>
+                                        <td style="width:16%">曹璐</td>
+                                        <td style="width:21%"><em>￥</em>15693</td>
+                                        <td style="width:21%"><em>￥</em>15693</td>
+                                        <td style="width:18%"><img src="img/completion_60.png" style="width:20px;height: 20px"/>59%</td>
+                                        <td style="width:13%"><img src="img/contribution_0.png" style="width:4px;height: 20px" />3%</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                   </div>
+                    <div class="col-lg-4">
+                       <div class="ibox float-e-margins">
+                            <div class="ibox-list_daogou_paihang">
+                                <div class="item_title">
+                                    <label>商品排行</label>
+                                    <span><img src="img/icon_hp_more.png" alt="更多" /></span>
+                                    <span><img src="img/icon_search_small.png" alt="搜索"/></span>
+                                </div>
+                                <div class="item_total">
+                                    <span>商品种类<label>8925</label></span>
+                                    <span class="average_per">库存总量<label>30963</label></span>
+                                </div>
+                                <div class="check_chart">
+                                    <div class="select_4 reg_testdate"  onclick="CDT(this);">
+                                        <span class="choose item" style="width:70px">
+                                            <div class="title" style="width:70px">按周查看</div>
+                                            <ul>
+                                                <li>按周查看</li>
+                                                <li>按月查看</li>
+                                                <li>按年查看</li>
+                                            </ul>
+                                        </span>
+                                        <span class="Year item" style="width:65px">
+                                            <div class="title" style="width:65px"></div>
+                                            <ul>
+                                            </ul>
+                                        </span>
+                                        <span class="Month item" style="width:50px;display:none;">
+                                            <div class="title" style="width:50px"></div>
+                                            <ul>
+                                            </ul>
+                                        </span>
+                                        <span class="Week item" style="width:140px;" >
+                                            <div class="title" style="width:140px">第1周<label>03-01至03-06</label></div>
+                                            <ul>
+                                                <li>第1周<label>03-01至03-06</label></li>
+                                                <li>第2周<label>03-07至03-13</label></li>
+                                                <li>第3周<label>03-14至03-20</label></li>
+                                                <li>第4周<label>03-21至03-27</label></li>
+                                                <li>第5周<label>03-28至04-03</label></li>
+                                            </ul>
+                                        </span>
+                                        <span class="Day item" style="width:90px;display:none;">
+                                            <div class="title" style="width:90px"></div>
+                                                <ul>
+                                                </ul>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="list_titles_daogou_paihang">
+                                <div class="list_titles_daogou_paihang">
+                                <table style="width: 100%">
+                                    <tr>
+                                       <th>排名</th>
+                                       <th>店铺</th>
+                                       <th>单价</th>
+                                       <th>销量</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%">1</td>
+                                        <td style="width:50%">冬季毛呢欧美羊毛呢大衣</td>
+                                        <td style="width:20%"><em>￥</em>995</td>
+                                        <td style="width:20%">556</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%">2</td>
+                                        <td style="width:50%">冬季保暖外搭高领简约毛衫</td>
+                                        <td style="width:20%"><em>￥</em>559</td>
+                                        <td style="width:20%">236</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%">3</td>
+                                        <td style="width:50%">秋冬羊毛黑色修身呢大衣</td>
+                                        <td style="width:20%"><em>￥</em>1440</td>
+                                        <td style="width:20%">165</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%">4</td>
+                                        <td style="width:50%">冬季毛呢直筒纯色羊毛呢大衣</td>
+                                        <td style="width:20%"><em>￥</em>1689</td>
+                                        <td style="width:20%">134</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:10%">5</td>
+                                        <td style="width:50%">双排扣羊毛韩版修身呢大衣</td>
+                                        <td style="width:20%"><em>￥</em>1693</td>
+                                        <td style="width:20%">90</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            </div>
+                        </div>
+                   </div>
+                   <div class="col-lg-3">
+                        <div class="ibox float-e-margins">
+                            <div class="wearther-list">
+                                <label class="list_title">天气预报</label>
+                            </div>
+                            <div class="wearther_content">
+                                <ul class="tree_W">
+                                </ul>
+                            </div>
+                        </div>
+                   </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Mainly scripts -->
+    <script src="js/jquery-2.1.1.min.js"></script>
+    <script src="js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+     <!-- 模拟联动 -->
+    <script type="text/javascript" src="js/liandong_select.js"></script>
+    <!-- Peity -->
+    <script src="js/plugins/peity/jquery.peity.min.js"></script>
+
+    <!-- Custom and plugin javascript -->
+    <script src="js/hplus.js?v=2.2.0"></script>
+    <script src="js/plugins/pace/pace.min.js"></script>
+    <!-- 汉字转拼音 -->
+    <script type="text/javascript" src="js/onvertToPinyin.js"></script>
+    <!-- piechart -->
+    <script type="text/javascript" src="js/easypiechart.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.i-checks').iCheck({
+                checkboxClass: 'icheckbox_square-green',
+                radioClass: 'iradio_square-green',
+            });
+            //调用天气预报数据
+            $.getScript('http://int.dpool.sina.com.cn/iplookup/iplookup.php?format=js', function(_result) {
+                if (remote_ip_info.ret == '1') {
+                    $.ajax({
+                        type: "GET",
+                        url: "http://wthrcdn.etouch.cn/weather_mini?city="+remote_ip_info.city,
+                        data: "",
+                        success: function(msg){
+                            var w_type=JSON.parse(msg)["data"]["forecast"];
+                            var w_date=["今天","明天","后天"];
+                            for(var i=0;i<w_type.length-2;i++){
+                                $(".wearther_content .tree_W").append('<li><label>'+w_date[i]+'</label><div><ul><li class="describe"><div class="w_tody_type">'+w_type[i].type+'</div><div class="w_range">'+w_type[i].low.replace(/[^0-9]/ig, "")+"～"+w_type[i].high.replace(/[^0-9]/ig, "")+'℃</div> </li><li class="w_img"><img src="http://php.weather.sina.com.cn/images/yb3/78_78/'+codefans_net_CC2PY(w_type[i].type).toLowerCase()+'_0.png" alt="" /></li></ul></div></li>');
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+    <!-- 达成率 -->
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var chart = window.chart = new EasyPieChart(document.querySelector('.yield_rate span'), {
+            easing: 'easeOutElastic',
+            delay: 3000,
+            barColor: '#6cc1c8',
+            trackColor: '#4a5f7c',
+            scaleColor: false,
+            lineWidth: 10,
+            trackWidth: 10,
+            lineCap: 'butt',
+            onStep: function(from, to, percent) {
+                this.el.children[0].innerHTML = Math.round(percent)+"%"+"<div style='color:#97a4b6'>达成率</div>";
+            }
+        });
+    });
+    </script>
+</body>
+
+</html>

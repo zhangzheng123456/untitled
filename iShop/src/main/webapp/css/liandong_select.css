@@ -1,0 +1,65 @@
+::-webkit-scrollbar{width:0px;}
+::-webkit-scrollbar-track{background-color:#4a5f7c;}
+::-webkit-scrollbar-thumb{background-color:#4a5f7c;}
+::-webkit-scrollbar-thumb:hover {background-color:#4a5f7c;}
+::-webkit-scrollbar-thumb:active {background-color:#4a5f7c;}
+.reg_testdate{
+	display:inline-flex;
+	position:absolute;
+	z-index:100;
+	cursor:pointer;
+}
+.reg_testdate .title{
+	height:26px;
+    background: #434960 url(../img/img_arrow_down.png) no-repeat 100% 50%;
+    background-size: 8px 4px;
+    list-style:none;
+    font-size:12px;
+	color:#ffffff;
+	line-height:26px;
+	text-align:center;
+}
+.reg_testdate ul{
+	list-style:none;
+	margin:0;
+	padding:0;
+	display:none;
+	height:235px;
+	overflow-y:auto;
+}
+.reg_testdate ul li{
+	height:26px;
+	font-size:12px;
+	text-align:center;
+	color:#ffffff;
+	line-height:26px;
+	background-color: #4a5f7c;
+}
+.reg_testdate .cur .title{
+	 background: #434960 url(../img/img_arrow_up.png) no-repeat 100% 50%;
+    background-size: 8px 4px;
+}
+.reg_testdate li.selected{
+	color:#6cc1c8;
+	background:#4a5f7c url(../img/img_spot_cyan.png) no-repeat 96% 50%;
+	background-size:4px 4px;
+}
+.reg_testdate li.selected label{
+	color:#6cc1c8;
+}
+.Week div label{
+	color:#A3ADBC;
+	margin-left:10px;
+	font-size:12px;
+}
+.Week ul li label{
+	color:#A3ADBC;
+	margin-left:10px;
+}
+.Day div label{
+	color:#A3ADBC;
+}
+.Day ul li label{
+	color:#A3ADBC;
+}
+/*模拟一般select样式*/
