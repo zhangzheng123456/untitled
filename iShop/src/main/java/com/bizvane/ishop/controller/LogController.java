@@ -36,7 +36,7 @@ public class LogController {
      * 错误日志
      * 新增
      */
-    @RequestMapping(value = "/error/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/error/add",method = RequestMethod.POST)
     @ResponseBody
     public String addErrorLog(HttpServletRequest request) {
 
@@ -47,7 +47,7 @@ public class LogController {
      * 错误日志
      * 编辑
      */
-    @RequestMapping(value = "/error/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/error/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editErrorLog(HttpServletRequest request) {
 
@@ -58,7 +58,7 @@ public class LogController {
      * 错误日志
      * 查找
      */
-    @RequestMapping(value = "/error/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/error/find",method = RequestMethod.POST)
     @ResponseBody
     public String findErrorLog(HttpServletRequest request) {
 
@@ -79,7 +79,7 @@ public class LogController {
      * 登录日志
      * 新增
      */
-    @RequestMapping(value = "/login/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/login/add",method = RequestMethod.POST)
     @ResponseBody
     public String addLoginLog(HttpServletRequest request) {
 
@@ -90,7 +90,7 @@ public class LogController {
      * 登录日志
      * 编辑
      */
-    @RequestMapping(value = "/login/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/login/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editLoginLog(HttpServletRequest request) {
 
@@ -101,9 +101,20 @@ public class LogController {
      * 登录日志
      * 查找
      */
-    @RequestMapping(value = "/login/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/login/find",method = RequestMethod.POST)
     @ResponseBody
     public String findLoginLog(HttpServletRequest request) {
+
+        return "login_log";
+    }
+
+    /**
+     * 登录日志
+     * 查找
+     */
+    @RequestMapping(value = "/login/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteLoginLog(HttpServletRequest request) {
 
         return "login_log";
     }
@@ -122,7 +133,7 @@ public class LogController {
      * 验证码管理
      * 新增
      */
-    @RequestMapping(value = "/code/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/code/add",method = RequestMethod.POST)
     @ResponseBody
     public String addCode(HttpServletRequest request) {
 
@@ -133,7 +144,7 @@ public class LogController {
      * 验证码管理
      * 编辑
      */
-    @RequestMapping(value = "/code/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/code/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editCode(HttpServletRequest request) {
 
@@ -144,9 +155,20 @@ public class LogController {
      * 验证码管理
      * 查找
      */
-    @RequestMapping(value = "/code/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/code/find",method = RequestMethod.POST)
     @ResponseBody
     public String findCode(HttpServletRequest request) {
+
+        return "code_manage";
+    }
+
+    /**
+     * 验证码管理
+     * 删除
+     */
+    @RequestMapping(value = "/code/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteCode(HttpServletRequest request) {
 
         return "code_manage";
     }
