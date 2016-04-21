@@ -29,7 +29,7 @@ public class GoodsController {
      * 商品培训
      * 添加
      */
-    @RequestMapping(value = "/train/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/train/add",method = RequestMethod.POST)
     @ResponseBody
     public String addGoodsTrain(HttpServletRequest request) {
         return "goods_train";
@@ -39,7 +39,7 @@ public class GoodsController {
      * 商品培训
      * 编辑
      */
-    @RequestMapping(value = "/train/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/train/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editGoodsTrain(HttpServletRequest request) {
         return "goods_train";
@@ -49,9 +49,19 @@ public class GoodsController {
      * 商品培训
      * 查找
      */
-    @RequestMapping(value = "/train/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/train/find",method = RequestMethod.POST)
     @ResponseBody
     public String findGoodsTrain(HttpServletRequest request) {
+        return "goods_train";
+    }
+
+    /**
+     * 商品培训
+     * 删除
+     */
+    @RequestMapping(value = "/train/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteGoodsTrain(HttpServletRequest request) {
         return "goods_train";
     }
 
