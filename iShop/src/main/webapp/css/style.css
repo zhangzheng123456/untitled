@@ -3136,6 +3136,7 @@ video {
 /* WRAPPERS */
 #wrapper {
   width: 100%;
+  /*overflow-x: hidden;*/
   background-color:#434960;
 }
 .wrapper {
@@ -6915,6 +6916,11 @@ body.skin-3 {
 .cart_tab{
   height:40px;
   width:160px;
+  position:relative;
+  z-index:100;
+}
+.radar_holder{
+  margin-top:40px;
 }
 .cart_tab ul{
   padding:0;
@@ -6951,7 +6957,7 @@ body.skin-3 {
   background-color:#565c70;
   border-radius:5px;
 }
-.cart_tab .select{
+.cart_tab .select label{
     width:60px;
     height:26px;
     font-size:12px;
@@ -6962,7 +6968,7 @@ body.skin-3 {
 }
 .check_chart{
   height:40px;
-  line-height:40px;
+  /*line-height:40px;*/
   /*margin: 0px 10px;*/
   font-size: 12px;
   color: #ffffff;
@@ -8063,3 +8069,30 @@ li.select_index>a>i{
 .nav-second-level li{
   font-size:14px;
 }
+#tip_note{
+  width:60px;
+  height:30px;
+  font-size:14px;
+  color:#ffffff;
+  text-align:center;
+  display:block;
+  border-radius:4px;
+  background:rgba(255,255,255,0.1);
+  line-height:30px;
+ }
+.border {
+  border-style: solid;
+  border-width: 5px;
+  border-color:rgba(255,255,255,0.1);
+  position:relative;
+}
+
+.css-border-arrow {
+  width: 0;
+  height: 0;
+}
+.top {
+    border-right-color: transparent;
+    border-bottom-color: transparent;
+    border-left-color: transparent;
+  }
