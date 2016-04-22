@@ -680,9 +680,6 @@ window.Chart = function(context){
 				if(textMeasurement>labelLength){
 					labelLength = textMeasurement;
 				}
-				else{
-					labelLength=textMeasurement;
-				}
 			}
 
 			//Figure out whats the largest - the height of the text or the width of what's there, and minus it from the maximum usable size.
