@@ -39,7 +39,9 @@
     </listener>
     <context-param>
         <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:spring-context.xml</param-value>
+        <param-value>classpath*:spring-context.xml;
+            classpath:spring-mybatis.xml
+        </param-value>
     </context-param>
 
     <!-- 设置根目录 -->
@@ -56,6 +58,10 @@
     <context-param>
         <param-name>log4jRefreshInterval</param-name>
         <param-value>3000</param-value>
+    </context-param>
+    <context-param>
+        <param-name/>
+        <param-value/>
     </context-param>
 
     <listener>
