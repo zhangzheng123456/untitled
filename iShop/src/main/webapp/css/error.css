@@ -9,6 +9,17 @@ img{
 	border:none;
 	display: block;
 }
-.img{
-	min-width: 1210px;
+.bg{
+	position: relative;
+	margin: 0 auto;
+}
+.top{
+	position: absolute;
+	top:17.5%;
+	width: 92%;
+	left: 4%;
+}
+.return{
+	width:28%;
+	margin: 0 auto;
 }
