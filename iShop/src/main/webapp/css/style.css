@@ -3008,7 +3008,7 @@ a.forum-item-title:hover {
   border-bottom: 1px solid #e7eaec;
 }
 body {
-  font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-family: "Microsoft YaHei";
   background-color: #434960;
   font-size: 14px;
   color: #676a6c;
@@ -7736,7 +7736,7 @@ ul,li{list-style:none;padding:0;margin:0;}
     text-indent: 10px;
 }
 #per_type ul li:hover{
-  background:#6cc1c8; 
+  background:#6cc1c8;
   color:#ffffff;
 }
 .add_per_icon{
