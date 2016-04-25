@@ -761,7 +761,7 @@ input::-webkit-input-placeholder{
 	margin-left: 20px;
 }
 /**回到顶部按钮 回到底部按钮**/
-.side_bar{
+#side_bar{
 	position: fixed;
 	top:300px;
 	z-index: 5;
@@ -771,7 +771,10 @@ input::-webkit-input-placeholder{
 	text-align: center;
 	vertical-align: middle;
 }
-.side_bar .gotop{
+#side_bar span{
+	display: block;
+}
+#side_bar .gotop{
 	width: 20px;
 	height: 20px;
 	background-color: #fff;
@@ -779,7 +782,7 @@ input::-webkit-input-placeholder{
 	display: block;
 	margin-bottom: 2px;
 }
-.side_bar .gobottom{
+#side_bar .gobottom{
 	width: 20px;
 	height: 20px;
 	background-color: #fff;

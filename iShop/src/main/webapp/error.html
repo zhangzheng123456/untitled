@@ -6,6 +6,24 @@
 	<link rel="stylesheet" href="css/error.css">
 </head>
 <body>
-	<div class="img"><img src="img/img_404_bg.png" alt=""></div>
+	<div class="bg">
+		<img src="img/img_404_bg.png" alt="" id="bg" width="100%">
+		<div class="top">
+			<img src="img/img_404_main.png" alt="" width="100%;">
+			<div class="return">
+				<a href="#"><img src="img/img_404_button.png" alt="" width="100%;"></a>
+			</div>
+		</div>
+	</div>
 </body>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script>
+	width=$(window).width();
+	// $("#bg").css("width",""+width+"px");
+	// $(window).resize(function(){
+	// 	width=$(window).width();
+	// 	console.log(width);
+	// 	$("#bg").css("width",""+width+"px");
+ //    });
+</script>
 </html>
