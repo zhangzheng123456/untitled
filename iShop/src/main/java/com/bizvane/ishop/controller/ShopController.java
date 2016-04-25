@@ -27,7 +27,7 @@ public class ShopController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
     public String shopManage(HttpServletRequest request) {
-        return "shop_manage";
+        return "shop";
     }
 
     /**
@@ -36,7 +36,7 @@ public class ShopController {
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     @ResponseBody
     public String addShop(HttpServletRequest request) {
-        return "shop_manage";
+        return "shop_add";
     }
 
     /**
@@ -45,8 +45,10 @@ public class ShopController {
     @RequestMapping(value = "/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editShop(HttpServletRequest request) {
-        return "shop_manage";
+        return "shop_edit";
     }
+
+
 
     /**
      * 查找
@@ -54,7 +56,7 @@ public class ShopController {
     @RequestMapping(value = "/find",method = RequestMethod.GET)
     @ResponseBody
     public String findShop(HttpServletRequest request) {
-        return "shop_manage";
+        return "";
     }
 
 }

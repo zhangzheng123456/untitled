@@ -26,7 +26,7 @@ public class SystemController {
     @RequestMapping(value = "/feedback/list",method = RequestMethod.GET)
     @ResponseBody
     public String feedbackManage(HttpServletRequest request) {
-        return "user_feedback";
+        return "feedback";
     }
 
     /**
@@ -36,7 +36,7 @@ public class SystemController {
     @RequestMapping(value = "/feedback/add",method = RequestMethod.GET)
     @ResponseBody
     public String addFeedback(HttpServletRequest request) {
-        return "user_feedback";
+        return "feedback_add";
     }
 
     /**
@@ -46,7 +46,7 @@ public class SystemController {
     @RequestMapping(value = "/feedback/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editFeedback(HttpServletRequest request) {
-        return "user_feedback";
+        return "feedback_edit";
     }
 
     /**
@@ -56,8 +56,10 @@ public class SystemController {
     @RequestMapping(value = "/feedback/find",method = RequestMethod.GET)
     @ResponseBody
     public String findFeedback(HttpServletRequest request) {
-        return "user_feedback";
+        return "";
     }
+
+
 
     /**
      * APP版本控制
@@ -65,7 +67,7 @@ public class SystemController {
     @RequestMapping(value = "/APPvesion/list",method = RequestMethod.GET)
     @ResponseBody
     public String APPVesionManage(HttpServletRequest request) {
-        return "APP_vesion";
+        return "appversion";
     }
 
     /**
@@ -75,7 +77,7 @@ public class SystemController {
     @RequestMapping(value = "/APPvesion/add",method = RequestMethod.GET)
     @ResponseBody
     public String addAPPVesion(HttpServletRequest request) {
-        return "APP_vesion";
+        return "appversion_add";
     }
 
     /**
@@ -85,7 +87,7 @@ public class SystemController {
     @RequestMapping(value = "/APPvesion/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editAPPVesion(HttpServletRequest request) {
-        return "APP_vesion";
+        return "appversion_edit";
     }
 
     /**
@@ -95,7 +97,7 @@ public class SystemController {
     @RequestMapping(value = "/APPvesion/find",method = RequestMethod.GET)
     @ResponseBody
     public String findAPPVesion(HttpServletRequest request) {
-        return "APP_vesion";
+        return "";
     }
 
 
@@ -105,7 +107,7 @@ public class SystemController {
     @RequestMapping(value = "/cache/list",method = RequestMethod.GET)
     @ResponseBody
     public String cacheManage(HttpServletRequest request) {
-        return "cache_manage";
+        return "cache";
     }
 
     /**
@@ -115,7 +117,7 @@ public class SystemController {
     @RequestMapping(value = "/cache/add",method = RequestMethod.GET)
     @ResponseBody
     public String addCache(HttpServletRequest request) {
-        return "cache_manage";
+        return "cache_add";
     }
 
     /**
@@ -125,7 +127,7 @@ public class SystemController {
     @RequestMapping(value = "/cache/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editCache(HttpServletRequest request) {
-        return "cache_manage";
+        return "cache_edit";
     }
 
     /**
@@ -135,7 +137,7 @@ public class SystemController {
     @RequestMapping(value = "/cache/find",method = RequestMethod.GET)
     @ResponseBody
     public String findCache(HttpServletRequest request) {
-        return "cache_manage";
+        return "";
     }
 
 
@@ -145,7 +147,7 @@ public class SystemController {
     @RequestMapping(value = "/interface/list",method = RequestMethod.GET)
     @ResponseBody
     public String interfaceManage(HttpServletRequest request) {
-        return "interface_manage";
+        return "interface";
     }
 
     /**
@@ -155,7 +157,7 @@ public class SystemController {
     @RequestMapping(value = "/interface/add",method = RequestMethod.GET)
     @ResponseBody
     public String addInterface(HttpServletRequest request) {
-        return "interface_manage";
+        return "interface_add";
     }
 
     /**
@@ -165,7 +167,7 @@ public class SystemController {
     @RequestMapping(value = "/interface/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editnterface(HttpServletRequest request) {
-        return "interface_manage";
+        return "interface_exit";
     }
 
     /**
@@ -175,7 +177,7 @@ public class SystemController {
     @RequestMapping(value = "/interface/find",method = RequestMethod.GET)
     @ResponseBody
     public String findInterface(HttpServletRequest request) {
-        return "interface_manage";
+        return "";
     }
 
 }

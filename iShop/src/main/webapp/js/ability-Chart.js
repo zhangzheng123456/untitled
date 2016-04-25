@@ -200,7 +200,7 @@ window.Chart = function(context){
 			scaleFontFamily : "'Microsoft YaHei'",
 			scaleFontSize : 10,
 			scaleFontStyle : "normal",
-			scaleFontColor : "#666",
+			scaleFontColor : "#fff",
 			scaleShowLabelBackdrop : true,
 			scaleBackdropColor : "rgba(255,255,255,.1)",
 			scaleBackdropPaddingY : 2,
@@ -215,9 +215,9 @@ window.Chart = function(context){
 			pointDot : false,
 			pointDotRadius : 0,
 			pointDotStrokeWidth : 0,
-			datasetStroke : true,
-			datasetStrokeWidth : 2,
-			datasetFill : true,
+			datasetStroke : false,
+			datasetStrokeWidth : 0,
+			datasetFill : false,
 			animation : true,
 			animationSteps : 60,
 			animationEasing : "easeOutQuart",
@@ -473,6 +473,7 @@ window.Chart = function(context){
 
 		}
 	}
+	var fixed_points=[];
 	var Radar = function (data,config,ctx) {
 		var maxSize, scaleHop, calculatedScale, labelHeight, scaleHeight, valueBounds, labelTemplateString;
 		//If no labels are defined set to an empty array, so referencing length for looping doesn't blow up.
@@ -513,7 +514,6 @@ window.Chart = function(context){
 			//We accept multiple data sets for radar charts, so show loop through each set
 			for (var i=0; i<data.datasets.length; i++){
 				ctx.beginPath();
-				ctx.fillStyle="#ffffff";
 				ctx.moveTo(0,animationDecimal*(-1*calculateOffset(data.datasets[i].data[0],calculatedScale,scaleHop)));
 				for (var j=1; j<data.datasets[i].data.length; j++){
 					ctx.rotate(rotationDegree);
@@ -527,7 +527,6 @@ window.Chart = function(context){
 				ctx.fill();
 				ctx.stroke();
 
-
 				if (config.pointDot){
 					ctx.fillStyle = data.datasets[i].pointColor;
 					ctx.strokeStyle = data.datasets[i].pointStrokeColor;
@@ -540,6 +539,7 @@ window.Chart = function(context){
 						ctx.stroke();
 					}
 				}
+
 				ctx.rotate(rotationDegree);
 			}
 			ctx.restore();
@@ -555,7 +555,6 @@ window.Chart = function(context){
 				ctx.strokeStyle = config.angleLineColor;
 				ctx.lineWidth = config.angleLineWidth;
 				for (var h=0; h<data.datasets[0].data.length; h++){
-
 				    ctx.rotate(rotationDegree);
 					ctx.beginPath();
 					ctx.moveTo(0,0);
@@ -601,9 +600,9 @@ window.Chart = function(context){
 				}
 
 			}
-			for (var k=0; k<data.labels.length; k++){
-			ctx.font = config.pointLabelFontStyle + " " + config.pointLabelFontSize+"px " + config.pointLabelFontFamily;
-			ctx.fillStyle = config.pointLabelFontColor;
+			for(var k=0; k<data.labels.length; k++){
+				ctx.font = config.pointLabelFontStyle + " " + config.pointLabelFontSize+"px " + config.pointLabelFontFamily;
+				ctx.fillStyle = config.pointLabelFontColor;
 				var opposite = Math.sin(rotationDegree*k) * (maxSize + config.pointLabelFontSize);
 				var adjacent = Math.cos(rotationDegree*k) * (maxSize + config.pointLabelFontSize);
 
@@ -611,26 +610,61 @@ window.Chart = function(context){
 					ctx.textAlign = "center";
 				}
 				else if(rotationDegree*k > Math.PI){
-					ctx.textAlign = "right";
+					ctx.textAlign = "center";
 				}
 				else{
-					ctx.textAlign = "left";
+					ctx.textAlign = "center";
 				}
-
 				ctx.textBaseline = "middle";
-				if(k==0){
-					ctx.fillText(data.labels[k],opposite,-adjacent-20);
-					ctx.fillStyle="rgba(255,255,255,1)";
-					ctx.fillText(data.labels2[k],opposite,-adjacent);
-					ctx.font="bold 12px Microsoft YaHei";
-					ctx.fillText(data.title[0],0,110);
+				if(data.label){
+					if(k==0){
+						ctx.fillText(data.label[k],opposite,-adjacent-30);
+						ctx.fillText(data.labels[k],opposite,-adjacent-15);
+						ctx.fillStyle="rgba(255,255,255,1)";
+						ctx.fillText(data.labels2[k],opposite,-adjacent);
+						ctx.font="bold 12px Microsoft YaHei";
+						ctx.fillText(data.title[0],0,115);
+					}else{
+						if(rotationDegree*k == Math.PI || rotationDegree*k == 0){
+							ctx.fillText(data.label[k],opposite,-adjacent);
+							ctx.fillText(data.labels[k],opposite,-adjacent+15);
+							ctx.fillStyle="rgba(255,255,255,1)";
+							ctx.fillText(data.labels2[k],opposite,-adjacent+30);
+						}else if(rotationDegree*k > Math.PI){
+							ctx.fillText(data.label[k],opposite-20,-adjacent-10);
+							ctx.fillText(data.labels[k],opposite-20,-adjacent+5);
+							ctx.fillStyle="rgba(255,255,255,1)";
+							ctx.fillText(data.labels2[k],opposite-20,-adjacent+20);
+						}else{
+							ctx.fillText(data.label[k],opposite+20,-adjacent-10);
+							ctx.fillText(data.labels[k],opposite+20,-adjacent+5);
+							ctx.fillStyle="rgba(255,255,255,1)";
+							ctx.fillText(data.labels2[k],opposite+20,-adjacent+20);
+						}
+					}
 				}else{
-					ctx.fillText(data.labels[k],opposite,-adjacent);
-					ctx.fillStyle="rgba(255,255,255,1)";
-					ctx.fillText(data.labels2[k],opposite,-adjacent+20);
+					if(k==0){
+						ctx.fillText(data.labels[k],opposite,-adjacent-15);
+						ctx.fillStyle="rgba(255,255,255,1)";
+						ctx.fillText(data.labels2[k],opposite,-adjacent);
+						ctx.font="bold 12px Microsoft YaHei";
+						ctx.fillText(data.title[0],0,115);
+					}else{
+						if(rotationDegree*k == Math.PI || rotationDegree*k == 0){
+							ctx.fillText(data.labels[k],opposite,-adjacent);
+							ctx.fillStyle="rgba(255,255,255,1)";
+							ctx.fillText(data.labels2[k],opposite,-adjacent+15);
+						}else if(rotationDegree*k > Math.PI){
+							ctx.fillText(data.labels[k],opposite-20,-adjacent);
+							ctx.fillStyle="rgba(255,255,255,1)";
+							ctx.fillText(data.labels2[k],opposite-20,-adjacent+15);
+						}else{
+							ctx.fillText(data.labels[k],opposite+20,-adjacent);
+							ctx.fillStyle="rgba(255,255,255,1)";
+							ctx.fillText(data.labels2[k],opposite+20,-adjacent+15);
+						}
+					}
 				}
-
-
 			}
 			ctx.restore();
 		};
@@ -645,9 +679,6 @@ window.Chart = function(context){
 				var textMeasurement = ctx.measureText(data.labels[i]).width;
 				if(textMeasurement>labelLength){
 					labelLength = textMeasurement;
-				}
-				else{
-					labelLength=textMeasurement;
 				}
 			}
 

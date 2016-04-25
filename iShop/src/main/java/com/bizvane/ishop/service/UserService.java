@@ -1,6 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.bean.User;
+import com.bizvane.ishop.bean.UserInfo;
 
 import java.util.List;
 
@@ -10,16 +10,9 @@ import java.util.List;
 
 public interface UserService {
 
-    public boolean insert(User user);
+    UserInfo getUserById(int id);
 
-//    public boolean save(User user);
+    List<UserInfo> getUsers();
 
-    public boolean delete(int id);
-
-    public boolean update(User user);
-
-    public List<User> findAll();
-
-    public User findById(int id);
-
+    int insert(UserInfo userInfo);
 }

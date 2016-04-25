@@ -1,8 +1,15 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
        xmlns:context="http://www.springframework.org/schema/context"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--自动扫描含有@Service将其注入为bean -->
+    <context:component-scan base-package="com.bizvane.ishop.service" />
+
     <!-- 引入properties配置文件 -->
     <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
         <property name="locations">
@@ -38,13 +45,14 @@
         </property>
     </bean >
 
-    <!-- cache配置 -->
+    <!-- cache配置
     <bean id="methodCacheInterceptor" class="com.bizvane.ishop.utils.MethodCacheInterceptor" >
         <property name="redisUtil" ref="redisUtil" />
     </bean >
     <bean id="redisUtil" class="com.bizvane.ishop.utils.RedisUtil" >
         <property name="redisTemplate" ref="redisTemplate" />
     </bean >
+    -->
     <!--&lt;!&ndash; 需要加入缓存的类或方法 &ndash;&gt;-->
     <!--<bean id="methodCachePointCut"  class="org.springframework.aop.support.RegexpMethodPointcutAdvisor" >-->
         <!--<property name="advice" >-->
@@ -57,4 +65,5 @@
             <!--</list>-->
         <!--</property>-->
     <!--</bean >-->
+
 </beans>

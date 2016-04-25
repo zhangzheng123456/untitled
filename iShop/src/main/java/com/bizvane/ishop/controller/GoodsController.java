@@ -19,60 +19,60 @@ public class GoodsController {
     /**
      * 商品培训
      */
-    @RequestMapping(value = "/train/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/fab/list",method = RequestMethod.GET)
     @ResponseBody
     public String goodsTrainManage(HttpServletRequest request) {
-        return "goods_train";
+        return "fab";
     }
 
     /**
      * 商品培训
      * 添加
      */
-    @RequestMapping(value = "/train/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/fab/add",method = RequestMethod.POST)
     @ResponseBody
     public String addGoodsTrain(HttpServletRequest request) {
-        return "goods_train";
+        return "fab_add";
     }
 
     /**
      * 商品培训
      * 编辑
      */
-    @RequestMapping(value = "/train/edit",method = RequestMethod.POST)
+    @RequestMapping(value = "/fab/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editGoodsTrain(HttpServletRequest request) {
-        return "goods_train";
+        return "fab_edit";
     }
 
     /**
      * 商品培训
      * 查找
      */
-    @RequestMapping(value = "/train/find",method = RequestMethod.POST)
+    @RequestMapping(value = "/fab/find",method = RequestMethod.POST)
     @ResponseBody
     public String findGoodsTrain(HttpServletRequest request) {
-        return "goods_train";
+        return "";
     }
 
     /**
      * 商品培训
      * 删除
      */
-    @RequestMapping(value = "/train/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/fab/delete",method = RequestMethod.POST)
     @ResponseBody
     public String deleteGoodsTrain(HttpServletRequest request) {
-        return "goods_train";
+        return "";
     }
 
 
     /**
      * 秀搭管理
      */
-    @RequestMapping(value = "/show_match/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/xiuda/list",method = RequestMethod.GET)
     @ResponseBody
     public String showMatchManage(HttpServletRequest request) {
-        return "show_match";
+        return "xiuda";
     }
 
 

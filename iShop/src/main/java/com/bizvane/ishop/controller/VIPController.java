@@ -22,115 +22,118 @@ public class VIPController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
     public String VIPManage(HttpServletRequest request) {
-        return "VIP_list";
+        return "vip";
     }
 
     /**
      * 会员列表
      * 新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add",method = RequestMethod.POST)
     @ResponseBody
     public String addVIP(HttpServletRequest request) {
-        return "VIP_list";
+        return "vip_add";
     }
 
     /**
      * 会员列表
      * 编辑
      */
-    @RequestMapping(value = "/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editVIP(HttpServletRequest request) {
-        return "VIP_list";
+        return "vip_edit";
     }
 
     /**
      * 会员列表
      * 查找
      */
-    @RequestMapping(value = "/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/find",method = RequestMethod.POST)
     @ResponseBody
     public String findVIP(HttpServletRequest request) {
-        return "VIP_list";
+        return "";
     }
+
 
     /**
      * 会员标签管理
      */
-    @RequestMapping(value = "/label_manage/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/label/list",method = RequestMethod.GET)
     @ResponseBody
     public String VIPLabelManage(HttpServletRequest request) {
-        return "label_manage";
+        return "viplabel";
     }
 
     /**
      * 会员标签管理
      * 新增
      */
-    @RequestMapping(value = "/label_manage/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/label/add",method = RequestMethod.GET)
     @ResponseBody
     public String addVIPLabel(HttpServletRequest request) {
-        return "label_manage";
+        return "viplabel_add";
     }
 
     /**
      * 会员标签管理
      * 编辑
      */
-    @RequestMapping(value = "/label_manage/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/label/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editVIPLabel(HttpServletRequest request) {
-        return "label_manage";
+        return "viplabel_edit";
     }
 
     /**
      * 会员标签管理
      * 查找
      */
-    @RequestMapping(value = "/label_manage/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/label/find",method = RequestMethod.GET)
     @ResponseBody
     public String findVIPLabel(HttpServletRequest request) {
-        return "label_manage";
+        return "";
     }
+
+
 
     /**
      * 回访记录管理
      */
-    @RequestMapping(value = "/return_visit/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/callback/list",method = RequestMethod.GET)
     @ResponseBody
-    public String returnVisitManage(HttpServletRequest request) {
-        return "return_visit_record";
+    public String callBackManage(HttpServletRequest request) {
+        return "callback";
     }
 
     /**
      * 回访记录管理
      * 新增
      */
-    @RequestMapping(value = "/return_visit/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/callback/add",method = RequestMethod.GET)
     @ResponseBody
-    public String addReturnVisit(HttpServletRequest request) {
-        return "return_visit_record";
+    public String addCallBack(HttpServletRequest request) {
+        return "callback_add";
     }
 
     /**
      * 回访记录管理
      * 编辑
      */
-    @RequestMapping(value = "/return_visit/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/callback/edit",method = RequestMethod.GET)
     @ResponseBody
-    public String editReturnVisit(HttpServletRequest request) {
-        return "return_visit_record";
+    public String editCallBack(HttpServletRequest request) {
+        return "callback_edit";
     }
 
     /**
      * 回访记录管理
      * 查找
      */
-    @RequestMapping(value = "/return_visit/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/callback/find",method = RequestMethod.GET)
     @ResponseBody
-    public String findReturnVisit(HttpServletRequest request) {
-        return "return_visit_record";
+    public String findCallBack(HttpServletRequest request) {
+        return "";
     }
 
 

@@ -28,7 +28,16 @@ public class CropController {
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
     public String cropManage(HttpServletRequest request) {
-        return "crop_manage";
+        return "crop";
+    }
+
+    /*
+   * 列表
+   * */
+    @RequestMapping(value = "/user",method = RequestMethod.GET)
+    @ResponseBody
+    public String cropUserManage(HttpServletRequest request) {
+        return "crop_user";
     }
 
     /**
@@ -37,7 +46,7 @@ public class CropController {
     @RequestMapping(value = "/add",method = RequestMethod.GET)
     @ResponseBody
     public String addCrop(HttpServletRequest request) {
-        return "crop_manage";
+        return "crop_add";
     }
 
     /**
@@ -46,7 +55,7 @@ public class CropController {
     @RequestMapping(value = "/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editCrop(HttpServletRequest request) {
-        return "crop_manage";
+        return "crop_add";
     }
 
     /**
@@ -55,7 +64,7 @@ public class CropController {
     @RequestMapping(value = "/find",method = RequestMethod.GET)
     @ResponseBody
     public String findCrop(HttpServletRequest request) {
-        return "crop_manage";
+        return "";
     }
 
 
