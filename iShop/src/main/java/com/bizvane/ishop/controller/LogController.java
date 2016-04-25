@@ -29,7 +29,7 @@ public class LogController {
     @ResponseBody
     public String errorLogManage(HttpServletRequest request) {
 
-        return "error_log";
+        return "errorlog";
     }
 
     /**
@@ -40,7 +40,7 @@ public class LogController {
     @ResponseBody
     public String addErrorLog(HttpServletRequest request) {
 
-        return "error_log";
+        return "errorlog_add";
     }
 
     /**
@@ -51,7 +51,7 @@ public class LogController {
     @ResponseBody
     public String editErrorLog(HttpServletRequest request) {
 
-        return "error_log";
+        return "errorlog_edit";
     }
 
     /**
@@ -62,7 +62,7 @@ public class LogController {
     @ResponseBody
     public String findErrorLog(HttpServletRequest request) {
 
-        return "error_log";
+        return "";
     }
 
     /**
@@ -72,7 +72,7 @@ public class LogController {
     @ResponseBody
     public String loginLogManage(HttpServletRequest request) {
 
-        return "login_log";
+        return "logging";
     }
 
     /**
@@ -83,7 +83,7 @@ public class LogController {
     @ResponseBody
     public String addLoginLog(HttpServletRequest request) {
 
-        return "login_log";
+        return "logging_add";
     }
 
     /**
@@ -94,7 +94,7 @@ public class LogController {
     @ResponseBody
     public String editLoginLog(HttpServletRequest request) {
 
-        return "login_log";
+        return "logging_edit";
     }
 
     /**
@@ -105,71 +105,61 @@ public class LogController {
     @ResponseBody
     public String findLoginLog(HttpServletRequest request) {
 
-        return "login_log";
+        return "";
     }
 
-    /**
-     * 登录日志
-     * 查找
-     */
-    @RequestMapping(value = "/login/delete",method = RequestMethod.POST)
-    @ResponseBody
-    public String deleteLoginLog(HttpServletRequest request) {
-
-        return "login_log";
-    }
 
     /**
      * 验证码管理
      */
-    @RequestMapping(value = "/code/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/authcode/list",method = RequestMethod.GET)
     @ResponseBody
-    public String codeManage(HttpServletRequest request) {
+    public String authCodeManage(HttpServletRequest request) {
 
-        return "code_manage";
+        return "authcode";
     }
 
     /**
      * 验证码管理
      * 新增
      */
-    @RequestMapping(value = "/code/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/authcode/add",method = RequestMethod.POST)
     @ResponseBody
-    public String addCode(HttpServletRequest request) {
+    public String addAuthCode(HttpServletRequest request) {
 
-        return "code_manage";
+        return "authcode_add";
     }
 
     /**
      * 验证码管理
      * 编辑
      */
-    @RequestMapping(value = "/code/edit",method = RequestMethod.POST)
+    @RequestMapping(value = "/authcode/edit",method = RequestMethod.POST)
     @ResponseBody
-    public String editCode(HttpServletRequest request) {
+    public String editAuthCode(HttpServletRequest request) {
 
-        return "code_manage";
+        return "authcode_edit";
     }
 
     /**
      * 验证码管理
      * 查找
      */
-    @RequestMapping(value = "/code/find",method = RequestMethod.POST)
+    @RequestMapping(value = "/authcode/find",method = RequestMethod.POST)
     @ResponseBody
-    public String findCode(HttpServletRequest request) {
+    public String findAuthCode(HttpServletRequest request) {
 
-        return "code_manage";
+        return "";
     }
 
     /**
      * 验证码管理
      * 删除
      */
-    @RequestMapping(value = "/code/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/authcode/delete",method = RequestMethod.POST)
     @ResponseBody
-    public String deleteCode(HttpServletRequest request) {
+    public String deleteAuthCode(HttpServletRequest request) {
 
-        return "code_manage";
+        return "";
     }
 }

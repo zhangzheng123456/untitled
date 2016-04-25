@@ -23,7 +23,7 @@ public class StaffController {
     @ResponseBody
     public String staffManage(HttpServletRequest request) {
 
-        return "staff_list";
+        return "staff";
     }
 
     /**
@@ -34,7 +34,7 @@ public class StaffController {
     @ResponseBody
     public String addStaff(HttpServletRequest request) {
 
-        return "staff_list";
+        return "staff_add";
     }
 
     /**
@@ -45,8 +45,9 @@ public class StaffController {
     @ResponseBody
     public String editStaff(HttpServletRequest request) {
 
-        return "staff_list";
+        return "staff_edit";
     }
+
 
     /**
      * 员工列表
@@ -56,48 +57,48 @@ public class StaffController {
     @ResponseBody
     public String findStaff(HttpServletRequest request) {
 
-        return "staff_list";
+        return "";
     }
 
     /**
      * 签到管理
      */
-    @RequestMapping(value = "/sign_in/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/checkin/list",method = RequestMethod.GET)
     @ResponseBody
-    public String signInManage(HttpServletRequest request) {
+    public String checkInManage(HttpServletRequest request) {
 
-        return "sign_in";
+        return "checkin";
     }
 
     /**
      * 签到管理
      * 新增
      */
-    @RequestMapping(value = "/sign_in/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/checkin/add",method = RequestMethod.GET)
     @ResponseBody
-    public String addSignIn(HttpServletRequest request) {
+    public String addCheckIn(HttpServletRequest request) {
 
-        return "sign_in";
+        return "checkin_add";
     }
     /**
      * 签到管理
      * 编辑
      */
-    @RequestMapping(value = "/sign_in/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/checkin/edit",method = RequestMethod.GET)
     @ResponseBody
-    public String editSignIn(HttpServletRequest request) {
+    public String editCheckIn(HttpServletRequest request) {
 
-        return "sign_in";
+        return "checkin_edit";
     }
     /**
      * 签到管理
      * 查找
      */
-    @RequestMapping(value = "/sign_in/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/checkin/find",method = RequestMethod.GET)
     @ResponseBody
-    public String findSignIn(HttpServletRequest request) {
+    public String findCheckIn(HttpServletRequest request) {
 
-        return "sign_in";
+        return "";
     }
 
 }

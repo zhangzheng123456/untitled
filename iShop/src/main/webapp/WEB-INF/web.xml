@@ -5,13 +5,11 @@
          id="WebApp_ID" version="3.0">
     <display-name>Archetype Created Web Application</display-name>
 
-    <session-config>
-        <session-timeout>10</session-timeout>
-        <cookie-config>
-            <name>BIZSESSIONID</name>
-        </cookie-config>
-        <tracking-mode>COOKIE</tracking-mode>
-    </session-config>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>classpath:spring.xml,
+            classpath:spring-mybatis.xml</param-value>
+    </context-param>
 
     <filter>
         <filter-name>encodingFilter</filter-name>
@@ -34,16 +32,14 @@
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
-    <listener>
-        <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
-    </listener>
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>classpath*:spring-context.xml;
-            classpath:spring-mybatis.xml
-        </param-value>
-    </context-param>
+     <listener>
+         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+     </listener>
 
+     <!-- 防止spring内存溢出监听器 -->
+    <listener>
+        <listener-class>org.springframework.web.util.IntrospectorCleanupListener</listener-class>
+    </listener>
     <!-- 设置根目录 -->
     <context-param>
         <param-name>webAppRootKey</param-name>
@@ -59,20 +55,16 @@
         <param-name>log4jRefreshInterval</param-name>
         <param-value>3000</param-value>
     </context-param>
-    <context-param>
-        <param-name/>
-        <param-value/>
-    </context-param>
 
-    <listener>
-        <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>
-    </listener>
+
     <servlet>
         <servlet-name>springMVC</servlet-name>
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>classpath*:spring-context.xml</param-value>
+            <param-value>
+                classpath:spring-mvc.xml
+            </param-value>
         </init-param>
         <load-on-startup>1</load-on-startup>
     </servlet>
@@ -80,6 +72,16 @@
         <servlet-name>springMVC</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
+
+    <!-- 配置session超时时间，单位分钟 -->
+    <session-config>
+        <session-timeout>10</session-timeout>
+        <cookie-config>
+            <name>BIZSESSIONID</name>
+        </cookie-config>
+        <tracking-mode>COOKIE</tracking-mode>
+    </session-config>
+
     <!--<servlet-mapping>-->
         <!--<servlet-name>default</servlet-name>-->
         <!--<url-pattern>*.jpg</url-pattern>-->

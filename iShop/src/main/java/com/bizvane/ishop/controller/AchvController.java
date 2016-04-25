@@ -20,40 +20,40 @@ public class AchvController {
     /**
      * 店铺业绩目标
      */
-    @RequestMapping(value = "/shop_goal/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/shopgoal/list",method = RequestMethod.GET)
     @ResponseBody
     public String shopGoalManage(HttpServletRequest request) {
-        return "shop_goal";
+        return "shopgoal";
     }
 
     /**
      * 店铺业绩目标
      * 新增
      */
-    @RequestMapping(value = "/shop_goal/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/shopgoal/add",method = RequestMethod.POST)
     @ResponseBody
     public String addShopGoal(HttpServletRequest request) {
-        return "shop_goal";
+        return "shopgoal_add";
     }
 
     /**
      * 店铺业绩目标
      * 编辑
      */
-    @RequestMapping(value = "/shop_goal/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/shopgoal/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editShopGoal(HttpServletRequest request) {
-        return "shop_goal";
+        return "shopgoal_edit";
     }
 
     /**
      * 店铺业绩目标
      * 查找
      */
-    @RequestMapping(value = "/shop_goal/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/shopgoal/find",method = RequestMethod.POST)
     @ResponseBody
     public String findShopGoal(HttpServletRequest request) {
-        return "shop_goal";
+        return "";
     }
 
 
@@ -62,20 +62,20 @@ public class AchvController {
     /**
      * 员工业绩目标
      */
-    @RequestMapping(value = "/staff_goal/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/staffgoal/list",method = RequestMethod.GET)
     @ResponseBody
     public String staffGoalManage(HttpServletRequest request) {
-        return "staff_goal";
+        return "staffgoal";
     }
 
     /**
      * 员工业绩目标
      * 新增
      */
-    @RequestMapping(value = "/staff_goal/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/staffgoal/add",method = RequestMethod.POST)
     @ResponseBody
     public String addStaffGoal(HttpServletRequest request) {
-        return "staff_goal";
+        return "staffgoal_add";
     }
 
 
@@ -83,20 +83,21 @@ public class AchvController {
      * 员工业绩目标
      * 编辑
      */
-    @RequestMapping(value = "/staff_goal/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/staffgoal/edit",method = RequestMethod.POST)
     @ResponseBody
     public String editStaffGoal(HttpServletRequest request) {
-        return "staff_goal";
+        return "staffgoal_edit";
     }
 
     /**
      * 员工业绩目标
      * 查找
      */
-    @RequestMapping(value = "/staff_goal/find",method = RequestMethod.GET)
+    @RequestMapping(value = "/staffgoal/find",method = RequestMethod.POST)
     @ResponseBody
     public String findStaffGoal(HttpServletRequest request) {
-        return "shop_goal";
+
+        return "";
     }
 
 

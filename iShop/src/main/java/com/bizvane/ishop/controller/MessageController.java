@@ -22,7 +22,7 @@ public class MessageController {
     @RequestMapping(value = "/ishop/list",method = RequestMethod.GET)
     @ResponseBody
     public String ishopManage(HttpServletRequest request) {
-        return "ishop_message";
+        return "iShop";
     }
 
     /**
@@ -32,7 +32,7 @@ public class MessageController {
     @RequestMapping(value = "/ishop/add",method = RequestMethod.GET)
     @ResponseBody
     public String addIshop(HttpServletRequest request) {
-        return "ishop_message";
+        return "iShop_add";
     }
 
     /**
@@ -42,7 +42,7 @@ public class MessageController {
     @RequestMapping(value = "/ishop/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editIshop(HttpServletRequest request) {
-        return "ishop_message";
+        return "iShop_edit";
     }
 
     /**
@@ -52,7 +52,7 @@ public class MessageController {
     @RequestMapping(value = "/ishop/find",method = RequestMethod.GET)
     @ResponseBody
     public String findIshop(HttpServletRequest request) {
-        return "ishop_message";
+        return "";
     }
 
 
@@ -62,7 +62,7 @@ public class MessageController {
     @RequestMapping(value = "/mobile/list",method = RequestMethod.GET)
     @ResponseBody
     public String mobileManage(HttpServletRequest request) {
-        return "mobile_message";
+        return "mobile";
     }
 
     /**
@@ -72,7 +72,7 @@ public class MessageController {
     @RequestMapping(value = "/mobile/add",method = RequestMethod.GET)
     @ResponseBody
     public String addMobile(HttpServletRequest request) {
-        return "mobile_message";
+        return "mobile_add";
     }
 
     /**
@@ -82,7 +82,7 @@ public class MessageController {
     @RequestMapping(value = "/mobile/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editMobile(HttpServletRequest request) {
-        return "mobile_message";
+        return "mobile_edit";
     }
 
     /**
@@ -92,7 +92,7 @@ public class MessageController {
     @RequestMapping(value = "/mobile/find",method = RequestMethod.GET)
     @ResponseBody
     public String findMobile(HttpServletRequest request) {
-        return "mobile_message";
+        return "";
     }
 
 }
