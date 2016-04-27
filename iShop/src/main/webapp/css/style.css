@@ -7754,6 +7754,22 @@ ul,li{list-style:none;padding:0;margin:0;}
   margin:0px 10px;
   vertical-align:middle;
 }
+@media (max-width:1365px){
+  .conpany_msg input{
+    width:376px;
+  }
+  #dropdown input{
+    width:346px;
+  }
+}
+@media (max-width:1365px){
+  .conpany_msg input{
+    width:346px;
+  }
+  #dropdown input{
+    width:316px;
+  }
+}
 @media (max-width:1199px){
   .oper_btn{
     text-align:left;
@@ -8064,7 +8080,7 @@ ul,li{list-style:none;padding:0;margin:0;}
 li.select_index>a{
   color:#6cc1c8;
 }
-li.select_index>a>i{
+li.select_index>a>label>i{
   font-size:12px;
   color:#6cc1c8;
   vertical-align:middle;
