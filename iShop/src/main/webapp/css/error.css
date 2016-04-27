@@ -2,8 +2,7 @@
 	margin:0;
 	padding:0;
 }
-html{
-	// background: url(../img/img_404_bg.png) no-repeat; 
+body,html{
 }
 img{
 	border:none;
@@ -21,5 +20,13 @@ img{
 }
 .return{
 	width:28%;
+	margin: 0 auto;
+}
+.f500{
+	width: 100%;
+	background-color: #434960;
+}
+.f500_img{
+	width: 87.5%;
 	margin: 0 auto;
 }
