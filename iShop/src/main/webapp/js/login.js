@@ -49,13 +49,13 @@ $(function() {//点击登陆
                 var user_type=message.user_type;
                 var user_id=message.user_id;
 				if(user_type=="admin"){
-                	window.location.href="home/index_admin.html?user_id"+user_id+"";
+                	window.location.href="home/index_admin.html?user_id="+user_id+"";
 				}else if(user_type=="am"){
-					window.location.href="home/index_am.html?user_id"+user_id+"";
+					window.location.href="home/index_am.html?user_id="+user_id+"";
 				}else if(user_type=="gm"){
-					window.location.href="home/index_gm.html?user_id"+user_id+"";
+					window.location.href="home/index_gm.html?user_id="+user_id+"";
 				}else if(user_type=="staff"){
-					window.location.href="home/index_staff.html?user_id"+user_id+"";
+					window.location.href="home/index_staff.html?user_id="+user_id+"";
 				}
 			}
 		})
