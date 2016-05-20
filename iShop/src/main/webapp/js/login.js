@@ -4,8 +4,9 @@ $(function(){
 		var phone=$('#login').val();
 	    var password=$('#password1').val();
 	    var param={};
-	    param[phone]=phone;
-	    param[password]=password;
+	    param["phone"]=phone;
+	    param["password"]=password;
+	    console.log(param);
 	    oc.postRequire("post","/login","0",param,function(data){
 	    	console.log(data);
 	    })
