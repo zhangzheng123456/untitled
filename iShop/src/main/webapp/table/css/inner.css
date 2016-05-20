@@ -400,6 +400,7 @@ input::-webkit-input-placeholder{
 	color: #434969;
 	cursor: pointer;
 	font-family: "微软雅黑";
+	background-color: #fff;
 }
 .action_l li.field_input i{
 	position: absolute;
