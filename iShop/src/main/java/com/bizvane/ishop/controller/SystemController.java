@@ -167,7 +167,7 @@ public class SystemController {
     @RequestMapping(value = "/interface/edit",method = RequestMethod.GET)
     @ResponseBody
     public String editnterface(HttpServletRequest request) {
-        return "interface_exit";
+        return "interface_edit";
     }
 
     /**

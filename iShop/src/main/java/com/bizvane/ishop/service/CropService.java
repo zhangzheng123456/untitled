@@ -1,6 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.bean.UserInfo;
+import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.exception.UserException;
 
 import java.util.List;
@@ -12,8 +12,6 @@ import java.util.List;
 public interface CropService {
 
     public boolean insert(UserInfo userInfo)throws UserException;
-
-//    public boolean save(UserInfo user)throws UserException;
 
     public boolean delete(int id)throws UserException;
 

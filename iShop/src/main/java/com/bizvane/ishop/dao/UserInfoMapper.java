@@ -1,20 +1,15 @@
 package com.bizvane.ishop.dao;
 
-import java.util.List;
-import com.bizvane.ishop.bean.UserInfo;
+import com.bizvane.ishop.entity.UserInfo;
 
 public interface UserInfoMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(int id);
 
     int insert(UserInfo record);
 
-    int insertSelective(UserInfo record);
-
-    UserInfo selectByPrimaryKey(Integer id);
-
-    int updateByPrimaryKeySelective(UserInfo record);
+    UserInfo selectByPrimaryKey(int id);
 
     int updateByPrimaryKey(UserInfo record);
 
-    List<UserInfo> selectAll();
+    UserInfo selectByPMP(String phone,String password);
 }

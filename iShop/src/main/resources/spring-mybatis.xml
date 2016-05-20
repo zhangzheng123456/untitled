@@ -17,30 +17,14 @@
     http://www.springframework.org/schema/util
     http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
-
+    <context:component-scan base-package="com.bizvane.ishop" />
     <bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource" init-method="init"
           destroy-method="close" >
-        <!--property name="driverClassName" value="com.mysql.jdbc.Driver" />
-        <property name="url" value="jdbc:mysql://dev.bizvane.com:3306/ETL?characterEncoding=utf-8" />
-        <property name="username" value="root" />
-        <property name="password" value="rootpassword" /-->
+        <property name="driverClassName" value="${jdbc.driverClassName}" />
         <property name="url" value="${jdbc.url}" />
         <property name="username" value="${jdbc.username}" />
         <property name="password" value="${jdbc.password}" />
-        <!--
-        <property name="driverClassName">
-            <value>${jdbc.driverClassName}</value>
-        </property>
-        <property name="url">
-            <value>${jdbc.url}</value>
-        </property>
-        <property name="username">
-            <value>${jdbc.username}</value>
-        </property>
-        <property name="password">
-            <value>${jdbc.password}</value>
-        </property>
-        -->
+
         <!-- 初始化连接大小 -->
         <property name="initialSize" value="0" />
         <!-- 连接池最大使用连接数量 -->
@@ -73,16 +57,8 @@
     </bean>
 
     <!-- mybatis文件配置，扫描所有mapper文件 -->
-    <!--
-   <bean id="sqlSessionFactory"
-         class="org.mybatis.spring.SqlSessionFactoryBean"
-         p:dataSource-ref="dataSource"
-         p:configLocation="classpath:mybatis-conf.xml"
-         p:mapperLocations="classpath:mapper/*.xml"/>--><!-- configLocation为mybatis属性 mapperLocations为所有mapper-->
-
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"></property>
-        <property name="configLocation" value="classpath:mybatis-conf.xml" />
         <property name="mapperLocations" value="classpath:mapping/*.xml" />
     </bean>
 
@@ -93,44 +69,11 @@
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
     </bean>
 
-    <!-- 对数据源进行事务管理
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager"
-          p:dataSource-ref="dataSource"/>
-          -->
-    <bean id="transactionManager"
+    <!-- 对数据源进行事务管理-->
+      <bean id="transactionManager"
           class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
         <property name="dataSource" ref="dataSource"></property>
     </bean>
-
-    <tx:annotation-driven transaction-manager="txManager" />
-
-    <!-- 拦截器方式配置事物 -->
-    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
-        <tx:attributes>
-            <tx:method name="insert*" propagation="REQUIRED" />
-            <tx:method name="update*" propagation="REQUIRED" />
-            <tx:method name="delete*" propagation="REQUIRED" />
-
-            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
-            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
-            <tx:method name="select*" propagation="SUPPORTS" read-only="true" />
-
-        </tx:attributes>
-    </tx:advice>
-    <!-- Spring aop事务管理 -->
-    <aop:config>
-        <aop:pointcut id="transactionPointcut"
-                      expression="execution(* com.bizvane.ishop.service..*Impl.*(..))" />
-        <aop:advisor pointcut-ref="transactionPointcut"
-                     advice-ref="transactionAdvice" />
-    </aop:config>
-
-    <!--
-    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
-        <constructor-arg index="0" ref="sqlSessionFactory"></constructor-arg>
-    </bean>
-    -->
 
 </beans>
 
