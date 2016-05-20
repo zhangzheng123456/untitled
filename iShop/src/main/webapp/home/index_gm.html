@@ -3,20 +3,20 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>区域经理主页</title>
+    <title>企业管理员主页</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
-     <link rel="stylesheet" href="../css/liandong_select.css">
+    <link rel="stylesheet" href="../css/liandong_select.css">
 </head>
 <body>
     <div id="wrapper">
         <div class="row border-bottom">
             <nav class="navbar navbar-static-top" role="navigation" style="margin-bottom: 0">
                     <div class="navbar-header">
-                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="area_manage_index.html#">
+                        <a class="navbar-minimalize minimalize-styl-2 btn btn-primary " href="qiye_manage.html#">
                         </a>
                     </div>
                     <ul class="nav navbar-top-links navbar-right">
@@ -174,7 +174,7 @@
 
                     </li>
                     <li>
-                        <a href="">
+                        <a href="#">
                             <i class="icon-ishop_2-01"></i>
                             <span class="nav-label">商家管理</span> <span class="fa arrow"></span>
                         </a>
@@ -278,9 +278,9 @@
                     <div class="col-lg-4">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content_per">
-                            <label class="c_a_shoppe"><i>尹墨IMM女装</i><img src="../img/img_spot_white.png"><i>华东一区</i></label>
+                            <label class="c_a_shoppe"><em>当前企业</em>尹墨IMM女装</label>
                                 <div class="check_select">
-                                   <div class="select_1 reg_testdate" onclick="CDT(this);">
+                                    <div class="select_1 reg_testdate" onclick="CDT(this);">
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按日查看</div>
                                             <ul>
@@ -315,7 +315,7 @@
                                 <div class="performance">
                                     <ul>
                                         <li class="total_num">
-                                            <div class="t_num">890063</div>
+                                            <div class="t_num">89810063</div>
                                             <div class="ranking">业绩总额（元）</div>
                                         </li>
                                         <li class="yield_rate">
@@ -363,7 +363,7 @@
                         <div class="customer_add_cart">
                             <div class="cart_tab">
                                 <ul>
-                                    <li  class="select"><label>业绩趋势</label></li>
+                                    <li class="select"><label>业绩趋势</label></li>
                                     <li><label>能力分析</label></li>
                                 </ul>
                             </div>
@@ -393,12 +393,12 @@
                                         </ul>
                                     </span>
                                     <span class="Day item" style="width:90px;display:none;">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
-                                        </span>
+                                        <div class="title" style="width:90px"></div>
+                                            <ul>
+                                            </ul>
+                                    </span>
                                 </div>
-                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px">21114.00</label>元</span>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size: 20px">21114.00</label>元</span>
                             </div>
                             <div class="charts_holder">
                                 <canvas id="canvas_circle" width="800"height="550">
@@ -420,17 +420,17 @@
                 <div class="row">
                    <div class="col-lg-4">
                        <div class="ibox float-e-margins">
-                             <div class="ibox-list_daogou_paihang">
+                            <div class="ibox-list_daogou_paihang">
                                 <div class="item_title">
-                                    <label>店铺排行</label>
+                                    <label>区域排行</label>
                                     <span><img src="../img/icon_hp_more.png" alt="更多" /></span>
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>店铺总数<label>24</label></span>
+                                    <span>区域总数<label>24</label></span>
                                 </div>
                                 <div class="check_chart">
-                                     <div class="select_3 reg_testdate"  onclick="CDT(this);">
+                                    <div class="select_3 reg_testdate"  onclick="CDT(this);">
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按周查看</div>
                                             <ul>
@@ -463,60 +463,57 @@
                                 </div>
                             </div>
                             <div class="list_titles_daogou_paihang">
-                                <div class="list_titles_daogou_paihang">
-                                    <table style="width:100%">
-                                        <tr>
-                                           <th>排名</th>
-                                           <th>店铺</th>
-                                           <th>业绩</th>
-                                           <th>折扣</th>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">1</td>
-                                            <td style="width:50%">贵阳荔星名店尹墨专柜</td>
-                                            <td style="width:21%"><em>￥</em>165395</td>
-                                            <td style="width:16%">80.62%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">2</td>
-                                            <td style="width:50%">重庆江北远东尹墨专柜</td>
-                                            <td style="width:21%"><em>￥</em>55659</td>
-                                            <td style="width:16%">89.65%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">3</td>
-                                            <td style="width:50%">重庆新世纪百货（世纪新都）</td>
-                                            <td style="width:21%"><em>￥</em>46740</td>
-                                            <td style="width:16%">78.65%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">4</td>
-                                            <td style="width:50%">昆明金格百货（时光）</td>
-                                            <td style="width:21%"><em>￥</em>17989</td>
-                                            <td style="width:16%">92.21%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">5</td>
-                                            <td style="width:50%">成都仁和春天光华店</td>
-                                            <td style="width:21%"><em>￥</em>15693</td>
-                                            <td style="width:16%">88.03%</td>
-                                        </tr>
-                                    </table>
-                                </div>
+                                <table style="width:100%">
+                                    <tr>
+                                       <th>排名</th>
+                                       <th>区域</th>
+                                       <th>区经</th>
+                                       <th>业绩</th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:13%">1</td>
+                                        <td style="width:45%">华东一区</td>
+                                        <td style="width:21%">李朋</td>
+                                        <td style="width:21%"><em>￥</em>1659595</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:13%">2</td>
+                                        <td style="width:45%">华南三区</td>
+                                        <td style="width:21%">翁舒茵</td>
+                                        <td style="width:21%"><em>￥</em>565949</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:13%">3</td>
+                                        <td style="width:45%">华东六区</td>
+                                        <td style="width:21%">何崇伟</td>
+                                        <td style="width:21%"><em>￥</em>167470</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:13%">4</td>
+                                        <td style="width:45%">华北一区</td>
+                                        <td style="width:21%">张懿</td>
+                                        <td style="width:21%"><em>￥</em>87989</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:13%">5</td>
+                                        <td style="width:45%">华东三区</td>
+                                        <td style="width:21%">董鹏</td>
+                                        <td style="width:21%"><em>￥</em>56893</td>
+                                    </tr>
+                                </table>
                             </div>
                         </div>
                    </div>
                     <div class="col-lg-4">
                        <div class="ibox float-e-margins">
-                             <div class="ibox-list_daogou_paihang">
+                            <div class="ibox-list_daogou_paihang">
                                 <div class="item_title">
-                                    <label>导购排行</label>
+                                    <label>店铺排行</label>
                                     <span><img src="../img/icon_hp_more.png" alt="更多" /></span>
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>导购总数<label>24</label></span>
-                                    <span class="average_per">平均业绩<label>30963</label></span>
+                                    <span>店铺总数<label>24</label></span>
                                 </div>
                                 <div class="check_chart">
                                     <div class="select_4 reg_testdate" onclick="CDT(this);">
@@ -553,44 +550,46 @@
                                 </div>
                             </div>
                             <div class="list_titles_daogou_paihang">
+                                <div class="list_titles_daogou_paihang">
                                 <table style="width:100%">
                                     <tr>
                                        <th>排名</th>
-                                       <th>姓名</th>
+                                       <th>店铺</th>
                                        <th>业绩</th>
-                                       <th>所属店铺</th>
+                                       <th>折扣</th>
                                     </tr>
                                     <tr>
                                         <td style="width:13%">1</td>
-                                        <td style="width:16%">朱亚晓</td>
-                                        <td style="width:21%"><em>￥</em>165395</td>
                                         <td style="width:50%">贵阳荔星名店尹墨专柜</td>
+                                        <td style="width:21%"><em>￥</em>165395</td>
+                                        <td style="width:16%">80.62%</td>
                                     </tr>
                                     <tr>
                                         <td style="width:13%">2</td>
-                                        <td style="width:16%">姚思婷</td>
-                                        <td style="width:21%"><em>￥</em>55659</td>
                                         <td style="width:50%">重庆江北远东尹墨专柜</td>
+                                        <td style="width:21%"><em>￥</em>55659</td>
+                                        <td style="width:16%">89.65%</td>
                                     </tr>
                                     <tr>
                                         <td style="width:13%">3</td>
-                                        <td style="width:16%">林思敏</td>
-                                        <td style="width:21%"><em>￥</em>46740</td>
                                         <td style="width:50%">重庆新世纪百货（世纪新都）</td>
+                                        <td style="width:21%"><em>￥</em>46740</td>
+                                        <td style="width:16%">78.65%</td>
                                     </tr>
                                     <tr>
                                         <td style="width:13%">4</td>
-                                        <td style="width:16%">贺明云</td>
-                                        <td style="width:21%"><em>￥</em>17989</td>
                                         <td style="width:50%">昆明金格百货（时光）</td>
+                                        <td style="width:21%"><em>￥</em>17989</td>
+                                        <td style="width:16%">92.21%</td>
                                     </tr>
                                     <tr>
                                         <td style="width:13%">5</td>
-                                        <td style="width:16%">曹璐</td>
-                                        <td style="width:21%"><em>￥</em>15693</td>
                                         <td style="width:50%">成都仁和春天光华店</td>
+                                        <td style="width:21%"><em>￥</em>15693</td>
+                                        <td style="width:16%">88.03%</td>
                                     </tr>
                                 </table>
+                            </div>
                             </div>
                         </div>
                    </div>
@@ -609,6 +608,7 @@
             </div>
         </div>
     </div>
+    <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -671,7 +671,7 @@
         });
     });
     </script>
-    <script>
+     <script>
         //雷达图
         var radarChartData = {
             labels : ["成交笔数","客单价","新增会员","平均折扣","连带率","销售件数"],
