@@ -7,12 +7,27 @@
         from USER
         where ID = #{id}
     </select>
-    <select id="selectByPMP" resultType="com.bizvane.ishop.entity.UserInfo">
+    <select id="selectLogin" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
         from USER
-        where PHONE = #{phone} AND PASSWORD = #{password}
+        where PHONE = #{0} AND PASSWORD = #{1}
     </select>
-
+    <select id="selectAll" resultType="com.bizvane.ishop.entity.UserInfo">
+        select *
+        from USER
+        where 1 = 1
+        <if test="search_value != null and search_value !=''">
+            AND USER_NAME like "%"#{search_value}"%"
+            OR USER_CODE like "%"#{search_value}"%"
+            OR PHONE like "%"#{search_value}"%"
+            OR EMAIL like "%"#{search_value}"%"
+            OR SEX like "%"#{search_value}"%"
+            OR ROLE_CODE like "%"#{search_value}"%"
+            OR STORE_CODE like "%"#{search_value}"%"
+            OR CROP_CODE like "%"#{search_value}"%"
+        </if>
+        ORDER BY ID
+    </select>
     <delete id="deleteByPrimaryKey">
         delete from
         USER

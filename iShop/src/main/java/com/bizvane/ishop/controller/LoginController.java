@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,6 +33,7 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/userlogin",method = RequestMethod.POST)
+    @ResponseBody
     public String Login(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -43,23 +45,28 @@ public class LoginController {
             JSONObject jsonObject = new JSONObject(message);
             String phone = jsonObject.get("phone").toString();
             String password = jsonObject.get("password").toString();
-            System.out.println(phone +"****"+password);
-
             log.info("phone:"+phone+" password:"+password);
-            UserInfo loginuser = userService.login(phone,password);
-            if (loginuser == null) {
+            UserInfo login_user = userService.login(phone,password);
+
+            if (login_user == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("fail");
-            }
-            if(loginuser.getRole_code().equals("R00001")) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("admin");
-            }else{
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("am");
+            }else {
+                int user_id = login_user.getId();
+                JSONObject user_info = new JSONObject();
+                user_info.put("user_id",user_id);
+                if (login_user.getRole_code().equals("R00001")) {
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    user_info.put("user_type","admin");
+                    dataBean.setMessage(user_info.toString());
+                } else {
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    user_info.put("user_type","am");
+                    dataBean.setMessage(user_info.toString());
+                }
             }
             } catch (Exception ex) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

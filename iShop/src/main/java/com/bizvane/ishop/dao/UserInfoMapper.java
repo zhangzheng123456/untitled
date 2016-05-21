@@ -1,6 +1,9 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.UserInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UserInfoMapper {
     int deleteByPrimaryKey(int id);
@@ -11,5 +14,7 @@ public interface UserInfoMapper {
 
     int updateByPrimaryKey(UserInfo record);
 
-    UserInfo selectByPMP(String phone,String password);
+    UserInfo selectLogin(String phone,String password);
+
+    List<UserInfo> selectAll(@Param("search_value") String search_value);
 }
