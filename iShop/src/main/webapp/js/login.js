@@ -57,6 +57,8 @@ $(function() {//点击登陆
 				}else if(user_type=="staff"){
 					window.location.href="home/index_staff.html?user_id="+user_id+"";
 				}
+			}else if(data.code=="-1"){
+				alert(data.message);
 			}
 		})
 	})
