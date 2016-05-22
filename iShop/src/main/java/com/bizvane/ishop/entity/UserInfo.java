@@ -21,7 +21,7 @@ public class UserInfo {
 	//生日
 	private String birthday;
 	//企业编号
-	private String crop_code;
+	private String corp_code;
 	//店铺编号
 	private String store_code;
 	//角色编号
@@ -38,6 +38,12 @@ public class UserInfo {
 	private String creater;
 	//是否可用
 	private String isactive;
+
+	public UserInfo(){}
+
+	public UserInfo(Integer id){
+		this.id = id;
+	}
 
 	public int getId() {
 		return id;
@@ -111,12 +117,12 @@ public class UserInfo {
 		this.birthday = birthday;
 	}
 
-	public String getCrop_code() {
-		return crop_code;
+	public String getCorp_code() {
+		return corp_code;
 	}
 
-	public void setCrop_code(String crop_code) {
-		this.crop_code = crop_code;
+	public void setCorp_code(String corp_code) {
+		this.corp_code = corp_code;
 	}
 
 	public String getStore_code() {

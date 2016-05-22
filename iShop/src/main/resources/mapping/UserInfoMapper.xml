@@ -12,19 +12,23 @@
         from USER
         where PHONE = #{0} AND PASSWORD = #{1}
     </select>
+    <select id="selectByPhone" resultType="com.bizvane.ishop.entity.UserInfo">
+        select *
+        from USER
+        where PHONE = #{phone}
+    </select>
     <select id="selectAll" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
         from USER
         where 1 = 1
         <if test="search_value != null and search_value !=''">
-            AND USER_NAME like "%"#{search_value}"%"
-            OR USER_CODE like "%"#{search_value}"%"
-            OR PHONE like "%"#{search_value}"%"
-            OR EMAIL like "%"#{search_value}"%"
-            OR SEX like "%"#{search_value}"%"
-            OR ROLE_CODE like "%"#{search_value}"%"
-            OR STORE_CODE like "%"#{search_value}"%"
-            OR CROP_CODE like "%"#{search_value}"%"
+            AND USER_NAME like #{search_value}
+            OR USER_CODE like #{search_value}
+            OR PHONE like #{search_value}
+            OR SEX like #{search_value}
+            OR ROLE_CODE like #{search_value}
+            OR CORP_CODE like #{search_value}
+            OR MODIFIER like #{search_value}
         </if>
         ORDER BY ID
     </select>
@@ -36,25 +40,25 @@
     <insert id="insert" parameterType="com.bizvane.ishop.entity.UserInfo">
         insert into USER
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="ID != null">
-                id,
-            </if>
-            <if test="PHONE != null">
+            <if test="phone != null">
                 phone,
             </if>
-            <if test="MAIL != null">
+            <if test="email != null">
                 email,
             </if>
+            <if test="password != null">
+            password,
+        </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="ID != null">
-                #{id},
-            </if>
-            <if test="PHONE != null">
+            <if test="phone != null">
                 #{phone},
             </if>
-            <if test="MAIL != null">
+            <if test="email != null">
                 #{email},
+            </if>
+            <if test="password != null">
+                #{password},
             </if>
         </trim>
     </insert>

@@ -5,6 +5,7 @@ import com.bizvane.ishop.dao.UserInfoMapper;
 import com.bizvane.ishop.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.List;
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -33,6 +34,19 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserInfo login(String phone,String password){
-        return userInfoMapper.selectByPMP(phone,password);
+        System.out.println("---------login--------");
+        return userInfoMapper.selectLogin(phone,password);
+    }
+
+    public UserInfo phoneExist(String phone){
+        return userInfoMapper.selectByPhone(phone);
+    }
+    public List<UserInfo> selectAll(){
+        String search_value = null;
+        return userInfoMapper.selectAll(search_value);
+    }
+
+    public List<UserInfo> selectBySearch(String search_value){
+        return userInfoMapper.selectAll("%"+search_value+"%");
     }
 }

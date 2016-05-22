@@ -16,5 +16,7 @@ public interface UserInfoMapper {
 
     UserInfo selectLogin(String phone,String password);
 
+    UserInfo selectByPhone(String phone);
+
     List<UserInfo> selectAll(@Param("search_value") String search_value);
 }

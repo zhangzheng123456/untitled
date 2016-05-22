@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 public class LoginController {
@@ -27,9 +28,40 @@ public class LoginController {
     public String index() {
         return "login";
     }
+
     @RequestMapping(value = "/register",method = RequestMethod.GET)
-    public String register() {
-        return "register";
+    @ResponseBody
+    public String register(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            log.info("json---------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String phone = jsonObject.get("phone").toString();
+            String password = jsonObject.get("password").toString();
+            UserInfo user = userService.phoneExist(phone);
+            if(user==null) {
+                user = new UserInfo();
+                user.setPhone(phone);
+                user.setPassword(password);
+                userService.insert(user);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("register success");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("the phone has registered");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
     @RequestMapping(value = "/userlogin",method = RequestMethod.POST)
@@ -47,16 +79,22 @@ public class LoginController {
             String password = jsonObject.get("password").toString();
             log.info("phone:"+phone+" password:"+password);
             UserInfo login_user = userService.login(phone,password);
-
             if (login_user == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("fail");
             }else {
                 int user_id = login_user.getId();
+                String corp_code = login_user.getCorp_code();
+                String role_code = login_user.getRole_code();
+                request.getSession().setAttribute("user_id", user_id);
+                request.getSession().setAttribute("corp_code", corp_code);
+                request.getSession().setAttribute("role_code", role_code);
+                System.out.println(request.getSession().getAttribute("user_id"));
+
                 JSONObject user_info = new JSONObject();
                 user_info.put("user_id",user_id);
-                if (login_user.getRole_code().equals("R00001")) {
+                if (login_user.getRole_code().equals("R100000")) {
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
                     user_info.put("user_type","admin");
