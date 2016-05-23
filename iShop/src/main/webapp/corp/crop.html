@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="../table/css/inner.css">
     <link rel="stylesheet" href="../css/font_style.css">
 	<script src="../table/js/jquery.min.js"></script>
+    <script src="../js/postRequire.js"></script>
     <script src="../table/js/navigation_bar.js"></script>
 </head>
 <body>
@@ -317,7 +318,6 @@
         </div>
     </div>
     <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-    <script src="../table/js/inner.js"></script>
     <script type="text/javascript">
         $(function(){
             $('#sidebar>div:eq(0)').find('h1').addClass('h1');
@@ -337,10 +337,10 @@
             });
             $("#side_bar .gobottom").click(function(){
                 var btm=$('html,body').height();
-                console.log(btm);
                 $('html,body').animate({'scrollTop':btm},500);
             })
         });
     </script>
 </body>
+    <script src="../js/corp/corp.js"></script>
 </html>

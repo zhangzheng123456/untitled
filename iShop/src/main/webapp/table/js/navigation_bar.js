@@ -99,4 +99,32 @@ $(function(){
 		                    </ul>\
         				</div>'
     )
+	var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
+     //左侧导航栏
+    $(".sidebar ul li dl dd").click(function(e){
+        e.stopPropagation();
+        $(this).find("span").addClass("icon-ishop_8-01");
+        $(this).find("a").css({color:"#6cc1c8"});
+        $(this).siblings("dd").find("a").css({color:"#fff"});
+        $(this).siblings("dd").find("span").removeClass("icon-ishop_8-01");
+    });
+    $(".sidebar .log").click(function(e){
+        $(this).next("ul").slideToggle(300);
+        $(this).toggleClass("h1");
+        $(this).find("i").toggleClass("icon-ishop_8-02");
+    });
+    $(".sidebar ul li").click(function(e){
+        e.stopPropagation();
+        $(this).find("h1").next("dl").slideToggle(300).parents().siblings("li").find("dl").slideUp(300);
+        $(this).find("h1").toggleClass("h1").parents().siblings("li").find("h1").removeClass("h1");
+        $(this).find("h1 span").toggleClass("icon-ishop_8-02").parents().siblings("li").find("h1 span").removeClass("icon-ishop_8-02");   
+    });
+    $(".sidebar ul li dl ul li").click(function(e){
+        e.stopPropagation();
+        $(this).find("span").addClass("icon-ishop_8-01");
+        $(this).find("a").css({color:"#6cc1c8"});
+        $(this).siblings("dd").find("a").css({color:"#fff"});
+        $(this).siblings("dd").find("span").removeClass("icon-ishop_8-01");
+    });
 })

@@ -53,7 +53,7 @@ $("#USERNAME").blur(function(){//姓名框失去焦点的时候的验证
 $("#COMPANY").focus(function(){//姓名
 	$('.COMPANY .notice').html("");
 });
-$("#COMPANY").blur(function(){//企业收索框失去焦点的时候的验证
+$("#COMPANY").blur(function(){//企业搜索框失去焦点的时候的验证
 	var COMPANY=$('#USERNAME').val();//姓名
     if(COMPANY==""){
     	$('.COMPANY .notice').html("企业名称不能为空！");
@@ -71,7 +71,7 @@ $("#addInfo").blur(function(){
 
 function sendSMS(btn){//手机获取验证码的验证
 	var btn=btn;
-	var num=10;
+	var num=59;
 	var reg=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;//验证手机号码格式正不正确
 	var PHONENUMBER=$('#PHONENUMBER').val();//手机号码
 	var param={};
@@ -79,23 +79,26 @@ function sendSMS(btn){//手机获取验证码的验证
 	if(PHONENUMBER==""||PHONENUMBER!==""&&reg.test(PHONENUMBER)==false){
 		$('.PHONENUMBER .notice').html("手机号码格式不正确!");
 		return;
-	}else if(PHONENUMBER==""||PHONENUMBER!==""&&reg.test(PHONENUMBER)==true){
-		$(btn).addClass("checkCode col col-30 disabled");
-		$(btn).attr("disabled","true");
-	}
-	var timer=setInterval(function(){
-		num--;
-		console.log(num);
-		$(btn).html(num+"秒");
-		if(num<=0){
-			$(btn).removeAttr("disabled");
-			$(btn).removeClass("disabled");
-			$(btn).html("获取验证码");
-			clearInterval(timer);
-		}
-	},1000);
+	}	
+	console.log(param);
 	oc.postRequire("post", "/authcode", "sms", param, function(data){
-		console.log(data);
+		if(data.code=="0"){
+			$(btn).addClass("checkCode col col-30 disabled");
+			$(btn).attr("disabled","true");
+			var timer=setInterval(function(){
+				num--;
+				console.log(num);
+				$(btn).html(num+"秒");
+				if(num<=0){
+					$(btn).removeAttr("disabled");
+					$(btn).removeClass("disabled");
+					$(btn).html("获取验证码");
+					clearInterval(timer);
+				}
+			},1000);	
+		}else if(data.code=="-1"){
+			$('.PHONECODE .notice').html("验证码没有发送成功,请重新发送!");	
+		}
 	})	
 }
 $(function(){
@@ -139,7 +142,11 @@ $(function(){
     		return;
         };
 		oc.postRequire("post", "/register", "reg", param, function(data){
-		
+			if(data.code=="0"){
+				alert("注册成功");
+			}else if(data.code=="-1"){
+
+			}
 		})
 	})
 })
