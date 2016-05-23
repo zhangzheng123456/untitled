@@ -49,16 +49,16 @@ $(function() {//点击登陆
                 var user_type=message.user_type;
                 var user_id=message.user_id;
 				if(user_type=="admin"){
-                	window.location.href="home/index_admin.html?user_id="+user_id+"";
+                	window.location.href="home/index_admin.html";
 				}else if(user_type=="am"){
-					window.location.href="home/index_am.html?user_id="+user_id+"";
+					window.location.href="home/index_am.html";
 				}else if(user_type=="gm"){
-					window.location.href="home/index_gm.html?user_id="+user_id+"";
+					window.location.href="home/index_gm.html";
 				}else if(user_type=="staff"){
-					window.location.href="home/index_staff.html?user_id="+user_id+"";
+					window.location.href="home/index_staff.html";
 				}
 			}else if(data.code=="-1"){
-				alert(data.message);
+				$(".portlet-msg-error").html("用户名或密码错误");
 			}
 		})
 	})
