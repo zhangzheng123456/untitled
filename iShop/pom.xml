@@ -37,6 +37,7 @@
         <alibaba-fastjson.version>1.2.10</alibaba-fastjson.version>
         <aspectjweaver.version>1.8.9</aspectjweaver.version>
         <pagehelper.version>3.6.3</pagehelper.version>
+        <ice>3.6.1</ice>
     </properties>
 
     <dependencies>
@@ -276,6 +277,16 @@
         </dependency>
         <!-- jackson end -->
 
+        <dependency>
+            <groupId>com.zeroc</groupId>
+            <artifactId>ice</artifactId>
+            <version>${ice}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.bizvane.sun</groupId>
+            <artifactId>app_client</artifactId>
+            <version>1.0</version>
+        </dependency>
     </dependencies>
 
     <repositories>

@@ -2,46 +2,36 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.UserInfoMapper">
 
-    <select id="selectByUserId" resultType="com.bizvane.ishop.entity.UserInfo">
+    <select id="selectByCorpId" resultType="com.bizvane.ishop.entity.CorpInfo">
         select *
-        from DEF_USER
-        where ID = #{id}
-    </select>
-    <select id="selectLogin" resultType="com.bizvane.ishop.entity.UserInfo">
-        select *
-        from DEF_USER
-        where PHONE = #{0} AND PASSWORD = #{1}
-    </select>
-    <select id="selectByPhone" resultType="com.bizvane.ishop.entity.UserInfo">
-        select *
-        from DEF_USER
-        where PHONE = #{phone}
-    </select>
-    <select id="selectAllUser" resultType="com.bizvane.ishop.entity.UserInfo">
-        select *
-        from DEF_USER
-        where 1 = 1
-        <if test="corp_code != null and corp_code !=''">
-            AND CORP_CODE like #{corp_code}
+        from DEF_CORP
+        where
+        <if test="corp_id != 0">
+            ID = #{corp_id}
         </if>
+        <if test="corp_code != null and corp_code !=''">
+            CORP_CODE = #{corp_code}
+        </if>
+    </select>
+
+    <select id="selectAllCorp" resultType="com.bizvane.ishop.entity.CorpInfo">
+        select *
+        from DEF_CORP
+        where 1 = 1
         <if test="search_value != null and search_value !=''">
             AND USER_NAME like #{search_value}
             OR USER_CODE like #{search_value}
             OR PHONE like #{search_value}
             OR SEX like #{search_value}
             OR ROLE_CODE like #{search_value}
+            OR CORP_CODE like #{search_value}
             OR MODIFIER like #{search_value}
-            OR ISACTIVE like #{search_value}
         </if>
         ORDER BY ID
     </select>
-    <delete id="deleteByUserId">
-        delete from
-        DEF_USER
-        where ID = #{id}
-    </delete>
-    <insert id="insertUser" parameterType="com.bizvane.ishop.entity.UserInfo">
-        insert into DEF_USER
+
+    <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.CorpInfo">
+        insert into DEF_CORP
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="phone != null">
                 phone,
@@ -66,8 +56,8 @@
         </trim>
     </insert>
 
-    <update id="updateByUserId" parameterType="com.bizvane.ishop.entity.UserInfo">
-        UPDATE DEF_USER
+    <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.UserInfo">
+        UPDATE DEF_CORP
         <trim prefix="SET" suffixOverrides=",">
             <if test="NAME!=null and NAME!='' ">
                 NAME = #{user_name},
@@ -82,4 +72,9 @@
         WHERE ID = #{id};
     </update>
 
+    <delete id="deleteByCorpId">
+        delete from
+        DEF_CORP
+        where ID = #{id}
+    </delete>
 </mapper>

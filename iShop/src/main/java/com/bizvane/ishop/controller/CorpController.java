@@ -1,65 +1,74 @@
 package com.bizvane.ishop.controller;
 
-import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.UserInfo;
-import com.bizvane.ishop.service.UserService;
+import com.bizvane.ishop.entity.CorpInfo;
+import com.bizvane.ishop.service.CorpService;
 import com.google.gson.Gson;
 import org.json.JSONObject;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
- * Created by maoweidong on 2016/2/15.
+ * Created by zhouying on 2016-04-20.
  */
 
-/*
-*用户及权限
-*/
-@Controller
-@RequestMapping("/user")
-public class UserController {
 
-    private static Logger logger = LoggerFactory.getLogger((UserController.class));
+/**
+ * 企业管理
+ */
+
+@Controller
+@RequestMapping("/crop")
+public class CorpController {
+
+    private static Logger logger = LoggerFactory.getLogger((CorpController.class));
+
+    String id;
 
     @Autowired
-    private UserService userService;
-    String id;
-    /**
-     * 用户管理
-     */
+    private CorpService corpService;
+    /*
+    * 列表
+    * */
     @RequestMapping(value = "/list",method = RequestMethod.GET)
     @ResponseBody
-    public String userManage(HttpServletRequest request) {
+    public String cropManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            List<UserInfo> userInfo;
+            JSONObject info = new JSONObject();
+            String user_type;
+            info.put("user_id",user_id);
             if(role_code.equals("R100000")) {
                 //系统管理员
-                userInfo = userService.selectBySearch("","");
+                List<CorpInfo> corpInfo = corpService.selectAllCorp("");
+                user_type = "admin";
+                info.put("user_type",user_type);
+                info.put("corpInfo",corpInfo);
             }else{
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                userInfo = userService.selectBySearch(corp_code, "");
+                CorpInfo corpInfo = corpService.selectByCorpId(0,corp_code);
+                user_type = "user";
+                info.put("user_type",user_type);
+                info.put("corpInfo",corpInfo);
             }
-            Gson gson = new Gson();
-            String result = gson.toJson(userInfo);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(result);
+            dataBean.setMessage(info.toString());
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -69,12 +78,11 @@ public class UserController {
     }
 
     /**
-     * 用户管理
      * 新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/add",method = RequestMethod.GET)
     @ResponseBody
-    public String addUser(HttpServletRequest request) {
+    public String addCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
         try {
@@ -85,21 +93,17 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            UserInfo user = new UserInfo();
-            user.setUser_code(jsonObject.get("user_code").toString());
-            user.setUser_name(jsonObject.get("username").toString());
-            user.setAvatar(jsonObject.get("avater").toString());
-            user.setPhone(jsonObject.get("phone").toString());
-            user.setEmail(jsonObject.get("email").toString());
-            user.setSex(jsonObject.get("sex").toString());
-            user.setCorp_code(jsonObject.get("corp_code").toString());
-            user.setRole_code(jsonObject.get("role_code").toString());
-            user.setPassword(jsonObject.get("password").toString());
+            CorpInfo corp = new CorpInfo();
+            corp.setCorp_code(jsonObject.get("corp_code").toString());
+            corp.setCorp_name(jsonObject.get("corp_name").toString());
+            corp.setAddress(jsonObject.get("address").toString());
+            corp.setContact(jsonObject.get("contact").toString());
+            corp.setContact_phone(jsonObject.get("phone").toString());
             Date now = new Date();
-            user.setCreated_date(now);
-            user.setCreater(user_id);
-            user.setIsactive(jsonObject.get("isactive").toString());
-            userService.insert(user);
+            corp.setCreated_date(now);
+            corp.setCreater(user_id);
+            corp.setIsactive(jsonObject.get("isactive").toString());
+            corpService.insertCorp(corp);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("add success");
@@ -112,12 +116,11 @@ public class UserController {
     }
 
     /**
-     * 用户管理
      * 编辑
      */
-    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @RequestMapping(value = "/edit",method = RequestMethod.GET)
     @ResponseBody
-    public String editUser(HttpServletRequest request) {
+    public String editCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
         try{
@@ -128,21 +131,17 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            UserInfo user = new UserInfo();
-            user.setUser_code(jsonObject.get("user_code").toString());
-            user.setUser_name(jsonObject.get("username").toString());
-            user.setPassword(jsonObject.get("password").toString());
-            user.setAvatar(jsonObject.get("avater").toString());
-            user.setPhone(jsonObject.get("phone").toString());
-            user.setEmail(jsonObject.get("email").toString());
-            user.setSex(jsonObject.get("sex").toString());
-            user.setCorp_code(jsonObject.get("corp_code").toString());
-            user.setRole_code(jsonObject.get("role_code").toString());
+            CorpInfo corp = new CorpInfo();
+            corp.setCorp_code(jsonObject.get("corp_code").toString());
+            corp.setCorp_name(jsonObject.get("corp_name").toString());
+            corp.setAddress(jsonObject.get("address").toString());
+            corp.setContact(jsonObject.get("contact").toString());
+            corp.setContact_phone(jsonObject.get("phone").toString());
             Date now = new Date();
-            user.setModified_date(now);
-            user.setModifier(user_id);
-            user.setIsactive(jsonObject.get("isactive").toString());
-            userService.update(user);
+            corp.setModified_date(now);
+            corp.setModifier(user_id);
+            corp.setIsactive(jsonObject.get("isactive").toString());
+            corpService.updateByCorpId(corp);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
@@ -177,9 +176,9 @@ public class UserController {
             String type = jsonObject.get("type").toString();
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
-                UserInfo user = new UserInfo(Integer.valueOf(ids[i]));
+                CorpInfo corp = new CorpInfo(Integer.valueOf(ids[i]));
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
-                userService.delete(Integer.valueOf(ids[i]));
+                corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -196,25 +195,12 @@ public class UserController {
     }
 
     /**
-     * 用户管理
-     * 选择单个用户
+     * 查找
      */
-    @RequestMapping("/find/{id}")
+    @RequestMapping(value = "/find",method = RequestMethod.GET)
     @ResponseBody
-    public String findById(@PathVariable Integer id) {
-        DataBean bean=new DataBean();
-        String data = null;
-        try {
-            data = JSON.toJSONString(userService.getUserById(id));
-            bean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            bean.setId("1");
-            bean.setMessage(data);
-        } catch (Exception e) {
-            bean.setCode(Common.DATABEAN_CODE_ERROR);
-            bean.setId("1");
-            bean.setMessage(e.getMessage());
-        }
-        logger.info("info-----" + bean.getJsonStr());
-        return bean.getJsonStr();
+    public String findCrop(HttpServletRequest request) {
+        return "";
     }
+
 }

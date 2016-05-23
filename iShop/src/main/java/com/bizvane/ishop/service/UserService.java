@@ -1,6 +1,8 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.UserInfo;
+
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -9,19 +11,17 @@ import java.util.List;
 
 public interface UserService {
 
-    UserInfo getUserById(int id);
+    UserInfo getUserById(int id) throws SQLException;
 
-    int insert(UserInfo userInfo);
+    int insert(UserInfo userInfo) throws SQLException;
 
-    int update(UserInfo userInfo);
+    int update(UserInfo userInfo) throws SQLException;
 
-    int delete(int id);
+    int delete(int id) throws SQLException;
 
-    UserInfo login(String phone,String password);
+    UserInfo login(String phone,String password) throws SQLException;
 
-    UserInfo phoneExist(String phone);
+    UserInfo phoneExist(String phone) throws SQLException;
 
-    List<UserInfo> selectAll();
-
-    List<UserInfo> selectBySearch(String search_value);
+    List<UserInfo> selectBySearch(String corp_code,String search_value) throws SQLException;
 }
