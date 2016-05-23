@@ -301,6 +301,11 @@
                 <enabled>true</enabled>
             </snapshots>
         </repository>
+        <repository>
+            <id>zeroc</id>
+            <name>repo zeroc ice</name>
+            <url>https://repo.zeroc.com/nexus/content/repositories/releases</url>
+        </repository>
     </repositories>
 
     <build>
