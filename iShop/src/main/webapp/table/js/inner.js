@@ -2,7 +2,7 @@
 $(function(){
     var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
-
+    console.log(left);
      //左侧导航栏
     $(".sidebar ul li dl dd").click(function(e){
         e.stopPropagation();
@@ -106,6 +106,7 @@ $("#remove").click(function(){
     }
     $("#p").show();
     $("#tk").show();
+    console.log(left);
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $("#tk").css({"left":+left+"px","top":+tp+"px"});
 })

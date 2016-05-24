@@ -1,24 +1,19 @@
 //删除的弹框
 var oc = new ObjectControl();
-function setPage(container, count, pageindex,pageSize,name,value) {//分页
+function setPage(container, count, pageindex) {
     var container = container;
+    var count = count;
     var pageindex = pageindex;
-    var name=name;
-    var value=value;
     var a = [];
-    var value=value;
-    param["pageSize"]=pageSize;
-    param["pageNumber"]=pageindex;
-    // if()
-    //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
-        a[a.length] = "<li><span class=\"prev\"></span></li>";
+        a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
-        a[a.length] = "<li><span class=\"unclick\"></span></li>";
+        a[a.length] = "<li><span class=\"icon-ishop_4-01\"></span></li>";
     }
     function setPageList() {
         if (pageindex == i) {
-            a[a.length] = "<li><span class=\"bg\">" + i + "</span></li>";
+            a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";
         } else {
             a[a.length] = "<li><span>" + i + "</span></li>";
         }
@@ -36,42 +31,53 @@ function setPage(container, count, pageindex,pageSize,name,value) {//分页
                 setPageList();
             }
             a[a.length] = "...<li><span>" + count + "</span></li>";
-        } else if (pageindex >= count - 3) {
+        }else if (pageindex >= count - 3) {
             a[a.length] = "<li><span>1</span></li>...";
             for (var i = count - 4; i <= count; i++) {
                 setPageList();
             }
-        } else { //当前页在中间部分
+        }
+        else { //当前页在中间部分
             a[a.length] = "<li><span>1</span></li>...";
             for (var i = pageindex - 2; i <= pageindex + 2; i++) {
                 setPageList();
             }
-            a[a.length] = "...<li><span>" + count + "</span></li>";
+                a[a.length] = "...<li><span>" + count + "</span></li>";
+            }
         }
-    }
     if (pageindex == count) {
-        a[a.length] = "<li><span class=\"xnclick\"></span></li>";
-    } else {
-        a[a.length] = "<li><span class=\"next\"></span></li>";
+        a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
+    }else{
+        a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
     }
     container.innerHTML = a.join("");
+    //事件点击
+    $("#input-txt").keydown(function(){
+      var inx=this.value.replace(/[^1-9]/g,'');
+      if(inx>count){inx=count};
+      if(inx>0){
+        if(event.keyCode==13){setPage(container, count, inx);};
+      }
+    })
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
         var inx = pageindex; //初始的页码
+        // console.log(inx);
+        // console.log(count);
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 " + count + "页");
+        $(".foot-sum .zy").html("共 "+count+"页");
         oAlink[0].onclick = function() { //点击上一页
             if (inx == 1) {
                 return false;
             }
             inx--;
-            setPage(container, count, inx,pageSize,name,value);
+            setPage(container, count, inx);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
-                inx = parseInt(this.innerHTML);
-                setPage(container, count, inx,pageSize,name,value);
+            inx = parseInt(this.innerHTML);
+                setPage(container, count, inx);
                 return false;
             }
         }
@@ -80,41 +86,14 @@ function setPage(container, count, pageindex,pageSize,name,value) {//分页
                 return false;
             }
             inx++;
-            setPage(container, count, inx,pageSize,name,value);
+            setPage(container, count, inx);
             return false;
         }
     }()
-    if(name==''&&value==''){
-        oc.postRequire("get","user/list?pageNumber="+pageindex
-        +"&pageSize="+pageSize+"","","",function(data){
-            if(data.code=="0"){
-                $(".table tbody").empty();
-                message=JSON.parse(data.message);
-                content=message.content;
-                cout=message.totalPages;
-                superaddition(content);
-                jumpBianse();
-            }
-        });
-    }else if(name!=''||value!=''){
-        oc.postRequire("post","user/list/search","0",param,function(data){
-            console.log(data);
-            if(data.code=="0"){
-                message=JSON.parse(data.message);
-                content=message.content;
-                if(content.length>0){
-                    $(".table tbody").empty();
-                    $(".table p").remove();
-                    superaddition(content);
-                    jumpBianse();
-                }
-            }else if(data.code=="-1"){
-                alert(data.message);
-            }
-        })
-    }
 }
+setPage($("#foot-num")[0],11,1);
 //隔行变色
+function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:even").css("backgroundColor","#f1f1f1");
     })
@@ -139,7 +118,7 @@ function setPage(container, count, pageindex,pageSize,name,value) {//分页
             $(this).removeClass("tr");
         }
     })
-
+}
 //全选
 function checkAll(name){
     var el=$("tbody input");

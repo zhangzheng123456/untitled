@@ -122,11 +122,10 @@ $(function(){
 		param["PASSWORD"]=PASSWORD;//密码
 		param["USERNAME"]=USERNAME;//姓名
 		param["COMPANY"]=COMPANY;//企业名称
-		param["PROVINCE"]=province;//所在省
-		param["CITY"]=city;//城市
-		param["REGIONID"]=regionId;//县区
-		param["ADDRESS"]=Address;//详细地址
-		console.log(param);
+		// param["PROVINCE"]=province;//所在省
+		// param["CITY"]=city;//城市
+		// param["REGIONID"]=regionId;//县区
+		param["ADDRESS"]=province+city+regionId+Address;//详细地址
 		if(PHONENUMBER==""||PHONECODE==""||PASSWORD==""||repswd==""||USERNAME==""||COMPANY==""||province=="省份"||city=="城市"||regionId=="区县"||Address==""){
 			if(province=="省份"||city=="城市"||regionId=="区县"){
 				$('#location').html('请正确选择省市区!');
@@ -137,7 +136,7 @@ $(function(){
     		$('.PHONENUMBER .notice').html("手机号码格式不正确!");
     		return;
     	};
-    	if(PASSWORD!==""&&reg.test(PASSWORD)==false){
+    	if(PASSWORD!==""&&red.test(PASSWORD)==false){
     		$('.PASSWORD .notice').html("密码格式不正确");
     		return;
         };
