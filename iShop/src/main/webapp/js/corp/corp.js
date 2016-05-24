@@ -117,7 +117,7 @@ function superaddition(data){
     }
 };
 function GET(){//页面加载时的GET请求
-    oc.postRequire("get","corp/list?pageNumber="+pageNumber
+    oc.postRequire("get","/corp/list?pageNumber="+pageNumber
         +"&pageSize="+pageSize+"","","",function(data){
             if(data.code=="0"){
                 message=JSON.parse(data.message);
@@ -125,6 +125,7 @@ function GET(){//页面加载时的GET请求
                 cout=message.totalPages;
                 superaddition(content);
                 setPage($("#foot-num")[0],cout,pageNumber,pageSize,value);
+                jumpBianse();
             }else if(data.code=="-1"){
                 alert(data.message);
             }

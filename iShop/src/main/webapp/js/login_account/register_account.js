@@ -25,7 +25,7 @@ $("#PASSWORD").blur(function(){//密码框失去焦点的时候的验证
 	var reg =/^[^\u4e00-\u9fa5]{6,16}$/;
 	var PASSWORD=$('#PASSWORD').val();//密码
     if(PASSWORD==""||PASSWORD!==""&&reg.test(PASSWORD)==false){
-    	$('.PASSWORD .notice').html("密码格式不正确");
+    	$('.PASSWORD .notice').html("密码格式不正确!");
     }else if(PASSWORD==""||PASSWORD!==""&&reg.test(PASSWORD)==true){
     	$('.PASSWORD .notice').html("");
     }  
@@ -37,7 +37,7 @@ $("#repswd").blur(function(){//确认密码框失去焦点的时候的验证
 	var repswd=$('#repswd').val();//确认密码
 	var PASSWORD=$('#PASSWORD').val();
     if(repswd==""||repswd!==""&&repswd!==PASSWORD){
-    	$('.repswd .notice').html("密码不一致");
+    	$('.repswd .notice').html("密码不一致!");
     }
 });
 $("#USERNAME").focus(function(){//姓名
@@ -65,7 +65,7 @@ $("#addInfo").focus(function(){
 $("#addInfo").blur(function(){
 	var addInfo=$('#addInfo').val();//姓名
     if(addInfo==""){
-    	$('.addInfo .notice').html("详细地址不能为空！");
+    	$('.addInfo .notice').html("详细地址不能为空!");
     }
 })
 
@@ -87,6 +87,7 @@ function sendSMS(btn){//手机获取验证码的验证
 	oc.postRequire("post", "/authcode", "sms", param, function(data){
 		console.log(data);
 		if(data.code=="0"){
+			$('.PHONECODE .notice').html("验证码发送成功!");
 			var timer=setInterval(function(){
 				num--;
 				console.log(num);
@@ -142,7 +143,7 @@ $(function(){
     		return;
     	};
     	if(PASSWORD!==""&&red.test(PASSWORD)==false){
-    		$('.PASSWORD .notice').html("密码格式不正确");
+    		$('.PASSWORD .notice').html("密码格式不正确!");
     		return;
         };
 		oc.postRequire("post", "/register", "reg", param, function(data){

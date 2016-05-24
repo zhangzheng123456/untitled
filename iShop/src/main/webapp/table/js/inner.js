@@ -220,7 +220,9 @@ function setPage(container, count, pageindex) {
 setPage($("#foot-num")[0],11,1);
 //模仿select的语句
 $(function(){  
-        $("#page_row").click(function(){  
+        $("#page_row").click(function(){
+            var iframe=$("#iframepage").height();
+            console.log(iframe);
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
             }else{  
