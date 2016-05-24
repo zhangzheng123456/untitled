@@ -79,13 +79,14 @@ function sendSMS(btn){//手机获取验证码的验证
 	if(PHONENUMBER==""||PHONENUMBER!==""&&reg.test(PHONENUMBER)==false){
 		$('.PHONENUMBER .notice').html("手机号码格式不正确!");
 		return;
+	}else if(PHONENUMBER==""||PHONENUMBER!==""&&reg.test(PHONENUMBER)==true){
+		$(btn).addClass("checkCode col col-30 disabled");
+		$(btn).attr("disabled","true");
 	}	
 	console.log(param);
 	oc.postRequire("post", "/authcode", "sms", param, function(data){
 		console.log(data);
 		if(data.code=="0"){
-			$(btn).addClass("checkCode col col-30 disabled");
-			$(btn).attr("disabled","true");
 			var timer=setInterval(function(){
 				num--;
 				console.log(num);
@@ -98,7 +99,10 @@ function sendSMS(btn){//手机获取验证码的验证
 				}
 			},1000);	
 		}else if(data.code=="-1"){
-			$('.PHONECODE .notice').html("验证码没有发送成功,请重新发送!");	
+			$('.PHONECODE .notice').html("验证码没有发送成功,请重新发送!");
+			$(btn).removeAttr("disabled");
+			$(btn).removeClass("disabled");
+			$(btn).html("获取验证码");	
 		}
 	})	
 }
