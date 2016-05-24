@@ -1,14 +1,15 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.LogInfo;
+import org.apache.ibatis.annotations.Param;
 
 public interface LogInfoMapper {
-    int deleteByPrimaryKey(Integer id);
+    int deleteByLogId(int id);
 
-    int insert(LogInfo record);
+    int insertLoginLog(LogInfo record);
 
-    LogInfo selectByPrimaryKey(Integer id);
+    LogInfo selectByLogId(@Param("log_id")int log_id,@Param("phone") String phone);
 
-    int updateByPrimaryKey(LogInfo record);
+    int updateByLogId(LogInfo record);
 
 }

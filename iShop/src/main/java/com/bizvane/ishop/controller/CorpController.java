@@ -1,5 +1,6 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -54,12 +56,13 @@ public class CorpController {
             String user_type;
             info.put("user_id",user_id);
             if(role_code.equals("R100000")) {
-                //系统管理员
+                //系统管理员(官方画面)
                 List<CorpInfo> corpInfo = corpService.selectAllCorp("");
                 user_type = "admin";
                 info.put("user_type",user_type);
                 info.put("corpInfo",corpInfo);
             }else{
+                //用户画面
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 CorpInfo corpInfo = corpService.selectByCorpId(0,corp_code);
                 user_type = "user";
@@ -197,10 +200,23 @@ public class CorpController {
     /**
      * 查找
      */
-    @RequestMapping(value = "/find",method = RequestMethod.GET)
+    @RequestMapping("/find/{id}")
     @ResponseBody
-    public String findCrop(HttpServletRequest request) {
-        return "";
+    public String findById(@PathVariable Integer corp_id) {
+        DataBean bean=new DataBean();
+        String data = null;
+        try {
+            data = JSON.toJSONString(corpService.selectByCorpId(corp_id,""));
+            bean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            bean.setId("1");
+            bean.setMessage(data);
+        } catch (Exception e) {
+            bean.setCode(Common.DATABEAN_CODE_ERROR);
+            bean.setId("1");
+            bean.setMessage(e.getMessage());
+        }
+        logger.info("info-----" + bean.getJsonStr());
+        return bean.getJsonStr();
     }
 
 }

@@ -201,11 +201,11 @@ public class UserController {
      */
     @RequestMapping("/find/{id}")
     @ResponseBody
-    public String findById(@PathVariable Integer id) {
+    public String findById(@PathVariable Integer user_id) {
         DataBean bean=new DataBean();
         String data = null;
         try {
-            data = JSON.toJSONString(userService.getUserById(id));
+            data = JSON.toJSONString(userService.getUserById(user_id));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

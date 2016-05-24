@@ -3,8 +3,10 @@ package com.bizvane.ishop.controller;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpInfo;
+import com.bizvane.ishop.entity.LogInfo;
 import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.service.LogService;
 import com.bizvane.ishop.service.UserService;
 
 import com.bizvane.sun.app.client.Client;
@@ -30,9 +32,11 @@ public class LoginController {
     UserService userService;
     @Autowired
     CorpService corpService;
+    @Autowired
+    LogService logService;
     private static Logger log = LoggerFactory.getLogger(LoginController.class);
-
-    Client client = new Client();
+    String[] arg = new String[]{"--Ice.Config=client.config"};
+    Client client = new Client(arg);
     String id;
 
     @RequestMapping(value = "/",method = RequestMethod.GET)
@@ -44,6 +48,7 @@ public class LoginController {
      *
      */
     @RequestMapping(value = "/authcode",method = RequestMethod.POST)
+    @ResponseBody
     public void getAuthCode(HttpServletRequest request) {
         String param = request.getParameter("param");
         log.info("json---------------" + param);
@@ -54,28 +59,60 @@ public class LoginController {
         String phone = jsonObject.get("PHONENUMBER").toString();
         System.out.println(phone);
 
-        log.info("初始化客户端成功");
+        String text = "[爱秀]您的注册验证码为：";
+        Random r = new Random();
+        Double d = r.nextDouble();
+        String authcode=d.toString().substring(3,3+6);
+        text = text+authcode+",1小时内有效";
 
-        Data data = new Data("phone", phone, ValueType.PARAM);
-
+        Data data_phone = new Data("phone", phone, ValueType.PARAM);
+        Data data_text = new Data("text", text, ValueType.PARAM);
         Map datalist = new HashMap<String, Data>();
-        datalist.put(data.key,data);
-        System.out.println(datalist);
-
-        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", "com.bizvane.sun.app.method.Captcha", datalist, null, null, System.currentTimeMillis());
+        datalist.put(data_phone.key,data_phone);
+        datalist.put(data_text.key,data_text);
+        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", "com.bizvane.sun.app.method.SendSMS", datalist, null, null, System.currentTimeMillis());
         System.out.println(dataBox1.data);
 
         DataBox dataBox = client.put(dataBox1);
-        log.info("CaptchaMethod -->" + dataBox.data.get("message").value);
+        log.info("SendSMSMethod -->" + dataBox.data.get("message").value);
         System.out.println("CaptchaMethod -->" + dataBox.data.get("message").value);
+        String msg = dataBox.data.get("message").value;
+        JSONObject obj = new JSONObject(msg);
+        DataBean dataBean = new DataBean();
+        if(obj.get("message").toString().equals("短信发送成功")) {
+            LogInfo logInfo = logService.selectLog(0,phone);
+            Date now = new Date();
+            if(logInfo==null) {
+                logInfo = new LogInfo();
+                logInfo.setContent(authcode);
+                logInfo.setPhone(phone);
+                logInfo.setCreated_date(now);
+                logInfo.setModified_date(now);
+                logInfo.setPlatform("网页注册");
+                logService.insertLoginLog(logInfo);
+            }else{
+                logInfo.setContent(authcode);
+                logInfo.setModified_date(now);
+                logInfo.setPlatform("网页注册");
+                logService.updateLoginLog(logInfo);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
+        }else{
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage("fail");
+        }
     }
     /**
      * 点击注册
      */
-    @RequestMapping(value = "/register",method = RequestMethod.GET)
+    @RequestMapping(value = "/register",method = RequestMethod.POST)
     @ResponseBody
     public String register(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        System.out.println("-------------------");
         try {
             String param = request.getParameter("param");
             log.info("json---------------" + param);
@@ -83,26 +120,48 @@ public class LoginController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String phone = jsonObject.get("phone").toString();
-            String user_name = jsonObject.get("username").toString();
-            String password = jsonObject.get("password").toString();
-            String corp_name = jsonObject.get("corpname").toString();
-            String address = jsonObject.get("address").toString();
+            String phone = jsonObject.get("PHONENUMBER").toString();
+            String auth_code = jsonObject.get("PHONECODE").toString();
+            String user_name = jsonObject.get("USERNAME").toString();
+            String password = jsonObject.get("PASSWORD").toString();
+            String corp_name = jsonObject.get("COMPANY").toString();
+            String address = jsonObject.get("ADDRESS").toString();
             UserInfo user = userService.phoneExist(phone);
             if(user==null) {
-                user = new UserInfo();
-                user.setUser_name(user_name);
-                user.setPhone(phone);
-                user.setPassword(password);
-                userService.insert(user);
-                CorpInfo corp = new CorpInfo();
-                corp.setCorp_name(corp_name);
-                corp.setAddress(address);
-                corpService.insertCorp(corp);
+                System.out.println("---------user==null----------");
+                LogInfo logInfo = logService.selectLog(0,phone);
+                Date now = new Date();
+                Date time = logInfo.getModified_date();
+                long timediff=(now.getTime()-time.getTime())/1000;
+                if(auth_code.equals(logInfo.getContent())&&timediff<3600) {
+                    System.out.println("---------auth_code----------");
+                    user = new UserInfo();
+                    user.setUser_name(user_name);
+                    user.setPhone(phone);
+                    user.setPassword(password);
+                    user.setRole_code("R500000");
+                    user.setCreated_date(now);
+                    user.setModified_date(now);
+                    userService.insert(user);
 
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("register success");
+                    CorpInfo corp = new CorpInfo();
+                    corp.setCorp_name(corp_name);
+                    corp.setAddress(address);
+                    corp.setContact(user_name);
+                    corp.setContact_phone(phone);
+                    corp.setCreated_date(now);
+                    corp.setModified_date(now);
+                    corpService.insertCorp(corp);
+
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("register success");
+                }else{
+                    System.out.println("---------auth_code-xxx---------");
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("authcode error");
+                }
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
