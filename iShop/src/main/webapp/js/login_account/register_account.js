@@ -82,6 +82,7 @@ function sendSMS(btn){//手机获取验证码的验证
 	}	
 	console.log(param);
 	oc.postRequire("post", "/authcode", "sms", param, function(data){
+		console.log(data);
 		if(data.code=="0"){
 			$(btn).addClass("checkCode col col-30 disabled");
 			$(btn).attr("disabled","true");
@@ -141,10 +142,11 @@ $(function(){
     		return;
         };
 		oc.postRequire("post", "/register", "reg", param, function(data){
+			console.log(data);
 			if(data.code=="0"){
-				alert("注册成功");
+				window.location.href="home/index_gm.html";
 			}else if(data.code=="-1"){
-
+				alert("注册失败");
 			}
 		})
 	})
