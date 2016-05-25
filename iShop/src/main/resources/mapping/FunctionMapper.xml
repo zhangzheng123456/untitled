@@ -22,7 +22,7 @@
         and enable = 'Y'
         )
     </select>
-    <select id="selectAllFun" resultType="com.bizvane.ishop.entity.Action">
+    <select id="selectAllFun" resultType="com.bizvane.ishop.entity.Function">
         select *
         from DEF_FUNCTION WHERE FUNCTION_CODE IN (
         SELECT FUNCTION_CODE FROM DEF_PRIVILEGE

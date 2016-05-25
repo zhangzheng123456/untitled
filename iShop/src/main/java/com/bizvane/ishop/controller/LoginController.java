@@ -1,11 +1,13 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpInfo;
 import com.bizvane.ishop.entity.LogInfo;
 import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.LogService;
 import com.bizvane.ishop.service.UserService;
 
@@ -34,6 +36,8 @@ public class LoginController {
     CorpService corpService;
     @Autowired
     LogService logService;
+    @Autowired
+    FunctionService functionService;
     private static Logger log = LoggerFactory.getLogger(LoginController.class);
     String[] arg = new String[]{"--Ice.Config=client.config"};
     Client client = new Client(arg);
@@ -202,9 +206,12 @@ public class LoginController {
                 int user_id = login_user.getId();
                 String corp_code = login_user.getCorp_code();
                 String role_code = login_user.getRole_code();
+
+                JSONArray menu = functionService.selectAllFunctions(user_id,role_code);
                 request.getSession().setAttribute("user_id", user_id);
                 request.getSession().setAttribute("corp_code", corp_code);
                 request.getSession().setAttribute("role_code", role_code);
+                request.getSession().setAttribute("menu", menu);
                 System.out.println(request.getSession().getAttribute("user_id"));
                 Date now = new Date();
                 login_user.setLogin_time_recently(now);
@@ -212,18 +219,27 @@ public class LoginController {
 
                 JSONObject user_info = new JSONObject();
                 user_info.put("user_id",user_id);
-                if (login_user.getRole_code().equals("R100000")) {
+                user_info.put("menu",menu);
+                if (login_user.getRole_code().contains("R10")) {
                     //系统管理员
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
                     user_info.put("user_type","admin");
-                    dataBean.setMessage(user_info.toString());
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
+                } else if (login_user.getRole_code().contains("R50")) {
+                    //总经理
+                    user_info.put("user_type","gm");
+                }else if (login_user.getRole_code().contains("R20")) {
+                    //区经
                     user_info.put("user_type","am");
-                    dataBean.setMessage(user_info.toString());
+                }else if (login_user.getRole_code().contains("R30")) {
+                    //店长
+                    user_info.put("user_type", "sm");
+                }else {
+                    //导购
+                    user_info.put("user_type","staff");
                 }
+                System.out.println(user_info);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(user_info.toString());
             }
             } catch (Exception ex) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -232,5 +248,4 @@ public class LoginController {
             }
             return dataBean.getJsonStr();
         }
-
 }

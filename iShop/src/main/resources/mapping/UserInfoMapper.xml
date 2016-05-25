@@ -189,16 +189,16 @@
             <if test="password!=null and password!='' ">
                 PASSWORD = #{password},
             </if>
-            <if test="login_time_recently!=null and login_time_recently!='' ">
+            <if test="login_time_recently!=null">
                 LOGIN_TIME_RECENTLY = #{login_time_recently},
             </if>
-            <if test="modified_date!=null and modified_date!='' ">
+            <if test="modified_date!=null">
                 MODIFIED_DATE = #{modified_date},
             </if>
             <if test="modifier!=null and modifier!='' ">
                 MODIFIER = #{modifier},
             </if>
-            <if test="created_date!=null and created_date!='' ">
+            <if test="created_date!=null">
                 CREATED_DATE = #{created_date},
             </if>
             <if test="creater!=null and creater!='' ">

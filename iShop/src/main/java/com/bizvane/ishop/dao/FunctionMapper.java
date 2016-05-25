@@ -11,9 +11,9 @@ import java.util.List;
  */
 public interface FunctionMapper {
 
-    List<Function> selectAllFunction(@Param("user_id")String user_id,@Param("role_code")String role_code);
+    List<Function> selectAllFunction(@Param("user_id")int user_id,@Param("role_code")String role_code);
 
-    List<Action> selectAllAction(@Param("user_id")String user_id,@Param("role_code")String role_code);
+    List<Action> selectAllAction(@Param("user_id")int user_id,@Param("role_code")String role_code);
 
-    List<Function> selectAllFun(@Param("user_id")String user_id,@Param("role_code")String role_code);
+    List<Function> selectAllFun(@Param("user_id")int user_id,@Param("role_code")String role_code);
 }
