@@ -52,7 +52,7 @@ var oc = new ObjectControl();
 		return true;
 	};
 	shopgoaljs.bindbutton=function(){
-		$(".oper_btn ul li:nth-of-type(1)").click(function(){
+		$(".corpadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(shopgoaljs.firstStep()){
 				var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
@@ -66,6 +66,27 @@ var oc = new ObjectControl();
 					}
 				};
 				var _params={"CORPID":CORPID,"CORPNAME":CORPNAME,"CORPADDRESS":CORPADDRESS,"CONTACTS":CONTACTS,"PHONE":PHONE};
+				shopgoaljs.ajaxSubmit(_command,_params,opt);
+			}else{
+				return;
+			}
+		});
+		$(".corpedit_oper_btn ul li:nth-of-type(1)").click(function(){
+			if(shopgoaljs.firstStep()){
+				var HEADPORTRAIT=$("#preview img").attr("src");
+				console.log(HEADPORTRAIT);
+				var CORPID=$("#CORPID").val();
+				var CORPNAME=$("#CORPNAME").val();
+				var CORPADDRESS=$("#CORPADDRESS").val();
+				var CONTACTS=$("#CONTACTS").val();
+				var PHONE=$("#PHONE").val();
+				var _command="";//接口名
+				var opt = {//返回成功后的操作
+					success:function(){
+
+					}
+				};
+				var _params={"HEADPORTRAIT":HEADPORTRAIT,"CORPID":CORPID,"CORPNAME":CORPNAME,"CORPADDRESS":CORPADDRESS,"CONTACTS":CONTACTS,"PHONE":PHONE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
