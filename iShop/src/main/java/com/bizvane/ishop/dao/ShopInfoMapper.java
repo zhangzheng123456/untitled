@@ -3,12 +3,13 @@ package com.bizvane.ishop.dao;
 import com.bizvane.ishop.entity.ShopInfo;
 
 public interface ShopInfoMapper {
-    int deleteByPrimaryKey(Integer id);
+    ShopInfo selectByShopInfoId(int id);
 
-    int insert(ShopInfo record);
+    int deleteByShopInfoId(int id);
 
-    ShopInfo selectByPrimaryKey(Integer id);
+    int insertShopInfo(ShopInfo shopInfo);
 
-    int updateByPrimaryKey(ShopInfo record);
+    int updateShopInfo(ShopInfo shopInfo);
+
 
 }

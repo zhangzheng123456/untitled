@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.ShopInfoMapper">
+
+    <select id="selectByShopInfoId" resultType="com.bizvane.ishop.entity.ShopInfo">
+    select *
+    from DEF_STORE
+    where ID=#{id}
+</select>
+    <delete id="deleteByShopInfoId">
+        delete from
+        DEF_STORE
+        where ID=#{id}
+    </delete>
+    <insert id="insertShopInfo" parameterType="com.bizvane.ishop.entity.ShopInfo">
+        insert into DEF_STORE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="STORE_CODE!=null">
+                STORE_CODE,
+            </if>
+            <if test="STORE_NAME!=null">
+                STORE_NAME,
+            </if>
+            <if test="BRAND_CODE!=null">
+                BRAND_CODE,
+            </if>
+            <if test="BRAND_NAME!=null">
+                BRAND_NAME,
+            </if>
+            <if test="STORE_AREA!=null">
+                STORE_AREA,
+            </if>
+            <if test="CORP_CODE!=null">
+                CORP_CODE,
+            </if>
+            <if test="MODIFIED_DATE!=null">
+                MODIFIED_DATE,
+            </if>
+            <if test="MODIFIER!=null">
+                MODIFIER,
+            </if>
+            <if test="CREATED_DATE!=null">
+                CREATED_DATE,
+            </if>
+            <if test="CREATER!=null">
+                CREATER,
+            </if>
+            <if test="ISACTIVE!=null">
+                ISACTIVE,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="STORE_CODE!=null">
+                #{STORE_CODE},
+            </if>
+            <if test="STORE_NAME!=null">
+                #{STORE_NAME},
+            </if>
+            <if test="BRAND_CODE!=null">
+                #{BRAND_CODE},
+            </if>
+            <if test="BRAND_NAME!=null">
+                #{BRAND_NAME},
+            </if>
+            <if test="STORE_AREA!=null">
+                #{STORE_AREA},
+            </if>
+            <if test="CORP_CODE!=null">
+                #{CORP_CODE},
+            </if>
+            <if test="MODIFIED_DATE!=null">
+                #{MODIFIED_DATE},
+            </if>
+            <if test="MODIFIER!=null">
+                #{MODIFIER},
+            </if>
+            <if test="CREATED_DATE!=null">
+                #{CREATED_DATE},
+            </if>
+            <if test="CREATER!=null">
+                #{CREATER},
+            </if>
+            <if test="ISACTIVE!=null">
+                #{ISACTIVE},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateShopInfo" parameterType="com.bizvane.ishop.entity.ShopInfo">
+        UPDATE DEF_SHOPINFO
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="STORE_CODE!=null and STORE_CODE!=''">
+                STORE_CODE=#{STORE_CODE},
+            </if>
+            <if test="STORE_NAME!=null and STORE_NAME!=''">
+                STORE_NAME=#{STORE_NAME},
+            </if>
+            <if test="BRAND_CODE!=null and BRAND_CODE!=''">
+                BRAND_CODE=#{BRAND_CODE},
+            </if>
+            <if test="BRAND_NAME!=null and BRAND_NAME!=''">
+                BRAND_NAME=#{BRAND_NAME},
+            </if>
+            <if test="STORE_AREA!=null and STORE_AREA!=''">
+                STORE_AREA=#{STORE_AREA},
+            </if>
+            <if test="CORP_CODE!=null and CORP_CODE!=''">
+                CORP_CODE=#{CORP_CODE},
+            </if>
+            <if test="MODIFIED_DATE!=null and MODIFIED_DATE!=''">
+                MODIFIED_DATE=#{MODIFIED_DATE},
+            </if>
+            <if test="MODIFIER!=null and MODIFIER!=''">
+                MODIFIER=#{MODIFIER},
+            </if>
+            <if test="CREATED_DATE!=null and CREATED_DATE!=''">
+                CREATED_DATE=#{CREATED_DATE},
+            </if>
+            <if test="CREATER!=null and CREATER!=''">
+                CREATER=#{CREATER},
+            </if>
+            <if test="ISACTIVE!=null and ISACTIVE!=''">
+                ISACTIVE=#{ISACTIVE},
+            </if>
+        </trim>
+
+    </update>
+</mapper>
