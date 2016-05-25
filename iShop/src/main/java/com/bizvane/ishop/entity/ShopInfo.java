@@ -17,6 +17,8 @@ public class ShopInfo {
     private String brand_name;
     //所属区域
     private String store_area;
+    //是否直营
+    private String flg_tob;
     //公司编号
     private String corp_code;
     //修改时间
@@ -84,6 +86,14 @@ public class ShopInfo {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
+    }
+
+    public String getFlg_tob() {
+        return flg_tob;
+    }
+
+    public void setFlg_tob(String flg_tob) {
+        this.flg_tob = flg_tob;
     }
 
     public Date getModified_date() {

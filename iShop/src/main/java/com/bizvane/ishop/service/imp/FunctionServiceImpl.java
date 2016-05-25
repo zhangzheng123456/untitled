@@ -24,18 +24,15 @@ public class FunctionServiceImpl implements FunctionService{
         List<Function> func_info = functionMapper.selectAllFun(user_id,role_code);
         JSONArray modules = new JSONArray();
         String uri;
-        if(role_code.contains("R10")){
-            uri = "official";}
-        else{
-            uri = "common";}
         for (int i = 0; i < func_info.size(); i++) {
             String module = func_info.get(i).getModule_name();
             String func = func_info.get(i).getFunction_name();
+            String func_code = func_info.get(i).getFunction_code();
             System.out.println(module+"---------"+func);
             if(func.equals("0")){
                 JSONObject obj1 = new JSONObject();
                 obj1.put("mod_name",module);
-                obj1.put("uri",uri);
+                obj1.put("func_code",func_code);
                 modules.add(obj1);
             }else {
                 if (modules.size()==0){
@@ -43,9 +40,9 @@ public class FunctionServiceImpl implements FunctionService{
                     JSONArray functions = new JSONArray();
                     JSONObject obj1 = new JSONObject();
                     obj1.put("fun_name",func);
+                    obj1.put("func_code",func_code);
                     functions.add(obj1);
                     obj.put("mod_name",module);
-                    obj.put("uri",uri);
                     obj.put("functions",functions);
                     modules.add(obj);
                 }else {
@@ -56,6 +53,7 @@ public class FunctionServiceImpl implements FunctionService{
                             JSONArray qq = JSONArray.parseArray(a);
                             JSONObject obj2 = new JSONObject();
                             obj2.put("fun_name", func);
+                            obj2.put("func_code", func_code);
                             qq.add(obj2);
                             object.put("functions",qq);
                             break;
@@ -64,7 +62,6 @@ public class FunctionServiceImpl implements FunctionService{
                                 JSONObject mod = new JSONObject();
                                 JSONArray functions = new JSONArray();
                                 mod.put("mod_name",module);
-                                mod.put("uri",uri);
                                 mod.put("functions",functions);
                                 modules.add(mod);
                             }
@@ -75,9 +72,47 @@ public class FunctionServiceImpl implements FunctionService{
         }return modules;
     }
 
-    public String selectAllFunction(int user_id,String role_code){
+    public JSONArray selectAllActions(int user_id,String role_code){
         List<Function> act_info = functionMapper.selectAllFunction(user_id,role_code);
+        JSONArray functions = new JSONArray();
 
-        return "";
+        for (int i = 0; i < act_info.size(); i++) {
+            String func_code = act_info.get(i).getFunction_code();
+     //       String func = act_info.get(i).getFunction_name();
+            String act = act_info.get(i).getAction_name();
+            System.out.println(act+"---------"+func_code);
+            if (functions.size()==0){
+                JSONObject obj = new JSONObject();
+                JSONArray actions = new JSONArray();
+                JSONObject obj1 = new JSONObject();
+                obj1.put("act_name",act);
+                actions.add(obj1);
+                obj.put("func_code",func_code);
+                obj.put("actions",actions);
+                functions.add(obj);
+            }else {
+                for (int j = 0; j < functions.size(); j++) {
+                    JSONObject object = (JSONObject) functions.get(j);
+                    System.out.println(object);
+                    if (object.get("func_code").equals(func_code)) {
+                        String a = object.get("actions").toString();
+                        JSONArray qq = JSONArray.parseArray(a);
+                        JSONObject obj2 = new JSONObject();
+                        obj2.put("act_name", act);
+                        qq.add(obj2);
+                        object.put("actions",qq);
+                        break;
+                    }else {
+                        if (j==functions.size()-1){
+                            JSONObject fun = new JSONObject();
+                            JSONArray actions = new JSONArray();
+                            fun.put("func_code",func_code);
+                            fun.put("actions",actions);
+                            functions.add(fun);
+                        }continue;
+                    }
+                }
+            }
+        }return functions;
     }
 }

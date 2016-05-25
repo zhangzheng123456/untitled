@@ -208,10 +208,12 @@ public class LoginController {
                 String role_code = login_user.getRole_code();
 
                 JSONArray menu = functionService.selectAllFunctions(user_id,role_code);
+                JSONArray action = functionService.selectAllActions(user_id,role_code);
                 request.getSession().setAttribute("user_id", user_id);
                 request.getSession().setAttribute("corp_code", corp_code);
                 request.getSession().setAttribute("role_code", role_code);
                 request.getSession().setAttribute("menu", menu);
+                request.getSession().setAttribute("action", action);
                 System.out.println(request.getSession().getAttribute("user_id"));
                 Date now = new Date();
                 login_user.setLogin_time_recently(now);
@@ -220,20 +222,26 @@ public class LoginController {
                 JSONObject user_info = new JSONObject();
                 user_info.put("user_id",user_id);
                 user_info.put("menu",menu);
+                user_info.put("action",action);
                 if (login_user.getRole_code().contains("R10")) {
                     //系统管理员
+                    user_info.put("uri","official");
                     user_info.put("user_type","admin");
                 } else if (login_user.getRole_code().contains("R50")) {
                     //总经理
+                    user_info.put("uri","common");
                     user_info.put("user_type","gm");
                 }else if (login_user.getRole_code().contains("R20")) {
                     //区经
+                    user_info.put("uri","common");
                     user_info.put("user_type","am");
                 }else if (login_user.getRole_code().contains("R30")) {
                     //店长
+                    user_info.put("uri","common");
                     user_info.put("user_type", "sm");
                 }else {
                     //导购
+                    user_info.put("uri","common");
                     user_info.put("user_type","staff");
                 }
                 System.out.println(user_info);

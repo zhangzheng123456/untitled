@@ -82,7 +82,6 @@ public class CorpController {
     public String addCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
-
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
