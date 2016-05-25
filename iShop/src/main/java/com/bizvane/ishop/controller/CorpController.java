@@ -33,7 +33,7 @@ import java.util.Map;
  */
 
 @Controller
-@RequestMapping("/crop")
+@RequestMapping("/corp")
 public class CorpController {
 
     private static Logger logger = LoggerFactory.getLogger((CorpController.class));
@@ -53,20 +53,14 @@ public class CorpController {
             String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject info = new JSONObject();
-            String user_type;
-            info.put("user_id",user_id);
             if(role_code.equals("R100000")) {
                 //系统管理员(官方画面)
                 List<CorpInfo> corpInfo = corpService.selectAllCorp("");
-                user_type = "admin";
-                info.put("user_type",user_type);
                 info.put("corpInfo",corpInfo);
             }else{
                 //用户画面
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 CorpInfo corpInfo = corpService.selectByCorpId(0,corp_code);
-                user_type = "user";
-                info.put("user_type",user_type);
                 info.put("corpInfo",corpInfo);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -88,6 +82,7 @@ public class CorpController {
     public String addCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
+
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -105,6 +100,8 @@ public class CorpController {
             Date now = new Date();
             corp.setCreated_date(now);
             corp.setCreater(user_id);
+            corp.setModified_date(now);
+            corp.setModifier(user_id);
             corp.setIsactive(jsonObject.get("isactive").toString());
             corpService.insertCorp(corp);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -191,7 +188,6 @@ public class CorpController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-            return dataBean.getJsonStr();
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();

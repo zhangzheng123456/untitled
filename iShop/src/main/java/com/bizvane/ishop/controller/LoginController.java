@@ -49,7 +49,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/authcode",method = RequestMethod.POST)
     @ResponseBody
-    public void getAuthCode(HttpServletRequest request) {
+    public String getAuthCode(HttpServletRequest request) {
         String param = request.getParameter("param");
         log.info("json---------------" + param);
         JSONObject jsonObj = new JSONObject(param);
@@ -104,6 +104,7 @@ public class LoginController {
             dataBean.setId(id);
             dataBean.setMessage("fail");
         }
+        return dataBean.getJsonStr();
     }
     /**
      * 点击注册

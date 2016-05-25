@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.FunctionMapper">
+
+    <select id="selectAllFunction" resultType="com.bizvane.ishop.entity.Function">
+        select *
+        FROM DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  a.FUNCTION_CODE IN (
+        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+	    WHERE MASTER_CODE = #{user_id}
+	        or MASTER_CODE = #{role_code}
+	        and enable = 'Y'
+        )
+    </select>
+    <select id="selectAllAction" resultType="com.bizvane.ishop.entity.Action">
+        select *
+        from DEF_ACTION WHERE ACTION_CODE IN (
+        SELECT ACTION_CODE FROM DEF_PRIVILEGE
+        WHERE MASTER_CODE = #{user_id}
+        or MASTER_CODE = #{role_code}
+        and enable = 'Y'
+        )
+    </select>
+    <select id="selectAllFun" resultType="com.bizvane.ishop.entity.Action">
+        select *
+        from DEF_FUNCTION WHERE FUNCTION_CODE IN (
+        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        WHERE MASTER_CODE = #{user_id}
+        or MASTER_CODE = #{role_code}
+        and enable = 'Y'
+        )
+    </select>
+
+</mapper>

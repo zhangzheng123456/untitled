@@ -1,0 +1,19 @@
+package com.bizvane.ishop.dao;
+
+import com.bizvane.ishop.entity.Action;
+import com.bizvane.ishop.entity.Function;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+/**
+ * Created by Administrator on 2016/5/24.
+ */
+public interface FunctionMapper {
+
+    List<Function> selectAllFunction(@Param("user_id")String user_id,@Param("role_code")String role_code);
+
+    List<Action> selectAllAction(@Param("user_id")String user_id,@Param("role_code")String role_code);
+
+    List<Function> selectAllFun(@Param("user_id")String user_id,@Param("role_code")String role_code);
+}
