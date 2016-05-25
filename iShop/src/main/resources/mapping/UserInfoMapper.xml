@@ -2,44 +2,62 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.UserInfoMapper">
 
-    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.UserInfo">
+    <select id="selectByUserId" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
-        from USER
+        from DEF_USER
         where ID = #{id}
     </select>
     <select id="selectLogin" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
-        from USER
+        from DEF_USER
         where PHONE = #{0} AND PASSWORD = #{1}
     </select>
     <select id="selectByPhone" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
-        from USER
+        from DEF_USER
         where PHONE = #{phone}
     </select>
-    <select id="selectAll" resultType="com.bizvane.ishop.entity.UserInfo">
+    <select id="selectAllUser" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
-        from USER
+        from DEF_USER
         where 1 = 1
+        <if test="corp_code != null and corp_code !=''">
+            AND CORP_CODE = #{corp_code}
+        </if>
         <if test="search_value != null and search_value !=''">
             AND USER_NAME like #{search_value}
+            OR ID like #{search_value}
             OR USER_CODE like #{search_value}
             OR PHONE like #{search_value}
             OR SEX like #{search_value}
             OR ROLE_CODE like #{search_value}
-            OR CORP_CODE like #{search_value}
+            OR LOGIN_TIME_RECENTLY like #{search_value}
+            OR MODIFIED_DATE like #{search_value}
             OR MODIFIER like #{search_value}
+            OR ISACTIVE like #{search_value}
         </if>
         ORDER BY ID
     </select>
-    <delete id="deleteByPrimaryKey">
+    <delete id="deleteByUserId">
         delete from
-        USER
+        DEF_USER
         where ID = #{id}
     </delete>
-    <insert id="insert" parameterType="com.bizvane.ishop.entity.UserInfo">
-        insert into USER
+    <insert id="insertUser" parameterType="com.bizvane.ishop.entity.UserInfo">
+        insert into DEF_USER
         <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user_code!=null">
+                user_code,
+            </if>
+            <if test="avatar!=null">
+                avatar,
+            </if>
+            <if test="user_name!=null">
+                user_name,
+            </if>
+            <if test="sex!=null">
+                sex,
+            </if>
             <if test="phone != null">
                 phone,
             </if>
@@ -47,10 +65,52 @@
                 email,
             </if>
             <if test="password != null">
-            password,
-        </if>
+                password,
+            </if>
+            <if test="birthday!=null">
+                birthday,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="store_code!=null">
+                store_code,
+            </if>
+            <if test="role_code!=null">
+                role_code,
+            </if>
+            <if test="login_time_recently!=null">
+                login_time_recently,
+            </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                MODIFIER,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="isactive != null">
+                ISACTIVE,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="user_code!=null">
+                #{user_code},
+            </if>
+            <if test="avatar!=null">
+                #{avatar},
+            </if>
+            <if test="user_name!=null">
+                #{user_name},
+            </if>
+            <if test="sex!=null">
+                #{sex},
+            </if>
             <if test="phone != null">
                 #{phone},
             </if>
@@ -60,23 +120,96 @@
             <if test="password != null">
                 #{password},
             </if>
+            <if test="birthday!=null">
+                #{birthday},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="store_code!=null">
+                #{store_code},
+            </if>
+            <if test="role_code!=null">
+                #{role_code},
+            </if>
+            <if test="login_time_recently!=null">
+                #{login_time_recently},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.UserInfo">
-        UPDATE USER
+    <update id="updateByUserId" parameterType="com.bizvane.ishop.entity.UserInfo">
+        UPDATE DEF_USER
         <trim prefix="SET" suffixOverrides=",">
-            <if test="NAME!=null and NAME!='' ">
-                NAME = #{user_name},
+            <if test="user_code!=null and user_code!='' ">
+                USER_CODE = #{user_code},
             </if>
-            <if test="SEX!=null and SEX!='' ">
+            <if test="avatar!=null and avatar!='' ">
+                AVATAR = #{avatar},
+            </if>
+            <if test="user_name!=null and user_name!='' ">
+                USER_NAME = #{user_name},
+            </if>
+            <if test="sex!=null and sex!='' ">
                 SEX = #{sex},
             </if>
-            <if test="BIRTHDAY!=null and SEX!='' ">
+            <if test="phone!=null and phone!='' ">
+                PHONE = #{phone},
+            </if>
+            <if test="email!=null and email!='' ">
+                EMAIL = #{email},
+            </if>
+            <if test="birthday!=null and birthday!='' ">
                 BIRTHDAY = #{birthday},
+            </if>
+            <if test="corp_code!=null and corp_code!='' ">
+                CORP_CODE = #{corp_code},
+            </if>
+            <if test="store_code!=null and store_code!='' ">
+                STORE_CODE = #{store_code},
+            </if>
+            <if test="role_code!=null and role_code!='' ">
+                ROLE_CODE = #{role_code},
+            </if>
+            <if test="password!=null and password!='' ">
+                PASSWORD = #{password},
+            </if>
+            <if test="login_time_recently!=null and login_time_recently!='' ">
+                LOGIN_TIME_RECENTLY = #{login_time_recently},
+            </if>
+            <if test="modified_date!=null and modified_date!='' ">
+                MODIFIED_DATE = #{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!='' ">
+                MODIFIER = #{modifier},
+            </if>
+            <if test="created_date!=null and created_date!='' ">
+                CREATED_DATE = #{created_date},
+            </if>
+            <if test="creater!=null and creater!='' ">
+                CREATER = #{creater},
+            </if>
+            <if test="isactive!=null and isactive!='' ">
+                ISACTIVE = #{isactive},
             </if>
         </trim>
         WHERE ID = #{id};
     </update>
+
 
 </mapper>

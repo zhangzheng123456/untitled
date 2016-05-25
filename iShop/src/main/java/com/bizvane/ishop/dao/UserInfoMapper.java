@@ -6,17 +6,17 @@ import org.apache.ibatis.annotations.Param;
 import java.util.List;
 
 public interface UserInfoMapper {
-    int deleteByPrimaryKey(int id);
+    int deleteByUserId(int id);
 
-    int insert(UserInfo record);
+    int insertUser(UserInfo record);
 
-    UserInfo selectByPrimaryKey(int id);
+    UserInfo selectByUserId(int id);
 
-    int updateByPrimaryKey(UserInfo record);
+    int updateByUserId(UserInfo record);
 
     UserInfo selectLogin(String phone,String password);
 
     UserInfo selectByPhone(String phone);
 
-    List<UserInfo> selectAll(@Param("search_value") String search_value);
+    List<UserInfo> selectAllUser(@Param("corp_code")String corp_code,@Param("search_value") String search_value);
 }

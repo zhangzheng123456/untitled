@@ -41,7 +41,7 @@ public class UserInfo {
 
 	public UserInfo(){}
 
-	public UserInfo(Integer id){
+	public UserInfo(int id){
 		this.id = id;
 	}
 

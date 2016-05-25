@@ -9,25 +9,32 @@
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
 </head>
 <body>
-    <div id="wrapper">
-    </div>
+    <!-- <div id="wrapper">
+    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="col-lg-12 pre_title">企业管理<i class="icon-ishop_8-03"></i>新增企业</div>
             <div class="editor_1 col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg">
                     <div>
-                        <span><label>公司名称</label><input type="text" /></span>
+                        <span><label>企业编号</label><input type="text" verify="Empty"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>公司地址</label><input type="text" /></span>
+                        <span><label>公司名称</label><input type="text" verify="Empty"/>
+                            <div style="padding-left:80px" class="hint"><div  hintinfo="公司名称为必填项，不能为空！"></div></div>
+                        </span>
                     </div>
                     <div>
-                        <span><label>联系人</label><input type="text" /></span>
+                        <span><label>公司地址</label><input type="text" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="公司地址不能为空！"></div></div>
+                        </span>
                     </div>
                     <div>
-                        <span><label>联系电话</label><input type="text" /></span>
+                        <span><label>联系人</label><input type="text" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系人不能为空！"></div></div></span>
+                    </div>
+                    <div>
+                        <span><label>联系电话</label><input type="text" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
                     </div>
                 </form>
             </div>
@@ -62,6 +69,8 @@
             $('#side-menu li:nth-of-type(1)').addClass('active');
         })
     </script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/achv/goal.js"></script>
 </body>
 
 </html>

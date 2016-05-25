@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.CorpInfoMapper">
+
+    <select id="selectByCorpId" resultType="com.bizvane.ishop.entity.CorpInfo">
+        select *
+        from DEF_CORP
+        where
+        <if test="corp_id != 0">
+            ID = #{corp_id}
+        </if>
+        <if test="corp_code != null and corp_code !=''">
+            CORP_CODE = #{corp_code}
+        </if>
+    </select>
+
+    <select id="selectAllCorp" resultType="com.bizvane.ishop.entity.CorpInfo">
+        select *
+        from DEF_CORP
+        where 1 = 1
+        <if test="search_value != null and search_value !=''">
+            AND corp_name like #{search_value}
+            OR corp_code like #{search_value}
+            OR address like #{search_value}
+            OR contact like #{search_value}
+            OR contact_phone like #{search_value}
+            OR modified_date like #{search_value}
+            OR MODIFIER like #{search_value}
+            OR isactive like #{search_value}
+        </if>
+        ORDER BY ID
+    </select>
+
+    <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.CorpInfo">
+        insert into DEF_CORP
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_name != null">
+                CORP_NAME,
+            </if>
+            <if test="corp_code != null">
+                CORP_CODE,
+            </if>
+            <if test="address != null">
+                ADDRESS,
+            </if>
+            <if test="contact != null">
+                CONTACT,
+            </if>
+            <if test="contact_phone != null">
+                CONTACT_PHONE,
+            </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corp_name != null">
+                #{corp_name},
+            </if>
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="address != null">
+                #{address},
+            </if>
+            <if test="contact != null">
+                #{contact},
+            </if>
+            <if test="contact_phone != null">
+                #{contact_phone},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.UserInfo">
+        UPDATE DEF_CORP
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_name != null">
+                corp_name = #{corp_name},
+            </if>
+            <if test="corp_code != null">
+                corp_code = #{corp_code},
+            </if>
+            <if test="address != null">
+                address = #{address},
+            </if>
+            <if test="contact != null">
+                contact = #{contact},
+            </if>
+            <if test="contact_phone != null">
+                contact_phone = #{contact_phone},
+            </if>
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date != null">
+                created_date = #{created_date},
+            </if>
+            <if test="creater != null">
+                creater = #{creater},
+            </if>
+            <if test="isactive != null">
+                isactive = #{isactive},
+            </if>
+        </trim>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="deleteByCorpId">
+        delete from
+        DEF_CORP
+        where ID = #{id}
+    </delete>
+</mapper>

@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,14 +45,21 @@ public class UserController {
     public String userManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-      //      String corp_code = request.getSession().getAttribute("corp_code").toString();
-            List<UserInfo> userInfo = userService.selectAll();
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            List<UserInfo> userInfo;
+            if(role_code.equals("R100000")) {
+                //系统管理员
+                userInfo = userService.selectBySearch("","");
+            }else{
+                String corp_code = request.getSession().getAttribute("corp_code").toString();
+                userInfo = userService.selectBySearch(corp_code, "");
+            }
             Gson gson = new Gson();
             String result = gson.toJson(userInfo);
-            JSONArray array = JSONArray.parseArray(result);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(array.get(0).toString());
+            dataBean.setMessage(result);
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -68,6 +76,7 @@ public class UserController {
     @ResponseBody
     public String addUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_id").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -77,14 +86,19 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             UserInfo user = new UserInfo();
-            user.setUser_code(jsonObject.get("comment").toString());
+            user.setUser_code(jsonObject.get("user_code").toString());
             user.setUser_name(jsonObject.get("username").toString());
-            user.setAvatar(jsonObject.get("username").toString());
-            user.setPhone(jsonObject.get("password").toString());
-            user.setEmail(jsonObject.get("password").toString());
-            user.setSex(jsonObject.get("password").toString());
-            user.setCorp_code(jsonObject.get("password").toString());
-            user.setRole_code(jsonObject.get("comment").toString());
+            user.setAvatar(jsonObject.get("avater").toString());
+            user.setPhone(jsonObject.get("phone").toString());
+            user.setEmail(jsonObject.get("email").toString());
+            user.setSex(jsonObject.get("sex").toString());
+            user.setCorp_code(jsonObject.get("corp_code").toString());
+            user.setRole_code(jsonObject.get("role_code").toString());
+            user.setPassword(jsonObject.get("password").toString());
+            Date now = new Date();
+            user.setCreated_date(now);
+            user.setCreater(user_id);
+            user.setIsactive(jsonObject.get("isactive").toString());
             userService.insert(user);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -105,6 +119,7 @@ public class UserController {
     @ResponseBody
     public String editUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_id").toString();
         try{
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -114,11 +129,19 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             UserInfo user = new UserInfo();
-            user.setUser_code(jsonObject.get("id").toString());
+            user.setUser_code(jsonObject.get("user_code").toString());
             user.setUser_name(jsonObject.get("username").toString());
             user.setPassword(jsonObject.get("password").toString());
-            user.setCorp_code(jsonObject.get("is_admin").toString());
-            user.setRole_code(jsonObject.get("comment").toString());
+            user.setAvatar(jsonObject.get("avater").toString());
+            user.setPhone(jsonObject.get("phone").toString());
+            user.setEmail(jsonObject.get("email").toString());
+            user.setSex(jsonObject.get("sex").toString());
+            user.setCorp_code(jsonObject.get("corp_code").toString());
+            user.setRole_code(jsonObject.get("role_code").toString());
+            Date now = new Date();
+            user.setModified_date(now);
+            user.setModifier(user_id);
+            user.setIsactive(jsonObject.get("isactive").toString());
             userService.update(user);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -178,11 +201,11 @@ public class UserController {
      */
     @RequestMapping("/find/{id}")
     @ResponseBody
-    public String findById(@PathVariable Integer id) {
+    public String findById(@PathVariable Integer user_id) {
         DataBean bean=new DataBean();
         String data = null;
         try {
-            data = JSON.toJSONString(userService.getUserById(id));
+            data = JSON.toJSONString(userService.getUserById(user_id));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

@@ -8,7 +8,7 @@ input{margin:0;padding:0;}
 body{
 	font-size: 14px;
 	font-family: "微软雅黑";
-	margin-top: 81px;
+	margin-top: 40.5px;
 }
 a{
 	text-decoration: none;
@@ -162,7 +162,7 @@ input::-webkit-input-placeholder{
 	width: 200px;
 	background-color: #434960;
 	height: 100%;
-	min-height: 720px;
+	// min-height: 720px;
 	position:absolute;
 	top: 81px;
 	z-index: 2;
