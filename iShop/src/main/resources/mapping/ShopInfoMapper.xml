@@ -12,6 +12,8 @@
         DEF_STORE
         where ID=#{id}
     </delete>
+
+
     <insert id="insertShopInfo" parameterType="com.bizvane.ishop.entity.ShopInfo">
         insert into DEF_STORE
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -122,6 +124,6 @@
                 ISACTIVE=#{ISACTIVE},
             </if>
         </trim>
-
+        WHERE ID=#{id};
     </update>
 </mapper>
