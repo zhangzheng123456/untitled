@@ -36,12 +36,30 @@ public class TestUserService {
     private UserService logService;
 
 	/*
-	 * @Test public void testQueryById() { ApplicationContext ac = new
+	 * @Test public void testQueryById()
+	 * {
+	 * ApplicationContext ac = new
 	 * ClassPathXmlApplicationContext( new String[] { "spring.xml",
-	 * "spring-mybatis.xml" }); UserService userService = (UserService)
-	 * ac.getBean("userService"); UserInfo userInfo =
-	 * userService.getUserById(1); System.out.println(userInfo.getUsername()); }
+	 * "spring-mybatis.xml" });
+	  * UserService userService = (UserService)
+	 * ac.getBean("userService");
+	  * UserInfo userInfo =
+	 * userService.getUserById(1);
+	  * System.out.println(userInfo.getUsername()); }
 	 */
+
+    @Test
+    public void updateShopInfo(){
+        try {
+            UserInfo user=this.logService.getUserById(12);
+           user.setCreated_date(new Date(1));
+            this.logService.update(user);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+    }
 
     @Test
     public void testQueryById1() throws SQLException{
@@ -49,7 +67,7 @@ public class TestUserService {
         //	LogInfo logInfo = logService.selectLog(0,"222");
         Date now = new Date();
         UserInfo user = new UserInfo();
-        user.setUser_name("111");
+        user.setUser_name("222");
         user.setPhone("222");
         user.setPassword("333");
         user.setCreated_date(now);

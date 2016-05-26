@@ -27,31 +27,34 @@ public class UserServiceImpl implements UserService {
         return userInfoMapper.insertUser(userInfo);
     }
 
-    public int update(UserInfo userInfo) throws SQLException{
+    public int update(UserInfo userInfo) throws SQLException {
         return userInfoMapper.updateByUserId(userInfo);
     }
 
-    public int delete(int id) throws SQLException{
+    public int delete(int id) throws SQLException {
         return userInfoMapper.deleteByUserId(id);
     }
+
     /**
-     *登录查询
+     * 登录查询
      */
-    public UserInfo login(String phone,String password) throws SQLException{
+    public UserInfo login(String phone, String password) throws SQLException {
         System.out.println("---------login--------");
-        return userInfoMapper.selectLogin(phone,password);
+        return userInfoMapper.selectLogin(phone, password);
     }
+
     /**
      * 验证手机号是否已存在
      */
-    public UserInfo phoneExist(String phone) throws SQLException{
+    public UserInfo phoneExist(String phone) throws SQLException {
         return userInfoMapper.selectByPhone(phone);
     }
+
     /**
      * @param corp_code
      * @param search_value
      */
-    public List<UserInfo> selectBySearch(String corp_code,String search_value) throws SQLException{
-        return userInfoMapper.selectAllUser(corp_code,"%"+search_value+"%");
+    public List<UserInfo> selectBySearch(String corp_code, String search_value) throws SQLException {
+        return userInfoMapper.selectAllUser(corp_code, "%" + search_value + "%");
     }
 }

@@ -17,111 +17,111 @@
     <insert id="insertShopInfo" parameterType="com.bizvane.ishop.entity.ShopInfo">
         insert into DEF_STORE
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="STORE_CODE!=null">
-                STORE_CODE,
+            <if test="store_code!=null">
+                store_code,
             </if>
-            <if test="STORE_NAME!=null">
-                STORE_NAME,
+            <if test="store_name!=null">
+                store_name,
             </if>
-            <if test="BRAND_CODE!=null">
-                BRAND_CODE,
+            <if test="brand_code!=null">
+                brand_code,
             </if>
-            <if test="BRAND_NAME!=null">
-                BRAND_NAME,
+            <if test="brand_name!=null">
+                brand_name,
             </if>
-            <if test="STORE_AREA!=null">
-                STORE_AREA,
+            <if test="store_area!=null">
+                store_area,
             </if>
-            <if test="CORP_CODE!=null">
-                CORP_CODE,
+            <if test="corp_code!=null">
+                corp_code,
             </if>
-            <if test="MODIFIED_DATE!=null">
-                MODIFIED_DATE,
+            <if test="modified_date!=null">
+                modified_date,
             </if>
-            <if test="MODIFIER!=null">
-                MODIFIER,
+            <if test="modifier!=null">
+                modifier,
             </if>
-            <if test="CREATED_DATE!=null">
-                CREATED_DATE,
+            <if test="created_date!=null">
+                created_date,
             </if>
-            <if test="CREATER!=null">
-                CREATER,
+            <if test="creater!=null">
+                creater,
             </if>
-            <if test="ISACTIVE!=null">
-                ISACTIVE,
+            <if test="isactive!=null">
+                isactive,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="STORE_CODE!=null">
-                #{STORE_CODE},
+            <if test="store_code!=null">
+                #{store_code},
             </if>
-            <if test="STORE_NAME!=null">
-                #{STORE_NAME},
+            <if test="store_name!=null">
+                #{store_name},
             </if>
-            <if test="BRAND_CODE!=null">
-                #{BRAND_CODE},
+            <if test="brand_code!=null">
+                #{brand_code},
             </if>
-            <if test="BRAND_NAME!=null">
-                #{BRAND_NAME},
+            <if test="brand_name!=null">
+                #{brand_name},
             </if>
-            <if test="STORE_AREA!=null">
-                #{STORE_AREA},
+            <if test="store_area!=null">
+                #{store_area},
             </if>
-            <if test="CORP_CODE!=null">
-                #{CORP_CODE},
+            <if test="corp_code!=null">
+                #{corp_code},
             </if>
-            <if test="MODIFIED_DATE!=null">
-                #{MODIFIED_DATE},
+            <if test="modified_date!=null">
+                #{modified_date},
             </if>
-            <if test="MODIFIER!=null">
-                #{MODIFIER},
+            <if test="modifier!=null">
+                #{modifier},
             </if>
-            <if test="CREATED_DATE!=null">
-                #{CREATED_DATE},
+            <if test="created_date!=null">
+                #{created_date},
             </if>
-            <if test="CREATER!=null">
-                #{CREATER},
+            <if test="creater!=null">
+                #{creater},
             </if>
-            <if test="ISACTIVE!=null">
-                #{ISACTIVE},
+            <if test="isactive!=null">
+                #{isactive},
             </if>
         </trim>
     </insert>
     <update id="updateShopInfo" parameterType="com.bizvane.ishop.entity.ShopInfo">
-        UPDATE DEF_SHOPINFO
+        UPDATE DEF_STORE
         <trim prefix="SET" suffixOverrides=",">
-            <if test="STORE_CODE!=null and STORE_CODE!=''">
-                STORE_CODE=#{STORE_CODE},
+            <if test="store_code!=null and store_code!=''">
+                store_code=#{store_code},
             </if>
-            <if test="STORE_NAME!=null and STORE_NAME!=''">
-                STORE_NAME=#{STORE_NAME},
+            <if test="store_name!=null and store_name!=''">
+                store_name=#{store_name},
             </if>
-            <if test="BRAND_CODE!=null and BRAND_CODE!=''">
-                BRAND_CODE=#{BRAND_CODE},
+            <if test="brand_code!=null and brand_code!=''">
+                brand_code=#{brand_code},
             </if>
-            <if test="BRAND_NAME!=null and BRAND_NAME!=''">
-                BRAND_NAME=#{BRAND_NAME},
+            <if test="brand_name!=null and brand_name!=''">
+                brand_name=#{brand_name},
             </if>
-            <if test="STORE_AREA!=null and STORE_AREA!=''">
-                STORE_AREA=#{STORE_AREA},
+            <if test="store_area!=null and store_area!=''">
+                store_area=#{store_area},
             </if>
-            <if test="CORP_CODE!=null and CORP_CODE!=''">
-                CORP_CODE=#{CORP_CODE},
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
             </if>
-            <if test="MODIFIED_DATE!=null and MODIFIED_DATE!=''">
-                MODIFIED_DATE=#{MODIFIED_DATE},
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
             </if>
-            <if test="MODIFIER!=null and MODIFIER!=''">
-                MODIFIER=#{MODIFIER},
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier},
             </if>
-            <if test="CREATED_DATE!=null and CREATED_DATE!=''">
-                CREATED_DATE=#{CREATED_DATE},
+            <if test="created_date!=null">
+                created_date=#{created_date},
             </if>
-            <if test="CREATER!=null and CREATER!=''">
-                CREATER=#{CREATER},
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
             </if>
-            <if test="ISACTIVE!=null and ISACTIVE!=''">
-                ISACTIVE=#{ISACTIVE},
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
             </if>
         </trim>
         WHERE ID=#{id};
