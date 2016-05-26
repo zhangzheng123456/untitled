@@ -43,7 +43,7 @@ $(function() {//点击登陆
 			}
 			return;
 		}
-		oc.postRequire("post", "/userlogin", "0", param, function(data) {
+		oc.postRequire("post", "/iShop/userlogin", "0", param, function(data) {
 			var str = JSON.stringify(data);
 			var key="key";
 			sessionStorage.setItem(key,str);

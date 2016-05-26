@@ -5,91 +5,91 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var funcCode=$(window.parent.document).find('#iframepage').attr("data-code");
 console.log(funcCode);
-// function setPage(container, count, pageindex,value) {
-//     var container = container;
-//     var count = count;
-//     var pageindex = pageindex;
-//     var a = [];
-//               //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
-//     if (pageindex == 1) {
-//         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
-//     } else {
-//         a[a.length] = "<li><span class=\"icon-ishop_4-01\"></span></li>";
-//     }
-//     function setPageList() {
-//         if (pageindex == i) {
-//             a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";
-//         } else {
-//             a[a.length] = "<li><span>" + i + "</span></li>";
-//         }
-//     }
-//     //总页数小于10
-//     if (count <= 10) {
-//         for (var i = 1; i <= count; i++) {
-//             setPageList();
-//         }
-//     }
-//     //总页数大于10页
-//     else {
-//         if (pageindex <= 4) {
-//             for (var i = 1; i <= 5; i++) {
-//                 setPageList();
-//             }
-//             a[a.length] = "...<li><span>" + count + "</span></li>";
-//         }else if (pageindex >= count - 3) {
-//             a[a.length] = "<li><span>1</span></li>...";
-//             for (var i = count - 4; i <= count; i++) {
-//                 setPageList();
-//             }
-//         }
-//         else { //当前页在中间部分
-//             a[a.length] = "<li><span>1</span></li>...";
-//             for (var i = pageindex - 2; i <= pageindex + 2; i++) {
-//                 setPageList();
-//             }
-//                 a[a.length] = "...<li><span>" + count + "</span></li>";
-//             }
-//         }
-//     if (pageindex == count) {
-//         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
-//     }else{
-//         a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
-//     }
-//     container.innerHTML = a.join("");
-//     var pageClick = function() {
-//         var oAlink = container.getElementsByTagName("span");
-//         var inx = pageindex; //初始的页码
-//         // console.log(inx);
-//         // console.log(count);
-//         $("#input-txt").val(inx);
-//         $(".foot-sum .zy").html("共 "+count+"页");
-//         oAlink[0].onclick = function() { //点击上一页
-//             if (inx == 1) {
-//                 return false;
-//             }
-//             inx--;
-//             setPage(container, count, inx);
-//             return false;
-//         }
-//         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
-//             oAlink[i].onclick = function() {
-//             inx = parseInt(this.innerHTML);
-//                 setPage(container, count, inx);
-//                 return false;
-//             }
-//         }
-//         oAlink[oAlink.length - 1].onclick = function() { //点击下一页
-//             if (inx == count) {
-//                 return false;
-//             }
-//             inx++;
-//             setPage(container, count, inx);
-//             return false;
-//         }
-//     }()
-// }
-// setPage($("#foot-num")[0],11,1);
-//页面加载循环
+function setPage(container, count, pageindex,value) {
+    var container = container;
+    var count = count;
+    var pageindex = pageindex;
+    var a = [];
+              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    if (pageindex == 1) {
+        a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
+    } else {
+        a[a.length] = "<li><span class=\"icon-ishop_4-01\"></span></li>";
+    }
+    function setPageList() {
+        if (pageindex == i) {
+            a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";
+        } else {
+            a[a.length] = "<li><span>" + i + "</span></li>";
+        }
+    }
+    //总页数小于10
+    if (count <= 10) {
+        for (var i = 1; i <= count; i++) {
+            setPageList();
+        }
+    }
+    //总页数大于10页
+    else {
+        if (pageindex <= 4) {
+            for (var i = 1; i <= 5; i++) {
+                setPageList();
+            }
+            a[a.length] = "...<li><span>" + count + "</span></li>";
+        }else if (pageindex >= count - 3) {
+            a[a.length] = "<li><span>1</span></li>...";
+            for (var i = count - 4; i <= count; i++) {
+                setPageList();
+            }
+        }
+        else { //当前页在中间部分
+            a[a.length] = "<li><span>1</span></li>...";
+            for (var i = pageindex - 2; i <= pageindex + 2; i++) {
+                setPageList();
+            }
+                a[a.length] = "...<li><span>" + count + "</span></li>";
+            }
+        }
+    if (pageindex == count) {
+        a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
+    }else{
+        a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
+    }
+    container.innerHTML = a.join("");
+    var pageClick = function() {
+        var oAlink = container.getElementsByTagName("span");
+        var inx = pageindex; //初始的页码
+        // console.log(inx);
+        // console.log(count);
+        $("#input-txt").val(inx);
+        $(".foot-sum .zy").html("共 "+count+"页");
+        oAlink[0].onclick = function() { //点击上一页
+            if (inx == 1) {
+                return false;
+            }
+            inx--;
+            setPage(container, count, inx);
+            return false;
+        }
+        for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
+            oAlink[i].onclick = function() {
+            inx = parseInt(this.innerHTML);
+                setPage(container, count, inx);
+                return false;
+            }
+        }
+        oAlink[oAlink.length - 1].onclick = function() { //点击下一页
+            if (inx == count) {
+                return false;
+            }
+            inx++;
+            setPage(container, count, inx);
+            return false;
+        }
+    }()
+}
+setPage($("#foot-num")[0],11,1);
+页面加载循环
 function superaddition(data){
 	console.log(data);
     for (var i = 0; i < data.length; i++) {
