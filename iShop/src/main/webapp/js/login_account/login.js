@@ -44,10 +44,15 @@ $(function() {//点击登陆
 			return;
 		}
 		oc.postRequire("post", "/userlogin", "0", param, function(data) {
+			var str = JSON.stringify(data);
+			var key="key";
+			sessionStorage.setItem(key,str);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
                 var user_type=message.user_type;
                 var user_id=message.user_id;
+                var val=message.menu;
+                console.log(message.menu);
 				if(user_type=="admin"){
                 	window.location.href="home/index_admin.html";
 				}else if(user_type=="am"){

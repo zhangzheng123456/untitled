@@ -20,6 +20,6 @@ public interface CorpService {
     int deleteByCorpId(int id)throws SQLException;
 
     List<CorpInfo> selectAllCorp(String search_value)throws SQLException;
-
+    String selectMaxCorpCode();
 
 }
