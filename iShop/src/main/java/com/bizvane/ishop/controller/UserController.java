@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.UserInfo;
+import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.UserService;
-import com.google.gson.Gson;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -16,7 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,9 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private FunctionService functionService;
+
     String id;
     /**
      * 用户管理
@@ -45,21 +49,31 @@ public class UserController {
     public String userManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
-            List<UserInfo> userInfo;
-            if(role_code.equals("R100000")) {
+
+            String function_code = request.getParameter("funcCode");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+
+            JSONArray actions = functionService.selectActionByFun(user_id,role_code,function_code);
+            JSONObject result = new JSONObject();
+            List<UserInfo> list;
+            if(role_code.contains("R1")) {
                 //系统管理员
-                userInfo = userService.selectBySearch("","");
+                PageHelper.startPage(page_number, page_size);
+                list = userService.selectBySearch("","");
             }else{
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                userInfo = userService.selectBySearch(corp_code, "");
+                PageHelper.startPage(page_number, page_size);
+                list = userService.selectBySearch(corp_code, "");
             }
-            Gson gson = new Gson();
-            String result = gson.toJson(userInfo);
+            PageInfo<UserInfo> page = new PageInfo<UserInfo>(list);
+            result.put("user",page);
+            result.put("actions",actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(result);
+            dataBean.setMessage(result.toString());
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

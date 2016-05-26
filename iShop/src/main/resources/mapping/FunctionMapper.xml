@@ -43,4 +43,8 @@
         and FUNCTION_CODE = #{function_code})
     </select>
 
+    <select id="select" resultType="com.bizvane.ishop.entity.Action">
+        select * from DEF_ACTION
+    </select>
+
 </mapper>

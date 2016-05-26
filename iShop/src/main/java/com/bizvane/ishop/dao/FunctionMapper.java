@@ -19,4 +19,5 @@ public interface FunctionMapper {
 
     List<Action> selectActionByFun(@Param("user_id")int user_id,@Param("role_code")String role_code,@Param("function_code") String function_code);
 
+    List<Action> select();
 }

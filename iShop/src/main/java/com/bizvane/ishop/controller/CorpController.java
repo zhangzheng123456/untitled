@@ -5,7 +5,11 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpInfo;
+import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.service.FunctionService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -40,6 +44,8 @@ public class CorpController {
 
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private FunctionService functionService;
     /*
     * 列表
     * */
@@ -48,19 +54,27 @@ public class CorpController {
     public String cropManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String function_code = request.getParameter("funcCode");
+            JSONArray actions = functionService.selectActionByFun(user_id,role_code,function_code);
+
             JSONObject info = new JSONObject();
             if(role_code.contains("R1")) {
                 //系统管理员(官方画面)
+                int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+                int page_size = Integer.parseInt(request.getParameter("pageSize"));
+                PageHelper.startPage(page_number, page_size);
                 List<CorpInfo> corpInfo = corpService.selectAllCorp("");
-                info.put("corpInfo",corpInfo);
+                PageInfo<CorpInfo> page = new PageInfo<CorpInfo>(corpInfo);
+                info.put("corpInfo",page);
             }else{
                 //用户画面
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 CorpInfo corpInfo = corpService.selectByCorpId(0,corp_code);
                 info.put("corpInfo",corpInfo);
             }
+            info.put("actions",actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(info.toString());

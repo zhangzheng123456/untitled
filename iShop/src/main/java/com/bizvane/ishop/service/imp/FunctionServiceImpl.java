@@ -4,7 +4,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.dao.FunctionMapper;
 import com.bizvane.ishop.entity.Action;
 import com.bizvane.ishop.entity.Function;
+import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.service.FunctionService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -137,5 +140,15 @@ public class FunctionServiceImpl implements FunctionService{
             actions.add(obj);
         }
         return actions;
+    }
+
+    public String page(){
+        PageHelper.startPage(1, 3);
+        List<Action> list = functionMapper.select();
+        PageInfo<Action> page = new PageInfo<Action>(list);
+        JSONObject result = new JSONObject();
+
+        result.put("user",page);
+        return result.toString();
     }
 }
