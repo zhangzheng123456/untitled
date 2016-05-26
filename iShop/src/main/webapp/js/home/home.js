@@ -21,8 +21,8 @@ $(function(){
             +'</a>'
             +'<ul class="nav nav-second-level">';
         }else{
-            html +='<li id="tiao" data-url="'+p.url+'" data-func_code="'+p.func_code+'">'
-            +'<a href="../../navigation_bar.html">'
+            html +='<li id="skip" data-url="'+p.url+'" data-func_code="'+p.func_code+'">'
+            +'<a href="../../navigation_bar.html" onclick="menuclick(this);">'
                 +'<i class="'+p.icon+'"></i>'
                 +'<span class="nav-label">'+p.mod_name+'</span>'
             +'</a>'
@@ -30,7 +30,7 @@ $(function(){
         }
         if(p.functions.length!==0){
             for(index_li in p.functions){
-                html +='<li data-url="'+p.functions[index_li].url+'" data-func_code="'+p.functions[index_li].func_code+'"><a href="../../navigation_bar.html">'+p.functions[index_li].fun_name+'</a>'
+                html +='<li data-url="'+p.functions[index_li].url+'" data-func_code="'+p.functions[index_li].func_code+'"><a href="../../navigation_bar.html" onclick="menuclick(this)">'+p.functions[index_li].fun_name+'</a>'
                  +'</li>';
             }
         }
@@ -39,7 +39,14 @@ $(function(){
 
     }
     $(html).insertAfter('.navbar-static-side .sidebar-collapse #side-menu .nav-header');
-    $('#tiao a').click(function(){
-        location.href="../../navigation_bar.html";
-    })
 });
+function menuclick(obj){
+    location.href="../../navigation_bar.html";
+     _this=$(obj);
+    console.log(_this.parent().data("url"));
+    var skip_url=_this.parent().data("url");
+    var skip_funcode=_this.parent().data("func_code");
+    var key_val={"url":skip_url,"func_code":skip_funcode};
+
+    sessionStorage.setItem("key_val",JSON.stringify(key_val));
+}
