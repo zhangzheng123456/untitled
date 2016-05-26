@@ -59,7 +59,7 @@ var oc = new ObjectControl();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
 				var PHONE=$("#PHONE").val();
-				var _command="/corp/add";//接口名
+				var _command="/iShop/corp/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
@@ -80,7 +80,7 @@ var oc = new ObjectControl();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
 				var PHONE=$("#PHONE").val();
-				var _command="/corp/edit";//接口名
+				var _command="/iShop/corp/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
