@@ -155,19 +155,19 @@ input::-webkit-input-placeholder{
 }
 .content{
 	min-width: 1230px;
-	background-color: #e8e8e8;
-	min-height: 720px;
+	// min-height: 720px;
+	background-color: #434960;
 }
 .sidebar{
 	width: 200px;
 	background-color: #434960;
-	height: 100%;
-	// min-height: 720px;
+	height:550px;
 	position:absolute;
 	top: 81px;
 	z-index: 2;
 	border-top: 1px solid #3a3f51;
 	box-shadow: 0px 2px 3px #3a3f51 inset;
+	overflow-y:auto;
 }
 .sidebar .btn{
 	position: absolute;
@@ -264,8 +264,10 @@ input::-webkit-input-placeholder{
 	margin-left: 10px;
 }
 .con_table{
-	margin-left: 220px;
+	margin-left: 200px;
+	padding-left: 20px;
 	padding-right: 20px;
+	background-color: #e8e8e8;
 }
 .con_table p{
 	height: 600px;
@@ -565,7 +567,7 @@ input::-webkit-input-placeholder{
 	top:0px;
 	width: 22px;
 	height: 22px;
-	background: url(../Images/icon_checkbox_U.png) no-repeat;
+	background: url(../images/icon_checkbox_U.png) no-repeat;
 	background-size: 22px 22px;
 	margin-left: 28px;
 }
@@ -576,11 +578,11 @@ input::-webkit-input-placeholder{
 	border-radius: 15px;
 }
 .checkbox1 .check:checked + label{
-	background: url(../Images/icon_radio_S.png) no-repeat center center;
+	background: url(../images/icon_radio_S.png) no-repeat center center;
 	background-size: 16px 16px;
 }
 .checkbox .check:checked + label{
-	background: url(../Images/icon_checkbox_S.png) no-repeat center center;
+	background: url(../images/icon_checkbox_S.png) no-repeat center center;
 	background-size: 22px 22px;
 }
 .table tr .pl5{

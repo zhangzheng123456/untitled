@@ -15,7 +15,7 @@ ObjectControl.prototype = {
 				if(data){
 				    callback(data);
 				}else{
-					
+						
 				}
 			},
 			error:function(data){
