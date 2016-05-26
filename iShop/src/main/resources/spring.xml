@@ -1,69 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:p="http://www.springframework.org/schema/p"
-       xmlns:context="http://www.springframework.org/schema/context"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans
-	http://www.springframework.org/schema/beans/spring-beans.xsd
-	http://www.springframework.org/schema/context
-	http://www.springframework.org/schema/context/spring-context.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="  
+http://www.springframework.org/schema/beans   
+classpath:/org/springframework/beans/factory/xml/spring-beans-3.0.xsd   
+http://www.springframework.org/schema/context   
+classpath:/org/springframework/context/config/spring-context-3.0.xsd  
+http://www.springframework.org/schema/aop   
+classpath:/org/springframework/aop/config/spring-aop-3.0.xsd  
+">
 
-    <!--自动扫描含有@Service将其注入为bean -->
-    <context:component-scan base-package="com.bizvane.ishop.service" />
+	<!--自动扫描含有@Service将其注入为bean -->
+	<context:component-scan base-package="com.bizvane.ishop.service" />
 
-    <!-- 引入properties配置文件 -->
-    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-        <property name="locations">
-            <list>
-                <value>classpath:redis.properties</value>
-                <value>classpath:jdbc.properties</value>
-                <!--要是有多个配置文件，只需在这里继续添加即可 -->
-            </list>
-        </property>
-    </bean>
+	<!-- 引入properties配置文件 -->
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:redis.properties</value>
+				<value>classpath:jdbc.properties</value>
+				<!--要是有多个配置文件，只需在这里继续添加即可 -->
+			</list>
+		</property>
+	</bean>
 
-    <!-- jedis 配置 -->
-    <bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig" >
-        <property name="maxIdle" value="${redis.maxIdle}" />
-        <property name="maxWaitMillis" value="${redis.maxWait}" />
-        <property name="testOnBorrow" value="${redis.testOnBorrow}" />
-    </bean >
-    <!-- redis服务器中心 -->
-    <bean id="connectionFactory"  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory" >
-        <property name="poolConfig" ref="poolConfig" />
-        <property name="port" value="${redis.port}" />
-        <property name="hostName" value="${redis.host}" />
-        <property name="password" value="${redis.password}" />
-        <property name="timeout" value="${redis.timeout}" ></property>
-    </bean >
-    <bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate" >
-        <property name="connectionFactory" ref="connectionFactory" />
-        <property name="keySerializer" >
-            <bean class="org.springframework.data.redis.serializer.StringRedisSerializer" />
-        </property>
-        <property name="valueSerializer" >
-            <bean class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
-        </property>
-    </bean >
+	<!-- jedis 配置 -->
+	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
+		<property name="maxIdle" value="${redis.maxIdle}" />
+		<property name="maxWaitMillis" value="${redis.maxWait}" />
+		<property name="testOnBorrow" value="${redis.testOnBorrow}" />
+	</bean>
+	<!-- redis服务器中心 -->
+	<bean id="connectionFactory"
+		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory">
+		<property name="poolConfig" ref="poolConfig" />
+		<property name="port" value="${redis.port}" />
+		<property name="hostName" value="${redis.host}" />
+		<property name="password" value="${redis.password}" />
+		<property name="timeout" value="${redis.timeout}"></property>
+	</bean>
+	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
+		<property name="connectionFactory" ref="connectionFactory" />
+		<property name="keySerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.StringRedisSerializer" />
+		</property>
+		<property name="valueSerializer">
+			<bean
+				class="org.springframework.data.redis.serializer.JdkSerializationRedisSerializer" />
+		</property>
+	</bean>
 
-    <!-- cache配置
-    <bean id="methodCacheInterceptor" class="com.bizvane.ishop.utils.MethodCacheInterceptor" >
-        <property name="redisUtil" ref="redisUtil" />
-    </bean >
-    <bean id="redisUtil" class="com.bizvane.ishop.utils.RedisUtil" >
-        <property name="redisTemplate" ref="redisTemplate" />
-    </bean >
-    -->
-    <!--&lt;!&ndash; 需要加入缓存的类或方法 &ndash;&gt;-->
-    <!--<bean id="methodCachePointCut"  class="org.springframework.aop.support.RegexpMethodPointcutAdvisor" >-->
-        <!--<property name="advice" >-->
-            <!--<ref local="methodCacheInterceptor" />-->
-        <!--</property>-->
-        <!--<property name="patterns" >-->
-            <!--<list>-->
-                <!--&lt;!&ndash; 确定正则表达式列表 &ndash;&gt;-->
-                <!--<value></value >-->
-            <!--</list>-->
-        <!--</property>-->
-    <!--</bean >-->
+	<!-- cache配置 <bean id="methodCacheInterceptor" class="com.bizvane.ishop.utils.MethodCacheInterceptor" 
+		> <property name="redisUtil" ref="redisUtil" /> </bean > <bean id="redisUtil" 
+		class="com.bizvane.ishop.utils.RedisUtil" > <property name="redisTemplate" 
+		ref="redisTemplate" /> </bean > -->
+	<!--&lt;!&ndash; 需要加入缓存的类或方法 &ndash;&gt; -->
+	<!--<bean id="methodCachePointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor" 
+		> -->
+	<!--<property name="advice" > -->
+	<!--<ref local="methodCacheInterceptor" /> -->
+	<!--</property> -->
+	<!--<property name="patterns" > -->
+	<!--<list> -->
+	<!--&lt;!&ndash; 确定正则表达式列表 &ndash;&gt; -->
+	<!--<value></value > -->
+	<!--</list> -->
+	<!--</property> -->
+	<!--</bean > -->
 
 </beans>
