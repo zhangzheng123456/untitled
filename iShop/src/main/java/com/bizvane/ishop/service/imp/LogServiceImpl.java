@@ -10,20 +10,20 @@ import org.springframework.stereotype.Service;
  * Created by Administrator on 2016/5/23.
  */
 @Service
-public class LogServiceImpl implements LogService{
+public class LogServiceImpl implements LogService {
 
     @Autowired
     private LogInfoMapper logInfoMapper;
 
-    public int insertLoginLog(LogInfo log){
+    public int insertLoginLog(LogInfo log) {
         return logInfoMapper.insertLoginLog(log);
     }
 
-    public LogInfo selectLog(int log_id,String phone){
-        return logInfoMapper.selectByLogId(log_id,phone);
+    public LogInfo selectLog(int log_id, String phone) {
+        return logInfoMapper.selectByLogId(log_id, phone);
     }
 
-    public int updateLoginLog(LogInfo log){
+    public int updateLoginLog(LogInfo log) {
         return logInfoMapper.updateByLogId(log);
     }
 }

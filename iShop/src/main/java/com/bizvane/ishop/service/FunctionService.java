@@ -12,4 +12,6 @@ public interface FunctionService {
     JSONArray selectAllActions(int user_id,String role_code);
 
     JSONArray selectAllFunctions(int user_id, String role_code);
+
+    JSONArray selectActionByFun(int user_id, String role_code,String function_code);
 }

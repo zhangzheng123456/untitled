@@ -16,6 +16,10 @@ public class Function {
     private String function_name;
     //模块名
     private String module_name;
+    //URL
+    private String url;
+    //ICON
+    private String icon;
     //修改时间
     private Date modified_date;
     //修改人
@@ -73,6 +77,22 @@ public class Function {
 
     public void setModule_name(String module_name) {
         this.module_name = module_name;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
     }
 
     public Date getModified_date() {

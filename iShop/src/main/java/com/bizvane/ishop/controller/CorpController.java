@@ -19,9 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -53,7 +51,7 @@ public class CorpController {
             String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject info = new JSONObject();
-            if(role_code.equals("R100000")) {
+            if(role_code.contains("R1")) {
                 //系统管理员(官方画面)
                 List<CorpInfo> corpInfo = corpService.selectAllCorp("");
                 info.put("corpInfo",corpInfo);
@@ -91,7 +89,16 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             CorpInfo corp = new CorpInfo();
-            corp.setCorp_code(jsonObject.get("corp_code").toString());
+            String max_code = corpService.selectMaxCorpCode();
+            int code=Integer.parseInt(max_code.substring(1,max_code.length()))+1;
+            Integer c = code;
+            int length = 5-c.toString().length();
+            String corp_code="C";
+            for (int i=0;i<length;i++){
+                corp_code=corp_code+"0";
+            }
+            corp_code=corp_code+code;
+            corp.setCorp_code(corp_code);
             corp.setCorp_name(jsonObject.get("corp_name").toString());
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());

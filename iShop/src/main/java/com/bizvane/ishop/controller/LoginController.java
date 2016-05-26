@@ -36,8 +36,7 @@ public class LoginController {
     CorpService corpService;
     @Autowired
     LogService logService;
-    @Autowired
-    FunctionService functionService;
+
     private static Logger log = LoggerFactory.getLogger(LoginController.class);
     String[] arg = new String[]{"--Ice.Config=client.config"};
     Client client = new Client(arg);
@@ -149,7 +148,18 @@ public class LoginController {
                     user.setModified_date(now);
                     userService.insert(user);
 
+                    String max_code = corpService.selectMaxCorpCode();
+                    int code=Integer.parseInt(max_code.substring(1,max_code.length()))+1;
+                    Integer c = code;
+                    int length = 5-c.toString().length();
+                    String corp_code="C";
+                    for (int i=0;i<length;i++){
+                        corp_code=corp_code+"0";
+                    }
+                    corp_code=corp_code+code;
+
                     CorpInfo corp = new CorpInfo();
+                    corp.setCorp_code(corp_code);
                     corp.setCorp_name(corp_name);
                     corp.setAddress(address);
                     corp.setContact(user_name);
@@ -197,63 +207,22 @@ public class LoginController {
             String phone = jsonObject.get("phone").toString();
             String password = jsonObject.get("password").toString();
             log.info("phone:"+phone+" password:"+password);
-            UserInfo login_user = userService.login(phone,password);
-            if (login_user == null) {
+            JSONObject user_info = userService.login(request,phone,password);
+            if (user_info==null){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("fail");
+                dataBean.setMessage("login fail");
             }else {
-                int user_id = login_user.getId();
-                String corp_code = login_user.getCorp_code();
-                String role_code = login_user.getRole_code();
-
-                JSONArray menu = functionService.selectAllFunctions(user_id,role_code);
-                JSONArray action = functionService.selectAllActions(user_id,role_code);
-                request.getSession().setAttribute("user_id", user_id);
-                request.getSession().setAttribute("corp_code", corp_code);
-                request.getSession().setAttribute("role_code", role_code);
-                request.getSession().setAttribute("menu", menu);
-                request.getSession().setAttribute("action", action);
-                System.out.println(request.getSession().getAttribute("user_id"));
-                Date now = new Date();
-                login_user.setLogin_time_recently(now);
-                userService.update(login_user);
-
-                JSONObject user_info = new JSONObject();
-                user_info.put("user_id",user_id);
-                user_info.put("menu",menu);
-                user_info.put("action",action);
-                if (login_user.getRole_code().contains("R10")) {
-                    //系统管理员
-                    user_info.put("uri","official");
-                    user_info.put("user_type","admin");
-                } else if (login_user.getRole_code().contains("R50")) {
-                    //总经理
-                    user_info.put("uri","common");
-                    user_info.put("user_type","gm");
-                }else if (login_user.getRole_code().contains("R20")) {
-                    //区经
-                    user_info.put("uri","common");
-                    user_info.put("user_type","am");
-                }else if (login_user.getRole_code().contains("R30")) {
-                    //店长
-                    user_info.put("uri","common");
-                    user_info.put("user_type", "sm");
-                }else {
-                    //导购
-                    user_info.put("uri","common");
-                    user_info.put("user_type","staff");
-                }
                 System.out.println(user_info);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage(user_info.toString());
             }
-            } catch (Exception ex) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(ex.getMessage());
-            }
-            return dataBean.getJsonStr();
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
         }
+        return dataBean.getJsonStr();
+    }
 }

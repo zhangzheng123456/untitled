@@ -12,6 +12,8 @@ public interface CorpInfoMapper {
 
     CorpInfo selectByCorpId(@Param("corp_id") int corp_id,@Param("corp_code") String corp_code);
 
+    String selectMaxCorpCOde();
+
     int insertCorp(CorpInfo record);
 
     int updateByCorpId(CorpInfo record);

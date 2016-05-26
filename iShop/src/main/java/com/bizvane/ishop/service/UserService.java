@@ -1,7 +1,9 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.UserInfo;
+import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -19,9 +21,10 @@ public interface UserService {
 
     int delete(int id) throws SQLException;
 
-    UserInfo login(String phone,String password) throws SQLException;
+    JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException;
 
     UserInfo phoneExist(String phone) throws SQLException;
 
     List<UserInfo> selectBySearch(String corp_code,String search_value) throws SQLException;
+
 }

@@ -30,6 +30,9 @@
         </if>
         ORDER BY ID
     </select>
+    <select id="selectMaxCorpCOde" resultType="java.lang.String">
+    select max(CORP_CODE) from DEF_CORP
+    </select>
 
     <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.CorpInfo">
         insert into DEF_CORP
