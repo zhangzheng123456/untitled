@@ -38,7 +38,7 @@
 		<aspectjweaver.version>1.8.9</aspectjweaver.version>
 		<pagehelper.version>4.0.1</pagehelper.version>
 		<ice>3.6.1</ice>
-		
+
 	</properties>
 
 	<dependencies>
@@ -354,10 +354,10 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<!-- 部署至本机 <plugin> <groupId>org.codehaus.cargo</groupId> <artifactId>cargo-maven2-plugin</artifactId> 
-				<version>1.0</version> <configuration> <container> <containerId>tomcat6x</containerId> 
-				<home>D:\WebServer\apache-tomcat-6.0.39</home> </container> <configuration> 
-				<type>existing</type> <home>D:\WebServer\apache-tomcat-6.0.39</home> </configuration> 
+			<!-- 部署至本机 <plugin> <groupId>org.codehaus.cargo</groupId> <artifactId>cargo-maven2-plugin</artifactId>
+				<version>1.0</version> <configuration> <container> <containerId>tomcat6x</containerId>
+				<home>D:\WebServer\apache-tomcat-6.0.39</home> </container> <configuration>
+				<type>existing</type> <home>D:\WebServer\apache-tomcat-6.0.39</home> </configuration>
 				</configuration> </plugin> -->
 		</plugins>
 
