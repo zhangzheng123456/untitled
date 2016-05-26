@@ -5,54 +5,41 @@ $(function(){
     console.log(val);
     console.log(message);
     var index=0;
+    var html =" ";
+    var li_html=" ";
+    var p=null;
     for(index in message.menu){
-        console.log(message.menu[index]);
-        var html +='<li>'
-                 +'<a href="index.html">'
-                     +'<i class="icon-ishop_2-01"></i>'
-                     +'<span class="nav-label">'+message.menu[index].mod_name+'</span> <span class="fa arrow"></span>'
-                 +'</a>'
-                 // +'<ul class="nav nav-second-level">'
-                 //     +'<li><a href="#">示例一</a>'
-                 //     +'</li>'
-                 //     +'<li><a href="#">示例二</a>'
-                 //     +'</li>'
-                 //     +'<li><a href="#">示例三</a>'
-                 //     +'</li>'
-                 //     +'<li><a href="#">示例四</a>'
-                 //     +'</li>'
-                 // +'</ul>'
-             +'</li>';
-            //  +'<li>'
-            //      +'<a href="#"><i class="icon-ishop_2-02"></i> <span class="nav-label">'+message.menu[1].mod_name+'</span>'
-            //      +'<span class="fa arrow"></span>'
-            //      +'</a>'
-            //      +'<ul class="nav nav-second-level">'
-            //         +'<li><a href="#">'+message.menu[1].functions[0].fun_name+'</a>'
-            //         +'</li>'
-            //      +'</ul>'
-            //  +'</li>'
-            // //  +'<li>'
-            // //      +'<a href="#"><i class="icon-ishop_2-03"></i> <span class="nav-label">'+message.menu[2].mod_name+'</span><span class="fa arrow"></span></a>'
-            // //      +'<ul class="nav nav-second-level">'
-            // //          +'<li><a href="#">'+message.menu[2].functions[0].fun_name+'</a>'
-            // //          +'</li>'
-            // //          +'<li><a href="#">'+message.menu[2].functions[1].fun_name+'</a>'
-            // //          +'</li>'
-            // //      +'</ul>'
-            // //  +'</li>'
-            // // +'<li>'
-            // //     +'<a href="#"><i class="icon-ishop_2-04"></i> <span class="nav-label">'+message.menu[3].mod_name+'</span><span class="fa arrow"></span></a>'
-            // //     +'<ul class="nav nav-second-level">'
-            // //         +'<li><a href="#">'+message.menu[3].functions[0].fun_name+'</a>'
-            // //         +'</li>'
-            // //         +'<li><a href="#">'+message.menu[3].functions[1].fun_name+'</a>'
-            // //         +'</li>'
-            //     +'</ul>'
-            // +'</li>';
-        if(message.menu[index].functions!=''){
+        var index_li=0;
+        p=message.menu[index];
 
+        if(p.functions.length!==0){
+            html +='<li>'
+            +'<a>'
+                +'<i class="'+p.icon+'"></i>'
+                +'<span class="nav-label">'+p.mod_name+'</span>'
+                +'<span class="fa arrow"></span>'
+            +'</a>'
+            +'<ul class="nav nav-second-level">';
+        }else{
+            html +='<li id="tiao" data-url="'+p.url+'" data-func_code="'+p.func_code+'">'
+            +'<a href="../../navigation_bar.html">'
+                +'<i class="'+p.icon+'"></i>'
+                +'<span class="nav-label">'+p.mod_name+'</span>'
+            +'</a>'
+            +'<ul class="nav nav-second-level">';
         }
+        if(p.functions.length!==0){
+            for(index_li in p.functions){
+                html +='<li data-url="'+p.functions[index_li].url+'" data-func_code="'+p.functions[index_li].func_code+'"><a href="../../navigation_bar.html">'+p.functions[index_li].fun_name+'</a>'
+                 +'</li>';
+            }
+        }
+        html +='</ul>'
+         +'</li>';
+
     }
     $(html).insertAfter('.navbar-static-side .sidebar-collapse #side-menu .nav-header');
+    $('#tiao a').click(function(){
+        location.href="../../navigation_bar.html";
+    })
 });
