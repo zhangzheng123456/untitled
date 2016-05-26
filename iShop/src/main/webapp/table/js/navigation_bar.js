@@ -7,10 +7,10 @@ $(function(){
     console.log(menu);
     for(var i=0;i<menu.length;i++){
     	var li="<li>";
-    	li+="<h1 class='menu_t' data-url='"+menu[i].url+"'><i class='"+menu[i].icon+"'></i>"+menu[i].mod_name+"<span></span></h1><dl>";
+    	li+="<h1 class='menu_t' data-url='"+menu[i].url+"' data-code='"+menu[i].func_code+"'><i class='"+menu[i].icon+"'></i>"+menu[i].mod_name+"<span></span></h1><dl>";
     	if(menu[i].functions!==""){
     		for(var j=0;j<menu[i].functions.length;j++){
-    			li+="<dd data-url='"+menu[i].functions[j].url+"'><a href='javascript:void(0);'><span></span>"+menu[i].functions[j].fun_name+"</a></dd>"
+    			li+="<dd data-url='"+menu[i].functions[j].url+"' data-code='"+menu[i].functions[j].func_code+"'><a href='javascript:void(0);'><span></span>"+menu[i].functions[j].fun_name+"</a></dd>"
     		}		
     	}
     	li+="</dl></li>"
@@ -20,7 +20,10 @@ $(function(){
     $(".sidebar ul li dl dd").click(function(e){
     	e.stopPropagation();
     	var src=$(this).attr("data-url");
+    	var func_code=$(this).attr("data-code");
+    	console.log(func_code);
     	$('#iframepage').attr("src",src);
+    	$('#iframepage').attr("data-code",func_code);
         $(this).find("span").addClass("icon-ishop_8-01");
         $(this).find("a").css({color:"#6cc1c8"});
         $(this).siblings("dd").find("a").css({color:"#fff"});
@@ -30,6 +33,10 @@ $(function(){
         e.stopPropagation();
         $(this).find("h1").toggleClass("h1").parents().siblings("li").find("h1").removeClass("h1");
         var src=$(this).find("h1").attr("data-url");
+        var func_code=$(this).find("h1").attr("data-code");
+        if(func_code!=="undefined"){
+        	$('#iframepage').attr("data-code",func_code);
+        }
         if(src!=="undefined"){
         	$('#iframepage').attr("src",src);
         }

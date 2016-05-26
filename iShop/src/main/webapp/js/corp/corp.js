@@ -2,7 +2,9 @@
 var oc = new ObjectControl();
 var pageNumber=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
-var value="";//收索的关键词 
+var value="";//收索的关键词
+var funcCode=$(window.parent.document).find('#iframepage').attr("data-code");
+console.log(funcCode);
 // function setPage(container, count, pageindex,value) {
 //     var container = container;
 //     var count = count;
@@ -118,8 +120,9 @@ function superaddition(data){
     }
 };
 function GET(){//页面加载时的GET请求
-    oc.postRequire("get","/corp/list?pageNumber="+pageNumber
-        +"&pageSize="+pageSize+"","","",function(data){
+    oc.postRequire("get","/corp/list?pageNumber="+pageNumber+"&pageSize="+pageSize
+        +"&funcCode="
+        +funcCode+"","","",function(data){
         	console.log(data);
             if(data.code=="0"){
                 message=JSON.parse(data.message);
