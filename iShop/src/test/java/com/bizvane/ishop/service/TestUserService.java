@@ -20,20 +20,20 @@ import java.util.List;
 
 /**
  * 创建时间：2015-1-27 下午10:45:38
- * 
+ *
  * @author andy
  * @version 2.2
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath:spring.xml",
-		"classpath:spring-mybatis.xml" })
+        "classpath:spring-mybatis.xml" })
 public class TestUserService {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(TestUserService.class);
+    private static final Logger LOGGER = Logger
+            .getLogger(TestUserService.class);
 
-	@Autowired
-	private UserService logService;
+    @Autowired
+    private UserService logService;
 
 	/*
 	 * @Test public void testQueryById() { ApplicationContext ac = new
@@ -43,26 +43,26 @@ public class TestUserService {
 	 * userService.getUserById(1); System.out.println(userInfo.getUsername()); }
 	 */
 
-	@Test
-	public void testQueryById1() throws SQLException{
-		System.out.println("11111111");
-	//	LogInfo logInfo = logService.selectLog(0,"222");
-		Date now = new Date();
-		UserInfo user = new UserInfo();
-		user.setUser_name("111");
-		user.setPhone("222");
-		user.setPassword("333");
-		user.setCreated_date(now);
-		user.setModified_date(now);
-		logService.insert(user);
+    @Test
+    public void testQueryById1() throws SQLException{
+        System.out.println("11111111");
+        //	LogInfo logInfo = logService.selectLog(0,"222");
+        Date now = new Date();
+        UserInfo user = new UserInfo();
+        user.setUser_name("111");
+        user.setPhone("222");
+        user.setPassword("333");
+        user.setCreated_date(now);
+        user.setModified_date(now);
+        logService.insert(user);
 
 //		Gson gson = new Gson();
 //		String reslut = gson.toJson(userInfo1);
 //		JSONArray array = JSONArray.parseArray(reslut);
 //		String i = array.get(0).toString();
-	//System.out.println(i);
+        //System.out.println(i);
 
-	}
+    }
 //	@Test
 //	public void queryByPageTest(){
 //		System.out.println("11111111");
