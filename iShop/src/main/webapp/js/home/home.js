@@ -22,7 +22,7 @@ $(function(){
             +'<ul class="nav nav-second-level">';
         }else{
             html +='<li id="skip" data-url="'+p.url+'" data-func_code="'+p.func_code+'">'
-            +'<a href="../../navigation_bar.html" onclick="menuclick(this);">'
+            +'<a href="iShop/../../navigation_bar.html" onclick="menuclick(this);">'
                 +'<i class="'+p.icon+'"></i>'
                 +'<span class="nav-label">'+p.mod_name+'</span>'
             +'</a>'
@@ -41,7 +41,7 @@ $(function(){
     $(html).insertAfter('.navbar-static-side .sidebar-collapse #side-menu .nav-header');
 });
 function menuclick(obj){
-    location.href="../../navigation_bar.html";
+    location.href="iShop/../../navigation_bar.html";
      _this=$(obj);
     console.log(_this.parent().data("url"));
     var skip_url=_this.parent().data("url");
