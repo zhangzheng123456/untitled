@@ -233,13 +233,22 @@ public class UserController {
      * 用户管理
      * 选择用户
      */
-    @RequestMapping("/find/{id}")
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public String findById(@PathVariable Integer user_id) {
+    public String findById(HttpServletRequest request) {
         DataBean bean = new DataBean();
         String data = null;
         try {
-            data = JSON.toJSONString(userService.getUserById(user_id));
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            System.out.println("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String user_id = jsonObject.get("id").toString();
+
+            data = JSON.toJSONString(userService.getUserById(Integer.parseInt(user_id)));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

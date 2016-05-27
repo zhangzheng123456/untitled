@@ -191,9 +191,9 @@ public class CorpController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String user_id = jsonObject.get("id").toString();
-            String type = jsonObject.get("type").toString();
-            String[] ids = user_id.split(",");
+            String corp_id = jsonObject.get("id").toString();
+
+            String[] ids = corp_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 CorpInfo corp = new CorpInfo(Integer.valueOf(ids[i]));
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
@@ -215,13 +215,22 @@ public class CorpController {
     /**
      * 企业选择
      */
-    @RequestMapping("/find/{id}")
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public String findById(@PathVariable Integer corp_id) {
+    public String findById(HttpServletRequest request) {
         DataBean bean = new DataBean();
         String data = null;
         try {
-            data = JSON.toJSONString(corpService.selectByCorpId(corp_id, ""));
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            System.out.println("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_id = jsonObject.get("id").toString();
+
+            data = JSON.toJSONString(corpService.selectByCorpId(Integer.parseInt(corp_id), ""));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

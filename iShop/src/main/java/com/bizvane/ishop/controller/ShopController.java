@@ -200,13 +200,22 @@ public class ShopController {
     /**
      * 选择店铺
      */
-    @RequestMapping("/find/{id}")
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public String findById(@PathVariable Integer shop_id) {
+    public String findById(HttpServletRequest request) {
         DataBean bean = new DataBean();
         String data = null;
         try {
-            data = JSON.toJSONString(shopService.getShopInfo(shop_id));
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            System.out.println("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String shop_id = jsonObject.get("id").toString();
+
+            data = JSON.toJSONString(shopService.getShopInfo(Integer.parseInt(shop_id)));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
