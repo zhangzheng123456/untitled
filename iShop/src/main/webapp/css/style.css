@@ -3163,6 +3163,7 @@ video {
     position: inherit;
     margin: 0 0 0 240px;
     /*min-height: 1000px;*/
+    min-height:720px;
     overflow-y:hidden;
   }
 }
