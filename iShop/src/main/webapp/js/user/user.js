@@ -3,6 +3,7 @@ var pageNumber=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var key_val=sessionStorage.getItem("key_val");
+key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 // var funcCode=$(window.parent.document).find('#iframepage').attr("data-code");
 console.log(funcCode);
@@ -173,12 +174,13 @@ function GET(){//页面加载时的GET请求
         	console.log(data);
             if(data.code=="0"){
             	$(".table tbody").empty();
-                message=JSON.parse(data.message);
+                var message=JSON.parse(data.message);
+                var user=message.user;
                 console.log(message);
                 // cout=message.totalPages;
-                superaddition(message);
-                setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
+                superaddition(user);
                 jumpBianse();
+                setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
@@ -221,14 +223,13 @@ $("#search").keydown(function() {
 	param["pageNumber"]=pageNumber;
 	param["pageSize"]=pageSize;
 	if(event.keyCode == 13){
-		POST();
-		console.log(name);
-		console.log(param);
+		POST(param);
 	}
 });
 //搜索的请求函数
-function POST(){
-	oc.postRequire("post","logic/list/search","0",param,function(data){
+function POST(param){
+    console.log(param);
+	oc.postRequire("post","user/search","0",param,function(data){
 		if(data.code=="0"){
 			message=JSON.parse(data.message);
 			// content=message.content;
@@ -274,8 +275,9 @@ $("#delete").click(function(){
     }
     var param={};
     param["id"]=ID;
-    oc.postRequire("post","logic/list/search","0",param,function(data){
-
+    console.log(param);
+    oc.postRequire("post","/user/delete","0",param,function(data){
+        console.log(data);
     })
 })  
 //删除
@@ -293,3 +295,31 @@ $("#remove").click(function(){
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $("#tk").css({"left":+left+"px","top":+tp+"px"});
 })
+//全选
+function checkAll(name){
+    var el=$("tbody input");
+    el.parents("tr").addClass("tr");
+    var len = el.length;
+
+    for(var i=0; i<len; i++)
+        {
+           if((el[i].type=="checkbox") && (el[i].name==name))
+            {
+              el[i].checked = true;
+            }
+        }
+};
+
+//取消全选
+function clearAll(name){
+    var el=$("tbody input");
+    el.parents("tr").removeClass("tr");
+    var len = el.length;
+    for(var i=0; i<len; i++)
+        {
+            if((el[i].type=="checkbox") && (el[i].name==name))
+            {
+              el[i].checked = false;
+            }
+        }
+};
