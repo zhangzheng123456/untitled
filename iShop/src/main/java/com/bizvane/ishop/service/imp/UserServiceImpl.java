@@ -46,22 +46,23 @@ public class UserServiceImpl implements UserService {
     Client client = new Client(arg);
 
     public UserInfo getUserById(int id) throws SQLException {
-        return userInfoMapper.selectByUserId(id,"");
+        return userInfoMapper.selectByUserId(id, "");
     }
+
     /**
      * 验证手机号是否已存在
      */
     public UserInfo phoneExist(String phone) throws SQLException {
-        return userInfoMapper.selectByUserId(0,phone);
+        return userInfoMapper.selectByUserId(0, phone);
     }
 
     /**
      * 验证企业下用户编号是否已存在
      */
-    public String userCodeExist(String user_code,String corp_coded) throws SQLException {
-        UserInfo user = userInfoMapper.selectUserCode(user_code,corp_coded);
+    public String userCodeExist(String user_code, String corp_coded) throws SQLException {
+        UserInfo user = userInfoMapper.selectUserCode(user_code, corp_coded);
         String result = Common.DATABEAN_CODE_SUCCESS;
-        if (user == null){
+        if (user == null) {
             result = Common.DATABEAN_CODE_ERROR;
         }
         return result;
@@ -85,7 +86,7 @@ public class UserServiceImpl implements UserService {
     public JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException {
         System.out.println("---------login--------");
         UserInfo login_user = userInfoMapper.selectLogin(phone, password);
-        log.info("------------end search"+new Date());
+        log.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
         if (login_user == null) {
             return null;
@@ -129,7 +130,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 注册
      */
-    public String register(String message) throws SQLException{
+    public String register(String message) throws SQLException {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String phone = jsonObject.get("PHONENUMBER").toString();
@@ -179,30 +180,31 @@ public class UserServiceImpl implements UserService {
         }
         return result;
     }
+
     /**
      * @param corp_code
      * @param search_value
      */
     public List<UserInfo> selectBySearch(String corp_code, String search_value) throws SQLException {
-        return userInfoMapper.selectAllUser(corp_code, "%"+search_value+"%");
+        return userInfoMapper.selectAllUser(corp_code, "%" + search_value + "%");
     }
 
     /**
      * 获取验证码
      */
-    public String getAuthCode(String phone,String platform){
+    public String getAuthCode(String phone, String platform) {
 
         String text = "[爱秀]您的注册验证码为：";
         Random r = new Random();
         Double d = r.nextDouble();
-        String authcode=d.toString().substring(3,3+6);
-        text = text+authcode+",1小时内有效";
+        String authcode = d.toString().substring(3, 3 + 6);
+        text = text + authcode + ",1小时内有效";
 
         Data data_phone = new Data("phone", phone, ValueType.PARAM);
         Data data_text = new Data("text", text, ValueType.PARAM);
         Map datalist = new HashMap<String, Data>();
-        datalist.put(data_phone.key,data_phone);
-        datalist.put(data_text.key,data_text);
+        datalist.put(data_phone.key, data_phone);
+        datalist.put(data_text.key, data_text);
         DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", "com.bizvane.sun.app.method.SendSMS", datalist, null, null, System.currentTimeMillis());
         System.out.println(dataBox1.data);
 
@@ -210,10 +212,10 @@ public class UserServiceImpl implements UserService {
         log.info("SendSMSMethod -->" + dataBox.data.get("message").value);
         System.out.println("CaptchaMethod -->" + dataBox.data.get("message").value);
         String msg = dataBox.data.get("message").value;
-        System.out.println("------------"+msg);
-        log.info("------------"+msg);
+        System.out.println("------------" + msg);
+        log.info("------------" + msg);
         JSONObject obj = new JSONObject(msg);
-        if(obj.get("message").toString().equals("短信发送成功")) {
+        if (obj.get("message").toString().equals("短信发送成功")) {
             //验证码存表
             ValidateCode code = validateCodeService.selectValidateCode(0, phone);
             Date now = new Date();

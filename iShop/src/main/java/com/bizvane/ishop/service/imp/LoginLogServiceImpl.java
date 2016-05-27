@@ -15,19 +15,19 @@ public class LoginLogServiceImpl implements LoginLogService {
     @Autowired
     private LoginLogMapper loginLogMapper;
 
-    public int insertLoginLog(LoginLog log){
+    public int insertLoginLog(LoginLog log) {
         return loginLogMapper.insertLoginLog(log);
     }
 
-    public LoginLog selectLoginLog(int log_id, String phone){
-        return loginLogMapper.selectByLogId(log_id,phone);
+    public LoginLog selectLoginLog(int log_id, String phone) {
+        return loginLogMapper.selectByLogId(log_id, phone);
     }
 
-    public int updateLoginLog(LoginLog log){
+    public int updateLoginLog(LoginLog log) {
         return loginLogMapper.updateByLogId(log);
     }
 
-    public int deleteLoginLog(int log_id){
+    public int deleteLoginLog(int log_id) {
         return loginLogMapper.deleteByLogId(log_id);
     }
 }

@@ -1,13 +1,8 @@
 package com.bizvane.ishop.service;
 
-import com.alibaba.fastjson.JSONArray;
-import com.bizvane.ishop.entity.CorpInfo;
-import com.bizvane.ishop.entity.LogInfo;
-import com.bizvane.ishop.entity.UserInfo;
-import com.github.pagehelper.PageInfo;
-import com.google.gson.Gson;
+import com.bizvane.ishop.entity.LoginLog;
+import com.bizvane.ishop.entity.ValidateCode;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +11,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.sql.SQLException;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 创建时间：2015-1-27 下午10:45:38
@@ -34,51 +28,51 @@ public class TestUserService {
 
     @Autowired
     private UserService logService;
-
-	/*
-	 * @Test public void testQueryById()
-	 * {
-	 * ApplicationContext ac = new
-	 * ClassPathXmlApplicationContext( new String[] { "spring.xml",
-	 * "spring-mybatis.xml" });
-	  * UserService userService = (UserService)
-	 * ac.getBean("userService");
-	  * UserInfo userInfo =
-	 * userService.getUserById(1);
-	  * System.out.println(userInfo.getUsername()); }
-	 */
-
-    @Test
-    public void updateShopInfo(){
-        try {
-            UserInfo user=this.logService.getUserById(12);
-           user.setCreated_date(new Date(1));
-            this.logService.update(user);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    @Autowired
+    private FunctionService functionService;
+    @Autowired
+    private CorpService corpService;
+    @Autowired
+    private LoginLogService validateCodeService;
 
 
-    }
 
     @Test
     public void testQueryById1() throws SQLException{
         System.out.println("11111111");
-        //	LogInfo logInfo = logService.selectLog(0,"222");
+        //	LoginLog logInfo = logService.selectLog(0,"222");
+//        Date now = new Date();
+//        UserInfo user = new UserInfo();
+//        user.setUser_name("222");
+//        user.setPhone("222");
+//        user.setPassword("333");
+//        user.setCreated_date(now);
+//        user.setModified_date(now);
+//        logService.insert(user);;
+        LoginLog code = validateCodeService.selectLoginLog(0,"000");
         Date now = new Date();
-        UserInfo user = new UserInfo();
-        user.setUser_name("222");
-        user.setPhone("222");
-        user.setPassword("333");
-        user.setCreated_date(now);
-        user.setModified_date(now);
-        logService.insert(user);
-
-//		Gson gson = new Gson();
-//		String reslut = gson.toJson(userInfo1);
-//		JSONArray array = JSONArray.parseArray(reslut);
-//		String i = array.get(0).toString();
-        //System.out.println(i);
+        if(code==null) {
+            code = new LoginLog();
+            code.setContent("123456");
+            code.setPhone("111");
+            code.setPlatform("web register");
+            code.setCreated_date(now);
+            code.setModified_date(now);
+            code.setCreater("root");
+            code.setModifier("root");
+            validateCodeService.insertLoginLog(code);
+        }else{
+            code.setContent("111111");
+            code.setModified_date(now);
+            code.setModifier("root");
+            code.setPlatform("网页注册");
+            validateCodeService.updateLoginLog(code);
+        }
+        System.out.println("-----"+code.getPhone());
+//        List<CorpInfo> corpInfo = corpService.selectAllCorp("1");
+//        for (int i=0;i<corpInfo.size();i++) {
+//            System.out.println(corpInfo.get(i).getCorp_code());
+//        }
 
     }
 //	@Test

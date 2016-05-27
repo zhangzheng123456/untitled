@@ -10,13 +10,13 @@ public interface UserInfoMapper {
 
     int insertUser(UserInfo record);
 
-    UserInfo selectByUserId(@Param("user_id") int user_id,@Param("phone") String phone);
+    UserInfo selectByUserId(@Param("user_id") int user_id, @Param("phone") String phone);
 
     int updateByUserId(UserInfo record);
 
-    UserInfo selectLogin(String phone,String password);
+    UserInfo selectLogin(String phone, String password);
 
-    UserInfo selectUserCode(String user_code,String corp_code);
+    UserInfo selectUserCode(String user_code, String corp_code);
 
-    List<UserInfo> selectAllUser(@Param("corp_code")String corp_code,@Param("search_value") String search_value);
+    List<UserInfo> selectAllUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 }

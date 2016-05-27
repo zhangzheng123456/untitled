@@ -8,9 +8,9 @@ import java.util.List;
 public interface ShopInfoMapper {
     ShopInfo selectByShopInfoId(int id);
 
-    List<ShopInfo> selectAllShop(@Param("corp_code")String corp_code, @Param("search_value") String search_value);
+    List<ShopInfo> selectAllShop(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
-    ShopInfo selectShopCode(String shop_code,String corp_code);
+    ShopInfo selectShopCode(String shop_code, String corp_code);
 
     int deleteByShopInfoId(int id);
 

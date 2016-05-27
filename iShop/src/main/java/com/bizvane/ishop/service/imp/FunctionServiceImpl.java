@@ -18,13 +18,13 @@ import java.util.List;
  * Created by Administrator on 2016/5/24.
  */
 @Service
-public class FunctionServiceImpl implements FunctionService{
+public class FunctionServiceImpl implements FunctionService {
 
     @Autowired
     FunctionMapper functionMapper;
 
-    public JSONArray selectAllFunctions(int user_id,String role_code){
-        List<Function> func_info = functionMapper.selectAllFun(user_id,role_code);
+    public JSONArray selectAllFunctions(int user_id, String role_code) {
+        List<Function> func_info = functionMapper.selectAllFun(user_id, role_code);
         JSONArray modules = new JSONArray();
         String uri;
         for (int i = 0; i < func_info.size(); i++) {
@@ -33,29 +33,29 @@ public class FunctionServiceImpl implements FunctionService{
             String func_code = func_info.get(i).getFunction_code();
             String url = func_info.get(i).getUrl();
             String icon = func_info.get(i).getIcon();
-            System.out.println(module+"---------"+func);
-            if(func.equals("0")){
+            System.out.println(module + "---------" + func);
+            if (func.equals("0")) {
                 JSONObject obj1 = new JSONObject();
-                obj1.put("mod_name",module);
-                obj1.put("icon",icon);
-                obj1.put("func_code",func_code);
-                obj1.put("url",url);
-                obj1.put("functions","");
+                obj1.put("mod_name", module);
+                obj1.put("icon", icon);
+                obj1.put("func_code", func_code);
+                obj1.put("url", url);
+                obj1.put("functions", "");
                 modules.add(obj1);
-            }else {
-                if (modules.size()==0){
+            } else {
+                if (modules.size() == 0) {
                     JSONObject obj = new JSONObject();
                     JSONArray functions = new JSONArray();
                     JSONObject obj1 = new JSONObject();
-                    obj1.put("fun_name",func);
-                    obj1.put("func_code",func_code);
-                    obj1.put("url",url);
+                    obj1.put("fun_name", func);
+                    obj1.put("func_code", func_code);
+                    obj1.put("url", url);
                     functions.add(obj1);
-                    obj.put("mod_name",module);
-                    obj.put("icon",icon);
-                    obj.put("functions",functions);
+                    obj.put("mod_name", module);
+                    obj.put("icon", icon);
+                    obj.put("functions", functions);
                     modules.add(obj);
-                }else {
+                } else {
                     for (int j = 0; j < modules.size(); j++) {
                         JSONObject object = (JSONObject) modules.get(j);
                         if (object.get("mod_name").equals(module)) {
@@ -66,43 +66,45 @@ public class FunctionServiceImpl implements FunctionService{
                             obj2.put("func_code", func_code);
                             obj2.put("url", url);
                             qq.add(obj2);
-                            object.put("functions",qq);
+                            object.put("functions", qq);
                             break;
-                        }else {
-                            if (j==modules.size()-1){
+                        } else {
+                            if (j == modules.size() - 1) {
                                 JSONObject mod = new JSONObject();
                                 JSONArray functions = new JSONArray();
-                                mod.put("mod_name",module);
-                                mod.put("icon",icon);
-                                mod.put("functions",functions);
+                                mod.put("mod_name", module);
+                                mod.put("icon", icon);
+                                mod.put("functions", functions);
                                 modules.add(mod);
                             }
-                            continue;}
+                            continue;
+                        }
                     }
                 }
             }
-        }return modules;
+        }
+        return modules;
     }
 
-    public JSONArray selectAllActions(int user_id,String role_code){
-        List<Function> act_info = functionMapper.selectAllFunction(user_id,role_code);
+    public JSONArray selectAllActions(int user_id, String role_code) {
+        List<Function> act_info = functionMapper.selectAllFunction(user_id, role_code);
         JSONArray functions = new JSONArray();
 
         for (int i = 0; i < act_info.size(); i++) {
             String func_code = act_info.get(i).getFunction_code();
-     //       String func = act_info.get(i).getFunction_name();
+            //       String func = act_info.get(i).getFunction_name();
             String act = act_info.get(i).getAction_name();
-            System.out.println(act+"---------"+func_code);
-            if (functions.size()==0){
+            System.out.println(act + "---------" + func_code);
+            if (functions.size() == 0) {
                 JSONObject obj = new JSONObject();
                 JSONArray actions = new JSONArray();
                 JSONObject obj1 = new JSONObject();
-                obj1.put("act_name",act);
+                obj1.put("act_name", act);
                 actions.add(obj1);
-                obj.put("func_code",func_code);
-                obj.put("actions",actions);
+                obj.put("func_code", func_code);
+                obj.put("actions", actions);
                 functions.add(obj);
-            }else {
+            } else {
                 for (int j = 0; j < functions.size(); j++) {
                     JSONObject object = (JSONObject) functions.get(j);
                     System.out.println(object);
@@ -112,24 +114,26 @@ public class FunctionServiceImpl implements FunctionService{
                         JSONObject obj2 = new JSONObject();
                         obj2.put("act_name", act);
                         qq.add(obj2);
-                        object.put("actions",qq);
+                        object.put("actions", qq);
                         break;
-                    }else {
-                        if (j==functions.size()-1){
+                    } else {
+                        if (j == functions.size() - 1) {
                             JSONObject fun = new JSONObject();
                             JSONArray actions = new JSONArray();
-                            fun.put("func_code",func_code);
-                            fun.put("actions",actions);
+                            fun.put("func_code", func_code);
+                            fun.put("actions", actions);
                             functions.add(fun);
-                        }continue;
+                        }
+                        continue;
                     }
                 }
             }
-        }return functions;
+        }
+        return functions;
     }
 
-    public JSONArray selectActionByFun(int user_id, String role_code,String function_code){
-        List<Action> act_info = functionMapper.selectActionByFun(user_id,role_code,function_code);
+    public JSONArray selectActionByFun(int user_id, String role_code, String function_code) {
+        List<Action> act_info = functionMapper.selectActionByFun(user_id, role_code, function_code);
         JSONArray actions = new JSONArray();
 
         for (int i = 0; i < act_info.size(); i++) {
@@ -142,14 +146,14 @@ public class FunctionServiceImpl implements FunctionService{
         return actions;
     }
 
-    public String page(){
+    public String page() {
         PageHelper.startPage(1, 3);
         List<Action> list = functionMapper.select();
         PageInfo<Action> page = new PageInfo<Action>(list);
         JSONObject result = new JSONObject();
 
         result.put("user", JSON.toJSONString(page));
-        result.put("222",list);
+        result.put("222", list);
         return result.toString();
     }
 }

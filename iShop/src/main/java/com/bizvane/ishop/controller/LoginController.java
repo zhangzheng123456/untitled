@@ -35,7 +35,7 @@ public class LoginController {
 
     String id;
 
-    @RequestMapping(value = "/",method = RequestMethod.GET)
+    @RequestMapping(value = "/", method = RequestMethod.GET)
     public String index() {
         return "login";
     }
@@ -43,9 +43,9 @@ public class LoginController {
     /**
      * 手机号是否已注册
      */
-    @RequestMapping(value = "/phone_exist",method = RequestMethod.GET)
+    @RequestMapping(value = "/phone_exist", method = RequestMethod.GET)
     @ResponseBody
-    public String phoneExist(HttpServletRequest request){
+    public String phoneExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
@@ -57,26 +57,29 @@ public class LoginController {
             String phone = jsonObject.get("PHONENUMBER").toString();
             System.out.println(phone);
             UserInfo user = userService.phoneExist(phone);
+            System.out.println(user);
             if (user == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("the phone can registered");
                 return dataBean.getJsonStr();
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("the phone has registered");
             }
-            } catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
-        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        dataBean.setId(id);
-        dataBean.setMessage("the phone has registered");
         return dataBean.getJsonStr();
     }
+
     /**
-     *获取验证码
+     * 获取验证码
      */
-    @RequestMapping(value = "/authcode",method = RequestMethod.POST)
+    @RequestMapping(value = "/authcode", method = RequestMethod.POST)
     @ResponseBody
     public String getAuthCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -88,7 +91,7 @@ public class LoginController {
         JSONObject jsonObject = new JSONObject(message);
         String phone = jsonObject.get("PHONENUMBER").toString();
         System.out.println(phone);
-        String msg = userService.getAuthCode(phone,"网页注册");
+        String msg = userService.getAuthCode(phone, "网页注册");
 //
 //        String text = "[爱秀]您的注册验证码为：";
 //        Random r = new Random();
@@ -133,21 +136,22 @@ public class LoginController {
 //                code.setIsactive(Common.IS_ACTIVE_Y);
 //                validateCodeService.updateValidateCode(code);
 //            }
-        if (msg.equals(Common.DATABEAN_CODE_SUCCESS)){
+        if (msg.equals(Common.DATABEAN_CODE_SUCCESS)) {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("success");
-        }else{
+        } else {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage("fail");
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 点击注册
      */
-    @RequestMapping(value = "/register",method = RequestMethod.POST)
+    @RequestMapping(value = "/register", method = RequestMethod.POST)
     @ResponseBody
     public String register(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -163,7 +167,7 @@ public class LoginController {
                 dataBean.setCode(result);
                 dataBean.setId(id);
                 dataBean.setMessage("register success");
-            }else {
+            } else {
                 System.out.println("---------auth_code-xxx---------");
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -180,10 +184,10 @@ public class LoginController {
     /**
      * 点击登录
      */
-    @RequestMapping(value = "/userlogin",method = RequestMethod.POST)
+    @RequestMapping(value = "/userlogin", method = RequestMethod.POST)
     @ResponseBody
     public String Login(HttpServletRequest request) {
-        log.info("------------starttime"+new Date());
+        log.info("------------starttime" + new Date());
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
@@ -194,14 +198,14 @@ public class LoginController {
             JSONObject jsonObject = new JSONObject(message);
             String phone = jsonObject.get("phone").toString();
             String password = jsonObject.get("password").toString();
-            log.info("phone:"+phone+" password:"+password);
-            log.info("------------start search"+new Date());
-            JSONObject user_info = userService.login(request,phone,password);
-            if (user_info==null){
+            log.info("phone:" + phone + " password:" + password);
+            log.info("------------start search" + new Date());
+            JSONObject user_info = userService.login(request, phone, password);
+            if (user_info == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("login fail");
-            }else {
+            } else {
                 System.out.println(user_info);
                 //插入登录日志
                 Date now = new Date();

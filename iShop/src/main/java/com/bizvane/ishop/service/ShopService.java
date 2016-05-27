@@ -11,11 +11,11 @@ import java.util.List;
 public interface ShopService {
     ShopInfo getShopInfo(int id) throws SQLException;
 
-    List<ShopInfo> getAllShop(String corp_code,String search_value);
+    List<ShopInfo> getAllShop(String corp_code, String search_value);
 
-    int insert(ShopInfo shopInfo)throws SQLException;
+    String insert(String message, String user_id) throws SQLException;
 
-    int update(ShopInfo shopInfo)throws SQLException;
+    int update(ShopInfo shopInfo) throws SQLException;
 
     int delete(int id) throws SQLException;
 

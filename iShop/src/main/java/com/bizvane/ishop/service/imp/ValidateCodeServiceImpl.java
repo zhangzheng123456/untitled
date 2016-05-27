@@ -15,19 +15,19 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
     @Autowired
     private ValidataCodeMapper validataCodeMapper;
 
-    public int insertValidateCode(ValidateCode code){
+    public int insertValidateCode(ValidateCode code) {
         return validataCodeMapper.insertValidateCode(code);
     }
 
-    public ValidateCode selectValidateCode(int code_id,String phone){
-        return validataCodeMapper.selectByCodeId(code_id,phone);
+    public ValidateCode selectValidateCode(int code_id, String phone) {
+        return validataCodeMapper.selectByCodeId(code_id, phone);
     }
 
-    public int updateValidateCode(ValidateCode code){
+    public int updateValidateCode(ValidateCode code) {
         return validataCodeMapper.updateByCodeId(code);
     }
 
-    public int deleteValidateCode(int code_id){
+    public int deleteValidateCode(int code_id) {
         return validataCodeMapper.deleteByCodeId(code_id);
     }
 }

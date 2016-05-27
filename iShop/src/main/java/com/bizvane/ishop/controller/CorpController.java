@@ -44,10 +44,11 @@ public class CorpController {
     private CorpService corpService;
     @Autowired
     private FunctionService functionService;
+
     /*
     * 列表
     * */
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public String cropManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -55,28 +56,28 @@ public class CorpController {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(user_id,role_code,function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
 
             JSONObject info = new JSONObject();
-            if(role_code.contains("R1")) {
+            if (role_code.contains("R1")) {
                 //系统管理员(官方画面)
                 int page_number = Integer.parseInt(request.getParameter("pageNumber"));
                 int page_size = Integer.parseInt(request.getParameter("pageSize"));
                 PageHelper.startPage(page_number, page_size);
                 List<CorpInfo> corpInfo = corpService.selectAllCorp("");
                 PageInfo<CorpInfo> page = new PageInfo<CorpInfo>(corpInfo);
-                info.put("corpInfo",corpInfo);
-            }else{
+                info.put("corpInfo", corpInfo);
+            } else {
                 //用户画面
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                CorpInfo corpInfo = corpService.selectByCorpId(0,corp_code);
-                info.put("corpInfo",corpInfo);
+                CorpInfo corpInfo = corpService.selectByCorpId(0, corp_code);
+                info.put("corpInfo", corpInfo);
             }
-            info.put("actions",actions);
+            info.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(info.toString());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -87,7 +88,7 @@ public class CorpController {
     /**
      * 新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     @ResponseBody
     public String addCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -102,14 +103,14 @@ public class CorpController {
             JSONObject jsonObject = new JSONObject(message);
             CorpInfo corp = new CorpInfo();
             String max_code = corpService.selectMaxCorpCode();
-            int code=Integer.parseInt(max_code.substring(1,max_code.length()))+1;
+            int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
             Integer c = code;
-            int length = 5-c.toString().length();
-            String corp_code="C";
-            for (int i=0;i<length;i++){
-                corp_code=corp_code+"0";
+            int length = 5 - c.toString().length();
+            String corp_code = "C";
+            for (int i = 0; i < length; i++) {
+                corp_code = corp_code + "0";
             }
-            corp_code=corp_code+code;
+            corp_code = corp_code + code;
             corp.setCorp_code(corp_code);
             corp.setCorp_name(jsonObject.get("corp_name").toString());
             corp.setAddress(jsonObject.get("address").toString());
@@ -136,12 +137,12 @@ public class CorpController {
     /**
      * 编辑
      */
-    @RequestMapping(value = "/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
     @ResponseBody
     public String editCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
-        try{
+        try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
@@ -217,10 +218,10 @@ public class CorpController {
     @RequestMapping("/find/{id}")
     @ResponseBody
     public String findById(@PathVariable Integer corp_id) {
-        DataBean bean=new DataBean();
+        DataBean bean = new DataBean();
         String data = null;
         try {
-            data = JSON.toJSONString(corpService.selectByCorpId(corp_id,""));
+            data = JSON.toJSONString(corpService.selectByCorpId(corp_id, ""));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
@@ -239,7 +240,7 @@ public class CorpController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String search(HttpServletRequest request) {
-        DataBean dataBean=new DataBean();
+        DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -254,7 +255,7 @@ public class CorpController {
             PageHelper.startPage(page_number, page_size);
             List<CorpInfo> list = corpService.selectAllCorp(search_value);
             PageInfo<CorpInfo> page = new PageInfo<CorpInfo>(list);
-            result.put("corp",list);
+            result.put("corp", list);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

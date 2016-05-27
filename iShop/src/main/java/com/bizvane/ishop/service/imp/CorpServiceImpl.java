@@ -34,10 +34,10 @@ public class CorpServiceImpl implements CorpService {
     }
 
     public List<CorpInfo> selectAllCorp(String search_value) throws SQLException {
-        return corpInfoMapper.selectAllCorp("%"+search_value+"%");
+        return corpInfoMapper.selectAllCorp("%" + search_value + "%");
     }
 
-    public String selectMaxCorpCode(){
+    public String selectMaxCorpCode() {
         return corpInfoMapper.selectMaxCorpCOde();
     }
 }

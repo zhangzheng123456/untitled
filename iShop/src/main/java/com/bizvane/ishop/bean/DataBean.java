@@ -10,38 +10,38 @@ public class DataBean {
     private String code;
     private String message;
 
-   
+
     public String getId() {
-		return id;
-	}
+        return id;
+    }
 
 
-	public void setId(String id) {
-		this.id = id;
-	}
+    public void setId(String id) {
+        this.id = id;
+    }
 
 
-	public String getCode() {
-		return code;
-	}
+    public String getCode() {
+        return code;
+    }
 
 
-	public void setCode(String code) {
-		this.code = code;
-	}
+    public void setCode(String code) {
+        this.code = code;
+    }
 
 
-	public String getMessage() {
-		return message;
-	}
+    public String getMessage() {
+        return message;
+    }
 
 
-	public void setMessage(String message) {
-		this.message = message;
-	}
+    public void setMessage(String message) {
+        this.message = message;
+    }
 
 
-	public String getJsonStr() {
+    public String getJsonStr() {
 
         GsonBuilder gb = new GsonBuilder();
         gb.disableHtmlEscaping();

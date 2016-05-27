@@ -10,8 +10,7 @@ import com.bizvane.ishop.service.ShopService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +34,8 @@ import java.util.List;
 @RequestMapping("/shop")
 public class ShopController {
 
-    private static Logger logger = LoggerFactory.getLogger((ShopController.class));
+    private static final Logger logger = Logger.getLogger(ShopController.class);
+
 
     String id;
 
@@ -43,10 +43,11 @@ public class ShopController {
     private ShopService shopService;
     @Autowired
     private FunctionService functionService;
+
     /**
      * 店铺管理
      */
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public String shopManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -58,25 +59,25 @@ public class ShopController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
 
-            JSONArray actions = functionService.selectActionByFun(user_id,role_code,function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
             JSONObject result = new JSONObject();
             List<ShopInfo> list;
-            if(role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
                 PageHelper.startPage(page_number, page_size);
-                list = shopService.getAllShop("","");
-            }else{
+                list = shopService.getAllShop("", "");
+            } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 PageHelper.startPage(page_number, page_size);
                 list = shopService.getAllShop(corp_code, "");
             }
             PageInfo<ShopInfo> page = new PageInfo<ShopInfo>(list);
-            result.put("shops",list);
-            result.put("actions",actions);
+            result.put("shops", list);
+            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -87,7 +88,7 @@ public class ShopController {
     /**
      * 新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
     @ResponseBody
     public String addShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -99,25 +100,16 @@ public class ShopController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            ShopInfo shop = new ShopInfo();
-            shop.setStore_code(jsonObject.get("store_code").toString());
-            shop.setStore_name(jsonObject.get("store_name").toString());
-            shop.setStore_area(jsonObject.get("store_area").toString());
-            shop.setCorp_code(jsonObject.get("corp_code").toString());
-            shop.setBrand_code(jsonObject.get("brand_code").toString());
-            shop.setBrand_name(jsonObject.get("brand_name").toString());
-            shop.setFlg_tob(jsonObject.get("flg_tob").toString());
-            Date now = new Date();
-            shop.setCreated_date(now);
-            shop.setCreater(user_id);
-            shop.setModified_date(now);
-            shop.setModifier(user_id);
-            shop.setIsactive(jsonObject.get("isactive").toString());
-            shopService.insert(shop);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("add success");
+            String result = shopService.insert(message, user_id);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("该企业店铺编号已经存在！");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -129,7 +121,7 @@ public class ShopController {
     /**
      * 编辑
      */
-    @RequestMapping(value = "/edit",method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.GET)
     @ResponseBody
     public String editShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -211,7 +203,7 @@ public class ShopController {
     @RequestMapping("/find/{id}")
     @ResponseBody
     public String findById(@PathVariable Integer shop_id) {
-        DataBean bean=new DataBean();
+        DataBean bean = new DataBean();
         String data = null;
         try {
             data = JSON.toJSONString(shopService.getShopInfo(shop_id));
@@ -233,7 +225,7 @@ public class ShopController {
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String search(HttpServletRequest request) {
-        DataBean dataBean=new DataBean();
+        DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -247,17 +239,17 @@ public class ShopController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             List<ShopInfo> list;
-            if(role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
                 PageHelper.startPage(page_number, page_size);
-                list = shopService.getAllShop("",search_value);
-            }else{
+                list = shopService.getAllShop("", search_value);
+            } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 PageHelper.startPage(page_number, page_size);
                 list = shopService.getAllShop(corp_code, search_value);
             }
             PageInfo<ShopInfo> page = new PageInfo<ShopInfo>(list);
-            result.put("shops",list);
+            result.put("shops", list);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

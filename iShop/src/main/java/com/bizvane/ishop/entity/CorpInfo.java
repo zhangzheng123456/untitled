@@ -28,11 +28,13 @@ public class CorpInfo {
     //是否可用
     private String isactive;
 
-    public CorpInfo(){}
+    public CorpInfo() {
+    }
 
-    public CorpInfo(int id){
+    public CorpInfo(int id) {
         this.id = id;
     }
+
     public int getId() {
         return id;
     }

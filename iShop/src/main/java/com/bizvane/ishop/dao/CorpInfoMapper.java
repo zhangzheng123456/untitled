@@ -10,7 +10,7 @@ public interface CorpInfoMapper {
 
     List<CorpInfo> selectAllCorp(@Param("search_value") String search_value);
 
-    CorpInfo selectByCorpId(@Param("corp_id") int corp_id,@Param("corp_code") String corp_code);
+    CorpInfo selectByCorpId(@Param("corp_id") int corp_id, @Param("corp_code") String corp_code);
 
     String selectMaxCorpCOde();
 
