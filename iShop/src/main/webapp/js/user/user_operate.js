@@ -1,16 +1,16 @@
 var oc = new ObjectControl();
 (function(root,factory){
-	root.goal = factory();
+	root.user = factory();
 }(this,function(){
-	var shopgoaljs={};
-	shopgoaljs.isEmpty=function(obj){
+	var useroperatejs={};
+	useroperatejs.isEmpty=function(obj){
 		if(obj.trim() == "" || obj.trim() == undefined){
 			return true;
 		}else{
 			return false;
 		}
 	};
-	shopgoaljs.checkEmpty = function(obj,hint){
+	useroperatejs.checkEmpty = function(obj,hint){
 		if(!this.isEmpty(obj)){
 			this.hiddenHint(hint);
 			return true;
@@ -19,7 +19,7 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	shopgoaljs.checkPhone = function(obj,hint){
+	useroperatejs.checkPhone = function(obj,hint){
 		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
 		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
 		if(!this.isEmpty(obj)){
@@ -35,65 +35,84 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	shopgoaljs.hiddenHint = function(hint){
+	useroperatejs.checkMail = function(obj,hint){
+		var reg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
+		if(!this.isEmpty(obj)){
+			if(reg.test(obj)){
+				this.hiddenHint(hint);
+				return true;
+			}else{
+				this.displayHint(hint,"邮箱格式不正确！")
+				return false;
+			}
+		}else{
+			this.displayHint(hint);
+			return false;
+		}
+	};
+	useroperatejs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
 	};
-	shopgoaljs.displayHint = function(hint,content){
+	useroperatejs.displayHint = function(hint,content){
 		hint.addClass("error_tips");
 		if(!content)hint.html(hint.attr("hintInfo"));//错误提示
 		else hint.html(content);
 	};
-	shopgoaljs.firstStep = function(){
+	useroperatejs.firstStep = function(){
 		var inputText = jQuery(".conpany_msg").find(":text");
 		for(var i=0,length=inputText.length;i<length;i++){
 			if(!bindFun(inputText[i]))return false;
 		}
 		return true;
 	};
-	shopgoaljs.bindbutton=function(){
-		$(".corpadd_oper_btn ul li:nth-of-type(1)").click(function(){
-			if(shopgoaljs.firstStep()){
-				var CORPID=$("#CORPID").val();
-				var CORPNAME=$("#CORPNAME").val();
-				var CORPADDRESS=$("#CORPADDRESS").val();
-				var CONTACTS=$("#CONTACTS").val();
-				var PHONE=$("#PHONE").val();
-				var _command="/corp/add";//接口名
+	useroperatejs.bindbutton=function(){
+		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
+			if(useroperatejs.firstStep()){
+				var ACCOUNT=$("#ACCOUNT").val();
+				var USER_NAME=$("#USER_NAME").val();
+				var HEADPORTRAIT=$("#preview img").attr("src");
+				var USER_PHONE=$("#USER_PHONE").val();
+				var USER_EMAIL=$("#USER_EMAIL").val();
+				var USER_SEX=$("#USER_SEX").val();
+				var OWN_CORP=$("#OWN_CORP").val();
+				var OWN_RIGHT=$("#OWN_RIGHT").val();
+				var _command="/user/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"CORPID":CORPID,"CORPNAME":CORPNAME,"CORPADDRESS":CORPADDRESS,"CONTACTS":CONTACTS,"PHONE":PHONE};
-				shopgoaljs.ajaxSubmit(_command,_params,opt);
+				var _params={"ACCOUNT":ACCOUNT,"USER_NAME":USER_NAME,"HEADPORTRAIT":HEADPORTRAIT,"USER_PHONE":USER_PHONE,"USER_EMAIL":USER_EMAIL,"USER_SEX":USER_SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
+				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
-		$(".corpedit_oper_btn ul li:nth-of-type(1)").click(function(){
-			if(shopgoaljs.firstStep()){
+		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
+			if(useroperatejs.firstStep()){
+				var ACCOUNT=$("#ACCOUNT").val();
+				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
-				console.log(HEADPORTRAIT);
-				var CORPID=$("#CORPID").val();
-				var CORPNAME=$("#CORPNAME").val();
-				var CORPADDRESS=$("#CORPADDRESS").val();
-				var CONTACTS=$("#CONTACTS").val();
-				var PHONE=$("#PHONE").val();
-				var _command="/corp/edit";//接口名
+				var USER_PHONE=$("#USER_PHONE").val();
+				var USER_EMAIL=$("#USER_EMAIL").val();
+				var USER_SEX=$("#USER_SEX").val();
+				var OWN_CORP=$("#OWN_CORP").val();
+				var OWN_RIGHT=$("#OWN_RIGHT").val();
+				var _command="/user/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"HEADPORTRAIT":HEADPORTRAIT,"CORPID":CORPID,"CORPNAME":CORPNAME,"CORPADDRESS":CORPADDRESS,"CONTACTS":CONTACTS,"PHONE":PHONE};
-				shopgoaljs.ajaxSubmit(_command,_params,opt);
+				var _params={"ACCOUNT":ACCOUNT,"USER_NAME":USER_NAME,"HEADPORTRAIT":HEADPORTRAIT,"USER_PHONE":USER_PHONE,"USER_EMAIL":USER_EMAIL,"USER_SEX":USER_SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
+				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
 	};
-	shopgoaljs.ajaxSubmit=function(_command,_params,opt){
+	useroperatejs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
 		_params=JSON.stringify(_params);
 		console.log(_params);
@@ -123,8 +142,8 @@ var oc = new ObjectControl();
 		var command = _this.attr("verify");
 		var obj = _this.val();
 		var hint = _this.nextAll(".hint").children();
-		if(shopgoaljs['check' + command]){
-			if(!shopgoaljs['check' + command].apply(shopgoaljs,[obj,hint])){
+		if(useroperatejs['check' + command]){
+			if(!useroperatejs['check' + command].apply(useroperatejs,[obj,hint])){
 				return false;
 			}
 		}
@@ -139,13 +158,13 @@ var oc = new ObjectControl();
 		clearInterval(interval);
 	});
 	var init=function(){
-		shopgoaljs.bindbutton();
+		useroperatejs.bindbutton();
 	}
 	var obj = {};
-	obj.shopgoaljs = shopgoaljs;
+	obj.useroperatejs = useroperatejs;
 	obj.init = init;
 	return obj;
 }));
 jQuery(document).ready(function(){
-	window.goal.init();//初始化
+	window.user.init();//初始化
 });

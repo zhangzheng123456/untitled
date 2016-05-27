@@ -3,32 +3,36 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>新增店铺业绩目标</title>
+    <title>新增员工业绩目标</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
 </head>
 
 <body>
     <!-- <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1" >
-            <div class="col-lg-12 pre_title">业绩管理<i class="icon-ishop_8-03"></i>店铺业绩目标<i class="icon-ishop_8-03"></i>新增店铺业绩目标</div>
+            <div class="col-lg-12 pre_title">业绩管理<i class="icon-ishop_8-03"></i>员工业绩目标<i class="icon-ishop_8-03"></i>新增员工业绩目标</div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" /></span>
+                    <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty" /> <div style="padding-left:135px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">店铺编号*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">店铺编号*</label><input type="text" id="SHOP_ID" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="店铺编号为必填项，不能为空！"></div></div></span>
+                    </div>
+                     <div>
+                        <span><label style="color:#c26555;">员工编号*</label><input type="text" id="STAFF_ID" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="员工编号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>店铺名称</label><input type="text" /></span>
+                        <span><label>店铺名称</label><input type="text" id="SHOP_NAME" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="店铺名称为必填项，不能为空！"></div></div></span>
                     </div>
                     <div id="dropdown" class="item_1">
-                    <span><label>时间类型</label><input class="input_select" type="text" placeholder="请选择时间类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                    <span><label>时间类型</label><input class="input_select" id="TIME_TYPE" type="text" placeholder="请选择时间类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
                             <ul>
                                 <li>日</li>
                                 <li>周</li>
@@ -38,15 +42,15 @@
                         </span>
                     </div>
                     <div>
-                        <span><label>目标业绩</label><input type="text" /></span>
+                        <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>日期</label><input type="text" /></span>
+                        <span><label>日期</label><input type="text" id="DATE" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="日期为必填项，不能为空！"></div></div></span>
                     </div>
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="staffgoaladd_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>
@@ -58,7 +62,7 @@
                     </div>
                 </form>
             </div>
-        </div>
+    </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <!-- side_menu -->
@@ -76,10 +80,16 @@
         $(function(){
             $('#side-menu li:nth-of-type(4)').addClass('active');
             $('.active ul').addClass('in');
-            $('.active ul li:nth-of-type(1)').addClass('select_index');
+            $('.active ul li:nth-of-type(2)').addClass('select_index');
             $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
         })
     </script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/jquery.artDialog.js"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/achv/staffgoal.js"></script>
 </body>
 
 </html>

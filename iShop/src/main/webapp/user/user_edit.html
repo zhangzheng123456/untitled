@@ -9,6 +9,7 @@
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
 </head>
 
 <body>
@@ -24,10 +25,10 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label>账号</label><input type="text" /></span>
+                        <span><label>账号</label><input type="text" id="ACCOUNT" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="账号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>姓名</label><input type="text" /></span>
+                        <span><label>姓名</label><input type="text" id="USER_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label>头像</label></span>
@@ -35,13 +36,13 @@
                         <span class="change_touxiang" style="position: relative;"><i class="icon-ishop_6-09"></i><input type="file" onchange="previewImage(this)"/ style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                     </div>
                     <div>
-                        <span><label>手机</label><input type="text" /></span>
+                        <span><label>手机</label><input type="text" id="USER_PHONE" verify="Phone"/><div style="padding-left:125px" class="hint"><div  hintinfo="手机号码为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>邮箱</label><input type="text" /></span>
+                        <span><label>邮箱</label><input type="text" id="USER_EMAIL" verify="Mail"/></span>
                     </div>
                     <div id="dropdown" class="item_1">
-                    <span><label>性别</label><input class="input_select" type="text" placeholder="请选择性别" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                    <span><label>性别</label><input class="input_select" type="text" id="USER_SEX" placeholder="请选择性别" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
                             <ul>
                                 <li>男</li>
                                 <li>女</li>
@@ -49,10 +50,10 @@
                         </span>
                     </div>
                      <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty"/></span>
                     </div>
                     <div id="per_type" class="item_2">
-                        <span><label>所属权限</label><input class="input_select" type="text" placeholder="请选择所属权限" readonly/><span class="down_icon icn_2"><i class="icon-ishop_8-02"></i></span>
+                        <span><label>所属权限</label><input class="input_select" type="text" id="OWN_RIGHT" placeholder="请选择所属权限" readonly/><span class="down_icon icn_2"><i class="icon-ishop_8-02"></i></span>
                             <ul>
                                 <li>系统管理员</li>
                                 <li>导购</li>
@@ -62,15 +63,15 @@
                             </ul></span><span class="add_per_icon"><i class="icon-ishop_6-01"></i>新增权限</span>
                     </div>
                     <div>
-                        <span><label>注册时间</label><input type="text" /></span>
+                        <span><label>注册时间</label><input type="text" style="background: #dfdfdf;" readonly /></span>
                     </div>
                     <div>
-                        <span><label>最后登录</label><input type="text" /></span>
+                        <span><label>最后登录</label><input type="text" style="background: #dfdfdf;" readonly/></span>
                     </div>
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="useradd_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>
@@ -78,16 +79,16 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" /></span>
+                        <span><label>创建时间</label><input type="text" readonly/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" /></span>
+                        <span><label>创建人</label><input type="text" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" /></span>
+                        <span><label>修改时间</label><input type="text" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" /></span>
+                        <span><label>修改人</label><input type="text" readonly/></span>
                     </div>
                     <div>
                     <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
@@ -118,6 +119,12 @@
             $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
         })
     </script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/jquery.artDialog.js"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/user/user_operate.js"></script>
 </body>
 
 </html>
