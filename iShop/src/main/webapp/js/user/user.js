@@ -193,7 +193,9 @@ function jumpBianse(){
 	})
 	//双击跳转
 	$(".table tbody tr").dblclick(function(){
-	    id=$(this).attr("id");
+	    var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        console.log(id);
         $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
 	})
 	//点击tr input是选择状态  tr增加class属性
@@ -232,9 +234,9 @@ function POST(param){
 	oc.postRequire("post","/user/search","0",param,function(data){
 		if(data.code=="0"){
 			message=JSON.parse(data.message);
-            var user=message.user;
+            var user=message.users;
 			$(".table tbody").empty();
-			if(content.length<=0){
+			if(user.length<=0){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
 		 	}else if(content.length>0){
