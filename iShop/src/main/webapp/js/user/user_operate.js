@@ -167,4 +167,23 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.user.init();//初始化
+	var id=sessionStorage.getItem("id");
+	var _params={"id":id};
+	var _command="/user/select";
+	oc.postRequire("post", _command, _params, function(data){
+		console.log(data);
+		// if(data.code=="0"){
+		// 	if(opt.success){
+		// 		opt.success();
+		// 	}
+		// 	// window.location.href="";
+		// }else if(data.code=="-1"){
+		// 	art.dialog({
+		// 		time: 1,
+		// 		lock:true,
+		// 		cancel: false,
+		// 		content: data[0].message
+		// 	});
+		// }
+	});
 });
