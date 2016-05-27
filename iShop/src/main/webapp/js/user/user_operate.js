@@ -116,7 +116,7 @@ var oc = new ObjectControl();
 		// console.log(JSON.stringify(_params));
 		_params=JSON.stringify(_params);
 		console.log(_params);
-		oc.postRequire("post", _command, _params, function(data){
+		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				if(opt.success){
 					opt.success();
@@ -170,7 +170,7 @@ jQuery(document).ready(function(){
 	var id=sessionStorage.getItem("id");
 	var _params={"id":id};
 	var _command="/user/select";
-	oc.postRequire("post", _command, _params, function(data){
+	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
 		// if(data.code=="0"){
 		// 	if(opt.success){
