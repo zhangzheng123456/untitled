@@ -9,10 +9,11 @@
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
 </head>
 
 <body>
-    <!-- <div id="wrapper">
+   <!--  <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="col-lg-12 pre_title">店铺管理<i class="icon-ishop_8-03"></i>编辑店铺信息</div>
@@ -24,33 +25,33 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label>所属企业</label><input type="text" /></span>
+                        <span><label>所属企业</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>品牌编号</label><input type="text" /></span>
+                        <span><label>品牌编号</label><input type="text" id="BRAND_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="品牌编号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>所属品牌</label><input type="text" /></span>
+                        <span><label>所属品牌</label><input type="text" id="OWN_BRAND" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属品牌不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>区域编号</label><input type="text" /></span>
+                        <span><label>区域编号</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="区域编号不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>店仓编号</label><input type="text" /></span>
+                        <span><label>店仓编号</label><input type="text" id="STORE_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓编号不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>所属区域</label><input type="text" /></span>
+                        <span><label>所属区域</label><input type="text" id="OWN_AREA" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属区域不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>店仓名称</label><input type="text" /></span>
+                        <span><label>店仓名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
                     </div>
                      <div>
-                        <span><label>店长</label><input type="text" /></span>
+                        <span><label>店长</label><input type="text" id="SHOP_MANAGER" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店长不能为空！"></div></div></span>
                     </div>
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="shopedit_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>
@@ -58,16 +59,16 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" /></span>
+                        <span><label>创建时间</label><input type="text" readonly/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" /></span>
+                        <span><label>创建人</label><input type="text" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" /></span>
+                        <span><label>修改时间</label><input type="text" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" /></span>
+                        <span><label>修改人</label><input type="text" readonly/></span>
                     </div>
                     <div>
                     <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
@@ -91,6 +92,12 @@
             $('#side-menu li:nth-of-type(2)').addClass('active');
         })
     </script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/jquery.artDialog.js"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/shop/shop.js"></script>
 </body>
 
 </html>
