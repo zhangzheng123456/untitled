@@ -2,7 +2,9 @@ var oc = new ObjectControl();
 var pageNumber=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
-var funcCode=$(window.parent.document).find('#iframepage').attr("data-code");
+var key_val=sessionStorage.getItem("key_val");
+var funcCode=key_val.func_code;
+// var funcCode=$(window.parent.document).find('#iframepage').attr("data-code");
 console.log(funcCode);
 //模仿select
 $(function(){  

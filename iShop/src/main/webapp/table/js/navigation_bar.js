@@ -50,7 +50,7 @@ $(function(){
         	$(this).find("h1").next("dl").slideToggle(300).parents().siblings("li").find("dl").slideUp(300);
         	$(this).find("h1 span").toggleClass("icon-ishop_8-02").parents().siblings("li").find("h1 span").removeClass("icon-ishop_8-02");   	
         }
-        if(src!=="underfined"&&func_code!=="underfined"){
+        if(src!=="undefined"&&func_code!=="undefined"){
             var key_val={"url":src,"func_code":func_code};
             sessionStorage.setItem("key_val",JSON.stringify(key_val));   
         }   
