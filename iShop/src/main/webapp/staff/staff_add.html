@@ -9,6 +9,7 @@
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
 </head>
 
 <body>
@@ -19,10 +20,10 @@
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
                    <div>
-                        <span><label>员工ID</label><input type="text" /></span>
+                        <span><label>员工ID</label><input type="text" id="STAFF_ID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="员工ID为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>员工编号</label><input type="text" /></span>
+                        <span><label>员工编号</label><input type="text" id="STAFF_NUMBER" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="员工编号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label>头像</label></span>
@@ -30,10 +31,10 @@
                         <span class="change_touxiang" style="position: relative;"><i class="icon-ishop_6-09"></i><input type="file" onchange="previewImage(this)"/ style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                     </div>
                     <div>
-                        <span><label>员工名称</label><input type="text" /></span>
+                        <span><label>员工名称</label><input type="text" id="STAFF_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="员工名称为必填项，不能为空！"></div></div></span>
                     </div>
                     <div id="dropdown" class="item_1">
-                    <span><label>员工类型</label><input class="input_select" type="text" placeholder="请选择员工类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                    <span><label>员工类型</label><input class="input_select" type="text" id="STAFF_TYPE" placeholder="请选择员工类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
                             <ul>
                                 <li>普通员工</li>
                                 <li>导购</li>
@@ -44,27 +45,28 @@
                         </span>
                     </div>
                      <div>
-                        <span><label style="color:#c26555;">手机号*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">手机号*</label><input type="text" id="IPHONE" verify="Phone"/><div style="padding-left:125px" class="hint"><div  hintinfo="手机号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>测试手机号</label><input type="text" /></span>
+                        <span><label>测试手机号</label><input type="text" id="TEST_IPHONE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="测试手机号不能为空！"></div></div></span>
                     </div>
                     <div class="login_ok">
                         <span><label>可登陆</label><i class="icon-ishop_6-13"></i></span>
                     </div>
                     <div>
-                        <span><label>生日</label><input type="text" /></span>
+                        <span><label>生日</label><input type="text" id="BIRTHDAY"/></span>
                     </div>
                     <div>
-                        <span><label>职位</label><input type="text" /></span>
+                        <span><label>职位</label><input type="text" id="POSITION" verify="Empty"/>
+                        <div style="padding-left:125px" class="hint"><div  hintinfo="职位不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>所属店仓编号</label><input type="text" /></span>
+                        <span><label>所属店仓编号</label><input type="text" id="OWN_STOREID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="所属店仓编号不能为空！"></div></div></span>
                     </div>
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="staffadd_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>
@@ -100,6 +102,12 @@
             $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
         })
     </script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/jquery.artDialog.js"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/staff/staff.js"></script>
 </body>
 
 </html>
