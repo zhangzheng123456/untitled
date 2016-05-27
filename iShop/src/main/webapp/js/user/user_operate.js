@@ -173,10 +173,11 @@ jQuery(document).ready(function(){
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
 		if(data.code=="0"){
-			var msg=data.message;
+			var msg=JSON.parse(data.message);
 			console.log(msg);
-			$("#ACCOUNT").val(msg["user_code"]);
-			$("#USER_NAME").val(JSON.parse(msg)["username"]);
+			console.log(msg.user_code);
+			$("#ACCOUNT").val(msg.user_code);
+			$("#USER_NAME").val(msg.username);
 			$("#preview img").attr("src",msg.avater);
 			$("#USER_PHONE").val(msg.phone);
 			$("#USER_EMAIL").val(msg.email);
