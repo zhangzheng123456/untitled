@@ -28,22 +28,22 @@ $(function() {//点击登陆
 		console.log(param);
 		console.log(verifyCode.toUpperCase());
 		console.log(code.toUpperCase());
-		if (phone== ''|| password ==''|| verifyCode==''||verifyCode!==''&&verifyCode.toUpperCase()!==code.toUpperCase()) {
-			if(phone=="") {
-				$(".portlet-msg-error").html("用户名不能为空");
-			}
-			if(password=='') {
-				$(".portlet-msg-error").html("密码不能为空");
-			}
-			if(verifyCode==''){
-				$(".portlet-msg-error").html("验证码不能为空");
-			}
-			if(verifyCode!==''&&verifyCode.toUpperCase()!==code.toUpperCase()){
-				$(".portlet-msg-error").html("验证码不正确");	
-			}
-			return;
-		}
-		oc.postRequire("post", "/iShop/userlogin", "0", param, function(data) {
+		// if (phone== ''|| password ==''|| verifyCode==''||verifyCode!==''&&verifyCode.toUpperCase()!==code.toUpperCase()) {
+		// 	if(phone=="") {
+		// 		$(".portlet-msg-error").html("用户名不能为空");
+		// 	}
+		// 	if(password=='') {
+		// 		$(".portlet-msg-error").html("密码不能为空");
+		// 	}
+		// 	if(verifyCode==''){
+		// 		$(".portlet-msg-error").html("验证码不能为空");
+		// 	}
+		// 	if(verifyCode!==''&&verifyCode.toUpperCase()!==code.toUpperCase()){
+		// 		$(".portlet-msg-error").html("验证码不正确");	
+		// 	}
+		// 	return;
+		// }
+		oc.postRequire("post","/userlogin","0", param, function(data) {
 			var str = JSON.stringify(data);
 			var key="key";
 			sessionStorage.setItem(key,str);

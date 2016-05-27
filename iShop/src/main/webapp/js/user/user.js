@@ -4,6 +4,49 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var funcCode=$(window.parent.document).find('#iframepage').attr("data-code");
 console.log(funcCode);
+//模仿select
+$(function(){  
+        $("#page_row").click(function(){
+
+            if("block" == $("#liebiao").css("display")){  
+                hideLi();  
+            }else{  
+                showLi();  
+            }  
+        });            
+        $("#liebiao li").each(function(i,v){  
+            $(this).click(function(){
+            	var id=$(this).attr('id');
+            	console.log(id);  
+                $("#page_row").val($(this).html());  
+                hideLi();  
+            });    
+        });      
+        $("#page_row").blur(function(){  
+            setTimeout(hideLi,200);  
+        });          
+    }      
+);
+  
+function showLi(){  
+    $("#liebiao").show();  
+}  
+function hideLi(){  
+    $("#liebiao").hide();  
+}
+$("#filtrate").click(function(){//点击筛选框弹出下拉框
+    $(".sxk").slideToggle();
+})
+$("#pack_up").click(function(){//点击收回 取消下拉框
+    $(".sxk").slideUp();
+})
+//点击清空  清空input的value值
+$("#empty").click(function(){
+    var input=$(".inputs input");
+    for(var i=0;i<input.length;i++){
+        input[i].value="";
+    }
+})
 function setPage(container, count, pageSize,funcCode,value) {//分页
     var container = container;
     var count = count;
@@ -140,6 +183,33 @@ function GET(){//页面加载时的GET请求
     });
 }
 GET();
+function jumpBianse(){
+	$(document).ready(function(){//隔行变色 
+   		 $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+    	 $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+	})
+	//双击跳转
+	$(".table tbody tr").dblclick(function(){
+	    id=$(this).attr("id");
+	})
+	//点击tr input是选择状态  tr增加class属性
+	$(".table tbody tr").click(function(){
+		var input=$(this).find("input")[0];
+		var thinput=$("thead input")[0];
+		$(this).toggleClass("tr");  
+		console.log(input);
+		if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+			input.checked = true;
+			$(this).addClass("tr");
+		}else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+			if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
+				thinput.checked=false;
+			}
+			input.checked = false;
+			$(this).removeClass("tr");
+		}
+	})
+}
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
 	var event=window.event||arguments[0];
@@ -148,11 +218,7 @@ $("#search").keydown(function() {
 	param["value"]=value;
 	param["pageNumber"]=pageNumber;
 	param["pageSize"]=pageSize;
-	if(event.keyCode == 13) {
-		if(name==""||name=="10"){
-			alert("请先选择字段");
-			return;
-		}
+	if(event.keyCode == 13){
 		POST();
 		console.log(name);
 		console.log(param);
@@ -170,7 +236,7 @@ function POST(){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
 		 	}else if(content.length>0){
-
+		 		superaddition(data)
 		 	}
 		 	setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
 		}else if(data.code=="-1"){
@@ -178,3 +244,52 @@ function POST(){
 		}
 	})
 }
+var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
+console.log(left);
+//弹框关闭
+$("#X").click(function(){
+    $("#p").hide();
+    $("#tk").hide();
+})
+//取消关闭
+$("#cancel").click(function(){
+    $("#p").hide();
+    $("#tk").hide();
+})
+//弹框删除关闭
+$("#delete").click(function(){
+    $("#p").hide();
+    $("#tk").hide();
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    for(var i=0,ID="";i<tr.length;i++){
+    	var r=$(tr[i]).attr("id");
+	    if(i<tr.length-1){
+	    	ID+=r+",";
+	    }else{
+	    	 ID+=r;
+	    }     
+    }
+    var param={};
+    param["id"]=ID;
+    oc.postRequire("post","logic/list/search","0",param,function(data){
+
+    })
+    $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+    $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+})  
+//删除
+$("#remove").click(function(){
+    var l=$(window).width();
+    var h=$(document.body).height();
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    if(tr.length==0){
+        alert("请先选中所选项");
+        return;
+    }
+    $("#p").show();
+    $("#tk").show();
+    console.log(left);
+    $("#p").css({"width":+l+"px","height":+h+"px"});
+    $("#tk").css({"left":+left+"px","top":+tp+"px"});
+})

@@ -247,12 +247,6 @@ function showLi(){
 function hideLi(){  
     $("#liebiao").hide();  
 }
-//hover事件个人菜单出现
-function show(node,isShow){
-    var obj=$(node);
-    var show=isShow?"block":"none";
-    obj[0].style.display=show;
-}
 //筛选
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();

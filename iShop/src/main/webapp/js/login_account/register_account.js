@@ -4,10 +4,21 @@ $("#PHONENUMBER").focus(function(){//手机号获得焦点的时候做的验证
 });
 $("#PHONENUMBER").blur(function(){//手机号失去焦点的时候的验证
 	var reg=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;//验证手机号码格式正不正确
-	var PHONENUMBER=$('#PHONENUMBER').val();//手机号码 
+	var PHONENUMBER=$('#PHONENUMBER').val();//手机号码
+	var param={};
+	param[PHONENUMBER]=PHONENUMBER;
     if(PHONENUMBER==""||PHONENUMBER!==""&&reg.test(PHONENUMBER)==false){
     	$('.PHONENUMBER .notice').html("手机号码格式不正确!");
-    }   
+    }
+    if(PHONENUMBER!==""&&reg.test(PHONENUMBER)==true){
+    	oc.postRequire("post", "/authcode", "find", param, function(data){
+    		if(data.code=='0'){
+    			$('.PHONENUMBER .notice').html("该手机号已被绑定,请<a class='link_blue' href='login.html' target='_blank'>直接登录</a>或<a class='link_forget' href='findpwd.html' target='_blank'>忘记密码？</a>");
+    		}else if(data.code=="-1"){
+    			alert(data.message);
+    		};
+    	})	
+    }  
 });
 $("#PHONECODE").focus(function(){//验证码获取
 	$('.PHONECODE .notice').html("");

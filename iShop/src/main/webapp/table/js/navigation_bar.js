@@ -49,4 +49,10 @@ $(function(){
         	$(this).find("h1 span").toggleClass("icon-ishop_8-02").parents().siblings("li").find("h1 span").removeClass("icon-ishop_8-02");   	
         }   
     });
+    var key_val=sessionStorage.getItem("key_val");
+    key_val=JSON.parse(key_val);
+    var url=key_val.url;
+    console.log(key_val.url);
+    console.log(key_val.func_code);
+    $('#iframepage').attr("src",url);
 })
