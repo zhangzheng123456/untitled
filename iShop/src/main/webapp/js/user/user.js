@@ -5,7 +5,6 @@ var value="";//收索的关键词
 var key_val=sessionStorage.getItem("key_val");
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-// var funcCode=$(window.parent.document).find('#iframepage').attr("data-code");
 console.log(funcCode);
 //模仿select
 $(function(){  
@@ -195,6 +194,7 @@ function jumpBianse(){
 	//双击跳转
 	$(".table tbody tr").dblclick(function(){
 	    id=$(this).attr("id");
+        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
 	})
 	//点击tr input是选择状态  tr增加class属性
 	$(".table tbody tr").click(function(){
@@ -219,7 +219,7 @@ $("#search").keydown(function() {
 	var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
     var param={};
-	param["value"]=value;
+	param["searchValue"]=value;
 	param["pageNumber"]=pageNumber;
 	param["pageSize"]=pageSize;
 	if(event.keyCode == 13){
@@ -229,11 +229,10 @@ $("#search").keydown(function() {
 //搜索的请求函数
 function POST(param){
     console.log(param);
-	oc.postRequire("post","user/search","0",param,function(data){
+	oc.postRequire("post","/user/search","0",param,function(data){
 		if(data.code=="0"){
 			message=JSON.parse(data.message);
-			// content=message.content;
-			// cout=message.totalPages;
+            var user=message.user;
 			$(".table tbody").empty();
 			if(content.length<=0){
 				$(".table p").remove();

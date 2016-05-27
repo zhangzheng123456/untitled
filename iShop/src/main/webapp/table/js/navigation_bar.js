@@ -61,5 +61,4 @@ $(function(){
     console.log(key_val.url);
     console.log(key_val.func_code);
     $('#iframepage').attr("src",url);
-    
 })
