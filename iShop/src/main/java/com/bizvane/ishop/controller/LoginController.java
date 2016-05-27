@@ -8,10 +8,9 @@ import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.LoginLogService;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.service.UserService;
-
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,7 +31,7 @@ public class LoginController {
     @Autowired
     LoginLogService loginLogService;
 
-    private static Logger log = LoggerFactory.getLogger(LoginController.class);
+    private static final Logger log = Logger.getLogger(LoginController.class);
 
     String id;
 
@@ -184,6 +183,7 @@ public class LoginController {
     @RequestMapping(value = "/userlogin",method = RequestMethod.POST)
     @ResponseBody
     public String Login(HttpServletRequest request) {
+        log.info("------------starttime"+new Date());
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
@@ -195,6 +195,7 @@ public class LoginController {
             String phone = jsonObject.get("phone").toString();
             String password = jsonObject.get("password").toString();
             log.info("phone:"+phone+" password:"+password);
+            log.info("------------start search"+new Date());
             JSONObject user_info = userService.login(request,phone,password);
             if (user_info==null){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

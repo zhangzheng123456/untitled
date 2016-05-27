@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.controller.LoginController;
 import com.bizvane.ishop.entity.CorpInfo;
 import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.dao.UserInfoMapper;
@@ -15,9 +16,8 @@ import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.Status;
 import com.bizvane.sun.v1.common.ValueType;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     ValidateCodeService validateCodeService;
 
-    private static Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    private static final Logger log = Logger.getLogger(UserServiceImpl.class);
     String[] arg = new String[]{"--Ice.Config=client.config"};
     Client client = new Client(arg);
 
@@ -85,6 +85,7 @@ public class UserServiceImpl implements UserService {
     public JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException {
         System.out.println("---------login--------");
         UserInfo login_user = userInfoMapper.selectLogin(phone, password);
+        log.info("------------end search"+new Date());
         JSONObject user_info = new JSONObject();
         if (login_user == null) {
             return null;
