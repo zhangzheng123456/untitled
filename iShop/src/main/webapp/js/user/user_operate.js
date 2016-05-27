@@ -172,18 +172,27 @@ jQuery(document).ready(function(){
 	var _command="/user/select";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
-		// if(data.code=="0"){
-		// 	if(opt.success){
-		// 		opt.success();
-		// 	}
-		// 	// window.location.href="";
-		// }else if(data.code=="-1"){
-		// 	art.dialog({
-		// 		time: 1,
-		// 		lock:true,
-		// 		cancel: false,
-		// 		content: data[0].message
-		// 	});
-		// }
+		if(data.code=="0"){
+			var msg=data.message;
+			$("#ACCOUNT").val(msg.user_code);
+			$("#USER_NAME").val(msg.username);
+			$("#preview img").attr("src",msg.avater);
+			$("#USER_PHONE").val(msg.phone);
+			$("#USER_EMAIL").val(msg.email);
+			if(msg.sex=="M"){
+				$("#USER_SEX").val("女");
+			}else if(msg.sex=="F"){
+				$("#USER_SEX").val("男");
+			}
+			$("#OWN_CORP").val(msg.corp_code);
+			$("#OWN_RIGHT").val(msg.role_code);
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data[0].message
+			});
+		}
 	});
 });
