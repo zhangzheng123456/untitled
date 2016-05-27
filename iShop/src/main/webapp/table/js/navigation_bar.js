@@ -26,6 +26,8 @@ $(function(){
     	console.log(func_code);
     	$('#iframepage').attr("src",src);
     	$('#iframepage').attr("data-code",func_code);
+        var key_val={"url":src,"func_code":func_code};
+        sessionStorage.setItem("key_val",JSON.stringify(key_val));
         $(this).find("span").addClass("icon-ishop_8-01");
         $(this).find("a").css({color:"#6cc1c8"});
         $(this).siblings("dd").find("a").css({color:"#fff"});
@@ -47,6 +49,10 @@ $(function(){
         if(src=="undefined"){
         	$(this).find("h1").next("dl").slideToggle(300).parents().siblings("li").find("dl").slideUp(300);
         	$(this).find("h1 span").toggleClass("icon-ishop_8-02").parents().siblings("li").find("h1 span").removeClass("icon-ishop_8-02");   	
+        }
+        if(src!=="underfined"&&func_code!=="underfined"){
+            var key_val={"url":src,"func_code":func_code};
+            sessionStorage.setItem("key_val",JSON.stringify(key_val));   
         }   
     });
     var key_val=sessionStorage.getItem("key_val");
@@ -55,4 +61,5 @@ $(function(){
     console.log(key_val.url);
     console.log(key_val.func_code);
     $('#iframepage').attr("src",url);
+    
 })

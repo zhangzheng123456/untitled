@@ -11,7 +11,7 @@ $("#PHONENUMBER").blur(function(){//手机号失去焦点的时候的验证
     	$('.PHONENUMBER .notice').html("手机号码格式不正确!");
     }
     if(PHONENUMBER!==""&&reg.test(PHONENUMBER)==true){
-    	oc.postRequire("post", "/authcode", "find", param, function(data){
+    	oc.postRequire("post", "/phone_exist", "find", param, function(data){
     		if(data.code=='0'){
     			$('.PHONENUMBER .notice').html("该手机号已被绑定,请<a class='link_blue' href='login.html' target='_blank'>直接登录</a>或<a class='link_forget' href='findpwd.html' target='_blank'>忘记密码？</a>");
     		}else if(data.code=="-1"){

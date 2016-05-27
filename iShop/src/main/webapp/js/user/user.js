@@ -275,8 +275,6 @@ $("#delete").click(function(){
     oc.postRequire("post","logic/list/search","0",param,function(data){
 
     })
-    $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-    $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
 })  
 //删除
 $("#remove").click(function(){
