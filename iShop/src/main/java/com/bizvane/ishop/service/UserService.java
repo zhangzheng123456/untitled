@@ -27,4 +27,9 @@ public interface UserService {
 
     List<UserInfo> selectBySearch(String corp_code,String search_value) throws SQLException;
 
+    String userCodeExist(String user_code,String corp_coded) throws SQLException;
+
+    String register(String message) throws SQLException;
+
+    String getAuthCode(String phone,String platform);
 }

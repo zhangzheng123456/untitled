@@ -1,10 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.dao.FunctionMapper;
 import com.bizvane.ishop.entity.Action;
 import com.bizvane.ishop.entity.Function;
-import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.service.FunctionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -148,7 +148,8 @@ public class FunctionServiceImpl implements FunctionService{
         PageInfo<Action> page = new PageInfo<Action>(list);
         JSONObject result = new JSONObject();
 
-        result.put("user",page);
+        result.put("user", JSON.toJSONString(page));
+        result.put("222",list);
         return result.toString();
     }
 }

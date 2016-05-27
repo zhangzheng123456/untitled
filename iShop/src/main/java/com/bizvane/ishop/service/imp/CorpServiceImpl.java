@@ -2,7 +2,6 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.CorpInfoMapper;
 import com.bizvane.ishop.entity.CorpInfo;
-import com.bizvane.ishop.exception.UserException;
 import com.bizvane.ishop.service.CorpService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,7 +34,7 @@ public class CorpServiceImpl implements CorpService {
     }
 
     public List<CorpInfo> selectAllCorp(String search_value) throws SQLException {
-        return corpInfoMapper.selectAllCorp(search_value);
+        return corpInfoMapper.selectAllCorp("%"+search_value+"%");
     }
 
     public String selectMaxCorpCode(){

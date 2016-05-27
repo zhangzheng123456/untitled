@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.LoginLogMapper">
+<mapper namespace="com.bizvane.ishop.dao.ValidataCodeMapper">
 
-    <select id="selectByLogId" resultType="com.bizvane.ishop.entity.LoginLog">
+    <select id="selectByCodeId" resultType="com.bizvane.ishop.entity.ValidateCode">
         select *
-        from DEF_LOGIN_LOG
+        from DEF_VALIDATE_CODE
         where
-        <if test="log_id != 0">
-            ID = #{log_id}
+        <if test="code_id != 0">
+            ID = #{code_id}
         </if>
         <if test="phone != null and phone !=''">
             phone = #{phone}
         </if>
     </select>
 
-    <insert id="insertLoginLog" parameterType="com.bizvane.ishop.entity.LoginLog">
-        insert into DEF_LOGIN_LOG
+    <insert id="insertValidateCode" parameterType="com.bizvane.ishop.entity.ValidateCode">
+        insert into DEF_VALIDATE_CODE
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="phone!=null">
                 phone,
             </if>
-            <if test="content!=null">
-                content,
+            <if test="validate_code!=null">
+                validate_code,
             </if>
             <if test="platform!=null">
                 platform,
@@ -46,8 +46,8 @@
             <if test="phone!=null">
                 #{phone},
             </if>
-            <if test="content!=null">
-                #{content},
+            <if test="validate_code!=null">
+                #{validate_code},
             </if>
             <if test="platform!=null">
                 #{platform},
@@ -70,14 +70,14 @@
         </trim>
     </insert>
 
-    <update id="updateByLogId" parameterType="com.bizvane.ishop.entity.LoginLog">
-        UPDATE DEF_LOGIN_LOG
+    <update id="updateByCodeId" parameterType="com.bizvane.ishop.entity.ValidateCode">
+        UPDATE DEF_VALIDATE_CODE
         <trim prefix="SET" suffixOverrides=",">
             <if test="phone!=null and phone!='' ">
                 phone = #{phone},
             </if>
-            <if test="content!=null and content!='' ">
-                content = #{content},
+            <if test="validate_code!=null and validate_code!='' ">
+                validate_code = #{validate_code},
             </if>
             <if test="platform!=null and platform!='' ">
                 platform = #{platform},
@@ -101,9 +101,9 @@
         WHERE ID = #{id};
     </update>
 
-    <delete id="deleteByLogId">
+    <delete id="deleteByCodeId">
         delete from
-        DEF_LOGIN_LOG
+        DEF_VALIDATE_CODE
         where ID = #{id}
     </delete>
 </mapper>

@@ -6,7 +6,36 @@
     select *
     from DEF_STORE
     where ID=#{id}
-</select>
+    </select>
+    <select id="selectAllShop" resultType="com.bizvane.ishop.entity.ShopInfo">
+        select *
+        from DEF_STORE
+        where 1 = 1
+        <if test="corp_code != null and corp_code !=''">
+            AND CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND STORE_CODE like #{search_value}
+            OR ID like #{search_value}
+            OR STORE_NAME like #{search_value}
+            OR BRAND_CODE like #{search_value}
+            OR BRAND_NAME like #{search_value}
+            OR STORE_AREA like #{search_value}
+            OR CORP_CODE like #{search_value}
+            OR MODIFIED_DATE like #{search_value}
+            OR MODIFIER like #{search_value}
+            OR ISACTIVE like #{search_value}
+        </if>
+        ORDER BY ID
+    </select>
+
+    <select id="selectShopCode" resultType="com.bizvane.ishop.entity.ShopInfo">
+        select *
+        from DEF_STORE
+        WHERE
+        STORE_CODE = #{0} AND CORP_CODE = #{1}
+    </select>
+
     <delete id="deleteByShopInfoId">
         delete from
         DEF_STORE
@@ -34,6 +63,9 @@
             </if>
             <if test="corp_code!=null">
                 corp_code,
+            </if>
+            <if test="flg_tob!=null">
+                flg_tob,
             </if>
             <if test="modified_date!=null">
                 modified_date,
@@ -69,6 +101,9 @@
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
+            </if>
+            <if test="flg_tob!=null">
+                #{flg_tob},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -107,6 +142,9 @@
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},
+            </if>
+            <if test="flg_tob!=null and flg_tob!=''">
+                #{flg_tob},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},

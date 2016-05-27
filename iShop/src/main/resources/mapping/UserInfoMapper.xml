@@ -5,17 +5,18 @@
     <select id="selectByUserId" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
         from DEF_USER
-        where ID = #{id}
+        where
+        <if test="user_id != 0">
+            ID = #{corp_id}
+        </if>
+        <if test="phone != null and phone !=''">
+            PHONE = #{phone}
+        </if>
     </select>
     <select id="selectLogin" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
         from DEF_USER
         where PHONE = #{0} AND PASSWORD = #{1}
-    </select>
-    <select id="selectByPhone" resultType="com.bizvane.ishop.entity.UserInfo">
-        select *
-        from DEF_USER
-        where PHONE = #{phone}
     </select>
     <select id="selectAllUser" resultType="com.bizvane.ishop.entity.UserInfo">
         select *
@@ -38,6 +39,14 @@
         </if>
         ORDER BY ID
     </select>
+
+    <select id="selectUserCode" resultType="com.bizvane.ishop.entity.UserInfo">
+    select *
+    from DEF_USER
+    WHERE
+    USER_CODE = #{0} AND CORP_CODE = #{1}
+</select>
+
     <delete id="deleteByUserId">
         delete from
         DEF_USER

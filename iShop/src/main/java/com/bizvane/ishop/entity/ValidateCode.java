@@ -5,14 +5,14 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/5/19.
  */
-public class LogInfo {
+public class ValidateCode {
     private int id;
     //平台
     private String platform;
     //手机号
     private String phone;
     //内容
-    private String content;
+    private String validate_code;
     //修改时间
     private Date modified_date;
     //修改人
@@ -48,12 +48,12 @@ public class LogInfo {
         this.phone = phone;
     }
 
-    public String getContent() {
-        return content;
+    public String getValidate_code() {
+        return validate_code;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setValidate_code(String validate_code) {
+        this.validate_code = validate_code;
     }
 
     public Date getModified_date() {

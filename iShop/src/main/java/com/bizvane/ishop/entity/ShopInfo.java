@@ -32,6 +32,12 @@ public class ShopInfo {
     //是否可用
     private String isactive;
 
+    public ShopInfo(){}
+
+    public ShopInfo(int id){
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
