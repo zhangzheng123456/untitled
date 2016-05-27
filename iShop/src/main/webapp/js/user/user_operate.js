@@ -175,9 +175,8 @@ jQuery(document).ready(function(){
 		if(data.code=="0"){
 			var msg=data.message;
 			console.log(msg);
-			console.log(msg.user_code);
-			$("#ACCOUNT").val(msg.user_code);
-			$("#USER_NAME").val(msg.username);
+			$("#ACCOUNT").val(msg["user_code"]);
+			$("#USER_NAME").val(JSON.parse(msg)["username"]);
 			$("#preview img").attr("src",msg.avater);
 			$("#USER_PHONE").val(msg.phone);
 			$("#USER_EMAIL").val(msg.email);
