@@ -193,7 +193,7 @@ jQuery(document).ready(function(){
 				time: 1,
 				lock:true,
 				cancel: false,
-				content: data[0].message
+				content: data.message
 			});
 		}
 	});
