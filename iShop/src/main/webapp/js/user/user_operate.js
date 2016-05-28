@@ -89,7 +89,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
+				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"corp_code":OWN_CORP,"role_code":OWN_RIGHT};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -112,12 +112,13 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_RIGHT=$("#OWN_RIGHT").val();
 				var _command="/user/edit";//接口名
+				console.log(HEADPORTRAIT);
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
+				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"corp_code":OWN_CORP,"role_code":OWN_RIGHT};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
