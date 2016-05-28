@@ -97,7 +97,7 @@ var oc = new ObjectControl();
 	};
 	staffgoaljs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
-		_params=JSON.stringify(_params);
+		// _params=JSON.stringify(_params);
 		console.log(_params);
 		oc.postRequire("post", _command, _params, function(data){
 			if(data.code=="0"){
@@ -110,7 +110,7 @@ var oc = new ObjectControl();
 					time: 1,
 					lock:true,
 					cancel: false,
-					content: data[0].message
+					content: data.message
 				});
 			}
 		});
