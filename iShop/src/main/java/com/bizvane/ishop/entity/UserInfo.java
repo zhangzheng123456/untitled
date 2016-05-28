@@ -27,17 +27,23 @@ public class UserInfo {
 	//角色编号
 	private String role_code;
 	//上次登录时间
-	private Date login_time_recently;
+	private String login_time_recently;
 	//修改时间
-	private Date modified_date;
+	private String modified_date;
 	//修改人
 	private String modifier;
 	//创建时间
-	private Date created_date;
+	private String created_date;
 	//创建者
 	private String creater;
 	//是否可用
 	private String isactive;
+
+	private CorpInfo corpInfo;
+
+	private Role role;
+
+	private ShopInfo shopInfo;
 
 	public UserInfo(){}
 
@@ -125,6 +131,14 @@ public class UserInfo {
 		this.corp_code = corp_code;
 	}
 
+//	public String getCorp_name() {
+//		return corp_name;
+//	}
+//
+//	public void setCorp_name(String corp_name) {
+//		this.corp_name = corp_name;
+//	}
+
 	public String getStore_code() {
 		return store_code;
 	}
@@ -141,19 +155,19 @@ public class UserInfo {
 		this.role_code = role_code;
 	}
 
-	public Date getLogin_time_recently() {
+	public String getLogin_time_recently() {
 		return login_time_recently;
 	}
 
-	public void setLogin_time_recently(Date login_time_recently) {
+	public void setLogin_time_recently(String login_time_recently) {
 		this.login_time_recently = login_time_recently;
 	}
 
-	public Date getModified_date() {
+	public String getModified_date() {
 		return modified_date;
 	}
 
-	public void setModified_date(Date modified_date) {
+	public void setModified_date(String modified_date) {
 		this.modified_date = modified_date;
 	}
 
@@ -165,11 +179,11 @@ public class UserInfo {
 		this.modifier = modifier;
 	}
 
-	public Date getCreated_date() {
+	public String getCreated_date() {
 		return created_date;
 	}
 
-	public void setCreated_date(Date created_date) {
+	public void setCreated_date(String created_date) {
 		this.created_date = created_date;
 	}
 
@@ -187,5 +201,29 @@ public class UserInfo {
 
 	public void setIsactive(String isactive) {
 		this.isactive = isactive;
+	}
+
+	public CorpInfo getCorpInfo() {
+		return corpInfo;
+	}
+
+	public void setCorpInfo(CorpInfo corpInfo) {
+		this.corpInfo = corpInfo;
+	}
+
+	public Role getRole() {
+		return role;
+	}
+
+	public void setRole(Role role) {
+		this.role = role;
+	}
+
+	public ShopInfo getShopInfo() {
+		return shopInfo;
+	}
+
+	public void setShopInfo(ShopInfo shopInfo) {
+		this.shopInfo = shopInfo;
 	}
 }

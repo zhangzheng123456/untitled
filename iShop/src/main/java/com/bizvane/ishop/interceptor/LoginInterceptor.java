@@ -31,7 +31,7 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        response.sendRedirect("/login.jsp");
+        response.sendRedirect("/login");
 		return true;  
     }
 

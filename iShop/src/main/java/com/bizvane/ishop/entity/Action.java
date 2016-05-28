@@ -13,11 +13,11 @@ public class Action {
     //功能名
     private String function_code;
     //修改时间
-    private Date modified_date;
+    private String modified_date;
     //修改人
     private String modifier;
     //创建时间
-    private Date created_date;
+    private String created_date;
     //创建者
     private String creater;
     //是否可用
@@ -55,11 +55,11 @@ public class Action {
         this.function_code = function_code;
     }
 
-    public Date getModified_date() {
+    public String getModified_date() {
         return modified_date;
     }
 
-    public void setModified_date(Date modified_date) {
+    public void setModified_date(String modified_date) {
         this.modified_date = modified_date;
     }
 
@@ -71,11 +71,11 @@ public class Action {
         this.modifier = modifier;
     }
 
-    public Date getCreated_date() {
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 

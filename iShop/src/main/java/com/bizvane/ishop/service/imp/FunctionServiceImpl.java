@@ -23,6 +23,9 @@ public class FunctionServiceImpl implements FunctionService {
     @Autowired
     FunctionMapper functionMapper;
 
+    /**
+     *获取user所有功能模块
+     */
     public JSONArray selectAllFunctions(int user_id, String role_code) {
         List<Function> func_info = functionMapper.selectAllFun(user_id, role_code);
         JSONArray modules = new JSONArray();
@@ -86,6 +89,10 @@ public class FunctionServiceImpl implements FunctionService {
         return modules;
     }
 
+    /**
+     *获取用户所有动作权限
+     * （暂未使用）
+     */
     public JSONArray selectAllActions(int user_id, String role_code) {
         List<Function> act_info = functionMapper.selectAllFunction(user_id, role_code);
         JSONArray functions = new JSONArray();
@@ -132,6 +139,9 @@ public class FunctionServiceImpl implements FunctionService {
         return functions;
     }
 
+    /**
+     *按功能获取user动作权限
+     */
     public JSONArray selectActionByFun(int user_id, String role_code, String function_code) {
         List<Action> act_info = functionMapper.selectActionByFun(user_id, role_code, function_code);
         JSONArray actions = new JSONArray();

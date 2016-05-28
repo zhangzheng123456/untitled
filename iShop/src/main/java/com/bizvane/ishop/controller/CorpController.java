@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -44,6 +45,8 @@ public class CorpController {
     private CorpService corpService;
     @Autowired
     private FunctionService functionService;
+
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     /*
     * 列表
@@ -117,9 +120,9 @@ public class CorpController {
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
             Date now = new Date();
-            corp.setCreated_date(now);
+            corp.setCreated_date(sdf.format(now));
             corp.setCreater(user_id);
-            corp.setModified_date(now);
+            corp.setModified_date(sdf.format(now));
             corp.setModifier(user_id);
             corp.setIsactive(jsonObject.get("isactive").toString());
             corpService.insertCorp(corp);
@@ -157,7 +160,7 @@ public class CorpController {
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
             Date now = new Date();
-            corp.setModified_date(now);
+            corp.setModified_date(sdf.format(now));
             corp.setModifier(user_id);
             corp.setIsactive(jsonObject.get("isactive").toString());
             corpService.updateByCorpId(corp);
@@ -215,22 +218,14 @@ public class CorpController {
     /**
      * 企业选择
      */
-    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @RequestMapping("/find/{id}")
     @ResponseBody
-    public String findById(HttpServletRequest request) {
+    public String findById(@PathVariable Integer corp_id) {
         DataBean bean = new DataBean();
         String data = null;
         try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String corp_id = jsonObject.get("id").toString();
 
-            data = JSON.toJSONString(corpService.selectByCorpId(Integer.parseInt(corp_id), ""));
+            data = JSON.toJSONString(corpService.selectByCorpId(corp_id, ""));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

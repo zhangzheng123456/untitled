@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.bean.PageBean;
 import com.bizvane.ishop.entity.UserInfo;
 import org.json.JSONObject;
 
@@ -25,11 +26,11 @@ public interface UserService {
 
     UserInfo phoneExist(String phone) throws SQLException;
 
-    List<UserInfo> selectBySearch(String corp_code,String search_value) throws SQLException;
+    PageBean<UserInfo> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
     String userCodeExist(String user_code,String corp_coded) throws SQLException;
 
-    String register(String message) throws SQLException;
+    String register(String message) throws Exception;
 
     String getAuthCode(String phone,String platform);
 }

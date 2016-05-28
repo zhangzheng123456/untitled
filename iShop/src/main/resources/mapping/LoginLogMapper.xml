@@ -106,4 +106,54 @@
         DEF_LOGIN_LOG
         where ID = #{id}
     </delete>
+
+    <insert id="insertTest" parameterType="com.bizvane.ishop.entity.VIPInfo">
+        insert into DEF_VIP
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="VIP_CODE!=null">
+                VIP_CODE,
+            </if>
+            <if test="VIP_NAME!=null">
+                VIP_NAME,
+            </if>
+            <if test="PHONE!=null">
+                PHONE,
+            </if>
+            <if test="BIRTHDAY != null">
+                BIRTHDAY,
+            </if>
+            <if test="VIP_TYPE != null">
+                VIP_TYPE,
+            </if>
+            <if test="VIP_CARD_NUMBER != null">
+                VIP_CARD_NUMBER,
+            </if>
+
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="VIP_CODE!=null">
+                #{VIP_CODE},
+            </if>
+            <if test="VIP_NAME!=null">
+                #{VIP_NAME},
+            </if>
+            <if test="PHONE!=null">
+                #{PHONE},
+            </if>
+            <if test="BIRTHDAY != null">
+                #{BIRTHDAY},
+            </if>
+            <if test="VIP_TYPE != null">
+                #{VIP_TYPE},
+            </if>
+            <if test="VIP_CARD_NUMBER != null">
+                #{VIP_CARD_NUMBER},
+            </if>
+
+        </trim>
+    </insert>
+<select id="selectTest" resultType="com.bizvane.ishop.entity.VIPInfo">
+    select * from DEF_VIP
+</select>
+
 </mapper>

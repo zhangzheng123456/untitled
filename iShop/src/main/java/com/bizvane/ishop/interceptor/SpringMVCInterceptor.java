@@ -5,6 +5,7 @@ package com.bizvane.ishop.interceptor;
  */
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
@@ -21,6 +22,13 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request,
                              HttpServletResponse response, Object handler) throws Exception {
         // TODO Auto-generated method stub
+        HttpSession session = request.getSession(true);
+        if (session.getAttribute("user_id") != null) {
+            System.out.println("-------------1");
+            return true;
+        }
+        System.out.println("-------------2");
+        response.sendRedirect("login.html");
         return false;
     }
 

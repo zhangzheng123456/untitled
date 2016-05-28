@@ -3,6 +3,7 @@ package com.bizvane.ishop.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
+import com.bizvane.ishop.bean.PageBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.ShopInfo;
 import com.bizvane.ishop.entity.UserInfo;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -43,6 +45,8 @@ public class UserController {
     private FunctionService functionService;
 
     String id;
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
+
 
     /**
      * 用户管理
@@ -61,17 +65,14 @@ public class UserController {
 
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
             JSONObject result = new JSONObject();
-            List<UserInfo> list;
+            PageBean<UserInfo> list;
             if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
-                PageHelper.startPage(page_number, page_size);
-                list = userService.selectBySearch("", "");
+                list = userService.selectBySearch(page_number,page_size,"", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                PageHelper.startPage(page_number, page_size);
-                list = userService.selectBySearch(corp_code, "");
+                list = userService.selectBySearch(page_number,page_size,corp_code, "");
             }
-            PageInfo<UserInfo> page = new PageInfo<UserInfo>(list);
             result.put("user", list);
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -119,9 +120,9 @@ public class UserController {
             user.setPassword(jsonObject.get("password").toString());
 
             Date now = new Date();
-            user.setCreated_date(now);
+            user.setCreated_date(sdf.format(now));
             user.setCreater(user_id);
-            user.setModified_date(now);
+            user.setModified_date(sdf.format(now));
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             String exist = userService.userCodeExist(user_code, corp_code);
@@ -173,7 +174,7 @@ public class UserController {
             user.setRole_code(jsonObject.get("role_code").toString());
             user.setStore_code(jsonObject.get("store_code").toString());
             Date now = new Date();
-            user.setModified_date(now);
+            user.setModified_date(sdf.format(now));
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             userService.update(user);
@@ -280,18 +281,15 @@ public class UserController {
 
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            List<UserInfo> list;
+            PageBean<UserInfo> list;
             if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
-                PageHelper.startPage(page_number, page_size);
-                list = userService.selectBySearch("", search_value);
+                list = userService.selectBySearch(page_number, page_size,"", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                PageHelper.startPage(page_number, page_size);
-                list = userService.selectBySearch(corp_code, search_value);
+                list = userService.selectBySearch(page_number, page_size,corp_code, search_value);
             }
-            PageInfo<UserInfo> page = new PageInfo<UserInfo>(list);
-            result.put("users", list);
+            result.put("users", JSON.toJSON(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

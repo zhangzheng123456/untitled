@@ -14,11 +14,11 @@ public class LoginLog {
     //内容
     private String content;
     //修改时间
-    private Date modified_date;
+    private String modified_date;
     //修改人
     private String modifier;
     //创建时间
-    private Date created_date;
+    private String created_date;
     //创建者
     private String creater;
     //是否可用
@@ -56,11 +56,11 @@ public class LoginLog {
         this.content = content;
     }
 
-    public Date getModified_date() {
+    public String getModified_date() {
         return modified_date;
     }
 
-    public void setModified_date(Date modified_date) {
+    public void setModified_date(String modified_date) {
         this.modified_date = modified_date;
     }
 
@@ -72,11 +72,11 @@ public class LoginLog {
         this.modifier = modifier;
     }
 
-    public Date getCreated_date() {
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 

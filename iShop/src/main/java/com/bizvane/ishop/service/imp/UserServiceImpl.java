@@ -1,8 +1,8 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONArray;
+import com.bizvane.ishop.bean.PageBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.controller.LoginController;
 import com.bizvane.ishop.entity.CorpInfo;
 import com.bizvane.ishop.entity.UserInfo;
 import com.bizvane.ishop.dao.UserInfoMapper;
@@ -16,6 +16,8 @@ import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.Status;
 import com.bizvane.sun.v1.common.ValueType;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +25,9 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.*;
+
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -45,15 +49,17 @@ public class UserServiceImpl implements UserService {
     String[] arg = new String[]{"--Ice.Config=client.config"};
     Client client = new Client(arg);
 
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
+
     public UserInfo getUserById(int id) throws SQLException {
-        return userInfoMapper.selectByUserId(id, "");
+        return userInfoMapper.selectUserById(id);
     }
 
     /**
      * 验证手机号是否已存在
      */
     public UserInfo phoneExist(String phone) throws SQLException {
-        return userInfoMapper.selectByUserId(0, phone);
+        return userInfoMapper.selectByPhone(phone);
     }
 
     /**
@@ -102,7 +108,7 @@ public class UserServiceImpl implements UserService {
             request.getSession().setAttribute("menu", menu);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
-            login_user.setLogin_time_recently(now);
+            login_user.setLogin_time_recently(sdf.format(now));
             update(login_user);
 
             user_info.put("user_id", user_id);
@@ -130,7 +136,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 注册
      */
-    public String register(String message) throws SQLException {
+    public String register(String message) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String phone = jsonObject.get("PHONENUMBER").toString();
@@ -142,8 +148,8 @@ public class UserServiceImpl implements UserService {
 
         ValidateCode code = validateCodeService.selectValidateCode(0, phone);
         Date now = new Date();
-        Date modified_date = code.getModified_date();
-        Date time = modified_date;
+        String modified_date = code.getModified_date();
+        Date time = sdf.parse(modified_date);
         long timediff = (now.getTime() - time.getTime()) / 1000;
         if (auth_code.equals(code.getValidate_code()) && timediff < 3600) {
             System.out.println("---------auth_code----------");
@@ -153,8 +159,8 @@ public class UserServiceImpl implements UserService {
             user.setPhone(phone);
             user.setPassword(password);
             user.setRole_code("R500000");
-            user.setCreated_date(now);
-            user.setModified_date(now);
+            user.setCreated_date(sdf.format(now));
+            user.setModified_date(sdf.format(now));
             insert(user);
             //拼接corp_code
             String max_corp_code = corpService.selectMaxCorpCode();
@@ -173,8 +179,8 @@ public class UserServiceImpl implements UserService {
             corp.setAddress(address);
             corp.setContact(user_name);
             corp.setContact_phone(phone);
-            corp.setCreated_date(now);
-            corp.setModified_date(now);
+            corp.setCreated_date(sdf.format(now));
+            corp.setModified_date(sdf.format(now));
             corpService.insertCorp(corp);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
@@ -185,8 +191,13 @@ public class UserServiceImpl implements UserService {
      * @param corp_code
      * @param search_value
      */
-    public List<UserInfo> selectBySearch(String corp_code, String search_value) throws SQLException {
-        return userInfoMapper.selectAllUser(corp_code, "%" + search_value + "%");
+    public PageBean<UserInfo> selectBySearch(int page_number,int page_size,String corp_code, String search_value) throws SQLException {
+
+        PageHelper.startPage(page_number, page_size);
+        List<UserInfo> users = userInfoMapper.selectAllUser(corp_code, "%" + search_value + "%");
+        PageBean<UserInfo> page = new PageBean<UserInfo>(users);
+
+        return page;
     }
 
     /**
@@ -224,15 +235,15 @@ public class UserServiceImpl implements UserService {
                 code.setValidate_code(authcode);
                 code.setPhone(phone);
                 code.setPlatform(platform);
-                code.setCreated_date(now);
-                code.setModified_date(now);
+                code.setCreated_date(sdf.format(now));
+                code.setModified_date(sdf.format(now));
                 code.setCreater("root");
                 code.setModifier("root");
                 code.setIsactive(Common.IS_ACTIVE_Y);
                 validateCodeService.insertValidateCode(code);
             } else {
                 code.setValidate_code(authcode);
-                code.setModified_date(now);
+                code.setModified_date(sdf.format(now));
                 code.setModifier("root");
                 code.setPlatform(platform);
                 code.setIsactive(Common.IS_ACTIVE_Y);

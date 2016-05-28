@@ -1,7 +1,10 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.LoginLog;
+import com.bizvane.ishop.entity.VIPInfo;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface LoginLogMapper {
     int deleteByLogId(int id);
@@ -11,5 +14,9 @@ public interface LoginLogMapper {
     LoginLog selectByLogId(@Param("log_id") int log_id, @Param("phone") String phone);
 
     int updateByLogId(LoginLog record);
+
+    int insertTest(VIPInfo vip);
+
+    List<VIPInfo> selectTest();
 
 }

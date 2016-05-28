@@ -73,6 +73,8 @@ public class ShopController {
             }
             PageInfo<ShopInfo> page = new PageInfo<ShopInfo>(list);
             result.put("shops", list);
+
+    //        result.put("list", list);
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -143,7 +145,7 @@ public class ShopController {
             shop.setBrand_name(jsonObject.get("brand_name").toString());
             shop.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
-            shop.setModified_date(now);
+     //       shop.setModified_date(now);
             shop.setModifier(user_id);
             shop.setIsactive(jsonObject.get("isactive").toString());
             shopService.update(shop);
@@ -259,6 +261,8 @@ public class ShopController {
             }
             PageInfo<ShopInfo> page = new PageInfo<ShopInfo>(list);
             result.put("shops", list);
+   //         result.put("list", list);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

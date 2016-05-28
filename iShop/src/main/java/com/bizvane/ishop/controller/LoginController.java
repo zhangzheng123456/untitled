@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 @Controller
@@ -34,11 +35,25 @@ public class LoginController {
     private static final Logger log = Logger.getLogger(LoginController.class);
 
     String id;
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
-    public String index() {
-        return "login";
-    }
+
+//    @RequestMapping(value = "/", method = RequestMethod.GET)
+//    public String index(HttpServletRequest request) {
+//        return "redirect:login";
+//    }
+//        System.out.println("-------------"+request.getSession().getAttribute("user_id"));
+//        if (request.getSession().getAttribute("user_id") == null) {
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage("new user login");
+//        }else{
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage("logined");
+//        }
+//        return dataBean.getJsonStr();
+
 
     /**
      * 手机号是否已注册
@@ -212,7 +227,7 @@ public class LoginController {
                 LoginLog log = new LoginLog();
                 log.setPlatform("WEB");
                 log.setPhone(phone);
-                log.setCreated_date(now);
+                log.setCreated_date(sdf.format(now));
                 loginLogService.insertLoginLog(log);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

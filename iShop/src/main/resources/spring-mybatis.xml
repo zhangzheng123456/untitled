@@ -55,7 +55,7 @@
 		<!-- 监控数据库 -->
 		<property name="filters" value="mergeStat" />
 		<!-- 每隔1分钟把监控数据输出到日志中 -->
-		<property name ="timeBetweenLogStatsMillis" value ="60000" />
+		<property name ="timeBetweenLogStatsMillis" value ="600000" />
 	</bean>
 
 	<!-- mybatis文件配置，扫描所有mapper文件 -->

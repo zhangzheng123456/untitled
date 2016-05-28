@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -20,6 +21,8 @@ public class ShopServiceImpl implements ShopService {
 
     @Autowired
     private ShopInfoMapper shopInfoMapper;
+
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     @Override
     public ShopInfo getShopInfo(int id) throws SQLException {
@@ -47,9 +50,9 @@ public class ShopServiceImpl implements ShopService {
             shop.setBrand_name(jsonObject.get("brand_name").toString());
             shop.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
-            shop.setCreated_date(now);
+            shop.setCreated_date(sdf.format(now));
             shop.setCreater(user_id);
-            shop.setModified_date(now);
+            shop.setModified_date(sdf.format(now));
             shop.setModifier(user_id);
             shop.setIsactive(jsonObject.get("isactive").toString());
             shopInfoMapper.insertShopInfo(shop);

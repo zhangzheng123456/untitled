@@ -23,5 +23,8 @@ public class Common {
     //是否可用（否）
     public static final String IS_ACTIVE_N = "N";
 
+    //时间格式
+    public static final String DATE_FORMATE = "yyyy-MM-dd HH:MM:ss";
+
 
 }
