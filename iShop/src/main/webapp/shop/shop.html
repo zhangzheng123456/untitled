@@ -18,32 +18,34 @@
     		</div>
     		<div class="action">
     			<div class="action_l">
-    				<ul>
-    					<li>
-                            <a href="addnew_shop.html">
-        						<span class="icon-ishop_6-01"></span>
-        						新增
+    				<ul id="jurisdiction">
+                        <!-- <li id="add">
+                            <a href="javascript:void(0);">
+                                <span class="icon-ishop_6-01"></span>
+                                新增
                             </a>
-    					</li>
-    					<li class="bg" id="remove">
-    						<span class="icon-ishop_6-02"></span>
-    						删除
-    					</li>
-    					<li>
-                            <a href="editor_shop_msg.html">
-        						<span class="icon-ishop_6-03"></span>
-        						编辑
+                        </li>
+                        <li class="bg" id="remove">
+                            <span class="icon-ishop_6-02"></span>
+                            删除
+                        </li>
+                        <li id="compile">
+                            <a href="javascript:void(0);">
+                                <span class="icon-ishop_6-03"></span>
+                                编辑
                             </a>
-    					</li>
-    					<li class="bg">
-    						<span class="icon-ishop_6-04"></span>
-    						保存
-    					</li>
+                        </li> -->
+                        <!-- <li class="bg">
+                            <span class="icon-ishop_6-04"></span>
+                            保存
+                        </li> -->
+                    </ul>
+                    <ul>
                         <li class="li">
-                            <input type="text" class="input">
+                            <input type="text" class="input" id="search">
                             <i class="icon-ishop_3-05"></i>
                         </li>
-    				</ul>
+                    </ul>
     			</div>
     			<div class="action_r">
     				<ul>
@@ -119,7 +121,7 @@
                  		</tr>
                  	</thead>
                     <tbody>
-                    	<tr>
+                    	<!-- <tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
                     		</td>
@@ -268,7 +270,7 @@
                     		<td>陈磊</td>
                     		<td>2016/02/23 15:04:02</td>
                     		<td width="50px">可用</td>
-                    	</tr>         			
+                    	</tr>          -->			
                     </tbody>
     			</table>
     		</div>
@@ -330,8 +332,8 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
-    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-    <!-- <script src="../table/js/inner.js"></script> -->
+    <script src="/js/postRequire.js"></script>
+    <script src="/js/shop/shoplist.js"></script>
     <script type="text/javascript">
         $(function(){
              $('#sidebar>div:eq(1)').find('h1').addClass('h1');

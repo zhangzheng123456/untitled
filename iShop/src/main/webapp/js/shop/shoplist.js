@@ -153,15 +153,19 @@ function superaddition(data){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + data[i].id
                         + "</td><td>"
-                        + data[i].corp_name
+                        + data[i].store_code
                         + "</td><td>"
-                        + data[i].address
+                        + data[i].store_name
                         + "</td><td>"
-                        + data[i].contact
+                        + data[i].store_area
                         +"</td><td>"
-                        +data[i].contact_phone
+                        +data[i].brand_code
                         + "</td><td>"
-                        +data[i].corp_name
+                        +data[i].brand_name
+                        + "</td><td>"
+                        +data[i].corp_code
+                        + "</td><td>"
+                        +data[i].creater
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -183,18 +187,18 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/shop/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
-                var user=message.corpInfo;
+                var list=message.shops;
                 var actions=message.actions;
                 console.log(actions);
                 console.log(message);
                 cout=message.pages;
-                superaddition(user);
+                superaddition(list);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
@@ -215,7 +219,7 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
@@ -236,11 +240,11 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_add.html");
         })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
     })
 }
 //鼠标按下时触发的收索
@@ -258,7 +262,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/corp/search","0",param,function(data){
+    oc.postRequire("post","/shop/search","0",param,function(data){
         if(data.code=="0"){
             message=JSON.parse(data.message);
             var user=message.users;
@@ -304,7 +308,7 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/corp/delete","0",param,function(data){
+    oc.postRequire("post","/shop/delete","0",param,function(data){
         console.log(data);
     })
 })  
