@@ -1,4 +1,6 @@
 var oc = new ObjectControl();
+var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
@@ -246,6 +248,41 @@ function jumpBianse(){
     $('#compile').click(function(){
             $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
     })
+    //删除
+    $("#remove").click(function(){
+        var l=$(window).width();
+        var h=$(document.body).height();
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            alert("请先选中所选项");
+            return;
+        }
+        $("#p").show();
+        $("#tk").show();
+        console.log(left);
+        $("#p").css({"width":+l+"px","height":+h+"px"});
+        $("#tk").css({"left":+left+"px","top":+tp+"px"});
+    })
+    //弹框删除关闭
+    $("#delete").click(function(){
+        $("#p").hide();
+        $("#tk").hide();
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        for(var i=0,ID="";i<tr.length;i++){
+            var r=$(tr[i]).attr("id");
+            if(i<tr.length-1){
+                ID+=r+",";
+            }else{
+                 ID+=r;
+            }     
+        }
+        var param={};
+        param["id"]=ID;
+        console.log(param);
+        oc.postRequire("post","/shop/delete","0",param,function(data){
+            console.log(data);
+        })
+    })  
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -279,9 +316,6 @@ function POST(){
         }
     })
 }
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -291,41 +325,6 @@ $("#X").click(function(){
 $("#cancel").click(function(){
     $("#p").hide();
     $("#tk").hide();
-})
-//弹框删除关闭
-$("#delete").click(function(){
-    $("#p").hide();
-    $("#tk").hide();
-    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    for(var i=0,ID="";i<tr.length;i++){
-        var r=$(tr[i]).attr("id");
-        if(i<tr.length-1){
-            ID+=r+",";
-        }else{
-             ID+=r;
-        }     
-    }
-    var param={};
-    param["id"]=ID;
-    console.log(param);
-    oc.postRequire("post","/shop/delete","0",param,function(data){
-        console.log(data);
-    })
-})  
-//删除
-$("#remove").click(function(){
-    var l=$(window).width();
-    var h=$(document.body).height();
-    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    if(tr.length==0){
-        alert("请先选中所选项");
-        return;
-    }
-    $("#p").show();
-    $("#tk").show();
-    console.log(left);
-    $("#p").css({"width":+l+"px","height":+h+"px"});
-    $("#tk").css({"left":+left+"px","top":+tp+"px"});
 })
 //全选
 function checkAll(name){

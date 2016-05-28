@@ -1,4 +1,6 @@
 var oc = new ObjectControl();
+var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
@@ -242,6 +244,21 @@ function jumpBianse(){
     $('#compile').click(function(){
             $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
     })
+    //删除
+    $("#remove").click(function(){
+        var l=$(window).width();
+        var h=$(document.body).height();
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            alert("请先选中所选项");
+            return;
+        }
+        $("#p").show();
+        $("#tk").show();
+        console.log(left);
+        $("#p").css({"width":+l+"px","height":+h+"px"});
+        $("#tk").css({"left":+left+"px","top":+tp+"px"});
+    })
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -275,8 +292,6 @@ function POST(){
         }
     })
 }
-var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
-var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 console.log(left);
 //弹框关闭
 $("#X").click(function(){
@@ -308,21 +323,6 @@ $("#delete").click(function(){
         console.log(data);
     })
 })  
-//删除
-$("#remove").click(function(){
-    var l=$(window).width();
-    var h=$(document.body).height();
-    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    if(tr.length==0){
-        alert("请先选中所选项");
-        return;
-    }
-    $("#p").show();
-    $("#tk").show();
-    console.log(left);
-    $("#p").css({"width":+l+"px","height":+h+"px"});
-    $("#tk").css({"left":+left+"px","top":+tp+"px"});
-})
 //全选
 function checkAll(name){
     var el=$("tbody input");
