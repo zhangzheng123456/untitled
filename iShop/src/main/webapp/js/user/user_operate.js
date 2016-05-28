@@ -188,6 +188,12 @@ jQuery(document).ready(function(){
 			}
 			$("#OWN_CORP").val(msg.corp_code);
 			$("#OWN_RIGHT").val(msg.role_code);
+			$("#create_time").val(msg.register_time);
+			$("#recently_login").val(msg.login_time_recently);
+			$("#create_time").val(msg.register_time);
+			$("#creator").val(msg.creater);
+			$("#modify_time").val(msg.modified_date);
+			$("#modifier").val(msg.modifier);
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,

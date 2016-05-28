@@ -58,7 +58,7 @@
                         <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty"/></span>
                     </div>
                     <div id="per_type" class="item_2">
-                        <span><label>所属权限</label><input class="input_select" type="text" id="OWN_RIGHT" placeholder="请选择所属权限" readonly/><span class="down_icon icn_2"><i class="icon-ishop_8-02"></i></span>
+                        <span><label>所属角色</label><input class="input_select" type="text" id="OWN_RIGHT" placeholder="请选择所属权限" readonly/><span class="down_icon icn_2"><i class="icon-ishop_8-02"></i></span>
                             <ul>
                                 <li>系统管理员</li>
                                 <li>导购</li>
@@ -68,10 +68,10 @@
                             </ul></span><span class="add_per_icon"><i class="icon-ishop_6-01"></i>新增权限</span>
                     </div>
                     <div>
-                        <span><label>注册时间</label><input type="text" style="background: #dfdfdf;" readonly /></span>
+                        <span><label>注册时间</label><input type="text" id="register_time" style="background: #dfdfdf;" readonly /></span>
                     </div>
                     <div>
-                        <span><label>最后登录</label><input type="text" style="background: #dfdfdf;" readonly/></span>
+                        <span><label>最后登录</label><input type="text" id="recently_login" style="background: #dfdfdf;" readonly/></span>
                     </div>
                 </form>
             </div>
@@ -84,16 +84,16 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" readonly/></span>
+                        <span><label>创建时间</label><input type="text" id="create_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" readonly/></span>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" readonly/></span>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" readonly/></span>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
                     </div>
                     <div>
                     <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
