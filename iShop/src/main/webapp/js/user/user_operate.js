@@ -89,7 +89,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"corp_code":OWN_CORP,"role_code":OWN_RIGHT};
+				var _params={"user_code":ACCOUNT,"username":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"corp_code":OWN_CORP,"role_code":OWN_RIGHT};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -118,7 +118,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"corp_code":OWN_CORP,"role_code":OWN_RIGHT};
+				var _params={"user_code":ACCOUNT,"username":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"corp_code":OWN_CORP,"role_code":OWN_RIGHT};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
