@@ -80,7 +80,7 @@ var oc = new ObjectControl();
 				var CONTACTS=$("#CONTACTS").val();
 				var PHONE=$("#PHONE").val();
 				var _command="/corp/edit";//接口名
-				var opt = {//返回成功后的操作
+				var opt = {//返回成功后的操作s
 					success:function(){
 
 					}
