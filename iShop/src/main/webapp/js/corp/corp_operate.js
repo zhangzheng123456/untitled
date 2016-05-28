@@ -54,7 +54,7 @@ var oc = new ObjectControl();
 	corpjs.bindbutton=function(){
 		$(".corpadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(corpjs.firstStep()){
-				var CORPID=$("#CORPID").val();
+				// var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
@@ -65,7 +65,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"CORPID":CORPID,"CORPNAME":CORPNAME,"CORPADDRESS":CORPADDRESS,"CONTACTS":CONTACTS,"PHONE":PHONE};
+				var _params={"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -74,7 +74,7 @@ var oc = new ObjectControl();
 		$(".corpedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(corpjs.firstStep()){
 				var HEADPORTRAIT=$("#preview img").attr("src");
-				var CORPID=$("#CORPID").val();
+				// var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
@@ -85,7 +85,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"HEADPORTRAIT":HEADPORTRAIT,"CORPID":CORPID,"CORPNAME":CORPNAME,"CORPADDRESS":CORPADDRESS,"CONTACTS":CONTACTS,"PHONE":PHONE};
+				var _params={"HEADPORTRAIT":HEADPORTRAIT,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;

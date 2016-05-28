@@ -10,6 +10,7 @@
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
         body{
             margin-top:40.5px;
@@ -32,9 +33,9 @@
                      <span class="change_logo" style="position: relative;"><i class="icon-ishop_6-09"></i><input type="file" onchange="previewImage(this)"/ style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换logo</span>
                 </div>
                 <form class="conpany_msg">
-                    <div>
+                   <!--  <div>
                         <span><label>企业编号</label><input type="text" id="CORPID" verify="Empty"/> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，不能为空！"></div></div></span>
-                    </div>
+                    </div> -->
                     <div>
                         <span><label>公司名称</label><input type="text" id="CORPNAME" verify="Empty"/>
                             <div style="padding-left:80px" class="hint"><div  hintinfo="公司名称为必填项，不能为空！"></div></div>
@@ -96,10 +97,11 @@
             $('#side-menu li:nth-of-type(1)').addClass('active');
         })
     </script>
+     <!-- Dialog -->
+    <script type="text/javascript" src="../js/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
      <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-    <!-- Dialog -->
-    <script type="text/javascript" src="../js/jquery.artDialog.js"></script>
     <!-- error tips -->
      <script type="text/javascript" src="../js/corp/corp_operate.js"></script>
 </body>
