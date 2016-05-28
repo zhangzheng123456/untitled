@@ -75,6 +75,12 @@ var oc = new ObjectControl();
 				var USER_PHONE=$("#USER_PHONE").val();
 				var USER_EMAIL=$("#USER_EMAIL").val();
 				var USER_SEX=$("#USER_SEX").val();
+				var SEX="";
+				if(USER_SEX=="男"){
+					SEX="M";
+				}else if(USER_SEX=="女"){
+					SEX="F";
+				}
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_RIGHT=$("#OWN_RIGHT").val();
 				var _command="/user/add";//接口名
@@ -83,7 +89,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"ACCOUNT":ACCOUNT,"USER_NAME":USER_NAME,"HEADPORTRAIT":HEADPORTRAIT,"USER_PHONE":USER_PHONE,"USER_EMAIL":USER_EMAIL,"USER_SEX":USER_SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
+				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -97,6 +103,12 @@ var oc = new ObjectControl();
 				var USER_PHONE=$("#USER_PHONE").val();
 				var USER_EMAIL=$("#USER_EMAIL").val();
 				var USER_SEX=$("#USER_SEX").val();
+				var SEX="";
+				if(USER_SEX=="男"){
+					SEX="M";
+				}else if(USER_SEX=="女"){
+					SEX="F";
+				}
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_RIGHT=$("#OWN_RIGHT").val();
 				var _command="/user/edit";//接口名
@@ -105,7 +117,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"ACCOUNT":ACCOUNT,"USER_NAME":USER_NAME,"HEADPORTRAIT":HEADPORTRAIT,"USER_PHONE":USER_PHONE,"USER_EMAIL":USER_EMAIL,"USER_SEX":USER_SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
+				var _params={"user_code":ACCOUNT,"user_name":USER_NAME,"avatar":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"OWN_CORP":OWN_CORP,"OWN_RIGHT":OWN_RIGHT};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
