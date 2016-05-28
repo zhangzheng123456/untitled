@@ -375,6 +375,9 @@ input::-webkit-input-placeholder{
 .action_r{
 	float: right;
 }
+.action_l ul{
+	float: left;
+}
 .action_l li,.action_r li{
 	float: left;
 	width: 80px;

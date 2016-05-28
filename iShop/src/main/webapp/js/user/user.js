@@ -1,7 +1,8 @@
 var oc = new ObjectControl();
-var pageNumber=1;//默认是第一页
+var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
+var param={};//定义的对象
 var key_val=sessionStorage.getItem("key_val");
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
@@ -53,8 +54,7 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
     var container = container;
     var count = count;
     var pageSize = pageSize;
-    var a = [];
-              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    var a = [];//总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageSize == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
@@ -112,13 +112,13 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx--;
-            setPage(container, count, inx);
+            // setPage(container, count, inx);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
-                setPage(container, count, inx);
+                // setPage(container, count, inx);
                 return false;
             }
         }
@@ -127,10 +127,18 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx++;
-            setPage(container, count, inx);
+            // setPage(container, count, inx);
             return false;
         }
     }()
+    function dian(inx){
+        var inx=inx;
+        if(value==""){
+            GET(inx);
+        }else if(value!==""){
+            POST(inx);
+        }
+    }
 }
 function superaddition(data){//页面加载循环
 	console.log(data);
@@ -145,7 +153,7 @@ function superaddition(data){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + data[i].id
                         + "</td><td>"
-                        + data[i].email
+                        + data[i].avatar
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
@@ -167,17 +175,33 @@ function superaddition(data){//页面加载循环
                         +"</td></tr>");
     }
 };
-function GET(){//页面加载时的GET请求
-    oc.postRequire("get","/user/list?pageNumber="+pageNumber+"&pageSize="+pageSize
+//权限配置
+function jurisdiction(actions){
+    for(var i=0;i<actions.length;i++){
+        if(actions[i].act_name=="add"){
+            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
+        }else if(actions[i].act_name=="delete"){
+            $('#jurisdiction').append("<li class='bg' id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+        }else if(actions[i].act_name=="edit"){
+            $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+        }
+    }
+}
+//页面加载时list请求
+function GET(){
+    oc.postRequire("get","/user/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
         	console.log(data);
             if(data.code=="0"){
             	$(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var user=message.user;
+                var actions=message.actions;
+                console.log(actions);
                 console.log(message);
-                // cout=message.totalPages;
+                cout=message.pages;
                 superaddition(user);
+                jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
             }else if(data.code=="-1"){
@@ -186,6 +210,7 @@ function GET(){//页面加载时的GET请求
     });
 }
 GET();
+//加载完成以后页面进行的操作
 function jumpBianse(){
 	$(document).ready(function(){//隔行变色 
    		 $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
@@ -215,6 +240,14 @@ function jumpBianse(){
 			$(this).removeClass("tr");
 		}
 	})
+    //点击新增时页面进行的跳转
+    $('#add').click(function(){
+            $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
+        })
+    //点击编辑时页面进行的跳转
+    $('#compile').click(function(){
+            $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+    })
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -224,13 +257,13 @@ $("#search").keydown(function() {
 	param["searchValue"]=value;
 	param["pageNumber"]=pageNumber;
 	param["pageSize"]=pageSize;
+    param["funcCode"]=funcCode;
 	if(event.keyCode == 13){
 		POST(param);
 	}
 });
 //搜索的请求函数
-function POST(param){
-    console.log(param);
+function POST(){
 	oc.postRequire("post","/user/search","0",param,function(data){
 		if(data.code=="0"){
 			message=JSON.parse(data.message);

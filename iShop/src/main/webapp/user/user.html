@@ -3,8 +3,8 @@
 <head>
 	<meta charset="UTF-8">
 	<title>用户及权限之用户管理</title>
-	<link rel="stylesheet" href="/table/css/inner.css">
-    <link rel="stylesheet" href="/table/css/style.css">
+	<link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" href="../table/css/style.css">
     <script src="/table/js/jquery.min.js"></script>
 </head>
 <body>
@@ -17,7 +17,7 @@
     		</div>
     		<div class="action">
     			<div class="action_l">
-    				<ul>
+    				<ul id="jurisdiction">
     					<li id="add">
                             <a href="javascript:void(0);">
         						<span class="icon-ishop_6-01"></span>
@@ -34,15 +34,17 @@
         						编辑
                             </a>
     					</li>
-    					<li class="bg">
+    					<!-- <li class="bg">
     						<span class="icon-ishop_6-04"></span>
     						保存
-    					</li>
+    					</li> -->
+    				</ul>
+                    <ul>
                         <li class="li">
                             <input type="text" class="input" id="search">
                             <i class="icon-ishop_3-05"></i>
                         </li>
-    				</ul>
+                    </ul>
     			</div>
     			<div class="action_r">
     				<ul>
@@ -197,13 +199,5 @@
     </div>
     <script src="/js/postRequire.js"></script>
     <script type="text/javascript" src="../js/user/user.js"></script>
-    <script>
-        $('#add').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
-        })
-        $('#compile').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
-        })
-    </script>
 </body>
 </html>
