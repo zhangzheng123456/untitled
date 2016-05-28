@@ -177,8 +177,8 @@ jQuery(document).ready(function(){
 			console.log(msg);
 			console.log(msg.user_code);
 			$("#ACCOUNT").val(msg.user_code);
-			$("#USER_NAME").val(msg.username);
-			$("#preview img").attr("src",msg.avater);
+			$("#USER_NAME").val(msg.user_name);
+			$("#preview img").attr("src",msg.avatar);
 			$("#USER_PHONE").val(msg.phone);
 			$("#USER_EMAIL").val(msg.email);
 			if(msg.sex=="M"){
