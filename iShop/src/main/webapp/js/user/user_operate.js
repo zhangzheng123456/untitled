@@ -200,9 +200,9 @@ jQuery(document).ready(function(){
 			}
 			$("#OWN_CORP").val(msg.corp_code);
 			$("#OWN_RIGHT").val(msg.role_code);
-			$("#create_time").val(msg.register_time);
+			$("#register_time").val(msg.created_date);
 			$("#recently_login").val(msg.login_time_recently);
-			$("#create_time").val(msg.register_time);
+			$("#created_time").val(msg.created_date);
 			$("#creator").val(msg.creater);
 			$("#modify_time").val(msg.modified_date);
 			$("#modifier").val(msg.modifier);
