@@ -57,18 +57,18 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var BRAND_ID=$("#BRAND_ID").val();
 				var OWN_BRAND=$("#OWN_BRAND").val();
-				var AREA_ID=$("#AREA_ID").val();
+				// var AREA_ID=$("#AREA_ID").val();
 				var STORE_ID=$("#STORE_ID").val();
 				var OWN_AREA=$("#OWN_AREA").val();
 				var STORE_NAME=$("#STORE_NAME").val();
-				var SHOP_MANAGER=$("#SHOP_MANAGER").val();
+				// var SHOP_MANAGER=$("#SHOP_MANAGER").val();
 				var _command="";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"OWN_CORP":OWN_CORP,"BRAND_ID":BRAND_ID,"OWN_BRAND":OWN_BRAND,"AREA_ID":AREA_ID,"STORE_ID":STORE_ID,"OWN_AREA":OWN_AREA,"STORE_NAME":STORE_NAME,"SHOP_MANAGER":SHOP_MANAGER};
+				var _params={"corp_code":OWN_CORP,"brand_code":BRAND_ID,"brand_name":OWN_BRAND,"store_code":STORE_ID,"store_area":OWN_AREA,"store_name":STORE_NAME};
 				shopjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -79,18 +79,18 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var BRAND_ID=$("#BRAND_ID").val();
 				var OWN_BRAND=$("#OWN_BRAND").val();
-				var AREA_ID=$("#AREA_ID").val();
+				// var AREA_ID=$("#AREA_ID").val();
 				var STORE_ID=$("#STORE_ID").val();
 				var OWN_AREA=$("#OWN_AREA").val();
 				var STORE_NAME=$("#STORE_NAME").val();
-				var SHOP_MANAGER=$("#SHOP_MANAGER").val();
+				// var SHOP_MANAGER=$("#SHOP_MANAGER").val();
 				var _command="";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"OWN_CORP":OWN_CORP,"BRAND_ID":BRAND_ID,"OWN_BRAND":OWN_BRAND,"AREA_ID":AREA_ID,"STORE_ID":STORE_ID,"OWN_AREA":OWN_AREA,"STORE_NAME":STORE_NAME,"SHOP_MANAGER":SHOP_MANAGER};
+				var _params={"corp_code":OWN_CORP,"brand_code":BRAND_ID,"brand_name":OWN_BRAND,"store_code":STORE_ID,"store_area":OWN_AREA,"store_name":STORE_NAME};
 				shopjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
