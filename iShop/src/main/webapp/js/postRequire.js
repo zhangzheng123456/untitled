@@ -7,7 +7,7 @@ ObjectControl.prototype = {
 		};
 		console.log(_params);
 		jQuery.ajax({
-			url: require_url,
+			url:require_url,
 			type: require_type,
 			dataType: 'json',
 			data:{param:JSON.stringify(_params)},

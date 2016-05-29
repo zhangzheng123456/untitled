@@ -114,13 +114,13 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx--;
-            // setPage(container, count, inx);
+            setPage(container, count, inx);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
-                // setPage(container, count, inx);
+                setPage(container, count, inx);
                 return false;
             }
         }
@@ -129,21 +129,21 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx++;
-            // setPage(container, count, inx);
+            setPage(container, count, inx);
             return false;
         }
     }()
-    function dian(inx){
-        var inx=inx;
-        if(value==""){
-            GET(inx);
-        }else if(value!==""){
-            POST(inx);
-        }
-    }
+    // function dian(inx){
+    //     var inx=inx;
+    //     if(value==""){
+    //         GET(inx);
+    //     }else if(value!==""){
+    //         POST(inx);
+    //     }
+    // }
 }
 function superaddition(data){//页面加载循环
-	console.log(data);
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
@@ -163,11 +163,11 @@ function superaddition(data){//页面加载循环
                         +"</td><td>"
                         +data[i].phone
                         + "</td><td>"
-                        +data[i].corp_code
+                        +data[i].corpInfo.corp_name
                         + "</td><td>"
                         +data[i].login_time_recently
                         + "</td><td>"
-                        +data[i].role_code
+                        +data[i].role.role_name
                         + "</td><td>"
                         +data[i].modifier
                         + "</td><td>"
@@ -193,19 +193,25 @@ function jurisdiction(actions){
 function GET(){
     oc.postRequire("get","/user/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
-        	console.log(data);
             if(data.code=="0"){
             	$(".table tbody").empty();
                 var message=JSON.parse(data.message);
-                var user=message.user;
+                var list=JSON.parse(message.list);
+                var cout=list.pages;
+                var list=list.list;
+                var corpInfo=list[0].corpInfo;
+                var role=list[0].role;
+                console.log(corpInfo);
+                console.log(role);
                 var actions=message.actions;
                 console.log(actions);
+                console.log(list);
+                console.log(cout);
                 console.log(message);
-                cout=message.pages;
-                superaddition(user);
+                superaddition(list);
                 jurisdiction(actions);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
+                setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
