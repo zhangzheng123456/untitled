@@ -81,7 +81,7 @@ var oc = new ObjectControl();
 		$(".corpedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(corpjs.firstStep()){
 				var HEADPORTRAIT=$("#preview img").attr("src");
-				// var CORPID=$("#CORPID").val();
+				var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
@@ -98,7 +98,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"avater":HEADPORTRAIT,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
+				var _params={"avater":HEADPORTRAIT,"corp_code":CORPID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -163,36 +163,39 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.corp.init();//初始化
-	var id=sessionStorage.getItem("id");
-	var _params={"id":id};
-	var _command="/corp/select";
-	oc.postRequire("post", _command,"", _params, function(data){
-		console.log(data);
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			console.log(msg);
-			$("#CORPNAME").val(msg.corp_name);
-			$("#CORPADDRESS").val(msg.address);
-			$("#CONTACTS").val(msg.contact);
-			$("#PHONE").val(msg.contact_phone);
+	if($(".pre_title label").text()=="编辑企业信息"){
+		var id=sessionStorage.getItem("id");
+		var _params={"id":id};
+		var _command="/corp/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				$("#CORPID").val(msg.corp_code)
+				$("#CORPNAME").val(msg.corp_name);
+				$("#CORPADDRESS").val(msg.address);
+				$("#CONTACTS").val(msg.contact);
+				$("#PHONE").val(msg.contact_phone);
 
-			$("#created_time").val(msg.created_date);
-			$("#creator").val(msg.creater);
-			$("#modify_time").val(msg.modified_date);
-			$("#modifier").val(msg.modifier);
-			var input=$(".checkbox_isactive").find("input")[0];
-			if(msg.isactive=="Y"){
-				input.checked=true;
-			}else if(msg.isactive=="N"){
-				input.checked=false;
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
-		}
-	});
+		});
+	}
 });
