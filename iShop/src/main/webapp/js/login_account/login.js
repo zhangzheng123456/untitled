@@ -1,6 +1,5 @@
 var oc = new ObjectControl();
 var code;
-
 function createCode() { //随机生成验证码
 	code = "";
 	var codeLength = 4; //验证码的长度

@@ -57,18 +57,37 @@ input::-webkit-input-placeholder{
 	font-size: 14px;
 }
 .list{
-	height: 50px;
+	height: 30px;
 	color: #434960;
-	line-height: 50px;
+	line-height: 30px;
 }
 .list .list_l{
 	float: left;
 }
 .list .list_l li{
 	float: left;
+	position: relative;
 }
 .list .list_l li.r{
 	margin-left: 20px;
+}
+.list .list_l li.w input{
+	width: 150px;
+	height: 30px; 
+	line-height: 30px;
+}
+.list .list_l li.w .sidedown{
+	display:block;
+	width: 20px;
+	height: 30px;
+	background-color: #6cc1c8;
+	border-radius:0 5px 5px 0px;
+	position: absolute;
+	top: 0px;
+	right: -15px;
+	text-align: center;
+	line-height: 30px;
+	color:#fff;
 }
 .list .list_l li input{
 	width: 195px;
@@ -76,7 +95,7 @@ input::-webkit-input-placeholder{
 	border:none;
 	outline: none;
 	border-radius: 5px;
-	margin-left: 20px;
+	margin-left: 10px;
 	color: #888;
 	padding-left: 5px;
 }
