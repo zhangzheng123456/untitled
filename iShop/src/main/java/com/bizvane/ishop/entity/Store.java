@@ -141,4 +141,23 @@ public class Store {
     public void setIsactive(String isactive) {
         this.isactive = isactive;
     }
+
+    public String toString(){
+        final StringBuffer sb = new StringBuffer("User{");
+        sb.append("id:").append(id);
+        sb.append(", store_code:").append(store_code);
+        sb.append(", store_name:").append(store_name);
+        sb.append(", brand_code:").append(brand_code);
+        sb.append(", brand_name:").append(brand_name);
+        sb.append(", store_area:").append(store_area);
+        sb.append(", flg_tob:").append(flg_tob);
+        sb.append(", corp_code:").append(corp_code);
+        sb.append(", modified_date:").append(modified_date);
+        sb.append(", modifier:").append(modifier);
+        sb.append(", created_date:").append(created_date);
+        sb.append(", creater:").append(creater);
+        sb.append(", isactive:").append(isactive);
+        sb.append('}');
+        return sb.toString();
+    }
 }

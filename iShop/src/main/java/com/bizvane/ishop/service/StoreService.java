@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.User;
 import com.github.pagehelper.PageInfo;
 import java.sql.SQLException;
 import java.util.List;
@@ -25,4 +26,5 @@ public interface StoreService {
 
     Store getStoreByCode(String corp_code,String store_code);
 
+    List<User> getStoreUser(String corp_code, String store_code);
 }

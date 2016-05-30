@@ -57,8 +57,25 @@ public class UserServiceImpl implements UserService {
      */
     public PageInfo<User> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
 
-        PageHelper.startPage(page_number, page_size);
-        List<User> users = userMapper.selectAllUser(corp_code, "%" + search_value + "%");
+        List<User> users;
+        if (search_value.equals("")) {
+            PageHelper.startPage(page_number, page_size);
+            users = userMapper.selectAllUser(corp_code,"");
+        }else {
+            PageHelper.startPage(page_number, page_size);
+            users = userMapper.selectAllUser(corp_code, "%" + search_value + "%");
+        }
+        for (int i = 0; i < users.size(); i++) {
+            User user = users.get(i);
+            String corp_name;
+            if (user.getCorp_code() == null ||user.getCorp_code().equals("")){
+                corp_name = "";
+            }else {
+                Corp corp = corpService.selectByCorpId(0,user.getCorp_code());
+                corp_name = corp.getCorp_name();
+            }
+            user.setCorp_name(corp_name);
+        }
         PageInfo<User> page = new PageInfo<User>(users);
 
         return page;
@@ -66,20 +83,23 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
-        String store_code = user.getStore_code();
-        if (store_code!=null) {
+        String store_name = "";
+        if (user.getStore_code()==null || user.getStore_code().equals("")){
+            store_name = "";
+        }else {
             String corp_code = user.getCorp_code();
-            String[] codes = store_code.split(",");
-            JSONArray array = new JSONArray();
-            for (int i = 0; i < codes.length; i++) {
-                JSONObject obj = new JSONObject();
-                Store store = storeService.getStoreByCode(corp_code,codes[i]);
-                String store_name = store.getStore_name();
-                obj.put("store_name",store_name);
-                array.add(obj);
+            String[] ids = user.getStore_code().split(",");
+            for (int i = 0; i < ids.length; i++) {
+                Store store = storeService.getStoreByCode(corp_code,ids[i]);
+                String store_name1 = store.getStore_name();
+                store_name = store_name+store_name1;
+                if(i!=ids.length-1){
+                    store_name = store_name+",";
+                }
             }
         }
-        return userMapper.selectUserById(id);
+        user.setStore_name(store_name);
+        return user;
     }
 
     /**

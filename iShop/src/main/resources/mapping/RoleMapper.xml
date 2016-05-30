@@ -9,9 +9,6 @@
         <if test="role_id != 0">
             ID = #{role_id}
         </if>
-        <if test="corp_code != null and corp_code !=''">
-            CORP_CODE = #{corp_code}
-        </if>
     </select>
 
     <select id="selectAllRole" resultType="com.bizvane.ishop.entity.Role">
@@ -20,9 +17,6 @@
         where 1 = 1
         <if test="corp_code != null and corp_code !=''">
             AND CORP_CODE = #{corp_code}
-        </if>
-        <if test="role_head != null and role_head !=''">
-            AND role_code &lt; #{role_head}
         </if>
         <if test="search_value != null and search_value !=''">
             AND role_code like #{search_value}
@@ -35,6 +29,21 @@
         </if>
         ORDER BY ID
     </select>
+
+    <select id="selectUserRole" resultType="com.bizvane.ishop.entity.Role">
+        select *
+        from DEF_ROLE
+        where 1 = 1
+        <if test="corp_code != null and corp_code !=''">
+            AND CORP_CODE = #{corp_code}
+        </if>
+        <if test="role_code != null and role_code !=''">
+            AND role_code &lt; #{role_code}
+        </if>
+        AND ISACTIVE = 'Y'
+        ORDER BY ID
+    </select>
+
     <select id="selectMaxRoleCode" resultType="java.lang.String">
     select max(role_code) from DEF_ROLE
     where role_code like #{role_head}
