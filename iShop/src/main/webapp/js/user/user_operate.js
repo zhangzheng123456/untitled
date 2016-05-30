@@ -240,40 +240,40 @@ jQuery(document).ready(function(){
 			$("#select_ownshop").css("display","block");
 		}
 		var id=sessionStorage.getItem("id");
-			var _params={"id":id};
-			var _command="/user/select";
-			oc.postRequire("post", _command,"", _params, function(data){
-				console.log(data);
-				if(data.code=="0"){
-					var msg=JSON.parse(data.message);
-					console.log(msg);
-					console.log(msg.user_code);
-					$("#ACCOUNT").val(msg.user_code);
-					$("#USER_NAME").val(msg.user_name);
-					$("#preview img").attr("src",msg.avatar);
-					$("#USER_PHONE").val(msg.phone);
-					$("#USER_EMAIL").val(msg.email);
-					if(msg.sex=="M"){
-						$("#USER_SEX").val("女");
-					}else if(msg.sex=="F"){
-						$("#USER_SEX").val("男");
-					}
-					$("#OWN_CORP").val(msg.corp_code);
-					$("#OWN_RIGHT").val(msg.role_code);
-					$("#register_time").val(msg.created_date);
-					$("#recently_login").val(msg.login_time_recently);
-					$("#created_time").val(msg.created_date);
-					$("#creator").val(msg.creater);
-					$("#modify_time").val(msg.modified_date);
-					$("#modifier").val(msg.modifier);
-				}else if(data.code=="-1"){
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content: data.message
-					});
+		var _params={"id":id};
+		var _command="/user/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				console.log(msg.user_code);
+				$("#ACCOUNT").val(msg.user_code);
+				$("#USER_NAME").val(msg.user_name);
+				$("#preview img").attr("src",msg.avatar);
+				$("#USER_PHONE").val(msg.phone);
+				$("#USER_EMAIL").val(msg.email);
+				if(msg.sex=="M"){
+					$("#USER_SEX").val("女");
+				}else if(msg.sex=="F"){
+					$("#USER_SEX").val("男");
 				}
-			});
+				$("#OWN_CORP").val(msg.corp_code);
+				$("#OWN_RIGHT").val(msg.role_code);
+				$("#register_time").val(msg.created_date);
+				$("#recently_login").val(msg.login_time_recently);
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+			}
+		});
 	}
 });
