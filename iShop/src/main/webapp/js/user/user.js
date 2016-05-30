@@ -277,13 +277,12 @@ function jumpBianse(){
 $("#search").keydown(function() {
 	var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
-    var param={};
 	param["searchValue"]=value;
 	param["pageNumber"]=inx;
 	param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
 	if(event.keyCode == 13){
-		POST(param);
+		POST();
 	}
 });
 //搜索的请求函数
@@ -305,7 +304,7 @@ function POST(){
 		 		superaddition(list);
                 jumpBianse();
 		 	}
-		 	setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
+		 	setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
 		}else if(data.code=="-1"){
 			console.log(data.message);
 		}
