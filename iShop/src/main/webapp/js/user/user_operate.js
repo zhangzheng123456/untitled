@@ -236,7 +236,7 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
-			$("#OWN_CORP").css({"display":"block","background-color":"#dfdfdf"});
+			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
 		}
@@ -245,7 +245,7 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
-			$("#OWN_CORP").css({"display":"block","background-color":"#dfdfdf"});
+			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
 		}

@@ -68,14 +68,23 @@
                                 <li>企业管理员</li>
                             </ul></span><span class="add_per_icon"><i class="icon-ishop_6-01"></i>查看动作</span>
                     </div>
-                    <div id="per_type" class="item_3">
-                        <span><label>所属店铺</label>
-                        <input class="input_select" type="text" id="OWN_RIGHT" placeholder="请选择所属角色" readonly/><span class="down_icon icn_3"><i class="icon-ishop_8-02"></i></span>
-                            <ul>
-                                <li>南京店铺</li>
-                                <li>上海店铺</li>
-                                <li>杭州店铺</li>
-                            </ul></span><span class="add_per_icon"><i class="icon-ishop_6-01"></i>新增店铺</span>
+                    <div id="select_ownshop">
+                        <ul id="ownshop_list">
+                            <li><label>所属店铺</label></li>
+                            <li id="per_type" class="shop_list">
+                                <div>
+                                    <span style="display:inline-block;" onclick="selectownshop(this)">
+                                        <input class="input_select" id="OWN_RIGHT" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
+                                        <ul style="margin-left:0px">
+                                            <li>南京店铺</li>
+                                            <li>上海店铺</li>
+                                            <li>杭州店铺</li>
+                                        </ul>
+                                    </span>
+                                    <span class="add_per_icon" onclick="addshopselect()"><i class="icon-ishop_6-01"></i>新增店铺</span>
+                                </div>
+                            <li>
+                        </ul>
                     </div>
                     <div>
                         <span><label>注册时间</label><input type="text" id="register_time" style="background: #dfdfdf;" readonly /></span>
@@ -86,7 +95,7 @@
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="useradd_oper_btn">
+                <div class="useredit_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>

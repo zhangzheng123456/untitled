@@ -70,7 +70,6 @@ var oc = new ObjectControl();
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
-				console.log(input.checked);
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==true){
@@ -107,7 +106,6 @@ var oc = new ObjectControl();
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
-				console.log(input.checked);
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==true){
