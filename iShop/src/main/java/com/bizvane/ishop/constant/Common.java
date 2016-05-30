@@ -9,14 +9,14 @@ public class Common {
 
     //系统管理员role头部
     public static final String ROLE_SYS_HEAD = "R1";
-    //企业管理员role头部
+    //总经理role头部
     public static final String ROLE_GM_HEAD = "R5";
-    //区经管理员role头部
-    public static final String ROLE_AM_HEAD = "R2";
-    //店长管理员role头部
+    //区经role头部
+    public static final String ROLE_AM_HEAD = "R4";
+    //店长role头部
     public static final String ROLE_SM_HEAD = "R3";
-    //导购管理员role头部
-    public static final String ROLE_STAFF_HEAD = "R4";
+    //导购role头部
+    public static final String ROLE_STAFF_HEAD = "R2";
 
     //是否可用（是）
     public static final String IS_ACTIVE_Y = "Y";

@@ -19,8 +19,8 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         return validataCodeMapper.insertValidateCode(code);
     }
 
-    public ValidateCode selectValidateCode(int code_id, String phone) {
-        return validataCodeMapper.selectByCodeId(code_id, phone);
+    public ValidateCode selectValidateCode(int code_id, String phone,String isactive) {
+        return validataCodeMapper.selectByCodeId(code_id, phone,isactive);
     }
 
     public int updateValidateCode(ValidateCode code) {

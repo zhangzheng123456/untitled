@@ -4,23 +4,20 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.ShopInfo;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.ShopService;
-import com.github.pagehelper.PageHelper;
+import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
-import java.util.List;
+import java.text.SimpleDateFormat;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -32,17 +29,19 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/shop")
-public class ShopController {
+public class StoreController {
 
-    private static final Logger logger = Logger.getLogger(ShopController.class);
+    private static final Logger logger = Logger.getLogger(StoreController.class);
 
 
     String id;
 
     @Autowired
-    private ShopService shopService;
+    private StoreService storeService;
     @Autowired
     private FunctionService functionService;
+
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     /**
      * 店铺管理
@@ -61,20 +60,15 @@ public class ShopController {
 
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
             JSONObject result = new JSONObject();
-            List<ShopInfo> list;
+            PageInfo<Store> list;
             if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
-                PageHelper.startPage(page_number, page_size);
-                list = shopService.getAllShop("", "");
+                list = storeService.getAllStore(page_number, page_size, "", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                PageHelper.startPage(page_number, page_size);
-                list = shopService.getAllShop(corp_code, "");
+                list = storeService.getAllStore(page_number, page_size, corp_code, "");
             }
-            PageInfo<ShopInfo> page = new PageInfo<ShopInfo>(list);
-            result.put("shops", list);
-
-    //        result.put("list", list);
+            result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -102,7 +96,7 @@ public class ShopController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = shopService.insert(message, user_id);
+            String result = storeService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -110,7 +104,7 @@ public class ShopController {
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该企业店铺编号已经存在！");
+                dataBean.setMessage(result);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -135,23 +129,16 @@ public class ShopController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            ShopInfo shop = new ShopInfo();
-            shop.setStore_code(jsonObject.get("store_code").toString());
-            shop.setStore_name(jsonObject.get("store_name").toString());
-            shop.setStore_area(jsonObject.get("store_area").toString());
-            shop.setCorp_code(jsonObject.get("corp_code").toString());
-            shop.setBrand_code(jsonObject.get("brand_code").toString());
-            shop.setBrand_name(jsonObject.get("brand_name").toString());
-            shop.setFlg_tob(jsonObject.get("flg_tob").toString());
-            Date now = new Date();
-     //       shop.setModified_date(now);
-            shop.setModifier(user_id);
-            shop.setIsactive(jsonObject.get("isactive").toString());
-            shopService.update(shop);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = storeService.insert(message, user_id);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("edit success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -181,9 +168,9 @@ public class ShopController {
             String shop_id = jsonObject.get("id").toString();
             String[] ids = shop_id.split(",");
             for (int i = 0; i < ids.length; i++) {
-                ShopInfo shop = new ShopInfo(Integer.valueOf(ids[i]));
+                Store shop = new Store(Integer.valueOf(ids[i]));
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
-                shopService.delete(Integer.valueOf(ids[i]));
+                storeService.delete(Integer.valueOf(ids[i]));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -217,7 +204,7 @@ public class ShopController {
             JSONObject jsonObject = new JSONObject(message);
             String shop_id = jsonObject.get("id").toString();
 
-            data = JSON.toJSONString(shopService.getShopInfo(Integer.parseInt(shop_id)));
+            data = JSON.toJSONString(storeService.getStoreById(Integer.parseInt(shop_id)));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
@@ -249,20 +236,15 @@ public class ShopController {
 
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            List<ShopInfo> list;
+            PageInfo<Store> list;
             if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
-                PageHelper.startPage(page_number, page_size);
-                list = shopService.getAllShop("", search_value);
+                list = storeService.getAllStore(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                PageHelper.startPage(page_number, page_size);
-                list = shopService.getAllShop(corp_code, search_value);
+                list = storeService.getAllStore(page_number, page_size, corp_code, search_value);
             }
-            PageInfo<ShopInfo> page = new PageInfo<ShopInfo>(list);
-            result.put("shops", list);
-   //         result.put("list", list);
-
+            result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

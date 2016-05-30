@@ -1,8 +1,29 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.UserInfoMapper">
+<mapper namespace="com.bizvane.ishop.dao.UserMapper">
 
-    <resultMap type="com.bizvane.ishop.entity.UserInfo" id="UserInfo">
+    <resultMap type="com.bizvane.ishop.entity.User" id="BaseMap">
+        <id column="id" property="id"/>
+        <result column="user_code" property="user_code"/>
+        <result column="avatar" property="avatar"/>
+        <result column="user_name" property="user_name"/>
+        <result column="sex" property="sex"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="birthday" property="birthday"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="store_code" property="store_code"/>
+        <result column="role_code" property="role_code"/>
+        <result column="password" property="password"/>
+        <result column="login_time_recently" property="login_time_recently"/>
+        <result column="created_date" property="created_date"/>
+        <result column="creater" property="creater"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="isactive" property="isactive"/>
+    </resultMap>
+
+    <resultMap type="com.bizvane.ishop.entity.User" id="UserInfo">
         <id column="id" property="id"/>
         <result column="user_code" property="user_code"/>
         <result column="avatar" property="avatar"/>
@@ -17,7 +38,7 @@
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
-        <association property="corpInfo" javaType="com.bizvane.ishop.entity.CorpInfo">
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
         <association property="role" javaType="com.bizvane.ishop.entity.Role">
@@ -34,6 +55,9 @@
         phone,
         email,
         birthday,
+        store_code,
+        DEF_USER.role_code,
+        DEF_USER.corp_code,
         login_time_recently,
         DEF_USER.modified_date,
         DEF_USER.modifier,
@@ -74,31 +98,37 @@
         email,
         birthday,
         login_time_recently,
+        store_code,
+        DEF_USER.role_code,
+        DEF_USER.corp_code,
         DEF_USER.modified_date,
         DEF_USER.modifier,
         DEF_USER.created_date,
         DEF_USER.creater,
         DEF_USER.isactive,
         DEF_CORP.corp_name,
-        DEF_ROLE.role_name,
+        DEF_ROLE.role_name
         from DEF_USER,DEF_CORP,DEF_ROLE
         where DEF_USER.corp_code = DEF_CORP.corp_code
         and DEF_USER.role_code = DEF_ROLE.role_code
-            AND ID = #{user_id}
+            AND DEF_USER.ID = #{user_id}
     </select>
 
-    <select id="selectByPhone" resultType="com.bizvane.ishop.entity.UserInfo">
+    <select id="selectByPhone" resultMap="BaseMap">
         select *
         from DEF_USER
         where
             PHONE = #{phone}
     </select>
-    <select id="selectLogin" resultType="com.bizvane.ishop.entity.UserInfo">
-        select *
-        from DEF_USER
-        where PHONE = #{0} AND PASSWORD = #{1}
+    <select id="selectLogin" resultMap="BaseMap">
+        SELECT *
+        FROM DEF_USER
+        WHERE PHONE = #{0}
+        OR MAIL = #{0}
+        AND PASSWORD = #{1}
+        AND ISACTIVE = 'Y'
     </select>
-    <select id="selectAllUser1" resultType="com.bizvane.ishop.entity.UserInfo">
+    <select id="selectAllUser1" resultMap="BaseMap">
         select *
         from DEF_USER
         where 1 = 1
@@ -120,7 +150,7 @@
         ORDER BY ID
     </select>
 
-    <select id="selectUserCode" resultType="com.bizvane.ishop.entity.UserInfo">
+    <select id="selectUserCode" resultMap="BaseMap">
     select *
     from DEF_USER
     WHERE
@@ -132,7 +162,7 @@
         DEF_USER
         where ID = #{id}
     </delete>
-    <insert id="insertUser" parameterType="com.bizvane.ishop.entity.UserInfo">
+    <insert id="insertUser" parameterType="com.bizvane.ishop.entity.User">
         insert into DEF_USER
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="user_code!=null">
@@ -242,7 +272,7 @@
         </trim>
     </insert>
 
-    <update id="updateByUserId" parameterType="com.bizvane.ishop.entity.UserInfo">
+    <update id="updateByUserId" parameterType="com.bizvane.ishop.entity.User">
         UPDATE DEF_USER
         <trim prefix="SET" suffixOverrides=",">
             <if test="user_code!=null and user_code!='' ">
@@ -299,6 +329,4 @@
         </trim>
         WHERE ID = #{id};
     </update>
-
-
 </mapper>

@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.ShopInfoMapper">
+<mapper namespace="com.bizvane.ishop.dao.StoreMapper">
 
-    <select id="selectByShopInfoId" resultType="com.bizvane.ishop.entity.ShopInfo">
+    <select id="selectByStoreId" resultType="com.bizvane.ishop.entity.Store">
     select *
     from DEF_STORE
     where ID=#{id}
     </select>
-    <select id="selectAllShop" resultType="com.bizvane.ishop.entity.ShopInfo">
+    <select id="selectByUserStore" resultType="com.bizvane.ishop.entity.Store">
+        select *
+        from DEF_STORE
+        where CORP_CODE = #{corp_code}
+        AND STORE_CODE = #{store_code}
+    </select>
+    <select id="selectAllStore" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE
         where 1 = 1
@@ -29,21 +35,21 @@
         ORDER BY ID
     </select>
 
-    <select id="selectShopCode" resultType="com.bizvane.ishop.entity.ShopInfo">
+    <select id="selectStoreCode" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE
         WHERE
         STORE_CODE = #{0} AND CORP_CODE = #{1}
     </select>
 
-    <delete id="deleteByShopInfoId">
+    <delete id="deleteByStoreId">
         delete from
         DEF_STORE
         where ID=#{id}
     </delete>
 
 
-    <insert id="insertShopInfo" parameterType="com.bizvane.ishop.entity.ShopInfo">
+    <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
         insert into DEF_STORE
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="store_code!=null">
@@ -122,7 +128,7 @@
             </if>
         </trim>
     </insert>
-    <update id="updateShopInfo" parameterType="com.bizvane.ishop.entity.ShopInfo">
+    <update id="updateStore" parameterType="com.bizvane.ishop.entity.Store">
         UPDATE DEF_STORE
         <trim prefix="SET" suffixOverrides=",">
             <if test="store_code!=null and store_code!=''">

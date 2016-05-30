@@ -12,6 +12,9 @@
         <if test="phone != null and phone !=''">
             phone = #{phone}
         </if>
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
     </select>
 
     <insert id="insertValidateCode" parameterType="com.bizvane.ishop.entity.ValidateCode">

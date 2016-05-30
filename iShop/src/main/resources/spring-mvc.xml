@@ -83,12 +83,12 @@
         <mvc:exclude-mapping path="/css/**"/>
         <mvc:exclude-mapping path="/js/**"/>
         <mvc:exclude-mapping path="/img/**"/>
-        <mvc:exclude-mapping path="/themes/**"/>
-        <mvc:exclude-mapping path="/plugins/**"/>
-        <mvc:exclude-mapping path="/login.html"/><!-- 登录不拦截 -->
-        <mvc:exclude-mapping path="/phone_exist"/>
-        <mvc:exclude-mapping path="/authcode"/>
         <mvc:exclude-mapping path="/register"/>
+        <mvc:exclude-mapping path="/authcode"/>
+        <mvc:exclude-mapping path="/login.html"/>
+        <mvc:exclude-mapping path="/register_account.html"/>
+
+        <mvc:exclude-mapping path="/phone_exist"/>
         <mvc:exclude-mapping path="/userlogin"/>
 
         <bean class="com.bizvane.ishop.interceptor.SpringMVCInterceptor"/>

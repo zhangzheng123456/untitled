@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * Created by Administrator on 2016/5/19.
  */
-public class CorpInfo {
+public class Corp {
     private int id;
     //企业编号
     private String corp_code;
@@ -28,10 +28,10 @@ public class CorpInfo {
     //是否可用
     private String isactive;
 
-    public CorpInfo() {
+    public Corp() {
     }
 
-    public CorpInfo(int id) {
+    public Corp(int id) {
         this.id = id;
     }
 

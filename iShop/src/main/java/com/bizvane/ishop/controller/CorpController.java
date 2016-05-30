@@ -4,10 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.CorpInfo;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -22,7 +21,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -66,15 +64,14 @@ public class CorpController {
                 //系统管理员(官方画面)
                 int page_number = Integer.parseInt(request.getParameter("pageNumber"));
                 int page_size = Integer.parseInt(request.getParameter("pageSize"));
-                PageHelper.startPage(page_number, page_size);
-                List<CorpInfo> corpInfo = corpService.selectAllCorp("");
-                PageInfo<CorpInfo> page = new PageInfo<CorpInfo>(corpInfo);
-                info.put("corpInfo", corpInfo);
+
+                PageInfo<Corp> corpInfo = corpService.selectAllCorp(page_number, page_size, "");
+                info.put("list", JSON.toJSONString(corpInfo));
             } else {
                 //用户画面
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                CorpInfo corpInfo = corpService.selectByCorpId(0, corp_code);
-                info.put("corpInfo", corpInfo);
+                Corp corp = corpService.selectByCorpId(0, corp_code);
+                info.put("list", corp);
             }
             info.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -104,7 +101,7 @@ public class CorpController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            CorpInfo corp = new CorpInfo();
+            Corp corp = new Corp();
             String max_code = corpService.selectMaxCorpCode();
             int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
             Integer c = code;
@@ -153,7 +150,7 @@ public class CorpController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            CorpInfo corp = new CorpInfo();
+            Corp corp = new Corp();
             corp.setCorp_code(jsonObject.get("corp_code").toString());
             corp.setCorp_name(jsonObject.get("corp_name").toString());
             corp.setAddress(jsonObject.get("address").toString());
@@ -198,7 +195,7 @@ public class CorpController {
 
             String[] ids = corp_id.split(",");
             for (int i = 0; i < ids.length; i++) {
-                CorpInfo corp = new CorpInfo(Integer.valueOf(ids[i]));
+                Corp corp = new Corp(Integer.valueOf(ids[i]));
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }
@@ -256,10 +253,8 @@ public class CorpController {
             String search_value = jsonObject.get("searchValue").toString();
 
             JSONObject result = new JSONObject();
-            PageHelper.startPage(page_number, page_size);
-            List<CorpInfo> list = corpService.selectAllCorp(search_value);
-            PageInfo<CorpInfo> page = new PageInfo<CorpInfo>(list);
-            result.put("corp", list);
+            PageInfo<Corp> list = corpService.selectAllCorp(page_number, page_size, search_value);
+            result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

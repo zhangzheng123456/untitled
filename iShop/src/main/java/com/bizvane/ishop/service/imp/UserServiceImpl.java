@@ -1,16 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONArray;
-import com.bizvane.ishop.bean.PageBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.CorpInfo;
-import com.bizvane.ishop.entity.UserInfo;
-import com.bizvane.ishop.dao.UserInfoMapper;
-import com.bizvane.ishop.entity.ValidateCode;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.UserService;
-import com.bizvane.ishop.service.ValidateCodeService;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.dao.UserMapper;
+import com.bizvane.ishop.service.*;
 import com.bizvane.sun.app.client.Client;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -24,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.System;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -37,11 +32,15 @@ import java.util.*;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    private UserInfoMapper userInfoMapper;
+    private UserMapper userMapper;
     @Autowired
     FunctionService functionService;
     @Autowired
     CorpService corpService;
+    @Autowired
+    StoreService storeService;
+    @Autowired
+    RoleService roleService;
     @Autowired
     ValidateCodeService validateCodeService;
 
@@ -51,22 +50,43 @@ public class UserServiceImpl implements UserService {
 
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
-    public UserInfo getUserById(int id) throws SQLException {
-        return userInfoMapper.selectUserById(id);
-    }
 
     /**
-     * 验证手机号是否已存在
+     * @param corp_code
+     * @param search_value
      */
-    public UserInfo phoneExist(String phone) throws SQLException {
-        return userInfoMapper.selectByPhone(phone);
+    public PageInfo<User> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+
+        PageHelper.startPage(page_number, page_size);
+        List<User> users = userMapper.selectAllUser(corp_code, "%" + search_value + "%");
+        PageInfo<User> page = new PageInfo<User>(users);
+
+        return page;
+    }
+
+    public User getUserById(int id) throws SQLException {
+        User user = userMapper.selectUserById(id);
+        String store_code = user.getStore_code();
+        if (store_code!=null) {
+            String corp_code = user.getCorp_code();
+            String[] codes = store_code.split(",");
+            JSONArray array = new JSONArray();
+            for (int i = 0; i < codes.length; i++) {
+                JSONObject obj = new JSONObject();
+                Store store = storeService.getStoreByCode(corp_code,codes[i]);
+                String store_name = store.getStore_name();
+                obj.put("store_name",store_name);
+                array.add(obj);
+            }
+        }
+        return userMapper.selectUserById(id);
     }
 
     /**
      * 验证企业下用户编号是否已存在
      */
     public String userCodeExist(String user_code, String corp_coded) throws SQLException {
-        UserInfo user = userInfoMapper.selectUserCode(user_code, corp_coded);
+        User user = userMapper.selectUserCode(user_code, corp_coded);
         String result = Common.DATABEAN_CODE_SUCCESS;
         if (user == null) {
             result = Common.DATABEAN_CODE_ERROR;
@@ -74,16 +94,16 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
-    public int insert(UserInfo userInfo) throws SQLException {
-        return userInfoMapper.insertUser(userInfo);
+    public int insert(User user) throws SQLException {
+        return userMapper.insertUser(user);
     }
 
-    public int update(UserInfo userInfo) throws SQLException {
-        return userInfoMapper.updateByUserId(userInfo);
+    public int update(User user) throws SQLException {
+        return userMapper.updateByUserId(user);
     }
 
     public int delete(int id) throws SQLException {
-        return userInfoMapper.deleteByUserId(id);
+        return userMapper.deleteByUserId(id);
     }
 
     /**
@@ -91,7 +111,7 @@ public class UserServiceImpl implements UserService {
      */
     public JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException {
         System.out.println("---------login--------");
-        UserInfo login_user = userInfoMapper.selectLogin(phone, password);
+        User login_user = userMapper.selectLogin(phone, password);
         log.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
         if (login_user == null) {
@@ -100,11 +120,13 @@ public class UserServiceImpl implements UserService {
             int user_id = login_user.getId();
             String corp_code = login_user.getCorp_code();
             String role_code = login_user.getRole_code();
+            String store_code = login_user.getStore_code();
 
             JSONArray menu = functionService.selectAllFunctions(user_id, role_code);
             request.getSession().setAttribute("user_id", user_id);
             request.getSession().setAttribute("corp_code", corp_code);
             request.getSession().setAttribute("role_code", role_code);
+            request.getSession().setAttribute("store_code", store_code);
             request.getSession().setAttribute("menu", menu);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
@@ -134,70 +156,100 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * 注册
+     * 验证手机号是否已注册
      */
-    public String register(String message) throws Exception {
-        String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
-        String phone = jsonObject.get("PHONENUMBER").toString();
-        String auth_code = jsonObject.get("PHONECODE").toString();
-        String user_name = jsonObject.get("USERNAME").toString();
-        String password = jsonObject.get("PASSWORD").toString();
-        String corp_name = jsonObject.get("COMPANY").toString();
-        String address = jsonObject.get("ADDRESS").toString();
-
-        ValidateCode code = validateCodeService.selectValidateCode(0, phone);
-        Date now = new Date();
-        String modified_date = code.getModified_date();
-        Date time = sdf.parse(modified_date);
-        long timediff = (now.getTime() - time.getTime()) / 1000;
-        if (auth_code.equals(code.getValidate_code()) && timediff < 3600) {
-            System.out.println("---------auth_code----------");
-            //插入用户信息
-            UserInfo user = new UserInfo();
-            user.setUser_name(user_name);
-            user.setPhone(phone);
-            user.setPassword(password);
-            user.setRole_code("R500000");
-            user.setCreated_date(sdf.format(now));
-            user.setModified_date(sdf.format(now));
-            insert(user);
-            //拼接corp_code
-            String max_corp_code = corpService.selectMaxCorpCode();
-            int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
-            Integer c = code_tail;
-            int length = 5 - c.toString().length();
-            String corp_code = "C";
-            for (int i = 0; i < length; i++) {
-                corp_code = corp_code + "0";
-            }
-            corp_code = corp_code + code;
-            //插入公司信息
-            CorpInfo corp = new CorpInfo();
-            corp.setCorp_code(corp_code);
-            corp.setCorp_name(corp_name);
-            corp.setAddress(address);
-            corp.setContact(user_name);
-            corp.setContact_phone(phone);
-            corp.setCreated_date(sdf.format(now));
-            corp.setModified_date(sdf.format(now));
-            corpService.insertCorp(corp);
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
+    public User phoneExist(String phone) throws SQLException {
+        return userMapper.selectByPhone(phone);
     }
 
     /**
-     * @param corp_code
-     * @param search_value
+     * 注册
      */
-    public PageBean<UserInfo> selectBySearch(int page_number,int page_size,String corp_code, String search_value) throws SQLException {
+    public String register(String message) {
+        String result = Common.DATABEAN_CODE_ERROR;
+        try {
+            JSONObject jsonObject = new JSONObject(message);
+            String phone = jsonObject.get("PHONENUMBER").toString();
+            String auth_code = jsonObject.get("PHONECODE").toString();
+            String user_name = jsonObject.get("USERNAME").toString();
+            String password = jsonObject.get("PASSWORD").toString();
+            String corp_name = jsonObject.get("COMPANY").toString();
+            String address = jsonObject.get("ADDRESS").toString();
 
-        PageHelper.startPage(page_number, page_size);
-        List<UserInfo> users = userInfoMapper.selectAllUser(corp_code, "%" + search_value + "%");
-        PageBean<UserInfo> page = new PageBean<UserInfo>(users);
+            ValidateCode code = validateCodeService.selectValidateCode(0, phone, "Y");
+            Date now = new Date();
+            String modified_date = code.getModified_date();
+            Date time = sdf.parse(modified_date);
+            long timediff = (now.getTime() - time.getTime()) / 1000;
+            if (auth_code.equals(code.getValidate_code()) && timediff < 3600) {
+                System.out.println("---------auth_code----------");
+                //插入用户信息
+                User user = new User();
+                String max_role_code = roleService.selectMaxRoleCode(Common.ROLE_GM_HEAD);
+                int a = Common.ROLE_GM_HEAD.length();
+                int role_tail = Integer.parseInt(max_role_code.substring(a, max_role_code.length())) + 1;
+                Integer b = role_tail;
+                int length = 5 - b.toString().length();
+                String role_code = Common.ROLE_GM_HEAD;
+                for (int i = 0; i < length; i++) {
+                    role_code = role_code + "0";
+                }
+                role_code = role_code + role_tail;
 
-        return page;
+                user.setUser_name(user_name);
+                user.setPhone(phone);
+                user.setPassword(password);
+                user.setRole_code(role_code);
+                user.setCreated_date(sdf.format(now));
+                user.setCreater("root");
+                user.setModified_date(sdf.format(now));
+                user.setModifier("root");
+                user.setIsactive(Common.IS_ACTIVE_Y);
+                userMapper.insertUser(user);
+                //拼接corp_code
+                String max_corp_code = corpService.selectMaxCorpCode();
+                int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
+                Integer c = code_tail;
+                int length1 = 5 - c.toString().length();
+                String corp_code = "C";
+                for (int i = 0; i < length; i++) {
+                    corp_code = corp_code + "0";
+                }
+                corp_code = corp_code + code_tail;
+                log.info("----------corp_code" + corp_code);
+                //插入公司信息
+                Corp corp = new Corp();
+                corp.setCorp_code(corp_code);
+                corp.setCorp_name(corp_name);
+                corp.setAddress(address);
+                corp.setContact(user_name);
+                corp.setContact_phone(phone);
+                corp.setCreated_date(sdf.format(now));
+                corp.setCreater("root");
+                corp.setModified_date(sdf.format(now));
+                corp.setModifier("root");
+                corp.setIsactive(Common.IS_ACTIVE_Y);
+                log.info("----------register corp" + corp.toString());
+                corpService.insertCorp(corp);
+
+                //插入角色信息
+                Role role = new Role();
+                role.setCorp_code(corp_code);
+                role.setRole_code(role_code);
+                role.setRole_name("总经理");
+                role.setCreated_date(sdf.format(now));
+                role.setCreater("root");
+                role.setModified_date(sdf.format(now));
+                role.setModifier("root");
+                role.setIsactive(Common.IS_ACTIVE_Y);
+                roleService.insertRole(role);
+
+                result = Common.DATABEAN_CODE_SUCCESS;
+            }
+        } catch (Exception ex) {
+
+        }
+        return result;
     }
 
     /**
@@ -228,7 +280,7 @@ public class UserServiceImpl implements UserService {
         JSONObject obj = new JSONObject(msg);
         if (obj.get("message").toString().equals("短信发送成功")) {
             //验证码存表
-            ValidateCode code = validateCodeService.selectValidateCode(0, phone);
+            ValidateCode code = validateCodeService.selectValidateCode(0, phone, "");
             Date now = new Date();
             if (code == null) {
                 code = new ValidateCode();

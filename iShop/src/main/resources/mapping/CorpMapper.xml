@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.CorpInfoMapper">
+<mapper namespace="com.bizvane.ishop.dao.CorpMapper">
 
-    <select id="selectByCorpId" resultType="com.bizvane.ishop.entity.CorpInfo">
+    <select id="selectByCorpId" resultType="com.bizvane.ishop.entity.Corp">
         select *
         from DEF_CORP
         where
@@ -14,7 +14,7 @@
         </if>
     </select>
 
-    <select id="selectAllCorp" resultType="com.bizvane.ishop.entity.CorpInfo">
+    <select id="selectAllCorp" resultType="com.bizvane.ishop.entity.Corp">
         select *
         from DEF_CORP
         where 1 = 1
@@ -30,11 +30,11 @@
         </if>
         ORDER BY ID
     </select>
-    <select id="selectMaxCorpCOde" resultType="java.lang.String">
+    <select id="selectMaxCorpCode" resultType="java.lang.String">
     select max(CORP_CODE) from DEF_CORP
     </select>
 
-    <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.CorpInfo">
+    <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.Corp">
         insert into DEF_CORP
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
@@ -102,7 +102,7 @@
         </trim>
     </insert>
 
-    <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.UserInfo">
+    <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.User">
         UPDATE DEF_CORP
         <trim prefix="SET" suffixOverrides=",">
             <if test="corp_name != null">

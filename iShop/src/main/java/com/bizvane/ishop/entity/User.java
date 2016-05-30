@@ -1,8 +1,6 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
-
-public class UserInfo {
+public class User {
 	private int id;
 	//用户编号
 	private String user_code;
@@ -39,15 +37,17 @@ public class UserInfo {
 	//是否可用
 	private String isactive;
 
-	private CorpInfo corpInfo;
+	private String store_name;
+
+	private Corp corp;
 
 	private Role role;
 
-	private ShopInfo shopInfo;
+	private Store store;
 
-	public UserInfo(){}
+	public User(){}
 
-	public UserInfo(int id){
+	public User(int id){
 		this.id = id;
 	}
 
@@ -131,14 +131,6 @@ public class UserInfo {
 		this.corp_code = corp_code;
 	}
 
-//	public String getCorp_name() {
-//		return corp_name;
-//	}
-//
-//	public void setCorp_name(String corp_name) {
-//		this.corp_name = corp_name;
-//	}
-
 	public String getStore_code() {
 		return store_code;
 	}
@@ -203,12 +195,12 @@ public class UserInfo {
 		this.isactive = isactive;
 	}
 
-	public CorpInfo getCorpInfo() {
-		return corpInfo;
+	public Corp getCorp() {
+		return corp;
 	}
 
-	public void setCorpInfo(CorpInfo corpInfo) {
-		this.corpInfo = corpInfo;
+	public void setCorp(Corp corp) {
+		this.corp = corp;
 	}
 
 	public Role getRole() {
@@ -219,11 +211,38 @@ public class UserInfo {
 		this.role = role;
 	}
 
-	public ShopInfo getShopInfo() {
-		return shopInfo;
+	public Store getStore() {
+		return store;
 	}
 
-	public void setShopInfo(ShopInfo shopInfo) {
-		this.shopInfo = shopInfo;
+	public void setStore(Store store) {
+		this.store = store;
+	}
+
+	public String toString() {
+		final StringBuffer sb = new StringBuffer("User{");
+		sb.append("user_code=").append(user_code);
+		sb.append(", user_name=").append(user_name);
+		sb.append(", id=").append(id);
+		sb.append(", avatar=").append(avatar);
+		sb.append(", user_name=").append(user_name);
+		sb.append(", sex=").append(sex);
+		sb.append(", phone=").append(phone);
+		sb.append(", email=").append(email);
+		sb.append(", corp_code=").append(corp_code);
+		sb.append(", role_code=").append(role_code);
+		sb.append(", store_code=").append(store_code);
+		sb.append(", password=").append(password);
+		sb.append(", isactive=").append(isactive);
+		sb.append('}');
+		return sb.toString();
+	}
+
+	public String getStore_name() {
+		return store_name;
+	}
+
+	public void setStore_name(String store_name) {
+		this.store_name = store_name;
 	}
 }

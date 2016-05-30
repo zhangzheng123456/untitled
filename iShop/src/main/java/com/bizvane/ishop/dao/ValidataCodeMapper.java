@@ -8,7 +8,7 @@ public interface ValidataCodeMapper {
 
     int insertValidateCode(ValidateCode record);
 
-    ValidateCode selectByCodeId(@Param("code_id")int code_id,@Param("phone") String phone);
+    ValidateCode selectByCodeId(@Param("code_id")int code_id,@Param("phone") String phone,@Param("isactive") String isactive);
 
     int updateByCodeId(ValidateCode record);
 

@@ -3,24 +3,18 @@ package com.bizvane.ishop.entity;
 import java.util.Date;
 
 /**
- * Created by Administrator on 2016/5/19.
+ * Created by Administrator on 2016/5/28.
  */
-public class ShopInfo {
+public class Role {
     private int id;
-    //店铺编号
-    private String store_code;
-    //店铺名称
-    private String store_name;
-    //品牌编号
-    private String brand_code;
-    //所属品牌
-    private String brand_name;
-    //所属区域
-    private String store_area;
-    //是否直营
-    private String flg_tob;
+    //角色编号
+    private String role_code;
+    //角色名
+    private String role_name;
     //公司编号
     private String corp_code;
+    //备注
+    private String remark;
     //修改时间
     private String modified_date;
     //修改人
@@ -32,12 +26,6 @@ public class ShopInfo {
     //是否可用
     private String isactive;
 
-    public ShopInfo(){}
-
-    public ShopInfo(int id){
-        this.id = id;
-    }
-
     public int getId() {
         return id;
     }
@@ -46,44 +34,20 @@ public class ShopInfo {
         this.id = id;
     }
 
-    public String getStore_code() {
-        return store_code;
+    public String getRole_code() {
+        return role_code;
     }
 
-    public void setStore_code(String store_code) {
-        this.store_code = store_code;
+    public void setRole_code(String role_code) {
+        this.role_code = role_code;
     }
 
-    public String getStore_name() {
-        return store_name;
+    public String getRole_name() {
+        return role_name;
     }
 
-    public void setStore_name(String store_name) {
-        this.store_name = store_name;
-    }
-
-    public String getBrand_code() {
-        return brand_code;
-    }
-
-    public void setBrand_code(String brand_code) {
-        this.brand_code = brand_code;
-    }
-
-    public String getBrand_name() {
-        return brand_name;
-    }
-
-    public void setBrand_name(String brand_name) {
-        this.brand_name = brand_name;
-    }
-
-    public String getStore_area() {
-        return store_area;
-    }
-
-    public void setStore_area(String store_area) {
-        this.store_area = store_area;
+    public void setRole_name(String role_name) {
+        this.role_name = role_name;
     }
 
     public String getCorp_code() {
@@ -94,12 +58,12 @@ public class ShopInfo {
         this.corp_code = corp_code;
     }
 
-    public String getFlg_tob() {
-        return flg_tob;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setFlg_tob(String flg_tob) {
-        this.flg_tob = flg_tob;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getModified_date() {

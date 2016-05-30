@@ -3,7 +3,7 @@ package com.bizvane.ishop.controller;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.LoginLog;
-import com.bizvane.ishop.entity.UserInfo;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.LoginLogService;
 import com.bizvane.ishop.service.ValidateCodeService;
@@ -38,10 +38,11 @@ public class LoginController {
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
-//    @RequestMapping(value = "/", method = RequestMethod.GET)
-//    public String index(HttpServletRequest request) {
-//        return "redirect:login";
-//    }
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String index(HttpServletRequest request) {
+        request.getSession().invalidate();
+        return "login";
+    }
 //        System.out.println("-------------"+request.getSession().getAttribute("user_id"));
 //        if (request.getSession().getAttribute("user_id") == null) {
 //            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -71,7 +72,7 @@ public class LoginController {
             JSONObject jsonObject = new JSONObject(message);
             String phone = jsonObject.get("PHONENUMBER").toString();
             System.out.println(phone);
-            UserInfo user = userService.phoneExist(phone);
+            User user = userService.phoneExist(phone);
             System.out.println(user);
             if (user == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -107,50 +108,6 @@ public class LoginController {
         String phone = jsonObject.get("PHONENUMBER").toString();
         System.out.println(phone);
         String msg = userService.getAuthCode(phone, "网页注册");
-//
-//        String text = "[爱秀]您的注册验证码为：";
-//        Random r = new Random();
-//        Double d = r.nextDouble();
-//        String authcode=d.toString().substring(3,3+6);
-//        text = text+authcode+",1小时内有效";
-//
-//        Data data_phone = new Data("phone", phone, ValueType.PARAM);
-//        Data data_text = new Data("text", text, ValueType.PARAM);
-//        Map datalist = new HashMap<String, Data>();
-//        datalist.put(data_phone.key,data_phone);
-//        datalist.put(data_text.key,data_text);
-//        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", "com.bizvane.sun.app.method.SendSMS", datalist, null, null, System.currentTimeMillis());
-//        System.out.println(dataBox1.data);
-//
-//        DataBox dataBox = client.put(dataBox1);
-//        log.info("SendSMSMethod -->" + dataBox.data.get("message").value);
-//        System.out.println("CaptchaMethod -->" + dataBox.data.get("message").value);
-//        String msg = dataBox.data.get("message").value;
-//        JSONObject obj = new JSONObject(msg);
-//        DataBean dataBean = new DataBean();
-//        if(obj.get("message").toString().equals("短信发送成功")) {
-//            //验证码存表
-//            ValidateCode code = validateCodeService.selectValidateCode(0,phone);
-//            Date now = new Date();
-//            if(code==null) {
-//                code = new ValidateCode();
-//                code.setValidate_code(authcode);
-//                code.setPhone(phone);
-//                code.setPlatform("web register");
-//                code.setCreated_date(now);
-//                code.setModified_date(now);
-//                code.setCreater("root");
-//                code.setModifier("root");
-//                code.setIsactive(Common.IS_ACTIVE_Y);
-//                validateCodeService.insertValidateCode(code);
-//            }else{
-//                code.setValidate_code(authcode);
-//                code.setModified_date(now);
-//                code.setModifier("root");
-//                code.setPlatform("web register");
-//                code.setIsactive(Common.IS_ACTIVE_Y);
-//                validateCodeService.updateValidateCode(code);
-//            }
         if (msg.equals(Common.DATABEAN_CODE_SUCCESS)) {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

@@ -8,7 +8,7 @@ import com.bizvane.ishop.entity.ValidateCode;
 public interface ValidateCodeService {
     int insertValidateCode(ValidateCode code);
 
-    ValidateCode selectValidateCode(int code_id,String phone);
+    ValidateCode selectValidateCode(int code_id,String phone,String isactive);
 
     int updateValidateCode(ValidateCode code);
 
