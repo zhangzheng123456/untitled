@@ -38,15 +38,18 @@ function login(){
 		}
 		if (verifyCode !== '' && verifyCode.toUpperCase() !== code.toUpperCase()) {
 			$(".portlet-msg-error").html("验证码不正确");
+			createCode();
 		}
 		return;
 	}
+	$('.btn_login').html("正在登陆");
 	oc.postRequire("post", "/userlogin", "0", param, function(data) {
 		console.log(data);
 		var str = JSON.stringify(data);
 		var key = "key";
 		sessionStorage.setItem(key, str);
 		if (data.code == "0") {
+			$('.btn_login').html("正在登陆");
 			var message = JSON.parse(data.message);
 			var user_type = message.user_type;
 			var user_id = message.user_id;

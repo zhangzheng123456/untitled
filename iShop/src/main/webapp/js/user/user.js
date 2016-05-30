@@ -142,7 +142,8 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
     //     }
     // }
 }
-function superaddition(data){//页面加载循环
+//页面加载循环
+function superaddition(data){
     console.log(data);
     for (var i = 0; i < data.length; i++) {
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -199,21 +200,13 @@ function GET(){
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
-                var corpInfo=list[0].corpInfo;
-                var role=list[0].role;
-                console.log(corpInfo);
-                console.log(role);
                 var actions=message.actions;
-                console.log(actions);
-                console.log(list);
-                console.log(cout);
-                console.log(message);
                 superaddition(list);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
-                // alert(data.message);
+                console.log(data.message);
             }
     });
 }
@@ -289,22 +282,27 @@ $("#search").keydown(function() {
 function POST(){
 	oc.postRequire("post","/user/search","0",param,function(data){
 		if(data.code=="0"){
-			message=JSON.parse(data.message);
-            var user=message.users;
 			$(".table tbody").empty();
+            var message=JSON.parse(data.message);
+            var list=JSON.parse(message.list);
+            var cout=list.pages;
+            var list=list.list;
+            var actions=message.actions;
+            jurisdiction(actions);
+            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
 			if(user.length<=0){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
 		 	}else if(content.length>0){
-		 		superaddition(data)
+		 		superaddition(list);
+                jumpBianse();
 		 	}
 		 	setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
 		}else if(data.code=="-1"){
-			alert(data.message);
+			console.log(data.message);
 		}
 	})
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();

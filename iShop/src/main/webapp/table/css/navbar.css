@@ -19,7 +19,6 @@ body{
 	background-color:#4a5f7c;
 	border-bottom:1px solid transparent;
 	position: fixed;
-	top:0;
 	z-index: 4;
 }
 .navbar .logo{
@@ -153,7 +152,7 @@ body{
 }
 .sidebar ul{
 	margin-top:81px;
-	border-top: 1px solid #3a3f51;
+	// border-top: 1px solid #3a3f51;
 }
 .sidebar .btn{
 	position: absolute;
