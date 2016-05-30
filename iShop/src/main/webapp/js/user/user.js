@@ -258,6 +258,8 @@ function jumpBianse(){
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
+            id=$(tr).attr("id");
+            sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
         }else{
             alert("只能选择一项");

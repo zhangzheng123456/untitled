@@ -240,13 +240,14 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        // var 
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
+            id=$(tr).attr("id");
+            sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
         }else{
             alert("只能选择一项");
