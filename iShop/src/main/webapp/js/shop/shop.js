@@ -186,41 +186,41 @@ var oc = new ObjectControl();
 jQuery(document).ready(function(){
 	window.shop.init();//初始化
 	var id=sessionStorage.getItem("id");
-		var _params={"id":id};
-		var _command="/shop/select";
-		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
-			if(data.code=="0"){
-				var msg=JSON.parse(data.message);
-				console.log(msg);
-				$("#OWN_CORP").val(msg.corp_code);
-				$("#BRAND_ID").val(msg.brand_code);
-				$("#OWN_BRAND").val(msg.brand_name);
-				$("#STORE_ID").val(msg.store_code);
-				$("#OWN_AREA").val(msg.store_area);
-				$("#STORE_NAME").val(msg.store_name);
-				if(msg.flg_tob=="Y"){
-					$("#FLG_TOB").val("是");
-				}else if(msg.flg_tob=="N"){
-					$("#FLG_TOB").val("否");
-				}
-				$("#created_time").val(msg.created_date);
-				$("#creator").val(msg.creater);
-				$("#modify_time").val(msg.modified_date);
-				$("#modifier").val(msg.modifier);
-				var input=$(".checkbox_isactive").find("input")[0];
-				if(msg.isactive=="Y"){
-					input.checked==true;
-				}else if(msg.isactive=="N"){
-					input.checked==false;
-				}
-			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
+	var _params={"id":id};
+	var _command="/shop/select";
+	oc.postRequire("post", _command,"", _params, function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			$("#OWN_CORP").val(msg.corp_code);
+			$("#BRAND_ID").val(msg.brand_code);
+			$("#OWN_BRAND").val(msg.brand_name);
+			$("#STORE_ID").val(msg.store_code);
+			$("#OWN_AREA").val(msg.store_area);
+			$("#STORE_NAME").val(msg.store_name);
+			if(msg.flg_tob=="Y"){
+				$("#FLG_TOB").val("是");
+			}else if(msg.flg_tob=="N"){
+				$("#FLG_TOB").val("否");
 			}
-		});
+			$("#created_time").val(msg.created_date);
+			$("#creator").val(msg.creater);
+			$("#modify_time").val(msg.modified_date);
+			$("#modifier").val(msg.modifier);
+			var input=$(".checkbox_isactive").find("input")[0];
+			if(msg.isactive=="Y"){
+				input.checked==true;
+			}else if(msg.isactive=="N"){
+				input.checked==false;
+			}
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
 });

@@ -61,7 +61,6 @@ var oc = new ObjectControl();
 				var PHONE=$("#PHONE").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
-				console.log(input.checked);
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==true){
@@ -87,13 +86,19 @@ var oc = new ObjectControl();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
 				var PHONE=$("#PHONE").val();
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==true){
+					ISACTIVE="N";
+				}
 				var _command="/corp/edit";//接口名
 				var opt = {//返回成功后的操作s
 					success:function(){
 
 					}
 				};
-				var _params={"avator":HEADPORTRAIT,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE};
+				var _params={"avater":HEADPORTRAIT,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -155,4 +160,21 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.corp.init();//初始化
+	var id=sessionStorage.getItem("id");
+	var _params={"id":id};
+	var _command="/corp/select";
+	oc.postRequire("post", _command,"", _params, function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
 });
