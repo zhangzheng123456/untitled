@@ -1,5 +1,7 @@
 var oc = new ObjectControl();
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+key_val=JSON.parse(key_val);
+var funcCode=key_val.func_code;
 function GET(){
     oc.postRequire("get","/corp/list?funcCode="+funcCode+"","","",function(data){
             console.log(data);

@@ -8,7 +8,6 @@ var param={};//定义的对象
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-alert(func_code);
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -267,13 +266,12 @@ function jumpBianse(){
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
-    var param={};
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        POST(param);
+        POST();
     }
 });
 //搜索的请求函数
