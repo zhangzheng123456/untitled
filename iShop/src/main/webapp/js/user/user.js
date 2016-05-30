@@ -187,6 +187,7 @@ function superaddition(data){
 };
 //权限配置
 function jurisdiction(actions){
+    $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
@@ -302,10 +303,10 @@ function POST(){
             var list=list.list;
             var actions=message.actions;
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
-			if(user.length<=0){
+			if(list.length<=0){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
-		 	}else if(content.length>0){
+		 	}else if(list.length>0){
 		 		superaddition(list);
                 jumpBianse();
 		 	}

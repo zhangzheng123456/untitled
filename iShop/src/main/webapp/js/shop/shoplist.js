@@ -180,6 +180,7 @@ function superaddition(data){//页面加载循环
 };
 //权限配置
 function jurisdiction(actions){
+    $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
