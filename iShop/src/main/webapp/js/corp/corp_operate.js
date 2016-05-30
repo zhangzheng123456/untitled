@@ -59,13 +59,21 @@ var oc = new ObjectControl();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
 				var PHONE=$("#PHONE").val();
+				var ISACTIVE="";
+				var input=$(".checkbox_isactive").find("input")[0];
+				console.log(input.checked);
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==true){
+					ISACTIVE="N";
+				}
 				var _command="/corp/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE};
+				var _params={"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
