@@ -216,7 +216,7 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
