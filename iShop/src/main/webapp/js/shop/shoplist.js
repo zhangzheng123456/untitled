@@ -310,10 +310,10 @@ function POST(){
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
-            if(user.length<=0){
+            if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
-            }else if(content.length>0){
+            }else if(list.length>0){
                 superaddition(list);
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
