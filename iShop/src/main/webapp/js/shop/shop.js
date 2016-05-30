@@ -133,12 +133,12 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 				$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 			}else if(data.code=="-1"){
 				art.dialog({
