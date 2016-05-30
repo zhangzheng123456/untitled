@@ -7750,7 +7750,25 @@ ul,li{list-style:none;padding:0;margin:0;}
     margin-left:5px;
     color:#ffffff;
 }
+.minus_per_icon{
+    width: 100px;
+    height: 30px;
+    background: #c26555;
+    display: inline-block;
+    border-radius:4px;
+    line-height: 30px;
+    margin-left:5px;
+    color:#ffffff;
+}
+#ownshop_list >li{
+  display:table-cell;
+}
 .add_per_icon i{
+  font-size:16px;
+  margin:0px 10px;
+  vertical-align:middle;
+}
+.minus_per_icon i{
   font-size:16px;
   margin:0px 10px;
   vertical-align:middle;
