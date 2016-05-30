@@ -193,25 +193,27 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				// console.log(msg.user_code);
-				// $("#OWN_CORP").val(msg.user_code);
-				// $("#USER_NAME").val(msg.user_name);
-				// $("#preview img").attr("src",msg.avatar);
-				// $("#USER_PHONE").val(msg.phone);
-				// $("#USER_EMAIL").val(msg.email);
-				// if(msg.sex=="M"){
-				// 	$("#USER_SEX").val("女");
-				// }else if(msg.sex=="F"){
-				// 	$("#USER_SEX").val("男");
-				// }
-				// $("#OWN_CORP").val(msg.corp_code);
-				// $("#OWN_RIGHT").val(msg.role_code);
-				// $("#register_time").val(msg.created_date);
-				// $("#recently_login").val(msg.login_time_recently);
-				// $("#created_time").val(msg.created_date);
-				// $("#creator").val(msg.creater);
-				// $("#modify_time").val(msg.modified_date);
-				// $("#modifier").val(msg.modifier);
+				$("#OWN_CORP").val(msg.corp_code);
+				$("#BRAND_ID").val(msg.brand_code);
+				$("#OWN_BRAND").val(msg.brand_name);
+				$("#STORE_ID").val(msg.store_code);
+				$("#OWN_AREA").val(msg.store_area);
+				$("#STORE_NAME").val(msg.store_name);
+				if(msg.flg_tob=="Y"){
+					$("#FLG_TOB").val("是");
+				}else if(msg.flg_tob=="N"){
+					$("#FLG_TOB").val("否");
+				}
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked==true;
+				}else if(msg.isactive=="N"){
+					input.checked==false;
+				}
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
