@@ -155,19 +155,15 @@ function superaddition(data){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + data[i].id
                         + "</td><td>"
-                        + data[i].store_code
+                        + data[i].corp_name
                         + "</td><td>"
-                        + data[i].store_name
+                        + data[i].address
                         + "</td><td>"
-                        + data[i].store_area
+                        + data[i].contact
                         +"</td><td>"
-                        +data[i].brand_code
+                        +data[i].contact_phone
                         + "</td><td>"
-                        +data[i].brand_name
-                        + "</td><td>"
-                        +data[i].corp_code
-                        + "</td><td>"
-                        +data[i].creater
+                        +data[i].corp_name
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -189,7 +185,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/shop/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/role/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             console.log(data);
             if(data.code=="0"){
@@ -220,7 +216,7 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
@@ -241,11 +237,11 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_add.html");
+            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
         })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
     })
     //删除
     $("#remove").click(function(){
@@ -262,26 +258,6 @@ function jumpBianse(){
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
-    //弹框删除关闭
-    $("#delete").click(function(){
-        $("#p").hide();
-        $("#tk").hide();
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        for(var i=0,ID="";i<tr.length;i++){
-            var r=$(tr[i]).attr("id");
-            if(i<tr.length-1){
-                ID+=r+",";
-            }else{
-                 ID+=r;
-            }     
-        }
-        var param={};
-        param["id"]=ID;
-        console.log(param);
-        oc.postRequire("post","/shop/delete","0",param,function(data){
-            console.log(data);
-        })
-    })  
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -298,7 +274,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/shop/search","0",param,function(data){
+    oc.postRequire("post","/role/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -306,18 +282,19 @@ function POST(){
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
-            if(user.length<=0){
+            if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
-            }else if(content.length>0){
-                superaddition(list);
+            }else if(list.length>0){
+                superaddition(data)
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
-            console.log(data.message);
+            alert(data.message);
         }
     })
 }
+console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -328,6 +305,26 @@ $("#cancel").click(function(){
     $("#p").hide();
     $("#tk").hide();
 })
+//弹框删除关闭
+$("#delete").click(function(){
+    $("#p").hide();
+    $("#tk").hide();
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    for(var i=0,ID="";i<tr.length;i++){
+        var r=$(tr[i]).attr("id");
+        if(i<tr.length-1){
+            ID+=r+",";
+        }else{
+             ID+=r;
+        }     
+    }
+    var param={};
+    param["id"]=ID;
+    console.log(param);
+    oc.postRequire("post","/role/delete","0",param,function(data){
+        console.log(data);
+    })
+})  
 //全选
 function checkAll(name){
     var el=$("tbody input");

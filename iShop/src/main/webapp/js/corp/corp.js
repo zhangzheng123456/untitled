@@ -191,15 +191,14 @@ function GET(){
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
-                var user=message.corpInfo;
+                var list=JSON.parse(message.list);
+                var cout=list.pages;
+                var list=list.list;
                 var actions=message.actions;
-                console.log(actions);
-                console.log(message);
-                cout=message.pages;
-                superaddition(user);
+                superaddition(list);
                 jurisdiction(actions);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
+                setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
@@ -277,16 +276,19 @@ $("#search").keydown(function() {
 function POST(){
     oc.postRequire("post","/corp/search","0",param,function(data){
         if(data.code=="0"){
-            message=JSON.parse(data.message);
-            var user=message.users;
+            var message=JSON.parse(data.message);
+            var list=JSON.parse(message.list);
+            var cout=list.pages;
+            var list=list.list;
+            var actions=message.actions;
             $(".table tbody").empty();
-            if(user.length<=0){
+            if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
-            }else if(content.length>0){
+            }else if(list.length>0){
                 superaddition(data)
             }
-            setPage($("#foot-num")[0],cout,pageNumber,pageSize,funcCode,value);
+            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
             alert(data.message);
         }
