@@ -127,7 +127,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":ACCOUNT,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX};
+				var _params={"user_code":ACCOUNT,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":""};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
