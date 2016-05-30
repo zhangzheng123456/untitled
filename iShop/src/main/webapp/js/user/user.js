@@ -288,6 +288,7 @@ $("#search").keydown(function() {
 //搜索的请求函数
 function POST(){
 	oc.postRequire("post","/user/search","0",param,function(data){
+        console.log(data);
 		if(data.code=="0"){
 			$(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -295,7 +296,6 @@ function POST(){
             var cout=list.pages;
             var list=list.list;
             var actions=message.actions;
-            jurisdiction(actions);
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
 			if(user.length<=0){
 				$(".table p").remove();
