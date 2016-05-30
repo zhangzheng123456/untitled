@@ -109,7 +109,7 @@ var oc = new ObjectControl();
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
 		console.log(_params);
-		oc.postRequire("post", _command, _params, function(data){
+		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
 				if(opt.success){
 					opt.success();
