@@ -164,7 +164,7 @@ function superaddition(data){
                         +"</td><td>"
                         +data[i].phone
                         + "</td><td>"
-                        +data[i].corpInfo.corp_name
+                        +data[i].corp_name
                         + "</td><td>"
                         +data[i].login_time_recently
                         + "</td><td>"
