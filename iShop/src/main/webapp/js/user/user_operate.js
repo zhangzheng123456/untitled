@@ -136,7 +136,7 @@ var oc = new ObjectControl();
 	};
 	useroperatejs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
-		oc.postRequire("post", _command," ", _params, function(data){
+		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				if(opt.success){
 					opt.success();
@@ -238,7 +238,8 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").css({"display":"block","background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
-			var id=sessionStorage.getItem("id");
+		}
+		var id=sessionStorage.getItem("id");
 			var _params={"id":id};
 			var _command="/user/select";
 			oc.postRequire("post", _command,"", _params, function(data){
@@ -274,6 +275,5 @@ jQuery(document).ready(function(){
 					});
 				}
 			});
-		}
 	}
 });
