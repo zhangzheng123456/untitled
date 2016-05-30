@@ -114,12 +114,14 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx--;
+            dian(inx);
             // setPage(container, count, inx);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
-            inx = parseInt(this.innerHTML);
+                inx = parseInt(this.innerHTML);
+                dian(inx);
                 // setPage(container, count, inx);
                 return false;
             }
@@ -129,6 +131,7 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx++;
+            dian(inx);
             // setPage(container, count, inx);
             return false;
         }
@@ -279,7 +282,9 @@ function jumpBianse(){
         param["id"]=ID;
         console.log(param);
         oc.postRequire("post","/shop/delete","0",param,function(data){
-            console.log(data);
+            if(data.code=="0"){
+                GET();
+            }
         })
     })  
 }

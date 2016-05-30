@@ -5,10 +5,10 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-var key_val=sessionStorage.getItem("key_val");
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-console.log(funcCode);
+alert(func_code);
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -114,12 +114,14 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx--;
+            dian(inx);
             // setPage(container, count, inx);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
+                dian(inx);
                 // setPage(container, count, inx);
                 return false;
             }
@@ -129,6 +131,7 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx++;
+            dian(inx);
             // setPage(container, count, inx);
             return false;
         }
@@ -237,11 +240,12 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
-        })
+        // var 
+        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+    })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
     })
     //删除
     $("#remove").click(function(){
@@ -265,7 +269,7 @@ $("#search").keydown(function() {
     value=this.value.replace(/\s+/g,"");
     var param={};
     param["searchValue"]=value;
-    param["pageNumber"]=pageNumber;
+    param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
@@ -322,7 +326,9 @@ $("#delete").click(function(){
     param["id"]=ID;
     console.log(param);
     oc.postRequire("post","/corp/delete","0",param,function(data){
-        console.log(data);
+        if(data.code=="0"){
+            GET();
+        }
     })
 })  
 //全选
