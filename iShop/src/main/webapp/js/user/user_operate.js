@@ -68,7 +68,6 @@ var oc = new ObjectControl();
 	};
 	useroperatejs.bindbutton=function(){
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
-			console.log($("#USERID").val());
 			if(useroperatejs.firstStep()){
 				console.log("1");
 				var USERID=$("#USERID").val();
@@ -276,6 +275,12 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
