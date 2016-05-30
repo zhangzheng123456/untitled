@@ -12,6 +12,7 @@
         from DEF_STORE
         where CORP_CODE = #{corp_code}
         AND STORE_CODE = #{store_code}
+         AND ISACTIVE = 'Y'
     </select>
     <select id="selectAllStore" resultType="com.bizvane.ishop.entity.Store">
         select *

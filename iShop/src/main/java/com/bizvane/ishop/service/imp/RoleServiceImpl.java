@@ -37,13 +37,13 @@ public class RoleServiceImpl implements RoleService {
 
     public PageInfo<Role> selectAllRole(int page_number, int page_size,String corp_code, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
-        List<Role> roles = roleMapper.selectAllRole(corp_code,"%" + search_value + "%","");
+        List<Role> roles = roleMapper.selectAllRole(corp_code,"%" + search_value + "%");
         PageInfo<Role>  page = new PageInfo<Role>(roles);
         return page;
     }
 
-    public List<Role> selectCorpRole(String corp_code,String role_head) throws SQLException {
-        List<Role> roles = roleMapper.selectAllRole(corp_code,"",role_head);
+    public List<Role> selectCorpRole(String corp_code,String role_code) throws SQLException {
+        List<Role> roles = roleMapper.selectUserRole(corp_code,role_code);
         return roles;
     }
 

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -84,7 +86,7 @@ public class StoreController {
     /**
      * 新增
      */
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -117,7 +119,7 @@ public class StoreController {
     /**
      * 编辑
      */
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -249,6 +251,32 @@ public class StoreController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/staff" , method = RequestMethod.POST)
+    @ResponseBody
+    public String getStaff(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String store_code = jsonObject.get("store_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            List<User> user = storeService.getStoreUser(corp_code, store_code);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(JSON.toJSONString(user));
+        }catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());

@@ -116,11 +116,11 @@ public class UserController {
             user.setPhone(jsonObject.get("phone").toString());
             user.setEmail(jsonObject.get("email").toString());
             user.setSex(jsonObject.get("sex").toString());
-            user.setBirthday(jsonObject.get("birthday").toString());
+       //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
             user.setRole_code(jsonObject.get("role_code").toString());
             user.setStore_code(jsonObject.get("store_code").toString());
-            user.setPassword(jsonObject.get("password").toString());
+            user.setPassword(user_code);
             Date now = new Date();
             user.setCreated_date(sdf.format(now));
             user.setCreater(user_id);
@@ -323,7 +323,7 @@ public class UserController {
             JSONObject roles = new JSONObject();
             if(jsonObject.get("user_type").equals("admin")){
                 String role = "系统管理员";
-                roles.put("role",role);
+                roles.put("roles",role);
             }else {
                 String corp_code = jsonObject.get("corp_code").toString();
 
@@ -334,7 +334,7 @@ public class UserController {
                 }else{
                     list = roleService.selectCorpRole(corp_code,role_code);
                 }
-                roles.put("role",list);
+                roles.put("roles",JSON.toJSONString(list));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -363,25 +363,28 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject stores = new JSONObject();
-            if(jsonObject.get("user_type").equals("admin")){
-
-            }else {
+            if(!jsonObject.get("user_type").equals("admin")){
                 String corp_code = jsonObject.get("corp_code").toString();
                 String role_code = request.getSession().getAttribute("role_code").toString();
                 List<Store> list;
                 if (role_code.contains(Common.ROLE_SYS_HEAD)){
                     list = storeService.getCorpStore(corp_code);
-                    stores.put("store",list);
+                    stores.put("stores",JSON.toJSONString(list));
                 }else{
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     String[] ids = store_code.split(",");
                     Store store;
+                    JSONArray array = new JSONArray();
                     for (int i = 0; i < ids.length; i++) {
-                        logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
-
+                        logger.info("-------------store_code" + ids[i]);
                         store = storeService.getUserStore(corp_code, ids[i]);
+                        array.add(JSON.toJSONString(store));
                     }
+                    stores.put("stores",array);
                 }
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(stores.toString());
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -390,6 +393,4 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
-
-
 }

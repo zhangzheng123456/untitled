@@ -39,11 +39,9 @@ public class User {
 
 	private String store_name;
 
-	private Corp corp;
+	private String corp_name;
 
 	private Role role;
-
-	private Store store;
 
 	public User(){}
 
@@ -195,14 +193,6 @@ public class User {
 		this.isactive = isactive;
 	}
 
-	public Corp getCorp() {
-		return corp;
-	}
-
-	public void setCorp(Corp corp) {
-		this.corp = corp;
-	}
-
 	public Role getRole() {
 		return role;
 	}
@@ -211,38 +201,19 @@ public class User {
 		this.role = role;
 	}
 
-	public Store getStore() {
-		return store;
-	}
-
-	public void setStore(Store store) {
-		this.store = store;
-	}
-
-	public String toString() {
-		final StringBuffer sb = new StringBuffer("User{");
-		sb.append("user_code=").append(user_code);
-		sb.append(", user_name=").append(user_name);
-		sb.append(", id=").append(id);
-		sb.append(", avatar=").append(avatar);
-		sb.append(", user_name=").append(user_name);
-		sb.append(", sex=").append(sex);
-		sb.append(", phone=").append(phone);
-		sb.append(", email=").append(email);
-		sb.append(", corp_code=").append(corp_code);
-		sb.append(", role_code=").append(role_code);
-		sb.append(", store_code=").append(store_code);
-		sb.append(", password=").append(password);
-		sb.append(", isactive=").append(isactive);
-		sb.append('}');
-		return sb.toString();
-	}
-
 	public String getStore_name() {
 		return store_name;
 	}
 
 	public void setStore_name(String store_name) {
 		this.store_name = store_name;
+	}
+
+	public String getCorp_name() {
+		return corp_name;
+	}
+
+	public void setCorp_name(String corp_name) {
+		this.corp_name = corp_name;
 	}
 }
