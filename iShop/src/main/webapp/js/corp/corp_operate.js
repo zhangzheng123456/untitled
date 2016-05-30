@@ -85,7 +85,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"HEADPORTRAIT":HEADPORTRAIT,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE};
+				var _params={"avator":HEADPORTRAIT,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
