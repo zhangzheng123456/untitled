@@ -10,10 +10,9 @@ function GET(){
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
+                console.log(list);
                 var actions=message.actions;
-                superaddition(list);
                 jurisdiction(actions);
-                jumpBianse();
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
