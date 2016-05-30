@@ -244,7 +244,12 @@ function jumpBianse(){
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==1){
+            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+        }else{
+            alert("只能选择一项");
+        }
     })
     //删除
     $("#remove").click(function(){
