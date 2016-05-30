@@ -111,10 +111,13 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				if(opt.success){
-					opt.success();
-				}
-				// window.location.href="";
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+				$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -168,6 +171,21 @@ jQuery(document).ready(function(){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			console.log(msg);
+			$("#CORPNAME").val(msg.corp_name);
+			$("#CORPADDRESS").val(msg.address);
+			$("#CONTACTS").val(msg.contact);
+			$("#PHONE").val(msg.contact_phone);
+
+			$("#created_time").val(msg.created_date);
+			$("#creator").val(msg.creater);
+			$("#modify_time").val(msg.modified_date);
+			$("#modifier").val(msg.modifier);
+			var input=$(".checkbox_isactive").find("input")[0];
+			if(msg.isactive=="Y"){
+				input.checked=true;
+			}else if(msg.isactive=="N"){
+				input.checked=false;
+			}
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,

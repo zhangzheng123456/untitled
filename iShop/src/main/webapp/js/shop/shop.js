@@ -210,9 +210,9 @@ jQuery(document).ready(function(){
 			$("#modifier").val(msg.modifier);
 			var input=$(".checkbox_isactive").find("input")[0];
 			if(msg.isactive=="Y"){
-				input.checked==true;
+				input.checked=true;
 			}else if(msg.isactive=="N"){
-				input.checked==false;
+				input.checked=false;
 			}
 		}else if(data.code=="-1"){
 			art.dialog({
