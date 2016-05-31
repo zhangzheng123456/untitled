@@ -10,8 +10,6 @@ function GET(){
                 console.log(message);
                 var list=JSON.parse(message.list);
                 console.log(list);
-                var cout=list.pages;
-                var list=list.list;
                 console.log(list);
                 var id=list.id;
                 console.log(list);
@@ -29,7 +27,7 @@ function GET(){
                     sessionStorage.setItem("id",id);
                 }
             }else if(data.code=="-1"){
-                // alert(data.message);
+                
             }
     });
 }
