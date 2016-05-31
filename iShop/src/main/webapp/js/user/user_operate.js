@@ -300,7 +300,10 @@ jQuery(document).ready(function(){
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			var msg=JSON.parse(data.message);
-
+			console.log(msg.roles);
+			var roles_list=JSON.parse(msg.roles);
+			console.log(roles_list.role_name);
 		});
+		store_li_list();
 	}
 });
