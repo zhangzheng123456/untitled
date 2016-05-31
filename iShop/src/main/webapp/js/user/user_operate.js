@@ -193,6 +193,7 @@ var i=0;
 function selectownshop(obj){
 	if(i==0){
 		store_li_list();
+		i++;
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
