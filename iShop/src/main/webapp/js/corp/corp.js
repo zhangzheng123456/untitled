@@ -175,6 +175,7 @@ function superaddition(data){//页面加载循环
 };
 //权限配置
 function jurisdiction(actions){
+    $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
@@ -239,12 +240,18 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        // var 
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==1){
+            id=$(tr).attr("id");
+            sessionStorage.setItem("id",id);
+            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+        }else{
+            alert("只能选择一项");
+        }
     })
     //删除
     $("#remove").click(function(){
@@ -288,7 +295,7 @@ function POST(){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
             }else if(list.length>0){
-                superaddition(data)
+                superaddition(list);
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){

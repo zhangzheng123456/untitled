@@ -21,6 +21,7 @@ public interface UserMapper {
     List<User> selectAllUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
     User selectUserById(int user_id);
- //   List<User> selectTest();
+
+    List<User> selectStoreUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
 }

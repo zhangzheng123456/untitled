@@ -68,9 +68,9 @@ var oc = new ObjectControl();
 	};
 	useroperatejs.bindbutton=function(){
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
-			console.log($("#ACCOUNT").val());
 			if(useroperatejs.firstStep()){
-				var ACCOUNT=$("#ACCOUNT").val();
+				console.log("1");
+				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
 				var USER_PHONE=$("#USER_PHONE").val();
@@ -86,7 +86,6 @@ var oc = new ObjectControl();
 				var OWN_RIGHT=$("#OWN_RIGHT").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
-				console.log(input.checked);
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==true){
@@ -98,7 +97,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":ACCOUNT,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":""};
+				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":""};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -106,7 +105,7 @@ var oc = new ObjectControl();
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(useroperatejs.firstStep()){
-				var ACCOUNT=$("#ACCOUNT").val();
+				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
 				var USER_PHONE=$("#USER_PHONE").val();
@@ -120,6 +119,13 @@ var oc = new ObjectControl();
 				}
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_RIGHT=$("#OWN_RIGHT").val();
+				var ISACTIVE="";
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==true){
+					ISACTIVE="N";
+				}
 				var _command="/user/edit";//接口名
 				console.log(HEADPORTRAIT);
 				var opt = {//返回成功后的操作
@@ -127,7 +133,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":ACCOUNT,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX};
+				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":""};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -136,12 +142,9 @@ var oc = new ObjectControl();
 	};
 	useroperatejs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
-		oc.postRequire("post", _command," ", _params, function(data){
+		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				if(opt.success){
-					opt.success();
-				}
-				// window.location.href="";
+				$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -220,13 +223,19 @@ jQuery(document).ready(function(){
 	var val=sessionStorage.getItem("key");
     val=JSON.parse(val);
     var message=JSON.parse(val.message);
+    //拉取角色下拉选项
+	var _params={"user_type":message.user_type};
+	var _command="/user/role";
+	oc.postRequire("post", _command,"", _params, function(data){
+		console.log(data);
+	});
 	if($(".pre_title label").text()=="新增用户"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
-			$("#OWN_CORP").css({"display":"block","background-color":"#dfdfdf"});
+			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
 		}
@@ -235,45 +244,51 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
-			$("#OWN_CORP").css({"display":"block","background-color":"#dfdfdf"});
+			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
-			var id=sessionStorage.getItem("id");
-			var _params={"id":id};
-			var _command="/user/select";
-			oc.postRequire("post", _command,"", _params, function(data){
-				console.log(data);
-				if(data.code=="0"){
-					var msg=JSON.parse(data.message);
-					console.log(msg);
-					console.log(msg.user_code);
-					$("#ACCOUNT").val(msg.user_code);
-					$("#USER_NAME").val(msg.user_name);
-					$("#preview img").attr("src",msg.avatar);
-					$("#USER_PHONE").val(msg.phone);
-					$("#USER_EMAIL").val(msg.email);
-					if(msg.sex=="M"){
-						$("#USER_SEX").val("女");
-					}else if(msg.sex=="F"){
-						$("#USER_SEX").val("男");
-					}
-					$("#OWN_CORP").val(msg.corp_code);
-					$("#OWN_RIGHT").val(msg.role_code);
-					$("#register_time").val(msg.created_date);
-					$("#recently_login").val(msg.login_time_recently);
-					$("#created_time").val(msg.created_date);
-					$("#creator").val(msg.creater);
-					$("#modify_time").val(msg.modified_date);
-					$("#modifier").val(msg.modifier);
-				}else if(data.code=="-1"){
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content: data.message
-					});
-				}
-			});
 		}
+		var id=sessionStorage.getItem("id");
+		var _params={"id":id};
+		var _command="/user/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				console.log(msg.user_code);
+				$("#USERID").val(msg.user_code);
+				$("#USER_NAME").val(msg.user_name);
+				$("#preview img").attr("src",msg.avatar);
+				$("#USER_PHONE").val(msg.phone);
+				$("#USER_EMAIL").val(msg.email);
+				if(msg.sex=="M"){
+					$("#USER_SEX").val("女");
+				}else if(msg.sex=="F"){
+					$("#USER_SEX").val("男");
+				}
+				$("#OWN_CORP").val(msg.corp_code);
+				$("#OWN_RIGHT").val(msg.role_code);
+				$("#register_time").val(msg.created_date);
+				$("#recently_login").val(msg.login_time_recently);
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+			}
+		});
 	}
 });

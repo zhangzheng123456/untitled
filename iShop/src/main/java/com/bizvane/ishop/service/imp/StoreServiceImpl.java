@@ -2,7 +2,9 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.StoreMapper;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -23,6 +25,8 @@ public class StoreServiceImpl implements StoreService {
 
     @Autowired
     private StoreMapper storeMapper;
+    @Autowired
+    private UserMapper userMapper;
 
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
@@ -34,11 +38,23 @@ public class StoreServiceImpl implements StoreService {
 
     //分页显示所有店铺
     public PageInfo<Store> getAllStore(int page_number, int page_size, String corp_code, String search_value) {
-        PageHelper.startPage(page_number, page_size);
-        List<Store> shops = storeMapper.selectAllStore(corp_code, "%" + search_value + "%");
+        List<Store> shops;
+        if (search_value.equals("")) {
+            PageHelper.startPage(page_number, page_size);
+            shops = storeMapper.selectAllStore(corp_code,"");
+        }else {
+            PageHelper.startPage(page_number, page_size);
+            shops = storeMapper.selectAllStore(corp_code, "%" + search_value + "%");
+        }
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
         return page;
+    }
+
+    //分页显示店铺下所属用户
+    public List<User> getStoreUser(String corp_code,String store_code){
+        List<User> user = userMapper.selectStoreUser(corp_code,"%"+store_code+"%");
+        return user;
     }
 
     //获取用户store_code对应店铺
@@ -51,7 +67,6 @@ public class StoreServiceImpl implements StoreService {
     //获取企业,store_code对应店铺
     public List<Store> getCorpStore(String corp_code) throws SQLException {
         List<Store> stores = storeMapper.selectAllStore(corp_code,"");
-
         return stores;
     }
 

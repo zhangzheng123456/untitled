@@ -21,7 +21,7 @@ public interface RoleService {
 
     PageInfo<Role> selectAllRole(int page_number, int page_size,String corp_code, String search_value) throws SQLException;
 
-    List<Role> selectCorpRole(String corp_code,String role_head) throws SQLException;
+    List<Role> selectCorpRole(String corp_code,String role_code) throws SQLException;
 
     String selectMaxRoleCode(String role_head);
 

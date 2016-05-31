@@ -60,7 +60,7 @@ public class CorpController {
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
 
             JSONObject info = new JSONObject();
-            if (role_code.contains("R1")) {
+            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员(官方画面)
                 int page_number = Integer.parseInt(request.getParameter("pageNumber"));
                 int page_size = Integer.parseInt(request.getParameter("pageSize"));
@@ -88,7 +88,7 @@ public class CorpController {
     /**
      * 新增
      */
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -137,7 +137,7 @@ public class CorpController {
     /**
      * 编辑
      */
-    @RequestMapping(value = "/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -215,14 +215,22 @@ public class CorpController {
     /**
      * 企业选择
      */
-    @RequestMapping("/find/{id}")
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public String findById(@PathVariable Integer corp_id) {
+    public String findById(HttpServletRequest request) {
         DataBean bean = new DataBean();
         String data = null;
         try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            System.out.println("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_id = jsonObject.get("id").toString();
 
-            data = JSON.toJSONString(corpService.selectByCorpId(corp_id, ""));
+            data = JSON.toJSONString(corpService.selectByCorpId(Integer.parseInt(corp_id), ""));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);

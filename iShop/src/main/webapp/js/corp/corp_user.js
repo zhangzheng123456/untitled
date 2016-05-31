@@ -10,10 +10,21 @@ function GET(){
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
+                var id=list.id;
+                console.log(list);
                 var actions=message.actions;
-                superaddition(list);
-                jurisdiction(actions);
-                jumpBianse();
+                $('#corp_name').html(list.corp_name);
+                $('#address').html(list.address);
+                $('#contact').html(list.contact);
+                $('#contact_phone').html(list.contact_phone);
+                $('#modifier').html(list.modifier);
+                $('#created_date').html(list.created_date);
+                $('#creater').html(list.creater);
+                $('#modified_date').html(list.modified_date);
+                if(actions[0].act_name=="edit"){
+                    $("#compile").html("<a href='crop_edit.html'><div class='shop_editor'>编辑</div></a>")
+                    sessionStorage.setItem("id",id);
+                }
             }else if(data.code=="-1"){
                 // alert(data.message);
             }

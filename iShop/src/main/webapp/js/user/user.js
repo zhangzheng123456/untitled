@@ -187,6 +187,7 @@ function superaddition(data){
 };
 //权限配置
 function jurisdiction(actions){
+    $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
@@ -255,7 +256,14 @@ function jumpBianse(){
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==1){
+            id=$(tr).attr("id");
+            sessionStorage.setItem("id",id);
+            $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+        }else{
+            alert("只能选择一项");
+        }
     })
     //删除
     $("#remove").click(function(){
@@ -288,6 +296,7 @@ $("#search").keydown(function() {
 //搜索的请求函数
 function POST(){
 	oc.postRequire("post","/user/search","0",param,function(data){
+        console.log(data);
 		if(data.code=="0"){
 			$(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -295,12 +304,11 @@ function POST(){
             var cout=list.pages;
             var list=list.list;
             var actions=message.actions;
-            jurisdiction(actions);
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
-			if(user.length<=0){
+			if(list.length<=0){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
-		 	}else if(content.length>0){
+		 	}else if(list.length>0){
 		 		superaddition(list);
                 jumpBianse();
 		 	}
