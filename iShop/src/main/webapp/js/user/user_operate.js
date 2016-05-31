@@ -191,7 +191,7 @@ var oc = new ObjectControl();
 	return obj;
 }));
 function selectownshop(obj){
-	if($(obj).data("i")==1){
+	if(obj.getAttribute("data-i")=="1"){
 		store_li_list();
 		obj.setAttribute('data-i','2');
 	}
