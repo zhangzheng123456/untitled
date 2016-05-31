@@ -193,7 +193,7 @@ var oc = new ObjectControl();
 function selectownshop(obj){
 	if($(obj).data("i")==1){
 		store_li_list();
-		$(obj).setAttribute('data-i','2');
+		obj.setAttribute('data-i','2');
 		var ul=$(obj).children('ul');
 	    if(ul.css("display")=="none"){
 	        ul.show();
