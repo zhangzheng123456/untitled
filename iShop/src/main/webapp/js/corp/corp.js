@@ -137,10 +137,10 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     function dian(inx){
         var inx=inx;
         if(value==""){
-            GET(inx);
+            GET();
         }else if(value!==""){
             param["pageNumber"]=inx;
-            POST(inx);
+            POST();
         }
     }
 }
