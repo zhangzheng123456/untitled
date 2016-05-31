@@ -133,6 +133,7 @@
         FROM DEF_USER
         WHERE CORP_CODE = #{corp_code}
         AND store_code like #{search_value}
+        AND ISACTIVE = 'Y'
     </select>
 
     <delete id="deleteByUserId">

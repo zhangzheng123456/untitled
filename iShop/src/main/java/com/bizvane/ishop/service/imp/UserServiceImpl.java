@@ -142,36 +142,42 @@ public class UserServiceImpl implements UserService {
             String role_code = login_user.getRole_code();
             String store_code = login_user.getStore_code();
 
-            JSONArray menu = functionService.selectAllFunctions(user_id, role_code);
             request.getSession().setAttribute("user_id", user_id);
             request.getSession().setAttribute("corp_code", corp_code);
             request.getSession().setAttribute("role_code", role_code);
             request.getSession().setAttribute("store_code", store_code);
-            request.getSession().setAttribute("menu", menu);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
             login_user.setLogin_time_recently(sdf.format(now));
             update(login_user);
 
-            user_info.put("user_id", user_id);
-            user_info.put("menu", menu);
+            JSONArray menu;
             if (login_user.getRole_code().contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
                 user_info.put("user_type", "admin");
-            } else if (login_user.getRole_code().contains(Common.ROLE_GM_HEAD)) {
-                //总经理
-                user_info.put("user_type", "gm");
-            } else if (login_user.getRole_code().contains(Common.ROLE_AM_HEAD)) {
-                //区经
-                user_info.put("user_type", "am");
-            } else if (login_user.getRole_code().contains(Common.ROLE_SM_HEAD)) {
-                //店长
-                user_info.put("user_type", "sm");
-            } else {
-                //导购
-                user_info.put("user_type", "staff");
+                menu = functionService.selectAllFunctions(0,"");
+            } else{
+                if (login_user.getRole_code().contains(Common.ROLE_GM_HEAD)) {
+                    //总经理
+                    user_info.put("user_type", "gm");
+                } else if (login_user.getRole_code().contains(Common.ROLE_AM_HEAD)) {
+                    //区经
+                    user_info.put("user_type", "am");
+                } else if (login_user.getRole_code().contains(Common.ROLE_SM_HEAD)) {
+                    //店长
+                    user_info.put("user_type", "sm");
+                } else {
+                    //导购
+                    user_info.put("user_type", "staff");
+                }
+                menu = functionService.selectAllFunctions(user_id, role_code);
             }
+            request.getSession().setAttribute("menu", menu);
+
+            user_info.put("user_id", user_id);
+            user_info.put("menu", menu);
         }
+
         return user_info;
     }
 

@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageInfo;
@@ -40,6 +42,8 @@ public class StoreController {
 
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private CorpService corpService;
     @Autowired
     private FunctionService functionService;
 
@@ -81,6 +85,42 @@ public class StoreController {
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
+    }
+
+    /**
+     * 新增
+     */
+    @RequestMapping(value = "/corp_exist", method = RequestMethod.POST)
+    @ResponseBody
+    public String corpExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            System.out.println("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject msg = new JSONObject(message);
+            String corp_code = msg.get("corp_code").toString();
+            Corp corp = corpService.selectByCorpId(0, corp_code);
+            if(corp==null){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("该企业编号不存在！");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("企业编号可用");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+
     }
 
     /**
@@ -259,9 +299,9 @@ public class StoreController {
     }
 
 
-    @RequestMapping(value = "/staff" , method = RequestMethod.POST)
+    @RequestMapping(value = "/staff", method = RequestMethod.POST)
     @ResponseBody
-    public String getStaff(HttpServletRequest request){
+    public String getStaff(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
@@ -276,7 +316,7 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(JSON.toJSONString(user));
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());

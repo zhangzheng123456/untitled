@@ -38,23 +38,26 @@ public class LoginController {
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "/")
     public String index(HttpServletRequest request) {
-        request.getSession().invalidate();
-        return "login";
-    }
-//        System.out.println("-------------"+request.getSession().getAttribute("user_id"));
-//        if (request.getSession().getAttribute("user_id") == null) {
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId(id);
-//            dataBean.setMessage("new user login");
-//        }else{
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage("logined");
-//        }
-//        return dataBean.getJsonStr();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        System.out.println(role_code);
+        String home = "";
+        if (role_code.contains(Common.ROLE_SYS_HEAD)){
+            home = "home/index_admin";
+        }else if(role_code.contains(Common.ROLE_GM_HEAD)){
+            home = "home/index_gm";
+        }else if(role_code.contains(Common.ROLE_AM_HEAD)){
+            home = "home/index_am";
+        }else if(role_code.contains(Common.ROLE_STAFF_HEAD)){
+           home = "home/index_staff";
+        }else {
+            home = "login";
+        }
+        System.out.println(home);
 
+        return home;
+    }
 
     /**
      * 手机号是否已注册
@@ -65,7 +68,7 @@ public class LoginController {
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
-            log.info("json---------------" + param);
+            log.info("json--phoneExist-------------" + param);
             JSONObject jsonObj = new JSONObject(param);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -100,7 +103,7 @@ public class LoginController {
     public String getAuthCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String param = request.getParameter("param");
-        log.info("json---------------" + param);
+        log.info("json--authcode-------------" + param);
         JSONObject jsonObj = new JSONObject(param);
         id = jsonObj.get("id").toString();
         String message = jsonObj.get("message").toString();
@@ -130,7 +133,7 @@ public class LoginController {
         System.out.println("-------------------");
         try {
             String param = request.getParameter("param");
-            log.info("json---------------" + param);
+            log.info("json--register-------------" + param);
             JSONObject jsonObj = new JSONObject(param);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
