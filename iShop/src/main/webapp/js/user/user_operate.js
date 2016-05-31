@@ -305,19 +305,38 @@ function store_li_list() {
 }
 jQuery(document).ready(function(){
 	window.user.init();//初始化
-	var val=sessionStorage.getItem("key");
+	var val=sessionStorage.getItem("addtype");
     val=JSON.parse(val);
-    var message=JSON.parse(val.message);
 	if($(".pre_title label").text()=="新增用户"){
-		console.log(message.user_type);
-		if(message.user_type=="admin"){
-			$("#OWN_CORP").parent().parent().css("display","none");
-			$("#select_ownshop").css("display","none");
+		if(val.user_type=="admin"){
+			if(val.isAdmin=="Y"){
+				$("#OWN_CORP").parent().parent().css("display","none");
+				$("#select_ownshop").css("display","none");
+			}else if(val.isAdmin=="N"){
+				$("#OWN_CORP").parent().parent().css("display","block");
+				$("#select_ownshop").css("display","block");
+			}
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
 		}
+		var id=sessionStorage.getItem("id");
+		var _params={"id":id};
+		var _command="/user/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			// if(data.code=="0"){
+			// 	$("#OWN_CORP").val(msg.corp_code);
+			// }else if(data.code=="-1"){
+			// 	art.dialog({
+			// 		time: 1,
+			// 		lock:true,
+			// 		cancel: false,
+			// 		content: data.message
+			// 	});
+			// }
+		});
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().css("display","none");
