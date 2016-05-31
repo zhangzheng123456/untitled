@@ -90,6 +90,7 @@ var oc = new ObjectControl();
 		});
 		$(".shopedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(shopjs.firstStep()){
+				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
 				var BRAND_ID=$("#BRAND_ID").val();
 				var OWN_BRAND=$("#OWN_BRAND").val();
@@ -118,7 +119,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"brand_code":BRAND_ID,"brand_name":OWN_BRAND,"store_code":STORE_ID,"store_area":OWN_AREA,"store_name":STORE_NAME,"flg_tob":FLG_TOB,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"brand_code":BRAND_ID,"brand_name":OWN_BRAND,"store_code":STORE_ID,"store_area":OWN_AREA,"store_name":STORE_NAME,"flg_tob":FLG_TOB,"isactive":ISACTIVE};
 				shopjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;

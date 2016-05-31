@@ -192,7 +192,19 @@ var oc = new ObjectControl();
 function selectownshop(obj){
 	if($(obj).data("i")==1){
 		store_li_list();
-		$(obj).data("i","2");
+		$(obj).setAttribute('data-i','2');
+		var ul=$(obj).children('ul');
+	    if(ul.css("display")=="none"){
+	        ul.show();
+	        $(obj).children("ul").children('li').click(function(){
+	            var this_=this;
+	            var txt = $(this_).text();
+	            $(this_).parent().parent().children(".input_select").val(txt);
+	            $(this_).addClass('rel').siblings().removeClass('rel');
+	        });
+	    }else{
+	        ul.hide();
+	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -212,6 +224,18 @@ function selectownrole(obj){
 	if(j==0){
 		role_li_list();
 		j++;
+		var ul=$(obj).children('ul');
+	    if(ul.css("display")=="none"){
+	        ul.show();
+	        $(obj).children("ul").children('li').click(function(){
+	            var this_=this;
+	            var txt = $(this_).text();
+	            $(this_).parent().parent().children(".input_select").val(txt);
+	            $(this_).addClass('rel').siblings().removeClass('rel');
+	        });
+	    }else{
+	        ul.hide();
+	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -229,7 +253,7 @@ function selectownrole(obj){
 function addshopselect(){
 	$(".shop_list").append('<div>'
             +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
-                +'<input class="input_select" id="OWN_RIGHT" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+                +'<input class="input_select"  type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
             +'</span>'
@@ -281,19 +305,38 @@ function store_li_list() {
 }
 jQuery(document).ready(function(){
 	window.user.init();//初始化
-	var val=sessionStorage.getItem("key");
+	var val=sessionStorage.getItem("addtype");
     val=JSON.parse(val);
-    var message=JSON.parse(val.message);
 	if($(".pre_title label").text()=="新增用户"){
-		console.log(message.user_type);
-		if(message.user_type=="admin"){
-			$("#OWN_CORP").parent().parent().css("display","none");
-			$("#select_ownshop").css("display","none");
+		if(val.user_type=="admin"){
+			if(val.isAdmin=="Y"){
+				$("#OWN_CORP").parent().parent().css("display","none");
+				$("#select_ownshop").css("display","none");
+			}else if(val.isAdmin=="N"){
+				$("#OWN_CORP").parent().parent().css("display","block");
+				$("#select_ownshop").css("display","block");
+			}
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
 		}
+		var id=sessionStorage.getItem("id");
+		var _params={"id":id};
+		var _command="/user/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			// if(data.code=="0"){
+			// 	$("#OWN_CORP").val(msg.corp_code);
+			// }else if(data.code=="-1"){
+			// 	art.dialog({
+			// 		time: 1,
+			// 		lock:true,
+			// 		cancel: false,
+			// 		content: data.message
+			// 	});
+			// }
+		});
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().css("display","none");
@@ -344,14 +387,14 @@ jQuery(document).ready(function(){
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div>'
 					            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
-					                +'<input class="input_select" id="OWN_RIGHT" type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+					                +'<input class="input_select"  type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
 					            +'</span>'
 					            +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
 					        +'</div>';
 						}
-						$("#shop_list").append(html);
+						$(".shop_list").append(html);
 					}
 				}
 				$("#register_time").val(msg.created_date);

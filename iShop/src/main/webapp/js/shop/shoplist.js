@@ -52,10 +52,10 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count, pageSize,funcCode,value) {//分页
+function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
     var container = container;
     var count = count;
-    var pageSize = pageSize;
+    var pageindex = pageindex;
     var a = [];//总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageSize == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";

@@ -80,6 +80,7 @@ var oc = new ObjectControl();
 		});
 		$(".corpedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(corpjs.firstStep()){
+				var ID=sessionStorage.getItem("id");
 				var HEADPORTRAIT=$("#preview img").attr("src");
 				var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
@@ -98,7 +99,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"avater":HEADPORTRAIT,"corp_code":CORPID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
+				var _params={"id":ID,"avater":HEADPORTRAIT,"corp_code":CORPID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
