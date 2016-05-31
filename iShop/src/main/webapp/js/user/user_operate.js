@@ -192,7 +192,7 @@ var oc = new ObjectControl();
 }));
 function selectownshop(obj){
 	if(obj.getAttribute("data-i")=="1"){
-		store_li_list();
+		store_li_list(obj.id);
 		obj.setAttribute('data-i','2');
 	}
 	var ul=$(obj).children('ul');
@@ -228,8 +228,9 @@ function selectownrole(obj){
     }
 }
 function addshopselect(){
-	$(".shop_list").append('<div>'
-            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
+		var k=$("#shop_list div").length;
+		$(".shop_list").append('<div>'
+            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownshop(this)">'
                 +'<input class="input_select"  type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
@@ -262,7 +263,7 @@ function role_li_list(){
 		$("#role_list").append(html);
 	});
 }
-function store_li_list() {
+function store_li_list(p) {
 	var _params={"role_code":c_code,"corp_code":c_code};
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
@@ -277,7 +278,7 @@ function store_li_list() {
 				html +='<li>'+msg_stores[index].store_name+'</li>';
 			}
 		}
-		$("#store_list").append(html);
+		$("#"+p+" ul").append(html);
 	});
 }
 jQuery(document).ready(function(){
@@ -355,9 +356,9 @@ jQuery(document).ready(function(){
 						var html='';
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div>'
-					            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
+					            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
 					                +'<input class="input_select"  type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
-					                +'<ul style="margin-left:0px" id="store_list">'
+					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
 					            +'</span>'
 					            +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
