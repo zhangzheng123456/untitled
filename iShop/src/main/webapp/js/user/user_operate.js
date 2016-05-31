@@ -205,6 +205,7 @@ function selectownshop(obj){
     }
 }
 function selectownrole(obj){
+	role_li_list();
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -234,45 +235,49 @@ function addshopselect(){
 function minusshopselect(obj){
 	$(obj).parent().remove();
 }
-
-function store_li_list() {
-	var id=sessionStorage.getItem("id");
-	var _params={"id":id};
-	var _command="/user/select";
-	var c_code="";
+var c_code="";
+function role_li_list(){
+	//拉取角色下拉选项
+	var val=sessionStorage.getItem("key");
+    val=JSON.parse(val);
+    var message=JSON.parse(val.message);
+	var _params={"user_type":message.user_type,"corp_code":c_code};
+	var _command="/user/role";
 	oc.postRequire("post", _command,"", _params, function(data){
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			console.log(msg);
-			c_code=msg.corp_code;
-			console.log(c_code);
-			var val=sessionStorage.getItem("key");
-		    val=JSON.parse(val);
-		    var message=JSON.parse(val.message);
-			var _params={"user_type":message.user_type,"corp_code":c_code};
-			var _command="/user/store";
-			oc.postRequire("post", _command,"", _params, function(data){
-				console.log(data);
-				var msg=JSON.parse(data.message);
-				console.log(msg.stores);
-				var msg_stores=JSON.parse(msg.stores);
-				var index=0;
-				var html="";
-				if(msg_stores[0].store_name){
-					for(index in msg_stores){
-						html +='<li>'+msg_stores[index].store_name+'</li>';
-					}
-				}
-				$("#store_list").append(html);
-			});
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
+		console.log(data);
+		var msg=JSON.parse(data.message);
+		console.log(msg.roles);
+		var msg_roles=JSON.parse(msg.roles);
+		console.log(msg_roles);
+		var index=0;
+		var html="";
+		if(msg_roles[0].role_name){
+			for(index in msg_roles){
+				html +='<li>'+msg_roles[index].role_name+'</li>';
+			}
 		}
+		$("#role_list").append(html);
+	});
+}
+function store_li_list() {
+	var val=sessionStorage.getItem("key");
+    val=JSON.parse(val);
+    var message=JSON.parse(val.message);
+	var _params={"user_type":message.user_type,"corp_code":c_code};
+	var _command="/user/store";
+	oc.postRequire("post", _command,"", _params, function(data){
+		console.log(data);
+		var msg=JSON.parse(data.message);
+		console.log(msg.stores);
+		var msg_stores=JSON.parse(msg.stores);
+		var index=0;
+		var html="";
+		if(msg_stores[0].store_name){
+			for(index in msg_stores){
+				html +='<li>'+msg_stores[index].store_name+'</li>';
+			}
+		}
+		$("#store_list").append(html);
 	});
 }
 jQuery(document).ready(function(){
@@ -302,7 +307,6 @@ jQuery(document).ready(function(){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/user/select";
-		var c_code="";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -328,6 +332,7 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
+				$("#init_password").val(msg.password);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -342,24 +347,6 @@ jQuery(document).ready(function(){
 					content: data.message
 				});
 			}
-		});
-		//拉取角色下拉选项
-		var _params={"user_type":message.user_type,"corp_code":c_code};
-		var _command="/user/role";
-		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
-			var msg=JSON.parse(data.message);
-			console.log(msg.roles);
-			var msg_roles=JSON.parse(msg.roles);
-			console.log(msg_roles);
-			var index=0;
-			var html="";
-			if(msg_roles[0].role_name){
-				for(index in msg_roles){
-					html +='<li>'+msg_roles[index].role_name+'</li>';
-				}
-			}
-			$("#role_list").append(html);
 		});
 	}
 });
