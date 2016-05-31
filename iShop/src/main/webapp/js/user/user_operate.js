@@ -190,6 +190,7 @@ var oc = new ObjectControl();
 	return obj;
 }));
 function selectownshop(obj){
+	store_li_list();
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -219,8 +220,16 @@ function addshopselect(){
 function minusshopselect(obj){
 	$(obj).parent().remove();
 }
-var c_code="";
+
 function store_li_list() {
+	var id=sessionStorage.getItem("id");
+	var _params={"id":id};
+	var _command="/user/select";
+	var c_code="";
+	oc.postRequire("post", _command,"", _params, function(data){
+		var msg=JSON.parse(data.message);
+		c_code=msg.corp_code;
+	});
 	var val=sessionStorage.getItem("key");
     val=JSON.parse(val);
     var message=JSON.parse(val.message);
@@ -268,6 +277,7 @@ jQuery(document).ready(function(){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/user/select";
+		var c_code="";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -326,6 +336,5 @@ jQuery(document).ready(function(){
 			}
 			$("#role_list").append(html);
 		});
-		store_li_list();
 	}
 });
