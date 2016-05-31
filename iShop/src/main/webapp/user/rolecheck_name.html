@@ -9,9 +9,6 @@
     <!-- <script src="../table/js/navigation_bar.js"></script> -->
 </head>
 <body>
-    <!-- <div id="navbar">
-        
-    </div> -->
     <div class="content">
     	<div class="con_table" id="con_table">
     		<div class="title">
@@ -315,16 +312,19 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
-    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-    <!-- <script src="../table/js/inner.js"></script> -->
-    <script type="text/javascript">
-        $(function(){
-            $('#sidebar ul>li:eq(5)').find('h1').addClass('h1');
-            $('#sidebar ul>li:eq(5)').find('h1 span').addClass('icon-ishop_8-02');
-            $('#sidebar ul>li:eq(5)').find('dl').show();
-            $('#sidebar ul>li:eq(5)').find('dl>dd:eq(0) a').css({color:"#6cc1c8"});
-            $('#sidebar ul>li:eq(5)').find('dl>dd:eq(0) span').addClass('icon-ishop_8-01');
-        })
-    </script>
 </body>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+    <!-- <script src="../table/js/inner.js"></script> -->
+<script type="text/javascript">
+    function frame(){
+        var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;">删除成功</div>')
+        $(".frame").animate({
+            width:"150px;"
+            height:"50px;"
+        },1000);
+    }
+    frame();
+</script>
 </html>

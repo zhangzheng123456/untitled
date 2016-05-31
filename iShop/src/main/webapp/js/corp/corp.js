@@ -240,6 +240,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
+        $('.fen').slideToggle();
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
     })
     //点击编辑时页面进行的跳转

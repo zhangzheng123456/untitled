@@ -6,6 +6,10 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var key_val=sessionStorage.getItem("key_val");//取function_code的值
+var val=sessionStorage.getItem("key");//取登录里面的key
+val=JSON.parse(val);
+var message=JSON.parse(val.message);
+var user_type=message.user_type;//是否为系统管理员
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 //模仿select
@@ -251,8 +255,19 @@ function jumpBianse(){
 	})
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
-
+        if(user_type=="admin"){
+            $('.fen').slideToggle();
+        }
+    })
+    $('#admin').click(function(){
+        var addtype={"user_type":user_type,"isAdmin":"Y"};
+        sessionStorage.setItem("addtype",JSON.stringify(addtype));
+        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+    })
+    $('#corp').click(function(){
+        var addtype={"user_type":user_type,"isAdmin":"N"};
+        sessionStorage.setItem("addtype",JSON.stringify(addtype));
+        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){

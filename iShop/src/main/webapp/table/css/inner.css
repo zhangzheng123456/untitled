@@ -159,6 +159,24 @@ input::-webkit-input-placeholder{
 .action_l ul{
 	float: left;
 }
+.fen{
+	position: absolute;
+	top:32px;
+	left: 0;
+	background-color: #e8e8e8;
+	z-index: 4;
+	border: 1px solid green;
+}
+.action_l ul .fen div{
+	padding-left: 15px;
+	width: 130px;
+	height:30px;
+	line-height: 30px;
+	background-color: #e8e8e8;
+}
+#corp{
+	margin-top: 5px;
+}
 .action_l li,.action_r li{
 	float: left;
 	width: 80px;
@@ -166,6 +184,7 @@ input::-webkit-input-placeholder{
 	line-height: 30px;
 	margin-top: 10px;
 	background-color: #fff;
+	position: relative;
 }
 .action_l li.li{
 	width: 320px;
@@ -549,6 +568,15 @@ input::-webkit-input-placeholder{
 	font-size: 14px;
 	border-radius: 5px;
 	margin-left: 20px;
+}
+.frame{
+	background:rgba(0,0,0,0.5);
+	position: absolute;
+	z-index: 5;
+	border-radius: 5px;
+	color:#fff;
+	text-align: center;
+	line-height: 50px;
 }
 /**回到顶部按钮 回到底部按钮**/
 #side_bar{
