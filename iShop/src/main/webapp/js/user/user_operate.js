@@ -307,7 +307,7 @@ jQuery(document).ready(function(){
 			index=0;
 			var html="";
 			for(index in msg.roles){
-				html +='<li>'+msg.roles[index].role_name+'</li>'
+				html +='<li>'+msg.roles[index]["role_name"]+'</li>'
 			}
 			$("#role_list").append(html);
 		});
