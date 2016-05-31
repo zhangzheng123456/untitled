@@ -329,7 +329,8 @@ jQuery(document).ready(function(){
 					$("#USER_SEX").val("男");
 				}
 				if(msg.corp_code==''){
-					$("#OWN_CORP").css("display","none");
+					$("#select_ownshop").css("display","none");
+					$("#OWN_CORP").parent().parent().css("display","none");
 				}else{
 					$("#OWN_CORP").val(msg.corp_code);
 				}
