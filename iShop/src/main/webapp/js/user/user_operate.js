@@ -127,6 +127,10 @@ var oc = new ObjectControl();
 				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
+				// var STORE_list=;
+				// for(var i=0;i<){
+
+				// }
 				var PSW=$("#init_password").val();
 				var _command="/user/edit";//接口名
 				console.log(HEADPORTRAIT);
@@ -201,7 +205,9 @@ function selectownshop(obj){
         $(obj).children("ul").children('li').click(function(){
             var this_=this;
             var txt = $(this_).text();
+            var s_code=$(this_).data("storecode");
             $(this_).parent().parent().children(".input_select").val(txt);
+            $(this_).parent().parent().children(".input_select").data('my_scode',s_code);
             $(this_).addClass('rel').siblings().removeClass('rel');
         });
     }else{
@@ -220,7 +226,9 @@ function selectownrole(obj){
         $(obj).children("ul").children('li').click(function(){
             var this_=this;
             var txt = $(this_).text();
+            var r_code=$(this_).data("rolecode");
             $(this_).parent().parent().children(".input_select").val(txt);
+            $(this_).parent().parent().children(".input_select").data('my_rcode',r_code);
             $(this_).addClass('rel').siblings().removeClass('rel');
         });
     }else{
@@ -257,7 +265,7 @@ function role_li_list(){
 		var html="";
 		if(msg_roles[0].role_name){
 			for(index in msg_roles){
-				html +='<li>'+msg_roles[index].role_name+'</li>';
+				html +='<li data-rolecode="'+msg_roles[index].role_code+'">'+msg_roles[index].role_name+'</li>';
 			}
 		}
 		$("#role_list").append(html);
@@ -275,7 +283,7 @@ function store_li_list(p) {
 		var html="";
 		if(msg_stores[0].store_name){
 			for(index in msg_stores){
-				html +='<li>'+msg_stores[index].store_name+'</li>';
+				html +='<li data-storecode="'+msg_stores[index].store_code+'">'+msg_stores[index].store_name+'</li>';
 			}
 		}
 		$("#"+p+" ul").append(html);
