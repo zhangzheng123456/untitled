@@ -189,8 +189,11 @@ var oc = new ObjectControl();
 	obj.init = init;
 	return obj;
 }));
+var i=0;
 function selectownshop(obj){
-	store_li_list();
+	if(i==0){
+		store_li_list();
+	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -204,8 +207,12 @@ function selectownshop(obj){
         ul.hide();
     }
 }
+var j=0;
 function selectownrole(obj){
-	role_li_list();
+	if(j==0){
+		role_li_list();
+		j++;
+	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -236,12 +243,10 @@ function minusshopselect(obj){
 	$(obj).parent().remove();
 }
 var c_code="";
+var r_code="";
 function role_li_list(){
 	//拉取角色下拉选项
-	var val=sessionStorage.getItem("key");
-    val=JSON.parse(val);
-    var message=JSON.parse(val.message);
-	var _params={"user_type":message.user_type,"corp_code":c_code};
+	var _params={"role_code":r_code,"corp_code":c_code};
 	var _command="/user/role";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
@@ -260,10 +265,7 @@ function role_li_list(){
 	});
 }
 function store_li_list() {
-	var val=sessionStorage.getItem("key");
-    val=JSON.parse(val);
-    var message=JSON.parse(val.message);
-	var _params={"user_type":message.user_type,"corp_code":c_code};
+	var _params={"role_code":c_code,"corp_code":c_code};
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
@@ -313,7 +315,9 @@ jQuery(document).ready(function(){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
 				console.log(msg.user_code);
+				console.log(msg.role);
 				c_code=msg.corp_code;
+				r_code=msg.role_code;
 				$("#USERID").val(msg.user_code);
 				$("#USER_NAME").val(msg.user_name);
 				$("#preview img").attr("src",msg.avatar);
@@ -324,7 +328,11 @@ jQuery(document).ready(function(){
 				}else if(msg.sex=="F"){
 					$("#USER_SEX").val("男");
 				}
-				$("#OWN_CORP").val(msg.corp_code);
+				if(msg.corp_code==''){
+					$("#OWN_CORP").css("display","none");
+				}else{
+					$("#OWN_CORP").val(msg.corp_code);
+				}
 				$("#OWN_RIGHT").val(msg.role_code);
 				$("#register_time").val(msg.created_date);
 				$("#recently_login").val(msg.login_time_recently);
