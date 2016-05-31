@@ -241,8 +241,19 @@ function store_li_list() {
 	var _command="/user/select";
 	var c_code="";
 	oc.postRequire("post", _command,"", _params, function(data){
-		var msg=JSON.parse(data.message);
-		c_code=msg.corp_code;
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			c_code=msg.corp_code;
+			console.log(c_code);
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
 	});
 	var val=sessionStorage.getItem("key");
     val=JSON.parse(val);
