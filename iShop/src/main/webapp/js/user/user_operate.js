@@ -189,11 +189,10 @@ var oc = new ObjectControl();
 	obj.init = init;
 	return obj;
 }));
-var i=0;
 function selectownshop(obj){
-	if(i==0){
+	if($(obj).data("i")==1){
 		store_li_list();
-		i++;
+		$(obj).data("i","2");
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -229,7 +228,7 @@ function selectownrole(obj){
 }
 function addshopselect(){
 	$(".shop_list").append('<div>'
-            +'<span style="display:inline-block;" onclick="selectownshop(this)">'
+            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
                 +'<input class="input_select" id="OWN_RIGHT" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
@@ -344,7 +343,7 @@ jQuery(document).ready(function(){
 						var html='';
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div>'
-					            +'<span style="display:inline-block;" onclick="selectownshop(this)">'
+					            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
 					                +'<input class="input_select" id="OWN_RIGHT" type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
