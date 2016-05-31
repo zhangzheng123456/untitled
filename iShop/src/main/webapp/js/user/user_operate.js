@@ -256,7 +256,7 @@ function store_li_list() {
 				var msg=JSON.parse(data.message);
 				console.log(msg.stores);
 				var msg_stores=JSON.parse(msg.stores);
-				index=0;
+				var index=0;
 				var html="";
 				if(msg_stores[0].store_name){
 					for(index in msg_stores){
@@ -274,7 +274,6 @@ function store_li_list() {
 			});
 		}
 	});
-	
 }
 jQuery(document).ready(function(){
 	window.user.init();//初始化
@@ -353,7 +352,7 @@ jQuery(document).ready(function(){
 			console.log(msg.roles);
 			var msg_roles=JSON.parse(msg.roles);
 			console.log(msg_roles);
-			index=0;
+			var index=0;
 			var html="";
 			if(msg_roles[0].role_name){
 				for(index in msg_roles){
