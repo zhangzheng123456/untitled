@@ -260,7 +260,7 @@ function store_li_list() {
 				var html="";
 				if(msg_stores[0].store_name){
 					for(index in msg_stores){
-						html +='<li>'+msg_stores[index].store_name+'</li>'
+						html +='<li>'+msg_stores[index].store_name+'</li>';
 					}
 				}
 				$("#store_list").append(html);
