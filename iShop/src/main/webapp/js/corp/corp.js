@@ -51,18 +51,19 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
+function setPage(container, count, pageindex,pageSize,funcCode,value) {
     var container = container;
     var count = count;
     var pageindex = pageindex;
-    var a = [];//总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
-    if (pageSize == 1) {
+    var a = [];
+              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    if (pageindex == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
         a[a.length] = "<li><span class=\"icon-ishop_4-01\"></span></li>";
     }
     function setPageList() {
-        if (pageSize == i) {
+        if (pageindex == i) {
             a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";
         } else {
             a[a.length] = "<li><span>" + i + "</span></li>";
@@ -76,12 +77,12 @@ function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
     }
     //总页数大于10页
     else {
-        if (pageSize <= 4) {
+        if (pageindex <= 4) {
             for (var i = 1; i <= 5; i++) {
                 setPageList();
             }
             a[a.length] = "...<li><span>" + count + "</span></li>";
-        }else if (pageSize >= count - 3) {
+        }else if (pageindex >= count - 3) {
             a[a.length] = "<li><span>1</span></li>...";
             for (var i = count - 4; i <= count; i++) {
                 setPageList();
@@ -89,13 +90,13 @@ function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
         }
         else { //当前页在中间部分
             a[a.length] = "<li><span>1</span></li>...";
-            for (var i = pageSize - 2; i <= pageSize + 2; i++) {
+            for (var i = pageindex - 2; i <= pageindex + 2; i++) {
                 setPageList();
             }
                 a[a.length] = "...<li><span>" + count + "</span></li>";
             }
         }
-    if (pageSize == count) {
+    if (pageindex == count) {
         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
     }else{
         a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
@@ -103,7 +104,7 @@ function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
     container.innerHTML = a.join("");
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
-        var inx = pageSize; //初始的页码
+        var inx = pageindex; //初始的页码
         // console.log(inx);
         // console.log(count);
         $("#input-txt").val(inx);
@@ -114,14 +115,12 @@ function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
             }
             inx--;
             dian(inx);
-            // setPage(container, count, inx);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
                 dian(inx);
-                // setPage(container, count, inx);
                 return false;
             }
         }
@@ -138,10 +137,10 @@ function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
     function dian(inx){
         var inx=inx;
         if(value==""){
-            GET(inx);
+            GET();
         }else if(value!==""){
             param["pageNumber"]=inx;
-            POST(inx);
+            POST();
         }
     }
 }

@@ -105,6 +105,7 @@ var oc = new ObjectControl();
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(useroperatejs.firstStep()){
+				var ID=sessionStorage.getItem("id");
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
@@ -134,7 +135,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":"","password":PSW};
+				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":"","password":PSW};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -192,19 +193,7 @@ var oc = new ObjectControl();
 function selectownshop(obj){
 	if($(obj).data("i")==1){
 		store_li_list();
-		$(obj).setAttribute('data-i','2');
-		var ul=$(obj).children('ul');
-	    if(ul.css("display")=="none"){
-	        ul.show();
-	        $(obj).children("ul").children('li').click(function(){
-	            var this_=this;
-	            var txt = $(this_).text();
-	            $(this_).parent().parent().children(".input_select").val(txt);
-	            $(this_).addClass('rel').siblings().removeClass('rel');
-	        });
-	    }else{
-	        ul.hide();
-	    }
+		obj.setAttribute('data-i','2');
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -224,18 +213,6 @@ function selectownrole(obj){
 	if(j==0){
 		role_li_list();
 		j++;
-		var ul=$(obj).children('ul');
-	    if(ul.css("display")=="none"){
-	        ul.show();
-	        $(obj).children("ul").children('li').click(function(){
-	            var this_=this;
-	            var txt = $(this_).text();
-	            $(this_).parent().parent().children(".input_select").val(txt);
-	            $(this_).addClass('rel').siblings().removeClass('rel');
-	        });
-	    }else{
-	        ul.hide();
-	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -305,14 +282,17 @@ function store_li_list() {
 }
 jQuery(document).ready(function(){
 	window.user.init();//初始化
-	var val=sessionStorage.getItem("addtype");
+	var val=sessionStorage.getItem("key");
+	var addtype=sessionStorage.getItem("addtype");
+	addtype=JSON.parse(addtype);
     val=JSON.parse(val);
+    var message=JSON.parse(val.message);
 	if($(".pre_title label").text()=="新增用户"){
-		if(val.user_type=="admin"){
-			if(val.isAdmin=="Y"){
+		if(addtype.user_type=="admin"){
+			if(addtype.isAdmin=="Y"){
 				$("#OWN_CORP").parent().parent().css("display","none");
 				$("#select_ownshop").css("display","none");
-			}else if(val.isAdmin=="N"){
+			}else if(addtype.isAdmin=="N"){
 				$("#OWN_CORP").parent().parent().css("display","block");
 				$("#select_ownshop").css("display","block");
 			}
@@ -321,22 +301,6 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
 		}
-		var id=sessionStorage.getItem("id");
-		var _params={"id":id};
-		var _command="/user/select";
-		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
-			// if(data.code=="0"){
-			// 	$("#OWN_CORP").val(msg.corp_code);
-			// }else if(data.code=="-1"){
-			// 	art.dialog({
-			// 		time: 1,
-			// 		lock:true,
-			// 		cancel: false,
-			// 		content: data.message
-			// 	});
-			// }
-		});
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().css("display","none");
