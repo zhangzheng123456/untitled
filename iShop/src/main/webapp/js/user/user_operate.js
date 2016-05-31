@@ -126,6 +126,7 @@ var oc = new ObjectControl();
 				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
+				var PSW=$("#init_password").val();
 				var _command="/user/edit";//接口名
 				console.log(HEADPORTRAIT);
 				var opt = {//返回成功后的操作
@@ -133,7 +134,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":""};
+				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":"","password":PSW};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -228,6 +229,16 @@ function store_li_list() {
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
 		var msg=JSON.parse(data.message);
+		console.log(msg.stores);
+		var msg_stores=JSON.parse(msg.stores);
+		index=0;
+		var html="";
+		if(msg_stores[0].store_name){
+			for(index in msg_stores){
+				html +='<li>'+msg_stores[index].store_name+'</li>'
+			}
+		}
+		$("#store_list").append(html);
 	});
 }
 jQuery(document).ready(function(){
@@ -308,8 +319,10 @@ jQuery(document).ready(function(){
 			console.log(msg_roles);
 			index=0;
 			var html="";
-			for(index in msg_roles){
-				html +='<li>'+msg_roles[index].role_name+'</li>'
+			if(msg_roles[0].role_name){
+				for(index in msg_roles){
+					html +='<li>'+msg_roles[index].role_name+'</li>'
+				}
 			}
 			$("#role_list").append(html);
 		});
