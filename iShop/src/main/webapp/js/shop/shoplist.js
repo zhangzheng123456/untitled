@@ -21,8 +21,13 @@ $(function(){
         });            
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
-                var id=$(this).attr('id');
-                console.log(id);  
+                pageSize=$(this).attr('id');  
+                if(value==""){
+                    GET();
+                }else if(value!==""){
+                    param["pageSize"]=pageSize;
+                    POST(); 
+                }    
                 $("#page_row").val($(this).html());  
                 hideLi();  
             });    
@@ -136,12 +141,46 @@ function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
             return false;
         }
     }()
-    function dian(inx){
-        var inx=inx;
+    function dian(inx){//
         if(value==""){
-            GET(inx);
+            oc.postRequire("get","/shop/list?pageNumber="+inx+"&pageSize="+pageSize
+                +"&funcCode="+funcCode+"","","",function(data){
+                    console.log(data);
+                    if(data.code=="0"){
+                        $(".table tbody").empty();
+                        var message=JSON.parse(data.message);
+                        var list=JSON.parse(message.list);
+                        var cout=list.pages;
+                        var list=list.list;
+                        superaddition(list);
+                        jumpBianse();
+                    }else if(data.code=="-1"){
+                        // alert(data.message);
+                    }
+            });           
         }else if(value!==""){
-            POST(inx);
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            oc.postRequire("post","/shop/search","0",param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var list=JSON.parse(message.list);
+                    var cout=list.pages;
+                    var list=list.list;
+                    $(".table tbody").empty();
+                    if(list.length<=0){
+                        $(".table p").remove();
+                        $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                    }else if(list.length>0){
+                        $(".table p").remove();
+                        superaddition(list);
+                        jumpBianse();
+                    }
+                    setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+            })        
         }
     }
 }
