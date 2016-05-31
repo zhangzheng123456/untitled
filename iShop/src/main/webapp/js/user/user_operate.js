@@ -68,7 +68,7 @@ var oc = new ObjectControl();
 	};
 	useroperatejs.bindbutton=function(){
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
-			if(useroperatejs.firstStep()){
+			// if(useroperatejs.firstStep()){
 				console.log("1");
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
@@ -99,12 +99,12 @@ var oc = new ObjectControl();
 				};
 				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":""};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
-			}else{
-				return;
-			}
+			// }else{
+			// 	return;
+			// }
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
-			// if(useroperatejs.firstStep()){
+			if(useroperatejs.firstStep()){
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
@@ -136,9 +136,9 @@ var oc = new ObjectControl();
 				};
 				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":"","password":PSW};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
-			// }else{
-			// 	return;
-			// }
+			}else{
+				return;
+			}
 		});
 	};
 	useroperatejs.ajaxSubmit=function(_command,_params,opt){
@@ -189,11 +189,10 @@ var oc = new ObjectControl();
 	obj.init = init;
 	return obj;
 }));
-var i=0;
 function selectownshop(obj){
-	if(i==0){
+	if($(obj).data("i")==1){
 		store_li_list();
-		i++;
+		$(obj).data("i","2");
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -229,7 +228,7 @@ function selectownrole(obj){
 }
 function addshopselect(){
 	$(".shop_list").append('<div>'
-            +'<span style="display:inline-block;" onclick="selectownshop(this)">'
+            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
                 +'<input class="input_select" id="OWN_RIGHT" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
@@ -344,7 +343,7 @@ jQuery(document).ready(function(){
 						var html='';
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div>'
-					            +'<span style="display:inline-block;" onclick="selectownshop(this)">'
+					            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
 					                +'<input class="input_select" id="OWN_RIGHT" type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
