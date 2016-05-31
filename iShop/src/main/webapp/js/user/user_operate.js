@@ -308,7 +308,7 @@ jQuery(document).ready(function(){
 			console.log(msg_roles);
 			index=0;
 			var html="";
-			for(index in msg.roles){
+			for(index in msg_roles){
 				html +='<li>'+msg_roles[index].role_name+'</li>'
 			}
 			$("#role_list").append(html);
