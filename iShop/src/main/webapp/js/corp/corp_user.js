@@ -7,9 +7,10 @@ function GET(){
             console.log(data);
             if(data.code=="0"){
                 var message=JSON.parse(data.message);
+                console.log(message);
                 var list=JSON.parse(message.list);
-                var cout=list.pages;
-                var list=list.list;
+                console.log(list);
+                console.log(list);
                 var id=list.id;
                 console.log(list);
                 var actions=message.actions;
@@ -26,7 +27,7 @@ function GET(){
                     sessionStorage.setItem("id",id);
                 }
             }else if(data.code=="-1"){
-                // alert(data.message);
+                
             }
     });
 }
