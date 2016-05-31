@@ -30,6 +30,18 @@ public class StoreServiceImpl implements StoreService {
 
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
+
+    @Override
+    public List<Store> selectByUserId(String id) {
+       return storeMapper.selectByUserId(id);
+    }
+
+    @Override
+    public int deleteStoreByUser_id(String user_id, String store_id) {
+        return storeMapper.deleteStoreByUser_id(user_id,store_id);
+    }
+
+
     //根据id获取店铺信息
     @Override
     public Store getStoreById(int id) throws SQLException {

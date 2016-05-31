@@ -10,6 +10,11 @@ import java.util.List;
  * Created by nanji on 2016/5/25.
  */
 public interface StoreService {
+
+    List<Store> selectByUserId(String user_id);
+
+    int deleteStoreByUser_id(String user_id,String store_id);
+
     Store getStoreById(int id) throws SQLException;
 
     Store getUserStore(String corp_code,String store_code) throws SQLException;

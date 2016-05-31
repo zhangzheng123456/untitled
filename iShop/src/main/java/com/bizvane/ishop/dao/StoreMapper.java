@@ -12,12 +12,15 @@ public interface StoreMapper {
 
     List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
+    List<Store> selectByUserId(@Param("user_id")String user_id);
+
     Store selectStoreCode(String shop_code, String corp_code);
 
-    int deleteByStoreId(int id);
+    int deleteStoreByUser_id(@Param("user_id") String user_id,@Param("store_id") String store_id);
 
     int insertStore(Store store);
 
     int updateStore(Store store);
 
+    int deleteByStoreId(int id);
 }

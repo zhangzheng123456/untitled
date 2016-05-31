@@ -43,11 +43,20 @@
         STORE_CODE = #{0} AND CORP_CODE = #{1}
     </select>
 
+    <select id="selectByUserId" resultType="com.bizvane.ishop.entity.Store">
+        select *
+         from DEF_STORE
+         WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
+    </select>
     <delete id="deleteByStoreId">
-        delete from
-        DEF_STORE
-        where ID=#{id}
+        DELETE DEF_USER
+        FROM WHERE id=#{id}
     </delete>
+
+  <update id="deleteStoreByUser_id">
+update DEF_USER
+set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'') where id=#{user_id}
+  </update>
 
 
     <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
