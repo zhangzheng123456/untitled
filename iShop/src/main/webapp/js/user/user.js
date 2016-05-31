@@ -258,6 +258,8 @@ function jumpBianse(){
         if(user_type=="admin"){
             $('.fen').slideToggle();
         }else if(user_type!=="admin"){
+            var addtype={"user_type":user_type,"isAdmin":""};
+            sessionStorage.setItem("addtype",JSON.stringify(addtype));
             $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
             sessionStorage.removeItem('id');
         }
