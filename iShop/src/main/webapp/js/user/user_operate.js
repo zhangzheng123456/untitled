@@ -309,6 +309,11 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
+			var _params="";
+			var _command="/user/add_code";
+			oc.postRequire("post", _command,"", _params, function(data){
+				console.log(data);
+			})
 		}
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
