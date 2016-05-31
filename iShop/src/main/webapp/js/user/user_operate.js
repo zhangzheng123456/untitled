@@ -333,8 +333,11 @@ jQuery(document).ready(function(){
 					$("#OWN_CORP").parent().parent().css("display","none");
 				}else{
 					$("#OWN_CORP").val(msg.corp_code);
+					$("#OWN_RIGHT").val(msg.role.role_name);
+					console.log(msg.store_name);
+					var store_lists=msg.store_name.split(",");
+					console.log(store_lists);
 				}
-				$("#OWN_RIGHT").val(msg.role_code);
 				$("#register_time").val(msg.created_date);
 				$("#recently_login").val(msg.login_time_recently);
 				$("#created_time").val(msg.created_date);
