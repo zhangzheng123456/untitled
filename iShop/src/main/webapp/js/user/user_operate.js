@@ -231,10 +231,7 @@ function addshopselect(){
 	$(".shop_list").append('<div>'
             +'<span style="display:inline-block;" onclick="selectownshop(this)">'
                 +'<input class="input_select" id="OWN_RIGHT" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
-                +'<ul style="margin-left:0px">'
-                    +'<li>南京店铺</li>'
-                    +'<li>上海店铺</li>'
-                    +'<li>杭州店铺</li>'
+                +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
             +'</span>'
             +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
@@ -337,9 +334,26 @@ jQuery(document).ready(function(){
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
 					$("#OWN_RIGHT").val(msg.role.role_name);
-					console.log(msg.store_name);
 					var store_lists=msg.store_name.split(",");
-					console.log(store_lists);
+					if(store_lists.length==0){
+						$("#OWN_STORE").val("");
+					}else if(store_lists==1){
+						$("#OWN_STORE").val(store_lists[0]);
+					}else{
+						$("#OWN_STORE").val(store_lists[0]);
+						var html='';
+						for(var i=1;i<store_lists.length;i++){
+							html +='<div>'
+					            +'<span style="display:inline-block;" onclick="selectownshop(this)">'
+					                +'<input class="input_select" id="OWN_RIGHT" type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+					                +'<ul style="margin-left:0px">'
+					                +'</ul>'
+					            +'</span>'
+					            +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
+					        +'</div>';
+						}
+						$("#shop_list").append(html);
+					}
 				}
 				$("#register_time").val(msg.created_date);
 				$("#recently_login").val(msg.login_time_recently);
