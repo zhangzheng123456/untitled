@@ -351,7 +351,7 @@ jQuery(document).ready(function(){
 					            +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
 					        +'</div>';
 						}
-						$("#shop_list").append(html);
+						$(".shop_list").append(html);
 					}
 				}
 				$("#register_time").val(msg.created_date);
