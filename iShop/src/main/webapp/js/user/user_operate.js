@@ -194,18 +194,6 @@ function selectownshop(obj){
 	if($(obj).data("i")==1){
 		store_li_list();
 		obj.setAttribute('data-i','2');
-		var ul=$(obj).children('ul');
-	    if(ul.css("display")=="none"){
-	        ul.show();
-	        $(obj).children("ul").children('li').click(function(){
-	            var this_=this;
-	            var txt = $(this_).text();
-	            $(this_).parent().parent().children(".input_select").val(txt);
-	            $(this_).addClass('rel').siblings().removeClass('rel');
-	        });
-	    }else{
-	        ul.hide();
-	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -225,18 +213,6 @@ function selectownrole(obj){
 	if(j==0){
 		role_li_list();
 		j++;
-		var ul=$(obj).children('ul');
-	    if(ul.css("display")=="none"){
-	        ul.show();
-	        $(obj).children("ul").children('li').click(function(){
-	            var this_=this;
-	            var txt = $(this_).text();
-	            $(this_).parent().parent().children(".input_select").val(txt);
-	            $(this_).addClass('rel').siblings().removeClass('rel');
-	        });
-	    }else{
-	        ul.hide();
-	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -306,14 +282,17 @@ function store_li_list() {
 }
 jQuery(document).ready(function(){
 	window.user.init();//初始化
-	var val=sessionStorage.getItem("addtype");
+	var val=sessionStorage.getItem("key");
+	var addtype=sessionStorage.getItem("addtype");
+	addtype=JSON.parse(addtype);
     val=JSON.parse(val);
+    var message=JSON.parse(val.message);
 	if($(".pre_title label").text()=="新增用户"){
-		if(val.user_type=="admin"){
-			if(val.isAdmin=="Y"){
+		if(addtype.user_type=="admin"){
+			if(addtype.isAdmin=="Y"){
 				$("#OWN_CORP").parent().parent().css("display","none");
 				$("#select_ownshop").css("display","none");
-			}else if(val.isAdmin=="N"){
+			}else if(addtype.isAdmin=="N"){
 				$("#OWN_CORP").parent().parent().css("display","block");
 				$("#select_ownshop").css("display","block");
 			}
@@ -339,7 +318,7 @@ jQuery(document).ready(function(){
 			// }
 		});
 	}else if($(".pre_title label").text()=="编辑用户信息"){
-		if(val.user_type=="admin"){
+		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
