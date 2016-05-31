@@ -51,10 +51,10 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count, pageSize,funcCode,value) {//分页
+function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
     var container = container;
     var count = count;
-    var pageSize = pageSize;
+    var pageindex = pageindex;
     var a = [];//总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageSize == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
@@ -140,6 +140,7 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
         if(value==""){
             GET(inx);
         }else if(value!==""){
+            param["pageNumber"]=inx;
             POST(inx);
         }
     }
@@ -242,6 +243,9 @@ function jumpBianse(){
     $('#add').click(function(){
         $('.fen').slideToggle();
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+    })
+    $('#admin').click(function(){
+        
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){

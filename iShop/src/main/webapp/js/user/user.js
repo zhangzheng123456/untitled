@@ -55,10 +55,10 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count, pageSize,funcCode,value) {//分页
+function setPage(container, count,pageindex,pageSize,funcCode,value) {//分页
     var container = container;
     var count = count;
-    var pageSize = pageSize;
+    var pageindex = pageindex;
     var param={};
     param["searchValue"]=value;
     param["pageNumber"]=inx;
@@ -262,12 +262,14 @@ function jumpBianse(){
             sessionStorage.removeItem('id');
         }
     })
+    //系统管理员新增系统管理员
     $('#admin').click(function(){
         var addtype={"user_type":user_type,"isAdmin":"Y"};
         sessionStorage.setItem("addtype",JSON.stringify(addtype));
         $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
         sessionStorage.removeItem('id');
     })
+    //系统管理员新增企业用户
     $('#corp').click(function(){
         var addtype={"user_type":user_type,"isAdmin":"N"};
         sessionStorage.setItem("addtype",JSON.stringify(addtype));
