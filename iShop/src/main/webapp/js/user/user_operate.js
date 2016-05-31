@@ -220,6 +220,9 @@ function minusshopselect(obj){
 }
 var c_code="";
 function store_li_list() {
+	var val=sessionStorage.getItem("key");
+    val=JSON.parse(val);
+    var message=JSON.parse(val.message);
 	var _params={"user_type":message.user_type,"corp_code":c_code};
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
@@ -301,8 +304,12 @@ jQuery(document).ready(function(){
 			console.log(data);
 			var msg=JSON.parse(data.message);
 			console.log(msg.roles);
-			var roles_list=JSON.parse(msg.roles);
-			console.log(roles_list.role_name);
+			index=0;
+			var html="";
+			for(index in msg.roles){
+				html +='<li>'+msg.roles[index].role_name'</li>'
+			}
+			$("#role_list").append(html);
 		});
 		store_li_list();
 	}
