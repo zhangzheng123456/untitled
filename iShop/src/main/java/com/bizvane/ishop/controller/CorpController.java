@@ -71,7 +71,7 @@ public class CorpController {
                 //用户画面
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 Corp corp = corpService.selectByCorpId(0, corp_code);
-                info.put("list", corp);
+                info.put("list", JSON.toJSONString(corp));
             }
             info.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

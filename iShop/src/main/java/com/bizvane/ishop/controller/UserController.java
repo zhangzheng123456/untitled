@@ -101,7 +101,7 @@ public class UserController {
         String user_id = request.getSession().getAttribute("user_id").toString();
         try {
             String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
+            logger.info("json--user add-------------" + jsString);
             System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
@@ -160,7 +160,7 @@ public class UserController {
         String user_id = request.getSession().getAttribute("user_id").toString();
         try {
             String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
+            logger.info("json--user edit-------------" + jsString);
             System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
@@ -174,7 +174,7 @@ public class UserController {
             user.setPhone(jsonObject.get("phone").toString());
             user.setEmail(jsonObject.get("email").toString());
             user.setSex(jsonObject.get("sex").toString());
-            user.setBirthday(jsonObject.get("birthday").toString());
+     //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setRole_code(jsonObject.get("role_code").toString());
             user.setStore_code(jsonObject.get("store_code").toString());
@@ -208,7 +208,7 @@ public class UserController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
+            logger.info("json--user delete-------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -243,7 +243,9 @@ public class UserController {
         String data = null;
         try {
             String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
+            System.out.println("json--user select-------------" + jsString);
+
+            logger.info("json--user select-------------" + jsString);
             System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
@@ -292,7 +294,7 @@ public class UserController {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = userService.selectBySearch(page_number, page_size, corp_code, search_value);
             }
-            result.put("users", JSON.toJSONString(list));
+            result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -316,6 +318,7 @@ public class UserController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
+            System.out.println("json--user role-------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -323,7 +326,11 @@ public class UserController {
             JSONObject roles = new JSONObject();
             if(jsonObject.get("user_type").equals("admin")){
                 String role = "系统管理员";
-                roles.put("roles",role);
+                JSONArray array = new JSONArray();
+                JSONObject obj = new JSONObject();
+                obj.put("role_name",role);
+                array.add(obj);
+                roles.put("roles",JSON.toJSONString(array));
             }else {
                 String corp_code = jsonObject.get("corp_code").toString();
 
@@ -357,7 +364,8 @@ public class UserController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
+            logger.info("json--user store-------------" + jsString);
+            System.out.println("json--user store-------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -372,6 +380,7 @@ public class UserController {
                     stores.put("stores",JSON.toJSONString(list));
                 }else{
                     String store_code = request.getSession().getAttribute("store_code").toString();
+                    System.out.println(store_code);
                     String[] ids = store_code.split(",");
                     Store store;
                     JSONArray array = new JSONArray();

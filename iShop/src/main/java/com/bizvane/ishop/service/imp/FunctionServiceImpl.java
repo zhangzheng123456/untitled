@@ -27,7 +27,14 @@ public class FunctionServiceImpl implements FunctionService {
      *获取user所有功能模块
      */
     public JSONArray selectAllFunctions(int user_id, String role_code) {
-        List<Function> func_info = functionMapper.selectAllFun(user_id, role_code);
+        List<Function> func_info;
+        if (user_id==0 &&role_code.equals("")){
+            //获取所有功能模块(系统管理员)
+            func_info = functionMapper.selectAll();
+        }else {
+            //获取user所有功能模块
+            func_info = functionMapper.selectAllFun(user_id, role_code);
+        }
         JSONArray modules = new JSONArray();
         String uri;
         for (int i = 0; i < func_info.size(); i++) {
@@ -88,6 +95,7 @@ public class FunctionServiceImpl implements FunctionService {
         }
         return modules;
     }
+
 
     /**
      *获取用户所有动作权限
@@ -154,16 +162,5 @@ public class FunctionServiceImpl implements FunctionService {
             actions.add(obj);
         }
         return actions;
-    }
-
-    public String page() {
-        PageHelper.startPage(1, 3);
-        List<Action> list = functionMapper.select();
-        PageInfo<Action> page = new PageInfo<Action>(list);
-        JSONObject result = new JSONObject();
-
-        result.put("user", JSON.toJSONString(page));
-        result.put("222", list);
-        return result.toString();
     }
 }

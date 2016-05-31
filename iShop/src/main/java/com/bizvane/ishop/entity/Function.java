@@ -10,7 +10,7 @@ public class Function {
     private String action_code;
     //动作名
     private String action_name;
-
+    //功能编号
     private String function_code;
     //功能名
     private String function_name;
@@ -30,6 +30,8 @@ public class Function {
     private String creater;
     //是否可用
     private String isactive;
+    //管理员拥有功能
+    private String admin_func;
 
     public int getId() {
         return id;
@@ -133,5 +135,13 @@ public class Function {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getAdmin_func() {
+        return admin_func;
+    }
+
+    public void setAdmin_func(String admin_func) {
+        this.admin_func = admin_func;
     }
 }

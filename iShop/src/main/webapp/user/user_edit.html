@@ -58,8 +58,8 @@
                      <div>
                         <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty"/></span>
                     </div>
-                    <div id="per_type" class="item_2">
-                        <span><label>所属角色</label><input class="input_select" type="text" id="OWN_RIGHT" placeholder="请选择所属角色" readonly/><span class="down_icon icn_2"><i class="icon-ishop_8-02"></i></span>
+                    <div id="per_type" >
+                        <span onclick="selectownrole(this)"><label>所属角色</label><input class="input_select" type="text" id="OWN_RIGHT" placeholder="请选择所属角色" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
                             <ul id="role_list">
                                 <!-- <li>系统管理员</li>
                                 <li>导购</li>
@@ -74,11 +74,11 @@
                             <li id="per_type" class="shop_list">
                                 <div>
                                     <span style="display:inline-block;" onclick="selectownshop(this)">
-                                        <input class="input_select" id="OWN_RIGHT" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
+                                        <input class="input_select" id="OWN_STORE" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
                                         <ul style="margin-left:0px" id="store_list">
-                                            <li>南京店铺</li>
+                                            <!-- <li>南京店铺</li>
                                             <li>上海店铺</li>
-                                            <li>杭州店铺</li>
+                                            <li>杭州店铺</li> -->
                                         </ul>
                                     </span>
                                     <span class="add_per_icon" onclick="addshopselect()"><i class="icon-ishop_6-01"></i>新增店铺</span>
@@ -132,6 +132,8 @@
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
+    <!-- moni select -->
+    <script type="text/javascript" src="../js/moni_select.js"></script>
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>
     <!-- 上传头像 -->
@@ -151,7 +153,5 @@
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/user/user_operate.js"></script>
-    <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js"></script>
 </body>
 </html>
