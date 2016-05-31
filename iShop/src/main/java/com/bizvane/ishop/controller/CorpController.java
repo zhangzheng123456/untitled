@@ -151,6 +151,7 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             Corp corp = new Corp();
+            corp.setId(Integer.parseInt(jsonObject.get("id").toString()));
             corp.setCorp_code(jsonObject.get("corp_code").toString());
             corp.setCorp_name(jsonObject.get("corp_name").toString());
             corp.setAddress(jsonObject.get("address").toString());

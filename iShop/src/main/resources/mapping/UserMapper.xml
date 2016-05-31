@@ -91,6 +91,7 @@
         phone,
         email,
         birthday,
+        password,
         login_time_recently,
         store_code,
         DEF_USER.role_code,

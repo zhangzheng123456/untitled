@@ -23,8 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -90,6 +89,22 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     *普通用户新增
+     * 获取公司编号
+     */
+    @RequestMapping(value = "/add_code", method = RequestMethod.POST)
+    @ResponseBody
+    public String addCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        System.out.println("add-corp_code"+corp_code);
+        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        dataBean.setId(id);
+        dataBean.setMessage(corp_code);
+
+        return dataBean.getJsonStr();
+    }
     /**
      * 用户管理
      * 新增
@@ -167,6 +182,7 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             User user = new User();
+            user.setId(Integer.parseInt(jsonObject.get("id").toString()));
             user.setUser_code(jsonObject.get("user_code").toString());
             user.setUser_name(jsonObject.get("username").toString());
             user.setPassword(jsonObject.get("password").toString());
@@ -318,19 +334,15 @@ public class UserController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            System.out.println("json--user role-------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject roles = new JSONObject();
-            if(jsonObject.get("user_type").equals("admin")){
-                String role = "系统管理员";
-                JSONArray array = new JSONArray();
-                JSONObject obj = new JSONObject();
-                obj.put("role_name",role);
-                array.add(obj);
-                roles.put("roles",JSON.toJSONString(array));
+            System.out.println(jsonObject.get("role_code").toString());
+            if(jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)){
+                String role = "[{\"role_name\":\"系统管理员\"}]";
+                roles.put("roles",role);
             }else {
                 String corp_code = jsonObject.get("corp_code").toString();
 
@@ -356,7 +368,7 @@ public class UserController {
     /**
      * 根据登录用户的角色类型
      * 输入的企业编号
-     * 查找该企业，该用户可选择的所有角色
+     * 查找该企业，该用户可选择的所有店铺
      */
     @RequestMapping(value = "/store", method = RequestMethod.POST)
     @ResponseBody
@@ -371,7 +383,7 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject stores = new JSONObject();
-            if(!jsonObject.get("user_type").equals("admin")){
+            if(!jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)){
                 String corp_code = jsonObject.get("corp_code").toString();
                 String role_code = request.getSession().getAttribute("role_code").toString();
                 List<Store> list;
@@ -387,9 +399,9 @@ public class UserController {
                     for (int i = 0; i < ids.length; i++) {
                         logger.info("-------------store_code" + ids[i]);
                         store = storeService.getUserStore(corp_code, ids[i]);
-                        array.add(JSON.toJSONString(store));
+                        array.add(store);
                     }
-                    stores.put("stores",array);
+                    stores.put("stores",JSON.toJSONString(array));
                 }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
