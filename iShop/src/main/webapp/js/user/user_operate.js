@@ -104,7 +104,7 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
-			if(useroperatejs.firstStep()){
+			// if(useroperatejs.firstStep()){
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
@@ -136,9 +136,9 @@ var oc = new ObjectControl();
 				};
 				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":"","password":PSW};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
-			}else{
-				return;
-			}
+			// }else{
+			// 	return;
+			// }
 		});
 	};
 	useroperatejs.ajaxSubmit=function(_command,_params,opt){
@@ -205,7 +205,7 @@ function selectownshop(obj){
     }
 }
 function selectownrole(obj){
-	var ul=$(obj)children('ul');
+	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
         $(obj).children("ul").children('li').click(function(){
