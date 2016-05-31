@@ -119,13 +119,23 @@ var oc = new ObjectControl();
 					SEX="F";
 				}
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_RIGHT=$("#OWN_RIGHT").val();
+				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==true){
 					ISACTIVE="N";
+				}
+				var STORE_CODE="";
+				var storelist_length=$(".shop_list input");;
+				for(var i=0;i<storelist_length.length;i++){
+					var r=$(storelist_length[i]).data("myscode");
+					if(i<storelist_length.length-1){
+						STORE_CODE +=r+",";
+					}else{
+						STORE_CODE +=r;
+					}
 				}
 				// var STORE_list=;
 				// for(var i=0;i<){
@@ -139,7 +149,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":"","password":PSW};
+				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE,"password":PSW};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -207,7 +217,7 @@ function selectownshop(obj){
             var txt = $(this_).text();
             var s_code=$(this_).data("storecode");
             $(this_).parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().children(".input_select").data('my_scode',s_code);
+            $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
             $(this_).addClass('rel').siblings().removeClass('rel');
         });
     }else{
@@ -227,8 +237,9 @@ function selectownrole(obj){
             var this_=this;
             var txt = $(this_).text();
             var r_code=$(this_).data("rolecode");
+            console.log(r_code);
             $(this_).parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().children(".input_select").data('my_rcode',r_code);
+            $(this_).parent().parent().children(".input_select").attr("data-myrcode",r_code);
             $(this_).addClass('rel').siblings().removeClass('rel');
         });
     }else{
@@ -311,6 +322,7 @@ jQuery(document).ready(function(){
 			$("#select_ownshop").css("display","block");
 		}
 	}else if($(".pre_title label").text()=="编辑用户信息"){
+		console.log(message.user_type);
 		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
@@ -349,23 +361,27 @@ jQuery(document).ready(function(){
 				if(msg.corp_code==''){
 					$("#select_ownshop").css("display","none");
 					$("#OWN_CORP").parent().parent().css("display","none");
-				}else{
+				}else if(msg.corp_code !==''){
 					$("#OWN_CORP").parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
 					$("#OWN_RIGHT").val(msg.role.role_name);
+					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
 					var store_lists=msg.store_name.split(",");
+					var storecode_list=msg.store_code.split(",");
 					if(store_lists.length==0){
 						$("#OWN_STORE").val("");
 					}else if(store_lists==1){
 						$("#OWN_STORE").val(store_lists[0]);
+						$("#OWN_STORE").attr("data-myscode",msg.store_code);
 					}else{
 						$("#OWN_STORE").val(store_lists[0]);
+						$("#OWN_STORE").attr("data-myscode",storecode_list[0]);
 						var html='';
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div>'
 					            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
-					                +'<input class="input_select"  type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+					                +'<input class="input_select"  type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
 					            +'</span>'
