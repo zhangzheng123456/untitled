@@ -83,8 +83,12 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
+        if (user.getCorp_code()==null || user.getCorp_code().equals("")){
+            user.setCorp_code("");
+        }
         String store_name = "";
         if (user.getStore_code()==null || user.getStore_code().equals("")){
+            user.setStore_code("");
             store_name = "";
         }else {
             String corp_code = user.getCorp_code();
