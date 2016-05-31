@@ -333,6 +333,8 @@ jQuery(document).ready(function(){
 					$("#select_ownshop").css("display","none");
 					$("#OWN_CORP").parent().parent().css("display","none");
 				}else{
+					$("#OWN_CORP").parent().parent().css("display","block");
+					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
 					$("#OWN_RIGHT").val(msg.role.role_name);
 					console.log(msg.store_name);
