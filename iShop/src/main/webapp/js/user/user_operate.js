@@ -304,12 +304,14 @@ jQuery(document).ready(function(){
 			console.log(data);
 			var msg=JSON.parse(data.message);
 			console.log(msg.roles);
+			var msg.roles=JSON.parse(msg.roles);
+			console.log(msg.roles);
 			index=0;
 			var html="";
-			for(index in msg.roles){
-				html +='<li>'+msg.roles[index]["role_name"]+'</li>'
-			}
-			$("#role_list").append(html);
+			// for(index in msg.roles){
+			// 	html +='<li>'+msg.roles[index]["role_name"]+'</li>'
+			// }
+			// $("#role_list").append(html);
 		});
 		store_li_list();
 	}
