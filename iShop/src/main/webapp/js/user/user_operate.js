@@ -306,14 +306,17 @@ function store_li_list() {
 }
 jQuery(document).ready(function(){
 	window.user.init();//初始化
-	var val=sessionStorage.getItem("addtype");
+	var val=sessionStorage.getItem("key");
+	var addtype=sessionStorage.getItem("addtype");
+	addtype=JSON.parse(addtype);
     val=JSON.parse(val);
+    var message=JSON.parse(val.message);
 	if($(".pre_title label").text()=="新增用户"){
-		if(val.user_type=="admin"){
-			if(val.isAdmin=="Y"){
+		if(addtype.user_type=="admin"){
+			if(addtype.isAdmin=="Y"){
 				$("#OWN_CORP").parent().parent().css("display","none");
 				$("#select_ownshop").css("display","none");
-			}else if(val.isAdmin=="N"){
+			}else if(addtype.isAdmin=="N"){
 				$("#OWN_CORP").parent().parent().css("display","block");
 				$("#select_ownshop").css("display","block");
 			}
@@ -339,7 +342,7 @@ jQuery(document).ready(function(){
 			// }
 		});
 	}else if($(".pre_title label").text()=="编辑用户信息"){
-		if(val.user_type=="admin"){
+		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
