@@ -204,6 +204,20 @@ function selectownshop(obj){
         ul.hide();
     }
 }
+function selectownrole(obj){
+	var ul=$(obj)children('ul');
+    if(ul.css("display")=="none"){
+        ul.show();
+        $(obj).children("ul").children('li').click(function(){
+            var this_=this;
+            var txt = $(this_).text();
+            $(this_).parent().parent().children(".input_select").val(txt);
+            $(this_).addClass('rel').siblings().removeClass('rel');
+        });
+    }else{
+        ul.hide();
+    }
+}
 function addshopselect(){
 	$(".shop_list").append('<div>'
             +'<span style="display:inline-block;" onclick="selectownshop(this)">'
