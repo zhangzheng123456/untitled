@@ -218,13 +218,13 @@ function addshopselect(){
 function minusshopselect(obj){
 	$(obj).parent().remove();
 }
+var c_code="";
 function store_li_list() {
-	var _params={"user_type":message.user_type,"":};
-	var _command="/user/role";
+	var _params={"user_type":message.user_type,"corp_code":c_code};
+	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
 		var msg=JSON.parse(data.message);
-
 	});
 }
 jQuery(document).ready(function(){
@@ -232,7 +232,6 @@ jQuery(document).ready(function(){
 	var val=sessionStorage.getItem("key");
     val=JSON.parse(val);
     var message=JSON.parse(val.message);
-    
 	if($(".pre_title label").text()=="新增用户"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
@@ -253,7 +252,6 @@ jQuery(document).ready(function(){
 			$("#select_ownshop").css("display","block");
 		}
 		var id=sessionStorage.getItem("id");
-		var c_code="";
 		var _params={"id":id};
 		var _command="/user/select";
 		oc.postRequire("post", _command,"", _params, function(data){
