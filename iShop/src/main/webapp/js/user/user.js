@@ -257,17 +257,22 @@ function jumpBianse(){
     $('#add').click(function(){
         if(user_type=="admin"){
             $('.fen').slideToggle();
+        }else if(user_type!=="admin"){
+            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+            sessionStorage.removeItem('id');
         }
     })
     $('#admin').click(function(){
         var addtype={"user_type":user_type,"isAdmin":"Y"};
         sessionStorage.setItem("addtype",JSON.stringify(addtype));
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+        sessionStorage.removeItem('id');
     })
     $('#corp').click(function(){
         var addtype={"user_type":user_type,"isAdmin":"N"};
         sessionStorage.setItem("addtype",JSON.stringify(addtype));
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+        sessionStorage.removeItem('id');
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
