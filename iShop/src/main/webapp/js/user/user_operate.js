@@ -246,6 +246,25 @@ function store_li_list() {
 			console.log(msg);
 			c_code=msg.corp_code;
 			console.log(c_code);
+			var val=sessionStorage.getItem("key");
+		    val=JSON.parse(val);
+		    var message=JSON.parse(val.message);
+			var _params={"user_type":message.user_type,"corp_code":c_code};
+			var _command="/user/store";
+			oc.postRequire("post", _command,"", _params, function(data){
+				console.log(data);
+				var msg=JSON.parse(data.message);
+				console.log(msg.stores);
+				var msg_stores=JSON.parse(msg.stores);
+				index=0;
+				var html="";
+				if(msg_stores[0].store_name){
+					for(index in msg_stores){
+						html +='<li>'+msg_stores[index].store_name+'</li>'
+					}
+				}
+				$("#store_list").append(html);
+			});
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -255,25 +274,7 @@ function store_li_list() {
 			});
 		}
 	});
-	var val=sessionStorage.getItem("key");
-    val=JSON.parse(val);
-    var message=JSON.parse(val.message);
-	var _params={"user_type":message.user_type,"corp_code":c_code};
-	var _command="/user/store";
-	oc.postRequire("post", _command,"", _params, function(data){
-		console.log(data);
-		var msg=JSON.parse(data.message);
-		console.log(msg.stores);
-		var msg_stores=JSON.parse(msg.stores);
-		index=0;
-		var html="";
-		if(msg_stores[0].store_name){
-			for(index in msg_stores){
-				html +='<li>'+msg_stores[index].store_name+'</li>'
-			}
-		}
-		$("#store_list").append(html);
-	});
+	
 }
 jQuery(document).ready(function(){
 	window.user.init();//初始化
@@ -356,7 +357,7 @@ jQuery(document).ready(function(){
 			var html="";
 			if(msg_roles[0].role_name){
 				for(index in msg_roles){
-					html +='<li>'+msg_roles[index].role_name+'</li>'
+					html +='<li>'+msg_roles[index].role_name+'</li>';
 				}
 			}
 			$("#role_list").append(html);
