@@ -192,7 +192,19 @@ var oc = new ObjectControl();
 function selectownshop(obj){
 	if($(obj).data("i")==1){
 		store_li_list();
-		$(obj).data("i","2");
+		$(obj).setAttribute('data-i','2');
+		var ul=$(obj).children('ul');
+	    if(ul.css("display")=="none"){
+	        ul.show();
+	        $(obj).children("ul").children('li').click(function(){
+	            var this_=this;
+	            var txt = $(this_).text();
+	            $(this_).parent().parent().children(".input_select").val(txt);
+	            $(this_).addClass('rel').siblings().removeClass('rel');
+	        });
+	    }else{
+	        ul.hide();
+	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -212,6 +224,18 @@ function selectownrole(obj){
 	if(j==0){
 		role_li_list();
 		j++;
+		var ul=$(obj).children('ul');
+	    if(ul.css("display")=="none"){
+	        ul.show();
+	        $(obj).children("ul").children('li').click(function(){
+	            var this_=this;
+	            var txt = $(this_).text();
+	            $(this_).parent().parent().children(".input_select").val(txt);
+	            $(this_).addClass('rel').siblings().removeClass('rel');
+	        });
+	    }else{
+	        ul.hide();
+	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -229,7 +253,7 @@ function selectownrole(obj){
 function addshopselect(){
 	$(".shop_list").append('<div>'
             +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
-                +'<input class="input_select" id="OWN_RIGHT" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+                +'<input class="input_select"  type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
             +'</span>'
@@ -344,7 +368,7 @@ jQuery(document).ready(function(){
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div>'
 					            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
-					                +'<input class="input_select" id="OWN_RIGHT" type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+					                +'<input class="input_select"  type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
 					            +'</span>'
