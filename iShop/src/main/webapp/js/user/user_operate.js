@@ -191,7 +191,7 @@ var oc = new ObjectControl();
 	return obj;
 }));
 function selectownshop(obj){
-	if($(obj).data("i")==1){
+	if(obj.getAttribute("data-i")=="1"){
 		store_li_list();
 		obj.setAttribute('data-i','2');
 	}
@@ -309,6 +309,11 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
+			var _params="";
+			var _command="/user/add_code";
+			oc.postRequire("post", _command,"", _params, function(data){
+				console.log(data);
+			})
 		}
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
@@ -352,7 +357,7 @@ jQuery(document).ready(function(){
 							html +='<div>'
 					            +'<span style="display:inline-block;" data-i="1" onclick="selectownshop(this)">'
 					                +'<input class="input_select"  type="text" value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
-					                +'<ul style="margin-left:0px">'
+					                +'<ul style="margin-left:0px" id="store_list">'
 					                +'</ul>'
 					            +'</span>'
 					            +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
