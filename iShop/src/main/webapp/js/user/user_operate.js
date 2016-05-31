@@ -194,18 +194,6 @@ function selectownshop(obj){
 	if($(obj).data("i")==1){
 		store_li_list();
 		obj.setAttribute('data-i','2');
-		var ul=$(obj).children('ul');
-	    if(ul.css("display")=="none"){
-	        ul.show();
-	        $(obj).children("ul").children('li').click(function(){
-	            var this_=this;
-	            var txt = $(this_).text();
-	            $(this_).parent().parent().children(".input_select").val(txt);
-	            $(this_).addClass('rel').siblings().removeClass('rel');
-	        });
-	    }else{
-	        ul.hide();
-	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -225,18 +213,6 @@ function selectownrole(obj){
 	if(j==0){
 		role_li_list();
 		j++;
-		var ul=$(obj).children('ul');
-	    if(ul.css("display")=="none"){
-	        ul.show();
-	        $(obj).children("ul").children('li').click(function(){
-	            var this_=this;
-	            var txt = $(this_).text();
-	            $(this_).parent().parent().children(".input_select").val(txt);
-	            $(this_).addClass('rel').siblings().removeClass('rel');
-	        });
-	    }else{
-	        ul.hide();
-	    }
 	}
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
