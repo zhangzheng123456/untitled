@@ -7,13 +7,15 @@
         from DEF_STORE
         where ID=#{id}
     </select>
-    <select id="selectByUserStore" resultType="com.bizvane.ishop.entity.Store">
+
+    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE
         where CORP_CODE = #{corp_code}
         AND STORE_CODE = #{store_code}
         AND ISACTIVE = 'Y'
     </select>
+
     <select id="selectAllStore" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE
@@ -34,13 +36,6 @@
             OR ISACTIVE like #{search_value}
         </if>
         ORDER BY ID
-    </select>
-
-    <select id="selectStoreCode" resultType="com.bizvane.ishop.entity.Store">
-        select *
-        from DEF_STORE
-        WHERE
-        STORE_CODE = #{0} AND CORP_CODE = #{1}
     </select>
 
     <select id="selectByUserId" resultType="com.bizvane.ishop.entity.Store">

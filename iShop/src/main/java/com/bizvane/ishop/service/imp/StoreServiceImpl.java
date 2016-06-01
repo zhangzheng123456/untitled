@@ -63,23 +63,23 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
+    //list获取企业店铺
+    public List<Store> getCorpStore(String corp_code) throws SQLException {
+        List<Store> stores = storeMapper.selectAllStore(corp_code,"");
+        return stores;
+    }
+
     //分页显示店铺下所属用户
     public List<User> getStoreUser(String corp_code,String store_code){
         List<User> user = userMapper.selectStoreUser(corp_code,"%"+store_code+"%");
         return user;
     }
 
-    //获取用户store_code对应店铺
-    public Store getUserStore(String corp_code,String store_code) throws SQLException {
-        Store store = storeMapper.selectByUserStore(corp_code, store_code);
+    //根据企业，店铺编号,查找店铺
+    public Store getStoreByCode(String corp_code, String store_code) throws SQLException {
+        Store store = storeMapper.selectByCorp(corp_code, store_code);
 
         return store;
-    }
-
-    //获取企业,store_code对应店铺
-    public List<Store> getCorpStore(String corp_code) throws SQLException {
-        List<Store> stores = storeMapper.selectAllStore(corp_code,"");
-        return stores;
     }
 
     //新增店铺
@@ -149,9 +149,5 @@ public class StoreServiceImpl implements StoreService {
         return this.storeMapper.deleteByStoreId(id);
     }
 
-    //根据企业，店铺编号,查找店铺
-    public Store getStoreByCode(String corp_code,String store_code){
-        Store store = storeMapper.selectStoreCode(store_code, corp_code);
-        return store;
-    }
+
 }
