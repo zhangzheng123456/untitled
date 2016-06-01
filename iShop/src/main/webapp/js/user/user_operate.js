@@ -68,7 +68,7 @@ var oc = new ObjectControl();
 	};
 	useroperatejs.bindbutton=function(){
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
-			// if(useroperatejs.firstStep()){
+			if(useroperatejs.firstStep()){
 				console.log("1");
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
@@ -83,7 +83,7 @@ var oc = new ObjectControl();
 					SEX="F";
 				}
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_RIGHT=$("#OWN_RIGHT").val();
+				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -91,17 +91,27 @@ var oc = new ObjectControl();
 				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
+				var STORE_CODE="";
+				var storelist_length=$(".shop_list input");;
+				for(var i=0;i<storelist_length.length;i++){
+					var r=$(storelist_length[i]).data("myscode");
+					if(i<storelist_length.length-1){
+						STORE_CODE +=r+",";
+					}else{
+						STORE_CODE +=r;
+					}
+				}
 				var _command="/user/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":""};
+				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
-			// }else{
-			// 	return;
-			// }
+			}else{
+				return;
+			}
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(useroperatejs.firstStep()){
@@ -320,7 +330,14 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
+			var _params="";
+			var _command="/user/add_code";
+			oc.postRequire("post", _command,"", _params, function(data){
+				console.log(data);
+				$("#OWN_CORP").val(data.message);
+			});
 		}
+
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
@@ -330,11 +347,6 @@ jQuery(document).ready(function(){
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
-			var _params="";
-			var _command="/user/add_code";
-			oc.postRequire("post", _command,"", _params, function(data){
-				console.log(data);
-			})
 		}
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
