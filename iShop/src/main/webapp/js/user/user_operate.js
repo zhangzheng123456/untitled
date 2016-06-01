@@ -222,14 +222,6 @@ function selectownshop(obj){
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
-        // $(obj).children("ul").children('li').click(function(){
-        //     var this_=this;
-        //     var txt = $(this_).text();
-        //     var s_code=$(this_).data("storecode");
-        //     $(this_).parent().parent().children(".input_select").val(txt);
-        //     $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
-        //     $(this_).addClass('rel').siblings().removeClass('rel');
-        // });
     }else{
         ul.hide();
     }
@@ -243,15 +235,6 @@ function selectownrole(obj){
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
-        // $(obj).children("ul").children('li').click(function(){
-        //     var this_=this;
-        //     var txt = $(this_).text();
-        //     var r_code=$(this_).data("rolecode");
-        //     console.log(r_code);
-        //     $(this_).parent().parent().children(".input_select").val(txt);
-        //     $(this_).parent().parent().children(".input_select").attr("data-myrcode",r_code);
-        //     $(this_).addClass('rel').siblings().removeClass('rel');
-        // });
     }else{
         ul.hide();
     }
@@ -325,9 +308,9 @@ function role_data(){
 		$("#role_list li").click(function(){
             var this_=this;
             var txt = $(this_).text();
-            var s_code=$(this_).data("storecode");
+            var r_code=$(this_).data("rolecode");
             $(this_).parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
+            $(this_).parent().parent().children(".input_select").attr('data-myrcode',r_code);
             $(this_).addClass('rel').siblings().removeClass('rel');
         });
 	});
