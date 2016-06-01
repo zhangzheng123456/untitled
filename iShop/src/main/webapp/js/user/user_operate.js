@@ -88,7 +88,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				var STORE_CODE="";
@@ -134,7 +134,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				var STORE_CODE="";
@@ -429,9 +429,9 @@ jQuery(document).ready(function(){
 				$("#preview img").attr("src",msg.avatar);
 				$("#USER_PHONE").val(msg.phone);
 				$("#USER_EMAIL").val(msg.email);
-				if(msg.sex=="M"){
+				if(msg.sex=="F"){
 					$("#USER_SEX").val("女");
-				}else if(msg.sex=="F"){
+				}else if(msg.sex=="M"){
 					$("#USER_SEX").val("男");
 				}
 				if(msg.corp_code==''){
