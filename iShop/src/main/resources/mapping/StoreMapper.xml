@@ -49,11 +49,13 @@
          WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
     </select>
     <delete id="deleteByStoreId">
-        DELETE DEF_USER
-        FROM WHERE id=#{id}
+        delete from
+        DEF_STORE
+        where ID=#{id}
     </delete>
 
-  <update id="deleteStoreByUser_id">
+
+    <update id="deleteStoreByUser_id">
 update DEF_USER
 set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'') where id=#{user_id}
   </update>
