@@ -274,6 +274,38 @@ var c_code="";
 var r_code="";
 function role_li_list(){
 	//拉取角色下拉选项
+	var addtype=sessionStorage.getItem("addtype");
+	addtype=JSON.parse(addtype);
+	if($(".pre_title label").text()=="新增用户"){
+		if(addtype.user_type=="admin"){
+			if(addtype.isAdmin=="Y"){
+				r_code=addtype.role_code;
+				c_code="";
+				role_data();
+			}else if(addtype.isAdmin=="N"){
+				if($("#OWN_CORP").val()!==''){
+					r_code=addtype.role_code;
+					c_code=$("#OWN_CORP").val();
+					role_data();
+				}else{
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"请先输入企业编号！"
+					});
+				}
+			}
+		}else{
+			c_code=$("#OWN_CORP").val();
+			r_code=addtype.role_code;
+			role_data();
+		}
+	}else{
+		role_data();
+	}
+}
+function role_data(){
 	var _params={"role_code":r_code,"corp_code":c_code};
 	var _command="/user/role";
 	oc.postRequire("post", _command,"", _params, function(data){
@@ -293,7 +325,7 @@ function role_li_list(){
 	});
 }
 function store_li_list(p) {
-	var _params={"role_code":c_code,"corp_code":c_code};
+	var _params={"role_code":r_code,"corp_code":c_code};
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
