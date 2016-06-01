@@ -222,14 +222,14 @@ function selectownshop(obj){
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
-        $(obj).children("ul").children('li').click(function(){
-            var this_=this;
-            var txt = $(this_).text();
-            var s_code=$(this_).data("storecode");
-            $(this_).parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
-            $(this_).addClass('rel').siblings().removeClass('rel');
-        });
+        // $(obj).children("ul").children('li').click(function(){
+        //     var this_=this;
+        //     var txt = $(this_).text();
+        //     var s_code=$(this_).data("storecode");
+        //     $(this_).parent().parent().children(".input_select").val(txt);
+        //     $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
+        //     $(this_).addClass('rel').siblings().removeClass('rel');
+        // });
     }else{
         ul.hide();
     }
@@ -243,15 +243,15 @@ function selectownrole(obj){
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
-        $(obj).children("ul").children('li').click(function(){
-            var this_=this;
-            var txt = $(this_).text();
-            var r_code=$(this_).data("rolecode");
-            console.log(r_code);
-            $(this_).parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().children(".input_select").attr("data-myrcode",r_code);
-            $(this_).addClass('rel').siblings().removeClass('rel');
-        });
+        // $(obj).children("ul").children('li').click(function(){
+        //     var this_=this;
+        //     var txt = $(this_).text();
+        //     var r_code=$(this_).data("rolecode");
+        //     console.log(r_code);
+        //     $(this_).parent().parent().children(".input_select").val(txt);
+        //     $(this_).parent().parent().children(".input_select").attr("data-myrcode",r_code);
+        //     $(this_).addClass('rel').siblings().removeClass('rel');
+        // });
     }else{
         ul.hide();
     }
@@ -322,10 +322,51 @@ function role_data(){
 			}
 		}
 		$("#role_list").append(html);
+		$("#role_list li").click(function(){
+            var this_=this;
+            var txt = $(this_).text();
+            var s_code=$(this_).data("storecode");
+            $(this_).parent().parent().children(".input_select").val(txt);
+            $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
+            $(this_).addClass('rel').siblings().removeClass('rel');
+        });
 	});
 }
 function store_li_list(p) {
+	var addtype=sessionStorage.getItem("addtype");
+	addtype=JSON.parse(addtype);
+	if($(".pre_title label").text()=="新增用户"){
+		if(addtype.user_type=="admin"){
+			if(addtype.isAdmin=="Y"){
+				r_code=addtype.role_code;
+				c_code="";
+				store_data(p);
+			}else if(addtype.isAdmin=="N"){
+				if($("#OWN_CORP").val()!==''){
+					r_code=addtype.role_code;
+					c_code=$("#OWN_CORP").val();
+					store_data(p);
+				}else{
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"请先输入企业编号！"
+					});
+				}
+			}
+		}else{
+			c_code=$("#OWN_CORP").val();
+			r_code=addtype.role_code;
+			store_data(p);
+		}
+	}else{
+		store_data(p);
+	}
+}
+function store_data(p){
 	var _params={"role_code":r_code,"corp_code":c_code};
+	console.log(_params);
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
@@ -340,6 +381,14 @@ function store_li_list(p) {
 			}
 		}
 		$("#"+p+" ul").append(html);
+		$("#"+p+" ul li").click(function(){
+            var this_=this;
+            var txt = $(this_).text();
+            var s_code=$(this_).data("storecode");
+            $(this_).parent().parent().children(".input_select").val(txt);
+            $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
+            $(this_).addClass('rel').siblings().removeClass('rel');
+        });
 	});
 }
 jQuery(document).ready(function(){
@@ -405,6 +454,8 @@ jQuery(document).ready(function(){
 				if(msg.corp_code==''){
 					$("#select_ownshop").css("display","none");
 					$("#OWN_CORP").parent().parent().css("display","none");
+					$("#OWN_RIGHT").val(msg.role.role_name);
+					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
 				}else if(msg.corp_code !==''){
 					$("#OWN_CORP").parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
