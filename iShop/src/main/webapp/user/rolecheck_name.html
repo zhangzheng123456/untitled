@@ -319,8 +319,10 @@
     function frame(){
         var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
         var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
-        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;">删除成功</div>')
-        $(".frame").animate({width:"150px;"},1000);
+        $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;">删除成功</div>');
+        $(".frame").animate({opacity:"1"},1000);
+        $(".frame").animate({opacity:"0"},1000);
+        console.log($(".frame")[0]);
     }
     frame();
 </script>

@@ -160,7 +160,7 @@ set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'') where id=#{user_id
                 corp_code=#{corp_code},
             </if>
             <if test="flg_tob!=null and flg_tob!=''">
-                #{flg_tob},
+                flg_tob = #{flg_tob},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},

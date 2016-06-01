@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.FunctionMapper;
 import com.bizvane.ishop.entity.Action;
 import com.bizvane.ishop.entity.Function;
@@ -24,14 +25,14 @@ public class FunctionServiceImpl implements FunctionService {
     FunctionMapper functionMapper;
 
     /**
-     *获取user所有功能模块
+     * 获取user所有功能模块
      */
     public JSONArray selectAllFunctions(int user_id, String role_code) {
         List<Function> func_info;
-        if (user_id==0 &&role_code.equals("")){
+        if (user_id == 0 && role_code.equals("")) {
             //获取所有功能模块(系统管理员)
             func_info = functionMapper.selectAll();
-        }else {
+        } else {
             //获取user所有功能模块
             func_info = functionMapper.selectAllFun(user_id, role_code);
         }
@@ -98,7 +99,7 @@ public class FunctionServiceImpl implements FunctionService {
 
 
     /**
-     *获取用户所有动作权限
+     * 获取用户所有动作权限
      * （暂未使用）
      */
     public JSONArray selectAllActions(int user_id, String role_code) {
@@ -148,12 +149,17 @@ public class FunctionServiceImpl implements FunctionService {
     }
 
     /**
-     *按功能获取user动作权限
+     * 按功能获取user动作权限
      */
     public JSONArray selectActionByFun(int user_id, String role_code, String function_code) {
-        List<Action> act_info = functionMapper.selectActionByFun(user_id, role_code, function_code);
-        JSONArray actions = new JSONArray();
+        List<Action> act_info;
+        if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            act_info = functionMapper.selectAllAction(function_code);
 
+        } else {
+            act_info = functionMapper.selectActionByFun(user_id, role_code, function_code);
+        }
+        JSONArray actions = new JSONArray();
         for (int i = 0; i < act_info.size(); i++) {
             String act = act_info.get(i).getAction_name();
 

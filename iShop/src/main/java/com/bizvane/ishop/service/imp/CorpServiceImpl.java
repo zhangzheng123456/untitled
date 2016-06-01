@@ -35,6 +35,9 @@ public class CorpServiceImpl implements CorpService {
         return corpMapper.deleteByCorpId(id);
     }
 
+    /**
+     *分页显示所有企业
+     */
     public PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Corp> corps = corpMapper.selectAllCorp("%" + search_value + "%");
@@ -42,6 +45,11 @@ public class CorpServiceImpl implements CorpService {
         return page;
     }
 
+    /**
+     * 查找最大的corp_code
+     * 以便新增企业时
+     * 自动生成corp_code
+     */
     public String selectMaxCorpCode() {
         return corpMapper.selectMaxCorpCode();
     }

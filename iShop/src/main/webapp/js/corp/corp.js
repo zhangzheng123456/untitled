@@ -20,8 +20,13 @@ $(function(){
         });            
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
-                var id=$(this).attr('id');
-                console.log(id);  
+                pageSize=$(this).attr('id');  
+                if(value==""){
+                    GET();
+                }else if(value!==""){
+                    param["pageSize"]=pageSize;
+                    POST(); 
+                } 
                 $("#page_row").val($(this).html());  
                 hideLi();  
             });    
@@ -55,6 +60,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     var container = container;
     var count = count;
     var pageindex = pageindex;
+    var pageSize=pageSize;
     var a = [];
               //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -105,8 +111,6 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
         var inx = pageindex; //初始的页码
-        // console.log(inx);
-        // console.log(count);
         $("#input-txt").val(inx);
         $(".foot-sum .zy").html("共 "+count+"页");
         oAlink[0].onclick = function() { //点击上一页
@@ -115,12 +119,14 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             }
             inx--;
             dian(inx);
+            setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
                 dian(inx);
+                setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
         }
@@ -130,17 +136,49 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             }
             inx++;
             dian(inx);
-            // setPage(container, count, inx);
+            setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
     }()
-    function dian(inx){
-        var inx=inx;
+    function dian(inx){//
         if(value==""){
-            GET();
+            oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
+                +"&funcCode="+funcCode+"","","",function(data){
+                    console.log(data);
+                    if(data.code=="0"){
+                        $(".table tbody").empty();
+                        var message=JSON.parse(data.message);
+                        var list=JSON.parse(message.list);
+                        var cout=list.pages;
+                        var list=list.list;
+                        superaddition(list);
+                        jumpBianse();
+                    }else if(data.code=="-1"){
+                        // alert(data.message);
+                    }
+            });           
         }else if(value!==""){
             param["pageNumber"]=inx;
-            POST();
+            param["pageSize"]=pageSize;
+            oc.postRequire("post","/corp/search","0",param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var list=JSON.parse(message.list);
+                    var cout=list.pages;
+                    var list=list.list;
+                    $(".table tbody").empty();
+                    if(list.length<=0){
+                        $(".table p").remove();
+                        $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                    }else if(list.length>0){
+                        $(".table p").remove();
+                        superaddition(list);
+                        jumpBianse();
+                    }
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+            })        
         }
     }
 }
@@ -240,11 +278,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $('.fen').slideToggle();
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
-    })
-    $('#admin').click(function(){
-        
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -253,8 +287,12 @@ function jumpBianse(){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
-        }else{
-            alert("只能选择一项");
+        }else if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+        }else if(tr.length>1){
+            frame();
+            $('.frame').html("不能选着多个");
         }
     })
     //删除
@@ -263,7 +301,8 @@ function jumpBianse(){
         var h=$(document.body).height();
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==0){
-            alert("请先选中所选项");
+            frame();
+            $('.frame').html("请先选择");
             return;
         }
         $("#p").show();
@@ -299,7 +338,9 @@ function POST(){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
             }else if(list.length>0){
+                $(".table p").remove();
                 superaddition(list);
+                jumpBianse();
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
@@ -336,10 +377,27 @@ $("#delete").click(function(){
     console.log(param);
     oc.postRequire("post","/corp/delete","0",param,function(data){
         if(data.code=="0"){
-            GET();
+            if(value==""){
+               frame();
+               $('.frame').html('删除成功');
+               GET(); 
+            }else if(value!==""){
+               frame();
+               $('.frame').html('删除成功');
+               POST();
+            }
         }
     })
-})  
+})
+//删除弹框
+ function frame(){
+    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+    $('.frame').remove();
+    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+    $(".frame").animate({opacity:"1"},1000);
+    $(".frame").animate({opacity:"0"},1000);
+} 
 //全选
 function checkAll(name){
     var el=$("tbody input");
