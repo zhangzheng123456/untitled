@@ -50,6 +50,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
+	useroperatejs.checkCorpCode=function(obj,hint){
+		var this_=this;
+		$("#OWN_CORP").blur(function(){
+			var this_code=$(this).val();
+		  	var _params={"corp_code":this_code};
+			var _command="/corp/exist";
+			oc.postRequire("post", _command,"", _params, function(data){
+				if(data.code=="-1"){
+					this_.displayHint(hint,"该企业编号不存在，请重新输入！")
+				}else if(data.code=="0"){
+					this_.hiddenHint(hint);
+				}
+			});
+		});
+	}
 	useroperatejs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
