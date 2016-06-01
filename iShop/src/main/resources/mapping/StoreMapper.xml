@@ -3,16 +3,16 @@
 <mapper namespace="com.bizvane.ishop.dao.StoreMapper">
 
     <select id="selectByStoreId" resultType="com.bizvane.ishop.entity.Store">
-    select *
-    from DEF_STORE
-    where ID=#{id}
+        select *
+        from DEF_STORE
+        where ID=#{id}
     </select>
     <select id="selectByUserStore" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE
         where CORP_CODE = #{corp_code}
         AND STORE_CODE = #{store_code}
-         AND ISACTIVE = 'Y'
+        AND ISACTIVE = 'Y'
     </select>
     <select id="selectAllStore" resultType="com.bizvane.ishop.entity.Store">
         select *
@@ -45,8 +45,8 @@
 
     <select id="selectByUserId" resultType="com.bizvane.ishop.entity.Store">
         select *
-         from DEF_STORE
-         WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
+        from DEF_STORE
+        WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
     </select>
     <delete id="deleteByStoreId">
         delete from
@@ -54,11 +54,11 @@
         where ID=#{id}
     </delete>
 
-
     <update id="deleteStoreByUser_id">
-update DEF_USER
-set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'') where id=#{user_id}
-  </update>
+        update DEF_USER
+        set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'')
+        where id=#{user_id}
+    </update>
 
 
     <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">

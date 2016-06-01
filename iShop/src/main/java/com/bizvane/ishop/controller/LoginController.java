@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -40,6 +41,8 @@ public class LoginController {
 
     @RequestMapping(value = "/")
     public String index(HttpServletRequest request) {
+        System.out.println("----------------------index  begin-----------");
+
         String role_code = request.getSession().getAttribute("role_code").toString();
         System.out.println(role_code);
         String home = "";
@@ -58,6 +61,19 @@ public class LoginController {
 
         return home;
     }
+    @RequestMapping(value = "/login_out", method = RequestMethod.GET)
+    public String login_out(HttpServletRequest request, HttpServletResponse response) throws Exception{
+        System.out.println("----------login_out---------");
+        request.getSession().removeAttribute("user_id");
+        request.getSession().removeAttribute("corp_code");
+        request.getSession().removeAttribute("role_code");
+        request.getSession().removeAttribute("store_code");
+        request.getSession().removeAttribute("menu");
+
+        return "login";
+
+    }
+
 
     /**
      * 手机号是否已注册
