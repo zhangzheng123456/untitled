@@ -199,7 +199,9 @@ function superaddition(data){//页面加载循环
                         + data[i].store_code
                         + "</td><td>"
                         + data[i].store_name
-                        + "</td><td>"
+                        + "</td><td class='staff'><a href='javascript:void(0)'>"
+                        + '查看'
+                        + "</a></td><td>"
                         + data[i].store_area
                         +"</td><td>"
                         +data[i].brand_code
@@ -284,6 +286,7 @@ function jumpBianse(){
     //点击新增时页面进行的跳转
     $('#add').click(function(){
             $(window.parent.document).find('#iframepage').attr("src","/shop/shop_add.html");
+            sessionStorage.removeItem('id');
         })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -344,7 +347,10 @@ function jumpBianse(){
                 }
             }
         })
-    })  
+    })
+    $('.staff').click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
+    })
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
