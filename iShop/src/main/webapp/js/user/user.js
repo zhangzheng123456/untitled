@@ -319,8 +319,12 @@ function jumpBianse(){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
-        }else{
-            alert("只能选择一项");
+        }else if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+        }else if(tr.length>1){
+            frame();
+            $('.frame').html("不能选着多个");
         }
     })
     //删除
@@ -329,7 +333,8 @@ function jumpBianse(){
         var h=$(document.body).height();
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==0){
-            alert("请先选中所选项");
+            frame();
+            $('.frame').html("请先选择");
             return;
         }
         $("#p").show();
@@ -407,7 +412,16 @@ $("#delete").click(function(){
             GET()
         }
     })
-})  
+})
+//删除弹框
+function frame(){
+    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+    $('.frame').remove();
+    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+    $(".frame").animate({opacity:"1"},1000);
+    $(".frame").animate({opacity:"0"},1000);
+}  
 //全选
 function checkAll(name){
     var el=$("tbody input");
