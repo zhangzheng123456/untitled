@@ -50,21 +50,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	useroperatejs.checkCorpCode=function(obj,hint){
-		var this_=this;
-		$("#OWN_CORP").blur(function(){
-			var this_code=$(this).val();
-		  	var _params={"corp_code":this_code};
-			var _command="/corp/exist";
-			oc.postRequire("post", _command,"", _params, function(data){
-				if(data.code=="-1"){
-					this_.displayHint(hint,"该企业编号不存在，请重新输入！")
-				}else if(data.code=="0"){
-					this_.hiddenHint(hint);
-				}
-			});
-		});
-	}
 	useroperatejs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -125,6 +110,7 @@ var oc = new ObjectControl();
 				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
+				console.log("lalla");
 				return;
 			}
 		});
@@ -507,4 +493,25 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
+	$("#OWN_CORP").focus(function() {
+		interval = setInterval(function() {
+			$("#OWN_CORP").blur(function(){
+				var this_code=$(this).val();
+			  	var _params={"corp_code":this_code};
+				var _command="/corp/exist";
+				oc.postRequire("post", _command,"", _params, function(data){
+					if(data.code=="-1"){
+						art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content: "该企业编号以存在，请重新输入！"
+						});
+					}
+				});
+			});
+		}, 500);
+	}).blur(function(event) {
+		clearInterval(interval);
+	});
 });
