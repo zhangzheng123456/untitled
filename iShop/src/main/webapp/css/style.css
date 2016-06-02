@@ -7571,9 +7571,9 @@ body.skin-3 {
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
-  /*  background: #ebebeb url(../images/arrow_down.png) no-repeat 100% 50%;*/
-   /* background-size: 10px 5px;
-    border-radius: 0px 13px 13px 0px;*/
+    background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+    background-size: 30px 30px;
+    /*border-radius: 0px 13px 13px 0px;*/
 }
 /*模拟一般select样式*/
 ul,li{list-style:none;padding:0;margin:0;}
