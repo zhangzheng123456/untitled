@@ -12,25 +12,21 @@ import java.util.List;
 
 public interface CorpService {
 
-    Corp selectByCorpId(int corp_id, String corp_code)throws SQLException;
+    Corp selectByCorpId(int corp_id, String corp_code) throws SQLException;
 
-    int insertCorp(Corp corp)throws SQLException;
+    int insertCorp(Corp corp) throws SQLException;
 
-    int updateByCorpId(Corp corp)throws SQLException;
+    int updateByCorpId(Corp corp) throws SQLException;
 
-    int deleteByCorpId(int id)throws SQLException;
+    int deleteByCorpId(int id) throws SQLException;
 
-    PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value)throws SQLException;
+    PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws SQLException;
 
-    List<Corp> selectAllCorp()throws SQLException;
+    List<Corp> selectAllCorp() throws SQLException;
 
+    Corp selectCorpInfoByUserId(String user_id);
 
     String selectMaxCorpCode();
-
-
-
-
-
 
 
 }

@@ -21,4 +21,6 @@ public interface CorpMapper {
 
     List<Corp>selectAllCorp();
 
+
+    Corp selectCorpInfoByUserId(String user_id);
 }

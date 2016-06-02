@@ -51,7 +51,10 @@ public class CorpServiceImpl implements CorpService {
         return list;
     }
 
-
+    @Override
+    public Corp selectCorpInfoByUserId(String user_id) {
+        return corpMapper.selectCorpInfoByUserId(user_id);
+    }
 
 
     /**
@@ -62,4 +65,10 @@ public class CorpServiceImpl implements CorpService {
     public String selectMaxCorpCode() {
         return corpMapper.selectMaxCorpCode();
     }
+
+    /**
+     * 通过用户的USER_ID  获得用户所在企业的信息。
+     * @return
+     */
+
 }
