@@ -518,4 +518,10 @@ jQuery(document).ready(function(){
 	// }).blur(function(event) {
 	// 	clearInterval(interval);
 	// });
+	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+	});
+	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+	});
 });

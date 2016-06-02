@@ -199,4 +199,10 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
+	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+	});
+	$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+	});
 });
