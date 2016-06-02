@@ -16,7 +16,7 @@ public interface StoreMapper {
 
     Store selectStoreCode(String shop_code, String corp_code);
 
-    int deleteStoreByUser_id(@Param("user_id") String user_id,@Param("store_id") String store_id);
+    int deleteStoreByUserid(@Param("user_id") String user_id, @Param("store_id") String store_id);
 
     int insertStore(Store store);
 

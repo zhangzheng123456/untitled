@@ -31,14 +31,26 @@ public class StoreServiceImpl implements StoreService {
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
+    /**
+     * 获取用户的店仓信息
+     *
+     * @param id ： 用户ID
+     * @return  ： 店仓信息
+     */
     @Override
     public List<Store> selectByUserId(String id) {
        return storeMapper.selectByUserId(id);
     }
 
+    /**
+     * 通过用户ID和制定的店仓来删除用户的店仓
+     * @param user_id ： 用户ID
+     * @param store_id ： 店仓ID
+     * @return  执行结果
+     */
     @Override
-    public int deleteStoreByUser_id(String user_id, String store_id) {
-        return storeMapper.deleteStoreByUser_id(user_id,store_id);
+    public int deleteStoreByUserid(String user_id, String store_id) {
+        return storeMapper.deleteStoreByUserid(user_id,store_id);
     }
 
 

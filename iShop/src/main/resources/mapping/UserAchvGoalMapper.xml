@@ -1,10 +1,140 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.U">
-    <select id="getAchvById" resultType="com.bizvane.ishop.entity.UserAchvGoal">
-        select * from DEF_ACHV
-        WHERE ID=#{id}
+<mapper namespace="com.bizvane.ishop.dao.UserAchvGoalMapper">
+    <select id="selectById" resultType="com.bizvane.ishop.entity.UserAchvGoal">
+        select * from
+        DEF_USER_ACHV_GOAL
+        WHERE id=#{id}
     </select>
+
+    <update id="update" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
+        update DEF_USER_ACHV_GOAL
+        <trim prefix="set" prefixOverrides=",">
+            <if test="user_code!=null  and user_code!=''">
+                user_code =#{user_code},
+            </if>
+            <if test="user_name!=null and user_name!=''">
+                user_name=#{user_name},
+            </if>
+            <if test="store_code!=null and store_code!=''">
+                store_code =#{store_code},
+            </if>
+            <if test="achv_goal!=null and achv_goal!=''">
+                achv_goal=#{achv_goal},
+            </if>
+            <if test="achv_type!=null and achv_type!=''">
+                achv_type=#{achv_type},
+            </if>
+            <if test="start_time!=null">
+                start_time =#{start_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and  modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="create_date!=null">
+                create_date=#{create_date},
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
+            </if>
+            <if test="isActive!=null and isActive!=''">
+                isActive=#{isActive},
+            </if>
+
+        </trim>
+    </update>
+
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
+        insert into DEF_USER_ACHV_GOAL
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user_code!=null  and user_code!=''">
+                user_code,
+            </if>
+            <if test="user_name!=null and user_name!=''">
+                user_name,
+            </if>
+            <if test="store_code!=null and store_code!=''">
+                store_code,
+            </if>
+            <if test="achv_goal!=null and achv_goal!=''">
+                achv_goal,
+            </if>
+            <if test="achv_type!=null and achv_type!=''">
+                achv_type,
+            </if>
+            <if test="start_time!=null">
+                start_time,
+            </if>
+            <if test="end_time!=null">
+                end_time,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null and  modifier!=''">
+                modifier,
+            </if>
+            <if test="create_date!=null">
+                create_date,
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater,
+            </if>
+            <if test="isActive!=null and isActive!=''">
+                isActive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+
+            <if test="user_code!=null  and user_code!=''">
+                user_code =#{user_code},
+            </if>
+            <if test="user_name!=null and user_name!=''">
+                user_name=#{user_name},
+            </if>
+            <if test="store_code!=null and store_code!=''">
+                store_code =#{store_code},
+            </if>
+            <if test="achv_goal!=null and achv_goal!=''">
+                achv_goal=#{achv_goal},
+            </if>
+            <if test="achv_type!=null and achv_type!=''">
+                achv_type=#{achv_type},
+            </if>
+            <if test="start_time!=null">
+                start_time =#{start_time},
+            </if>
+            <if test="end_time!=null">
+                end_time=#{end_time},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and  modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="create_date!=null">
+                create_date=#{create_date},
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
+            </if>
+            <if test="isActive!=null and isActive!=''">
+                isActive=#{isActive},
+            </if>
+        </trim>
+    </insert>
+
+    <delete id="delelteById">
+        DELETE  FROM   DEF_USER_ACHV_GOAL
+        WHERE id=#{id}
+    </delete>
 
 
 </mapper>

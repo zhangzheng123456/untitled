@@ -13,7 +13,7 @@ public interface StoreService {
 
     List<Store> selectByUserId(String user_id);
 
-    int deleteStoreByUser_id(String user_id,String store_id);
+    int deleteStoreByUserid(String user_id, String store_id);
 
     Store getStoreById(int id) throws SQLException;
 
