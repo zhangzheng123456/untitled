@@ -10,7 +10,7 @@
         insert into DEF_GOODS
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="goods_code!=null">
-                 goods_code,
+                goods_code,
             </if>
             <if test="goods_name!=null">
                 goods_name,
@@ -88,44 +88,44 @@
     </insert>
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.Goods">
         update DEF_GOODS
-            <trim prefix="set" suffixOverrides=",">
-                <if test="goods_code!=null and goods_code!=''">
-                    goods_code=#{goods_code},
-                </if>
-                <if test="goods_name!=null and goods_name!=''">
-                    goods_name=#{goods_name},
-                </if>
-                <if test="goods_image!=null and goods_image!=''" >
-                    goods_image=#{goods_image},
-                </if>
-                <if test="goods_price!=null and goods_price!=''">
-                    goods_price=#{goods_price},
-                </if>
-                <if test="goods_time and goods_time!=''">
-                    goods_time=#{goods_time},
-                </if>
-                <if test="goods_quarter!=null and goods_quarter!=''">
-                    goods_quarter=#{goods_quarter},
-                </if>
-                <if test="goods_wave!=null and goods_wave!=''">
-                    goods_wave=#{goods_wave},
-                </if>
-                <if test="modified_date!=null">
-                    modified_date=#{modified_date},
-                </if>
-                <if test="modifier!=null and modifier!=''">
-                    modifier=#{modifier},
-                </if>
-                <if test="isActive!=null and isActive!=''">
-                    isActive=#{isActive},
-                </if>
-                <if test="created_date!=null">
-                    created_date=#{created_date},
-                </if>
-                <if test="creater!=null and creater!=''" >
-                    creater=#{creater},
-                </if>
-            </trim>
+        <trim prefix="set" suffixOverrides=",">
+            <if test="goods_code!=null and goods_code!=''">
+                goods_code=#{goods_code},
+            </if>
+            <if test="goods_name!=null and goods_name!=''">
+                goods_name=#{goods_name},
+            </if>
+            <if test="goods_image!=null and goods_image!=''" >
+                goods_image=#{goods_image},
+            </if>
+            <if test="goods_price!=null and goods_price!=''">
+                goods_price=#{goods_price},
+            </if>
+            <if test="goods_time and goods_time!=''">
+                goods_time=#{goods_time},
+            </if>
+            <if test="goods_quarter!=null and goods_quarter!=''">
+                goods_quarter=#{goods_quarter},
+            </if>
+            <if test="goods_wave!=null and goods_wave!=''">
+                goods_wave=#{goods_wave},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="isActive!=null and isActive!=''">
+                isActive=#{isActive},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null and creater!=''" >
+                creater=#{creater},
+            </if>
+        </trim>
         where id=#{id}
     </update>
     <delete id="deleteByPrimaryKey">
@@ -134,5 +134,5 @@
         where ID=#{id}
     </delete>
 
-    
+
 </mapper>
