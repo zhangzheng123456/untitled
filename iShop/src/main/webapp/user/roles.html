@@ -2,52 +2,50 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>会员标签管理</title>
+	<title>用户及权限之角色定义</title>
 	<link rel="stylesheet" href="../table/css/inner.css">
     <link rel="stylesheet" href="../table/css/style.css">
     <script src="../table/js/jquery.min.js"></script>
-    <!-- <script src="../table/js/navigation_bar.js"></script> -->
 </head>
 <body>
-	<!-- <div id="navbar">
-        
-    </div> -->
     <div class="content">
     	<div class="con_table" id="con_table">
     		<div class="title">
-                <span>会员管理</span>
+                <span>用户及权限</span>
                 <span class="icon-ishop_8-03"></span>
-    			<span>会员标签管理</span>
+    			<span>角色定义</span>
     		</div>
     		<div class="action">
     			<div class="action_l">
-    				<ul>
-    					<li>
-                            <a href="/vip/viplabel_add.html">
-        						<span class="icon-ishop_6-01"></span>
-        						新增
+                    <ul id="jurisdiction">
+                        <li id="add">
+                            <a href="javascript:void(0);">
+                                <span class="icon-ishop_6-01"></span>
+                                新增
                             </a>
-    					</li>
-    					<li class="bg" id="remove">
-    						<span class="icon-ishop_6-02"></span>
-    						删除
-    					</li>
-    					<li>
-                            <a href="/vip/viplabel_edit.html">
-        						<span class="icon-ishop_6-03"></span>
-        						编辑
+                        </li>
+                        <li class="bg" id="remove">
+                            <span class="icon-ishop_6-02"></span>
+                            删除
+                        </li>
+                        <li id="compile">
+                            <a href="/user/role_edit.html">
+                                <span class="icon-ishop_6-03"></span>
+                                编辑
                             </a>
-    					</li>
-    					<li class="bg">
-    						<span class="icon-ishop_6-04"></span>
-    						保存
-    					</li>
+                        </li>
+                        <!-- <li class="bg">
+                            <span class="icon-ishop_6-04"></span>
+                            保存
+                        </li> -->
+                    </ul>
+                    <ul>
                         <li class="li">
-                            <input type="text" class="input">
+                            <input type="text" class="input" id="search">
                             <i class="icon-ishop_3-05"></i>
                         </li>
-    				</ul>
-    			</div>
+                    </ul>
+                </div>
     			<div class="action_r">
     				<ul>
     					<li id="filtrate">
@@ -69,7 +67,7 @@
     				</ul>
     			</div>
     		</div>
-            <div class="sxk" id="sxk">
+             <div class="sxk" id="sxk">
                 <div class="btn">
                     <div class="empty" id="empty">
                         <i class="icon-ishop_6-16"></i>清空筛选
@@ -110,10 +108,13 @@
                  		<tr class="th">
                  			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                  			<th style="text-align: left;">序号</th>
-                 			<th>标签名称</th>
-                 			<th>标签类型</th>
-							<th>所属企业</th>
-							<th>修改时间</th>
+                 			<th>角色编号</th>
+                 			<th>角色名称</th>
+							<th>备注</th>
+                            <th>角色权限</th>
+                            <th>所属企业</th>
+                            <th>修改人</th>
+                            <th>修改时间</th>    
 							<th width="50px;">可用</th>
                  		</tr>
                  	</thead>
@@ -123,9 +124,12 @@
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
                     		</td>
                     		<td style="text-align: left;">1</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    		<td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                    		<td><a href="/user/rolecheck_power.html">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
                     		<td width="50px">是</td>
                     	</tr>
@@ -134,99 +138,126 @@
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput2"/><label for="checkboxTwoInput2"></label></div>
                     		</td>
                     		<td style="text-align: left;">2</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    		<td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput3"/><label for="checkboxTwoInput3"></label></div>
                     		</td>
                     		<td style="text-align: left;">3</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    		<td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput4"/><label for="checkboxTwoInput4"></label></div>
                     		</td>
                     		<td style="text-align: left;">4</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    	    <td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput5"/><label for="checkboxTwoInput5"></label></div>
                     		</td>
                     		<td style="text-align: left;">5</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    		<td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput6"/><label for="checkboxTwoInput6"></label></div>
                     		</td>
                     		<td style="text-align: left;">6</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    		<td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput7"/><label for="checkboxTwoInput7"></label></div>
                     		</td>
                     		<td style="text-align: left;">7</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    		<td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput8"/><label for="checkboxTwoInput8"></label></div>
                     		</td>
                     		<td style="text-align: left;">8</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    		<td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput9"/><label for="checkboxTwoInput9"></label></div>
                     		</td>
                     		<td style="text-align: left;">9</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    	    <td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput10"/><label for="checkboxTwoInput10"></label></div>
                     		</td>
                     		<td style="text-align: left;">10</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
-                            <td>JSNJO309</td>
+                    	    <td>1984698959599715812248</td>
+                            <th>高级店长</th>
+                            <th>高级店长</th>
+                            <td><a href="#">查看</a></td>
+                            <th>JSNJO309</th>
+                            <td>陈磊</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
+                            <td width="50px">是</td>
                     	</tr>                                    													
                     </tbody>
     			</table>
@@ -289,16 +320,34 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
-    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-    <script src="../table/js/inner.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            $('#sidebar ul>li:eq(2)').find('h1').addClass('h1');
-            $('#sidebar ul>li:eq(2)').find('h1 span').addClass('icon-ishop_8-02');
-            $('#sidebar ul>li:eq(2)').find('dl').show();
-            $('#sidebar ul>li:eq(2)').find('dl>dd:eq(1) a').css({color:"#6cc1c8"});
-            $('#sidebar ul>li:eq(2)').find('dl>dd:eq(1) span').addClass('icon-ishop_8-01');
-        })
-    </script>
+    <div id="side_bar">
+        <div class="gotop">
+            <span class="icon-ishop_4-03"></span>
+        </div>
+        <div class="gobottom">
+            <span class="icon-ishop_4-04"></span>
+        </div>
+    </div>
 </body>
+<script src="/js/postRequire.js"></script>
+<!-- <script src="/js/user/role.js"></script> -->
+<script type="text/javascript">
+    $(function(){
+        $(window).scroll(function(){
+            if($(window).scrollTop()>100){
+                $("#side_bar .gotop").fadeIn(); 
+            }
+            else{
+                $("#side-bar .gotop").hide();
+            }
+        });
+        $("#side_bar .gotop").click(function(){
+            $('html,body').animate({'scrollTop':0},500);
+        });
+        $("#side_bar .gobottom").click(function(){
+            var btm=$('html,body').height();
+            $('html,body').animate({'scrollTop':btm},500);
+        })
+    });
+</script>
 </html>

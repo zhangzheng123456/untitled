@@ -144,4 +144,10 @@
         DEF_CORP
         where ID = #{id}
     </delete>
+    <select id="selectAllCorp" resultType="com.bizvane.ishop.entity.Corp">
+    select * from DEF_CORP
+</select>
+    <select id="selectCorpByUserId" resultType="com.bizvane.ishop.entity.Corp">
+        select * from DEF_CORP WHERE
+    </select>
 </mapper>

@@ -45,6 +45,15 @@ public class CorpServiceImpl implements CorpService {
         return page;
     }
 
+    @Override
+    public List<Corp> selectAllCorp() throws SQLException {
+         List<Corp> list=corpMapper.selectAllCorp();
+        return list;
+    }
+
+
+
+
     /**
      * 查找最大的corp_code
      * 以便新增企业时

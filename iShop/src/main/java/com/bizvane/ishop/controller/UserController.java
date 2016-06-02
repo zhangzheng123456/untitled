@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.RoleService;
-import com.bizvane.ishop.service.StoreService;
-import com.bizvane.ishop.service.UserService;
+import com.bizvane.ishop.service.*;
 import com.github.pagehelper.PageInfo;
+import org.json.HTTP;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,6 +46,8 @@ public class UserController {
     private RoleService roleService;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private CorpService corpService;
 
     String id;
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
@@ -90,7 +92,7 @@ public class UserController {
     }
 
     /**
-     *普通用户新增
+     * 普通用户新增
      * 获取公司编号
      */
     @RequestMapping(value = "/add_code", method = RequestMethod.POST)
@@ -98,13 +100,14 @@ public class UserController {
     public String addCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
-        System.out.println("add-corp_code"+corp_code);
+        System.out.println("add-corp_code" + corp_code);
         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         dataBean.setId(id);
         dataBean.setMessage(corp_code);
 
         return dataBean.getJsonStr();
     }
+
     /**
      * 用户管理
      * 新增
@@ -131,7 +134,7 @@ public class UserController {
             user.setPhone(jsonObject.get("phone").toString());
             user.setEmail(jsonObject.get("email").toString());
             user.setSex(jsonObject.get("sex").toString());
-       //     user.setBirthday(jsonObject.get("birthday").toString());
+            //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
             user.setRole_code(jsonObject.get("role_code").toString());
             user.setStore_code(jsonObject.get("store_code").toString());
@@ -190,7 +193,7 @@ public class UserController {
             user.setPhone(jsonObject.get("phone").toString());
             user.setEmail(jsonObject.get("email").toString());
             user.setSex(jsonObject.get("sex").toString());
-     //       user.setBirthday(jsonObject.get("birthday").toString());
+            //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setRole_code(jsonObject.get("role_code").toString());
             user.setStore_code(jsonObject.get("store_code").toString());
@@ -340,20 +343,20 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             JSONObject roles = new JSONObject();
             System.out.println(jsonObject.get("role_code").toString());
-            if(jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)){
+            if (jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)) {
                 String role = "[{\"role_name\":\"系统管理员\"}]";
-                roles.put("roles",role);
-            }else {
+                roles.put("roles", role);
+            } else {
                 String corp_code = jsonObject.get("corp_code").toString();
 
                 String role_code = request.getSession().getAttribute("role_code").toString();
                 List<Role> list;
-                if (role_code.contains(Common.ROLE_SYS_HEAD)){
-                    list = roleService.selectCorpRole(corp_code,"");
-                }else{
-                    list = roleService.selectCorpRole(corp_code,role_code);
+                if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+                    list = roleService.selectCorpRole(corp_code, "");
+                } else {
+                    list = roleService.selectCorpRole(corp_code, role_code);
                 }
-                roles.put("roles",JSON.toJSONString(list));
+                roles.put("roles", JSON.toJSONString(list));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -365,6 +368,7 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 根据登录用户的角色类型
      * 输入的企业编号
@@ -383,14 +387,14 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject stores = new JSONObject();
-            if(!jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)){
+            if (!jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)) {
                 String corp_code = jsonObject.get("corp_code").toString();
                 String role_code = request.getSession().getAttribute("role_code").toString();
                 List<Store> list;
-                if (role_code.contains(Common.ROLE_SYS_HEAD)){
+                if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                     list = storeService.getCorpStore(corp_code);
-                    stores.put("stores",JSON.toJSONString(list));
-                }else{
+                    stores.put("stores", JSON.toJSONString(list));
+                } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     System.out.println(store_code);
                     String[] ids = store_code.split(",");
@@ -401,7 +405,7 @@ public class UserController {
                         store = storeService.getUserStore(corp_code, ids[i]);
                         array.add(store);
                     }
-                    stores.put("stores",JSON.toJSONString(array));
+                    stores.put("stores", JSON.toJSONString(array));
                 }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -414,4 +418,50 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 根据用户的ID输出用户的企业
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getCorpByUser", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCorpByUserId(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject corps=null;
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("Json ---user " + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+              corps = new JSONObject();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+
+            if (role_code.contains((Common.ROLE_SYS_HEAD))) {
+                List<Corp> list = corpService.selectAllCorp();
+                corps.put("corps", JSON.toJSONString(list));
+            } else {
+
+                List<Corp> list = new ArrayList<Corp>();
+                Corp corp = corpService.selectByCorpId(0, corp_code);
+                list.add(corp);
+                corps.put("corps",JSON.toJSONString(list));
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(corps.toString());
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
 }
