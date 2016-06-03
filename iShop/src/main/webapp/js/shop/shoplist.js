@@ -10,7 +10,7 @@ key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 console.log(funcCode);
 //模仿select
-$(function(){  
+$(function(){
         $("#page_row").click(function(){
 
             if("block" == $("#liebiao").css("display")){  
@@ -199,7 +199,9 @@ function superaddition(data){//页面加载循环
                         + data[i].store_code
                         + "</td><td>"
                         + data[i].store_name
-                        + "</td><td>"
+                        + "</td><td class='staff'><a href='javascript:void(0)'>"
+                        +"查看"
+                        + "</a></td><td>"
                         + data[i].store_area
                         +"</td><td>"
                         +data[i].brand_code
@@ -344,16 +346,12 @@ function jumpBianse(){
                 }
             }
         })
-<<<<<<< HEAD
     })
     //查看员工跳转查看员工页面
     $('.staff').click(function(){
-        
+        var store_code=$(this).
         $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })
-=======
-    })  
->>>>>>> c4207311c3b8f2091d5b9b990bf6358fcaaf1dd8
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {

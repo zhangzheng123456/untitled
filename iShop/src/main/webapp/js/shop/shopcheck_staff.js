@@ -141,9 +141,9 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             return false;
         }
     }()
-    function dian(inx){
+    function dian(inx){//点击分页时的操作
         if(value==""){
-            oc.postRequire("get","/shop/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/shop/staff?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
