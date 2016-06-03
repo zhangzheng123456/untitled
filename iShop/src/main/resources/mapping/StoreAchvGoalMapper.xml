@@ -5,6 +5,21 @@
         select * from DEF_USER_ACHV_GOAL
         where id=#{id}
     </select>
+    <select id="selectUsersBySearch" resultType="com.bizvane.ishop.entity.StoreAchvGoal">
+        select * from DEF_USER_ACHV_GOAL
+        WHERE
+        <if test="user_code!=null and user_code!=''">
+            USER_CODE=#{user_code} and
+        </if>
+        <if test="search_value!=null and serach_value!=''">
+              user_name like #{search_value}
+             OR  ACHV_GOAL like #{search_Value}
+            OR ACHV_TYPE like #{search_value}
+            OR MODIFIER like #{search_value}
+            OR CREATER like #{search_value}
+        </if>
+        ORDER BY ID
+    </select>
     <insert id="insertById">
         insert into DEF_USER_ACHV_GOAL
         <trim prefix="(" suffix=")" suffixOverrides=",">

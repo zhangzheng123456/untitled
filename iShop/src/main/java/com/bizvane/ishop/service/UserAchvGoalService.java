@@ -10,9 +10,9 @@ public interface UserAchvGoalService {
 
     UserAchvGoal getUserAchvGoalById(int id);
 
-    int update(UserAchvGoal userAchvGoal);
+    int updateUserAchvGoal(UserAchvGoal userAchvGoal);
 
-    int delete(int id);
+    int deleteUserAchvGoalById(int id);
 
     int insert(UserAchvGoal userAchvGoal);
 

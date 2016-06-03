@@ -2,6 +2,8 @@ package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.StoreAchvGoal;
 
+import java.util.List;
+
 /**
  * Created by lixiang on 2016/6/1.
  *
@@ -37,4 +39,10 @@ public interface StoreAchvGoalMapper {
      int deleteById(int id );
 
 
+    /**
+     * 搜寻值
+     * @param search_value
+     * @return
+     */
+    List<StoreAchvGoal> selectUsersBySearch( String storeAchvGoalId,String search_value);
 }

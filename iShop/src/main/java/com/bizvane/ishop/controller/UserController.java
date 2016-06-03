@@ -493,8 +493,5 @@ public class UserController {
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
-
     }
-
-
 }

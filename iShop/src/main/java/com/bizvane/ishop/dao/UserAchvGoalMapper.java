@@ -3,6 +3,8 @@ package com.bizvane.ishop.dao;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.UserAchvGoal;
 
+import java.util.List;
+
 /**
  * Created by lixiang on 2016/6/1.
  *
@@ -19,5 +21,5 @@ public interface UserAchvGoalMapper {
     int delelteById(int id );
 
 
-
+    List<UserAchvGoal> selectUserAchvGoalBySearch(String userAchvGoalId, String search_value);
 }
