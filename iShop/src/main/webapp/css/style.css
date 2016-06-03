@@ -7740,6 +7740,34 @@ ul,li{list-style:none;padding:0;margin:0;}
   background:#6cc1c8;
   color:#ffffff;
 }
+#store_type input{
+    width: 280px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px 0px 0px 4px;
+}
+#store_type ul{
+    width: 310px;
+    background: #e8f5fe;
+    margin-top: 2px;
+    margin-left: 123px;
+    border: 1px solid #a9c9e2;
+    position: absolute;
+    display: none;
+    z-index: 100;
+}
+#store_type ul li {
+    display: block;
+    height: 24px;
+    color: #807a62;
+    text-decoration: none;
+    line-height: 24px;
+    text-indent: 10px;
+}
+#store_type ul li:hover{
+  background:#6cc1c8;
+  color:#ffffff;
+}
 .add_per_icon{
     width: 100px;
     height: 30px;
