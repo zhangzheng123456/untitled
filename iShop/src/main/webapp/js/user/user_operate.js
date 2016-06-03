@@ -265,12 +265,12 @@ function role_li_list(){
 			if(addtype.isAdmin=="Y"){
 				r_code=addtype.role_code;
 				c_code="";
-				role_data();
+				role_data(r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
 				if($('.corp_select select').val()!==''){
 					r_code=addtype.role_code;
 					c_code=$('.corp_select select').val();
-					role_data();
+					role_data(r_code,c_code);
 				}else{
 					art.dialog({
 						time: 1,
@@ -283,14 +283,14 @@ function role_li_list(){
 		}else{
 			c_code=$('.corp_select select').val();
 			r_code=addtype.role_code;
-			role_data();
+			role_data(r_code,c_code);
 		}
 	}else{
-		role_data();
+		role_data(r_code,c_code);
 	}
 }
-function role_data(){
-	var _params={"role_code":r_code,"corp_code":c_code};
+function role_data(r,c){
+	var _params={"role_code":r,"corp_code":c};
 	var _command="/user/role";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
@@ -319,17 +319,18 @@ function role_data(){
 function store_li_list(p) {
 	var addtype=sessionStorage.getItem("addtype");
 	addtype=JSON.parse(addtype);
+	console.log(addtype.role_code);
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
 				r_code=addtype.role_code;
 				c_code="";
-				store_data(p);
+				store_data(p,r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
 				if($('.corp_select select').val()!==''){
 					r_code=addtype.role_code;
 					c_code=$('.corp_select select').val();
-					store_data(p);
+					store_data(p,r_code,c_code);
 				}else{
 					art.dialog({
 						time: 1,
@@ -342,14 +343,14 @@ function store_li_list(p) {
 		}else{
 			c_code=$('.corp_select select').val();
 			r_code=addtype.role_code;
-			store_data(p);
+			store_data(p,r_code,c_code);
 		}
 	}else{
-		store_data(p);
+		store_data(p,r_code,c_code);
 	}
 }
-function store_data(p){
-	var _params={"role_code":r_code,"corp_code":c_code};
+function store_data(p,r,c){
+	var _params={"role_code":r,"corp_code":c};
 	console.log(_params);
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
@@ -477,7 +478,7 @@ jQuery(document).ready(function(){
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div>'
 					            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
-					                +'<input class="input_select"  type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+					                +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
 					            +'</span>'
