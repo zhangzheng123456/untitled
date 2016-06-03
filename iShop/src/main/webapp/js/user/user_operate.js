@@ -422,13 +422,13 @@ jQuery(document).ready(function(){
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
-			$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
-			$("#select_ownshop").css("display","none");
-		}else{
 			$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
+			$("#select_ownshop").css("display","block");
+		}else{
+			$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
-			$("#select_ownshop").css("display","block");
+			$("#select_ownshop").css("display","none");
 		}
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
