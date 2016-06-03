@@ -411,7 +411,7 @@ public class UserController {
                     JSONArray array = new JSONArray();
                     for (int i = 0; i < ids.length; i++) {
                         logger.info("-------------store_code" + ids[i]);
-                        store = storeService.getUserStore(corp_code1, ids[i]);
+                        store = storeService.getStoreByCode(corp_code1, ids[i]);
                         array.add(store);
                     }
                     stores.put("stores", JSON.toJSONString(array));

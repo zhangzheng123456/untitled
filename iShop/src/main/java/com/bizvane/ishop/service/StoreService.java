@@ -17,11 +17,13 @@ public interface StoreService {
 
     Store getStoreById(int id) throws SQLException;
 
-    Store getUserStore(String corp_code,String store_code) throws SQLException;
-
     PageInfo<Store> getAllStore(int page_number, int page_size, String corp_code, String search_value);
 
     List<Store> getCorpStore(String corp_code) throws SQLException;
+
+    Store getStoreByCode(String corp_code,String store_code);
+
+    List<User> getStoreUser(String corp_code, String store_code);
 
     String insert(String message, String user_id) throws SQLException;
 
@@ -29,7 +31,4 @@ public interface StoreService {
 
     int delete(int id) throws SQLException;
 
-    Store getStoreByCode(String corp_code,String store_code);
-
-    List<User> getStoreUser(String corp_code, String store_code);
 }

@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.StoreMapper">
+<mapper namespace="com.bizvane.ishop.dao.BrandMapper">
 
-
-    <resultMap type="com.bizvane.ishop.entity.Store" id="Store">
+    <resultMap type="com.bizvane.ishop.entity.Brand" id="Brand">
         <id column="id" property="id"/>
-        <result column="store_code" property="store_code"/>
-        <result column="store_name" property="store_name"/>
         <result column="brand_code" property="brand_code"/>
         <result column="brand_name" property="brand_name"/>
-        <result column="store_area" property="store_area"/>
-        <result column="flg_tob" property="flg_tob"/>
         <result column="corp_code" property="corp_code"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
@@ -20,81 +15,63 @@
         </association>
     </resultMap>
 
-    <select id="selectByStoreId" resultType="com.bizvane.ishop.entity.Store">
+    <select id="selectByBrandId" resultType="com.bizvane.ishop.entity.Brand">
     select *
-    from DEF_STORE
+    from DEF_BRAND
     where ID=#{id}
     </select>
-    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
+
+    <select id="selectCorpBrand" resultType="com.bizvane.ishop.entity.Brand">
         select *
-        from DEF_STORE
+        from DEF_BRAND
         where CORP_CODE = #{corp_code}
-        AND STORE_CODE = #{store_code}
+        AND BRAND_CODE = #{brand_code}
          AND ISACTIVE = 'Y'
     </select>
-    <select id="selectAllStore" resultMap="Store">
+
+    <select id="selectAllBrand" resultMap="Brand">
         select
-        DEF_STORE.id,
-        store_code,
-        store_name,
+        DEF_BRAND.id,
         brand_code,
         brand_name,
-        store_area,
-        flg_tob,
-        DEF_STORE.corp_code,
-        DEF_STORE.modified_date,
-        DEF_STORE.modifier,
-        DEF_STORE.isactive,
+        DEF_BRAND.corp_code,
+        DEF_BRAND.modified_date,
+        DEF_BRAND.modifier,
+        DEF_BRAND.isactive,
         DEF_CORP.CORP_NAME
-        from DEF_STORE,DEF_CORP
-        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        from DEF_BRAND,DEF_CORP
+        where DEF_BRAND.CORP_CODE = DEF_CORP.CORP_CODE
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_STORE.CORP_CODE = #{corp_code}
+            AND DEF_BRAND.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-            AND STORE_CODE like #{search_value}
-            OR DEF_STORE.ID like #{search_value}
-            OR STORE_NAME like #{search_value}
             OR BRAND_CODE like #{search_value}
             OR BRAND_NAME like #{search_value}
-            OR STORE_AREA like #{search_value}
-            OR DEF_STORE.CORP_CODE like #{search_value}
-            OR DEF_STORE.MODIFIED_DATE like #{search_value}
-            OR DEF_STORE.MODIFIER like #{search_value}
-            OR DEF_STORE.ISACTIVE like #{search_value}
+            OR DEF_BRAND.CORP_CODE like #{search_value}
+            OR DEF_BRAND.MODIFIED_DATE like #{search_value}
+            OR DEF_BRAND.MODIFIER like #{search_value}
+            OR DEF_BRAND.ISACTIVE like #{search_value}
         </if>
-        ORDER BY DEF_STORE.ID
+        ORDER BY DEF_BRAND.ID
     </select>
 
-    <select id="selectByUserId" resultType="com.bizvane.ishop.entity.Store">
-        select *
-         from DEF_STORE
-         WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
-    </select>
+    <delete id="deleteByBrandId">
+        delete from
+        DEF_BRAND
+        where ID=#{id}
+    </delete>
 
-    <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
-        insert into DEF_STORE
+    <insert id="insertBrand" parameterType="com.bizvane.ishop.entity.Brand">
+        insert into DEF_BRAND
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="store_code!=null">
-                store_code,
-            </if>
-            <if test="store_name!=null">
-                store_name,
-            </if>
             <if test="brand_code!=null">
                 brand_code,
             </if>
             <if test="brand_name!=null">
                 brand_name,
             </if>
-            <if test="store_area!=null">
-                store_area,
-            </if>
             <if test="corp_code!=null">
                 corp_code,
-            </if>
-            <if test="flg_tob!=null">
-                flg_tob,
             </if>
             <if test="modified_date!=null">
                 modified_date,
@@ -113,26 +90,14 @@
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="store_code!=null">
-                #{store_code},
-            </if>
-            <if test="store_name!=null">
-                #{store_name},
-            </if>
-            <if test="brand_code!=null">
+           <if test="brand_code!=null">
                 #{brand_code},
             </if>
             <if test="brand_name!=null">
                 #{brand_name},
             </if>
-            <if test="store_area!=null">
-                #{store_area},
-            </if>
             <if test="corp_code!=null">
                 #{corp_code},
-            </if>
-            <if test="flg_tob!=null">
-                #{flg_tob},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -152,29 +117,16 @@
         </trim>
     </insert>
 
-    <update id="updateStore" parameterType="com.bizvane.ishop.entity.Store">
-        UPDATE DEF_STORE
-        <trim prefix="SET" suffixOverrides=",">
-            <if test="store_code!=null and store_code!=''">
-                store_code=#{store_code},
-            </if>
-            <if test="store_name!=null and store_name!=''">
-                store_name=#{store_name},
-            </if>
-            <if test="brand_code!=null and brand_code!=''">
+    <update id="updateBrand" parameterType="com.bizvane.ishop.entity.Brand">
+        UPDATE DEF_BRAND
+        <trim prefix="SET" suffixOverrides=","><if test="brand_code!=null and brand_code!=''">
                 brand_code=#{brand_code},
             </if>
             <if test="brand_name!=null and brand_name!=''">
                 brand_name=#{brand_name},
             </if>
-            <if test="store_area!=null and store_area!=''">
-                store_area=#{store_area},
-            </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},
-            </if>
-            <if test="flg_tob!=null and flg_tob!=''">
-                flg_tob = #{flg_tob},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
@@ -193,16 +145,5 @@
             </if>
         </trim>
         WHERE ID=#{id};
-    </update>
-
-    <delete id="deleteByStoreId">
-        delete from
-        DEF_STORE
-        where ID=#{id}
-    </delete>
-
-    <update id="deleteStoreByUserid">
-      update DEF_USER
-      set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'') where id=#{user_id}
     </update>
 </mapper>
