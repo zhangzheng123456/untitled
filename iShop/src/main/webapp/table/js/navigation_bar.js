@@ -25,7 +25,6 @@ $(function(){
     	var func_code=$(this).attr("data-code");
     	console.log(func_code);
     	$('#iframepage').attr("src",src);
-    	$('#iframepage').attr("data-code",func_code);
         var key_val={"url":src,"func_code":func_code};
         sessionStorage.setItem("key_val",JSON.stringify(key_val));
         $(this).find("span").addClass("icon-ishop_8-01");
@@ -38,9 +37,6 @@ $(function(){
         $(this).find("h1").toggleClass("h1").parents().siblings("li").find("h1").removeClass("h1");
         var src=$(this).find("h1").attr("data-url");
         var func_code=$(this).find("h1").attr("data-code");
-        if(func_code!=="undefined"){
-        	$('#iframepage').attr("data-code",func_code);
-        }
         if(src!=="undefined"){
         	$('#iframepage').attr("src",src);
             $(this).find("h1").parents().siblings("li").find("dl").slideUp(300);

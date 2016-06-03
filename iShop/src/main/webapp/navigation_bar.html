@@ -69,7 +69,7 @@
 	<table width="100%" height="100%" border="0" cellspacing="0" cellpadding="0">
 		<tr>
 			<td valign="top">
-				<iframe id="iframepage" height="100%" width="100%" border="0" frameborder="0" src="" name="rightFrame" title="rightFrame" data-code=""></iframe>
+				<iframe id="iframepage" height="100%" width="100%" border="0" frameborder="0" src="corp/corp.html" name="iframepage" title="rightFrame"></iframe>
 			</td>
 		</tr>
 	</table>
@@ -78,12 +78,15 @@
 <script>
 	$(function(){
         $(".sidebar").niceScroll({cursorborder:"0 none",cursorcolor:"#1a1a19",cursoropacitymin:"0",boxzoom:false});
-    })
+    });
     //hover事件个人菜单出现
 	function show(node,isShow){
 	    var obj=$(node);
 	    var show=isShow?"block":"none";
 	    obj[0].style.display=show;
-	}
+	};
+ 	window.onload=function(){
+ 		window.frames["iframe的name值"].document.title;
+ 	};
 </script>
 </html>

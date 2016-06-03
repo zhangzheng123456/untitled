@@ -348,7 +348,9 @@ function jumpBianse(){
             }
         })
     })
+    //查看员工跳转查看员工页面
     $('.staff').click(function(){
+        
         $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })
 }
