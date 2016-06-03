@@ -5,9 +5,10 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-var key_val=sessionStorage.getItem("key_val");
-key_val=JSON.parse(key_val);
-var funcCode=key_val.func_code;
+var store_corp=sessionStorage.getItem("store_corp");
+store_corp=JSON.parse(key_val);
+var store_code=store_corp.store_code;
+var corp_code=store_corp.corp_code;
 console.log(funcCode);
 //模仿select
 $(function(){  
@@ -144,7 +145,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     function dian(inx){//点击分页时的操作
         if(value==""){
             oc.postRequire("get","/shop/staff?pageNumber="+inx+"&pageSize="+pageSize
-                +"&funcCode="+funcCode+"","","",function(data){
+                +"&storeCode="+store_corp+"&corpCode="+corp_code+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
                         $(".table tbody").empty();

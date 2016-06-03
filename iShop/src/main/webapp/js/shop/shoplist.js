@@ -199,7 +199,7 @@ function superaddition(data){//页面加载循环
                         + data[i].store_code
                         + "</td><td>"
                         + data[i].store_name
-                        + "</td><td class='staff'><a href='javascript:void(0)'>"
+                        + "</td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
                         +"查看"
                         + "</a></td><td>"
                         + data[i].store_area
@@ -349,8 +349,16 @@ function jumpBianse(){
     })
     //查看员工跳转查看员工页面
     $('.staff').click(function(){
-        var store_code=$(this).
-        $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
+        if(event.stopPropagation){
+            event.stopPropagation();
+        }else{
+            event.cancelBubble=true;
+        }
+        var store_code=$(this).parents('tr').find("td:eq(2)").html();
+        var corp_code=$(this).attr("data-code");
+        var store_corp={"store_code":store_code,"corp_code":corp_code};
+        sessionStorage.setItem("store_corp",JSON.stringify(store_corp));
+        // $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })
 }
 //鼠标按下时触发的收索
