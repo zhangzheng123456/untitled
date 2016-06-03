@@ -15,6 +15,8 @@ public class Store {
     private String brand_code;
     //所属品牌
     private String brand_name;
+    //区域编号
+    private String area_code;
     //所属区域
     private String store_area;
     //是否直营
@@ -31,6 +33,8 @@ public class Store {
     private String creater;
     //是否可用
     private String isactive;
+
+    private Corp corp;
 
     public Store(){}
 
@@ -76,6 +80,14 @@ public class Store {
 
     public void setBrand_name(String brand_name) {
         this.brand_name = brand_name;
+    }
+
+    public String getArea_code() {
+        return area_code;
+    }
+
+    public void setArea_code(String area_code) {
+        this.area_code = area_code;
     }
 
     public String getStore_area() {
@@ -140,6 +152,14 @@ public class Store {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
     }
 
     public String toString(){

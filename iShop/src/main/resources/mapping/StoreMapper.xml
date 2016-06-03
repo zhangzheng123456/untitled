@@ -2,6 +2,24 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.StoreMapper">
 
+
+    <resultMap type="com.bizvane.ishop.entity.Store" id="Store">
+        <id column="id" property="id"/>
+        <result column="store_code" property="store_code"/>
+        <result column="store_name" property="store_name"/>
+        <result column="brand_code" property="brand_code"/>
+        <result column="brand_name" property="brand_name"/>
+        <result column="store_area" property="store_area"/>
+        <result column="flg_tob" property="flg_tob"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="isactive" property="isactive"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
     <select id="selectByStoreId" resultType="com.bizvane.ishop.entity.Store">
     select *
     from DEF_STORE
@@ -14,26 +32,38 @@
         AND STORE_CODE = #{store_code}
          AND ISACTIVE = 'Y'
     </select>
-    <select id="selectAllStore" resultType="com.bizvane.ishop.entity.Store">
-        select *
-        from DEF_STORE
-        where 1 = 1
+    <select id="selectAllStore" resultMap="Store">
+        select
+        DEF_STORE.id,
+        store_code,
+        store_name,
+        brand_code,
+        brand_name,
+        store_area,
+        flg_tob,
+        DEF_STORE.corp_code,
+        DEF_STORE.modified_date,
+        DEF_STORE.modifier,
+        DEF_STORE.isactive,
+        DEF_CORP.CORP_NAME
+        from DEF_STORE,DEF_CORP
+        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         <if test="corp_code != null and corp_code !=''">
-            AND CORP_CODE = #{corp_code}
+            AND DEF_STORE.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND STORE_CODE like #{search_value}
-            OR ID like #{search_value}
+            OR DEF_STORE.ID like #{search_value}
             OR STORE_NAME like #{search_value}
             OR BRAND_CODE like #{search_value}
             OR BRAND_NAME like #{search_value}
             OR STORE_AREA like #{search_value}
-            OR CORP_CODE like #{search_value}
-            OR MODIFIED_DATE like #{search_value}
-            OR MODIFIER like #{search_value}
-            OR ISACTIVE like #{search_value}
+            OR DEF_STORE.CORP_CODE like #{search_value}
+            OR DEF_STORE.MODIFIED_DATE like #{search_value}
+            OR DEF_STORE.MODIFIER like #{search_value}
+            OR DEF_STORE.ISACTIVE like #{search_value}
         </if>
-        ORDER BY ID
+        ORDER BY DEF_STORE.ID
     </select>
 
     <select id="selectStoreCode" resultType="com.bizvane.ishop.entity.Store">

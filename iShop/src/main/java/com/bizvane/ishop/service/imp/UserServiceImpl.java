@@ -177,8 +177,8 @@ public class UserServiceImpl implements UserService {
                 menu = functionService.selectAllFunctions(user_id, role_code);
             }
             request.getSession().setAttribute("menu", menu);
-
             user_info.put("user_id", user_id);
+            user_info.put("role_code", role_code);
             user_info.put("menu", menu);
         }
 

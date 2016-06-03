@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.GoodsMapper">
+
     <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.Goods">
          select *
          from DEF_GOODS
          WHERE ID=#{id}
     </select>
+
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Goods">
         insert into DEF_GOODS
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -86,6 +88,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.Goods">
         update DEF_GOODS
         <trim prefix="set" suffixOverrides=",">
@@ -128,6 +131,7 @@
         </trim>
         where id=#{id}
     </update>
+
     <delete id="deleteByPrimaryKey">
         delete from
         DEF_GOODS

@@ -102,6 +102,7 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             Corp corp = new Corp();
+            //为新增企业，计算corp_code
             String max_code = corpService.selectMaxCorpCode();
             int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
             Integer c = code;
