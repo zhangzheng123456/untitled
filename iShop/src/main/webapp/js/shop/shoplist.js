@@ -199,9 +199,7 @@ function superaddition(data){//页面加载循环
                         + data[i].store_code
                         + "</td><td>"
                         + data[i].store_name
-                        + "</td><td class='staff'><a href='javascript:void(0)'>"
-                        + '查看'
-                        + "</a></td><td>"
+                        + "</td><td>"
                         + data[i].store_area
                         +"</td><td>"
                         +data[i].brand_code
@@ -286,7 +284,6 @@ function jumpBianse(){
     //点击新增时页面进行的跳转
     $('#add').click(function(){
             $(window.parent.document).find('#iframepage').attr("src","/shop/shop_add.html");
-            sessionStorage.removeItem('id');
         })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -347,12 +344,16 @@ function jumpBianse(){
                 }
             }
         })
+<<<<<<< HEAD
     })
     //查看员工跳转查看员工页面
     $('.staff').click(function(){
         
         $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })
+=======
+    })  
+>>>>>>> c4207311c3b8f2091d5b9b990bf6358fcaaf1dd8
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {

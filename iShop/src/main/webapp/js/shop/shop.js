@@ -72,7 +72,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==false){
+				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
 				// var SHOP_MANAGER=$("#SHOP_MANAGER").val();
@@ -103,13 +103,13 @@ var oc = new ObjectControl();
 				if(is_zhiying=="是"){
 					FLG_TOB="Y";
 				}else if(is_zhiying=="否"){
-					FLG_TOB="N";
+					FLG_TOB="Y";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==false){
+				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
 				// var SHOP_MANAGER=$("#SHOP_MANAGER").val();
@@ -224,10 +224,4 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-	$(".shopadd_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
-	});
-	$(".shopedit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
-	});
 });

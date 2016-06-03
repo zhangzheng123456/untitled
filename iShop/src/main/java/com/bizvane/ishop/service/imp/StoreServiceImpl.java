@@ -31,14 +31,26 @@ public class StoreServiceImpl implements StoreService {
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
+    /**
+     * 获取用户的店仓信息
+     *
+     * @param id ： 用户ID
+     * @return  ： 店仓信息
+     */
     @Override
     public List<Store> selectByUserId(String id) {
        return storeMapper.selectByUserId(id);
     }
 
+    /**
+     * 通过用户ID和制定的店仓来删除用户的店仓
+     * @param user_id ： 用户ID
+     * @param store_id ： 店仓ID
+     * @return  执行结果
+     */
     @Override
-    public int deleteStoreByUser_id(String user_id, String store_id) {
-        return storeMapper.deleteStoreByUser_id(user_id,store_id);
+    public int deleteStoreByUserid(String user_id, String store_id) {
+        return storeMapper.deleteStoreByUserid(user_id,store_id);
     }
 
 
@@ -63,23 +75,23 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
-    //list获取企业店铺
-    public List<Store> getCorpStore(String corp_code) throws SQLException {
-        List<Store> stores = storeMapper.selectAllStore(corp_code,"");
-        return stores;
-    }
-
     //分页显示店铺下所属用户
     public List<User> getStoreUser(String corp_code,String store_code){
         List<User> user = userMapper.selectStoreUser(corp_code,"%"+store_code+"%");
         return user;
     }
 
-    //根据企业，店铺编号,查找店铺
-    public Store getStoreByCode(String corp_code, String store_code) throws SQLException {
-        Store store = storeMapper.selectByCorp(corp_code, store_code);
+    //获取用户store_code对应店铺
+    public Store getUserStore(String corp_code,String store_code) throws SQLException {
+        Store store = storeMapper.selectByUserStore(corp_code, store_code);
 
         return store;
+    }
+
+    //获取企业,store_code对应店铺
+    public List<Store> getCorpStore(String corp_code) throws SQLException {
+        List<Store> stores = storeMapper.selectAllStore(corp_code,"");
+        return stores;
     }
 
     //新增店铺
@@ -149,5 +161,9 @@ public class StoreServiceImpl implements StoreService {
         return this.storeMapper.deleteByStoreId(id);
     }
 
-
+    //根据企业，店铺编号,查找店铺
+    public Store getStoreByCode(String corp_code,String store_code){
+        Store store = storeMapper.selectStoreCode(store_code, corp_code);
+        return store;
+    }
 }

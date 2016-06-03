@@ -1,20 +1,34 @@
 package com.bizvane.ishop.controller;
 
+import com.bizvane.ishop.service.FunctionService;
+import org.json.JSONArray;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
  */
+
+/**
+ * 业绩管理
+ */
 @Controller
 @RequestMapping("/achv")
 public class AchvController {
+
+    private static Logger logger= LoggerFactory.getLogger((CorpController.class));
+
+    @Autowired
+    private FunctionService functionService;
+    //@Autowired
+    //private AchvService achvService;
 
 
     /**
@@ -23,6 +37,16 @@ public class AchvController {
     @RequestMapping(value = "/shopgoal/list",method = RequestMethod.GET)
     @ResponseBody
     public String shopGoalManage(HttpServletRequest request) {
+
+     int user_id=Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+        try{
+            String role_code=request.getSession(false).getAttribute("role_code").toString();
+            String function_code=request.getSession(false).getAttribute("funcCode").toString();
+           // JSONArray actions=f
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
         return "shopgoal";
     }
 

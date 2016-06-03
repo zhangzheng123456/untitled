@@ -19,4 +19,8 @@ public interface CorpMapper {
 
     int deleteByCorpId(Integer id);
 
+    List<Corp>selectAllCorp();
+
+
+    Corp selectCorpInfoByUserId(String user_id);
 }

@@ -267,9 +267,9 @@ function role_li_list(){
 				c_code="";
 				role_data();
 			}else if(addtype.isAdmin=="N"){
-				if($("#OWN_CORP").val()!==''){
+				if($('.corp_select select').val()!==''){
 					r_code=addtype.role_code;
-					c_code=$("#OWN_CORP").val();
+					c_code=$('.corp_select select').val();
 					role_data();
 				}else{
 					art.dialog({
@@ -281,7 +281,7 @@ function role_li_list(){
 				}
 			}
 		}else{
-			c_code=$("#OWN_CORP").val();
+			c_code=$('.corp_select select').val();
 			r_code=addtype.role_code;
 			role_data();
 		}
@@ -326,9 +326,9 @@ function store_li_list(p) {
 				c_code="";
 				store_data(p);
 			}else if(addtype.isAdmin=="N"){
-				if($("#OWN_CORP").val()!==''){
+				if($('.corp_select select').val()!==''){
 					r_code=addtype.role_code;
-					c_code=$("#OWN_CORP").val();
+					c_code=$('.corp_select select').val();
 					store_data(p);
 				}else{
 					art.dialog({
@@ -340,7 +340,7 @@ function store_li_list(p) {
 				}
 			}
 		}else{
-			c_code=$("#OWN_CORP").val();
+			c_code=$('.corp_select select').val();
 			r_code=addtype.role_code;
 			store_data(p);
 		}
@@ -385,15 +385,26 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
-				$("#OWN_CORP").parent().parent().css("display","none");
+				$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 				$("#select_ownshop").css("display","none");
 			}else if(addtype.isAdmin=="N"){
-				$("#OWN_CORP").parent().parent().css("display","block");
+				$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 				$("#select_ownshop").css("display","block");
 			}
-			var _command="/getCorpByUser";
+			var _command="/user/getCorpByUser";
 			oc.postRequire("post", _command,"", "", function(data){
 				console.log(data);
+				if(data.code=="0"){
+					var msg=JSON.parse(data.message);
+					console.log(msg.user_code);
+				}else if(data.code=="-1"){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: data.message
+					});
+				}
 			});
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
@@ -405,14 +416,16 @@ jQuery(document).ready(function(){
 				console.log(data);
 				$("#OWN_CORP").val(data.message);
 			});
+
 		}
 
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
-			$("#OWN_CORP").parent().parent().css("display","none");
+			$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
+			$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
@@ -441,11 +454,11 @@ jQuery(document).ready(function(){
 				}
 				if(msg.corp_code==''){
 					$("#select_ownshop").css("display","none");
-					$("#OWN_CORP").parent().parent().css("display","none");
+					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 					$("#OWN_RIGHT").val(msg.role.role_name);
 					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
 				}else if(msg.corp_code !==''){
-					$("#OWN_CORP").parent().parent().css("display","block");
+					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
 					$("#OWN_RIGHT").val(msg.role.role_name);
@@ -524,4 +537,7 @@ jQuery(document).ready(function(){
 	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
+
+	$('.corp_select select').searchableSelect();
+	// $('.corp_select select').searchableSelect();
 });

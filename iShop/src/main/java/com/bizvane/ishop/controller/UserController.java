@@ -4,14 +4,13 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.RoleService;
-import com.bizvane.ishop.service.StoreService;
-import com.bizvane.ishop.service.UserService;
+import com.bizvane.ishop.service.*;
 import com.github.pagehelper.PageInfo;
+import org.json.HTTP;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -46,6 +46,8 @@ public class UserController {
     private RoleService roleService;
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private CorpService corpService;
 
     String id;
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
@@ -118,6 +120,7 @@ public class UserController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user add-------------" + jsString);
+            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -137,7 +140,6 @@ public class UserController {
             user.setStore_code(jsonObject.get("store_code").toString());
             user.setPassword(user_code);
             Date now = new Date();
-            user.setLogin_time_recently(sdf.format(now));
             user.setCreated_date(sdf.format(now));
             user.setCreater(user_id);
             user.setModified_date(sdf.format(now));
@@ -177,6 +179,7 @@ public class UserController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user edit-------------" + jsString);
+            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -259,7 +262,10 @@ public class UserController {
         String data = null;
         try {
             String jsString = request.getParameter("param");
+            System.out.println("json--user select-------------" + jsString);
+
             logger.info("json--user select-------------" + jsString);
+            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -337,18 +343,12 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             JSONObject roles = new JSONObject();
             System.out.println(jsonObject.get("role_code").toString());
-            if (jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD) &&
-                    jsonObject.get("corp_code").toString().equals("")) {
-                JSONArray array = new JSONArray();
-                Map map = new HashMap();
-                String r_code = jsonObject.get("role_code").toString();
-                map.put("role_code", r_code);
-                map.put("role_name", "系统管理员");
-                array.add(0, map);
-
-                roles.put("roles", JSON.toJSONString(array));
+            if (jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)) {
+                String role = "[{\"role_name\":\"系统管理员\"}]";
+                roles.put("roles", role);
             } else {
                 String corp_code = jsonObject.get("corp_code").toString();
+
                 String role_code = request.getSession().getAttribute("role_code").toString();
                 List<Role> list;
                 if (role_code.contains(Common.ROLE_SYS_HEAD)) {
@@ -387,36 +387,106 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject stores = new JSONObject();
-            String corp_code = jsonObject.get("corp_code").toString();
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            if (corp_code.equals("")) {
-                //新增编辑系统管理员，corp_code为空
-                stores.put("stores", "");
-            } else {
+            if (!jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD)) {
+                String corp_code = jsonObject.get("corp_code").toString();
+                String role_code = request.getSession().getAttribute("role_code").toString();
+                List<Store> list;
                 if (role_code.contains(Common.ROLE_SYS_HEAD)) {
-                    //登录用户为admin
-                    List<Store> list;
                     list = storeService.getCorpStore(corp_code);
                     stores.put("stores", JSON.toJSONString(list));
                 } else {
-                    //登录用户为普通用户
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    String corp_code1 = request.getSession().getAttribute("corp_code").toString();
                     System.out.println(store_code);
                     String[] ids = store_code.split(",");
                     Store store;
                     JSONArray array = new JSONArray();
                     for (int i = 0; i < ids.length; i++) {
                         logger.info("-------------store_code" + ids[i]);
-                        store = storeService.getStoreByCode(corp_code1, ids[i]);
+                        store = storeService.getUserStore(corp_code, ids[i]);
                         array.add(store);
                     }
                     stores.put("stores", JSON.toJSONString(array));
                 }
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(stores.toString());
             }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 根据用户的ID输出用户的企业
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getCorpByUser", method = RequestMethod.POST)
+    @ResponseBody
+    public String getCorpByUserId(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject corps = null;
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        List<Corp>list=null;
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("Json ---user " + jsString);
+     //       JSONObject jsonObj = new JSONObject();
+           // id = jsonObj.get("id").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            corps = new JSONObject();
+
+
+            if (role_code.contains((Common.ROLE_SYS_HEAD))) {
+                 list = corpService.selectAllCorp();
+             //   corps.put("corps", JSON.toJSONString(list));
+            } else {
+
+                list = new ArrayList<Corp>();
+                Corp corp = corpService.selectCorpInfoByUserId(user_id);
+                list.add(corp);
+            //    corps.put("corps", JSON.toJSONString(list));
+            }
+            JSONArray array=new JSONArray();
+            JSONObject temp=null;
+            Map<String,String>maps=new HashMap<String, String>();
+//            StringBuffer sb=new StringBuffer();
+//            sb.append("[{");
+            array.addAll(list);
+//            for(Corp c:list){
+//                array.add(c);
+
+//                array.add(c.getCorp_code());
+//                array.add(c.getCorp_name());
+//                JSONObject tmpJs=new JSONObject();
+//                tmpJs.put(c.getCorp_code(),c.getCorp_name());
+
+             //   sb.append("\""+c.getCorp_code()).append("\":").append(c.getCorp_name()).append(",");
+              //    temp=new JSONObject();
+             //   temp.put(c.getCorp_code(),c.getCorp_name());
+           //    String tempStr="[{\"+c.getCorp_code()+"\":\""+c.getCorp_name()+"\"}]";
+
+            //    maps.put(c.getCorp_code(),c.getCorp_name());
+
+             //   array.add(tempStr);
+
+         //        array.add(c.getCorp_code()+",,,"+c.getCorp_name());
+            //    array.add(c);
+          //  }
+        //    array.add(maps);
+        //    array.add(list);
+             corps.put("corps",JSON.toJSONString(array));
+           // temp.toJSONArray(array);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(stores.toString());
+
+            dataBean.setMessage(corps.toString());
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

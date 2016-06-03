@@ -57,10 +57,4 @@ $(function(){
     console.log(key_val.url);
     console.log(key_val.func_code);
     $('#iframepage').attr("src",url);
-    //退出登录
-    $('#return').click(function(){
-        $.get("/login_out",function(data){
-            console.log(data);
-        });
-    })
 })

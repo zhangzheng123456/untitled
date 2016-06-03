@@ -1,4 +1,3 @@
-var oc = new ObjectControl();
 $(function(){
 	var val=sessionStorage.getItem("key");
     val=JSON.parse(val);
@@ -50,9 +49,4 @@ function menuclick(obj){
     var key_val={"url":skip_url,"func_code":skip_funcode};
 
     sessionStorage.setItem("key_val",JSON.stringify(key_val));
-}
-function login_out(){
-    var _command="/login_out";
-    oc.postRequire("post", _command,"","", function(data){
-    });
 }

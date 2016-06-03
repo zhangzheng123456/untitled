@@ -188,7 +188,7 @@
                 MODIFIER,
             </if>
             <if test="created_date != null">
-                CREATED_DATE,
+                CREATED_DATE
             </if>
             <if test="creater != null">
                 CREATER,

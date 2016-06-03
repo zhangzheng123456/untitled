@@ -10,9 +10,8 @@ var val=sessionStorage.getItem("key");//取登录里面的key
 val=JSON.parse(val);
 var message=JSON.parse(val.message);
 var user_type=message.user_type;//是否为系统管理员
-var role_code=message.role_code//角色编号
-key_val=JSON.parse(key_val);//
-var funcCode=key_val.func_code;//funcCode的编号
+key_val=JSON.parse(key_val);
+var funcCode=key_val.func_code;
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -40,7 +39,8 @@ $(function(){
             setTimeout(hideLi,200);  
         });          
     }      
-);  
+);
+  
 function showLi(){  
     $("#liebiao").show();  
 }  
@@ -292,7 +292,7 @@ function jumpBianse(){
         if(user_type=="admin"){
             $('.fen').slideToggle();
         }else if(user_type!=="admin"){
-            var addtype={"user_type":user_type,"isAdmin":"","role_code":role_code};
+            var addtype={"user_type":user_type,"isAdmin":""};
             sessionStorage.setItem("addtype",JSON.stringify(addtype));
             $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
             sessionStorage.removeItem('id');
@@ -300,14 +300,14 @@ function jumpBianse(){
     })
     //系统管理员新增系统管理员
     $('#admin').click(function(){
-        var addtype={"user_type":user_type,"isAdmin":"Y","role_code":role_code};
+        var addtype={"user_type":user_type,"isAdmin":"Y"};
         sessionStorage.setItem("addtype",JSON.stringify(addtype));
         $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
         sessionStorage.removeItem('id');
     })
     //系统管理员新增企业用户
     $('#corp').click(function(){
-        var addtype={"user_type":user_type,"isAdmin":"N","role_code":role_code};
+        var addtype={"user_type":user_type,"isAdmin":"N"};
         sessionStorage.setItem("addtype",JSON.stringify(addtype));
         $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
         sessionStorage.removeItem('id');
