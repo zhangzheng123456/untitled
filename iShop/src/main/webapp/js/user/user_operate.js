@@ -88,7 +88,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				var STORE_CODE="";
@@ -110,6 +110,7 @@ var oc = new ObjectControl();
 				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
+				console.log("lalla");
 				return;
 			}
 		});
@@ -134,7 +135,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				var STORE_CODE="";
@@ -222,14 +223,6 @@ function selectownshop(obj){
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
-        $(obj).children("ul").children('li').click(function(){
-            var this_=this;
-            var txt = $(this_).text();
-            var s_code=$(this_).data("storecode");
-            $(this_).parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
-            $(this_).addClass('rel').siblings().removeClass('rel');
-        });
     }else{
         ul.hide();
     }
@@ -243,15 +236,6 @@ function selectownrole(obj){
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
-        $(obj).children("ul").children('li').click(function(){
-            var this_=this;
-            var txt = $(this_).text();
-            var r_code=$(this_).data("rolecode");
-            console.log(r_code);
-            $(this_).parent().parent().children(".input_select").val(txt);
-            $(this_).parent().parent().children(".input_select").attr("data-myrcode",r_code);
-            $(this_).addClass('rel').siblings().removeClass('rel');
-        });
     }else{
         ul.hide();
     }
@@ -274,6 +258,38 @@ var c_code="";
 var r_code="";
 function role_li_list(){
 	//拉取角色下拉选项
+	var addtype=sessionStorage.getItem("addtype");
+	addtype=JSON.parse(addtype);
+	if($(".pre_title label").text()=="新增用户"){
+		if(addtype.user_type=="admin"){
+			if(addtype.isAdmin=="Y"){
+				r_code=addtype.role_code;
+				c_code="";
+				role_data();
+			}else if(addtype.isAdmin=="N"){
+				if($('.corp_select select').val()!==''){
+					r_code=addtype.role_code;
+					c_code=$('.corp_select select').val();
+					role_data();
+				}else{
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"请先输入企业编号！"
+					});
+				}
+			}
+		}else{
+			c_code=$('.corp_select select').val();
+			r_code=addtype.role_code;
+			role_data();
+		}
+	}else{
+		role_data();
+	}
+}
+function role_data(){
 	var _params={"role_code":r_code,"corp_code":c_code};
 	var _command="/user/role";
 	oc.postRequire("post", _command,"", _params, function(data){
@@ -290,10 +306,51 @@ function role_li_list(){
 			}
 		}
 		$("#role_list").append(html);
+		$("#role_list li").click(function(){
+            var this_=this;
+            var txt = $(this_).text();
+            var r_code=$(this_).data("rolecode");
+            $(this_).parent().parent().children(".input_select").val(txt);
+            $(this_).parent().parent().children(".input_select").attr('data-myrcode',r_code);
+            $(this_).addClass('rel').siblings().removeClass('rel');
+        });
 	});
 }
 function store_li_list(p) {
-	var _params={"role_code":c_code,"corp_code":c_code};
+	var addtype=sessionStorage.getItem("addtype");
+	addtype=JSON.parse(addtype);
+	if($(".pre_title label").text()=="新增用户"){
+		if(addtype.user_type=="admin"){
+			if(addtype.isAdmin=="Y"){
+				r_code=addtype.role_code;
+				c_code="";
+				store_data(p);
+			}else if(addtype.isAdmin=="N"){
+				if($('.corp_select select').val()!==''){
+					r_code=addtype.role_code;
+					c_code=$('.corp_select select').val();
+					store_data(p);
+				}else{
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"请先输入企业编号！"
+					});
+				}
+			}
+		}else{
+			c_code=$('.corp_select select').val();
+			r_code=addtype.role_code;
+			store_data(p);
+		}
+	}else{
+		store_data(p);
+	}
+}
+function store_data(p){
+	var _params={"role_code":r_code,"corp_code":c_code};
+	console.log(_params);
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
@@ -308,6 +365,14 @@ function store_li_list(p) {
 			}
 		}
 		$("#"+p+" ul").append(html);
+		$("#"+p+" ul li").click(function(){
+            var this_=this;
+            var txt = $(this_).text();
+            var s_code=$(this_).data("storecode");
+            $(this_).parent().parent().children(".input_select").val(txt);
+            $(this_).parent().parent().children(".input_select").attr('data-myscode',s_code);
+            $(this_).addClass('rel').siblings().removeClass('rel');
+        });
 	});
 }
 jQuery(document).ready(function(){
@@ -320,15 +385,26 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
-				$("#OWN_CORP").parent().parent().css("display","none");
+				$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 				$("#select_ownshop").css("display","none");
 			}else if(addtype.isAdmin=="N"){
-				$("#OWN_CORP").parent().parent().css("display","block");
+				$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 				$("#select_ownshop").css("display","block");
 			}
-			var _command="/getCorpByUser";
+			var _command="/user/getCorpByUser";
 			oc.postRequire("post", _command,"", "", function(data){
 				console.log(data);
+				if(data.code=="0"){
+					var msg=JSON.parse(data.message);
+					console.log(msg.user_code);
+				}else if(data.code=="-1"){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: data.message
+					});
+				}
 			});
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
@@ -340,14 +416,16 @@ jQuery(document).ready(function(){
 				console.log(data);
 				$("#OWN_CORP").val(data.message);
 			});
+
 		}
 
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
-			$("#OWN_CORP").parent().parent().css("display","none");
+			$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 			$("#select_ownshop").css("display","none");
 		}else{
+			$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
 			$("#select_ownshop").css("display","block");
@@ -369,16 +447,18 @@ jQuery(document).ready(function(){
 				$("#preview img").attr("src",msg.avatar);
 				$("#USER_PHONE").val(msg.phone);
 				$("#USER_EMAIL").val(msg.email);
-				if(msg.sex=="M"){
+				if(msg.sex=="F"){
 					$("#USER_SEX").val("女");
-				}else if(msg.sex=="F"){
+				}else if(msg.sex=="M"){
 					$("#USER_SEX").val("男");
 				}
 				if(msg.corp_code==''){
 					$("#select_ownshop").css("display","none");
-					$("#OWN_CORP").parent().parent().css("display","none");
+					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
+					$("#OWN_RIGHT").val(msg.role.role_name);
+					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
 				}else if(msg.corp_code !==''){
-					$("#OWN_CORP").parent().parent().css("display","block");
+					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
 					$("#OWN_RIGHT").val(msg.role.role_name);
@@ -430,7 +510,6 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-
 	// $("#OWN_CORP").focus(function() {
 	// 	interval = setInterval(function() {
 	// 		$("#OWN_CORP").blur(function(){
@@ -452,5 +531,13 @@ jQuery(document).ready(function(){
 	// }).blur(function(event) {
 	// 	clearInterval(interval);
 	// });
+	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+	});
+	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+	});
 
+	$('.corp_select select').searchableSelect();
+	// $('.corp_select select').searchableSelect();
 });
