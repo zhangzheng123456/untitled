@@ -109,22 +109,14 @@ public class UserServiceImpl implements UserService {
     /**
      * 验证企业下用户编号是否已存在
      */
-    public String userCodeExist(String user_code, String corp_coded) throws SQLException {
-        User user = userMapper.selectUserCode(user_code, corp_coded);
+    public String userCodeExist(String user_code, String corp_code) throws SQLException {
+        User user = userMapper.selectUserCode(user_code, corp_code);
         String result = Common.DATABEAN_CODE_SUCCESS;
         if (user == null) {
             result = Common.DATABEAN_CODE_ERROR;
         }
         return result;
     }
-//    public String userCodeExist(String user_code, String corp_coded) throws SQLException {
-//        User user = userMapper.selectUserCode(user_code, corp_coded);
-//        String result = Common.DATABEAN_CODE_SUCCESS;
-//        if (user == null) {
-//            result = Common.DATABEAN_CODE_ERROR;
-//        }
-//        return result;
-//    }
 
     public int insert(User user) throws SQLException {
         return userMapper.insertUser(user);

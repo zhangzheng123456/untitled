@@ -429,64 +429,35 @@ public class UserController {
     @ResponseBody
     public String getCorpByUserId(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        JSONObject corps = null;
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
-        List<Corp>list=null;
         try {
-            String jsString = request.getParameter("param");
-            logger.info("Json ---user " + jsString);
-     //       JSONObject jsonObj = new JSONObject();
-           // id = jsonObj.get("id").toString();
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            corps = new JSONObject();
-
-
+            JSONObject corps = new JSONObject();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            JSONArray array = new JSONArray();
             if (role_code.contains((Common.ROLE_SYS_HEAD))) {
-                 list = corpService.selectAllCorp();
-             //   corps.put("corps", JSON.toJSONString(list));
+                List<Corp> list = corpService.selectAllCorp();
+                for (int i = 0; i < list.size(); i++) {
+                    Corp corp = list.get(i);
+                    String c_code = corp.getCorp_code();
+                    String corp_name = corp.getCorp_name();
+                    JSONObject obj = new JSONObject();
+                    obj.put("corp_code",c_code);
+                    obj.put("corp_name",corp_name);
+                    array.add(obj);
+                }
             } else {
-
-                list = new ArrayList<Corp>();
-                Corp corp = corpService.selectCorpInfoByUserId(user_id);
-                list.add(corp);
-            //    corps.put("corps", JSON.toJSONString(list));
+                Corp corp = corpService.selectByCorpId(0, corp_code);
+                String c_code = corp.getCorp_code();
+                String corp_name = corp.getCorp_name();
+                JSONObject obj = new JSONObject();
+                obj.put("corp_code",c_code);
+                obj.put("corp_name",corp_name);
+                array.add(obj);
             }
-            JSONArray array=new JSONArray();
-            JSONObject temp=null;
-            Map<String,String>maps=new HashMap<String, String>();
-//            StringBuffer sb=new StringBuffer();
-//            sb.append("[{");
-            array.addAll(list);
-//            for(Corp c:list){
-//                array.add(c);
-
-//                array.add(c.getCorp_code());
-//                array.add(c.getCorp_name());
-//                JSONObject tmpJs=new JSONObject();
-//                tmpJs.put(c.getCorp_code(),c.getCorp_name());
-
-             //   sb.append("\""+c.getCorp_code()).append("\":").append(c.getCorp_name()).append(",");
-              //    temp=new JSONObject();
-             //   temp.put(c.getCorp_code(),c.getCorp_name());
-           //    String tempStr="[{\"+c.getCorp_code()+"\":\""+c.getCorp_name()+"\"}]";
-
-            //    maps.put(c.getCorp_code(),c.getCorp_name());
-
-             //   array.add(tempStr);
-
-         //        array.add(c.getCorp_code()+",,,"+c.getCorp_name());
-            //    array.add(c);
-          //  }
-        //    array.add(maps);
-        //    array.add(list);
-             corps.put("corps",JSON.toJSONString(array));
-           // temp.toJSONArray(array);
-
+            corps.put("corps", array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-
             dataBean.setMessage(corps.toString());
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

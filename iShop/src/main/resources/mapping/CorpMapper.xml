@@ -144,13 +144,5 @@
         DEF_CORP
         where ID = #{id}
     </delete>
-    <select id="selectAllCorps" resultType="com.bizvane.ishop.entity.Corp">
-    select * from DEF_CORP
-</select>
-    <select id="selectCorpInfoByUserId" resultType="com.bizvane.ishop.entity.Corp">
-select * from DEF_CORP where CORP_CODE=
-(
-select CORP_CODE from DEF_USER WHERE USER_CODE=#{user_id} )
-    </select>
 
 </mapper>

@@ -24,8 +24,6 @@ public interface CorpService {
 
     List<Corp> selectAllCorp() throws SQLException;
 
-    Corp selectCorpInfoByUserId(String user_id);
-
     String selectMaxCorpCode();
 
 
