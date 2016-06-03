@@ -1,7 +1,4 @@
 var oc = new ObjectControl();
-var val=sessionStorage.getItem("key");
-val=JSON.parse(val);
-var login_message=JSON.parse(val.message);
 (function(root,factory){
 	root.corp = factory();
 }(this,function(){
@@ -66,7 +63,7 @@ var login_message=JSON.parse(val.message);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==false){
+				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
 				var _command="/corp/add";//接口名
@@ -93,7 +90,7 @@ var login_message=JSON.parse(val.message);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==false){
+				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
 				var _command="/corp/edit";//接口名
@@ -121,11 +118,7 @@ var login_message=JSON.parse(val.message);
 				// 	cancel: false,
 				// 	content: data.message
 				// });
-				if(login_message.user_type=="admin"){
-					$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
-				}else{
-					$(window.parent.document).find('#iframepage').attr("src","/corp/corp_user.html");
-				}
+				$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -206,19 +199,4 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-    if(login_message.user_type=="admin"){
-    	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
-			$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
-		});
-		$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
-			$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
-		});
-    }else{
-    	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
-			$(window.parent.document).find('#iframepage').attr("src","/corp/corp_user.html");
-		});
-		$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
-			$(window.parent.document).find('#iframepage').attr("src","/corp/corp_user.html");
-		});
-    }
 });

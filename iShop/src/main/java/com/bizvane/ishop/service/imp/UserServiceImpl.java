@@ -81,9 +81,6 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
-    /**
-     * 选中某用户，返回数据
-     */
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
         if (user.getCorp_code()==null || user.getCorp_code().equals("")){
@@ -112,14 +109,22 @@ public class UserServiceImpl implements UserService {
     /**
      * 验证企业下用户编号是否已存在
      */
-    public String userCodeExist(String user_code, String corp_code) throws SQLException {
-        User user = userMapper.selectUserCode(user_code, corp_code);
-        String result = Common.DATABEAN_CODE_ERROR;
+    public String userCodeExist(String user_code, String corp_coded) throws SQLException {
+        User user = userMapper.selectUserCode(user_code, corp_coded);
+        String result = Common.DATABEAN_CODE_SUCCESS;
         if (user == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
+            result = Common.DATABEAN_CODE_ERROR;
         }
         return result;
     }
+//    public String userCodeExist(String user_code, String corp_coded) throws SQLException {
+//        User user = userMapper.selectUserCode(user_code, corp_coded);
+//        String result = Common.DATABEAN_CODE_SUCCESS;
+//        if (user == null) {
+//            result = Common.DATABEAN_CODE_ERROR;
+//        }
+//        return result;
+//    }
 
     public int insert(User user) throws SQLException {
         return userMapper.insertUser(user);
@@ -182,7 +187,6 @@ public class UserServiceImpl implements UserService {
             request.getSession().setAttribute("menu", menu);
 
             user_info.put("user_id", user_id);
-            user_info.put("role_code",login_user.getRole_code());
             user_info.put("menu", menu);
         }
 

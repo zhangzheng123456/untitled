@@ -221,6 +221,13 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li class='bg' id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            //双击跳转
+            $(".table tbody tr").dblclick(function(){
+                var id=$(this).attr("id");
+                sessionStorage.setItem("id",id);
+                console.log(id);
+                $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+            })
         }
     }
 }
@@ -252,13 +259,6 @@ function jumpBianse(){
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
-    //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
-    })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
@@ -278,7 +278,6 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        sessionStorage.removeItem('id');
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
     })
     //点击编辑时页面进行的跳转

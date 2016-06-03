@@ -36,12 +36,8 @@
                         </li>
                         <li class="r w">
                             <label>动作类型</label>
-                            <input type="text" value="导购" id="action" readonly="">
+                            <input type="text" value="导购">
                             <span class="sidedown icon-ishop_8-02"></span>
-                            <div class="drop_down">
-                                <div class="lie">系统管理员</div>
-                                <div class="lie">店长</div>
-                            </div>
                         </li>
                     </ul>            
                 </div>
@@ -294,16 +290,12 @@
     <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
     <!-- <script src="../table/js/inner.js"></script> -->
     <script type="text/javascript">
-        $('#action').click(function(){
-            if("block" == $(".drop_down").css("display")){
-                $(".drop_down").hide();
-            }else{
-                $(".drop_down").show();
-            }
-        })
-        $('.drop_down .lie').click(function(){
-            $("#action").val($(this).html());
-            $(".drop_down").hide();
+        $(function(){
+            $('#sidebar ul>li:eq(5)').find('h1').addClass('h1');
+            $('#sidebar ul>li:eq(5)').find('h1 span').addClass('icon-ishop_8-02');
+            $('#sidebar ul>li:eq(5)').find('dl').show();
+            $('#sidebar ul>li:eq(5)').find('dl>dd:eq(0) a').css({color:"#6cc1c8"});
+            $('#sidebar ul>li:eq(5)').find('dl>dd:eq(0) span').addClass('icon-ishop_8-01');
         })
     </script>
 </body>

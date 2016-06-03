@@ -45,6 +45,18 @@ public class CorpServiceImpl implements CorpService {
         return page;
     }
 
+    @Override
+    public List<Corp> selectAllCorp() throws SQLException {
+         List<Corp> list=corpMapper.selectAllCorp();
+        return list;
+    }
+
+    @Override
+    public Corp selectCorpInfoByUserId(String user_id) {
+        return corpMapper.selectCorpInfoByUserId(user_id);
+    }
+
+
     /**
      * 查找最大的corp_code
      * 以便新增企业时
@@ -53,4 +65,10 @@ public class CorpServiceImpl implements CorpService {
     public String selectMaxCorpCode() {
         return corpMapper.selectMaxCorpCode();
     }
+
+    /**
+     * 通过用户的USER_ID  获得用户所在企业的信息。
+     * @return
+     */
+
 }

@@ -78,35 +78,16 @@ input::-webkit-input-placeholder{
 }
 .list .list_l li.w .sidedown{
 	display:block;
-	width: 30px;
+	width: 20px;
 	height: 30px;
 	background-color: #6cc1c8;
 	border-radius:0 5px 5px 0px;
 	position: absolute;
 	top: 0px;
-	right: -20px;
+	right: -15px;
 	text-align: center;
 	line-height: 30px;
 	color:#fff;
-}
-.drop_down{
-	position:absolute;
-	top:31px;
-	left: 70px;
-	width: 175px;
-	background-color: #e8f5fe;
-	z-index: 5;
-	border:1px solid #a9c9e2;
-	display: none;
-}
-.drop_down .lie{
-	width: 160px;
-	height: 30px;
-	line-height: 30px;
-	padding-left: 15px;
-}
-.drop_down .lie:hover{
-	background-color: #6cc1c8;
 }
 .list .list_l li input{
 	width: 195px;

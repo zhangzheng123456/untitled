@@ -274,41 +274,4 @@ public class CorpController {
         }
         return dataBean.getJsonStr();
     }
-
-    /**
-     * 输入企业编号时
-     * 判断企业编号是否存在
-     */
-    @RequestMapping(value = "/exist", method = RequestMethod.POST)
-    @ResponseBody
-    public String corpExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject msg = new JSONObject(message);
-            String corp_code = msg.get("corp_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code);
-            if(corp==null){
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("该企业编号不存在！");
-            }else{
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("企业编号可用");
-            }
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-
-    }
 }
