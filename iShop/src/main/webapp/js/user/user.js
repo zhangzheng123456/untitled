@@ -325,7 +325,7 @@ function jumpBianse(){
             $('.frame').html("请先选择");
         }else if(tr.length>1){
             frame();
-            $('.frame').html("不能选着多个");
+            $('.frame').html("不能选择多个");
         }
     })
     //删除
