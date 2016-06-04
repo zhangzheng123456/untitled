@@ -397,7 +397,16 @@ jQuery(document).ready(function(){
 				console.log(data);
 				if(data.code=="0"){
 					var msg=JSON.parse(data.message);
-					console.log(msg.user_code);
+					console.log(msg);
+					var index=0;
+					var corp_html='';
+					var c=null;
+					for(index in msg.corps){
+						c=msg.corps[index];
+						corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+					}
+					$("#OWN_CORP").append(corp_html);
+					$('.corp_select select').searchableSelect();
 				}else if(data.code=="-1"){
 					art.dialog({
 						time: 1,
@@ -407,6 +416,7 @@ jQuery(document).ready(function(){
 					});
 				}
 			});
+			
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
@@ -425,6 +435,30 @@ jQuery(document).ready(function(){
 		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 			$("#select_ownshop").css("display","block");
+			var _command="/user/getCorpByUser";
+			oc.postRequire("post", _command,"", "", function(data){
+				console.log(data);
+				if(data.code=="0"){
+					var msg=JSON.parse(data.message);
+					console.log(msg);
+					var index=0;
+					var corp_html='';
+					var c=null;
+					for(index in msg.corps){
+						c=msg.corps[index];
+						corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+					}
+					$("#OWN_CORP").append(corp_html);
+					$('.corp_select select').searchableSelect();
+				}else if(data.code=="-1"){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: data.message
+					});
+				}
+			});
 		}else{
 			$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
@@ -539,6 +573,6 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
 
-	$('.corp_select select').searchableSelect();
-	// $('.corp_select select').searchableSelect();
+	
+	
 });

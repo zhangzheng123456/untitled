@@ -7,6 +7,7 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
@@ -25,7 +26,15 @@
             <div class="editor_1 col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg">
                     <div>
-                        <span><label>所属企业</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
+                       <!--  <span><label>所属企业</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span> -->
                     </div>
                     <div>
                         <span><label>品牌编号</label><input type="text" id="BRAND_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="品牌编号为必填项，不能为空！"></div></div></span>
@@ -95,6 +104,8 @@
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/shop/shop.js"></script>
 </body>
