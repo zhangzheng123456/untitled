@@ -6,7 +6,7 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
-key_val=JSON.parse(key_val);
+key_val=JSON.parse(key_val);//
 var funcCode=key_val.func_code;
 //模仿select
 $(function(){  
@@ -142,7 +142,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/area/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/brand/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
@@ -160,7 +160,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/area/search","0",param,function(data){
+            oc.postRequire("post","/brand/search","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
@@ -195,9 +195,9 @@ function superaddition(data){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + i
                         + "</td><td>"
-                        + data[i].area_code
+                        + data[i].brand_code
                         + "</td><td>"
-                        + data[i].area_name
+                        + data[i].brand_name
                         + "</td><td>"
                         + data[i].corp.corp_name
                         +"</td><td>"
@@ -216,22 +216,22 @@ function jurisdiction(actions){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
         }else if(actions[i].act_name=="delete"){
-            $('#jurisdiction').append("<li class='bg' id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+            $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
-            $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            $('#jurisdiction').append("<li class='bg' id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
             //双击跳转
             $(".table tbody tr").dblclick(function(){
                 var id=$(this).attr("id");
                 sessionStorage.setItem("id",id);
                 console.log(id);
-                $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+                $(window.parent.document).find('#iframepage').attr("src","/brand/brand_edit.html");
             })
         }
     }
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/area/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/brand/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
@@ -275,7 +275,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/area/area_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/brand/brand_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -283,7 +283,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/brand/brand_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -323,7 +323,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/area/search","0",param,function(data){
+    oc.postRequire("post","/brand/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -372,7 +372,7 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/area/delete","0",param,function(data){
+    oc.postRequire("post","/brand/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
                frame();
