@@ -121,7 +121,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"brand_name":OWN_BRAND,"store_code":STORE_ID,"store_area":OWN_AREA,"store_name":STORE_NAME,"flg_tob":FLG_TOB,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"brand_code":OWN_BRAND,"store_code":STORE_ID,"area_code":OWN_AREA,"store_name":STORE_NAME,"flg_tob":FLG_TOB,"isactive":ISACTIVE};
 				shopjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -197,12 +197,13 @@ jQuery(document).ready(function(){
 				console.log(msg);
 
 				$("#OWN_CORP").val(msg.corp_code);
-				$("#OWN_BRAND").val(msg.brand_code);
-				$("#OWN_BRAND").html(msg.brand_name);
+				$("#OWN_CORP option:nth-child(1)").html(msg.corp_name);
+				$("#OWN_BRAND option:nth-child(1)").val(msg.brand_code);
+				$("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);
 				$("#STORE_NAME").val(msg.store_name);
 				$("#STORE_ID").val(msg.store_code);
-				$("#OWN_AREA").val(msg.area_code);
-				$("#OWN_AREA").html(msg.area_name);
+				$("#OWN_AREA option:nth-child(1)").val(msg.area_code);
+				$("#OWN_AREA option:nth-child(1)").html(msg.area_name);
 				if(msg.flg_tob=="Y"){
 					$("#FLG_TOB").val("是");
 				}else if(msg.flg_tob=="N"){
@@ -253,45 +254,33 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	//获取所属区域列表
-	var j=0;
-	$(".area_select").on('click',function(){
-		if(j==0){
-			$("#OWN_AREA").html("");
-			var area_param={"corp_code":$("#OWN_CORP").val()};
-			var area_command="/shop/area";
-			oc.postRequire("post", area_command,"",area_param, function(data){
-				console.log(data);
-				if(data.code=="0"){
-					var msg=JSON.parse(data.message);
-					console.log(msg);
-					var index=0;
-					var area_html='';
-					var a=null;
-					for(index in msg.areas){
-						a=msg.areas[index];
-						area_html+='<option value="'+a.area_code+'">'+a.area_name+'</option>';
-					}
-					$("#OWN_AREA").append(area_html);
-					$('.area_select select').searchableSelect();
-				}else if(data.code=="-1"){
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content: data.message
-					});
+	setTimeout(function(){
+		var area_param={"corp_code":$("#OWN_CORP").val()};
+		var area_command="/shop/area";
+		oc.postRequire("post", area_command,"",area_param, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				var index=0;
+				var area_html='';
+				var a=null;
+				for(index in msg.areas){
+					a=msg.areas[index];
+					area_html+='<option value="'+a.area_code+'">'+a.area_name+'</option>';
 				}
-			});
-			j++;
-		}
-	});
-	
-	//获取所属品牌列表
-	var k=0;
-	$(".brand_select").on('click',function(){
-		if(k==0){
-			var brand_param={"corp_code":$("#OWN_CORP").val()};
+				$("#OWN_AREA").append(area_html);
+				$('.area_select select').searchableSelect();
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+			}
+		});
+		var brand_param={"corp_code":$("#OWN_CORP").val()};
 			var brand_command="/shop/brand";
 			oc.postRequire("post", brand_command,"",brand_param, function(data){
 				console.log(data);
@@ -316,8 +305,11 @@ jQuery(document).ready(function(){
 					});
 				}
 			});
-			k++;
-		}
+	},1000);
+		
+	//获取所属品牌列表
+	$(".brand_select").on('click',function(){
+			
 		
 	});
 	$(".shopadd_oper_btn ul li:nth-of-type(2").click(function(){

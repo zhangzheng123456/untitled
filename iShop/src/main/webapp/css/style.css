@@ -7163,7 +7163,9 @@ body.skin-3 {
     height: 30px;
     border: 0;
     border-radius: 4px;
-    text-indent: 10px;
+    text-indent: 16px;
+    font-size:14px;
+    color:#888888;
     outline: 0;
     appearance: none;
     -webkit-appearance: none;
