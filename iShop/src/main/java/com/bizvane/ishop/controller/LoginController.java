@@ -1,13 +1,11 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.entity.User;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.LoginLogService;
-import com.bizvane.ishop.service.ValidateCodeService;
-import com.bizvane.ishop.service.UserService;
+import com.bizvane.ishop.service.*;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -31,6 +29,8 @@ public class LoginController {
     ValidateCodeService validateCodeService;
     @Autowired
     LoginLogService loginLogService;
+    @Autowired
+    FunctionService functionService;
 
     private static final Logger log = Logger.getLogger(LoginController.class);
 
@@ -57,6 +57,17 @@ public class LoginController {
         System.out.println(home);
 
         return home;
+    }
+
+    @RequestMapping(value = "/login_out")
+    public String loginOut(HttpServletRequest request) {
+        request.getSession().removeAttribute("user_id");
+        request.getSession().removeAttribute("role_code");
+        request.getSession().removeAttribute("corp_code");
+        request.getSession().removeAttribute("store_code");
+        request.getSession().removeAttribute("menu");
+
+        return "login";
     }
 
     /**
@@ -161,7 +172,7 @@ public class LoginController {
      */
     @RequestMapping(value = "/userlogin", method = RequestMethod.POST)
     @ResponseBody
-    public String Login(HttpServletRequest request) {
+    public String login(HttpServletRequest request) {
         log.info("------------starttime" + new Date());
         DataBean dataBean = new DataBean();
         try {
@@ -194,6 +205,36 @@ public class LoginController {
                 dataBean.setMessage(user_info.toString());
             }
         } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 获取导航栏
+     */
+    @RequestMapping(value = "/menu", method = RequestMethod.GET)
+    @ResponseBody
+    public String menu(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject menus = new JSONObject();
+            JSONArray menu;
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+                menu = functionService.selectAllFunctions(0, "");
+            } else {
+                menu = functionService.selectAllFunctions(Integer.parseInt(user_id), role_code);
+            }
+            request.getSession().setAttribute("menu", menu);
+            menus.put("menu",menu);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(menus.toString());
+        }catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());

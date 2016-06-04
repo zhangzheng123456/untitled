@@ -34,8 +34,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    FunctionService functionService;
-    @Autowired
     CorpService corpService;
     @Autowired
     StoreService storeService;
@@ -154,12 +152,9 @@ public class UserServiceImpl implements UserService {
             Date now = new Date();
             login_user.setLogin_time_recently(sdf.format(now));
             update(login_user);
-
-            JSONArray menu;
             if (login_user.getRole_code().contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
                 user_info.put("user_type", "admin");
-                menu = functionService.selectAllFunctions(0,"");
             } else{
                 if (login_user.getRole_code().contains(Common.ROLE_GM_HEAD)) {
                     //总经理
@@ -174,14 +169,10 @@ public class UserServiceImpl implements UserService {
                     //导购
                     user_info.put("user_type", "staff");
                 }
-                menu = functionService.selectAllFunctions(user_id, role_code);
             }
-            request.getSession().setAttribute("menu", menu);
             user_info.put("user_id", user_id);
             user_info.put("role_code", role_code);
-            user_info.put("menu", menu);
         }
-
         return user_info;
     }
 

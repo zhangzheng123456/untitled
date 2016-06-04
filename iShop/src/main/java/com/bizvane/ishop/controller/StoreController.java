@@ -298,6 +298,12 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/brand", method = RequestMethod.POST)
+    @ResponseBody
+    public String getBrand(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        return dataBean.getJsonStr();
+    }
 
     @RequestMapping(value = "/staff", method = RequestMethod.POST)
     @ResponseBody
