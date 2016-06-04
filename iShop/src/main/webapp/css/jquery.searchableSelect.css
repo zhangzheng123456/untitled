@@ -64,6 +64,7 @@ Date: 2014-11-05
   top: 32px;
   /*left: 9px;*/
   right: 0;
+  z-index:1000;
 }
 
 .searchable-select-input {
