@@ -5,10 +5,10 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-var store_corp=sessionStorage.getItem("store_corp");
+var store_corp=sessionStorage.getItem("store_corp");//获取本地储存的store_corp值
 store_corp=JSON.parse(key_val);
-var store_code=store_corp.store_code;
-var corp_code=store_corp.corp_code;
+var store_code=store_corp.store_code;//店仓编号
+var corp_code=store_corp.corp_code;//企业编号
 console.log(funcCode);
 //模仿select
 $(function(){  

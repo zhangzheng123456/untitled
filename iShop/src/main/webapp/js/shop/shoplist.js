@@ -208,9 +208,9 @@ function superaddition(data){//页面加载循环
                         + "</td><td>"
                         +data[i].brand_name
                         + "</td><td>"
-                        +data[i].corp_code
+                        +data[i].corp.corp_name
                         + "</td><td>"
-                        +data[i].creater
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -358,7 +358,7 @@ function jumpBianse(){
         var corp_code=$(this).attr("data-code");
         var store_corp={"store_code":store_code,"corp_code":corp_code};
         sessionStorage.setItem("store_corp",JSON.stringify(store_corp));
-        // $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
+        $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })
 }
 //鼠标按下时触发的收索

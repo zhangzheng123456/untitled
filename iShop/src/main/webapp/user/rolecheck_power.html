@@ -25,16 +25,27 @@
     		</div>
             <div class="list">
                 <div class="list_l">
-                    <ul>
-                        <li>
-                            <label>角色编号</label>
+                     <ul>
+                        <li class="w">
+                            <label>手机号</label>
                             <input type="text">
                         </li>
-                        <li class="r">
-                            <label>角色名称</label>
+                        <li class="r w">
+                            <label>用户名称</label>
                             <input type="text">
                         </li>
-                    </ul>            
+                        <li class="r w">
+                            <label>用户角色</label>
+                            <input type="text" value="导购" readonly="true" class="drop">
+                            <span class="sidedown icon-ishop_8-02 drop"></span>
+                            <div class="drop_dowm" id="drop_dowm">
+                                <div class="lie">总经理</div>
+                                <div class="lie">区域经理</div>
+                                <div class="lie">店长</div>
+                                <div class="lie">导购</div>
+                            </div>
+                        </li>
+                    </ul>      
                 </div>
                 <div class="list_r">
                     <div class="save">
@@ -285,13 +296,13 @@
     <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
     <!-- <script src="../table/js/inner.js"></script> -->
     <script type="text/javascript">
-        $(function(){
-            $('#sidebar ul>li:eq(5)').find('h1').addClass('h1');
-            $('#sidebar ul>li:eq(5)').find('h1 span').addClass('icon-ishop_8-02');
-            $('#sidebar ul>li:eq(5)').find('dl').show();
-            $('#sidebar ul>li:eq(5)').find('dl>dd:eq(0) a').css({color:"#6cc1c8"});
-            $('#sidebar ul>li:eq(5)').find('dl>dd:eq(0) span').addClass('icon-ishop_8-01');
-        })
+        $(".drop").click(function(){
+            if("block" == $("#liebiao").css("display")){  
+                hideLi();  
+            }else{  
+                showLi();  
+            }  
+        });           
     </script>
 </body>
 </html>

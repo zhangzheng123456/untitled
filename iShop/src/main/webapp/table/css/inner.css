@@ -78,7 +78,7 @@ input::-webkit-input-placeholder{
 }
 .list .list_l li.w .sidedown{
 	display:block;
-	width: 20px;
+	width: 30px;
 	height: 30px;
 	background-color: #6cc1c8;
 	border-radius:0 5px 5px 0px;
@@ -88,6 +88,23 @@ input::-webkit-input-placeholder{
 	text-align: center;
 	line-height: 30px;
 	color:#fff;
+}
+.drop_dowm{
+	position: absolute;
+	left: 72px;
+	top:31px;
+	width: 165px;
+	background-color:#e8f5fe;
+	border: 1px solid #a9c9e2;
+	z-index: 5;
+}
+.lie{
+	width: 150px;
+	height: 30px;
+	padding-left: 15px;
+}
+.lie:hover{
+	background-color:#6cc1c8;
 }
 .list .list_l li input{
 	width: 195px;
