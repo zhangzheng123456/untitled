@@ -224,6 +224,8 @@ public class LoginController {
             JSONArray menu;
             String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_type = request.getSession().getAttribute("user_type").toString();
+
             if (role_code.contains(Common.ROLE_SYS_HEAD)) {
                 menu = functionService.selectAllFunctions(0, "");
             } else {
@@ -231,6 +233,8 @@ public class LoginController {
             }
             request.getSession().setAttribute("menu", menu);
             menus.put("menu",menu);
+            menus.put("user_type",user_type);
+            menus.put("role_code",role_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());

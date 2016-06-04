@@ -152,24 +152,27 @@ public class UserServiceImpl implements UserService {
             Date now = new Date();
             login_user.setLogin_time_recently(sdf.format(now));
             update(login_user);
+            String user_type;
             if (login_user.getRole_code().contains(Common.ROLE_SYS_HEAD)) {
                 //系统管理员
-                user_info.put("user_type", "admin");
+                user_type = "admin";
             } else{
                 if (login_user.getRole_code().contains(Common.ROLE_GM_HEAD)) {
                     //总经理
-                    user_info.put("user_type", "gm");
+                    user_type = "gm";
                 } else if (login_user.getRole_code().contains(Common.ROLE_AM_HEAD)) {
                     //区经
-                    user_info.put("user_type", "am");
+                    user_type = "am";
                 } else if (login_user.getRole_code().contains(Common.ROLE_SM_HEAD)) {
                     //店长
-                    user_info.put("user_type", "sm");
+                    user_type = "sm";
                 } else {
                     //导购
-                    user_info.put("user_type", "staff");
+                    user_type = "staff";
                 }
             }
+            request.getSession().setAttribute("user_type", user_type);
+            user_info.put("user_type", user_type);
             user_info.put("user_id", user_id);
             user_info.put("role_code", role_code);
         }

@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.entity.Achv;
 import com.bizvane.ishop.service.AchvService;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 
@@ -10,6 +11,8 @@ import java.sql.SQLException;
  *
  * @@version
  */
+
+@Service
 public class AchvServiceImpl  implements AchvService{
     @Override
     public Achv getAchvById(int id) throws SQLException {
