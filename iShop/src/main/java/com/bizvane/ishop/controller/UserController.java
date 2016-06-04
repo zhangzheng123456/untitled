@@ -71,7 +71,7 @@ public class UserController {
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<User> list;
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = userService.selectBySearch(page_number, page_size, "", "");
             } else {
@@ -304,7 +304,7 @@ public class UserController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<User> list;
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = userService.selectBySearch(page_number, page_size, "", search_value);
             } else {
@@ -341,7 +341,7 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             JSONObject roles = new JSONObject();
             System.out.println(jsonObject.get("role_code").toString());
-            if (jsonObject.get("role_code").toString().contains(Common.ROLE_SYS_HEAD) &&
+            if (jsonObject.get("role_code").toString().equals(Common.ROLE_SYS) &&
                     jsonObject.get("corp_code").toString().equals("")) {
                 JSONArray array = new JSONArray();
                 Map map = new HashMap();
@@ -351,13 +351,12 @@ public class UserController {
                 array.add(0, map);
                 roles.put("roles", JSON.toJSONString(array));
             } else {
-                String corp_code = jsonObject.get("corp_code").toString();
                 String role_code = request.getSession().getAttribute("role_code").toString();
                 List<Role> list;
-                if (role_code.contains(Common.ROLE_SYS_HEAD)) {
-                    list = roleService.selectCorpRole(corp_code, "");
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = roleService.selectCorpRole("");
                 } else {
-                    list = roleService.selectCorpRole(corp_code, role_code);
+                    list = roleService.selectCorpRole(role_code);
                 }
                 roles.put("roles", JSON.toJSONString(list));
             }
@@ -396,7 +395,7 @@ public class UserController {
                 //新增编辑系统管理员，corp_code为空
                 stores.put("stores", "");
             } else {
-                if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+                if (role_code.equals(Common.ROLE_SYS)) {
                     //登录用户为admin
                     List<Store> list;
                     list = storeService.getCorpStore(corp_code);
@@ -441,9 +440,8 @@ public class UserController {
         try {
             JSONObject corps = new JSONObject();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            System.out.println("=======" + role_code);
             JSONArray array = new JSONArray();
-            if (role_code.contains((Common.ROLE_SYS_HEAD))) {
+            if (role_code.equals((Common.ROLE_SYS))) {
                 List<Corp> list = corpService.selectAllCorp();
                 for (int i = 0; i < list.size(); i++) {
                     Corp corp = list.get(i);
@@ -456,8 +454,6 @@ public class UserController {
                 }
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                System.out.println("=======" + corp_code);
-
                 Corp corp = corpService.selectByCorpId(0, corp_code);
                 String c_code = corp.getCorp_code();
                 String corp_name = corp.getCorp_name();

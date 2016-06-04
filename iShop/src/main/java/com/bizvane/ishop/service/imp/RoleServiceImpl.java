@@ -35,20 +35,15 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.deleteByRoleId(id);
     }
 
-    public PageInfo<Role> selectAllRole(int page_number, int page_size,String corp_code, String search_value) throws SQLException {
+    public PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
-        List<Role> roles = roleMapper.selectAllRole(corp_code,"%" + search_value + "%");
-        PageInfo<Role>  page = new PageInfo<Role>(roles);
+        List<Role> roles = roleMapper.selectAllRole("%" + search_value + "%");
+        PageInfo<Role> page = new PageInfo<Role>(roles);
         return page;
     }
 
-    public List<Role> selectCorpRole(String corp_code,String role_code) throws SQLException {
-        List<Role> roles = roleMapper.selectUserRole(corp_code,role_code);
+    public List<Role> selectCorpRole(String role_code) throws SQLException {
+        List<Role> roles = roleMapper.selectUserRole(role_code);
         return roles;
-    }
-
-    public String selectMaxRoleCode(String role_head) {
-
-        return roleMapper.selectMaxRoleCode("%" +role_head+"%");
     }
 }

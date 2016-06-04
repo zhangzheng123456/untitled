@@ -43,13 +43,13 @@ public class LoginController {
         String role_code = request.getSession().getAttribute("role_code").toString();
         System.out.println(role_code);
         String home = "";
-        if (role_code.contains(Common.ROLE_SYS_HEAD)){
+        if (role_code.equals(Common.ROLE_SYS)){
             home = "home/index_admin";
-        }else if(role_code.contains(Common.ROLE_GM_HEAD)){
+        }else if(role_code.equals(Common.ROLE_GM)){
             home = "home/index_gm";
-        }else if(role_code.contains(Common.ROLE_AM_HEAD)){
+        }else if(role_code.equals(Common.ROLE_AM)){
             home = "home/index_am";
-        }else if(role_code.contains(Common.ROLE_STAFF_HEAD)){
+        }else if(role_code.equals(Common.ROLE_STAFF)){
            home = "home/index_staff";
         }else {
             home = "login";
@@ -226,7 +226,7 @@ public class LoginController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_type = request.getSession().getAttribute("user_type").toString();
 
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 menu = functionService.selectAllFunctions(0, "");
             } else {
                 menu = functionService.selectAllFunctions(Integer.parseInt(user_id), role_code);

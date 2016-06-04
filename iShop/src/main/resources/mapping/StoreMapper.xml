@@ -85,11 +85,8 @@
             <if test="brand_code!=null">
                 brand_code,
             </if>
-            <if test="brand_name!=null">
-                brand_name,
-            </if>
-            <if test="store_area!=null">
-                store_area,
+            <if test="area_code!=null">
+                area_code,
             </if>
             <if test="corp_code!=null">
                 corp_code,
@@ -123,11 +120,8 @@
             <if test="brand_code!=null">
                 #{brand_code},
             </if>
-            <if test="brand_name!=null">
-                #{brand_name},
-            </if>
-            <if test="store_area!=null">
-                #{store_area},
+            <if test="area_code!=null">
+                #{area_code},
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
@@ -165,11 +159,8 @@
             <if test="brand_code!=null and brand_code!=''">
                 brand_code=#{brand_code},
             </if>
-            <if test="brand_name!=null and brand_name!=''">
-                brand_name=#{brand_name},
-            </if>
-            <if test="store_area!=null and store_area!=''">
-                store_area=#{store_area},
+            <if test="area_code!=null and area_code!=''">
+                area_code=#{area_code},
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},

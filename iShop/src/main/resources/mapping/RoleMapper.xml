@@ -15,9 +15,6 @@
         select *
         from DEF_ROLE
         where 1 = 1
-        <if test="corp_code != null and corp_code !=''">
-            AND CORP_CODE = #{corp_code}
-        </if>
         <if test="search_value != null and search_value !=''">
             AND role_code like #{search_value}
             OR corp_code like #{search_value}
@@ -34,9 +31,6 @@
         select *
         from DEF_ROLE
         where 1 = 1
-        <if test="corp_code != null and corp_code !=''">
-            AND CORP_CODE = #{corp_code}
-        </if>
         <if test="role_code != null and role_code !=''">
             AND role_code &lt; #{role_code}
         </if>
@@ -44,19 +38,11 @@
         ORDER BY ID
     </select>
 
-    <select id="selectMaxRoleCode" resultType="java.lang.String">
-    select max(role_code) from DEF_ROLE
-    where role_code like #{role_head}
-    </select>
-
     <insert id="insertRole" parameterType="com.bizvane.ishop.entity.Role">
         insert into DEF_ROLE
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="role_name != null">
                 role_name,
-            </if>
-            <if test="corp_code != null">
-                CORP_CODE,
             </if>
             <if test="role_code != null">
                 role_code,
@@ -83,9 +69,6 @@
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="role_name != null">
                 #{role_name},
-            </if>
-            <if test="corp_code != null">
-                #{corp_code},
             </if>
             <if test="role_code != null">
                 #{role_code},
@@ -114,11 +97,11 @@
     <update id="updateByRoleId" parameterType="com.bizvane.ishop.entity.Role">
         UPDATE DEF_ROLE
         <trim prefix="SET" suffixOverrides=",">
+            <if test="role_code != null">
+                role_code = #{role_code},
+            </if>
             <if test="role_name != null">
                 role_name = #{role_name},
-            </if>
-            <if test="corp_code != null">
-                corp_code = #{corp_code},
             </if>
             <if test="remark != null">
                 remark = #{remark},

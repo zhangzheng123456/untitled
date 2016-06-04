@@ -82,7 +82,7 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
-    //分页显示店铺下所属用户
+    //店铺下所属用户
     public List<User> getStoreUser(String corp_code, String store_code) {
         List<User> user = userMapper.selectStoreUser(corp_code, "%" + store_code + "%");
         return user;

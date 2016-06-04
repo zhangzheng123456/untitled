@@ -11,8 +11,6 @@ public class Role {
     private String role_code;
     //角色名
     private String role_name;
-    //公司编号
-    private String corp_code;
     //备注
     private String remark;
     //修改时间
@@ -48,14 +46,6 @@ public class Role {
 
     public void setRole_name(String role_name) {
         this.role_name = role_name;
-    }
-
-    public String getCorp_code() {
-        return corp_code;
-    }
-
-    public void setCorp_code(String corp_code) {
-        this.corp_code = corp_code;
     }
 
     public String getRemark() {

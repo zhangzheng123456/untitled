@@ -16,27 +16,38 @@ import java.util.List;
  */
 
 @Service
-public class AreaServiceImpl implements AreaService{
+public class AreaServiceImpl implements AreaService {
     @Autowired
     AreaMapper areaMapper;
 
+    /**
+     * 根据区域id
+     * 获取某区域信息
+     */
     @Override
     public Area getAreaById(int id) throws SQLException {
         return areaMapper.selectByAreaId(id);
     }
 
+    /**
+     * 根据区域编号
+     * 获取区域信息
+     */
     @Override
-    public Area getAreaByCode(String corp_code,String brand_code) throws SQLException {
-        return areaMapper.selectCorpArea(corp_code,brand_code);
+    public Area getAreaByCode(String corp_code, String area_code) throws SQLException {
+        return areaMapper.selectCorpArea(corp_code, area_code);
     }
 
+    /**
+     * 分页显示区域
+     */
     @Override
     public PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
         List<Area> areas;
         if (search_value.equals("")) {
             PageHelper.startPage(page_number, page_size);
-            areas = areaMapper.selectAllArea(corp_code,"");
-        }else {
+            areas = areaMapper.selectAllArea(corp_code, "");
+        } else {
             PageHelper.startPage(page_number, page_size);
             areas = areaMapper.selectAllArea(corp_code, "%" + search_value + "%");
         }
@@ -46,8 +57,8 @@ public class AreaServiceImpl implements AreaService{
     }
 
     @Override
-    public List<Area> getAllArea(String corp_code,String search_value) throws SQLException {
-        return areaMapper.selectAllArea(corp_code,"%"+search_value+"%");
+    public List<Area> getAllArea(String corp_code, String search_value) throws SQLException {
+        return areaMapper.selectAllArea(corp_code, "%" + search_value + "%");
     }
 
     @Override

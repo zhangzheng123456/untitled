@@ -55,7 +55,7 @@ public class BrandController {
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Brand> list;
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = brandService.getAllBrandByPage(page_number, page_size, "", "");
             } else {
@@ -238,7 +238,7 @@ public class BrandController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Brand> list;
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = brandService.getAllBrandByPage(page_number, page_size, "", search_value);
             } else {

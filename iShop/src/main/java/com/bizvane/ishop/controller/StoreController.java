@@ -68,7 +68,7 @@ public class StoreController {
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = storeService.getAllStore(page_number, page_size, "", "");
             } else {
@@ -279,7 +279,7 @@ public class StoreController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = storeService.getAllStore(page_number, page_size, "", search_value);
             } else {
@@ -310,9 +310,21 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             List<Brand> brand = brandService.getAllBrand(corp_code,"");
+            JSONArray array = new JSONArray();
+            JSONObject brands = new JSONObject();
+            for (int i = 0; i < brand.size(); i++) {
+                Brand brand1 = brand.get(i);
+                String brand_code = brand1.getBrand_code();
+                String brand_name = brand1.getBrand_name();
+                JSONObject obj = new JSONObject();
+                obj.put("brand_code", brand_code);
+                obj.put("brand_name", brand_name);
+                array.add(obj);
+            }
+            brands.put("brands", array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(JSON.toJSONString(brand));
+            dataBean.setMessage(brands.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -333,9 +345,21 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             List<Area> area = areaService.getAllArea(corp_code,"");
+            JSONArray array = new JSONArray();
+            JSONObject areas = new JSONObject();
+            for (int i = 0; i < area.size(); i++) {
+                Area area1 = area.get(i);
+                String area_code = area1.getArea_code();
+                String area_name = area1.getArea_name();
+                JSONObject obj = new JSONObject();
+                obj.put("area_code", area_code);
+                obj.put("area_name", area_name);
+                array.add(obj);
+            }
+            areas.put("areas", array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(JSON.toJSONString(area));
+            dataBean.setMessage(areas.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

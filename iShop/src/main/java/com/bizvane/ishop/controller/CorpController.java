@@ -5,8 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -40,6 +43,8 @@ public class CorpController {
     @Autowired
     private CorpService corpService;
     @Autowired
+    private StoreService storeService;
+    @Autowired
     private FunctionService functionService;
 
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
@@ -58,7 +63,7 @@ public class CorpController {
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
 
             JSONObject info = new JSONObject();
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员(官方画面)
                 int page_number = Integer.parseInt(request.getParameter("pageNumber"));
                 int page_size = Integer.parseInt(request.getParameter("pageSize"));
@@ -265,6 +270,36 @@ public class CorpController {
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 查看企业所有店铺
+     */
+    @RequestMapping(value = "/store", method = RequestMethod.POST)
+    @ResponseBody
+    public String getStore(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<Store> list = storeService.getAllStore(page_number, page_size, corp_code, "");
+            result.put("stores", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -7,16 +7,16 @@ public class Common {
     //请求发送的类型成功
     public static final String DATABEAN_CODE_SUCCESS = "0";
 
-    //系统管理员role头部
-    public static final String ROLE_SYS_HEAD = "R1";
-    //总经理role头部
-    public static final String ROLE_GM_HEAD = "R5";
-    //区经role头部
-    public static final String ROLE_AM_HEAD = "R4";
-    //店长role头部
-    public static final String ROLE_SM_HEAD = "R3";
-    //导购role头部
-    public static final String ROLE_STAFF_HEAD = "R2";
+    //系统管理员role
+    public static final String ROLE_SYS = "R1000";
+    //总经理role
+    public static final String ROLE_GM = "R5000";
+    //区经role
+    public static final String ROLE_AM = "R4000";
+    //店长role
+    public static final String ROLE_SM = "R3000";
+    //导购role
+    public static final String ROLE_STAFF = "R2000";
 
     //是否可用（是）
     public static final String IS_ACTIVE_Y = "Y";

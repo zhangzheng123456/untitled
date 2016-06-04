@@ -153,17 +153,17 @@ public class UserServiceImpl implements UserService {
             login_user.setLogin_time_recently(sdf.format(now));
             update(login_user);
             String user_type;
-            if (login_user.getRole_code().contains(Common.ROLE_SYS_HEAD)) {
+            if (login_user.getRole_code().equals(Common.ROLE_SYS)) {
                 //系统管理员
                 user_type = "admin";
             } else{
-                if (login_user.getRole_code().contains(Common.ROLE_GM_HEAD)) {
+                if (login_user.getRole_code().equals(Common.ROLE_GM)) {
                     //总经理
                     user_type = "gm";
-                } else if (login_user.getRole_code().contains(Common.ROLE_AM_HEAD)) {
+                } else if (login_user.getRole_code().equals(Common.ROLE_AM)) {
                     //区经
                     user_type = "am";
-                } else if (login_user.getRole_code().contains(Common.ROLE_SM_HEAD)) {
+                } else if (login_user.getRole_code().equals(Common.ROLE_SM)) {
                     //店长
                     user_type = "sm";
                 } else {
@@ -207,40 +207,33 @@ public class UserServiceImpl implements UserService {
             long timediff = (now.getTime() - time.getTime()) / 1000;
             if (auth_code.equals(code.getValidate_code()) && timediff < 3600) {
                 System.out.println("---------auth_code----------");
-                //插入用户信息
-                User user = new User();
-                String max_role_code = roleService.selectMaxRoleCode(Common.ROLE_GM_HEAD);
-                int a = Common.ROLE_GM_HEAD.length();
-                int role_tail = Integer.parseInt(max_role_code.substring(a, max_role_code.length())) + 1;
-                Integer b = role_tail;
-                int length = 5 - b.toString().length();
-                String role_code = Common.ROLE_GM_HEAD;
-                for (int i = 0; i < length; i++) {
-                    role_code = role_code + "0";
-                }
-                role_code = role_code + role_tail;
 
-                user.setUser_name(user_name);
-                user.setPhone(phone);
-                user.setPassword(password);
-                user.setRole_code(role_code);
-                user.setCreated_date(sdf.format(now));
-                user.setCreater("root");
-                user.setModified_date(sdf.format(now));
-                user.setModifier("root");
-                user.setIsactive(Common.IS_ACTIVE_Y);
-                userMapper.insertUser(user);
                 //拼接corp_code
                 String max_corp_code = corpService.selectMaxCorpCode();
                 int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
                 Integer c = code_tail;
-                int length1 = 5 - c.toString().length();
+                int length = 5 - c.toString().length();
                 String corp_code = "C";
                 for (int i = 0; i < length; i++) {
                     corp_code = corp_code + "0";
                 }
                 corp_code = corp_code + code_tail;
                 log.info("----------corp_code" + corp_code);
+
+                //插入用户信息
+                User user = new User();
+                user.setUser_name(user_name);
+                user.setPhone(phone);
+                user.setPassword(password);
+                user.setRole_code(Common.ROLE_GM);
+                user.setCorp_code(corp_code);
+                user.setCreated_date(sdf.format(now));
+                user.setCreater("root");
+                user.setModified_date(sdf.format(now));
+                user.setModifier("root");
+                user.setIsactive(Common.IS_ACTIVE_Y);
+                userMapper.insertUser(user);
+
                 //插入公司信息
                 Corp corp = new Corp();
                 corp.setCorp_code(corp_code);
@@ -257,16 +250,15 @@ public class UserServiceImpl implements UserService {
                 corpService.insertCorp(corp);
 
                 //插入角色信息
-                Role role = new Role();
-                role.setCorp_code(corp_code);
-                role.setRole_code(role_code);
-                role.setRole_name("总经理");
-                role.setCreated_date(sdf.format(now));
-                role.setCreater("root");
-                role.setModified_date(sdf.format(now));
-                role.setModifier("root");
-                role.setIsactive(Common.IS_ACTIVE_Y);
-                roleService.insertRole(role);
+//                Role role = new Role();
+//                role.setRole_code(Common.ROLE_GM);
+//                role.setRole_name("总经理");
+//                role.setCreated_date(sdf.format(now));
+//                role.setCreater("root");
+//                role.setModified_date(sdf.format(now));
+//                role.setModifier("root");
+//                role.setIsactive(Common.IS_ACTIVE_Y);
+//                roleService.insertRole(role);
 
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
