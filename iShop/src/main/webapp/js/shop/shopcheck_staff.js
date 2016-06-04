@@ -1,49 +1,12 @@
 var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
-var inx=1;//默认是第一页
-var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var store_corp=sessionStorage.getItem("store_corp");//获取本地储存的store_corp值
 store_corp=JSON.parse(store_corp);//转成json格式
 var store_code=store_corp.store_code;//店仓编号
 var corp_code=store_corp.corp_code;//企业编号
-//模仿select
-$(function(){  
-        $("#page_row").click(function(){
-
-            if("block" == $("#liebiao").css("display")){  
-                hideLi();  
-            }else{  
-                showLi();  
-            }  
-        });            
-        $("#liebiao li").each(function(i,v){  
-            $(this).click(function(){
-                pageSize=$(this).attr('id');  
-                if(value==""){
-                    GET();
-                }else if(value!==""){
-                    param["pageSize"]=pageSize;
-                    POST(); 
-                }    
-                $("#page_row").val($(this).html());  
-                hideLi();  
-            });    
-        });      
-        $("#page_row").blur(function(){  
-            setTimeout(hideLi,200);  
-        });          
-    }      
-);
-  
-function showLi(){  
-    $("#liebiao").show();  
-}  
-function hideLi(){  
-    $("#liebiao").hide();  
-}
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
 })
@@ -57,133 +20,7 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count, pageindex,pageSize,funcCode,value) {
-    var container = container;
-    var count = count;
-    var pageindex = pageindex;
-    var pageSize=pageSize;
-    var a = [];
-              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
-    if (pageindex == 1) {
-        a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
-    } else {
-        a[a.length] = "<li><span class=\"icon-ishop_4-01\"></span></li>";
-    }
-    function setPageList() {
-        if (pageindex == i) {
-            a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";
-        } else {
-            a[a.length] = "<li><span>" + i + "</span></li>";
-        }
-    }
-    //总页数小于10
-    if (count <= 10) {
-        for (var i = 1; i <= count; i++) {
-            setPageList();
-        }
-    }
-    //总页数大于10页
-    else {
-        if (pageindex <= 4) {
-            for (var i = 1; i <= 5; i++) {
-                setPageList();
-            }
-            a[a.length] = "...<li><span>" + count + "</span></li>";
-        }else if (pageindex >= count - 3) {
-            a[a.length] = "<li><span>1</span></li>...";
-            for (var i = count - 4; i <= count; i++) {
-                setPageList();
-            }
-        }
-        else { //当前页在中间部分
-            a[a.length] = "<li><span>1</span></li>...";
-            for (var i = pageindex - 2; i <= pageindex + 2; i++) {
-                setPageList();
-            }
-                a[a.length] = "...<li><span>" + count + "</span></li>";
-            }
-        }
-    if (pageindex == count) {
-        a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
-    }else{
-        a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
-    }
-    container.innerHTML = a.join("");
-    var pageClick = function() {
-        var oAlink = container.getElementsByTagName("span");
-        var inx = pageindex; //初始的页码
-        $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
-        oAlink[0].onclick = function() { //点击上一页
-            if (inx == 1) {
-                return false;
-            }
-            inx--;
-            dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
-            return false;
-        }
-        for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
-            oAlink[i].onclick = function() {
-            inx = parseInt(this.innerHTML);
-                dian(inx);
-                setPage(container, count, inx,pageSize,funcCode,value);
-                return false;
-            }
-        }
-        oAlink[oAlink.length - 1].onclick = function() { //点击下一页
-            if (inx == count) {
-                return false;
-            }
-            inx++;
-            dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
-            return false;
-        }
-    }()
-    function dian(inx){//点击分页时的操作
-        if(value==""){
-            oc.postRequire("get","/shop/staff?pageNumber="+inx+"&pageSize="+pageSize
-                +"&storeCode="+store_corp+"&corpCode="+corp_code+"","","",function(data){
-                    console.log(data);
-                    if(data.code=="0"){
-                        $(".table tbody").empty();
-                        var message=JSON.parse(data.message);
-                        var list=JSON.parse(message.list);
-                        var cout=list.pages;
-                        var list=list.list;
-                        superaddition(list);
-                        jumpBianse();
-                    }else if(data.code=="-1"){
-                        // alert(data.message);
-                    }
-            });           
-        }else if(value!==""){
-            param["pageNumber"]=inx;
-            param["pageSize"]=pageSize;
-            oc.postRequire("post","/shop/search","0",param,function(data){
-                if(data.code=="0"){
-                    var message=JSON.parse(data.message);
-                    var list=JSON.parse(message.list);
-                    var cout=list.pages;
-                    var list=list.list;
-                    $(".table tbody").empty();
-                    if(list.length<=0){
-                        $(".table p").remove();
-                        $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
-                    }else if(list.length>0){
-                        $(".table p").remove();
-                        superaddition(list);
-                        jumpBianse();
-                    }
-                }else if(data.code=="-1"){
-                    alert(data.message);
-                }
-            })        
-        }
-    }
-}
-function superaddition(data){//页面加载循环
+function superaddition(data){
     console.log(data);
     for (var i = 0; i < data.length; i++) {
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -195,22 +32,19 @@ function superaddition(data){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + data[i].id
+                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
                         + "</td><td>"
-                        + data[i].store_code
+                        + data[i].user_name
                         + "</td><td>"
-                        + data[i].store_name
-                        + "</td><td class='staff'><a href='javascript:void(0)'>"
-                        + '查看'
-                        + "</a></td><td>"
-                        + data[i].store_area
+                        + data[i].sex
                         +"</td><td>"
-                        +data[i].brand_code
+                        +data[i].phone
                         + "</td><td>"
-                        +data[i].brand_name
+                        +data[i].login_time_recently
                         + "</td><td>"
-                        +data[i].corp_code
+                        +data[i].role
                         + "</td><td>"
-                        +data[i].creater
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -233,18 +67,19 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/store/staff?pageNumber="+inx+"&pageSize="+pageSize
-        +"&store_code="+store_code+"","","",function(data){
+    var param={};
+    param["store_code"]=store_code;
+    param["corp_code"]=corp_code;
+    oc.postRequire("post","/shop/staff","list",param,function(data){
             console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
-                var list=JSON.parse(message.list);
-                var cout=list.pages;
-                var list=list.list;
+                // var list=JSON.parse(message.list);
+                console.log(message);
                 var actions=message.actions;
-                superaddition(list);
-                jurisdiction(actions);
+                superaddition(message);
+                // jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
