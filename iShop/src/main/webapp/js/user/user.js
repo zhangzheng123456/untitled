@@ -177,7 +177,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
                     }else if(list.length>0){
                         $(".table p").remove();
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }
                     setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -189,9 +189,13 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }
 }
 //页面加载循环
-function superaddition(data){
-    console.log(data);
+function superaddition(data,num){
     for (var i = 0; i < data.length; i++) {
+        if(num>=2){
+            var a=i+num*pageSize;
+        }else{
+            var a=i+1;
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -248,7 +252,7 @@ function GET(){
                 var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list);
+                superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -373,7 +377,7 @@ function POST(){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
 		 	}else if(list.length>0){
-		 		superaddition(list);
+		 		superaddition(list,inx);
                 jumpBianse();
 		 	}
 		 	setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
