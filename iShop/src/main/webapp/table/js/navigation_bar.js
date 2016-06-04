@@ -1,5 +1,22 @@
 $(function(){
     var oc = new ObjectControl();
+    function GetRequest(){   
+        var url = location.search; //获取url中"?"符后的字串   
+        var theRequest = new Object();   
+        if (url.indexOf("?") != -1) {   
+        var str = url.substr(1);   
+        strs = str.split("&");   
+        for(var i = 0; i < strs.length; i ++) {   
+            theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);   
+            }   
+        }   
+        return theRequest;   
+    }
+    var a=GetRequest();//取得url的后面的参数
+    var src=a.url;//获取url后面的参数
+    var func_code=a.func_code;//获取func_code
+    var key_val={"url":src,"func_code":func_code};
+    sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
     oc.postRequire("get","/menu","0","",function(data){
         console.log(data);
         // var val=sessionStorage.getItem("key");
@@ -54,11 +71,11 @@ $(function(){
                 sessionStorage.setItem("key_val",JSON.stringify(key_val));   
             }   
         });
-        var key_val=sessionStorage.getItem("key_val");
-        key_val=JSON.parse(key_val);
-        var url=key_val.url;
-        console.log(key_val.url);
-        console.log(key_val.func_code);
-        $('#iframepage').attr("src",url);
     })
+    var key_val=sessionStorage.getItem("key_val");
+    key_val=JSON.parse(key_val);
+    var url=key_val.url;
+    console.log(key_val.url);
+    console.log(key_val.func_code);
+    $('#iframepage').attr("src",url);
 })
