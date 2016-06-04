@@ -15,8 +15,12 @@ $(function(){
     var a=GetRequest();//取得url的后面的参数
     var src=a.url;//获取url后面的参数
     var func_code=a.func_code;//获取func_code
-    var key_val={"url":src,"func_code":func_code};
+    var key_val={"url":src,"func_code":func_code};//组成一个对象字符串
     sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
+    var key_val=sessionStorage.getItem("key_val");//获取本地的属性
+    key_val=JSON.parse(key_val);//
+    var url=key_val.url;//url的参数
+    $('#iframepage').attr("src",url);//给获取的src赋值
     oc.postRequire("get","/menu","0","",function(data){
         console.log(data);
         // var val=sessionStorage.getItem("key");
@@ -72,10 +76,4 @@ $(function(){
             }   
         });
     })
-    var key_val=sessionStorage.getItem("key_val");
-    key_val=JSON.parse(key_val);
-    var url=key_val.url;
-    console.log(key_val.url);
-    console.log(key_val.func_code);
-    $('#iframepage').attr("src",url);
 })

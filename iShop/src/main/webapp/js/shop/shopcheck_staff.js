@@ -6,10 +6,9 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var store_corp=sessionStorage.getItem("store_corp");//获取本地储存的store_corp值
-store_corp=JSON.parse(key_val);
+store_corp=JSON.parse(store_corp);//转成json格式
 var store_code=store_corp.store_code;//店仓编号
 var corp_code=store_corp.corp_code;//企业编号
-console.log(funcCode);
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -235,7 +234,7 @@ function jurisdiction(actions){
 //页面加载时list请求
 function GET(){
     oc.postRequire("get","/store/staff?pageNumber="+inx+"&pageSize="+pageSize
-        +"&funcCode="+funcCode+"","","",function(data){
+        +"&store_code="+store_code+"","","",function(data){
             console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
