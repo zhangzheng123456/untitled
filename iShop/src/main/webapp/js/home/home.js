@@ -1,7 +1,7 @@
 $(function(){
     var oc = new ObjectControl();
     var _command="/menu";
-    oc.postRequire("post", _command,"", "", function(data){
+    oc.postRequire("get", _command,"", "", function(data){
         console.log(data);
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -56,11 +56,16 @@ $(function(){
 });
 function menuclick(obj){
     location.href="../../navigation_bar.html";
-     _this=$(obj);
+    _this=$(obj);
     console.log(_this.parent().data("url"));
     var skip_url=_this.parent().data("url");
     var skip_funcode=_this.parent().data("func_code");
     var key_val={"url":skip_url,"func_code":skip_funcode};
 
     sessionStorage.setItem("key_val",JSON.stringify(key_val));
+}
+function login_out(){
+    var _command="/login_out";
+    oc.postRequire("get", _command,"", "", function(data){
+    });
 }
