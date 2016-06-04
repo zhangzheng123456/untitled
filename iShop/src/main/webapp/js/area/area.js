@@ -193,17 +193,15 @@ function superaddition(data){//页面加载循环
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + data[i].id
+                        + i
                         + "</td><td>"
-                        + data[i].corp_name
+                        + data[i].area_code
                         + "</td><td>"
-                        + data[i].address
+                        + data[i].area_name
                         + "</td><td>"
-                        + data[i].contact
+                        + data[i].corp.corp_name
                         +"</td><td>"
-                        +data[i].contact_phone
-                        + "</td><td>"
-                        +data[i].corp_name
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -235,7 +233,6 @@ function jurisdiction(actions){
 function GET(){
     oc.postRequire("get","/area/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);

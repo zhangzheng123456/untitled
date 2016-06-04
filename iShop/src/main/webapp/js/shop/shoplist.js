@@ -202,11 +202,7 @@ function superaddition(data){//页面加载循环
                         + "</td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
                         +"查看"
                         + "</a></td><td>"
-                        + data[i].store_area
-                        +"</td><td>"
-                        +data[i].brand_code
-                        + "</td><td>"
-                        +data[i].brand_name
+                        + data[i].area.area_name
                         + "</td><td>"
                         +data[i].corp.corp_name
                         + "</td><td>"
