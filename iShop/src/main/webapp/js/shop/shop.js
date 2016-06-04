@@ -224,8 +224,9 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-	var _command="/user/getCorpByUser";
-	oc.postRequire("post", _command,"", "", function(data){
+	//获取所属企业列表
+	var corp_command="/user/getCorpByUser";
+	oc.postRequire("post", corp_command,"", "", function(data){
 		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
@@ -248,6 +249,36 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	//获取所属区域列表
+	$(".area_select").on('click',function(){
+		var area_param={"corp_code":$("#OWN_CORP").val()};
+		var area_command="/shop/area";
+		oc.postRequire("post", area_command,"",area_param, function(data){
+			console.log(data);
+			// if(data.code=="0"){
+			// 	var msg=JSON.parse(data.message);
+			// 	console.log(msg);
+			// 	var index=0;
+			// 	var area_html='';
+			// 	var a=null;
+			// 	for(index in msg.corps){
+			// 		a=msg.corps[index];
+			// 		area_html+='<option value="'+a.corp_code+'">'+a.corp_name+'</option>';
+			// 	}
+			// 	$("#OWN_AREA").append(area_html);
+			// 	$('.area_select select').searchableSelect();
+			// }else if(data.code=="-1"){
+			// 	art.dialog({
+			// 		time: 1,
+			// 		lock:true,
+			// 		cancel: false,
+			// 		content: data.message
+			// 	});
+			// }
+		});
+	});
+	
+	//获取所属品牌列表
 	$(".shopadd_oper_btn ul li:nth-of-type(2").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
