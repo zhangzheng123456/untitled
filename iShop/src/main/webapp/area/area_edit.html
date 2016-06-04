@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>新增品牌</title>
+    <title>编辑区域信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -19,17 +19,22 @@
 </head>
 
 <body>
-    <!-- <div id="wrapper">
+   <!--  <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">品牌管理<i class="icon-ishop_8-03"></i><label>新增品牌</label></div>
-            <div class="editor_1 col-lg-6 editor_line  animated fadeInRight">
+        <div class="col-lg-12 pre_title">区域管理<i class="icon-ishop_8-03"></i><label>编辑区域信息</label></div>
+            <div class="editor_1 col-lg-6  animated fadeInRight">
+                <div class="operation_conpany">
+                    <ul>
+                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
+                    </ul>
+                </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label>品牌编号</label><input type="text" id="BRAND_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="品牌编号为必填项，不能为空！"></div></div></span>
+                        <span><label>区域编号</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="品牌编号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>品牌名称</label><input type="text" id="BRAND_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属品牌不能为空！"></div></div></span>
+                        <span><label>区域名称</label><input type="text" id="AREA_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属品牌不能为空！"></div></div></span>
                     </div>
                     <div>
                         <ul style="display:inline-flex;">
@@ -40,12 +45,11 @@
                                 </span>
                             </li>
                         </ul>
-                       <!--  <span><label>所属企业</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span> -->
                     </div>
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
-                <div class="brandadd_oper_btn">
+                <div class="areaedit_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>
@@ -53,11 +57,23 @@
                 </div>
                  <form class="msg_detail">
                     <div>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+                    </div>
+                    <div>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+                    </div>
+                    <div>
                     <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
                 </form>
             </div>
-    </div>
+        </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <!-- side_menu -->
@@ -67,8 +83,13 @@
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
-     <!-- moni select -->
-    <script type="text/javascript" src="../js/moni_select.js"></script>
+    <!-- con_arrow -->
+    <script type="text/javascript" src="../js/con_arrow.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $('#side-menu li:nth-of-type(2)').addClass('active');
+        })
+    </script>
    <!-- Dialog -->
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
@@ -77,7 +98,7 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/brand/brand_operate.js"></script>
+    <script type="text/javascript" src="../js/area/area_operate.js"></script>
 </body>
 
 </html>

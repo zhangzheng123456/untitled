@@ -195,11 +195,10 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-
+				var OWN_CORP_option=$('#OWN_CORP option');
 				$("#OWN_CORP").val(msg.corp_code);
-				$("#OWN_CORP option:nth-child(1)").html(msg.corp_name);
-				$("#OWN_BRAND option:nth-child(1)").val(msg.brand_code);
-				$("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);
+				$("#OWN_BRAND").val(msg.brand_code);
+				// $("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);
 				$("#STORE_NAME").val(msg.store_name);
 				$("#STORE_ID").val(msg.store_code);
 				$("#OWN_AREA option:nth-child(1)").val(msg.area_code);
@@ -307,11 +306,6 @@ jQuery(document).ready(function(){
 			});
 	},1000);
 		
-	//获取所属品牌列表
-	$(".brand_select").on('click',function(){
-			
-		
-	});
 	$(".shopadd_oper_btn ul li:nth-of-type(2").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
