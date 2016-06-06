@@ -249,7 +249,7 @@ function GET(){
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
-                // alert(data.message);
+                alert(data.message);
             }
     });
 }
@@ -309,7 +309,8 @@ function jumpBianse(){
         var h=$(document.body).height();
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==0){
-            alert("请先选中所选项");
+            frame();
+            $('.frame').html('请先选择');
             return;
         }
         $("#p").show();
@@ -345,6 +346,9 @@ function jumpBianse(){
                     $('.frame').html('删除成功');
                     POST();
                 }
+            }else if(data.code=="-1"){
+                frame();
+                $('.frame').html(data.message);
             }
         })
     })

@@ -142,7 +142,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){
         if(value==""){
-            oc.postRequire("get","/user/role/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/user/group/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
@@ -160,7 +160,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/corp/search","0",param,function(data){
+            oc.postRequire("post","/user/group/search","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
@@ -231,14 +231,14 @@ function jurisdiction(actions){
                 var id=$(this).attr("id");
                 sessionStorage.setItem("id",id);
                 console.log(id);
-                $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+                $(window.parent.document).find('#iframepage').attr("src","/group/group_edit.html");
             })
         }
     }
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/user/role/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/user/group/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             console.log(data);
             if(data.code=="0"){
@@ -283,7 +283,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/user/role_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/user/group_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -291,7 +291,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/user/role_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -344,7 +344,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/corp/search","0",param,function(data){
+    oc.postRequire("post","/user/group/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -393,7 +393,7 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/user/role/delete","0",param,function(data){
+    oc.postRequire("post","/user/group/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
                frame();

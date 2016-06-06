@@ -154,7 +154,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         superaddition(list,inx);
                         jumpBianse();
                     }else if(data.code=="-1"){
-                        // alert(data.message);
+                        alert(data.message);
                     }
             });           
         }else if(value!==""){
@@ -198,7 +198,7 @@ function superaddition(data,num){//页面加载循环
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + i
+                        + a
                         + "</td><td>"
                         + data[i].area_code
                         + "</td><td>"
@@ -250,7 +250,7 @@ function GET(){
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
-                // alert(data.message);
+                alert(data.message);
             }
     });
 }
@@ -388,6 +388,9 @@ $("#delete").click(function(){
                $('.frame').html('删除成功');
                POST();
             }
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html(data.message);
         }
     })
 })

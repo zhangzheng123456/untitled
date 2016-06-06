@@ -588,8 +588,10 @@ input::-webkit-input-placeholder{
 	margin-left: 20px;
 }
 .frame{
-	width: 150px;
-	height: 50px;
+	padding-left: 10px;
+	padding-right: 10px;
+	min-width: 130px;
+	min-height: 50px;
 	background:rgba(0,0,0,0.5);
 	position: absolute;
 	z-index: 5;
