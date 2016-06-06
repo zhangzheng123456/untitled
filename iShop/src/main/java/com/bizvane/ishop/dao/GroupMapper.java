@@ -13,6 +13,10 @@ public interface GroupMapper {
 
     Group selectCorpGroup(@Param("corp_code")String corp_code, @Param("group_code")String group_code);
 
+    List<Group> selectUserGroup(@Param("corp_code")String corp_code,@Param("role_code") String role_code);
+
+    List<Group> selectByRole(@Param("role_code")String role_code);
+
     int insertGroup(Group record);
 
     int updateGroup(Group record);

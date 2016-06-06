@@ -5,7 +5,7 @@ package com.bizvane.ishop.entity;
  *
  * @@version
  */
-public class PrivilegeInfo {
+public class Privilege {
 
     private String group_code;
     private String group_name;
@@ -14,7 +14,7 @@ public class PrivilegeInfo {
     private String module_name;
     private String url;
 
-    public PrivilegeInfo() {
+    public Privilege() {
     }
 
 

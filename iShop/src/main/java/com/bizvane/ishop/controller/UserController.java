@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.Role;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.github.pagehelper.PageInfo;
 import org.json.HTTP;
@@ -22,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.lang.System;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -48,6 +46,8 @@ public class UserController {
     private StoreService storeService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private GroupService groupService;
 
     String id;
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
@@ -369,27 +369,25 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String group_code = jsonObject.get("group_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            System.out.println(corp_code+","+group_code+","+role_code);
             JSONObject roles = new JSONObject();
-            System.out.println(jsonObject.get("role_code").toString());
-            if (jsonObject.get("role_code").toString().equals(Common.ROLE_SYS) &&
-                    jsonObject.get("corp_code").toString().equals("")) {
-                JSONArray array = new JSONArray();
-                Map map = new HashMap();
-                String r_code = jsonObject.get("role_code").toString();
-                map.put("role_code", r_code);
-                map.put("role_name", "系统管理员");
-                array.add(0, map);
-                roles.put("roles", JSON.toJSONString(array));
-            } else {
-                String role_code = request.getSession().getAttribute("role_code").toString();
-                List<Role> list;
-                if (role_code.equals(Common.ROLE_SYS)) {
-                    list = roleService.selectCorpRole("");
-                } else {
-                    list = roleService.selectCorpRole(role_code);
+            List<Group> group;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                if (corp_code.equals("")){
+                    //列出系统管理员，role_code=r1000
+                    group = groupService.selectByRole(Common.ROLE_SYS);
+                    System.out.println("-------");
+                }else{
+                    //列出企业下所有,corp_code=
+                    group = groupService.selectUserGroup(corp_code,"");
                 }
-                roles.put("roles", JSON.toJSONString(list));
+            } else {
+                group = groupService.selectUserGroup(corp_code,group_code);
             }
+            roles.put("group", JSON.toJSONString(group));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(roles.toString());

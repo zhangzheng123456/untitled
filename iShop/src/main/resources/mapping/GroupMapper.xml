@@ -44,7 +44,7 @@
         DEF_GROUP.group_name,
         DEF_ROLE.role_name,
         DEF_CORP.corp_name,
-        DEF_CORP.remark,
+        DEF_GROUP.remark,
         DEF_GROUP.modified_date,
         DEF_GROUP.modifier,
         DEF_GROUP.created_date,
@@ -68,6 +68,27 @@
         ORDER BY DEF_GROUP.ID
     </select>
 
+    <select id="selectUserGroup" resultType="com.bizvane.ishop.entity.Group">
+        select *
+        from DEF_GROUP
+        where 1 = 1
+        <if test="corp_code != null and corp_code !=''">
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="role_code != null and role_code !=''">
+            AND role_code &lt; #{role_code}
+        </if>
+        AND ISACTIVE = 'Y'
+        ORDER BY ID
+    </select>
+
+    <select id="selectByRole" resultType="com.bizvane.ishop.entity.Group">
+        select *
+        from DEF_GROUP
+        where role_code = #{role_code}
+        AND ISACTIVE = 'Y'
+        ORDER BY ID
+    </select>
     <insert id="insertGroup" parameterType="com.bizvane.ishop.entity.Group">
         insert into DEF_GROUP
         <trim prefix="(" suffix=")" suffixOverrides=",">

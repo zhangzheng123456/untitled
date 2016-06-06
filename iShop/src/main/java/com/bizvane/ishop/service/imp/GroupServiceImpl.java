@@ -23,6 +23,14 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.selectByGroupId(id);
     }
 
+    public List<Group> selectUserGroup(String corp_code,String role_code) throws SQLException {
+        return groupMapper.selectUserGroup(corp_code,role_code);
+    }
+
+    public List<Group> selectByRole(String role_code) throws SQLException {
+        return groupMapper.selectByRole(role_code);
+    }
+
     public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
         List<Group> groups;
         if (search_value.equals("")) {
