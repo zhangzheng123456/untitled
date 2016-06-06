@@ -432,6 +432,7 @@ function clearAll(name){
 
     //点击新增时页面进行的跳转
     $('#add').click(function(){
+        sessionStorage.removeItem('id');
         $(window.parent.document).find('#iframepage').attr("src","/user/role_add.html");
     })
     //点击编辑时页面进行的跳转

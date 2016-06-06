@@ -42,6 +42,7 @@ $(function(){
         	li+="</li>"
         	$(".sidebar ul").append(li);
         }
+        $(".sidebar ul").append("<li style='height:38px;'><li>");
         //左侧导航栏
         $(".sidebar ul li dl dd").click(function(e){
         	e.stopPropagation();
