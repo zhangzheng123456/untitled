@@ -107,7 +107,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
+				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				console.log("lalla");
@@ -160,7 +160,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"role_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE,"password":PSW};
+				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE,"password":PSW};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -298,9 +298,9 @@ function role_data(r,c){
 		console.log(msg_roles);
 		var index=0;
 		var html="";
-		if(msg_roles[0].role_name){
+		if(msg_roles[0].group_name){
 			for(index in msg_roles){
-				html +='<li data-rolecode="'+msg_roles[index].role_code+'">'+msg_roles[index].role_name+'</li>';
+				html +='<li data-rolecode="'+msg_roles[index].group_code+'">'+msg_roles[index].group_name+'</li>';
 			}
 		}
 		$("#role_list").append(html);
@@ -348,7 +348,7 @@ function store_li_list(p) {
 	}
 }
 function store_data(p,r,c){
-	var _params={"role_code":r,"corp_code":c};
+	var _params={"group_code":r,"corp_code":c};
 	console.log(_params);
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
@@ -487,8 +487,8 @@ jQuery(document).ready(function(){
 				if(msg.store_code==''){
 					$("#select_ownshop").css("display","none");
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
-					$("#OWN_RIGHT").val(msg.role.role_name);
-					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
+					$("#OWN_RIGHT").val(msg.role.group_name);
+					$("#OWN_RIGHT").attr("data-myrcode",msg.role.group_code);
 				}else if(msg.store_code !==''){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
