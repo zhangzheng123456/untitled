@@ -15,6 +15,9 @@
         body{
             margin-top:81px;
         }
+        .rel{
+            background-color:#6cc1c8;
+        }
     </style>
 </head>
 
@@ -36,7 +39,7 @@
                             <li><label style="color:#c26555;">所属企业</label></li>
                             <li>
                                 <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
                                     </select>
                                 </span>
                             </li>
@@ -54,7 +57,7 @@
                                 </span>
                             </li>
                         </ul> -->
-                        <span><label>所属区域</label><input type="text" id="OWN_AREA"  class="input_select"/><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
+                        <span><label>所属区域</label><input type="text" id="OWN_AREA"  class="input_select" readonly /><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
                          <ul id="area_select" style="margin-left:80px">
                         </ul>
                         </span>
@@ -70,7 +73,8 @@
                                 </span>
                             </li>
                         </ul> -->
-                        <span><label>所属品牌</label><input type="text" id="OWN_BRAND"  style="width:390px;border-radius: 4px 0px 0px 4px;" name="checkboxSelect" /><span class="down_icon"><i class="icon-ishop_8-02"></i></span></span>
+                        <span><label>所属品牌</label><input type="text" id="OWN_BRAND"  style="width:390px;border-radius: 4px 0px 0px 4px;" name="checkboxSelect" readonly/><span class="down_icon"><i class="icon-ishop_8-02"></i></span></span>
+                        <input type="text" id="hiddencheckboxSelect" name="hiddencheckboxSelect" style="display:none;width:250px;">
                     </div>
                     <div id="dropdown" class="item_1">
                     <span><label>是否直营</label><input class="input_select" id="FLG_TOB" type="text" placeholder="请选择是否直营" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
@@ -121,10 +125,10 @@
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <!-- error tips -->
-    <script type="text/javascript" src="../js/shop/shop.js"></script>
     <!-- multiple choice -->
     <script type="text/javascript" src="../js/multiple_choice.js"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/shop/shop.js"></script>
 </body>
 
 </html>
