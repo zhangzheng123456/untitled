@@ -42,7 +42,7 @@ function superaddition(data){
                         + "</td><td>"
                         +data[i].login_time_recently
                         + "</td><td>"
-                        +data[i].role
+                        +data[i].role.role_name
                         + "</td><td>"
                         +data[i].modifier
                         + "</td><td>"
