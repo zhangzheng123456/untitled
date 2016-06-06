@@ -15,7 +15,7 @@ public interface StoreAchvGoalMapper {
      * 获取相应的店铺业绩信息
      * @return
      */
-    StoreAchvGoal selectlById(int id);
+    StoreAchvGoal selectById(int id);
 
     /**
      * 插入店铺业绩目标信息
@@ -45,4 +45,15 @@ public interface StoreAchvGoalMapper {
      * @return
      */
     List<StoreAchvGoal> selectUsersBySearch( String storeAchvGoalId,String search_value);
+
+
+    /**
+     * 企业id
+     * 用户id
+     * @param corp_code
+     * @param user_code
+     */
+    void selectByCorpAndUserCode(String corp_code, String user_code);
+
+
 }

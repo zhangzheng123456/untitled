@@ -10,6 +10,7 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
+import org.omg.CORBA.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 
 /**
@@ -49,13 +51,14 @@ public class RoleController {
         try {
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            //      String function_code = request.getParameter("funcCode");
+            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            //   com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Role> list;
             if (role_code.equals(Common.ROLE_SYS)) {
+                result.put("actions", actions);
                 list = roleService.selectAllRole(page_number, page_size, "");
                 result.put("list", JSON.toJSONString(list));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -79,8 +82,8 @@ public class RoleController {
     @ResponseBody
     public String addRole(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String id = "";
         try {
-            String id = "";
             String user_id = request.getSession(false).getAttribute("user_id").toString();
             String jsString = request.getSession(false).getAttribute("param").toString();
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -89,16 +92,46 @@ public class RoleController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Role role = WebUtils.JSON2Bean(jsonObject, Role.class);
             roleService.insertRole(role);
-            dataBean.setId("1");
+            dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("add role success !!!!");
         } catch (Exception ex) {
-            dataBean.setId("1");
+            dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
+    @RequestMapping(value = "/role/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteRole(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String[] role_ids = jsonObject.get("id").toString().split(",");
+            for (int i = 0; role_ids != null && i < role_ids.length; i++) {
+                roleService.deleteByRoleId(Integer.parseInt(role_ids[i]));
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success !!!!!");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            ;
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+//    @RequestMapping(value = "/role/select",method = RequestMethod.POST)
+//    @ResponseBody
 
     /**
      * 角色定义
@@ -134,28 +167,28 @@ public class RoleController {
      * 编辑角色信息之
      * 查看名单
      */
-    @RequestMapping(value = "/role/check_name", method = RequestMethod.GET)
-    @ResponseBody
-    public String roleCheckName(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            int role_id = Integer.parseInt(jsonObj.get("role_id").toString());
-            Role role =roleService.selectByRoleId(role_id);
-            com.alibaba.fastjson.JSONObject result=new com.alibaba.fastjson.JSONObject();
-            result.put("role",role);
-
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/role/check_name", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String roleCheckName(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            int role_id = Integer.parseInt(jsonObj.get("role_id").toString());
+//            Role role = roleService.selectByRoleId(role_id);
+//            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+//            result.put("role", role);
+//
+//            dataBean.setId("1");
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setId("1");
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 角色定义之

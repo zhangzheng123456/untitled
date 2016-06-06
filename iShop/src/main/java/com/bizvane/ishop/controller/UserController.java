@@ -136,7 +136,7 @@ public class UserController {
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
             user.setRole_code(jsonObject.get("role_code").toString());
-            user.setStore_code(jsonObject.get("store_code").toString()+",");
+            user.setStore_code(jsonObject.get("store_code").toString() + ",");
             user.setPassword(user_code);
             Date now = new Date();
             user.setCreated_date(sdf.format(now));
@@ -195,7 +195,7 @@ public class UserController {
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setRole_code(jsonObject.get("role_code").toString());
-            user.setStore_code(jsonObject.get("store_code").toString()+",");
+            user.setStore_code(jsonObject.get("store_code").toString() + ",");
             Date now = new Date();
             user.setModified_date(sdf.format(now));
             user.setModifier(user_id);
@@ -322,6 +322,34 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
+    @RequestMapping(value = "/groupcheck_power", method = RequestMethod.GET)
+    @ResponseBody
+    public String groupList(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_id = request.getParameter("role_id").toString();
+            String function_code = request.getParameter("funcCode");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONObject result=new JSONObject();
+            PageInfo<User>list;
+
+
+            String data = null;
+
+
+        } catch (Exception ex) {
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 
     /**
      * 根据登录用户的角色类型

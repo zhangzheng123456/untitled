@@ -1,8 +1,8 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.LoginLog;
-import com.bizvane.ishop.entity.User;
-import com.bizvane.ishop.entity.ValidateCode;
+import com.bizvane.ishop.dao.RoleMapper;
+import com.bizvane.ishop.entity.*;
+import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.lang.System;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 创建时间
@@ -24,6 +26,10 @@ public class TestUserService {
     @Autowired
     private UserService userService=null;
 
+    @Autowired
+    private RoleService roleService=null;
+    @Autowired
+    private RoleMapper role=null;
     @Test
     public void testInsert(){
         User user=new User();
@@ -31,8 +37,16 @@ public class TestUserService {
         user.setCreated_date(new Date().toString());
 
         user.setAvatar("111");
+    }
 
-
+    @Test
+    public void testSelectALlRole(){
+        try {
+            List<Role> list=role.selectAllRole("");
+            System.out.print(list.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 

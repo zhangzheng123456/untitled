@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.StoreAchvGoalMapper">
-    <select id="selectlById" resultType="com.bizvane.ishop.entity.StoreAchvGoal">
+    <select id="selectById" resultType="com.bizvane.ishop.entity.StoreAchvGoal">
         select * from DEF_USER_ACHV_GOAL
         where id=#{id}
     </select>
@@ -9,7 +9,7 @@
         select * from DEF_USER_ACHV_GOAL
         WHERE
         <if test="user_code!=null and user_code!=''">
-            USER_CODE=#{user_code} and
+            corp_code=#{corp_code} and
         </if>
         <if test="search_value!=null and serach_value!=''">
               user_name like #{search_value}

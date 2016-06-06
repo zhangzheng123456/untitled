@@ -27,6 +27,7 @@ public class UserAchvGoal {
     public UserAchvGoal() {
     }
 
+
     public int getId() {
         return id;
     }

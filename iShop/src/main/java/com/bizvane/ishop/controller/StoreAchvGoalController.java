@@ -1,15 +1,27 @@
 package com.bizvane.ishop.controller;
 
-import com.bizvane.ishop.dao.StoreAchvGoalMapper;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+import com.bizvane.ishop.bean.DataBean;
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.StoreAchvGoal;
+import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.StoreAchvGoalService;
+import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
+import org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -22,34 +34,143 @@ public class StoreAchvGoalController {
 
     private static Logger logger = LoggerFactory.getLogger((UserController.class));
 
+
     @Autowired
-    StoreAchvGoalMapper storeAchvGoalMapper=null;
+    StoreAchvGoalService storeAchvGoalService = null;
+    @Autowired
+    FunctionService functionService = null;
 
     /**
      * 用户管理
+     *
      * @param request
      * @return
      */
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public String getAllUser(HttpRequest request){
-        return null;
+    public String getStoreAchvGoal(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String role_code = request.getSession(false).getAttribute("role_code").toString();
+        String function_code = request.getSession(false).getAttribute("funcCode").toString();
+        int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+        int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
+        int page_size = Integer.parseInt(request.getParameter("pageSize"));
+        try {
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONObject result = new JSONObject();
+            PageInfo<StoreAchvGoal> list = null;
+            if (role_code.contains(Common.ROLE_SYS)) {
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "");
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
+            }
+            result.put("list", JSON.toJSONString(list));
+            result.put("actions", actions);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (SQLException e) {
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return dataBean.getJsonStr();
     }
 
-    public StoreAchvGoal getStoreAchvGoalById(int id ){
-        return storeAchvGoalMapper.selectlById(id);
+    /**
+     * 员工最新业绩目标修改或添加
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @ResponseBody
+    public String addStoreAchvGoal(HttpServletRequest request) {
+
+        DataBean dataBean = new DataBean();
+        String user_id = WebUtils.getValueForSession(request, "user_id");
+        String corp_code = WebUtils.getValueForSession(request, "corp_code");
+
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            StoreAchvGoal storeAchvGoal = WebUtils.request2Bean(request, StoreAchvGoal.class);
+
+            String exist = storeAchvGoalService.storeAchvExist(corp_code, user_id);
+            if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
+                storeAchvGoalService.update(storeAchvGoal);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("业绩目标修改成功");
+            } else {
+                storeAchvGoalService.insert(storeAchvGoal);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
-    public int insert(StoreAchvGoal storeAchvGoal){
-        return storeAchvGoalMapper.insert(storeAchvGoal);
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public String editStoreAchvGoal(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_id = WebUtils.getValueForSession(request, "user_id");
+        String id="";
+        try {
+            String jsString =request.getParameter("param");
+            org.json.JSONObject jsonObj=new org.json.JSONObject(jsString);
+            id=jsonObj.get("id").toString();
+            String message=jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject=new org.json.JSONObject(message);
+            StoreAchvGoal storeAchvGoal=WebUtils.JSON2Bean(jsonObject,StoreAchvGoal.class);
+            storeAchvGoalService.update(storeAchvGoal);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id );
+            dataBean.setMessage("edit success ");
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
-    public int delete( int id ){
-        return storeAchvGoalMapper.deleteById(id);
-    }
-
-    public int update(StoreAchvGoal storeAchvGoal){
-        return storeAchvGoalMapper.update(storeAchvGoal);
+    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @ResponseBody
+    public String delete(HttpServletRequest request){
+        DataBean dataBean=new DataBean();
+        String id="";
+        try{
+            String jsString =WebUtils.getValueForSession(request,"param");
+            org.json.JSONObject jsonObj=new org.json.JSONObject(jsString);
+            String  storeAchvGoal_id=jsonObj.get("id").toString();
+            String message=jsonObj.get("message").toString();
+            String []ids=storeAchvGoal_id.split(",");
+            for (int i=0;ids!=null&&i<ids.length;i++){
+                storeAchvGoalService.deleteById(Integer.parseInt(ids[i]));
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("scuccess");
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id );
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
 

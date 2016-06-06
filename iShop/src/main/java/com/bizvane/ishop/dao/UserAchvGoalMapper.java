@@ -3,6 +3,7 @@ package com.bizvane.ishop.dao;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.UserAchvGoal;
 
+import java.sql.SQLException;
 import java.util.List;
 
 /**
@@ -12,14 +13,17 @@ import java.util.List;
  */
 public interface UserAchvGoalMapper {
 
-    UserAchvGoal selectById(int id);
+    UserAchvGoal selectById(int id)throws SQLException;
 
-    int insert(UserAchvGoal userAchvGoal);
+    int insert(UserAchvGoal userAchvGoal)throws SQLException;
 
-    int update(UserAchvGoal userAchvGoal);
+    int update(UserAchvGoal userAchvGoal)throws SQLException;
 
-    int delelteById(int id );
+    int delelteByUser_code(String user_code)throws SQLException;
 
 
-    List<UserAchvGoal> selectUserAchvGoalBySearch(String userAchvGoalId, String search_value);
+    List<UserAchvGoal> selectUserAchvGoalBySearch(String userAchvGoalId, String search_value)throws SQLException;
+
+
+    int userAchvGoalExist(String user_code)throws SQLException;
 }

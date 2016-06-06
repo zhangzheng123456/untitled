@@ -6,6 +6,9 @@
         DEF_USER_ACHV_GOAL
         WHERE id=#{id}
     </select>
+    <select id="userAchvGoalExist">
+        select * from DEF_USER_ACHV_GOAL WHERE USER_CODE=#{user_code}
+    </select>
 
     <update id="update" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
         update DEF_USER_ACHV_GOAL
@@ -131,9 +134,9 @@
         </trim>
     </insert>
 
-    <delete id="delelteById">
+    <delete id="delelteByUser_code">
         DELETE  FROM   DEF_USER_ACHV_GOAL
-        WHERE id=#{id}
+        WHERE user_code=#{user_code}
     </delete>
 
 
