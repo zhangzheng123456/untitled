@@ -171,18 +171,18 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var ROLE_NUM=$("#ROLE_NUM").val(msg.role_num);
+				var ROLE_NUM=$("#ROLE_NUM").val(msg.role_code);
 				var ROLE_NAME=$("#ROLE_NAME").val(msg.role_name);
-				var BEIZHU=$("#BEIZHU").val(msg.beizhu);
-				var check_per=$("#check_per").val(msg.check_per);
+				var BEIZHU=$("#BEIZHU").val(msg.remark);
+				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
 				// $("#BEIZHU").val(msg.beizhu);			
 
-				$("#ROLE_NUM").val(msg.role_num);
+				$("#ROLE_NUM").val(msg.role_code);
 				$("#ROLE_NAME").val(msg.role_name);
-				$("#BEIZHU").val(msg.beizhu);
-				$("#OWN_DOCU").val(msg.own_docu);
+				$("#BEIZHU").val(msg.remark);
+				// $("#OWN_DOCU").val(msg.own_docu);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
