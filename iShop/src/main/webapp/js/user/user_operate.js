@@ -216,10 +216,11 @@ var oc = new ObjectControl();
 	return obj;
 }));
 function selectownshop(obj){
-	if(obj.getAttribute("data-i")=="1"){
-		store_li_list(obj.id);
-		obj.setAttribute('data-i','2');
-	}
+	// if(obj.getAttribute("data-i")=="1"){
+	// 	store_li_list(obj.id);
+	// 	obj.setAttribute('data-i','2');
+	// }
+	$(".shop_list ul").html('');
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -227,12 +228,9 @@ function selectownshop(obj){
         ul.hide();
     }
 }
-var j=0;
 function selectownrole(obj){
-	if(j==0){
-		role_li_list();
-		j++;
-	}
+	$("#role_list").html('');
+	role_li_list();
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -290,7 +288,7 @@ function role_li_list(){
 	}
 }
 function role_data(r,c){
-	var _params={"role_code":r,"corp_code":c};
+	var _params={"group_code":r,"corp_code":c};
 	var _command="/user/role";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
@@ -416,7 +414,6 @@ jQuery(document).ready(function(){
 					});
 				}
 			});
-			
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
@@ -476,7 +473,7 @@ jQuery(document).ready(function(){
 				console.log(msg.user_code);
 				console.log(msg.role);
 				c_code=msg.corp_code;
-				r_code=msg.role_code;
+				r_code=msg.group_code;
 				$("#USERID").val(msg.user_code);
 				$("#USER_NAME").val(msg.user_name);
 				$("#preview img").attr("src",msg.avatar);
@@ -496,8 +493,8 @@ jQuery(document).ready(function(){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
-					$("#OWN_RIGHT").val(msg.role.role_name);
-					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
+					$("#OWN_RIGHT").val(msg.role.group_name);
+					$("#OWN_RIGHT").attr("data-myrcode",msg.role.group_code);
 					var store_lists=msg.store_name.split(",");
 					var storecode_list=msg.store_code.split(",");
 					if(store_lists.length==0){
