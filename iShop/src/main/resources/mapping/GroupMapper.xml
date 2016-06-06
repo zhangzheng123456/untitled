@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.GroupMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.Group" id="GroupInfo">
+        <id column="id" property="id"/>
+        <result column="group_code" property="group_code"/>
+        <result column="group_name" property="group_name"/>
+        <result column="user_name" property="user_name"/>
+        <result column="role_code" property="role_code"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="remark" property="remark"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="isactive" property="isactive"/>
+        <association property="role" javaType="com.bizvane.ishop.entity.Role">
+            <result column="role_name" property="role_name"/>
+        </association>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectByGroupId" resultType="com.bizvane.ishop.entity.Group">
+        select *
+        from DEF_GROUP
+        where
+        <if test="group_id != 0">
+            ID = #{group_id}
+        </if>
+    </select>
+
+    <select id="selectAllGroup" resultMap="GroupInfo">
+        select
+        DEF_GROUP.id,
+        DEF_GROUP.group_code,
+        DEF_GROUP.group_name,
+        DEF_ROLE.role_name,
+        DEF_CORP.corp_name,
+        DEF_CORP.remark,
+        DEF_GROUP.modified_date,
+        DEF_GROUP.modifier,
+        DEF_GROUP.created_date,
+        DEF_GROUP.creater,
+        DEF_GROUP.isactive
+        from DEF_GROUP,DEF_ROLE,DEF_CORP
+        where DEF_GROUP.role_code = DEF_ROLE.role_code
+            AND DEF_GROUP.corp_code = DEF_CORP.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND DEF_GROUP.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND DEF_GROUP.group_code like #{search_value}
+            OR DEF_GROUP.group_name like #{search_value}
+            OR DEF_ROLE.role_name like #{search_value}
+            OR DEF_CORP.corp_name like #{search_value}
+            OR DEF_GROUP.modified_date like #{search_value}
+            OR DEF_GROUP.MODIFIER like #{search_value}
+            OR DEF_GROUP.isactive like #{search_value}
+        </if>
+        ORDER BY DEF_GROUP.ID
+    </select>
+
+    <insert id="insertGroup" parameterType="com.bizvane.ishop.entity.Group">
+        insert into DEF_GROUP
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="group_code != null">
+                group_code,
+            </if>
+            <if test="group_name != null">
+                group_name,
+            </if>
+            <if test="role_code != null">
+                role_code,
+            </if>
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="group_code != null">
+                #{group_code},
+            </if>
+            <if test="group_name != null">
+                #{group_name},
+            </if>
+            <if test="role_code != null">
+                #{role_code},
+            </if>
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateGroup" parameterType="com.bizvane.ishop.entity.Group">
+        UPDATE DEF_GROUP
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="group_code != null">
+                group_code = #{group_code},
+            </if>
+            <if test="group_name != null">
+                group_name = #{group_name},
+            </if>
+            <if test="role_code != null">
+                role_code = #{role_code},
+            </if>
+            <if test="corp_code != null">
+                corp_code = #{corp_code},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date != null">
+                created_date = #{created_date},
+            </if>
+            <if test="creater != null">
+                creater = #{creater},
+            </if>
+            <if test="isactive != null">
+                isactive = #{isactive},
+            </if>
+        </trim>
+        WHERE ID = #{id};
+    </update>
+
+    <delete id="deleteByGroupId">
+        delete from
+        DEF_GROUP
+        where ID = #{id}
+    </delete>
+</mapper>

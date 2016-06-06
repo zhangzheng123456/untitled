@@ -199,8 +199,8 @@ public class BrandController {
     }
 
     /**
-     * 用户管理
-     * 选择用户
+     * 品牌管理
+     * 选择品牌
      */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody

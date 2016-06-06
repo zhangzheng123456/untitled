@@ -199,8 +199,8 @@ public class AreaController {
     }
 
     /**
-     * 用户管理
-     * 选择用户
+     * 区域管理
+     * 选择区域
      */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody

@@ -221,7 +221,7 @@ public class StoreController {
                     dataBean.setId(id);
                     dataBean.setMessage("success");
                 }else {
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
                     dataBean.setMessage("该店铺下有所属员工，请先处理店铺下员工再删除！");
                 }
