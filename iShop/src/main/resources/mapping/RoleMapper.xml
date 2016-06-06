@@ -17,7 +17,6 @@
         where 1 = 1
         <if test="search_value != null and search_value !=''">
             AND role_code like #{search_value}
-            OR corp_code like #{search_value}
             OR role_name like #{search_value}
             OR remark like #{search_value}
             OR modified_date like #{search_value}

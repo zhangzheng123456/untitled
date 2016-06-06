@@ -16,6 +16,9 @@ import java.util.List;
  */
 @Service
 public class RoleServiceImpl implements RoleService {
+//    @Autowired
+//    private RoleMapper roleMapper;
+
     @Autowired
     private RoleMapper roleMapper;
 
@@ -37,7 +40,12 @@ public class RoleServiceImpl implements RoleService {
 
     public PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
-        List<Role> roles = roleMapper.selectAllRole("%" + search_value + "%");
+        List<Role> roles=null;
+        if(null==search_value||search_value.isEmpty()){
+            roles=roleMapper.selectAllRole("");
+        }else {
+            roles = roleMapper.selectAllRole("%" + search_value + "%");
+        }
         PageInfo<Role> page = new PageInfo<Role>(roles);
         return page;
     }

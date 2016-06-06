@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface RoleMapper {
 
-    List<Role> selectAllRole(String search_value);
+    List<Role> selectAllRole(@Param("search_value") String search_value);
 
     List<Role> selectUserRole(String role_code);
 
