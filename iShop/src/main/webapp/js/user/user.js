@@ -213,11 +213,11 @@ function superaddition(data,num){
                         +"</td><td>"
                         +data[i].phone
                         + "</td><td>"
-                        +data[i].corp_name
+                        +data[i].corp.corp_name
                         + "</td><td>"
                         +data[i].login_time_recently
                         + "</td><td>"
-                        +data[i].role.role_name
+                        +data[i].group.group_name
                         + "</td><td>"
                         +data[i].modifier
                         + "</td><td>"

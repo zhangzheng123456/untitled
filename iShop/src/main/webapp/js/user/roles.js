@@ -249,7 +249,7 @@ function GET(){
                 var list=list.list;
                 var actions=message.actions;
                 superaddition(list,inx);
-                jurisdiction(actions);
+                // jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
@@ -279,25 +279,6 @@ function jumpBianse(){
             }
             input.checked = false;
             $(this).removeClass("tr");
-        }
-    })
-    //点击新增时页面进行的跳转
-    $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/user/role_add.html");
-    })
-    //点击编辑时页面进行的跳转
-    $('#compile').click(function(){
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        if(tr.length==1){
-            id=$(tr).attr("id");
-            sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/user/role_edit.html");
-        }else if(tr.length==0){
-            frame();
-            $('.frame').html("请先选择");
-        }else if(tr.length>1){
-            frame();
-            $('.frame').html("不能选择多个");
         }
     })
     //删除
@@ -447,3 +428,24 @@ function clearAll(name){
             }
         }
 };
+
+
+    //点击新增时页面进行的跳转
+    $('#add').click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/user/role_add.html");
+    })
+    //点击编辑时页面进行的跳转
+    $('#compile').click(function(){
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==1){
+            id=$(tr).attr("id");
+            sessionStorage.setItem("id",id);
+            $(window.parent.document).find('#iframepage').attr("src","/user/role_edit.html");
+        }else if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+        }else if(tr.length>1){
+            frame();
+            $('.frame').html("不能选择多个");
+        }
+    })
