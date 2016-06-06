@@ -1,16 +1,16 @@
-// var oc = new ObjectControl();
+var oc = new ObjectControl();
 (function(root,factory){
-	root.vip = factory();
+	root.role = factory();
 }(this,function(){
-	var vipjs={};
-	vipjs.isEmpty=function(obj){
+	var rolejs={};
+	rolejs.isEmpty=function(obj){
 		if(obj.trim() == "" || obj.trim() == undefined){
 			return true;
 		}else{
 			return false;
 		}
 	};
-	vipjs.checkEmpty = function(obj,hint){
+	rolejs.checkEmpty = function(obj,hint){
 		if(!this.isEmpty(obj)){
 			this.hiddenHint(hint);
 			return true;
@@ -19,7 +19,7 @@
 			return false;
 		}
 	};
-	vipjs.checkPhone = function(obj,hint){
+	rolejs.checkPhone = function(obj,hint){
 		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
 		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
 		if(!this.isEmpty(obj)){
@@ -35,35 +35,30 @@
 			return false;
 		}
 	};
-	vipjs.hiddenHint = function(hint){
+	rolejs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
 	};
-	vipjs.displayHint = function(hint,content){
+	rolejs.displayHint = function(hint,content){
 		hint.addClass("error_tips");
 		if(!content)hint.html(hint.attr("hintInfo"));//错误提示
 		else hint.html(content);
 	};
-	vipjs.firstStep = function(){
+	rolejs.firstStep = function(){
 		var inputText = jQuery(".conpany_msg").find(":text");
 		for(var i=0,length=inputText.length;i<length;i++){
 			if(!bindFun(inputText[i]))return false;
 		}
 		return true;
 	};
-	vipjs.bindbutton=function(){
+	rolejs.bindbutton=function(){
 		$(".oper_btn ul li:nth-of-type(1)").click(function(){
-			if(vipjs.firstStep()){
+			if(rolejs.firstStep()){
 				// var CORPID=$("#CORPID").val();
-				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_STORE=$("#OWN_STORE").val();
-				var OWN_SALES=$("#OWN_SALES").val();
-				// var AREA_ID=$("#AREA_ID").val();
-				var VIP_ID=$("#VIP_ID").val();
-				var VIP_CARD=$("#VIP_CARD").val();
-				var VIP_NAME=$("#VIP_NAME").val();
-				var is_leixing=$("#VIP_STYLE").val();
-				var is_xingbie=$("#SEX").val();
+				var ROLE_NUM=$("#ROLE_NUM").val();
+				var ROLE_NAME=$("#ROLE_NAME").val();
+				var BEIZHU=$("#BEIZHU").val();
+				var check_per=$("#check_per").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -71,30 +66,24 @@
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/vip/add";//接口名
+				var _command="/user/role/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
 				};
-				var _params={"own_corp":OWN_CORP,"own_store":OWN_STORE,"own_sales":OWN_SALES,"vip_id":VIP_ID,
-				"vip_card":VIP_CARD,"vip_name":VIP_NAME,"vip_style":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE};
-				vipjs.ajaxSubmit(_command,_params,opt);
+				var _params={"role_num":ROLE_NUM,"role_name":ROLE_NAME,"beizhu":BEIZHU,"check_per":check_per,"isactive":ISACTIVE};
+				rolejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
 		$(".oper_btn ul li:nth-of-type(1)").click(function(){
-			if(vipjs.firstStep()){
+			if(rolejs.firstStep()){
 				var ID=sessionStorage.getItem("id");
-				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_STORE=$("#OWN_STORE").val();
-				var OWN_SALES=$("#OWN_SALES").val();
-				// var AREA_ID=$("#AREA_ID").val();
-				var VIP_ID=$("#VIP_ID").val();
-				var VIP_CARD=$("#VIP_CARD").val();
-				var VIP_NAME=$("#VIP_NAME").val();
-				var is_leixing=$("#VIP_STYLE").val();
-				var is_xingbie=$("#SEX").val();
+				var ROLE_NUM=$("#ROLE_NUM").val();
+				var ROLE_NAME=$("#ROLE_NAME").val();
+				var BEIZHU=$("#BEIZHU").val();
+				var check_per=$("#check_per").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -102,20 +91,19 @@
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/vip/edit";//接口名
+				var _command="/user/role/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"own_corp":OWN_CORP,"own_store":OWN_STORE,"own_sales":OWN_SALES,"vip_id":VIP_ID,
-				"vip_card":VIP_CARD,"vip_name":VIP_NAME,"vip_style":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE};
-				vipjs.ajaxSubmit(_command,_params,opt);
+				var _params={"id":ID,"role_num":ROLE_NUM,"role_name":ROLE_NAME,"beizhu":BEIZHU,"check_per":check_per,"isactive":ISACTIVE};
+				rolejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
 	};
-	vipjs.ajaxSubmit=function(_command,_params,opt){
+	rolejs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
 		console.log(_params);
@@ -129,6 +117,7 @@
 				// });
 				$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
 			}else if(data.code=="-1"){
+				// alert(data.message);
 				art.dialog({
 					time: 1,
 					lock:true,
@@ -148,8 +137,8 @@
 		var command = _this.attr("verify");
 		var obj = _this.val();
 		var hint = _this.nextAll(".hint").children();
-		if(vipjs['check' + command]){
-			if(!vipjs['check' + command].apply(vipjs,[obj,hint])){
+		if(rolejs['check' + command]){
+			if(!rolejs['check' + command].apply(rolejs,[obj,hint])){
 				return false;
 			}
 		}
@@ -164,37 +153,36 @@
 		clearInterval(interval);
 	});
 	var init=function(){
-		vipjs.bindbutton();
+		rolejs.bindbutton();
 	}
 	var obj = {};
-	obj.vipjs = vipjs;
+	obj.rolejs = rolejs;
 	obj.init = init;
 	return obj;
 }));
 jQuery(document).ready(function(){
-	window.vip.init();//初始化
+	window.role.init();//初始化
 	if($(".pre_title label").text()=="编辑企业信息"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/vip/select";
+		var _command="/role/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				$("#OWN_CORP").val(msg.own_corp)
-				$("#OWN_STORE").val(msg.own_store);
-				$("#OWN_SALES").val(msg.own_sales);
-				$("#VIP_ID").val(msg.vip_id);
-				$("#VIP_CARD").val(msg.vip_card);
-				$("#VIP_NAME").val(msg.vip_name);
-				$("#is_leixing").val(msg.vip_style);
-				$("#is_xingbie").val(msg.sex);
+				var ROLE_NUM=$("#ROLE_NUM").val(msg.role_num);
+				var ROLE_NAME=$("#ROLE_NAME").val(msg.role_name);
+				var BEIZHU=$("#BEIZHU").val(msg.beizhu);
+				var check_per=$("#check_per").val(msg.check_per);
+				// $("#ROLE_NUM").val(msg.role_num);
+				// $("#ROLE_NAME").val(msg.role_name);
+				// $("#BEIZHU").val(msg.beizhu);			
 
-				$("#created_time").val(msg.created_date);
-				$("#creator").val(msg.creater);
-				$("#modify_time").val(msg.modified_date);
-				$("#modifier").val(msg.modifier);
+				$("#ROLE_NUM").val(msg.role_num);
+				$("#ROLE_NAME").val(msg.role_name);
+				$("#BEIZHU").val(msg.beizhu);
+				$("#OWN_DOCU").val(msg.own_docu);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -211,6 +199,11 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
+
+$(".oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/role/role.html");
+	});
+	$(".oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/role/role.html");
+	});
 });
-"own_corp":OWN_CORP,"own_store":OWN_STORE,"own_sales":OWN_SALES,"vip_id":VIP_ID,
-"vip_card":VIP_CARD,"vip_name":VIP_NAME,"vip_style":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE
