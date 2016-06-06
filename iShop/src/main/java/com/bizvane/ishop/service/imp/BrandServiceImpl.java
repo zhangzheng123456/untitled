@@ -1,7 +1,9 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.BrandMapper;
+import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Brand;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BrandService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +20,8 @@ import java.util.List;
 public class BrandServiceImpl implements BrandService{
     @Autowired
     BrandMapper brandMapper;
+    @Autowired
+    StoreMapper storeMapper;
 
     @Override
     public Brand getBrandById(int id) throws SQLException {
@@ -47,6 +51,12 @@ public class BrandServiceImpl implements BrandService{
     @Override
     public List<Brand> getAllBrand(String corp_code,String search_value) throws SQLException {
         return brandMapper.selectAllBrand(corp_code,"%"+search_value+"%");
+    }
+
+    //获得品牌下店铺
+    @Override
+    public List<Store> getBrandStore(String corp_code, String brand_code) throws SQLException {
+        return storeMapper.selectStoreBrandArea(corp_code,"%"+brand_code+","+"%","");
     }
 
     @Override

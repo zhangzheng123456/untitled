@@ -1,7 +1,9 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.AreaMapper;
+import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -19,6 +21,8 @@ import java.util.List;
 public class AreaServiceImpl implements AreaService {
     @Autowired
     AreaMapper areaMapper;
+    @Autowired
+    StoreMapper storeMapper;
 
     /**
      * 根据区域id
@@ -59,6 +63,12 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public List<Area> getAllArea(String corp_code, String search_value) throws SQLException {
         return areaMapper.selectAllArea(corp_code, "%" + search_value + "%");
+    }
+
+    //获得区域下店铺
+    @Override
+    public List<Store> getAreaStore(String corp_code, String area_code) throws SQLException {
+        return storeMapper.selectStoreBrandArea(corp_code,"","%"+area_code+"%");
     }
 
     @Override

@@ -249,17 +249,6 @@ public class UserServiceImpl implements UserService {
                 log.info("----------register corp" + corp.toString());
                 corpService.insertCorp(corp);
 
-                //插入角色信息
-//                Role role = new Role();
-//                role.setRole_code(Common.ROLE_GM);
-//                role.setRole_name("总经理");
-//                role.setCreated_date(sdf.format(now));
-//                role.setCreater("root");
-//                role.setModified_date(sdf.format(now));
-//                role.setModifier("root");
-//                role.setIsactive(Common.IS_ACTIVE_Y);
-//                roleService.insertRole(role);
-
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
         } catch (Exception ex) {

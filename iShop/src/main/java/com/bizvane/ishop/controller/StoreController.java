@@ -210,13 +210,22 @@ public class StoreController {
             String shop_id = jsonObject.get("id").toString();
             String[] ids = shop_id.split(",");
             for (int i = 0; i < ids.length; i++) {
-                Store shop = new Store(Integer.valueOf(ids[i]));
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
-                storeService.delete(Integer.valueOf(ids[i]));
+                Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
+                String store_code = store.getStore_code();
+                String corp_code = store.getCorp_code();
+                List<User> user = storeService.getStoreUser(corp_code, store_code);
+                if (user.size() == 0) {
+                    storeService.delete(Integer.valueOf(ids[i]));
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
+                }else {
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("该店铺下有所属员工，请先处理店铺下员工再删除！");
+                }
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
         } catch (Exception ex) {
             //	return "Error deleting the user:" + ex.toString();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

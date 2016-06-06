@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Brand;
+import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
@@ -17,6 +18,8 @@ public interface BrandService {
     PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
     List<Brand> getAllBrand(String corp_code,String search_value) throws SQLException;
+
+    List<Store> getBrandStore(String corp_code, String brand_code) throws SQLException;
 
     int insert(Brand brand) throws SQLException;
 

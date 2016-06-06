@@ -14,6 +14,8 @@ public interface StoreMapper {
 
     List<Store> selectByUserId(@Param("user_id")String user_id);
 
+    List<Store> selectStoreBrandArea(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code, @Param("area_code") String area_code);
+
     int insertStore(Store store);
 
     int updateStore(Store store);

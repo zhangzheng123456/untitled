@@ -84,7 +84,7 @@ public class StoreServiceImpl implements StoreService {
 
     //店铺下所属用户
     public List<User> getStoreUser(String corp_code, String store_code) {
-        List<User> user = userMapper.selectStoreUser(corp_code, "%" + store_code + "%");
+        List<User> user = userMapper.selectStoreUser(corp_code, "%" + store_code+","+ "%");
         return user;
     }
 
@@ -109,9 +109,9 @@ public class StoreServiceImpl implements StoreService {
                 shop = new Store();
                 shop.setStore_code(store_code);
                 shop.setStore_name(jsonObject.get("store_name").toString());
-                shop.setArea_code(jsonObject.get("area_code").toString());
+                shop.setArea_code(jsonObject.get("area_code").toString()+",");
                 shop.setCorp_code(corp_code);
-                shop.setBrand_code(jsonObject.get("brand_code").toString());
+                shop.setBrand_code(jsonObject.get("brand_code").toString()+",");
                 shop.setFlg_tob(jsonObject.get("flg_tob").toString());
                 Date now = new Date();
                 shop.setCreated_date(sdf.format(now));
@@ -139,9 +139,9 @@ public class StoreServiceImpl implements StoreService {
             store.setId(Integer.valueOf(jsonObject.get("id").toString()));
             store.setStore_code(jsonObject.get("store_code").toString());
             store.setStore_name(jsonObject.get("store_name").toString());
-            store.setArea_code(jsonObject.get("area_code").toString());
+            store.setArea_code(jsonObject.get("area_code").toString()+",");
             store.setCorp_code(jsonObject.get("corp_code").toString());
-            store.setBrand_code(jsonObject.get("brand_code").toString());
+            store.setBrand_code(jsonObject.get("brand_code").toString()+",");
             store.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
             store.setModified_date(sdf.format(now));

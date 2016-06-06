@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Brand;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BrandService;
 import com.bizvane.ishop.service.FunctionService;
 import com.github.pagehelper.PageInfo;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -171,11 +173,21 @@ public class BrandController {
             String[] ids = brand_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-                brandService.delete(Integer.valueOf(ids[i]));
+                Brand brand = brandService.getBrandById(Integer.valueOf(ids[i]));
+                String brand_code = brand.getBrand_code();
+                String corp_code = brand.getCorp_code();
+                List<Store> stores = brandService.getBrandStore(corp_code,brand_code);
+                if (stores.size() == 0) {
+                    brandService.delete(Integer.valueOf(ids[i]));
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
+                }else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("该品牌下有所属店铺，请先处理品牌下店铺再删除！");
+                }
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

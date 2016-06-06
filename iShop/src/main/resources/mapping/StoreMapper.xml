@@ -73,6 +73,19 @@
          WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
     </select>
 
+    <select id="selectStoreBrandArea" resultType="com.bizvane.ishop.entity.Store">
+        SELECT *
+        FROM DEF_STORE
+        where CORP_CODE = #{corp_code}
+        <if test="brand_code != null and brand_code !=''">
+            AND brand_code like #{brand_code}
+        </if>
+        <if test="area_code != null and area_code !=''">
+            AND area_code like #{area_code}
+        </if>
+        AND ISACTIVE = 'Y'
+    </select>
+
     <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
         insert into DEF_STORE
         <trim prefix="(" suffix=")" suffixOverrides=",">
