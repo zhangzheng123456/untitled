@@ -6,8 +6,10 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Group;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.GroupService;
+import com.bizvane.ishop.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -35,6 +37,8 @@ public class GroupController {
 
     @Autowired
     private GroupService groupService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private FunctionService functionService;
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
@@ -179,10 +183,10 @@ public class GroupController {
             String[] ids = area_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-//                Area area = areaService.getAreaById(Integer.valueOf(ids[i]));
+                Group group = groupService.getGroupById(Integer.valueOf(ids[i]));
 //                String area_code = area.getArea_code();
 //                String corp_code = area.getCorp_code();
-//                List<Store> stores = areaService.getAreaStore(corp_code,area_code);
+//                List<User> users = userService.
 //                if (stores.size() == 0) {
                     groupService.deleteGroup(Integer.valueOf(ids[i]));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -259,10 +263,10 @@ public class GroupController {
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = groupService.getGroupAll(page_number, page_size, "", "");
+                list = groupService.getGroupAll(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = groupService.getGroupAll(page_number, page_size, corp_code, "");
+                list = groupService.getGroupAll(page_number, page_size, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

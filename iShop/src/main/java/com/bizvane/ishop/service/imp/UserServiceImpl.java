@@ -1,7 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
-import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.GroupMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.service.*;
@@ -41,6 +41,8 @@ public class UserServiceImpl implements UserService {
     RoleService roleService;
     @Autowired
     ValidateCodeService validateCodeService;
+    @Autowired
+    GroupMapper groupMapper;
 
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
     String[] arg = new String[]{"--Ice.Config=client.config"};
@@ -63,17 +65,6 @@ public class UserServiceImpl implements UserService {
             PageHelper.startPage(page_number, page_size);
             users = userMapper.selectAllUser(corp_code, "%" + search_value + "%");
         }
-        for (int i = 0; i < users.size(); i++) {
-            User user = users.get(i);
-            String corp_name;
-            if (user.getCorp_code() == null ||user.getCorp_code().equals("")){
-                corp_name = "";
-            }else {
-                Corp corp = corpService.selectByCorpId(0,user.getCorp_code());
-                corp_name = corp.getCorp_name();
-            }
-            user.setCorp_name(corp_name);
-        }
         PageInfo<User> page = new PageInfo<User>(users);
 
         return page;
@@ -81,14 +72,12 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
-        if (user.getCorp_code()==null || user.getCorp_code().equals("")){
-            user.setCorp_code("");
-        }
-        String store_name = "";
         if (user.getStore_code()==null || user.getStore_code().equals("")){
             user.setStore_code("");
-            store_name = "";
+            user.setCorp_code("");
+            user.setStore_name("");
         }else {
+            String store_name = "";
             String corp_code = user.getCorp_code();
             String[] ids = user.getStore_code().split(",");
             for (int i = 0; i < ids.length; i++) {
@@ -99,8 +88,8 @@ public class UserServiceImpl implements UserService {
                     store_name = store_name+",";
                 }
             }
+            user.setStore_name(store_name);
         }
-        user.setStore_name(store_name);
         return user;
     }
 
@@ -141,29 +130,31 @@ public class UserServiceImpl implements UserService {
         } else {
             int user_id = login_user.getId();
             String corp_code = login_user.getCorp_code();
-            String role_code = login_user.getRole_code();
+            String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
+            String role_code = groupMapper.selectCorpGroup(corp_code,group_code).getRole_code();
 
             request.getSession().setAttribute("user_id", user_id);
             request.getSession().setAttribute("corp_code", corp_code);
             request.getSession().setAttribute("role_code", role_code);
             request.getSession().setAttribute("store_code", store_code);
+            request.getSession().setAttribute("group_code", group_code);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
             login_user.setLogin_time_recently(sdf.format(now));
             update(login_user);
             String user_type;
-            if (login_user.getRole_code().equals(Common.ROLE_SYS)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 user_type = "admin";
             } else{
-                if (login_user.getRole_code().equals(Common.ROLE_GM)) {
+                if (role_code.equals(Common.ROLE_GM)) {
                     //总经理
                     user_type = "gm";
-                } else if (login_user.getRole_code().equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_AM)) {
                     //区经
                     user_type = "am";
-                } else if (login_user.getRole_code().equals(Common.ROLE_SM)) {
+                } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     user_type = "sm";
                 } else {
@@ -225,7 +216,7 @@ public class UserServiceImpl implements UserService {
                 user.setUser_name(user_name);
                 user.setPhone(phone);
                 user.setPassword(password);
-                user.setRole_code(Common.ROLE_GM);
+                user.setGroup_code("");
                 user.setCorp_code(corp_code);
                 user.setCreated_date(sdf.format(now));
                 user.setCreater("root");
