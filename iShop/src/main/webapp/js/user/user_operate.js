@@ -293,8 +293,8 @@ function role_data(r,c){
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
 		var msg=JSON.parse(data.message);
-		console.log(msg.roles);
-		var msg_roles=JSON.parse(msg.roles);
+		console.log(msg.group);
+		var msg_roles=JSON.parse(msg.group);
 		console.log(msg_roles);
 		var index=0;
 		var html="";
