@@ -5,10 +5,9 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-var key_val=sessionStorage.getItem("key_val");
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-console.log(funcCode);
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -21,8 +20,13 @@ $(function(){
         });            
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
-                var id=$(this).attr('id');
-                console.log(id);  
+                pageSize=$(this).attr('id');  
+                if(value==""){
+                    GET();
+                }else if(value!==""){
+                    param["pageSize"]=pageSize;
+                    POST(); 
+                } 
                 $("#page_row").val($(this).html());  
                 hideLi();  
             });    
@@ -52,18 +56,20 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count, pageSize,funcCode,value) {//分页
+function setPage(container, count, pageindex,pageSize,funcCode,value) {
     var container = container;
     var count = count;
-    var pageSize = pageSize;
-    var a = [];//总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
-    if (pageSize == 1) {
+    var pageindex = pageindex;
+    var pageSize=pageSize;
+    var a = [];
+              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    if (pageindex == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
         a[a.length] = "<li><span class=\"icon-ishop_4-01\"></span></li>";
     }
     function setPageList() {
-        if (pageSize == i) {
+        if (pageindex == i) {
             a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";
         } else {
             a[a.length] = "<li><span>" + i + "</span></li>";
@@ -77,12 +83,12 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
     }
     //总页数大于10页
     else {
-        if (pageSize <= 4) {
+        if (pageindex <= 4) {
             for (var i = 1; i <= 5; i++) {
                 setPageList();
             }
             a[a.length] = "...<li><span>" + count + "</span></li>";
-        }else if (pageSize >= count - 3) {
+        }else if (pageindex >= count - 3) {
             a[a.length] = "<li><span>1</span></li>...";
             for (var i = count - 4; i <= count; i++) {
                 setPageList();
@@ -90,13 +96,13 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
         }
         else { //当前页在中间部分
             a[a.length] = "<li><span>1</span></li>...";
-            for (var i = pageSize - 2; i <= pageSize + 2; i++) {
+            for (var i = pageindex - 2; i <= pageindex + 2; i++) {
                 setPageList();
             }
                 a[a.length] = "...<li><span>" + count + "</span></li>";
             }
         }
-    if (pageSize == count) {
+    if (pageindex == count) {
         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
     }else{
         a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
@@ -104,9 +110,7 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
     container.innerHTML = a.join("");
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
-        var inx = pageSize; //初始的页码
-        // console.log(inx);
-        // console.log(count);
+        var inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
         $(".foot-sum .zy").html("共 "+count+"页");
         oAlink[0].onclick = function() { //点击上一页
@@ -114,13 +118,15 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx--;
-            // setPage(container, count, inx);
+            dian(inx);
+            setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
-                // setPage(container, count, inx);
+                dian(inx);
+                setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
         }
@@ -129,22 +135,60 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
                 return false;
             }
             inx++;
-            // setPage(container, count, inx);
+            dian(inx);
+            setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
     }()
     function dian(inx){
-        var inx=inx;
         if(value==""){
-            GET(inx);
+            oc.postRequire("get","/user/role/list?pageNumber="+inx+"&pageSize="+pageSize
+                +"&funcCode="+funcCode+"","","",function(data){
+                    console.log(data);
+                    if(data.code=="0"){
+                        $(".table tbody").empty();
+                        var message=JSON.parse(data.message);
+                        var list=JSON.parse(message.list);
+                        var cout=list.pages;
+                        var list=list.list;
+                        superaddition(list,inx);
+                        jumpBianse();
+                    }else if(data.code=="-1"){
+                        // alert(data.message);
+                    }
+            });           
         }else if(value!==""){
-            POST(inx);
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            oc.postRequire("post","/corp/search","0",param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var list=JSON.parse(message.list);
+                    var cout=list.pages;
+                    var list=list.list;
+                    $(".table tbody").empty();
+                    if(list.length<=0){
+                        $(".table p").remove();
+                        $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                    }else if(list.length>0){
+                        $(".table p").remove();
+                        superaddition(list,inx);
+                        jumpBianse();
+                    }
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+            })        
         }
     }
 }
-function superaddition(data){//页面加载循环
-    console.log(data);
+function superaddition(data,num){//页面加载循环
     for (var i = 0; i < data.length; i++) {
+        if(num>=2){
+            var a=i+num*pageSize;
+        }else{
+            var a=i+1;
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -153,7 +197,7 @@ function superaddition(data){//页面加载循环
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + data[i].id
+                        + a
                         + "</td><td>"
                         + data[i].corp_name
                         + "</td><td>"
@@ -173,6 +217,7 @@ function superaddition(data){//页面加载循环
 };
 //权限配置
 function jurisdiction(actions){
+    $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
@@ -180,12 +225,19 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li class='bg' id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            //双击跳转
+            $(".table tbody tr").dblclick(function(){
+                var id=$(this).attr("id");
+                sessionStorage.setItem("id",id);
+                console.log(id);
+                $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+            })
         }
     }
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/role/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/user/role/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             console.log(data);
             if(data.code=="0"){
@@ -195,7 +247,7 @@ function GET(){
                 var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list);
+                superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -210,13 +262,6 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-    })
-    //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
@@ -237,11 +282,22 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
-        })
+        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
+    })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==1){
+            id=$(tr).attr("id");
+            sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+        }else if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+        }else if(tr.length>1){
+            frame();
+            $('.frame').html("不能选择多个");
+        }
     })
     //删除
     $("#remove").click(function(){
@@ -249,7 +305,8 @@ function jumpBianse(){
         var h=$(document.body).height();
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==0){
-            alert("请先选中所选项");
+            frame();
+            $('.frame').html("请先选择");
             return;
         }
         $("#p").show();
@@ -263,18 +320,17 @@ function jumpBianse(){
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
-    var param={};
     param["searchValue"]=value;
-    param["pageNumber"]=pageNumber;
+    param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        POST(param);
+        POST();
     }
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/role/search","0",param,function(data){
+    oc.postRequire("post","/corp/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -286,7 +342,9 @@ function POST(){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
             }else if(list.length>0){
-                superaddition(data)
+                $(".table p").remove();
+                superaddition(list,inx);
+                jumpBianse();
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
@@ -321,10 +379,29 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/role/delete","0",param,function(data){
-        console.log(data);
+    oc.postRequire("post","/corp/delete","0",param,function(data){
+        if(data.code=="0"){
+            if(value==""){
+               frame();
+               $('.frame').html('删除成功');
+               GET(); 
+            }else if(value!==""){
+               frame();
+               $('.frame').html('删除成功');
+               POST();
+            }
+        }
     })
-})  
+})
+//删除弹框
+ function frame(){
+    var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
+    $('.frame').remove();
+    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+    $(".frame").animate({opacity:"1"},1000);
+    $(".frame").animate({opacity:"0"},1000);
+} 
 //全选
 function checkAll(name){
     var el=$("tbody input");
