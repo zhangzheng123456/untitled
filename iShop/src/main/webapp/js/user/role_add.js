@@ -52,7 +52,7 @@ var oc = new ObjectControl();
 		return true;
 	};
 	rolejs.bindbutton=function(){
-		$(".oper_btn ul li:nth-of-type(1)").click(function(){
+		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
 			if(rolejs.firstStep()){
 				// var CORPID=$("#CORPID").val();
 				var ROLE_NUM=$("#ROLE_NUM").val();
@@ -71,13 +71,13 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"role_num":ROLE_NUM,"role_name":ROLE_NAME,"beizhu":BEIZHU,"check_per":check_per,"isactive":ISACTIVE};
+				var _params={"role_code":ROLE_NUM,"role_name":ROLE_NAME,"remark":BEIZHU,"isactive":ISACTIVE};
 				rolejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
-		$(".oper_btn ul li:nth-of-type(1)").click(function(){
+		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
 			if(rolejs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var ROLE_NUM=$("#ROLE_NUM").val();
@@ -96,7 +96,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"role_num":ROLE_NUM,"role_name":ROLE_NAME,"beizhu":BEIZHU,"check_per":check_per,"isactive":ISACTIVE};
+				var _params={"id":ID,"role_code":ROLE_NUM,"role_name":ROLE_NAME,"remark":BEIZHU,"isactive":ISACTIVE};
 				rolejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -109,21 +109,21 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
-				$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
-			}else if(data.code=="-1"){
-				// alert(data.message);
 				art.dialog({
 					time: 1,
 					lock:true,
 					cancel: false,
 					content: data.message
 				});
+				$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+			}else if(data.code=="-1"){
+				// alert(data.message);
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 			}
 		});
 	};
