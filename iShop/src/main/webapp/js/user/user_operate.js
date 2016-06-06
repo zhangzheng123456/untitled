@@ -487,12 +487,12 @@ jQuery(document).ready(function(){
 				}else if(msg.sex=="M"){
 					$("#USER_SEX").val("男");
 				}
-				if(msg.corp_code==''){
+				if(msg.store_code==''){
 					$("#select_ownshop").css("display","none");
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 					$("#OWN_RIGHT").val(msg.role.role_name);
 					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
-				}else if(msg.corp_code !==''){
+				}else if(msg.store_code !==''){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);

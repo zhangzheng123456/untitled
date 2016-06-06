@@ -92,11 +92,9 @@ var oc = new ObjectControl();
 			if(shopjs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
-				// var BRAND_ID=$("#BRAND_ID").val();
-				var OWN_BRAND=$("#OWN_BRAND").val();
-				// var AREA_ID=$("#AREA_ID").val();
+				var OWN_AREA=$("#OWN_AREA").data("myacode");
+				var OWN_BRAND=$("#OWN_BRAND").data("mybcode");
 				var STORE_ID=$("#STORE_ID").val();
-				var OWN_AREA=$("#OWN_AREA").val();
 				var STORE_NAME=$("#STORE_NAME").val();
 				var is_zhiying=$("#FLG_TOB").val();
 				var FLG_TOB="";
@@ -338,16 +336,6 @@ jQuery(document).ready(function(){
 	var checknow_data=[];
 	var checknow_namedata=[];
 	$("#OWN_BRAND").click(function(){
-		// var s=$("#OWN_BRAND").val();
-		// var c_input=$('.checkboxselect-container input');
-		// var ss = s.split(",");
-		// for(var i=0;i<ss.length;i++){
-		// 	for(var j=0;j<c_input.length;j++){
-		// 		if($(c_input[j]).val()==ss[i]){
-		// 			$(c_input[j]).attr("checked",true);
-		// 		}
-		// 	}
-		// }
 		$(".checkboxselect-container").html('');
 		var brand_param={"corp_code":$("#OWN_CORP").val()};
 		var brand_command="/shop/brand";
@@ -379,6 +367,19 @@ jQuery(document).ready(function(){
 							checknow_data.remove($(this).val());
 							$('#OWN_BRAND').val(checknow_namedata.toString());
 							$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
+						}
+					}
+				}
+				var s=$("#OWN_BRAND").data("mybcode");
+				var c_input=$('.checkboxselect-container input');
+				var ss = s.split(",");
+				for(var i=0;i<ss.length;i++){
+					for(var j=0;j<c_input.length;j++){
+						console.log($(c_input[j]).val());
+						console.log(ss[i]);
+						if($(c_input[j]).val()==ss[i]){
+							console.log($(c_input[j]).val());
+							$(c_input[j]).attr("checked",true);
 						}
 					}
 				}
