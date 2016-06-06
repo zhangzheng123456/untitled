@@ -51,6 +51,7 @@ function CheckboxSelect(opt){
     this.width = opt.width;
     this.opacity = opt.opacity;
     this.data = opt.data || [];
+    this.code=opt.code || [];
     this.checkboxdata = [];  //数组保存选中项的值
     this.arrayUrl = opt.arrayUrl || null;
     this.jsonUrl = opt.jsonUrl || null;
@@ -117,6 +118,7 @@ CheckboxSelect.prototype = {
             //获得新增的div元素
             container = this.container;
             //直接付给他CSS样式省去了定义CSS的步骤
+            container.id="brand_data";
             container.style.cssText =
                 'display:none;position: absolute;margin-left:78px;overflow:hidden;border: 1px solid #a9c9e2;margin-top:2px;background:#e8f5fe;width:'
                 // IE6/7/8/9/Chrome/Safari input[type=text] border默认为2，Firefox为1，因此取offsetWidth-2保证与FF一致
@@ -259,11 +261,3 @@ CheckboxSelect.prototype = {
         });
     }
 }
-jQuery(document).ready(function(){
-    $("#OWN_BRAND").click(function(){
-        $(".checkboxselect-container").toggle();
-    })
-    $("#OWN_BRAND").parent().children(".down_icon").click(function() {
-        $(".checkboxselect-container").toggle();
-    });
-});

@@ -22,8 +22,8 @@ public class User {
 	private String corp_code;
 	//店铺编号
 	private String store_code;
-	//角色编号
-	private String role_code;
+	//群组编号
+	private String group_code;
 	//上次登录时间
 	private String login_time_recently;
 	//修改时间
@@ -39,9 +39,9 @@ public class User {
 
 	private String store_name;
 
-	private String corp_name;
+	private Group group;
 
-	private Role role;
+	private Corp corp;
 
 	public User(){}
 
@@ -137,12 +137,12 @@ public class User {
 		this.store_code = store_code;
 	}
 
-	public String getRole_code() {
-		return role_code;
+	public String getGroup_code() {
+		return group_code;
 	}
 
-	public void setRole_code(String role_code) {
-		this.role_code = role_code;
+	public void setGroup_code(String group_code) {
+		this.group_code = group_code;
 	}
 
 	public String getLogin_time_recently() {
@@ -193,12 +193,12 @@ public class User {
 		this.isactive = isactive;
 	}
 
-	public Role getRole() {
-		return role;
+	public Group getGroup() {
+		return group;
 	}
 
-	public void setRole(Role role) {
-		this.role = role;
+	public void setGroup(Group group) {
+		this.group = group;
 	}
 
 	public String getStore_name() {
@@ -209,11 +209,11 @@ public class User {
 		this.store_name = store_name;
 	}
 
-	public String getCorp_name() {
-		return corp_name;
+	public Corp getCorp() {
+		return corp;
 	}
 
-	public void setCorp_name(String corp_name) {
-		this.corp_name = corp_name;
+	public void setCorp(Corp corp) {
+		this.corp = corp;
 	}
 }

@@ -11,6 +11,8 @@ public interface GroupMapper {
 
     List<Group> selectAllGroup(@Param("corp_code")String corp_code, @Param("search_value")String search_value);
 
+    Group selectCorpGroup(@Param("corp_code")String corp_code, @Param("group_code")String group_code);
+
     int insertGroup(Group record);
 
     int updateGroup(Group record);

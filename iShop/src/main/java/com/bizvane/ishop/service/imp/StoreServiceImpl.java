@@ -1,8 +1,11 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.AreaMapper;
+import com.bizvane.ishop.dao.BrandMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.dao.UserMapper;
+import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.StoreService;
@@ -27,6 +30,10 @@ public class StoreServiceImpl implements StoreService {
     private StoreMapper storeMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private BrandMapper brandMapper;
+    @Autowired
+    private AreaMapper areaMapper;
 
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
@@ -58,7 +65,24 @@ public class StoreServiceImpl implements StoreService {
     //根据id获取店铺信息
     @Override
     public Store getStoreById(int id) throws SQLException {
-        return this.storeMapper.selectByStoreId(id);
+        Store store = storeMapper.selectByStoreId(id);
+        String corp_code = store.getCorp_code();
+        String area_code = store.getArea_code();
+        String area_name = areaMapper.selectCorpArea(corp_code,area_code).getArea_name();
+        String brand_name = "";
+        System.out.println(store.getBrand_code());
+        String[] ids = store.getBrand_code().split(",");
+        for (int i = 0; i < ids.length; i++) {
+            Brand brand = brandMapper.selectCorpBrand(corp_code,ids[i]);
+            String brand_name1 = brand.getBrand_name();
+            brand_name = brand_name+brand_name1;
+            if(i!=ids.length-1){
+                brand_name = brand_name+",";
+            }
+        }
+        store.setBrand_name(brand_name);
+        store.setArea_name(area_name);
+        return store;
     }
 
     //list获取企业店铺

@@ -30,6 +30,10 @@ public class Store {
     //是否可用
     private String isactive;
 
+    private String brand_name;
+
+    private String area_name;
+
     private Corp corp;
 
     private Brand brand;
@@ -136,6 +140,22 @@ public class Store {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getBrand_name() {
+        return brand_name;
+    }
+
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
+    }
+
+    public String getArea_name() {
+        return area_name;
+    }
+
+    public void setArea_name(String area_name) {
+        this.area_name = area_name;
     }
 
     public Corp getCorp() {

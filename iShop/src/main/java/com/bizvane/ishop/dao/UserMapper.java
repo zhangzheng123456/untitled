@@ -24,4 +24,5 @@ public interface UserMapper {
 
     List<User> selectStoreUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
+    Object groupcheck_power();
 }

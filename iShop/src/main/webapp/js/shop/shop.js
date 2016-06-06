@@ -57,12 +57,10 @@ var oc = new ObjectControl();
 				var STORE_ID=$("#STORE_ID").val();
 				var STORE_NAME=$("#STORE_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_AREA=$("#OWN_AREA").val();
-				var OWN_BRAND=$("#OWN_BRAND").val();
+				var OWN_AREA=$("#OWN_AREA").data("myacode");
+				var OWN_BRAND=$("#OWN_BRAND").data("mybcode");
 				// var BRAND_ID=$("#BRAND_ID").val();
-				
 				// var AREA_ID=$("#AREA_ID").val();
-				
 				var is_zhiying=$("#FLG_TOB").val();
 				var FLG_TOB="";
 				if(is_zhiying=="是"){
@@ -197,12 +195,13 @@ jQuery(document).ready(function(){
 				console.log(msg);
 				var OWN_CORP_option=$('#OWN_CORP option');
 				$("#OWN_CORP").val(msg.corp_code);
-				$("#OWN_BRAND").val(msg.brand_code);
+				$("#OWN_BRAND").val(msg.brand_name);
+				$("#OWN_BRAND").attr("data-mybcode",msg.brand_code);
 				// $("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);
 				$("#STORE_NAME").val(msg.store_name);
 				$("#STORE_ID").val(msg.store_code);
-				$("#OWN_AREA option:nth-child(1)").val(msg.area_code);
-				$("#OWN_AREA option:nth-child(1)").html(msg.area_name);
+				$("#OWN_AREA").val(msg.area_name);
+				$("#OWN_AREA").attr("data-myacode",msg.area_code);
 				if(msg.flg_tob=="Y"){
 					$("#FLG_TOB").val("是");
 				}else if(msg.flg_tob=="N"){
@@ -255,6 +254,7 @@ jQuery(document).ready(function(){
 	});
 	$("#OWN_AREA").click(function(){
 		$("#area_select").html('');
+		 $(this).parent().children('ul').toggle();
 		var area_param={"corp_code":$("#OWN_CORP").val()};
 		var area_command="/shop/area";
 		oc.postRequire("post", area_command,"",area_param, function(data){
@@ -289,13 +289,72 @@ jQuery(document).ready(function(){
 			}
 		});
 	})
+	$(".shopadd_oper_btn ul li:nth-of-type(2").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
+	});
+	$(".shopedit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
+	});
 	$("#OWN_BRAND").click(function(){
+       $("#OWN_BRAND").parent().children("#brand_data").toggle();
+    })
+    $("#OWN_BRAND").parent().children(".down_icon").click(function() {
+    	$("#OWN_BRAND").parent().children("#brand_data").toggle();
+    });
+    var brandname=[];
+	$("#brand_data").remove();
+	var brand_param={"corp_code":$("#OWN_CORP").val()};
+	var brand_command="/shop/brand";
+	oc.postRequire("post", brand_command,"",brand_param, function(rdata){
+		console.log(rdata);
+		if(rdata.code=="0"){
+			var msg=JSON.parse(rdata.message);
+			console.log(msg);
+			var index=0;
+			var brand_html='';
+			var b=null;
+			for(index in msg.brands){
+				b=msg.brands[index];
+				brand_html+='<option value="'+b.brand_code+'">'+b.brand_name+'</option>';
+				brandname.push(b.brand_name);
+			}
+			var checkboxSelect = new CheckboxSelect({
+		        input:document.getElementById('OWN_BRAND'),
+		        hiddeninput:document.getElementById('hiddencheckboxSelect'),
+		        width:420,
+		        opacity:1,
+		        data:brandname,
+			});
+		console.log(brandname);
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+	var checknow_data=[];
+	var checknow_namedata=[];
+	$("#OWN_BRAND").click(function(){
+		// var s=$("#OWN_BRAND").val();
+		// var c_input=$('.checkboxselect-container input');
+		// var ss = s.split(",");
+		// for(var i=0;i<ss.length;i++){
+		// 	for(var j=0;j<c_input.length;j++){
+		// 		if($(c_input[j]).val()==ss[i]){
+		// 			$(c_input[j]).attr("checked",true);
+		// 		}
+		// 	}
+		// }
+		$(".checkboxselect-container").html('');
 		var brand_param={"corp_code":$("#OWN_CORP").val()};
 		var brand_command="/shop/brand";
-		oc.postRequire("post", brand_command,"",brand_param, function(data){
-			console.log(data);
-			if(data.code=="0"){
-				var msg=JSON.parse(data.message);
+		oc.postRequire("post", brand_command,"",brand_param, function(rdata){
+			console.log(rdata);
+			if(rdata.code=="0"){
+				var msg=JSON.parse(rdata.message);
 				console.log(msg);
 				var index=0;
 				var brand_html='';
@@ -303,7 +362,25 @@ jQuery(document).ready(function(){
 				for(index in msg.brands){
 					b=msg.brands[index];
 					// brand_html+='<option value="'+b.brand_code+'">'+b.brand_name+'</option>';
-					// brandname.push(b.brand_name);
+					brand_html+='<div class="checkboxselect-item"><input type="checkbox" value="'+b.brand_code+'" data-brandname="'+b.brand_name+'" style="-webkit-appearance: checkbox; width: 14px; height: 14px;">'+b.brand_name+'</div>';
+				}
+				$(".checkboxselect-container").html(brand_html);
+				var check_input=$('.checkboxselect-container input');
+				for(var c=0;c<check_input.length;c++){
+					check_input[c].onclick=function(){
+						if(this.checked==true){
+							checknow_data.push($(this).val())
+							checknow_namedata.push($(this).data("brandname"));
+							console.log(checknow_namedata);
+							$('#OWN_BRAND').val(checknow_namedata.toString());
+							$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
+						}else{
+							checknow_namedata.remove($(this).data("brandname"));
+							checknow_data.remove($(this).val());
+							$('#OWN_BRAND').val(checknow_namedata.toString());
+							$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
+						}
+					}
 				}
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -314,18 +391,6 @@ jQuery(document).ready(function(){
 				});
 			}
 		});
-	})
-	$(".shopadd_oper_btn ul li:nth-of-type(2").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
-	$(".shopedit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
-	});
-	var checkboxSelect = new CheckboxSelect({
-        input:document.getElementById('OWN_BRAND'),
-        // hiddeninput:document.getElementById('hiddencheckboxSelect'),
-        width:420,
-        opacity:1,
-        data:['JNBY','MO&CO','POO','安正',"玖姿"],
-    });
 });
+
