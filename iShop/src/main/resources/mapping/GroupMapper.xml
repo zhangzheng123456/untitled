@@ -30,6 +30,13 @@
         </if>
     </select>
 
+    <select id="selectCorpGroup" resultType="com.bizvane.ishop.entity.Group">
+        select *
+        from DEF_GROUP
+        where corp_code = #{corp_code}
+        AND group_code = #{group_code}
+    </select>
+
     <select id="selectAllGroup" resultMap="GroupInfo">
         select
         DEF_GROUP.id,
