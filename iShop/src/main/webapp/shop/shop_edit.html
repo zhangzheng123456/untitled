@@ -31,7 +31,7 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label>店仓编号</label><input type="text" id="STORE_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓编号不能为空！"></div></div></span>
+                        <span><label>店仓编号</label><input type="text" id="STORE_ID" style="background:#dfdfdf;" verify="Empty" readonly/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓编号不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span><label>店仓名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
@@ -139,6 +139,19 @@
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/shop/shop.js"></script>
+    <!-- multiple choice -->
+    <script type="text/javascript" src="../js/multiple_choice.js"></script>
+    <script type="text/javascript">
+        window.onload = function(){
+            var checkboxSelect = new CheckboxSelect({
+                input:document.getElementById('checkboxSelect'),
+                hiddeninput:document.getElementById('hiddencheckboxSelect'),
+                width:150,
+                opacity:0.9,
+                data:['北京','上海','南京'],
+            });
+        }
+    </script>
 </body>
 
 </html>
