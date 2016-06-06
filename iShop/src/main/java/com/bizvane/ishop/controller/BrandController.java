@@ -131,7 +131,7 @@ public class BrandController {
             JSONObject jsonObject = new JSONObject(message);
             Brand brand = new Brand();
             Date now = new Date();
-            brand.setId(Integer.parseInt(jsonObject.get(id).toString()));
+            brand.setId(Integer.parseInt(jsonObject.get("id").toString()));
             brand.setBrand_code(jsonObject.get("brand_code").toString());
             brand.setBrand_name(jsonObject.get("brand_name").toString());
             brand.setCorp_code(jsonObject.get("corp_code").toString());
