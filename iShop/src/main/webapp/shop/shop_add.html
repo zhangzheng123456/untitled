@@ -37,15 +37,14 @@
                             <li>
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex">
-                                        <option value="-1">请选择所属企业</option>
                                     </select>
                                 </span>
                             </li>
                         </ul>
                        <!--  <span><label>所属企业</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span> -->
                     </div>
-                    <div>
-                         <ul style="display:inline-flex;">
+                    <div id="dropdown">
+                         <!-- <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属区域</label></li>
                             <li>
                                 <span class="area_select">
@@ -54,8 +53,11 @@
                                     </select>
                                 </span>
                             </li>
+                        </ul> -->
+                        <span><label>所属区域</label><input type="text" id="OWN_AREA"  class="input_select"/><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
+                         <ul id="area_select" style="margin-left:80px">
                         </ul>
-                        <!-- <span><label>所属区域</label><input type="text" id="OWN_AREA" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属区域不能为空！"></div></div></span> -->
+                        </span>
                     </div>
                     <div>
                         <!-- <ul style="display:inline-flex;">
@@ -68,7 +70,7 @@
                                 </span>
                             </li>
                         </ul> -->
-                        <span><label>所属品牌</label><input type="text" id="OWN_BRAND" style="width:390px" name="checkboxSelect" /><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span></span>
+                        <span><label>所属品牌</label><input type="text" id="OWN_BRAND"  style="width:390px;border-radius: 4px 0px 0px 4px;" name="checkboxSelect" /><span class="down_icon"><i class="icon-ishop_8-02"></i></span></span>
                     </div>
                     <div id="dropdown" class="item_1">
                     <span><label>是否直营</label><input class="input_select" id="FLG_TOB" type="text" placeholder="请选择是否直营" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
@@ -123,17 +125,6 @@
     <script type="text/javascript" src="../js/shop/shop.js"></script>
     <!-- multiple choice -->
     <script type="text/javascript" src="../js/multiple_choice.js"></script>
-    <script type="text/javascript">
-        window.onload = function(){
-            var checkboxSelect = new CheckboxSelect({
-                input:document.getElementById('OWN_BRAND'),
-                // hiddeninput:document.getElementById('hiddencheckboxSelect'),
-                width:420,
-                opacity:1,
-                data:['JNBY','MO&CO','POO'],
-            });
-        }
-    </script>
 </body>
 
 </html>

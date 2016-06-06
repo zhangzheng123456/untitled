@@ -253,7 +253,8 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	setTimeout(function(){
+	$("#OWN_AREA").click(function(){
+		$("#area_select").html('');
 		var area_param={"corp_code":$("#OWN_CORP").val()};
 		var area_command="/shop/area";
 		oc.postRequire("post", area_command,"",area_param, function(data){
@@ -266,10 +267,18 @@ jQuery(document).ready(function(){
 				var a=null;
 				for(index in msg.areas){
 					a=msg.areas[index];
-					area_html+='<option value="'+a.area_code+'">'+a.area_name+'</option>';
+					area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';
 				}
-				$("#OWN_AREA").append(area_html);
-				$('.area_select select').searchableSelect();
+				$("#area_select").append(area_html);
+				$("#area_select li").click(function(){
+		            var this_=this;
+		            var txt = $(this_).text();
+		            var a_code=$(this_).data("areacode");
+		            $(this_).parent().parent().children(".input_select").val(txt);
+		            $(this_).parent().parent().children(".input_select").attr('data-myacode',a_code);
+		            $(this_).addClass('rel').siblings().removeClass('rel');
+		             $(this_).parent().toggle();
+		        });
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -279,37 +288,44 @@ jQuery(document).ready(function(){
 				});
 			}
 		});
+	})
+	$("#OWN_BRAND").click(function(){
 		var brand_param={"corp_code":$("#OWN_CORP").val()};
-			var brand_command="/shop/brand";
-			oc.postRequire("post", brand_command,"",brand_param, function(data){
-				console.log(data);
-				if(data.code=="0"){
-					var msg=JSON.parse(data.message);
-					console.log(msg);
-					var index=0;
-					var brand_html='';
-					var b=null;
-					for(index in msg.brands){
-						b=msg.brands[index];
-						brand_html+='<option value="'+b.brand_code+'">'+b.brand_name+'</option>';
-					}
-					$("#OWN_BRAND").append(brand_html);
-					$('.brand_select select').searchableSelect();
-				}else if(data.code=="-1"){
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content: data.message
-					});
+		var brand_command="/shop/brand";
+		oc.postRequire("post", brand_command,"",brand_param, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				var index=0;
+				var brand_html='';
+				var b=null;
+				for(index in msg.brands){
+					b=msg.brands[index];
+					// brand_html+='<option value="'+b.brand_code+'">'+b.brand_name+'</option>';
+					// brandname.push(b.brand_name);
 				}
-			});
-	},1000);
-		
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+			}
+		});
+	})
 	$(".shopadd_oper_btn ul li:nth-of-type(2").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
 	$(".shopedit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
+	var checkboxSelect = new CheckboxSelect({
+        input:document.getElementById('OWN_BRAND'),
+        // hiddeninput:document.getElementById('hiddencheckboxSelect'),
+        width:420,
+        opacity:1,
+        data:['JNBY','MO&CO','POO','安正',"玖姿"],
+    });
 });

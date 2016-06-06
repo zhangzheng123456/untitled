@@ -65,6 +65,7 @@ CheckboxSelect.prototype = {
         this.doc = window.document;
         //构造一个DIV元素
         this.container = this.$C('div');
+
         //设置div的样式
         this.attr(this.container, 'class', this.containerCls);
         //将div附在DOM文档中
@@ -75,6 +76,7 @@ CheckboxSelect.prototype = {
         this.on(input,'click',function(e){
             _this.onClick(e);
         });
+        $("#OWN_BRAND").parent().append(this.container);
         this.onMouseover();
         this.onMousedown();
         // blur会在click前发生，元素失去焦点
@@ -116,12 +118,9 @@ CheckboxSelect.prototype = {
             container = this.container;
             //直接付给他CSS样式省去了定义CSS的步骤
             container.style.cssText =
-                'position:absolute;overflow:hidden;border: 1px solid #a9c9e2;margin-top:2px;background:#e8f5fe;left:'
-                + pos[0] + 'px;top:'
-                //offsetHeight:获取对象相对于版面或由父坐标 offsetParent 属性指定的父坐标的高度
-                + (pos[1]+input.offsetHeight) + 'px;width:'
+                'display:none;position: absolute;margin-left:78px;overflow:hidden;border: 1px solid #a9c9e2;margin-top:2px;background:#e8f5fe;width:'
                 // IE6/7/8/9/Chrome/Safari input[type=text] border默认为2，Firefox为1，因此取offsetWidth-2保证与FF一致
-                + (brow.firefox ? input.clientWidth : input.offsetWidth-2) + 'px;';
+                + (brow.firefox ? input.clientWidth : input.offsetWidth-2) + 'px;height:146px;overflow-y: scroll;';
         if(width){
             container.style.width = width + 'px';
         }
@@ -184,6 +183,7 @@ CheckboxSelect.prototype = {
                 var tempinput = this.$C('input');
                 tempinput.type = 'checkbox';
                 tempinput.value = this.data[i];
+                tempinput.style='appearance:checkbox;-webkit-appearance:checkbox;width:14px;height:14px;-moz-appearance:checkbox;-ms-appearance:checkbox;';
                 this.on(tempinput,'click',function(e){
                     var target = e.target || e.srcElement;
                     if(target.checked){
@@ -261,6 +261,9 @@ CheckboxSelect.prototype = {
 }
 jQuery(document).ready(function(){
     $("#OWN_BRAND").click(function(){
-        $(".checkboxselect-container").slideToggle();
+        $(".checkboxselect-container").toggle();
     })
+    $("#OWN_BRAND").parent().children(".down_icon").click(function() {
+        $(".checkboxselect-container").toggle();
+    });
 });
