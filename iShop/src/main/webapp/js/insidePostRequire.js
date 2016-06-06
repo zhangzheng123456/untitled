@@ -1,4 +1,4 @@
-var ObjectControl = new Function();
+var ObjectControl = new Function()
 ObjectControl.prototype = {
 	postRequire:function(require_type,require_url,require_id,require_data,callback){
 		var _params = {

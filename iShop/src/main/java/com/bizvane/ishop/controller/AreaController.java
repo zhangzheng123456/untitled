@@ -131,7 +131,7 @@ public class AreaController {
             JSONObject jsonObject = new JSONObject(message);
             Area area = new Area();
             Date now = new Date();
-            area.setId(Integer.parseInt(jsonObject.get(id).toString()));
+            area.setId(Integer.parseInt(jsonObject.get("id").toString()));
             area.setArea_code(jsonObject.get("area_code").toString());
             area.setArea_name(jsonObject.get("area_name").toString());
             area.setCorp_code(jsonObject.get("corp_code").toString());
