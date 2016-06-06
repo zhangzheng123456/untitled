@@ -1,58 +1,62 @@
-var oc = new ObjectControl();
 $(function(){
-	var val=sessionStorage.getItem("key");
-    val=JSON.parse(val);
-    var message=JSON.parse(val.message);
-    console.log(val);
-    console.log(message);
-    var index=0;
-    var html =" ";
-    var li_html=" ";
-    var p=null;
-    for(index in message.menu){
-        var index_li=0;
-        p=message.menu[index];
-
-        if(p.functions.length!==0){
-            html +='<li>'
-            +'<a>'
-                +'<i class="'+p.icon+'"></i>'
-                +'<span class="nav-label">'+p.mod_name+'</span>'
-                +'<span class="fa arrow"></span>'
-            +'</a>'
-            +'<ul class="nav nav-second-level">';
-        }else{
-            html +='<li id="skip" data-url="'+p.url+'" data-func_code="'+p.func_code+'">'
-            +'<a href="../../navigation_bar.html" onclick="menuclick(this);">'
-                +'<i class="'+p.icon+'"></i>'
-                +'<span class="nav-label">'+p.mod_name+'</span>'
-            +'</a>'
-            +'<ul class="nav nav-second-level">';
-        }
-        if(p.functions.length!==0){
-            for(index_li in p.functions){
-                html +='<li data-url="'+p.functions[index_li].url+'" data-func_code="'+p.functions[index_li].func_code+'"><a href="../../navigation_bar.html" onclick="menuclick(this)">'+p.functions[index_li].fun_name+'</a>'
+    var oc = new ObjectControl();
+    var _command="/menu";
+    oc.postRequire("get", _command,"", "", function(data){
+        console.log(data);
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var index=0;
+            var html =" ";
+            var li_html=" ";
+            var p=null;
+            for(index in message.menu){
+                var index_li=0;
+                p=message.menu[index];
+                console.log(p.functions);
+                if(p.functions!==''){
+                    html +='<li>'
+                    +'<a>'
+                        +'<i class="'+p.icon+'"></i>'
+                        +'<span class="nav-label">'+p.mod_name+'</span>'
+                        +'<span class="fa arrow"></span>'
+                    +'</a>'
+                    +'<ul class="nav nav-second-level">';
+                    for(index_li in p.functions){
+                        html +='<li><a href="../../navigation_bar.html?url='+p.functions[index_li].url+'&func_code='+p.functions[index_li].func_code+'" >'+p.functions[index_li].fun_name+'</a></li>';
+                    }
+                }
+                else{
+                    html +='<li>'
+                    +'<a href="../../navigation_bar.html?url='+p.url+'&func_code='+p.func_code+'">'
+                        +'<i class="'+p.icon+'"></i>'
+                        +'<span class="nav-label">'+p.mod_name+'</span>'
+                    +'</a>'
+                    +'<ul class="nav nav-second-level">';
+                }
+                html +='</ul>'
                  +'</li>';
+
             }
+            $(html).insertAfter('.navbar-static-side .sidebar-collapse #side-menu .nav-header');
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock:true,
+                cancel: false,
+                content: data.message
+            });
         }
-        html +='</ul>'
-         +'</li>';
-
-    }
-    $(html).insertAfter('.navbar-static-side .sidebar-collapse #side-menu .nav-header');
+        $("#side-menu li").click(function(){
+            if($(this).children('ul').children('li').length>0){
+                $(this).children('ul').slideToggle();
+                $(this).siblings().children('ul').slideUp();
+            }
+            
+        });
+    });
 });
-function menuclick(obj){
-    location.href="../../navigation_bar.html";
-     _this=$(obj);
-    console.log(_this.parent().data("url"));
-    var skip_url=_this.parent().data("url");
-    var skip_funcode=_this.parent().data("func_code");
-    var key_val={"url":skip_url,"func_code":skip_funcode};
-
-    sessionStorage.setItem("key_val",JSON.stringify(key_val));
-}
 function login_out(){
     var _command="/login_out";
-    oc.postRequire("post", _command,"","", function(data){
+    oc.postRequire("get", _command,"", "", function(data){
     });
 }

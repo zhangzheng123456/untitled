@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.AreaMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.Area" id="Area">
+        <id column="id" property="id"/>
+        <result column="area_code" property="area_code"/>
+        <result column="area_name" property="area_name"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="isactive" property="isactive"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectByAreaId" resultType="com.bizvane.ishop.entity.Area">
+    select *
+    from DEF_AREA
+    where ID=#{id}
+    </select>
+
+    <select id="selectCorpArea" resultType="com.bizvane.ishop.entity.Area">
+        select *
+        from DEF_AREA
+        where CORP_CODE = #{corp_code}
+        AND area_code = #{area_code}
+         AND ISACTIVE = 'Y'
+    </select>
+
+    <select id="selectAllArea" resultMap="Area">
+        select
+        DEF_AREA.id,
+        area_code,
+        area_name,
+        DEF_AREA.corp_code,
+        DEF_AREA.modified_date,
+        DEF_AREA.modifier,
+        DEF_AREA.isactive,
+        DEF_CORP.CORP_NAME
+        from DEF_AREA,DEF_CORP
+        where DEF_AREA.CORP_CODE = DEF_CORP.CORP_CODE
+        <if test="corp_code != null and corp_code !=''">
+            AND DEF_AREA.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            OR area_code like #{search_value}
+            OR area_name like #{search_value}
+            OR DEF_AREA.CORP_CODE like #{search_value}
+            OR DEF_AREA.MODIFIED_DATE like #{search_value}
+            OR DEF_AREA.MODIFIER like #{search_value}
+            OR DEF_AREA.ISACTIVE like #{search_value}
+        </if>
+        ORDER BY DEF_AREA.ID
+    </select>
+
+    <delete id="deleteByAreaId">
+        delete from
+        DEF_AREA
+        where ID=#{id}
+    </delete>
+
+    <insert id="insertArea" parameterType="com.bizvane.ishop.entity.Area">
+        insert into DEF_AREA
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="area_code!=null">
+                area_code,
+            </if>
+            <if test="area_name!=null">
+                area_name,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+           <if test="area_code!=null">
+                #{area_code},
+            </if>
+            <if test="area_name!=null">
+                #{area_name},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateArea" parameterType="com.bizvane.ishop.entity.Area">
+        UPDATE DEF_AREA
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="area_code!=null and area_code!=''">
+                area_code=#{area_code},
+            </if>
+            <if test="area_name!=null and area_name!=''">
+                area_name=#{area_name},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+</mapper>

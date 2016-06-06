@@ -18,5 +18,4 @@ public interface CorpMapper {
     int updateByCorpId(Corp record);
 
     int deleteByCorpId(Integer id);
-
 }

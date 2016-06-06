@@ -129,12 +129,30 @@
     USER_CODE = #{0} AND CORP_CODE = #{1}
    </select>
 
-    <select id="selectStoreUser" resultType="com.bizvane.ishop.entity.User">
-        SELECT *
-        FROM DEF_USER
-        WHERE CORP_CODE = #{corp_code}
+    <select id="selectStoreUser" resultMap="UserInfo">
+        SELECT
+        DEF_USER.id,
+        user_code,
+        user_name,
+        sex,
+        avatar,
+        phone,
+        email,
+        birthday,
+        password,
+        login_time_recently,
+        DEF_USER.role_code,
+        DEF_USER.modified_date,
+        DEF_USER.modifier,
+        DEF_USER.created_date,
+        DEF_USER.creater,
+        DEF_USER.isactive,
+        DEF_ROLE.role_name
+        FROM DEF_USER,DEF_ROLE
+        where DEF_USER.role_code = DEF_ROLE.role_code
+        AND CORP_CODE = #{corp_code}
         AND store_code like #{search_value}
-        AND ISACTIVE = 'Y'
+        AND DEF_USER.ISACTIVE = 'Y'
     </select>
 
     <delete id="deleteByUserId">
@@ -188,7 +206,7 @@
                 MODIFIER,
             </if>
             <if test="created_date != null">
-                CREATED_DATE,
+                CREATED_DATE
             </if>
             <if test="creater != null">
                 CREATER,

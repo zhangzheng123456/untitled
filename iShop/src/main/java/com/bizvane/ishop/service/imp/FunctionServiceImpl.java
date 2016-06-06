@@ -153,16 +153,14 @@ public class FunctionServiceImpl implements FunctionService {
      */
     public JSONArray selectActionByFun(int user_id, String role_code, String function_code) {
         List<Action> act_info;
-        if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+        if (role_code.equals(Common.ROLE_SYS)) {
             act_info = functionMapper.selectAllAction(function_code);
-
         } else {
             act_info = functionMapper.selectActionByFun(user_id, role_code, function_code);
         }
         JSONArray actions = new JSONArray();
         for (int i = 0; i < act_info.size(); i++) {
             String act = act_info.get(i).getAction_name();
-
             JSONObject obj = new JSONObject();
             obj.put("act_name", act);
             actions.add(obj);

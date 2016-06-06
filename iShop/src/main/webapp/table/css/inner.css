@@ -84,29 +84,27 @@ input::-webkit-input-placeholder{
 	border-radius:0 5px 5px 0px;
 	position: absolute;
 	top: 0px;
-	right: -20px;
+	right: -15px;
 	text-align: center;
 	line-height: 30px;
 	color:#fff;
 }
-.drop_down{
-	position:absolute;
+.drop_dowm{
+	position: absolute;
+	left: 72px;
 	top:31px;
-	left: 70px;
-	width: 175px;
-	background-color: #e8f5fe;
+	width: 165px;
+	background-color:#e8f5fe;
+	border: 1px solid #a9c9e2;
 	z-index: 5;
-	border:1px solid #a9c9e2;
-	display: none;
 }
-.drop_down .lie{
-	width: 160px;
+.lie{
+	width: 150px;
 	height: 30px;
-	line-height: 30px;
 	padding-left: 15px;
 }
-.drop_down .lie:hover{
-	background-color: #6cc1c8;
+.lie:hover{
+	background-color:#6cc1c8;
 }
 .list .list_l li input{
 	width: 195px;

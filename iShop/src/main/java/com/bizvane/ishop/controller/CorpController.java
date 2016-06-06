@@ -5,15 +5,15 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -35,12 +36,14 @@ import java.util.Date;
 @RequestMapping("/corp")
 public class CorpController {
 
-    private static Logger logger = LoggerFactory.getLogger((CorpController.class));
+    private static final Logger logger = Logger.getLogger(CorpController.class);
 
     String id;
 
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private StoreService storeService;
     @Autowired
     private FunctionService functionService;
 
@@ -60,7 +63,7 @@ public class CorpController {
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
 
             JSONObject info = new JSONObject();
-            if (role_code.contains(Common.ROLE_SYS_HEAD)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员(官方画面)
                 int page_number = Integer.parseInt(request.getParameter("pageNumber"));
                 int page_size = Integer.parseInt(request.getParameter("pageSize"));
@@ -102,6 +105,7 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             Corp corp = new Corp();
+            //为新增企业，计算corp_code
             String max_code = corpService.selectMaxCorpCode();
             int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
             Integer c = code;
@@ -276,39 +280,32 @@ public class CorpController {
     }
 
     /**
-     * 输入企业编号时
-     * 判断企业编号是否存在
+     * 查看企业所有店铺
      */
-    @RequestMapping(value = "/exist", method = RequestMethod.POST)
+    @RequestMapping(value = "/store", method = RequestMethod.POST)
     @ResponseBody
-    public String corpExist(HttpServletRequest request) {
+    public String getStore(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-
             String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject msg = new JSONObject(message);
-            String corp_code = msg.get("corp_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code);
-            if(corp==null){
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("该企业编号不存在！");
-            }else{
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("企业编号可用");
-            }
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<Store> list = storeService.getAllStore(page_number, page_size, corp_code, "");
+            result.put("stores", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
-
     }
 }

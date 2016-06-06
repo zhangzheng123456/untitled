@@ -10,7 +10,7 @@ key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 console.log(funcCode);
 //模仿select
-$(function(){  
+$(function(){
         $("#page_row").click(function(){
 
             if("block" == $("#liebiao").css("display")){  
@@ -152,7 +152,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }else if(data.code=="-1"){
                         // alert(data.message);
@@ -173,7 +173,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
                     }else if(list.length>0){
                         $(".table p").remove();
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }
                 }else if(data.code=="-1"){
@@ -183,9 +183,14 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }
     }
 }
-function superaddition(data){//页面加载循环
+function superaddition(data,num){//页面加载循环
     console.log(data);
     for (var i = 0; i < data.length; i++) {
+        if(num>=2){
+            var a=i+num*pageSize;
+        }else{
+            var a=i+1;
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -199,18 +204,14 @@ function superaddition(data){//页面加载循环
                         + data[i].store_code
                         + "</td><td>"
                         + data[i].store_name
-                        + "</td><td class='staff'><a href='javascript:void(0)'>"
-                        + '查看'
+                        + "</td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
+                        +"查看"
                         + "</a></td><td>"
-                        + data[i].store_area
-                        +"</td><td>"
-                        +data[i].brand_code
+                        + data[i].area.area_name
                         + "</td><td>"
-                        +data[i].brand_name
+                        +data[i].corp.corp_name
                         + "</td><td>"
-                        +data[i].corp_code
-                        + "</td><td>"
-                        +data[i].creater
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -243,7 +244,7 @@ function GET(){
                 var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list);
+                superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -286,7 +287,6 @@ function jumpBianse(){
     //点击新增时页面进行的跳转
     $('#add').click(function(){
             $(window.parent.document).find('#iframepage').attr("src","/shop/shop_add.html");
-            sessionStorage.removeItem('id');
         })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -300,7 +300,7 @@ function jumpBianse(){
             $('.frame').html("请先选择");
         }else if(tr.length>1){
             frame();
-            $('.frame').html("不能选着多个");
+            $('.frame').html("不能选择多个");
         }
     })
     //删除
@@ -348,7 +348,17 @@ function jumpBianse(){
             }
         })
     })
+    //查看员工跳转查看员工页面
     $('.staff').click(function(){
+        if(event.stopPropagation){
+            event.stopPropagation();
+        }else{
+            event.cancelBubble=true;
+        }
+        var store_code=$(this).parents('tr').find("td:eq(2)").html();
+        var corp_code=$(this).attr("data-code");
+        var store_corp={"store_code":store_code,"corp_code":corp_code};
+        sessionStorage.setItem("store_corp",JSON.stringify(store_corp));
         $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })
 }
@@ -380,7 +390,7 @@ function POST(){
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list);
+                superaddition(list,inx);
                 jumpBianse();
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);

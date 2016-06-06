@@ -242,9 +242,9 @@ function selectownrole(obj){
 }
 function addshopselect(){
 		var k=$("#shop_list div").length;
-		$(".shop_list").append('<div>'
+		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownshop(this)">'
-                +'<input class="input_select"  type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
             +'</span>'
@@ -265,12 +265,12 @@ function role_li_list(){
 			if(addtype.isAdmin=="Y"){
 				r_code=addtype.role_code;
 				c_code="";
-				role_data();
+				role_data(r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
-				if($("#OWN_CORP").val()!==''){
+				if($('.corp_select select').val()!==''){
 					r_code=addtype.role_code;
-					c_code=$("#OWN_CORP").val();
-					role_data();
+					c_code=$('.corp_select select').val();
+					role_data(r_code,c_code);
 				}else{
 					art.dialog({
 						time: 1,
@@ -281,16 +281,16 @@ function role_li_list(){
 				}
 			}
 		}else{
-			c_code=$("#OWN_CORP").val();
+			c_code=$('.corp_select select').val();
 			r_code=addtype.role_code;
-			role_data();
+			role_data(r_code,c_code);
 		}
 	}else{
-		role_data();
+		role_data(r_code,c_code);
 	}
 }
-function role_data(){
-	var _params={"role_code":r_code,"corp_code":c_code};
+function role_data(r,c){
+	var _params={"role_code":r,"corp_code":c};
 	var _command="/user/role";
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
@@ -319,17 +319,18 @@ function role_data(){
 function store_li_list(p) {
 	var addtype=sessionStorage.getItem("addtype");
 	addtype=JSON.parse(addtype);
+	console.log(addtype.role_code);
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
 				r_code=addtype.role_code;
 				c_code="";
-				store_data(p);
+				store_data(p,r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
-				if($("#OWN_CORP").val()!==''){
+				if($('.corp_select select').val()!==''){
 					r_code=addtype.role_code;
-					c_code=$("#OWN_CORP").val();
-					store_data(p);
+					c_code=$('.corp_select select').val();
+					store_data(p,r_code,c_code);
 				}else{
 					art.dialog({
 						time: 1,
@@ -340,16 +341,16 @@ function store_li_list(p) {
 				}
 			}
 		}else{
-			c_code=$("#OWN_CORP").val();
+			c_code=$('.corp_select select').val();
 			r_code=addtype.role_code;
-			store_data(p);
+			store_data(p,r_code,c_code);
 		}
 	}else{
-		store_data(p);
+		store_data(p,r_code,c_code);
 	}
 }
-function store_data(p){
-	var _params={"role_code":r_code,"corp_code":c_code};
+function store_data(p,r,c){
+	var _params={"role_code":r,"corp_code":c};
 	console.log(_params);
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
@@ -385,12 +386,37 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
-				$("#OWN_CORP").parent().parent().css("display","none");
+				$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 				$("#select_ownshop").css("display","none");
 			}else if(addtype.isAdmin=="N"){
-				$("#OWN_CORP").parent().parent().css("display","block");
+				$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 				$("#select_ownshop").css("display","block");
 			}
+			var _command="/user/getCorpByUser";
+			oc.postRequire("post", _command,"", "", function(data){
+				console.log(data);
+				if(data.code=="0"){
+					var msg=JSON.parse(data.message);
+					console.log(msg);
+					var index=0;
+					var corp_html='';
+					var c=null;
+					for(index in msg.corps){
+						c=msg.corps[index];
+						corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+					}
+					$("#OWN_CORP").append(corp_html);
+					$('.corp_select select').searchableSelect();
+				}else if(data.code=="-1"){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: data.message
+					});
+				}
+			});
+			
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
@@ -401,17 +427,43 @@ jQuery(document).ready(function(){
 				console.log(data);
 				$("#OWN_CORP").val(data.message);
 			});
+
 		}
 
 	}else if($(".pre_title label").text()=="编辑用户信息"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
-			$("#OWN_CORP").parent().parent().css("display","none");
-			$("#select_ownshop").css("display","none");
+			$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
+			$("#select_ownshop").css("display","block");
+			var _command="/user/getCorpByUser";
+			oc.postRequire("post", _command,"", "", function(data){
+				console.log(data);
+				if(data.code=="0"){
+					var msg=JSON.parse(data.message);
+					console.log(msg);
+					var index=0;
+					var corp_html='';
+					var c=null;
+					for(index in msg.corps){
+						c=msg.corps[index];
+						corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+					}
+					$("#OWN_CORP").append(corp_html);
+					$('.corp_select select').searchableSelect();
+				}else if(data.code=="-1"){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: data.message
+					});
+				}
+			});
 		}else{
+			$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
-			$("#select_ownshop").css("display","block");
+			$("#select_ownshop").css("display","none");
 		}
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
@@ -437,11 +489,11 @@ jQuery(document).ready(function(){
 				}
 				if(msg.corp_code==''){
 					$("#select_ownshop").css("display","none");
-					$("#OWN_CORP").parent().parent().css("display","none");
+					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 					$("#OWN_RIGHT").val(msg.role.role_name);
 					$("#OWN_RIGHT").attr("data-myrcode",msg.role.role_code);
 				}else if(msg.corp_code !==''){
-					$("#OWN_CORP").parent().parent().css("display","block");
+					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
 					$("#OWN_RIGHT").val(msg.role.role_name);
@@ -458,9 +510,9 @@ jQuery(document).ready(function(){
 						$("#OWN_STORE").attr("data-myscode",storecode_list[0]);
 						var html='';
 						for(var i=1;i<store_lists.length;i++){
-							html +='<div>'
+							html +='<div id="per_type">'
 					            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
-					                +'<input class="input_select"  type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+					                +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 					                +'<ul style="margin-left:0px">'
 					                +'</ul>'
 					            +'</span>'
@@ -493,25 +545,34 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-	$("#OWN_CORP").focus(function() {
-		interval = setInterval(function() {
-			$("#OWN_CORP").blur(function(){
-				var this_code=$(this).val();
-			  	var _params={"corp_code":this_code};
-				var _command="/corp/exist";
-				oc.postRequire("post", _command,"", _params, function(data){
-					if(data.code=="-1"){
-						art.dialog({
-							time: 1,
-							lock:true,
-							cancel: false,
-							content: "该企业编号以存在，请重新输入！"
-						});
-					}
-				});
-			});
-		}, 500);
-	}).blur(function(event) {
-		clearInterval(interval);
+	// $("#OWN_CORP").focus(function() {
+	// 	interval = setInterval(function() {
+	// 		$("#OWN_CORP").blur(function(){
+	// 			var this_code=$(this).val();
+	// 		  	var _params={"corp_code":this_code};
+	// 			var _command="/corp/exist";
+	// 			oc.postRequire("post", _command,"", _params, function(data){
+	// 				if(data.code=="-1"){
+	// 					art.dialog({
+	// 						time: 1,
+	// 						lock:true,
+	// 						cancel: false,
+	// 						content: "该企业编号以存在，请重新输入！"
+	// 					});
+	// 				}
+	// 			});
+	// 		});
+	// 	}, 500);
+	// }).blur(function(event) {
+	// 	clearInterval(interval);
+	// });
+	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
+	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+	});
+
+	
+	
 });

@@ -144,4 +144,5 @@
         DEF_CORP
         where ID = #{id}
     </delete>
+
 </mapper>

@@ -65,7 +65,6 @@ public class GoodsController {
         return "";
     }
 
-
     /**
      * 秀搭管理
      */
@@ -74,6 +73,5 @@ public class GoodsController {
     public String showMatchManage(HttpServletRequest request) {
         return "xiuda";
     }
-
 
 }

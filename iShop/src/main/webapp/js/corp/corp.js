@@ -151,7 +151,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }else if(data.code=="-1"){
                         // alert(data.message);
@@ -172,7 +172,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
                     }else if(list.length>0){
                         $(".table p").remove();
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }
                 }else if(data.code=="-1"){
@@ -182,9 +182,13 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }
     }
 }
-function superaddition(data){//页面加载循环
-    console.log(data);
+function superaddition(data,num){//页面加载循环
     for (var i = 0; i < data.length; i++) {
+        if(num>=2){
+            var a=i+num*pageSize;
+        }else{
+            var a=i+1;
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -193,7 +197,7 @@ function superaddition(data){//页面加载循环
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + data[i].id
+                        + a
                         + "</td><td>"
                         + data[i].corp_name
                         + "</td><td>"
@@ -221,6 +225,13 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li class='bg' id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            //双击跳转
+            $(".table tbody tr").dblclick(function(){
+                var id=$(this).attr("id");
+                sessionStorage.setItem("id",id);
+                console.log(id);
+                $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
+            })
         }
     }
 }
@@ -228,7 +239,7 @@ function jurisdiction(actions){
 function GET(){
     oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
+            // console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
@@ -236,7 +247,7 @@ function GET(){
                 var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list);
+                superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -251,13 +262,6 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-    })
-    //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
@@ -278,7 +282,6 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        sessionStorage.removeItem('id');
         $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
     })
     //点击编辑时页面进行的跳转
@@ -293,7 +296,7 @@ function jumpBianse(){
             $('.frame').html("请先选择");
         }else if(tr.length>1){
             frame();
-            $('.frame').html("不能选着多个");
+            $('.frame').html("不能选择多个");
         }
     })
     //删除
@@ -340,7 +343,7 @@ function POST(){
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list);
+                superaddition(list,inx);
                 jumpBianse();
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);

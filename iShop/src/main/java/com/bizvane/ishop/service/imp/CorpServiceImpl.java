@@ -46,6 +46,14 @@ public class CorpServiceImpl implements CorpService {
     }
 
     /**
+     *显示所有企业
+     */
+    public List<Corp> selectAllCorp() throws SQLException {
+         List<Corp> list=corpMapper.selectAllCorp("");
+        return list;
+    }
+
+    /**
      * 查找最大的corp_code
      * 以便新增企业时
      * 自动生成corp_code
@@ -53,4 +61,5 @@ public class CorpServiceImpl implements CorpService {
     public String selectMaxCorpCode() {
         return corpMapper.selectMaxCorpCode();
     }
+
 }

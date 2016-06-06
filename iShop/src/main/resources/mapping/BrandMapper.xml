@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.BrandMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.Brand" id="Brand">
+        <id column="id" property="id"/>
+        <result column="brand_code" property="brand_code"/>
+        <result column="brand_name" property="brand_name"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="isactive" property="isactive"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectByBrandId" resultType="com.bizvane.ishop.entity.Brand">
+    select *
+    from DEF_BRAND
+    where ID=#{id}
+    </select>
+
+    <select id="selectCorpBrand" resultType="com.bizvane.ishop.entity.Brand">
+        select *
+        from DEF_BRAND
+        where CORP_CODE = #{corp_code}
+        AND BRAND_CODE = #{brand_code}
+         AND ISACTIVE = 'Y'
+    </select>
+
+    <select id="selectAllBrand" resultMap="Brand">
+        select
+        DEF_BRAND.id,
+        brand_code,
+        brand_name,
+        DEF_BRAND.corp_code,
+        DEF_BRAND.modified_date,
+        DEF_BRAND.modifier,
+        DEF_BRAND.isactive,
+        DEF_CORP.CORP_NAME
+        from DEF_BRAND,DEF_CORP
+        where DEF_BRAND.CORP_CODE = DEF_CORP.CORP_CODE
+        <if test="corp_code != null and corp_code !=''">
+            AND DEF_BRAND.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            OR BRAND_CODE like #{search_value}
+            OR BRAND_NAME like #{search_value}
+            OR DEF_BRAND.CORP_CODE like #{search_value}
+            OR DEF_BRAND.MODIFIED_DATE like #{search_value}
+            OR DEF_BRAND.MODIFIER like #{search_value}
+            OR DEF_BRAND.ISACTIVE like #{search_value}
+        </if>
+        ORDER BY DEF_BRAND.ID
+    </select>
+
+    <delete id="deleteByBrandId">
+        delete from
+        DEF_BRAND
+        where ID=#{id}
+    </delete>
+
+    <insert id="insertBrand" parameterType="com.bizvane.ishop.entity.Brand">
+        insert into DEF_BRAND
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="brand_code!=null">
+                brand_code,
+            </if>
+            <if test="brand_name!=null">
+                brand_name,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+           <if test="brand_code!=null">
+                #{brand_code},
+            </if>
+            <if test="brand_name!=null">
+                #{brand_name},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateBrand" parameterType="com.bizvane.ishop.entity.Brand">
+        UPDATE DEF_BRAND
+        <trim prefix="SET" suffixOverrides=","><if test="brand_code!=null and brand_code!=''">
+                brand_code=#{brand_code},
+            </if>
+            <if test="brand_name!=null and brand_name!=''">
+                brand_name=#{brand_name},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+</mapper>

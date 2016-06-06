@@ -63,7 +63,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==false){
+				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
 				var _command="/corp/add";//接口名
@@ -90,7 +90,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==false){
+				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
 				var _command="/corp/edit";//接口名
@@ -199,4 +199,10 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
+	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+	});
+	$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+	});
 });

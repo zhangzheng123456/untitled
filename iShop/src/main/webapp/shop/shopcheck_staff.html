@@ -18,17 +18,17 @@
     		<div class="action">
     			<div class="action_l">
                     <ul id="jurisdiction">
-                        <!-- <li id="add">
+                       <!--  <li id="add">
                             <a href="javascript:void(0);">
                                 <span class="icon-ishop_6-01"></span>
                                 新增
                             </a>
-                        </li>
-                        <li class="bg" id="remove">
+                        </li> -->
+                        <li id="remove">
                             <span class="icon-ishop_6-02"></span>
                             删除
                         </li>
-                        <li id="compile">
+                        <!-- <li id="compile">
                             <a href="javascript:void(0);">
                                 <span class="icon-ishop_6-03"></span>
                                 编辑
@@ -106,241 +106,23 @@
     			<table id="table" cellpadding="0" cellspacing="0" width="100%">
                  	<thead>
                  		<tr class="th">
-                 			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
-                 			<th style="text-align: left;">序号</th>
-                 			<th>员工编号</th>
-                 			<th>职位</th>
-							<th>员工ID</th>
-							<th>员工名称</th>
-							<th>员工类型</th>
-							<th>手机号</th>
-							<th>测试手机号</th>
-							<th>所属店仓编号</th>
-							<th>所属企业代码</th>
-							<th>可登录</th>
-							<th width="50px;">可用</th>
-                 		</tr>
+                            <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                            <th style="text-align: left;">序号</th>
+                            <th>头像</th>
+                            <th>姓名</th>
+                            <th>性别</th>
+                            <th>手机</th>
+                            <th>最后登录</th>
+                            <th>所属角色</th>
+                            <th>修改人</th>
+                            <th>修改时间</th>    
+                            <th width="50px;">可用</th>
+                        </tr>
                  	</thead>
                     <tbody>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">1</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput2"/><label for="checkboxTwoInput2"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">2</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput3"/><label for="checkboxTwoInput3"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">3</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput4"/><label for="checkboxTwoInput4"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">4</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput5"/><label for="checkboxTwoInput5"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">5</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput6"/><label for="checkboxTwoInput6"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">6</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput7"/><label for="checkboxTwoInput7"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">7</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput8"/><label for="checkboxTwoInput8"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">8</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput9"/><label for="checkboxTwoInput9"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">9</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput10"/><label for="checkboxTwoInput10"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">10</td>
-                    		<td>AHMA1002</td>
-                    		<td>经理</td>
-                    		<td>9813</td>
-                    		<td>李彩云</td>
-                    		<td>普通员工</td>
-                    		<td>18651684281</td>
-                    		<td>18651684281</td>
-                    		<td>KHB00065</td>
-                    		<td>KHB00065</td>
-                    		<td>是</td>
-                    		<td width="50px">可用</td>
-                    	</tr>																					
+                    																		
                     </tbody>
     			</table>
-    		</div>
-    		<div class="footer">
-    			<ul>
-    				<li class="foot-jum">
-    					<span>跳转至</span>
-    					<input class="input-txt" value="36" id="input-txt">
-    					<em>页</em>
-    				</li>
-    				<li class="foot-num" >
-    					<ul id="foot-num">
-    						<li class="icon-ishop_4-01" style="color: #afafaf">
-    							
-    						</li>
-    						<li>
-                                <span class="p-bg">1</span>
-    						</li>
-    						<li>
-    							<span>2</span>
-    						</li>
-    						<li>
-    							<span>3</span>
-    						</li>
-    						<li>
-    							<span>4</span>
-    						</li>
-    						<li>
-    							<span>5</span>
-    						</li>
-    						<li class="icon-ishop_4-02">
-    							
-    						</li>
-    					</ul>
-    				</li>
-    				<li class="foot-sum">
-    					<div class="page_p">
-    						<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
-                            <ul class="liebiao" style="display:none;" id="liebiao">
-                                <li id="10">10行/页</li>
-                                <li id="30">30行/页</li>
-                                <li id="50">50行/页</li>
-                                <li id="100">100行/页</li>
-                            </ul>
-						    <span class="icon-ishop_8-02 icon"></span>
-    					</div>
-						<span class="zy">共 75 页</span>
-    				</li>
-    			</ul>
     		</div>
     	</div>
     </div>
@@ -361,6 +143,7 @@
             <span class="icon-ishop_4-04"></span>
         </div>
     </div>
+    <script src="/js/postRequire.js"></script>
     <script src="/js/shop/shopcheck_staff.js"></script>
     <script type="text/javascript">
         $(function(){

@@ -2,59 +2,76 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.StoreMapper">
 
-    <select id="selectByStoreId" resultType="com.bizvane.ishop.entity.Store">
-        select *
-        from DEF_STORE
-        where ID=#{id}
-    </select>
 
+    <resultMap type="com.bizvane.ishop.entity.Store" id="Store">
+        <id column="id" property="id"/>
+        <result column="store_code" property="store_code"/>
+        <result column="store_name" property="store_name"/>
+        <result column="brand_code" property="brand_code"/>
+        <result column="area_code" property="area_code"/>
+        <result column="flg_tob" property="flg_tob"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="isactive" property="isactive"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+        <association property="area" javaType="com.bizvane.ishop.entity.Area">
+            <result column="area_name" property="area_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectByStoreId" resultType="com.bizvane.ishop.entity.Store">
+    select *
+    from DEF_STORE
+    where ID=#{id}
+    </select>
     <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE
         where CORP_CODE = #{corp_code}
         AND STORE_CODE = #{store_code}
-        AND ISACTIVE = 'Y'
+         AND ISACTIVE = 'Y'
     </select>
-
-    <select id="selectAllStore" resultType="com.bizvane.ishop.entity.Store">
-        select *
-        from DEF_STORE
-        where 1 = 1
+    <select id="selectAllStore" resultMap="Store">
+        select
+        DEF_STORE.id,
+        store_code,
+        store_name,
+        brand_code,
+        flg_tob,
+        DEF_STORE.AREA_CODE,
+        DEF_STORE.corp_code,
+        DEF_STORE.modified_date,
+        DEF_STORE.modifier,
+        DEF_STORE.isactive,
+        DEF_CORP.CORP_NAME,
+        DEF_AREA.AREA_NAME
+        from DEF_STORE,DEF_CORP,DEF_AREA
+        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
         <if test="corp_code != null and corp_code !=''">
-            AND CORP_CODE = #{corp_code}
+            AND DEF_STORE.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND STORE_CODE like #{search_value}
-            OR ID like #{search_value}
+            OR DEF_STORE.ID like #{search_value}
             OR STORE_NAME like #{search_value}
-            OR BRAND_CODE like #{search_value}
-            OR BRAND_NAME like #{search_value}
-            OR STORE_AREA like #{search_value}
-            OR CORP_CODE like #{search_value}
-            OR MODIFIED_DATE like #{search_value}
-            OR MODIFIER like #{search_value}
-            OR ISACTIVE like #{search_value}
+            OR  DEF_AREA.AREA_NAME like #{search_value}
+            OR DEF_STORE.CORP_CODE like #{search_value}
+            OR DEF_STORE.MODIFIED_DATE like #{search_value}
+            OR DEF_STORE.MODIFIER like #{search_value}
+            OR DEF_STORE.ISACTIVE like #{search_value}
         </if>
-        ORDER BY ID
+        ORDER BY DEF_STORE.ID
     </select>
 
     <select id="selectByUserId" resultType="com.bizvane.ishop.entity.Store">
         select *
-        from DEF_STORE
-        WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
+         from DEF_STORE
+         WHERE POSITION(STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
     </select>
-    <delete id="deleteByStoreId">
-        delete from
-        DEF_STORE
-        where ID=#{id}
-    </delete>
-
-    <update id="deleteStoreByUser_id">
-        update DEF_USER
-        set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'')
-        where id=#{user_id}
-    </update>
-
 
     <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
         insert into DEF_STORE
@@ -68,11 +85,8 @@
             <if test="brand_code!=null">
                 brand_code,
             </if>
-            <if test="brand_name!=null">
-                brand_name,
-            </if>
-            <if test="store_area!=null">
-                store_area,
+            <if test="area_code!=null">
+                area_code,
             </if>
             <if test="corp_code!=null">
                 corp_code,
@@ -106,11 +120,8 @@
             <if test="brand_code!=null">
                 #{brand_code},
             </if>
-            <if test="brand_name!=null">
-                #{brand_name},
-            </if>
-            <if test="store_area!=null">
-                #{store_area},
+            <if test="area_code!=null">
+                #{area_code},
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
@@ -135,6 +146,7 @@
             </if>
         </trim>
     </insert>
+
     <update id="updateStore" parameterType="com.bizvane.ishop.entity.Store">
         UPDATE DEF_STORE
         <trim prefix="SET" suffixOverrides=",">
@@ -147,11 +159,8 @@
             <if test="brand_code!=null and brand_code!=''">
                 brand_code=#{brand_code},
             </if>
-            <if test="brand_name!=null and brand_name!=''">
-                brand_name=#{brand_name},
-            </if>
-            <if test="store_area!=null and store_area!=''">
-                store_area=#{store_area},
+            <if test="area_code!=null and area_code!=''">
+                area_code=#{area_code},
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},
@@ -176,5 +185,16 @@
             </if>
         </trim>
         WHERE ID=#{id};
+    </update>
+
+    <delete id="deleteByStoreId">
+        delete from
+        DEF_STORE
+        where ID=#{id}
+    </delete>
+
+    <update id="deleteStoreByUserid">
+      update DEF_USER
+      set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'') where id=#{user_id}
     </update>
 </mapper>

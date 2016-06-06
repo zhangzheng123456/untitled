@@ -10,9 +10,9 @@ var val=sessionStorage.getItem("key");//取登录里面的key
 val=JSON.parse(val);
 var message=JSON.parse(val.message);
 var user_type=message.user_type;//是否为系统管理员
-var role_code=message.role_code//角色编号
-key_val=JSON.parse(key_val);//
-var funcCode=key_val.func_code;//funcCode的编号
+var role_code=message.role_code;//角色编号
+key_val=JSON.parse(key_val);
+var funcCode=key_val.func_code;
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -40,7 +40,8 @@ $(function(){
             setTimeout(hideLi,200);  
         });          
     }      
-);  
+);
+  
 function showLi(){  
     $("#liebiao").show();  
 }  
@@ -176,7 +177,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
                     }else if(list.length>0){
                         $(".table p").remove();
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }
                     setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -188,9 +189,13 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }
 }
 //页面加载循环
-function superaddition(data){
-    console.log(data);
+function superaddition(data,num){
     for (var i = 0; i < data.length; i++) {
+        if(num>=2){
+            var a=i+num*pageSize;
+        }else{
+            var a=i+1;
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -247,7 +252,7 @@ function GET(){
                 var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list);
+                superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -324,7 +329,7 @@ function jumpBianse(){
             $('.frame').html("请先选择");
         }else if(tr.length>1){
             frame();
-            $('.frame').html("不能选着多个");
+            $('.frame').html("不能选择多个");
         }
     })
     //删除
@@ -372,7 +377,7 @@ function POST(){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
 		 	}else if(list.length>0){
-		 		superaddition(list);
+		 		superaddition(list,inx);
                 jumpBianse();
 		 	}
 		 	setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);

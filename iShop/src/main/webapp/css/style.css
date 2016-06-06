@@ -3009,7 +3009,7 @@ a.forum-item-title:hover {
 }
 body {
   font-family: "Microsoft YaHei";
-  background-color: #434960;
+  background-color: #e8e8e8;
   font-size: 14px;
   color: #676a6c;
   overflow-x: hidden;
@@ -7158,6 +7158,23 @@ body.skin-3 {
   color:#434960;
   line-height:30px;
 }
+.editor_1 select{
+    width: 420px;
+    height: 30px;
+    border: 0;
+    border-radius: 4px;
+    text-indent: 16px;
+    font-size:14px;
+    color:#888888;
+    outline: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+    background-size: 30px 30px;
+    /* border-radius: 0px 13px 13px 0px; */
+}
 .editor_1 .operation_conpany ul li{
   display:inline-block;
   width:80px;
@@ -7571,9 +7588,9 @@ body.skin-3 {
     -webkit-appearance: none;
     -moz-appearance: none;
     -ms-appearance: none;
-  /*  background: #ebebeb url(../images/arrow_down.png) no-repeat 100% 50%;*/
-   /* background-size: 10px 5px;
-    border-radius: 0px 13px 13px 0px;*/
+    background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+    background-size: 30px 30px;
+    /*border-radius: 0px 13px 13px 0px;*/
 }
 /*模拟一般select样式*/
 ul,li{list-style:none;padding:0;margin:0;}
@@ -7737,6 +7754,34 @@ ul,li{list-style:none;padding:0;margin:0;}
     text-indent: 10px;
 }
 #per_type ul li:hover{
+  background:#6cc1c8;
+  color:#ffffff;
+}
+#store_type input{
+    width: 280px;
+    height: 30px;
+    line-height: 30px;
+    border-radius: 4px 0px 0px 4px;
+}
+#store_type ul{
+    width: 310px;
+    background: #e8f5fe;
+    margin-top: 2px;
+    margin-left: 123px;
+    border: 1px solid #a9c9e2;
+    position: absolute;
+    display: none;
+    z-index: 100;
+}
+#store_type ul li {
+    display: block;
+    height: 24px;
+    color: #807a62;
+    text-decoration: none;
+    line-height: 24px;
+    text-indent: 10px;
+}
+#store_type ul li:hover{
   background:#6cc1c8;
   color:#ffffff;
 }
@@ -8107,6 +8152,7 @@ li.select_index>a>label>i{
 }
 .nav-second-level{
   background:#333848;
+  display:none;
 }
 .nav-second-level li{
   font-size:14px;

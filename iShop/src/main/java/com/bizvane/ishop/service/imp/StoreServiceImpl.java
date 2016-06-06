@@ -31,14 +31,27 @@ public class StoreServiceImpl implements StoreService {
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
+    /**
+     * 获取用户的店仓信息
+     *
+     * @param id ： 用户ID
+     * @return ： 店仓信息
+     */
     @Override
     public List<Store> selectByUserId(String id) {
-       return storeMapper.selectByUserId(id);
+        return storeMapper.selectByUserId(id);
     }
 
+    /**
+     * 通过用户ID和制定的店仓来删除用户的店仓
+     *
+     * @param user_id  ： 用户ID
+     * @param store_id ： 店仓ID
+     * @return 执行结果
+     */
     @Override
-    public int deleteStoreByUser_id(String user_id, String store_id) {
-        return storeMapper.deleteStoreByUser_id(user_id,store_id);
+    public int deleteStoreByUserid(String user_id, String store_id) {
+        return storeMapper.deleteStoreByUserid(user_id, store_id);
     }
 
 
@@ -48,13 +61,19 @@ public class StoreServiceImpl implements StoreService {
         return this.storeMapper.selectByStoreId(id);
     }
 
+    //list获取企业店铺
+    public List<Store> getCorpStore(String corp_code) throws SQLException {
+        List<Store> stores = storeMapper.selectAllStore(corp_code, "");
+        return stores;
+    }
+
     //分页显示所有店铺
     public PageInfo<Store> getAllStore(int page_number, int page_size, String corp_code, String search_value) {
         List<Store> shops;
         if (search_value.equals("")) {
             PageHelper.startPage(page_number, page_size);
-            shops = storeMapper.selectAllStore(corp_code,"");
-        }else {
+            shops = storeMapper.selectAllStore(corp_code, "");
+        } else {
             PageHelper.startPage(page_number, page_size);
             shops = storeMapper.selectAllStore(corp_code, "%" + search_value + "%");
         }
@@ -63,20 +82,15 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
-    //list获取企业店铺
-    public List<Store> getCorpStore(String corp_code) throws SQLException {
-        List<Store> stores = storeMapper.selectAllStore(corp_code,"");
-        return stores;
-    }
-
-    //分页显示店铺下所属用户
-    public List<User> getStoreUser(String corp_code,String store_code){
-        List<User> user = userMapper.selectStoreUser(corp_code,"%"+store_code+"%");
+    //店铺下所属用户
+    public List<User> getStoreUser(String corp_code, String store_code) {
+        List<User> user = userMapper.selectStoreUser(corp_code, "%" + store_code + "%");
         return user;
     }
 
+
     //根据企业，店铺编号,查找店铺
-    public Store getStoreByCode(String corp_code, String store_code) throws SQLException {
+    public Store getStoreByCode(String corp_code, String store_code){
         Store store = storeMapper.selectByCorp(corp_code, store_code);
 
         return store;
@@ -84,21 +98,20 @@ public class StoreServiceImpl implements StoreService {
 
     //新增店铺
     @Override
-    public String insert(String message, String user_id){
+    public String insert(String message, String user_id) {
         JSONObject jsonObject = new JSONObject(message);
         try {
 
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Store shop = getStoreByCode(corp_code,store_code);
+            Store shop = getStoreByCode(corp_code, store_code);
             if (shop == null) {
                 shop = new Store();
                 shop.setStore_code(store_code);
                 shop.setStore_name(jsonObject.get("store_name").toString());
-                shop.setStore_area(jsonObject.get("store_area").toString());
+                shop.setArea_code(jsonObject.get("area_code").toString());
                 shop.setCorp_code(corp_code);
                 shop.setBrand_code(jsonObject.get("brand_code").toString());
-                shop.setBrand_name(jsonObject.get("brand_name").toString());
                 shop.setFlg_tob(jsonObject.get("flg_tob").toString());
                 Date now = new Date();
                 shop.setCreated_date(sdf.format(now));
@@ -110,7 +123,7 @@ public class StoreServiceImpl implements StoreService {
 
                 return Common.DATABEAN_CODE_SUCCESS;
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return ex.getMessage();
         }
         return "该企业店铺编号已经存在!";
@@ -118,7 +131,7 @@ public class StoreServiceImpl implements StoreService {
 
     //修改店铺
     @Override
-    public String update(String message, String user_id){
+    public String update(String message, String user_id) {
         String result = "";
         try {
             JSONObject jsonObject = new JSONObject(message);
@@ -126,10 +139,9 @@ public class StoreServiceImpl implements StoreService {
             store.setId(Integer.valueOf(jsonObject.get("id").toString()));
             store.setStore_code(jsonObject.get("store_code").toString());
             store.setStore_name(jsonObject.get("store_name").toString());
-            store.setStore_area(jsonObject.get("store_area").toString());
+            store.setArea_code(jsonObject.get("area_code").toString());
             store.setCorp_code(jsonObject.get("corp_code").toString());
             store.setBrand_code(jsonObject.get("brand_code").toString());
-            store.setBrand_name(jsonObject.get("brand_name").toString());
             store.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
             store.setModified_date(sdf.format(now));
@@ -137,7 +149,7 @@ public class StoreServiceImpl implements StoreService {
             store.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.updateStore(store);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }catch (Exception ex){
+        } catch (Exception ex) {
             return ex.getMessage();
         }
         return result;
@@ -148,6 +160,4 @@ public class StoreServiceImpl implements StoreService {
     public int delete(int id) throws SQLException {
         return this.storeMapper.deleteByStoreId(id);
     }
-
-
 }

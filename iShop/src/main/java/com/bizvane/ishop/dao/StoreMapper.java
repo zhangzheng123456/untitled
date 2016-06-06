@@ -20,6 +20,6 @@ public interface StoreMapper {
 
     int deleteByStoreId(int id);
 
-    int deleteStoreByUser_id(@Param("user_id") String user_id,@Param("store_id") String store_id);
+    int deleteStoreByUserid(@Param("user_id") String user_id, @Param("store_id") String store_id);
 
 }

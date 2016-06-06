@@ -23,7 +23,7 @@ public class testStoreService {
     private StoreService storeService;
     @Test
     public void testdeleteStoreByUser_id(){
-            storeService.deleteStoreByUser_id("9","001");
+            storeService.deleteStoreByUserid("9","001");
     }
 
     @Test
