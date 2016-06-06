@@ -52,7 +52,7 @@
 		return true;
 	};
 	vipjs.bindbutton=function(){
-		$(".oper_btn ul li:nth-of-type(1)").click(function(){
+		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
 			if(vipjs.firstStep()){
 				// var CORPID=$("#CORPID").val();
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -83,7 +83,7 @@
 				return;
 			}
 		});
-		$(".oper_btn ul li:nth-of-type(1)").click(function(){
+		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
 			if(vipjs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -121,20 +121,21 @@
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
-				$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
-			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
 					lock:true,
 					cancel: false,
 					content: data.message
 				});
+				$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+			}else if(data.code=="-1"){
+				// alert(data.message);
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 			}
 		});
 	};
@@ -182,6 +183,14 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
+				var OWN_CORP=$("#OWN_CORP").val(msg.own_corp);
+				var OWN_STORE=$("#OWN_STORE").val(msg.own_store);
+				var OWN_SALES=$("#OWN_SALES").val(msg.own_sales);
+				var VIP_ID=$("#VIP_ID").val(msg.vip_id);
+				var VIP_CARD=$("#VIP_CARD").val(msg.vip_card);
+				var VIP_NAME=$("#VIP_NAME").val(msg.vip_name);
+				var is_leixing=$("#is_leixing").val(msg.vip_style);
+				var is_xingbie=$("#is_xingbie").val(msg.sex);
 				$("#OWN_CORP").val(msg.own_corp)
 				$("#OWN_STORE").val(msg.own_store);
 				$("#OWN_SALES").val(msg.own_sales);
@@ -191,10 +200,10 @@ jQuery(document).ready(function(){
 				$("#is_leixing").val(msg.vip_style);
 				$("#is_xingbie").val(msg.sex);
 
-				$("#created_time").val(msg.created_date);
-				$("#creator").val(msg.creater);
-				$("#modify_time").val(msg.modified_date);
-				$("#modifier").val(msg.modifier);
+				// $("#created_time").val(msg.created_date);
+				// $("#creator").val(msg.creater);
+				// $("#modify_time").val(msg.modified_date);
+				// $("#modifier").val(msg.modifier);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -211,6 +220,11 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
+
+// $(".oper_btn ul li:nth-of-type(2)").click(function(){
+// 		$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+// 	});
+// 	$(".oper_btn ul li:nth-of-type(2)").click(function(){
+// 		$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+// 	});
 });
-"own_corp":OWN_CORP,"own_store":OWN_STORE,"own_sales":OWN_SALES,"vip_id":VIP_ID,
-"vip_card":VIP_CARD,"vip_name":VIP_NAME,"vip_style":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE

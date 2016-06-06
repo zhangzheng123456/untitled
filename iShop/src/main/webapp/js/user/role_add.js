@@ -162,10 +162,10 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.role.init();//初始化
-	if($(".pre_title label").text()=="编辑企业信息"){
+	if($(".pre_title label").text()=="编辑角色"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/role/select";
+		var _command="/user/role/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
