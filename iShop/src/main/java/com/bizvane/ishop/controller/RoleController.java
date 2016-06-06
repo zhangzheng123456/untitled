@@ -22,6 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
+import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -40,6 +43,8 @@ public class RoleController {
     private RoleService roleService;
 
     private static Logger logger = LoggerFactory.getLogger((RoleController.class));
+
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     /**
      * 角色定义
