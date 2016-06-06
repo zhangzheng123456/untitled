@@ -13,7 +13,7 @@
         <result column="birthday" property="birthday"/>
         <result column="corp_code" property="corp_code"/>
         <result column="store_code" property="store_code"/>
-        <result column="group_code" property="group_code"/>
+        <result column="role_code" property="role_code"/>
         <result column="password" property="password"/>
         <result column="login_time_recently" property="login_time_recently"/>
         <result column="created_date" property="created_date"/>
@@ -34,17 +34,35 @@
         <result column="birthday" property="birthday"/>
         <result column="corp_code" property="corp_code"/>
         <result column="store_code" property="store_code"/>
-        <result column="group_code" property="group_code"/>
+        <result column="role_code" property="role_code"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
-        <association property="group" javaType="com.bizvane.ishop.entity.Group">
-            <result column="group_name" property="group_name"/>
-        </association>
-        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
-            <result column="corp_name" property="corp_name"/>
+        <association property="role" javaType="com.bizvane.ishop.entity.Role">
+            <result column="role_name" property="role_name"/>
         </association>
     </resultMap>
+    <resultMap id="groupInfo" type="com.bizvane.ishop.entity.Group">
+        <result column="group_code" property="group_code"/>
+        <result column="group_name" property="group_name"/>
+        <association property="action" javaType="com.bizvane.ishop.entity.Action">
+            <result column="action_name" property="action_name"/>
+        </association>
+        <association property="function" javaType="com.bizvane.ishop.entity.Function">
+            <result column="function_name" property="function_name"/>
+            <result column="module_name" property="module_name"/>
+            <result column="url" property="url"/>
+        </association>
+    </resultMap>
+    <select id="groupcheck_power" resultMap="java.lang.Object">
+        select  g.group_code,g.group_name,a.action_name,f.function_name,f.module_name,f.url
+        from
+        DEF_GROUP  g,DEF_ACTION a,DEF_FUNCTION f,DEF_PRIVILEGE p
+        where
+        g.group_code=p.master_code
+        and   f.function_code=p.function_code
+        and   a.action_code=p.action_code
+    </select>
 
     <select id="selectAllUser" resultMap="UserInfo">
         select DEF_USER.id,
@@ -56,7 +74,7 @@
         email,
         birthday,
         store_code,
-        DEF_USER.group_code,
+        DEF_USER.role_code,
         DEF_USER.corp_code,
         login_time_recently,
         DEF_USER.modified_date,
@@ -64,11 +82,9 @@
         DEF_USER.created_date,
         DEF_USER.creater,
         DEF_USER.isactive,
-        DEF_GROUP.group_name,
-        DEF_CORP.corp_name
-        from DEF_USER,DEF_GROUP,DEF_CORP
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
+        DEF_ROLE.role_name
+        from DEF_USER,DEF_ROLE
+        where DEF_USER.role_code = DEF_ROLE.role_code
         <if test="corp_code != null and corp_code !=''">
             AND DEF_USER.CORP_CODE = #{corp_code}
         </if>
@@ -78,7 +94,7 @@
             OR USER_CODE like #{search_value}
             OR PHONE like #{search_value}
             OR SEX like #{search_value}
-            OR DEF_GROUP.group_name like #{search_value}
+            OR DEF_ROLE.role_name like #{search_value}
             OR LOGIN_TIME_RECENTLY like #{search_value}
             OR DEF_USER.MODIFIED_DATE like #{search_value}
             OR DEF_USER.MODIFIER like #{search_value}
@@ -99,24 +115,24 @@
         password,
         login_time_recently,
         store_code,
-        DEF_USER.group_code,
+        DEF_USER.role_code,
         DEF_USER.corp_code,
         DEF_USER.modified_date,
         DEF_USER.modifier,
         DEF_USER.created_date,
         DEF_USER.creater,
         DEF_USER.isactive,
-        DEF_GROUP.group_name
-        from DEF_USER,DEF_CORP,DEF_GROUP
-        where DEF_USER.group_code = DEF_GROUP.group_code
-            AND DEF_USER.ID = #{user_id}
+        DEF_ROLE.role_name
+        from DEF_USER,DEF_CORP,DEF_ROLE
+        where DEF_USER.role_code = DEF_ROLE.role_code
+        AND DEF_USER.ID = #{user_id}
     </select>
 
     <select id="selectByPhone" resultMap="BaseMap">
         select *
         from DEF_USER
         where
-            PHONE = #{phone}
+        PHONE = #{phone}
     </select>
     <select id="selectLogin" resultMap="BaseMap">
         SELECT *
@@ -128,11 +144,11 @@
     </select>
 
     <select id="selectUserCode" resultMap="BaseMap">
-    select *
-    from DEF_USER
-    WHERE
-    USER_CODE = #{0} AND CORP_CODE = #{1}
-   </select>
+        select *
+        from DEF_USER
+        WHERE
+        USER_CODE = #{0} AND CORP_CODE = #{1}
+    </select>
 
     <select id="selectStoreUser" resultMap="UserInfo">
         SELECT
@@ -146,15 +162,15 @@
         birthday,
         password,
         login_time_recently,
-        DEF_USER.group_code,
+        DEF_USER.role_code,
         DEF_USER.modified_date,
         DEF_USER.modifier,
         DEF_USER.created_date,
         DEF_USER.creater,
         DEF_USER.isactive,
-        DEF_GROUP.group_name
-        FROM DEF_USER,DEF_GROUP
-        where DEF_USER.group_code = DEF_GROUP.group_code
+        DEF_ROLE.role_name
+        FROM DEF_USER,DEF_ROLE
+        where DEF_USER.role_code = DEF_ROLE.role_code
         AND CORP_CODE = #{corp_code}
         AND store_code like #{search_value}
         AND DEF_USER.ISACTIVE = 'Y'
@@ -198,8 +214,8 @@
             <if test="store_code!=null">
                 store_code,
             </if>
-            <if test="group_code!=null">
-                group_code,
+            <if test="role_code!=null">
+                role_code,
             </if>
             <if test="login_time_recently!=null">
                 login_time_recently,
@@ -251,8 +267,8 @@
             <if test="store_code!=null">
                 #{store_code},
             </if>
-            <if test="group_code!=null">
-                #{group_code},
+            <if test="role_code!=null">
+                #{role_code},
             </if>
             <if test="login_time_recently!=null">
                 #{login_time_recently},
@@ -305,8 +321,8 @@
             <if test="store_code!=null and store_code!='' ">
                 STORE_CODE = #{store_code},
             </if>
-            <if test="group_code!=null and group_code!='' ">
-                GROUP_CODE = #{group_code},
+            <if test="role_code!=null and role_code!='' ">
+                ROLE_CODE = #{role_code},
             </if>
             <if test="password!=null and password!='' ">
                 PASSWORD = #{password},

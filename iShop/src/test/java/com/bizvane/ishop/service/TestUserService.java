@@ -1,6 +1,8 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.dao.RoleMapper;
+import com.bizvane.ishop.dao.UserAchvGoalMapper;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.*;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -30,6 +32,9 @@ public class TestUserService {
     private RoleService roleService=null;
     @Autowired
     private RoleMapper role=null;
+    @Autowired
+    private UserMapper userMapper=null;
+
     @Test
     public void testInsert(){
         User user=new User();
@@ -48,6 +53,13 @@ public class TestUserService {
             e.printStackTrace();
         }
 
+    }
+
+    @Test
+    public void testGroup(){
+        Object o=userMapper.groupcheck_power();
+        System.out.println(o.toString());
+        System.out.println(o.getClass());
     }
 
 }
