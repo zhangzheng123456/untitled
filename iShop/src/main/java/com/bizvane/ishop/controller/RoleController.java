@@ -1,8 +1,11 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Function;
+import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.RoleService;
@@ -43,7 +46,7 @@ public class RoleController {
     private RoleService roleService;
 
     private static Logger logger = LoggerFactory.getLogger((RoleController.class));
-
+    String id;
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     /**
@@ -203,10 +206,44 @@ public class RoleController {
      * 编辑角色信息之
      * 查看权限
      */
-//    @RequestMapping(value = "/role/check_power", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String roleCheckPower(HttpServletRequest request) {    return "rolecheck_power";
-//    }
+    @RequestMapping(value = "/role/check_power", method = RequestMethod.GET)
+    @ResponseBody
+    public String roleCheckPower(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            String login_role_code = request.getSession().getAttribute("role_code").toString();
+            String login_group_code = request.getSession().getAttribute("group_code").toString();
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+
+            //获取登录用户的所有权限
+            PageInfo<Function> funcs = functionService.selectAllPrivilege(page_number,page_size,login_role_code,login_user_id,login_group_code);
+
+            String role_code = jsonObject.get("role_code").toString();
+            //获取群组角色的权限
+            JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
+
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(funcs));
+            result.put("live", role_privilege);
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 角色定义之

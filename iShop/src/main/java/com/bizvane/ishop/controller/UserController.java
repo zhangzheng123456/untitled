@@ -504,10 +504,6 @@ public class UserController {
             String user_id = jsonObject.get("user_id").toString();
             String role_code = jsonObject.get("role_code").toString();
 
-
-            //获取群组角色的权限
-            JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
-
             //获取群组自定义的权限
             JSONArray group_privilege = functionService.selectRAGPrivilege(role_code,group_code);
 
@@ -516,9 +512,8 @@ public class UserController {
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));
-            result.put("role", role_privilege);
-            result.put("group", group_privilege);
-            result.put("user", user_privilege);
+            result.put("die", group_privilege);
+            result.put("live", user_privilege);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
