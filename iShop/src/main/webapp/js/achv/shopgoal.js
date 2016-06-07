@@ -60,6 +60,7 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
@@ -71,7 +72,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE};
+				var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -86,6 +87,7 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
@@ -97,7 +99,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
