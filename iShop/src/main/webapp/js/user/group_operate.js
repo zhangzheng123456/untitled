@@ -80,6 +80,7 @@ var oc = new ObjectControl();
 		});
 		$(".groupedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(groupjs.firstStep()){
+				var ID=sessionStorage.getItem("id");
 				var GROUP_CODE=$("#GROUP_ID").val();
 				var GROUP_NAME=$("#GROUP_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -155,48 +156,6 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.group.init();//初始化
-	if($(".pre_title label").text()=="新增群组"){
-		$('#GROUP_USER').parent().parent().css("display","none");
-		$('#GROUP_RIGHT').parent().parent().css("display","none");
-
-	}else if($(".pre_title label").text()=="编辑群组"){
-		$('#GROUP_USER').parent().parent().css("display","block");
-		$('#GROUP_RIGHT').parent().parent().css("display","block");
-		var id=sessionStorage.getItem("id");
-		var _params={"id":id};
-		var _command="/user/group/select";
-		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
-			if(data.code=="0"){
-				var msg=JSON.parse(data.message);
-				console.log(msg);
-				$("#GROUP_ID").val(msg.group_code);
-				$("#GROUP_NAME").val(msg.group_name);
-				$("#searchable-select-holder").text(msg.corp_code);
-				$("#OWN_ROLE").val(msg.role_name);
-				$("#OWN_ROLE").attr("data-mygcode",msg.role_code);
-				$("#REMARK").val(msg.remark);
-
-				$("#created_time").val(msg.created_date);
-				$("#creator").val(msg.creater);
-				$("#modify_time").val(msg.modified_date);
-				$("#modifier").val(msg.modifier);
-				var input=$(".checkbox_isactive").find("input")[0];
-				if(msg.isactive=="Y"){
-					input.checked=true;
-				}else if(msg.isactive=="N"){
-					input.checked=false;
-				}
-			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
-			}
-		});
-	}
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -222,6 +181,48 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	if($(".pre_title label").text()=="新增群组"){
+		$('#GROUP_USER').parent().parent().css("display","none");
+		$('#GROUP_RIGHT').parent().parent().css("display","none");
+
+	}else if($(".pre_title label").text()=="编辑群组"){
+		$('#GROUP_USER').parent().parent().css("display","block");
+		$('#GROUP_RIGHT').parent().parent().css("display","block");
+		var id=sessionStorage.getItem("id");
+		var _params={"id":id};
+		var _command="/user/group/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				$("#GROUP_ID").val(msg.group_code);
+				$("#GROUP_NAME").val(msg.group_name);
+				$("#searchable-select-holder").attr("value",msg.corp_code);
+				$("#OWN_ROLE").val(msg.role.role_name);
+				$("#OWN_ROLE").attr("data-mygcode",msg.role.role_code);
+				$("#REMARK").val(msg.remark);
+
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+			}
+		});
+	}
 	//获取角色列表
 	$("#OWN_ROLE").click(function(){
 		$("#grouprole_select").html('');
@@ -265,6 +266,12 @@ jQuery(document).ready(function(){
 	});
 	$(".groupedit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/group.html");
+	});
+	$("#check_name").click(function() {
+		$(window.parent.document).find('#iframepage').attr("src","user/groupcheck_name.html");
+	});
+	$("#check_right").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","user/groupcheck_power.html");
 	});
 });
 
