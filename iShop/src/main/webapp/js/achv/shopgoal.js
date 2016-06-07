@@ -60,6 +60,7 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -157,7 +158,7 @@ var oc = new ObjectControl();
 	return obj;
 }));
 jQuery(document).ready(function(){
-	window.role.init();//初始化
+	window.shopgoal.init();//初始化
 	if($(".pre_title label").text()=="编辑店铺业绩目标"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":1};
