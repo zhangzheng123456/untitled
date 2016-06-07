@@ -63,7 +63,6 @@ var oc = new ObjectControl();
 				var _command="/storeAchvGoal/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
-
 					}
 				};
 				var _params={"own_corp":OWN_CORP,"shop_id":SHOP_ID,"shop_name":SHOP_NAME,"time_type":TIME_TYPE,"per_goal":PER_GOAL,"date":DATE};
