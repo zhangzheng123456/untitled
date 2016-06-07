@@ -200,11 +200,13 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].role_code
+                        + data[i].group_code
                         + "</td><td>"
-                        + data[i].role_name
+                        + data[i].group_name
                         + "</td><td>"
-                        + data[i].remark
+                        + data[i].role.role_name
+                        + "</td><td>"
+                        + data[i].corp.corp_name
                         +"</td><td class='power'><a href='javascript:void(0);'>"
                         +"编辑"
                         + "</a></td><td>"
@@ -231,7 +233,7 @@ function jurisdiction(actions){
                 var id=$(this).attr("id");
                 sessionStorage.setItem("id",id);
                 console.log(id);
-                $(window.parent.document).find('#iframepage').attr("src","/group/group_edit.html");
+                $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
             })
         }
     }
