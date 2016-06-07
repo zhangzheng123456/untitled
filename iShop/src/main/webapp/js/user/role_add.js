@@ -177,12 +177,21 @@ jQuery(document).ready(function(){
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
-				// $("#BEIZHU").val(msg.beizhu);			
+				// $("#BEIZHU").val(msg.beizhu);
+				var created_time=$("#created_time").val(msg.created_date);
+				var creator=$("#creator").val(msg.creater);
+				var modify_time=$("#modify_time").val(msg.modified_date);
+				var modifier=$("#modifier").val(msg.modifier);			
 
 				$("#ROLE_NUM").val(msg.role_code);
 				$("#ROLE_NAME").val(msg.role_name);
 				$("#BEIZHU").val(msg.remark);
 				// $("#OWN_DOCU").val(msg.own_docu);
+				
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
