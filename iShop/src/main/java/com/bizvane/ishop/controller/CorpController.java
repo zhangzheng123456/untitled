@@ -59,8 +59,10 @@ public class CorpController {
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
+
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
 
             JSONObject info = new JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {

@@ -28,8 +28,9 @@ public class PrivilegeController {
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_id = request.getSession().getAttribute("user_id").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
 
-            JSONArray function = functionService.selectAllFunctions(Integer.parseInt(user_id),role_code);
+            JSONArray function = functionService.selectAllFunctions(Integer.parseInt(user_id),role_code,group_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(function.toString());
