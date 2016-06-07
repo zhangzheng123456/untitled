@@ -242,4 +242,33 @@ public class RoleController {
 //        return "";
 //    }
 
+    @RequestMapping(value = "/role/select", method = RequestMethod.POST)
+    @ResponseBody
+    public String editbefore(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();      String id = "";
+        try {
+
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String jsString = request.getParameter("param");
+
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int role_id = Integer.parseInt(jsonObject.get("id").toString());
+            Role role = roleService.selectByRoleId(role_id);
+            JSONObject result = new JSONObject();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(JSON.toJSONString(role));
+
+        } catch (SQLException e) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
+
 }
