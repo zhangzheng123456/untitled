@@ -198,7 +198,7 @@ function superaddition(data,num){//页面加载循环
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + i
+                        + a
                         + "</td><td>"
                         + data[i].brand_code
                         + "</td><td>"

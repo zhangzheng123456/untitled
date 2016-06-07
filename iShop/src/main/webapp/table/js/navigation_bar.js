@@ -16,8 +16,12 @@ $(function(){
     var src=a.url;//获取url后面的参数
     var func_code=a.func_code;//获取func_code
     var key=sessionStorage.getItem("key_val");//获取本地的key值
-    if(key==null){
-        var key_val={"url":src,"func_code":func_code};//组成一个对象字符串
+    key=JSON.parse(key);
+    if(key!==null){
+       var src1=key.url;  
+    }
+    var key_val={"url":src,"func_code":func_code};//组成一个对象字符串
+    if(key==null||src!==src1){
         sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
     }
     var keyVal=sessionStorage.getItem("key_val");//获取本地的属性
