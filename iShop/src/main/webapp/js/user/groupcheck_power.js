@@ -192,7 +192,7 @@ function superaddition(data,num,die){
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''>"
+        $(".table tbody").append("<tr>"
                         + "</td><td style='text-align:left;padding-left:22px'>"
                         + a
                         + "</td><td>"
@@ -203,7 +203,7 @@ function superaddition(data,num,die){
                         +data[i].function_name
                         + "</td><td>"
                         +data[i].action_name
-                        +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                        +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='"+data[i].id+"'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -211,19 +211,11 @@ function superaddition(data,num,die){
                         + 1
                         + "'></label></div></td></tr>");
     }
-    var el=$("tbody input");
-    var id=el.parents("tr").attr("id");
-    console.log(el);
-    console.log(id);
-    var len = el.length;
-
-    for(var i=0; i<len; i++)
-        {
-           if((el[i].type=="checkbox") && (el[i].name==name))
-            {
-              el[i].checked = true;
-            }
+    for(var j=0;j<die.length;j++){
+        if($("#"+die[j].id).find("input").length>0){
+            $("#"+die[j].id).find("input")[0].checked=true;
         }
+    }
 };
 // //权限配置
 // function jurisdiction(actions){
