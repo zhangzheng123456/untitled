@@ -198,7 +198,8 @@ jQuery(document).ready(function(){
 				console.log(msg);
 				$("#GROUP_ID").val(msg.group_code);
 				$("#GROUP_NAME").val(msg.group_name);
-				$("#searchable-select-holder").attr("value",msg.corp_code);
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_ROLE").val(msg.role.role_name);
 				$("#OWN_ROLE").attr("data-mygcode",msg.role.role_code);
 				$("#REMARK").val(msg.remark);
