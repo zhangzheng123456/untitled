@@ -22,17 +22,25 @@
             <div class="col-lg-12 pre_title">用户及权限<i class="icon-ishop_8-03"></i>群组管理<i class="icon-ishop_8-03"></i>新增群组</div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
+                    <div>
+                        <span><label>群组编号</label><input type="text" id="GROUP_ID" verify="Empty"/></span>
+                    </div>
+                    <div>
+                        <span><label>群组名称</label><input type="text" id="GROUP_NAME" verify="Empty"/></span>
+                    </div>
                    <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" /></span>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                     <div>
                         <span><label style="color:#c26555;">所属角色*</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>群组编号</label><input type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>群组名称</label><input type="text" /></span>
                     </div>
                     <div id="check_per">
                         <span><label>群组用户</label><input type="text" placeholder="共有1269位用户" readonly/><span class="check_icon">查看名单<i class="icon-ishop_8-03"></i></span>
