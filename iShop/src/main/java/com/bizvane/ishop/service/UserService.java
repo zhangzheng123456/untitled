@@ -26,6 +26,8 @@ public interface UserService {
 
     PageInfo<User> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
+    PageInfo<User> selectGroupUser(int page_number,int page_size,String corp_code,String group_code)throws SQLException;
+
     String userCodeExist(String user_code,String corp_code) throws SQLException;
 
     String register(String message) throws Exception;

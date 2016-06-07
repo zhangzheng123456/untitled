@@ -84,7 +84,7 @@
             OR DEF_USER.MODIFIER like #{search_value}
             OR DEF_USER.ISACTIVE like #{search_value}
         </if>
-        ORDER BY ID
+        ORDER BY DEF_USER.ID
     </select>
 
     <select id="selectUserById" resultMap="UserInfo">
@@ -158,6 +158,38 @@
         AND CORP_CODE = #{corp_code}
         AND store_code like #{search_value}
         AND DEF_USER.ISACTIVE = 'Y'
+    </select>
+
+    <select id="selectGroupUser" resultMap="UserInfo">
+        select DEF_USER.id,
+        user_code,
+        user_name,
+        sex,
+        avatar,
+        phone,
+        email,
+        birthday,
+        store_code,
+        DEF_USER.group_code,
+        DEF_USER.corp_code,
+        login_time_recently,
+        DEF_USER.modified_date,
+        DEF_USER.modifier,
+        DEF_USER.created_date,
+        DEF_USER.creater,
+        DEF_USER.isactive,
+        DEF_GROUP.group_name,
+        DEF_CORP.corp_name
+        from DEF_USER,DEF_GROUP,DEF_CORP
+        where DEF_USER.group_code = DEF_GROUP.group_code
+        AND DEF_USER.corp_code = DEF_CORP.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND DEF_USER.CORP_CODE = #{corp_code}
+        </if>
+        <if test="group_code != null and group_code !=''">
+            AND DEF_USER.group_code = #{group_code}
+        </if>
+        ORDER BY DEF_USER.ID
     </select>
 
     <delete id="deleteByUserId">

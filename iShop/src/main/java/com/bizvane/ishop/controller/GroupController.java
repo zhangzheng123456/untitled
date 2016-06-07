@@ -287,7 +287,31 @@ public class GroupController {
     @RequestMapping(value = "/check_name",method = RequestMethod.POST)
     @ResponseBody
     public String groupCheckName(HttpServletRequest request) {
-        return "groupcheck_name";
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String group_code = jsonObject.get("group_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            PageInfo<User> users = userService.selectGroupUser(page_number,page_size,corp_code,group_code);
+            JSONObject result = new JSONObject();
+
+            result.put("list", JSON.toJSONString(users));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
     /**

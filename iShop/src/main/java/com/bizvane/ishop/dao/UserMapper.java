@@ -18,6 +18,8 @@ public interface UserMapper {
 
     User selectUserCode(String user_code, String corp_code);
 
+    List<User> selectGroupUser(@Param("corp_code") String corp_code, @Param("group_code") String group_code);
+
     List<User> selectAllUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
     User selectUserById(int user_id);

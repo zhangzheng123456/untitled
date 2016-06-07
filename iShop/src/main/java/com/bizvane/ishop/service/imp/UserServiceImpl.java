@@ -94,6 +94,16 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 群组管理
+     * 查看用户名单
+     */
+    public PageInfo<User> selectGroupUser(int page_number,int page_size,String corp_code,String group_code)throws SQLException{
+        PageHelper.startPage(page_number, page_size);
+        List<User> users = userMapper.selectGroupUser(corp_code,group_code);
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+    /**
      * 验证企业下用户编号是否已存在
      */
     public String userCodeExist(String user_code, String corp_code) throws SQLException {

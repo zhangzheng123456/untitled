@@ -135,7 +135,7 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
-            user.setGroup_code(jsonObject.get("role_code").toString());
+            user.setGroup_code(jsonObject.get("group_code").toString());
             user.setStore_code(jsonObject.get("store_code").toString() + ",");
             user.setPassword(user_code);
             Date now = new Date();
@@ -194,7 +194,7 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
-            user.setGroup_code(jsonObject.get("role_code").toString());
+            user.setGroup_code(jsonObject.get("group_code").toString());
             user.setStore_code(jsonObject.get("store_code").toString() + ",");
             Date now = new Date();
             user.setModified_date(sdf.format(now));
@@ -323,44 +323,15 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/groupcheck_power", method = RequestMethod.GET)
-    @ResponseBody
-    public String groupList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_id = request.getParameter("role_id").toString();
-            String function_code = request.getParameter("funcCode");
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
-            JSONObject result=new JSONObject();
-            PageInfo<User>list;
-
-
-
-
-            String data = null;
-
-
-        } catch (Exception ex) {
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
 
     /**
      * 根据登录用户的角色类型
      * 输入的企业编号
-     * 获得该用户可选择的所有角色
+     * 获得该用户可选择的所有群组
      */
     @RequestMapping(value = "/role", method = RequestMethod.POST)
     @ResponseBody
-    public String userRole(HttpServletRequest request) {
+    public String userGroup(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
@@ -372,25 +343,25 @@ public class UserController {
             String corp_code = jsonObject.get("corp_code").toString();
             String group_code = jsonObject.get("group_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            System.out.println(corp_code+","+group_code+","+role_code);
-            JSONObject roles = new JSONObject();
+            System.out.println(corp_code + "," + group_code + "," + role_code);
+            JSONObject groups = new JSONObject();
             List<Group> group;
             if (role_code.equals(Common.ROLE_SYS)) {
-                if (corp_code.equals("")){
+                if (corp_code.equals("")) {
                     //列出系统管理员，role_code=r1000
                     group = groupService.selectByRole(Common.ROLE_SYS);
                     System.out.println("-------");
-                }else{
+                } else {
                     //列出企业下所有,corp_code=
-                    group = groupService.selectUserGroup(corp_code,"");
+                    group = groupService.selectUserGroup(corp_code, "");
                 }
             } else {
-                group = groupService.selectUserGroup(corp_code,group_code);
+                group = groupService.selectUserGroup(corp_code, group_code);
             }
-            roles.put("group", JSON.toJSONString(group));
+            groups.put("group", JSON.toJSONString(group));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(roles.toString());
+            dataBean.setMessage(groups.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -476,9 +447,12 @@ public class UserController {
                     String c_code = corp.getCorp_code();
                     String corp_name = corp.getCorp_name();
                     JSONObject obj = new JSONObject();
-                    obj.put("corp_code", c_code);
-                    obj.put("corp_name", corp_name);
-                    array.add(obj);
+                    String sys_corp_code = groupService.selectByRole(Common.ROLE_SYS).get(0).getCorp_code();
+                    if (!c_code.equals(sys_corp_code)) {
+                        obj.put("corp_code", c_code);
+                        obj.put("corp_name", corp_name);
+                        array.add(obj);
+                    }
                 }
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -501,4 +475,32 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
+    @RequestMapping(value = "/groupcheck_power", method = RequestMethod.GET)
+    @ResponseBody
+    public String groupList(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_id = request.getParameter("role_id").toString();
+            String function_code = request.getParameter("funcCode");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONObject result = new JSONObject();
+            PageInfo<User> list;
+
+
+            String data = null;
+
+
+        } catch (Exception ex) {
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }
