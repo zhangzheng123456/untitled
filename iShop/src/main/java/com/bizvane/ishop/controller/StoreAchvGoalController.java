@@ -9,12 +9,10 @@ import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreAchvGoalService;
 import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.datetime.joda.DateTimeFormatterFactoryBean;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -58,7 +56,7 @@ public class StoreAchvGoalController {
         int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
         int page_size = Integer.parseInt(request.getParameter("pageSize"));
         try {
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
             JSONObject result = new JSONObject();
             PageInfo<StoreAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
@@ -124,22 +122,48 @@ public class StoreAchvGoalController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
+    @ResponseBody
+    public String editbefore(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int store_id = Integer.parseInt(jsonObject.get("id").toString());
+            StoreAchvGoal storeAchvGoal = storeAchvGoalService.selectlById(store_id);
+//            JSONObject result = new JSONObject();
+//            result.put("storeAchvGoal", storeAchvGoal);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(JSON.toJSONString(storeAchvGoal));
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.toString();
+    }
+
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editStoreAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = WebUtils.getValueForSession(request, "user_id");
-        String id="";
+        String id = "";
         try {
-            String jsString =request.getParameter("param");
-            org.json.JSONObject jsonObj=new org.json.JSONObject(jsString);
-            id=jsonObj.get("id").toString();
-            String message=jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject=new org.json.JSONObject(message);
-            StoreAchvGoal storeAchvGoal=WebUtils.JSON2Bean(jsonObject,StoreAchvGoal.class);
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            StoreAchvGoal storeAchvGoal = WebUtils.JSON2Bean(jsonObject, StoreAchvGoal.class);
             storeAchvGoalService.update(storeAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id );
+            dataBean.setId(id);
             dataBean.setMessage("edit success ");
 
         } catch (Exception ex) {
@@ -150,26 +174,26 @@ public class StoreAchvGoalController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/delete",method = RequestMethod.POST)
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public String delete(HttpServletRequest request){
-        DataBean dataBean=new DataBean();
-        String id="";
-        try{
-            String jsString =WebUtils.getValueForSession(request,"param");
-            org.json.JSONObject jsonObj=new org.json.JSONObject(jsString);
-            String  storeAchvGoal_id=jsonObj.get("id").toString();
-            String message=jsonObj.get("message").toString();
-            String []ids=storeAchvGoal_id.split(",");
-            for (int i=0;ids!=null&&i<ids.length;i++){
+    public String delete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "1";
+        try {
+            String jsString = WebUtils.getValueForSession(request, "param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String storeAchvGoal_id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            String[] ids = storeAchvGoal_id.split(",");
+            for (int i = 0; ids != null && i < ids.length; i++) {
                 storeAchvGoalService.deleteById(Integer.parseInt(ids[i]));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
+            dataBean.setId("1");
             dataBean.setMessage("scuccess");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id );
+            dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();

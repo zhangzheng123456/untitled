@@ -92,10 +92,11 @@ public class RoleController {
         String id = "";
         try {
             String user_id = request.getSession(false).getAttribute("user_id").toString();
-            String jsString = request.getSession(false).getAttribute("param").toString();
+           // String jsString = request.getSession(false).getAttribute("param").toString();
+            String jsString=request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
-            String message = jsonObj.get("messsage").toString();
+            String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Role role = WebUtils.JSON2Bean(jsonObject, Role.class);
             roleService.insertRole(role);
