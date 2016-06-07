@@ -96,7 +96,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":1,"own_corp":OWN_CORP,"shop_id":SHOP_ID,"shop_name":SHOP_NAME,"time_type":TIME_TYPE,"per_goal":PER_GOAL,"date":DATE};
+				var _params={"id":ID,"own_corp":OWN_CORP,"shop_id":SHOP_ID,"shop_name":SHOP_NAME,"time_type":TIME_TYPE,"per_goal":PER_GOAL,"date":DATE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -107,7 +107,7 @@ var oc = new ObjectControl();
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
 		console.log(_params);
-		oc.postRequire("post", _command, _params, function(data){
+		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				// if(opt.success){
 				// 	opt.success();
