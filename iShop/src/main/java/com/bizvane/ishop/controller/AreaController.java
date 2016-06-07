@@ -51,10 +51,11 @@ public class AreaController {
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
             JSONObject result = new JSONObject();
             PageInfo<Area> list;
             if (role_code.equals(Common.ROLE_SYS)) {

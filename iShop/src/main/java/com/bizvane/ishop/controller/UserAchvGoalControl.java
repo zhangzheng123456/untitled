@@ -48,8 +48,10 @@ public class UserAchvGoalControl {
         try {
             int user_id = Integer.parseInt(request.getParameter("user_id").toString());
             String role_code = request.getParameter("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
+
             String function_code = request.getParameter("funcode").toString();
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
             JSONObject result = new JSONObject();
 
             int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());

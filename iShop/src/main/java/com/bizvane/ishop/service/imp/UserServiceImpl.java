@@ -108,9 +108,9 @@ public class UserServiceImpl implements UserService {
      */
     public String userCodeExist(String user_code, String corp_code) throws SQLException {
         User user = userMapper.selectUserCode(user_code, corp_code);
-        String result = Common.DATABEAN_CODE_SUCCESS;
+        String result = Common.DATABEAN_CODE_ERROR;
         if (user == null) {
-            result = Common.DATABEAN_CODE_ERROR;
+            result = Common.DATABEAN_CODE_SUCCESS;
         }
         return result;
     }

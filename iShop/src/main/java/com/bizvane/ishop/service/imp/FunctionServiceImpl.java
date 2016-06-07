@@ -27,14 +27,14 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 获取user所有功能模块
      */
-    public JSONArray selectAllFunctions(int user_id, String role_code) {
+    public JSONArray selectAllFunctions(int user_id, String role_code,String group_code) {
         List<Function> func_info;
         if (user_id == 0 && role_code.equals("")) {
             //获取所有功能模块(系统管理员)
             func_info = functionMapper.selectAll();
         } else {
             //获取user所有功能模块
-            func_info = functionMapper.selectAllFun(user_id, role_code);
+            func_info = functionMapper.selectAllFun(user_id, role_code,group_code);
         }
         JSONArray modules = new JSONArray();
         String uri;
@@ -45,7 +45,7 @@ public class FunctionServiceImpl implements FunctionService {
             String url = func_info.get(i).getUrl();
             String icon = func_info.get(i).getIcon();
             System.out.println(module + "---------" + func);
-            if (func.equals("0")) {
+            if (func.equals("")) {
                 JSONObject obj1 = new JSONObject();
                 obj1.put("mod_name", module);
                 obj1.put("icon", icon);
@@ -102,8 +102,8 @@ public class FunctionServiceImpl implements FunctionService {
      * 获取用户所有动作权限
      * （暂未使用）
      */
-    public JSONArray selectAllActions(int user_id, String role_code) {
-        List<Function> act_info = functionMapper.selectAllFunction(user_id, role_code);
+    public JSONArray selectAllActions(int user_id, String role_code,String group_code) {
+        List<Function> act_info = functionMapper.selectPrivilege(user_id, role_code,group_code);
         JSONArray functions = new JSONArray();
 
         for (int i = 0; i < act_info.size(); i++) {
@@ -151,12 +151,12 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 按功能获取user动作权限
      */
-    public JSONArray selectActionByFun(int user_id, String role_code, String function_code) {
+    public JSONArray selectActionByFun(int user_id, String role_code, String function_code,String group_code) {
         List<Action> act_info;
         if (role_code.equals(Common.ROLE_SYS)) {
             act_info = functionMapper.selectAllAction(function_code);
         } else {
-            act_info = functionMapper.selectActionByFun(user_id, role_code, function_code);
+            act_info = functionMapper.selectActionByFun(user_id, role_code, function_code,group_code);
         }
         JSONArray actions = new JSONArray();
         for (int i = 0; i < act_info.size(); i++) {
@@ -166,5 +166,34 @@ public class FunctionServiceImpl implements FunctionService {
             actions.add(obj);
         }
         return actions;
+    }
+
+    /**
+     *列出所选角色，用户，群组的权限
+     * 返回id
+     */
+    public JSONArray selectPrivilege(String role_code,int user_id,String group_code){
+        JSONArray array = new JSONArray();
+        List<Function> act_info = functionMapper.selectPrivilege(user_id, role_code,group_code);
+        for (int i = 0; i < act_info.size(); i++) {
+            int id = act_info.get(i).getId();
+            JSONObject corps = new JSONObject();
+            corps.put("id",id);
+            array.add(corps);
+        }
+        return array;
+    }
+
+    /**
+     *列出登录用户的所有权限
+     */
+    public List<Function> selectAllPrivilege(String role_code,int user_id,String group_code){
+        List<Function> privilege;
+        if (role_code.equals(Common.ROLE_SYS)) {
+            privilege = functionMapper.selectAllPrivilege();
+        }else {
+            privilege = functionMapper.selectPrivilege(user_id, role_code,group_code);
+        }
+        return privilege;
     }
 }
