@@ -109,13 +109,13 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
-				$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
+				$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 			}else if(data.code=="-1"){
 				// alert(data.message);
 				// art.dialog({
@@ -199,20 +199,20 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
 				});
 			}
 		});
 	}
 
-$(".oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/role/role.html");
+$(".operadd_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 	});
-	$(".oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/role/role.html");
+	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 	});
 });
