@@ -7,8 +7,10 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         body{
             margin-top:81px;
@@ -34,10 +36,19 @@
                         <span><label>群组名称</label><input type="text" id="GROUP_NAME" verify="Empty"/></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" /></span>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
-                    <div>
-                        <span><label style="color:#c26555;">所属角色*</label><input type="text" /></span>
+                    <div id="dropdown">
+                        <span><label style="color:#c26555;">所属角色</label><input type="text" id="own_role"/><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
+                        <ul id="grouprole_select"></ul></span>
                     </div>
                     <div id="check_per">
                         <span><label>群组用户</label><input type="text" placeholder="共有1269位用户" readonly/><span class="check_icon">查看名单<i class="icon-ishop_8-03"></i></span>
@@ -48,12 +59,12 @@
                         </span>
                     </div>
                     <div>
-                        <span><label>备注</label><input type="text" /></span>
+                        <span><label>备注</label><input type="text" id="REMARK"/></span>
                     </div>
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="groupedit_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>
@@ -89,16 +100,15 @@
     <script src="../js/hplus.js?v=2.2.0"></script>
     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
-    <!-- con_arrow -->
-    <script type="text/javascript" src="../js/con_arrow.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            $('#side-menu li:nth-of-type(8)').addClass('active');
-            $('.active ul').addClass('in');
-            $('.active ul li:nth-of-type(2)').addClass('select_index');
-            $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
-        })
-    </script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+    <!-- error tips -->
+    <script type="text/javascript" src="../js/user/group_operate.js"></script>
 </body>
 
 </html>
