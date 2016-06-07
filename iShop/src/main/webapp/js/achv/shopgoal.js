@@ -71,7 +71,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"own_corp":OWN_CORP,"shop_id":SHOP_ID,"shop_name":SHOP_NAME,"time_type":TIME_TYPE,"per_goal":PER_GOAL,"date":DATE};
+				var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -96,7 +96,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"own_corp":OWN_CORP,"shop_id":SHOP_ID,"shop_name":SHOP_NAME,"time_type":TIME_TYPE,"per_goal":PER_GOAL,"date":DATE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -168,12 +168,12 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var OWN_CORP=$("#OWN_CORP").val(msg.own_corp);
-				var SHOP_ID=$("#SHOP_ID").val(msg.shop_id);
-				var SHOP_NAME=$("#SHOP_NAME").val(msg.shop_name);
-				var TIME_TYPE=$("#TIME_TYPE").val(msg.time_type);
-				var PER_GOAL=$("#PER_GOAL").val(msg.per_goal);
-				var DATE=$("#DATE").val(msg.date);
+				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
+				var SHOP_ID=$("#SHOP_ID").val(msg.store_code);
+				var SHOP_NAME=$("#SHOP_NAME").val(msg.store_name);
+				var TIME_TYPE=$("#TIME_TYPE").val(msg.achv_type);
+				var PER_GOAL=$("#PER_GOAL").val(msg.achv_goal);
+				var DATE=$("#DATE").val(msg.end_time);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
@@ -183,12 +183,12 @@ jQuery(document).ready(function(){
 				var modify_time=$("#modify_time").val(msg.modified_date);
 				var modifier=$("#modifier").val(msg.modifier);			
 
-				$("#OWN_CORP").val(msg.own_corp);
-				$("#SHOP_ID").val(msg.shop_id);
-				$("#SHOP_NAME").val(msg.shop_name);
-				$("#TIME_TYPE").val(msg.time_type);
-				$("#PER_GOAL").val(msg.per_goal);
-				$("#DATE").val(msg.date);
+				$("#OWN_CORP").val(msg.corp_code);
+				$("#SHOP_ID").val(msg.store_code);
+				$("#SHOP_NAME").val(msg.store_name);
+				$("#TIME_TYPE").val(msg.achv_type);
+				$("#PER_GOAL").val(msg.achv_goal);
+				$("#DATE").val(msg.end_time);
 				// $("#OWN_DOCU").val(msg.own_docu);
 				
 				$("#created_time").val(msg.created_date);
