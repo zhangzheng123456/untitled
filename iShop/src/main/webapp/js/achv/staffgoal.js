@@ -61,10 +61,15 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==false){
+					ISACTIVE="N";
+				}
 				var _command="";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
-
 					}
 				};
 				var _params={"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE};
@@ -75,6 +80,7 @@ var oc = new ObjectControl();
 		});
 		$(".staffgoaledit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(staffgoaljs.firstStep()){
+				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
 				var SHOP_ID=$("#SHOP_ID").val();
 				var STAFF_ID=$("#STAFF_ID").val();
@@ -82,13 +88,18 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==false){
+					ISACTIVE="N";
+				}
 				var _command="";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
-
 					}
 				};
-				var _params={"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE};
+				var _params={"id":ID,"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -99,19 +110,20 @@ var oc = new ObjectControl();
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
 		console.log(_params);
-		oc.postRequire("post", _command, _params, function(data){
+		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				if(opt.success){
-					opt.success();
-				}
+				// if(opt.success){
+				// 	opt.success();
+				// }
 				// window.location.href="";
+				$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 			}
 		});
 	};
@@ -152,7 +164,7 @@ jQuery(document).ready(function(){
 	window.role.init();//初始化
 	if($(".pre_title label").text()=="编辑员工业绩目标"){
 		var id=sessionStorage.getItem("id");
-		var _params={"id":1};
+		var _params={"id":id};
 		var _command="/storeAchvGoal/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);

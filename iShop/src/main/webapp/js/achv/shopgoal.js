@@ -86,6 +86,7 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -161,7 +162,7 @@ jQuery(document).ready(function(){
 	window.shopgoal.init();//初始化
 	if($(".pre_title label").text()=="编辑店铺业绩目标"){
 		var id=sessionStorage.getItem("id");
-		var _params={"id":1};
+		var _params={"id":id};
 		var _command="/storeAchvGoal/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
