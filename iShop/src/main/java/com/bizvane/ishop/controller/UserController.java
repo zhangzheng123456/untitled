@@ -63,12 +63,13 @@ public class UserController {
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
 
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
 
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
             JSONObject result = new JSONObject();
             PageInfo<User> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -471,33 +472,6 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-    @RequestMapping(value = "/groupcheck_power", method = RequestMethod.GET)
-    @ResponseBody
-    public String groupList(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_id = request.getParameter("role_id").toString();
-            String function_code = request.getParameter("funcCode");
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
-            JSONObject result = new JSONObject();
-            PageInfo<User> list;
-
-
-            String data = null;
-
-
-        } catch (Exception ex) {
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();

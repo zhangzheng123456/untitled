@@ -6,9 +6,11 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Group;
+import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.GroupService;
+import com.bizvane.ishop.service.RoleService;
 import com.bizvane.ishop.service.UserService;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -40,6 +42,8 @@ public class GroupController {
     @Autowired
     private UserService userService;
     @Autowired
+    private RoleService roleService;
+    @Autowired
     private FunctionService functionService;
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
@@ -55,10 +59,12 @@ public class GroupController {
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
+
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
             JSONObject result = new JSONObject();
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -279,6 +285,31 @@ public class GroupController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 群组管理之
+     * 角色选择
+     */
+    @RequestMapping(value = "/role",method = RequestMethod.POST)
+    @ResponseBody
+    public String roleSelect(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            List<Role> roles = roleService.selectCorpRole(role_code);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(roles));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
     /**
      * 群组管理之
      * 编辑群组信息之
@@ -322,7 +353,31 @@ public class GroupController {
     @RequestMapping(value = "/check_power",method = RequestMethod.POST)
     @ResponseBody
     public String groupCheckPower(HttpServletRequest request) {
-        return "groupcheck_power";
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String group_code = jsonObject.get("group_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            PageInfo<User> users = userService.selectGroupUser(page_number,page_size,corp_code,group_code);
+            JSONObject result = new JSONObject();
+
+            result.put("list", JSON.toJSONString(users));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
     /**

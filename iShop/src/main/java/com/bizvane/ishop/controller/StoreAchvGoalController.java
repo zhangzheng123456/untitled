@@ -51,12 +51,14 @@ public class StoreAchvGoalController {
     public String getStoreAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String role_code = request.getSession(false).getAttribute("role_code").toString();
+        String group_code = request.getSession().getAttribute("group_code").toString();
+
         String function_code = request.getSession(false).getAttribute("funcCode").toString();
         int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
         int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
         int page_size = Integer.parseInt(request.getParameter("pageSize"));
         try {
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
             JSONObject result = new JSONObject();
             PageInfo<StoreAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {

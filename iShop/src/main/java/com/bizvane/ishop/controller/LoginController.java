@@ -225,11 +225,12 @@ public class LoginController {
             String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_type = request.getSession().getAttribute("user_type").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
 
             if (role_code.equals(Common.ROLE_SYS)) {
-                menu = functionService.selectAllFunctions(0, "");
+                menu = functionService.selectAllFunctions(0, "","");
             } else {
-                menu = functionService.selectAllFunctions(Integer.parseInt(user_id), role_code);
+                menu = functionService.selectAllFunctions(Integer.parseInt(user_id), role_code,group_code);
             }
             request.getSession().setAttribute("menu", menu);
             menus.put("menu",menu);
