@@ -221,6 +221,7 @@ function selectownshop(obj){
 	// 	obj.setAttribute('data-i','2');
 	// }
 	$(".shop_list ul").html('');
+	store_li_list(obj.id);
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -298,10 +299,18 @@ function role_data(r,c){
 		console.log(msg_roles);
 		var index=0;
 		var html="";
-		if(msg_roles[0].group_name){
+		console.log(msg_roles.length);
+		if(msg_roles.length!==0){
 			for(index in msg_roles){
 				html +='<li data-rolecode="'+msg_roles[index].group_code+'">'+msg_roles[index].group_name+'</li>';
 			}
+		}else{
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content:"该企业目前没有群组，请先定义群组！"
+			});
 		}
 		$("#role_list").append(html);
 		$("#role_list li").click(function(){
@@ -358,10 +367,17 @@ function store_data(p,r,c){
 		var msg_stores=JSON.parse(msg.stores);
 		var index=0;
 		var html="";
-		if(msg_stores[0].store_name){
+		if(msg_stores.length!==0){
 			for(index in msg_stores){
 				html +='<li data-storecode="'+msg_stores[index].store_code+'">'+msg_stores[index].store_name+'</li>';
 			}
+		}else{
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content:"该企业目前没有店铺，请先定义店铺！"
+			});
 		}
 		$("#"+p+" ul").append(html);
 		$("#"+p+" ul li").click(function(){
@@ -470,8 +486,6 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				console.log(msg.user_code);
-				console.log(msg.role);
 				c_code=msg.corp_code;
 				r_code=msg.group_code;
 				$("#USERID").val(msg.user_code);
@@ -487,14 +501,14 @@ jQuery(document).ready(function(){
 				if(msg.store_code==''){
 					$("#select_ownshop").css("display","none");
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
-					$("#OWN_RIGHT").val(msg.role.group_name);
-					$("#OWN_RIGHT").attr("data-myrcode",msg.role.group_code);
+					$("#OWN_RIGHT").val(msg.group.group_name);
+					$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
 				}else if(msg.store_code !==''){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
 					$("#OWN_CORP").val(msg.corp_code);
-					$("#OWN_RIGHT").val(msg.role.group_name);
-					$("#OWN_RIGHT").attr("data-myrcode",msg.role.group_code);
+					$("#OWN_RIGHT").val(msg.group.group_name);
+					$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
 					var store_lists=msg.store_name.split(",");
 					var storecode_list=msg.store_code.split(",");
 					if(store_lists.length==0){
@@ -569,7 +583,4 @@ jQuery(document).ready(function(){
 	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
-
-	
-	
 });
