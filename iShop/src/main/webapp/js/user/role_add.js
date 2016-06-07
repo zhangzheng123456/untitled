@@ -204,7 +204,7 @@ jQuery(document).ready(function(){
 				// 	lock:true,
 				// 	cancel: false,
 				// 	content: data.message
-				});
+				// });
 			}
 		});
 	}
