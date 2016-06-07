@@ -79,12 +79,10 @@ var oc = new ObjectControl();
 		});
 		$(".groupedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(groupjs.firstStep()){
-				var ID=sessionStorage.getItem("id");
+				var GROUP_CODE=$("#GROUP_ID").val();
+				var GROUP_NAME=$("#GROUP_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_AREA=$("#OWN_AREA").data("myacode");
-				var OWN_BRAND=$("#OWN_BRAND").data("mybcode");
-				var STORE_ID=$("#STORE_ID").val();
-				var STORE_NAME=$("#STORE_NAME").val();
+				var OWN_ROLE=$("#OWN_ROLE").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -98,7 +96,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"brand_code":OWN_BRAND,"store_code":STORE_ID,"area_code":OWN_AREA,"store_name":STORE_NAME,"flg_tob":FLG_TOB,"isactive":ISACTIVE};
+				var _params={"id":ID,"group_code":GROUP_CODE,"group_name":GROUP_NAME,"corp_code":OWN_CORP,"role_name":OWN_ROLE,"isactive":ISACTIVE};
 				groupjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -155,6 +153,49 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.group.init();//初始化
+	if($(".pre_title label").text()=="编辑店铺信息"){
+		var id=sessionStorage.getItem("id");
+		var _params={"id":id};
+		var _command="/shop/select";
+		// oc.postRequire("post", _command,"", _params, function(data){
+		// 	console.log(data);
+		// 	if(data.code=="0"){
+		// 		var msg=JSON.parse(data.message);
+		// 		console.log(msg);
+		// 		var OWN_CORP_option=$('#OWN_CORP option');
+		// 		$("#OWN_CORP").val(msg.corp_code);
+		// 		$("#OWN_BRAND").val(msg.brand_name);
+		// 		$("#OWN_BRAND").attr("data-mybcode",msg.brand_code);
+		// 		// $("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);
+		// 		$("#STORE_NAME").val(msg.store_name);
+		// 		$("#STORE_ID").val(msg.store_code);
+		// 		$("#OWN_AREA").val(msg.area_name);
+		// 		$("#OWN_AREA").attr("data-myacode",msg.area_code);
+		// 		if(msg.flg_tob=="Y"){
+		// 			$("#FLG_TOB").val("是");
+		// 		}else if(msg.flg_tob=="N"){
+		// 			$("#FLG_TOB").val("否");
+		// 		}
+		// 		$("#created_time").val(msg.created_date);
+		// 		$("#creator").val(msg.creater);
+		// 		$("#modify_time").val(msg.modified_date);
+		// 		$("#modifier").val(msg.modifier);
+		// 		var input=$(".checkbox_isactive").find("input")[0];
+		// 		if(msg.isactive=="Y"){
+		// 			input.checked=true;
+		// 		}else if(msg.isactive=="N"){
+		// 			input.checked=false;
+		// 		}
+		// 	}else if(data.code=="-1"){
+		// 		art.dialog({
+		// 			time: 1,
+		// 			lock:true,
+		// 			cancel: false,
+		// 			content: data.message
+		// 		});
+		// 	}
+		// });
+	}
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
