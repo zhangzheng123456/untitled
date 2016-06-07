@@ -61,6 +61,7 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
@@ -72,7 +73,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE};
+				var _params={"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE,"isactive":ISACTIVE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -88,6 +89,7 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
@@ -99,7 +101,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE};
+				var _params={"id":ID,"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE,"isactive":ISACTIVE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
