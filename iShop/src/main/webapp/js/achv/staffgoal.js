@@ -149,5 +149,64 @@ var oc = new ObjectControl();
 	return obj;
 }));
 jQuery(document).ready(function(){
-	window.staffgoal.init();//初始化
+	window.role.init();//初始化
+	if($(".pre_title label").text()=="编辑员工业绩目标"){
+		var id=sessionStorage.getItem("id");
+		var _params={"id":1};
+		var _command="/storeAchvGoal/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				var OWN_CORP=$("#OWN_CORP").val(msg.own_corp);
+				var SHOP_ID=$("#SHOP_ID").val(msg.shop_id);
+				var SHOP_NAME=$("#SHOP_NAME").val(msg.shop_name);
+				var TIME_TYPE=$("#TIME_TYPE").val(msg.time_type);
+				var PER_GOAL=$("#PER_GOAL").val(msg.per_goal);
+				var DATE=$("#DATE").val(msg.date);
+				// var check_per=$("#check_per").val(msg.check_per);
+				// $("#ROLE_NUM").val(msg.role_num);
+				// $("#ROLE_NAME").val(msg.role_name);
+				// $("#BEIZHU").val(msg.beizhu);
+				var created_time=$("#created_time").val(msg.created_date);
+				var creator=$("#creator").val(msg.creater);
+				var modify_time=$("#modify_time").val(msg.modified_date);
+				var modifier=$("#modifier").val(msg.modifier);			
+
+				$("#OWN_CORP").val(msg.own_corp);
+				$("#SHOP_ID").val(msg.shop_id);
+				$("#SHOP_NAME").val(msg.shop_name);
+				$("#TIME_TYPE").val(msg.time_type);
+				$("#PER_GOAL").val(msg.per_goal);
+				$("#DATE").val(msg.date);
+				// $("#OWN_DOCU").val(msg.own_docu);
+				
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
+			}else if(data.code=="-1"){
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
+			}
+		});
+	}
+
+$(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+	});
+	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+	});
 });
