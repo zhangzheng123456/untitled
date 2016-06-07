@@ -185,8 +185,7 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
         }
     }
 }
-function superaddition(data,num){
-    console.log(data);
+function superaddition(data,num,die){
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+num*pageSize;
@@ -197,25 +196,34 @@ function superaddition(data,num){
                         + "</td><td style='text-align:left;padding-left:22px'>"
                         + a
                         + "</td><td>"
+                        + data[i].action_code
+                        + "</td><td>"
                         + data[i].module_name
-                        + "</td><td>"
-                        + data[i].sex
                         +"</td><td>"
-                        +data[i].phone
+                        +data[i].function_name
                         + "</td><td>"
-                        +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
-                        + "</td><td>"
-                        +data[i].group.group_name
-                        + "</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
+                        +data[i].action_name
+                        +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxTwoInput"
+                        + i
+                        + 1
+                        + "'></label></div></td></tr>");
     }
+    var el=$("tbody input");
+    var id=el.parents("tr").attr("id");
+    console.log(el);
+    console.log(id);
+    var len = el.length;
+
+    for(var i=0; i<len; i++)
+        {
+           if((el[i].type=="checkbox") && (el[i].name==name))
+            {
+              el[i].checked = true;
+            }
+        }
 };
 // //权限配置
 // function jurisdiction(actions){
@@ -249,12 +257,14 @@ function GET(){
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
+                var die=message.die;
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
                 console.log(list);
+                console.log(die)
                 var actions=message.actions;
-                superaddition(list,inx);
+                superaddition(list,inx,die);
                 // jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,group_code,corp_code,value);
