@@ -73,7 +73,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -101,7 +101,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"STAFF_ID":STAFF_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -173,12 +173,13 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var OWN_CORP=$("#OWN_CORP").val(msg.own_corp);
-				var SHOP_ID=$("#SHOP_ID").val(msg.shop_id);
-				var SHOP_NAME=$("#SHOP_NAME").val(msg.shop_name);
-				var TIME_TYPE=$("#TIME_TYPE").val(msg.time_type);
-				var PER_GOAL=$("#PER_GOAL").val(msg.per_goal);
-				var DATE=$("#DATE").val(msg.date);
+				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
+				var SHOP_ID=$("#SHOP_ID").val(msg.store_code);
+				var STAFF_ID=$("#STAFF_ID").val(msg.user_code);
+				var SHOP_NAME=$("#SHOP_NAME").val(msg.store_name);
+				var TIME_TYPE=$("#TIME_TYPE").val(msg.achv_type);
+				var PER_GOAL=$("#PER_GOAL").val(msg.achv_goal);
+				var DATE=$("#DATE").val(msg.end_time);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
