@@ -60,6 +60,11 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==false){
+					ISACTIVE="N";
+				}
 				var _command="/storeAchvGoal/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -80,6 +85,11 @@ var oc = new ObjectControl();
 				var TIME_TYPE=$("#TIME_TYPE").val();
 				var PER_GOAL=$("#PER_GOAL").val();
 				var DATE=$("#DATE").val();
+				if(input.checked==true){
+					ISACTIVE="Y";
+				}else if(input.checked==false){
+					ISACTIVE="N";
+				}
 				var _command="/storeAchvGoal/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -98,10 +108,11 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command, _params, function(data){
 			if(data.code=="0"){
-				if(opt.success){
-					opt.success();
-				}
+				// if(opt.success){
+				// 	opt.success();
+				// }
 				// window.location.href="";
+				$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
