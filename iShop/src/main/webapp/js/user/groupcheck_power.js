@@ -186,6 +186,7 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
     }
 }
 function superaddition(data,num){
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+num*pageSize;
@@ -243,7 +244,7 @@ function GET(){
     param["pageSize"]=pageSize;
     param["group_code"]=group_code;
     param["corp_code"]=corp_code;
-    oc.postRequire("post","/user/group/check_name","0",param,function(data){
+    oc.postRequire("post","/user/group/check_power","0",param,function(data){
         console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
