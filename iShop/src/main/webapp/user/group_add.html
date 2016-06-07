@@ -24,9 +24,9 @@
         <div class="col-lg-12 pre_title">用户及权限<i class="icon-ishop_8-03"></i>群组管理<i class="icon-ishop_8-03"></i><label>新增群组</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
-                    <div>
+                    <!-- <div>
                         <span><label>群组编号</label><input type="text" id="GROUP_ID" verify="Empty"/></span>
-                    </div>
+                    </div> -->
                     <div>
                         <span><label>群组名称</label><input type="text" id="GROUP_NAME" verify="Empty"/></span>
                     </div>
@@ -42,15 +42,15 @@
                         </ul>
                     </div>
                     <div id="dropdown">
-                        <span><label style="color:#c26555;">所属角色</label><input type="text" id="OWN_ROLE" readonly /><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
+                        <span><label style="color:#c26555;">所属角色</label><input type="text" id="OWN_ROLE" class="input_select" readonly /><span class="down_icon"><i class="icon-ishop_8-02"></i></span>
                         <ul id="grouprole_select"></ul></span>
                     </div>
                     <div id="check_per">
-                        <span><label>群组用户</label><input type="text" id="GROUP_USER" placeholder="共有1269位用户" readonly/><span class="check_icon">查看名单<i class="icon-ishop_8-03"></i></span>
+                    <span><label>群组用户</label><input type="text" id="GROUP_USER" placeholder="共有1269位用户" readonly/><span class="check_icon"><a href="groupcheck_name.html" style="color:#ffffff;">查看名单<i class="icon-ishop_8-03"></i></a></span>
                         </span>
                     </div>
                     <div id="check_per">
-                        <span><label>群组权限</label><input type="text" id="GROUP_RIGHT" placeholder="共26个权限" readonly/><span class="check_icon">查看权限<i class="icon-ishop_8-03"></i></span>
+                    <span><label>群组权限</label><input type="text" id="GROUP_RIGHT" placeholder="共26个权限" readonly/><span class="check_icon"><a href="groupcheck_power.html" style="color:#ffffff;">查看权限<i class="icon-ishop_8-03"></i></a></span>
                         </span>
                     </div>
                     <div>
@@ -67,7 +67,7 @@
                 </div>
                 <form class="msg_detail">
                     <div>
-                    <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
+                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
                 </form>
             </div>
