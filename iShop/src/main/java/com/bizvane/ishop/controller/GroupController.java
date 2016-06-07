@@ -4,10 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.Function;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.GroupService;
 import com.bizvane.ishop.service.RoleService;
@@ -296,9 +296,24 @@ public class GroupController {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
-            List<Role> roles = roleService.selectCorpRole(role_code);
+            List<Role> roles;
+            if (role_code.equals(Common.ROLE_SYS)){
+                roles = roleService.selectAll("");
+            }else {
+                roles = roleService.selectCorpRole(role_code);
+            }
+            JSONArray array = new JSONArray();
+            for (int i = 0; i < roles.size(); i++) {
+                Role role = roles.get(i);
+                String role_code1 = role.getRole_code();
+                String role_name = role.getRole_name();
+                JSONObject obj = new JSONObject();
+                obj.put("role_code",role_code1);
+                obj.put("role_name",role_name);
+                array.add(obj);
+            }
             JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(roles));
+            result.put("role", array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -361,14 +376,25 @@ public class GroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            String login_role_code = request.getSession().getAttribute("role_code").toString();
+            String login_group_code = request.getSession().getAttribute("group_code").toString();
+
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            PageInfo<User> users = userService.selectGroupUser(page_number,page_size,corp_code,group_code);
-            JSONObject result = new JSONObject();
+            Group group = groupService.selectCorpGroup(corp_code,group_code);
+            String role_code = group.getRole_code();
+            //获取登录用户的所有权限
+            PageInfo<Function> funcs = functionService.selectAllPrivilege(page_number,page_size,login_role_code,login_user_id,login_group_code);
+            //获取选择角色的权限
+            JSONArray array = functionService.selectPrivilege(role_code,0,group_code);
 
-            result.put("list", JSON.toJSONString(users));
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(funcs));
+            result.put("select", array);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

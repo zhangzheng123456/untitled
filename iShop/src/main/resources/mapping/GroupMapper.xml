@@ -42,6 +42,8 @@
         DEF_GROUP.id,
         DEF_GROUP.group_code,
         DEF_GROUP.group_name,
+        DEF_GROUP.role_code,
+        DEF_GROUP.corp_code,
         DEF_ROLE.role_name,
         DEF_CORP.corp_name,
         DEF_GROUP.remark,
@@ -199,4 +201,5 @@
         DEF_GROUP
         where ID = #{id}
     </delete>
+
 </mapper>

@@ -9,7 +9,7 @@ public interface RoleMapper {
 
     List<Role> selectAllRole(@Param("search_value") String search_value);
 
-    List<Role> selectUserRole(String role_code);
+    List<Role> selectUserRole(@Param("role_code") String role_code);
 
     Role selectByRoleId(@Param("role_id") int role_id);
 

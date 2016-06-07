@@ -50,6 +50,16 @@ public class RoleServiceImpl implements RoleService {
         return page;
     }
 
+    public List<Role> selectAll( String search_value) throws SQLException {
+        List<Role> roles;
+        if(null==search_value||search_value.isEmpty()){
+            roles=roleMapper.selectAllRole("");
+        }else {
+            roles = roleMapper.selectAllRole("%" + search_value + "%");
+        }
+        return roles;
+    }
+
     public List<Role> selectCorpRole(String role_code) throws SQLException {
         List<Role> roles = roleMapper.selectUserRole(role_code);
         return roles;

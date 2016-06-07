@@ -6,6 +6,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.FunctionMapper;
 import com.bizvane.ishop.entity.Action;
 import com.bizvane.ishop.entity.Function;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.FunctionService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -187,13 +188,16 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      *列出登录用户的所有权限
      */
-    public List<Function> selectAllPrivilege(String role_code,int user_id,String group_code){
+    public PageInfo<Function> selectAllPrivilege(int page_number,int page_size,String role_code,int user_id,String group_code){
         List<Function> privilege;
         if (role_code.equals(Common.ROLE_SYS)) {
+            PageHelper.startPage(page_number, page_size);
             privilege = functionMapper.selectAllPrivilege();
         }else {
+            PageHelper.startPage(page_number, page_size);
             privilege = functionMapper.selectPrivilege(user_id, role_code,group_code);
         }
-        return privilege;
+        PageInfo<Function> page = new PageInfo<Function>(privilege);
+        return page;
     }
 }

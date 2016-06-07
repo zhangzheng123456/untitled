@@ -39,4 +39,31 @@
         and function_code = #{function_code}
     </select>
 
+
+    <select id="selectPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select *
+        FROM DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  a.FUNCTION_CODE IN (
+        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        WHERE MASTER_CODE = #{user_id}
+        or MASTER_CODE = #{role_code}
+        or MASTER_CODE = #{group_code}
+        and enable = 'Y'
+        )
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by a.FUNCTION_CODE
+    </select>
+
+    <select id="selectAllPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select *
+        FROM DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND b.ADMIN_FUNC = 'Y'
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by a.FUNCTION_CODE
+    </select>
+
 </mapper>

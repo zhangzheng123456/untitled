@@ -22,5 +22,7 @@ public interface RoleService {
 
     PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws SQLException;
 
+    List<Role> selectAll( String search_value) throws SQLException;
+
     List<Role> selectCorpRole(String role_code) throws SQLException;
 }

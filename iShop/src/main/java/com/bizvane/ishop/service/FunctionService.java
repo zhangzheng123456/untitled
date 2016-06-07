@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.Function;
+import com.github.pagehelper.PageInfo;
 
 import java.util.List;
 
@@ -17,5 +18,5 @@ public interface FunctionService {
 
     JSONArray selectPrivilege(String role_code,int user_id,String group_code);
 
-    List<Function> selectAllPrivilege(String role_code,int user_id,String group_code);
+    PageInfo<Function> selectAllPrivilege(int page_number, int page_size, String role_code, int user_id, String group_code);
 }

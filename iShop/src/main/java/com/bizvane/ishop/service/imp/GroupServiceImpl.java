@@ -31,6 +31,10 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.selectByRole(role_code);
     }
 
+    public Group selectCorpGroup(String corp_code,String group_code) throws SQLException {
+        return groupMapper.selectCorpGroup(corp_code,group_code);
+    }
+
     public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
         List<Group> groups;
         if (search_value.equals("")) {
