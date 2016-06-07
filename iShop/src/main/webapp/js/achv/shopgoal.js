@@ -66,7 +66,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE};
+				var _params={"own_corp":OWN_CORP,"shop_id":SHOP_ID,"shop_name":SHOP_NAME,"time_type":TIME_TYPE,"per_goal":PER_GOAL,"date":DATE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -86,7 +86,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":1,"OWN_CORP":OWN_CORP,"SHOP_ID":SHOP_ID,"SHOP_NAME":SHOP_NAME,"TIME_TYPE":TIME_TYPE,"PER_GOAL":PER_GOAL,"DATE":DATE};
+				var _params={"id":1,"own_corp":OWN_CORP,"shop_id":SHOP_ID,"shop_name":SHOP_NAME,"time_type":TIME_TYPE,"per_goal":PER_GOAL,"date":DATE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -157,12 +157,12 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var OWN_CORP=$("#OWN_CORP").val(msg.role_code);
-				var SHOP_ID=$("#SHOP_ID").val(msg.role_name);
-				var SHOP_NAME=$("#SHOP_NAME").val(msg.remark);
-				var TIME_TYPE=$("#TIME_TYPE").val(msg.role_code);
-				var PER_GOAL=$("#PER_GOAL").val(msg.role_name);
-				var DATE=$("#DATE").val(msg.remark);
+				var OWN_CORP=$("#OWN_CORP").val(msg.own_corp);
+				var SHOP_ID=$("#SHOP_ID").val(msg.shop_id);
+				var SHOP_NAME=$("#SHOP_NAME").val(msg.shop_name);
+				var TIME_TYPE=$("#TIME_TYPE").val(msg.time_type);
+				var PER_GOAL=$("#PER_GOAL").val(msg.per_goal);
+				var DATE=$("#DATE").val(msg.date);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
@@ -172,12 +172,12 @@ jQuery(document).ready(function(){
 				var modify_time=$("#modify_time").val(msg.modified_date);
 				var modifier=$("#modifier").val(msg.modifier);			
 
-				$("#OWN_CORP").val(msg.role_code);
-				$("#SHOP_ID").val(msg.role_name);
-				$("#SHOP_NAME").val(msg.remark);
-				$("#TIME_TYPE").val(msg.role_code);
-				$("#PER_GOAL").val(msg.role_name);
-				$("#DATE").val(msg.remark);
+				$("#OWN_CORP").val(msg.own_corp);
+				$("#SHOP_ID").val(msg.shop_id);
+				$("#SHOP_NAME").val(msg.shop_name);
+				$("#TIME_TYPE").val(msg.time_type);
+				$("#PER_GOAL").val(msg.per_goal);
+				$("#DATE").val(msg.date);
 				// $("#OWN_DOCU").val(msg.own_docu);
 				
 				$("#created_time").val(msg.created_date);
