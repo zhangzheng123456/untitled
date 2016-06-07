@@ -162,7 +162,8 @@ jQuery(document).ready(function(){
 				console.log(msg);
 				$("#BRAND_ID").val(msg.brand_code);
 				$("#BRAND_NAME").val(msg.brand_name);
-				$("#OWN_CORP").val(msg.corp_code);
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
 
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);

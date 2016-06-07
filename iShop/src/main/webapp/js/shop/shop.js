@@ -191,8 +191,8 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				$("#OWN_CORP option").val(msg.corp_code);
-				$("#OWN_CORP option").text(msg.corp_name);
+				// $("#OWN_CORP option").val(msg.corp.corp_code);
+				// $("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_BRAND").val(msg.brand_name);
 				$("#OWN_BRAND").attr("data-mybcode",msg.brand_code);
 				// $("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);

@@ -506,7 +506,8 @@ jQuery(document).ready(function(){
 				}else if(msg.store_code !==''){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
-					$("#OWN_CORP").val(msg.corp_code);
+					$("#OWN_CORP option").val(msg.corp.corp_code);
+					$("#OWN_CORP option").text(msg.corp.corp_name);
 					$("#OWN_RIGHT").val(msg.group.group_name);
 					$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
 					var store_lists=msg.store_name.split(",");
