@@ -156,15 +156,14 @@
         </trim>
     </insert>
 
-    <select id="selectExist" resultType="com.bizvane.ishop.entity.Privilege">
+    <select id="selectGroup" resultType="com.bizvane.ishop.entity.Privilege">
         SELECT * FROM DEF_PRIVILEGE
-        WHERE group_code = #{group_code}
+        WHERE master_code = #{group_code}
     </select>
-    <delete id="delete">
+
+    <delete id="deleteGroup">
         delete from
         DEF_PRIVILEGE
-        where action_code = #{}
-        AND function_code = #{}
-        AND group_code = #{}
+        where master_code = #{group_code}
     </delete>
 </mapper>

@@ -137,7 +137,7 @@ public class UserController {
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
             user.setGroup_code(jsonObject.get("group_code").toString());
-            user.setStore_code(jsonObject.get("store_code").toString() + ",");
+            user.setStore_code(jsonObject.get("store_code").toString());
             user.setPassword(user_code);
             Date now = new Date();
             user.setCreated_date(sdf.format(now));
@@ -196,7 +196,7 @@ public class UserController {
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setGroup_code(jsonObject.get("group_code").toString());
-            user.setStore_code(jsonObject.get("store_code").toString() + ",");
+            user.setStore_code(jsonObject.get("store_code").toString());
             Date now = new Date();
             user.setModified_date(sdf.format(now));
             user.setModifier(user_id);
