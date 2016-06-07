@@ -1,8 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.dao.RoleMapper;
-import com.bizvane.ishop.dao.UserAchvGoalMapper;
-import com.bizvane.ishop.dao.UserMapper;
+import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -21,33 +19,39 @@ import java.util.List;
  * 创建时间
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "classpath:spring.xml",
-        "classpath:spring-mybatis.xml" })
+@ContextConfiguration(locations = {"classpath:spring.xml",
+        "classpath:spring-mybatis.xml"})
 public class TestUserService {
 
     @Autowired
-    private UserService userService=null;
+    private UserService userService = null;
 
     @Autowired
-    private RoleService roleService=null;
+    private RoleService roleService = null;
     @Autowired
-    private RoleMapper role=null;
+    private RoleMapper role = null;
     @Autowired
-    private UserMapper userMapper=null;
+    private UserMapper userMapper = null;
+
+
+//    @Autowired
+//    private PrivilegeInfoMapper privilegeInfoMapper=null;
+
+    @Autowired
+    private GroupMapper groupMapper;
 
     @Test
-    public void testInsert(){
-        User user=new User();
+    public void testInsert() {
+        User user = new User();
         user.setCreater("1111");
         user.setCreated_date(new Date().toString());
-
         user.setAvatar("111");
     }
 
     @Test
-    public void testSelectALlRole(){
+    public void testSelectALlRole() {
         try {
-            List<Role> list=role.selectAllRole("");
+            List<Role> list = role.selectAllRole("");
             System.out.print(list.size());
         } catch (Exception e) {
             e.printStackTrace();
@@ -55,11 +59,6 @@ public class TestUserService {
 
     }
 
-    @Test
-    public void testGroup(){
-        Object o=userMapper.groupcheck_power();
-        System.out.println(o.toString());
-        System.out.println(o.getClass());
-    }
+
 
 }

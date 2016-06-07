@@ -11,7 +11,7 @@ public interface RoleMapper {
 
     List<Role> selectUserRole(String role_code);
 
-    Role selectByRoleId(int role_id);
+    Role selectByRoleId(@Param("role_id") int role_id);
 
     int insertRole(Role record);
 
