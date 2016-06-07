@@ -21,13 +21,25 @@
         </association>
     </resultMap>
 
-    <select id="selectByGroupId" resultType="com.bizvane.ishop.entity.Group">
-        select *
-        from DEF_GROUP
-        where
-        <if test="group_id != 0">
-            ID = #{group_id}
-        </if>
+    <select id="selectByGroupId" resultMap="GroupInfo">
+        select
+        DEF_GROUP.id,
+        DEF_GROUP.group_code,
+        DEF_GROUP.group_name,
+        DEF_GROUP.role_code,
+        DEF_GROUP.corp_code,
+        DEF_ROLE.role_name,
+        DEF_CORP.corp_name,
+        DEF_GROUP.remark,
+        DEF_GROUP.modified_date,
+        DEF_GROUP.modifier,
+        DEF_GROUP.created_date,
+        DEF_GROUP.creater,
+        DEF_GROUP.isactive
+        from DEF_GROUP,DEF_ROLE,DEF_CORP
+        where DEF_GROUP.role_code = DEF_ROLE.role_code
+        AND DEF_GROUP.corp_code = DEF_CORP.corp_code
+        AND DEF_GROUP.ID = #{group_id}
     </select>
 
     <select id="selectCorpGroup" resultType="com.bizvane.ishop.entity.Group">
@@ -91,6 +103,11 @@
         AND ISACTIVE = 'Y'
         ORDER BY ID
     </select>
+
+    <select id="selectMaxCode" resultType="java.lang.String">
+        select max(GROUP_CODE) from DEF_GROUP
+    </select>
+
     <insert id="insertGroup" parameterType="com.bizvane.ishop.entity.Group">
         insert into DEF_GROUP
         <trim prefix="(" suffix=")" suffixOverrides=",">

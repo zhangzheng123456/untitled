@@ -40,6 +40,46 @@
     </select>
 
 
+    <select id="selectRolePrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select *
+        FROM DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  a.FUNCTION_CODE IN (
+        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        WHERE MASTER_CODE = #{role_code}
+        and enable = 'Y'
+        )
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by a.FUNCTION_CODE
+    </select>
+    <select id="selectGroupPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select *
+        FROM DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  a.FUNCTION_CODE IN (
+        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        WHERE MASTER_CODE = #{group_code}
+        and enable = 'Y'
+        )
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by a.FUNCTION_CODE
+    </select>
+    <select id="selectUserPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select *
+        FROM DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  a.FUNCTION_CODE IN (
+        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        WHERE MASTER_CODE = #{user_id}
+        and enable = 'Y'
+        )
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by a.FUNCTION_CODE
+    </select>
+
     <select id="selectPrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
@@ -47,8 +87,8 @@
         AND  a.FUNCTION_CODE IN (
         SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
         WHERE MASTER_CODE = #{user_id}
-        or MASTER_CODE = #{role_code}
-        or MASTER_CODE = #{group_code}
+        OR MASTER_CODE = #{role_code}
+        OR MASTER_CODE = #{group_code}
         and enable = 'Y'
         )
         AND a.ISACTIVE = 'Y'

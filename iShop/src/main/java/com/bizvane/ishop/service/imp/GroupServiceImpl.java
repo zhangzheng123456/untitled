@@ -48,6 +48,9 @@ public class GroupServiceImpl implements GroupService {
         return page;
     }
 
+    public String selectMaxCode(){
+        return groupMapper.selectMaxCode();
+    }
     public int insertGroup(Group group) throws SQLException {
         return groupMapper.insertGroup(group);
     }

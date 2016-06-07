@@ -21,6 +21,12 @@ public interface FunctionMapper {
     //系统管理员获取所有功能操作
     List<Action> selectAllAction(String function_code);
 
+    List<Function> selectRolePrivilege(@Param("role_code") String role_code);
+
+    List<Function> selectGroupPrivilege(@Param("group_code") String group_code);
+
+    List<Function> selectUserPrivilege(@Param("user_id") String user_id);
+
     List<Function> selectPrivilege(@Param("user_id") int user_id, @Param("role_code") String role_code, @Param("group_code") String group_code);
 
     List<Function> selectAllPrivilege();

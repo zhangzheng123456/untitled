@@ -17,6 +17,8 @@ public interface GroupMapper {
 
     List<Group> selectByRole(@Param("role_code")String role_code);
 
+    String selectMaxCode();
+
     int insertGroup(Group record);
 
     int updateGroup(Group record);

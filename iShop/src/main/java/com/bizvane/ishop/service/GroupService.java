@@ -21,6 +21,8 @@ public interface GroupService {
 
     PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
+    String selectMaxCode();
+
     int insertGroup(Group group) throws SQLException;
 
     int updateGroup(Group group) throws SQLException;

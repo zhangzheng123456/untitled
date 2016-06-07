@@ -111,7 +111,7 @@ public class CorpController {
             String max_code = corpService.selectMaxCorpCode();
             int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
             Integer c = code;
-            int length = 5 - c.toString().length();
+            int length = max_code.length() - c.toString().length()-1;
             String corp_code = "C";
             for (int i = 0; i < length; i++) {
                 corp_code = corp_code + "0";
