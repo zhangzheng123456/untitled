@@ -5,9 +5,12 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-var key_val=sessionStorage.getItem("key_val");//取页面的function_code
-key_val=JSON.parse(key_val);
-var funcCode=key_val.func_code;
+var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
+group_corp=JSON.parse(group_corp);
+var corp_code=group_corp.corp_code;//企业编号
+var group_code=group_corp.group_code;//群主编号
+console.log(corp_code);
+console.log(group_corp);
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -140,9 +143,9 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             return false;
         }
     }()
-    function dian(inx){
+    function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/user/group/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
@@ -154,13 +157,13 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         superaddition(list,inx);
                         jumpBianse();
                     }else if(data.code=="-1"){
-                        alert(data.message);
+                        // alert(data.message);
                     }
             });           
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/user/group/search","0",param,function(data){
+            oc.postRequire("post","/corp/search","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
@@ -183,14 +186,13 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }
 }
 function superaddition(data,num){//页面加载循环
-    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+num*pageSize;
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"'' data-code='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -200,17 +202,15 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].group_code
+                        + data[i].corp_name
                         + "</td><td>"
-                        + data[i].group_name
+                        + data[i].address
                         + "</td><td>"
-                        + data[i].role.role_name
+                        + data[i].contact
+                        +"</td><td>"
+                        +data[i].contact_phone
                         + "</td><td>"
-                        + data[i].corp.corp_name
-                        +"</td><td class='power'><a href='javascript:void(0);'>"
-                        +"编辑"
-                        + "</a></td><td>"
-                        +data[i].modifier
+                        +data[i].corp_name
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -233,21 +233,20 @@ function jurisdiction(actions){
                 var id=$(this).attr("id");
                 sessionStorage.setItem("id",id);
                 console.log(id);
-                var corp_code=$(this).attr("data-code");
-                var group_code=$(this).find("td:eq(2)").html();
-                var group_corp={"corp_code":corp_code,"group_code":group_code};
-                sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-                console.log(group_corp);
-                $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
+                $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
             })
         }
-    }
+    }s
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/user/group/list?pageNumber="+inx+"&pageSize="+pageSize
-        +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
+    var param={};
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["group_code"]=group_code;
+    param["corp_code"]=corp_code;
+    oc.postRequire("post","/user/group/check_name","0",param,function(data){
+        console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
@@ -290,7 +289,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/user/group_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/corp/crop_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -298,12 +297,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
-            var corp_code=$(tr).attr("data-code");
-            var group_code=$(tr).find("td:eq(2)").html();
-            var group_corp={"corp_code":corp_code,"group_code":group_code};
-            sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-            console.log(group_corp);
+            $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -328,20 +322,6 @@ function jumpBianse(){
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
-    //点击编辑查看权限
-    $('.power').click(function(){
-        if(event.stopPropagation){
-            event.stopPropagation();
-        }else{
-            event.cancelBubble=true;
-        }
-        var corp_code=$(this).parents('tr').attr("data-code");
-        var group_code=$(this).parents('tr').find("td:eq(2)").html();
-        var group_corp={"corp_code":corp_code,"group_code":group_code};
-        sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-        console.log(group_corp);
-        $(window.parent.document).find('#iframepage').attr("src","/user/groupcheck_power.html");
-    })
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
@@ -357,7 +337,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/user/group/search","0",param,function(data){
+    oc.postRequire("post","/corp/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -406,7 +386,7 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/user/group/delete","0",param,function(data){
+    oc.postRequire("post","/corp/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
                frame();
@@ -417,9 +397,6 @@ $("#delete").click(function(){
                $('.frame').html('删除成功');
                POST();
             }
-        }else if(data.code=="-1"){
-            frame();
-            $('.frame').html(data.message);
         }
     })
 })

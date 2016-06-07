@@ -199,7 +199,7 @@ function superaddition(data,num){//页面加载循环
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + data.a
+                        + a
                         + "</td><td>"
                         + data[i].store_code
                         + "</td><td>"
