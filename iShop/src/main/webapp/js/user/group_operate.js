@@ -57,7 +57,8 @@ var oc = new ObjectControl();
 				var GROUP_CODE=$("#GROUP_ID").val();
 				var GROUP_NAME=$("#GROUP_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_ROLE=$("#OWN_ROLE").val();
+				var OWN_ROLE=$("#OWN_ROLE").data("mygcode");
+				var REMARK=$("#REMARK").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -65,13 +66,13 @@ var oc = new ObjectControl();
 				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
-				var _command="/group/add";//接口名
+				var _command="/user/group/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"group_code":GROUP_CODE,"group_name":GROUP_NAME,"corp_code":OWN_CORP,"role_name":OWN_ROLE,"isactive":ISACTIVE};
+				var _params={"group_code":GROUP_CODE,"group_name":GROUP_NAME,"corp_code":OWN_CORP,"role_code":OWN_ROLE,"remark":REMARK,"isactive":ISACTIVE};
 				groupjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -82,7 +83,8 @@ var oc = new ObjectControl();
 				var GROUP_CODE=$("#GROUP_ID").val();
 				var GROUP_NAME=$("#GROUP_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_ROLE=$("#OWN_ROLE").val();
+				var OWN_ROLE=$("#OWN_ROLE").data("mygcode");
+				var REMARK=$("#REMARK").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -90,13 +92,13 @@ var oc = new ObjectControl();
 				}else if(input.checked==true){
 					ISACTIVE="N";
 				}
-				var _command="/group/edit";//接口名
+				var _command="/user/group/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"id":ID,"group_code":GROUP_CODE,"group_name":GROUP_NAME,"corp_code":OWN_CORP,"role_name":OWN_ROLE,"isactive":ISACTIVE};
+				var _params={"id":ID,"group_code":GROUP_CODE,"group_name":GROUP_NAME,"corp_code":OWN_CORP,"role_code":OWN_ROLE,"remark":REMARK,"isactive":ISACTIVE};
 				groupjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -153,48 +155,47 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.group.init();//初始化
-	if($(".pre_title label").text()=="编辑店铺信息"){
+	if($(".pre_title label").text()=="新增群组"){
+		$('#GROUP_USER').parent().parent().css("display","none");
+		$('#GROUP_RIGHT').parent().parent().css("display","none");
+
+	}else if($(".pre_title label").text()=="编辑群组"){
+		$('#GROUP_USER').parent().parent().css("display","block");
+		$('#GROUP_RIGHT').parent().parent().css("display","block");
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/shop/select";
-		// oc.postRequire("post", _command,"", _params, function(data){
-		// 	console.log(data);
-		// 	if(data.code=="0"){
-		// 		var msg=JSON.parse(data.message);
-		// 		console.log(msg);
-		// 		var OWN_CORP_option=$('#OWN_CORP option');
-		// 		$("#OWN_CORP").val(msg.corp_code);
-		// 		$("#OWN_BRAND").val(msg.brand_name);
-		// 		$("#OWN_BRAND").attr("data-mybcode",msg.brand_code);
-		// 		// $("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);
-		// 		$("#STORE_NAME").val(msg.store_name);
-		// 		$("#STORE_ID").val(msg.store_code);
-		// 		$("#OWN_AREA").val(msg.area_name);
-		// 		$("#OWN_AREA").attr("data-myacode",msg.area_code);
-		// 		if(msg.flg_tob=="Y"){
-		// 			$("#FLG_TOB").val("是");
-		// 		}else if(msg.flg_tob=="N"){
-		// 			$("#FLG_TOB").val("否");
-		// 		}
-		// 		$("#created_time").val(msg.created_date);
-		// 		$("#creator").val(msg.creater);
-		// 		$("#modify_time").val(msg.modified_date);
-		// 		$("#modifier").val(msg.modifier);
-		// 		var input=$(".checkbox_isactive").find("input")[0];
-		// 		if(msg.isactive=="Y"){
-		// 			input.checked=true;
-		// 		}else if(msg.isactive=="N"){
-		// 			input.checked=false;
-		// 		}
-		// 	}else if(data.code=="-1"){
-		// 		art.dialog({
-		// 			time: 1,
-		// 			lock:true,
-		// 			cancel: false,
-		// 			content: data.message
-		// 		});
-		// 	}
-		// });
+		var _command="/user/group/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				$("#GROUP_ID").val(msg.group_code);
+				$("#GROUP_NAME").val(msg.group_name);
+				$("#searchable-select-holder").text(msg.corp_code);
+				$("#OWN_ROLE").val(msg.role_name);
+				$("#OWN_ROLE").attr("data-mygcode",msg.role_code);
+				$("#REMARK").val(msg.remark);
+
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+			}
+		});
 	}
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
@@ -247,7 +248,7 @@ jQuery(document).ready(function(){
 		            $(this_).parent().parent().children(".input_select").val(txt);
 		            $(this_).parent().parent().children(".input_select").attr('data-mygcode',g_code);
 		            $(this_).addClass('rel').siblings().removeClass('rel');
-		             $(this_).parent().toggle();
+		            $(this_).parent().toggle();
 		        });
 			}else if(data.code=="-1"){
 				art.dialog({
