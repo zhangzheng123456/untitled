@@ -433,21 +433,29 @@ public class GroupController {
     @RequestMapping(value = "/check_power/add",method = RequestMethod.POST)
     @ResponseBody
     public String addGroupCheckPower(HttpServletRequest request) {
-        return "groupcheck_power_add";
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject result = new JSONObject();
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String action_code = jsonObject.get("action_code").toString();
+            String function_code = jsonObject.get("function_code").toString();
+            String group_code = jsonObject.get("group_code").toString();
+
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
-
-    /**
-     * 群组管理之
-     * 编辑群组信息之
-     * 查看权限之
-     * 编辑权限
-     */
-    @RequestMapping(value = "/check_power/edit",method = RequestMethod.POST)
-    @ResponseBody
-    public String editGroupCheckPower(HttpServletRequest request) {
-        return "groupcheck_power_edit";
-    }
-
-
 
 }

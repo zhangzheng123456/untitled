@@ -15,10 +15,21 @@
         </association>
     </resultMap>
 
-    <select id="selectByBrandId" resultType="com.bizvane.ishop.entity.Brand">
-    select *
-    from DEF_BRAND
-    where ID=#{id}
+    <select id="selectByBrandId" resultMap="Brand">
+      SELECT
+        DEF_BRAND.id,
+        brand_code,
+        brand_name,
+        DEF_BRAND.corp_code,
+        DEF_BRAND.modified_date,
+        DEF_BRAND.modifier,
+        DEF_BRAND.created_date,
+        DEF_BRAND.creater,
+        DEF_BRAND.isactive,
+        DEF_CORP.CORP_NAME
+      FROM DEF_BRAND,DEF_CORP
+      WHERE DEF_BRAND.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_BRAND.ID=#{id}
     </select>
 
     <select id="selectCorpBrand" resultType="com.bizvane.ishop.entity.Brand">
