@@ -49,10 +49,11 @@ public class GroupController {
 
     private static Logger logger = LoggerFactory.getLogger((GroupController.class));
     String id;
+
     /**
      * 群组管理
      */
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public String groupManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -64,7 +65,7 @@ public class GroupController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
             JSONObject result = new JSONObject();
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -91,7 +92,7 @@ public class GroupController {
      * 群组管理
      * 新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addGroup(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -111,7 +112,7 @@ public class GroupController {
             String max_code = groupService.selectMaxCode();
             int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
             Integer c = code;
-            int length = max_code.length() - c.toString().length()-1;
+            int length = max_code.length() - c.toString().length() - 1;
             String group_code = "G";
             for (int i = 0; i < length; i++) {
                 group_code = group_code + "0";
@@ -132,7 +133,7 @@ public class GroupController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("add success");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -144,7 +145,7 @@ public class GroupController {
      * 群组管理
      * 编辑
      */
-    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editGroup(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -172,7 +173,7 @@ public class GroupController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -206,10 +207,10 @@ public class GroupController {
 //                String corp_code = area.getCorp_code();
 //                List<User> users = userService.
 //                if (stores.size() == 0) {
-                    groupService.deleteGroup(Integer.valueOf(ids[i]));
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
+                groupService.deleteGroup(Integer.valueOf(ids[i]));
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
 //                }else {
 //                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
 //                    dataBean.setId(id);
@@ -302,16 +303,16 @@ public class GroupController {
      * 群组管理之
      * 角色选择
      */
-    @RequestMapping(value = "/role",method = RequestMethod.POST)
+    @RequestMapping(value = "/role", method = RequestMethod.POST)
     @ResponseBody
     public String roleSelect(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
             List<Role> roles;
-            if (role_code.equals(Common.ROLE_SYS)){
+            if (role_code.equals(Common.ROLE_SYS)) {
                 roles = roleService.selectAll("");
-            }else {
+            } else {
                 roles = roleService.selectCorpRole(role_code);
             }
             JSONArray array = new JSONArray();
@@ -320,8 +321,8 @@ public class GroupController {
                 String role_code1 = role.getRole_code();
                 String role_name = role.getRole_name();
                 JSONObject obj = new JSONObject();
-                obj.put("role_code",role_code1);
-                obj.put("role_name",role_name);
+                obj.put("role_code", role_code1);
+                obj.put("role_name", role_name);
                 array.add(obj);
             }
             JSONObject result = new JSONObject();
@@ -342,7 +343,7 @@ public class GroupController {
      * 编辑群组信息之
      * 查看名单
      */
-    @RequestMapping(value = "/check_name",method = RequestMethod.POST)
+    @RequestMapping(value = "/check_name", method = RequestMethod.POST)
     @ResponseBody
     public String groupCheckName(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -357,7 +358,7 @@ public class GroupController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            PageInfo<User> users = userService.selectGroupUser(page_number,page_size,corp_code,group_code);
+            PageInfo<User> users = userService.selectGroupUser(page_number, page_size, corp_code, group_code);
             JSONObject result = new JSONObject();
 
             result.put("list", JSON.toJSONString(users));
@@ -373,11 +374,11 @@ public class GroupController {
     }
 
     /**
-     *  群组管理之
-     *  编辑群组信息
-     *  之查看权限
+     * 群组管理之
+     * 编辑群组信息
+     * 之查看权限
      */
-    @RequestMapping(value = "/check_power",method = RequestMethod.POST)
+    @RequestMapping(value = "/check_power", method = RequestMethod.POST)
     @ResponseBody
     public String groupCheckPower(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -395,11 +396,11 @@ public class GroupController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
             //获取登录用户的所有权限
-            PageInfo<Function> funcs = functionService.selectAllPrivilege(page_number,page_size,login_role_code,login_user_id,login_group_code);
+            PageInfo<Function> funcs = functionService.selectAllPrivilege(page_number, page_size, login_role_code, login_user_id, login_group_code);
 
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Group group = groupService.selectCorpGroup(corp_code,group_code);
+            Group group = groupService.selectCorpGroup(corp_code, group_code);
             String role_code = group.getRole_code();
 
             //获取群组角色的权限
@@ -430,26 +431,27 @@ public class GroupController {
      * 查看权限之
      * 新增权限
      */
-    @RequestMapping(value = "/check_power/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/check_power/add", method = RequestMethod.POST)
     @ResponseBody
     public String addGroupCheckPower(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            JSONObject result = new JSONObject();
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String action_code = jsonObject.get("action_code").toString();
-            String function_code = jsonObject.get("function_code").toString();
-            String group_code = jsonObject.get("group_code").toString();
-
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String result = functionService.updatePrivilege(message, user_id);
+            if (request.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

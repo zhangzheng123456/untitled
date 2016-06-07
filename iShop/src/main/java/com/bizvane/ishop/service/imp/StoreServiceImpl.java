@@ -67,8 +67,6 @@ public class StoreServiceImpl implements StoreService {
     public Store getStoreById(int id) throws SQLException {
         Store store = storeMapper.selectByStoreId(id);
         String corp_code = store.getCorp_code();
-        String area_code = store.getArea_code();
-        String area_name = areaMapper.selectCorpArea(corp_code,area_code).getArea_name();
         String brand_name = "";
         System.out.println(store.getBrand_code());
         String[] ids = store.getBrand_code().split(",");
@@ -81,7 +79,6 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         store.setBrand_name(brand_name);
-        store.setArea_name(area_name);
         return store;
     }
 
