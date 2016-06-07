@@ -106,10 +106,12 @@
         DEF_USER.created_date,
         DEF_USER.creater,
         DEF_USER.isactive,
+        DEF_CORP.corp_name,
         DEF_GROUP.group_name
         from DEF_USER,DEF_CORP,DEF_GROUP
         where DEF_USER.group_code = DEF_GROUP.group_code
-            AND DEF_USER.ID = #{user_id}
+        AND DEF_USER.corp_code = DEF_CORP.corp_code
+        AND DEF_USER.ID = #{user_id}
     </select>
 
     <select id="selectByPhone" resultMap="BaseMap">

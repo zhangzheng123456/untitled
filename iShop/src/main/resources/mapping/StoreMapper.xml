@@ -22,11 +22,28 @@
         </association>
     </resultMap>
 
-    <select id="selectByStoreId" resultType="com.bizvane.ishop.entity.Store">
-    select *
-    from DEF_STORE
-    where ID=#{id}
+    <select id="selectByStoreId" resultMap="Store">
+    select
+        DEF_STORE.id,
+        store_code,
+        store_name,
+        brand_code,
+        flg_tob,
+        DEF_STORE.AREA_CODE,
+        DEF_STORE.corp_code,
+        DEF_STORE.modified_date,
+        DEF_STORE.modifier,
+        DEF_STORE.created_date,
+        DEF_STORE.creater,
+        DEF_STORE.isactive,
+        DEF_CORP.CORP_NAME,
+        DEF_AREA.AREA_NAME
+        from DEF_STORE,DEF_CORP,DEF_AREA
+        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND DEF_STORE.ID=#{id}
     </select>
+
     <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE

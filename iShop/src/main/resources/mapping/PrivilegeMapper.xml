@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.PrivilegeMapper">
+<!--
+    <resultMap type="com.bizvane.ishop.entity.Privilege" id="Privilege">
+        <id column="id" property="id"/>
+        <result column="action_code" property="action_code"/>
+        <result column="function_code" property="function_code"/>
+        <result column="master_code" property="master_code"/>
+        <result column="enable" property="enable"/>
+        <result column="isactive" property="isactive"/>
+        <association property="function" javaType="com.bizvane.ishop.entity.Function">
+            <result column="function_name" property="function_name"/>
+        </association>
+        <association property="action" javaType="com.bizvane.ishop.entity.Action">
+            <result column="action_name" property="action_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectRolePrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select
+        c.id,
+        b.function_name,
+        b.MODULE_NAME,
+        a.action_name
+        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  b.FUNCTION_CODE = c.FUNCTION_CODE
+        AND c.MASTER_CODE = #{role_code}
+        and c.enable = 'Y'
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by b.FUNCTION_CODE
+    </select>
+    <select id="selectGroupPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select
+        c.id,
+        b.function_name,
+        b.MODULE_NAME,
+        a.action_name
+        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  b.FUNCTION_CODE = c.FUNCTION_CODE
+        AND c.MASTER_CODE = #{group_code}
+        and c.enable = 'Y'
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by b.FUNCTION_CODE
+    </select>
+    <select id="selectUserPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select
+        c.id,
+        b.function_name,
+        b.MODULE_NAME,
+        a.action_name
+        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND  b.FUNCTION_CODE = c.FUNCTION_CODE
+        AND c.MASTER_CODE = #{user_id}
+        and c.enable = 'Y'
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by b.FUNCTION_CODE
+    </select>
+
+    <select id="selectPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select
+        c.id,
+        b.function_name,
+        b.MODULE_NAME,
+        a.action_name
+        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND b.FUNCTION_CODE = c.FUNCTION_CODE
+        AND c.MASTER_CODE = #{group_code}
+        OR MASTER_CODE = #{role_code}
+        <if test="user_id!=0">
+          OR MASTER_CODE = #{user_id}
+        </if>
+        and c.enable = 'Y'
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by b.FUNCTION_CODE
+    </select>
+
+    <select id="selectAllPrivilege" resultType="com.bizvane.ishop.entity.Function">
+        select *
+        FROM DEF_ACTION a,DEF_FUNCTION b
+        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
+        AND b.ADMIN_FUNC = 'Y'
+        AND a.ISACTIVE = 'Y'
+        AND b.ISACTIVE = 'Y'
+        order by a.FUNCTION_CODE
+    </select>
+-->
+
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.Privilege">
+        insert into DEF_PRIVILEGE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="action_code!=null">
+                action_code,
+            </if>
+            <if test="function_code!=null">
+                function_code,
+            </if>
+            <if test="master_code!=null">
+                master_code,
+            </if>
+            <if test="enable!=null">
+                enable,
+            </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                MODIFIER,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="isactive != null">
+                ISACTIVE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="action_code!=null">
+                #{action_code},
+            </if>
+            <if test="function_code!=null">
+                #{function_code},
+            </if>
+            <if test="master_code!=null">
+                #{master_code},
+            </if>
+            <if test="enable!=null">
+                #{enable},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectExist" resultType="com.bizvane.ishop.entity.Privilege">
+        SELECT * FROM DEF_PRIVILEGE
+        WHERE group_code = #{group_code}
+    </select>
+    <delete id="delete">
+        delete from
+        DEF_PRIVILEGE
+        where action_code = #{}
+        AND function_code = #{}
+        AND group_code = #{}
+    </delete>
+</mapper>

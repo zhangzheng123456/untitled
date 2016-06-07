@@ -15,10 +15,21 @@
         </association>
     </resultMap>
 
-    <select id="selectByAreaId" resultType="com.bizvane.ishop.entity.Area">
-    select *
-    from DEF_AREA
-    where ID=#{id}
+    <select id="selectByAreaId" resultMap="Area">
+        select
+        DEF_AREA.id,
+        area_code,
+        area_name,
+        DEF_AREA.corp_code,
+        DEF_AREA.modified_date,
+        DEF_AREA.modifier,
+        DEF_AREA.created_date,
+        DEF_AREA.creater,
+        DEF_AREA.isactive,
+        DEF_CORP.CORP_NAME
+        from DEF_AREA,DEF_CORP
+        where DEF_AREA.CORP_CODE = DEF_CORP.CORP_CODE
+        and  DEF_AREA.ID=#{id}
     </select>
 
     <select id="selectCorpArea" resultType="com.bizvane.ishop.entity.Area">
