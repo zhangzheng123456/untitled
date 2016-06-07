@@ -15,13 +15,16 @@ $(function(){
     var a=GetRequest();//取得url的后面的参数
     var src=a.url;//获取url后面的参数
     var func_code=a.func_code;//获取func_code
-    var key_val={"url":src,"func_code":func_code};//组成一个对象字符串
-    sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
-    var key_val=sessionStorage.getItem("key_val");//获取本地的属性
-    key_val=JSON.parse(key_val);//
-    var url=key_val.url;//url的参数
+    var key=sessionStorage.getItem("key_val");//获取本地的key值
+    if(key==null){
+        var key_val={"url":src,"func_code":func_code};//组成一个对象字符串
+        sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
+    }
+    var keyVal=sessionStorage.getItem("key_val");//获取本地的属性
+    keyVal=JSON.parse(keyVal);//把本地的属性转成json
+    var url=keyVal.url;//url的参数
     $('#iframepage').attr("src",url);//给获取的src赋值
-    oc.postRequire("get","/menu","0","",function(data){
+    oc.postRequire("get","/menu","0","",function(data){//左侧导航栏的循环操作
         console.log(data);
         // var val=sessionStorage.getItem("key");
         // val=JSON.parse(val);

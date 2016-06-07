@@ -204,7 +204,7 @@ function superaddition(data,num){
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + data[i].id
+                        + a
                         + "</td><td><img src='"+data[i].avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
