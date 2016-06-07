@@ -18,6 +18,8 @@ public interface FunctionService {
 
     PageInfo<Function> selectAllPrivilege(int page_number, int page_size, String role_code, int user_id, String group_code);
 
+    JSONArray selectRAGPrivilege(String role_code,String group_code);
+
     JSONArray selectRolePrivilege(String role_code);
 
     JSONArray selectGroupPrivilege(String group_code);

@@ -86,9 +86,11 @@
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND  a.FUNCTION_CODE IN (
         SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{user_id}
+        WHERE MASTER_CODE = #{group_code}
         OR MASTER_CODE = #{role_code}
-        OR MASTER_CODE = #{group_code}
+        <if test="user_id!=0">
+        OR MASTER_CODE = #{user_id}
+        </if>
         and enable = 'Y'
         )
         AND a.ISACTIVE = 'Y'

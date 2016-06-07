@@ -410,8 +410,8 @@ public class GroupController {
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));
-            result.put("role", role_privilege);
-            result.put("group", group_privilege);
+            result.put("die", role_privilege);
+            result.put("live", group_privilege);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
