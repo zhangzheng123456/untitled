@@ -194,10 +194,10 @@ function superaddition(data,num){
             var a=i+1;
         }
         $(".table tbody").append("<tr id='"+data[i].id+"''>"
-                        + "</td><td style='text-align:left;'>"
+                        + "</td><td style='text-align:left;padding-left:22px'>"
                         + a
                         + "</td><td>"
-                        + data[i].user_name
+                        + data[i].module_name
                         + "</td><td>"
                         + data[i].sex
                         +"</td><td>"
