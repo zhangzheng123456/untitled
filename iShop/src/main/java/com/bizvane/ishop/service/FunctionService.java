@@ -25,4 +25,6 @@ public interface FunctionService {
     JSONArray selectGroupPrivilege(String group_code);
 
     JSONArray selectUserPrivilege(String user_id);
+
+    String updatePrivilege(String message,String user_id);
 }
