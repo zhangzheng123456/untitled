@@ -203,19 +203,19 @@ public class GroupController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 Group group = groupService.getGroupById(Integer.valueOf(ids[i]));
-//                String area_code = area.getArea_code();
-//                String corp_code = area.getCorp_code();
-//                List<User> users = userService.
-//                if (stores.size() == 0) {
+                String group_code = group.getGroup_code();
+                String corp_code = group.getCorp_code();
+                List<User> users = userService.selectGroup(corp_code,group_code);
+                if (users.size() == 0) {
                 groupService.deleteGroup(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
-//                }else {
-//                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                    dataBean.setId(id);
-//                    dataBean.setMessage("该区域下有所属店铺，请先处理区域下店铺再删除！");
-//                }
+                }else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除！");
+                }
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -392,11 +392,9 @@ public class GroupController {
             int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
             //获取登录用户的所有权限
-            PageInfo<Function> funcs = functionService.selectAllPrivilege(page_number, page_size, login_role_code, login_user_id, login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_user_id, login_group_code);
 
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
@@ -431,7 +429,7 @@ public class GroupController {
      * 查看权限之
      * 新增权限
      */
-    @RequestMapping(value = "/check_power/add", method = RequestMethod.POST)
+    @RequestMapping(value = "/check_power/save", method = RequestMethod.POST)
     @ResponseBody
     public String addGroupCheckPower(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -443,7 +441,7 @@ public class GroupController {
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_id").toString();
             String result = functionService.updatePrivilege(message, user_id);
-            if (request.equals(Common.DATABEAN_CODE_SUCCESS)) {
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");

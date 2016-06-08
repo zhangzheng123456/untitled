@@ -62,7 +62,13 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public List<Area> getAllArea(String corp_code, String search_value) throws SQLException {
-        return areaMapper.selectAllArea(corp_code, "%" + search_value + "%");
+        List<Area> areas;
+        if (search_value.equals("")) {
+            areas = areaMapper.selectAllArea(corp_code, "");
+        } else {
+            areas = areaMapper.selectAllArea(corp_code, "%" + search_value + "%");
+        }
+        return areas;
     }
 
     //获得区域下店铺

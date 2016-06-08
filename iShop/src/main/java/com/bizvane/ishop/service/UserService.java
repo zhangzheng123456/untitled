@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -33,4 +34,7 @@ public interface UserService {
     String register(String message) throws Exception;
 
     String getAuthCode(String phone,String platform);
+
+    List<User> selectGroup(String corp_code, String group_code)throws SQLException;
+
 }

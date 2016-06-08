@@ -50,7 +50,13 @@ public class BrandServiceImpl implements BrandService{
 
     @Override
     public List<Brand> getAllBrand(String corp_code,String search_value) throws SQLException {
-        return brandMapper.selectAllBrand(corp_code,"%"+search_value+"%");
+        List<Brand> brands;
+        if (search_value.equals("")) {
+            brands = brandMapper.selectAllBrand(corp_code,"");
+        }else {
+            brands = brandMapper.selectAllBrand(corp_code, "%" + search_value + "%");
+        }
+        return brands;
     }
 
     //获得品牌下店铺

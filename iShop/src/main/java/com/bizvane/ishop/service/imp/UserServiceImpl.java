@@ -311,4 +311,8 @@ public class UserServiceImpl implements UserService {
         }
         return Common.DATABEAN_CODE_ERROR;
     }
+
+    public List<User> selectGroup(String corp_code, String group_code)throws SQLException{
+        return userMapper.selectGroupUser(corp_code,group_code);
+    }
 }

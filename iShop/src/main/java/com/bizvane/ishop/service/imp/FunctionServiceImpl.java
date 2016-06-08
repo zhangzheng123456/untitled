@@ -180,17 +180,14 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 列出登录用户的所有权限
      */
-    public PageInfo<Function> selectAllPrivilege(int page_number, int page_size, String role_code, int user_id, String group_code) {
+    public List<Function> selectAllPrivilege(String role_code, int user_id, String group_code) {
         List<Function> privilege;
         if (role_code.equals(Common.ROLE_SYS)) {
-            PageHelper.startPage(page_number, page_size);
             privilege = functionMapper.selectAllPrivilege();
         } else {
-            PageHelper.startPage(page_number, page_size);
             privilege = functionMapper.selectPrivilege(user_id, role_code, group_code);
         }
-        PageInfo<Function> page = new PageInfo<Function>(privilege);
-        return page;
+        return privilege;
     }
 
     /**
@@ -259,25 +256,31 @@ public class FunctionServiceImpl implements FunctionService {
     public String updatePrivilege(String message,String user_id){
         try {
             JSONObject jsonObject = new JSONObject(message);
-            String action_code = jsonObject.get("action_code").toString();
-            String function_code = jsonObject.get("function_code").toString();
+            String list = jsonObject.get("list").toString();
             String group_code = jsonObject.get("group_code").toString();
-
+            JSONArray array = JSONArray.parseArray(list);
             Date now = new Date();
             //先删除权限下所有权限
+            System.out.println("-------begin delete group---------");
             privilegeMapper.deleteGroup(group_code);
             //再插入画面选择的权限
-            Privilege privilege = new Privilege();
-            privilege.setAction_code(action_code);
-            privilege.setFunction_code(function_code);
-            privilege.setMaster_code(group_code);
-            privilege.setEnable(Common.IS_ACTIVE_Y);
-            privilege.setModified_date(sdf.format(now));
-            privilege.setModifier(user_id);
-            privilege.setCreated_date(sdf.format(now));
-            privilege.setCreater(user_id);
-            privilege.setIsactive(Common.IS_ACTIVE_Y);
-            privilegeMapper.insert(privilege);
+            for (int i = 0; i < array.size(); i++) {
+                String info = array.get(i).toString();
+                JSONObject json = new JSONObject(info);
+                String action_code = json.get("action_code").toString();
+                String function_code = json.get("function_code").toString();
+                Privilege privilege = new Privilege();
+                privilege.setAction_code(action_code);
+                privilege.setFunction_code(function_code);
+                privilege.setMaster_code(group_code);
+                privilege.setEnable(Common.IS_ACTIVE_Y);
+                privilege.setModified_date(sdf.format(now));
+                privilege.setModifier(user_id);
+                privilege.setCreated_date(sdf.format(now));
+                privilege.setCreater(user_id);
+                privilege.setIsactive(Common.IS_ACTIVE_Y);
+                privilegeMapper.insert(privilege);
+            }
             return Common.DATABEAN_CODE_SUCCESS;
         }catch (Exception ex){
             return ex.getMessage();

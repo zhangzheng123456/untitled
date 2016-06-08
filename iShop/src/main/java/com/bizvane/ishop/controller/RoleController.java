@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -224,7 +225,7 @@ public class RoleController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
             //获取登录用户的所有权限
-            PageInfo<Function> funcs = functionService.selectAllPrivilege(page_number,page_size,login_role_code,login_user_id,login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code,login_user_id,login_group_code);
 
             String role_code = jsonObject.get("role_code").toString();
             //获取群组角色的权限

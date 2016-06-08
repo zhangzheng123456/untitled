@@ -16,7 +16,7 @@ public interface FunctionService {
 
     JSONArray selectActionByFun(int user_id, String role_code,String function_code,String group_code);
 
-    PageInfo<Function> selectAllPrivilege(int page_number, int page_size, String role_code, int user_id, String group_code);
+    List<Function> selectAllPrivilege(String role_code, int user_id, String group_code);
 
     JSONArray selectRAGPrivilege(String role_code,String group_code);
 

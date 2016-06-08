@@ -6,9 +6,9 @@
         select *
         from DEF_FUNCTION WHERE FUNCTION_CODE IN (
         SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{user_id}
+        WHERE (MASTER_CODE = #{user_id}
         or MASTER_CODE = #{role_code}
-        or MASTER_CODE = #{group_code}
+        or MASTER_CODE = #{group_code})
         and enable = 'Y')
         and ISACTIVE = 'Y'
         order by FUNCTION_CODE
@@ -25,12 +25,13 @@
     <select id="selectActionByFun" resultType="com.bizvane.ishop.entity.Action">
        select *
         from DEF_ACTION WHERE ACTION_CODE IN (
-        SELECT ACTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{user_id}
-        or MASTER_CODE = #{role_code}
-        or MASTER_CODE = #{group_code}
-        and enable = 'Y'
-        and FUNCTION_CODE = #{function_code})
+          SELECT ACTION_CODE
+          FROM DEF_PRIVILEGE
+          WHERE FUNCTION_CODE = #{function_code}
+          AND (MASTER_CODE = #{user_id}
+            or MASTER_CODE = #{role_code}
+            or MASTER_CODE = #{group_code})
+          and enable = 'Y')
     </select>
 
     <select id="selectAllAction" resultType="com.bizvane.ishop.entity.Action">
@@ -86,12 +87,13 @@
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND  a.FUNCTION_CODE IN (
         SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{group_code}
-        OR MASTER_CODE = #{role_code}
-        <if test="user_id!=0">
-        OR MASTER_CODE = #{user_id}
-        </if>
-        and enable = 'Y'
+        WHERE (MASTER_CODE = #{group_code}
+            OR MASTER_CODE = #{role_code}
+            <if test="user_id!=0">
+                OR MASTER_CODE = #{user_id}
+            </if>
+            )
+            and enable = 'Y'
         )
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'

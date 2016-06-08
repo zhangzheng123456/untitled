@@ -494,11 +494,9 @@ public class UserController {
             int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
             //获取登录用户的所有权限
-            PageInfo<Function> funcs = functionService.selectAllPrivilege(page_number,page_size,login_role_code,login_user_id,login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code,login_user_id,login_group_code);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
