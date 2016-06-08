@@ -121,12 +121,12 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 				$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
 			}else if(data.code=="-1"){
 				// alert(data.message);
@@ -200,10 +200,10 @@ jQuery(document).ready(function(){
 				$("#is_leixing").val(msg.vip_style);
 				$("#is_xingbie").val(msg.sex);
 
-				// $("#created_time").val(msg.created_date);
-				// $("#creator").val(msg.creater);
-				// $("#modify_time").val(msg.modified_date);
-				// $("#modifier").val(msg.modifier);
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -211,20 +211,20 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 			}
 		});
 	}
 
-// $(".oper_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
-// 	});
-// 	$(".oper_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
-// 	});
+$(".oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+	});
+	$(".oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+	});
 });
