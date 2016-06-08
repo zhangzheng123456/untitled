@@ -33,9 +33,7 @@ $(function(){
         // var val=sessionStorage.getItem("key");
         // val=JSON.parse(val);
         var message=JSON.parse(data.message);
-        console.log(message);
         var menu=message.menu;
-        console.log(menu);
         for(var i=0;i<menu.length;i++){
         	var li="<li>";
         	li+="<h1 class='menu_t' data-url='"+menu[i].url+"' data-code='"+menu[i].func_code+"'><i class='"+menu[i].icon+"'></i>"+menu[i].mod_name+"<span></span></h1>";
