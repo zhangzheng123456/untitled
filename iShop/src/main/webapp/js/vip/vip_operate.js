@@ -1,4 +1,4 @@
-// var oc = new ObjectControl();
+var oc = new ObjectControl();
 (function(root,factory){
 	root.vip = factory();
 }(this,function(){
