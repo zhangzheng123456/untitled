@@ -199,10 +199,22 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
-	});
-	$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
-	});
+	var val=sessionStorage.getItem("key");
+	val=JSON.parse(val);
+    var message=JSON.parse(val.message);
+    if(message.user_type=="admin"){
+    	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
+			$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+		});
+		$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
+			$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+		});
+    }else{
+    	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
+			$(window.parent.document).find('#iframepage').attr("src","/corp/user.html");
+		});
+		$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
+			$(window.parent.document).find('#iframepage').attr("src","/corp/user.html");
+		});
+    }
 });

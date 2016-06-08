@@ -551,3 +551,9 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
 });
+$(".corp_select").click(function(){
+	// $("select").change(function(){
+		$("#OWN_RIGHT").val('');
+		$("#OWN_STORE").val('');
+	// });
+});

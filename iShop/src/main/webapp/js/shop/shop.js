@@ -251,12 +251,11 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var index=0;
 				var area_html='';
 				var a=null;
 				console.log(msg.areas);
-				for(index in msg.areas){
-					a=msg.areas[index];
+				for(var i=0; i< msg.areas.length;i++){
+					a=msg.areas[i];
 					area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';
 				}
 				$("#area_select").append(area_html);
@@ -300,11 +299,11 @@ jQuery(document).ready(function(){
 		if(rdata.code=="0"){
 			var msg=JSON.parse(rdata.message);
 			console.log(msg);
-			var index=0;
+			// var index=0;
 			var brand_html='';
 			var b=null;
-			for(index in msg.brands){
-				b=msg.brands[index];
+			for(var j=0;j<msg.brands.length;j++){
+				b=msg.brands[j];
 				brand_html+='<option value="'+b.brand_code+'">'+b.brand_name+'</option>';
 				brandname.push(b.brand_name);
 			}
@@ -336,42 +335,59 @@ jQuery(document).ready(function(){
 			if(rdata.code=="0"){
 				var msg=JSON.parse(rdata.message);
 				console.log(msg);
-				var index=0;
+				// var index=0;
 				var brand_html='';
 				var b=null;
-				for(index in msg.brands){
-					b=msg.brands[index];
-					// brand_html+='<option value="'+b.brand_code+'">'+b.brand_name+'</option>';
-					brand_html+='<div class="checkboxselect-item"><input type="checkbox" value="'+b.brand_code+'" data-brandname="'+b.brand_name+'" style="-webkit-appearance: checkbox; width: 14px; height: 14px;">'+b.brand_name+'</div>';
-				}
-				$(".checkboxselect-container").html(brand_html);
-				var check_input=$('.checkboxselect-container input');
-				for(var c=0;c<check_input.length;c++){
-					check_input[c].onclick=function(){
-						if(this.checked==true){
-							checknow_data.push($(this).val())
-							checknow_namedata.push($(this).data("brandname"));
-							console.log(checknow_namedata);
-							$('#OWN_BRAND').val(checknow_namedata.toString());
-							$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
-						}else{
-							checknow_namedata.remove($(this).data("brandname"));
-							checknow_data.remove($(this).val());
-							$('#OWN_BRAND').val(checknow_namedata.toString());
-							$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
+				if(msg.brands.length==0){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"该企业目前没有品牌！"
+					});
+					$(".checkboxselect-container").css("display","none");
+				}else{
+					for(var m=0;m<msg.brands.length;m++){
+						b=msg.brands[m];
+						brand_html+='<div class="checkboxselect-item"><input type="checkbox" value="'+b.brand_code+'" data-brandname="'+b.brand_name+'" style="-webkit-appearance: checkbox; width: 14px; height: 14px;">'+b.brand_name+'</div>';
+					}
+					$(".checkboxselect-container").html(brand_html);
+					var check_input=$('.checkboxselect-container input');
+					for(var c=0;c<check_input.length;c++){
+						check_input[c].onclick=function(){
+							if(this.checked==true){
+								checknow_data.push($(this).val())
+								checknow_namedata.push($(this).data("brandname"));
+								console.log(checknow_namedata);
+								$('#OWN_BRAND').val(checknow_namedata.toString());
+								$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
+							}else{
+								checknow_namedata.remove($(this).data("brandname"));
+								checknow_data.remove($(this).val());
+								$('#OWN_BRAND').val(checknow_namedata.toString());
+								$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
+							}
 						}
 					}
-				}
-				var s=$("#OWN_BRAND").data("mybcode");
-				var c_input=$('.checkboxselect-container input');
-				var ss = s.split(",");
-				for(var i=0;i<ss.length;i++){
-					for(var j=0;j<c_input.length;j++){
-						console.log($(c_input[j]).val());
-						console.log(ss[i]);
-						if($(c_input[j]).val()==ss[i]){
-							console.log($(c_input[j]).val());
-							$(c_input[j]).attr("checked",true);
+					var s=$("#OWN_BRAND").data("mybcode");
+					var c_input=$('.checkboxselect-container input');
+					if(flg_index==0){
+						var ss='';
+						console.log(s.split(',').length-1);
+						ss = s.split(",");
+						for(var i=0;i<ss.length;i++){
+							for(var j=0;j<c_input.length;j++){
+								console.log($(c_input[j]).val());
+								console.log(ss[i]);
+								if($(c_input[j]).val()==ss[i]){
+									console.log($(c_input[j]).val());
+									$(c_input[j]).attr("checked",true);
+								}
+							}
+						}
+					}else{
+						for(var j=0;j<c_input.length;j++){
+							$(c_input[j]).attr("checked",false);
 						}
 					}
 				}
@@ -386,4 +402,13 @@ jQuery(document).ready(function(){
 		});
 	});
 });
-
+var flg_index=0;
+$(".corp_select").click(function(){
+		$("#OWN_AREA").val('');
+		$("#OWN_BRAND").val('');
+		flg_index ++;
+		// var c_input=$('.checkboxselect-container input');
+		// for(var j=0;j<c_input.length;j++){
+		// 	$(c_input[j]).attr("checked",false);
+		// }
+});
