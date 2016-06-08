@@ -125,17 +125,9 @@ var oc = new ObjectControl();
 		});
 	};
 	shopjs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
 		console.log(_params);
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
 				$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -191,11 +183,10 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				$("#OWN_CORP option").val(msg.corp_code);
-				$("#OWN_CORP option").text(msg.corp_name);
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_BRAND").val(msg.brand_name);
 				$("#OWN_BRAND").attr("data-mybcode",msg.brand_code);
-				// $("#OWN_BRAND option:nth-child(1)").html(msg.brand_name);
 				$("#STORE_NAME").val(msg.store_name);
 				$("#STORE_ID").val(msg.store_code);
 				$("#OWN_AREA").val(msg.area_name);
@@ -263,6 +254,7 @@ jQuery(document).ready(function(){
 				var index=0;
 				var area_html='';
 				var a=null;
+				console.log(msg.areas);
 				for(index in msg.areas){
 					a=msg.areas[index];
 					area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';

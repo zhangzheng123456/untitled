@@ -160,9 +160,11 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var AREA_ID=$("#AREA_ID").val(msg.area_code);
-				var AREA_NAME=$("#AREA_NAME").val(msg.area_name);
-				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
+				$("#AREA_ID").val(msg.area_code);
+				$("#AREA_NAME").val(msg.area_name);
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
+				// $("#OWN_CORP").val(msg.corp_code);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);

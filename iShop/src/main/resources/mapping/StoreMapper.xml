@@ -40,6 +40,7 @@
         DEF_AREA.AREA_NAME
         from DEF_STORE,DEF_CORP,DEF_AREA
         where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
         AND DEF_STORE.ID=#{id}
     </select>
@@ -67,6 +68,7 @@
         DEF_AREA.AREA_NAME
         from DEF_STORE,DEF_CORP,DEF_AREA
         where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
         <if test="corp_code != null and corp_code !=''">
             AND DEF_STORE.CORP_CODE = #{corp_code}

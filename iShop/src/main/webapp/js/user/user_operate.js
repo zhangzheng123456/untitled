@@ -160,7 +160,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE,"password":PSW};
+				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE,"password":PSW};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -257,8 +257,9 @@ var c_code="";
 var r_code="";
 function role_li_list(){
 	//拉取角色下拉选项
-	var addtype=sessionStorage.getItem("addtype");
+	var addtype=sessionStorage.getItem("key");
 	addtype=JSON.parse(addtype);
+    var addtype=JSON.parse(addtype.message);
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
@@ -324,9 +325,9 @@ function role_data(r,c){
 	});
 }
 function store_li_list(p) {
-	var addtype=sessionStorage.getItem("addtype");
+	var addtype=sessionStorage.getItem("key");
 	addtype=JSON.parse(addtype);
-	console.log(addtype.role_code);
+    var addtype=JSON.parse(addtype.message);
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
@@ -506,7 +507,8 @@ jQuery(document).ready(function(){
 				}else if(msg.store_code !==''){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
-					$("#OWN_CORP").val(msg.corp_code);
+					$("#OWN_CORP option").val(msg.corp.corp_code);
+					$("#OWN_CORP option").text(msg.corp.corp_name);
 					$("#OWN_RIGHT").val(msg.group.group_name);
 					$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
 					var store_lists=msg.store_name.split(",");

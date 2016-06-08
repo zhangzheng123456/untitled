@@ -69,6 +69,7 @@
         from DEF_USER,DEF_GROUP,DEF_CORP
         where DEF_USER.group_code = DEF_GROUP.group_code
         AND DEF_USER.corp_code = DEF_CORP.corp_code
+        AND DEF_USER.corp_code = DEF_GROUP.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND DEF_USER.CORP_CODE = #{corp_code}
         </if>
@@ -110,6 +111,7 @@
         DEF_GROUP.group_name
         from DEF_USER,DEF_CORP,DEF_GROUP
         where DEF_USER.group_code = DEF_GROUP.group_code
+        AND DEF_USER.corp_code = DEF_GROUP.corp_code
         AND DEF_USER.corp_code = DEF_CORP.corp_code
         AND DEF_USER.ID = #{user_id}
     </select>
