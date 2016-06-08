@@ -102,8 +102,19 @@ public class RoleController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            Role role = WebUtils.JSON2Bean(jsonObject, Role.class);
-            roleService.insertRole(role);
+
+            Role role1 = new Role();
+            role1.setRole_code(jsonObject.get("role_code").toString());
+            role1.setRole_name(jsonObject.get("role_name").toString());
+            role1.setRemark(jsonObject.get("remark").toString());
+            Date now = new Date();
+            role1.setModified_date(sdf.format(now));
+            role1.setModifier(user_id);
+            role1.setCreated_date(sdf.format(now));
+            role1.setCreater(user_id);
+            role1.setIsactive(jsonObject.get("isactive").toString());
+
+            roleService.insertRole(role1);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("add role success !!!!");
@@ -154,15 +165,25 @@ public class RoleController {
     public String editRole(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
-        String user_id = request.getSession(false).toString();
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            Role role = WebUtils.JSON2Bean(jsonObject, Role.class);
-            roleService.updateByRoleId(role);
+            JSONObject jsonObject = new JSONObject(message);
+
+            Role role1 = new Role();
+            role1.setId(Integer.parseInt(jsonObject.get("id").toString()));
+            role1.setRole_code(jsonObject.get("role_code").toString());
+            role1.setRole_name(jsonObject.get("role_name").toString());
+            role1.setRemark(jsonObject.get("remark").toString());
+            Date now = new Date();
+            role1.setModified_date(sdf.format(now));
+            role1.setModifier(user_id);
+            role1.setIsactive(jsonObject.get("isactive").toString());
+
+            roleService.updateByRoleId(role1);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage("edit success !!! ");
@@ -174,33 +195,6 @@ public class RoleController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 角色定义之
-     * 编辑角色信息之
-     * 查看名单
-     */
-//    @RequestMapping(value = "/role/check_name", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String roleCheckName(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            int role_id = Integer.parseInt(jsonObj.get("role_id").toString());
-//            Role role = roleService.selectByRoleId(role_id);
-//            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-//            result.put("role", role);
-//
-//            dataBean.setId("1");
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setId("1");
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
     /**
      * 角色定义之
@@ -221,8 +215,6 @@ public class RoleController {
             int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 
             //获取登录用户的所有权限
             List<Function> funcs = functionService.selectAllPrivilege(login_role_code,login_user_id,login_group_code);
@@ -246,40 +238,6 @@ public class RoleController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 角色定义之
-     * 编辑角色信息之
-     * 查看权限之
-     * 编辑权限
-     */
-//    @RequestMapping(value = "/role/check_power/edit", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String editRoleCheckPower(HttpServletRequest request) {
-//        return "rolecheck_power_edit";
-//    }
-
-    /**
-     * 角色定义之
-     * 编辑角色信息之
-     * 查看权限之
-     * 新增权限
-     */
-//    @RequestMapping(value = "/role/check_power/add", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String addRoleCheckPower(HttpServletRequest request) {
-//        return "rolecheck_power_add";
-//    }
-
-
-    /**
-     * 角色定义
-     * 查找
-     */
-//    @RequestMapping(value = "/role/find", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String findRole(HttpServletRequest request) {
-//        return "";
-//    }
 
     @RequestMapping(value = "/role/select", method = RequestMethod.POST)
     @ResponseBody

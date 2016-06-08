@@ -22,25 +22,30 @@
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员列表<i class="icon-ishop_8-03"></i><label>新增会员</label></div>
-            <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
+            <div class="editor_em col-lg-7 animated fadeInRight">
+               <!--  <div class="operation_conpany">
+                    <ul>
+                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
+                    </ul>
+                </div> -->
                 <form class="conpany_msg">
                     <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">所属企业*</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属企业*为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">所属店铺*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">所属店铺*</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属店铺*为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">所属店员*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">所属店员*</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属店员*为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">会员ID*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">会员ID*</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员ID*为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>会员卡号</label><input type="text" /></span>
+                        <span><label>会员卡号</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员卡号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>会员名称</label><input type="text" /></span>
+                        <span><label>会员名称</label><input type="text" id="AREA_ID" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员名称为必填项，不能为空！"></div></div></span>
                     </div>
                     <div id="dropdown" class="item_1">
                         <span><label>VIP类型</label><input class="input_select" type="text" placeholder="请选择VIP类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
@@ -62,7 +67,7 @@
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="operedit_btn">
+                <div class="operadd_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
                         <li><i class="icon-ishop_6-12"></i>关闭</li>
@@ -86,11 +91,11 @@
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
-     <!-- moni select -->
+    <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>
-    <!-- <script type="text/javascript" src="../js/vip/vip_operate.js"></script> -->
+    
     <script type="text/javascript">
         $(function(){
             $('#side-menu li:nth-of-type(5)').addClass('active');

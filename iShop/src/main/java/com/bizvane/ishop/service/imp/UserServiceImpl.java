@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
             String corp_code = login_user.getCorp_code();
             String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
-            String role_code = groupMapper.selectCorpGroup(corp_code,group_code).getRole_code();
+            String role_code = groupMapper.selectByCode(group_code).getRole_code();
 
             request.getSession().setAttribute("user_id", user_id);
             request.getSession().setAttribute("corp_code", corp_code);

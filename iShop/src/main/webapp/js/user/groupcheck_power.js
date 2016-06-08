@@ -59,137 +59,7 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-// function setPage(container, count, pageindex,pageSize,group_code,corp_code,value) {
-//     var container = container;
-//     var count = count;
-//     var pageindex = pageindex;
-//     var pageSize=pageSize;
-//     var a = [];
-//               //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
-//     if (pageindex == 1) {
-//         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
-//     } else {
-//         a[a.length] = "<li><span class=\"icon-ishop_4-01\"></span></li>";
-//     }
-//     function setPageList() {
-//         if (pageindex == i) {
-//             a[a.length] = "<li><span class=\"p-bg\">" + i + "</span></li>";
-//         } else {
-//             a[a.length] = "<li><span>" + i + "</span></li>";
-//         }
-//     }
-//     //总页数小于10
-//     if (count <= 10) {
-//         for (var i = 1; i <= count; i++) {
-//             setPageList();
-//         }
-//     }
-//     //总页数大于10页
-//     else {
-//         if (pageindex <= 4) {
-//             for (var i = 1; i <= 5; i++) {
-//                 setPageList();
-//             }
-//             a[a.length] = "...<li><span>" + count + "</span></li>";
-//         }else if (pageindex >= count - 3) {
-//             a[a.length] = "<li><span>1</span></li>...";
-//             for (var i = count - 4; i <= count; i++) {
-//                 setPageList();
-//             }
-//         }
-//         else { //当前页在中间部分
-//             a[a.length] = "<li><span>1</span></li>...";
-//             for (var i = pageindex - 2; i <= pageindex + 2; i++) {
-//                 setPageList();
-//             }
-//                 a[a.length] = "...<li><span>" + count + "</span></li>";
-//             }
-//         }
-//     if (pageindex == count) {
-//         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
-//     }else{
-//         a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
-//     }
-//     container.innerHTML = a.join("");
-//     var pageClick = function() {
-//         var oAlink = container.getElementsByTagName("span");
-//         var inx = pageindex; //初始的页码
-//         $("#input-txt").val(inx);
-//         $(".foot-sum .zy").html("共 "+count+"页");
-//         oAlink[0].onclick = function() { //点击上一页
-//             if (inx == 1) {
-//                 return false;
-//             }
-//             inx--;
-//             dian(inx);
-//             setPage(container, count,inx,pageSize,group_code,corp_code,value);
-//             return false;
-//         }
-//         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
-//             oAlink[i].onclick = function() {
-//             inx = parseInt(this.innerHTML);
-//                 dian(inx);
-//                 setPage(container, count, inx,pageSize,group_code,corp_code,value);
-//                 return false;
-//             }
-//         }
-//         oAlink[oAlink.length - 1].onclick = function() { //点击下一页
-//             if (inx == count) {
-//                 return false;
-//             }
-//             inx++;
-//             dian(inx);
-//             setPage(container, count,inx,pageSize,group_code,corp_code,value);
-//             return false;
-//         }
-//     }()
-//     function dian(inx){//
-//         if(value==""){
-//             param['pageNumber']=inx;
-//             oc.postRequire("post","/user/group/check_power","0",param,function(data){
-//                     if(data.code=="0"){
-//                         $(".table tbody").empty();
-//                         var message=JSON.parse(data.message);
-//                         var die=message.die;
-//                         var list=JSON.parse(message.list);
-//                         var cout=list.pages;
-//                         var list=list.list;
-//                         console.log(list);
-//                         console.log(die)
-//                         var actions=message.actions;
-//                         superaddition(list,inx,die);
-//                         // jurisdiction(actions);
-//                         jumpBianse();
-//                     }else if(data.code=="-1"){
-//                         alert(data.message);
-//                     }
-//             });    
-//         }else if(value!==""){
-//             param["pageNumber"]=inx;
-//             param["pageSize"]=pageSize;
-//             oc.postRequire("post","/corp/search","0",param,function(data){
-//                 if(data.code=="0"){
-//                     var message=JSON.parse(data.message);
-//                     var list=JSON.parse(message.list);
-//                     var cout=list.pages;
-//                     var list=list.list;
-//                     $(".table tbody").empty();
-//                     if(list.length<=0){
-//                         $(".table p").remove();
-//                         $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
-//                     }else if(list.length>0){
-//                         $(".table p").remove();
-//                         superaddition(list,inx);
-//                         jumpBianse();
-//                     }
-//                 }else if(data.code=="-1"){
-//                     alert(data.message);
-//                 }
-//             })        
-//         }
-//     }
-// }
-function superaddition(data,num,die){
+function superaddition(data,num,die,live){
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+num*pageSize;
@@ -221,27 +91,12 @@ function superaddition(data,num,die){
             $("#"+die[j].id).find("input").attr("name","die");
         }
     }
+    for(var p=0;p<live.length;p++){
+        if($("#"+live[p].id).find("input").length>0){
+            $("#"+live[p].id).find("input")[0].checked=true;
+        }
+    }
 };
-// //权限配置
-// function jurisdiction(actions){
-//     $('#jurisdiction').empty();
-//     for(var i=0;i<actions.length;i++){
-//         if(actions[i].act_name=="add"){
-//             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
-//         }else if(actions[i].act_name=="delete"){
-//             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
-//         }else if(actions[i].act_name=="edit"){
-//             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
-//             //双击跳转
-//             $(".table tbody tr").dblclick(function(){
-//                 var id=$(this).attr("id");
-//                 sessionStorage.setItem("id",id);
-//                 console.log(id);
-//                 $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
-//             })
-//         }
-//     }s
-// }
 //页面加载时list请求
 function GET(){
     param["pageNumber"]=inx;
@@ -254,12 +109,12 @@ function GET(){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var die=message.die;
+                var live=message.live;
                 var list=JSON.parse(message.list);
-                var list=list.list;
                 console.log(list);
                 console.log(die)
                 var actions=message.actions;
-                superaddition(list,inx,die);
+                superaddition(list,inx,die,live);
                 // jurisdiction(actions);
                 jumpBianse();
             }else if(data.code=="-1"){

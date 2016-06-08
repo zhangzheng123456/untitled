@@ -74,6 +74,7 @@ public class StoreController {
                 list = storeService.getAllStore(page_number, page_size, "", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
+                String store_code = request.getSession().getAttribute("store_code").toString();
                 list = storeService.getAllStore(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
