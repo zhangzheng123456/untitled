@@ -371,7 +371,7 @@ input::-webkit-input-placeholder{
 	margin-left: 7px;
 	cursor: pointer;
 }
-.checkbox,.checkbox1{
+.checkbox,.checkbox1,.checkbox2{
 	display: inline-block;
 	vertical-align: middle;
 	width: 23px;
@@ -385,7 +385,7 @@ input::-webkit-input-placeholder{
 .check{
 	visibility: hidden;
 }
-.checkbox label,.checkbox1 label{
+.checkbox label,.checkbox1 label,.checkbox2 label{
 	position: absolute;
 	left: -15px;
 	top:0px;
@@ -395,7 +395,7 @@ input::-webkit-input-placeholder{
 	background-size: 22px 22px;
 	margin-left: 28px;
 }
-.checkbox1 label{
+.checkbox1 label,.checkbox2 label{
 	width: 16px;
 	height: 16px;
 	background-color: #d5d5d5;
@@ -403,6 +403,10 @@ input::-webkit-input-placeholder{
 }
 .checkbox1 .check:checked + label{
 	background: url(../images/icon_radio_S.png) no-repeat center center;
+	background-size: 16px 16px;
+}
+.checkbox2 .check:checked + label{
+	background: url(../images/icon_radio_h.png) no-repeat center center;
 	background-size: 16px 16px;
 }
 .checkbox .check:checked + label{
