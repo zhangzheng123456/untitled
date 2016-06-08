@@ -236,7 +236,7 @@ function selectownrole(obj){
     }
 }
 function addshopselect(){
-		var k=$("#shop_list div").length;
+		var k=$("#select_ownshop #shop_list div").length;
 		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownshop(this)">'
                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
@@ -253,28 +253,20 @@ var c_code="";
 var r_code="";
 function role_li_list(){
 	//拉取角色下拉选项
-	var addtype=sessionStorage.getItem("key");
-	addtype=JSON.parse(addtype);
-    var addtype=JSON.parse(addtype.message);
-	if($(".pre_title label").text()=="新增用户"){
+
+	if($(".pre_title label").text().trim()=="新增用户"){
+		var addtype=sessionStorage.getItem("addtype");
+		addtype=JSON.parse(addtype);
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
 				r_code=addtype.role_code;
 				c_code="";
 				role_data(r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
-				if($('#OWN_CORP').val()!==''){
-					r_code=addtype.role_code;
-					c_code=$('#OWN_CORP').val();
-					role_data(r_code,c_code);
-				}else{
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content:"请先输入企业编号！"
-					});
-				}
+				console.log("lalall");
+				r_code=addtype.role_code;
+				c_code=$('#OWN_CORP').val();
+				role_data(r_code,c_code);
 			}
 		}else{
 			c_code=$('#OWN_CORP').val();
@@ -282,6 +274,9 @@ function role_li_list(){
 			role_data(r_code,c_code);
 		}
 	}else{
+		// var addtype=sessionStorage.getItem("key");
+		// addtype=JSON.parse(addtype);
+	 //    var addtype=JSON.parse(addtype.message);
 		c_code=$('#OWN_CORP').val();
 		role_data(r_code,c_code);
 	}
@@ -322,28 +317,21 @@ function role_data(r,c){
 	});
 }
 function store_li_list(p) {
-	var addtype=sessionStorage.getItem("key");
-	addtype=JSON.parse(addtype);
-    var addtype=JSON.parse(addtype.message);
-	if($(".pre_title label").text()=="新增用户"){
+	// var addtype=sessionStorage.getItem("key");
+	// addtype=JSON.parse(addtype);
+ //    var addtype=JSON.parse(addtype.message);
+	if($(".pre_title label").text().trim()=="新增用户"){
+		var addtype=sessionStorage.getItem("addtype");
+		addtype=JSON.parse(addtype);
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
 				r_code=addtype.role_code;
 				c_code="";
 				store_data(p,r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
-				if($('#OWN_CORP').val()!==''){
-					r_code=addtype.role_code;
-					c_code=$('#OWN_CORP').val();
-					store_data(p,r_code,c_code);
-				}else{
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content:"请先输入企业编号！"
-					});
-				}
+				r_code=addtype.role_code;
+				c_code=$('#OWN_CORP').val();
+				store_data(p,r_code,c_code);
 			}
 		}else{
 			c_code=$('#OWN_CORP').val();
