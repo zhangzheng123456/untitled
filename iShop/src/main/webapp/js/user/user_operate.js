@@ -558,27 +558,7 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-	// $("#OWN_CORP").focus(function() {
-	// 	interval = setInterval(function() {
-	// 		$("#OWN_CORP").blur(function(){
-	// 			var this_code=$(this).val();
-	// 		  	var _params={"corp_code":this_code};
-	// 			var _command="/corp/exist";
-	// 			oc.postRequire("post", _command,"", _params, function(data){
-	// 				if(data.code=="-1"){
-	// 					art.dialog({
-	// 						time: 1,
-	// 						lock:true,
-	// 						cancel: false,
-	// 						content: "该企业编号以存在，请重新输入！"
-	// 					});
-	// 				}
-	// 			});
-	// 		});
-	// 	}, 500);
-	// }).blur(function(event) {
-	// 	clearInterval(interval);
-	// });
+	$("")
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
