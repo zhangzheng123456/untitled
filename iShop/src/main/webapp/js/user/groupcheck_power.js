@@ -8,7 +8,7 @@ var param={};//定义的对象
 var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
 group_corp=JSON.parse(group_corp);
 var corp_code=group_corp.corp_code;//企业编号
-var group_code=group_corp.group_code;//群主编号
+var group_code=group_corp.group_code;//群组编号
 console.log(corp_code);
 console.log(group_corp);
 //模仿select
@@ -219,6 +219,7 @@ function superaddition(data,num,die){
         if($("#"+die[j].id).find("input").length>0){
             $("#"+die[j].id).find("input")[0].checked=true;
             $("#"+die[j].id).find("input").attr("disabled","true");
+            $("#"+die[j].id).find("input").attr("name","die");
         }
     }
 };
@@ -400,13 +401,13 @@ $("#delete").click(function(){
 } 
 //全选
 function checkAll(name){
-    var el=$("tbody input");
-    el.parents("tr").addClass("tr");
+    console.log(name);
+    var el=$("tbody input[name='"+name+"']");
     var len = el.length;
-
     for(var i=0; i<len; i++)
         {
-           if((el[i].type=="checkbox") && (el[i].name==name)&&(el[i].disabled==true));
+            console.log(el[i].name);
+            if((el[i].type=="checkbox") && (el[i].name==name));
             {
               el[i].checked = true;
             }
@@ -415,18 +416,21 @@ function checkAll(name){
 
 //取消全选
 function clearAll(name){
-    var el=$("tbody input");
-    el.parents("tr").removeClass("tr");
+    console.log(name);
+    var el=$("tbody input[name='"+name+"']");
     var len = el.length;
     for(var i=0; i<len; i++)
         {
-            if((el[i].type=="checkbox") && (el[i].name==name)&&(el[i].disabled==true));
+            if((el[i].type=="checkbox") && (el[i].name==name));
             {
               el[i].checked = false;
             }
         }
 };
 $('#save').click(function(){
-    var tr=$("tbody input[type='checkbox']:checked").parents("div");
-    console.log(tr);
+    var param={};
+    param["group_code"]=group_code;
+    param["list"]=[];
+    var tr=$("tbody input[name='test'][type='checkbox']:checked").parents('tr');
+    console.log(param);
 })
