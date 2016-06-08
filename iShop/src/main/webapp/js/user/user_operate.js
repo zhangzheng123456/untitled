@@ -216,10 +216,6 @@ var oc = new ObjectControl();
 	return obj;
 }));
 function selectownshop(obj){
-	// if(obj.getAttribute("data-i")=="1"){
-	// 	store_li_list(obj.id);
-	// 	obj.setAttribute('data-i','2');
-	// }
 	$(".shop_list ul").html('');
 	store_li_list(obj.id);
 	var ul=$(obj).children('ul');
@@ -267,9 +263,9 @@ function role_li_list(){
 				c_code="";
 				role_data(r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
-				if($('.corp_select select').val()!==''){
+				if($('#OWN_CORP').val()!==''){
 					r_code=addtype.role_code;
-					c_code=$('.corp_select select').val();
+					c_code=$('#OWN_CORP').val();
 					role_data(r_code,c_code);
 				}else{
 					art.dialog({
@@ -281,11 +277,12 @@ function role_li_list(){
 				}
 			}
 		}else{
-			c_code=$('.corp_select select').val();
+			c_code=$('#OWN_CORP').val();
 			r_code=addtype.role_code;
 			role_data(r_code,c_code);
 		}
 	}else{
+		c_code=$('#OWN_CORP').val();
 		role_data(r_code,c_code);
 	}
 }
@@ -335,9 +332,9 @@ function store_li_list(p) {
 				c_code="";
 				store_data(p,r_code,c_code);
 			}else if(addtype.isAdmin=="N"){
-				if($('.corp_select select').val()!==''){
+				if($('#OWN_CORP').val()!==''){
 					r_code=addtype.role_code;
-					c_code=$('.corp_select select').val();
+					c_code=$('#OWN_CORP').val();
 					store_data(p,r_code,c_code);
 				}else{
 					art.dialog({
@@ -349,11 +346,12 @@ function store_li_list(p) {
 				}
 			}
 		}else{
-			c_code=$('.corp_select select').val();
+			c_code=$('#OWN_CORP').val();
 			r_code=addtype.role_code;
 			store_data(p,r_code,c_code);
 		}
 	}else{
+		c_code=$('#OWN_CORP').val();
 		store_data(p,r_code,c_code);
 	}
 }
@@ -558,7 +556,6 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-	$("")
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
