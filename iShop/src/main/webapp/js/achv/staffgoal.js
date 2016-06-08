@@ -104,7 +104,7 @@ var oc = new ObjectControl();
 				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
-				return;
+				return;0
 			}
 		});
 	};
@@ -163,7 +163,7 @@ var oc = new ObjectControl();
 	return obj;
 }));
 jQuery(document).ready(function(){
-	window.role.init();//初始化
+	window.staffgoal.init();//初始化
 	if($(".pre_title label").text()=="编辑员工业绩目标"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};

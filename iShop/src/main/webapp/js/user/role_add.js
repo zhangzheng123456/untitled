@@ -209,10 +209,10 @@ jQuery(document).ready(function(){
 		});
 	}
 
-    $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+   $(".operadd_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
 	});
 });
