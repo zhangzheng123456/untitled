@@ -27,7 +27,7 @@ public interface StoreAchvGoalService {
             throws SQLException;
 
     //storeAchvGoalService.storeAchvExist(corp,user_code);
-    String storeAchvExist(String corp_code, String user_code);
+    String storeAchvExist(String corp_code, String store_code);
 
 
 }

@@ -23,7 +23,15 @@ public class StoreAchvGoal {
     private Date created_date;
     private String creater;
     private String isactive;
+    private String area_name;
 
+    public String getArea_name() {
+        return area_name;
+    }
+
+    public void setArea_name(String area_name) {
+        this.area_name = area_name;
+    }
 
     public StoreAchvGoal() {
     }

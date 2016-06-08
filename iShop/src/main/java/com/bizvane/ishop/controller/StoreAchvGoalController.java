@@ -20,6 +20,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -32,6 +34,7 @@ public class StoreAchvGoalController {
 
     private static Logger logger = LoggerFactory.getLogger((UserController.class));
 
+    private static SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     @Autowired
     StoreAchvGoalService storeAchvGoalService = null;
@@ -85,7 +88,7 @@ public class StoreAchvGoalController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addStoreAchvGoal(HttpServletRequest request) {
 
@@ -100,24 +103,39 @@ public class StoreAchvGoalController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            StoreAchvGoal storeAchvGoal = WebUtils.request2Bean(request, StoreAchvGoal.class);
+            //StoreAchvGoal storeAchvGoal = WebUtils.request2Bean(request, StoreAchvGoal.class);
+            // StoreAchvGoal storeAchvGoal=WebUtils.JSON2Bean(jsonObject,StoreAchvGoal.class);
+            StoreAchvGoal storeAchvGoal1 = new StoreAchvGoal();
+            storeAchvGoal1.setStore_name(jsonObject.get("store_name").toString());
+            storeAchvGoal1.setStore_name(jsonObject.get("store_code").toString());
+            storeAchvGoal1.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
+            storeAchvGoal1.setAchv_type(jsonObject.get("achv_type").toString());
+            storeAchvGoal1.setStart_time(new Date());
+            storeAchvGoal1.setEnd_time(sdf.parse(jsonObject.get("end_time").toString()));
+            storeAchvGoal1.setModifier(user_id);
+            storeAchvGoal1.setModified_date(new Date());
+            storeAchvGoal1.setCreater(user_id);
+            storeAchvGoal1.setCreated_date(new Date());
+            storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
 
-            String exist = storeAchvGoalService.storeAchvExist(corp_code, user_id);
+
+           String exist = storeAchvGoalService.storeAchvExist(corp_code, storeAchvGoal1.getStore_code());
             if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
-                storeAchvGoalService.update(storeAchvGoal);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("业绩目标修改成功");
-            } else {
-                storeAchvGoalService.insert(storeAchvGoal);
+                //storeAchvGoalService.update(storeAchvGoal1);
+                storeAchvGoalService.insert(storeAchvGoal1);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage("add error ");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("商户已存在！！");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

@@ -1,6 +1,7 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.StoreAchvGoal;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -48,12 +49,12 @@ public interface StoreAchvGoalMapper {
 
 
     /**
-     * 企业id
-     * 用户id
+     *
      * @param corp_code
-     * @param user_code
+     * @param store_code
+     * @return
      */
-    void selectByCorpAndUserCode(String corp_code, String user_code);
+    StoreAchvGoal selectByCorpAndUserCode(@Param("corp_code") String corp_code,@Param("store_code") String store_code);
 
 
 }

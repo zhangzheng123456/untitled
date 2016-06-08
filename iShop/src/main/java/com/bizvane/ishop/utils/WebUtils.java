@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.StoreAchvGoal;
+import com.sun.beans.editors.DoubleEditor;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
@@ -88,26 +89,62 @@ public class WebUtils {
             ConvertUtils.register(new Converter() {
                 @Override
                 public Object convert(Class type, Object value) {
-                    if(value==null){
+                    if (value == null) {
                         return null;
                     }
-                    String str=(String)value;
-                    if(str.trim().equals("")){
+                    String str = (String) value;
+                    if (str.trim().equals("")) {
                         return null;
                     }
-                    try{
-                        sdf.parse(str);
-                    }catch (Exception ex){
+                    try {
+                        return sdf.parse(str);
+                    } catch (Exception ex) {
                         throw new RuntimeException(ex);
                     }
-                    return null;
                 }
-            },Date.class);
-            BeanUtils.populate(bean, map);
+            }, Date.class);
+
+
+
+            ConvertUtils.register(new Converter() {
+                @Override
+                public Object convert(Class type, Object value) {
+                    if (value == null) {
+                        return null;
+                    }
+                    String str = (String) value;
+                    if (str.trim().equals("")) {
+                        return null;
+                    }
+                    try {
+                        if(isDecimal(str)){
+                            return Double.parseDouble(str);
+                        }
+                        return sdf.parse(str);
+                    } catch (Exception ex) {
+                        throw new RuntimeException(ex);
+                    }
+                }
+            }, double.class);
+
             return bean;
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
     }
+
+    public static boolean isDecimal(String orginal) {
+        return isMatch("[-+]{0,1}\\d+\\.\\d*|[-+]{0,1}\\d*\\.\\d+", orginal);
+    }
+
+    private static boolean isMatch(String regex, String orginal) {
+        if (orginal == null || orginal.trim().equals("")) {
+            return false;
+        }
+        Pattern pattern = Pattern.compile(regex);
+        Matcher isNum = pattern.matcher(orginal);
+        return isNum.matches();
+    }
+
 }
 

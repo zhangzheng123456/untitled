@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.StoreAchvGoalMapper;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.StoreAchvGoalService;
@@ -49,10 +50,16 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public String storeAchvExist(String corp_code, String user_code) {
+    public String storeAchvExist(String corp_code, String store_code) {
         //this.storeAchvGoalMapper.selectById(1);
-        this.storeAchvGoalMapper.selectByCorpAndUserCode(corp_code,user_code);
-        return null;
+        try {
+            if (null != this.storeAchvGoalMapper.selectByCorpAndUserCode(corp_code, store_code)) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
+        } catch (Exception ex) {
+            return Common.DATABEAN_CODE_ERROR;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
     @Override
