@@ -133,3 +133,6 @@
   background:#6cc1c8;
   color: white;
 }
+.searchable-select-items div:nth-of-type(1){
+  display:none;
+}

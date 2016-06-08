@@ -122,14 +122,14 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
             }
             inx--;
             dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            setPage(container, count,inx,pageSize,group_code,corp_code,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
                 dian(inx);
-                setPage(container, count, inx,pageSize,funcCode,value);
+                setPage(container, count, inx,pageSize,group_code,corp_code,value);
                 return false;
             }
         }
@@ -139,27 +139,31 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
             }
             inx++;
             dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            setPage(container, count,inx,pageSize,group_code,corp_code,value);
             return false;
         }
     }()
     function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
-                +"&funcCode="+funcCode+"","","",function(data){
-                    console.log(data);
+            param['pageNumber']=inx;
+            oc.postRequire("post","/user/group/check_power","0",param,function(data){
                     if(data.code=="0"){
                         $(".table tbody").empty();
                         var message=JSON.parse(data.message);
+                        var die=message.die;
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
-                        superaddition(list,inx);
+                        console.log(list);
+                        console.log(die)
+                        var actions=message.actions;
+                        superaddition(list,inx,die);
+                        // jurisdiction(actions);
                         jumpBianse();
                     }else if(data.code=="-1"){
-                        // alert(data.message);
+                        alert(data.message);
                     }
-            });           
+            });    
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
@@ -192,7 +196,7 @@ function superaddition(data,num,die){
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr id='"+data[i].id+"''>"
+        $(".table tbody").append("<tr>"
                         + "</td><td style='text-align:left;padding-left:22px'>"
                         + a
                         + "</td><td>"
@@ -203,7 +207,7 @@ function superaddition(data,num,die){
                         +data[i].function_name
                         + "</td><td>"
                         +data[i].action_name
-                        +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                        +"</td><td width='50px;' style='text-align: left;'><div class='checkbox1' id='"+data[i].id+"'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -211,19 +215,12 @@ function superaddition(data,num,die){
                         + 1
                         + "'></label></div></td></tr>");
     }
-    var el=$("tbody input");
-    var id=el.parents("tr").attr("id");
-    console.log(el);
-    console.log(id);
-    var len = el.length;
-
-    for(var i=0; i<len; i++)
-        {
-           if((el[i].type=="checkbox") && (el[i].name==name))
-            {
-              el[i].checked = true;
-            }
+    for(var j=0;j<die.length;j++){
+        if($("#"+die[j].id).find("input").length>0){
+            $("#"+die[j].id).find("input")[0].checked=true;
+            $("#"+die[j].id).find("input").attr("disabled","true");
         }
+    }
 };
 // //权限配置
 // function jurisdiction(actions){
@@ -247,7 +244,6 @@ function superaddition(data,num,die){
 // }
 //页面加载时list请求
 function GET(){
-    var param={};
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["group_code"]=group_code;
@@ -279,23 +275,6 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-    })
-    //点击tr input是选择状态  tr增加class属性
-    $(".table tbody tr").click(function(){
-        var input=$(this).find("input")[0];
-        var thinput=$("thead input")[0];
-        $(this).toggleClass("tr");  
-        console.log(input);
-        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
-            input.checked = true;
-            $(this).addClass("tr");
-        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
-            if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
-                thinput.checked=false;
-            }
-            input.checked = false;
-            $(this).removeClass("tr");
-        }
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
@@ -427,7 +406,7 @@ function checkAll(name){
 
     for(var i=0; i<len; i++)
         {
-           if((el[i].type=="checkbox") && (el[i].name==name))
+           if((el[i].type=="checkbox") && (el[i].name==name)&&(el[i].disabled==true));
             {
               el[i].checked = true;
             }
@@ -441,9 +420,13 @@ function clearAll(name){
     var len = el.length;
     for(var i=0; i<len; i++)
         {
-            if((el[i].type=="checkbox") && (el[i].name==name))
+            if((el[i].type=="checkbox") && (el[i].name==name)&&(el[i].disabled==true));
             {
               el[i].checked = false;
             }
         }
 };
+$('#save').click(function(){
+    var tr=$("tbody input[type='checkbox']:checked").parents("div");
+    console.log(tr);
+})

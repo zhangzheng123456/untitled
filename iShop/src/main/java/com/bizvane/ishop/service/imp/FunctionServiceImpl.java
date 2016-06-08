@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.FunctionMapper;
+import com.bizvane.ishop.dao.PrivilegeMapper;
 import com.bizvane.ishop.entity.Action;
 import com.bizvane.ishop.entity.Function;
+import com.bizvane.ishop.entity.Privilege;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.FunctionService;
 import com.github.pagehelper.PageHelper;
@@ -14,6 +16,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,6 +28,10 @@ public class FunctionServiceImpl implements FunctionService {
 
     @Autowired
     FunctionMapper functionMapper;
+    @Autowired
+    PrivilegeMapper privilegeMapper;
+
+    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     /**
      * 获取user所有功能模块
@@ -248,4 +256,31 @@ public class FunctionServiceImpl implements FunctionService {
         return array;
     }
 
+    public String updatePrivilege(String message,String user_id){
+        try {
+            JSONObject jsonObject = new JSONObject(message);
+            String action_code = jsonObject.get("action_code").toString();
+            String function_code = jsonObject.get("function_code").toString();
+            String group_code = jsonObject.get("group_code").toString();
+
+            Date now = new Date();
+            //先删除权限下所有权限
+            privilegeMapper.deleteGroup(group_code);
+            //再插入画面选择的权限
+            Privilege privilege = new Privilege();
+            privilege.setAction_code(action_code);
+            privilege.setFunction_code(function_code);
+            privilege.setMaster_code(group_code);
+            privilege.setEnable(Common.IS_ACTIVE_Y);
+            privilege.setModified_date(sdf.format(now));
+            privilege.setModifier(user_id);
+            privilege.setCreated_date(sdf.format(now));
+            privilege.setCreater(user_id);
+            privilege.setIsactive(Common.IS_ACTIVE_Y);
+            privilegeMapper.insert(privilege);
+            return Common.DATABEAN_CODE_SUCCESS;
+        }catch (Exception ex){
+            return ex.getMessage();
+        }
+    }
 }
