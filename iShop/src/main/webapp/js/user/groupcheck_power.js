@@ -196,11 +196,9 @@ function superaddition(data,num,die){
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr>"
+        $(".table tbody").append("<tr data-action='"+data[i].action_code+"' data-function='"+data[i].function_code+"'>"
                         + "</td><td style='text-align:left;padding-left:22px'>"
                         + a
-                        + "</td><td>"
-                        + data[i].action_code
                         + "</td><td>"
                         + data[i].module_name
                         +"</td><td>"
@@ -430,7 +428,16 @@ function clearAll(name){
 $('#save').click(function(){
     var param={};
     param["group_code"]=group_code;
-    param["list"]=[];
     var tr=$("tbody input[name='test'][type='checkbox']:checked").parents('tr');
-    console.log(param);
+    var list=[];
+    for(var i=0;i<tr.length;i++){
+        var action_code=$(tr[i]).attr("data-action");
+        var function_code=$(tr[i]).attr("data-function");
+        var param1={"function_code":function_code,"action_code":action_code};
+        list.push(param1);
+    }
+    param["list"]=list;
+    oc.postRequire("post","/user/group/check_power/save","0",param,function(data){
+        console.log(data);
+    })
 })
