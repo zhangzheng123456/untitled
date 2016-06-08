@@ -45,8 +45,8 @@
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.FUNCTION_CODE IN (
-        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        AND  a.ACTION_CODE IN (
+        SELECT ACTION_CODE FROM DEF_PRIVILEGE
         WHERE MASTER_CODE = #{role_code}
         and enable = 'Y'
         )
@@ -58,8 +58,8 @@
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.FUNCTION_CODE IN (
-        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        AND  a.ACTION_CODE IN (
+        SELECT ACTION_CODE FROM DEF_PRIVILEGE
         WHERE MASTER_CODE = #{group_code}
         and enable = 'Y'
         )
@@ -71,8 +71,8 @@
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.FUNCTION_CODE IN (
-        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        AND  a.ACTION_CODE IN (
+        SELECT ACTION_CODE FROM DEF_PRIVILEGE
         WHERE MASTER_CODE = #{user_id}
         and enable = 'Y'
         )
@@ -85,8 +85,8 @@
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.FUNCTION_CODE IN (
-        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
+        AND  a.ACTION_CODE IN (
+        SELECT ACTION_CODE FROM DEF_PRIVILEGE
         WHERE (MASTER_CODE = #{group_code}
             OR MASTER_CODE = #{role_code}
             <if test="user_id!=0">

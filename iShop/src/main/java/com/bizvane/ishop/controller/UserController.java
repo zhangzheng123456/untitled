@@ -357,7 +357,9 @@ public class UserController {
                     group = groupService.selectUserGroup(corp_code, "");
                 }
             } else {
-                group = groupService.selectUserGroup(corp_code, group_code);
+                //比登陆用户角色级别低的群组
+                String login_corp_code  = request.getSession().getAttribute("corp_code").toString();
+                group = groupService.selectUserGroup(login_corp_code, role_code);
             }
             groups.put("group", JSON.toJSONString(group));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -500,7 +502,7 @@ public class UserController {
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
-            String role_code = jsonObject.get("role_code").toString();
+            String role_code = groupService.selectCorpGroup(group_code).getRole_code();
 
             //获取群组自定义的权限
             JSONArray group_privilege = functionService.selectRAGPrivilege(role_code,group_code);

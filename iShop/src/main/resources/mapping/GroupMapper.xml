@@ -42,11 +42,10 @@
         AND DEF_GROUP.ID = #{group_id}
     </select>
 
-    <select id="selectCorpGroup" resultType="com.bizvane.ishop.entity.Group">
+    <select id="selectByCode" resultType="com.bizvane.ishop.entity.Group">
         select *
         from DEF_GROUP
-        where corp_code = #{corp_code}
-        AND group_code = #{group_code}
+        where group_code = #{group_code}
     </select>
 
     <select id="selectAllGroup" resultMap="GroupInfo">
@@ -90,7 +89,7 @@
             AND corp_code = #{corp_code}
         </if>
         <if test="role_code != null and role_code !=''">
-            AND role_code &lt; #{role_code}
+            AND role_code &lt;= #{role_code}
         </if>
         AND ISACTIVE = 'Y'
         ORDER BY ID
