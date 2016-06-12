@@ -1,16 +1,13 @@
 var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
-var inx=1;//默认是第一页
-var pageSize=10;//默认传的每页多少行
+// var inx=1;//默认是第一页
+// var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
 group_corp=JSON.parse(group_corp);
-var corp_code=group_corp.corp_code;//企业编号
-var group_code=group_corp.group_code;//群组编号
-console.log(corp_code);
-console.log(group_corp);
+var role_code=group_corp.role_code;//角色编号
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -101,9 +98,8 @@ function superaddition(data,num,die,live){
 function GET(){
     // param["pageNumber"]=inx;
     // param["pageSize"]=pageSize;
-    param["group_code"]=group_code;
-    param["corp_code"]=corp_code;
-    oc.postRequire("post","/user/group/check_power","0",param,function(data){
+    param["role_code"]=role_code;
+    oc.postRequire("post","/user/role/check_power","0",param,function(data){
         console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();
@@ -164,15 +160,16 @@ function jumpBianse(){
 //         $("#p").css({"width":+l+"px","height":+h+"px"});
 //         $("#tk").css({"left":+left+"px","top":+tp+"px"});
 //     })
- }
+}
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
     param["searchValue"]=value;
+    param["role_code"]=role_code;
     // param["pageNumber"]=inx;
     // param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    // param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         POST();
     }
@@ -281,7 +278,7 @@ function clearAll(name){
 };
 $('#save').click(function(){
     var param={};
-    param["group_code"]=group_code;
+    param["group_code"]=role_code;
     var tr=$("tbody input[name='test'][type='checkbox']:checked").parents('tr');
     var list=[];
     for(var i=0;i<tr.length;i++){
@@ -292,8 +289,6 @@ $('#save').click(function(){
     }
     param["list"]=list;
     oc.postRequire("post","/user/group/check_power/save","0",param,function(data){
-        if(data.code=="0"){
-            $(window.parent.document).find('#iframepage').attr("src","/group/group.html");
-        }
+        console.log(data);
     })
 })
