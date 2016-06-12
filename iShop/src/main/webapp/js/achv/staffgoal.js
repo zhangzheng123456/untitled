@@ -167,7 +167,7 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="编辑员工业绩目标"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/storeAchvGoal/select";
+		var _command="/userAchvGoal/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -227,10 +227,3 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
 	})
 });
-// $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
-// 	});
-// 	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
-// 	});
-// });
