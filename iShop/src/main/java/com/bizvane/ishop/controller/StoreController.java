@@ -58,7 +58,7 @@ public class StoreController {
     public String shopManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
 
@@ -66,7 +66,7 @@ public class StoreController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
 
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(Integer.parseInt(user_id), role_code, function_code, group_code);
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -74,8 +74,7 @@ public class StoreController {
                 list = storeService.getAllStore(page_number, page_size, "", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                String store_code = request.getSession().getAttribute("store_code").toString();
-                list = storeService.getAllStore(page_number, page_size, corp_code, "");
+                list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -108,11 +107,11 @@ public class StoreController {
             JSONObject msg = new JSONObject(message);
             String corp_code = msg.get("corp_code").toString();
             Corp corp = corpService.selectByCorpId(0, corp_code);
-            if(corp==null){
+            if (corp == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("该企业编号不存在！");
-            }else{
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("企业编号可用");
@@ -194,6 +193,7 @@ public class StoreController {
 
     /**
      * 删除
+     *
      * @param request
      * @return
      */
@@ -222,7 +222,7 @@ public class StoreController {
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
                     dataBean.setMessage("success");
-                }else {
+                } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
                     dataBean.setMessage("该店铺下有所属员工，请先处理店铺下员工再删除！");
@@ -288,6 +288,7 @@ public class StoreController {
             String search_value = jsonObject.get("searchValue").toString();
 
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_id = request.getSession().getAttribute("user_id").toString();
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -295,7 +296,7 @@ public class StoreController {
                 list = storeService.getAllStore(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = storeService.getAllStore(page_number, page_size, corp_code, search_value);
+                list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -320,7 +321,7 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
-            List<Brand> brand = brandService.getAllBrand(corp_code,"");
+            List<Brand> brand = brandService.getAllBrand(corp_code, "");
             JSONArray array = new JSONArray();
             JSONObject brands = new JSONObject();
             for (int i = 0; i < brand.size(); i++) {
@@ -355,7 +356,7 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
-            List<Area> area = areaService.getAllArea(corp_code,"");
+            List<Area> area = areaService.getAllArea(corp_code, "");
             JSONArray array = new JSONArray();
             JSONObject areas = new JSONObject();
             for (int i = 0; i < area.size(); i++) {

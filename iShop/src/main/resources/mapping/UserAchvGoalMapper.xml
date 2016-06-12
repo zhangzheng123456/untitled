@@ -49,7 +49,9 @@
             <if test="isActive!=null and isActive!=''">
                 isActive=#{isActive},
             </if>
-
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
         </trim>
     </update>
 
@@ -65,6 +67,7 @@
             <if test="store_code!=null and store_code!=''">
                 store_code,
             </if>
+
             <if test="achv_goal!=null and achv_goal!=''">
                 achv_goal,
             </if>
@@ -91,6 +94,9 @@
             </if>
             <if test="isActive!=null and isActive!=''">
                 isActive,
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -131,6 +137,9 @@
             <if test="isActive!=null and isActive!=''">
                 isActive=#{isActive},
             </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code,
+            </if>
         </trim>
     </insert>
 
@@ -139,5 +148,20 @@
         WHERE user_code=#{user_code}
     </delete>
 
+
+    <select id="selectUserAchvGoalBySearch" resultType="com.bizvane.ishop.entity.UserAchvGoal">
+        select * from DEF_USER_ACHV_GOAL
+        <if test="userAchvGoalId!=null and userAchvGoalId!=''">
+            where id=#{userAchvGoalId}
+        </if>
+        <if test="search_value!=null and search_value!=''">
+            AND user_name like #{search_value}
+            OR ACHV_GOAL like #{search_value}
+            OR MODIFIER like #{search_value}
+            OR CREATER like #{search_value}
+
+        </if>
+
+    </select>
 
 </mapper>
