@@ -68,7 +68,7 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="";//接口名
+				var _command="/userAchvGoal/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
@@ -96,7 +96,7 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="";//接口名
+				var _command="/userAchvGoal/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
@@ -104,7 +104,7 @@ var oc = new ObjectControl();
 				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
-				return;0
+				return;
 			}
 		});
 	};
@@ -217,11 +217,20 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-
-$(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+  $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
 	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
+	$("#che").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
+	})
 });
+// $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
+// 		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+// 	});
+// 	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
+// 		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+// 	});
+// });
