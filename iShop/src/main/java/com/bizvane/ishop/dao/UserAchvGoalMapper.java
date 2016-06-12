@@ -22,7 +22,7 @@ public interface UserAchvGoalMapper {
     int delelteByUser_code(String user_code)throws SQLException;
 
 
-    List<UserAchvGoal> selectUserAchvGoalBySearch(String userAchvGoalId, String search_value)throws SQLException;
+   List<UserAchvGoal> selectUserAchvGoalBySearch(String userAchvGoalId, String search_value)throws SQLException;
 
 
     int userAchvGoalExist(String user_code)throws SQLException;
