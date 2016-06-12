@@ -72,7 +72,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
+			 var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
