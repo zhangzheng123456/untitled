@@ -201,7 +201,7 @@ public class RoleController {
      * 编辑角色信息之
      * 查看权限
      */
-    @RequestMapping(value = "/role/check_power", method = RequestMethod.GET)
+    @RequestMapping(value = "/role/check_power", method = RequestMethod.POST)
     @ResponseBody
     public String roleCheckPower(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
