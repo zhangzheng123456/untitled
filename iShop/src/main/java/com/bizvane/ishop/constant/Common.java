@@ -8,7 +8,7 @@ public class Common {
     public static final String DATABEAN_CODE_SUCCESS = "0";
 
     //系统管理员role
-    public static final String ROLE_SYS = "R1000";
+    public static final String ROLE_SYS = "R6000";
     //总经理role
     public static final String ROLE_GM = "R5000";
     //区经role

@@ -37,18 +37,6 @@ public class StoreServiceImpl implements StoreService {
 
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
-
-    /**
-     * 获取用户的店仓信息
-     *
-     * @param id ： 用户ID
-     * @return ： 店仓信息
-     */
-    @Override
-    public List<Store> selectByUserId(String id) {
-        return storeMapper.selectByUserId(id);
-    }
-
     /**
      * 通过用户ID和制定的店仓来删除用户的店仓
      *
@@ -71,11 +59,11 @@ public class StoreServiceImpl implements StoreService {
         System.out.println(store.getBrand_code());
         String[] ids = store.getBrand_code().split(",");
         for (int i = 0; i < ids.length; i++) {
-            Brand brand = brandMapper.selectCorpBrand(corp_code,ids[i]);
+            Brand brand = brandMapper.selectCorpBrand(corp_code, ids[i]);
             String brand_name1 = brand.getBrand_name();
-            brand_name = brand_name+brand_name1;
-            if(i!=ids.length-1){
-                brand_name = brand_name+",";
+            brand_name = brand_name + brand_name1;
+            if (i != ids.length - 1) {
+                brand_name = brand_name + ",";
             }
         }
         store.setBrand_name(brand_name);
@@ -103,15 +91,34 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
+    /**
+     * 获取用户的店仓信息
+     */
+    @Override
+    public PageInfo<Store> selectByUserId(int page_number, int page_size, String user_id, String corp_code, String search_value) {
+        List<Store> shops;
+        if (search_value.equals("")) {
+            PageHelper.startPage(page_number, page_size);
+            shops = storeMapper.selectByUserId(user_id, corp_code, "");
+        } else {
+            PageHelper.startPage(page_number, page_size);
+            shops = storeMapper.selectByUserId(user_id, corp_code, "%" + search_value + "%");
+        }
+        PageInfo<Store> page = new PageInfo<Store>(shops);
+
+        return page;
+    }
+
+
     //店铺下所属用户
     public List<User> getStoreUser(String corp_code, String store_code) {
-        List<User> user = userMapper.selectStoreUser(corp_code, "%" + store_code+ "%");
+        List<User> user = userMapper.selectStoreUser(corp_code, "%" + store_code + "%");
         return user;
     }
 
 
     //根据企业，店铺编号,查找店铺
-    public Store getStoreByCode(String corp_code, String store_code){
+    public Store getStoreByCode(String corp_code, String store_code) {
         Store store = storeMapper.selectByCorp(corp_code, store_code);
 
         return store;
@@ -141,6 +148,7 @@ public class StoreServiceImpl implements StoreService {
                 shop.setModifier(user_id);
                 shop.setIsactive(jsonObject.get("isactive").toString());
                 storeMapper.insertStore(shop);
+
 
                 return Common.DATABEAN_CODE_SUCCESS;
             }

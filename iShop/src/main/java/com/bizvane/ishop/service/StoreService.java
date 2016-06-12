@@ -11,7 +11,7 @@ import java.util.List;
  */
 public interface StoreService {
 
-    List<Store> selectByUserId(String user_id);
+    PageInfo<Store> selectByUserId(int page_number, int page_size,String user_id,String corp_code, String search_value);
 
     int deleteStoreByUserid(String user_id, String store_id);
 
