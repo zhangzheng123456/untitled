@@ -1,7 +1,7 @@
 var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
-// var inx=1;//默认是第一页
+var inx=1;//默认是第一页
 // var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
@@ -56,7 +56,7 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function superaddition(data,num,die,live){
+function superaddition(data,num,live){
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+num*pageSize;
@@ -80,14 +80,6 @@ function superaddition(data,num,die,live){
                         + 1
                         + "'></label></div></td></tr>");
     }
-    for(var j=0;j<die.length;j++){
-        if($("#"+die[j].id).find("input").length>0){
-            $("#"+die[j].id).find("input").parent("div").attr("class","checkbox2");
-            $("#"+die[j].id).find("input")[0].checked=true;
-            $("#"+die[j].id).find("input").attr("disabled","true");
-            $("#"+die[j].id).find("input").attr("name","die");
-        }
-    }
     for(var p=0;p<live.length;p++){
         if($("#"+live[p].id).find("input").length>0){
             $("#"+live[p].id).find("input")[0].checked=true;
@@ -104,13 +96,11 @@ function GET(){
             if(data.code=="0"){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
-                var die=message.die;
                 var live=message.live;
                 var list=JSON.parse(message.list);
                 console.log(list);
-                console.log(die)
                 var actions=message.actions;
-                superaddition(list,inx,die,live);
+                superaddition(list,inx,live);
                 // jurisdiction(actions);
                 jumpBianse();
             }else if(data.code=="-1"){
