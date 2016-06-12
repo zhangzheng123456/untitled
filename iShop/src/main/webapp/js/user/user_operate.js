@@ -557,3 +557,10 @@ $(".corp_select").click(function(){
 		$("#OWN_STORE").val('');
 	// });
 });
+$("#edit_power").click(function(){
+	var user_id=sessionStorage.getItem("id");
+	var group_code=$('#OWN_RIGHT').attr("data-myrcode");
+	var group_corp={"user_id":user_id,"group_code":group_code};
+    sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+    $(window.parent.document).find('#iframepage').attr("src","/user/usercheck_power.html");
+})

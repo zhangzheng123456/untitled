@@ -316,7 +316,7 @@ function jumpBianse(){
             var role_code=$(tr).find("td:eq(2)").html();
             var group_corp={"role_code":role_code};
             sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地
-            $(window.parent.document).find('#iframepage').attr("src","/user/role_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/user/role_edit.html");//
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
