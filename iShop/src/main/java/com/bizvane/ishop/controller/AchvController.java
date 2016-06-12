@@ -9,6 +9,7 @@ import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreAchvGoalService;
 import com.github.pagehelper.PageInfo;
+import org.omg.CORBA.Request;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,40 +44,45 @@ public class AchvController {
     /**
      * 店铺业绩目标
      */
-    @RequestMapping(value = "/shopgoal", method = RequestMethod.GET)
+    @RequestMapping(value = "",method = RequestMethod.GET)
     @ResponseBody
     public String shopGoalManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String role_code = request.getSession(false).getAttribute("role_code").toString();
-        String group_code = request.getSession(false).getAttribute("group_code").toString();
-
-        String function_code = request.getSession(false).getAttribute("funcCode").toString();
-        int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-        int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
-        int page_size = Integer.parseInt(request.getParameter("pageSize"));
-        try {
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            JSONObject result = new JSONObject();
-            PageInfo<StoreAchvGoal> list = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "");
-            } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (SQLException e) {
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(e.getMessage());
-            e.printStackTrace();
-        }
-        return dataBean.getJsonStr();
+        return "shopGoalManage";
     }
+//    @RequestMapping(value = "/shopgoal", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String shopGoalManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String role_code = request.getSession(false).getAttribute("role_code").toString();
+//        String group_code = request.getSession(false).getAttribute("group_code").toString();
+//
+//        String function_code = request.getSession(false).getAttribute("funcCode").toString();
+//        int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+//        int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
+//        int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//        try {
+//            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
+//            JSONObject result = new JSONObject();
+//            PageInfo<StoreAchvGoal> list = null;
+//            if (role_code.contains(Common.ROLE_SYS)) {
+//                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "");
+//            } else {
+//                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            result.put("actions", actions);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (SQLException e) {
+//            dataBean.setId("1");
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(e.getMessage());
+//            e.printStackTrace();
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 店铺业绩目标

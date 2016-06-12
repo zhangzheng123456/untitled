@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -30,6 +32,7 @@ import java.sql.SQLException;
 public class UserAchvGoalControl {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(UserAchvGoalControl.class);
 
+    private SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
     @Autowired
     private UserAchvGoalService userAchvGoalService = null;
     @Autowired
@@ -51,7 +54,7 @@ public class UserAchvGoalControl {
             String group_code = request.getSession().getAttribute("group_code").toString();
 
             String function_code = request.getParameter("funcode").toString();
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
             JSONObject result = new JSONObject();
 
             int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
@@ -144,7 +147,25 @@ public class UserAchvGoalControl {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            UserAchvGoal userAchvGoal = WebUtils.request2Bean(request, UserAchvGoal.class);
+            //   UserAchvGoal userAchvGoal = WebUtils.request2Bean(request, UserAchvGoal.class);
+            UserAchvGoal userAchvGoal = new UserAchvGoal();
+            userAchvGoal.setCreater(user_id);
+            userAchvGoal.setStore_code(jsonObject.get("store_code").toString());
+
+            userAchvGoal.setUser_code(jsonObject.getString("user_code"));
+            userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
+            //   userAchvGoal.setUser_name();
+            userAchvGoal.setAchv_goal(jsonObject.getDouble("achv_goal"));
+            userAchvGoal.setAchv_type(jsonObject.getString("achv_type"));
+            userAchvGoal.setStart_time(new Date());
+            userAchvGoal.setEnd_time(sdf.parse(jsonObject.getString("end_time")));
+            userAchvGoal.setModified_date(new Date());
+            userAchvGoal.setCreater(user_id);
+            userAchvGoal.setIsActive(jsonObject.getString("isactive"));
+            userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
+
+
+
             String existInfo = this.userAchvGoalService.userAchvGoalExist(userAchvGoal.getUser_code());
             if (existInfo.equals(Common.DATABEAN_CODE_ERROR)) {
                 userAchvGoalService.insert(userAchvGoal);
@@ -214,16 +235,16 @@ public class UserAchvGoalControl {
             String search_value = jsonObject.get("searchValue").toString();
 
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            JSONObject result=new JSONObject();
-            PageInfo<UserAchvGoal>list;
-            if(role_code.contains(Common.ROLE_SYS)){
+            JSONObject result = new JSONObject();
+            PageInfo<UserAchvGoal> list;
+            if (role_code.contains(Common.ROLE_SYS)) {
                 //系统管理员
-                list=userAchvGoalService.selectBySearch(page_number,page_size,"",search_value);
-            }else{
-                String corp_code=request.getSession(false).getAttribute("corp_code").toString();
-                list=userAchvGoalService.selectBySearch(page_number,page_size,corp_code,search_value);
+                list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
             }
-            result.put("list",JSON.toJSONString(list));
+            result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

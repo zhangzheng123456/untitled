@@ -13,6 +13,7 @@ public class UserAchvGoal {
     private String user_code;
     private String user_name;
     private String store_code;
+    private String corp_code;
     private double achv_goal;
     private String achv_type;
     private Date start_time;
@@ -27,6 +28,13 @@ public class UserAchvGoal {
     public UserAchvGoal() {
     }
 
+    public String getCorp_code() {
+        return corp_code;
+    }
+
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
+    }
 
     public int getId() {
         return id;
