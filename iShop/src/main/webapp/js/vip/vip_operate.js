@@ -66,8 +66,8 @@ var oc = new ObjectControl();
 				var VIP_ID=$("#VIP_ID").val();
 				var VIP_CARD=$("#VIP_CARD").val();
 				var VIP_NAME=$("#VIP_NAME").val();
-				var is_leixing=$("#VIP_STYLE").val();
-				var is_xingbie=$("#SEX").val();
+				var is_leixing=$("#vip_type").val();
+				var is_xingbie=$("#sex").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -97,8 +97,8 @@ var oc = new ObjectControl();
 				var VIP_ID=$("#VIP_ID").val();
 				var VIP_CARD=$("#VIP_CARD").val();
 				var VIP_NAME=$("#VIP_NAME").val();
-				var is_leixing=$("#VIP_STYLE").val();
-				var is_xingbie=$("#SEX").val();
+				var is_leixing=$("#vip_type").val();
+				var is_xingbie=$("#sex").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -197,21 +197,16 @@ jQuery(document).ready(function(){
 				var VIP_ID=$("#VIP_ID").val(msg.vip_code);
 				var VIP_CARD=$("#VIP_CARD").val(msg.vip_card_number);
 				var VIP_NAME=$("#VIP_NAME").val(msg.vip_name);
-				var is_leixing=$("#VIP_STYLE").val(msg.vip_type);
-				var is_xingbie=$("#SEX").val(msg.sex);
-
+				var is_leixing=$("#vip_type").val(msg.vip_type);
+				var is_xingbie=$("#sex").val(msg.sex);
 				// var phone=$("#phone").val();
-				// var birthday=$("#birthday").val();
-				// var register_date=$("#register_date").val();
-				// "corp_code":OWN_CORP,"store_code":OWN_STORE,"user_code":OWN_SALES,"vip_code":VIP_ID,
-				// "vip_card_number":VIP_CARD,"vip_name":VIP_NAME,"vip_type":is_leixing,"sex":is_xingbie,
-				$("#OWN_CORP").val(msg.own_corp)
+				$("#OWN_CORP").val(msg.own_corp);
 				$("#OWN_STORE").val(msg.own_store);
 				$("#OWN_SALES").val(msg.own_sales);
 				$("#VIP_ID").val(msg.vip_id);
 				$("#VIP_CARD").val(msg.vip_card);
 				$("#VIP_NAME").val(msg.vip_name);
-				$("#is_leixing").val(msg.vip_style);
+				$("#is_leixing").val(msg.vip_type);
 				$("#is_xingbie").val(msg.sex);
 
 				$("#created_time").val(msg.created_date);
