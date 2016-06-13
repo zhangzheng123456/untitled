@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bizvane.ishop.dao.VIPtagMapper">
+    <select id="selectByPrimaryKey" resultMap="com.bizvane.ishop.entity.VIPtag">
+        select * from DEF_VIP_TAG
+        WHERE  id=#{id}
+    </select>
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.VIPtag">
+        INSERT INTO VIPtag
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="tag_name!=null and tag_name!=''">
+                tag_name ,
+            </if>
+            <if test="tag_type!=null and tag_type!=''">
+                tag_type,
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code ,
+            </if>
+            <if test="modified_date!=null">
+                modified_date ,
+            </if>
+            <if test="modifier!=null and  modifier!=''">
+                modifier,
+            </if>
+            <if test=" !=null and !=''">
+                ,
+            </if>
+            <if test="create_date!=null">
+                create_date ,
+            </if>
+            <if test="creater!=null and  creater!=''">
+                creater,
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="value(" suffix=")" suffixOverrides=",">
+            <if test="tag_name!=null and tag_name!=''">
+                tag_name=#{tag_name} ,
+            </if>
+            <if test="tag_type!=null and tag_type!=''">
+                tag_type=#{tag_type},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date} ,
+            </if>
+            <if test="modifier!=null and  modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="create_date!=null">
+                create_date=#{create_date},
+            </if>
+            <if test="creater!=null and  creater!=''">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
+            </if>
+        </trim>
+
+    </insert>
+    <update id="updateByPrimarykey" parameterType="com.bizvane.ishop.entity.VIPtag">
+
+    </update>
+    <delete id="deleteByPrimaryKey">
+        delete from DEF_VIP_TAG
+        WHERE id=#{id}
+    </delete>
+</mapper>

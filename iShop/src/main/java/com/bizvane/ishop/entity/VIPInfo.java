@@ -1,106 +1,156 @@
 package com.bizvane.ishop.entity;
 
+import java.util.Date;
+
 /**
  * Created by maoweidong on 2016/2/24.
  */
 public class VIPInfo {
-  private int id;
-  private String VIP_CODE;
-  private String VIP_NAME;
-  private String PHONE;
-  private String BIRTHDAY;
-  private String VIP_TYPE;
-  private String VIP_CARD_NUMBER;
-  private String SEX;
-  private String REGISTER_TIME;
-  private String USER_CODE;
-  private String STORE_CODE;
+    private int id;
+    private String vip_code;
+    private String vip_name;
+    private String phone;
+    private Date birthday;
+    private String vip_type;
+    private String vip_card_number;
+    private String sex;
+    private Date register_time;
+    private String user_code;
+    private String store_code;
+    private Date modified_date;
+    private String modifier;
+    private Date created_date;
+    private String creater;
+    private String isactive;
 
-  public int getId() {
-    return id;
-  }
+    public VIPInfo() {
+    }
 
-  public void setId(int id) {
-    this.id = id;
-  }
+    public int getId() {
+        return id;
+    }
 
-  public String getVIP_CODE() {
-    return VIP_CODE;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  public void setVIP_CODE(String VIP_CODE) {
-    this.VIP_CODE = VIP_CODE;
-  }
+    public String getVip_code() {
+        return vip_code;
+    }
 
-  public String getVIP_NAME() {
-    return VIP_NAME;
-  }
+    public void setVip_code(String vip_code) {
+        this.vip_code = vip_code;
+    }
 
-  public void setVIP_NAME(String VIP_NAME) {
-    this.VIP_NAME = VIP_NAME;
-  }
+    public String getVip_name() {
+        return vip_name;
+    }
 
-  public String getPHONE() {
-    return PHONE;
-  }
+    public void setVip_name(String vip_name) {
+        this.vip_name = vip_name;
+    }
 
-  public void setPHONE(String PHONE) {
-    this.PHONE = PHONE;
-  }
+    public String getPhone() {
+        return phone;
+    }
 
-  public String getBIRTHDAY() {
-    return BIRTHDAY;
-  }
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
-  public void setBIRTHDAY(String BIRTHDAY) {
-    this.BIRTHDAY = BIRTHDAY;
-  }
+    public Date getBirthday() {
+        return birthday;
+    }
 
-  public String getVIP_TYPE() {
-    return VIP_TYPE;
-  }
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
 
-  public void setVIP_TYPE(String VIP_TYPE) {
-    this.VIP_TYPE = VIP_TYPE;
-  }
+    public String getVip_type() {
+        return vip_type;
+    }
 
-  public String getVIP_CARD_NUMBER() {
-    return VIP_CARD_NUMBER;
-  }
+    public void setVip_type(String vip_type) {
+        this.vip_type = vip_type;
+    }
 
-  public void setVIP_CARD_NUMBER(String VIP_CARD_NUMBER) {
-    this.VIP_CARD_NUMBER = VIP_CARD_NUMBER;
-  }
+    public String getVip_card_number() {
+        return vip_card_number;
+    }
 
-  public String getSEX() {
-    return SEX;
-  }
+    public void setVip_card_number(String vip_card_number) {
+        this.vip_card_number = vip_card_number;
+    }
 
-  public void setSEX(String SEX) {
-    this.SEX = SEX;
-  }
+    public String getSex() {
+        return sex;
+    }
 
-  public String getREGISTER_TIME() {
-    return REGISTER_TIME;
-  }
+    public void setSex(String sex) {
+        this.sex = sex;
+    }
 
-  public void setREGISTER_TIME(String REGISTER_TIME) {
-    this.REGISTER_TIME = REGISTER_TIME;
-  }
+    public Date getRegister_time() {
+        return register_time;
+    }
 
-  public String getUSER_CODE() {
-    return USER_CODE;
-  }
+    public void setRegister_time(Date register_time) {
+        this.register_time = register_time;
+    }
 
-  public void setUSER_CODE(String USER_CODE) {
-    this.USER_CODE = USER_CODE;
-  }
+    public String getUser_code() {
+        return user_code;
+    }
 
-  public String getSTORE_CODE() {
-    return STORE_CODE;
-  }
+    public void setUser_code(String user_code) {
+        this.user_code = user_code;
+    }
 
-  public void setSTORE_CODE(String STORE_CODE) {
-    this.STORE_CODE = STORE_CODE;
-  }
+    public String getStore_code() {
+        return store_code;
+    }
+
+    public void setStore_code(String store_code) {
+        this.store_code = store_code;
+    }
+
+    public Date getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(Date modified_date) {
+        this.modified_date = modified_date;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
+    }
+
+    public String getCreater() {
+        return creater;
+    }
+
+    public void setCreater(String creater) {
+        this.creater = creater;
+    }
+
+    public String getIsactive() {
+        return isactive;
+    }
+
+    public void setIsactive(String isactive) {
+        this.isactive = isactive;
+    }
 }

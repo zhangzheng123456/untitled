@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VIPMapper">
+    <select id="selectByPrimaryKey" resultMap="com.bizvane.ishop.entity.VIPInfo">
+      select * from DEF_VIP
+       WHERE id=#{id}
+    </select>
+
+    <delete id="deleteByPrimaryKey">
+        DELETE  FROM
+        DEF_VIP
+        WHERE ID=#{id}
+    </delete>
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.VIPInfo">
+        INSERT INT DEF_VIP
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vip_code!=null and vip_code!=''">
+                vip_code,
+            </if>
+
+            <if test="vip_name!=null and vip_name!=''">
+                vip_name,
+            </if>
+
+            <if test="phone!=null and phone!=''">
+                phone,
+            </if>
+
+            <if test="birthday!=null ">
+                birthday,
+            </if>
+            <if test="vip_type!=null and vip_type!=''">
+                vip_type,
+            </if>
+            <if test="vip_card_number!=null and vip_card_number!=''">
+                vip_card_number,
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex,
+            </if>
+            <if test="register_time!=null">
+                register_time,
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                user_code,
+            </if>
+            <if test="store_code!=null and store_code!=''">
+                store_code,
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+
+            <if test="creater!=null and creater!=''">
+                creater,
+            </if>
+
+
+            <if test="isactive!=null and isactive!=''">
+                isactive,
+            </if>
+
+        </trim>
+
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="vip_code!=null and vip_code!=''">
+                #{vip_code},
+            </if>
+
+            <if test="vip_name!=null and vip_name!=''">
+                #{vip_name},
+            </if>
+
+            <if test="phone!=null and phone!=''">
+                #{phone},
+            </if>
+
+            <if test="birthday!=null ">
+                #{birthday},
+            </if>
+            <if test="vip_type!=null and vip_type!=''">
+                #{vip_type},
+            </if>
+            <if test="vip_card_number!=null and vip_card_number!=''">
+                #{vip_card_number},
+            </if>
+            <if test="sex!=null and sex!=''">
+                #{sex},
+            </if>
+            <if test="register_time!=null">
+                #{register_time},
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                #{user_code},
+            </if>
+            <if test="store_code!=null and store_code!=''">
+                #{store_code},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+
+            <if test="creater!=null and creater!=''">
+                #{creater},
+            </if>
+
+
+            <if test="isactive!=null and isactive!=''">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VIPInfo">
+        UPDATE DEF_VIP
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vip_code!=null and vip_code!=''">
+                vip_code=#{vip_code},
+            </if>
+
+            <if test="vip_name!=null and vip_name!=''">
+                vip_name=#{vip_name},
+            </if>
+
+            <if test="phone!=null and phone!=''">
+                phone=#{phone},
+            </if>
+
+            <if test="birthday!=null ">
+                birthday=#{birthday},
+            </if>
+            <if test="vip_type!=null and vip_type!=''">
+                vip_type=#{vip_type},
+            </if>
+            <if test="vip_card_number!=null and vip_card_number!=''">
+                vip_card_number=#{vip_card_number},
+            </if>
+            <if test="sex!=null and sex!=''">
+                sex=#{sex},
+            </if>
+            <if test="register_time!=null">
+                register_time=#{register_time},
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                user_code=#{user_code},
+            </if>
+            <if test="store_code!=null and store_code!=''">
+                store_code=#{store_code},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
+            </if>
+
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
+            </if>
+
+        </trim>
+        WHERE ID=#{id}
+    </update>
+    <select id="selectAllVipInfo" resultMap="com.bizvane.ishop.entity.VIPInfo">
+        SELECT * FROM
+        DEF_VIP
+        WHERE
+        <if test="corp_code!=null and corp_code!=''">
+            corp_code=#{corp_code}
+        </if>
+        <if test="search_value!=null and search_value!=''">
+            and
+            VIP_NAME like #{search_value}
+            OR VIP_TYPE LIKE #{search_value}
+            OR VIP_CARD_NUMBER LIKE #{search_value}
+            OR SEX like #{search_value}
+            OR USER_CODE LIKE #{search_value}
+            OR STORE_CODE LIKE #{search_value}
+            OR MODIFIER LIKE #{search_value}
+            OR CREATER LIKE #{search_value}
+            OR ISACTIVE LIKE #{search_value}
+        </if>
+    </select>
+
+    <select id="selectVipCode" resultMap="com.bizvane.ishop.entity.VIPInfo">
+        select * from DEF_VIP
+        where vip_code=#{vip_code}
+        and
+        corp_code=#{corp_code}
+    </select>
+</mapper>
+

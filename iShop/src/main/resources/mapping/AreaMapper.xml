@@ -56,9 +56,9 @@
             AND DEF_AREA.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-            OR area_code like #{search_value}
+            AND area_code like #{search_value}
             OR area_name like #{search_value}
-            OR DEF_AREA.CORP_CODE like #{search_value}
+            OR DEF_CORP.CORP_NAME like #{search_value}
             OR DEF_AREA.MODIFIED_DATE like #{search_value}
             OR DEF_AREA.MODIFIER like #{search_value}
             OR DEF_AREA.ISACTIVE like #{search_value}
