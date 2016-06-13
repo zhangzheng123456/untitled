@@ -183,7 +183,10 @@ $('#save').click(function(){
     oc.postRequire("post","/user/group/check_power/save","0",param,function(data){
     	console.log(data);
         if(data.code=="0"){
-        	
+       		$("#page-wrapper").hide();
+    		$(".content").show();	
+        }else if(data.code=="-1"){
+            alert(data.message);
         }
     })
 })
