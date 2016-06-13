@@ -3156,7 +3156,7 @@ video {
 #page-wrapper {
   padding: 0 10px;
   /*min-height: 568px;*/
-  min-width:1230px;
+  min-width:1160px;
   position: relative !important;
 }
 /*@media (min-width: 768px) {
