@@ -49,7 +49,7 @@ $(function(){
         $("#side-menu li").click(function(){
             if($(this).children('ul').children('li').length>0){
                 $(this).children('ul').slideToggle();
-                $(this).parent().parent().children('.icon-ishop_8-02').toggleClass('.per');
+                $(this).children('a').children('.per').toggle();
                 $(this).siblings().children('ul').slideUp();
             }
         });
