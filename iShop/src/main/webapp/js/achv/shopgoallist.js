@@ -200,11 +200,19 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].area_code
+                        + data[i].store_name
                         + "</td><td>"
-                        + data[i].area_name
+                        + data[i].store_code
                         + "</td><td>"
                         + data[i].corp.corp_name
+                        +"</td><td>"
+                        + data[i].area.area_name
+                        +"</td><td>"
+                        + data[i].achv_goal
+                        +"</td><td>"
+                        + data[i].achv_type
+                        +"</td><td>"
+                        + data[i].start_time
                         +"</td><td>"
                         +data[i].modifier
                         + "</td><td>"
