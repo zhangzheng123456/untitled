@@ -29,16 +29,17 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
     public PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String userAchvGoalId, String search_value) throws SQLException {
 
-            List<UserAchvGoal> userAchvGoals = null;
-            if (search_value == null || search_value.isEmpty()) {
-                PageHelper.startPage(page_number, page_size);
-                userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, "");
-            } else {
-                PageHelper.startPage(page_number, page_size);
-                userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, search_value);
-            }
-            PageInfo<UserAchvGoal> page = (PageInfo<UserAchvGoal>) userAchvGoals;
-            return page;
+        List<UserAchvGoal> userAchvGoals = null;
+        if (search_value == null || search_value.isEmpty()) {
+            PageHelper.startPage(page_number, page_size);
+            userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, "");
+        } else {
+            PageHelper.startPage(page_number, page_size);
+            userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, search_value);
+        }
+        //PageInfo<UserAchvGoal> page = (PageInfo<UserAchvGoal>) userAchvGoals;
+        PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
+        return page;
 
     }
 
@@ -46,8 +47,10 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     public String userAchvGoalExist(String user_code) throws SQLException {
 
         //UserAchvGoal userAchvGoal = this.userAchvGoalMapper.selectByUser_code(user_code);
-         UserAchvGoal userAchvGoal=this.userAchvGoalMapper.selectUserAchvGoalBySearch(user_code,"").get(0);
-        if (userAchvGoal == null) {
+        List<UserAchvGoal> list = this.userAchvGoalMapper.selectUserAchvGoalBySearch(user_code, "");
+
+        //UserAchvGoal userAchvGoal = this.userAchvGoalMapper.selectUserAchvGoalBySearch(user_code, "").get(0);
+        if (list == null || list.size() < 1) {
             return Common.DATABEAN_CODE_ERROR;
         }
         return Common.DATABEAN_CODE_SUCCESS;

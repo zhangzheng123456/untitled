@@ -49,16 +49,18 @@ public class UserAchvGoalControl {
     public String userAchvGoalManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            int user_id = Integer.parseInt(request.getParameter("user_id").toString());
-            String role_code = request.getParameter("role_code").toString();
-            String group_code = request.getSession().getAttribute("group_code").toString();
+            //int user_id = Integer.parseInt(request.getParameter("user_id").toString());
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            //String role_code = request.getParameter("role_code").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
 
-            String function_code = request.getParameter("funcode").toString();
+            String function_code = request.getParameter("funcCode").toString();
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            JSONObject result = new JSONObject();
+            org.json.JSONObject result = new org.json.JSONObject();
 
             int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
-            int page_size = Integer.parseInt(request.getParameter("page_size").toString());
+            int page_size = Integer.parseInt(request.getParameter("pageSize").toString());
             PageInfo<UserAchvGoal> pages = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 pages = userAchvGoalService.selectBySearch(page_number, page_size, "", "");
@@ -161,9 +163,8 @@ public class UserAchvGoalControl {
             userAchvGoal.setEnd_time(sdf.parse(jsonObject.getString("end_time")));
             userAchvGoal.setModified_date(new Date());
             userAchvGoal.setCreater(user_id);
-            userAchvGoal.setIsActive(jsonObject.getString("isactive"));
+            userAchvGoal.setIsactive(jsonObject.getString("isactive"));
             userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
-
 
 
             String existInfo = this.userAchvGoalService.userAchvGoalExist(userAchvGoal.getUser_code());

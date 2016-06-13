@@ -56,13 +56,14 @@ public class StoreAchvGoalController {
             String group_code = request.getSession().getAttribute("group_code").toString();
 
             //String function_code = request.getSession(false).getAttribute("funcCode").toString();
-            String function_code=request.getParameter("funcCode");
+            String function_code = request.getParameter("funcCode");
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
 
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            JSONObject result = new JSONObject();
+            //  JSONObject result = new JSONObject();
+            org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<StoreAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "");
@@ -153,7 +154,7 @@ public class StoreAchvGoalController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-          int store_id = Integer.parseInt(jsonObject.get("id").toString());
+            int store_id = Integer.parseInt(jsonObject.get("id").toString());
             StoreAchvGoal storeAchvGoal = storeAchvGoalService.selectlById(store_id);
 //            JSONObject result = new JSONObject();
 //            result.put("storeAchvGoal", storeAchvGoal);

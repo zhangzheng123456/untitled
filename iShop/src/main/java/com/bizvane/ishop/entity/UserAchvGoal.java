@@ -20,12 +20,39 @@ public class UserAchvGoal {
     private Date end_time;
     private Date modified_date;
     private String modifier;
-    private Date create_date;
+    private Date created_date;
     private String creater;
-    private String isActive;
+    private String isactive;
+    private User user;
+    private Store store;
+    private Corp corp;
 
 
     public UserAchvGoal() {
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
+    }
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
     }
 
     public String getCorp_code() {
@@ -116,13 +143,6 @@ public class UserAchvGoal {
         this.modifier = modifier;
     }
 
-    public Date getCreate_date() {
-        return create_date;
-    }
-
-    public void setCreate_date(Date create_date) {
-        this.create_date = create_date;
-    }
 
     public String getCreater() {
         return creater;
@@ -132,11 +152,19 @@ public class UserAchvGoal {
         this.creater = creater;
     }
 
-    public String getIsActive() {
-        return isActive;
+    public String getIsactive() {
+        return isactive;
     }
 
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
+    public void setIsactive(String isactive) {
+        this.isactive = isactive;
+    }
+
+    public Date getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(Date created_date) {
+        this.created_date = created_date;
     }
 }

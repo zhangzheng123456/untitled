@@ -2,6 +2,7 @@ package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.entity.UserAchvGoal;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -22,7 +23,7 @@ public interface UserAchvGoalMapper {
     int delelteByUser_code(String user_code)throws SQLException;
 
 
-   List<UserAchvGoal> selectUserAchvGoalBySearch(String userAchvGoalId, String search_value)throws SQLException;
+   List<UserAchvGoal> selectUserAchvGoalBySearch(@Param("userAchvGoalId") String userAchvGoalId,@Param("search_value") String search_value)throws SQLException;
 
 
     int userAchvGoalExist(String user_code)throws SQLException;

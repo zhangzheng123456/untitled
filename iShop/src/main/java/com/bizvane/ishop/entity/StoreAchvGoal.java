@@ -24,6 +24,8 @@ public class StoreAchvGoal {
     private String creater;
     private String isactive;
     private String area_name;
+    private Area area;
+    private Corp corp;
 
     public String getArea_name() {
         return area_name;
@@ -138,5 +140,21 @@ public class StoreAchvGoal {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public Area getArea() {
+        return area;
+    }
+
+    public void setArea(Area area) {
+        this.area = area;
+    }
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
     }
 }

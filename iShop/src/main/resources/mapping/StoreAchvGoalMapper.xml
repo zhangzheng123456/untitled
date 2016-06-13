@@ -15,7 +15,13 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="isactive" property="isactive"/>
-        <result column="area_name" property="area_name"/>
+        <association property="area" javaType="com.bizvane.ishop.entity.Area">
+            <result column="area_name" property="area_name"/>
+        </association>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+
 
     </resultMap>
     <select id="selectById" resultType="com.bizvane.ishop.entity.StoreAchvGoal">
@@ -23,25 +29,33 @@
         where id=#{id}
     </select>
     <select id="selectUsersBySearch" resultMap="storeAchvGoals">
-        select * from DEF_STORE_ACHV_GOAL
-        WHERE 1=1
+        select
+        sa.id,sa.store_code,sa.store_name,sa.corp_code,
+        sa.area_code,sa.achv_goal,sa.achv_type,sa.start_time,
+        sa.end_time,sa.modified_date,sa.modifier,sa.created_date,
+        sa.creater,sa.isactive,c.corp_name,a.area_name
+        from
+        DEF_STORE_ACHV_GOAL sa,
+        DEF_AREA a,
+        DEF_CORP c
+        WHERE
+        sa.corp_code=c.corp_code and sa.area_code=a.area_code
         <if test="corp_code!=null and corp_code!=''">
             AND
-            corp_code=#{corp_code}
+            c.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             and
-            STORE_CODE like #{search_value}
-            OR STORE_NAME LIKE #{search_value}
-            OR CORP_CODE LIKE #{search_value}
-            OR AREA_CODE LIKE #{search_value}
-
-            OR ACHV_GOAL like #{search_Value}
-            OR ACHV_TYPE like #{search_value}
-            OR MODIFIER like #{search_value}
-            OR CREATER like #{search_value}
+            sa.STORE_CODE like #{search_value}
+            OR sa.STORE_NAME LIKE #{search_value}
+            OR sa.CORP_CODE LIKE #{search_value}
+            OR sa.AREA_CODE LIKE #{search_value}
+            OR sa.ACHV_GOAL like #{search_Value}
+            OR sa.ACHV_TYPE like #{search_value}
+            OR sa.MODIFIER like #{search_value}
+            OR sa.CREATER like #{search_value}
         </if>
-        ORDER BY ID
+        ORDER BY sa.ID
     </select>
     <insert id="insert">
         insert into DEF_STORE_ACHV_GOAL
