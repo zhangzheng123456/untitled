@@ -180,17 +180,22 @@ input::-webkit-input-placeholder{
 	position: absolute;
 	top:32px;
 	left: 0;
-	background-color: #e8e8e8;
+	background-color: #fff;
 	z-index: 4;
-	border: 1px solid green;
+	border: 2px solid #dbdbdb;
 	display: none;
+	padding-top:1px;
+	padding-bottom: 1px;
 }
 .action_l ul .fen div{
-	padding-left: 15px;
-	width: 130px;
+	padding-left: 9px;
+	width: 105px;
 	height:30px;
 	line-height: 30px;
-	background-color: #e8e8e8;
+	background-color: #fff;
+}
+.action_l ul .fen div:hover{
+	background-color:#6CC1C8;
 }
 #corp{
 	margin-top: 5px;
