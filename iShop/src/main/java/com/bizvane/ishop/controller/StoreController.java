@@ -74,7 +74,11 @@ public class StoreController {
                 list = storeService.getAllStore(page_number, page_size, "", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, "");
+                if (role_code.equals(Common.ROLE_GM)){
+                    list = storeService.getAllStore(page_number, page_size, corp_code, "");
+                }else {
+                    list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, "");
+                }
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -296,7 +300,11 @@ public class StoreController {
                 list = storeService.getAllStore(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, search_value);
+                if (role_code.equals(Common.ROLE_GM)){
+                    list = storeService.getAllStore(page_number, page_size, corp_code, search_value);
+                }else {
+                    list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, search_value);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

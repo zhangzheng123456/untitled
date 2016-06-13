@@ -56,9 +56,9 @@
             AND DEF_BRAND.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-            OR BRAND_CODE like #{search_value}
+            AND BRAND_CODE like #{search_value}
             OR BRAND_NAME like #{search_value}
-            OR DEF_BRAND.CORP_CODE like #{search_value}
+            OR DEF_CORP.CORP_NAME like #{search_value}
             OR DEF_BRAND.MODIFIED_DATE like #{search_value}
             OR DEF_BRAND.MODIFIER like #{search_value}
             OR DEF_BRAND.ISACTIVE like #{search_value}
