@@ -59,6 +59,10 @@ var oc = new ObjectControl();
 				var OWN_STORE=$("#OWN_STORE").val();
 				var OWN_SALES=$("#OWN_SALES").val();
 				// var AREA_ID=$("#AREA_ID").val();
+				var phone=$("#phone").val();
+				var birthday=$("#birthday").val();
+				var register_date=$("#register_date").val();
+
 				var VIP_ID=$("#VIP_ID").val();
 				var VIP_CARD=$("#VIP_CARD").val();
 				var VIP_NAME=$("#VIP_NAME").val();
@@ -71,13 +75,13 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/vip/add";//接口名
+				var _command="/VIP/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
 				};
-				var _params={"own_corp":OWN_CORP,"own_store":OWN_STORE,"own_sales":OWN_SALES,"vip_id":VIP_ID,
-				"vip_card":VIP_CARD,"vip_name":VIP_NAME,"vip_style":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE};
+				var _params={"phone":phone,"birthday":birthday,"register_date":register_date,"corp_code":OWN_CORP,"store_code":OWN_STORE,"user_code":OWN_SALES,"vip_code":VIP_ID,
+				"vip_card_number":VIP_CARD,"vip_name":VIP_NAME,"vip_type":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE};
 				vipjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -102,13 +106,13 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/vip/edit";//接口名
+				var _command="/VIP/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"own_corp":OWN_CORP,"own_store":OWN_STORE,"own_sales":OWN_SALES,"vip_id":VIP_ID,
-				"vip_card":VIP_CARD,"vip_name":VIP_NAME,"vip_style":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":OWN_STORE,"user_code":OWN_SALES,"vip_code":VIP_ID,
+				"vip_card_number":VIP_CARD,"vip_name":VIP_NAME,"vip_type":is_leixing,"sex":is_xingbie,"isactive":ISACTIVE};
 				vipjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -174,7 +178,7 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.vip.init();//初始化
-	if($(".pre_title label").text()=="编辑企业信息"){
+	if($(".pre_title label").text()=="编辑会员信息"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/vip/select";
@@ -183,14 +187,24 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var OWN_CORP=$("#OWN_CORP").val(msg.own_corp);
-				var OWN_STORE=$("#OWN_STORE").val(msg.own_store);
-				var OWN_SALES=$("#OWN_SALES").val(msg.own_sales);
-				var VIP_ID=$("#VIP_ID").val(msg.vip_id);
-				var VIP_CARD=$("#VIP_CARD").val(msg.vip_card);
+				var phone=$("#phone").val(msg.phone);
+				var birthday=$("#birthday").val(msg.birthday);
+				var register_date=$("#register_date").val(msg.register_date);
+				
+				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
+				var OWN_STORE=$("#OWN_STORE").val(msg.store_code);
+				var OWN_SALES=$("#OWN_SALES").val(msg.user_code);
+				var VIP_ID=$("#VIP_ID").val(msg.vip_code);
+				var VIP_CARD=$("#VIP_CARD").val(msg.vip_card_number);
 				var VIP_NAME=$("#VIP_NAME").val(msg.vip_name);
-				var is_leixing=$("#is_leixing").val(msg.vip_style);
-				var is_xingbie=$("#is_xingbie").val(msg.sex);
+				var is_leixing=$("#VIP_STYLE").val(msg.vip_type);
+				var is_xingbie=$("#SEX").val(msg.sex);
+
+				// var phone=$("#phone").val();
+				// var birthday=$("#birthday").val();
+				// var register_date=$("#register_date").val();
+				// "corp_code":OWN_CORP,"store_code":OWN_STORE,"user_code":OWN_SALES,"vip_code":VIP_ID,
+				// "vip_card_number":VIP_CARD,"vip_name":VIP_NAME,"vip_type":is_leixing,"sex":is_xingbie,
 				$("#OWN_CORP").val(msg.own_corp)
 				$("#OWN_STORE").val(msg.own_store);
 				$("#OWN_SALES").val(msg.own_sales);
