@@ -14,12 +14,14 @@ public interface StoreAchvGoalMapper {
 
     /**
      * 获取相应的店铺业绩信息
+     *
      * @return
      */
     StoreAchvGoal selectById(int id);
 
     /**
      * 插入店铺业绩目标信息
+     *
      * @param storeAchvGoal
      * @return
      */
@@ -27,6 +29,7 @@ public interface StoreAchvGoalMapper {
 
     /**
      * 更改店铺业绩目标信息
+     *
      * @param storeAchvGoal
      * @return
      */
@@ -34,22 +37,23 @@ public interface StoreAchvGoalMapper {
 
     /**
      * 删除店铺业绩目标信息
+     *
      * @param id
      * @return
      */
-     int deleteById(int id);
+    int deleteById(int id);
 
 
     /**
      * 搜寻值
+     *
      * @param search_value
      * @return
      */
-    List<StoreAchvGoal> selectUsersBySearch(String storeAchvGoalId, String search_value);
+    List<StoreAchvGoal> selectUsersBySearch(@Param("corp_code") String store_code, @Param("search_value") String search_value);
 
 
     /**
-     *
      * @param corp_code
      * @param store_code
      * @return

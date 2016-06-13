@@ -1,18 +1,41 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.StoreAchvGoalMapper">
+    <resultMap id="storeAchvGoals" type="com.bizvane.ishop.entity.StoreAchvGoal">
+        <id column="id" property="id"/>
+        <result column="store_code" property="store_code"/>
+        <result column="store_name" property="store_name"/>
+        <result column="corp_code" property="corp_code"/>
+        <result column="achv_goal" property="achv_goal"/>
+        <result column="achv_type" property="achv_type"/>
+        <result column="start_time" property="start_time"/>
+        <result column="end_time" property="end_time"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="created_date" property="created_date"/>
+        <result column="creater" property="creater"/>
+        <result column="isactive" property="isactive"/>
+        <result column="area_name" property="area_name"/>
+
+    </resultMap>
     <select id="selectById" resultType="com.bizvane.ishop.entity.StoreAchvGoal">
         select * from DEF_STORE_ACHV_GOAL
         where id=#{id}
     </select>
-    <select id="selectUsersBySearch" resultType="com.bizvane.ishop.entity.StoreAchvGoal">
+    <select id="selectUsersBySearch" resultMap="storeAchvGoals">
         select * from DEF_STORE_ACHV_GOAL
-        WHERE
-        <if test="user_code!=null and user_code!=''">
-            corp_code=#{corp_code} and
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND
+            corp_code=#{corp_code}
         </if>
-        <if test="search_value!=null and serach_value!=''">
-            user_name like #{search_value}
+        <if test="search_value!=null and search_value!=''">
+            and
+            STORE_CODE like #{search_value}
+            OR STORE_NAME LIKE #{search_value}
+            OR CORP_CODE LIKE #{search_value}
+            OR AREA_CODE LIKE #{search_value}
+
             OR ACHV_GOAL like #{search_Value}
             OR ACHV_TYPE like #{search_value}
             OR MODIFIER like #{search_value}

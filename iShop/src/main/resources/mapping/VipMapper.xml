@@ -1,8 +1,26 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.VIPMapper">
-    
 
+
+    <resultMap id="VIPInfos" type="com.bizvane.ishop.entity.VIPInfo">
+        <id column="id" property="id"/>
+        <result column="vip_code" property="vip_code"/>
+        <result column="vip_name" property="vip_name"/>
+        <result column="phonev" property="phone"/>
+        <result column="birthday" property="birthday"/>
+        <result column="vip_type" property="vip_type"/>
+        <result column="vip_card_number" property="vip_card_number"/>
+        <result column="sex" property="sex"/>
+        <result column="register_time" property="register_time"/>
+        <result column="user_code" property="user_code"/>
+        <result column="store_code" property="store_code"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="created_date" property="created_date"/>
+        <result column="creater" property="creater"/>
+        <result column="isactive" property="isactive"/>
+    </resultMap>
     <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VIPInfo">
       select * from DEF_VIP
        WHERE id=#{id}
@@ -192,7 +210,7 @@
     </update>
 
 
-    <select id="selectAllVipInfo" resultType="com.bizvane.ishop.entity.VIPInfo">
+    <select id="selectAllVipInfo" resultMap="VIPInfos">
         SELECT * FROM
         DEF_VIP
         WHERE
@@ -211,6 +229,7 @@
             OR CREATER LIKE #{search_value}
             OR ISACTIVE LIKE #{search_value}
         </if>
+        ORDER BY  ID
     </select>
 
     <select id="selectVipCode" resultType="com.bizvane.ishop.entity.VIPInfo">
