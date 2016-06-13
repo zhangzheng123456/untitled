@@ -69,7 +69,6 @@ var oc = new ObjectControl();
 	useroperatejs.bindbutton=function(){
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(useroperatejs.firstStep()){
-				console.log("1");
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
