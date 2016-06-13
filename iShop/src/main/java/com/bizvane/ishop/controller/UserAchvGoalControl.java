@@ -151,6 +151,7 @@ public class UserAchvGoalControl {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             //   UserAchvGoal userAchvGoal = WebUtils.request2Bean(request, UserAchvGoal.class);
             UserAchvGoal userAchvGoal = new UserAchvGoal();
+            Date now = new Date();
             userAchvGoal.setCreater(user_id);
             userAchvGoal.setStore_code(jsonObject.get("store_code").toString());
 
@@ -159,12 +160,14 @@ public class UserAchvGoalControl {
             //   userAchvGoal.setUser_name();
             userAchvGoal.setAchv_goal(jsonObject.getDouble("achv_goal"));
             userAchvGoal.setAchv_type(jsonObject.getString("achv_type"));
-            userAchvGoal.setStart_time(new Date());
+            userAchvGoal.setStart_time(now);
             userAchvGoal.setEnd_time(sdf.parse(jsonObject.getString("end_time")));
-            userAchvGoal.setModified_date(new Date());
+            userAchvGoal.setModified_date(now);
             userAchvGoal.setCreater(user_id);
             userAchvGoal.setIsactive(jsonObject.getString("isactive"));
             userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
+            userAchvGoal.setCreated_date(now);
+            userAchvGoal.setCreater(user_id);
 
 
             String existInfo = this.userAchvGoalService.userAchvGoalExist(userAchvGoal.getUser_code());

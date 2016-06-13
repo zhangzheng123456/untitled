@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by lixiang on 2016/6/13.
@@ -38,12 +39,19 @@ public class VIPTagServiceImpl implements VIPTagService {
 
     @Override
     public PageInfo<VIPtag> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
-            return null;
+        List<VIPtag> list = null;
+        if (search_value == null || search_value.isEmpty()) {
+            list = viPtagMapper.selectAllVipInfo(corp_code, "");
+        } else {
+            list = viPtagMapper.selectAllVipInfo(corp_code, search_value);
+        }
+        PageInfo<VIPtag> page = new PageInfo<VIPtag>(list);
+        return page;
     }
 
     @Override
     public String vipExist(String tag_code, String corp_code) throws SQLException {
-       //viPtagMapper.selectVIpTag_code
+        //viPtagMapper.selectVIpTag_code
         return null;
     }
 }

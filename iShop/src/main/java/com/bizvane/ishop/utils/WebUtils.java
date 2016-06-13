@@ -1,6 +1,6 @@
 package com.bizvane.ishop.utils;
 
-import java.sql.Date;
+import java.util.Date;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -49,7 +49,6 @@ public class WebUtils {
                     if (str.trim().equals("")) {
                         return null;
                     }
-                    //       SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                     try {
 
                         //   return df.parse(str);
@@ -81,6 +80,7 @@ public class WebUtils {
                 map.put(name, value);
             }
             ConvertUtils.register(new Converter() {
+
                 @Override
                 public Object convert(Class type, Object value) {
                     if (value == null) {
@@ -90,37 +90,15 @@ public class WebUtils {
                     if (str.trim().equals("")) {
                         return null;
                     }
+                    SimpleDateFormat df = new SimpleDateFormat(Common.DATE_FORMATE);
                     try {
-                        return sdf.parse(str);
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
+                        return df.parse(str);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
                     }
                 }
             }, Date.class);
-
-
-
-            ConvertUtils.register(new Converter() {
-                @Override
-                public Object convert(Class type, Object value) {
-                    if (value == null) {
-                        return null;
-                    }
-                    String str = (String) value;
-                    if (str.trim().equals("")) {
-                        return null;
-                    }
-                    try {
-                        if(isDecimal(str)){
-                            return Double.parseDouble(str);
-                        }
-                        return sdf.parse(str);
-                    } catch (Exception ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-            }, double.class);
-
+            BeanUtils.populate(bean, map);
             return bean;
         } catch (Exception ex) {
             throw new RuntimeException(ex);

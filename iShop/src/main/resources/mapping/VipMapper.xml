@@ -32,7 +32,7 @@
         WHERE ID=#{id}
     </delete>
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VIPInfo">
-        INSERT INT DEF_VIP
+        INSERT INTO DEF_VIP
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="vip_code!=null and vip_code!=''">
                 vip_code,
@@ -141,8 +141,6 @@
             <if test="creater!=null and creater!=''">
                 #{creater},
             </if>
-
-
             <if test="isactive!=null and isactive!=''">
                 #{isactive},
             </if>
@@ -225,11 +223,12 @@
             OR SEX like #{search_value}
             OR USER_CODE LIKE #{search_value}
             OR STORE_CODE LIKE #{search_value}
+            OR CORP_CODE LIKE #{search_value}
             OR MODIFIER LIKE #{search_value}
             OR CREATER LIKE #{search_value}
             OR ISACTIVE LIKE #{search_value}
         </if>
-        ORDER BY  ID
+        ORDER BY ID
     </select>
 
     <select id="selectVipCode" resultType="com.bizvane.ishop.entity.VIPInfo">

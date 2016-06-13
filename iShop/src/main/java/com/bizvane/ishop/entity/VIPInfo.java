@@ -17,11 +17,20 @@ public class VIPInfo {
     private Date register_time;
     private String user_code;
     private String store_code;
+    private String corp_code;
     private Date modified_date;
     private String modifier;
     private Date created_date;
     private String creater;
     private String isactive;
+
+    public String getCorp_code() {
+        return corp_code;
+    }
+
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
+    }
 
     public VIPInfo() {
     }

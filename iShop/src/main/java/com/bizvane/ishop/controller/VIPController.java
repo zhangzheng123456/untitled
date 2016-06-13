@@ -32,6 +32,9 @@ public class VIPController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private VIPTagService vipTagService;
     @Autowired
     private FunctionService functionService;
     @Autowired
@@ -101,7 +104,8 @@ public class VIPController {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.getString("id");
-            String message = jsonObj.getString("message");
+            //  String message = jsonObj.getString("message");
+            String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             Date now = new Date();
@@ -219,7 +223,8 @@ public class VIPController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VIPtag> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                //     list = vipService.selectBySearch(page_number, page_size, "", "");
+               // list = vipService.selectBySearch(page_number, page_size, "", "");
+                list=vipTagService.selectBySearch(page_number,page_size,"","");
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 //    list = vipService.selectBySearch(page_number, page_size, corp_code, "");
