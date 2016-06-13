@@ -145,6 +145,11 @@ function setPage(container, count, pageSize,funcCode,value) {//分页
 function superaddition(data){//页面加载循环
     console.log(data);
     for (var i = 0; i < data.length; i++) {
+        if(num>=2){
+            var a=i+1+(num-1)*pageSize;
+        }else{
+            var a=i+1;
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -153,7 +158,7 @@ function superaddition(data){//页面加载循环
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + data[i].id
+                        + a
                         + "</td><td>"
                         + data[i].store_code
                         + "</td><td>"

@@ -186,7 +186,7 @@ function superaddition(data,num){//页面加载循环
     console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
-            var a=i+num*pageSize;
+            var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }
