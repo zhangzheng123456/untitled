@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.VIPMapper">
-    <select id="selectByPrimaryKey" resultMap="com.bizvane.ishop.entity.VIPInfo">
+    
+
+    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VIPInfo">
       select * from DEF_VIP
        WHERE id=#{id}
     </select>
@@ -188,7 +190,9 @@
         </trim>
         WHERE ID=#{id}
     </update>
-    <select id="selectAllVipInfo" resultMap="com.bizvane.ishop.entity.VIPInfo">
+
+
+    <select id="selectAllVipInfo" resultType="com.bizvane.ishop.entity.VIPInfo">
         SELECT * FROM
         DEF_VIP
         WHERE
@@ -209,7 +213,7 @@
         </if>
     </select>
 
-    <select id="selectVipCode" resultMap="com.bizvane.ishop.entity.VIPInfo">
+    <select id="selectVipCode" resultType="com.bizvane.ishop.entity.VIPInfo">
         select * from DEF_VIP
         where vip_code=#{vip_code}
         and

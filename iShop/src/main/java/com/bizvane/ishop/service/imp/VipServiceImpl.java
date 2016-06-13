@@ -7,6 +7,7 @@ import com.bizvane.ishop.service.VipService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  *
  * @@version
  */
+@Service
 public class VipServiceImpl implements VipService {
 
     @Autowired
