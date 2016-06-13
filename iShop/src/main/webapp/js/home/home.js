@@ -18,7 +18,7 @@ $(function(){
                     +'<a>'
                         +'<i class="'+p.icon+'"></i>'
                         +'<span class="nav-label">'+p.mod_name+'</span>'
-                        +'<span class="fa arrow"></span>'
+                        +'<i class="icon-ishop_8-02 per" style="font-size:14px;position:absolute;right: 24px;top: 21px;"></i>'
                     +'</a>'
                     +'<ul class="nav nav-second-level">';
                     for(index_li in p.functions){
@@ -49,9 +49,9 @@ $(function(){
         $("#side-menu li").click(function(){
             if($(this).children('ul').children('li').length>0){
                 $(this).children('ul').slideToggle();
+                $(this).parent().parent().children('.icon-ishop_8-02').toggleClass('.per');
                 $(this).siblings().children('ul').slideUp();
             }
-            
         });
     });
 });

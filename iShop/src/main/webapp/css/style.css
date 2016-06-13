@@ -8213,3 +8213,6 @@ li.select_index>a>label>i{
     background: url(../img/icon_radio_S.png) no-repeat center center;
     background-size: 16px 16px;
 }
+.per{
+  display:none;
+}
