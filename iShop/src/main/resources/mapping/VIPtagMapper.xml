@@ -48,7 +48,7 @@
                 isactive,
             </if>
         </trim>
-        <trim prefix="value(" suffix=")" suffixOverrides=",">
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="tag_name!=null and tag_name!=''">
                 tag_name=#{tag_name} ,
             </if>

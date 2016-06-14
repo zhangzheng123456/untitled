@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.service.CorpService;
@@ -36,20 +37,20 @@ public class CorpServiceImpl implements CorpService {
     }
 
     /**
-     *分页显示所有企业
+     * 分页显示所有企业
      */
     public PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Corp> corps = corpMapper.selectAllCorp("%" + search_value + "%");
-        PageInfo<Corp>  page = new PageInfo<Corp>(corps);
+        PageInfo<Corp> page = new PageInfo<Corp>(corps);
         return page;
     }
 
     /**
-     *显示所有企业
+     * 显示所有企业
      */
     public List<Corp> selectAllCorp() throws SQLException {
-         List<Corp> list=corpMapper.selectAllCorp("");
+        List<Corp> list = corpMapper.selectAllCorp("");
         return list;
     }
 
@@ -60,6 +61,22 @@ public class CorpServiceImpl implements CorpService {
      */
     public String selectMaxCorpCode() {
         return corpMapper.selectMaxCorpCode();
+    }
+
+    /**
+     * 校验企业名称是否唯一
+     *
+     * @param corp_name
+     * @return
+     * @throws SQLException
+     */
+    @Override
+    public String getCorpByCorpName(String corp_name) throws SQLException {
+        List<Corp> corps = corpMapper.selectByCorpName(corp_name);
+        if (corps == null || corps.size() < 1) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
 }

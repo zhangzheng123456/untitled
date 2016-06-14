@@ -62,7 +62,7 @@ public class CorpController {
             String group_code = request.getSession().getAttribute("group_code").toString();
 
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
 
             JSONObject info = new JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -111,7 +111,7 @@ public class CorpController {
             String max_code = corpService.selectMaxCorpCode();
             int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
             Integer c = code;
-            int length = max_code.length() - c.toString().length()-1;
+            int length = max_code.length() - c.toString().length() - 1;
             String corp_code = "C";
             for (int i = 0; i < length; i++) {
                 corp_code = corp_code + "0";
@@ -307,6 +307,74 @@ public class CorpController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 测试企业名是否被使用
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "CorpNameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String CorpExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_name = jsonObject.get("corp_name").toString();
+            String existInfo = corpService.getCorpByCorpName(corp_name);
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("企业名已被使用！！！");
+                //  dataBean.setCode();
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("企业名不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "Corp_codeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String Corp_codeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            //String existInfo = corpService.getCorpByCorpName(corp_name);
+            Corp corp = corpService.selectByCorpId(0, corp_code);
+            if (corp != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("企业编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("企业编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
     }

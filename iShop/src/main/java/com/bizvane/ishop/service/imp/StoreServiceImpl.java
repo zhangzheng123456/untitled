@@ -76,6 +76,7 @@ public class StoreServiceImpl implements StoreService {
         return stores;
     }
 
+
     //分页显示所有店铺
     public PageInfo<Store> getAllStore(int page_number, int page_size, String corp_code, String search_value) {
         List<Store> shops;

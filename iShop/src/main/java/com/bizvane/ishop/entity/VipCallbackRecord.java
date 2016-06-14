@@ -11,8 +11,8 @@ public class VipCallbackRecord {
     private int id;
     private String vip_code;
     private String user_code;
-    private String collback_type;
-    private Date collback_time;
+    private String callback_type;
+    private Date callback_time;
     private String remark;
     private Date modified_date;
     private String isactive;
@@ -22,6 +22,22 @@ public class VipCallbackRecord {
 
     public String getCorp_code() {
         return corp_code;
+    }
+
+    public String getCallback_type() {
+        return callback_type;
+    }
+
+    public void setCallback_type(String callback_type) {
+        this.callback_type = callback_type;
+    }
+
+    public Date getCallback_time() {
+        return callback_time;
+    }
+
+    public void setCallback_time(Date callback_time) {
+        this.callback_time = callback_time;
     }
 
     public void setCorp_code(String corp_code) {
@@ -55,21 +71,7 @@ public class VipCallbackRecord {
         this.user_code = user_code;
     }
 
-    public String getCollback_type() {
-        return collback_type;
-    }
 
-    public void setCollback_type(String collback_type) {
-        this.collback_type = collback_type;
-    }
-
-    public Date getCollback_time() {
-        return collback_time;
-    }
-
-    public void setCollback_time(Date collback_time) {
-        this.collback_time = collback_time;
-    }
 
     public String getRemark() {
         return remark;

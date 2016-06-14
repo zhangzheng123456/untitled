@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.entity.VipCallbackRecord">
+<mapper namespace="com.bizvane.ishop.dao.VipCallbackRecordMapper">
 
     <resultMap id="VipInfos" type="com.bizvane.ishop.entity.VipCallbackRecord">
         <id column="id" property="id"/>
         <result column="vip_code" property="vip_code"/>
         <result column="user_code" property="user_code"/>
-        <result column="collback_type" property="collback_type"/>
-        <result column="collback_time" property="collback_time"/>
+        <result column="callback_type" property="callback_type"/>
+        <result column="callback_time" property="callback_time"/>
         <result column="remark" property="remark"/>
         <result column="modified_date" property="modified_date"/>
         <result column="isactive" property="isactive"/>
@@ -20,10 +20,6 @@
         WHERE id=#{id}
     </select>
 
-    <delete id="deleteByPrimary">
-        delete from DEF_VIP_CALLBACK_RECORD
-        WHERE id=#{id}
-    </delete>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipCallbackRecord">
         INSERT INTO DEF_VIP_CALLBACK_RECORD
@@ -34,11 +30,11 @@
             <if test="user_code!=null and user_code!=''">
                 user_code ,
             </if>
-            <if test="collback_type!=null and  collback_type!=''">
-                collback_type ,
+            <if test="callback_type!=null and  callback_type!=''">
+                callback_type ,
             </if>
-            <if test="collback_time!=null">
-                collback_time ,
+            <if test="callback_time!=null">
+                callback_time ,
             </if>
             <if test="remark!=null and remark!=''">
                 remark ,
@@ -56,33 +52,33 @@
                 creater ,
             </if>
         </trim>
-        <trim prefix="value(" suffixOverrides="," suffix=")">
+        <trim prefix="values(" suffixOverrides="," suffix=")">
             <if test="vip_code!=null and  vip_code!=''">
-                vip_code=#{vip_code},
+                #{vip_code},
             </if>
             <if test="user_code!=null and user_code!=''">
-                user_code=#{user_code},
+                #{user_code},
             </if>
-            <if test="collback_type!=null and  collback_type!=''">
-                collback_type=#{collback_type},
+            <if test="callback_type!=null and  callback_type!=''">
+                #{callback_type},
             </if>
-            <if test="collback_time!=null">
-                collback_time=#{collback_time},
+            <if test="callback_time!=null">
+                #{callback_time},
             </if>
             <if test="remark!=null and remark!=''">
-                remark=#{remark},
+                #{remark},
             </if>
             <if test="modified_date!=null">
-                modified_date=#{modified_date},
+                #{modified_date},
             </if>
             <if test="isactive!=null and isactive!=''">
-                isactive=#{isactive},
+                #{isactive},
             </if>
             <if test="created_date!=null">
-                created_date=#{create_date},
+                #{created_date},
             </if>
             <if test="creater!=null and  creater!=''">
-                creater=#{creater},
+                #{creater},
             </if>
         </trim>
     </insert>
