@@ -46,13 +46,9 @@ public class VipServiceImpl implements VipService {
     @Override
     public PageInfo<VIPInfo> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         List<VIPInfo> vipInfos;
-        if (null == search_value || search_value.isEmpty()) {
-            PageHelper.startPage(page_number, page_size);
-            vipInfos = vipMapper.selectAllVipInfo(corp_code, "");
-        } else {
-            PageHelper.startPage(page_number, page_size);
-            vipInfos = vipMapper.selectAllVipInfo(corp_code, "%" + search_value + "%");
-        }
+        PageHelper.startPage(page_number, page_size);
+        vipInfos = vipMapper.selectAllVipInfo(corp_code, search_value);
+
         PageInfo<VIPInfo> page = new PageInfo<VIPInfo>(vipInfos);
         return page;
     }

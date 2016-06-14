@@ -161,9 +161,9 @@
         WHERE master_code = #{group_code}
     </select>
 
-    <delete id="deleteGroup">
+    <delete id="delete">
         delete from
         DEF_PRIVILEGE
-        where master_code = #{group_code}
+        where master_code = #{master_code}
     </delete>
 </mapper>

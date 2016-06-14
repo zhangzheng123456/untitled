@@ -80,13 +80,10 @@ public class StoreServiceImpl implements StoreService {
     //分页显示所有店铺
     public PageInfo<Store> getAllStore(int page_number, int page_size, String corp_code, String search_value) {
         List<Store> shops;
-        if (search_value.equals("")) {
-            PageHelper.startPage(page_number, page_size);
-            shops = storeMapper.selectAllStore(corp_code, "");
-        } else {
-            PageHelper.startPage(page_number, page_size);
-            shops = storeMapper.selectAllStore(corp_code, "%" + search_value + "%");
-        }
+
+        PageHelper.startPage(page_number, page_size);
+        shops = storeMapper.selectAllStore(corp_code, search_value);
+
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
         return page;
@@ -98,13 +95,8 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public PageInfo<Store> selectByUserId(int page_number, int page_size, String user_id, String corp_code, String search_value) {
         List<Store> shops;
-        if (search_value.equals("")) {
-            PageHelper.startPage(page_number, page_size);
-            shops = storeMapper.selectByUserId(user_id, corp_code, "");
-        } else {
-            PageHelper.startPage(page_number, page_size);
-            shops = storeMapper.selectByUserId(user_id, corp_code, "%" + search_value + "%");
-        }
+        PageHelper.startPage(page_number, page_size);
+        shops = storeMapper.selectByUserId(user_id, corp_code, search_value);
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
         return page;

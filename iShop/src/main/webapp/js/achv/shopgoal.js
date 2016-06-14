@@ -239,6 +239,10 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	//change 事件
+	$('#OWN_CORP').change(function(){
+		console.log(123);
+	})
     $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
 	});
