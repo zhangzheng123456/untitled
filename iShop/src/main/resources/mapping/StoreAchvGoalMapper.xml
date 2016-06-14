@@ -46,14 +46,14 @@
         </if>
         <if test="search_value!=null and search_value!=''">
             and
-            sa.STORE_CODE like #{search_value}
-            OR sa.STORE_NAME LIKE #{search_value}
-            OR sa.CORP_CODE LIKE #{search_value}
-            OR sa.AREA_CODE LIKE #{search_value}
-            OR sa.ACHV_GOAL like #{search_Value}
-            OR sa.ACHV_TYPE like #{search_value}
-            OR sa.MODIFIER like #{search_value}
-            OR sa.CREATER like #{search_value}
+            sa.STORE_CODE like concat('%',#{search_value},'%')
+            OR sa.STORE_NAME LIKE concat('%',#{search_value},'%')
+            OR sa.CORP_CODE LIKE concat('%',#{search_value},'%')
+            OR sa.AREA_CODE LIKE concat('%',#{search_value},'%')
+            OR sa.ACHV_GOAL like concat('%',#{search_value},'%')
+            OR sa.ACHV_TYPE like concat('%',#{search_value},'%')
+            OR sa.MODIFIER like concat('%',#{search_value},'%')
+            OR sa.CREATER like concat('%',#{search_value},'%')
         </if>
         ORDER BY sa.ID
     </select>

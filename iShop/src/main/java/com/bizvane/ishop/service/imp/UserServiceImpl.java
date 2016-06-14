@@ -58,13 +58,8 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
 
         List<User> users;
-        if (search_value.equals("")) {
-            PageHelper.startPage(page_number, page_size);
-            users = userMapper.selectAllUser(corp_code,"");
-        }else {
-            PageHelper.startPage(page_number, page_size);
-            users = userMapper.selectAllUser(corp_code, "%" + search_value + "%");
-        }
+        PageHelper.startPage(page_number, page_size);
+        users = userMapper.selectAllUser(corp_code, search_value);
         PageInfo<User> page = new PageInfo<User>(users);
 
         return page;
@@ -72,20 +67,20 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
-        if (user.getStore_code()==null || user.getStore_code().equals("")){
+        if (user.getStore_code() == null || user.getStore_code().equals("")) {
             user.setStore_code("");
             user.setCorp_code("");
             user.setStore_name("");
-        }else {
+        } else {
             String store_name = "";
             String corp_code = user.getCorp_code();
             String[] ids = user.getStore_code().split(",");
             for (int i = 0; i < ids.length; i++) {
-                Store store = storeService.getStoreByCode(corp_code,ids[i]);
+                Store store = storeService.getStoreByCode(corp_code, ids[i]);
                 String store_name1 = store.getStore_name();
-                store_name = store_name+store_name1;
-                if(i!=ids.length-1){
-                    store_name = store_name+",";
+                store_name = store_name + store_name1;
+                if (i != ids.length - 1) {
+                    store_name = store_name + ",";
                 }
             }
             user.setStore_name(store_name);
@@ -97,12 +92,13 @@ public class UserServiceImpl implements UserService {
      * 群组管理
      * 查看用户名单
      */
-    public PageInfo<User> selectGroupUser(int page_number,int page_size,String corp_code,String group_code)throws SQLException{
+    public PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code) throws SQLException {
         PageHelper.startPage(page_number, page_size);
-        List<User> users = userMapper.selectGroupUser(corp_code,group_code);
+        List<User> users = userMapper.selectGroupUser(corp_code, group_code);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
+
     /**
      * 验证企业下用户编号是否已存在
      */
@@ -157,7 +153,7 @@ public class UserServiceImpl implements UserService {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 user_type = "admin";
-            } else{
+            } else {
                 if (role_code.equals(Common.ROLE_GM)) {
                     //总经理
                     user_type = "gm";
@@ -312,7 +308,7 @@ public class UserServiceImpl implements UserService {
         return Common.DATABEAN_CODE_ERROR;
     }
 
-    public List<User> selectGroup(String corp_code, String group_code)throws SQLException{
-        return userMapper.selectGroupUser(corp_code,group_code);
+    public List<User> selectGroup(String corp_code, String group_code) throws SQLException {
+        return userMapper.selectGroupUser(corp_code, group_code);
     }
 }

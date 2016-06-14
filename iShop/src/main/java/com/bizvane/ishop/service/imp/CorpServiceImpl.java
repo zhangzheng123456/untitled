@@ -40,7 +40,8 @@ public class CorpServiceImpl implements CorpService {
      */
     public PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
-        List<Corp> corps = corpMapper.selectAllCorp("%" + search_value + "%");
+        System.out.println(search_value);
+        List<Corp> corps = corpMapper.selectAllCorp(search_value);
         PageInfo<Corp>  page = new PageInfo<Corp>(corps);
         return page;
     }

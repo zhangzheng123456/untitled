@@ -47,13 +47,8 @@ public class VipCallbackRecordServiceImpl implements VipCallbackRecordService {
     @Override
     public PageInfo<VipCallbackRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         List<VipCallbackRecord> list = null;
-        if (search_value == null || search_value.isEmpty()) {
-            PageHelper.startPage(page_number, page_size);
-            list = this.vipCallbackRecordMapper.selectAllVipCallBackRecordInfo(corp_code, "");
-        } else {
-            PageHelper.startPage(page_number, page_size);
-            list = this.vipCallbackRecordMapper.selectAllVipCallBackRecordInfo(corp_code, "%" + search_value + "%");
-        }
+        PageHelper.startPage(page_number, page_size);
+        list = this.vipCallbackRecordMapper.selectAllVipCallBackRecordInfo(corp_code, search_value);
         PageInfo<VipCallbackRecord> page = new PageInfo<VipCallbackRecord>(list);
         return page;
     }
