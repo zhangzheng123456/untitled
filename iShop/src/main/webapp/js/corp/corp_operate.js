@@ -219,7 +219,7 @@ jQuery(document).ready(function(){
 	var val=sessionStorage.getItem("key");
 	val=JSON.parse(val);
     var message=JSON.parse(val.message);
-    $("#CORPID").focus(function(){
+    $("#CORPID").blur(function(){
     	var corp_code=$("#CORPID").val();
     	var _params={};
     	_params["corp_code"]=corp_code;
@@ -228,7 +228,7 @@ jQuery(document).ready(function(){
     	})
 
     })
-    $("#CORPNAME").focus(function(){
+    $("#CORPNAME").blur(function(){
     	var corp_name=$("#CORPNAME").val();
     	var _params={};
     	_params["corp_name"]=corp_code;
