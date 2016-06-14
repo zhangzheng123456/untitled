@@ -65,21 +65,17 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
     @Override
     public int updateUserAchvGoal(UserAchvGoal userAchvGoal) throws SQLException {
-
         return this.userAchvGoalMapper.update(userAchvGoal);
-
     }
 
     @Override
     public int deleteUserAchvGoalById(String user_code) throws SQLException {
-
         return this.userAchvGoalMapper.delelteByUser_code(user_code);
 
     }
 
     @Override
     public int insert(UserAchvGoal userAchvGoal) throws SQLException {
-
         return this.userAchvGoalMapper.insert(userAchvGoal);
 
     }

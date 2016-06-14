@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VIPtagMapper;
 import com.bizvane.ishop.entity.VIPtag;
 import com.bizvane.ishop.service.VIPTagService;
@@ -51,7 +52,11 @@ public class VIPTagServiceImpl implements VIPTagService {
 
     @Override
     public String vipExist(String tag_code, String corp_code) throws SQLException {
-        //viPtagMapper.selectVIpTag_code
-        return null;
+        VIPtag viPtag = viPtagMapper.selectVipTagCode(tag_code, corp_code);
+        String result = Common.DATABEAN_CODE_ERROR;
+        if (viPtag == null) {
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
     }
 }
