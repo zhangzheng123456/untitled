@@ -41,11 +41,8 @@ public class VIPTagServiceImpl implements VIPTagService {
     @Override
     public PageInfo<VIPtag> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         List<VIPtag> list = null;
-        if (search_value == null || search_value.isEmpty()) {
-            list = viPtagMapper.selectAllVipInfo(corp_code, "");
-        } else {
-            list = viPtagMapper.selectAllVipInfo(corp_code, search_value);
-        }
+
+        list = viPtagMapper.selectAllVipInfo(corp_code, search_value);
         PageInfo<VIPtag> page = new PageInfo<VIPtag>(list);
         return page;
     }

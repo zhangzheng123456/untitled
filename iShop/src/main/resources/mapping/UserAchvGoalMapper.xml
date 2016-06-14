@@ -216,10 +216,10 @@
             and ua.id=#{userAchvGoalId}
         </if>
         <if test="search_value!=null and search_value!=''">
-            AND ua.user_name like #{search_value}
-            OR ua.ACHV_GOAL like #{search_value}
-            OR ua.MODIFIER like #{search_value}
-            OR ua.CREATER like #{search_value}
+            AND ua.user_name like concat('%',#{search_value},'%')
+            OR ua.ACHV_GOAL like concat('%',#{search_value},'%')
+            OR ua.MODIFIER like concat('%',#{search_value},'%')
+            OR ua.CREATER like concat('%',#{search_value},'%')
         </if>
 
     </select>

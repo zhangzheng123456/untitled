@@ -30,13 +30,9 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     public PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String userAchvGoalId, String search_value) throws SQLException {
 
         List<UserAchvGoal> userAchvGoals = null;
-        if (search_value == null || search_value.isEmpty()) {
-            PageHelper.startPage(page_number, page_size);
-            userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, "");
-        } else {
-            PageHelper.startPage(page_number, page_size);
-            userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, search_value);
-        }
+
+        PageHelper.startPage(page_number, page_size);
+        userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, search_value);
         //PageInfo<UserAchvGoal> page = (PageInfo<UserAchvGoal>) userAchvGoals;
         PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
         return page;
