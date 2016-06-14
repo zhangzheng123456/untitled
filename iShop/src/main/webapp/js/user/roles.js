@@ -300,7 +300,7 @@ function jumpBianse(){
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地
         $(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
     })
-     //点击新增时页面进行的跳转
+    //点击新增时页面进行的跳转
     $('#add').click(function(){
         sessionStorage.removeItem('id');
         $(window.parent.document).find('#iframepage').attr("src","/user/role_add.html");

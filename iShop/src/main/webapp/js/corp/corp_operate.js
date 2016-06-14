@@ -231,7 +231,7 @@ jQuery(document).ready(function(){
     $("#CORPNAME").blur(function(){
     	var corp_name=$("#CORPNAME").val();
     	var _params={};
-    	_params["corp_name"]=corp_code;
+    	_params["corp_name"]=corp_name;
     	oc.postRequire("post","/corp/Corp_codeExist","", _params, function(data){
             console.log(data);
     	})
