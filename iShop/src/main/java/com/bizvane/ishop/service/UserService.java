@@ -37,4 +37,9 @@ public interface UserService {
 
     List<User> selectGroup(String corp_code, String group_code)throws SQLException;
 
+    String userNameExist(String user_name, String corp_code);
+
+    String userPhoneExist(String phone, String corp_code);
+
+    String userEmailExist(String email, String corp_code);
 }

@@ -33,4 +33,5 @@ public interface StoreService {
 
     int delete(int id) throws SQLException;
 
+    Store getStoreByName(String corp_code, String store_name);
 }

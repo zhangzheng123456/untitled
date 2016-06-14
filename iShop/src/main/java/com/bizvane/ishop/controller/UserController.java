@@ -69,7 +69,7 @@ public class UserController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
 
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
             JSONObject result = new JSONObject();
             PageInfo<User> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -358,7 +358,7 @@ public class UserController {
                 }
             } else {
                 //比登陆用户角色级别低的群组
-                String login_corp_code  = request.getSession().getAttribute("corp_code").toString();
+                String login_corp_code = request.getSession().getAttribute("corp_code").toString();
                 group = groupService.selectUserGroup(login_corp_code, role_code);
             }
             groups.put("group", JSON.toJSONString(group));
@@ -478,11 +478,12 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
-     *  用户管理
-     *  查看权限
+     * 用户管理
+     * 查看权限
      */
-    @RequestMapping(value = "/check_power",method = RequestMethod.POST)
+    @RequestMapping(value = "/check_power", method = RequestMethod.POST)
     @ResponseBody
     public String groupCheckPower(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -498,14 +499,14 @@ public class UserController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code,login_user_id,login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_user_id, login_group_code);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
             String role_code = groupService.selectCorpGroup(group_code).getRole_code();
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code,group_code);
+            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, group_code);
 
             //获取用户自定义的权限
             JSONArray user_privilege = functionService.selectUserPrivilege(user_id);
@@ -522,6 +523,138 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "UserCodeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String UserCodeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String user_code = jsonObject.get("user_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            //         Area area = areaService.getAreaByName(corp_code, store_code);
+            //  Store store = storeService.getStoreByName(corp_code, store_name);
+            String existInfo = userService.userCodeExist(user_code, corp_code);
+
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("用户编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("用户编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "UserNameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String UserNameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String user_name = jsonObject.get("user_name").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            //         Area area = areaService.getAreaByName(corp_code, store_code);
+            //  Store store = storeService.getStoreByName(corp_code, store_name);
+            String existInfo = userService.userNameExist(user_name, corp_code);
+
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("用户编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("用户编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "PhoneExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String PhoneExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String phone = jsonObject.get("phone").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            //         Area area = areaService.getAreaByName(corp_code, store_code);
+            //  Store store = storeService.getStoreByName(corp_code, store_name);
+            String existInfo = userService.userPhoneExist(phone, corp_code);
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("手机号码已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("手机号码未被使用！！！");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "EamilExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String EamilExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String email = jsonObject.get("email").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String existInfo = userService.userEmailExist(email, corp_code);
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("email已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("email未被使用！！！");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
     }

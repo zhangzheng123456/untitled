@@ -360,6 +360,7 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
+
             //String existInfo = corpService.getCorpByCorpName(corp_name);
             Corp corp = corpService.selectByCorpId(0, corp_code);
             if (corp != null) {

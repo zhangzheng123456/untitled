@@ -182,4 +182,10 @@ public class StoreServiceImpl implements StoreService {
     public int delete(int id) throws SQLException {
         return this.storeMapper.deleteByStoreId(id);
     }
+
+    @Override
+    public Store getStoreByName(String corp_code, String store_name) {
+        Store store = this.storeMapper.selectByStoreName(corp_code, store_name);
+        return store;
+    }
 }
