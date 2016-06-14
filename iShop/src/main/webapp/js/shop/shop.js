@@ -72,7 +72,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				// var SHOP_MANAGER=$("#SHOP_MANAGER").val();
@@ -107,7 +107,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				// var SHOP_MANAGER=$("#SHOP_MANAGER").val();
