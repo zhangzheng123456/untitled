@@ -71,4 +71,10 @@ public class BrandServiceImpl implements BrandService {
         return brandMapper.deleteByBrandId(id);
     }
 
+    @Override
+    public Brand getBrandByName(String corp_code, String brand_name) {
+        Brand brand = brandMapper.selectByBrandName(corp_code, brand_name);
+        return brand;
+    }
+
 }

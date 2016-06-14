@@ -101,7 +101,7 @@
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-           <if test="brand_code!=null">
+            <if test="brand_code!=null">
                 #{brand_code},
             </if>
             <if test="brand_name!=null">
@@ -130,7 +130,8 @@
 
     <update id="updateBrand" parameterType="com.bizvane.ishop.entity.Brand">
         UPDATE DEF_BRAND
-        <trim prefix="SET" suffixOverrides=","><if test="brand_code!=null and brand_code!=''">
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="brand_code!=null and brand_code!=''">
                 brand_code=#{brand_code},
             </if>
             <if test="brand_name!=null and brand_name!=''">
@@ -157,4 +158,8 @@
         </trim>
         WHERE ID=#{id};
     </update>
+    <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
+        select * from  DEF_BRAND
+        WHERE  corp_code=#{corp_code} and brand_name=#{brand_name}
+    </select>
 </mapper>

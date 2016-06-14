@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BrandService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,11 +42,10 @@ public class BrandController {
     private static final Logger logger = Logger.getLogger(BrandController.class);
 
 
-
     /**
      * 品牌列表
      */
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public String brandManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -56,7 +57,7 @@ public class BrandController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
             JSONObject result = new JSONObject();
             PageInfo<Brand> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -82,7 +83,7 @@ public class BrandController {
     /**
      * 品牌新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addBrand(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -109,7 +110,7 @@ public class BrandController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("add success");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -120,7 +121,7 @@ public class BrandController {
     /**
      * 品牌编辑
      */
-    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editBrand(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -146,7 +147,7 @@ public class BrandController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -178,13 +179,13 @@ public class BrandController {
                 Brand brand = brandService.getBrandById(Integer.valueOf(ids[i]));
                 String brand_code = brand.getBrand_code();
                 String corp_code = brand.getCorp_code();
-                List<Store> stores = brandService.getBrandStore(corp_code,brand_code);
+                List<Store> stores = brandService.getBrandStore(corp_code, brand_code);
                 if (stores.size() == 0) {
                     brandService.delete(Integer.valueOf(ids[i]));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
                     dataBean.setMessage("success");
-                }else {
+                } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
                     dataBean.setMessage("该品牌下有所属店铺，请先处理品牌下店铺再删除！");
@@ -231,6 +232,7 @@ public class BrandController {
         logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();
     }
+
     /**
      * 页面查找
      */
@@ -270,5 +272,68 @@ public class BrandController {
         }
         return dataBean.getJsonStr();
     }
+
+
+    @RequestMapping(value = "Brand_codeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String Brand_codeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String brand_code = jsonObject.get("brand_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            Brand brand = brandService.getBrandByCode(corp_code, brand_code);
+            if (brand != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("品牌编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("品牌编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "Brand_nameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String Brand_nameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String brand_name = jsonObject.get("brand_name").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            Brand brand = brandService.getBrandByName(corp_code, brand_name);
+            if (brand != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("品牌名称已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("品牌名称不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
 
 }
