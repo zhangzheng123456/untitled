@@ -260,13 +260,22 @@ public class VIPController {
             id = jsonObj.getString("id");
             String messsage = jsonObj.getString("message");
             org.json.JSONObject jsonObject = new org.json.JSONObject(messsage);
-            VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
-            //Data now=new Date();
+            VIPtag viPtag = WebUtils.JSON2Bean(jsonObject, VIPtag.class);
+            Date now = new Date();
+            viPtag.setModified_date(now);
+            viPtag.setModifier(user_id);
+            viPtag.setCreated_date(now);
+            viPtag.setCreater(user_id);
+            vipTagService.insert(viPtag);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("标签创建成功！！");
+            dataBean.setId(id);
         } catch (Exception ex) {
-
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
         }
-
-        return "viplabel_add";
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -276,7 +285,29 @@ public class VIPController {
     @RequestMapping(value = "/label/edit", method = RequestMethod.GET)
     @ResponseBody
     public String editVIPLabel(HttpServletRequest request) {
-        return "viplabel_edit";
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonobj = new org.json.JSONObject(jsString);
+            id = jsonobj.get("id").toString();
+            String message = jsonobj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            VIPtag viPtag = WebUtils.JSON2Bean(jsonObject, VIPtag.class);
+            Date now = new Date();
+            viPtag.setModified_date(now);
+            viPtag.setModifier(user_id);
+            this.vipTagService.update(viPtag);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("edit success ");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setId(id);
+        }
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -286,7 +317,36 @@ public class VIPController {
     @RequestMapping(value = "/label/find", method = RequestMethod.GET)
     @ResponseBody
     public String findVIPLabel(HttpServletRequest request) {
-        return "";
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_number = jsonObject.getInt("pageNumber");
+            int page_size = jsonObject.getInt("pageSize");
+            String search_value = jsonObject.getString("searchValue");
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VIPtag> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = this.vipTagService.selectBySearch(page_number, page_size, "", search_value);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = this.vipTagService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
 
@@ -296,6 +356,20 @@ public class VIPController {
     @RequestMapping(value = "/callback/list", method = RequestMethod.GET)
     @ResponseBody
     public String callBackManage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String function_code = request.getParameter("funcCode");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            // org.json.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
+
+        } catch (Exception ex) {
+
+        }
+
         return "callback";
     }
 

@@ -540,10 +540,7 @@ public class UserController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String user_code = jsonObject.get("user_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            //         Area area = areaService.getAreaByName(corp_code, store_code);
-            //  Store store = storeService.getStoreByName(corp_code, store_name);
             String existInfo = userService.userCodeExist(user_code, corp_code);
-
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -574,10 +571,7 @@ public class UserController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String user_name = jsonObject.get("user_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            //         Area area = areaService.getAreaByName(corp_code, store_code);
-            //  Store store = storeService.getStoreByName(corp_code, store_name);
             String existInfo = userService.userNameExist(user_name, corp_code);
-
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -608,8 +602,6 @@ public class UserController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String phone = jsonObject.get("phone").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            //         Area area = areaService.getAreaByName(corp_code, store_code);
-            //  Store store = storeService.getStoreByName(corp_code, store_name);
             String existInfo = userService.userPhoneExist(phone, corp_code);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);

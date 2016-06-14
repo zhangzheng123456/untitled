@@ -39,6 +39,12 @@ public class VIPTagServiceImpl implements VIPTagService {
     }
 
     @Override
+    public int update(VIPtag vipTag) {
+        return this.viPtagMapper.updateByPrimaryKey(vipTag);
+
+    }
+
+    @Override
     public PageInfo<VIPtag> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         List<VIPtag> list = null;
 
