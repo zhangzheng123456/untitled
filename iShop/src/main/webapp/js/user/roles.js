@@ -11,7 +11,6 @@ var funcCode=key_val.func_code;
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
-
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
             }else{  
@@ -35,8 +34,7 @@ $(function(){
             setTimeout(hideLi,200);  
         });          
     }      
-);
-  
+); 
 function showLi(){  
     $("#liebiao").show();  
 }  
