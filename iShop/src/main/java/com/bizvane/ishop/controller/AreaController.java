@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
 import com.bizvane.ishop.service.FunctionService;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -40,11 +42,10 @@ public class AreaController {
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
 
-
     /**
      * 品牌列表
      */
-    @RequestMapping(value = "/list",method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public String areaManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -55,7 +56,7 @@ public class AreaController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
             JSONObject result = new JSONObject();
             PageInfo<Area> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -81,7 +82,7 @@ public class AreaController {
     /**
      * 品牌新增
      */
-    @RequestMapping(value = "/add",method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addArea(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -108,7 +109,7 @@ public class AreaController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("add success");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -119,7 +120,7 @@ public class AreaController {
     /**
      * 品牌编辑
      */
-    @RequestMapping(value = "/edit",method = RequestMethod.POST)
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editArea(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -145,7 +146,7 @@ public class AreaController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
@@ -177,13 +178,13 @@ public class AreaController {
                 Area area = areaService.getAreaById(Integer.valueOf(ids[i]));
                 String area_code = area.getArea_code();
                 String corp_code = area.getCorp_code();
-                List<Store> stores = areaService.getAreaStore(corp_code,area_code);
+                List<Store> stores = areaService.getAreaStore(corp_code, area_code);
                 if (stores.size() == 0) {
                     areaService.delete(Integer.valueOf(ids[i]));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
                     dataBean.setMessage("success");
-                }else {
+                } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
                     dataBean.setMessage("该区域下有所属店铺，请先处理区域下店铺再删除！");
@@ -230,6 +231,7 @@ public class AreaController {
         logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();
     }
+
     /**
      * 页面查找
      */
@@ -266,6 +268,67 @@ public class AreaController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "Area_codeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String Corp_codeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String area_code = jsonObject.get("area_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            Area area = areaService.getAreaByCode(corp_code, area_code);
+            if (area != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("区域编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("区域编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "Area_nameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String Area_nameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String area_name = jsonObject.get("area_name").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            Area area = areaService.getAreaByName(corp_code, area_name);
+            if (area != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("区域编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("区域编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
     }

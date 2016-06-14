@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Area;
@@ -81,6 +82,12 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public int delete(int id) throws SQLException {
         return areaMapper.deleteByAreaId(id);
+    }
+
+    @Override
+    public Area getAreaByName(String corp_code, String area_name) {
+        Area area = this.areaMapper.selectArea_Name(corp_code, area_name);
+        return area;
     }
 
 }

@@ -26,4 +26,6 @@ public interface AreaService {
     int update(Area area) throws SQLException;
 
     int delete(int id) throws SQLException;
+
+    Area getAreaByName(String corp_code, String area_name);
 }

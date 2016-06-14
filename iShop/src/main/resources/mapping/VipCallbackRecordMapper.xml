@@ -108,4 +108,37 @@
         </if>
     </select>
 
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipCallbackRecord">
+        update DEF_VIP_CALLBACK_RECORD
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vip_code!=null and  vip_code!=''">
+                vip_code=#{vip_code},
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                user_code=#{user_code},
+            </if>
+            <if test="callback_type!=null and  callback_type!=''">
+                callback_type=#{callback_type},
+            </if>
+            <if test="callback_time!=null">
+                callback_time=#{callback_time},
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark=#{remark},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null and  creater!=''">
+                creater=#{creater},
+            </if>
+        </trim>
+    </update>
+
 </mapper>

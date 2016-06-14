@@ -101,7 +101,7 @@
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-           <if test="area_code!=null">
+            <if test="area_code!=null">
                 #{area_code},
             </if>
             <if test="area_name!=null">
@@ -157,5 +157,11 @@
             </if>
         </trim>
         WHERE ID=#{id};
+
+
     </update>
+    <select id="selectArea_Name" resultType="com.bizvane.ishop.entity.Area">
+        select * from DEF_AREA
+        WHERE corp_code=#{corp_code} and area_name=#{area_name}
+    </select>
 </mapper>
