@@ -253,16 +253,12 @@ public class FunctionServiceImpl implements FunctionService {
         return array;
     }
 
-    public String updatePrivilege(String message,String user_id){
+    public String updatePrivilege(String master_code,String user_id,JSONArray array){
         try {
-            JSONObject jsonObject = new JSONObject(message);
-            String list = jsonObject.get("list").toString();
-            String group_code = jsonObject.get("group_code").toString();
-            JSONArray array = JSONArray.parseArray(list);
             Date now = new Date();
             //先删除权限下所有权限
             System.out.println("-------begin delete group---------");
-            privilegeMapper.deleteGroup(group_code);
+            privilegeMapper.delete(master_code);
             //再插入画面选择的权限
             for (int i = 0; i < array.size(); i++) {
                 String info = array.get(i).toString();
@@ -272,7 +268,7 @@ public class FunctionServiceImpl implements FunctionService {
                 Privilege privilege = new Privilege();
                 privilege.setAction_code(action_code);
                 privilege.setFunction_code(function_code);
-                privilege.setMaster_code(group_code);
+                privilege.setMaster_code(master_code);
                 privilege.setEnable(Common.IS_ACTIVE_Y);
                 privilege.setModified_date(sdf.format(now));
                 privilege.setModifier(user_id);

@@ -11,6 +11,6 @@ public interface PrivilegeMapper {
 
     List<Privilege> selectGroup(@Param("group_code") String group_code);
 
-    int deleteGroup(@Param("group_code") String group_code);
+    int delete(@Param("master_code") String master_code);
 
 }
