@@ -19,4 +19,8 @@ public interface VIPtagMapper {
     int updateByPrimaryKey(VIPtag record);
 
     List<VIPtag> selectAllVipInfo(String corp_code, String search_value);
+
+
+    VIPtag selectVipTagCode(String tag_code, String corp_code);
+
 }

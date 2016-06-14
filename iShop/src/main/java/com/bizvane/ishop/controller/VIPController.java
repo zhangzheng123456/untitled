@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VIPtag;
+import com.bizvane.ishop.entity.VipCallbackRecord;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
@@ -223,13 +224,13 @@ public class VIPController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VIPtag> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-               // list = vipService.selectBySearch(page_number, page_size, "", "");
-                list=vipTagService.selectBySearch(page_number,page_size,"","");
+                // list = vipService.selectBySearch(page_number, page_size, "", "");
+                list = vipTagService.selectBySearch(page_number, page_size, "", "");
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                //    list = vipService.selectBySearch(page_number, page_size, corp_code, "");
+                list = vipTagService.selectBySearch(page_number, page_size, corp_code, "");
             }
-            // result.put("list", list);
+            result.put("list", list);
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -249,6 +250,22 @@ public class VIPController {
     @RequestMapping(value = "/label/add", method = RequestMethod.GET)
     @ResponseBody
     public String addVIPLabel(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        try {
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String messsage = jsonObj.getString("message");
+            org.json.JSONObject jsonObject = new org.json.JSONObject(messsage);
+            VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
+            //Data now=new Date();
+        } catch (Exception ex) {
+
+        }
+
         return "viplabel_add";
     }
 
