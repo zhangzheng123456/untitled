@@ -138,7 +138,7 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
-				$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
+				$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
