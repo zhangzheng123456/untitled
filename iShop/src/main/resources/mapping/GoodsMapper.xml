@@ -25,20 +25,21 @@
             AND corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
-            AND goods_code LIKE concat('%',#{search_value},'%')
-            OR goods_name LIKE concat('%',#{search_value},'%')
-            OR goods_image LIKE concat('%',#{search_value},'%')
-            OR goods_price LIKE concat('%',#{search_value},'%')
-            OR goods_time LIKE concat('%',#{search_value},'%')
-            OR goods_quarter LIKE concat('%',#{search_value},'%')
-            OR goods_wave LIKE concat('%',#{search_value},'%')
-            OR modified_date LIKE concat('%',#{search_value},'%')
-            OR modifier LIKE concat('%',#{search_value},'%')
-            OR isactive LIKE concat('%',#{search_value},'%')
-            OR created_date LIKE concat('%',#{search_value},'%')
-            OR creater LIKE concat('%',#{search_value},'%')
-            OR goods_description LIKE concat('%',#{search_value},'%')
-
+            AND
+            (goods_code LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR goods_name LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR goods_image LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR goods_price LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR goods_time LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR goods_quarter LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR goods_wave LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR modified_date LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR modifier LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR isactive LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR created_date LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR creater LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR goods_description LIKE concat('%',"'"+#{search_value}+"'",'%')
+            )
         </if>
         ORDER BY id
     </select>

@@ -217,16 +217,18 @@
         </if>
         <if test="search_value!=null and search_value!=''">
             and
-            VIP_NAME like concat('%',#{search_value},'%')
-            OR VIP_TYPE LIKE concat('%',#{search_value},'%')
-            OR VIP_CARD_NUMBER LIKE concat('%',#{search_value},'%')
-            OR SEX like concat('%',#{search_value},'%')
-            OR USER_CODE LIKE concat('%',#{search_value},'%')
-            OR STORE_CODE LIKE concat('%',#{search_value},'%')
-            OR CORP_CODE LIKE concat('%',#{search_value},'%')
-            OR MODIFIER LIKE concat('%',#{search_value},'%')
-            OR CREATER LIKE concat('%',#{search_value},'%')
-            OR ISACTIVE LIKE concat('%',#{search_value},'%')
+            (
+            VIP_NAME like concat('%',"'"+#{search_value}+"'",'%')
+            OR VIP_TYPE LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR VIP_CARD_NUMBER LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR SEX like concat('%',"'"+#{search_value}+"'",'%')
+            OR USER_CODE LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR STORE_CODE LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR CORP_CODE LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR MODIFIER LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR CREATER LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR ISACTIVE LIKE concat('%',"'"+#{search_value}+"'",'%')
+            )
         </if>
         ORDER BY ID
     </select>

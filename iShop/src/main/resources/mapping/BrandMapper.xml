@@ -56,12 +56,14 @@
             AND DEF_BRAND.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-            AND BRAND_CODE like concat('%',#{search_value},'%')
-            OR BRAND_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_BRAND.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_BRAND.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_BRAND.ISACTIVE like concat('%',#{search_value},'%')
+            AND
+            (BRAND_CODE like concat('%',"'"+#{search_value}+"'",'%')
+            OR BRAND_NAME like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_CORP.CORP_NAME like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_BRAND.MODIFIED_DATE like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_BRAND.MODIFIER like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_BRAND.ISACTIVE like concat('%',"'"+#{search_value}+"'",'%')
+            )
         </if>
         ORDER BY DEF_BRAND.ID
     </select>

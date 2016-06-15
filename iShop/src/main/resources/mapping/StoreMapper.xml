@@ -74,14 +74,16 @@
             AND DEF_STORE.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-            AND STORE_CODE like concat('%',#{search_value},'%')
-            OR DEF_STORE.ID like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
-            OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
+            AND
+            (STORE_CODE like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.ID like concat('%',"'"+#{search_value}+"'",'%')
+            OR STORE_NAME like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_AREA.AREA_NAME like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_CORP.CORP_NAME like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.MODIFIED_DATE like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.MODIFIER like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.ISACTIVE like concat('%',"'"+#{search_value}+"'",'%')
+            )
         </if>
         ORDER BY DEF_STORE.ID
     </select>
@@ -107,14 +109,14 @@
         AND position(DEF_STORE.STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
         AND DEF_STORE.CORP_CODE = #{corp_code}
         <if test="search_value != null and search_value !=''">
-            AND STORE_CODE like concat('%',#{search_value},'%')
-            OR DEF_STORE.ID like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
-            OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
+            AND STORE_CODE like  concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.ID like  concat('%',"'"+#{search_value}+"'",'%')
+            OR STORE_NAME like  concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_AREA.AREA_NAME like  concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_CORP.CORP_NAME like  concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.MODIFIED_DATE like  concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.MODIFIER like  concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_STORE.ISACTIVE like  concat('%',"'"+#{search_value}+"'",'%')
         </if>
         AND DEF_STORE.ISACTIVE = 'Y'
         ORDER BY DEF_STORE.ID

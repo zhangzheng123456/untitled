@@ -91,18 +91,19 @@
             vip_code=#{vip_code}
         </if>
         <if test="search_value!=null and search_value!=''">
-            and
-            vip_code like concat('%',#{search_value},'%')
-            or vip_name like concat('%',#{search_value},'%')
-            or phone like concat('%',#{search_value},'%')
-            or birthday like concat('%',#{search_value},'%')
-            or vip_type like concat('%',#{search_value},'%')
-            or vip_card_number like concat('%',#{search_value},'%')
-            or sex like concat('%',#{search_value},'%')
-            or user_code like concat('%',#{search_value},'%')
-            or store_code like concat('%',#{search_value},'%')
-            or modifier like concat('%',#{search_value},'%')
-            or creater like concat('%',#{search_value},'%')
+            and(
+            vip_code like concat('%',"'"+#{search_value}+"'",'%')
+            or vip_name like concat('%',"'"+#{search_value}+"'",'%')
+            or phone like concat('%',"'"+#{search_value}+"'",'%')
+            or birthday like concat('%',"'"+#{search_value}+"'",'%')
+            or vip_type like concat('%',"'"+#{search_value}+"'",'%')
+            or vip_card_number like concat('%',"'"+#{search_value}+"'",'%')
+            or sex like concat('%',"'"+#{search_value}+"'",'%')
+            or user_code like concat('%',"'"+#{search_value}+"'",'%')
+            or store_code like concat('%',"'"+#{search_value}+"'",'%')
+            or modifier like concat('%',"'"+#{search_value}+"'",'%')
+            or creater like concat('%',"'"+#{search_value}+"'",'%')
+            )
         </if>
         ORDER BY ID
     </select>
