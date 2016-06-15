@@ -19,22 +19,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	areajs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	areajs.checkCode=function(obj,hint){
+		var isCode=/^[A]{1}[0-9]{1,7}$/;
 		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
+			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
+				this.displayHint(hint,"请以大写字母A开头从一位到七位之间的数字!");
 				return false;
 			}
 		}else{
 			this.displayHint(hint);
 			return false;
 		}
-	};
+	}
 	areajs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -53,6 +52,8 @@ var oc = new ObjectControl();
 	};
 	areajs.bindbutton=function(){
 		$(".areaadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#AREA_ID").attr("data-mark");
+			var codeMark=$("#CORPID").attr("data-mark");
 			if(areajs.firstStep()){
 				var AREA_ID=$("#AREA_ID").val();
 				var AREA_NAME=$("#AREA_NAME").val();
@@ -162,6 +163,7 @@ jQuery(document).ready(function(){
 				console.log(msg);
 				$("#AREA_ID").val(msg.area_code);
 				$("#AREA_NAME").val(msg.area_name);
+				$("#AREA_NAME").attr("data-name",msg.area_name);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				// $("#OWN_CORP").val(msg.corp_code);
@@ -210,6 +212,48 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	//验证编号是不是唯一
+	$("input[verify='Code']").blur(function(){
+    	var isCode=/^[A]{1}[0-9]{1,7}$/;
+    	var _params={};
+    	var area_code=$(this).val();
+    	var corp_code=$("#OWN_CORP").val();
+		if(area_code!==""&&isCode.test(area_code)==true){
+			_params["area_code"]=area_code;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/area/Area_codeExist","", _params, function(data){
+	               if(data.code=="0"){
+	                    div.html("");
+	                    $("#CORPID").attr("data-mark","Y");
+	               }else if(data.code=="-1"){
+	               		$("#CORPID").attr("data-mark","N");
+	               		div.addClass("error_tips");
+						div.html("该编号已经存在！");	
+	               }
+		    })
+		}
+    })
+    //验证名称是否唯一
+    $("#AREA_NAME").blur(function(){
+    	var area_name=$("#AREA_NAME").val();
+    	var area_name1=$("#AREA_NAME").attr("data-name");
+    	var div=$(this).next('.hint').children();
+    	if(corp_name!==""&&area_name!==area_name1){
+	    	var _params={};
+	    	_params["area_name"]=area_name;
+	    	oc.postRequire("post","/area/Area_nameExist","", _params, function(data){
+	            if(data.code=="0"){
+	            	div.html("");
+	            	$("#CORPNAME").attr("data-mark","Y");
+	            }else if(data.code=="-1"){
+	            	div.html("该名称已经存在！")
+	            	div.addClass("error_tips");
+	            	$("#CORPNAME").attr("data-mark","N");
+	            }
+	    	})
+	    }
+    })
 	$(".areaadd_oper_btn ul li:nth-of-type(2").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/area/area.html");
 	});
