@@ -58,7 +58,7 @@ var oc = new ObjectControl();
 				var STORE_NAME=$("#STORE_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_AREA=$("#OWN_AREA").data("myacode");
-				var OWN_BRAND=$("#OWN_BRAND").data("mybcode");
+				var OWN_BRAND=$("#OWN_BRAND").attr("data-mybcode");
 				// var BRAND_ID=$("#BRAND_ID").val();
 				// var AREA_ID=$("#AREA_ID").val();
 				var is_zhiying=$("#FLG_TOB").val();
@@ -90,10 +90,11 @@ var oc = new ObjectControl();
 		});
 		$(".shopedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(shopjs.firstStep()){
+				console.log($("#OWN_BRAND").data("mybcode"));
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_AREA=$("#OWN_AREA").data("myacode");
-				var OWN_BRAND=$("#OWN_BRAND").data("mybcode");
+				var OWN_BRAND=$("#OWN_BRAND").attr("data-mybcode");
 				var STORE_ID=$("#STORE_ID").val();
 				var STORE_NAME=$("#STORE_NAME").val();
 				var is_zhiying=$("#FLG_TOB").val();
@@ -172,6 +173,8 @@ var oc = new ObjectControl();
 	obj.init = init;
 	return obj;
 }));
+var checknow_data=[];
+var checknow_namedata=[];
 jQuery(document).ready(function(){
 	window.shop.init();//初始化
 	if($(".pre_title label").text()=="编辑店铺信息"){
@@ -183,6 +186,8 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
+				checknow_data.push(msg.brand_code);
+				checknow_namedata.push(msg.brand_name);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_BRAND").val(msg.brand_name);
@@ -324,8 +329,7 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	var checknow_data=[];
-	var checknow_namedata=[];
+	
 	$("#OWN_BRAND").click(function(){
 		$(".checkboxselect-container").html('');
 		var brand_param={"corp_code":$("#OWN_CORP").val()};
@@ -369,7 +373,7 @@ jQuery(document).ready(function(){
 							}
 						}
 					}
-					var s=$("#OWN_BRAND").data("mybcode");
+					var s=$("#OWN_BRAND").attr("data-mybcode");
 					var c_input=$('.checkboxselect-container input');
 					if(flg_index==0){
 						var ss='';
@@ -377,8 +381,6 @@ jQuery(document).ready(function(){
 						ss = s.split(",");
 						for(var i=0;i<ss.length;i++){
 							for(var j=0;j<c_input.length;j++){
-								console.log($(c_input[j]).val());
-								console.log(ss[i]);
 								if($(c_input[j]).val()==ss[i]){
 									console.log($(c_input[j]).val());
 									$(c_input[j]).attr("checked",true);
@@ -407,6 +409,8 @@ $(".corp_select").click(function(){
 		$("#OWN_AREA").val('');
 		$("#OWN_BRAND").val('');
 		flg_index ++;
+		checknow_data=[];
+		checknow_namedata=[];
 		// var c_input=$('.checkboxselect-container input');
 		// for(var j=0;j<c_input.length;j++){
 		// 	$(c_input[j]).attr("checked",false);

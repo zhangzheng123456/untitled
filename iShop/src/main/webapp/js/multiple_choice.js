@@ -75,11 +75,11 @@ CheckboxSelect.prototype = {
         this.setPos();
         var _this = this, input = this.input,container = this.container;
         this.on(input,'click',function(e){
-            _this.onClick(e);
+            // _this.onClick(e);
         });
         $("#OWN_BRAND").parent().append(this.container);
-        this.onMouseover();
-        this.onMousedown();
+        // this.onMouseover();
+        // this.onMousedown();
         // blur会在click前发生，元素失去焦点
         this.on(container,'blur',function(e){
             _this.hide();
@@ -170,94 +170,94 @@ CheckboxSelect.prototype = {
         else if (window.XMLHttpRequest) {
             return new XMLHttpRequest();
         }
-    },
-    onClick:function(e){
-        var container = this.container, input = this.input, iCls = this.itemCls, aCls = this.activeCls,checkboxdata = this.checkboxdata ,hiddeninput = this.hiddeninput;
-        this.win = window;
-        this.doc = window.document;
-        this.items = [];
-        if(this.data.length>0){
-            this.container.innerHTML = '';
-            //循环增加子项并设置样式
-            for(var i=0,len=this.data.length;i<len;i++){
-                var item = this.$C('div');
-                this.attr(item, 'class', this.itemCls);
-                var tempinput = this.$C('input');
-                tempinput.type = 'checkbox';
-                tempinput.value = this.data[i];
-                tempinput.style='appearance:checkbox;-webkit-appearance:checkbox;width:14px;height:14px;-moz-appearance:checkbox;-ms-appearance:checkbox;';
-                this.on(tempinput,'click',function(e){
-                    var target = e.target || e.srcElement;
-                    if(target.checked){
-                        checkboxdata.push(target.value);
-                        input.value = checkboxdata.toString();
-                        if(hiddeninput)
-                            hiddeninput.value = checkboxdata.toString();
-                    }else{
-                        if(checkboxdata.length>0)
-                            checkboxdata.remove(target.value)
-                        input.value = checkboxdata.toString();
-                        if(hiddeninput)
-                            hiddeninput.value = checkboxdata.toString();
-                    }
-                });
-                //判断是否有初始选中
-                if(checkboxdata.length>0){
-                    for(var t=0;t<checkboxdata.length;t++){
-                        if(checkboxdata[t] === this.data[i])
-                            tempinput.checked = true;
-                    }
-                }
-                item.appendChild(tempinput);
-                item.appendChild(this.doc.createTextNode(this.data[i]))
-                this.items[i] = item;
-                this.container.appendChild(item);
-            }
-            this.show();
-        }
-    },
-    onMouseover: function(){
-        var _this = this, icls = this.itemCls, acls = this.activeCls;
-        this.on(this.container,'mouseover',function(e){
-            var target = e.target || e.srcElement;
-            if(target.className == icls){
-                if(_this.active){
-                    _this.active.className = icls;
-                }
-                target.className = acls;
-                _this.active = target;
-
-            }
-        });
-    },
-    onMousedown: function(){
-        var _this = this ;
-        var container = this.container, input = this.input, iCls = this.itemCls, aCls = this.activeCls,checkboxdata = this.checkboxdata ,hiddeninput = this.hiddeninput;
-        this.on(this.container,'mousedown',function(e){
-            var target = e.target || e.srcElement;
-            //首先判断target是何种类型
-            if(target.type === 'checkbox'){
-            }else{
-                if(container.childNodes.length>0){
-                    if(target.childNodes[0].checked){
-                        //如果第一个节点Checkbox是选中状态，则取消选中
-                        target.childNodes[0].checked = false;
-                        if(checkboxdata.length>0)
-                        checkboxdata.remove(target.childNodes[1].nodeValue)
-                        input.value = checkboxdata.toString();
-                        if(hiddeninput)
-                            hiddeninput.value = checkboxdata.toString();
-                    }
-                    else{
-                        //如果第一个节点Checkbox是未选中状态，则选中
-                        target.childNodes[0].checked = true;
-                        checkboxdata.push(target.childNodes[1].nodeValue);
-                        input.value = checkboxdata.toString();
-                        if(hiddeninput)
-                            hiddeninput.value = checkboxdata.toString();
-                    }
-                }
-            }
-        });
     }
+    // onClick:function(e){
+    //     var container = this.container, input = this.input, iCls = this.itemCls, aCls = this.activeCls,checkboxdata = this.checkboxdata ,hiddeninput = this.hiddeninput;
+    //     this.win = window;
+    //     this.doc = window.document;
+    //     this.items = [];
+    //     if(this.data.length>0){
+    //         this.container.innerHTML = '';
+    //         //循环增加子项并设置样式
+    //         for(var i=0,len=this.data.length;i<len;i++){
+    //             var item = this.$C('div');
+    //             this.attr(item, 'class', this.itemCls);
+    //             var tempinput = this.$C('input');
+    //             tempinput.type = 'checkbox';
+    //             tempinput.value = this.data[i];
+    //             tempinput.style='appearance:checkbox;-webkit-appearance:checkbox;width:14px;height:14px;-moz-appearance:checkbox;-ms-appearance:checkbox;';
+    //             this.on(tempinput,'click',function(e){
+    //                 var target = e.target || e.srcElement;
+    //                 if(target.checked){
+    //                     checkboxdata.push(target.value);
+    //                     input.value = checkboxdata.toString();
+    //                     if(hiddeninput)
+    //                         hiddeninput.value = checkboxdata.toString();
+    //                 }else{
+    //                     if(checkboxdata.length>0)
+    //                         checkboxdata.remove(target.value)
+    //                     input.value = checkboxdata.toString();
+    //                     if(hiddeninput)
+    //                         hiddeninput.value = checkboxdata.toString();
+    //                 }
+    //             });
+    //             //判断是否有初始选中
+    //             if(checkboxdata.length>0){
+    //                 for(var t=0;t<checkboxdata.length;t++){
+    //                     if(checkboxdata[t] === this.data[i])
+    //                         tempinput.checked = true;
+    //                 }
+    //             }
+    //             item.appendChild(tempinput);
+    //             item.appendChild(this.doc.createTextNode(this.data[i]))
+    //             this.items[i] = item;
+    //             this.container.appendChild(item);
+    //         }
+    //         this.show();
+    //     }
+    // },
+    // onMouseover: function(){
+    //     var _this = this, icls = this.itemCls, acls = this.activeCls;
+    //     this.on(this.container,'mouseover',function(e){
+    //         var target = e.target || e.srcElement;
+    //         if(target.className == icls){
+    //             if(_this.active){
+    //                 _this.active.className = icls;
+    //             }
+    //             target.className = acls;
+    //             _this.active = target;
+
+    //         }
+    //     });
+    // },
+    // onMousedown: function(){
+    //     var _this = this ;
+    //     var container = this.container, input = this.input, iCls = this.itemCls, aCls = this.activeCls,checkboxdata = this.checkboxdata ,hiddeninput = this.hiddeninput;
+    //     this.on(this.container,'mousedown',function(e){
+    //         var target = e.target || e.srcElement;
+    //         //首先判断target是何种类型
+    //         if(target.type === 'checkbox'){
+    //         }else{
+    //             if(container.childNodes.length>0){
+    //                 if(target.childNodes[0].checked){
+    //                     //如果第一个节点Checkbox是选中状态，则取消选中
+    //                     target.childNodes[0].checked = false;
+    //                     if(checkboxdata.length>0)
+    //                     checkboxdata.remove(target.childNodes[1].nodeValue)
+    //                     input.value = checkboxdata.toString();
+    //                     if(hiddeninput)
+    //                         hiddeninput.value = checkboxdata.toString();
+    //                 }
+    //                 else{
+    //                     //如果第一个节点Checkbox是未选中状态，则选中
+    //                     target.childNodes[0].checked = true;
+    //                     checkboxdata.push(target.childNodes[1].nodeValue);
+    //                     input.value = checkboxdata.toString();
+    //                     if(hiddeninput)
+    //                         hiddeninput.value = checkboxdata.toString();
+    //                 }
+    //             }
+    //         }
+    //     });
+    // }
 }
