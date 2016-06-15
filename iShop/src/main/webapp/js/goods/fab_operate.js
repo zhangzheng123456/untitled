@@ -54,26 +54,15 @@ var oc = new ObjectControl();
 	fabjs.bindbutton=function(){
 		$(".shopadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(fabjs.firstStep()){
-				var STORE_ID=$("#STORE_ID").val();
-				var STORE_NAME=$("#STORE_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_AREA=$("#OWN_AREA").data("myacode");
-				var OWN_BRAND=$("#OWN_BRAND").data("mybcode");
-				var is_zhiying=$("#FLG_TOB").val();
-				var FLG_TOB="";
-				if(is_zhiying=="是"){
-					FLG_TOB="Y";
-				}else if(is_zhiying=="否"){
-					FLG_TOB="Y";
-				}
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
-				if(input.checked==true){
-					ISACTIVE="Y";
-				}else if(input.checked==false){
-					ISACTIVE="N";
-				}
-				var _command="/shop/add";//接口名
+				var GOODS_CODE=$("#GOODS_CODE").val();
+				var GOODS_NAME=$("#GOODS_NAME").val();
+				var GOODS_PRICE=$("#GOODS_PRICE").val();
+				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
+				var GOODS_BAND=$("#GOODS_BAND").val();
+				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
+				var GOODS_BUYPOINT=$("#GOODS_BUYPOINT").val();
+				var _command="/goods/fab/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 

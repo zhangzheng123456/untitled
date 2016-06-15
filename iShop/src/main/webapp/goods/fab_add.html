@@ -38,13 +38,13 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">商品编号*</label><input type="text" id="GOOD_CODE"/></span>
+                        <span><label style="color:#c26555;">商品编号*</label><input type="text" id="GOODS_CODE"/></span>
                     </div>
                     <div>
-                        <span><label>商品名称</label><input type="text" id="GOOD_NAME" /></span>
+                        <span><label>商品名称</label><input type="text" id="GOODS_NAME" /></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">价格*</label><input type="text" id="GOOD_PRICE"/></span>
+                        <span><label style="color:#c26555;">价格*</label><input type="text" id="GOODS_PRICE"/></span>
                     </div>
                     <div>
                         <span><label style="margin-right:14px;">商品图片</label></span>
@@ -53,13 +53,16 @@
                         </span>
                     </div>
                     <div>
-                        <span><label>季度</label><input type="text" id="GOOD_QUARTER"/></span>
+                        <span><label>季度</label><input type="text" id="GOODS_QUARTER"/></span>
                     </div>
                     <div>
-                        <span><label>波段</label><input type="text" id="GOOD_BAND"/></span>
+                        <span><label>波段</label><input type="text" id="GOODS_BAND"/></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">商品买点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOOD_BUYPOINT"></textarea></span></span>
+                        <span><label>发布时间</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/></span>
+                    </div>
+                    <div>
+                    <span style="display: inline-flex;width:100%"><label style="height:180px;">商品买点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOODS_BUYPOINT"></textarea></span></span>
                     </div>
                 </form>
             </div>
@@ -108,6 +111,8 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <script type="text/javascript" src="../js/goods/fab_operate.js"></script>
+    <!-- 日期选择器 -->
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>
 
 </html>
