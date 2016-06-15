@@ -7,9 +7,12 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
         body{
             margin-top:81px;
@@ -54,8 +57,12 @@
                     <div>
                         <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
                     </div>
-                    <div>
+                   <!--  <div>
                         <span><label>日期</label><input type="text" id="DATE" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="日期为必填项，不能为空！"></div></div></span>
+                    </div> -->
+
+                     <div>
+                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/></span>
                     </div>
                 </form>
             </div>
@@ -92,14 +99,32 @@
     <!-- side_menu -->
     <script type="text/javascript" src="../js/side_menu.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
     <!-- Custom and plugin javascript -->
-    <script src="../js/hplus.js?v=2.2.0"></script>
+    <!-- <script src="../js/hplus.js?v=2.2.0"></script> -->
     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
+    <!-- 图片上传(支持批量) -->
+    <script type="text/javascript" src="../js/webuploader.html5only.min.js"></script>
+    <script type="text/javascript" src="../js/diyUpload.js"></script>
+    <script type="text/javascript">
+        $('#test').diyUpload({
+            url:'server/fileupload.php',
+            success:function( data ) {
+                console.info( data );
+            },
+            error:function( err ) {
+                console.info( err );
+            }
+        });
+    </script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+
     <!-- con_arrow -->
-    <script type="text/javascript" src="../js/con_arrow.js"></script>
+    <!-- <script type="text/javascript" src="../js/con_arrow.js"></script>
     <script type="text/javascript">
         $(function(){
             $('#side-menu li:nth-of-type(4)').addClass('active');
@@ -107,13 +132,18 @@
             $('.active ul li:nth-of-type(2)').addClass('select_index');
             $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
         })
-    </script>
-    <!-- Dialog -->
-    <script type="text/javascript" src="../js/jquery.artDialog.js"></script>
+    </script> -->
     <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+
+    <!-- Dialog -->
+    <!-- <script type="text/javascript" src="../js/jquery.artDialog.js"></script> -->
     <!-- error tips -->
     <script type="text/javascript" src="../js/achv/staffgoal.js"></script>
+    <!-- 日期选择器 -->
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>
 
 </html>
