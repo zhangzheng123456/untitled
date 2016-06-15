@@ -274,7 +274,7 @@ public class BrandController {
     }
 
 
-    @RequestMapping(value = "Brand_codeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/Brand_codeExist", method = RequestMethod.POST)
     @ResponseBody
     public String Brand_codeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -305,7 +305,7 @@ public class BrandController {
     }
 
 
-    @RequestMapping(value = "Brand_nameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/Brand_nameExist", method = RequestMethod.POST)
     @ResponseBody
     public String Brand_nameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

@@ -317,7 +317,7 @@ public class CorpController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "CorpNameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/CorpNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String CorpExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -348,7 +348,7 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "Corp_codeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/Corp_codeExist", method = RequestMethod.POST)
     @ResponseBody
     public String Corp_codeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

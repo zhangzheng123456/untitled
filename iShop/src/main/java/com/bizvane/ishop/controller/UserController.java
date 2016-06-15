@@ -528,7 +528,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "UserCodeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/UserCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String UserCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -559,7 +559,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "UserNameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/UserNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String UserNameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -590,7 +590,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "PhoneExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/PhoneExist", method = RequestMethod.POST)
     @ResponseBody
     public String PhoneExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -621,7 +621,7 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "EamilExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/EamilExist", method = RequestMethod.POST)
     @ResponseBody
     public String EamilExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
