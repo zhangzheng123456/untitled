@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
@@ -54,9 +55,14 @@
                             </ul>
                         </span>
                     </div>
-                    <div>
+                    <!-- <div>
                         <span><label>日期</label><input type="text" id="DATE" verify="Empty"placeholder="2016/01/01"/><div style="padding-left:135px" class="hint"><div  hintinfo="日期为必填项，不能为空！"></div></div></span>
+                    </div> -->
+
+                    <div>
+                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/></span>
                     </div>
+
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
@@ -86,8 +92,23 @@
     <script src="../js/hplus.js?v=2.2.0"></script>
      <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
+
+    <script type="text/javascript" src="../js/webuploader.html5only.min.js"></script>
+    <script type="text/javascript" src="../js/diyUpload.js"></script>
+    <script type="text/javascript">
+        $('#test').diyUpload({
+            url:'server/fileupload.php',
+            success:function( data ) {
+                console.info( data );
+            },
+            error:function( err ) {
+                console.info( err );
+            }
+        });
+    </script>
+
     <!-- con_arrow -->
-    <script type="text/javascript" src="../js/con_arrow.js"></script>
+   <!--  <script type="text/javascript" src="../js/con_arrow.js"></script> -->
     <!-- Dialog -->
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
@@ -96,6 +117,8 @@
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/achv/shopgoal.js"></script>
+    <!-- 日期选择器 -->
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>
 
 </html>
