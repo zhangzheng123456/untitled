@@ -249,12 +249,6 @@ jQuery(document).ready(function(){
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
 	});
- //    $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
-	// 	$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-	// });
-	// $(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
-	// 	$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-	// });
 });
 
 //     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
