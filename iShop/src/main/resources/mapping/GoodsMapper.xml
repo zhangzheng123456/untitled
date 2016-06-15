@@ -2,50 +2,102 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.GoodsMapper">
 
+    <resultMap id="GoodsInfo" type="com.bizvane.ishop.entity.Goods">
+        <id column="id" property="id"/>
+        <result column="goods_code" property="goods_code"/>
+        <result column="goods_name" property="goods_name"/>
+        <result column="goods_image" property="goods_image"/>
+        <result column="goods_price" property="goods_price"/>
+        <result column="goods_time" property="goods_time"/>
+        <result column="goods_quarter" property="goods_quarter"/>
+        <result column="goods_wave" property="goods_wave"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="isActive" property="isActive"/>
+        <result column="created_date" property="created_date"/>
+        <result column="creater" property="creater"/>
+        <result column="goods_description" property="goods_description"/>
+    </resultMap>
+    <select id="selectAllGoods" resultMap="GoodsInfo">
+        SELECT * FROM DEF_GOODS
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            AND corp_code=#{corp_code}
+        </if>
+        <if test="search_value!=null and search_value!=''">
+            AND goods_code LIKE concat('%',#{search_value},'%')
+            OR goods_name LIKE concat('%',#{search_value},'%')
+            OR goods_image LIKE concat('%',#{search_value},'%')
+            OR goods_price LIKE concat('%',#{search_value},'%')
+            OR goods_time LIKE concat('%',#{search_value},'%')
+            OR goods_quarter LIKE concat('%',#{search_value},'%')
+            OR goods_wave LIKE concat('%',#{search_value},'%')
+            OR modified_date LIKE concat('%',#{search_value},'%')
+            OR modifier LIKE concat('%',#{search_value},'%')
+            OR isActive LIKE concat('%',#{search_value},'%')
+            OR created_date LIKE concat('%',#{search_value},'%')
+            OR creater LIKE concat('%',#{search_value},'%')
+            OR goods_description LIKE concat('%',#{search_value},'%')
+
+        </if>
+        ORDER BY id
+    </select>
+
+
     <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.Goods">
          select *
          from DEF_GOODS
          WHERE ID=#{id}
     </select>
 
+    <select id="getGoodsByCode" resultType="com.bizvane.ishop.entity.Goods">
+        SELECT *
+        FROM DEF_GOODS
+        WHERE goods_code=#{goods_code}
+        AND  corp_code=#{corp_code}
+    </select>
+
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Goods">
         insert into DEF_GOODS
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="goods_code!=null">
+            <if test="goods_code!=null  and goods_code!=''">
                 goods_code,
             </if>
-            <if test="goods_name!=null">
+            <if test="goods_name!=null  and goods_name!=''">
                 goods_name,
             </if>
-            <if test="goods_image!=null" >
+            <if test="goods_image!=null   and goods_image!=''">
                 goods_image,
             </if>
-            <if test="goods_price!=null">
+            <if test="goods_price!=null  and goods_price!=''">
                 goods_price,
             </if>
-            <if test="goods_time!=null ">
+            <if test="goods_time!=null  ">
                 goods_time,
             </if>
-            <if test="goods_quarter!=null">
+            <if test="goods_quarter!=null  and goods_quarter!=''">
                 goods_quarter,
             </if>
-            <if test="goods_wave!=null">
+            <if test="goods_wave!=null  and goods_wave!=''">
                 goods_wave,
             </if>
             <if test="modified_date!=null">
                 modified_date,
             </if>
-            <if test="modifier!=null">
+            <if test="modifier!=null  and modifier!=''">
                 modifier,
             </if>
-            <if test="isActive!=null">
+            <if test="isActive!=null  and isActive!=''">
                 isActive,
             </if>
             <if test="created_date!=null">
                 created_date,
             </if>
-            <if test="creater!=null">
+            <if test="creater!=null  and creater!=''">
                 creater,
+            </if>
+            <if test="goods_description!=null and goods_description!=''">
+                goods_description,
             </if>
 
         </trim>
@@ -56,7 +108,7 @@
             <if test="goods_name!=null">
                 #{goods_name},
             </if>
-            <if test="goods_image!=null" >
+            <if test="goods_image!=null">
                 #{goods_image},
             </if>
             <if test="goods_price!=null">
@@ -86,6 +138,9 @@
             <if test="creater!=null">
                 #{creater},
             </if>
+            <if test="goods_description!=null and goods_description!=''">
+                #{goods_description},
+            </if>
         </trim>
     </insert>
 
@@ -98,7 +153,7 @@
             <if test="goods_name!=null and goods_name!=''">
                 goods_name=#{goods_name},
             </if>
-            <if test="goods_image!=null and goods_image!=''" >
+            <if test="goods_image!=null and goods_image!=''">
                 goods_image=#{goods_image},
             </if>
             <if test="goods_price!=null and goods_price!=''">
@@ -125,8 +180,11 @@
             <if test="created_date!=null">
                 created_date=#{created_date},
             </if>
-            <if test="creater!=null and creater!=''" >
+            <if test="creater!=null and creater!=''">
                 creater=#{creater},
+            </if>
+            <if test="goods_description!=null and goods_description!=''">
+                goods_description=#{goods_description},
             </if>
         </trim>
         where id=#{id}

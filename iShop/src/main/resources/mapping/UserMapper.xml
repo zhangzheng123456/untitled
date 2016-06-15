@@ -159,8 +159,8 @@
         DEF_GROUP.group_name
         FROM DEF_USER,DEF_GROUP
         where DEF_USER.group_code = DEF_GROUP.group_code
-        AND CORP_CODE = #{corp_code}
-        AND store_code like #{search_value}
+        AND DEF_USER.CORP_CODE = #{corp_code}
+        AND DEF_USER.store_code like #{search_value}
         AND DEF_USER.ISACTIVE = 'Y'
     </select>
 

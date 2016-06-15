@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Goods;
+import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 
@@ -15,4 +16,8 @@ public interface GoodsService {
     int update(Goods goods) throws SQLException;
 
     int delete(int id) throws SQLException;
+
+    PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+
+    Goods getGoodsByCode(String corp_code, String goods_code);
 }

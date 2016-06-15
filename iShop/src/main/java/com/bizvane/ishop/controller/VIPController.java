@@ -357,6 +357,7 @@ public class VIPController {
     @ResponseBody
     public String callBackManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String id = "";
         try {
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
@@ -365,12 +366,26 @@ public class VIPController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             // org.json.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VIPtag> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = vipTagService.selectBySearch(page_number, page_size, "", "");
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = vipTagService.selectBySearch(page_number, page_size, corp_code, "");
+            }
+            result.put("list", JSON.toJSONString(list));
+            result.put("actions", actions);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
-
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
         }
-
-        return "callback";
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -380,6 +395,9 @@ public class VIPController {
     @RequestMapping(value = "/callback/add", method = RequestMethod.GET)
     @ResponseBody
     public String addCallBack(HttpServletRequest request) {
+
+
+
         return "callback_add";
     }
 

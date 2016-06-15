@@ -18,10 +18,10 @@ public class Goods {
     private float goods_price;
     //商品时间
     private String goods_time;
-    //商品
+    //商品季度
     private String goods_quarter;
-
-    private  String goods_wave;
+    //波段
+    private String goods_wave;
     //修改日期
     private Date modified_date;
     //修改人
@@ -32,8 +32,10 @@ public class Goods {
     private Date created_date;
     //创建者
     private String creater;
+    //商品描述
+    private String goods_description;
 
-    public Goods( ) {
+    public Goods() {
     }
 
     public int getId() {
@@ -141,5 +143,14 @@ public class Goods {
 
     public void setModifier(String modifier) {
         this.modifier = modifier;
+    }
+
+
+    public String getGoods_description() {
+        return goods_description;
+    }
+
+    public void setGoods_description(String goods_description) {
+        this.goods_description = goods_description;
     }
 }

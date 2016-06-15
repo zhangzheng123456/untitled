@@ -3,10 +3,13 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.dao.GoodsMapper;
 import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.service.GoodsService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by lixiang on 2016/5/30.
@@ -16,7 +19,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private GoodsMapper goodsMapper;
 
-    private static  final org.apache.log4j.Logger log= org.apache.log4j.Logger.getLogger(GoodsServiceImpl.class);
+    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(GoodsServiceImpl.class);
 
 
     public GoodsServiceImpl() {
@@ -40,5 +43,21 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public int delete(int id) throws SQLException {
         return goodsMapper.deleteByPrimaryKey(id);
+    }
+
+    @Override
+    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
+        List<Goods> list;
+        PageHelper.startPage(page_number, page_size);
+        list = goodsMapper.selectAllGoods(corp_code, search_value);
+        PageInfo<Goods> page = new PageInfo<Goods>(list);
+
+        return page;
+    }
+
+    @Override
+    public Goods getGoodsByCode(String corp_code, String goods_code) {
+        Goods goods = this.goodsMapper.getGoodsByCode(corp_code, goods_code);
+        return goods;
     }
 }

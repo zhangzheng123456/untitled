@@ -260,7 +260,6 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String shop_id = jsonObject.get("id").toString();
-
             data = JSON.toJSONString(storeService.getStoreById(Integer.parseInt(shop_id)));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
