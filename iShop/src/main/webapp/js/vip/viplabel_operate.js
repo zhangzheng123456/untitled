@@ -78,7 +78,7 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
-			if(rolejs.firstStep()){
+			if(viplabeljs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -102,7 +102,7 @@ var oc = new ObjectControl();
 					}
 				};
 				var _params={"id":ID,"corp_code":OWN_CORP,"label_name":LABEL_NAME,"label_type":LABEL_TYPE,"isactive":ISACTIVE};
-				rolejs.ajaxSubmit(_command,_params,opt);
+				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
@@ -170,15 +170,15 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="编辑会员标签"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/user/role/select";
+		var _command="/VIP/label/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var ROLE_NUM=$("#ROLE_NUM").val(msg.role_code);
-				var ROLE_NAME=$("#ROLE_NAME").val(msg.role_name);
-				var BEIZHU=$("#BEIZHU").val(msg.remark);
+				var OWN_CORP=$("#OWN_CORP").val(msg.role_code);
+				var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
+				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
@@ -188,9 +188,9 @@ jQuery(document).ready(function(){
 				var modify_time=$("#modify_time").val(msg.modified_date);
 				var modifier=$("#modifier").val(msg.modifier);			
 
-				$("#ROLE_NUM").val(msg.role_code);
-				$("#ROLE_NAME").val(msg.role_name);
-				$("#BEIZHU").val(msg.remark);
+				$("#OWN_CORP").val(msg.corp_code);
+				$("#LABEL_NAME").val(msg.label_name);
+				$("#LABEL_TYPE").val(msg.label_type);
 				// $("#OWN_DOCU").val(msg.own_docu);
 				
 				$("#created_time").val(msg.created_date);
