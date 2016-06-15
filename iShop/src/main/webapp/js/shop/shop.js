@@ -66,7 +66,7 @@ var oc = new ObjectControl();
 				if(is_zhiying=="是"){
 					FLG_TOB="Y";
 				}else if(is_zhiying=="否"){
-					FLG_TOB="Y";
+					FLG_TOB="N";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -102,7 +102,7 @@ var oc = new ObjectControl();
 				if(is_zhiying=="是"){
 					FLG_TOB="Y";
 				}else if(is_zhiying=="否"){
-					FLG_TOB="Y";
+					FLG_TOB="N";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -186,8 +186,13 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				checknow_data.push(msg.brand_code);
-				checknow_namedata.push(msg.brand_name);
+				if(msg.brand_code.indexOf(',')!==-1){
+					checknow_data=msg.brand_code.split(",");
+					checknow_namedata=msg.brand_name.split(",");
+				}else{
+					checknow_data.push(msg.brand_code);
+					checknow_namedata.push(msg.brand_name);
+				}
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_BRAND").val(msg.brand_name);
@@ -329,7 +334,6 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	
 	$("#OWN_BRAND").click(function(){
 		$(".checkboxselect-container").html('');
 		var brand_param={"corp_code":$("#OWN_CORP").val()};
@@ -361,13 +365,14 @@ jQuery(document).ready(function(){
 						check_input[c].onclick=function(){
 							if(this.checked==true){
 								checknow_data.push($(this).val())
-								checknow_namedata.push($(this).data("brandname"));
-								console.log(checknow_namedata);
+								checknow_namedata.push($(this).attr("data-brandname"));
 								$('#OWN_BRAND').val(checknow_namedata.toString());
 								$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
-							}else{
-								checknow_namedata.remove($(this).data("brandname"));
+							}else if(this.checked==false){
+								checknow_namedata.remove($(this).attr("data-brandname"));
 								checknow_data.remove($(this).val());
+								console.log(checknow_data);
+								console.log(checknow_namedata);
 								$('#OWN_BRAND').val(checknow_namedata.toString());
 								$('#OWN_BRAND').attr('data-mybcode',checknow_data.toString());
 							}
@@ -377,12 +382,19 @@ jQuery(document).ready(function(){
 					var c_input=$('.checkboxselect-container input');
 					if(flg_index==0){
 						var ss='';
-						console.log(s.split(',').length-1);
-						ss = s.split(",");
-						for(var i=0;i<ss.length;i++){
+						if(s.indexOf(',')!==-1){
+							ss = s.split(",");
+							for(var i=0;i<ss.length;i++){
+								for(var j=0;j<c_input.length;j++){
+									if($(c_input[j]).val()==ss[i]){
+										$(c_input[j]).attr("checked",true);
+									}
+								}
+							}
+						}else{
+							ss=s;
 							for(var j=0;j<c_input.length;j++){
-								if($(c_input[j]).val()==ss[i]){
-									console.log($(c_input[j]).val());
+								if($(c_input[j]).val()==ss){
 									$(c_input[j]).attr("checked",true);
 								}
 							}
