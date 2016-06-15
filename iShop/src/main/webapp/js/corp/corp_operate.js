@@ -20,7 +20,6 @@ var oc = new ObjectControl();
 		}
 	};
 	corpjs.checkPhone = function(obj,hint){
-		console.log()
 		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
 		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
 		if(!this.isEmpty(obj)){
@@ -37,7 +36,7 @@ var oc = new ObjectControl();
 		}
 	};
 	corpjs.checkCode=function(obj,hint){
-		var isCode=/^[C]{1}[0-9]{7}$/;
+		var isCode=/^[C]{1}[0-9]{1,7}$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
 				this.hiddenHint(hint);
@@ -69,8 +68,24 @@ var oc = new ObjectControl();
 	};
 	corpjs.bindbutton=function(){
 		$(".corpadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#CORPNAME").attr("data-mark");
+			var codeMark=$("#CORPID").attr("data-mark");
+			console.log(nameMark);
 			if(corpjs.firstStep()){
-				// var CORPID=$("#CORPID").val();
+				if(nameMark=="N"||codeMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#CORPNAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#CORPID").next('.hint').children();
+						div.html("该编号已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+	            }
+				var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
@@ -95,7 +110,18 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".corpedit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#CORPNAME").attr("data-mark");
+			var codeMark=$("#CORPID").attr("data-mark");
+			console.log(nameMark);
 			if(corpjs.firstStep()){
+				if(nameMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#CORPNAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+	            }
 				var ID=sessionStorage.getItem("id");
 				var HEADPORTRAIT=$("#preview img").attr("src");
 				var CORPID=$("#CORPID").val();
@@ -107,7 +133,7 @@ var oc = new ObjectControl();
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
-					ISACTIVE="N";
+						ISACTIVE="N";
 				}
 				var _command="/corp/edit";//接口名
 				var opt = {//返回成功后的操作s
@@ -195,11 +221,11 @@ jQuery(document).ready(function(){
 				$("#CORPADDRESS").val(msg.address);
 				$("#CONTACTS").val(msg.contact);
 				$("#PHONE").val(msg.contact_phone);
-
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
+				$("#CORPNAME").attr("data-name",msg.corp_name);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -219,23 +245,44 @@ jQuery(document).ready(function(){
 	var val=sessionStorage.getItem("key");
 	val=JSON.parse(val);
     var message=JSON.parse(val.message);
-    $("#CORPID").blur(function(){
-    	var corp_code=$("#CORPID").val();
+    $("input[verify='Code']").blur(function(){
+    	var isCode=/^[C]{1}[0-9]{1,7}$/;
     	var _params={};
-    	_params["corp_code"]=corp_code;
-    	oc.postRequire("post","/corp/Corp_codeExist","", _params, function(data){
-            console.log(data);
-    	})
-
+    	var corp_code=$(this).val();
+		if(corp_code!==""&&isCode.test(corp_code)==true){
+	    	console.log(corp_code);
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/corp/Corp_codeExist","", _params, function(data){
+	               if(data.code=="0"){
+	                    div.html("");
+	                    $("#CORPID").attr("data-mark","Y");
+	               }else if(data.code=="-1"){
+	               		$("#CORPID").attr("data-mark","N");
+	               		div.addClass("error_tips");
+						div.html("该编号已经存在！");	
+	               }
+		    })
+		}
     })
     $("#CORPNAME").blur(function(){
     	var corp_name=$("#CORPNAME").val();
-    	var _params={};
-    	_params["corp_name"]=corp_name;
-    	oc.postRequire("post","/corp/Corp_codeExist","", _params, function(data){
-            console.log(data);
-    	})
-
+    	var corp_name1=$("#CORPNAME").attr("data-name");
+    	var div=$(this).next('.hint').children();
+    	if(corp_name!==""&&corp_name!==corp_name1){
+	    	var _params={};
+	    	_params["corp_name"]=corp_name;
+	    	oc.postRequire("post","/corp/CorpNameExist","", _params, function(data){
+	            if(data.code=="0"){
+	            	div.html("");
+	            	$("#CORPNAME").attr("data-mark","Y");
+	            }else if(data.code=="-1"){
+	            	div.html("该名称已经存在！")
+	            	div.addClass("error_tips");
+	            	$("#CORPNAME").attr("data-mark","N");
+	            }
+	    	})
+	    }
     })
     if(message.user_type=="admin"){
     	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
