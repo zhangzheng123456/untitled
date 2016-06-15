@@ -19,15 +19,14 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	shopjs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	shopjs.checkCode=function(obj,hint){
+		var isCode=/^[D]{1}[0-9]{1,7}$/;
 		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
+			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
+				this.displayHint(hint,"请以大写字母D开头从一位到七位之间的数字!");
 				return false;
 			}
 		}else{
@@ -251,6 +250,48 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	$("input[verify='Code']").blur(function(){
+    	var isCode=/^[D]{1}[0-9]{1,7}$/;
+    	var _params={};
+    	var store_code=$(this).val();//店仓编号
+    	var corp_code=$("#OWN_CORP").val();//公司编号
+		if(store_code!==""&&isCode.test(store_code)==true){
+			_params["store_code"]=store_code;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/store/Store_CodeExist","", _params, function(data){
+	               if(data.code=="0"){
+	                    div.html("");
+	                    $("#STORE_ID").attr("data-mark","Y");
+	               }else if(data.code=="-1"){
+	               		$("#STORE_ID").attr("data-mark","N");
+	               		div.addClass("error_tips");
+						div.html("该编号已经存在！");	
+	               }
+		    })
+		}
+    })
+    $("#STORE_NAME").blur(function(){
+    	var store_name=$("#STORE_NAME").val();
+    	var store_name1=$("#STORE_NAME").attr("data-name");
+    	var div=$(this).next('.hint').children();
+    	var corp_code=$("#OWN_CORP").val();
+    	if(store_name!==""&&store_name!==store_name1){
+	    	var _params={};
+	    	_params["store_name"]=store_name;
+	    	_params["corp_code"]=corp_code;
+	    	oc.postRequire("post","/store/Store_NameExist","", _params, function(data){
+	            if(data.code=="0"){
+	            	div.html("");
+	            	$("#STORE_NAME").attr("data-mark","Y");
+	            }else if(data.code=="-1"){
+	            	div.html("该名称已经存在！")
+	            	div.addClass("error_tips");
+	            	$("#STORE_NAME").attr("data-mark","N");
+	            }
+	    	})
+	    }
+    })
 	$("#OWN_AREA").click(function(){
 		$("#area_select").html('');
 		 $(this).parent().children('ul').toggle();

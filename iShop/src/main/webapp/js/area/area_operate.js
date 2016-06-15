@@ -52,9 +52,22 @@ var oc = new ObjectControl();
 	};
 	areajs.bindbutton=function(){
 		$(".areaadd_oper_btn ul li:nth-of-type(1)").click(function(){
-			var nameMark=$("#AREA_ID").attr("data-mark");
-			var codeMark=$("#CORPID").attr("data-mark");
+			var nameMark=$("#AREA_NAME").attr("data-mark");//区域编号是否唯一的标志
+			var codeMark=$("#AREA_ID").attr("data-mark");//区域名称是否唯一的标志
 			if(areajs.firstStep()){
+				if(nameMark=="N"||codeMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#AREA_NAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#AREA_ID").next('.hint').children();
+						div.html("该编号已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+				}
 				var AREA_ID=$("#AREA_ID").val();
 				var AREA_NAME=$("#AREA_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -78,7 +91,14 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".areaedit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#AREA_NAME").attr("data-mark");//区域编号是否唯一的标志
 			if(areajs.firstStep()){
+				if(nameMark=="N"){
+					var div=$("#AREA_NAME").next('.hint').children();
+					div.html("该名称已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
 				var ID=sessionStorage.getItem("id");
 				var AREA_ID=$("#AREA_ID").val();
 				var AREA_NAME=$("#AREA_NAME").val();
@@ -225,9 +245,9 @@ jQuery(document).ready(function(){
 			oc.postRequire("post","/area/Area_codeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
-	                    $("#CORPID").attr("data-mark","Y");
+	                    $("#AREA_ID").attr("data-mark","Y");
 	               }else if(data.code=="-1"){
-	               		$("#CORPID").attr("data-mark","N");
+	               		$("#AREA_ID").attr("data-mark","N");
 	               		div.addClass("error_tips");
 						div.html("该编号已经存在！");	
 	               }
@@ -236,20 +256,22 @@ jQuery(document).ready(function(){
     })
     //验证名称是否唯一
     $("#AREA_NAME").blur(function(){
+    	var corp_code=$("#OWN_CORP").val();
     	var area_name=$("#AREA_NAME").val();
     	var area_name1=$("#AREA_NAME").attr("data-name");
     	var div=$(this).next('.hint').children();
-    	if(corp_name!==""&&area_name!==area_name1){
+    	if(area_name!==""&&area_name!==area_name1){
 	    	var _params={};
 	    	_params["area_name"]=area_name;
+	    	_params["corp_code"]=corp_code;
 	    	oc.postRequire("post","/area/Area_nameExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
-	            	$("#CORPNAME").attr("data-mark","Y");
+	            	$("#AREA_NAME").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
 	            	div.html("该名称已经存在！")
 	            	div.addClass("error_tips");
-	            	$("#CORPNAME").attr("data-mark","N");
+	            	$("#AREA_NAME").attr("data-mark","N");
 	            }
 	    	})
 	    }

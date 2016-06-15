@@ -19,15 +19,14 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	brandjs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	brandjs.checkCode=function(obj,hint){
+		var isCode=/^[B]{1}[0-9]{1,7}$/;
 		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
+			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
+				this.displayHint(hint,"请以大写字母B开头从一位到七位之间的数字!");
 				return false;
 			}
 		}else{
@@ -53,7 +52,22 @@ var oc = new ObjectControl();
 	};
 	brandjs.bindbutton=function(){
 		$(".brandadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#BRAND_NAME").attr("data-mark");//区域编号是否唯一的标志
+			var codeMark=$("#BRAND_ID").attr("data-mark");//区域名称是否唯一的标志
 			if(brandjs.firstStep()){
+				if(nameMark=="N"||codeMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#BRAND_NAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#BRAND_ID").next('.hint').children();
+						div.html("该编号已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+				}
 				var BRAND_ID=$("#BRAND_ID").val();
 				var BRAND_NAME=$("#BRAND_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -77,7 +91,14 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".brandedit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#BRAND_NAME").attr("data-mark");//区域名称是否唯一的标志
 			if(brandjs.firstStep()){
+				if(nameMark=="N"){
+					var div=$("#BRAND_NAME").next('.hint').children();
+					div.html("该名称已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
 				var ID=sessionStorage.getItem("id");
 				var BRAND_ID=$("#BRAND_ID").val();
 				var BRAND_NAME=$("#BRAND_NAME").val();
@@ -162,9 +183,9 @@ jQuery(document).ready(function(){
 				console.log(msg);
 				$("#BRAND_ID").val(msg.brand_code);
 				$("#BRAND_NAME").val(msg.brand_name);
+				$("#BRAND_NAME").attr("data-name",msg.brand_name);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
-
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -210,6 +231,48 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	$("input[verify='Code']").blur(function(){
+    	var isCode=/^[B]{1}[0-9]{1,7}$/;
+    	var _params={};
+    	var brand_code=$(this).val();
+    	var corp_code=$("#OWN_CORP").val();
+		if(brand_code!==""&&isCode.test(brand_code)==true){
+			_params["brand_code"]=brand_code;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/brand/Brand_codeExist","", _params, function(data){
+	               if(data.code=="0"){
+	                    div.html("");
+	                    $("#BRAND_ID").attr("data-mark","Y");
+	               }else if(data.code=="-1"){
+	               		$("#BRAND_ID").attr("data-mark","N");
+	               		div.addClass("error_tips");
+						div.html("该编号已经存在！");	
+	               }
+		    })
+		}
+    })
+    $("#BRAND_NAME").blur(function(){
+    	var brand_name=$("#BRAND_NAME").val();
+    	var brand_name1=$("#BRAND_NAME").attr("data-name");
+    	var div=$(this).next('.hint').children();
+    	var corp_code=$("#OWN_CORP").val();
+    	if(brand_name!==""&&brand_name!==brand_name1){
+	    	var _params={};
+	    	_params["brand_name"]=brand_name;
+	    	_params["corp_code"]=corp_code;
+	    	oc.postRequire("post","/brand/Brand_nameExist","", _params, function(data){
+	            if(data.code=="0"){
+	            	div.html("");
+	            	$("#BRAND_NAME").attr("data-mark","Y");
+	            }else if(data.code=="-1"){
+	            	div.html("该名称已经存在！")
+	            	div.addClass("error_tips");
+	            	$("#BRAND_NAME").attr("data-mark","N");
+	            }
+	    	})
+	    }
+    })
 	$(".brandadd_oper_btn ul li:nth-of-type(2").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
