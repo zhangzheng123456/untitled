@@ -2,13 +2,15 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
     <title>编辑会员标签</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         body{
             margin-top:81px;
@@ -19,7 +21,8 @@
     <!-- <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员标签<i class="icon-ishop_8-03"></i>编辑会员标签</div>
+            <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员标签
+            <i class="icon-ishop_8-03"></i><label>编辑会员标签</label></div>
             <div class="editor_em col-lg-7  animated fadeInRight">
                 <div class="operation_conpany">
                     <ul>
@@ -28,13 +31,13 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="所属企业*为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>标签名称</label><input type="text" /></span>
+                        <span><label>标签名称</label><input type="text" id="LABEL_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="标签名称为必填项，不能为空！"></div></div></span>
                     </div>
                     <div id="dropdown" class="item_1">
-                    <span><label>标签类型</label><input class="input_select" type="text" placeholder="请选择标签类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                    <span><label>标签类型</label><input class="input_select" id="LABEL_TYPE" type="text" placeholder="请选择标签类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
                             <ul>
                                 <li>标签类型1</li>
                                 <li>标签类型2</li>
@@ -44,7 +47,7 @@
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="operedit_btn">
                     <ul>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
@@ -64,7 +67,9 @@
                         <span><label>修改人</label><input type="text" /></span>
                     </div>
                     <div>
-                    <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
+                    <span><label>可用</label><em class="checkbox_isactive">
+                    <input type="checkbox" value="" name="test" class="check" id="is_active">
+                    <label for="is_active"></label></em></span>
                     </div>
                 </form>
             </div>
@@ -82,6 +87,8 @@
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <script type="text/javascript" src="../js/vip/viplabel_operate.js"></script>
     <script type="text/javascript">
         $(function(){
             $('#side-menu li:nth-of-type(5)').addClass('active');
