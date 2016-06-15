@@ -29,6 +29,7 @@ body{
 	height: 80px;
 	float: left;
 	background: url(../images/bg-image.png);
+	cursor: pointer;
 }
 .navbar .floot-r{
 	float: right;

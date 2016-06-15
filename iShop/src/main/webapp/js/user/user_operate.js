@@ -429,7 +429,7 @@ jQuery(document).ready(function(){
 
 		}
 
-	}else if($(".pre_title label").text()=="编辑用户信息"){
+	}else if($(".pre_title label").text()=="编辑员工信息"){
 		console.log(message.user_type);
 		if(message.user_type=="admin"){
 			$("#OWN_CORP").parent().parent().parent().parent().css("display","block");

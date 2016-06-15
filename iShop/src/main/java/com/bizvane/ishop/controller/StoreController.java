@@ -74,9 +74,9 @@ public class StoreController {
                 list = storeService.getAllStore(page_number, page_size, "", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM)){
+                if (role_code.equals(Common.ROLE_GM)) {
                     list = storeService.getAllStore(page_number, page_size, corp_code, "");
-                }else {
+                } else {
                     list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, "");
                 }
             }
@@ -300,9 +300,9 @@ public class StoreController {
                 list = storeService.getAllStore(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM)){
+                if (role_code.equals(Common.ROLE_GM)) {
                     list = storeService.getAllStore(page_number, page_size, corp_code, search_value);
-                }else {
+                } else {
                     list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, search_value);
                 }
             }
@@ -410,6 +410,72 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "Store_CodeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String Area_nameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String store_code = jsonObject.get("store_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            //         Area area = areaService.getAreaByName(corp_code, store_code);
+            Store store = storeService.getStoreByCode(corp_code, store_code);
+
+            if (store != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("店铺编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("店铺编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "Store_NameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String Store_NameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String store_name = jsonObject.get("store_name").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            //         Area area = areaService.getAreaByName(corp_code, store_code);
+            Store store = storeService.getStoreByName(corp_code, store_name);
+
+            if (store != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("店铺名称已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("店铺名称不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
     }

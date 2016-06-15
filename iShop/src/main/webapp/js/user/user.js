@@ -234,7 +234,7 @@ function jurisdiction(actions){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a><div class='fen'><div id='admin'>新增系统管理员</div><div id='corp'>新增企业用户</div></div></li>");
         }else if(actions[i].act_name=="delete"){
-            $('#jurisdiction').append("<li class='bg' id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+            $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
@@ -267,6 +267,7 @@ function jumpBianse(){
 	$(document).ready(function(){//隔行变色 
    		 $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
     	 $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+         $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
 	})
 	//双击跳转
 	$(".table tbody tr").dblclick(function(){
@@ -295,7 +296,7 @@ function jumpBianse(){
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         if(user_type=="admin"){
-            $('.fen').slideToggle();
+            $('.fen').slideToggle("200");
         }else if(user_type!=="admin"){
             var addtype={"user_type":user_type,"isAdmin":"","role_code":role_code};
             sessionStorage.setItem("addtype",JSON.stringify(addtype));

@@ -26,4 +26,9 @@ public interface UserMapper {
 
     List<User> selectStoreUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
+    User selectUserName(@Param("user_name") String user_name, @Param("corp_oode") String corp_code);
+
+    User selectPhone(@Param("phone") String phone, @Param("corp_code") String corp_code);
+
+    User selectEmail(@Param("email") String email, @Param("corp_code") String corp_code);
 }

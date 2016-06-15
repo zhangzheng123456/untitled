@@ -26,5 +26,7 @@ public interface CorpService {
 
     String selectMaxCorpCode();
 
+    String getCorpByCorpName(String corp_name) throws SQLException;
+
 
 }

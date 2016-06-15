@@ -28,10 +28,10 @@ public class testStoreService {
 
     @Test
     public void testgetStoresByUserId(){
-          List<Store> list=  storeService.selectByUserId("9");
-        for (Store store: list) {
-            System.out.println(store.getStore_name()+"....."+store.getStore_code());
-        }
+       //   List<Store> list=  storeService.selectByUserId("9");
+//        for (Store store: list) {
+//            System.out.println(store.getStore_name()+"....."+store.getStore_code());
+//        }
     }
 
 

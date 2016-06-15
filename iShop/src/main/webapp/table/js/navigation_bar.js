@@ -82,4 +82,19 @@ $(function(){
             }   
         });
     })
+    $("#logo").click(function(){
+        var val=sessionStorage.getItem("key");//取登录里面的key
+        val=JSON.parse(val);//
+        var message=JSON.parse(val.message);//
+        var user_type=message.user_type;//用户类型
+        if (user_type == "admin") {
+                window.location.href = "home/index_admin.html";
+            } else if (user_type == "am") {
+                window.location.href = "home/index_am.html";
+            } else if (user_type == "gm") {
+                window.location.href = "home/index_gm.html";
+            } else if (user_type == "staff") {
+                window.location.href = "home/index_staff.html";
+            }
+    })
 })

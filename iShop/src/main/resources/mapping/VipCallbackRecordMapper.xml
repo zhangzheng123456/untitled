@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipCallbackRecordMapper">
+
+    <resultMap id="VipInfos" type="com.bizvane.ishop.entity.VipCallbackRecord">
+        <id column="id" property="id"/>
+        <result column="vip_code" property="vip_code"/>
+        <result column="user_code" property="user_code"/>
+        <result column="callback_type" property="callback_type"/>
+        <result column="callback_time" property="callback_time"/>
+        <result column="remark" property="remark"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="isactive" property="isactive"/>
+        <result column="created_date" property="created_date"/>
+        <result column="creater" property="creater"/>
+    </resultMap>
+
+    <select id="selecctById" resultType="com.bizvane.ishop.entity.VipCallbackRecord">
+        select * from DEF_VIP_CALLBACK_RECORD
+        WHERE id=#{id}
+    </select>
+
+
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.VipCallbackRecord">
+        INSERT INTO DEF_VIP_CALLBACK_RECORD
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vip_code!=null and  vip_code!=''">
+                vip_code,
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                user_code ,
+            </if>
+            <if test="callback_type!=null and  callback_type!=''">
+                callback_type ,
+            </if>
+            <if test="callback_time!=null">
+                callback_time ,
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark ,
+            </if>
+            <if test="modified_date!=null">
+                modified_date ,
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive ,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null and  creater!=''">
+                creater ,
+            </if>
+        </trim>
+        <trim prefix="values(" suffixOverrides="," suffix=")">
+            <if test="vip_code!=null and  vip_code!=''">
+                #{vip_code},
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                #{user_code},
+            </if>
+            <if test="callback_type!=null and  callback_type!=''">
+                #{callback_type},
+            </if>
+            <if test="callback_time!=null">
+                #{callback_time},
+            </if>
+            <if test="remark!=null and remark!=''">
+                #{remark},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                #{isactive},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null and  creater!=''">
+                #{creater},
+            </if>
+        </trim>
+    </insert>
+    <delete id="deleteByPrimary">
+        DELETE FROM
+        DEF_VIP_CALLBACK_RECORD
+        WHERE id=#{id}
+    </delete>
+    <select id="selectAllVipCallBackRecordInfo" resultMap="VipInfos">
+        select * from DEF_VIP_CALLBACK_RECORD
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            corp_code=#{corp_code}
+        </if>
+        <if test="search_value!=null search_value!=''">
+            and
+            vip_code like concat('%',#{search_value},'%')
+            or user_code like concat('%',#{search_value},'%')
+            or callback_type like concat('%',#{search_value},'%')
+            or callback_time like concat('%',#{search_value},'%')
+            or remark like concat('%',#{search_value},'%')
+            or modified_date like concat('%',#{search_value},'%')
+            or modifier like concat('%',#{search_value},'%')
+            or isactive like concat('%',#{search_value},'%')
+            or creater like concat('%',#{search_value},'%')
+            or corp_code like concat('%',#{search_value},'%')
+        </if>
+    </select>
+
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipCallbackRecord">
+        update DEF_VIP_CALLBACK_RECORD
+        <trim prefix="set" suffixOverrides=",">
+            <if test="vip_code!=null and  vip_code!=''">
+                vip_code=#{vip_code},
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                user_code=#{user_code},
+            </if>
+            <if test="callback_type!=null and  callback_type!=''">
+                callback_type=#{callback_type},
+            </if>
+            <if test="callback_time!=null">
+                callback_time=#{callback_time},
+            </if>
+            <if test="remark!=null and remark!=''">
+                remark=#{remark},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null and  creater!=''">
+                creater=#{creater},
+            </if>
+        </trim>
+    </update>
+
+</mapper>

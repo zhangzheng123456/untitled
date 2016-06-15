@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Area;
@@ -48,13 +49,8 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
         List<Area> areas;
-        if (search_value.equals("")) {
-            PageHelper.startPage(page_number, page_size);
-            areas = areaMapper.selectAllArea(corp_code, "");
-        } else {
-            PageHelper.startPage(page_number, page_size);
-            areas = areaMapper.selectAllArea(corp_code, "%" + search_value + "%");
-        }
+        PageHelper.startPage(page_number, page_size);
+        areas = areaMapper.selectAllArea(corp_code, search_value);
         PageInfo<Area> page = new PageInfo<Area>(areas);
 
         return page;
@@ -63,18 +59,14 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public List<Area> getAllArea(String corp_code, String search_value) throws SQLException {
         List<Area> areas;
-        if (search_value.equals("")) {
-            areas = areaMapper.selectAllArea(corp_code, "");
-        } else {
-            areas = areaMapper.selectAllArea(corp_code, "%" + search_value + "%");
-        }
+        areas = areaMapper.selectAllArea(corp_code, search_value);
         return areas;
     }
 
     //获得区域下店铺
     @Override
     public List<Store> getAreaStore(String corp_code, String area_code) throws SQLException {
-        return storeMapper.selectStoreBrandArea(corp_code,"","%"+area_code+"%");
+        return storeMapper.selectStoreBrandArea(corp_code, "", "%" + area_code + "%");
     }
 
     @Override
@@ -90,6 +82,12 @@ public class AreaServiceImpl implements AreaService {
     @Override
     public int delete(int id) throws SQLException {
         return areaMapper.deleteByAreaId(id);
+    }
+
+    @Override
+    public Area getAreaByName(String corp_code, String area_name) {
+        Area area = this.areaMapper.selectArea_Name(corp_code, area_name);
+        return area;
     }
 
 }

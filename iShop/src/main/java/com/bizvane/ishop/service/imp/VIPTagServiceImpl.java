@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VIPtagMapper;
 import com.bizvane.ishop.entity.VIPtag;
 import com.bizvane.ishop.service.VIPTagService;
@@ -38,20 +39,27 @@ public class VIPTagServiceImpl implements VIPTagService {
     }
 
     @Override
+    public int update(VIPtag vipTag) {
+        return this.viPtagMapper.updateByPrimaryKey(vipTag);
+
+    }
+
+    @Override
     public PageInfo<VIPtag> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         List<VIPtag> list = null;
-        if (search_value == null || search_value.isEmpty()) {
-            list = viPtagMapper.selectAllVipInfo(corp_code, "");
-        } else {
-            list = viPtagMapper.selectAllVipInfo(corp_code, search_value);
-        }
+
+        list = viPtagMapper.selectAllVipInfo(corp_code, search_value);
         PageInfo<VIPtag> page = new PageInfo<VIPtag>(list);
         return page;
     }
 
     @Override
     public String vipExist(String tag_code, String corp_code) throws SQLException {
-        //viPtagMapper.selectVIpTag_code
-        return null;
+        VIPtag viPtag = viPtagMapper.selectVipTagCode(tag_code, corp_code);
+        String result = Common.DATABEAN_CODE_ERROR;
+        if (viPtag == null) {
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
     }
 }

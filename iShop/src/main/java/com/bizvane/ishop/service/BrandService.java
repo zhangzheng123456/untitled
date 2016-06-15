@@ -26,4 +26,6 @@ public interface BrandService {
     int update(Brand brand) throws SQLException;
 
     int delete(int id) throws SQLException;
+
+    Brand getBrandByName(String corp_code, String brand_name);
 }

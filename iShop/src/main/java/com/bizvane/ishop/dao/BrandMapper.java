@@ -17,4 +17,6 @@ public interface BrandMapper {
     int updateBrand(Brand brand);
 
     int deleteByBrandId(int id);
+
+    Brand selectByBrandName(@Param("corp_code") String corp_code, @Param("brand_name") String brand_name);
 }

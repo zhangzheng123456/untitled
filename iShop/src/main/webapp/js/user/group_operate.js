@@ -63,7 +63,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				var _command="/user/group/add";//接口名
@@ -90,7 +90,7 @@ var oc = new ObjectControl();
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
-				}else if(input.checked==true){
+				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
 				var _command="/user/group/edit";//接口名

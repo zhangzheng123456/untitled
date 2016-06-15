@@ -434,13 +434,27 @@ public class GroupController {
     public String addGroupCheckPower(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
+            String user_id = request.getSession().getAttribute("user_id").toString();
+
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String user_id = request.getSession().getAttribute("user_id").toString();
-            String result = functionService.updatePrivilege(message, user_id);
+            JSONObject jsonObject = new JSONObject(message);
+            String list = jsonObject.get("list").toString();
+            JSONArray array = JSONArray.parseArray(list);
+
+            String group_code = jsonObject.get("group_code").toString();
+            String master_code;
+            if (jsonObject.get("corp_code")!=null && !jsonObject.get("corp_code").equals("")) {
+                String corp_code = jsonObject.get("corp_code").toString();
+                master_code = corp_code + group_code;
+            }else {
+                master_code = group_code;
+            }
+
+            String result = functionService.updatePrivilege(master_code, user_id,array);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

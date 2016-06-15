@@ -18,4 +18,6 @@ public interface CorpMapper {
     int updateByCorpId(Corp record);
 
     int deleteByCorpId(Integer id);
+
+    List<Corp> selectByCorpName(String corp_name);
 }

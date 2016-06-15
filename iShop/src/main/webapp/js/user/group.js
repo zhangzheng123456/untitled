@@ -228,18 +228,6 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
-            //双击跳转
-            $(".table tbody tr").dblclick(function(){
-                var id=$(this).attr("id");
-                sessionStorage.setItem("id",id);
-                console.log(id);
-                var corp_code=$(this).attr("data-code");
-                var group_code=$(this).find("td:eq(2)").html();
-                var group_corp={"corp_code":corp_code,"group_code":group_code};
-                sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-                console.log(group_corp);
-                $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
-            })
         }
     }
 }
@@ -287,6 +275,18 @@ function jumpBianse(){
             input.checked = false;
             $(this).removeClass("tr");
         }
+    })
+    //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        console.log(id);
+        var corp_code=$(this).attr("data-code");
+        var group_code=$(this).find("td:eq(2)").html();
+        var group_corp={"corp_code":corp_code,"group_code":group_code};
+        sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+        console.log(group_corp);
+        $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){

@@ -38,14 +38,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value)
             throws SQLException {
         List<StoreAchvGoal> storeAchvGoals;
-        if (search_value == null || search_value.isEmpty()) {
-            PageHelper.startPage(page_number, page_size);
             storeAchvGoals = storeAchvGoalMapper.selectUsersBySearch(corp_code, search_value);
-        } else {
-            PageHelper.startPage(page_number, page_size);
-            storeAchvGoals = storeAchvGoalMapper.selectUsersBySearch(corp_code, search_value);
-        }
-        //   PageInfo<StoreAchvGoal> page = (PageInfo<StoreAchvGoal>) storeAchvGoals;
         PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
         return page;
     }

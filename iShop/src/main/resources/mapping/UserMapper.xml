@@ -74,16 +74,16 @@
             AND DEF_USER.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
-            AND USER_NAME like #{search_value}
-            OR DEF_USER.ID like #{search_value}
-            OR USER_CODE like #{search_value}
-            OR PHONE like #{search_value}
-            OR SEX like #{search_value}
-            OR DEF_GROUP.group_name like #{search_value}
-            OR LOGIN_TIME_RECENTLY like #{search_value}
-            OR DEF_USER.MODIFIED_DATE like #{search_value}
-            OR DEF_USER.MODIFIER like #{search_value}
-            OR DEF_USER.ISACTIVE like #{search_value}
+            AND USER_NAME like concat('%',#{search_value},'%')
+            OR DEF_USER.ID like concat('%',#{search_value},'%')
+            OR USER_CODE like concat('%',#{search_value},'%')
+            OR PHONE like concat('%',#{search_value},'%')
+            OR SEX like concat('%',#{search_value},'%')
+            OR DEF_GROUP.group_name like concat('%',#{search_value},'%')
+            OR LOGIN_TIME_RECENTLY like concat('%',#{search_value},'%')
+            OR DEF_USER.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR DEF_USER.MODIFIER like concat('%',#{search_value},'%')
+            OR DEF_USER.ISACTIVE like concat('%',#{search_value},'%')
         </if>
         ORDER BY DEF_USER.ID
     </select>
@@ -368,4 +368,18 @@
         </trim>
         WHERE ID = #{id};
     </update>
+    <select id="selectUserName" resultType="com.bizvane.ishop.entity.User">
+        select * from DEF_USER
+        WHERE user_name=#{user_name} and user_code=#{user_code}
+    </select>
+    <select id="selectPhone" resultType="com.bizvane.ishop.entity.User">
+        select * from DEF_USER
+        WHERE phone=#{phone} and corp_code=#{corp_code}
+    </select>
+
+    <select id="userEmailExist" resultType="com.bizvane.ishop.entity.User">
+        select * from DEF_USER
+        WHERE email=#{email} and corp_code=#{corp_code}
+    </select>
+
 </mapper>

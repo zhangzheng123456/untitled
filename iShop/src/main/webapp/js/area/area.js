@@ -224,13 +224,6 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
-            //双击跳转
-            $(".table tbody tr").dblclick(function(){
-                var id=$(this).attr("id");
-                sessionStorage.setItem("id",id);
-                console.log(id);
-                $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
-            })
         }
     }
 }
@@ -281,6 +274,12 @@ function jumpBianse(){
     //点击新增时页面进行的跳转
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/area/area_add.html");
+    })
+    //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
