@@ -30,9 +30,22 @@
                     </ul>
                 </div>
                 <form class="conpany_msg">
-                    <div>
+                 <!--    <div>
                         <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="所属企业*为必填项，不能为空！"></div></div></span>
+                    </div> -->
+
+                      <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
+                    
                     <div>
                         <span><label>标签名称</label><input type="text" id="LABEL_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="标签名称为必填项，不能为空！"></div></div></span>
                     </div>
