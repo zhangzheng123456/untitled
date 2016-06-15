@@ -69,13 +69,35 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				/*
+				获取上传的图片地址
+				 */
+				var img_list=[];
+				var img_list_json={};
+				var picture_one='';
+				var picture_two='';
+				var picture_three='';
+				var picture_four='';
+				var picture_five='';
+				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
+				if(img_url_list.length<=5){
+					for(var i=0;i<img_url_list.length;i++){
+						img_list.push(img_url_list[i].src);
+					}
+					for(var j=0;j<img_list.length;j++){
+						img_list_json[j]=img_list[j];
+					}
+					img_list_json=JSON.stringify(img_list_json);
+				}else{
+					alert("商品图片最多可以上传5张");
+				}
 				var _command="/goods/fab/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":img_list_json,"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -195,4 +217,5 @@ jQuery(document).ready(function(){
 	$(".fabedit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
+
 });
