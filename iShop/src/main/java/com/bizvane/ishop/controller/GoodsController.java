@@ -90,15 +90,15 @@ public class GoodsController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String user_code = jsonObject.get("user_code").toString();
+            // String user_code = jsonObject.get("user_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
             Date now = new Date();
             goods.setModified_date(now);
-            goods.setModifier(user_code);
+            goods.setModifier(user_id);
             goods.setCreated_date(now);
-            goods.setCreater(user_code);
+            goods.setCreater(user_id);
             this.goodsService.insert(goods);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

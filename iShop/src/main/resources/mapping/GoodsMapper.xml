@@ -13,7 +13,7 @@
         <result column="goods_wave" property="goods_wave"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
-        <result column="isActive" property="isActive"/>
+        <result column="isactive" property="isactive"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="goods_description" property="goods_description"/>
@@ -34,7 +34,7 @@
             OR goods_wave LIKE concat('%',#{search_value},'%')
             OR modified_date LIKE concat('%',#{search_value},'%')
             OR modifier LIKE concat('%',#{search_value},'%')
-            OR isActive LIKE concat('%',#{search_value},'%')
+            OR isactive LIKE concat('%',#{search_value},'%')
             OR created_date LIKE concat('%',#{search_value},'%')
             OR creater LIKE concat('%',#{search_value},'%')
             OR goods_description LIKE concat('%',#{search_value},'%')
@@ -87,8 +87,8 @@
             <if test="modifier!=null  and modifier!=''">
                 modifier,
             </if>
-            <if test="isActive!=null  and isActive!=''">
-                isActive,
+            <if test="isactive!=null  and isactive!=''">
+                isactive,
             </if>
             <if test="created_date!=null">
                 created_date,
@@ -129,8 +129,8 @@
             <if test="modifier!=null">
                 #{modifier},
             </if>
-            <if test="isActive!=null">
-                #{isActive},
+            <if test="isactive!=null">
+                #{isactive},
             </if>
             <if test="created_date!=null">
                 #{created_date},
@@ -174,8 +174,8 @@
             <if test="modifier!=null and modifier!=''">
                 modifier=#{modifier},
             </if>
-            <if test="isActive!=null and isActive!=''">
-                isActive=#{isActive},
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
             </if>
             <if test="created_date!=null">
                 created_date=#{created_date},

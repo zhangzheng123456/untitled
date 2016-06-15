@@ -27,7 +27,7 @@ public class Goods {
     //修改人
     private String modifier;
     //是否可用
-    private String isActive;
+    private String isactive;
     //创建日期
     private Date created_date;
     //创建者
@@ -120,9 +120,6 @@ public class Goods {
         this.creater = creater;
     }
 
-    public String getIsActive() {
-        return isActive;
-    }
 
     public String getGoods_image() {
         return goods_image;
@@ -130,10 +127,6 @@ public class Goods {
 
     public void setGoods_image(String goods_image) {
         this.goods_image = goods_image;
-    }
-
-    public void setIsActive(String isActive) {
-        this.isActive = isActive;
     }
 
 
@@ -152,5 +145,14 @@ public class Goods {
 
     public void setGoods_description(String goods_description) {
         this.goods_description = goods_description;
+    }
+
+
+    public String getIsactive() {
+        return isactive;
+    }
+
+    public void setIsactive(String isactive) {
+        this.isactive = isactive;
     }
 }
