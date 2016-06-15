@@ -169,7 +169,7 @@ var oc = new ObjectControl();
 	return obj;
 }));
 jQuery(document).ready(function(){
-	window.shop.init();//初始化
+	window.fab.init();//初始化
 	if($(".pre_title label").text()=="编辑商品培训(FAB)"){
 	}
 	//获取所属企业列表
@@ -198,9 +198,9 @@ jQuery(document).ready(function(){
 		}
 	});
 	$(".fabadd_oper_btn ul li:nth-of-type(2").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/goods/fab_add.html");
+		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
 	$(".fabedit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/goods/fab_edit.html");
+		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
 });

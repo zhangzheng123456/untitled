@@ -99,19 +99,19 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" /></span>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" /></span>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" /></span>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" /></span>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
                     </div>
                     <div>
-                    <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
+                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
                 </form>
             </div>
@@ -139,6 +139,13 @@
             }
         });
     </script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <!-- ajax -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- 带搜索的下拉框 -->
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <script type="text/javascript" src="../js/goods/fab_operate.js"></script>
 </body>
 
