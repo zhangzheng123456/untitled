@@ -223,6 +223,10 @@ jQuery(document).ready(function(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("#AREA_NAME").val("");
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -253,7 +257,7 @@ jQuery(document).ready(function(){
 	               }
 		    })
 		}
-    })
+    });
     //验证名称是否唯一
     $("#AREA_NAME").blur(function(){
     	var corp_code=$("#OWN_CORP").val();
@@ -275,7 +279,7 @@ jQuery(document).ready(function(){
 	            }
 	    	})
 	    }
-    })
+    });
 	$(".areaadd_oper_btn ul li:nth-of-type(2").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/area/area.html");
 	});

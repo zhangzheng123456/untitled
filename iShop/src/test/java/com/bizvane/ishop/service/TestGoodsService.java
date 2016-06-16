@@ -58,7 +58,7 @@ public class TestGoodsService {
 
         goods.setCreated_date(new Date());
         goods.setCreater("person");
-        goods.setIsActive("123");
+        goods.setIsactive("123");
         logService.insert(goods);
     }
 
@@ -77,7 +77,7 @@ public class TestGoodsService {
 
         goods.setCreated_date(new Date());
         goods.setCreater("personperson");
-        goods.setIsActive("123");
+        goods.setIsactive("123");
 
             this.logService.update(goods);
 
