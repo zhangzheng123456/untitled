@@ -10,6 +10,7 @@
         <result column="callback_time" property="callback_time"/>
         <result column="remark" property="remark"/>
         <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
@@ -42,6 +43,9 @@
             <if test="modified_date!=null">
                 modified_date ,
             </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier ,
+            </if>
             <if test="isactive!=null and isactive!=''">
                 isactive ,
             </if>
@@ -70,6 +74,10 @@
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
+            </if>
+
+            <if test="modifier!=null and modifier!=''">
+                #{modifier} ,
             </if>
             <if test="isactive!=null and isactive!=''">
                 #{isactive},
@@ -129,6 +137,9 @@
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier},
             </if>
             <if test="isactive!=null and isactive!=''">
                 isactive=#{isactive},

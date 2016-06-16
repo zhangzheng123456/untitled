@@ -452,12 +452,54 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
-    //        vipCallbackRecord.set
+            Date now = new Date();
+            vipCallbackRecord.setModified_date(now);
+            vipCallbackRecord.setModifier(user_id);
+            this.vipCallbackRecordService.insert(vipCallbackRecord);
+            dataBean.setId(id);
+            dataBean.setMessage("add successs");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
         } catch (Exception ex) {
-
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
+        return dataBean.getJsonStr();
+    }
 
-        return "callback_add";
+    /**
+     * 回访记录管理
+     * 编辑前
+     */
+
+    @RequestMapping(value = "", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectCallBack(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int vipCallbackRecord_id = Integer.parseInt(jsonObject.get("id").toString());
+            VipCallbackRecord vipCallbackRecord = this.vipCallbackRecordService.getVipCallbackRecord(vipCallbackRecord_id);
+            if (vipCallbackRecord != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success!!!s");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("not found vipCallbackRecord error !!!");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -467,7 +509,27 @@ public class VIPController {
     @RequestMapping(value = "/callback/edit", method = RequestMethod.GET)
     @ResponseBody
     public String editCallBack(HttpServletRequest request) {
-        return "callback_edit";
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
+            vipCallbackRecord.setModified_date(new Date());
+            vipCallbackRecord.setModifier(user_id);
+            this.vipCallbackRecordService.update(vipCallbackRecord);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("edit success!!!s");
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -477,6 +539,14 @@ public class VIPController {
     @RequestMapping(value = "/callback/find", method = RequestMethod.GET)
     @ResponseBody
     public String findCallBack(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
+
+        } catch (Exception ex) {
+
+        }
         return "";
     }
 

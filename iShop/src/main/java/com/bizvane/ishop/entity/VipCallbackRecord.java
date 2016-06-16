@@ -32,6 +32,14 @@ public class VipCallbackRecord {
     //企业编号
     private String corp_code;
 
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
     public String getCorp_code() {
         return corp_code;
     }

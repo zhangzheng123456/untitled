@@ -127,9 +127,9 @@ public class GoodsController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String goods_code = jsonObject.getString("goods_code");
-            String corp_code = jsonObject.getString("corp_code");
-            Goods goods = this.goodsService.getGoodsByCode(corp_code, goods_code);
+            int goods_id = Integer.parseInt(jsonObject.getString("id"));
+            //   Goods goods = this.goodsService.getGoodsByCode(corp_code, goods_code);
+            Goods goods = this.goodsService.getGoodsById(goods_id);
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("goods", goods);
             dataBean.setId(id);
@@ -142,7 +142,6 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
-
 
     /**
      * 商品培训
