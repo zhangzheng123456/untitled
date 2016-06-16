@@ -1,4 +1,7 @@
 var oc = new ObjectControl();
+var val=sessionStorage.getItem("key");
+val=JSON.parse(val);
+var message=JSON.parse(val.message);
 (function(root,factory){
 	root.corp = factory();
 }(this,function(){
@@ -160,7 +163,11 @@ var oc = new ObjectControl();
 				// 	cancel: false,
 				// 	content: data.message
 				// });
-				$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+				if(message.user_type=="admin"){
+					$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
+				}else{
+					$(window.parent.document).find('#iframepage').attr("src","/corp/corp_user.html");
+				}
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -242,9 +249,6 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-	var val=sessionStorage.getItem("key");
-	val=JSON.parse(val);
-    var message=JSON.parse(val.message);
     $("input[verify='Code']").blur(function(){
     	var isCode=/^[C]{1}[0-9]{1,7}$/;
     	var _params={};
