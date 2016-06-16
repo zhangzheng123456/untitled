@@ -103,40 +103,40 @@
 
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="goods_code!=null">
+            <if test="goods_code!=null  and goods_code!=''">
                 #{goods_code},
             </if>
-            <if test="goods_name!=null">
+            <if test="goods_name!=null  and goods_name!=''">
                 #{goods_name},
             </if>
-            <if test="goods_image!=null">
+            <if test="goods_image!=null   and goods_image!=''">
                 #{goods_image},
             </if>
-            <if test="goods_price!=null">
+            <if test="goods_price!=null and goods_price!=''">
                 #{goods_price},
             </if>
             <if test="goods_time">
                 #{goods_time},
             </if>
-            <if test="goods_quarter!=null">
+            <if test="goods_quarter!=null  and goods_quarter!=''">
                 #{goods_quarter},
             </if>
-            <if test="goods_wave!=null">
+            <if test="goods_wave!=null  and goods_wave!=''">
                 #{goods_wave},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
             </if>
-            <if test="modifier!=null">
+            <if test="modifier!=null  and modifier!=''">
                 #{modifier},
             </if>
-            <if test="isactive!=null">
+            <if test="isactive!=null  and isactive!=''">
                 #{isactive},
             </if>
             <if test="created_date!=null">
                 #{created_date},
             </if>
-            <if test="creater!=null">
+            <if test="creater!=null  and creater!=''">
                 #{creater},
             </if>
             <if test="goods_description!=null and goods_description!=''">

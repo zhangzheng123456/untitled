@@ -49,6 +49,9 @@ public class VIPController {
     @Autowired
     private VipService vipService;
 
+    @Autowired
+    private VipCallbackRecordService vipCallbackRecordService;
+
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
@@ -399,16 +402,37 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
+            id = jsonObj.get("id").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter(request.getParameter("pageSize")));
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String function_code = request.getParameter("funcCode");
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VipCallbackRecord> list;
+            if (role_code.contains(Common.ROLE_SYS)) {
+                list = this.vipCallbackRecordService.selectBySearch(page_number, page_size, "", "");
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = this.vipCallbackRecordService.selectBySearch(page_number, page_size, corp_code, "");
+            }
+            result.put("list", JSON.toJSONString(list));
+            result.put("actions", actions);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
-
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
         }
-        return "";
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -418,6 +442,20 @@ public class VIPController {
     @RequestMapping(value = "/callback/add", method = RequestMethod.GET)
     @ResponseBody
     public String addCallBack(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
+    //        vipCallbackRecord.set
+        } catch (Exception ex) {
+
+        }
 
         return "callback_add";
     }
