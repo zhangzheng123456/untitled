@@ -52,7 +52,22 @@ var oc = new ObjectControl();
 	};
 	shopjs.bindbutton=function(){
 		$(".shopadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
+			var codeMark=$("#STORE_ID").attr("data-mark");//店铺ID是否唯一的标志
 			if(shopjs.firstStep()){
+				if(nameMark=="N"||codeMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#STORE_NAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#STORE_ID").next('.hint').children();
+						div.html("该编号已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+				}
 				var STORE_ID=$("#STORE_ID").val();
 				var STORE_NAME=$("#STORE_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -88,7 +103,14 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".shopedit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var nameMark=$("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
 			if(shopjs.firstStep()){
+			    if(nameMark=="N"){
+					var div=$("#STORE_NAME").next('.hint').children();
+					div.html("该名称已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
 				console.log($("#OWN_BRAND").data("mybcode"));
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -197,6 +219,7 @@ jQuery(document).ready(function(){
 				$("#OWN_BRAND").val(msg.brand_name);
 				$("#OWN_BRAND").attr("data-mybcode",msg.brand_code);
 				$("#STORE_NAME").val(msg.store_name);
+				$("#STORE_NAME").attr("data-name",msg.store_name);
 				$("#STORE_ID").val(msg.store_code);
 				$("#OWN_AREA").val(msg.area_name);
 				$("#OWN_AREA").attr("data-myacode",msg.area_code);
@@ -272,8 +295,8 @@ jQuery(document).ready(function(){
 		}
     })
     $("#STORE_NAME").blur(function(){
-    	var store_name=$("#STORE_NAME").val();
-    	var store_name1=$("#STORE_NAME").attr("data-name");
+    	var store_name=$("#STORE_NAME").val();//店铺名称
+    	var store_name1=$("#STORE_NAME").attr("data-name");//给店铺的名称是一个字
     	var div=$(this).next('.hint').children();
     	var corp_code=$("#OWN_CORP").val();
     	if(store_name!==""&&store_name!==store_name1){
@@ -285,13 +308,14 @@ jQuery(document).ready(function(){
 	            	div.html("");
 	            	$("#STORE_NAME").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
-	            	div.html("该名称已经存在！")
+	            	div.html("该名称已经存在！");
 	            	div.addClass("error_tips");
 	            	$("#STORE_NAME").attr("data-mark","N");
 	            }
 	    	})
 	    }
     })
+
 	$("#OWN_AREA").click(function(){
 		$("#area_select").html('');
 		 $(this).parent().children('ul').toggle();
