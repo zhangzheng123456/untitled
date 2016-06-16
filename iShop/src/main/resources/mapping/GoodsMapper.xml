@@ -17,38 +17,78 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="goods_description" property="goods_description"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+            <result column="corp_code" property="corp_code"/>
+        </association>
     </resultMap>
     <select id="selectAllGoods" resultMap="GoodsInfo">
-        SELECT * FROM DEF_GOODS
+        SELECT g.id
+        ,g.goods_code
+        ,g.goods_name
+        ,g.goods_image
+        ,g.goods_price
+        ,g.goods_time
+        ,g.goods_quarter
+        ,g.goods_wave
+        ,g.modified_date
+        ,g.modifier
+        ,g.isactive
+        ,g.created_date
+        ,g.creater
+        ,g.goods_description
+        ,cp.corp_name
+        ,cp.corp_code
+        FROM DEF_GOODS g,DEF_CORP cp
         WHERE 1=1
         <if test="corp_code!=null and corp_code!=''">
-            AND corp_code=#{corp_code}
+            AND g.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
-            (goods_code LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR goods_name LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR goods_image LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR goods_price LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR goods_time LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR goods_quarter LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR goods_wave LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR modified_date LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR modifier LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR isactive LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR created_date LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR creater LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR goods_description LIKE concat('%',"'"+#{search_value}+"'",'%')
+
+            (g.goods_code LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.goods_name LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.goods_image LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.goods_price LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.goods_time LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.goods_quarter LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.goods_wave LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.modified_date LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.modifier LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.isactive LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.created_date LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.creater LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR g.goods_description LIKE concat('%',"'"+#{search_value}+"'",'%')
+            OR cp.corp_name LIKE concat('%',"'"+#{search_value}+"'",'%')
             )
         </if>
-        ORDER BY id
+        ORDER BY g.id
     </select>
 
 
-    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.Goods">
-         select *
-         from DEF_GOODS
-         WHERE ID=#{id}
+    <select id="selectByPrimaryKey" resultMap="GoodsInfo">
+         select
+         g.id
+        ,g.goods_code
+        ,g.goods_name
+        ,g.goods_image
+        ,g.goods_price
+        ,g.goods_time
+        ,g.goods_quarter
+        ,g.goods_wave
+        ,g.modified_date
+        ,g.modifier
+        ,g.isactive
+        ,g.created_date
+        ,g.creater
+        ,g.goods_description
+        ,cp.corp_name
+        ,cp.corp_code
+         from DEF_GOODS g,DEF_CORP cp
+         WHERE
+          g.corp_code=cp.corp_code  AND
+          g.ID=#{id}
     </select>
 
     <select id="getGoodsByCode" resultType="com.bizvane.ishop.entity.Goods">

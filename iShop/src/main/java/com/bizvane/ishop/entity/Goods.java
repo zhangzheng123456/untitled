@@ -35,6 +35,16 @@ public class Goods {
     //商品描述
     private String goods_description;
 
+    private Corp corp;
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
+    }
+
     public Goods() {
     }
 
