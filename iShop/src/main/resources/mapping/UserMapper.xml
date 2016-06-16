@@ -76,10 +76,9 @@
         <if test="search_value != null and search_value !=''">
             AND
             (USER_NAME like concat('%',#{search_value},'%')
-            OR DEF_USER.ID like concat('%',#{search_value},'%')
-            OR USER_CODE like concat('%',#{search_value},'%')
             OR PHONE like concat('%',#{search_value},'%')
             OR SEX like concat('%',#{search_value},'%')
+            OR DEF_CORP.corp_name like concat('%',#{search_value},'%')
             OR DEF_GROUP.group_name like concat('%',#{search_value},'%')
             OR LOGIN_TIME_RECENTLY like concat('%',#{search_value},'%')
             OR DEF_USER.MODIFIED_DATE like concat('%',#{search_value},'%')
