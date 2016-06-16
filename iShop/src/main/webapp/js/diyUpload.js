@@ -163,7 +163,7 @@
 			//文件上传方式
 			method:"POST",
 			//服务器地址;
-			server:"",
+			server:"http://dev.bizvane.com/alidata1/dev/apache-tomcat-8.0.33/webapps/iShop/img",
 			//是否已二进制的流的方式发送文件，这样整个上传内容php://input都为文件内容
 			sendAsBinary:false,
 			// 开起分片上传。 thinkphp的上传类测试分片无效,图片丢失;
