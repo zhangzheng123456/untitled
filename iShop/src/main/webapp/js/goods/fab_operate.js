@@ -189,7 +189,38 @@ jQuery(document).ready(function(){
 		var _params={"id":id};
 		var _command="/goods/fab/select";
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
+			console.log(data.message);
+			if(data.code=="0"){
+				var m=JSON.parse(data.message);
+				var msg=JSON.parse(m.goods);
+				// $("#OWN_CORP option").val(msg.corp.corp_code);
+				// $("#OWN_CORP option").text(msg.corp.corp_name);
+				$("#GOODS_CODE").val(msg.goods_code);
+				$("#GOODS_NAME").val(msg.goods_name);
+				$("#GOODS_PRICE").val(msg.goods_price);
+				$("#GOODS_QUARTER").val(msg.goods_quarter);
+				$("#GOODS_BAND").val(msg.goods_wave);
+				$("#GOODS_RELEASETIME").val(msg.goods_time);
+				$("#GOODS_BUYPOINT").val(msg.goods_description);
+
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var input=$(".checkbox_isactive").find("input")[0];
+				if(msg.isactive=="Y"){
+					input.checked=true;
+				}else if(msg.isactive=="N"){
+					input.checked=false;
+				}
+			}else if(data.code=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+			}
 		});
 	}
 	//获取所属企业列表
