@@ -131,7 +131,7 @@ public class GoodsController {
             //   Goods goods = this.goodsService.getGoodsByCode(corp_code, goods_code);
             Goods goods = this.goodsService.getGoodsById(goods_id);
             org.json.JSONObject result = new org.json.JSONObject();
-            result.put("goods", goods);
+            result.put("goods", JSON.toJSONString(goods));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
