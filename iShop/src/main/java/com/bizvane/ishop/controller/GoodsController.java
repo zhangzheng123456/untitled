@@ -153,7 +153,7 @@ public class GoodsController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            String user_id = request.getSession(false).toString();
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
@@ -251,7 +251,6 @@ public class GoodsController {
     @RequestMapping(value = "/xiuda/list", method = RequestMethod.GET)
     @ResponseBody
     public String showMatchManage(HttpServletRequest request) {
-
 
 
         return "xiuda";
