@@ -82,8 +82,29 @@ var oc = new ObjectControl();
 		return true;
 	};
 	useroperatejs.bindbutton=function(){
+		var codeMark=$("#USERID").attr("data-mark");
+		var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
+		var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(useroperatejs.firstStep()){
+				if(phoneMark=="N"){
+					var div=$("#USER_PHONE").next('.hint').children();
+					div.html("该手机号码已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(emailMark=="N"){
+					var div=$("#USER_EMAIL").next('.hint').children();
+					div.html("该邮箱已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(codeMark=="N"){
+					var div=$("#USERID").next('.hint').children();
+					div.html("该编号已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var HEADPORTRAIT=$("#preview img").attr("src");
@@ -422,6 +443,14 @@ jQuery(document).ready(function(){
 					}
 					$("#OWN_CORP").append(corp_html);
 					$('.corp_select select').searchableSelect();
+					$('.searchable-select-item').click(function(){
+						$("input[verify='Code']").val("");
+						$("#USER_PHONE").val("");
+						$("#USER_EMAIL").val("");
+						$("#USERID").attr("data-mark");
+						$("#USER_PHONE").attr("data-mark","");
+						$("#USER_EMAIL").attr("data-mark","");
+					})
 				}else if(data.code=="-1"){
 					art.dialog({
 						time: 1,
@@ -464,6 +493,13 @@ jQuery(document).ready(function(){
 					}
 					$("#OWN_CORP").append(corp_html);
 					$('.corp_select select').searchableSelect();
+					$('.searchable-select-item').click(function(){
+						$("#USER_PHONE").val("");
+						$("#USER_EMAIL").val("");
+						$("#USERID").attr("data-mark");
+						$("#USER_PHONE").attr("data-mark","");
+						$("#USER_EMAIL").attr("data-mark","");
+					})
 				}else if(data.code=="-1"){
 					art.dialog({
 						time: 1,

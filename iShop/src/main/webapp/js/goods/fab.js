@@ -183,6 +183,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -199,13 +200,21 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].corp_name
+                        + data[i].goods_code
                         + "</td><td>"
-                        + data[i].address
-                        + "</td><td>"
-                        + data[i].contact
+                        + data[i].goods_name
+                        + "</td><td><img src='"+data[i].goods_image+"' alt=''>"
                         +"</td><td>"
-                        +data[i].contact_phone
+                        +data[i].goods_price
+                        + "</td><td>"
+                        +data[i].goods_time
+                        + "</td><td>"
+                        +data[i].goods_quarter
+                        + "</td><td>"
+                        +data[i].goods_wave
+                        + "</td><td>"
+                        // + data[i].corp.corp_name
+                        +data[i].goods_wave
                         + "</td><td>"
                         +data[i].modifier
                         + "</td><td>"
