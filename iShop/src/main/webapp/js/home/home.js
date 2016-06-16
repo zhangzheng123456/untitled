@@ -1,5 +1,5 @@
+var oc = new ObjectControl();
 $(function(){
-    var oc = new ObjectControl();
     var _command="/menu";
     oc.postRequire("get", _command,"", "", function(data){
         console.log(data);
