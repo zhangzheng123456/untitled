@@ -56,7 +56,8 @@ $(function(){
     });
 });
 function login_out(){
-    var _command="/login_out";
-    oc.postRequire("get", _command,"", "", function(data){
-    });
+    // var _command="/login_out";
+    // oc.postRequire("get", _command,"", "", function(data){
+        window.location="http://dev.bizvane.com/login_out";
+    // });
 }
