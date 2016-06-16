@@ -264,6 +264,12 @@ jQuery(document).ready(function(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("#STORE_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#STORE_NAME").attr("data-mark","");
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -273,6 +279,7 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	
 	$("input[verify='Code']").blur(function(){
     	var isCode=/^[D]{1}[0-9]{1,7}$/;
     	var _params={};
@@ -341,7 +348,7 @@ jQuery(document).ready(function(){
 		            $(this_).parent().parent().children(".input_select").val(txt);
 		            $(this_).parent().parent().children(".input_select").attr('data-myacode',a_code);
 		            $(this_).addClass('rel').siblings().removeClass('rel');
-		             $(this_).parent().toggle();
+		            $(this_).parent().toggle();
 		        });
 			}else if(data.code=="-1"){
 				art.dialog({

@@ -35,6 +35,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
+	useroperatejs.checkCode=function(obj,hint){
+		var isCode=/^[S]{1}[Y]{1}[0-9]{1,7}$/;
+		if(!this.isEmpty(obj)){
+			if(isCode.test(obj)){
+				this.hiddenHint(hint);
+				return true;
+			}else{
+				this.displayHint(hint,"请以大写字母SY开头从一位到七位之间的数字!");
+				return false;
+			}
+		}else{
+			this.displayHint(hint);
+			return false;
+		}
+	};
 	useroperatejs.checkMail = function(obj,hint){
 		var reg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
 		if(!this.isEmpty(obj)){
@@ -478,7 +493,9 @@ jQuery(document).ready(function(){
 				$("#USER_NAME").val(msg.user_name);
 				$("#preview img").attr("src",msg.avatar);
 				$("#USER_PHONE").val(msg.phone);
+				$("#USER_PHONE").attr("data-name",msg.phone);
 				$("#USER_EMAIL").val(msg.email);
+				$("#USER_EMAIL").attr("data-name",msg.email);
 				if(msg.sex=="F"){
 					$("#USER_SEX").val("女");
 				}else if(msg.sex=="M"){
@@ -489,6 +506,8 @@ jQuery(document).ready(function(){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
 					$("#OWN_RIGHT").val(msg.group.group_name);
 					$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
+					$("#OWN_CORP option").val("");
+					$("#OWN_CORP option").text("");
 				}else if(msg.store_code !==''){
 					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 					$("#select_ownshop").css("display","block");
@@ -549,6 +568,83 @@ jQuery(document).ready(function(){
 	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
+	//验证编号是否唯一的方法
+	$("input[verify='Code']").blur(function(){
+    	var isCode=/^[S]{1}[Y]{1}[0-9]{1,7}$/;
+    	var _params={};
+    	var user_code=$(this).val();//员工编号
+    	var corp_code=$("#OWN_CORP").val();//公司编号
+    	var group_code=$
+    	if(addtype.isAdmin=="Y"){
+        	corp_code="";
+    	}
+		if(user_code!==""&&isCode.test(user_code)==true){
+			_params["user_code"]=user_code;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/user/UserCodeExist","", _params, function(data){
+	               if(data.code=="0"){
+	                    div.html("");
+	                    $("#USERID").attr("data-mark","Y");
+	               }else if(data.code=="-1"){
+	               		$("#USERID").attr("data-mark","N");
+	               		div.addClass("error_tips");
+						div.html("该编号已经存在！");	
+	               }
+		    })
+		}
+    })
+    //验证邮箱是否唯一的方法
+    $("#USER_EMAIL").blur(function(){
+    	var email=$("#USER_EMAIL").val();//邮箱名称
+    	var email1=$("#USER_EMAIL").attr("data-name");//编辑的标志
+    	var div=$(this).next('.hint').children();
+    	var corp_code=$("#OWN_CORP").val();//企业编号
+    	if(addtype.isAdmin=="Y"){
+        	corp_code="";
+    	}
+    	console.log(corp_code);
+    	if(email!==""&&email!==email1){
+	    	var _params={};
+	    	_params["email"]=email;//邮箱
+	    	_params["corp_code"]=corp_code;//企业编号
+	    	oc.postRequire("post","/user/EamilExist","", _params, function(data){
+	            if(data.code=="0"){
+	            	div.html("");
+	            	$("#STORE_NAME").attr("data-mark","Y");
+	            }else if(data.code=="-1"){
+	            	div.html("该邮箱已经存在！");
+	            	div.addClass("error_tips");
+	            	$("#STORE_NAME").attr("data-mark","N");
+	            }
+	    	})
+	    }
+    })
+    //验证手机是否唯一的方法
+    $("#USER_PHONE").blur(function(){
+    	var phone=$("#USER_PHONE").val();//手机号码
+    	var phone1=$("#USER_PHONE").attr("data-name");//取手机号的一个标志
+    	var div=$(this).next('.hint').children();
+    	var corp_code=$("#OWN_CORP").val();
+    	if(addtype.isAdmin=="Y"){
+        	corp_code="";
+    	}
+    	if(phone!==""&&phone!==phone1){
+	    	var _params={};
+	    	_params["phone"]=phone;
+	    	_params["corp_code"]=corp_code;
+	    	oc.postRequire("post","/user/PhoneExist","", _params, function(data){
+	            if(data.code=="0"){
+	            	div.html("");
+	            	$("#STORE_NAME").attr("data-mark","Y");
+	            }else if(data.code=="-1"){
+	            	div.html("该名称已经存在！");
+	            	div.addClass("error_tips");
+	            	$("#STORE_NAME").attr("data-mark","N");
+	            }
+	    	})
+	    }
+    })
 });
 $(".corp_select").click(function(){
 	// $("select").change(function(){

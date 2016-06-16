@@ -207,7 +207,7 @@ function superaddition(data,num){//页面加载循环
                         +"</td><td>"
                         +data[i].contact_phone
                         + "</td><td>"
-                        +data[i].corp_name
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"

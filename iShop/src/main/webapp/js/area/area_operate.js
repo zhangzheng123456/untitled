@@ -226,6 +226,8 @@ jQuery(document).ready(function(){
 			$('.searchable-select-item').click(function(){
 				$("input[verify='Code']").val("");
 				$("#AREA_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#AREA_NAME").attr("data-mark","");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({

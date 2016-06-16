@@ -33,6 +33,19 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
+                         <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display: inline-flex">
+                                        <option value="-1">请选择所属企业</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                       <!--  <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" /></span> -->
+                    </div>
+                    <div>
                         <span><label>用户编号</label><input type="text" id="USERID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="账号为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
@@ -47,7 +60,9 @@
                         <span><label>手机</label><input type="text" id="USER_PHONE" verify="Phone"/><div style="padding-left:125px" class="hint"><div  hintinfo="手机号码为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>邮箱</label><input type="text" id="USER_EMAIL" verify="Mail"/></span>
+                        <span><label>邮箱</label><input type="text" id="USER_EMAIL" verify="Mail"/>
+                            <div style="padding-left:125px" class="hint"><div  hintinfo="邮箱为必填项，不能为空！"></div></div>
+                        </span>
                     </div>
                     <div id="dropdown" class="item_1">
                     <span><label>性别</label><input class="input_select" type="text" id="USER_SEX" placeholder="请选择性别" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
@@ -56,19 +71,6 @@
                                 <li>女</li>
                             </ul>
                         </span>
-                    </div>
-                     <div>
-                         <ul style="display:inline-flex;">
-                            <li><label style="color:#c26555;">所属企业*</label></li>
-                            <li>
-                                <span class="corp_select">
-                                    <select id="OWN_CORP" style="display: inline-flex">
-                                        <option value="-1">请选择所属企业</option>
-                                    </select>
-                                </span>
-                            </li>
-                        </ul>
-                       <!--  <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" /></span> -->
                     </div>
                     <div id="per_type" >
                         <span onclick="selectownrole(this)"><label>所属群组</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
