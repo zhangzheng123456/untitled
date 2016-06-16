@@ -185,6 +185,12 @@ var oc = new ObjectControl();
 jQuery(document).ready(function(){
 	window.fab.init();//初始化
 	if($(".pre_title label").text()=="编辑商品培训(FAB)"){
+		var id=sessionStorage.getItem("id");
+		var _params={"id":id};
+		var _command="/goods/fab/select";
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+		});
 	}
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
