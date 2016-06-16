@@ -54,7 +54,7 @@
                     <div>
                         <span><label style="margin-right:14px;">商品图片</label></span>
                         <span class="good_imgs" style="display: inline-block;width:420px">
-                            <span class="parentFileBox" style="display:inline-flex;vertical-align: middle;">
+                            <!-- <span class="parentFileBox" style="display:inline-flex;vertical-align: middle;">
                                 <ul class="fileBoxUl">
                                     <li id="fileBox_WU_FILE_10" class="diyUploadHover">
                                         <div class="viewThumb"><img src="../img/p1.jpg"></div>                    <div class="diyCancel"></div>
@@ -75,7 +75,7 @@
                                         </div>
                                     </li>
                                 </ul>
-                            </span>
+                            </span> -->
                             <span class="add_new_touxiang" style="position: relative;"><span id="test"></span></span>
                         </span>
                     </div>
@@ -133,7 +133,7 @@
     <script type="text/javascript" src="../js/diyUpload.js"></script>
     <script type="text/javascript">
         $('#test').diyUpload({
-            url:'server/fileupload.php',
+            url:'../server/fileupload.php',
             success:function( data ) {
                 console.info( data );
             },
