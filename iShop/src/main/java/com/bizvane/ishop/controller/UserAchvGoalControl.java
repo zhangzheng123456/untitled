@@ -203,15 +203,12 @@ public class UserAchvGoalControl {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-
-
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String userAchvGoalId = jsonObject.get("id").toString();
             data = JSON.toJSONString(userAchvGoalService.getUserAchvGoalById(Integer.parseInt(userAchvGoalId)));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(data);
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -237,7 +234,6 @@ public class UserAchvGoalControl {
             int page_number = Integer.valueOf(jsonObject.get("pageNum").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
-
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<UserAchvGoal> list;

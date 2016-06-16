@@ -472,7 +472,7 @@ public class VIPController {
      * 编辑前
      */
 
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "/callback/select", method = RequestMethod.POST)
     @ResponseBody
     public String selectCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -488,7 +488,7 @@ public class VIPController {
             if (vipCallbackRecord != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("edit success!!!s");
+                dataBean.setMessage(JSON.toJSONString(vipCallbackRecord));
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

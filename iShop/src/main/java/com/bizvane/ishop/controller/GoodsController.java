@@ -251,6 +251,9 @@ public class GoodsController {
     @RequestMapping(value = "/xiuda/list", method = RequestMethod.GET)
     @ResponseBody
     public String showMatchManage(HttpServletRequest request) {
+
+
+
         return "xiuda";
     }
 
