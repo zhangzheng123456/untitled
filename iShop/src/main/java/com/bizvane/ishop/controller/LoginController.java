@@ -59,10 +59,23 @@ public class LoginController {
         return home;
     }
 
+    @RequestMapping(value = "/login")
+    public String loginIndex(HttpServletRequest request) {
+        request.getSession().removeAttribute("user_id");
+        request.getSession().removeAttribute("role_code");
+        request.getSession().removeAttribute("group_code");
+        request.getSession().removeAttribute("corp_code");
+        request.getSession().removeAttribute("store_code");
+        request.getSession().removeAttribute("menu");
+
+        return "login";
+    }
+
     @RequestMapping(value = "/login_out")
     public String loginOut(HttpServletRequest request) {
         request.getSession().removeAttribute("user_id");
         request.getSession().removeAttribute("role_code");
+        request.getSession().removeAttribute("group_code");
         request.getSession().removeAttribute("corp_code");
         request.getSession().removeAttribute("store_code");
         request.getSession().removeAttribute("menu");
