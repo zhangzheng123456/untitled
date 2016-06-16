@@ -335,7 +335,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String userEmailExist(String email, String corp_code) {
-        User user = this.userMapper.selectEmail(email, corp_code);
+        User user = this.userMapper.userEmailExist(email, corp_code);
         String result = Common.DATABEAN_CODE_ERROR;
         if (user == null) {
             result = Common.DATABEAN_CODE_SUCCESS;

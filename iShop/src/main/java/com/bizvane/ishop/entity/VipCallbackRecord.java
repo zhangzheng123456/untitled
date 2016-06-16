@@ -9,15 +9,27 @@ import java.util.Date;
  */
 public class VipCallbackRecord {
     private int id;
+    //vip编号
     private String vip_code;
+    //用户编号
     private String user_code;
+    //回访类型
     private String callback_type;
+    //回访时间
     private Date callback_time;
+    // 评论
     private String remark;
+    // 修改时间
     private Date modified_date;
+    //修改人
+    private String modifier;
+    // 是否可用
     private String isactive;
+    //创建日期
     private Date created_date;
+    //创建人
     private String creater;
+    //企业编号
     private String corp_code;
 
     public String getCorp_code() {
@@ -70,7 +82,6 @@ public class VipCallbackRecord {
     public void setUser_code(String user_code) {
         this.user_code = user_code;
     }
-
 
 
     public String getRemark() {

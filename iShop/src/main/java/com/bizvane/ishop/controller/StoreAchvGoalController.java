@@ -58,7 +58,7 @@ public class StoreAchvGoalController {
             //String function_code = request.getSession(false).getAttribute("funcCode").toString();
             String function_code = request.getParameter("funcCode");
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-            int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
 
             JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);

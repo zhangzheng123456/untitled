@@ -28,4 +28,6 @@ public interface AreaService {
     int delete(int id) throws SQLException;
 
     Area getAreaByName(String corp_code, String area_name);
+
+    List<Area> getAreaByCorp(String corp_code);
 }

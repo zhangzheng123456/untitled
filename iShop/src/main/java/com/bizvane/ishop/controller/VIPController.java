@@ -390,13 +390,34 @@ public class VIPController {
 
     /**
      * 回访记录管理
+     * 列表
+     */
+
+    @RequestMapping(value = "/callback/list", method = RequestMethod.POST)
+    @ResponseBody
+    public String manageCallBack(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+
+        } catch (Exception ex) {
+
+        }
+        return "";
+    }
+
+    /**
+     * 回访记录管理
      * 新增
      */
     @RequestMapping(value = "/callback/add", method = RequestMethod.GET)
     @ResponseBody
     public String addCallBack(HttpServletRequest request) {
-
-
 
         return "callback_add";
     }

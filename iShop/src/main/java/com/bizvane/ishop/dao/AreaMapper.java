@@ -21,4 +21,5 @@ public interface AreaMapper {
     Area selectArea_Name(@Param("corp_code") String corp_code, @Param("area_name") String area_name);
 
 
+    List<Area> getAreaByCorp(@Param("corp_code") String corp_code);
 }

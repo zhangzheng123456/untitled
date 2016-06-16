@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.RequestWrapper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -348,6 +349,8 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
+
+
     @RequestMapping(value = "/Corp_codeExist", method = RequestMethod.POST)
     @ResponseBody
     public String Corp_codeExist(HttpServletRequest request) {
@@ -379,4 +382,7 @@ public class CorpController {
         }
         return dataBean.getJsonStr();
     }
+
+
+
 }

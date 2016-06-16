@@ -30,5 +30,5 @@ public interface UserMapper {
 
     User selectPhone(@Param("phone") String phone, @Param("corp_code") String corp_code);
 
-    User selectEmail(@Param("email") String email, @Param("corp_code") String corp_code);
+    User userEmailExist(@Param("email") String email, @Param("corp_code") String corp_code);
 }

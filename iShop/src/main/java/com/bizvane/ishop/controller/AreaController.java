@@ -333,4 +333,39 @@ public class AreaController {
         return dataBean.getJsonStr();
     }
 
+//
+//    @RequestMapping(value = "", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String getAreaByCorp(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            String corp_code = jsonObject.getString("corp_code");
+//            List<Area> list = this.areaService.getAreaByCorp(corp_code);
+//            com.alibaba.fastjson.JSONArray array = new com.alibaba.fastjson.JSONArray();
+//            com.alibaba.fastjson.JSONObject json = null;
+//            for (int i = 0; list != null && i < list.size(); i++) {
+//                String area_code = list.get(i).getArea_code();
+//                String area_name = list.get(i).getArea_name();
+//                json = new com.alibaba.fastjson.JSONObject();
+//                json.put("area_code", area_code);
+//                json.put("area_name", area_name);
+//                array.add(json);
+//            }
+//            org.json.JSONObject result = new org.json.JSONObject();
+//            result.put("areas", array);
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage("success!!");
+//        } catch (Exception ex) {
+//
+//        }
+//        return "";
+//    }
+
 }

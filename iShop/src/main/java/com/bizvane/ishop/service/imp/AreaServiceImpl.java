@@ -90,4 +90,10 @@ public class AreaServiceImpl implements AreaService {
         return area;
     }
 
+    @Override
+    public List<Area> getAreaByCorp(String corp_code) {
+        List<Area> list = this.areaMapper.getAreaByCorp(corp_code);
+        return list;
+    }
+
 }

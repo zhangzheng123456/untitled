@@ -262,7 +262,6 @@ public class UserController {
         String data = null;
         try {
             String jsString = request.getParameter("param");
-
             logger.info("json--user select-------------" + jsString);
             System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
@@ -622,6 +621,7 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
 
 
     @RequestMapping(value = "/EamilExist", method = RequestMethod.POST)

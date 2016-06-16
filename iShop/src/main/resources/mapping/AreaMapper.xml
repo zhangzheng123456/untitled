@@ -59,10 +59,10 @@
             AND
             (area_code like concat('%',"'"+#{search_value}+"'",'%')
             OR area_name like concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_CORP.CORP_NAME like  concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_AREA.MODIFIED_DATE like  concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_AREA.MODIFIER like  concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_AREA.ISACTIVE like  concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_CORP.CORP_NAME like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_AREA.MODIFIED_DATE like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_AREA.MODIFIER like concat('%',"'"+#{search_value}+"'",'%')
+            OR DEF_AREA.ISACTIVE like concat('%',"'"+#{search_value}+"'",'%')
             )
         </if>
         ORDER BY DEF_AREA.ID
@@ -165,5 +165,11 @@
     <select id="selectArea_Name" resultType="com.bizvane.ishop.entity.Area">
         select * from DEF_AREA
         WHERE corp_code=#{corp_code} and area_name=#{area_name}
+    </select>
+
+
+    <select id="getAreaByCorp" resultMap="Area">
+        select * from DEF_AREA
+        WHERE corp_code=#{corp_code}
     </select>
 </mapper>
