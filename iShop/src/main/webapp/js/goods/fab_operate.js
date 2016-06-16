@@ -127,7 +127,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":"","goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
