@@ -22,7 +22,9 @@ $("#empty").click(function(){
 })
 function superaddition(data){
     console.log(data);
+
     for (var i = 0; i < data.length; i++) {
+        var a=i+1;
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -31,7 +33,7 @@ function superaddition(data){
                         + 1
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
-                        + data[i].id
+                        + a
                         + "</td><td><img src='"+data[i].avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
@@ -42,7 +44,7 @@ function superaddition(data){
                         + "</td><td>"
                         +data[i].login_time_recently
                         + "</td><td>"
-                        +data[i].role.role_name
+                        +data[i].group_code
                         + "</td><td>"
                         +data[i].modifier
                         + "</td><td>"
@@ -81,7 +83,7 @@ function GET(){
                 superaddition(message);
                 // jurisdiction(actions);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+                // setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
                 // alert(data.message);
             }
