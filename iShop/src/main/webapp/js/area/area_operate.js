@@ -91,11 +91,18 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".areaedit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var codeMark=$("#AREA_ID").attr("data-mark");//区域名称是否唯一的标志
 			var nameMark=$("#AREA_NAME").attr("data-mark");//区域编号是否唯一的标志
 			if(areajs.firstStep()){
 				if(nameMark=="N"){
 					var div=$("#AREA_NAME").next('.hint').children();
 					div.html("该名称已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(codeMark=="N"){
+					var div=$("#AREA_ID").next('.hint').children();
+					div.html("该编号已经存在！");
 		            div.addClass("error_tips");
 		            return;
 				}
@@ -182,6 +189,7 @@ jQuery(document).ready(function(){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
 				$("#AREA_ID").val(msg.area_code);
+				$("#AREA_ID").attr("data-name",msg.area_code);
 				$("#AREA_NAME").val(msg.area_name);
 				$("#AREA_NAME").attr("data-name",msg.area_name);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
@@ -243,8 +251,9 @@ jQuery(document).ready(function(){
     	var isCode=/^[A]{1}[0-9]{1,7}$/;
     	var _params={};
     	var area_code=$(this).val();
+    	var area_code1=$(this).attr("data-name");
     	var corp_code=$("#OWN_CORP").val();
-		if(area_code!==""&&isCode.test(area_code)==true){
+		if(area_code!==""&&area_code!==area_code1&&isCode.test(area_code)==true){
 			_params["area_code"]=area_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();

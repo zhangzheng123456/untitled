@@ -104,12 +104,20 @@ var oc = new ObjectControl();
 		});
 		$(".shopedit_oper_btn ul li:nth-of-type(1)").click(function(){
 			var nameMark=$("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
+			var codeMark=$("#STORE_ID").attr("data-mark");//店铺ID是否唯一的标志
 			if(shopjs.firstStep()){
-			    if(nameMark=="N"){
-					var div=$("#STORE_NAME").next('.hint').children();
-					div.html("该名称已经存在！");
-		            div.addClass("error_tips");
-		            return;
+				if(nameMark=="N"||codeMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#STORE_NAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#STORE_ID").next('.hint').children();
+						div.html("该编号已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
 				}
 				console.log($("#OWN_BRAND").data("mybcode"));
 				var ID=sessionStorage.getItem("id");
@@ -221,6 +229,7 @@ jQuery(document).ready(function(){
 				$("#STORE_NAME").val(msg.store_name);
 				$("#STORE_NAME").attr("data-name",msg.store_name);
 				$("#STORE_ID").val(msg.store_code);
+				$("#STORE_ID").attr("data-name",msg.store_code);
 				$("#OWN_AREA").val(msg.area_name);
 				$("#OWN_AREA").attr("data-myacode",msg.area_code);
 				if(msg.flg_tob=="Y"){
@@ -284,12 +293,13 @@ jQuery(document).ready(function(){
     	var isCode=/^[D]{1}[0-9]{1,7}$/;
     	var _params={};
     	var store_code=$(this).val();//店仓编号
+    	var store_code1=$(this).attr("data-name");//标志
     	var corp_code=$("#OWN_CORP").val();//公司编号
-		if(store_code!==""&&isCode.test(store_code)==true){
+		if(store_code!==""&&store_code!==store_code1&&isCode.test(store_code)==true){
 			_params["store_code"]=store_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/store/Store_CodeExist","", _params, function(data){
+			oc.postRequire("post","/shop/Store_CodeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
 	                    $("#STORE_ID").attr("data-mark","Y");
@@ -310,7 +320,7 @@ jQuery(document).ready(function(){
 	    	var _params={};
 	    	_params["store_name"]=store_name;
 	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/store/Store_NameExist","", _params, function(data){
+	    	oc.postRequire("post","/shop/Store_NameExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
 	            	$("#STORE_NAME").attr("data-mark","Y");
