@@ -224,6 +224,7 @@ jQuery(document).ready(function(){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
 				$("#CORPID").val(msg.corp_code)
+				$("#CORPID").attr("data-name",msg.corp_code);
 				$("#CORPNAME").val(msg.corp_name);
 				$("#CORPADDRESS").val(msg.address);
 				$("#CONTACTS").val(msg.contact);
@@ -253,10 +254,11 @@ jQuery(document).ready(function(){
     	var isCode=/^[C]{1}[0-9]{1,7}$/;
     	var _params={};
     	var corp_code=$(this).val();
-		if(corp_code!==""&&isCode.test(corp_code)==true){
+    	var corp_code1=$(this).attr("data-name");
+    	var div=$(this).next('.hint').children();
+		if(corp_code!==""&&corp_code!==corp_code1&&isCode.test(corp_code)==true){
 	    	console.log(corp_code);
 			_params["corp_code"]=corp_code;
-			var div=$(this).next('.hint').children();
 			oc.postRequire("post","/corp/Corp_codeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
