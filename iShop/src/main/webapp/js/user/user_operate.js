@@ -82,10 +82,10 @@ var oc = new ObjectControl();
 		return true;
 	};
 	useroperatejs.bindbutton=function(){
-		var codeMark=$("#USERID").attr("data-mark");
-		var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
-		var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
+			var codeMark=$("#USERID").attr("data-mark");
+			var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
+			var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 			if(useroperatejs.firstStep()){
 				if(phoneMark=="N"){
 					var div=$("#USER_PHONE").next('.hint').children();
@@ -422,44 +422,76 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="新增用户"){
 		if(addtype.user_type=="admin"){
 			if(addtype.isAdmin=="Y"){
-				$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
+				// $("#OWN_CORP").parent().parent().parent().parent().css("display","none");
+				var _command="/user/getAdminCorp";
+				oc.postRequire("post", _command,"", "", function(data){
+					console.log(data);
+					if(data.code=="0"){
+						var msg=JSON.parse(data.message);
+						console.log(msg);
+						var index=0;
+						var corp_html='';
+						var c=null;
+						for(index in msg.corps){
+							c=msg.corps[index];
+							corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+						}
+						$("#OWN_CORP").append(corp_html);
+						$('.corp_select select').searchableSelect();
+						$('.searchable-select-item').click(function(){
+							$("input[verify='Code']").val("");
+							$("#USER_PHONE").val("");
+							$("#USER_EMAIL").val("");
+							$("#USERID").attr("data-mark");
+							$("#USER_PHONE").attr("data-mark","");
+							$("#USER_EMAIL").attr("data-mark","");
+						})
+					}else if(data.code=="-1"){
+						art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content: data.message
+						});
+					}
+				});
 				$("#select_ownshop").css("display","none");
 			}else if(addtype.isAdmin=="N"){
-				$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
+				// $("#OWN_CORP").parent().parent().parent().parent().css("display","block");
+				var _command="/user/getCorpByUser";
+				oc.postRequire("post", _command,"", "", function(data){
+					console.log(data);
+					if(data.code=="0"){
+						var msg=JSON.parse(data.message);
+						console.log(msg);
+						var index=0;
+						var corp_html='';
+						var c=null;
+						for(index in msg.corps){
+							c=msg.corps[index];
+							corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+						}
+						$("#OWN_CORP").append(corp_html);
+						$('.corp_select select').searchableSelect();
+						$('.searchable-select-item').click(function(){
+							$("input[verify='Code']").val("");
+							$("#USER_PHONE").val("");
+							$("#USER_EMAIL").val("");
+							$("#USERID").attr("data-mark");
+							$("#USER_PHONE").attr("data-mark","");
+							$("#USER_EMAIL").attr("data-mark","");
+						})
+					}else if(data.code=="-1"){
+						art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content: data.message
+						});
+					}
+				});
 				$("#select_ownshop").css("display","block");
 			}
-			var _command="/user/getCorpByUser";
-			oc.postRequire("post", _command,"", "", function(data){
-				console.log(data);
-				if(data.code=="0"){
-					var msg=JSON.parse(data.message);
-					console.log(msg);
-					var index=0;
-					var corp_html='';
-					var c=null;
-					for(index in msg.corps){
-						c=msg.corps[index];
-						corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-					}
-					$("#OWN_CORP").append(corp_html);
-					$('.corp_select select').searchableSelect();
-					$('.searchable-select-item').click(function(){
-						$("input[verify='Code']").val("");
-						$("#USER_PHONE").val("");
-						$("#USER_EMAIL").val("");
-						$("#USERID").attr("data-mark");
-						$("#USER_PHONE").attr("data-mark","");
-						$("#USER_EMAIL").attr("data-mark","");
-					})
-				}else if(data.code=="-1"){
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content: data.message
-					});
-				}
-			});
 		}else{
 			$("#OWN_CORP").css({"background-color":"#dfdfdf"});
 			$("#OWN_CORP").attr("readonly",true);
@@ -647,11 +679,11 @@ jQuery(document).ready(function(){
 	    	oc.postRequire("post","/user/EamilExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
-	            	$("#STORE_NAME").attr("data-mark","Y");
+	            	$("#USER_EMAIL").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
 	            	div.html("该邮箱已经存在！");
 	            	div.addClass("error_tips");
-	            	$("#STORE_NAME").attr("data-mark","N");
+	            	$("#USER_EMAIL").attr("data-mark","N");
 	            }
 	    	})
 	    }
@@ -672,11 +704,11 @@ jQuery(document).ready(function(){
 	    	oc.postRequire("post","/user/PhoneExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
-	            	$("#STORE_NAME").attr("data-mark","Y");
+	            	$("#USER_PHONE").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
 	            	div.html("该名称已经存在！");
 	            	div.addClass("error_tips");
-	            	$("#STORE_NAME").attr("data-mark","N");
+	            	$("#USER_PHONE").attr("data-mark","N");
 	            }
 	    	})
 	    }

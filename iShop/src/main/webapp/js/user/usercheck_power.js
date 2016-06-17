@@ -2,9 +2,11 @@ var oc = new ObjectControl();
 var inx=1;//默认是第一页
 var value="";//收索的关键词
 var param={};//定义的对象
-var user_id=sessionStorage.getItem("id");
-var group_code="";
+var user_id=sessionStorage.getItem("id");//用户id
+var group_code="";//群主编号
+var corp_code="";
 $("#edit_power").click(function(){
+    corp_code=$('#OWN_CORP').val();
 	group_code=$('#OWN_RIGHT').attr("data-myrcode");
     $("#page-wrapper").hide();
     $(".content").show();
@@ -186,6 +188,7 @@ function clearAll(name){
 $('#save').click(function(){
     var param={};
     param["group_code"]=user_id;
+    param["corp_code"]=corp_code;
     var tr=$("tbody input[name='test'][type='checkbox']:checked").parents('tr');
     var list=[];
     for(var i=0;i<tr.length;i++){

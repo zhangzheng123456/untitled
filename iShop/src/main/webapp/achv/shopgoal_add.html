@@ -62,7 +62,13 @@
                     <div>
                         <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/></span>
                     </div>
-
+                    <div>
+                        <span>
+                            <label>日期</label>
+                            <input type="text" id="week">
+                            <input type="text" id="week">
+                        </span>
+                    </div>
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
@@ -84,7 +90,7 @@
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <!-- side_menu -->
-    <script type="text/javascript" src="../js/side_menu.js"></script>
+    <!-- <script type="text/javascript" src="../js/side_menu.js"></script> -->
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
@@ -95,18 +101,6 @@
 
     <script type="text/javascript" src="../js/webuploader.html5only.min.js"></script>
     <script type="text/javascript" src="../js/diyUpload.js"></script>
-    <script type="text/javascript">
-        $('#test').diyUpload({
-            url:'server/fileupload.php',
-            success:function( data ) {
-                console.info( data );
-            },
-            error:function( err ) {
-                console.info( err );
-            }
-        });
-    </script>
-
     <!-- con_arrow -->
    <!--  <script type="text/javascript" src="../js/con_arrow.js"></script> -->
     <!-- Dialog -->
@@ -116,7 +110,7 @@
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
-    <script type="text/javascript" src="../js/achv/shopgoal.js"></script>
+    <!-- <script type="text/javascript" src="../js/achv/shopgoal.js"></script> -->
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>

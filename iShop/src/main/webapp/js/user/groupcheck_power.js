@@ -282,6 +282,7 @@ function clearAll(name){
 $('#save').click(function(){
     var param={};
     param["group_code"]=group_code;
+    param["corp_code"]=corp_code;
     var tr=$("tbody input[name='test'][type='checkbox']:checked").parents('tr');
     var list=[];
     for(var i=0;i<tr.length;i++){
