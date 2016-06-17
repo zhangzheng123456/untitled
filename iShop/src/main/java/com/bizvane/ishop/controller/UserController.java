@@ -532,7 +532,7 @@ public class UserController {
     public String getAdminCorp(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String role_code = request.getSession(false).getAttribute("role_code").toString();
-        int user_id = Integer.parseInt(request.getSession(false).getAttribute("use_id").toString());
+        int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
         try {
             if (!role_code.contains(Common.ROLE_SYS)) {
                 dataBean.setId(id);
@@ -542,7 +542,7 @@ public class UserController {
             }
             Corp corp = this.corpService.selectByUser_id(user_id);
             org.json.JSONObject result = new org.json.JSONObject();
-            result.put("corp", corp);
+            result.put("corp", JSON.toJSON(corp));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
