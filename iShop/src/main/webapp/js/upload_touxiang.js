@@ -52,3 +52,29 @@ function clacImgZoomParam(maxWidth, maxHeight, width, height) {
     param.top = Math.round((maxHeight - param.height) / 2);
     return param;
 }
+//上传头像至oss存储
+$(function(){
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'wA6nbdOTkdNvajg3',
+        accessKeySecret: 'j1Nv6xi16lmOkangJfPxc6Y4gPTq15',
+        bucket: 'goods-image'
+    });
+    document.getElementById('file').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        var storeAs = $("#CORPID").val().trim()+'.jpg';
+        console.log(file.name + ' => ' + storeAs);
+        client.multipartUpload(storeAs, file).then(function (result) {
+            console.log(result);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    });
+    client.list({
+        'max-keys': 10
+    }).then(function (result) {
+        console.log(result);
+    }).catch(function (err) {
+        console.log(err);
+    });
+});
