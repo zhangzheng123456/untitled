@@ -90,6 +90,9 @@
             <if test="isactive != null">
                 isactive,
             </if>
+            <if test="avater!=null and avater!=''">
+                avater,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
@@ -121,6 +124,9 @@
             </if>
             <if test="isactive != null">
                 #{isactive},
+            </if>
+            <if test="avater!=null and avater!=''">
+                #{avater},
             </if>
         </trim>
     </insert>
@@ -157,6 +163,9 @@
             </if>
             <if test="isactive != null">
                 isactive = #{isactive},
+            </if>
+            <if test="avater!=null and avater!=''">
+                avater=#{avater},
             </if>
         </trim>
         WHERE ID = #{id};

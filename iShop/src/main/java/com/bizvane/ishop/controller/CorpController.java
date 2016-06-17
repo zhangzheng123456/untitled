@@ -164,6 +164,7 @@ public class CorpController {
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
+            corp.setAvater(jsonObject.get("avater").toString());
             Date now = new Date();
             corp.setModified_date(sdf.format(now));
             corp.setModifier(user_id);
@@ -184,7 +185,7 @@ public class CorpController {
     /**
      * 删除
      *
-     * @param request
+     * @param
      * @return
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
@@ -350,7 +351,6 @@ public class CorpController {
     }
 
 
-
     @RequestMapping(value = "/Corp_codeExist", method = RequestMethod.POST)
     @ResponseBody
     public String Corp_codeExist(HttpServletRequest request) {
@@ -382,7 +382,6 @@ public class CorpController {
         }
         return dataBean.getJsonStr();
     }
-
 
 
 }

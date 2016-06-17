@@ -28,6 +28,17 @@ public class Corp {
     //是否可用
     private String isactive;
 
+    //图片路径
+    private String avater;
+
+    public String getAvater() {
+        return avater;
+    }
+
+    public void setAvater(String avater) {
+        this.avater = avater;
+    }
+
     public Corp() {
     }
 
