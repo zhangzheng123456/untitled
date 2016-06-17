@@ -394,7 +394,7 @@ $("#delete").click(function(){
     })
 })
 //删除弹框
- function frame(){
+function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
