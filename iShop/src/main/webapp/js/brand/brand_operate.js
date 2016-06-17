@@ -52,8 +52,8 @@ var oc = new ObjectControl();
 	};
 	brandjs.bindbutton=function(){
 		$(".brandadd_oper_btn ul li:nth-of-type(1)").click(function(){
-			var nameMark=$("#BRAND_NAME").attr("data-mark");//区域编号是否唯一的标志
-			var codeMark=$("#BRAND_ID").attr("data-mark");//区域名称是否唯一的标志
+			var nameMark=$("#BRAND_NAME").attr("data-mark");//品牌编号是否唯一的标志
+			var codeMark=$("#BRAND_ID").attr("data-mark");//品牌名称是否唯一的标志
 			if(brandjs.firstStep()){
 				if(nameMark=="N"||codeMark=="N"){
 					if(nameMark=="N"){
@@ -91,13 +91,21 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".brandedit_oper_btn ul li:nth-of-type(1)").click(function(){
-			var nameMark=$("#BRAND_NAME").attr("data-mark");//区域名称是否唯一的标志
+			var nameMark=$("#BRAND_NAME").attr("data-mark");//品牌编号是否唯一的标志
+			var codeMark=$("#BRAND_ID").attr("data-mark");//品牌名称是否唯一的标志
 			if(brandjs.firstStep()){
-				if(nameMark=="N"){
-					var div=$("#BRAND_NAME").next('.hint').children();
-					div.html("该名称已经存在！");
-		            div.addClass("error_tips");
-		            return;
+				if(nameMark=="N"||codeMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#BRAND_NAME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#BRAND_ID").next('.hint').children();
+						div.html("该编号已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
 				}
 				var ID=sessionStorage.getItem("id");
 				var BRAND_ID=$("#BRAND_ID").val();
@@ -182,6 +190,7 @@ jQuery(document).ready(function(){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
 				$("#BRAND_ID").val(msg.brand_code);
+				$("#BRAND_ID").attr("data-name",msg.brand_code);
 				$("#BRAND_NAME").val(msg.brand_name);
 				$("#BRAND_NAME").attr("data-name",msg.brand_name);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
@@ -242,7 +251,8 @@ jQuery(document).ready(function(){
     	var _params={};
     	var brand_code=$(this).val();
     	var corp_code=$("#OWN_CORP").val();
-		if(brand_code!==""&&isCode.test(brand_code)==true){
+    	var brand_code1=$(this).attr("data-name");
+		if(brand_code!==""&&brand_code!==brand_code1&&isCode.test(brand_code)==true){
 			_params["brand_code"]=brand_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();

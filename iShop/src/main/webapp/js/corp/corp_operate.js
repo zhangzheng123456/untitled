@@ -117,10 +117,15 @@ var message=JSON.parse(val.message);
 			var codeMark=$("#CORPID").attr("data-mark");
 			console.log(nameMark);
 			if(corpjs.firstStep()){
-				if(nameMark=="N"){
+				if(nameMark=="N"||codeMark=="N"){
 					if(nameMark=="N"){
 						var div=$("#CORPNAME").next('.hint').children();
 						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#CORPID").next('.hint').children();
+						div.html("该编号已经存在！");
 		            	div.addClass("error_tips");
 					}
 	            	return;

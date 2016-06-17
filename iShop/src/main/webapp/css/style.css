@@ -7398,6 +7398,7 @@ body.skin-3 {
   border-radius:4px;
   font-size:14px;
   letter-spacing:10px;
+  cursor: pointer;
 }
 .editor_detail ul li i{
   vertical-align:middle;
