@@ -428,14 +428,14 @@ jQuery(document).ready(function(){
 					console.log(data);
 					if(data.code=="0"){
 						var msg=JSON.parse(data.message);
-						console.log(msg);
+						var corp=msg.corp
 						var index=0;
 						var corp_html='';
-						var c=null;
-						for(index in msg.corps){
-							c=msg.corps[index];
-							corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-						}
+						// var c=null;
+						// for(index in msg.corp){
+						// 	c=msg.corp[index];
+							corp_html+='<option value="'+corp.corp_code+'">'+corp.corp_name+'</option>';
+						// }
 						$("#OWN_CORP").append(corp_html);
 						$('.corp_select select').searchableSelect();
 						$('.searchable-select-item').click(function(){
