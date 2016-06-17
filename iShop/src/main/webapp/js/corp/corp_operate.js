@@ -228,7 +228,8 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				$("#CORPID").val(msg.corp_code)
+				$("#preview img").attr("src",msg.avater);
+				$("#CORPID").val(msg.corp_code);
 				$("#CORPID").attr("data-name",msg.corp_code);
 				$("#CORPNAME").val(msg.corp_name);
 				$("#CORPADDRESS").val(msg.address);
