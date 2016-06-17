@@ -168,4 +168,8 @@
         where ID = #{id}
     </delete>
 
+    <select id="selectByUser_id" resultType="com.bizvane.ishop.entity.Corp">
+        select * from DEF_CORP where corp_code=(select corp_code from DEF_USER WHERE id=#{user_id})
+    </select>
+
 </mapper>

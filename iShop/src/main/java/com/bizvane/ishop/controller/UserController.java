@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -526,6 +527,75 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/getAdminCorp")
+    @ResponseBody
+    public String getAdminCorp(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String role_code = request.getSession(false).getAttribute("role_code").toString();
+        int user_id = Integer.parseInt(request.getSession(false).getAttribute("use_id").toString());
+        try {
+            if (!role_code.contains(Common.ROLE_SYS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("没有访问权限");
+                return dataBean.getJsonStr();
+            }
+            Corp corp = this.corpService.selectByUser_id(user_id);
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("corp", corp);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/adminExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String adminExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+
+            String jsString = request.getParameter("param").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            id = jsonObject.get("id").toString();
+            if (!role_code.contains(Common.ROLE_SYS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("没有访问权限");
+                return dataBean.getJsonStr();
+            }
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String message = jsonObject.get("message").toString();
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
+            String admin_code = jsonObject1.getString("id");
+            String existInfo = userService.userCodeExist(admin_code, corp_code);
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("系统管理员编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("系统管理员不存在");
+            }
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("没有访问权限");
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 
     @RequestMapping(value = "/UserCodeExist", method = RequestMethod.POST)
     @ResponseBody
@@ -621,7 +691,6 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
-
 
 
     @RequestMapping(value = "/EamilExist", method = RequestMethod.POST)

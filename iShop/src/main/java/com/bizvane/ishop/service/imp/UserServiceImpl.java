@@ -61,7 +61,6 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUser(corp_code, search_value);
         PageInfo<User> page = new PageInfo<User>(users);
-
         return page;
     }
 
@@ -341,5 +340,13 @@ public class UserServiceImpl implements UserService {
             result = Common.DATABEAN_CODE_SUCCESS;
         }
         return result;
+    }
+
+    @Override
+    public Corp getCorpByUserId(int user_id) throws SQLException {
+        // Corp corp = this.userMapper.selectCorpByUser_id(user_id);
+        //   this.userMapper.select
+        Corp corp = this.corpService.selectByUser_id(user_id);
+        return corp;
     }
 }

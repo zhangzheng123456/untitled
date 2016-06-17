@@ -29,4 +29,5 @@ public interface CorpService {
     String getCorpByCorpName(String corp_name) throws SQLException;
 
 
+    Corp selectByUser_id(int user_id) throws SQLException;
 }

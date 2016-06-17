@@ -1,5 +1,6 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.User;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,4 +32,6 @@ public interface UserMapper {
     User selectPhone(@Param("phone") String phone, @Param("corp_code") String corp_code);
 
     User userEmailExist(@Param("email") String email, @Param("corp_code") String corp_code);
+
+
 }
