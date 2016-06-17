@@ -319,10 +319,10 @@ function li_remove(){
 				});
 			}
 		}
-	}
-	$(function(){
+}
+$(function(){
+	li_remove();
+	$('.add_new_touxiang').click(function() {
 		li_remove();
-		$('.add_new_touxiang').click(function() {
-			li_remove();
-		});
 	});
+});

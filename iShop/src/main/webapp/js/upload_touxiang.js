@@ -62,7 +62,7 @@ $(function(){
     });
     document.getElementById('file').addEventListener('change', function (e) {
         var file = e.target.files[0];
-        var storeAs = $("#CORPID").val().trim()+'.jpg';
+        var storeAs = '/Avater/User/iShow/'+$("#CORPID").val().trim()+'.jpg';
         console.log(file.name + ' => ' + storeAs);
         client.multipartUpload(storeAs, file).then(function (result) {
             console.log(result);

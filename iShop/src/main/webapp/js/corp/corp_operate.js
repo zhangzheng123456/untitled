@@ -131,7 +131,7 @@ var message=JSON.parse(val.message);
 	            	return;
 	            }
 				var ID=sessionStorage.getItem("id");
-				var HEADPORTRAIT="http://goods-image.oss-cn-hangzhou.aliyuncs.com/"+$("#CORPID").val().trim()+".jpg";
+				var HEADPORTRAIT="http://goods-image.oss-cn-hangzhou.aliyuncs.com/Avater/User/iShow/"+$("#CORPID").val().trim()+".jpg";
 				var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
