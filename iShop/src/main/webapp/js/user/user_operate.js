@@ -1,4 +1,6 @@
 var oc = new ObjectControl();
+var addtype=sessionStorage.getItem("addtype");
+addtype=JSON.parse(addtype);
 (function(root,factory){
 	root.user = factory();
 }(this,function(){
@@ -410,8 +412,6 @@ function store_data(p,r,c){
 jQuery(document).ready(function(){
 	window.user.init();//初始化
 	var val=sessionStorage.getItem("key");
-	var addtype=sessionStorage.getItem("addtype");
-	addtype=JSON.parse(addtype);
     val=JSON.parse(val);
     var message=JSON.parse(val.message);
 	if($(".pre_title label").text()=="新增用户"){
