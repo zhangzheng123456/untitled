@@ -7596,7 +7596,7 @@ body.skin-3 {
 }
 /*模拟一般select样式*/
 ul,li{list-style:none;padding:0;margin:0;}
-.dropdown input{width:420px; height:30px; line-height:30px;border-radius:4px 0px 0px 4px;background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+.dropdown input{width:420px; height:30px; line-height:30px;border-radius:4px;background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
     background-size: 30px 30px;}
 .dropdown ul{width:420px; background:#e8f5fe; margin-top:2px;margin-left:123px; border:1px solid #a9c9e2; position:absolute; display:none;z-index:100;}
 .dropdown ul li{height:24px; line-height:24px; text-indent:10px;}
