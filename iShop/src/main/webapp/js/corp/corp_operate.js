@@ -131,7 +131,12 @@ var message=JSON.parse(val.message);
 	            	return;
 	            }
 				var ID=sessionStorage.getItem("id");
-				var HEADPORTRAIT="http://goods-image.oss-cn-hangzhou.aliyuncs.com/Avater/User/iShow/"+$("#CORPID").val().trim()+".jpg";
+				var HEADPORTRAIT="";
+				if($("#CORPID").val()!==''&&$("#preview img").attr("src")!=='../img/bg.png'){
+				   HEADPORTRAIT="http://goods-image.oss-cn-hangzhou.aliyuncs.com/Avater/User/iShow/"+$("#CORPID").val().trim()+".jpg";
+				}else{
+				   HEADPORTRAIT="";
+				}
 				var CORPID=$("#CORPID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
