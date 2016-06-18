@@ -137,10 +137,12 @@ input::-webkit-input-placeholder{
 }
 .list .list_r div.save{
 	background-color: #6dc1c8;
+	cursor: pointer;
 }
 .list .list_r div.turnoff{
 	margin-left: 20px;
 	background-color: #4a5f7c;
+	cursor: pointer;
 }
 .action{
 	height: 50px;
