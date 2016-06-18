@@ -5,10 +5,18 @@ var inx=1;//默认是第一页
 // var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-// var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
-// group_corp=JSON.parse(group_corp);
-// var role_code=group_corp.role_code;//角色编号
-var role_code="";
+var role_code=group_corp.role_code;//角色编号
+var role_code="";//角色编号
+var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
+
+if(group!==null){
+  group_corp=JSON.parse(group_corp);
+  role_code=group_corp.role_code;
+  $("#page-wrapper").hide();
+  $(".content").show();
+  GET();  
+}
+
 //编辑页面点击弹出角色权限的框
 $('#edit_power').click(function(){
     role_code=$("#ROLE_NUM").val();
@@ -20,6 +28,24 @@ $('#edit_power').click(function(){
     $("#page-wrapper").hide();
     $(".content").show();
     GET();
+})
+//新增页面点击弹出角色权限的框
+$("#add_power").click(function(){
+    if(role_code==''){
+        frame();
+        $('.frame').html("请先定义角色编号！");
+        return;
+    }
+   role_code=$("#ROLE_NUM").val();
+   $("#page-wrapper").hide();
+   $(".content").show();
+   GET();
+})
+//关闭弹框
+$('#turnoff').click(function(){
+    $("#page-wrapper").show();
+    $(".content").hide();
+    sessionStorage.removeItem('group_corp');
 })
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
@@ -84,7 +110,6 @@ function GET(){
             }
     });
 }
-GET();
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
@@ -173,10 +198,11 @@ function POST(){
  function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
-    $('.frame').remove();
-    $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+    
+    $('body').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+    $('.frame').remove();
 } 
 //全选
 function checkAll(name){
@@ -220,5 +246,12 @@ $('#save').click(function(){
     param["list"]=list;
     oc.postRequire("post","/user/group/check_power/save","0",param,function(data){
         console.log(data);
+        if(data.code=="0"){
+            $("#page-wrapper").show();
+            $(".content").hide();
+            sessionStorage.removeItem('group_corp');   
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
     })
 })
