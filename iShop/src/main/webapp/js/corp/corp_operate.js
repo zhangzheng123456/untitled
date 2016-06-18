@@ -89,6 +89,7 @@ var message=JSON.parse(val.message);
 	            	return;
 	            }
 				var CORPID=$("#CORPID").val();
+				var WXID=$("#WXID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
@@ -106,7 +107,7 @@ var message=JSON.parse(val.message);
 
 					}
 				};
-				var _params={"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
+				var _params={"corp_code":CORPID,"app_id":WXID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -138,6 +139,7 @@ var message=JSON.parse(val.message);
 				   HEADPORTRAIT="";
 				}
 				var CORPID=$("#CORPID").val();
+				var WXID=$("#WXID").val();
 				var CORPNAME=$("#CORPNAME").val();
 				var CORPADDRESS=$("#CORPADDRESS").val();
 				var CONTACTS=$("#CONTACTS").val();
@@ -154,7 +156,7 @@ var message=JSON.parse(val.message);
 
 					}
 				};
-				var _params={"id":ID,"avater":HEADPORTRAIT,"corp_code":CORPID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
+				var _params={"id":ID,"avater":HEADPORTRAIT,"corp_code":CORPID,"app_id":WXID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -225,11 +227,6 @@ var message=JSON.parse(val.message);
 jQuery(document).ready(function(){
 	window.corp.init();//初始化
 	if($(".pre_title label").text()=="编辑企业信息"){
-		if($("#preview img").attr("src")!=='../img/bg.png'){
-			$("#c_logo label").html("更换logo");
-		}else{
-			$("#c_logo label").html("上传logo");
-		}
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/corp/select";
@@ -239,6 +236,12 @@ jQuery(document).ready(function(){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
 				$("#preview img").attr("src",msg.avater);
+				if($("#preview img").attr("src").indexOf('http')!==-1){
+					$("#c_logo label").html("更换logo");
+				}else{
+					$("#c_logo label").html("上传logo");
+				}
+				$("#WXID").val(msg.app_id);
 				$("#CORPID").val(msg.corp_code);
 				$("#CORPID").attr("data-name",msg.corp_code);
 				$("#CORPNAME").val(msg.corp_name);

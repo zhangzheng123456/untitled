@@ -46,6 +46,11 @@ textarea{
   border: none;
   border-radius:4px;
 }
+
+::-webkit-input-placeholder{color:#D2CFCF;}
+::-moz-placeholder{color:#D2CFCF;}
+:-moz-placeholder{color:#D2CFCF;}
+
 .nav > li > a {
   /*color: #a7b1c2;*/
   /*font-weight: 600;*/

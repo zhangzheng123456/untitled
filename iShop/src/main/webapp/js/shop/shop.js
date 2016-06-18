@@ -346,20 +346,29 @@ jQuery(document).ready(function(){
 				var area_html='';
 				var a=null;
 				console.log(msg.areas);
-				for(var i=0; i< msg.areas.length;i++){
-					a=msg.areas[i];
-					area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';
-				}
-				$("#area_select").append(area_html);
-				$("#area_select li").click(function(){
-		            var this_=this;
-		            var txt = $(this_).text();
-		            var a_code=$(this_).data("areacode");
-		            $(this_).parent().parent().children(".input_select").val(txt);
-		            $(this_).parent().parent().children(".input_select").attr('data-myacode',a_code);
-		            $(this_).addClass('rel').siblings().removeClass('rel');
-		            $(this_).parent().toggle();
-		        });
+				if(msg.areas.length==0){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"该企业目前分配区域！"
+					});
+				}else{
+					for(var i=0; i< msg.areas.length;i++){
+						a=msg.areas[i];
+						area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';
+					}
+					$("#area_select").append(area_html);
+					$("#area_select li").click(function(){
+			            var this_=this;
+			            var txt = $(this_).text();
+			            var a_code=$(this_).data("areacode");
+			            $(this_).parent().parent().children(".input_select").val(txt);
+			            $(this_).parent().parent().children(".input_select").attr('data-myacode',a_code);
+			            $(this_).addClass('rel').siblings().removeClass('rel');
+			            $(this_).parent().toggle();
+			        });
+			    }
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -500,10 +509,6 @@ jQuery(document).ready(function(){
 		flg_index ++;
 		checknow_data=[];
 		checknow_namedata=[];
-		// var c_input=$('.checkboxselect-container input');
-		// for(var j=0;j<c_input.length;j++){
-		// 	$(c_input[j]).attr("checked",false);
-		// }
 	});
 });
 
