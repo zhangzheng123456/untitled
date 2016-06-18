@@ -225,6 +225,11 @@ var message=JSON.parse(val.message);
 jQuery(document).ready(function(){
 	window.corp.init();//初始化
 	if($(".pre_title label").text()=="编辑企业信息"){
+		if($("#preview img").attr("src")!=='../img/bg.png'){
+			$("#c_logo label").html("更换logo");
+		}else{
+			$("#c_logo label").html("上传logo");
+		}
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/corp/select";
