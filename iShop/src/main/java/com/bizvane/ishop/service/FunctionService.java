@@ -11,13 +11,12 @@ import java.util.List;
  * Created by Administrator on 2016/5/24.
  */
 public interface FunctionService {
-    JSONArray selectAllActions(int user_id,String role_code,String group_code);
 
     JSONArray selectAllFunctions(String user_code,String group_code, String role_code);
 
     JSONArray selectActionByFun(String user_code,String group_code, String role_code,String function_code);
 
-    List<Function> selectAllPrivilege(String role_code, int user_id, String group_code);
+    List<Function> selectAllPrivilege(String role_code, String user_code, String group_code);
 
     JSONArray selectRAGPrivilege(String role_code,String group_code);
 
@@ -25,7 +24,7 @@ public interface FunctionService {
 
     JSONArray selectGroupPrivilege(String group_code);
 
-    JSONArray selectUserPrivilege(String user_id);
+    JSONArray selectUserPrivilege(String user_code);
 
     String updatePrivilege(String master_code,String user_id,JSONArray array);
 

@@ -214,12 +214,13 @@ public class RoleController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            String login_user_code = request.getSession().getAttribute("user_code").toString();
+            String login_corp_code = request.getSession().getAttribute("corp_code").toString();
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code,login_user_id,login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code);
 
             String role_code = jsonObject.get("role_code").toString();
             //获取群组角色的权限

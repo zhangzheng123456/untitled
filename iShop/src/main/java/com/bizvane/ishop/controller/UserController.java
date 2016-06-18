@@ -494,22 +494,25 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            String login_user_code = request.getSession().getAttribute("user_code").toString();
+            String login_corp_code = request.getSession().getAttribute("corp_code").toString();
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_user_id, login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
             String role_code = groupService.selectCorpGroup(group_code).getRole_code();
+            String corp_code = userService.getUserById(Integer.parseInt(user_id)).getCorp_code();
+            String user_code = userService.getUserById(Integer.parseInt(user_id)).getUser_code();
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, group_code);
+            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, corp_code+group_code);
 
             //获取用户自定义的权限
-            JSONArray user_privilege = functionService.selectUserPrivilege(user_id);
+            JSONArray user_privilege = functionService.selectUserPrivilege(corp_code+user_code);
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));
