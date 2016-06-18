@@ -111,8 +111,8 @@ public class FunctionServiceImpl implements FunctionService {
      * 获取用户所有动作权限
      * （暂未使用）
      */
-    public JSONArray selectAllActions(int user_id, String role_code, String group_code) {
-        List<Function> act_info = functionMapper.selectPrivilege(user_id, role_code, group_code);
+    public JSONArray selectAllActions(String user_code, String role_code, String group_code) {
+        List<Function> act_info = functionMapper.selectPrivilege(user_code, role_code, group_code);
         JSONArray functions = new JSONArray();
 
         for (int i = 0; i < act_info.size(); i++) {
@@ -180,13 +180,8 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 列出登录用户的所有权限
      */
-    public List<Function> selectAllPrivilege(String role_code, int user_id, String group_code) {
-        List<Function> privilege;
-        if (role_code.equals(Common.ROLE_SYS)) {
-            privilege = functionMapper.selectAllPrivilege();
-        } else {
-            privilege = functionMapper.selectPrivilege(user_id, role_code, group_code);
-        }
+    public List<Function> selectAllPrivilege(String role_code, String user_code, String group_code) {
+        List<Function> privilege = functionMapper.selectPrivilege(user_code, role_code, group_code);
         return privilege;
     }
 
@@ -195,7 +190,7 @@ public class FunctionServiceImpl implements FunctionService {
      */
     public JSONArray selectRAGPrivilege(String role_code, String group_code) {
         JSONArray array = new JSONArray();
-        List<Function> info = functionMapper.selectPrivilege(0, role_code, group_code);
+        List<Function> info = functionMapper.selectPrivilege("", role_code, group_code);
         for (int i = 0; i < info.size(); i++) {
             int id = info.get(i).getId();
             JSONObject object = new JSONObject();
@@ -241,9 +236,9 @@ public class FunctionServiceImpl implements FunctionService {
      * 列出所选用户的权限
      * 返回action id
      */
-    public JSONArray selectUserPrivilege(String user_id) {
+    public JSONArray selectUserPrivilege(String user_code) {
         JSONArray array = new JSONArray();
-        List<Function> act_info = functionMapper.selectUserPrivilege(user_id);
+        List<Function> act_info = functionMapper.selectUserPrivilege(user_code);
         for (int i = 0; i < act_info.size(); i++) {
             int id = act_info.get(i).getId();
             JSONObject corps = new JSONObject();

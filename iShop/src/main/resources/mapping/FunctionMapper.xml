@@ -35,12 +35,13 @@
         AND  a.ACTION_CODE IN (
         SELECT ACTION_CODE FROM DEF_PRIVILEGE
         WHERE MASTER_CODE = #{role_code}
-        and enable = 'Y'
+        and ISACTIVE = 'Y'
         )
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
         order by a.FUNCTION_CODE
     </select>
+
     <select id="selectGroupPrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
@@ -48,20 +49,21 @@
         AND  a.ACTION_CODE IN (
         SELECT ACTION_CODE FROM DEF_PRIVILEGE
         WHERE MASTER_CODE = #{group_code}
-        and enable = 'Y'
+        and ISACTIVE = 'Y'
         )
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
         order by a.FUNCTION_CODE
     </select>
+
     <select id="selectUserPrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND  a.ACTION_CODE IN (
         SELECT ACTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{user_id}
-        and enable = 'Y'
+        WHERE MASTER_CODE = #{user_code}
+        and ISACTIVE = 'Y'
         )
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
@@ -72,30 +74,21 @@
         select *
         FROM DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.ACTION_CODE IN (
+        AND a.ACTION_CODE IN (
         SELECT ACTION_CODE FROM DEF_PRIVILEGE
         WHERE (MASTER_CODE = #{group_code}
-            OR MASTER_CODE = #{role_code}
-            <if test="user_id!=0">
-                OR MASTER_CODE = #{user_id}
-            </if>
-            )
-            and enable = 'Y'
+        OR MASTER_CODE = #{role_code}
+        <if test="user_code!=''">
+            OR MASTER_CODE = #{user_code}
+        </if>
+        )
+        and ISACTIVE = 'Y'
         )
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
         order by a.FUNCTION_CODE
     </select>
 
-    <select id="selectAllPrivilege" resultType="com.bizvane.ishop.entity.Function">
-        select *
-        FROM DEF_ACTION a,DEF_FUNCTION b
-        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND b.ADMIN_FUNC = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
-        order by a.FUNCTION_CODE
-    </select>
 
     <insert id="insertFunction" parameterType="com.bizvane.ishop.entity.Function">
         insert into DEF_FUNCTION

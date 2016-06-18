@@ -20,11 +20,9 @@ public interface FunctionMapper {
 
     List<Function> selectGroupPrivilege(@Param("group_code") String group_code);
 
-    List<Function> selectUserPrivilege(@Param("user_id") String user_id);
+    List<Function> selectUserPrivilege(@Param("user_code") String user_code);
 
-    List<Function> selectPrivilege(@Param("user_id") int user_id, @Param("role_code") String role_code, @Param("group_code") String group_code);
-
-    List<Function> selectAllPrivilege();
+    List<Function> selectPrivilege(@Param("user_code") String user_code, @Param("role_code") String role_code, @Param("group_code") String group_code);
 
     int insertFunction(Function function);
 }

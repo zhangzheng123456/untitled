@@ -390,12 +390,13 @@ public class GroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            int login_user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            String login_user_code = request.getSession().getAttribute("user_code").toString();
+            String login_corp_code = request.getSession().getAttribute("corp_code").toString();
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_user_id, login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code);
 
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
@@ -406,7 +407,7 @@ public class GroupController {
             JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectGroupPrivilege(group_code);
+            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code+group_code);
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));
