@@ -1,6 +1,7 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.VIPtag;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,9 +19,9 @@ public interface VIPtagMapper {
 
     int updateByPrimaryKey(VIPtag record);
 
-    List<VIPtag> selectAllVipInfo(String corp_code, String search_value);
+    List<VIPtag> selectAllVipInfo(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
 
-    VIPtag selectVipTagCode(String tag_code, String corp_code);
+    VIPtag selectVipTagCode(@Param("tag_code") String tag_code, @Param("corp_code") String corp_code);
 
 }
