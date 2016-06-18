@@ -185,13 +185,8 @@ addtype=JSON.parse(addtype);
 						STORE_CODE +=r;
 					}
 				}
-				// var STORE_list=;
-				// for(var i=0;i<){
-
-				// }
 				var PSW=$("#init_password").val();
 				var _command="/user/edit";//接口名
-				console.log(HEADPORTRAIT);
 				var opt = {//返回成功后的操作
 					success:function(){
 

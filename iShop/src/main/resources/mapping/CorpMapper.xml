@@ -75,6 +75,9 @@
             <if test="contact_phone != null">
                 CONTACT_PHONE,
             </if>
+            <if test="app_id != null">
+                app_id,
+            </if>
             <if test="modified_date != null">
                 MODIFIED_DATE,
             </if>
@@ -109,6 +112,9 @@
             </if>
             <if test="contact_phone != null">
                 #{contact_phone},
+            </if>
+            <if test="app_id != null">
+                #{app_id},
             </if>
             <if test="modified_date != null">
                 #{modified_date},
@@ -148,6 +154,9 @@
             </if>
             <if test="contact_phone != null">
                 contact_phone = #{contact_phone},
+            </if>
+            <if test="app_id != null">
+                app_id = #{app_id},
             </if>
             <if test="modified_date != null">
                 modified_date = #{modified_date},

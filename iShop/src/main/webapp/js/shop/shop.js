@@ -204,6 +204,7 @@ var oc = new ObjectControl();
 }));
 var checknow_data=[];
 var checknow_namedata=[];
+var flg_index=0;
 jQuery(document).ready(function(){
 	window.shop.init();//初始化
 	if($(".pre_title label").text()=="编辑店铺信息"){
@@ -264,11 +265,10 @@ jQuery(document).ready(function(){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			console.log(msg);
-			var index=0;
 			var corp_html='';
 			var c=null;
-			for(index in msg.corps){
-				c=msg.corps[index];
+			for(var i=0;i<msg.corps.length;i++){
+				c=msg.corps[i];
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
@@ -346,20 +346,29 @@ jQuery(document).ready(function(){
 				var area_html='';
 				var a=null;
 				console.log(msg.areas);
-				for(var i=0; i< msg.areas.length;i++){
-					a=msg.areas[i];
-					area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';
-				}
-				$("#area_select").append(area_html);
-				$("#area_select li").click(function(){
-		            var this_=this;
-		            var txt = $(this_).text();
-		            var a_code=$(this_).data("areacode");
-		            $(this_).parent().parent().children(".input_select").val(txt);
-		            $(this_).parent().parent().children(".input_select").attr('data-myacode',a_code);
-		            $(this_).addClass('rel').siblings().removeClass('rel');
-		            $(this_).parent().toggle();
-		        });
+				if(msg.areas.length==0){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"该企业目前分配区域！"
+					});
+				}else{
+					for(var i=0; i< msg.areas.length;i++){
+						a=msg.areas[i];
+						area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';
+					}
+					$("#area_select").append(area_html);
+					$("#area_select li").click(function(){
+			            var this_=this;
+			            var txt = $(this_).text();
+			            var a_code=$(this_).data("areacode");
+			            $(this_).parent().parent().children(".input_select").val(txt);
+			            $(this_).parent().parent().children(".input_select").attr('data-myacode',a_code);
+			            $(this_).addClass('rel').siblings().removeClass('rel');
+			            $(this_).parent().toggle();
+			        });
+			    }
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -462,30 +471,25 @@ jQuery(document).ready(function(){
 					}
 					var s=$("#OWN_BRAND").attr("data-mybcode");
 					var c_input=$('.checkboxselect-container input');
-					if(flg_index==0){
-						var ss='';
-						if(s.indexOf(',')!==-1){
-							ss = s.split(",");
-							for(var i=0;i<ss.length;i++){
-								for(var j=0;j<c_input.length;j++){
-									if($(c_input[j]).val()==ss[i]){
-										$(c_input[j]).attr("checked",true);
-									}
-								}
-							}
-						}else{
-							ss=s;
+					var ss='';
+					if(s.indexOf(',')!==-1){
+						ss = s.split(",");
+						for(var i=0;i<ss.length;i++){
 							for(var j=0;j<c_input.length;j++){
-								if($(c_input[j]).val()==ss){
+								if($(c_input[j]).val()==ss[i]){
 									$(c_input[j]).attr("checked",true);
 								}
 							}
 						}
 					}else{
+						ss=s;
 						for(var j=0;j<c_input.length;j++){
-							$(c_input[j]).attr("checked",false);
+							if($(c_input[j]).val()==ss){
+								$(c_input[j]).attr("checked",true);
+							}
 						}
 					}
+					
 				}
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -497,16 +501,14 @@ jQuery(document).ready(function(){
 			}
 		});
 	});
-});
-var flg_index=0;
-$(".corp_select").click(function(){
+
+	$(".corp_select").click(function(){
 		$("#OWN_AREA").val('');
 		$("#OWN_BRAND").val('');
+		$('#OWN_BRAND').attr('data-mybcode','');
 		flg_index ++;
 		checknow_data=[];
 		checknow_namedata=[];
-		// var c_input=$('.checkboxselect-container input');
-		// for(var j=0;j<c_input.length;j++){
-		// 	$(c_input[j]).attr("checked",false);
-		// }
+	});
 });
+
