@@ -17,6 +17,8 @@ public class Corp {
     private String contact;
     //联系电话
     private String contact_phone;
+    //微信公众号app_id
+    private String app_id;
     //修改时间
     private String modified_date;
     //修改人
@@ -92,6 +94,14 @@ public class Corp {
 
     public void setContact_phone(String contact_phone) {
         this.contact_phone = contact_phone;
+    }
+
+    public String getApp_id() {
+        return app_id;
+    }
+
+    public void setApp_id(String app_id) {
+        this.app_id = app_id;
     }
 
     public String getModified_date() {

@@ -109,20 +109,22 @@ public class CorpController {
             JSONObject jsonObject = new JSONObject(message);
             Corp corp = new Corp();
             //为新增企业，计算corp_code
-            String max_code = corpService.selectMaxCorpCode();
-            int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
-            Integer c = code;
-            int length = max_code.length() - c.toString().length() - 1;
-            String corp_code = "C";
-            for (int i = 0; i < length; i++) {
-                corp_code = corp_code + "0";
-            }
-            corp_code = corp_code + code;
-            corp.setCorp_code(corp_code);
+//            String max_code = corpService.selectMaxCorpCode();
+//            int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
+//            Integer c = code;
+//            int length = max_code.length() - c.toString().length() - 1;
+//            String corp_code = "C";
+//            for (int i = 0; i < length; i++) {
+//                corp_code = corp_code + "0";
+//            }
+//            corp_code = corp_code + code;
+            corp.setCorp_code(jsonObject.get("corp_name").toString());
             corp.setCorp_name(jsonObject.get("corp_name").toString());
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
+            corp.setApp_id(jsonObject.get("app_id").toString());
+
             Date now = new Date();
             corp.setCreated_date(sdf.format(now));
             corp.setCreater(user_id);
@@ -165,6 +167,8 @@ public class CorpController {
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
             corp.setAvater(jsonObject.get("avater").toString());
+            corp.setApp_id(jsonObject.get("app_id").toString());
+
             Date now = new Date();
             corp.setModified_date(sdf.format(now));
             corp.setModifier(user_id);
