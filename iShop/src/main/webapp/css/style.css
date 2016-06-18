@@ -8218,7 +8218,7 @@ li.select_index>a>label>i{
 .per{
   display:none;
 }
-#OWN_BRAND{
+#OWN_BRAND,#TIME_TYPE{
 	background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
     background-size: 30px 30px;
 }
