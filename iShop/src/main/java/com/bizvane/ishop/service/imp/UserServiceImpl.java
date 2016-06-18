@@ -123,12 +123,14 @@ public class UserServiceImpl implements UserService {
             return null;
         } else {
             int user_id = login_user.getId();
+            String user_code = login_user.getUser_code();
             String corp_code = login_user.getCorp_code();
             String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
             String role_code = groupMapper.selectByCode(group_code).getRole_code();
 
             request.getSession().setAttribute("user_id", user_id);
+            request.getSession().setAttribute("user_code", user_code);
             request.getSession().setAttribute("corp_code", corp_code);
             request.getSession().setAttribute("role_code", role_code);
             request.getSession().setAttribute("store_code", store_code);

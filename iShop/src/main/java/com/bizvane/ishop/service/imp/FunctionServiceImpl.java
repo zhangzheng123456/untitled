@@ -36,15 +36,15 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 获取user所有功能模块
      */
-    public JSONArray selectAllFunctions(int user_id, String role_code, String group_code) {
+    public JSONArray selectAllFunctions(String user_code,String group_code, String role_code) {
         List<Function> func_info;
-        if (user_id == 0 && role_code.equals("")) {
-            //获取所有功能模块(系统管理员)
-            func_info = functionMapper.selectAll();
-        } else {
+//        if (user_id == 0 && role_code.equals("")) {
+//            //获取所有功能模块(系统管理员)
+//            func_info = functionMapper.selectAll();
+//        } else {
             //获取user所有功能模块
-            func_info = functionMapper.selectAllFun(user_id, role_code, group_code);
-        }
+            func_info = functionMapper.selectAllFun(user_code, group_code, role_code);
+ //       }
         JSONArray modules = new JSONArray();
         String uri;
         for (int i = 0; i < func_info.size(); i++) {
@@ -160,13 +160,13 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 按功能获取user动作权限
      */
-    public JSONArray selectActionByFun(int user_id, String role_code, String function_code, String group_code) {
+    public JSONArray selectActionByFun(String user_code, String group_code, String role_code, String function_code) {
         List<Action> act_info;
-        if (role_code.equals(Common.ROLE_SYS)) {
-            act_info = functionMapper.selectAllAction(function_code);
-        } else {
-            act_info = functionMapper.selectActionByFun(user_id, role_code, function_code, group_code);
-        }
+//        if (role_code.equals(Common.ROLE_SYS)) {
+//            act_info = functionMapper.selectAllAction(function_code);
+//        } else {
+            act_info = functionMapper.selectActionByFun(user_code, group_code, role_code, function_code);
+ //       }
         JSONArray actions = new JSONArray();
         for (int i = 0; i < act_info.size(); i++) {
             String act = act_info.get(i).getAction_name();

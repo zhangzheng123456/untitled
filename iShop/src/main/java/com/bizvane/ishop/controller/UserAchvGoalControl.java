@@ -54,9 +54,12 @@ public class UserAchvGoalControl {
             //String role_code = request.getParameter("role_code").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
             String function_code = request.getParameter("funcCode").toString();
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+
             org.json.JSONObject result = new org.json.JSONObject();
 
             int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
@@ -65,7 +68,6 @@ public class UserAchvGoalControl {
             if (role_code.contains(Common.ROLE_SYS)) {
                 pages = userAchvGoalService.selectBySearch(page_number, page_size, "", "");
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 pages = this.userAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(pages));

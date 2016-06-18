@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -11,13 +12,11 @@ import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.support.WebArgumentResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -63,20 +62,21 @@ public class VIPController {
     public String VIPManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            org.json.JSONObject result = new org.json.JSONObject();
+            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+
+            JSONObject result = new JSONObject();
             PageInfo<VIPInfo> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = vipService.selectBySearch(page_number, page_size, "", "");
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = vipService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", list);
@@ -219,18 +219,20 @@ public class VIPController {
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
 
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VIPtag> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 // list = vipService.selectBySearch(page_number, page_size, "", "");
                 list = vipTagService.selectBySearch(page_number, page_size, "", "");
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = vipTagService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", list);
@@ -365,17 +367,20 @@ public class VIPController {
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             // org.json.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            org.json.JSONObject result = new org.json.JSONObject();
+            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+
+            JSONObject result = new JSONObject();
             PageInfo<VIPtag> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = vipTagService.selectBySearch(page_number, page_size, "", "");
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = vipTagService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -386,50 +391,6 @@ public class VIPController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-    /**
-     * 回访记录管理
-     * 列表
-     */
-
-    @RequestMapping(value = "/callback/list", method = RequestMethod.POST)
-    @ResponseBody
-    public String manageCallBack(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            id = jsonObj.get("id").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter(request.getParameter("pageSize")));
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
-            String function_code = request.getParameter("funcCode");
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<VipCallbackRecord> list;
-            if (role_code.contains(Common.ROLE_SYS)) {
-                list = this.vipCallbackRecordService.selectBySearch(page_number, page_size, "", "");
-            } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = this.vipCallbackRecordService.selectBySearch(page_number, page_size, corp_code, "");
-            }
-            result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();

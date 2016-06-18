@@ -61,18 +61,19 @@ public class GroupController {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
 
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = groupService.getGroupAll(page_number, page_size, "", "");
             } else {
-                String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = groupService.getGroupAll(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -447,7 +448,7 @@ public class GroupController {
 
             String group_code = jsonObject.get("group_code").toString();
             String master_code;
-            if (jsonObject.get("corp_code")!=null && !jsonObject.get("corp_code").equals("")) {
+            if (jsonObject.has("corp_code")) {
                 String corp_code = jsonObject.get("corp_code").toString();
                 master_code = corp_code + group_code;
             }else {

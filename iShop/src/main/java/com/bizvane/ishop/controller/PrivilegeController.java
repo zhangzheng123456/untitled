@@ -25,10 +25,11 @@ public class PrivilegeController {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
 
-            JSONArray function = functionService.selectAllFunctions(Integer.parseInt(user_id),role_code,group_code);
+            JSONArray function = functionService.selectAllFunctions(corp_code+user_code,corp_code+group_code,role_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(function.toString());

@@ -44,20 +44,21 @@ public class GoodsController {
     public String goodsTrainManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession(false).getAttribute("group_code").toString();
-            String funcCode = request.getParameter("funcCode");
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+
+            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, funcCode, group_code);
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Goods> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = this.goodsService.selectBySearch(page_number, page_size, "", "");
             } else {
                 //   String corp_code = request.getParameter("corp_code");
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));

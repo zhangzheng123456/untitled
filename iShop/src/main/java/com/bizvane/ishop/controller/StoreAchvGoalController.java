@@ -54,21 +54,20 @@ public class StoreAchvGoalController {
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
-            //String function_code = request.getSession(false).getAttribute("funcCode").toString();
             String function_code = request.getParameter("funcCode");
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
 
-            JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            //  JSONObject result = new JSONObject();
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<StoreAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, "", "");
             } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -106,8 +105,6 @@ public class StoreAchvGoalController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            //StoreAchvGoal storeAchvGoal = WebUtils.request2Bean(request, StoreAchvGoal.class);
-            // StoreAchvGoal storeAchvGoal=WebUtils.JSON2Bean(jsonObject,StoreAchvGoal.class);
             StoreAchvGoal storeAchvGoal1 = new StoreAchvGoal();
             storeAchvGoal1.setStore_name(jsonObject.get("store_name").toString());
             storeAchvGoal1.setStore_name(jsonObject.get("store_code").toString());

@@ -6,7 +6,7 @@
         select *
         from DEF_FUNCTION WHERE FUNCTION_CODE IN (
         SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
-        WHERE (MASTER_CODE = #{user_id}
+        WHERE (MASTER_CODE = #{user_code}
         or MASTER_CODE = #{role_code}
         or MASTER_CODE = #{group_code})
         and enable = 'Y')
@@ -14,13 +14,6 @@
         order by FUNCTION_CODE
     </select>
 
-    <select id="selectAll" resultType="com.bizvane.ishop.entity.Function">
-        select *
-        from DEF_FUNCTION
-        WHERE  ISACTIVE = 'Y'
-        AND ADMIN_FUNC = 'Y'
-        order by FUNCTION_CODE
-    </select>
 
     <select id="selectActionByFun" resultType="com.bizvane.ishop.entity.Action">
        select *
@@ -28,16 +21,10 @@
           SELECT ACTION_CODE
           FROM DEF_PRIVILEGE
           WHERE FUNCTION_CODE = #{function_code}
-          AND (MASTER_CODE = #{user_id}
+          AND (MASTER_CODE = #{user_code}
             or MASTER_CODE = #{role_code}
             or MASTER_CODE = #{group_code})
           and enable = 'Y')
-    </select>
-
-    <select id="selectAllAction" resultType="com.bizvane.ishop.entity.Action">
-        select * from DEF_ACTION
-        where ISACTIVE = 'Y'
-        and function_code = #{function_code}
     </select>
 
 
@@ -109,5 +96,73 @@
         AND b.ISACTIVE = 'Y'
         order by a.FUNCTION_CODE
     </select>
+
+    <insert id="insertFunction" parameterType="com.bizvane.ishop.entity.Function">
+        insert into DEF_FUNCTION
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="function_code != null">
+                FUNCTION_CODE,
+            </if>
+            <if test="function_name != null">
+                FUNCTION_NAME,
+            </if>
+            <if test="module_name != null">
+                MODULE_NAME,
+            </if>
+            <if test="url != null">
+                URL,
+            </if>
+            <if test="icon != null">
+                ICON,
+            </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="function_code != null">
+                #{function_code},
+            </if>
+            <if test="function_name != null">
+                #{function_name},
+            </if>
+            <if test="module_name != null">
+                #{module_name},
+            </if>
+            <if test="url != null">
+                #{url},
+            </if>
+            <if test="icon != null">
+                #{icon},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
 
 </mapper>

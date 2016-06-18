@@ -61,11 +61,13 @@ public class RoleController {
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code,group_code);
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Role> list;
             if (role_code.equals(Common.ROLE_SYS)) {

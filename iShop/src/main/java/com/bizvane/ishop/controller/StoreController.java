@@ -61,19 +61,20 @@ public class StoreController {
             String user_id = request.getSession().getAttribute("user_id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
 
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
 
-            JSONArray actions = functionService.selectActionByFun(Integer.parseInt(user_id), role_code, function_code, group_code);
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = storeService.getAllStore(page_number, page_size, "", "");
             } else {
-                String corp_code = request.getSession().getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
                     list = storeService.getAllStore(page_number, page_size, corp_code, "");
                 } else {
