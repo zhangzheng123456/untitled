@@ -41,7 +41,7 @@
         from DEF_CORP
         where 1 = 1
         <if test="search_value != null and search_value !=''">
-            <![CDATA[    AND
+              AND
             (
 
             corp_name like concat('%',#{search_value},'%')
@@ -53,7 +53,7 @@
             OR MODIFIER like concat('%',#{search_value},'%')
             OR isactive like concat('%',#{search_value},'%')
             )
-                 ]]>
+
         </if>
         ORDER BY corp_code
 
@@ -63,7 +63,7 @@
     </select>
 
     <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.Corp">
-        <![CDATA[
+
         insert into DEF_CORP
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
@@ -141,7 +141,7 @@
                 #{avater},
             </if>
         </trim>
-        ]]>
+
     </insert>
 
     <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.User">
