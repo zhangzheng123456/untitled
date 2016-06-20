@@ -75,6 +75,41 @@ public class GoodsController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/fab/search", method = RequestMethod.GET)
+    @ResponseBody
+    public String selectBySearch(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            String search_value = jsonObject.get("searchValue").toString();
+            PageInfo<Goods> list = null;
+            if (role_code.contains(Common.ROLE_SYS)) {
+                list = goodsService.selectBySearch(page_number, page_size, "", search_value);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
     /**
      * 商品培训
      * 添加
@@ -246,13 +281,77 @@ public class GoodsController {
         return dataBean.getJsonStr();
     }
 
+
+    @RequestMapping(value = "/FabCodeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String UserCodeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String goods_code = jsonObject.get("goods_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            //String current_corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            //corp_code = (corp_code == null || corp_code.isEmpty()) ? current_corp_code : corp_code;
+            // String existInfo = goodsService.userCodeExist(user_code, corp_code);
+            String existInfo = goodsService.goodsCodeExist(goods_code, corp_code);
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("商品编号已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("商品编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/FabNameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String FabNameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String goods_name = jsonObject.get("goods_name").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String existInfo = goodsService.goodsNameExist(corp_code, goods_name);
+            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("商品名称已被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("商品名称不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
     /**
      * 秀搭管理
      */
     @RequestMapping(value = "/xiuda/list", method = RequestMethod.GET)
     @ResponseBody
     public String showMatchManage(HttpServletRequest request) {
-
 
         return "xiuda";
     }

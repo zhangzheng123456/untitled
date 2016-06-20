@@ -234,5 +234,13 @@
         where ID=#{id}
     </delete>
 
+    <select id="getGoodsByCode" resultType="com.bizvane.ishop.entity.Goods">
+        select * from corp_code=#{corp_code} and goods_code=#{goods_code}
+    </select>
+
+    <select id="getGoodsByName" resultType="com.bizvane.ishop.entity.Goods">
+        select * from corp_code=#{corp_code} and goods_name=#{goods_name}
+    </select>
+
 
 </mapper>
