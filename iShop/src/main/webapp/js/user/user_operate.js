@@ -648,43 +648,34 @@ jQuery(document).ready(function(){
 				}else if(msg.sex=="M"){
 					$("#USER_SEX").val("男");
 				}
-				if(msg.store_code==''){
-					$("#select_ownshop").css("display","none");
-					$("#OWN_CORP").parent().parent().parent().parent().css("display","none");
-					$("#OWN_RIGHT").val(msg.group.group_name);
-					$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
-					$("#OWN_CORP option").val("");
-					$("#OWN_CORP option").text("");
-				}else if(msg.store_code !==''){
-					$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
-					$("#select_ownshop").css("display","block");
-					$("#OWN_CORP option").val(msg.corp.corp_code);
-					$("#OWN_CORP option").text(msg.corp.corp_name);
-					$("#OWN_RIGHT").val(msg.group.group_name);
-					$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
-					var store_lists=msg.store_name.split(",");
-					var storecode_list=msg.store_code.split(",");
-					if(store_lists.length==0){
-						$("#OWN_STORE").val("");
-					}else if(store_lists==1){
-						$("#OWN_STORE").val(store_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",msg.store_code);
-					}else{
-						$("#OWN_STORE").val(store_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",storecode_list[0]);
-						var html='';
-						for(var i=1;i<store_lists.length;i++){
-							html +='<div id="per_type">'
-					            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
-					                +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
-					                +'<ul style="margin-left:0px">'
-					                +'</ul>'
-					            +'</span>'
-					            +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
+				$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
+				$("#select_ownshop").css("display","block");
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
+				$("#OWN_RIGHT").val(msg.group.group_name);
+				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
+				var store_lists=msg.store_name.split(",");
+				var storecode_list=msg.store_code.split(",");
+				if(store_lists.length==0){
+					$("#OWN_STORE").val("");
+				}else if(store_lists==1){
+					$("#OWN_STORE").val(store_lists[0]);
+					$("#OWN_STORE").attr("data-myscode",msg.store_code);
+				}else{
+					$("#OWN_STORE").val(store_lists[0]);
+					$("#OWN_STORE").attr("data-myscode",storecode_list[0]);
+					var html='';
+					for(var i=1;i<store_lists.length;i++){
+						html +='<div id="per_type">'
+					        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
+					        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+					        +'<ul style="margin-left:0px">'
+					        +'</ul>'
+					        +'</span>'
+					        +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
 					        +'</div>';
-						}
-						$(".shop_list").append(html);
 					}
+					$(".shop_list").append(html);
 				}
 				$("#register_time").val(msg.created_date);
 				$("#recently_login").val(msg.login_time_recently);
@@ -752,10 +743,6 @@ jQuery(document).ready(function(){
     	var _params={};
     	var user_code=$(this).val();//员工编号
     	var corp_code=$("#OWN_CORP").val();//公司编号
-    	var group_code=$
-    	if(addtype.isAdmin=="Y"){
-        	corp_code="";
-    	}
 		if(user_code!==""&&isCode.test(user_code)==true){
 			_params["user_code"]=user_code;
 			_params["corp_code"]=corp_code;
@@ -778,9 +765,6 @@ jQuery(document).ready(function(){
     	var email1=$("#USER_EMAIL").attr("data-name");//编辑的标志
     	var div=$(this).next('.hint').children();
     	var corp_code=$("#OWN_CORP").val();//企业编号
-    	if(addtype.isAdmin=="Y"){
-        	corp_code="";
-    	}
     	console.log(corp_code);
     	if(email!==""&&email!==email1){
 	    	var _params={};
@@ -804,9 +788,6 @@ jQuery(document).ready(function(){
     	var phone1=$("#USER_PHONE").attr("data-name");//取手机号的一个标志
     	var div=$(this).next('.hint').children();
     	var corp_code=$("#OWN_CORP").val();
-    	if(addtype.isAdmin=="Y"){
-        	corp_code="";
-    	}
     	if(phone!==""&&phone!==phone1){
 	    	var _params={};
 	    	_params["phone"]=phone;

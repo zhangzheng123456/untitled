@@ -170,32 +170,32 @@ jQuery(document).ready(function(){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
-				var ROLE_NUM=$("#ROLE_NUM").val(msg.role_code);
-				var ROLE_NAME=$("#ROLE_NAME").val(msg.role_name);
-				var BEIZHU=$("#BEIZHU").val(msg.remark);
+				mg=JSON.parse(msg.data);
+				var ROLE_NUM=$("#ROLE_NUM").val(mg.role_code);
+				var ROLE_NAME=$("#ROLE_NAME").val(mg.role_name);
+				var BEIZHU=$("#BEIZHU").val(mg.remark);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
 				// $("#BEIZHU").val(msg.beizhu);
-				var created_time=$("#created_time").val(msg.created_date);
-				var creator=$("#creator").val(msg.creater);
-				var modify_time=$("#modify_time").val(msg.modified_date);
-				var modifier=$("#modifier").val(msg.modifier);			
+				var created_time=$("#created_time").val(mg.created_date);
+				var creator=$("#creator").val(mg.creater);
+				var modify_time=$("#modify_time").val(mg.modified_date);
+				var modifier=$("#modifier").val(mg.modifier);			
 
-				$("#ROLE_NUM").val(msg.role_code);
-				$("#ROLE_NAME").val(msg.role_name);
-				$("#BEIZHU").val(msg.remark);
+				$("#ROLE_NUM").val(mg.role_code);
+				$("#ROLE_NAME").val(mg.role_name);
+				$("#BEIZHU").val(mg.remark);
 				// $("#OWN_DOCU").val(msg.own_docu);
-				
-				$("#created_time").val(msg.created_date);
-				$("#creator").val(msg.creater);
-				$("#modify_time").val(msg.modified_date);
-				$("#modifier").val(msg.modifier);
+				$("#power_num").val("共"+msg.privilege_count+"个权限");
+				$("#created_time").val(mg.created_date);
+				$("#creator").val(mg.creater);
+				$("#modify_time").val(mg.modified_date);
+				$("#modifier").val(mg.modifier);
 				var input=$(".checkbox_isactive").find("input")[0];
-				if(msg.isactive=="Y"){
+				if(mg.isactive=="Y"){
 					input.checked=true;
-				}else if(msg.isactive=="N"){
+				}else if(mg.isactive=="N"){
 					input.checked=false;
 				}
 			}else if(data.code=="-1"){
