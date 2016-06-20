@@ -450,12 +450,12 @@ public class UserController {
                     String c_code = corp.getCorp_code();
                     String corp_name = corp.getCorp_name();
                     JSONObject obj = new JSONObject();
-                    String sys_corp_code = groupService.selectByRole(Common.ROLE_SYS).get(0).getCorp_code();
-                    if (!c_code.equals(sys_corp_code)) {
+//                    String sys_corp_code = groupService.selectByRole(Common.ROLE_SYS).get(0).getCorp_code();
+//                    if (!c_code.equals(sys_corp_code)) {
                         obj.put("corp_code", c_code);
                         obj.put("corp_name", corp_name);
                         array.add(obj);
-                    }
+      //              }
                 }
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
