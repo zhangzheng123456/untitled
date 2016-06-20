@@ -2,15 +2,52 @@ var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
-var pageSize=10;//默认传的每页多少行
+// var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
+var corp_code="";
+var group_code="";
 var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
-group_corp=JSON.parse(group_corp);
-var corp_code=group_corp.corp_code;//企业编号
-var group_code=group_corp.group_code;//群组编号
-console.log(corp_code);
-console.log(group_corp);
+if(group_corp!==null){
+    group_corp=JSON.parse(group_corp);
+    corp_code=group_corp.corp_code;//企业编号
+    group_code=group_corp.group_code;//群组编号
+    $("#page-wrapper").hide();
+    $(".content").show();
+    GET();
+}
+//编辑页面点击弹出角色权限的框
+$('#edit_power').click(function(){
+    group_code=$("#GROUP_ID").val();
+    corp_code=$('#OWN_CORP').val();
+    $("#page-wrapper").hide();
+    $(".content").show();
+    GET();
+})
+//新增页面点击弹出角色权限的框
+$("#add_power").click(function(){
+   group_code=$("#GROUP_ID").val();
+   corp_code=$('#OWN_CORP').val();
+   $("#page-wrapper").hide();
+   $(".content").show();
+   GET();
+})
+//点击查看名单的时候的操作
+$("#check_name").click(function(){
+    var group_code=$("#GROUP_ID").val();
+    var corp_code=$('#OWN_CORP').val();
+    var group_name=$('#GROUP_NAME').val();
+    var check_name={"group_corp":group_code,"corp_code":corp_code,"group_name":group_name};
+    console.log(check_name);
+    sessionStorage.setItem("check_name",JSON.stringify(check_name));//保存到本地
+    $(window.parent.document).find('#iframepage').attr("src","user/groupcheck_name.html");
+})
+//关闭弹框
+$('#turnoff').click(function(){
+    $("#page-wrapper").show();
+    $(".content").hide();
+    sessionStorage.removeItem('group_corp');
+})
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -122,7 +159,6 @@ function GET(){
             }
     });
 }
-GET();
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
@@ -294,7 +330,11 @@ $('#save').click(function(){
     param["list"]=list;
     oc.postRequire("post","/user/group/check_power/save","0",param,function(data){
         if(data.code=="0"){
-            $(window.parent.document).find('#iframepage').attr("src","/group/group.html");
+            $("#page-wrapper").show();
+            $(".content").hide();
+            sessionStorage.removeItem('group_corp');   
+        }else if(data.code=="-1"){
+            alert(data.message);
         }
     })
 })

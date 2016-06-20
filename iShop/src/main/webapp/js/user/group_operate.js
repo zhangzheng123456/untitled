@@ -268,11 +268,5 @@ jQuery(document).ready(function(){
 	$(".groupedit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/group.html");
 	});
-	$("#check_name").click(function() {
-		$(window.parent.document).find('#iframepage').attr("src","user/groupcheck_name.html");
-	});
-	$("#check_right").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","user/groupcheck_power.html");
-	});
 });
 

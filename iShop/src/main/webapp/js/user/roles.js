@@ -295,6 +295,8 @@ function jumpBianse(){
         }else{
             event.cancelBubble=true;
         }
+        var id=$(this).parents('tr').attr('id');
+        sessionStorage.setItem("id",id);
         var role_code=$(this).parents('tr').find("td:eq(2)").html();//角色编号
         var group_corp={"role_code":role_code};//组成一个code的字符串
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地
@@ -311,6 +313,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
+            sessionStorage.removeItem('group_corp');
             // var role_code=$(tr).find("td:eq(2)").html();
             // var group_corp={"role_code":role_code};
             // sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地
@@ -328,6 +331,7 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
+        sessionStorage.removeItem('group_corp');
         // var role_code=$(this).find("td:eq(2)").html();
         // var group_corp={"role_code":role_code};
         // sessionStorage.setItem("group_corp",JSON.stringify(group_corp));//保存到本地

@@ -210,12 +210,9 @@ jQuery(document).ready(function(){
 	}
 
     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
 	});
-	$("#che").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
-	})
 });
