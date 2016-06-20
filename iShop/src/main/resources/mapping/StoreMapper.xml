@@ -85,7 +85,7 @@
             OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_STORE.ID
+        ORDER BY STORE_CODE
     </select>
 
     <select id="selectByUserId" resultMap="Store">
@@ -119,7 +119,7 @@
             OR DEF_STORE.ISACTIVE like  concat('%',#{search_value},'%')
         </if>
         AND DEF_STORE.ISACTIVE = 'Y'
-        ORDER BY DEF_STORE.ID
+        ORDER BY STORE_CODE
     </select>
 
     <select id="selectStoreBrandArea" resultType="com.bizvane.ishop.entity.Store">

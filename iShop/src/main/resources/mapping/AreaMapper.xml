@@ -65,7 +65,7 @@
             OR DEF_AREA.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_AREA.ID
+        ORDER BY area_code
     </select>
 
     <delete id="deleteByAreaId">
