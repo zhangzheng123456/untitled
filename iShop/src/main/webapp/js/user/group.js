@@ -281,11 +281,12 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        var corp_code=$(this).attr("data-code");
-        var group_code=$(this).find("td:eq(2)").html();
-        var group_corp={"corp_code":corp_code,"group_code":group_code};
-        sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-        console.log(group_corp);
+        // var corp_code=$(this).attr("data-code");
+        // var group_code=$(this).find("td:eq(2)").html();
+        // var group_corp={"corp_code":corp_code,"group_code":group_code};
+        // sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+        // console.log(group_corp);
+        sessionStorage.removeItem('group_corp');
         $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
     })
     //点击新增时页面进行的跳转
@@ -298,11 +299,12 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
+            sessionStorage.removeItem('group_corp');
             $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
-            var corp_code=$(tr).attr("data-code");
-            var group_code=$(tr).find("td:eq(2)").html();
-            var group_corp={"corp_code":corp_code,"group_code":group_code};
-            sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
+            // var corp_code=$(tr).attr("data-code");
+            // var group_code=$(tr).find("td:eq(2)").html();
+            // var group_corp={"corp_code":corp_code,"group_code":group_code};
+            // sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
             console.log(group_corp);
         }else if(tr.length==0){
             frame();
@@ -335,12 +337,13 @@ function jumpBianse(){
         }else{
             event.cancelBubble=true;
         }
+        var id=$(this).parents('tr').attr('id');
+        sessionStorage.setItem("id",id);
         var corp_code=$(this).parents('tr').attr("data-code");
         var group_code=$(this).parents('tr').find("td:eq(2)").html();
         var group_corp={"corp_code":corp_code,"group_code":group_code};
         sessionStorage.setItem("group_corp",JSON.stringify(group_corp));
-        console.log(group_corp);
-        $(window.parent.document).find('#iframepage').attr("src","/user/groupcheck_power.html");
+        $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
     })
 }
 //鼠标按下时触发的收索

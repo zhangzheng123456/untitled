@@ -5,18 +5,16 @@ var inx=1;//默认是第一页
 // var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-var role_code=group_corp.role_code;//角色编号
+// var role_code=group_corp.role_code;//角色编号
 var role_code="";//角色编号
 var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
-
-if(group!==null){
+if(group_corp!==null){
   group_corp=JSON.parse(group_corp);
   role_code=group_corp.role_code;
   $("#page-wrapper").hide();
   $(".content").show();
   GET();  
 }
-
 //编辑页面点击弹出角色权限的框
 $('#edit_power').click(function(){
     role_code=$("#ROLE_NUM").val();
