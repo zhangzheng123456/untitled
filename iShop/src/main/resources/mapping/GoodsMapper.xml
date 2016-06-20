@@ -88,12 +88,6 @@
           g.ID=#{id}
     </select>
 
-    <select id="getGoodsByCode" resultType="com.bizvane.ishop.entity.Goods">
-        SELECT *
-        FROM DEF_GOODS
-        WHERE goods_code=#{goods_code}
-        AND  corp_code=#{corp_code}
-    </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Goods">
         insert into DEF_GOODS
@@ -241,6 +235,7 @@
     <select id="getGoodsByName" resultType="com.bizvane.ishop.entity.Goods">
         select * from corp_code=#{corp_code} and goods_name=#{goods_name}
     </select>
+
 
 
 </mapper>
