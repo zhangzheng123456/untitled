@@ -41,23 +41,23 @@
         from DEF_CORP
         where 1 = 1
         <if test="search_value != null and search_value !=''">
-              AND
+            AND
             (
+            corp_name like concat('%', #{search_value},'%')
 
-            corp_name like concat('%',#{search_value},'%')
-            OR corp_code like concat('%',#{search_value},'%')
-            OR address like concat('%',#{search_value},'%')
-            OR contact like concat('%',#{search_value},'%')
-            OR contact_phone like concat('%',#{search_value},'%')
-            OR modified_date like concat('%',#{search_value},'%')
-            OR MODIFIER like concat('%',#{search_value},'%')
-            OR isactive like concat('%',#{search_value},'%')
+            OR address like concat('%', #{search_value},'%')
+            OR contact like concat('%', #{search_value},'%')
+            OR contact_phone like concat('%', #{search_value},'%')
+            OR modified_date like concat('%', #{search_value},'%')
+
+            OR MODIFIER like concat('%', #{search_value},'%')
+            OR isactive like concat('%', #{search_value},'%')
             )
-
         </if>
         ORDER BY corp_code
 
-    </select>
+
+     </select>
     <select id="selectMaxCorpCode" resultType="java.lang.String">
     select max(CORP_CODE) from DEF_CORP
     </select>
