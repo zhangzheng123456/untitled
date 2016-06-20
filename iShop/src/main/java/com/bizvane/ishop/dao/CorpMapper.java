@@ -7,7 +7,11 @@ import java.util.List;
 
 public interface CorpMapper {
 
+    //所有企业
     List<Corp> selectAllCorp(@Param("search_value") String search_value);
+
+    //isactive为Y的企业
+    List<Corp> selectCorps(@Param("search_value") String search_value);
 
     Corp selectByCorpId(@Param("corp_id") int corp_id, @Param("corp_code") String corp_code);
 

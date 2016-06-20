@@ -35,8 +35,6 @@
 
 
     <select id="selectAllCorp" resultMap="CorpInfo">
-
-
         select *
         from DEF_CORP
         where 1 = 1
@@ -54,10 +52,16 @@
             OR isactive like concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY id
-
-
+        ORDER BY corp_code
     </select>
+
+    <select id="selectCorps" resultMap="CorpInfo">
+    select *
+    from DEF_CORP
+    where isactive = 'Y'
+    ORDER BY corp_code
+    </select>
+
     <select id="selectMaxCorpCode" resultType="java.lang.String">
     select max(CORP_CODE) from DEF_CORP
     </select>

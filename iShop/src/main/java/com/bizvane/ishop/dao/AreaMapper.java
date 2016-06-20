@@ -12,6 +12,8 @@ public interface AreaMapper {
 
     List<Area> selectAllArea(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
+    List<Area> selectAreas(@Param("corp_code") String corp_code);
+
     int insertArea(Area area);
 
     int updateArea(Area area);

@@ -52,6 +52,7 @@
         AND STORE_CODE = #{store_code}
          AND ISACTIVE = 'Y'
     </select>
+
     <select id="selectAllStore" resultMap="Store">
         select
         DEF_STORE.id,
@@ -86,6 +87,12 @@
             )
         </if>
         ORDER BY STORE_CODE
+    </select>
+
+    <select id="selectStores" resultType="com.bizvane.ishop.entity.Store">
+        SELECT * FROM DEF_STORE
+        where CORP_CODE = #{corp_code}
+        AND isactive = 'Y'
     </select>
 
     <select id="selectByUserId" resultMap="Store">

@@ -50,7 +50,7 @@ public class CorpServiceImpl implements CorpService {
      * 显示所有企业
      */
     public List<Corp> selectAllCorp() throws SQLException {
-        List<Corp> list = corpMapper.selectAllCorp("");
+        List<Corp> list = corpMapper.selectCorps("");
         return list;
     }
 

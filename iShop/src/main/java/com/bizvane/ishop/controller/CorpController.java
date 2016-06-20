@@ -388,5 +388,32 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)
+    @ResponseBody
+    public String isAuthorize(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
 
+            Corp corp = corpService.selectByCorpId(0, corp_code);
+            String is_authorize = corp.getIs_authorize();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            if (is_authorize.equals("Y")) {
+                dataBean.setMessage("已授权");
+            } else {
+                dataBean.setMessage("未授权");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 }

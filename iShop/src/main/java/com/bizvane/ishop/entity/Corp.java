@@ -29,7 +29,8 @@ public class Corp {
     private String creater;
     //是否可用
     private String isactive;
-
+    //是否已授权
+    private String is_authorize;
     //图片路径
     private String avater;
 
@@ -142,5 +143,13 @@ public class Corp {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getIs_authorize() {
+        return is_authorize;
+    }
+
+    public void setIs_authorize(String is_authorize) {
+        this.is_authorize = is_authorize;
     }
 }

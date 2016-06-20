@@ -329,7 +329,7 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
-            List<Brand> brand = brandService.getAllBrand(corp_code, "");
+            List<Brand> brand = brandService.getAllBrand(corp_code);
             JSONArray array = new JSONArray();
             JSONObject brands = new JSONObject();
             for (int i = 0; i < brand.size(); i++) {
@@ -364,7 +364,7 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
-            List<Area> area = areaService.getAllArea(corp_code, "");
+            List<Area> area = areaService.getAllArea(corp_code);
             JSONArray array = new JSONArray();
             JSONObject areas = new JSONObject();
             for (int i = 0; i < area.size(); i++) {

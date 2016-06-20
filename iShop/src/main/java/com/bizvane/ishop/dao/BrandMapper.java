@@ -12,6 +12,8 @@ public interface BrandMapper {
 
     List<Brand> selectAllBrand(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
+    List<Brand> selectBrands(@Param("corp_code") String corp_code);
+
     int insertBrand(Brand brand);
 
     int updateBrand(Brand brand);

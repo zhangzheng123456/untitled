@@ -44,9 +44,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrand(String corp_code, String search_value) throws SQLException {
+    public List<Brand> getAllBrand(String corp_code) throws SQLException {
         List<Brand> brands;
-        brands = brandMapper.selectAllBrand(corp_code, search_value);
+        brands = brandMapper.selectBrands(corp_code);
         return brands;
     }
 

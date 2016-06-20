@@ -72,7 +72,7 @@ public class StoreServiceImpl implements StoreService {
 
     //list获取企业店铺
     public List<Store> getCorpStore(String corp_code) throws SQLException {
-        List<Store> stores = storeMapper.selectAllStore(corp_code, "");
+        List<Store> stores = storeMapper.selectStores(corp_code);
         return stores;
     }
 
