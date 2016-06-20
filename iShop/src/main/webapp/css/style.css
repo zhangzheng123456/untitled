@@ -7160,7 +7160,7 @@ body.skin-3 {
 .editor_1 .operation_conpany ul{
   list-style:none;
   display:inline-block;
-  font-size:10px;
+  font-size:16px;
   color:#434960;
   line-height:30px;
 }
@@ -7169,7 +7169,7 @@ body.skin-3 {
     height: 30px;
     border: 0;
     border-radius: 4px;
-    text-indent: 16px;
+    text-indent: 10px;
     font-size:14px;
     color:#888888;
     outline: 0;
