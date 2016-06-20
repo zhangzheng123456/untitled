@@ -202,9 +202,9 @@ function superaddition(data,num){//页面加载循环
                         + data[i].corp_code
                         + "</td><td>"
                         + data[i].corp_name
-                        + "</td><td>"
+                        + "</td><td><span>"
                         + data[i].address
-                        + "</td><td>"
+                        + "</span></td><td>"
                         + data[i].contact
                         +"</td><td>"
                         +data[i].contact_phone
