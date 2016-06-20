@@ -66,7 +66,7 @@
             OR DEF_BRAND.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_BRAND.ID
+        ORDER BY brand_code
     </select>
 
     <delete id="deleteByBrandId">

@@ -14,6 +14,8 @@ function GET(){
                 var id=list.id;
                 console.log(list);
                 var actions=message.actions;
+                $(".editor_1 .shop_logo img").attr("src",list.avater);
+                $("#corp_code").html(list.corp_code);
                 $('#corp_name').html(list.corp_name);
                 $('#address').html(list.address);
                 $('#contact').html(list.contact);

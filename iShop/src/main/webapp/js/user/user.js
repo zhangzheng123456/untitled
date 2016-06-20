@@ -205,6 +205,8 @@ function superaddition(data,num){
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
+                        +"<td></td>"
+                        +data[i].user_code
                         + "</td><td><img src='"+data[i].avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
@@ -295,29 +297,29 @@ function jumpBianse(){
 	})
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        if(user_type=="admin"){
-            $('.fen').slideToggle("200");
-        }else if(user_type!=="admin"){
-            var addtype={"user_type":user_type,"isAdmin":"","role_code":role_code};
-            sessionStorage.setItem("addtype",JSON.stringify(addtype));
-            $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
-            sessionStorage.removeItem('id');
-        }
-    })
-    //系统管理员新增系统管理员
-    $('#admin').click(function(){
-        var addtype={"user_type":user_type,"isAdmin":"Y","role_code":role_code};
+        // if(user_type=="admin"){
+            // $('.fen').slideToggle("200");
+        // }else if(user_type!=="admin"){
+        var addtype={"user_type":user_type,"isAdmin":"","role_code":role_code};
         sessionStorage.setItem("addtype",JSON.stringify(addtype));
         $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
         sessionStorage.removeItem('id');
+        // }
     })
-    //系统管理员新增企业用户
-    $('#corp').click(function(){
-        var addtype={"user_type":user_type,"isAdmin":"N","role_code":role_code};
-        sessionStorage.setItem("addtype",JSON.stringify(addtype));
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
-        sessionStorage.removeItem('id');
-    })
+    // 系统管理员新增系统管理员
+    // $('#admin').click(function(){
+    //     var addtype={"user_type":user_type,"isAdmin":"Y","role_code":role_code};
+    //     sessionStorage.setItem("addtype",JSON.stringify(addtype));
+    //     $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
+    //     sessionStorage.removeItem('id');
+    // })
+    // 系统管理员新增企业用户
+    // $('#corp').click(function(){
+    //     var addtype={"user_type":user_type,"isAdmin":"N","role_code":role_code};
+    //     sessionStorage.setItem("addtype",JSON.stringify(addtype));
+    //     $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
+    //     sessionStorage.removeItem('id');
+    // })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");

@@ -76,6 +76,7 @@
         <if test="search_value != null and search_value !=''">
             AND
             (USER_NAME like concat('%',#{search_value},'%')
+            OR user_code like concat('%',#{search_value},'%')
             OR PHONE like concat('%',#{search_value},'%')
             OR SEX like concat('%',#{search_value},'%')
             OR DEF_CORP.corp_name like concat('%',#{search_value},'%')
@@ -86,7 +87,7 @@
             OR DEF_USER.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_USER.ID
+        ORDER BY user_code
     </select>
 
     <select id="selectUserById" resultMap="UserInfo">
