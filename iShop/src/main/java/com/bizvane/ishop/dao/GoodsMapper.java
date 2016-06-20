@@ -17,4 +17,6 @@ public interface GoodsMapper {
     List<Goods> selectAllGoods(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
     Goods getGoodsByCode(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code);
+
+    Goods getGoodsByName(@Param("corp_code") String corp_code,@Param("goods_name") String goods_name);
 }

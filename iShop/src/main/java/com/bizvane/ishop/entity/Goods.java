@@ -35,6 +35,8 @@ public class Goods {
     //商品描述
     private String goods_description;
 
+
+
     private Corp corp;
 
     public Corp getCorp() {

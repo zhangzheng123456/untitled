@@ -34,6 +34,8 @@ public class Corp {
     //图片路径
     private String avater;
 
+
+
     public String getAvater() {
         return avater;
     }

@@ -13,6 +13,7 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -172,6 +174,33 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/select", method = RequestMethod.GET)
+    @ResponseBody
+    public String findVipById(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String data = null;
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int vip_id = Integer.parseInt(jsonObject.getString("id"));
+            VIPInfo vipInfo = vipService.getVipInfoById(vip_id);
+            data = JSON.toJSONString(vipInfo);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(data);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
     /**
      * 会员列表
      * 查找
@@ -318,6 +347,34 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
+    @RequestMapping(value = "/label/select", method = RequestMethod.GET)
+    @ResponseBody
+    public String findVipLabelById(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String data = null;
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int vip_tag_id = Integer.parseInt(jsonObject.getString("id"));
+            //VIPtag  viPtag = vipService.getVipInfoById(vip_label_id);
+            VIPtag viPtag = vipTagService.getVIPTagById(vip_tag_id);
+            data = JSON.toJSONString(viPtag);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(data);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 
     /**
      * 会员标签管理
@@ -507,12 +564,34 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonobj = new org.json.JSONObject(jsString);
+            String message = jsonobj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = jsonObject.get("searchValue").toString();
 
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<VipCallbackRecord> list = null;
+            if (role_code.contains(Common.ROLE_SYS)) {
+                //list = vipCallbackRecordService.selectBySearch(page_number, page_size, "", search_value);
+                list = vipCallbackRecordService.selectBySearch(page_number, page_size, "", search_value);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = vipCallbackRecordService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
-
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
         }
-        return "";
+        return dataBean.getJsonStr();
     }
 
 
