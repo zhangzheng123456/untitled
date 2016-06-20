@@ -44,11 +44,10 @@
             AND
             (
             corp_name like concat('%', #{search_value},'%')
-
             OR address like concat('%', #{search_value},'%')
             OR contact like concat('%', #{search_value},'%')
             OR contact_phone like concat('%', #{search_value},'%')
-            OR modified_date like concat('%', #{search_value},'%')
+            OR CAST(MODIFIED_DATE as DATE) like concat('%', ,#{search_value},'%')
 
             OR MODIFIER like concat('%', #{search_value},'%')
             OR isactive like concat('%', #{search_value},'%')
@@ -57,7 +56,7 @@
         ORDER BY corp_code
 
 
-     </select>
+    </select>
     <select id="selectMaxCorpCode" resultType="java.lang.String">
     select max(CORP_CODE) from DEF_CORP
     </select>
