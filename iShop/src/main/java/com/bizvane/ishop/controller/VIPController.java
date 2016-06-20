@@ -35,10 +35,6 @@ public class VIPController {
     @Autowired
     private UserService userService;
 
-
-
-
-    
     @Autowired
     private VIPTagService vipTagService;
     @Autowired
