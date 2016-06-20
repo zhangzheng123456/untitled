@@ -247,10 +247,27 @@ public class GroupController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String group_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(groupService.getGroupById(Integer.parseInt(group_id)));
+            Group group = groupService.getGroupById(Integer.parseInt(group_id));
+            String corp_code = group.getCorp_code();
+            String role_code = group.getRole_code();
+            String group_code = group.getGroup_code();
+            //群组用户个数
+            int user_count = userService.selectGroupUser(corp_code,group_code);
+
+            //获取群组角色的权限
+            JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
+            //获取群组自定义的权限
+            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code+group_code);
+            //群组权限个数
+            int privilege_count = role_privilege.size()+group_privilege.size();
+
+            JSONObject group_info = new JSONObject();
+            group_info.put("user_count",user_count);
+            group_info.put("privilege_count",privilege_count);
+            group_info.put("data",JSON.toJSONString(group));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
-            bean.setMessage(data);
+            bean.setMessage(group_info.toString());
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");

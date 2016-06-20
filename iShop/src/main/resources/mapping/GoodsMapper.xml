@@ -46,21 +46,18 @@
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
-
-            (g.goods_code LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.goods_name LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.goods_image LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.goods_price LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.goods_time LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.goods_quarter LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.goods_wave LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.modified_date LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.modifier LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.isactive LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.created_date LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.creater LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR g.goods_description LIKE concat('%',"'"+#{search_value}+"'",'%')
-            OR cp.corp_name LIKE concat('%',"'"+#{search_value}+"'",'%')
+            (g.goods_code LIKE concat('%',#{search_value},'%')
+            OR g.goods_name LIKE concat('%',#{search_value},'%')
+            OR g.goods_image LIKE concat('%',#{search_value},'%')
+            OR g.goods_price LIKE concat('%',#{search_value},'%')
+            OR g.goods_time LIKE concat('%',#{search_value},'%')
+            OR g.goods_quarter LIKE concat('%',#{search_value},'%')
+            OR g.goods_wave LIKE concat('%',#{search_value},'%')
+            OR g.modified_date LIKE concat('%',#{search_value},'%')
+            OR g.modifier LIKE concat('%',#{search_value},'%')
+            OR g.isactive LIKE concat('%',#{search_value},'%')
+            OR g.goods_description LIKE concat('%',#{search_value},'%')
+            OR cp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY g.id

@@ -155,8 +155,41 @@ public class RoleController {
         return dataBean.getJsonStr();
     }
 
-//    @RequestMapping(value = "/role/select",method = RequestMethod.POST)
-//    @ResponseBody
+    @RequestMapping(value = "/role/select", method = RequestMethod.POST)
+    @ResponseBody
+    public String editbefore(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();      String id = "";
+        try {
+
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String jsString = request.getParameter("param");
+
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int role_id = Integer.parseInt(jsonObject.get("id").toString());
+            Role role = roleService.selectByRoleId(role_id);
+            String role_code = role.getRole_code();
+            JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
+
+            int privilege_count = role_privilege.size();
+            JSONObject result = new JSONObject();
+            result.put("data",JSON.toJSONString(role));
+            result.put("privilege_count",privilege_count);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+
+        } catch (SQLException e) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(e.getMessage());
+            e.printStackTrace();
+        }
+        return dataBean.getJsonStr();
+    }
+
 
     /**
      * 角色定义
@@ -237,36 +270,6 @@ public class RoleController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-
-    @RequestMapping(value = "/role/select", method = RequestMethod.POST)
-    @ResponseBody
-    public String editbefore(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();      String id = "";
-        try {
-
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
-            String jsString = request.getParameter("param");
-
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int role_id = Integer.parseInt(jsonObject.get("id").toString());
-            Role role = roleService.selectByRoleId(role_id);
-            JSONObject result = new JSONObject();
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(JSON.toJSONString(role));
-
-        } catch (SQLException e) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(e.getMessage());
-            e.printStackTrace();
         }
         return dataBean.getJsonStr();
     }

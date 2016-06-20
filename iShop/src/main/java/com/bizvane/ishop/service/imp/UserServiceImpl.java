@@ -98,6 +98,15 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
+    /**
+     * 群组管理
+     * 查看用户名单
+     */
+    public int selectGroupUser(String corp_code, String group_code) throws SQLException {
+        List<User> users = userMapper.selectGroupUser(corp_code, group_code);
+        int count = users.size();
+        return count;
+    }
 
     public int insert(User user) throws SQLException {
         return userMapper.insertUser(user);

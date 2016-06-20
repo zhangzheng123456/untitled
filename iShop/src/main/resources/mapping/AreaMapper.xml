@@ -57,12 +57,12 @@
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (area_code like concat('%',"'"+#{search_value}+"'",'%')
-            OR area_name like concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_CORP.CORP_NAME like concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_AREA.MODIFIED_DATE like concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_AREA.MODIFIER like concat('%',"'"+#{search_value}+"'",'%')
-            OR DEF_AREA.ISACTIVE like concat('%',"'"+#{search_value}+"'",'%')
+            (area_code like concat('%',#{search_value},'%')
+            OR area_name like concat('%',#{search_value},'%')
+            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
+            OR DEF_AREA.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR DEF_AREA.MODIFIER like concat('%',#{search_value},'%')
+            OR DEF_AREA.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY DEF_AREA.ID
