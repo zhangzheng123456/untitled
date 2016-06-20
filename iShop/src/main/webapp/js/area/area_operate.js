@@ -291,7 +291,7 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     });
-	$(".areaadd_oper_btn ul li:nth-of-type(2").click(function(){
+	$(".areaadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/area/area.html");
 	});
 	$(".areaedit_oper_btn ul li:nth-of-type(2)").click(function(){
