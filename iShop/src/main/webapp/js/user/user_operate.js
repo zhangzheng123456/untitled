@@ -1,6 +1,4 @@
 var oc = new ObjectControl();
-var addtype=sessionStorage.getItem("addtype");
-addtype=JSON.parse(addtype);
 (function(root,factory){
 	root.user = factory();
 }(this,function(){
@@ -144,7 +142,7 @@ addtype=JSON.parse(addtype);
 
 					}
 				};
-				var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
+			    var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				console.log("lalla");
@@ -285,7 +283,6 @@ var c_code="";
 var r_code="";
 function role_li_list(){
 	//拉取角色下拉选项
-
 	if($(".pre_title label").text().trim()=="新增用户"){
 		var addtype=sessionStorage.getItem("addtype");
 		addtype=JSON.parse(addtype);
