@@ -37,7 +37,7 @@ $("#check_name").click(function(){
     var group_code=$("#GROUP_ID").val();
     var corp_code=$('#OWN_CORP').val();
     var group_name=$('#GROUP_NAME').val();
-    var check_name={"group_corp":group_code,"corp_code":corp_code,"group_name":group_name};
+    var check_name={"group_code":group_code,"corp_code":corp_code,"group_name":group_name};
     console.log(check_name);
     sessionStorage.setItem("check_name",JSON.stringify(check_name));//保存到本地
     $(window.parent.document).find('#iframepage').attr("src","user/groupcheck_name.html");

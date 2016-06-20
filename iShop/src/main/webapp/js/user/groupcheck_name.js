@@ -11,6 +11,10 @@ var corp_code=group_corp.corp_code;//企业编号
 var group_code=group_corp.group_code;//群主编号
 console.log(corp_code);
 console.log(group_corp);
+//关闭弹框
+$('#turnoff').click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","user/group_edit.html");
+})
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -38,8 +42,7 @@ $(function(){
             setTimeout(hideLi,200);  
         });          
     }      
-);
-  
+);  
 function showLi(){  
     $("#liebiao").show();  
 }  
@@ -188,12 +191,12 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
 function superaddition(data,num){
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
-            var a=i+num*pageSize;
+            var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }
         $(".table tbody").append("<tr id='"+data[i].id+"''>"
-                        + "</td><td style='text-align:left;'>"
+                        + "</td><td style='text-align:left;padding-left:22px'>"
                         + a
                         + "</td><td>"
                         + data[i].user_name
