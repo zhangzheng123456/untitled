@@ -119,7 +119,7 @@ public class CorpController {
 //                corp_code = corp_code + "0";
 //            }
 //            corp_code = corp_code + code;
-            corp.setCorp_code(jsonObject.get("corp_name").toString());
+            corp.setCorp_code(jsonObject.get("corp_code").toString());
             corp.setCorp_name(jsonObject.get("corp_name").toString());
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());

@@ -34,30 +34,36 @@
     </select>
 
 
-    <select id="selectAllCorp" resultType="com.bizvane.ishop.entity.Corp">
+    <select id="selectAllCorp" resultMap="CorpInfo">
+
+
         select *
         from DEF_CORP
         where 1 = 1
         <if test="search_value != null and search_value !=''">
-            AND
+            <![CDATA[    AND
             (
-            corp_name like concat('%',"'"+#{search_value}+"'",'%')
-            OR corp_code like concat('%',"'"+#{search_value}+"'",'%')
-            OR address like concat('%',"'"+#{search_value}+"'",'%')
-            OR contact like concat('%',"'"+#{search_value}+"'",'%')
-            OR contact_phone like concat('%',"'"+#{search_value}+"'",'%')
-            OR modified_date like concat('%',"'"+#{search_value}+"'",'%')
-            OR MODIFIER like concat('%',"'"+#{search_value}+"'",'%')
-            OR isactive like concat('%',"'"+#{search_value}+"'",'%')
+
+            corp_name like concat('%',#{search_value},'%')
+            OR corp_code like concat('%',#{search_value},'%')
+            OR address like concat('%',#{search_value},'%')
+            OR contact like concat('%',#{search_value},'%')
+            OR contact_phone like concat('%',#{search_value},'%')
+            OR modified_date like concat('%',#{search_value},'%')
+            OR MODIFIER like concat('%',#{search_value},'%')
+            OR isactive like concat('%',#{search_value},'%')
             )
+                 ]]>
         </if>
         ORDER BY corp_code
+
     </select>
     <select id="selectMaxCorpCode" resultType="java.lang.String">
     select max(CORP_CODE) from DEF_CORP
     </select>
 
     <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.Corp">
+        <![CDATA[
         insert into DEF_CORP
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
@@ -135,6 +141,7 @@
                 #{avater},
             </if>
         </trim>
+        ]]>
     </insert>
 
     <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.User">
