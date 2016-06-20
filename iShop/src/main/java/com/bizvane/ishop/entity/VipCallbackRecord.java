@@ -16,17 +16,17 @@ public class VipCallbackRecord {
     //回访类型
     private String callback_type;
     //回访时间
-    private Date callback_time;
+    private String callback_time;
     // 评论
     private String remark;
     // 修改时间
-    private Date modified_date;
+    private String modified_date;
     //修改人
     private String modifier;
     // 是否可用
     private String isactive;
     //创建日期
-    private Date created_date;
+    private String created_date;
     //创建人
     private String creater;
     //企业编号
@@ -52,13 +52,6 @@ public class VipCallbackRecord {
         this.callback_type = callback_type;
     }
 
-    public Date getCallback_time() {
-        return callback_time;
-    }
-
-    public void setCallback_time(Date callback_time) {
-        this.callback_time = callback_time;
-    }
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
@@ -100,13 +93,6 @@ public class VipCallbackRecord {
         this.remark = remark;
     }
 
-    public Date getModified_date() {
-        return modified_date;
-    }
-
-    public void setModified_date(Date modified_date) {
-        this.modified_date = modified_date;
-    }
 
     public String getIsactive() {
         return isactive;
@@ -116,11 +102,27 @@ public class VipCallbackRecord {
         this.isactive = isactive;
     }
 
-    public Date getCreated_date() {
+    public String getCallback_time() {
+        return callback_time;
+    }
+
+    public void setCallback_time(String callback_time) {
+        this.callback_time = callback_time;
+    }
+
+    public String getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(String modified_date) {
+        this.modified_date = modified_date;
+    }
+
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 

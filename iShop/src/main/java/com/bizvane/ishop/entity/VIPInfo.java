@@ -10,17 +10,17 @@ public class VIPInfo {
     private String vip_code;
     private String vip_name;
     private String phone;
-    private Date birthday;
+    private String birthday;
     private String vip_type;
     private String vip_card_number;
     private String sex;
-    private Date register_time;
+    private String register_time;
     private String user_code;
     private String store_code;
     private String corp_code;
-    private Date modified_date;
+    private String modified_date;
     private String modifier;
-    private Date created_date;
+    private String created_date;
     private String creater;
     private String isactive;
 
@@ -67,13 +67,6 @@ public class VIPInfo {
         this.phone = phone;
     }
 
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
-    }
 
     public String getVip_type() {
         return vip_type;
@@ -99,13 +92,6 @@ public class VIPInfo {
         this.sex = sex;
     }
 
-    public Date getRegister_time() {
-        return register_time;
-    }
-
-    public void setRegister_time(Date register_time) {
-        this.register_time = register_time;
-    }
 
     public String getUser_code() {
         return user_code;
@@ -123,14 +109,6 @@ public class VIPInfo {
         this.store_code = store_code;
     }
 
-    public Date getModified_date() {
-        return modified_date;
-    }
-
-    public void setModified_date(Date modified_date) {
-        this.modified_date = modified_date;
-    }
-
     public String getModifier() {
         return modifier;
     }
@@ -139,11 +117,36 @@ public class VIPInfo {
         this.modifier = modifier;
     }
 
-    public Date getCreated_date() {
+
+    public String getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(String birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getRegister_time() {
+        return register_time;
+    }
+
+    public void setRegister_time(String register_time) {
+        this.register_time = register_time;
+    }
+
+    public String getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(String modified_date) {
+        this.modified_date = modified_date;
+    }
+
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 

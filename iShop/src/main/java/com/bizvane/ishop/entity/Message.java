@@ -12,12 +12,12 @@ public class Message {
     private String message_type;
     private String message_receiver;
     private String message_title;
-    private Date message_time;
+    private String message_time;
     private String message_sender;
-    private Date modified_date;
+    private String modified_date;
     private String modifier;
     private String isactive;
-    private Date created_date;
+    private String created_date;
     private String creater;
 
     public Message() {
@@ -71,13 +71,6 @@ public class Message {
         this.message_title = message_title;
     }
 
-    public Date getMessage_time() {
-        return message_time;
-    }
-
-    public void setMessage_time(Date message_time) {
-        this.message_time = message_time;
-    }
 
     public String getMessage_sender() {
         return message_sender;
@@ -87,13 +80,6 @@ public class Message {
         this.message_sender = message_sender;
     }
 
-    public Date getModified_date() {
-        return modified_date;
-    }
-
-    public void setModified_date(Date modified_date) {
-        this.modified_date = modified_date;
-    }
 
     public String getModifier() {
         return modifier;
@@ -111,16 +97,33 @@ public class Message {
         this.isactive = isactive;
     }
 
-    public Date getCreated_date() {
-        return created_date;
-    }
-
-    public void setCreated_date(Date created_date) {
-        this.created_date = created_date;
-    }
 
     public String getCreater() {
         return creater;
+    }
+
+    public String getMessage_time() {
+        return message_time;
+    }
+
+    public void setMessage_time(String message_time) {
+        this.message_time = message_time;
+    }
+
+    public String getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(String modified_date) {
+        this.modified_date = modified_date;
+    }
+
+    public String getCreated_date() {
+        return created_date;
+    }
+
+    public void setCreated_date(String created_date) {
+        this.created_date = created_date;
     }
 
     public void setCreater(String creater) {

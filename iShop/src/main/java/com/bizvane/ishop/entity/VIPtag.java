@@ -12,9 +12,9 @@ public class VIPtag {
     private String tag_name;
     private String tag_type;
     private String corp_code;
-    private Date modified_date;
+    private String modified_date;
     private String modifier;
-    private Date created_date;
+    private String created_date;
     private String creater;
     private String isactive;
 
@@ -54,13 +54,6 @@ public class VIPtag {
         this.corp_code = corp_code;
     }
 
-    public Date getModified_date() {
-        return modified_date;
-    }
-
-    public void setModified_date(Date modified_date) {
-        this.modified_date = modified_date;
-    }
 
     public String getModifier() {
         return modifier;
@@ -70,11 +63,19 @@ public class VIPtag {
         this.modifier = modifier;
     }
 
-    public Date getCreated_date() {
+    public String getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(String modified_date) {
+        this.modified_date = modified_date;
+    }
+
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 

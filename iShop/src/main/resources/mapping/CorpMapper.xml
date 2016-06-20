@@ -47,8 +47,8 @@
             OR address like concat('%', #{search_value},'%')
             OR contact like concat('%', #{search_value},'%')
             OR contact_phone like concat('%', #{search_value},'%')
-            OR CAST(MODIFIED_DATE as DATE) like concat('%', ,#{search_value},'%')
-
+            /* OR CAST(MODIFIED_DATE as DATE) like concat('%', ,#{search_value},'%')*/
+            OR MODIFIED_DATE LIKE concat('%',#{search_value},'%')
             OR MODIFIER like concat('%', #{search_value},'%')
             OR isactive like concat('%', #{search_value},'%')
             )

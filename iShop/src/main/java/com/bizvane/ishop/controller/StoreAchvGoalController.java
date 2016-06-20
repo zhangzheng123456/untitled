@@ -61,7 +61,7 @@ public class StoreAchvGoalController {
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<StoreAchvGoal> list = null;
@@ -110,12 +110,13 @@ public class StoreAchvGoalController {
             storeAchvGoal1.setStore_name(jsonObject.get("store_code").toString());
             storeAchvGoal1.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
             storeAchvGoal1.setAchv_type(jsonObject.get("achv_type").toString());
-            storeAchvGoal1.setStart_time(new Date());
-            storeAchvGoal1.setEnd_time(sdf.parse(jsonObject.get("end_time").toString()));
+            Date now = new Date();
+            storeAchvGoal1.setStart_time(sdf.format(now));
+            storeAchvGoal1.setEnd_time(jsonObject.get("end_time").toString());
             storeAchvGoal1.setModifier(user_id);
-            storeAchvGoal1.setModified_date(new Date());
+            storeAchvGoal1.setModified_date(sdf.format(now));
             storeAchvGoal1.setCreater(user_id);
-            storeAchvGoal1.setCreated_date(new Date());
+            storeAchvGoal1.setCreated_date(sdf.format(now));
             storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
 
 

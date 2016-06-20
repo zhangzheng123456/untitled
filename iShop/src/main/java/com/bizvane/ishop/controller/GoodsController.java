@@ -96,9 +96,9 @@ public class GoodsController {
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
             Date now = new Date();
-            goods.setModified_date(now);
+            goods.setModified_date(sdf.format(now));
             goods.setModifier(user_id);
-            goods.setCreated_date(now);
+            goods.setCreated_date(sdf.format(now));
             goods.setCreater(user_id);
             this.goodsService.insert(goods);
             dataBean.setId(id);
@@ -162,7 +162,7 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             Date now = new Date();
-            goods.setModified_date(now);
+            goods.setModified_date(sdf.format(now));
             goods.setModifier(user_id);
             this.goodsService.update(goods);
             dataBean.setId(id);

@@ -16,11 +16,11 @@ public class UserAchvGoal {
     private String corp_code;
     private double achv_goal;
     private String achv_type;
-    private Date start_time;
-    private Date end_time;
-    private Date modified_date;
+    private String start_time;
+    private String end_time;
+    private String modified_date;
     private String modifier;
-    private Date created_date;
+    private String created_date;
     private String creater;
     private String isactive;
     private User user;
@@ -111,30 +111,6 @@ public class UserAchvGoal {
         this.achv_type = achv_type;
     }
 
-    public Date getStart_time() {
-        return start_time;
-    }
-
-    public void setStart_time(Date start_time) {
-        this.start_time = start_time;
-    }
-
-    public Date getEnd_time() {
-        return end_time;
-    }
-
-    public void setEnd_time(Date end_time) {
-        this.end_time = end_time;
-    }
-
-    public Date getModified_date() {
-        return modified_date;
-    }
-
-    public void setModified_date(Date modified_date) {
-        this.modified_date = modified_date;
-    }
-
     public String getModifier() {
         return modifier;
     }
@@ -160,11 +136,35 @@ public class UserAchvGoal {
         this.isactive = isactive;
     }
 
-    public Date getCreated_date() {
+    public String getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(String start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getEnd_time() {
+        return end_time;
+    }
+
+    public void setEnd_time(String end_time) {
+        this.end_time = end_time;
+    }
+
+    public String getModified_date() {
+        return modified_date;
+    }
+
+    public void setModified_date(String modified_date) {
+        this.modified_date = modified_date;
+    }
+
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 }

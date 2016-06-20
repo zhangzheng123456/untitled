@@ -23,13 +23,13 @@ public class Goods {
     //波段
     private String goods_wave;
     //修改日期
-    private Date modified_date;
+    private String modified_date;
     //修改人
     private String modifier;
     //是否可用
     private String isactive;
     //创建日期
-    private Date created_date;
+    private String created_date;
     //创建者
     private String creater;
     //商品描述
@@ -105,20 +105,19 @@ public class Goods {
         this.goods_wave = goods_wave;
     }
 
-    public Date getModified_date() {
+    public String getModified_date() {
         return modified_date;
     }
 
-    public void setModified_date(Date modified_date) {
+    public void setModified_date(String modified_date) {
         this.modified_date = modified_date;
     }
 
-
-    public Date getCreated_date() {
+    public String getCreated_date() {
         return created_date;
     }
 
-    public void setCreated_date(Date created_date) {
+    public void setCreated_date(String created_date) {
         this.created_date = created_date;
     }
 

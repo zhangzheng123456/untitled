@@ -162,13 +162,13 @@ public class UserAchvGoalControl {
             //   userAchvGoal.setUser_name();
             userAchvGoal.setAchv_goal(jsonObject.getDouble("achv_goal"));
             userAchvGoal.setAchv_type(jsonObject.getString("achv_type"));
-            userAchvGoal.setStart_time(now);
-            userAchvGoal.setEnd_time(sdf.parse(jsonObject.getString("end_time")));
-            userAchvGoal.setModified_date(now);
+            userAchvGoal.setStart_time(sdf.format(now));
+            userAchvGoal.setEnd_time(jsonObject.getString("end_time"));
+            userAchvGoal.setModified_date(sdf.format(now));
             userAchvGoal.setCreater(user_id);
             userAchvGoal.setIsactive(jsonObject.getString("isactive"));
             userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
-            userAchvGoal.setCreated_date(now);
+            userAchvGoal.setCreated_date(sdf.format(now));
             userAchvGoal.setCreater(user_id);
 
 

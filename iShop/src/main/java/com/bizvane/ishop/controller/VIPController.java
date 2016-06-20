@@ -70,7 +70,7 @@ public class VIPController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
             PageInfo<VIPInfo> list;
@@ -113,10 +113,10 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             Date now = new Date();
-            vipInfo.setRegister_time(now);
-            vipInfo.setModified_date(now);
+            vipInfo.setRegister_time(sdf.format(now));
+            vipInfo.setModified_date(sdf.format(now));
             vipInfo.setModifier(user_id);
-            vipInfo.setCreated_date(now);
+            vipInfo.setCreated_date(sdf.format(now));
             vipInfo.setCreater(user_id);
             String exist = vipService.vipCodeExist(vipInfo.getVip_code(), corp_code);
             if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
@@ -155,7 +155,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             vipInfo.setModifier(user_id);
-            vipInfo.setModified_date(new Date());
+            vipInfo.setModified_date(sdf.format(new Date()));
             vipService.update(vipInfo);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -225,7 +225,7 @@ public class VIPController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VIPtag> list;
@@ -267,9 +267,9 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(messsage);
             VIPtag viPtag = WebUtils.JSON2Bean(jsonObject, VIPtag.class);
             Date now = new Date();
-            viPtag.setModified_date(now);
+            viPtag.setModified_date(sdf.format(now));
             viPtag.setModifier(user_id);
-            viPtag.setCreated_date(now);
+            viPtag.setCreated_date(sdf.format(now));
             viPtag.setCreater(user_id);
             vipTagService.insert(viPtag);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -301,7 +301,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPtag viPtag = WebUtils.JSON2Bean(jsonObject, VIPtag.class);
             Date now = new Date();
-            viPtag.setModified_date(now);
+            viPtag.setModified_date(sdf.format(now));
             viPtag.setModifier(user_id);
             this.vipTagService.update(viPtag);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -374,7 +374,7 @@ public class VIPController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             // org.json.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
             PageInfo<VIPtag> list;
@@ -414,7 +414,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
             Date now = new Date();
-            vipCallbackRecord.setModified_date(now);
+            vipCallbackRecord.setModified_date(sdf.format(now));
             vipCallbackRecord.setModifier(user_id);
             this.vipCallbackRecordService.insert(vipCallbackRecord);
             dataBean.setId(id);
@@ -479,7 +479,7 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
-            vipCallbackRecord.setModified_date(new Date());
+            vipCallbackRecord.setModified_date(sdf.format(new Date()));
             vipCallbackRecord.setModifier(user_id);
             this.vipCallbackRecordService.update(vipCallbackRecord);
             dataBean.setId(id);
