@@ -18,6 +18,7 @@ function GET(){
                 $("#corp_code").html(list.corp_code);
                 $('#corp_name').html(list.corp_name);
                 $('#address').html(list.address);
+                $('#address').attr('title',list.address);
                 $('#contact').html(list.contact);
                 $('#contact_phone').html(list.contact_phone);
                 $('#modifier').html(list.modifier);
@@ -29,7 +30,12 @@ function GET(){
                     sessionStorage.setItem("id",id);
                 }
             }else if(data.code=="-1"){
-                
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
             }
     });
 }

@@ -9,39 +9,39 @@ var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 //模仿select
-$(function(){  
+$(function(){
         $("#page_row").click(function(){
 
-            if("block" == $("#liebiao").css("display")){  
-                hideLi();  
-            }else{  
-                showLi();  
-            }  
-        });            
-        $("#liebiao li").each(function(i,v){  
+            if("block" == $("#liebiao").css("display")){
+                hideLi();
+            }else{
+                showLi();
+            }
+        });
+        $("#liebiao li").each(function(i,v){
             $(this).click(function(){
-                pageSize=$(this).attr('id');  
+                pageSize=$(this).attr('id');
                 if(value==""){
                     GET();
                 }else if(value!==""){
                     param["pageSize"]=pageSize;
-                    POST(); 
-                } 
-                $("#page_row").val($(this).html());  
-                hideLi();  
-            });    
-        });      
-        $("#page_row").blur(function(){  
-            setTimeout(hideLi,200);  
-        });          
-    }      
+                    POST();
+                }
+                $("#page_row").val($(this).html());
+                hideLi();
+            });
+        });
+        $("#page_row").blur(function(){
+            setTimeout(hideLi,200);
+        });
+    }
 );
-  
-function showLi(){  
-    $("#liebiao").show();  
-}  
-function hideLi(){  
-    $("#liebiao").hide();  
+
+function showLi(){
+    $("#liebiao").show();
+}
+function hideLi(){
+    $("#liebiao").hide();
 }
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
@@ -156,7 +156,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     }else if(data.code=="-1"){
                         alert(data.message);
                     }
-            });           
+            });
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
@@ -178,7 +178,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                 }else if(data.code=="-1"){
                     alert(data.message);
                 }
-            })        
+            })
         }
     }
 }
@@ -255,7 +255,7 @@ function GET(){
 GET();
 //加载完成以后页面进行的操作
 function jumpBianse(){
-    $(document).ready(function(){//隔行变色 
+    $(document).ready(function(){//隔行变色
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
@@ -263,7 +263,7 @@ function jumpBianse(){
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
-        $(this).toggleClass("tr");  
+        $(this).toggleClass("tr");
         console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
@@ -404,7 +404,7 @@ $("#delete").click(function(){
             ID+=r+",";
         }else{
              ID+=r;
-        }     
+        }
     }
     var param={};
     param["id"]=ID;
@@ -414,7 +414,7 @@ $("#delete").click(function(){
             if(value==""){
                frame();
                $('.frame').html('删除成功');
-               GET(); 
+               GET();
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
@@ -434,7 +434,7 @@ $("#delete").click(function(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-} 
+}
 //全选
 function checkAll(name){
     var el=$("tbody input");
