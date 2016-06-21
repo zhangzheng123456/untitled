@@ -13,11 +13,16 @@
         <result column="creater" property="creater"/>
         <result column="created_date" property="created_date"/>
         <result column="isactive" property="isactive"/>
-        <result column="corp_code" property="corp_code"/>
-        <association property="corp">
+
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_code" property="corp_code"/>
         </association>
     </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VipTagType">
+        select * from def_vip_tag_type where  id=#{id}
+    </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipTagType">
         insert into def_vip_tag_type
@@ -117,7 +122,7 @@
             </if>
 
             <if test="corp_code!=null and  corp_code!=''">
-                corp_code=s#{corp_code} ,
+                corp_code=#{corp_code} ,
             </if>
         </trim>
     </update>
@@ -131,31 +136,31 @@
         vtt.id,
         vtt.type_code,
         vtt.type_name,
-        vtt.type_type_description,
+        vtt.type_description,
         vtt.modified_date,
         vtt.modifier,
         vtt.creater,
         vtt.created_date,
-        vtt.isactive
+        vtt.isactive,
         vtt.corp_code
         FROM def_vip_tag_type vtt
         WHERE
         1=1
         <if test="search_value!=null and search_value!=''">
             and vtt.type_name like concat('%',#{search_value},'%')
-            or type_type_description like concat('%',#{search_value},'%')
-            or modified_date like concat('%',#{search_value},'%')
-            or modifier like concat('%',#{search_value},'%')
-            or creater like concat('%',#{search_value},'%')
-            or created_date like concat('%',#{search_value},'%')
-            or isactive like concat('%',#{search_value},'%')
+            or vtt.type_description like concat('%',#{search_value},'%')
+            or vtt.modified_date like concat('%',#{search_value},'%')
+            or vtt.modifier like concat('%',#{search_value},'%')
+            or vtt.creater like concat('%',#{search_value},'%')
+            or vtt.created_date like concat('%',#{search_value},'%')
+            or vtt.isactive like concat('%',#{search_value},'%')
         </if>
         ORDER BY vtt.id
     </select>
 
-    <select id="searchCode" resultMap="vipTagTypeInfo">
-           select
-            *
+    <select id="selectCode" resultMap="vipTagTypeInfo">
+        select
+        *
         FROM def_vip_tag_type vtt
         WHERE
         vtt.corp_code=#{corp_code}
@@ -165,7 +170,7 @@
 
     <select id="selectName" resultType="com.bizvane.ishop.entity.VipTagType">
         select
-            *
+        *
         FROM def_vip_tag_type vtt
         WHERE
         vtt.corp_code=#{corp_code}

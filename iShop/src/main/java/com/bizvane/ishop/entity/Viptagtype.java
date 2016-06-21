@@ -16,6 +16,15 @@ public class VipTagType {
     private String created_date;
     private String isactive;
     private Corp corp;
+    private String corp_code;
+
+    public String getCorp_code() {
+        return corp_code;
+    }
+
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
+    }
 
     public VipTagType() {
     }
