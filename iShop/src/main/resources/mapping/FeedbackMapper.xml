@@ -19,4 +19,118 @@
         </if>
         ORDER BY USER_CODE
     </select>
+    <insert id="addFeedback" parameterType="com.bizvane.ishop.entity.Feedback">
+        INSERT INTO  def_feedback
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+        <if test="user_code != null">
+            USER_CODE,
+        </if>
+        <if test="feedback_content != null">
+            FEEDBACK_CONTENT,
+        </if>
+        <if test="phone != null">
+            PHONE,
+        </if>
+        <if test="feedback_date != null">
+            FEEDBACK_DATE,
+        </if>
+        <if test="process_state != null">
+            PROCESS_STATE,
+        </if>
+        <if test="created_date != null">
+            CREATED_DATE,
+        </if>
+        <if test="cheater != null">
+            CREATER,
+        </if>
+        <if test="modified_date != null">
+            MODIFIED_DATE,
+        </if>
+        <if test="modifier != null">
+            MODIFIER,
+        </if>
+        <if test="isactive != null">
+            ISACTIVE,
+        </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="user_code != null">
+               #{user_code},
+            </if>
+
+            <if test="feedback_content != null">
+                #{feedback_content},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="feedback_date != null">
+                #{feedback_date},
+            </if>
+            <if test="process_state != null">
+                #{process_state},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="cheater != null">
+                #{cheater},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+    <update id="updFeedbackById" parameterType="com.bizvane.ishop.entity.Feedback">
+        UPDATE  def_feedback
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="user_code != null">
+                #{user_code},
+            </if>
+
+            <if test="feedback_content != null">
+                #{feedback_content},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="feedback_date != null">
+                #{feedback_date},
+            </if>
+            <if test="process_state != null">
+                #{process_state},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="cheater != null">
+                #{cheater},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+    <delete id="delFeedbackById">
+        DELETE FROM def_feedback
+        WHERE ID=#{id};
+    </delete>
+    <!--根据ID查询-->
+    <select id="selFeedbackById" resultType="com.bizvane.ishop.entity.Feedback">
+      SELECT * FROM def_feedback WHERE ID=#{id};
+    </select>
 </mapper>

@@ -12,4 +12,12 @@ import java.util.List;
 public interface FeedbackMapper {
 
     List<Feedback> selectAllFeedback(@Param("search_value") String search_value);
+
+    int addFeedback(Feedback feedback);
+
+    int updFeedbackById(Feedback feedback);
+
+    int delFeedbackById(int id);
+
+    Feedback selFeedbackById(@Param("id") int id);
 }
