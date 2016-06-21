@@ -176,9 +176,12 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var OWN_CORP=$("#OWN_CORP").val(msg.role_code);
-				var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
-				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
+				// var OWN_CORP=$("#OWN_CORP").val(msg.role_code);
+				// var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
+				// var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
+				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
+				var LABEL_NAME=$("#LABEL_NAME").val(msg.label_name);
+				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.label_type);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
