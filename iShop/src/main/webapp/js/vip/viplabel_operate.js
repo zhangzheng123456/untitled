@@ -247,10 +247,10 @@ jQuery(document).ready(function(){
 		console.log(123);
 	})
 	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
 });
 
