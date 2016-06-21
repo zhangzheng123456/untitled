@@ -65,14 +65,13 @@ public class CorpController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             JSONObject info = new JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员(官方画面)
                 int page_number = Integer.parseInt(request.getParameter("pageNumber"));
                 int page_size = Integer.parseInt(request.getParameter("pageSize"));
-
                 PageInfo<Corp> corpInfo = corpService.selectAllCorp(page_number, page_size, "");
                 info.put("list", JSON.toJSONString(corpInfo));
             } else {
@@ -174,6 +173,14 @@ public class CorpController {
             corp.setModified_date(sdf.format(now));
             corp.setModifier(user_id);
             corp.setIsactive(jsonObject.get("isactive").toString());
+
+
+//            int count = corpService.getAreaCount(corp.getCorp_code());
+//            if (count == 0) {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setMessage("企业中有区域，请处理区域后再编辑！！");
+//            }
             corpService.updateByCorpId(corp);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -205,17 +212,30 @@ public class CorpController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String corp_id = jsonObject.get("id").toString();
-
-            String[] ids = corp_id.split(",");
+            String corp_ids = jsonObject.get("id").toString();
+            boolean flag = false;
+            int corp_id = -1;
+            String[] ids = corp_ids.split(",");
             for (int i = 0; i < ids.length; i++) {
-                Corp corp = new Corp(Integer.valueOf(ids[i]));
+                corp_id = Integer.valueOf(ids[i]);
+                Corp corp = this.corpService.selectByCorpId(corp_id, "");
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
+                int count = corpService.getAreaCount(corp.getCorp_code());
+                if (count > 0) {
+                    flag = true;
+                    break;
+                }
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
+            if (flag) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("企业" + corp_id + "下有未处理的区域，请先处理区域！！！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            }
         } catch (Exception ex) {
             //	return "Error deleting the user:" + ex.toString();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

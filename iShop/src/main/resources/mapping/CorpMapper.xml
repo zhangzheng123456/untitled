@@ -54,6 +54,9 @@
         ORDER BY corp_code
     </select>
 
+    <select id="getAreaCount" resultType="int">
+        select count(*) from DEF_AREA WHERE corp_code=#{corp_code}
+    </select>
     <select id="selectCorps" resultMap="CorpInfo">
     select *
     from DEF_CORP

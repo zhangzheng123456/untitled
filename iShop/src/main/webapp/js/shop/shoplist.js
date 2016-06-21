@@ -170,7 +170,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     $(".table tbody").empty();
                     if(list.length<=0){
                         $(".table p").remove();
-                        $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                        $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
                     }else if(list.length>0){
                         $(".table p").remove();
                         superaddition(list,inx);
@@ -391,7 +391,7 @@ function POST(){
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
-                $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,inx);

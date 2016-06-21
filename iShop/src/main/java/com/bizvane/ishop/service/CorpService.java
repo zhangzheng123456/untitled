@@ -29,4 +29,6 @@ public interface CorpService {
     String getCorpByCorpName(String corp_name) throws SQLException;
 
     int selectCount() throws SQLException;
+
+    int getAreaCount(String corp_code);
 }
