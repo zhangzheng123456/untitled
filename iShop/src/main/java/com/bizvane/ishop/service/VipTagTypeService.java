@@ -20,8 +20,8 @@ public interface VipTagTypeService {
 
     PageInfo<VipTagType> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
 
-    String vipTagTypeExist(String type_code, String corp_code);
+    String vipTagTypeCodeExist(String type_code, String corp_code);
 
-    String vipTagNameExist(String type_name, String corp_code);
+    String vipTagTypeNameExist(String type_name, String corp_code);
 
 }

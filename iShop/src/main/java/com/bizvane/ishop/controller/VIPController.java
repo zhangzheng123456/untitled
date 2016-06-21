@@ -8,6 +8,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VIPtag;
 import com.bizvane.ishop.entity.VipCallbackRecord;
+import com.bizvane.ishop.entity.VipTagType;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
@@ -50,6 +51,7 @@ public class VIPController {
     private GroupService groupService;
     @Autowired
     private VipService vipService;
+
 
     @Autowired
     private VipCallbackRecordService vipCallbackRecordService;
@@ -268,7 +270,7 @@ public class VIPController {
             } else {
                 list = vipTagService.selectBySearch(page_number, page_size, corp_code, "");
             }
-            result.put("list", list);
+            result.put("list",JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -593,6 +595,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
 
 
 

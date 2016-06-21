@@ -87,8 +87,9 @@
         SELECT * FROM
         DEF_VIP_TAG
         WHERE
+            1=1
         <if test="corp_code!=null and corp_code!=''">
-            corp_code=#{corp_code}
+         and    corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             and(
