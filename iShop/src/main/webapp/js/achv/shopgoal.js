@@ -204,6 +204,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist();
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
@@ -213,8 +214,22 @@ jQuery(document).ready(function(){
 				// });
 			}
 		});
+	}else{
+		getcorplist();
 	}
-	//获取企业信息列表
+	//change 事件
+	$('#OWN_CORP').change(function(){
+		console.log(123);
+	})
+    $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+	});
+	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+	});
+});
+function getcorplist(){
+	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
 		console.log(data);
@@ -239,14 +254,4 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	//change 事件
-	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
-    $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-	});
-	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-	});
-});
+}

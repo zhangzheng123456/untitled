@@ -142,7 +142,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/area/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/VIP/label/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
@@ -160,7 +160,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/area/search","0",param,function(data){
+            oc.postRequire("post","/VIP/label/search","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
@@ -212,12 +212,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
-    //     int id;
-    //  String tag_name;
-    //  String tag_type; 
-    //  String modified_date;   
-    //  String isactive;
-    // String corp_name
+  
     }
 };
 //权限配置
@@ -235,7 +230,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/area/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/VIP/label/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
