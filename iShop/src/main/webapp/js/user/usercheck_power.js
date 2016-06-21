@@ -4,10 +4,12 @@ var value="";//收索的关键词
 var param={};//定义的对象
 var user_id=sessionStorage.getItem("id");//用户id
 var group_code="";//群主编号
-var corp_code="";
+var corp_code="";//公司编号
+var user_code=""//用户编号
 $("#edit_power").click(function(){
     corp_code=$('#OWN_CORP').val();
 	group_code=$('#OWN_RIGHT').attr("data-myrcode");
+    user_code=$('#USERID').val();
     $("#page-wrapper").hide();
     $(".content").show();
     GET();
@@ -188,7 +190,7 @@ function clearAll(name){
 //保存调的接口
 $('#save').click(function(){
     var param={};
-    param["group_code"]=user_id;
+    param["group_code"]=user_code;
     param["corp_code"]=corp_code;
     var tr=$("tbody input[name='test'][type='checkbox']:checked").parents('tr');
     var list=[];
@@ -202,8 +204,8 @@ $('#save').click(function(){
     oc.postRequire("post","/user/group/check_power/save","0",param,function(data){
     	console.log(data);
         if(data.code=="0"){
-       		$("#page-wrapper").hide();
-    		$(".content").show();	
+       		$("#page-wrapper").show();
+    		$(".content").hide();	
         }else if(data.code=="-1"){
             alert(data.message);
         }

@@ -642,3 +642,7 @@ input::-webkit-input-placeholder{
 	display: block;
 	margin-bottom: 2px;
 }
+/*********搜索的时候的字体的颜色***************/
+.color{
+	color:red;
+}
