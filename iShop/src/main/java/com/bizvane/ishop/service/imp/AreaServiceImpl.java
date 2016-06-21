@@ -57,9 +57,9 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public List<Area> getAllArea(String corp_code, String search_value) throws SQLException {
+    public List<Area> getAllArea(String corp_code) throws SQLException {
         List<Area> areas;
-        areas = areaMapper.selectAllArea(corp_code, search_value);
+        areas = areaMapper.selectAreas(corp_code);
         return areas;
     }
 

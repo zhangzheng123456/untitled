@@ -205,8 +205,8 @@ function superaddition(data,num){
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        +"<td></td>"
-                        +data[i].user_code
+                        +"</td><td>"
+                        + data[i].user_code
                         + "</td><td><img src='"+data[i].avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name

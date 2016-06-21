@@ -69,6 +69,14 @@
         ORDER BY brand_code
     </select>
 
+    <select id="selectBrands" resultType="com.bizvane.ishop.entity.Brand">
+        select *
+        from DEF_BRAND
+        where CORP_CODE = #{corp_code}
+        and isactive = 'Y'
+        ORDER BY brand_code
+    </select>
+
     <delete id="deleteByBrandId">
         delete from
         DEF_BRAND

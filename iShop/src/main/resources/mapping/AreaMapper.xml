@@ -68,6 +68,13 @@
         ORDER BY area_code
     </select>
 
+    <select id="selectAreas" resultType="com.bizvane.ishop.entity.Area">
+        select *
+        from DEF_AREA
+        where CORP_CODE = #{corp_code}
+        AND ISACTIVE = 'Y'
+    </select>
+
     <delete id="deleteByAreaId">
         delete from
         DEF_AREA

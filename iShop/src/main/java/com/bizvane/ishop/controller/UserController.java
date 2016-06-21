@@ -70,7 +70,7 @@ public class UserController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
             PageInfo<User> list;
@@ -141,6 +141,7 @@ public class UserController {
             user.setStore_code(jsonObject.get("store_code").toString());
             user.setPassword(user_code);
             Date now = new Date();
+            user.setLogin_time_recently("");
             user.setCreated_date(sdf.format(now));
             user.setCreater(user_id);
             user.setModified_date(sdf.format(now));
@@ -351,9 +352,9 @@ public class UserController {
 //                    group = groupService.selectByRole(Common.ROLE_SYS);
 //                    System.out.println("-------");
 //                } else {
-                    //列出企业下所有,corp_code=
-                    group = groupService.selectUserGroup(corp_code, "");
- //               }
+                //列出企业下所有,corp_code=
+                group = groupService.selectUserGroup(corp_code, "");
+                //               }
             } else {
                 //比登陆用户角色级别低的群组
                 String login_corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -395,29 +396,29 @@ public class UserController {
 //                //新增编辑系统管理员，corp_code为空
 //                stores.put("stores", "");
 //            } else {
-                if (role_code.equals(Common.ROLE_SYS)) {
-                    //登录用户为admin
-                    List<Store> list;
-                    list = storeService.getCorpStore(corp_code);
-                    stores.put("stores", JSON.toJSONString(list));
-                } else {
-                    //登录用户为普通用户
-                    String store_code = request.getSession().getAttribute("store_code").toString();
-                    String corp_code1 = request.getSession().getAttribute("corp_code").toString();
-                    System.out.println(store_code);
-                    String[] ids = store_code.split(",");
-                    Store store;
-                    JSONArray array = new JSONArray();
-                    for (int i = 0; i < ids.length; i++) {
-                        logger.info("-------------store_code" + ids[i]);
-                        store = storeService.getStoreByCode(corp_code1, ids[i]);
-                        array.add(store);
-                    }
-                    stores.put("stores", JSON.toJSONString(array));
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //登录用户为admin
+                List<Store> list;
+                list = storeService.getCorpStore(corp_code);
+                stores.put("stores", JSON.toJSONString(list));
+            } else {
+                //登录用户为普通用户
+                String store_code = request.getSession().getAttribute("store_code").toString();
+                String corp_code1 = request.getSession().getAttribute("corp_code").toString();
+                System.out.println(store_code);
+                String[] ids = store_code.split(",");
+                Store store;
+                JSONArray array = new JSONArray();
+                for (int i = 0; i < ids.length; i++) {
+                    logger.info("-------------store_code" + ids[i]);
+                    store = storeService.getStoreByCode(corp_code1, ids[i]);
+                    array.add(store);
                 }
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage(stores.toString());
+                stores.put("stores", JSON.toJSONString(array));
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(stores.toString());
 //            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -435,7 +436,7 @@ public class UserController {
      */
     @RequestMapping(value = "/getCorpByUser", method = RequestMethod.POST)
     @ResponseBody
-    public String getCorpByUserId(HttpServletRequest request) {
+    public String getCorpByUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             JSONObject corps = new JSONObject();
@@ -448,12 +449,9 @@ public class UserController {
                     String c_code = corp.getCorp_code();
                     String corp_name = corp.getCorp_name();
                     JSONObject obj = new JSONObject();
-                    String sys_corp_code = groupService.selectByRole(Common.ROLE_SYS).get(0).getCorp_code();
-                    if (!c_code.equals(sys_corp_code)) {
-                        obj.put("corp_code", c_code);
-                        obj.put("corp_name", corp_name);
-                        array.add(obj);
-                    }
+                    obj.put("corp_code", c_code);
+                    obj.put("corp_name", corp_name);
+                    array.add(obj);
                 }
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -498,7 +496,7 @@ public class UserController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
@@ -507,10 +505,10 @@ public class UserController {
             String user_code = userService.getUserById(Integer.parseInt(user_id)).getUser_code();
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, corp_code+group_code);
+            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, corp_code + group_code);
 
             //获取用户自定义的权限
-            JSONArray user_privilege = functionService.selectUserPrivilege(corp_code+user_code);
+            JSONArray user_privilege = functionService.selectUserPrivilege(corp_code + user_code);
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));

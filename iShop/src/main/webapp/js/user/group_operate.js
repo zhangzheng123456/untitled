@@ -196,20 +196,23 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				$("#GROUP_ID").val(msg.group_code);
-				$("#GROUP_NAME").val(msg.group_name);
-				$("#OWN_CORP option").val(msg.corp.corp_code);
-				$("#OWN_CORP option").text(msg.corp.corp_name);
-				$("#OWN_ROLE").val(msg.role.role_name);
-				$("#OWN_ROLE").attr("data-mygcode",msg.role.role_code);
-				$("#REMARK").val(msg.remark);
+				var mg=JSON.parse(msg.data);
+				$("#GROUP_ID").val(mg.group_code);
+				$("#GROUP_NAME").val(mg.group_name);
+				$("#OWN_CORP option").val(mg.corp.corp_code);
+				$("#OWN_CORP option").text(mg.corp.corp_name);
+				$("#OWN_ROLE").val(mg.role.role_name);
+				$("#OWN_ROLE").attr("data-mygcode",mg.role.role_code);
+				$("#REMARK").val(mg.remark);
 
-				$("#created_time").val(msg.created_date);
-				$("#creator").val(msg.creater);
-				$("#modify_time").val(msg.modified_date);
-				$("#modifier").val(msg.modifier);
+				$("#created_time").val(mg.created_date);
+				$("#creator").val(mg.creater);
+				$("#modify_time").val(mg.modified_date);
+				$("#modifier").val(mg.modifier);
+				$("#power_num").val("共"+msg.user_count+"个权限");
+				$("#name_num").val("共"+msg.privilege_count+"个名单");
 				var input=$(".checkbox_isactive").find("input")[0];
-				if(msg.isactive=="Y"){
+				if(mg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
 					input.checked=false;
