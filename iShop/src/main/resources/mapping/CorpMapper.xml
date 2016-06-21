@@ -35,7 +35,7 @@
 
 
     <select id="selectAllCorp" resultMap="CorpInfo">
-        select  *
+        select *
         from DEF_CORP
         where 1 = 1
         <if test="search_value != null and search_value !=''">
@@ -147,7 +147,7 @@
 
     </insert>
 
-    <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.User">
+    <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.Corp">
         UPDATE DEF_CORP
         <trim prefix="SET" suffixOverrides=",">
             <if test="corp_name != null">

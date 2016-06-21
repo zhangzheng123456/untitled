@@ -37,8 +37,10 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     @Override
     public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value)
             throws SQLException {
+
+        PageHelper.startPage(page_number, page_size);
         List<StoreAchvGoal> storeAchvGoals;
-            storeAchvGoals = storeAchvGoalMapper.selectUsersBySearch(corp_code, search_value);
+        storeAchvGoals = storeAchvGoalMapper.selectUsersBySearch(corp_code, search_value);
         PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
         return page;
     }

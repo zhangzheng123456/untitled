@@ -36,9 +36,6 @@ public class VIPController {
     private UserService userService;
 
 
-
-
-    
     @Autowired
     private VIPTagService vipTagService;
     @Autowired
@@ -56,6 +53,9 @@ public class VIPController {
 
     @Autowired
     private VipCallbackRecordService vipCallbackRecordService;
+
+    @Autowired
+    private VipTagTypeService vipTagTypeService;
 
     SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
@@ -174,7 +174,7 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/select", method = RequestMethod.GET)
+    @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public String findVipById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -285,7 +285,7 @@ public class VIPController {
      * 会员标签管理
      * 新增
      */
-    @RequestMapping(value = "/label/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/label/add", method = RequestMethod.POST)
     @ResponseBody
     public String addVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -320,7 +320,7 @@ public class VIPController {
      * 会员标签管理
      * 编辑
      */
-    @RequestMapping(value = "/label/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/label/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -348,7 +348,7 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/label/select", method = RequestMethod.GET)
+    @RequestMapping(value = "/label/select", method = RequestMethod.POST)
     @ResponseBody
     public String findVipLabelById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -528,7 +528,7 @@ public class VIPController {
      * 回访记录管理
      * 编辑
      */
-    @RequestMapping(value = "/callback/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/callback/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -593,6 +593,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
 
 
 }
