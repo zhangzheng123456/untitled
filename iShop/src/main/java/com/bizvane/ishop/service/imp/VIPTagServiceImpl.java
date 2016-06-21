@@ -4,6 +4,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VIPtagMapper;
 import com.bizvane.ishop.entity.VIPtag;
 import com.bizvane.ishop.service.VIPTagService;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,8 +48,9 @@ public class VIPTagServiceImpl implements VIPTagService {
     @Override
     public PageInfo<VIPtag> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         List<VIPtag> list = null;
+        PageHelper.startPage(page_number, page_size);
 
-        list = viPtagMapper.selectAllVipInfo(corp_code, search_value);
+        list = viPtagMapper.selectAllVipTag(corp_code, search_value);
         PageInfo<VIPtag> page = new PageInfo<VIPtag>(list);
         return page;
     }

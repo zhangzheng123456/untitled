@@ -19,7 +19,7 @@ public interface VIPtagMapper {
 
     int updateByPrimaryKey(VIPtag record);
 
-    List<VIPtag> selectAllVipInfo(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
+    List<VIPtag> selectAllVipTag(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
 
     VIPtag selectVipTagCode(@Param("tag_code") String tag_code, @Param("corp_code") String corp_code);
