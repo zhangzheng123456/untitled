@@ -111,7 +111,7 @@
                 #{created_date},
             </if>
             <if test="creater != null">
-                #{creater},
+                #{createra},
             </if>
             <if test="modified_date != null">
                 #{modified_date},

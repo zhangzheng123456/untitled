@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.AppversionMapper">
+    <select id="selectAllAppversion" resultType="com.bizvane.ishop.entity.Appversion">
+        SELECT *
+        FROM def_app_version
+        WHERE 1 = 1
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            PLATFORM LIKE concat('%', #{search_value},'%')
+            OR DOWNLOAD_ADDR LIKE concat('%', #{search_value},'%')
+            OR VERSION_ID LIKE concat('%', #{search_value},'%')
+            OR IS_FORCE_UPDATE LIKE concat('%',#{search_value},'%')
+            OR VERSION_DESCRIBE LIKE concat('%', #{search_value},'%')
+            OR CROP_CODE LIKE concat('%', #{search_value},'%')
+            OR MODIFIED_DATE LIKE concat('%', #{search_value},'%')
+            OR MODIFIER LIKE concat('%', #{search_value},'%')
+            OR ISACTIVE LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY ID
+    </select>
+    <insert id="addAppversion" parameterType="com.bizvane.ishop.entity.Appversion">
+        INSERT INTO  def_app_version
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="platform != null">
+                PLATFORM,
+            </if>
+            <if test="download_addr != null">
+                DOWNLOAD_ADDR,
+            </if>
+            <if test="version_id">
+                VERSION_ID,
+            </if>
+            <if test="is_force_update != null">
+                IS_FORCE_UPDATE,
+            </if>
+            <if test="version_describe != null">
+                VERSION_DESCRIBE,
+            </if>
+            <if test="crop_code != null">
+                CROP_CODE,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                CREATER,
+            </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                MODIFIER,
+            </if>
+            <if test="isactive != null">
+                ISACTIVE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="platform != null">
+                #{platform},
+            </if>
+
+            <if test="download_addr != null">
+                #{download_addr},
+            </if>
+            <if test="version_id != null">
+                #{version_id},
+            </if>
+            <if test="is_force_update != null">
+                #{is_force_update},
+            </if>
+            <if test="version_describe != null">
+                #{version_describe},
+            </if>
+            <if test="crop_code != null">
+                #{crop_code},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+    <update id="updAppversionById" parameterType="com.bizvane.ishop.entity.Appversion">
+        UPDATE  def_app_version
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="platform != null">
+                #{platform},
+            </if>
+
+            <if test="download_addr != null">
+                #{download_addr},
+            </if>
+            <if test="version_id != null">
+                #{version_id},
+            </if>
+            <if test="is_force_update != null">
+                #{is_force_update},
+            </if>
+            <if test="version_describe != null">
+                #{version_describe},
+            </if>
+            <if test="crop_code != null">
+                #{crop_code},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+    <delete id="delAppversionById">
+        DELETE FROM def_app_version
+        WHERE ID=#{id};
+    </delete>
+    <!--根据ID查询-->
+    <select id="selAppversionById" resultType="com.bizvane.ishop.entity.Appversion">
+        SELECT * FROM def_app_version WHERE ID=#{id};
+    </select>
+</mapper>

@@ -19,6 +19,7 @@ import java.util.List;
 public class TestFeedbackService {
     @Autowired
     private FeedbackService feedbackService = null;
+    //成功
     @Test
     public void testselectAllFeedback() {
         try {
@@ -29,6 +30,7 @@ public class TestFeedbackService {
         }
 
     }
+    //成功
     @Test
     public void testAddFeedback(){
         try {
@@ -40,10 +42,20 @@ public class TestFeedbackService {
             f.setFeedback_content("1");
             f.setPhone("1");
             f.setProcess_state("1");
-            f.setCheater("1");
+            f.setCreater("1");
             f.setFeedback_date("2015/6/3");
             f.setCreated_date("2015/6/3");
             feedbackService.addFeedback(f);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+    //成功
+    @Test
+    public void testSelFeedback(){
+        try {
+            Feedback feedback = feedbackService.selFeedbackById(1);
+            System.out.println(feedback.getPhone()+"----------");
         }catch (Exception e){
             e.printStackTrace();
         }
