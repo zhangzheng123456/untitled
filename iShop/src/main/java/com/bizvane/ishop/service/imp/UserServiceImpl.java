@@ -224,7 +224,7 @@ public class UserServiceImpl implements UserService {
             String corp_name = jsonObject.get("COMPANY").toString();
             String address = jsonObject.get("ADDRESS").toString();
 
-            ValidateCode code = validateCodeService.selectValidateCode(0, phone, "Y");
+            ValidateCode code = validateCodeService.selectValidateCode(0, phone, Common.IS_ACTIVE_Y);
             Date now = new Date();
             String modified_date = code.getModified_date();
             Date time = sdf.parse(modified_date);
@@ -256,6 +256,7 @@ public class UserServiceImpl implements UserService {
                 user.setModified_date(sdf.format(now));
                 user.setModifier("root");
                 user.setIsactive(Common.IS_ACTIVE_Y);
+                user.setCan_login(Common.IS_ACTIVE_Y);
                 userMapper.insertUser(user);
 
                 //插入公司信息

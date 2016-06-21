@@ -21,6 +21,7 @@
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
+        <result column="can_login" property="can_login"/>
     </resultMap>
 
     <resultMap type="com.bizvane.ishop.entity.User" id="UserInfo">
@@ -38,6 +39,7 @@
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
+        <result column="can_login" property="can_login"/>
         <association property="group" javaType="com.bizvane.ishop.entity.Group">
             <result column="group_name" property="group_name"/>
         </association>
@@ -56,6 +58,7 @@
         email,
         birthday,
         store_code,
+        can_login,
         DEF_USER.group_code,
         DEF_USER.corp_code,
         login_time_recently,
@@ -102,6 +105,7 @@
         password,
         login_time_recently,
         store_code,
+        can_login,
         DEF_USER.group_code,
         DEF_USER.corp_code,
         DEF_USER.modified_date,
@@ -264,6 +268,9 @@
             <if test="isactive != null">
                 ISACTIVE,
             </if>
+            <if test="can_login != null">
+                can_login,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="user_code!=null">
@@ -316,6 +323,9 @@
             </if>
             <if test="isactive != null">
                 #{isactive},
+            </if>
+            <if test="can_login != null">
+                #{can_login},
             </if>
         </trim>
     </insert>
@@ -373,6 +383,9 @@
             </if>
             <if test="isactive!=null and isactive!='' ">
                 ISACTIVE = #{isactive},
+            </if>
+            <if test="can_login!=null and can_login!='' ">
+                can_login = #{can_login},
             </if>
         </trim>
         WHERE ID = #{id};

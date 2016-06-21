@@ -404,7 +404,7 @@ public class CorpController {
             String is_authorize = corp.getIs_authorize();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            if (is_authorize.equals("Y")) {
+            if (is_authorize.equals(Common.IS_AUTHORIZE_Y)) {
                 dataBean.setMessage("已授权");
             } else {
                 dataBean.setMessage("未授权");

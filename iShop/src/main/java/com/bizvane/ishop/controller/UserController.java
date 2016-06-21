@@ -147,6 +147,8 @@ public class UserController {
             user.setModified_date(sdf.format(now));
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
+            user.setCan_login(jsonObject.get("can_login").toString());
+
             logger.info("------insert user" + user.toString());
 
             String exist = userService.userCodeExist(user_code, corp_code);
@@ -203,6 +205,7 @@ public class UserController {
             user.setModified_date(sdf.format(now));
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
+            user.setCan_login(jsonObject.get("can_login").toString());
             logger.info("------update user" + user.toString());
             userService.update(user);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -411,7 +414,7 @@ public class UserController {
                 JSONArray array = new JSONArray();
                 for (int i = 0; i < ids.length; i++) {
                     logger.info("-------------store_code" + ids[i]);
-                    store = storeService.getStoreByCode(corp_code1, ids[i],"Y");
+                    store = storeService.getStoreByCode(corp_code1, ids[i],Common.IS_ACTIVE_Y);
                     array.add(store);
                 }
                 stores.put("stores", JSON.toJSONString(array));
@@ -501,7 +504,7 @@ public class UserController {
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
             String corp_code = userService.getUserById(Integer.parseInt(user_id)).getCorp_code();
-            String role_code = groupService.selectByCode(corp_code ,group_code,"Y").getRole_code();
+            String role_code = groupService.selectByCode(corp_code ,group_code,Common.IS_ACTIVE_Y).getRole_code();
             String user_code = userService.getUserById(Integer.parseInt(user_id)).getUser_code();
 
             //获取群组自定义的权限

@@ -36,6 +36,8 @@ public class User {
 	private String creater;
 	//是否可用
 	private String isactive;
+	//是否可登录
+	private String can_login;
 
 	private String store_name;
 
@@ -191,6 +193,14 @@ public class User {
 
 	public void setIsactive(String isactive) {
 		this.isactive = isactive;
+	}
+
+	public String getCan_login() {
+		return can_login;
+	}
+
+	public void setCan_login(String can_login) {
+		this.can_login = can_login;
 	}
 
 	public Group getGroup() {
