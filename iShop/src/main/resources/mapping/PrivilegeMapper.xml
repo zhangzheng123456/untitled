@@ -156,11 +156,6 @@
         </trim>
     </insert>
 
-    <select id="selectGroup" resultType="com.bizvane.ishop.entity.Privilege">
-        SELECT * FROM DEF_PRIVILEGE
-        WHERE master_code = #{group_code}
-    </select>
-
     <delete id="delete">
         delete from
         DEF_PRIVILEGE

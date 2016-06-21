@@ -9,7 +9,8 @@
         WHERE (MASTER_CODE = #{user_code}
         or MASTER_CODE = #{role_code}
         or MASTER_CODE = #{group_code})
-        and enable = 'Y')
+        and enable = 'Y'
+        and isactive = 'Y')
         and ISACTIVE = 'Y'
         order by FUNCTION_CODE
     </select>
@@ -24,7 +25,10 @@
           AND (MASTER_CODE = #{user_code}
             or MASTER_CODE = #{role_code}
             or MASTER_CODE = #{group_code})
-          and enable = 'Y')
+           and enable = 'Y'
+        and isactive = 'Y')
+        and ISACTIVE = 'Y'
+        order by ACTION_CODE
     </select>
 
 

@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
             String corp_code = user.getCorp_code();
             String[] ids = user.getStore_code().split(",");
             for (int i = 0; i < ids.length; i++) {
-                Store store = storeService.getStoreByCode(corp_code, ids[i]);
+                Store store = storeService.getStoreByCode(corp_code, ids[i],"");
                 String store_name1 = store.getStore_name();
                 store_name = store_name + store_name1;
                 if (i != ids.length - 1) {
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
             String corp_code = login_user.getCorp_code();
             String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
-            String role_code = groupMapper.selectByCode(group_code).getRole_code();
+            String role_code = groupMapper.selectByCode(corp_code,group_code,"").getRole_code();
 
             request.getSession().setAttribute("user_id", user_id);
             request.getSession().setAttribute("user_code", user_code);
@@ -174,13 +174,41 @@ public class UserServiceImpl implements UserService {
         }
         return user_info;
     }
-
     /**
      * 验证手机号是否已注册
      */
-    public User phoneExist(String phone) throws SQLException {
-        return userMapper.selectByPhone(phone);
+    @Override
+    public String userPhoneExist(String phone) {
+        User user = this.userMapper.selectByPhone(phone);
+        String result = Common.DATABEAN_CODE_ERROR;
+        if (user == null) {
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
     }
+
+    @Override
+    public String userEmailExist(String email) {
+        User user = this.userMapper.userEmailExist(email);
+        String result = Common.DATABEAN_CODE_ERROR;
+        if (user == null) {
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
+    }
+
+    /**
+     * 验证企业下用户编号是否已存在
+     */
+    public String userCodeExist(String user_code, String corp_code) throws SQLException {
+        User user = userMapper.selectUserCode(user_code, corp_code);
+        String result = Common.DATABEAN_CODE_ERROR;
+        if (user == null) {
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
+    }
+
 
     /**
      * 注册
@@ -311,47 +339,17 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectGroupUser(corp_code, group_code);
     }
 
-    /**
-     * 验证企业下用户编号是否已存在
-     */
-    public String userCodeExist(String user_code, String corp_code) throws SQLException {
-        User user = userMapper.selectUserCode(user_code, corp_code);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (user == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
-    }
 
-    @Override
-    public String userNameExist(String user_name, String corp_code) {
-        User user = this.userMapper.selectUserName(user_name, corp_code);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (user == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
-    }
+//    @Override
+//    public String userNameExist(String user_name, String corp_code) {
+//        User user = this.userMapper.selectUserName(user_name, corp_code);
+//        String result = Common.DATABEAN_CODE_ERROR;
+//        if (user == null) {
+//            result = Common.DATABEAN_CODE_SUCCESS;
+//        }
+//        return result;
+//    }
 
-    @Override
-    public String userPhoneExist(String phone, String corp_code) {
-        User user = this.userMapper.selectPhone(phone, corp_code);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (user == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
-    }
-
-    @Override
-    public String userEmailExist(String email, String corp_code) {
-        User user = this.userMapper.userEmailExist(email, corp_code);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (user == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
-    }
 
     @Override
     public Corp getCorpByUserId(int user_id) throws SQLException {

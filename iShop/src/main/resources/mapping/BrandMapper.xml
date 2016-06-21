@@ -37,7 +37,6 @@
         from DEF_BRAND
         where CORP_CODE = #{corp_code}
         AND BRAND_CODE = #{brand_code}
-         AND ISACTIVE = 'Y'
     </select>
 
     <select id="selectAllBrand" resultMap="Brand">

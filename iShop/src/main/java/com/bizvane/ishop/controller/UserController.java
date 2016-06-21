@@ -411,7 +411,7 @@ public class UserController {
                 JSONArray array = new JSONArray();
                 for (int i = 0; i < ids.length; i++) {
                     logger.info("-------------store_code" + ids[i]);
-                    store = storeService.getStoreByCode(corp_code1, ids[i]);
+                    store = storeService.getStoreByCode(corp_code1, ids[i],"Y");
                     array.add(store);
                 }
                 stores.put("stores", JSON.toJSONString(array));
@@ -500,8 +500,8 @@ public class UserController {
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
-            String role_code = groupService.selectCorpGroup(group_code).getRole_code();
             String corp_code = userService.getUserById(Integer.parseInt(user_id)).getCorp_code();
+            String role_code = groupService.selectByCode(corp_code ,group_code,"Y").getRole_code();
             String user_code = userService.getUserById(Integer.parseInt(user_id)).getUser_code();
 
             //获取群组自定义的权限
@@ -630,35 +630,35 @@ public class UserController {
     }
 
 
-    @RequestMapping(value = "/UserNameExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String UserNameExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String user_name = jsonObject.get("user_name").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            String existInfo = userService.userNameExist(user_name, corp_code);
-            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("用户编号已被使用！！！");
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("用户编号不存在");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/UserNameExist", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String UserNameExist(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            String user_name = jsonObject.get("user_name").toString();
+//            String corp_code = jsonObject.get("corp_code").toString();
+//            String existInfo = userService.userNameExist(user_name, corp_code);
+//            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setMessage("用户编号已被使用！！！");
+//            } else {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("用户编号不存在");
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 
     @RequestMapping(value = "/PhoneExist", method = RequestMethod.POST)
@@ -673,7 +673,7 @@ public class UserController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String phone = jsonObject.get("phone").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String existInfo = userService.userPhoneExist(phone, corp_code);
+            String existInfo = userService.userPhoneExist(phone);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -704,7 +704,7 @@ public class UserController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String email = jsonObject.get("email").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String existInfo = userService.userEmailExist(email, corp_code);
+            String existInfo = userService.userEmailExist(email);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

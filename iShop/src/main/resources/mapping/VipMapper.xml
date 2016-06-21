@@ -21,6 +21,7 @@
         <result column="creater" property="creater"/>
         <result column="isactive" property="isactive"/>
     </resultMap>
+
     <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VIPInfo">
       select * from DEF_VIP
        WHERE id=#{id}

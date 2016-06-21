@@ -8,7 +8,7 @@ import java.util.List;
 public interface StoreMapper {
     Store selectByStoreId(int id);
 
-    Store selectByCorp(@Param("corp_code") String corp_code, @Param("store_code") String store_code);
+    Store selectByCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("isactive") String isactive);
 
     List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 

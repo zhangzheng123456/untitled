@@ -48,7 +48,6 @@
             AND
             (g.goods_code LIKE concat('%',#{search_value},'%')
             OR g.goods_name LIKE concat('%',#{search_value},'%')
-            OR g.goods_image LIKE concat('%',#{search_value},'%')
             OR g.goods_price LIKE concat('%',#{search_value},'%')
             OR g.goods_time LIKE concat('%',#{search_value},'%')
             OR g.goods_quarter LIKE concat('%',#{search_value},'%')

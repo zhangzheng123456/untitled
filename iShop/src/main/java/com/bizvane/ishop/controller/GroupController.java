@@ -417,7 +417,7 @@ public class GroupController {
 
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Group group = groupService.selectCorpGroup(group_code);
+            Group group = groupService.selectByCode(corp_code,group_code,"Y");
             String role_code = group.getRole_code();
 
             //获取群组角色的权限

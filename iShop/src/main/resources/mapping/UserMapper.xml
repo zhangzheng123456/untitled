@@ -124,6 +124,7 @@
         where
             PHONE = #{phone}
     </select>
+
     <select id="selectLogin" resultMap="BaseMap">
         SELECT *
         FROM DEF_USER
@@ -131,6 +132,7 @@
         OR EMAIL = #{0}
         AND PASSWORD = #{1}
         AND ISACTIVE = 'Y'
+        AND CAN_LOGIN = 'Y'
     </select>
 
     <select id="selectUserCode" resultMap="BaseMap">
@@ -139,6 +141,11 @@
     WHERE
     USER_CODE = #{0} AND CORP_CODE = #{1}
    </select>
+
+    <select id="userEmailExist" resultType="com.bizvane.ishop.entity.User">
+        select * from DEF_USER
+        WHERE email = #{email}
+    </select>
 
     <select id="selectStoreUser" resultMap="UserInfo">
         SELECT
@@ -163,7 +170,6 @@
         where DEF_USER.group_code = DEF_GROUP.group_code
         AND DEF_USER.CORP_CODE = #{corp_code}
         AND DEF_USER.store_code like #{search_value}
-        AND DEF_USER.ISACTIVE = 'Y'
     </select>
 
     <select id="selectGroupUser" resultMap="UserInfo">
@@ -203,6 +209,7 @@
         DEF_USER
         where ID = #{id}
     </delete>
+
     <insert id="insertUser" parameterType="com.bizvane.ishop.entity.User">
         insert into DEF_USER
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -370,19 +377,17 @@
         </trim>
         WHERE ID = #{id};
     </update>
+<!--
     <select id="selectUserName" resultType="com.bizvane.ishop.entity.User">
         select * from DEF_USER
         WHERE user_name=#{user_name} and user_code=#{user_code}
     </select>
+
     <select id="selectPhone" resultType="com.bizvane.ishop.entity.User">
         select * from DEF_USER
         WHERE phone=#{phone} and corp_code=#{corp_code}
     </select>
-
-    <select id="userEmailExist" resultType="com.bizvane.ishop.entity.User">
-        select * from DEF_USER
-        WHERE email=#{email} and corp_code=#{corp_code}
-    </select>
+-->
 
 
 </mapper>

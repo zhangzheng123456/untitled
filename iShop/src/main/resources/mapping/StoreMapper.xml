@@ -45,12 +45,14 @@
         AND DEF_STORE.ID=#{id}
     </select>
 
-    <select id="selectByCorp" resultType="com.bizvane.ishop.entity.Store">
+    <select id="selectByCode" resultType="com.bizvane.ishop.entity.Store">
         select *
         from DEF_STORE
         where CORP_CODE = #{corp_code}
         AND STORE_CODE = #{store_code}
-         AND ISACTIVE = 'Y'
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
     </select>
 
     <select id="selectAllStore" resultMap="Store">
@@ -125,7 +127,6 @@
             OR DEF_STORE.MODIFIER like  concat('%',#{search_value},'%')
             OR DEF_STORE.ISACTIVE like  concat('%',#{search_value},'%')
         </if>
-        AND DEF_STORE.ISACTIVE = 'Y'
         ORDER BY STORE_CODE
     </select>
 

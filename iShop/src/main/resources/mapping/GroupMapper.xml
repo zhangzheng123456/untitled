@@ -46,6 +46,10 @@
         select *
         from DEF_GROUP
         where group_code = #{group_code}
+        and corp_code = #{corp_code}
+        <if test="isactive !=''">
+            and isactive = #{isactive}
+        </if>
     </select>
 
     <select id="selectAllGroup" resultMap="GroupInfo">
@@ -97,6 +101,7 @@
         ORDER BY ID
     </select>
 
+    <!--
     <select id="selectByRole" resultType="com.bizvane.ishop.entity.Group">
         select *
         from DEF_GROUP
@@ -104,7 +109,7 @@
         AND ISACTIVE = 'Y'
         ORDER BY ID
     </select>
-
+ -->
     <select id="selectMaxCode" resultType="java.lang.String">
         select max(GROUP_CODE) from DEF_GROUP
     </select>

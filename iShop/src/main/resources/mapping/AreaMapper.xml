@@ -37,7 +37,6 @@
         from DEF_AREA
         where CORP_CODE = #{corp_code}
         AND area_code = #{area_code}
-         AND ISACTIVE = 'Y'
     </select>
 
     <select id="selectAllArea" resultMap="Area">

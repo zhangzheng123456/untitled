@@ -99,9 +99,9 @@ public class LoginController {
             JSONObject jsonObject = new JSONObject(message);
             String phone = jsonObject.get("PHONENUMBER").toString();
             System.out.println(phone);
-            User user = userService.phoneExist(phone);
+            String user = userService.userPhoneExist(phone);
             System.out.println(user);
-            if (user == null) {
+            if (user.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("the phone can registered");

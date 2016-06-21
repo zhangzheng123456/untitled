@@ -417,7 +417,7 @@ public class StoreController {
 
     @RequestMapping(value = "/Store_CodeExist", method = RequestMethod.POST)
     @ResponseBody
-    public String Area_nameExist(HttpServletRequest request) {
+    public String Store_CodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -428,7 +428,7 @@ public class StoreController {
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             //         Area area = areaService.getAreaByName(corp_code, store_code);
-            Store store = storeService.getStoreByCode(corp_code, store_code);
+            Store store = storeService.getStoreByCode(corp_code, store_code,"");
 
             if (store != null) {
                 dataBean.setId(id);

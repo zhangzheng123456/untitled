@@ -23,7 +23,7 @@ public interface StoreService {
     List<Store> getCorpStore(String corp_code) throws SQLException;
 
 
-    Store getStoreByCode(String corp_code, String store_code);
+    Store getStoreByCode(String corp_code, String store_code,String isactive);
 
     List<User> getStoreUser(String corp_code, String store_code);
 
