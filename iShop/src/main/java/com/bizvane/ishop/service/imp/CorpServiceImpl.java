@@ -59,7 +59,7 @@ public class CorpServiceImpl implements CorpService {
      * 以便新增企业时
      * 自动生成corp_code
      */
-    public String selectMaxCorpCode() {
+    public String selectMaxCorpCode() throws SQLException{
         return corpMapper.selectMaxCorpCode();
     }
 
@@ -79,10 +79,7 @@ public class CorpServiceImpl implements CorpService {
         return Common.DATABEAN_CODE_ERROR;
     }
 
-    @Override
-    public Corp selectByUser_id(int user_id) throws SQLException {
-        Corp corp = this.corpMapper.selectByUser_id(user_id);
-        return corp;
+    public int selectCount() throws SQLException{
+        return corpMapper.selectCount();
     }
-
 }

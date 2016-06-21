@@ -45,5 +45,4 @@ public interface UserService {
 
 //    String userNameExist(String user_name, String corp_code);
 
-    Corp getCorpByUserId(int user_id) throws SQLException;
 }

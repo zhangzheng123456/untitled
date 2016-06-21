@@ -349,13 +349,4 @@ public class UserServiceImpl implements UserService {
 //        }
 //        return result;
 //    }
-
-
-    @Override
-    public Corp getCorpByUserId(int user_id) throws SQLException {
-        // Corp corp = this.userMapper.selectCorpByUser_id(user_id);
-        //   this.userMapper.select
-        Corp corp = this.corpService.selectByUser_id(user_id);
-        return corp;
-    }
 }

@@ -25,5 +25,5 @@ public interface CorpMapper {
 
     List<Corp> selectByCorpName(String corp_name);
 
-    Corp selectByUser_id(@Param("user_id") int user_id);
+    int selectCount();
 }
