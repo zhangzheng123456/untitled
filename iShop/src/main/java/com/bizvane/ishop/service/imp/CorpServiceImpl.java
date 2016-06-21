@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.service.CorpService;
@@ -19,6 +20,9 @@ import java.util.List;
 public class CorpServiceImpl implements CorpService {
     @Autowired
     private CorpMapper corpMapper;
+
+    @Autowired
+    private AreaMapper areaMapper;
 
     public Corp selectByCorpId(int corp_id, String corp_code) throws SQLException {
         return corpMapper.selectByCorpId(corp_id, corp_code);
@@ -83,6 +87,11 @@ public class CorpServiceImpl implements CorpService {
     public Corp selectByUser_id(int user_id) throws SQLException {
         Corp corp = this.corpMapper.selectByUser_id(user_id);
         return corp;
+    }
+
+    @Override
+    public int getAreaCount(String corp_code) {
+        return this.corpMapper.getAreaCount(corp_code);
     }
 
 }

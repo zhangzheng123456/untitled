@@ -30,4 +30,6 @@ public interface CorpService {
 
 
     Corp selectByUser_id(int user_id) throws SQLException;
+
+    int getAreaCount(String corp_code);
 }

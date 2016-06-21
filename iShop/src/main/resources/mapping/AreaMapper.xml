@@ -136,6 +136,7 @@
         </trim>
     </insert>
 
+
     <update id="updateArea" parameterType="com.bizvane.ishop.entity.Area">
         UPDATE DEF_AREA
         <trim prefix="SET" suffixOverrides=",">
