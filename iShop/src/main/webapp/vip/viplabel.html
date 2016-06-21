@@ -4,7 +4,7 @@
 	<meta charset="UTF-8">
 	<title>会员标签管理</title>
 	<link rel="stylesheet" href="../table/css/inner.css">
-    <link rel="stylesheet" href="../table/css/style.css">
+    <!-- <link rel="stylesheet" href="../table/css/style.css"> -->
     <link rel="stylesheet" href="../css/font_style.css">
     <script src="../table/js/jquery.min.js"></script>
     <!-- <script src="../table/js/navigation_bar.js"></script> -->
@@ -23,8 +23,8 @@
     		</div>
     		<div class="action">
     			<div class="action_l">
-    				<ul>
-    					<li>
+    				<ul id="jurisdiction">
+    					<!-- <li>
                             <a href="/vip/viplabel_add.html">
         						<span class="icon-ishop_6-01"></span>
         						新增
@@ -47,8 +47,14 @@
                         <li class="li">
                             <input type="text" class="input">
                             <i class="icon-ishop_3-05"></i>
-                        </li>
+                        </li> -->
     				</ul>
+                    <ul>
+                        <li class="li">
+                            <input type="text" class="input" id="search">
+                            <i class="icon-ishop_3-05"></i>
+                        </li>
+                    </ul>
     			</div>
     			<div class="action_r">
     				<ul>
@@ -122,7 +128,7 @@
                     <tbody>
                     	<tr>
                     		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    			<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
                     		</td>
                     		<td style="text-align: left;">1</td>
                     		<td>淑女</td>
@@ -130,41 +136,44 @@
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
                     		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput2"/><label for="checkboxTwoInput2"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">2</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
+                    	</tr>                	
+                    	<!-- 
+                        <tbody>
+                        <tr>
+                            <td width="50px" style="text-align: left;">
+                                <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput2"/><label for="checkboxTwoInput2"></label></div>
+                            </td>
+                            <td style="text-align: left;">2</td>
+                            <td>淑女</td>
+                            <td>日</td>
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput3"/><label for="checkboxTwoInput3"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">3</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
+                            <td width="50px">是</td>
+                        </tr>
+                        </tbody>
+                        <tr>
+                            <td width="50px" style="text-align: left;">
+                                <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput3"/><label for="checkboxTwoInput3"></label></div>
+                            </td>
+                            <td style="text-align: left;">3</td>
+                            <td>淑女</td>
+                            <td>日</td>
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput4"/><label for="checkboxTwoInput4"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">4</td>
-                    		<td>淑女</td>
-                    		<td>日</td>
+                            <td width="50px">是</td>
+                        </tr>
+                        <tr>
+                            <td width="50px" style="text-align: left;">
+                                <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput4"/><label for="checkboxTwoInput4"></label></div>
+                            </td>
+                            <td style="text-align: left;">4</td>
+                            <td>淑女</td>
+                            <td>日</td>
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
-                    		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
+                            <td width="50px">是</td>
+                        </tr>
+                        <tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput5"/><label for="checkboxTwoInput5"></label></div>
                     		</td>
@@ -185,8 +194,8 @@
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
                     		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
+                    	</tr> -->
+                    	<!-- <tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput7"/><label for="checkboxTwoInput7"></label></div>
                     		</td>
@@ -196,8 +205,8 @@
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
                     		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
+                    	</tr> -->
+                    	<!-- <tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput8"/><label for="checkboxTwoInput8"></label></div>
                     		</td>
@@ -207,8 +216,8 @@
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
                     		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
+                    	</tr> -->
+                    	<!-- <tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput9"/><label for="checkboxTwoInput9"></label></div>
                     		</td>
@@ -218,8 +227,8 @@
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
                     		<td width="50px">是</td>
-                    	</tr>
-                    	<tr>
+                    	</tr> -->
+                    	<!-- <tr>
                     		<td width="50px" style="text-align: left;">
                     			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput10"/><label for="checkboxTwoInput10"></label></div>
                     		</td>
@@ -229,7 +238,7 @@
                             <td>JSNJO309</td>
                             <td>2016/02/23 15:04:02</td>
                     		<td width="50px">是</td>
-                    	</tr>                                    													
+                    	</tr>  -->                                   													
                     </tbody>
     			</table>
     		</div>
@@ -291,7 +300,40 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
-    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+
+    <div id="side_bar">
+        <div class="gotop">
+            <span class="icon-ishop_4-03"></span>
+        </div>
+        <div class="gobottom">
+            <span class="icon-ishop_4-04"></span>
+        </div>
+    </div>
+</body>
+    <script src="/js/postRequire.js"></script>
+    <script src="/js/area/area.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $(window).scroll(function(){
+                if($(window).scrollTop()>100){
+                    $("#side_bar .gotop").fadeIn(); 
+                }
+                else{
+                    $("#side-bar .gotop").hide();
+                }
+            });
+            $("#side_bar .gotop").click(function(){
+                $('html,body').animate({'scrollTop':0},500);
+            });
+            $("#side_bar .gobottom").click(function(){
+                var btm=$('html,body').height();
+                $('html,body').animate({'scrollTop':btm},500);
+            })
+        });
+    </script>
+
+
+    <!-- <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
     <script src="../table/js/inner.js"></script>
     <script type="text/javascript">
         $(function(){
@@ -302,5 +344,5 @@
             $('#sidebar ul>li:eq(2)').find('dl>dd:eq(1) span').addClass('icon-ishop_8-01');
         })
     </script>
-</body>
+</body> -->
 </html>
