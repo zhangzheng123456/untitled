@@ -8,9 +8,6 @@ var param={};//定义的对象
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-//模仿select
-
-///aasd 
 $(function(){  
         $("#page_row").click(function(){
 
