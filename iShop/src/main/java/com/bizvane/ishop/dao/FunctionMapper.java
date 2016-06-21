@@ -22,7 +22,7 @@ public interface FunctionMapper {
 
     List<Function> selectUserPrivilege(@Param("user_code") String user_code);
 
-    List<Function> selectPrivilege(@Param("user_code") String user_code, @Param("role_code") String role_code, @Param("group_code") String group_code);
+    List<Function> selectPrivilege(@Param("user_code") String user_code, @Param("role_code") String role_code, @Param("group_code") String group_code,@Param("search_value") String search_value);
 
     int insertFunction(Function function);
 }

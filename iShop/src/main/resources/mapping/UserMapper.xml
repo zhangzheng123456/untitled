@@ -132,8 +132,8 @@
     <select id="selectLogin" resultMap="BaseMap">
         SELECT *
         FROM DEF_USER
-        WHERE PHONE = #{0}
-        OR EMAIL = #{0}
+        WHERE (PHONE = #{0}
+        OR EMAIL = #{0})
         AND PASSWORD = #{1}
         AND ISACTIVE = 'Y'
         AND CAN_LOGIN = 'Y'

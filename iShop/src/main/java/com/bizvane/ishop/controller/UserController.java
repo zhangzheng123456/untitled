@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.IshowHttpClient;
 import com.github.pagehelper.PageInfo;
 import org.json.HTTP;
 import org.json.JSONObject;
@@ -498,8 +499,12 @@ public class UserController {
             String login_role_code = request.getSession().getAttribute("role_code").toString();
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
+            String search_value = "";
+            if (jsonObject.has("search_value")){
+                search_value = jsonObject.get("search_value").toString();
+            }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code,search_value);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
@@ -615,6 +620,33 @@ public class UserController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("email未被使用！！！");
             }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/creatQrcode", method = RequestMethod.POST)
+    @ResponseBody
+    public String creatQrcode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String user_code = jsonObject.get("user_code").toString();
+            String auth_appid = corpService.selectByCorpId(0,corp_code).getApp_id();
+
+            String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid="+auth_appid+"&guider_code="+user_code;
+            String result = IshowHttpClient.get(url);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
