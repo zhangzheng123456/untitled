@@ -690,6 +690,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -699,38 +700,10 @@ jQuery(document).ready(function(){
 				});
 			}
 		});
+    }else{
+    	getcorplist();
     }
-	//获取企业列表
-	var corp_command="/user/getCorpByUser";
-	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			console.log(msg);
-			var index=0;
-			var corp_html='';
-			var c=null;
-			for(index in msg.corps){
-				c=msg.corps[index];
-				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-			}
-			$("#OWN_CORP").append(corp_html);
-			$('.corp_select select').searchableSelect();
-			$('.searchable-select-item').click(function(){
-				$("input[verify='Code']").val("");
-				$("#AREA_NAME").val("");
-				$("input[verify='Code']").attr("data-mark","");
-				$("#AREA_NAME").attr("data-mark","");
-			})
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
-		}
-	});
+	
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
@@ -811,3 +784,36 @@ $(".corp_select").click(function(){
 		$("#OWN_STORE").val('');
 	// });
 });
+function getcorplist(){
+	//获取企业列表
+	var corp_command="/user/getCorpByUser";
+	oc.postRequire("post", corp_command,"", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			var index=0;
+			var corp_html='';
+			var c=null;
+			for(index in msg.corps){
+				c=msg.corps[index];
+				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+			}
+			$("#OWN_CORP").append(corp_html);
+			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("#AREA_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#AREA_NAME").attr("data-mark","");
+			})
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+}

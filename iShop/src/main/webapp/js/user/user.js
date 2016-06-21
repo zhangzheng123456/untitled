@@ -416,8 +416,19 @@ $("#delete").click(function(){
     param["id"]=ID;
     console.log(param);
     oc.postRequire("post","/user/delete","0",param,function(data){
-        if(data.code=="0"){
-            GET()
+       if(data.code=="0"){
+            if(value==""){
+               frame();
+               $('.frame').html('删除成功');
+               GET(); 
+            }else if(value!==""){
+               frame();
+               $('.frame').html('删除成功');
+               POST();
+            }
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html(data.message);
         }
     })
 })

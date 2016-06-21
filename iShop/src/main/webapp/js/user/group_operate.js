@@ -156,35 +156,11 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.group.init();//初始化
-	//获取所属企业列表
-	var corp_command="/user/getCorpByUser";
-	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			console.log(msg);
-			var index=0;
-			var corp_html='';
-			var c=null;
-			for(index in msg.corps){
-				c=msg.corps[index];
-				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-			}
-			$("#OWN_CORP").append(corp_html);
-			$('.corp_select select').searchableSelect();
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
-		}
-	});
+	
 	if($(".pre_title label").text()=="新增群组"){
 		$('#GROUP_USER').parent().parent().css("display","none");
 		$('#GROUP_RIGHT').parent().parent().css("display","none");
-
+		getcorplist();
 	}else if($(".pre_title label").text()=="编辑群组"){
 		$('#GROUP_USER').parent().parent().css("display","block");
 		$('#GROUP_RIGHT').parent().parent().css("display","block");
@@ -209,14 +185,15 @@ jQuery(document).ready(function(){
 				$("#creator").val(mg.creater);
 				$("#modify_time").val(mg.modified_date);
 				$("#modifier").val(mg.modifier);
-				$("#power_num").val("共"+msg.user_count+"个权限");
-				$("#name_num").val("共"+msg.privilege_count+"个名单");
+				$("#name_num").val("共"+msg.user_count+"个名单");
+				$("#power_num").val("共"+msg.privilege_count+"个权限");
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(mg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -272,4 +249,30 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/group.html");
 	});
 });
-
+function getcorplist(){
+	//获取所属企业列表
+	var corp_command="/user/getCorpByUser";
+	oc.postRequire("post", corp_command,"", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			var index=0;
+			var corp_html='';
+			var c=null;
+			for(index in msg.corps){
+				c=msg.corps[index];
+				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+			}
+			$("#OWN_CORP").append(corp_html);
+			$('.corp_select select').searchableSelect();
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+}

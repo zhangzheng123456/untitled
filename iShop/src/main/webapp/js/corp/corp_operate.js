@@ -313,6 +313,13 @@ jQuery(document).ready(function(){
     $("#power").click(function(){
     	 window.parent.location.href="http://wx.bizvane.com/wechat/goAuthor";
     })
+    //检查是否可否授权状态、
+    $("#state").click(function(){
+    	var _params={};
+    	oc.postRequire("post","/corp/is_authorize","", _params, function(data){
+    		console.log(data);
+    	})
+    })
     if(message.user_type=="admin"){
     	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
 			$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
