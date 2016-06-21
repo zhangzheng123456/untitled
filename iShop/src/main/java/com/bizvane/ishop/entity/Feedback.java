@@ -11,7 +11,7 @@ public class Feedback {
     private String feedback_date;
     private String process_state;
     private String created_date;
-    private String cheater;
+    private String creater;
     private String modified_date;
     private String modifier;
     private String isactive;
@@ -72,12 +72,12 @@ public class Feedback {
         this.created_date = created_date;
     }
 
-    public String getCheater() {
-        return cheater;
+    public String getCreater() {
+        return creater;
     }
 
-    public void setCheater(String cheater) {
-        this.cheater = cheater;
+    public void setCreater(String creater) {
+        this.creater = creater;
     }
 
     public String getModified_date() {

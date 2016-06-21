@@ -41,7 +41,7 @@
         <if test="created_date != null">
             CREATED_DATE,
         </if>
-        <if test="cheater != null">
+        <if test="creater != null">
             CREATER,
         </if>
         <if test="modified_date != null">
@@ -74,8 +74,8 @@
             <if test="created_date != null">
                 #{created_date},
             </if>
-            <if test="cheater != null">
-                #{cheater},
+            <if test="creater != null">
+                #{creater},
             </if>
             <if test="modified_date != null">
                 #{modified_date},
@@ -110,8 +110,8 @@
             <if test="created_date != null">
                 #{created_date},
             </if>
-            <if test="cheater != null">
-                #{cheater},
+            <if test="creater != null">
+                #{creater},
             </if>
             <if test="modified_date != null">
                 #{modified_date},
