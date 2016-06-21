@@ -68,7 +68,6 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.selectUserById(id);
         if (user.getStore_code() == null || user.getStore_code().equals("")) {
             user.setStore_code("");
-            user.setCorp_code("");
             user.setStore_name("");
         } else {
             String store_name = "";
