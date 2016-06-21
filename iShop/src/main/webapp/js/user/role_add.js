@@ -35,6 +35,7 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
+	
 	rolejs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示

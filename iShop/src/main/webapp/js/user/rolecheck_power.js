@@ -247,6 +247,7 @@ $('#save').click(function(){
         if(data.code=="0"){
             $("#page-wrapper").show();
             $(".content").hide();
+            window.location.reload();
             sessionStorage.removeItem('group_corp');   
         }else if(data.code=="-1"){
             alert(data.message);
