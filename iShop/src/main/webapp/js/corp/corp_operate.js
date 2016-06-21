@@ -45,7 +45,7 @@ var message=JSON.parse(val.message);
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"请以大写字母C开头从一位到七位之间的数字!");
+				this.displayHint(hint,"企业编号为必填项，支持以大写C开头1到7位的数字的组合！");
 				return false;
 			}
 		}else{
@@ -308,6 +308,10 @@ jQuery(document).ready(function(){
 	            }
 	    	})
 	    }
+    })
+    //授权的点击事件
+    $("#power").click(function(){
+    	 window.parent.location.href="http://wx.bizvane.com/wechat/goAuthor";
     })
     if(message.user_type=="admin"){
     	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){

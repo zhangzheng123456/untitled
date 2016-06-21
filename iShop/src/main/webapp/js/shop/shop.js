@@ -26,7 +26,7 @@ var oc = new ObjectControl();
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"请以大写字母D开头从一位到七位之间的数字!");
+				this.displayHint(hint,"店仓编号为必填项,支持以大写D开头1到7位的数字的组合！");
 				return false;
 			}
 		}else{
