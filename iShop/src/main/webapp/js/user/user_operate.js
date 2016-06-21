@@ -119,13 +119,20 @@ var oc = new ObjectControl();
 				}
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
+				var ISACTIVE="";//是否可用字段
+				var input=$("#is_active")[0];//是否可用
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				var can_login="";//可登录状态
+                var input1=$("#invisible")[0];
+                if(input1.checked==true){
+                	can_login="Y";
+                }else if(input.checked==false){
+                	can_login="N";
+                }
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list input");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -142,7 +149,19 @@ var oc = new ObjectControl();
 
 					}
 				};
-			    var _params={"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE};
+				var _params = {
+					"user_code": USERID,
+					"username": USER_NAME,
+					"avater": HEADPORTRAIT,
+					"phone": USER_PHONE,
+					"email": USER_EMAIL,
+					"sex": SEX,
+					"group_code": OWN_RIGHT,
+					"isactive": ISACTIVE,
+					"corp_code": OWN_CORP,
+					"store_code": STORE_CODE,
+					"can_login":can_login
+				};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				console.log("lalla");
@@ -167,12 +186,20 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");
 				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				var can_login="";//可登录状态
+                var input1=$("#invisible")[0];
+                if(input1.checked==true){
+                	can_login="Y";
+                }else if(input.checked==false){
+                	can_login="N";
+                }
+
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list input");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -190,7 +217,21 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"user_code":USERID,"username":USER_NAME,"avater":HEADPORTRAIT,"phone":USER_PHONE,"email":USER_EMAIL,"sex":SEX,"group_code":OWN_RIGHT,"isactive":ISACTIVE,"corp_code":OWN_CORP,"store_code":STORE_CODE,"password":PSW};
+				var _params = {
+					"id": ID,
+					"user_code": USERID,
+					"username": USER_NAME,
+					"avater": HEADPORTRAIT,
+					"phone": USER_PHONE,
+					"email": USER_EMAIL,
+					"sex": SEX,
+					"group_code": OWN_RIGHT,
+					"isactive": ISACTIVE,
+					"corp_code": OWN_CORP,
+					"store_code": STORE_CODE,
+					"password": PSW,
+					"can_login":can_login
+				};
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -269,7 +310,7 @@ function addshopselect(){
 		var k=$("#select_ownshop #shop_list div").length;
 		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownshop(this)">'
-                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode=""/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
             +'</span>'
@@ -648,8 +689,8 @@ jQuery(document).ready(function(){
 				}else if(msg.sex=="M"){
 					$("#USER_SEX").val("男");
 				}
-				$("#OWN_CORP").parent().parent().parent().parent().css("display","block");
-				$("#select_ownshop").css("display","block");
+				// $("#OWN_CORP").parent().parent().parent().parent().css("display","block");
+				// $("#select_ownshop").css("display","block");
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_RIGHT").val(msg.group.group_name);
@@ -684,11 +725,17 @@ jQuery(document).ready(function(){
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
 				$("#init_password").val(msg.password);
-				var input=$(".checkbox_isactive").find("input")[0];
+				var input=$("#is_active")[0];//是否可用
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
 					input.checked=false;
+				}
+				var input1=$("#invisible")[0];
+				if(msg.can_login=="Y"){
+					input1.checked=true;
+				}else if(msg.can_login=="N"){
+					input1.checked=false;
 				}
 				getcorplist();
 			}else if(data.code=="-1"){
