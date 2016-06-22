@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.bizvane.ishop.dao.MessageTypeMapper">
+
+    <resultMap id="Message_typeInfo" type="com.bizvane.ishop.entity.Message_type">
+        <id column="id" property="id"/>
+        <result column="type_code" property="type_code"/>
+        <result column="type_name" property="type_name"/>
+        <result column="type_description" property="type_description"/>
+        <result column="modified_date" property="modified_date"/>
+        <result column="modifier" property="modifier"/>
+        <result column="creater" property="creater"/>
+        <result column="created_date" property="created_date"/>
+        <result column="isactive" property="isactive"/>
+
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_code" property="corp_code"/>
+        </association>
+    </resultMap>
+
+
+    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.Message_type">
+        select * from def_message_type where  id=#{id}
+    </select>
+
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.Message_type">
+        insert into def_message_type
+        <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="type_code!=null and type_code!=''">
+                type_code,
+            </if>
+            <if test="type_name!=null  and type_name!=''">
+                type_name ,
+            </if>
+            <if test="type_description!=null and type_description!=''">
+                type_description ,
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                modified_date ,
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier ,
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater,
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                created_date ,
+            </if>
+            <if test="isactive!=null and  isactive!=''">
+                isactive ,
+            </if>
+            <if test="corp_code!=null and  corp_code!=''">
+                corp_code ,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+
+            <if test="type_code!=null and type_code!=''">
+                #{type_code},
+            </if>
+            <if test="type_name!=null  and type_name!=''">
+                #{type_name},
+            </if>
+            <if test="type_description!=null and type_description!=''">
+                #{type_description},
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                #{modified_date} ,
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                #{modifier} ,
+            </if>
+            <if test="creater!=null and creater!=''">
+                #{creater},
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                #{created_date} ,
+            </if>
+            <if test="isactive!=null and  isactive!=''">
+                #{isactive} ,
+            </if>
+            <if test="corp_code!=null and  corp_code!=''">
+                #{corp_code} ,
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.Message_type">
+        update def_message_type
+        <trim prefix="set" suffixOverrides=",">
+            <if test="type_code!=null and type_code!=''">
+                type_code=#{type_code},
+            </if>
+            <if test="type_name!=null  and type_name!=''">
+                type_name=#{type_name},
+            </if>
+
+            <if test="type_description!=null and type_description!=''">
+                type_description=#{type_description},
+            </if>
+
+            <if test="modified_date!=null and modified_date!=''">
+                modified_date=#{modified_date} ,
+            </if>
+
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier} ,
+            </if>
+
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
+            </if>
+
+            <if test="created_date!=null and created_date!=''">
+                created_date=#{created_date} ,
+            </if>
+
+            <if test="isactive!=null and  isactive!=''">
+                isactive=#{isactive} ,
+            </if>
+
+            <if test="corp_code!=null and  corp_code!=''">
+                corp_code=#{corp_code} ,
+            </if>
+        </trim>
+    </update>
+
+    <delete id="deleteByPrimaryKey">
+        delete FROM  def_message_type WHERE id=#{id}
+    </delete>
+
+    <select id="selectAllMessage_type" resultMap="Message_typeInfo">
+        select
+        vtt.id,
+        vtt.type_code,
+        vtt.type_name,
+        vtt.type_description,
+        vtt.modified_date,
+        vtt.modifier,
+        vtt.creater,
+        vtt.created_date,
+        vtt.isactive,
+        vtt.corp_code
+        FROM def_message_type vtt
+        WHERE
+        1=1
+        <if test="search_value!=null and search_value!=''">
+            and vtt.type_name like concat('%',#{search_value},'%')
+            or vtt.type_description like concat('%',#{search_value},'%')
+            or vtt.modified_date like concat('%',#{search_value},'%')
+            or vtt.modifier like concat('%',#{search_value},'%')
+            or vtt.creater like concat('%',#{search_value},'%')
+            or vtt.created_date like concat('%',#{search_value},'%')
+            or vtt.isactive like concat('%',#{search_value},'%')
+        </if>
+        ORDER BY vtt.id
+    </select>
+
+    <select id="selectCode" resultMap="Message_typeInfo">
+        select
+        *
+        FROM def_message_type vtt
+        WHERE
+        vtt.corp_code=#{corp_code}
+        and
+        vtt.type_code=#{type_code}
+    </select>
+
+    <select id="selectName" resultType="com.bizvane.ishop.entity.Message_type">
+        select
+        *
+        FROM def_message_type vtt
+        WHERE
+        vtt.corp_code=#{corp_code}
+        and
+        vtt.type_name=#{type_name}
+    </select>
+
+
+</mapper>

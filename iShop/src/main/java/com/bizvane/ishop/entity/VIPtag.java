@@ -17,6 +17,15 @@ public class VIPtag {
     private String created_date;
     private String creater;
     private String isactive;
+    private Corp corp;
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
+    }
 
     public VIPtag() {
 
