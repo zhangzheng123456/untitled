@@ -188,6 +188,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
+        
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1

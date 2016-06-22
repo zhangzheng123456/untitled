@@ -43,4 +43,18 @@ $(function(){
 		var value = $(this).attr("rel");
 		$(".item_2 ul").hide();
 	});
+	$(".item_1 .input_select").blur(function(){
+		var ul = $(".item_1 ul");
+		setTimeout(hideLi,200);
+	})
+	$(".item_2 .input_select").blur(function(){
+		var ul = $(".item_2 ul");
+		setTimeout(hideLi1,200);
+	})
+	function hideLi(){
+	    $(".item_1 ul").hide();
+	}
+	function hideli1(){
+		$(".item_2 ul").hide();
+	}
 });
