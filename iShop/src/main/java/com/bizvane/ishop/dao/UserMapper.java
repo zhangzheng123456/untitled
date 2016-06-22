@@ -33,4 +33,5 @@ public interface UserMapper {
 //
 //    User selectPhone(@Param("phone") String phone, @Param("corp_code") String corp_code);
 
+    int selectCount();
 }

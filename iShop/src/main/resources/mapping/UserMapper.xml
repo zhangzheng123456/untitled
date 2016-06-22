@@ -401,6 +401,8 @@
         WHERE phone=#{phone} and corp_code=#{corp_code}
     </select>
 -->
-
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(1) from DEF_USER
+    </select>
 
 </mapper>

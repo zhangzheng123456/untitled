@@ -271,4 +271,8 @@
         select * from DEF_STORE
         WHERE  corp_code=#{corp_code} and store_name=#{store_name}
     </select>
+
+    <select id="selectCount" resultType="java.lang.String">
+        SELECT COUNT(1) FROM DEF_STORE
+    </select>
 </mapper>

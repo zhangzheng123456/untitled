@@ -33,5 +33,7 @@ public interface StoreService {
 
     int delete(int id) throws SQLException;
 
-    Store getStoreByName(String corp_code, String store_name);
+    Store getStoreByName(String corp_code, String store_name) throws SQLException;
+
+    int selectCount() throws SQLException;
 }

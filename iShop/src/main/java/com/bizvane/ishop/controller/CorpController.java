@@ -436,4 +436,5 @@ public class CorpController {
         }
         return dataBean.getJsonStr();
     }
+
 }

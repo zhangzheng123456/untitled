@@ -413,8 +413,8 @@ public class GroupController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             String search_value = "";
-            if (jsonObject.has("search_value")){
-                search_value = jsonObject.get("search_value").toString();
+            if (jsonObject.has("searchValue")){
+                search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
             List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code,search_value);

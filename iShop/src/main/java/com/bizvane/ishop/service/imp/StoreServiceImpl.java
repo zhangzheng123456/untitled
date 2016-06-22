@@ -177,8 +177,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store getStoreByName(String corp_code, String store_name) {
+    public Store getStoreByName(String corp_code, String store_name) throws SQLException {
         Store store = this.storeMapper.selectByStoreName(corp_code, store_name);
         return store;
+    }
+
+    public int selectCount() throws SQLException{
+        return storeMapper.selectCount();
     }
 }

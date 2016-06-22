@@ -188,7 +188,8 @@ public class AreaController {
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("该区域下有所属店铺，请先处理区域下店铺再删除！");
+                    dataBean.setMessage("区域"+area_code+"下有所属店铺，请先处理区域下店铺再删除！");
+                    return dataBean.getJsonStr();
                 }
             }
         } catch (Exception ex) {

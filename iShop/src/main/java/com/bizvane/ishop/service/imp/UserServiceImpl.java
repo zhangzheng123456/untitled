@@ -340,13 +340,8 @@ public class UserServiceImpl implements UserService {
     }
 
 
-//    @Override
-//    public String userNameExist(String user_name, String corp_code) {
-//        User user = this.userMapper.selectUserName(user_name, corp_code);
-//        String result = Common.DATABEAN_CODE_ERROR;
-//        if (user == null) {
-//            result = Common.DATABEAN_CODE_SUCCESS;
-//        }
-//        return result;
-//    }
+    @Override
+    public int selectCount() throws SQLException{
+        return userMapper.selectCount();
+    }
 }

@@ -230,7 +230,8 @@ public class StoreController {
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("该店铺下有所属员工，请先处理店铺下员工再删除！");
+                    dataBean.setMessage("店铺"+store_code+"下有所属员工，请先处理店铺下员工再删除！");
+                    return dataBean.getJsonStr();
                 }
             }
         } catch (Exception ex) {
