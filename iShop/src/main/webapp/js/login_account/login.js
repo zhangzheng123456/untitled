@@ -41,7 +41,6 @@ function login(){
 		}
 		return;
 	}
-	$('.btn_login').html("正在登陆");
 	oc.postRequire("post", "/userlogin", "0", param, function(data) {
 		console.log(data);
 		var str = JSON.stringify(data);
