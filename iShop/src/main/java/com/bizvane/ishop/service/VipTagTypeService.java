@@ -24,4 +24,5 @@ public interface VipTagTypeService {
 
     String vipTagTypeNameExist(String type_name, String corp_code);
 
+    int deleteById(int id);
 }

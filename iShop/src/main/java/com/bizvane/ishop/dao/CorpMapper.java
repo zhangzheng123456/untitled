@@ -29,4 +29,5 @@ public interface CorpMapper {
 
     int getAreaCount(@Param("corp_code") String corp_code);
 
+    int getBrandCount(String corp_code);
 }

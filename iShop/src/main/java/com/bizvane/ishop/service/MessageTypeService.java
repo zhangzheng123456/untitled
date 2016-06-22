@@ -24,4 +24,5 @@ public interface MessageTypeService {
 
     String MessageTypeNameExist(String type_name, String corp_code);
 
+    int deleteById(int id);
 }

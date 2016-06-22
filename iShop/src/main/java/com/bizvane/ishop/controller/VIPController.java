@@ -51,13 +51,11 @@ public class VIPController {
     private GroupService groupService;
     @Autowired
     private VipService vipService;
-
-
     @Autowired
     private VipCallbackRecordService vipCallbackRecordService;
-
     @Autowired
     private VipTagTypeService vipTagTypeService;
+
 
     /**
      * 会员列表
@@ -222,10 +220,10 @@ public class VIPController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VIPInfo> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipService.selectBySearch(page_Size, page_Number, "", search_value);
+                list = vipService.selectBySearch(page_Number, page_Size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = vipService.selectBySearch(page_Size, page_Number, corp_code, search_value);
+                list = vipService.selectBySearch(page_Number, page_Size, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -267,7 +265,7 @@ public class VIPController {
             } else {
                 list = vipTagService.selectBySearch(page_number, page_size, corp_code, "");
             }
-            result.put("list",JSON.toJSONString(list));
+            result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -360,7 +358,6 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int vip_tag_id = Integer.parseInt(jsonObject.getString("id"));
-            //VIPtag  viPtag = vipService.getVipInfoById(vip_label_id);
             VIPtag viPtag = vipTagService.getVIPTagById(vip_tag_id);
             data = JSON.toJSONString(viPtag);
             dataBean.setId(id);
@@ -387,25 +384,210 @@ public class VIPController {
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
+            id = jsonObj.getString("id");
+            String message = jsonObj.getString("message");
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_number = jsonObject.getInt("pageNumber");
-            int page_size = jsonObject.getInt("pageSize");
-            String search_value = jsonObject.getString("searchValue");
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            int page_Number = jsonObject.getInt("pageNumber");
+            int page_Size = jsonObject.getInt("pageSize");
+            String search_value = jsonObject.getString("search_value").toString();
+            String role_code = jsonObject.getString("role_code");
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VIPtag> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.vipTagService.selectBySearch(page_number, page_size, "", search_value);
+                list = this.vipTagService.selectBySearch(page_Number, page_Size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = this.vipTagService.selectBySearch(page_number, page_size, corp_code, search_value);
+                list = this.vipTagService.selectBySearch(page_Number, page_Size, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
-            dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
             dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+//================
+
+    /**
+     * 会员标签类型管理
+     * 查找
+     */
+    @RequestMapping(value = "/label/type/find", method = RequestMethod.GET)
+    @ResponseBody
+    public String findVIPLabelTypeFind(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.getString("message");
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_Number = jsonObject.getInt("pageNumber");
+            int page_Size = jsonObject.getInt("pageSize");
+            String search_value = jsonObject.getString("search_value").toString();
+            String role_code = jsonObject.getString("role_code");
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VipTagType> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = this.vipTagTypeService.selectBySearch(page_Number, page_Size, "", search_value);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = this.vipTagTypeService.selectBySearch(page_Number, page_Size, corp_code, search_value);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 会员标签类型管理
+     * 列表
+     */
+    @RequestMapping(value = "/label/type/list", method = RequestMethod.GET)
+    @ResponseBody
+    public String findVIPLabelType(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
+            String function_code = request.getParameter("funcCode");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VipTagType> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = this.vipTagTypeService.selectBySearch(page_number, page_size, "", "");
+            } else {
+                list = vipTagTypeService.selectBySearch(page_number, page_size, corp_code, "");
+            }
+            result.put("list", JSON.toJSONString(list));
+            result.put("actions", actions);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * 会员标签类型管理
+     * 添加
+     */
+    @RequestMapping(value = "/label/type/add", method = RequestMethod.POST)
+    @ResponseBody
+    public String findVIPLabelTypeAdd(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+
+        String id = "";
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String messsage = jsonObj.getString("message");
+            org.json.JSONObject jsonObject = new org.json.JSONObject(messsage);
+            VipTagType vipTagType = WebUtils.JSON2Bean(jsonObject, VipTagType.class);
+            Date now = new Date();
+            vipTagType.setModified_date(Common.DATETIME_FORMAT.format(now));
+            vipTagType.setModifier(user_id);
+            vipTagType.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            vipTagType.setCreater(user_id);
+            this.vipTagTypeService.insert(vipTagType);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("标签类型创建成功！！");
+            dataBean.setId(id);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * 会员标签类型管理
+     * 删除
+     */
+    @RequestMapping(value = "/label/type/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String findVIPLabelTypeDelete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = WebUtils.getValueForSession(request, "param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String messageType_id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            String[] ids = messageType_id.split(",");
+            for (int i = 0; ids != null && i < ids.length; i++) {
+                this.vipTagTypeService.deleteById(Integer.parseInt(ids[i]));
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("scuccess!!!!");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * 会员标签类型管理
+     * 修改
+     */
+    @RequestMapping(value = "/label/type/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public String findVIPLabelTypeEdit(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            VipTagType vipTagType = WebUtils.JSON2Bean(jsonObject, VipTagType.class);
+            vipTagType.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
+            vipTagType.setModifier(user_id);
+            String existInfo = this.vipTagTypeService.vipTagTypeCodeExist(vipTagType.getType_code(), corp_code);
+            if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success!!!s");
+            } else {
+                this.vipTagTypeService.update(vipTagType);
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("edit error !!!");
+            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -460,7 +642,7 @@ public class VIPController {
      * 回访记录管理
      * 新增
      */
-    @RequestMapping(value = "/callback/add", method = RequestMethod.GET)
+    @RequestMapping(value = "/callback/add", method = RequestMethod.POST)
     @ResponseBody
     public String addCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -592,8 +774,6 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
-
-
 
 
 }

@@ -67,4 +67,9 @@ public class VipTagTypeServiceImpl implements VipTagTypeService {
         }
         return result;
     }
+
+    @Override
+    public int deleteById(int id) {
+        return this.vipTagTypeMapper.deleteByPrimaryKey(id);
+    }
 }
