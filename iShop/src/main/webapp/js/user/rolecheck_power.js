@@ -130,23 +130,22 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/corp/search","0",param,function(data){
+    oc.postRequire("post","/user/role/check_power","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
+            var live=message.live;
             var list=JSON.parse(message.list);
-            var cout=list.pages;
-            var list=list.list;
+            console.log(list);
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
-                $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,inx);
+                superaddition(list,inx,live);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
             alert(data.message);
         }
