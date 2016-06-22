@@ -35,7 +35,6 @@ $(function(){
         });          
     }      
 );
-  
 function showLi(){  
     $("#liebiao").show();  
 }  
