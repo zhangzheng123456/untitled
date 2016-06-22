@@ -23,7 +23,7 @@ public interface CorpMapper {
 
     int deleteByCorpId(Integer id);
 
-    List<Corp> selectByCorpName(@Param("corp_code") String corp_name);
+    List<Corp> selectByCorpName(@Param("corp_name") String corp_name);
 
     int selectCount();
 

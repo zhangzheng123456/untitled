@@ -27,7 +27,6 @@ import java.util.Map;
 @RequestMapping("/message")
 public class MessageController {
 
-    private SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
     @Autowired
     private FunctionService functionService;
 
@@ -135,10 +134,10 @@ public class MessageController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipTagType vipTagType = WebUtils.JSON2Bean(jsonObject, VipTagType.class);
             Date now = new Date();
-            vipTagType.setModified_date(sdf.format(now));
+            vipTagType.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipTagType.setModifier(user_id);
             vipTagType.setCreater(user_id);
-            vipTagType.setCreated_date(sdf.format(now));
+            vipTagType.setCreated_date(Common.DATETIME_FORMAT.format(now));
             this.vipTagTypeService.insert(vipTagType);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

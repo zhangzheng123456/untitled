@@ -35,10 +35,10 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.selectByCode(corp_code,group_code,isactive);
     }
 
-    public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+    public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
-        groups = groupMapper.selectAllGroup(corp_code, search_value);
+        groups = groupMapper.selectAllGroup(corp_code,role_code, search_value);
         PageInfo<Group> page = new PageInfo<Group>(groups);
         return page;
     }

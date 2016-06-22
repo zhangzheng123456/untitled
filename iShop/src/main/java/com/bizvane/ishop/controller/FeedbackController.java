@@ -33,7 +33,6 @@ public class FeedbackController {
 
     String id;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
     private static final Logger logger = Logger.getLogger(FeedbackController.class);
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -120,9 +119,9 @@ public class FeedbackController {
             feedback.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
-            feedback.setFeedback_date(sdf.format(date));
-            feedback.setCreated_date(sdf.format(date));
-            feedback.setModified_date(sdf.format(date));
+            feedback.setFeedback_date(Common.DATETIME_FORMAT.format(date));
+            feedback.setCreated_date(Common.DATETIME_FORMAT.format(date));
+            feedback.setModified_date(Common.DATETIME_FORMAT.format(date));
            feedbackService.addFeedback(feedback);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -225,9 +224,7 @@ public class FeedbackController {
             feedback.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
-            feedback.setFeedback_date(sdf.format(date));
-            feedback.setCreated_date(sdf.format(date));
-            feedback.setModified_date(sdf.format(date));
+            feedback.setModified_date(Common.DATETIME_FORMAT.format(date));
             feedback.setId(Integer.parseInt(jsonObject.get("id").toString()));
             feedbackService.updFeedbackById(feedback);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

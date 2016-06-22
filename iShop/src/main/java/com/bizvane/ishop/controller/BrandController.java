@@ -37,8 +37,6 @@ public class BrandController {
     @Autowired
     private FunctionService functionService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     private static final Logger logger = Logger.getLogger(BrandController.class);
 
 
@@ -102,9 +100,9 @@ public class BrandController {
             brand.setBrand_code(jsonObject.get("brand_code").toString());
             brand.setBrand_name(jsonObject.get("brand_name").toString());
             brand.setCorp_code(jsonObject.get("corp_code").toString());
-            brand.setCreated_date(sdf.format(now));
+            brand.setCreated_date(Common.DATETIME_FORMAT.format(now));
             brand.setCreater(user_id);
-            brand.setModified_date(sdf.format(now));
+            brand.setModified_date(Common.DATETIME_FORMAT.format(now));
             brand.setModifier(user_id);
             brand.setIsactive(jsonObject.get("isactive").toString());
             brandService.insert(brand);
@@ -142,7 +140,7 @@ public class BrandController {
             brand.setBrand_name(jsonObject.get("brand_name").toString());
             brand.setCorp_code(jsonObject.get("corp_code").toString());
             brand.setModifier(user_id);
-            brand.setModified_date(sdf.format(now));
+            brand.setModified_date(Common.DATETIME_FORMAT.format(now));
             brand.setIsactive(jsonObject.get("isactive").toString());
             brandService.update(brand);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

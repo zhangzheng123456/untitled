@@ -9,6 +9,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.List;
  * Created by Administrator on 2016/5/23.
  */
 @Service
+@Transactional
 public class CorpServiceImpl implements CorpService {
     @Autowired
     private CorpMapper corpMapper;

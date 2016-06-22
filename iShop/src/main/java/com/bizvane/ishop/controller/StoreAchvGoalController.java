@@ -34,8 +34,6 @@ public class StoreAchvGoalController {
 
     private static Logger logger = LoggerFactory.getLogger((UserController.class));
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     @Autowired
     StoreAchvGoalService storeAchvGoalService = null;
     @Autowired
@@ -111,12 +109,12 @@ public class StoreAchvGoalController {
             storeAchvGoal1.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
             storeAchvGoal1.setAchv_type(jsonObject.get("achv_type").toString());
             Date now = new Date();
-            storeAchvGoal1.setStart_time(sdf.format(now));
+            storeAchvGoal1.setStart_time(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal1.setEnd_time(jsonObject.get("end_time").toString());
             storeAchvGoal1.setModifier(user_id);
-            storeAchvGoal1.setModified_date(sdf.format(now));
+            storeAchvGoal1.setModified_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal1.setCreater(user_id);
-            storeAchvGoal1.setCreated_date(sdf.format(now));
+            storeAchvGoal1.setCreated_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
 
 

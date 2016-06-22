@@ -48,9 +48,6 @@ public class UserServiceImpl implements UserService {
     String[] arg = new String[]{"--Ice.Config=client.config"};
     Client client = new Client(arg);
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
-
     /**
      * @param corp_code
      * @param search_value
@@ -145,7 +142,7 @@ public class UserServiceImpl implements UserService {
             request.getSession().setAttribute("group_code", group_code);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
-            login_user.setLogin_time_recently(sdf.format(now));
+            login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
             update(login_user);
             String user_type;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -223,57 +220,61 @@ public class UserServiceImpl implements UserService {
             String corp_name = jsonObject.get("COMPANY").toString();
             String address = jsonObject.get("ADDRESS").toString();
 
-            ValidateCode code = validateCodeService.selectValidateCode(0, phone, Common.IS_ACTIVE_Y);
-            Date now = new Date();
-            String modified_date = code.getModified_date();
-            Date time = sdf.parse(modified_date);
-            long timediff = (now.getTime() - time.getTime()) / 1000;
-            if (auth_code.equals(code.getValidate_code()) && timediff < 3600) {
-                System.out.println("---------auth_code----------");
+            User u = this.userMapper.selectByPhone(phone);
+            if (u == null) {
 
-                //拼接corp_code
-                String max_corp_code = corpService.selectMaxCorpCode();
-                int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
-                Integer c = code_tail;
-                int length = 5 - c.toString().length();
-                String corp_code = "C";
-                for (int i = 0; i < length; i++) {
-                    corp_code = corp_code + "0";
+                ValidateCode code = validateCodeService.selectValidateCode(0, phone, Common.IS_ACTIVE_Y);
+                Date now = new Date();
+                String modified_date = code.getModified_date();
+                Date time = Common.DATETIME_FORMAT.parse(modified_date);
+                long timediff = (now.getTime() - time.getTime()) / 1000;
+                if (auth_code.equals(code.getValidate_code()) && timediff < 3600) {
+                    System.out.println("---------auth_code----------");
+
+                    //拼接corp_code
+                    String max_corp_code = corpService.selectMaxCorpCode();
+                    int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
+                    Integer c = code_tail;
+                    int length = 5 - c.toString().length();
+                    String corp_code = "C";
+                    for (int i = 0; i < length; i++) {
+                        corp_code = corp_code + "0";
+                    }
+                    corp_code = corp_code + code_tail;
+                    log.info("----------corp_code" + corp_code);
+
+                    //插入用户信息
+                    User user = new User();
+                    user.setUser_name(user_name);
+                    user.setPhone(phone);
+                    user.setPassword(password);
+                    user.setGroup_code("");
+                    user.setCorp_code(corp_code);
+                    user.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    user.setCreater("root");
+                    user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    user.setModifier("root");
+                    user.setIsactive(Common.IS_ACTIVE_Y);
+                    user.setCan_login(Common.IS_ACTIVE_Y);
+                    userMapper.insertUser(user);
+
+                    //插入公司信息
+                    Corp corp = new Corp();
+                    corp.setCorp_code(corp_code);
+                    corp.setCorp_name(corp_name);
+                    corp.setAddress(address);
+                    corp.setContact(user_name);
+                    corp.setContact_phone(phone);
+                    corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    corp.setCreater("root");
+                    corp.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    corp.setModifier("root");
+                    corp.setIsactive(Common.IS_ACTIVE_Y);
+                    log.info("----------register corp" + corp.toString());
+                    corpService.insertCorp(corp);
+
+                    result = Common.DATABEAN_CODE_SUCCESS;
                 }
-                corp_code = corp_code + code_tail;
-                log.info("----------corp_code" + corp_code);
-
-                //插入用户信息
-                User user = new User();
-                user.setUser_name(user_name);
-                user.setPhone(phone);
-                user.setPassword(password);
-                user.setGroup_code("");
-                user.setCorp_code(corp_code);
-                user.setCreated_date(sdf.format(now));
-                user.setCreater("root");
-                user.setModified_date(sdf.format(now));
-                user.setModifier("root");
-                user.setIsactive(Common.IS_ACTIVE_Y);
-                user.setCan_login(Common.IS_ACTIVE_Y);
-                userMapper.insertUser(user);
-
-                //插入公司信息
-                Corp corp = new Corp();
-                corp.setCorp_code(corp_code);
-                corp.setCorp_name(corp_name);
-                corp.setAddress(address);
-                corp.setContact(user_name);
-                corp.setContact_phone(phone);
-                corp.setCreated_date(sdf.format(now));
-                corp.setCreater("root");
-                corp.setModified_date(sdf.format(now));
-                corp.setModifier("root");
-                corp.setIsactive(Common.IS_ACTIVE_Y);
-                log.info("----------register corp" + corp.toString());
-                corpService.insertCorp(corp);
-
-                result = Common.DATABEAN_CODE_SUCCESS;
             }
         } catch (Exception ex) {
 
@@ -316,15 +317,15 @@ public class UserServiceImpl implements UserService {
                 code.setValidate_code(authcode);
                 code.setPhone(phone);
                 code.setPlatform(platform);
-                code.setCreated_date(sdf.format(now));
-                code.setModified_date(sdf.format(now));
+                code.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                code.setModified_date(Common.DATETIME_FORMAT.format(now));
                 code.setCreater("root");
                 code.setModifier("root");
                 code.setIsactive(Common.IS_ACTIVE_Y);
                 validateCodeService.insertValidateCode(code);
             } else {
                 code.setValidate_code(authcode);
-                code.setModified_date(sdf.format(now));
+                code.setModified_date(Common.DATETIME_FORMAT.format(now));
                 code.setModifier("root");
                 code.setPlatform(platform);
                 code.setIsactive(Common.IS_ACTIVE_Y);

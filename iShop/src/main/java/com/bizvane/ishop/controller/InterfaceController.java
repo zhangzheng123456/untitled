@@ -32,7 +32,6 @@ public class InterfaceController {
     private InterfaceService interfaceService;
     String id;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
     private static final Logger logger = Logger.getLogger(InterfaceController.class);
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -111,9 +110,9 @@ public class InterfaceController {
             JSONObject jsonObject = new JSONObject(message);
             Interfacers interfacers = WebUtils.JSON2Bean(jsonObject, Interfacers.class);            //------------操作日期-------------
             Date date=new Date();
-            interfacers.setCreated_date(sdf.format(date));
+            interfacers.setCreated_date(Common.DATETIME_FORMAT.format(date));
             interfacers.setCreater(user_id);
-            interfacers.setModified_date(sdf.format(date));
+            interfacers.setModified_date(Common.DATETIME_FORMAT.format(date));
             interfacers.setModifier(user_id);
             interfaceService.addInterface(interfacers);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -210,7 +209,7 @@ public class InterfaceController {
             Interfacers interfacers = WebUtils.JSON2Bean(jsonObject, Interfacers.class);
             //------------操作日期-------------
             Date date=new Date();
-            interfacers.setModified_date(sdf.format(date));
+            interfacers.setModified_date(Common.DATETIME_FORMAT.format(date));
             interfacers.setModifier(user_id);
             interfaceService.updInterfaceById(interfacers);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

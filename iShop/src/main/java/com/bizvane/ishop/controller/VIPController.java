@@ -59,9 +59,6 @@ public class VIPController {
     @Autowired
     private VipTagTypeService vipTagTypeService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
-
     /**
      * 会员列表
      */
@@ -121,10 +118,10 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             Date now = new Date();
-            vipInfo.setRegister_time(sdf.format(now));
-            vipInfo.setModified_date(sdf.format(now));
+            vipInfo.setRegister_time(Common.DATETIME_FORMAT.format(now));
+            vipInfo.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipInfo.setModifier(user_id);
-            vipInfo.setCreated_date(sdf.format(now));
+            vipInfo.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipInfo.setCreater(user_id);
             String exist = vipService.vipCodeExist(vipInfo.getVip_code(), corp_code);
             if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
@@ -163,7 +160,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             vipInfo.setModifier(user_id);
-            vipInfo.setModified_date(sdf.format(new Date()));
+            vipInfo.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
             vipService.update(vipInfo);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -302,9 +299,9 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(messsage);
             VIPtag viPtag = WebUtils.JSON2Bean(jsonObject, VIPtag.class);
             Date now = new Date();
-            viPtag.setModified_date(sdf.format(now));
+            viPtag.setModified_date(Common.DATETIME_FORMAT.format(now));
             viPtag.setModifier(user_id);
-            viPtag.setCreated_date(sdf.format(now));
+            viPtag.setCreated_date(Common.DATETIME_FORMAT.format(now));
             viPtag.setCreater(user_id);
             vipTagService.insert(viPtag);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -336,7 +333,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPtag viPtag = WebUtils.JSON2Bean(jsonObject, VIPtag.class);
             Date now = new Date();
-            viPtag.setModified_date(sdf.format(now));
+            viPtag.setModified_date(Common.DATETIME_FORMAT.format(now));
             viPtag.setModifier(user_id);
             this.vipTagService.update(viPtag);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -477,7 +474,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
             Date now = new Date();
-            vipCallbackRecord.setModified_date(sdf.format(now));
+            vipCallbackRecord.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipCallbackRecord.setModifier(user_id);
             this.vipCallbackRecordService.insert(vipCallbackRecord);
             dataBean.setId(id);
@@ -542,7 +539,7 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
-            vipCallbackRecord.setModified_date(sdf.format(new Date()));
+            vipCallbackRecord.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
             vipCallbackRecord.setModifier(user_id);
             this.vipCallbackRecordService.update(vipCallbackRecord);
             dataBean.setId(id);

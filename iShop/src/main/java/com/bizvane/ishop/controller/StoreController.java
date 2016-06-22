@@ -48,8 +48,6 @@ public class StoreController {
     @Autowired
     private FunctionService functionService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     /**
      * 店铺管理
      */
