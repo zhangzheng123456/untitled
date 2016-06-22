@@ -16,7 +16,8 @@ $(function(){
             }else{  
                 showLi();  
             }  
-        });            
+        });  
+                  
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
