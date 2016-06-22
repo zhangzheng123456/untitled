@@ -23,10 +23,13 @@
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
+                        <span><label>模板编号</label><input type="text" /></span>
+                    </div>
+                    <div>
                         <span><label>模板名称</label><input type="text" /></span>
                     </div>
-                    <div id="dropdown" class="item_1">
-                        <span><label>模板类型</label><input class="input_select" type="text" placeholder="请选择模板类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                    <div class="drop_down item_1">
+                        <span><label>模板类型</label><input class="input_select" id="MOBAN_TYPE" type="text" placeholder="请选择模板类型" readonly/>
                             <ul>
                                 <li>祝福</li>
                                 <li>通知</li>
@@ -39,7 +42,7 @@
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="operadd_btn">
                     <ul>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
@@ -47,7 +50,9 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                    <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
+                    <span><label>可用</label><em class="checkbox_isactive">
+                    <input type="checkbox" value="" name="test" class="check" id="is_active">
+                    <label for="is_active"></label></em></span>
                     </div>
                 </form>
             </div>
