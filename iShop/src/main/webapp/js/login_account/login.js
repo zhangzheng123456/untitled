@@ -64,6 +64,7 @@ function login(){
 			}
 		} else if (data.code == "-1") {
 			$(".portlet-msg-error").html("用户名或密码错误");
+			$('.btn_login').html("登陆");
 		}
 	})
 }

@@ -328,7 +328,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/area/search","0",param,function(data){
+    oc.postRequire("post","/VIP/label/find","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);

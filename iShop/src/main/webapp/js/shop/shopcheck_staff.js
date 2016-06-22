@@ -120,26 +120,6 @@ function jumpBianse(){
             $(this).removeClass("tr");
         }
     })
-    //点击新增时页面进行的跳转
-    // $('#add').click(function(){
-    //         $(window.parent.document).find('#iframepage').attr("src","/shop/shop_add.html");
-    //         sessionStorage.removeItem('id');
-    //     })
-    //点击编辑时页面进行的跳转
-    // $('#compile').click(function(){
-    //     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    //     if(tr.length==1){
-    //         id=$(tr).attr("id");
-    //         sessionStorage.setItem("id",id);
-    //         $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
-    //     }else if(tr.length==0){
-    //         frame();
-    //         $('.frame').html("请先选择");
-    //     }else if(tr.length>1){
-    //         frame();
-    //         $('.frame').html("不能选着多个");
-    //     }
-    // })
     //删除
     $("#remove").click(function(){
         var l=$(window).width();
@@ -170,8 +150,9 @@ function jumpBianse(){
         }
         var param={};
         param["id"]=ID;
+        param["store_code"]=store_code;
         console.log(param);
-        oc.postRequire("post","/shop/delete","0",param,function(data){
+        oc.postRequire("post","/shop/staff/delete","0",param,function(data){
             if(data.code=="0"){
                 if(value==""){
                     frame();
@@ -185,8 +166,8 @@ function jumpBianse(){
             }
         })
     })
-    $('.staff').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
+    $('#turnoff').click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
     })
 }
 //鼠标按下时触发的收索
