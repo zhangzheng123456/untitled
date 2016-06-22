@@ -1,10 +1,13 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.service.*;
+import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +28,8 @@ public class HomeController {
     CorpService corpService;
     @Autowired
     StoreService storeService;
+    @Autowired
+    FeedbackService feedbackService;
     @Autowired
     ValidateCodeService validateCodeService;
     @Autowired
@@ -50,9 +55,13 @@ public class HomeController {
                 int corp_count = corpService.selectCount();
                 int store_count = storeService.selectCount();
                 int user_count = userService.selectCount();
+
+                PageInfo<Feedback> feedback = feedbackService.selectAllFeedback(1,6,"");
                 dashboard.put("corp_count", corp_count);
                 dashboard.put("store_count", store_count);
                 dashboard.put("user_count", user_count);
+                dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
+
 
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

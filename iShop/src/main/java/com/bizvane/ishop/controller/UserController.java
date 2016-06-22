@@ -43,8 +43,6 @@ public class UserController {
     @Autowired
     private FunctionService functionService;
     @Autowired
-    private RoleService roleService;
-    @Autowired
     private StoreService storeService;
     @Autowired
     private CorpService corpService;
@@ -139,7 +137,11 @@ public class UserController {
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
             user.setGroup_code(jsonObject.get("group_code").toString());
-            user.setStore_code(jsonObject.get("store_code").toString());
+            String store_code = jsonObject.get("store_code").toString();
+            if (!store_code.endsWith(",")){
+                store_code = store_code + ",";
+            }
+            user.setStore_code(store_code);
             user.setPassword(user_code);
             Date now = new Date();
             user.setLogin_time_recently("");
@@ -201,7 +203,11 @@ public class UserController {
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setGroup_code(jsonObject.get("group_code").toString());
-            user.setStore_code(jsonObject.get("store_code").toString());
+            String store_code = jsonObject.get("store_code").toString();
+            if (!store_code.endsWith(",")){
+                store_code = store_code + ",";
+            }
+            user.setStore_code(store_code);
             Date now = new Date();
             user.setModified_date(sdf.format(now));
             user.setModifier(user_id);
