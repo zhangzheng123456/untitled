@@ -230,7 +230,8 @@ public class StoreController {
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("该店铺下有所属员工，请先处理店铺下员工再删除！");
+                    dataBean.setMessage("店铺"+store_code+"下有所属员工，请先处理店铺下员工再删除！");
+                    return dataBean.getJsonStr();
                 }
             }
         } catch (Exception ex) {
@@ -414,6 +415,30 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/staff/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String deleteStaff(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String store_code = jsonObject.get("store_code").toString();
+            String user_id = jsonObject.get("user_id").toString();
+
+            storeService.deleteStoreUser(user_id,store_code);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("delete success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
     @RequestMapping(value = "/Store_CodeExist", method = RequestMethod.POST)
     @ResponseBody

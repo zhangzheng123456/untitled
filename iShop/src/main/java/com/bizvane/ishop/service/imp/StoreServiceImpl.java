@@ -45,8 +45,8 @@ public class StoreServiceImpl implements StoreService {
      * @return 执行结果
      */
     @Override
-    public int deleteStoreByUserid(String user_id, String store_id) {
-        return storeMapper.deleteStoreByUserid(user_id, store_id);
+    public int deleteStoreUser(String user_id, String store_code) {
+        return storeMapper.deleteStoreByUserid(user_id, store_code);
     }
 
 
@@ -177,8 +177,12 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store getStoreByName(String corp_code, String store_name) {
+    public Store getStoreByName(String corp_code, String store_name) throws SQLException {
         Store store = this.storeMapper.selectByStoreName(corp_code, store_name);
         return store;
+    }
+
+    public int selectCount() throws SQLException{
+        return storeMapper.selectCount();
     }
 }

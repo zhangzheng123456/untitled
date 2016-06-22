@@ -132,8 +132,8 @@
     <select id="selectLogin" resultMap="BaseMap">
         SELECT *
         FROM DEF_USER
-        WHERE PHONE = #{0}
-        OR EMAIL = #{0}
+        WHERE (PHONE = #{0}
+        OR EMAIL = #{0})
         AND PASSWORD = #{1}
         AND ISACTIVE = 'Y'
         AND CAN_LOGIN = 'Y'
@@ -401,6 +401,8 @@
         WHERE phone=#{phone} and corp_code=#{corp_code}
     </select>
 -->
-
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT count(1) from DEF_USER
+    </select>
 
 </mapper>

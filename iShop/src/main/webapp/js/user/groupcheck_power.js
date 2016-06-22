@@ -206,32 +206,32 @@ $("#search").keydown(function() {
     var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
     param["searchValue"]=value;
-    // param["pageNumber"]=inx;
-    // param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    param["group_code"]=group_code;
+    param["corp_code"]=corp_code;
     if(event.keyCode == 13){
         POST();
     }
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/corp/search","0",param,function(data){
+    oc.postRequire("post","/user/group/check_power","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
+            var die=message.die;
+            var live=message.live;
             var list=JSON.parse(message.list);
-            var cout=list.pages;
-            var list=list.list;
-            var actions=message.actions;
+            console.log(list);
+            console.log(die)
+            jumpBianse();
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,inx);
+                superaddition(list,inx,die,live);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
             alert(data.message);
         }

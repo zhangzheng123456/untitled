@@ -169,7 +169,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     $(".table tbody").empty();
                     if(list.length<=0){
                         $(".table p").remove();
-                        $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                        $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
                     }else if(list.length>0){
                         $(".table p").remove();
                         superaddition(list,inx);
@@ -274,13 +274,13 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/area/area_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_add.html");
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -288,7 +288,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -328,7 +328,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/area/search","0",param,function(data){
+    oc.postRequire("post","/VIP/label/find","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -338,7 +338,7 @@ function POST(){
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
-                $(".table").append("<p>没有找到与“"+value+"”相关的信息请重新搜索</p>")
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,inx);

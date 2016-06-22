@@ -88,6 +88,13 @@
         )
         and ISACTIVE = 'Y'
         )
+        <if test="search_value!=''">
+            AND (
+            b.module_name like concat('%',#{search_value},'%')
+            OR  b.function_name like concat('%',#{search_value},'%')
+            OR  a.action_name like concat('%',#{search_value},'%')
+            )
+        </if>
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
         order by a.FUNCTION_CODE

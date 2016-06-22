@@ -14,7 +14,7 @@ public interface StoreService {
 
     PageInfo<Store> selectByUserId(int page_number, int page_size, String user_id, String corp_code, String search_value);
 
-    int deleteStoreByUserid(String user_id, String store_id);
+    int deleteStoreUser(String user_id, String store_code);
 
     Store getStoreById(int id) throws SQLException;
 
@@ -33,5 +33,7 @@ public interface StoreService {
 
     int delete(int id) throws SQLException;
 
-    Store getStoreByName(String corp_code, String store_name);
+    Store getStoreByName(String corp_code, String store_name) throws SQLException;
+
+    int selectCount() throws SQLException;
 }

@@ -41,7 +41,6 @@ function login(){
 		}
 		return;
 	}
-	$('.btn_login').html("正在登陆");
 	oc.postRequire("post", "/userlogin", "0", param, function(data) {
 		console.log(data);
 		var str = JSON.stringify(data);
@@ -62,9 +61,12 @@ function login(){
 				window.location.href = "home/index_gm.html";
 			} else if (user_type == "staff") {
 				window.location.href = "home/index_staff.html";
+			} else if(user_type == "sm"){
+				window.location.href="home/index_sm.html";
 			}
 		} else if (data.code == "-1") {
 			$(".portlet-msg-error").html("用户名或密码错误");
+			$('.btn_login').html("登陆");
 		}
 	})
 }

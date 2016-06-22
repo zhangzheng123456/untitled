@@ -265,10 +265,20 @@
 
     <update id="deleteStoreByUserid">
       update DEF_USER
-      set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_id},','),'') where id=#{user_id}
+      set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_code},','),'') where id=#{user_id}
     </update>
+
     <select id="selectByStoreName" resultType="com.bizvane.ishop.entity.Store">
         select * from DEF_STORE
         WHERE  corp_code=#{corp_code} and store_name=#{store_name}
+    </select>
+
+    <select id="selectCount" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM DEF_STORE
+    </select>
+
+    <select id="selectCountNew" resultType="java.lang.Integer">
+        SELECT COUNT(1) FROM DEF_STORE
+        WHERE c
     </select>
 </mapper>

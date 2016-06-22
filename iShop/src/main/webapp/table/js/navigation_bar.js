@@ -87,7 +87,7 @@ $(function(){
         val=JSON.parse(val);//
         var message=JSON.parse(val.message);//
         var user_type=message.user_type;//用户类型
-        if (user_type == "admin") {
+            if (user_type == "admin") {
                 window.location.href = "home/index_admin.html";
             } else if (user_type == "am") {
                 window.location.href = "home/index_am.html";
@@ -95,6 +95,8 @@ $(function(){
                 window.location.href = "home/index_gm.html";
             } else if (user_type == "staff") {
                 window.location.href = "home/index_staff.html";
+            } else if(user_type == "sm"){
+                window.location.href="home/index_sm.html";
             }
     })
 })

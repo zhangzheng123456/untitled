@@ -12,6 +12,9 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="isactive" property="isactive"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
     </resultMap>
     <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VIPtag">
         select * from DEF_VIP_TAG
@@ -84,29 +87,34 @@
         WHERE id=#{id}
     </delete>
     <select id="selectAllVipTag" resultMap="VIPTags">
-        SELECT * FROM
-        DEF_VIP_TAG
+        SELECT
+        vt.id,
+        vt.tag_name,
+        vt.tag_type,
+        vt.corp_code,
+        vt.modified_date,
+        vt.modifier,
+        vt.created_date,
+        vt.creater,
+        vt.isactive,
+        cc.corp_name
+        FROM
+        DEF_VIP_TAG vt,DEF_CORP cc
         WHERE
-            1=1
+        vt.corp_code=cc.corp_code
         <if test="corp_code!=null and corp_code!=''">
-         and    corp_code=#{corp_code}
+            and corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             and(
-            vip_code like concat('%',#{search_value},'%')
-            or vip_name like concat('%',#{search_value},'%')
-            or phone like concat('%',#{search_value},'%')
-            or birthday like concat('%',#{search_value},'%')
-            or vip_type like concat('%',#{search_value},'%')
-            or vip_card_number like concat('%',#{search_value},'%')
-            or sex like concat('%',#{search_value},'%')
-            or user_code like concat('%',#{search_value},'%')
-            or store_code like concat('%',#{search_value},'%')
-            or modifier like concat('%',#{search_value},'%')
-            or creater like concat('%',#{search_value},'%')
-            )
+            vt.id like concat('%',#{search_value},'%')
+            or vt.tag_name like concat('%',#{search_value},'%')
+            or vt.tag_type like concat('%',#{search_value},'%')
+            or cc.corp_name like concat('%',#{search_value},'%')
+            or modified_date like concat('%',#{search_value},'%')
+            or isactive like concat('%',#{search_value},'%') )
         </if>
-        ORDER BY ID
+        ORDER BY vt.id
     </select>
     <select id="selectVIPTag_code" resultType="com.bizvane.ishop.entity.VIPtag">
         select * from DEF_VIP_TAG

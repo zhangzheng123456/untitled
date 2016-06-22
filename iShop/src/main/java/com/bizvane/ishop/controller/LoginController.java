@@ -26,6 +26,8 @@ public class LoginController {
     @Autowired
     CorpService corpService;
     @Autowired
+    StoreService storeService;
+    @Autowired
     ValidateCodeService validateCodeService;
     @Autowired
     LoginLogService loginLogService;
@@ -71,6 +73,17 @@ public class LoginController {
         return "login";
     }
 
+    @RequestMapping(value = "/home/login")
+    public String loginHome(HttpServletRequest request) {
+        request.getSession().removeAttribute("user_id");
+        request.getSession().removeAttribute("role_code");
+        request.getSession().removeAttribute("group_code");
+        request.getSession().removeAttribute("corp_code");
+        request.getSession().removeAttribute("store_code");
+        request.getSession().removeAttribute("menu");
+
+        return "login";
+    }
     @RequestMapping(value = "/login_out")
     public String loginOut(HttpServletRequest request) {
         request.getSession().removeAttribute("user_id");

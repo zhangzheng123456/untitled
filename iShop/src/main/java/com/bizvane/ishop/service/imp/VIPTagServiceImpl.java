@@ -42,7 +42,6 @@ public class VIPTagServiceImpl implements VIPTagService {
     @Override
     public int update(VIPtag vipTag) {
         return this.viPtagMapper.updateByPrimaryKey(vipTag);
-
     }
 
     @Override

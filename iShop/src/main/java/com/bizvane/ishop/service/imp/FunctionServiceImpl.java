@@ -111,51 +111,51 @@ public class FunctionServiceImpl implements FunctionService {
      * 获取用户所有动作权限
      * （暂未使用）
      */
-    public JSONArray selectAllActions(String user_code, String role_code, String group_code) {
-        List<Function> act_info = functionMapper.selectPrivilege(user_code, role_code, group_code);
-        JSONArray functions = new JSONArray();
-
-        for (int i = 0; i < act_info.size(); i++) {
-            String func_code = act_info.get(i).getFunction_code();
-            //       String func = act_info.get(i).getFunction_name();
-            String act = act_info.get(i).getAction_name();
-            System.out.println(act + "---------" + func_code);
-            if (functions.size() == 0) {
-                JSONObject obj = new JSONObject();
-                JSONArray actions = new JSONArray();
-                JSONObject obj1 = new JSONObject();
-                obj1.put("act_name", act);
-                actions.add(obj1);
-                obj.put("func_code", func_code);
-                obj.put("actions", actions);
-                functions.add(obj);
-            } else {
-                for (int j = 0; j < functions.size(); j++) {
-                    JSONObject object = (JSONObject) functions.get(j);
-                    System.out.println(object);
-                    if (object.get("func_code").equals(func_code)) {
-                        String a = object.get("actions").toString();
-                        JSONArray qq = JSONArray.parseArray(a);
-                        JSONObject obj2 = new JSONObject();
-                        obj2.put("act_name", act);
-                        qq.add(obj2);
-                        object.put("actions", qq);
-                        break;
-                    } else {
-                        if (j == functions.size() - 1) {
-                            JSONObject fun = new JSONObject();
-                            JSONArray actions = new JSONArray();
-                            fun.put("func_code", func_code);
-                            fun.put("actions", actions);
-                            functions.add(fun);
-                        }
-                        continue;
-                    }
-                }
-            }
-        }
-        return functions;
-    }
+//    public JSONArray selectAllActions(String user_code, String role_code, String group_code) {
+//        List<Function> act_info = functionMapper.selectPrivilege(user_code, role_code, group_code);
+//        JSONArray functions = new JSONArray();
+//
+//        for (int i = 0; i < act_info.size(); i++) {
+//            String func_code = act_info.get(i).getFunction_code();
+//            //       String func = act_info.get(i).getFunction_name();
+//            String act = act_info.get(i).getAction_name();
+//            System.out.println(act + "---------" + func_code);
+//            if (functions.size() == 0) {
+//                JSONObject obj = new JSONObject();
+//                JSONArray actions = new JSONArray();
+//                JSONObject obj1 = new JSONObject();
+//                obj1.put("act_name", act);
+//                actions.add(obj1);
+//                obj.put("func_code", func_code);
+//                obj.put("actions", actions);
+//                functions.add(obj);
+//            } else {
+//                for (int j = 0; j < functions.size(); j++) {
+//                    JSONObject object = (JSONObject) functions.get(j);
+//                    System.out.println(object);
+//                    if (object.get("func_code").equals(func_code)) {
+//                        String a = object.get("actions").toString();
+//                        JSONArray qq = JSONArray.parseArray(a);
+//                        JSONObject obj2 = new JSONObject();
+//                        obj2.put("act_name", act);
+//                        qq.add(obj2);
+//                        object.put("actions", qq);
+//                        break;
+//                    } else {
+//                        if (j == functions.size() - 1) {
+//                            JSONObject fun = new JSONObject();
+//                            JSONArray actions = new JSONArray();
+//                            fun.put("func_code", func_code);
+//                            fun.put("actions", actions);
+//                            functions.add(fun);
+//                        }
+//                        continue;
+//                    }
+//                }
+//            }
+//        }
+//        return functions;
+//    }
 
     /**
      * 按功能获取user动作权限
@@ -180,8 +180,8 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 列出登录用户的所有权限
      */
-    public List<Function> selectAllPrivilege(String role_code, String user_code, String group_code) {
-        List<Function> privilege = functionMapper.selectPrivilege(user_code, role_code, group_code);
+    public List<Function> selectAllPrivilege(String role_code, String user_code, String group_code,String search_value) {
+        List<Function> privilege = functionMapper.selectPrivilege(user_code, role_code, group_code,search_value);
         return privilege;
     }
 
@@ -190,7 +190,7 @@ public class FunctionServiceImpl implements FunctionService {
      */
     public JSONArray selectRAGPrivilege(String role_code, String group_code) {
         JSONArray array = new JSONArray();
-        List<Function> info = functionMapper.selectPrivilege("", role_code, group_code);
+        List<Function> info = functionMapper.selectPrivilege("", role_code, group_code,"");
         for (int i = 0; i < info.size(); i++) {
             int id = info.get(i).getId();
             JSONObject object = new JSONObject();

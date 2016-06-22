@@ -24,4 +24,5 @@ public interface AreaMapper {
 
 
     List<Area> getAreaByCorp(@Param("corp_code") String corp_code);
+
 }

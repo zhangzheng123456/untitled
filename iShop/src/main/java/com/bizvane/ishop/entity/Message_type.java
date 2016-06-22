@@ -1,11 +1,11 @@
 package com.bizvane.ishop.entity;
 
 /**
- * Created by lixiang on 2016/6/21.
+ * Created by lixiang on 2016/6/22.
  *
  * @@version
  */
-public class VipTagType {
+public class Message_type {
     private int id;
     private String type_code;
     private String type_name;
@@ -18,6 +18,9 @@ public class VipTagType {
     private Corp corp;
     private String corp_code;
 
+    public Message_type() {
+    }
+
     public String getCorp_code() {
         return corp_code;
     }
@@ -26,8 +29,6 @@ public class VipTagType {
         this.corp_code = corp_code;
     }
 
-    public VipTagType() {
-    }
 
     public int getId() {
         return id;
@@ -108,4 +109,5 @@ public class VipTagType {
     public void setCorp(Corp corp) {
         this.corp = corp;
     }
+
 }

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.bizvane.ishop.dao.VipTagTypeMapper">
+<mapper namespace="com.bizvane.ishop.dao.MessageTypeMapper">
 
-    <resultMap id="vipTagTypeInfo" type="com.bizvane.ishop.entity.VipTagType">
+    <resultMap id="Message_typeInfo" type="com.bizvane.ishop.entity.Message_type">
         <id column="id" property="id"/>
         <result column="type_code" property="type_code"/>
         <result column="type_name" property="type_name"/>
@@ -20,12 +20,12 @@
     </resultMap>
 
 
-    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VipTagType">
-        select * from def_vip_tag_type where  id=#{id}
+    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.Message_type">
+        select * from def_message_type where  id=#{id}
     </select>
 
-    <insert id="insert" parameterType="com.bizvane.ishop.entity.VipTagType">
-        insert into def_vip_tag_type
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.Message_type">
+        insert into def_message_type
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="type_code!=null and type_code!=''">
                 type_code,
@@ -87,8 +87,8 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipTagType">
-        update def_vip_tag_type
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.Message_type">
+        update def_message_type
         <trim prefix="set" suffixOverrides=",">
             <if test="type_code!=null and type_code!=''">
                 type_code=#{type_code},
@@ -128,10 +128,10 @@
     </update>
 
     <delete id="deleteByPrimaryKey">
-          delete FROM  def_vip_tag_type WHERE id=#{id}
+        delete FROM  def_message_type WHERE id=#{id}
     </delete>
 
-    <select id="selectAllVipTagType" resultMap="vipTagTypeInfo">
+    <select id="selectAllMessage_type" resultMap="Message_typeInfo">
         select
         vtt.id,
         vtt.type_code,
@@ -143,7 +143,7 @@
         vtt.created_date,
         vtt.isactive,
         vtt.corp_code
-        FROM def_vip_tag_type vtt
+        FROM def_message_type vtt
         WHERE
         1=1
         <if test="search_value!=null and search_value!=''">
@@ -158,20 +158,20 @@
         ORDER BY vtt.id
     </select>
 
-    <select id="selectCode" resultMap="vipTagTypeInfo">
+    <select id="selectCode" resultMap="Message_typeInfo">
         select
         *
-        FROM def_vip_tag_type vtt
+        FROM def_message_type vtt
         WHERE
         vtt.corp_code=#{corp_code}
         and
         vtt.type_code=#{type_code}
     </select>
 
-    <select id="selectName" resultType="com.bizvane.ishop.entity.VipTagType">
+    <select id="selectName" resultType="com.bizvane.ishop.entity.Message_type">
         select
         *
-        FROM def_vip_tag_type vtt
+        FROM def_message_type vtt
         WHERE
         vtt.corp_code=#{corp_code}
         and

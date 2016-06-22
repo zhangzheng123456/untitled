@@ -183,13 +183,11 @@ public class BrandController {
                 List<Store> stores = brandService.getBrandStore(corp_code, brand_code);
                 if (stores.size() == 0) {
                     brandService.delete(Integer.valueOf(ids[i]));
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("该品牌下有所属店铺，请先处理品牌下店铺再删除！");
+                    dataBean.setMessage("品牌"+brand_code+"下有所属店铺，请先处理品牌下店铺再删除！");
+                    return dataBean.getJsonStr();
                 }
             }
         } catch (Exception ex) {
