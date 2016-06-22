@@ -64,7 +64,6 @@ public class GoodsController {
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

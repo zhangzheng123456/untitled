@@ -105,7 +105,6 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String id = "";
         String user_id = request.getSession(false).getAttribute("user_id").toString();
-
         try {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
@@ -116,7 +115,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             Date now = new Date();
-            vipInfo.setRegister_time(Common.DATETIME_FORMAT.format(now));
+      //      vipInfo.setRegister_time(Common.DATETIME_FORMAT.format(now));
             vipInfo.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipInfo.setModifier(user_id);
             vipInfo.setCreated_date(Common.DATETIME_FORMAT.format(now));

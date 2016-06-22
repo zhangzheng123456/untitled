@@ -35,6 +35,8 @@ public class Goods {
     //商品描述
     private String goods_description;
 
+    //商品编号
+    private String corp_code;
 
 
     private Corp corp;
@@ -48,6 +50,14 @@ public class Goods {
     }
 
     public Goods() {
+    }
+
+    public String getCorp_code() {
+        return corp_code;
+    }
+
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
     }
 
     public int getId() {
