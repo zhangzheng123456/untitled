@@ -31,7 +31,7 @@
             <if test="download_addr != null">
                 DOWNLOAD_ADDR,
             </if>
-            <if test="version_id">
+            <if test="version_id != null">
                 VERSION_ID,
             </if>
             <if test="is_force_update != null">
@@ -100,38 +100,38 @@
         UPDATE  def_app_version
         <trim prefix="SET" suffixOverrides=",">
             <if test="platform != null">
-                #{platform},
+                PLATFORM= #{platform},
             </if>
 
             <if test="download_addr != null">
-                #{download_addr},
+                DOWNLOAD_ADDR= #{download_addr},
             </if>
             <if test="version_id != null">
-                #{version_id},
+                VERSION_ID=   #{version_id},
             </if>
             <if test="is_force_update != null">
-                #{is_force_update},
+                IS_FORCE_UPDATE=   #{is_force_update},
             </if>
             <if test="version_describe != null">
-                #{version_describe},
+                VERSION_DESCRIBE= #{version_describe},
             </if>
             <if test="crop_code != null">
-                #{crop_code},
+                CROP_CODE=  #{crop_code},
             </if>
             <if test="created_date != null">
-                #{created_date},
+                CREATED_DATE=   #{created_date},
             </if>
             <if test="creater != null">
-                #{creater},
+                CREATER= #{creater},
             </if>
             <if test="modified_date != null">
-                #{modified_date},
+                MODIFIED_DATE=  #{modified_date},
             </if>
             <if test="modifier != null">
-                #{modifier},
+                MODIFIER= #{modifier},
             </if>
             <if test="isactive != null">
-                #{isactive},
+                ISACTIVE=  #{isactive},
             </if>
         </trim>
         WHERE ID=#{id};

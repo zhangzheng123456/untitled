@@ -92,35 +92,35 @@
         UPDATE  def_feedback
         <trim prefix="SET" suffixOverrides=",">
             <if test="user_code != null">
-                #{user_code},
+                USER_CODE =   #{user_code},
             </if>
 
             <if test="feedback_content != null">
-                #{feedback_content},
+                FEEDBACK_CONTENT= #{feedback_content},
             </if>
             <if test="phone != null">
-                #{phone},
+                PHONE=   #{phone},
             </if>
             <if test="feedback_date != null">
-                #{feedback_date},
+                FEEDBACK_DATE= #{feedback_date},
             </if>
             <if test="process_state != null">
-                #{process_state},
+                PROCESS_STATE=   #{process_state},
             </if>
             <if test="created_date != null">
-                #{created_date},
+                CREATED_DATE=  #{created_date},
             </if>
             <if test="creater != null">
-                #{createra},
+                CREATER=  #{createra},
             </if>
             <if test="modified_date != null">
-                #{modified_date},
+                MODIFIED_DATE=   #{modified_date},
             </if>
             <if test="modifier != null">
-                #{modifier},
+                MODIFIER=  #{modifier},
             </if>
             <if test="isactive != null">
-                #{isactive},
+                ISACTIVE=  #{isactive},
             </if>
         </trim>
         WHERE ID=#{id};

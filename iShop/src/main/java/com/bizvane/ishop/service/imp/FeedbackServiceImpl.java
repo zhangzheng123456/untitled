@@ -63,9 +63,9 @@ public class FeedbackServiceImpl implements FeedbackService{
         //事务测试代码
 //        int j=5/0;
 //        if(i==1) {
-//            System.out.println("------事务失败--------");
+//            System.out.println("------aaaaaa--------");
 //        }else{
-//            System.out.println("========事务成功=========");
+//            System.out.println("========bbbbbb=========");
 //        }
         return i;
     }
