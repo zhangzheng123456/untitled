@@ -45,8 +45,8 @@ public class StoreServiceImpl implements StoreService {
      * @return 执行结果
      */
     @Override
-    public int deleteStoreByUserid(String user_id, String store_id) {
-        return storeMapper.deleteStoreByUserid(user_id, store_id);
+    public int deleteStoreUser(String user_id, String store_code) {
+        return storeMapper.deleteStoreByUserid(user_id, store_code);
     }
 
 

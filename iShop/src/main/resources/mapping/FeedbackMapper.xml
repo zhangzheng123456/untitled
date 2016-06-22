@@ -17,7 +17,7 @@
             OR ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY USER_CODE
+        ORDER BY id DESC
     </select>
     <insert id="addFeedback" parameterType="com.bizvane.ishop.entity.Feedback">
         INSERT INTO  def_feedback
