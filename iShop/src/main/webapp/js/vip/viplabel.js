@@ -274,13 +274,13 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_add.html");
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -288,7 +288,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");

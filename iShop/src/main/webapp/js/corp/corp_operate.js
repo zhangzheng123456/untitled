@@ -259,6 +259,11 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				if(msg.is_authorize=="Y"){
+					$("#state_val").val("已授权");
+				}else if(msg.is_authorize=="N"){
+					$("#state_val").val("未授权");
+				}
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -315,9 +320,15 @@ jQuery(document).ready(function(){
     })
     //检查是否可否授权状态、
     $("#state").click(function(){
+    	var corp_code=$("#CORPID").val();
     	var _params={};
+    	_params["corp_code"]=corp_code;
     	oc.postRequire("post","/corp/is_authorize","", _params, function(data){
-    		console.log(data);
+    		if(data.code=="0"){
+    			$("#state_val").val(data.message);
+    		}else{
+    			alert(data.message);
+    		}
     	})
     })
     if(message.user_type=="admin"){

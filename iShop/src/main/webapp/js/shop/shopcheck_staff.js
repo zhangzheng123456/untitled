@@ -149,7 +149,7 @@ function jumpBianse(){
             }     
         }
         var param={};
-        param["id"]=ID;
+        param["user_id"]=ID;
         param["store_code"]=store_code;
         console.log(param);
         oc.postRequire("post","/shop/staff/delete","0",param,function(data){

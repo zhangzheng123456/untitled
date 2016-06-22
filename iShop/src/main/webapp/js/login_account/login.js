@@ -61,6 +61,8 @@ function login(){
 				window.location.href = "home/index_gm.html";
 			} else if (user_type == "staff") {
 				window.location.href = "home/index_staff.html";
+			} else if(user_type == "sm"){
+				window.location.href="home/index_sm.html";
 			}
 		} else if (data.code == "-1") {
 			$(".portlet-msg-error").html("用户名或密码错误");
