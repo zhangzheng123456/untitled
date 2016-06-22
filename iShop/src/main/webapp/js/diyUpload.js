@@ -11,7 +11,13 @@
 		*/
         diyUpload:function( opt, serverCallBack ) {
  			if ( typeof opt != "object" ) {
-				alert('参数错误!');
+ 				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content:'参数错误!'
+				});
+				// alert('参数错误!');
 				return;
 			}
 
@@ -47,7 +53,13 @@
 			var webUploader = getUploader( opt );
 
 			if ( !WebUploader.Uploader.support() ) {
-				alert( ' 上传组件不支持您的浏览器！');
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content:' 上传组件不支持您的浏览器！'
+				});
+				// alert( ' 上传组件不支持您的浏览器！');
 				return false;
        		}
 
@@ -117,7 +129,12 @@
 					default : text = '未知错误!';
  					break;
 				}
-            	alert( text );
+            	art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: text
+				});
         	});
         }
     });
@@ -163,7 +180,7 @@
 			//文件上传方式
 			method:"POST",
 			//服务器地址;
-			server:"http://dev.bizvane.com/alidata1/dev/apache-tomcat-8.0.33/webapps/iShop/images",
+			server:"",
 			//是否已二进制的流的方式发送文件，这样整个上传内容php://input都为文件内容
 			sendAsBinary:false,
 			// 开起分片上传。 thinkphp的上传类测试分片无效,图片丢失;

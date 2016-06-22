@@ -242,7 +242,7 @@ jQuery(document).ready(function(){
 			}
 		});
 	});
-	$(".groupadd_oper_btn ul li:nth-of-type(2").click(function(){
+	$(".groupadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/group.html");
 	});
 	$(".groupedit_oper_btn ul li:nth-of-type(2)").click(function(){

@@ -82,6 +82,9 @@
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
+    <!-- Dialog -->
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- oss -->
     <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
     <!-- side_menu -->
@@ -96,7 +99,7 @@
     <script type="text/javascript" src="../js/diyUpload.js"></script>
     <script type="text/javascript">
         $('#test').diyUpload({
-            url:'../server/fileupload.php',
+            url:'server/fileupload.php',
             success:function( data ) {
                 console.info( data );
             },
@@ -105,9 +108,7 @@
             }
         });
     </script>
-    <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    
     <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉框 -->
