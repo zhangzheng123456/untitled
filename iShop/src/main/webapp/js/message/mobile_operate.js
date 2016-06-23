@@ -66,7 +66,7 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/VIP/label/add";//接口名
+				var _command="/message/mobile/template/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
@@ -96,7 +96,7 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/VIP/label/edit";//接口名
+				var _command="/message/mobile/template/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
@@ -120,7 +120,7 @@ var oc = new ObjectControl();
 				// 	cancel: false,
 				// 	content: data.message
 				// });
-				$(window.parent.document).find('#iframepage').attr("src","/message/mobilelist.html");
+				$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 			}else if(data.code=="-1"){
 				// alert(data.message);
 				// art.dialog({
@@ -170,7 +170,7 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="编辑短信模板"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/VIP/label/select";
+		var _command="/message/mobile/template/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -248,10 +248,10 @@ jQuery(document).ready(function(){
 // 		console.log(123);
 // 	})
 	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/mobilelist.html");
+		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/mobilelist.html");
+		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
 });
 

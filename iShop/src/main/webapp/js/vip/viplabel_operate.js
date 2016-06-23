@@ -71,7 +71,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"label_name":LABEL_NAME,"label_type":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -101,7 +101,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"label_name":LABEL_NAME,"label_type":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -120,7 +120,7 @@ var oc = new ObjectControl();
 				// 	cancel: false,
 				// 	content: data.message
 				// });
-				$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+				$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 			}else if(data.code=="-1"){
 				// alert(data.message);
 				// art.dialog({
@@ -180,8 +180,8 @@ jQuery(document).ready(function(){
 				// var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
 				// var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
 				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
-				var LABEL_NAME=$("#LABEL_NAME").val(msg.label_name);
-				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.label_type);
+				var LABEL_NAME=$("#LABEL_NAME").val(msg.tag_name);
+				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.tag_type);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
@@ -192,8 +192,8 @@ jQuery(document).ready(function(){
 				var modifier=$("#modifier").val(msg.modifier);			
 
 				$("#OWN_CORP").val(msg.corp_code);
-				$("#LABEL_NAME").val(msg.label_name);
-				$("#LABEL_TYPE").val(msg.label_type);
+				$("#LABEL_NAME").val(msg.tag_name);
+				$("#LABEL_TYPE").val(msg.tag_type);
 				// $("#OWN_DOCU").val(msg.own_docu);
 				
 				$("#created_time").val(msg.created_date);
