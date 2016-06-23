@@ -144,6 +144,7 @@ var oc = new ObjectControl();
 	obj.init = init;
 	return obj;
 }));
+//编辑页面赋值
 jQuery(document).ready(function(){
 	window.shopgoal.init();//初始化
 	if($(".pre_title label").text()=="编辑店铺业绩目标"){
@@ -294,4 +295,19 @@ function store_data(c){
 			});
 		}
 	})
+}
+function year(){
+	var myDate = new Date();
+	var year=myDate.getFullYear();
+	console.log($('#week_p .year'));
+	$('#week_p .year').empty();
+	for(var i=0;i<10;i++){
+		var year=year+1
+		var li="<li>";
+		li+=""+year+"</li>"
+		$('#week_p .year').append(li);
+	}
+}
+function week(){
+	
 }
