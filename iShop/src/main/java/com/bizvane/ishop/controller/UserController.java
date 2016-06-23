@@ -60,6 +60,7 @@ public class UserController {
     public String userManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
+            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -76,7 +77,17 @@ public class UserController {
                 //系统管理员
                 list = userService.selectBySearch(page_number, page_size, "", "");
             } else {
-                list = userService.selectBySearch(page_number, page_size, corp_code, "");
+       //         if (role_code.equals(Common.ROLE_GM)) {
+                    list = userService.selectBySearch(page_number, page_size, corp_code, "");
+//                }else if (role_code.equals(Common.ROLE_STAFF)){
+//                    User user= userService.getUserById(user_id);
+//                    List<User> users  = new ArrayList<User>();
+//                    users.add(user);
+//                    list = new PageInfo<User>();
+//                    list.setList(users);
+//                }else {
+//             //       list = ;
+//                }
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);

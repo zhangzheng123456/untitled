@@ -274,10 +274,14 @@ public class UserServiceImpl implements UserService {
                     corpService.insertCorp(corp);
 
                     result = Common.DATABEAN_CODE_SUCCESS;
+                }else {
+                    result = "验证码错误！！！";
                 }
+            }else {
+                result = "该手机号已注册！！！";
             }
         } catch (Exception ex) {
-
+            result = ex.getMessage();
         }
         return result;
     }

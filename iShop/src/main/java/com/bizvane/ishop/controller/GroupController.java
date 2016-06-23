@@ -66,14 +66,14 @@ public class GroupController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = groupService.getGroupAll(page_number, page_size, "","", "");
+                list = groupService.getGroupAll(page_number, page_size, "", "", "");
             } else {
-                list = groupService.getGroupAll(page_number, page_size, corp_code,role_code, "");
+                list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, "");
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -205,13 +205,13 @@ public class GroupController {
                 Group group = groupService.getGroupById(Integer.valueOf(ids[i]));
                 String group_code = group.getGroup_code();
                 String corp_code = group.getCorp_code();
-                List<User> users = userService.selectGroup(corp_code,group_code);
+                List<User> users = userService.selectGroup(corp_code, group_code);
                 if (users.size() == 0) {
-                groupService.deleteGroup(Integer.valueOf(ids[i]));
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
-                }else {
+                    groupService.deleteGroup(Integer.valueOf(ids[i]));
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
+                } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
                     dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除！");
@@ -251,19 +251,19 @@ public class GroupController {
             String role_code = group.getRole_code();
             String group_code = group.getGroup_code();
             //群组用户个数
-            int user_count = userService.selectGroupUser(corp_code,group_code);
+            int user_count = userService.selectGroupUser(corp_code, group_code);
 
             //获取群组角色的权限
             JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code+group_code);
+            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code + group_code);
             //群组权限个数
-            int privilege_count = role_privilege.size()+group_privilege.size();
+            int privilege_count = role_privilege.size() + group_privilege.size();
 
             JSONObject group_info = new JSONObject();
-            group_info.put("user_count",user_count);
-            group_info.put("privilege_count",privilege_count);
-            group_info.put("data",JSON.toJSONString(group));
+            group_info.put("user_count", user_count);
+            group_info.put("privilege_count", privilege_count);
+            group_info.put("data", JSON.toJSONString(group));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(group_info.toString());
@@ -299,10 +299,10 @@ public class GroupController {
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = groupService.getGroupAll(page_number, page_size, "","", search_value);
+                list = groupService.getGroupAll(page_number, page_size, "", "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = groupService.getGroupAll(page_number, page_size, corp_code,role_code, search_value);
+                list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -412,22 +412,22 @@ public class GroupController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             String search_value = "";
-            if (jsonObject.has("searchValue")){
+            if (jsonObject.has("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code,search_value);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code, search_value);
 
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Group group = groupService.selectByCode(corp_code,group_code,Common.IS_ACTIVE_Y);
+            Group group = groupService.selectByCode(corp_code, group_code, Common.IS_ACTIVE_Y);
             String role_code = group.getRole_code();
 
             //获取群组角色的权限
             JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code+group_code);
+            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code + group_code);
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));
@@ -472,11 +472,11 @@ public class GroupController {
             if (jsonObject.has("corp_code")) {
                 String corp_code = jsonObject.get("corp_code").toString();
                 master_code = corp_code + group_code;
-            }else {
+            } else {
                 master_code = group_code;
             }
 
-            String result = functionService.updatePrivilege(master_code, user_id,array);
+            String result = functionService.updatePrivilege(master_code, user_id, array);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

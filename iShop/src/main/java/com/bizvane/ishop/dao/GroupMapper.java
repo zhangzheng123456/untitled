@@ -15,7 +15,7 @@ public interface GroupMapper {
 
     List<Group> selectUserGroup(@Param("corp_code")String corp_code,@Param("role_code") String role_code);
 
-//    List<Group> selectByRole(@Param("role_code")String role_code);
+    List<Group> selectByRole(@Param("role_code")String role_code);
 
     String selectMaxCode();
 

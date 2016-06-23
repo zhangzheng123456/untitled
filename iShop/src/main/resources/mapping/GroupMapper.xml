@@ -104,15 +104,14 @@
         ORDER BY ID
     </select>
 
-    <!--
+
     <select id="selectByRole" resultType="com.bizvane.ishop.entity.Group">
         select *
         from DEF_GROUP
         where role_code = #{role_code}
-        AND ISACTIVE = 'Y'
         ORDER BY ID
     </select>
- -->
+
     <select id="selectMaxCode" resultType="java.lang.String">
         select max(GROUP_CODE) from DEF_GROUP
     </select>

@@ -27,9 +27,9 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.selectUserGroup(corp_code, role_code);
     }
 
-//    public List<Group> selectByRole(String role_code) throws SQLException {
-//        return groupMapper.selectByRole(role_code);
-//    }
+    public List<Group> selectByRole(String role_code) throws SQLException {
+        return groupMapper.selectByRole(role_code);
+    }
 
     public Group selectByCode(String corp_code ,String group_code,String isactive) throws SQLException {
         return groupMapper.selectByCode(corp_code,group_code,isactive);

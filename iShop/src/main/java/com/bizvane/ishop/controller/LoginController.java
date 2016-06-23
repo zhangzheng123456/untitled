@@ -182,7 +182,7 @@ public class LoginController {
                 System.out.println("---------auth_code-xxx---------");
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("authcode error");
+                dataBean.setMessage(result);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

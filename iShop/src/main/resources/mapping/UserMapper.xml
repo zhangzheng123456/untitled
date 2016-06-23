@@ -405,4 +405,15 @@
         SELECT count(1) from DEF_USER
     </select>
 
+
+    <select id="test" resultType="com.bizvane.ishop.entity.User">
+        SELECT * from DEF_USER
+        WHERE 1=1
+        AND store_code LIKE
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+           #{item}
+         </foreach>
+
+    </select>
+
 </mapper>

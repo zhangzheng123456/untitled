@@ -15,7 +15,7 @@ public interface GroupService {
 
     List<Group> selectUserGroup(String corp_code, String role_code) throws SQLException;
 
-//    List<Group> selectByRole(String role_code) throws SQLException;
+   List<Group> selectByRole(String role_code) throws SQLException;
 
     Group selectByCode(String corp_code ,String group_code,String isactive) throws SQLException;
 

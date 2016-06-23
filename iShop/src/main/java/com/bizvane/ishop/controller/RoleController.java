@@ -8,6 +8,7 @@ import com.bizvane.ishop.entity.Function;
 import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.GroupService;
 import com.bizvane.ishop.service.RoleService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
@@ -45,6 +46,8 @@ public class RoleController {
 
     @Autowired
     private RoleService roleService;
+    @Autowired
+    private GroupService groupService;
 
     private static Logger logger = LoggerFactory.getLogger((RoleController.class));
     String id;
@@ -139,8 +142,22 @@ public class RoleController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String[] role_ids = jsonObject.get("id").toString().split(",");
-            for (int i = 0; role_ids != null && i < role_ids.length; i++) {
-                roleService.deleteByRoleId(Integer.parseInt(role_ids[i]));
+
+            for (int i = 0; i < role_ids.length; i++) {
+                int role_id = Integer.parseInt(role_ids[i]);
+                String role_code = roleService.selectByRoleId(role_id).getRole_code();
+                List<Group> groups = groupService.selectByRole(role_code);
+                if (groups.size() == 0) {
+                    roleService.deleteByRoleId(role_id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
+                } else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("角色"+role_code+"下有所属群组，请先处理角色下群组再删除！");
+                    return dataBean.getJsonStr();
+                }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
