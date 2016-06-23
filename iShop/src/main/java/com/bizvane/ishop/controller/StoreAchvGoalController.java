@@ -154,15 +154,17 @@ public class StoreAchvGoalController {
             StoreAchvGoal storeAchvGoal = storeAchvGoalService.selectlById(store_id);
 //            JSONObject result = new JSONObject();
 //            result.put("storeAchvGoal", storeAchvGoal);
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("storeAchvGoal", JSON.toJSONString(storeAchvGoal));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(JSON.toJSONString(storeAchvGoal));
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(Common.DATABEAN_CODE_ERROR);
         }
-        return dataBean.toString();
+        return dataBean.getJsonStr();
     }
 
     @RequestMapping(value = "/edit", method = RequestMethod.POST)

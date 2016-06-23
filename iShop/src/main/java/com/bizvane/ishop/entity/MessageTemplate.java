@@ -29,10 +29,20 @@ public class MessageTemplate {
     //消息类型
     private String type_code;
 
+    private Message_type message_type;
+
 
     private Corp corp;
 
     public MessageTemplate() {
+    }
+
+    public Message_type getMessage_type() {
+        return message_type;
+    }
+
+    public void setMessage_type(Message_type message_type) {
+        this.message_type = message_type;
     }
 
     public String getType_code() {
@@ -122,7 +132,6 @@ public class MessageTemplate {
     public void setCreater(String creater) {
         this.creater = creater;
     }
-
 
 
     public Corp getCorp() {

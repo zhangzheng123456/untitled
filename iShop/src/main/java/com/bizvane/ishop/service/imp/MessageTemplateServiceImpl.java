@@ -6,6 +6,7 @@ import com.bizvane.ishop.entity.MessageTemplate;
 import com.bizvane.ishop.service.MessageTemplateService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
@@ -19,6 +20,7 @@ import java.util.List;
 @Service
 public class MessageTemplateServiceImpl implements MessageTemplateService {
 
+    @Autowired
     private MessageTemplateMapper messageTemplateMapper;
 
 

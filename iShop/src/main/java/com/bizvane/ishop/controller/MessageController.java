@@ -30,7 +30,7 @@ import java.util.Map;
 @Controller
 @RequestMapping("/message")
 public class MessageController {
- 
+
     @Autowired
     private FunctionService functionService;
 
@@ -437,7 +437,7 @@ public class MessageController {
      * 手机消息模板
      * 编辑
      */
-    @RequestMapping(value = "/mobile/template/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/template/edit", method = RequestMethod.POST)
     @ResponseBody
     public String MessageModernEdit(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -465,7 +465,7 @@ public class MessageController {
     /**
      * 手机消息模板删除
      */
-    @RequestMapping(value = "/mobile/template/delete", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/template/delete", method = RequestMethod.POST)
     @ResponseBody
     public String MessageModernDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -553,7 +553,7 @@ public class MessageController {
             messageTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreater(user_id);
             String existInfo = this.messageTemplateService.messageTemplateExist(corp_code, messageTemplate.getTem_code());
-            if (existInfo.equals(Common.DATABEAN_CODE_ERROR)) {
+            if (existInfo.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 messageTemplateService.insert(messageTemplate);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

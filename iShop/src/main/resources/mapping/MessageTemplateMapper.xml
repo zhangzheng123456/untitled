@@ -3,7 +3,7 @@
 
 <mapper namespace="com.bizvane.ishop.dao.MessageTemplateMapper">
 
-    <resultMap id="MessageTemplate" type="com.bizvane.ishop.entity.MessageTemplate">
+    <resultMap id="MessageTemplates" type="com.bizvane.ishop.entity.MessageTemplate">
         <id column="id" property="id"/>
         <result column="tem_code" property="tem_code"/>
         <result column="tem_name" property="tem_name"/>
@@ -15,17 +15,31 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="type_code" property="type_code"/>
-        <association property="Message_type" javaType="com.bizvane.ishop.entity.Message_type">
+        <association property="message_type" javaType="com.bizvane.ishop.entity.Message_type">
             <result column="type_name" property="type_name"/>
         </association>
     </resultMap>
 
-    <select id="selectBySearch" resultMap="MessageTemplate">
+    <select id="selectBySearch" resultMap="MessageTemplates">
         select
-        dmt.*,dmtype.type_name
+        dmt.id,
+        dmt.tem_code,
+        dmt.tem_name,
+        dmt.tem_content,
+        dmt.isactive,
+        dmt.corp_code,
+        dmt.modifier,
+        dmt.modified_date,
+        dmt.created_date,
+        dmt.creater,
+        dmt.type_code,
+        dmtype.type_name
         from def_message_template dmt,def_message_type dmtype
         WHERE dmt.type_code=dmtype.type_code
-        <if test="search_value!=null and search_value">
+        <if test="corp_code and corp_code!=''">
+            and dmt.corp_code=#{corp_code}
+        </if>
+        <if test="search_value!=null and search_value!=''">
             AND
             (
             dmt.tem_name like concat('%',#{search_value},'%')
@@ -118,7 +132,7 @@
         update def_message_template
         <trim prefix="set" suffixOverrides=",">
             <if test="tem_code!=null and tem_code!=''">
-                tmp_code=#{tem_code},
+                tem_code=#{tem_code},
             </if>
             <if test="tem_name!=null  and tem_name!=''">
                 tem_name=#{tem_name},

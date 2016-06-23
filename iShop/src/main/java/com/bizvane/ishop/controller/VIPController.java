@@ -409,6 +409,39 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 会员标签类型管理
+     * 删除
+     */
+    @RequestMapping(value = "/label/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String findVIPLabelDelete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String messageType_id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String[] ids = jsonObject.get("id").toString().split(",");
+            for (int i = 0; ids != null && i < ids.length; i++) {
+                this.vipTagService.delete(Integer.parseInt(ids[i]));
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("scuccess!!!!");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
 //================
 
     /**
