@@ -119,7 +119,7 @@ public class FeedbackController {
             feedback.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
-            feedback.setFeedback_date(Common.DATETIME_FORMAT.format(date));
+            feedback.setFeedback_date(jsonObject.get("feedback_date").toString());
             feedback.setCreated_date(Common.DATETIME_FORMAT.format(date));
             feedback.setModified_date(Common.DATETIME_FORMAT.format(date));
            feedbackService.addFeedback(feedback);
@@ -224,6 +224,8 @@ public class FeedbackController {
             feedback.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
+            feedback.setFeedback_date(jsonObject.get("feedback_date").toString());
+            feedback.setCreated_date(jsonObject.get("created_date").toString());
             feedback.setModified_date(Common.DATETIME_FORMAT.format(date));
             feedback.setId(Integer.parseInt(jsonObject.get("id").toString()));
             feedbackService.updFeedbackById(feedback);

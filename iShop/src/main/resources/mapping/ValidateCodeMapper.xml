@@ -1,7 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.ValidataCodeMapper">
-
+    <select id="selectAllValidateCode" resultType="com.bizvane.ishop.entity.ValidateCode">
+        SELECT *
+        FROM DEF_VALIDATE_CODE
+        WHERE 1 = 1
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            USER_CODE LIKE concat('%', #{search_value},'%')
+            OR FEEDBACK_CONTENT LIKE concat('%', #{search_value},'%')
+            OR PHONE LIKE concat('%', #{search_value},'%')
+            OR FEEDBACK_DATE LIKE concat('%',#{search_value},'%')
+            OR PROCESS_STATE LIKE concat('%', #{search_value},'%')
+            OR ISACTIVE LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY id DESC
+    </select>
     <select id="selectByCodeId" resultType="com.bizvane.ishop.entity.ValidateCode">
         select *
         from DEF_VALIDATE_CODE

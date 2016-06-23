@@ -229,6 +229,7 @@ public class AppversionController {
             appversion.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
+            appversion.setCreated_date(jsonObject.get("created_date").toString());
             appversion.setModified_date(Common.DATETIME_FORMAT.format(date));
             appversion.setId(Integer.parseInt(jsonObject.get("id").toString()));
             appversionService.updAppversionById(appversion);
