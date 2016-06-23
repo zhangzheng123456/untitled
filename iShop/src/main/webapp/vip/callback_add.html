@@ -3,12 +3,15 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>新增会员标签</title>
+    <title>新增回访记录</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
         body{
             margin-top:81px;
@@ -19,21 +22,21 @@
     <!-- <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员回访管理<i class="icon-ishop_8-03"></i>新增回访记录</div>
+        <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员回访管理<i class="icon-ishop_8-03"></i><label>新增回访记录</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
-                        <span><label style="color:#c26555;">回访员工*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">回访员工*</label><input type="text" id="CALLBACK_STUFF" verify="Code"/><div style="padding-left:80px" class="hint"><div  hintinfo="回访员工不能为空！"></div></div></span>
                     </div>
 
                     <div>
-                        <span><label style="color:#c26555;">会员*</label><input type="text" /></span>
+                        <span><label style="color:#c26555;">会员*</label><input type="text" id="VIP" verify="Code"/><div style="padding-left:80px" class="hint"><div  hintinfo="会员不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>回访日期</label><input type="text" /></span>
+                        <span><label>回访日期</label><input type="text" id="CALLBACK_DATE" verify="Code"/><div style="padding-left:80px" class="hint"><div  hintinfo="回访日期不能为空！"></div></div></span>
                     </div>
                     <div id="dropdown" class="item_1">
-                    <span><label>回访类型</label><input class="input_select" type="text" placeholder="请选择标签类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
+                    <span><label>回访类型</label><input class="input_select" id="CALLBACK_TYPE" type="text" placeholder="请选择标签类型" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
                             <ul>
                                 <li>回访类型1</li>
                                 <li>回访类型2</li>
@@ -42,7 +45,7 @@
                     </div>
                 </form>
             </div>
-            
+
             <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="oper_btn">
                     <ul>

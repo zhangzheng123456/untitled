@@ -199,20 +199,14 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        // + "</td><td>"
-                        // + data[i].tem_name
-                        // + "</td><td>"
-                        // + data[i].tem_content
-                        // + "</td><td>"
-                        // + data[i].corp.corp_name
                         + "</td><td>"
                         + data[i].tem_name
-                        + "</td><td>"
+                        + "</td><td><span>"
                         + data[i].tem_content
-                        // + "</td><td>"
-                        // + data[i].corp.corp_name
                         + "</td><td>"
                         + data[i].tem_type
+                        // + "</td><td>"
+                        // + data[i].corp.corp_name
                         +"</td><td>"
                         +data[i].modifier
                         + "</td><td>"
@@ -220,6 +214,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
+  
     }
 };
 //权限配置
@@ -335,7 +330,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/message/mobile/template/search","0",param,function(data){
+    oc.postRequire("post","/message/mobile/template/find","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);

@@ -58,6 +58,7 @@ var oc = new ObjectControl();
 				var MOBAN_ID=$("#MOBAN_ID").val();
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
+				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();
 				// var check_per=$("#check_per").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -71,7 +72,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"tem_code":MOBAN_ID,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
+				var _params={"tem_code":MOBAN_ID,"tem_content":MOBAN_CONTENT,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
 				mobilejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -84,6 +85,7 @@ var oc = new ObjectControl();
 				var MOBAN_ID=$("#MOBAN_ID").val();
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
+				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();
 
 				// var ROLE_NUM=$("#ROLE_NUM").val();
 				// var ROLE_NAME=$("#ROLE_NAME").val();
@@ -101,7 +103,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"tem_code":MOBAN_ID,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
+				var _params={"id":ID,"tem_code":MOBAN_ID,"tem_content":MOBAN_CONTENT,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
 				mobilejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -183,6 +185,7 @@ jQuery(document).ready(function(){
 				var MOBAN_ID=$("#MOBAN_ID").val(msg.tem_code);
 				var MOBAN_NAME=$("#MOBAN_NAME").val(msg.tem_name);
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val(msg.type_code);
+				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val(msg.tem_content);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
@@ -195,6 +198,7 @@ jQuery(document).ready(function(){
 				$("#MOBAN_ID").val(msg.tem_code);
 				$("#MOBAN_NAME").val(msg.tem_name);
 				$("#MOBAN_TYPE").val(msg.type_code);
+				$("#MOBAN_CONTENT").val(msg.tem_content);
 				// $("#OWN_DOCU").val(msg.own_docu);
 				
 				$("#created_time").val(msg.created_date);
@@ -218,35 +222,35 @@ jQuery(document).ready(function(){
 		});
 	}
 
-// //获取企业信息列表
-// 	var corp_command="/user/getCorpByUser";
-// 	oc.postRequire("post", corp_command,"", "", function(data){
-// 		console.log(data);
-// 		if(data.code=="0"){
-// 			var msg=JSON.parse(data.message);
-// 			console.log(msg);
-// 			var index=0;
-// 			var corp_html='';
-// 			var c=null;
-// 			for(index in msg.corps){
-// 				c=msg.corps[index];
-// 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-// 			}
-// 			$("#OWN_CORP").append(corp_html);
-// 			$('.corp_select select').searchableSelect();
-// 		}else if(data.code=="-1"){
-// 			art.dialog({
-// 				time: 1,
-// 				lock:true,
-// 				cancel: false,
-// 				content: data.message
-// 			});
-// 		}
-// 	});
-// 	//change 事件
-// 	$('#OWN_CORP').change(function(){
-// 		console.log(123);
-// 	})
+//获取企业信息列表
+	var corp_command="/user/getCorpByUser";
+	oc.postRequire("post", corp_command,"", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			var index=0;
+			var corp_html='';
+			var c=null;
+			for(index in msg.corps){
+				c=msg.corps[index];
+				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+			}
+			$("#OWN_CORP").append(corp_html);
+			$('.corp_select select').searchableSelect();
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+	//change 事件
+	$('#OWN_CORP').change(function(){
+		console.log(123);
+	})
 	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
