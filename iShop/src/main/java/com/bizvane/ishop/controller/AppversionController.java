@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AppversionMapper;
@@ -8,6 +9,7 @@ import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.service.AppversionService;
 import com.bizvane.ishop.service.FeedbackService;
+import com.bizvane.ishop.service.FunctionService;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -31,7 +33,8 @@ import java.util.Date;
 public class AppversionController {
     @Autowired
     private AppversionService appversionService;
-
+    @Autowired
+    private FunctionService functionService;
     String id;
 
     private static final Logger logger = Logger.getLogger(AppversionController.class);
@@ -41,18 +44,26 @@ public class AppversionController {
     public String selectAll(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String user_code = request.getSession(false).getAttribute("user_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             //-------------------------------------------------------
+            String function_code = request.getParameter("funcCode");
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
            // String search_value = jsonObject.get("searchValue").toString();
             JSONObject result = new JSONObject();
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+
             PageInfo<Appversion> list = appversionService.selectAllAppversion(page_number, page_size, "");
             result.put("list", JSON.toJSONString(list));
+            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
