@@ -3,6 +3,8 @@ package com.bizvane.ishop.dao;
 import com.bizvane.ishop.entity.ValidateCode;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 public interface ValidataCodeMapper {
     int deleteByCodeId(int id);
 
@@ -12,4 +14,7 @@ public interface ValidataCodeMapper {
 
     int updateByCodeId(ValidateCode record);
 
+    ValidateCode selValidateCodeById(@Param("id")int id);
+
+    List<ValidateCode> selectAllValidateCode(@Param("search_value")String search_value);
 }

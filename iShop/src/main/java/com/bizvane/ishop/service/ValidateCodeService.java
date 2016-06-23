@@ -1,6 +1,12 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.ValidateCode;
+import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
+
+import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/5/23.
@@ -14,4 +20,7 @@ public interface ValidateCodeService {
 
     int deleteValidateCode(int code_id);
 
+    ValidateCode selValidateCodeById(int id);
+
+    PageInfo<ValidateCode> selectAllValidateCode(int page_number, int page_size, String search_value)throws SQLException;
 }

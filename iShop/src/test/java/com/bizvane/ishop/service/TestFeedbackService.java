@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.Interfacers;
+import com.bizvane.ishop.entity.ValidateCode;
 import com.github.pagehelper.PageInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,6 +27,8 @@ public class TestFeedbackService {
     private AppversionService appversionService=null;
     @Autowired
     private InterfaceService interfaceService=null;
+    @Autowired
+    private ValidateCodeService validateCodeService=null;
     //成功
     @Test
     public void testselectAllFeedback() {
@@ -150,6 +153,16 @@ public class TestFeedbackService {
         interfacers.setId(1);
         int i = interfaceService.updInterfaceById(interfacers);
         System.out.println(i+"----faceUpd-------");
+    }
+    @Test
+    public void testVcodeSelAll(){
+        try {
+            PageInfo<ValidateCode> validateCodePageInfo = validateCodeService.selectAllValidateCode(1, 4, "");
+            List<ValidateCode> list = validateCodePageInfo.getList();
+            System.out.println(list.size()+"---------------");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
 }

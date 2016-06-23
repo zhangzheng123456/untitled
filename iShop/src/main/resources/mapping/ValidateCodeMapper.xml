@@ -18,6 +18,10 @@
         </if>
         ORDER BY id DESC
     </select>
+    <select id="selValidateCodeById" resultType="com.bizvane.ishop.entity.ValidateCode">
+        SELECT * FROM DEF_VALIDATE_CODE
+        WHERE ID=#{id}
+    </select>
     <select id="selectByCodeId" resultType="com.bizvane.ishop.entity.ValidateCode">
         select *
         from DEF_VALIDATE_CODE
