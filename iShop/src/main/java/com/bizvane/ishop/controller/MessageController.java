@@ -377,8 +377,6 @@ public class MessageController {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -471,11 +469,12 @@ public class MessageController {
         DataBean dataBean = new DataBean();
         String id = "1";
         try {
-            String jsString = WebUtils.getValueForSession(request, "param");
+            String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String messageType_id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String[] ids = messageType_id.split(",");
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String[] ids = jsonObject.getString("id").split(",");
             for (int i = 0; ids != null && i < ids.length; i++) {
                 messageTemplateService.delete(Integer.parseInt(ids[i]));
             }

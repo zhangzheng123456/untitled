@@ -16,10 +16,14 @@
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
+
+
     <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VIPtag">
         select * from DEF_VIP_TAG
         WHERE  id=#{id}
     </select>
+
+
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VIPtag">
         INSERT INTO DEF_VIP_TAG
         <trim prefix="(" suffixOverrides="," suffix=")">
@@ -77,9 +81,11 @@
         </trim>
 
     </insert>
-    <update id="updateByPrimarykey" parameterType="com.bizvane.ishop.entity.VIPtag">
+
+
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VIPtag">
         update DEF_VIP_TAG
-        <trim prefix="set " suffixOverrides=",">
+        <trim prefix="set "  suffixOverrides=",">
             <if test="tag_name!=null and tag_name!=''">
                 tag_name=#{tag_name} ,
             </if>
@@ -106,10 +112,14 @@
             </if>
         </trim>
     </update>
+
+
     <delete id="deleteByPrimaryKey">
         delete from DEF_VIP_TAG
         WHERE id=#{id}
     </delete>
+
+
     <select id="selectAllVipTag" resultMap="VIPTags">
         SELECT
         vt.id,
@@ -140,6 +150,8 @@
         </if>
         ORDER BY vt.id
     </select>
+
+
     <select id="selectVIPTag_code" resultType="com.bizvane.ishop.entity.VIPtag">
         select * from DEF_VIP_TAG
          WHERE

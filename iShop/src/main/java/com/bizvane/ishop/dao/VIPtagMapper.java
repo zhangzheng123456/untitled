@@ -11,6 +11,7 @@ import java.util.List;
  * @@version
  */
 public interface VIPtagMapper {
+
     int deleteByPrimaryKey(Integer id);
 
     int insert(VIPtag record);

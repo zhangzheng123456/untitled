@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -57,7 +58,7 @@ public class UserAchvGoalControl {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
             String function_code = request.getParameter("funcCode").toString();
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
 
@@ -160,9 +161,14 @@ public class UserAchvGoalControl {
             userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
             //   userAchvGoal.setUser_name();
             userAchvGoal.setAchv_goal(jsonObject.getDouble("achv_goal"));
-            userAchvGoal.setAchv_type(jsonObject.getString("achv_type"));
+            String achv_type = jsonObject.getString("achv_type");
+            userAchvGoal.setAchv_type(achv_type);
+            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            Date start_time = null;
+            Date end_time = null;
+
             userAchvGoal.setStart_time(jsonObject.getString("start_time"));
-            
+
 
             //userAchvGoal.setEnd_time(jsonObject.getString("end_time"));
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
