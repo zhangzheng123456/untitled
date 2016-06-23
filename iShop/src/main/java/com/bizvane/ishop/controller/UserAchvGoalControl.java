@@ -40,7 +40,7 @@ public class UserAchvGoalControl {
 
     /**
      * 用户管理
-     *
+     *用户业绩目标的列表展示
      * @param request
      * @return
      */
@@ -84,6 +84,12 @@ public class UserAchvGoalControl {
     }
 
 
+    /**
+     * 用户业绩目标
+     * 编辑
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editUserAchvGoal(HttpServletRequest request) {
@@ -107,6 +113,12 @@ public class UserAchvGoalControl {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 用户业绩目标
+     * 删除
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String deleteUserAchvGoalById(HttpServletRequest request) {
@@ -133,6 +145,8 @@ public class UserAchvGoalControl {
     }
 
     /**
+     * 用户业绩目标
+     * 添加
      * @param request
      * @return
      */
@@ -227,6 +241,7 @@ public class UserAchvGoalControl {
     }
 
     /**
+     * 用户业绩管理
      * 页面查找
      */
     @RequestMapping(value = "/search", method = RequestMethod.POST)

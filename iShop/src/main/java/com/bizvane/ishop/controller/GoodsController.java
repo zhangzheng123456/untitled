@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -59,6 +60,13 @@ public class GoodsController {
                 //   String corp_code = request.getParameter("corp_code");
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
             }
+
+            List<Goods> goods = list.getList();
+            for (int i = 0; i < goods.size(); i++) {
+                // goods.get(i).setGoods_image("");
+                goods.get(i).getGoods_image();
+            }
+
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setId("1");
