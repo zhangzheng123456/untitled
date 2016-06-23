@@ -21,7 +21,7 @@
         WHERE  id=#{id}
     </select>
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VIPtag">
-        INSERT INTO VIPtag
+        INSERT INTO DEF_VIP_TAG
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="tag_name!=null and tag_name!=''">
                 tag_name ,
@@ -32,17 +32,15 @@
             <if test="corp_code!=null and corp_code!=''">
                 corp_code ,
             </if>
-            <if test="modified_date!=null">
+            <if test="modified_date!=null and modified_date!=''">
                 modified_date ,
             </if>
             <if test="modifier!=null and  modifier!=''">
                 modifier,
             </if>
-            <if test=" !=null and !=''">
-                ,
-            </if>
-            <if test="create_date!=null">
-                create_date ,
+
+            <if test="created_date!=null">
+                created_date ,
             </if>
             <if test="creater!=null and  creater!=''">
                 creater,
@@ -53,6 +51,36 @@
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="tag_name!=null and tag_name!=''">
+                #{tag_name} ,
+            </if>
+            <if test="tag_type!=null and tag_type!=''">
+                #{tag_type},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date} ,
+            </if>
+            <if test="modifier!=null and  modifier!=''">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null and  creater!=''">
+                #{creater},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                #{isactive},
+            </if>
+        </trim>
+
+    </insert>
+    <update id="updateByPrimarykey" parameterType="com.bizvane.ishop.entity.VIPtag">
+        update DEF_VIP_TAG
+        <trim prefix="set " suffixOverrides=",">
+            <if test="tag_name!=null and tag_name!=''">
                 tag_name=#{tag_name} ,
             </if>
             <if test="tag_type!=null and tag_type!=''">
@@ -61,14 +89,14 @@
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},
             </if>
-            <if test="modified_date!=null">
+            <if test="modified_date!=null and modified_date!=''">
                 modified_date=#{modified_date} ,
             </if>
             <if test="modifier!=null and  modifier!=''">
                 modifier=#{modifier},
             </if>
-            <if test="create_date!=null">
-                create_date=#{create_date},
+            <if test="created_date!=null and created_date!=''">
+                created_date=#{created_date},
             </if>
             <if test="creater!=null and  creater!=''">
                 creater=#{creater},
@@ -77,10 +105,6 @@
                 isactive=#{isactive},
             </if>
         </trim>
-
-    </insert>
-    <update id="updateByPrimarykey" parameterType="com.bizvane.ishop.entity.VIPtag">
-
     </update>
     <delete id="deleteByPrimaryKey">
         delete from DEF_VIP_TAG

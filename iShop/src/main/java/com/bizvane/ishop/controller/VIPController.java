@@ -115,7 +115,7 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             Date now = new Date();
-      //      vipInfo.setRegister_time(Common.DATETIME_FORMAT.format(now));
+            //      vipInfo.setRegister_time(Common.DATETIME_FORMAT.format(now));
             vipInfo.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipInfo.setModifier(user_id);
             vipInfo.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -292,7 +292,7 @@ public class VIPController {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.getString("id");
-            String messsage = jsonObj.getString("message");
+            String messsage = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(messsage);
             VIPtag viPtag = WebUtils.JSON2Bean(jsonObject, VIPtag.class);
             Date now = new Date();
