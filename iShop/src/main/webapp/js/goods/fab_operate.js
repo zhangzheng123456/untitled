@@ -183,26 +183,27 @@ jQuery(document).ready(function(){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/goods/fab/select";
+		var img_html='';
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data.message);
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
-				var img_html='';
 				var goods_img=JSON.parse(msg.goods_image);
-				for(var i=0;i<goods_img.length;i++){
-					img_html +='<li id="fileBox_WU_FILE_10" class="diyUploadHover">'
-                                   	+'<div class="viewThumb"><img src="'+goods_img[i]+'"></div>'
-                                   	+'<div class="diyCancel"></div>'
-                                    +'<div class="diySuccess"></div>'
-                                    +'<div class="diyFileName"></div>'
-                                    +'<div class="diyBar">'
-                                        +'<div class="diyProgress"></div>'
-                                        +'<div class="diyProgressText">0%</div>'
-                                    +'</div>'
-                                +'</li>';
-				}
-				$(".fileBoxUl").append(img_html);
+				console.log(goods_img);
+				// for(var i=0;i<goods_img.length;i++){
+				// 	img_html +='<li id="fileBox_WU_FILE_'+i+'" class="diyUploadHover">'
+    //                                	+'<div class="viewThumb"><img src="'+goods_img[i]+'"></div>'
+    //                                	+'<div class="diyCancel"></div>'
+    //                                 +'<div class="diySuccess"></div>'
+    //                                 +'<div class="diyFileName"></div>'
+    //                                 +'<div class="diyBar">'
+    //                                     +'<div class="diyProgress"></div>'
+    //                                     +'<div class="diyProgressText">0%</div>'
+    //                                 +'</div>'
+    //                             +'</li>';
+				// }
+				// $(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#GOODS_CODE").val(msg.goods_code);
