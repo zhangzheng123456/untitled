@@ -363,8 +363,6 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
-//====================================================================================================短信模板
-
     /**
      * 手机消息模板
      */
@@ -405,6 +403,13 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 短信模板管理
+     * 短信模板的选择
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/mobile/template/select", method = RequestMethod.POST)
     @ResponseBody
     public String messageModernSearch(HttpServletRequest request) {
@@ -501,7 +506,7 @@ public class MessageController {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.getString("id");
-            String message = jsonObj.getString("message");
+            String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_Number = jsonObject.getInt("pageNumber");
             int page_Size = jsonObject.getInt("pageSize");

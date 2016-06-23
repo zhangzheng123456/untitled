@@ -36,7 +36,7 @@
         dmtype.type_name
         from def_message_template dmt,def_message_type dmtype
         WHERE dmt.type_code=dmtype.type_code
-        <if test="corp_code and corp_code!=''">
+        <if test="corp_code!=null and corp_code!=''">
             and dmt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">

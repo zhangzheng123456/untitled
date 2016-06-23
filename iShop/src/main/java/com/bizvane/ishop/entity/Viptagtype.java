@@ -2,18 +2,26 @@ package com.bizvane.ishop.entity;
 
 /**
  * Created by lixiang on 2016/6/21.
- *
+ * 会员标签类型
  * @@version
  */
 public class VipTagType {
     private int id;
+    //标签类型编号
     private String type_code;
+    //类型名称
     private String type_name;
+    //类型描述
     private String type_description;
+    //修改日期
     private String modified_date;
+    //修改人
     private String modifier;
+    //创建者
     private String creater;
+    //创建日期
     private String created_date;
+    //是否可用
     private String isactive;
     private Corp corp;
     private String corp_code;

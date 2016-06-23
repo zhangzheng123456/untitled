@@ -4,18 +4,27 @@ import java.util.Date;
 
 /**
  * Created by lixiang on 2016/6/12.
+ * 用户标签
  *
  * @@version
  */
 public class VIPtag {
     private int id;
+    //用户标签编号
     private String tag_name;
+    //标签类型
     private String tag_type;
+    //企业编号
     private String corp_code;
+    //修改日期
     private String modified_date;
+    //修改人
     private String modifier;
+    //创建日期
     private String created_date;
+    //创建者
     private String creater;
+    //是否可用
     private String isactive;
     private Corp corp;
 

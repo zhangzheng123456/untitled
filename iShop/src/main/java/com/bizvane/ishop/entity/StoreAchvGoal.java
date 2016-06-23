@@ -4,25 +4,37 @@ import java.util.Date;
 
 /**
  * Created by lixiang on 2016/6/1.
- *
+ * 店铺业绩目标
  * @@version
  */
 public class StoreAchvGoal {
 
     private int id;
-    //用户编号
+    //店铺业绩目标编号
     private String store_code;
+    //店铺名称
     private String store_name;
+    //公司编号
     private String corp_code;
+    //业绩目标
     private double achv_goal;
+    //业绩类型
     private String achv_type;
+    //开始时间
     private String start_time;
+    //结束时间
     private String end_time;
+    //修改时间
     private String modified_date;
+    //修改人
     private String modifier;
+    //创建时间
     private String created_date;
+    //创建人
     private String creater;
+    //是否可用
     private String isactive;
+    //区域名称
     private String area_name;
     private Area area;
     private Corp corp;

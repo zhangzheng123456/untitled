@@ -7,21 +7,37 @@ import java.util.Date;
  */
 public class VIPInfo {
     private int id;
+    //会员编号
     private String vip_code;
+    //会员名称
     private String vip_name;
+    //会员电话
     private String phone;
+    //会员生日
     private String birthday;
+    //会员类型
     private String vip_type;
+    //会员卡片号码
     private String vip_card_number;
+    //性别
     private String sex;
+    //注册时间
     private String register_time;
+    //用户编号
     private String user_code;
+    //店仓编号
     private String store_code;
+    //企业编号
     private String corp_code;
+    //修改日期
     private String modified_date;
+    //修改人
     private String modifier;
+    //创建日期
     private String created_date;
+    //创建人
     private String creater;
+    //是否可用
     private String isactive;
 
     public String getCorp_code() {

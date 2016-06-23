@@ -6,16 +6,25 @@ package com.bizvane.ishop.entity;
  * @@version
  */
 public class Message_type {
+    //消息id
     private int id;
+    //消息类型编号
     private String type_code;
+    //消息类型名称
     private String type_name;
+    //消息类型描述
     private String type_description;
+    //修改时间
     private String modified_date;
+    //修改人
     private String modifier;
+    //创建人
     private String creater;
+    //创建时间
     private String created_date;
+    //是否可用
     private String isactive;
-
+    //企业编号
     private String corp_code;
     private Corp corp;
     private Message_type message_type;

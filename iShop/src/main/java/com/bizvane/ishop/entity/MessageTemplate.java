@@ -13,7 +13,6 @@ public class MessageTemplate {
     private String tem_name;
     //模板内容
     private String tem_content;
-
     //是否可用
     private String isactive;
     //企业编号
