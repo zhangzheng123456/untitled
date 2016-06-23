@@ -48,15 +48,11 @@ public class AppversionController {
             String group_code = request.getSession(false).getAttribute("group_code").toString();
             String user_code = request.getSession(false).getAttribute("user_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+        
             //-------------------------------------------------------
             String function_code = request.getParameter("funcCode");
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
            // String search_value = jsonObject.get("searchValue").toString();
             JSONObject result = new JSONObject();
             JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
