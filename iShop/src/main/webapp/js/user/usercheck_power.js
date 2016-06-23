@@ -53,7 +53,6 @@ function superaddition(data,num,die,live){
         }else{
             var a=i+1;
         }
-        
         $(".table tbody").append("<tr data-action='"+data[i].action_code+"' data-function='"+data[i].function_code+"'>"
                         + "</td><td style='text-align:left;padding-left:22px'>"
                         + a

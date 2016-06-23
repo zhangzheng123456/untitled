@@ -172,4 +172,6 @@
         select * from  DEF_BRAND
         WHERE  corp_code=#{corp_code} and brand_name=#{brand_name}
     </select>
+
+
 </mapper>

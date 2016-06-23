@@ -40,7 +40,6 @@ public class HomeController {
     private static final Logger log = Logger.getLogger(HomeController.class);
 
     String id;
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     //系统管理员主页面
     @RequestMapping(value = "/home/sys", method = RequestMethod.GET)
@@ -51,6 +50,7 @@ public class HomeController {
             JSONObject dashboard = new JSONObject();
             JSONArray menu;
             String role_code = request.getSession().getAttribute("role_code").toString();
+
             if (role_code.equals(Common.ROLE_SYS)) {
                 int corp_count = corpService.selectCount();
                 int store_count = storeService.selectCount();
@@ -61,7 +61,6 @@ public class HomeController {
                 dashboard.put("store_count", store_count);
                 dashboard.put("user_count", user_count);
                 dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
-
 
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

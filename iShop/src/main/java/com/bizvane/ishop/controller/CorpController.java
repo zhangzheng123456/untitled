@@ -48,8 +48,6 @@ public class CorpController {
     @Autowired
     private FunctionService functionService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     /*
     * 列表
     * */
@@ -126,9 +124,9 @@ public class CorpController {
             corp.setApp_id(jsonObject.get("app_id").toString());
 
             Date now = new Date();
-            corp.setCreated_date(sdf.format(now));
+            corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
             corp.setCreater(user_id);
-            corp.setModified_date(sdf.format(now));
+            corp.setModified_date(Common.DATETIME_FORMAT.format(now));
             corp.setModifier(user_id);
             corp.setIsactive(jsonObject.get("isactive").toString());
             corpService.insertCorp(corp);
@@ -170,7 +168,7 @@ public class CorpController {
             corp.setApp_id(jsonObject.get("app_id").toString());
 
             Date now = new Date();
-            corp.setModified_date(sdf.format(now));
+            corp.setModified_date(Common.DATETIME_FORMAT.format(now));
             corp.setModifier(user_id);
             corp.setIsactive(jsonObject.get("isactive").toString());
 

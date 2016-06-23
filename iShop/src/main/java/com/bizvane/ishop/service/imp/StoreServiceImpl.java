@@ -35,13 +35,11 @@ public class StoreServiceImpl implements StoreService {
     @Autowired
     private AreaMapper areaMapper;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     /**
      * 通过用户ID和制定的店仓来删除用户的店仓
      *
      * @param user_id  ： 用户ID
-     * @param store_id ： 店仓ID
+     * @param store_code ： 店仓ID
      * @return 执行结果
      */
     @Override
@@ -131,9 +129,9 @@ public class StoreServiceImpl implements StoreService {
             shop.setBrand_code(jsonObject.get("brand_code").toString());
             shop.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
-            shop.setCreated_date(sdf.format(now));
+            shop.setCreated_date(Common.DATETIME_FORMAT.format(now));
             shop.setCreater(user_id);
-            shop.setModified_date(sdf.format(now));
+            shop.setModified_date(Common.DATETIME_FORMAT.format(now));
             shop.setModifier(user_id);
             shop.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.insertStore(shop);
@@ -159,7 +157,7 @@ public class StoreServiceImpl implements StoreService {
             store.setBrand_code(jsonObject.get("brand_code").toString());
             store.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
-            store.setModified_date(sdf.format(now));
+            store.setModified_date(Common.DATETIME_FORMAT.format(now));
             store.setModifier(user_id);
             store.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.updateStore(store);

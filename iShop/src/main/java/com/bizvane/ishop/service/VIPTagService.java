@@ -23,5 +23,4 @@ public interface VIPTagService {
 
     String vipExist(String tag_code, String corp_code) throws SQLException;
 
-
 }

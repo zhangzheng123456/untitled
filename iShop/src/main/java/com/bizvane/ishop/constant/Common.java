@@ -1,5 +1,7 @@
 package com.bizvane.ishop.constant;
 
+import java.text.SimpleDateFormat;
+
 public class Common {
 
     //请求发送的类型失败
@@ -29,7 +31,7 @@ public class Common {
     public static final String IS_AUTHORIZE_N = "N";
 
     //时间格式
-    public static final String DATE_FORMATE = "yyyy-MM-dd HH:MM:ss";
+    public static final SimpleDateFormat DATETIME_FORMAT = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 
 }

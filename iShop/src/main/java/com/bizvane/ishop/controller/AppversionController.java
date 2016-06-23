@@ -34,7 +34,6 @@ public class AppversionController {
 
     String id;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
     private static final Logger logger = Logger.getLogger(AppversionController.class);
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -124,8 +123,8 @@ public class AppversionController {
             appversion.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
-            appversion.setCreated_date(sdf.format(date));
-            appversion.setModified_date(sdf.format(date));
+            appversion.setCreated_date(Common.DATETIME_FORMAT.format(date));
+            appversion.setModified_date(Common.DATETIME_FORMAT.format(date));
             appversionService.addAppversion(appversion);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -230,8 +229,7 @@ public class AppversionController {
             appversion.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
-            appversion.setCreated_date(sdf.format(date));
-            appversion.setModified_date(sdf.format(date));
+            appversion.setModified_date(Common.DATETIME_FORMAT.format(date));
             appversion.setId(Integer.parseInt(jsonObject.get("id").toString()));
             appversionService.updAppversionById(appversion);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

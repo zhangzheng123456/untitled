@@ -37,8 +37,6 @@ public class AreaController {
     @Autowired
     private FunctionService functionService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
 
@@ -101,9 +99,9 @@ public class AreaController {
             area.setArea_code(jsonObject.get("area_code").toString());
             area.setArea_name(jsonObject.get("area_name").toString());
             area.setCorp_code(jsonObject.get("corp_code").toString());
-            area.setCreated_date(sdf.format(now));
+            area.setCreated_date(Common.DATETIME_FORMAT.format(now));
             area.setCreater(user_id);
-            area.setModified_date(sdf.format(now));
+            area.setModified_date(Common.DATETIME_FORMAT.format(now));
             area.setModifier(user_id);
             area.setIsactive(jsonObject.get("isactive").toString());
             areaService.insert(area);
@@ -141,7 +139,7 @@ public class AreaController {
             area.setArea_name(jsonObject.get("area_name").toString());
             area.setCorp_code(jsonObject.get("corp_code").toString());
             area.setModifier(user_id);
-            area.setModified_date(sdf.format(now));
+            area.setModified_date(Common.DATETIME_FORMAT.format(now));
             area.setIsactive(jsonObject.get("isactive").toString());
             areaService.update(area);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

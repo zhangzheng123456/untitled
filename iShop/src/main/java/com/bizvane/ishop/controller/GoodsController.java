@@ -34,8 +34,6 @@ public class GoodsController {
     @Autowired
     private GoodsService goodsService;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     /**
      * 商品培训
      */
@@ -66,7 +64,6 @@ public class GoodsController {
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -131,9 +128,9 @@ public class GoodsController {
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
             Date now = new Date();
-            goods.setModified_date(sdf.format(now));
+            goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
-            goods.setCreated_date(sdf.format(now));
+            goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
             goods.setCreater(user_id);
             this.goodsService.insert(goods);
             dataBean.setId(id);
@@ -197,7 +194,7 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             Date now = new Date();
-            goods.setModified_date(sdf.format(now));
+            goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             this.goodsService.update(goods);
             dataBean.setId(id);

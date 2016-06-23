@@ -22,8 +22,6 @@ import org.json.JSONObject;
  */
 public class WebUtils {
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     public static String getValueForSession(HttpServletRequest request, String key) {
         HttpSession session = request.getSession(false);
         if (session == null) {
@@ -52,7 +50,7 @@ public class WebUtils {
                     try {
 
                         //   return df.parse(str);
-                        return sdf.parse(str);
+                        return Common.DATETIME_FORMAT.parse(str);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }
@@ -90,9 +88,8 @@ public class WebUtils {
                     if (str.trim().equals("")) {
                         return null;
                     }
-                    SimpleDateFormat df = new SimpleDateFormat(Common.DATE_FORMATE);
                     try {
-                        return df.parse(str);
+                        return Common.DATETIME_FORMAT.parse(str);
                     } catch (Exception e) {
                         throw new RuntimeException(e);
                     }

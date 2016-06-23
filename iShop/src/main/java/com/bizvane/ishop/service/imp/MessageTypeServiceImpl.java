@@ -7,6 +7,7 @@ import com.bizvane.ishop.service.MessageTypeService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -16,6 +17,7 @@ import java.util.List;
  *
  * @@version
  */
+@Service
 public class MessageTypeServiceImpl implements MessageTypeService {
 
     @Autowired
@@ -65,5 +67,10 @@ public class MessageTypeServiceImpl implements MessageTypeService {
             result = Common.DATABEAN_CODE_SUCCESS;
         }
         return result;
+    }
+
+    @Override
+    public int deleteById(int id) {
+        return this.messageTypeMapper.deleteByPrimaryKey(id);
     }
 }

@@ -7,8 +7,11 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
         body{
             margin-top:81px;
@@ -19,14 +22,14 @@
     <!-- <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>手机短信<i class="icon-ishop_8-03"></i>新增短信模板</div>
+            <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>手机短信<i class="icon-ishop_8-03"></i><label>新增短信模板</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
-                        <span><label>模板编号</label><input type="text" /></span>
+                        <span><label>模板编号</label><input type="text" id="MOBAN_ID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板编号不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>模板名称</label><input type="text" /></span>
+                        <span><label>模板名称</label><input type="text" id="MOBAN_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板名称不能为空！"></div></div></span>
                     </div>
                     <div class="drop_down item_1">
                         <span><label>模板类型</label><input class="input_select" id="MOBAN_TYPE" type="text" placeholder="请选择模板类型" readonly/>
@@ -70,6 +73,11 @@
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+    <script type="text/javascript" src="../js/message/mobile_operate.js"></script>
     <script type="text/javascript">
         $(function(){
             $('#side-menu li:nth-of-type(7)').addClass('active');

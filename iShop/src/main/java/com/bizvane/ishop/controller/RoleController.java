@@ -48,7 +48,6 @@ public class RoleController {
 
     private static Logger logger = LoggerFactory.getLogger((RoleController.class));
     String id;
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     /**
      * 角色定义
@@ -110,9 +109,9 @@ public class RoleController {
             role1.setRole_name(jsonObject.get("role_name").toString());
             role1.setRemark(jsonObject.get("remark").toString());
             Date now = new Date();
-            role1.setModified_date(sdf.format(now));
+            role1.setModified_date(Common.DATETIME_FORMAT.format(now));
             role1.setModifier(user_id);
-            role1.setCreated_date(sdf.format(now));
+            role1.setCreated_date(Common.DATETIME_FORMAT.format(now));
             role1.setCreater(user_id);
             role1.setIsactive(jsonObject.get("isactive").toString());
 
@@ -214,7 +213,7 @@ public class RoleController {
             role1.setRole_name(jsonObject.get("role_name").toString());
             role1.setRemark(jsonObject.get("remark").toString());
             Date now = new Date();
-            role1.setModified_date(sdf.format(now));
+            role1.setModified_date(Common.DATETIME_FORMAT.format(now));
             role1.setModifier(user_id);
             role1.setIsactive(jsonObject.get("isactive").toString());
 
@@ -253,8 +252,8 @@ public class RoleController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             String search_value = "";
-            if (jsonObject.has("search_value")){
-                search_value = jsonObject.get("search_value").toString();
+            if (jsonObject.has("searchValue")){
+                search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
             List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code,search_value);

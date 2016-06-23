@@ -45,7 +45,6 @@ public class GroupController {
     private RoleService roleService;
     @Autowired
     private FunctionService functionService;
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
     private static Logger logger = LoggerFactory.getLogger((GroupController.class));
     String id;
@@ -72,9 +71,9 @@ public class GroupController {
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = groupService.getGroupAll(page_number, page_size, "", "");
+                list = groupService.getGroupAll(page_number, page_size, "","", "");
             } else {
-                list = groupService.getGroupAll(page_number, page_size, corp_code, "");
+                list = groupService.getGroupAll(page_number, page_size, corp_code,role_code, "");
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -125,9 +124,9 @@ public class GroupController {
             group.setRole_code(jsonObject.get("role_code").toString());
             group.setCorp_code(jsonObject.get("corp_code").toString());
             group.setRemark(jsonObject.get("remark").toString());
-            group.setCreated_date(sdf.format(now));
+            group.setCreated_date(Common.DATETIME_FORMAT.format(now));
             group.setCreater(user_id);
-            group.setModified_date(sdf.format(now));
+            group.setModified_date(Common.DATETIME_FORMAT.format(now));
             group.setModifier(user_id);
             group.setIsactive(jsonObject.get("isactive").toString());
             groupService.insertGroup(group);
@@ -168,7 +167,7 @@ public class GroupController {
             group.setCorp_code(jsonObject.get("corp_code").toString());
             group.setRemark(jsonObject.get("remark").toString());
             group.setModifier(user_id);
-            group.setModified_date(sdf.format(now));
+            group.setModified_date(Common.DATETIME_FORMAT.format(now));
             group.setIsactive(jsonObject.get("isactive").toString());
             groupService.updateGroup(group);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -300,10 +299,10 @@ public class GroupController {
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = groupService.getGroupAll(page_number, page_size, "", search_value);
+                list = groupService.getGroupAll(page_number, page_size, "","", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = groupService.getGroupAll(page_number, page_size, corp_code, search_value);
+                list = groupService.getGroupAll(page_number, page_size, corp_code,role_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

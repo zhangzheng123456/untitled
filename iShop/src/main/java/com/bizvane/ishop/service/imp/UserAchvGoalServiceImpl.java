@@ -50,12 +50,10 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             return Common.DATABEAN_CODE_ERROR;
         }
         return Common.DATABEAN_CODE_SUCCESS;
-
     }
 
     @Override
     public UserAchvGoal getUserAchvGoalById(int id) throws SQLException {
-
         return this.userAchvGoalMapper.selectById(id);
     }
 
@@ -67,12 +65,10 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     @Override
     public int deleteUserAchvGoalById(String user_code) throws SQLException {
         return this.userAchvGoalMapper.delelteByUser_code(user_code);
-
     }
 
     @Override
     public int insert(UserAchvGoal userAchvGoal) throws SQLException {
         return this.userAchvGoalMapper.insert(userAchvGoal);
-
     }
 }

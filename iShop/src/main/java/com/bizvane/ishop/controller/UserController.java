@@ -50,7 +50,6 @@ public class UserController {
     private GroupService groupService;
 
     String id;
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
     /**
@@ -145,9 +144,9 @@ public class UserController {
             user.setPassword(user_code);
             Date now = new Date();
             user.setLogin_time_recently("");
-            user.setCreated_date(sdf.format(now));
+            user.setCreated_date(Common.DATETIME_FORMAT.format(now));
             user.setCreater(user_id);
-            user.setModified_date(sdf.format(now));
+            user.setModified_date(Common.DATETIME_FORMAT.format(now));
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
@@ -209,7 +208,7 @@ public class UserController {
             }
             user.setStore_code(store_code);
             Date now = new Date();
-            user.setModified_date(sdf.format(now));
+            user.setModified_date(Common.DATETIME_FORMAT.format(now));
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
@@ -506,8 +505,8 @@ public class UserController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             String search_value = "";
-            if (jsonObject.has("search_value")){
-                search_value = jsonObject.get("search_value").toString();
+            if (jsonObject.has("searchValue")){
+                search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
             List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code,search_value);

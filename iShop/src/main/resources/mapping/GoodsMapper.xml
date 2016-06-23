@@ -17,6 +17,7 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="goods_description" property="goods_description"/>
+        <result column="corp_code" property="corp_code"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
             <result column="corp_code" property="corp_code"/>
@@ -37,10 +38,11 @@
         ,g.created_date
         ,g.creater
         ,g.goods_description
+        ,g.corp_code
         ,cp.corp_name
         ,cp.corp_code
         FROM DEF_GOODS g,DEF_CORP cp
-        WHERE 1=1
+        WHERE g.corp_code=cp.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND g.corp_code=#{corp_code}
         </if>
@@ -130,7 +132,9 @@
             <if test="goods_description!=null and goods_description!=''">
                 goods_description,
             </if>
-
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="goods_code!=null  and goods_code!=''">
@@ -171,6 +175,9 @@
             </if>
             <if test="goods_description!=null and goods_description!=''">
                 #{goods_description},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                #{corp_code},
             </if>
         </trim>
     </insert>
@@ -217,6 +224,9 @@
             <if test="goods_description!=null and goods_description!=''">
                 goods_description=#{goods_description},
             </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
         </trim>
         where id=#{id}
     </update>
@@ -234,7 +244,6 @@
     <select id="getGoodsByName" resultType="com.bizvane.ishop.entity.Goods">
         select * from corp_code=#{corp_code} and goods_name=#{goods_name}
     </select>
-
 
 
 </mapper>

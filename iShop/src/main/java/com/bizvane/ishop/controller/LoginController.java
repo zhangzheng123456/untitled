@@ -37,7 +37,6 @@ public class LoginController {
     private static final Logger log = Logger.getLogger(LoginController.class);
 
     String id;
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
 
 
     @RequestMapping(value = "/")
@@ -224,7 +223,12 @@ public class LoginController {
                 LoginLog log = new LoginLog();
                 log.setPlatform("WEB");
                 log.setPhone(phone);
-                log.setCreated_date(sdf.format(now));
+                log.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                log.setModified_date(Common.DATETIME_FORMAT.format(now));
+                log.setModifier("root");
+                log.setCreater("root");
+                log.setIsactive(Common.IS_ACTIVE_Y);
+
                 loginLogService.insertLoginLog(log);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

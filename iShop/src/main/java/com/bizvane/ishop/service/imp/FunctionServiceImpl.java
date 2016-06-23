@@ -31,8 +31,6 @@ public class FunctionServiceImpl implements FunctionService {
     @Autowired
     PrivilegeMapper privilegeMapper;
 
-    SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
-
     /**
      * 获取user所有功能模块
      */
@@ -265,9 +263,9 @@ public class FunctionServiceImpl implements FunctionService {
                 privilege.setFunction_code(function_code);
                 privilege.setMaster_code(master_code);
                 privilege.setEnable(Common.IS_ACTIVE_Y);
-                privilege.setModified_date(sdf.format(now));
+                privilege.setModified_date(Common.DATETIME_FORMAT.format(now));
                 privilege.setModifier(user_id);
-                privilege.setCreated_date(sdf.format(now));
+                privilege.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 privilege.setCreater(user_id);
                 privilege.setIsactive(Common.IS_ACTIVE_Y);
                 privilegeMapper.insert(privilege);

@@ -19,22 +19,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	shopgoaljs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
 	shopgoaljs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示

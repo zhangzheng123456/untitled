@@ -63,7 +63,7 @@ public class CorpServiceImpl implements CorpService {
      * 以便新增企业时
      * 自动生成corp_code
      */
-    public String selectMaxCorpCode() throws SQLException{
+    public String selectMaxCorpCode() throws SQLException {
         return corpMapper.selectMaxCorpCode();
     }
 
@@ -83,13 +83,23 @@ public class CorpServiceImpl implements CorpService {
         return Common.DATABEAN_CODE_ERROR;
     }
 
-    public int selectCount() throws SQLException{
+    public int selectCount() throws SQLException {
         return corpMapper.selectCount();
     }
 
     @Override
     public int getAreaCount(String corp_code) {
         return this.corpMapper.getAreaCount(corp_code);
+    }
+
+    @Override
+    public int getBranCount(String corp_code) {
+        return this.corpMapper.getBrandCount(corp_code);
+    }
+
+    @Override
+    public int getGoodCount(String corp_code) {
+        return 0;
     }
 
 }

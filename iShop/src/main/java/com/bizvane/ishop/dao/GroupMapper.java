@@ -9,7 +9,7 @@ public interface GroupMapper {
 
     Group selectByGroupId(@Param("group_id")int group_id);
 
-    List<Group> selectAllGroup(@Param("corp_code")String corp_code, @Param("search_value")String search_value);
+    List<Group> selectAllGroup(@Param("corp_code")String corp_code, @Param("role_code")String role_code, @Param("search_value")String search_value);
 
     Group selectByCode(@Param("corp_code")String corp_code,@Param("group_code")String group_code,@Param("isactive")String isactive);
 

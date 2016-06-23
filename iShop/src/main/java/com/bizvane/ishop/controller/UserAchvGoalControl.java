@@ -32,7 +32,6 @@ import java.util.Date;
 public class UserAchvGoalControl {
     private static org.slf4j.Logger logger = LoggerFactory.getLogger(UserAchvGoalControl.class);
 
-    private SimpleDateFormat sdf = new SimpleDateFormat(Common.DATE_FORMATE);
     @Autowired
     private UserAchvGoalService userAchvGoalService = null;
     @Autowired
@@ -162,13 +161,13 @@ public class UserAchvGoalControl {
             //   userAchvGoal.setUser_name();
             userAchvGoal.setAchv_goal(jsonObject.getDouble("achv_goal"));
             userAchvGoal.setAchv_type(jsonObject.getString("achv_type"));
-            userAchvGoal.setStart_time(sdf.format(now));
+            userAchvGoal.setStart_time(jsonObject.getString("start_time"));
             userAchvGoal.setEnd_time(jsonObject.getString("end_time"));
-            userAchvGoal.setModified_date(sdf.format(now));
+            userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setCreater(user_id);
             userAchvGoal.setIsactive(jsonObject.getString("isactive"));
             userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
-            userAchvGoal.setCreated_date(sdf.format(now));
+            userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setCreater(user_id);
 
 
