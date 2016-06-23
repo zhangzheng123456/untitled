@@ -32,11 +32,8 @@ import java.util.List;
 @RequestMapping("/VIP")
 public class VIPController {
 
-
     @Autowired
     private UserService userService;
-
-
     @Autowired
     private VIPTagService vipTagService;
     @Autowired
@@ -170,6 +167,11 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 编辑前获取数据
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public String findVipById(HttpServletRequest request) {
@@ -239,6 +241,7 @@ public class VIPController {
 
     /**
      * 会员标签管理
+     * 列表
      */
     @RequestMapping(value = "/label/list", method = RequestMethod.GET)
     @ResponseBody
@@ -344,6 +347,11 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 编辑标签前，获取数据
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/label/select", method = RequestMethod.POST)
     @ResponseBody
     public String findVipLabelById(HttpServletRequest request) {
@@ -441,8 +449,6 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-
-//================
 
     /**
      * 会员标签类型管理

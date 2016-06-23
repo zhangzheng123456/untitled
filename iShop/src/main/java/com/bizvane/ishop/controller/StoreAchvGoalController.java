@@ -24,6 +24,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
+ * 店铺业绩目标管理
  * Created by lixiang on 2016/6/1.
  *
  * @@version
@@ -41,7 +42,7 @@ public class StoreAchvGoalController {
 
     /**
      * 用户管理
-     *
+     *列表展示
      * @param request
      * @return
      */
@@ -139,6 +140,12 @@ public class StoreAchvGoalController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 用户业绩目标
+     * 选择业绩
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public String editbefore(HttpServletRequest request) {
@@ -167,6 +174,11 @@ public class StoreAchvGoalController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 用户业绩目标编辑
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editStoreAchvGoal(HttpServletRequest request) {
@@ -193,6 +205,11 @@ public class StoreAchvGoalController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 用户业绩目标删除
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String delete(HttpServletRequest request) {
