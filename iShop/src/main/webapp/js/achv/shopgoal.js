@@ -207,6 +207,26 @@ jQuery(document).ready(function(){
 	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal.html");
 	});
+	//日期类型的点击事件
+    $("#drop_down li").click(function(){
+    	var text=$(this).html();
+    	if(text=="日"){
+    		$('#day').show();
+    		$('#week_p').hide();
+    		$('#month').show();
+    	}else if(text=="周"){
+    		$('#day').hide();
+    		$('#week_p').show();
+    	}else if(text=="年"){
+    		$('#day').hide();
+    		$('#week_p').show();
+    		$('#month').hide();
+    	}else if(text=="月"){
+    		$('#day').hide();
+    		$('#week_p').show();
+    		$('#month').show();
+    	}
+    })
 });
 function getcorplist(){
 	//获取所属企业列表

@@ -15,8 +15,12 @@ $("#PHONENUMBER").blur(function(){//手机号失去焦点的时候的验证
     		console.log(data);
     		if(data.code=='-1'){
     			$('.PHONENUMBER .notice').html("该手机号已被绑定,请<a class='link_blue' href='login.html' target='_blank'>直接登录</a>或<a class='link_forget' href='findpwd.html' target='_blank'>忘记密码？</a>");
+    			$("#btn").addClass("checkCode col col-30 disabled");
+				$("#btn").attr("disabled","true");
     		}else if(data.code=="0"){
     			$('.PHONENUMBER .notice').html("手机号码可用！");
+    			$("#btn").removeAttr("disabled");
+				$("#btn").removeClass("disabled");
     		};
     	})	
     }  
