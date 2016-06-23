@@ -74,15 +74,10 @@ var oc = new ObjectControl();
 				 */
 				var img_list=[];
 				var img_list_json={};
-				var picture_one='';
-				var picture_two='';
-				var picture_three='';
-				var picture_four='';
-				var picture_five='';
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
 				if(img_url_list.length<=5){
 					for(var i=0;i<img_url_list.length;i++){
-						img_list.push(img_url_list[i].src);
+						img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com//goods-images/"+$("#GOODS_CODE").val()+"_"+i+".jpg");
 					}
 					for(var j=0;j<img_list.length;j++){
 						img_list_json[j]=img_list[j];
@@ -193,8 +188,23 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
-				// $("#OWN_CORP option").val(msg.corp.corp_code);
-				// $("#OWN_CORP option").text(msg.corp.corp_name);
+				var img_html='';
+				var goods_img=JSON.parse(msg.goods_image);
+				for(var i=0;i<goods_img.length;i++){
+					img_html +='<li id="fileBox_WU_FILE_10" class="diyUploadHover">'
+                                   	+'<div class="viewThumb"><img src="'+goods_img[i]+'"></div>'
+                                   	+'<div class="diyCancel"></div>'
+                                    +'<div class="diySuccess"></div>'
+                                    +'<div class="diyFileName"></div>'
+                                    +'<div class="diyBar">'
+                                        +'<div class="diyProgress"></div>'
+                                        +'<div class="diyProgressText">0%</div>'
+                                    +'</div>'
+                                +'</li>';
+				}
+				$(".fileBoxUl").append(img_html);
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#GOODS_CODE").val(msg.goods_code);
 				$("#GOODS_NAME").val(msg.goods_name);
 				$("#GOODS_PRICE").val(msg.goods_price);
