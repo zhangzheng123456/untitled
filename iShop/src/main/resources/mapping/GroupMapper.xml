@@ -74,7 +74,7 @@
             AND DEF_GROUP.CORP_CODE = #{corp_code}
         </if>
         <if test="role_code != null and role_code !=''">
-            AND DEF_GROUP.role_code &lt;= #{role_code}
+            AND DEF_GROUP.role_code &lt; #{role_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
@@ -98,7 +98,7 @@
             AND corp_code = #{corp_code}
         </if>
         <if test="role_code != null and role_code !=''">
-            AND role_code &lt;= #{role_code}
+            AND role_code &lt; #{role_code}
         </if>
         AND ISACTIVE = 'Y'
         ORDER BY ID
