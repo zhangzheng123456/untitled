@@ -77,17 +77,18 @@ public class UserController {
                 //系统管理员
                 list = userService.selectBySearch(page_number, page_size, "", "");
             } else {
-       //         if (role_code.equals(Common.ROLE_GM)) {
+                if (role_code.equals(Common.ROLE_GM)) {
                     list = userService.selectBySearch(page_number, page_size, corp_code, "");
-//                }else if (role_code.equals(Common.ROLE_STAFF)){
-//                    User user= userService.getUserById(user_id);
-//                    List<User> users  = new ArrayList<User>();
-//                    users.add(user);
-//                    list = new PageInfo<User>();
-//                    list.setList(users);
-//                }else {
-//             //       list = ;
-//                }
+                }else if (role_code.equals(Common.ROLE_STAFF)){
+                    User user= userService.getUserById(user_id);
+                    List<User> users  = new ArrayList<User>();
+                    users.add(user);
+                    list = new PageInfo<User>();
+                    list.setList(users);
+                }else {
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = userService.selectBySearchPart(page_number,page_size,corp_code,"",store_code,role_code);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);

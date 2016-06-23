@@ -5,6 +5,7 @@ import com.bizvane.ishop.entity.User;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
     int deleteByUserId(int id);
@@ -25,6 +26,8 @@ public interface UserMapper {
 
     List<User> selectAllUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
+    List<User> selectPartUser(Map<String, Object> params);
+
     User selectUserById(int user_id);
 
     List<User> selectStoreUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
@@ -35,5 +38,4 @@ public interface UserMapper {
 
     int selectCount();
 
-    List<User> test(String[] store_code);
 }

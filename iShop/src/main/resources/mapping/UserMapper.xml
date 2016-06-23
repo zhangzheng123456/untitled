@@ -93,6 +93,37 @@
         ORDER BY user_code
     </select>
 
+    <select id="selectPartUser" resultMap="UserInfo">
+        SELECT *
+        from DEF_USER,DEF_GROUP,DEF_CORP
+        where DEF_USER.group_code = DEF_GROUP.group_code
+        AND DEF_USER.corp_code = DEF_CORP.corp_code
+        AND DEF_USER.corp_code = DEF_GROUP.corp_code
+        AND DEF_USER.CORP_CODE = #{corp_code}
+        AND DEF_GROUP.role_code &lt; #{role_code}
+        AND
+        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+            store_code like concat('%',#{item},'%')
+        </foreach>
+
+        <if test="search_value != null and search_value !=''">
+            AND
+            (USER_NAME like concat('%',#{search_value},'%')
+            OR user_code like concat('%',#{search_value},'%')
+            OR PHONE like concat('%',#{search_value},'%')
+            OR SEX like concat('%',#{search_value},'%')
+            OR DEF_CORP.corp_name like concat('%',#{search_value},'%')
+            OR DEF_GROUP.group_name like concat('%',#{search_value},'%')
+            OR LOGIN_TIME_RECENTLY like concat('%',#{search_value},'%')
+            OR DEF_USER.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR DEF_USER.MODIFIER like concat('%',#{search_value},'%')
+            OR DEF_USER.ISACTIVE like concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY user_code
+    </select>
+
+
     <select id="selectUserById" resultMap="UserInfo">
         select DEF_USER.id,
         user_code,
@@ -403,17 +434,6 @@
 -->
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT count(1) from DEF_USER
-    </select>
-
-
-    <select id="test" resultType="com.bizvane.ishop.entity.User">
-        SELECT * from DEF_USER
-        WHERE 1=1
-        AND store_code LIKE
-        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
-           #{item}
-         </foreach>
-
     </select>
 
 </mapper>

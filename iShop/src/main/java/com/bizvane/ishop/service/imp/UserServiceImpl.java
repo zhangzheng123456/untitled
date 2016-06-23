@@ -61,6 +61,26 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
+    /**
+     *用户拥有店铺下的员工
+     * （属于自己拥有的店铺，且角色级别比自己低）
+     */
+    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value,String store_code,String role_code) throws SQLException {
+
+        String[] stores = store_code.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("array", stores);
+        params.put("search_value", search_value);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+
+        List<User> users;
+        PageHelper.startPage(page_number, page_size);
+        users = userMapper.selectPartUser(params);
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
         if (user.getStore_code() == null || user.getStore_code().equals("")) {
