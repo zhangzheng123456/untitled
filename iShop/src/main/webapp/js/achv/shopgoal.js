@@ -246,14 +246,32 @@ function store_data(c){
 	_params["corp_code"]=c;//企业编号
 	var _command="/user/store";//调取店铺的名字
 	oc.postRequire("post", _command,"", _params, function(data){
-		var msg=JSON.parse(data.message);
-		console.log(msg.stores);
-		var msg_stores=JSON.parse(msg.stores);
-		$('#SHOP_NAME').empty();
-		$('#shop_select .searchable-select').remove();
-		for(var i=0;i<msg_stores.length;i++){
-			$('#SHOP_NAME').append("<option value='"+msg_stores[i].store_code+"'>"+msg_stores[i].store_name+"</option>");
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg.stores);
+			var msg_stores=JSON.parse(msg.stores);
+			$('#SHOP_NAME').empty();
+			$('#shop_select .searchable-select').remove();
+			if(msg_stores.length>0){
+				for(var i=0;i<msg_stores.length;i++){
+					$('#SHOP_NAME').append("<option value='"+msg_stores[i].store_code+"'>"+msg_stores[i].store_name+"</option>");
+				}
+			}else if(msg_stores.length<=0){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "改企业没有店铺"
+			    });
+			}
+			$("#SHOP_NAME").searchableSelect();
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
 		}
-		$("#SHOP_NAME").searchableSelect();
 	})
 }

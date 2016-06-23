@@ -56,7 +56,7 @@
                         <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
                     </div>
                     <div class="drop_down item_1">
-                    <span><label>时间类型</label><input class="input_select" type="text" id="TIME_TYPE" placeholder="请选择时间类型" readonly/>
+                    <span><label>时间类型</label><input class="input_select" type="text" id="TIME_TYPE" value="日" readonly/>
                             <ul>
                                 <li>日</li>
                                 <li>周</li>
@@ -68,15 +68,15 @@
                     <!-- <div>
                         <span><label>日期</label><input type="text" id="DATE" verify="Empty"placeholder="2016/01/01"/><div style="padding-left:135px" class="hint"><div  hintinfo="日期为必填项，不能为空！"></div></div></span>
                     </div> -->
-
-                    <div>
-                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/></span>
+                    <div id="day">
+                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/></span>
                     </div>
-                    <div>
+                    <div id="week_p" style="display:none;">
                         <span>
                             <label>日期</label>
-                            <input type="text" id="week">
-                            <input type="text" id="week">
+                            <input type="text" id="year" class="week">
+                            <input type="text" id="month" class="week">
+                            <input type="text" id="week" class="week">
                         </span>
                     </div>
                 </form>

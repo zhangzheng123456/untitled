@@ -331,7 +331,8 @@ function jumpBianse(){
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
     //点击编辑查看权限
-    $('.power').click(function(){
+    $('.power').click(function(event){
+        var event=window.event||arguments[0];
         if(event.stopPropagation){
             event.stopPropagation();
         }else{

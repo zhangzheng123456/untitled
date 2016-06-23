@@ -12,7 +12,6 @@ console.log(funcCode);
 //模仿select
 $(function(){
         $("#page_row").click(function(){
-
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
             }else{  

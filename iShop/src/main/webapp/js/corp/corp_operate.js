@@ -316,7 +316,7 @@ jQuery(document).ready(function(){
     })
     //授权的点击事件
     $("#power").click(function(){
-    	 window.parent.location.href="http://wx.bizvane.com/wechat/goAuthor";
+    	 window.parent.location.href="http://wx.bizvane.com/wechat/Authorization.html";
     })
     //检查是否可否授权状态、
     $("#state").click(function(){
