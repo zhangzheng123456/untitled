@@ -377,7 +377,7 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/area/delete","0",param,function(data){
+    oc.postRequire("post","/VIP/label/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
                frame();

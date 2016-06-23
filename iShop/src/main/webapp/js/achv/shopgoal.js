@@ -201,15 +201,11 @@ jQuery(document).ready(function(){
 	}else{
 		getcorplist();
 	}
-	//change 事件
-	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
     $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal.html");
 	});
 	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+		$(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal.html");
 	});
 });
 function getcorplist(){
@@ -228,7 +224,13 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
-			$('.corp_select select').searchableSelect();
+			$("#OWN_CORP").searchableSelect();
+			var c=$('#corp_select .selected').attr("data-value");
+			store_data(c);
+			$("#corp_select .searchable-select-item").click(function(){
+				var c=$(this).attr("data-value");
+				store_data(c);
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -238,4 +240,20 @@ function getcorplist(){
 			});
 		}
 	});
+}
+function store_data(c){
+	var _params={};
+	_params["corp_code"]=c;//企业编号
+	var _command="/user/store";//调取店铺的名字
+	oc.postRequire("post", _command,"", _params, function(data){
+		var msg=JSON.parse(data.message);
+		console.log(msg.stores);
+		var msg_stores=JSON.parse(msg.stores);
+		$('#SHOP_NAME').empty();
+		$('#shop_select .searchable-select').remove();
+		for(var i=0;i<msg_stores.length;i++){
+			$('#SHOP_NAME').append("<option value='"+msg_stores[i].store_code+"'>"+msg_stores[i].store_name+"</option>");
+		}
+		$("#SHOP_NAME").searchableSelect();
+	})
 }
