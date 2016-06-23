@@ -265,10 +265,13 @@ public class UserServiceImpl implements UserService {
 
                     //插入用户信息
                     User user = new User();
+                    user.setUser_code("SY001");
                     user.setUser_name(user_name);
                     user.setPhone(phone);
+                    user.setLogin_time_recently("");
+                    user.setSex("M");
                     user.setPassword(password);
-                    user.setGroup_code("");
+                    user.setGroup_code("G0001");
                     user.setCorp_code(corp_code);
                     user.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     user.setCreater("root");
@@ -292,6 +295,19 @@ public class UserServiceImpl implements UserService {
                     corp.setIsactive(Common.IS_ACTIVE_Y);
                     log.info("----------register corp" + corp.toString());
                     corpService.insertCorp(corp);
+
+                    //插入群组
+                    Group group = new Group();
+                    group.setGroup_code("G0001");
+                    group.setCorp_code(corp_code);
+                    group.setRole_code(Common.ROLE_GM);
+                    group.setGroup_name("企业管理员");
+                    group.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    group.setCreater("root");
+                    group.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    group.setModifier("root");
+                    group.setIsactive(Common.IS_ACTIVE_Y);
+                    groupMapper.insertGroup(group);
 
                     result = Common.DATABEAN_CODE_SUCCESS;
                 }else {

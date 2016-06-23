@@ -551,6 +551,9 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 用户编号是否重复
+     */
     @RequestMapping(value = "/UserCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String UserCodeExist(HttpServletRequest request) {
@@ -584,6 +587,9 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 手机号是否重复
+     */
     @RequestMapping(value = "/PhoneExist", method = RequestMethod.POST)
     @ResponseBody
     public String PhoneExist(HttpServletRequest request) {
@@ -614,7 +620,9 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
-
+    /**
+     * 邮箱是否重复
+     */
     @RequestMapping(value = "/EamilExist", method = RequestMethod.POST)
     @ResponseBody
     public String EamilExist(HttpServletRequest request) {
@@ -645,6 +653,9 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 导购根据user_code生成二维码
+     */
     @RequestMapping(value = "/creatQrcode", method = RequestMethod.POST)
     @ResponseBody
     public String creatQrcode(HttpServletRequest request) {
@@ -657,18 +668,27 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String user_code = jsonObject.get("user_code").toString();
-            String auth_appid = corpService.selectByCorpId(0,corp_code).getApp_id();
-
-            String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid="+auth_appid+"&guider_code="+user_code;
-            String result = IshowHttpClient.get(url);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            Corp corp = corpService.selectByCorpId(0,corp_code);
+            String auth_appid = corp.getApp_id();
+            String is_authorize = corp.getIs_authorize();
+            if (auth_appid != null && auth_appid != "") {
+                if (is_authorize.equals("Y")) {
+                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&guider_code=" + user_code;
+                    String result = IshowHttpClient.get(url);
+                    dataBean.setId(id);
+                    dataBean.setMessage(result);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    return dataBean.getJsonStr();
+                }
+            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
+        dataBean.setId(id);
+        dataBean.setMessage("所属企业未授权！");
+        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         return dataBean.getJsonStr();
     }
 }
