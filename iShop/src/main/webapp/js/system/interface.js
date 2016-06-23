@@ -141,7 +141,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/appversion/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/interfacers/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
@@ -159,7 +159,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/appversion/search","0",param,function(data){
+            oc.postRequire("post","/interfacers/search","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
@@ -199,21 +199,13 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].platform
+                        + data[i].version
                         + "</td><td>"
-                        + data[i].download_addr
+                        + data[i].crop_code
                         + "</td><td><span>"
-                        + data[i].version_id
-                        + "</span></td><td>"
-                        + data[i].is_force_update
-                        +"</td><td>"
-                        +data[i].crop_code
-                        + "</td><td>"
-                        +data[i].version_describe
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].modified
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
@@ -234,7 +226,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/appversion/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/interfacers/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             // console.log(data);
             if(data.code=="0"){
@@ -279,7 +271,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/system/appversion_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/syste/interface_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -287,7 +279,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/system/appversion_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/syste/interface_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -301,7 +293,7 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/system/appversion_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/syste/interface_edit.html");
     })
     //删除
     $("#remove").click(function(){
@@ -334,7 +326,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/appversion/search","0",param,function(data){
+    oc.postRequire("post","/interfacers/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -383,7 +375,7 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/appversion/delete","0",param,function(data){
+    oc.postRequire("post","/interfacers/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
                frame();
