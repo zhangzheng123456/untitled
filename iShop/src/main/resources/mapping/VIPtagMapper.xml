@@ -111,6 +111,7 @@
                 isactive=#{isactive},
             </if>
         </trim>
+        WHERE ID=#{ID}
     </update>
 
 

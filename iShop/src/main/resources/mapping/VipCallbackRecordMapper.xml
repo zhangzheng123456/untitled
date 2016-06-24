@@ -169,6 +169,7 @@
                 creater=#{creater},
             </if>
         </trim>
+        WHERE ID=#{ID}
     </update>
 
 </mapper>

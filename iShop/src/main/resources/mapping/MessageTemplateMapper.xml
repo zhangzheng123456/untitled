@@ -163,6 +163,7 @@
                 type_code=#{type_code},
             </if>
         </trim>
+        WHERE ID=#{ID}
     </update>
 
     <delete id="deleteByPrimaryKey">

@@ -73,6 +73,7 @@
                 corp_code=#{corp_code},
             </if>
         </trim>
+        WHERE ID=#{ID}
     </update>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
