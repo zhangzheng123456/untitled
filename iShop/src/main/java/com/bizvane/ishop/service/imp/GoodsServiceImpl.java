@@ -33,24 +33,25 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Goods getGoodsById(int id) throws SQLException {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
-        String jsString = goods.getGoods_image();
-        org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
-
-        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-        result.put("test", JSON.toJSONString(jsonObject));
-        System.out.println(result.toString());
-        Iterator<String> it = jsonObject.keySet().iterator();
-        org.json.JSONObject tempObj = new org.json.JSONObject();
-        while (it.hasNext()) {
-            String key = it.next();
-            String value = jsonObject.get(key).toString();
-            System.out.println(key + ":" + value);
-            tempObj.put(key, value);
-        }
-        GsonBuilder gb = new GsonBuilder();
-        gb.disableHtmlEscaping();
-        String temp1 = gb.create().toJson(tempObj);
-        goods.setGoods_image(temp1);
+//        String jsString = goods.getGoods_image();
+//        org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+//
+//        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+//        result.put("test", JSON.toJSONString(jsonObject));
+//        System.out.println(result.toString());
+//        Iterator<String> it = jsonObject.keySet().iterator();
+//        org.json.JSONObject tempObj = new org.json.JSONObject();
+//        while (it.hasNext()) {
+//            String key = it.next();
+//            String value = jsonObject.get(key).toString();
+//            System.out.println(key + ":" + value);
+//            tempObj.put(key, value);
+//        }
+//        GsonBuilder gb = new GsonBuilder();
+//        gb.disableHtmlEscaping();
+//        String temp1 = gb.create().toJson(tempObj);
+//        goods.setGoods_image(temp1);
+        Transter(goods);
         return goods;
     }
 
