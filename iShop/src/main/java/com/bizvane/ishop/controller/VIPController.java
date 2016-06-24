@@ -657,7 +657,7 @@ public class VIPController {
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
-            JSONObject result = new JSONObject();
+            org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VipCallbackRecord> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = this.vipCallbackRecordService.selectBySearch(page_number, page_size, "", "");

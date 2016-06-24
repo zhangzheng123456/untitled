@@ -1,6 +1,7 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.VipCallbackRecord;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -18,6 +19,6 @@ public interface VipCallbackRecordMapper {
 
     int updateByPrimaryKey(VipCallbackRecord vipCallbackRecord);
 
-    List<VipCallbackRecord> selectAllVipCallBackRecordInfo(String corp_code, String search_value);
+    List<VipCallbackRecord> selectAllVipCallBackRecordInfo(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
 }

@@ -14,6 +14,7 @@
         <result column="isactive" property="isactive"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
+        <result column="corp_code" property="corp_code"/>
         <association property="vipinfo" javaType="com.bizvane.ishop.entity.VIPInfo">
             <result column="vip_name" property="vip_name"/>
         </association>
@@ -103,8 +104,8 @@
     </delete>
     <select id="selectAllVipCallBackRecordInfo" resultMap="VipInfos">
         select
-        dvc.id    ,
-        dvc.vip_code    ,
+        dvc.id ,
+        dvc.vip_code ,
         dvc.user_code,
         dvc.callback_type,
         dvc.callback_time,
@@ -112,16 +113,16 @@
         dvc.modified_date ,
         dvc.modifier,
         dvc.isactive,
-        dvc.created_date  ,
+        dvc.created_date ,
         dvc.creater,
         dv.vip_name,
         du.user_name
-        from DEF_VIP_CALLBACK_RECORD dvc  ,DEF_VIP dv,DEF_USER du
+        from DEF_VIP_CALLBACK_RECORD dvc,DEF_VIP dv,DEF_USER du
         WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code
         <if test="corp_code!=null and corp_code!=''">
             dvc.corp_code=#{corp_code}
         </if>
-        <if test="search_value!=null search_value!=''">
+        <if test="search_value!=null and search_value!=''">
             and (
             dv.vip_name like concat('%',#{search_value},'%')
             or dvc.callback_type like concat('%',#{search_value},'%')
@@ -131,6 +132,7 @@
             or dvc.isactive like concat('%',#{search_value},'%')
             )
         </if>
+        ORDER BY dvc.id
     </select>
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipCallbackRecord">
