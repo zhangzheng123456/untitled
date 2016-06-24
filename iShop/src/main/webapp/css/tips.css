@@ -31,6 +31,7 @@
 .year li,.month li{
 	width: 97px;
 	height: 26px;
+	line-height: 26px;
 	padding-left: 5px;
 }
 .year li:hover,.month li:hover{

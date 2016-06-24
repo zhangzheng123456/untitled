@@ -56,7 +56,15 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-			 var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
+				var _params = {
+					"corp_code": OWN_CORP,
+					"store_code": SHOP_ID,
+					"store_name": SHOP_NAME,
+					"achv_type": TIME_TYPE,
+					"achv_goal": PER_GOAL,
+					"end_time": DATE,
+					"isactive": ISACTIVE
+				};
 				shopgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -213,20 +221,20 @@ jQuery(document).ready(function(){
     	var text=$(this).html();
     	if(text=="日"){
     		$('#day').show();
-    		$('#week_p').hide();
-    		$('#month').show();
-    	}else if(text=="周"){
-    		$('#day').hide();
-    		$('#week_p').show();
     	}else if(text=="年"){
     		$('#day').hide();
     		$('#week_p').show();
     		$('#month').hide();
-    	}else if(text=="月"){
-    		$('#day').hide();
-    		$('#week_p').show();
-    		$('#month').show();
     	}
+    })
+    //点击年的input出来ul
+    $("#year").click(function(){
+    	$("#week_p .year").show();
+    })
+    $("#year").blur(function(){
+    	setTimeout(function(){
+    		$("#week_p .year").hide();	
+    	},200);  
     })
 });
 function getcorplist(){
@@ -299,15 +307,19 @@ function store_data(c){
 function year(){
 	var myDate = new Date();
 	var year=myDate.getFullYear();
+	var year=year-1;
 	console.log($('#week_p .year'));
 	$('#week_p .year').empty();
 	for(var i=0;i<10;i++){
-		var year=year+1
+		year++;
 		var li="<li>";
 		li+=""+year+"</li>"
 		$('#week_p .year').append(li);
 	}
-}
-function week(){
-    	
+	$("#week_p .year>li").click(function(){
+    	console.log(this);
+    	var value=$(this).html();
+    	$('#year').val(value);
+    	$('#week_p .year').hide();
+    })
 }
