@@ -17,6 +17,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.System;
@@ -124,14 +125,58 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
-    public int insert(User user) throws SQLException {
-        return userMapper.insertUser(user);
+    @Transactional
+    public String insert(User user) throws SQLException {
+        String result = "";
+        String phone = user.getPhone();
+        String user_code = user.getUser_code();
+        String corp_code = user.getCorp_code();
+        String email = user.getEmail();
+        String phone_exist = userPhoneExist(phone);
+        String code_exist = userCodeExist(user_code,corp_code);
+        String email_exist = userEmailExist(email);
+
+        if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result = "手机号已存在";
+        }else if (!code_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result = "员工编号已存在";
+        }else if (!email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result = "邮箱已存在";
+        }else if(phone_exist.equals(Common.DATABEAN_CODE_SUCCESS) && code_exist.equals(Common.DATABEAN_CODE_SUCCESS)
+                && email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+            userMapper.insertUser(user);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
     }
 
-    public int update(User user) throws SQLException {
-        return userMapper.updateByUserId(user);
+    @Transactional
+    public String update(User user) throws SQLException {
+        String result = "";
+        int user_id = user.getId();
+        String phone = user.getPhone();
+        String user_code = user.getUser_code();
+        String corp_code = user.getCorp_code();
+        String email = user.getEmail();
+        User user1 = getUserById(user_id);
+        String phone_exist = userPhoneExist(phone);
+        String code_exist = userCodeExist(user_code,corp_code);
+        String email_exist = userEmailExist(email);
+
+        if (!user1.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result = "手机号已存在";
+        }else if (!user1.getUser_code().equals(user_code) && !code_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result = "员工编号已存在";
+        }else if (!user1.getEmail().equals(email) && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+            result = "邮箱已存在";
+        }else{
+            userMapper.insertUser(user);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
     }
 
+    @Transactional
     public int delete(int id) throws SQLException {
         return userMapper.deleteByUserId(id);
     }
@@ -139,6 +184,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 登录查询
      */
+    @Transactional
     public JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException {
         System.out.println("---------login--------");
         User login_user = userMapper.selectLogin(phone, password);
@@ -229,6 +275,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 注册
      */
+    @Transactional
     public String register(String message) {
         String result = Common.DATABEAN_CODE_ERROR;
         try {
@@ -327,6 +374,7 @@ public class UserServiceImpl implements UserService {
     /**
      * 获取验证码
      */
+    @Transactional
     public String getAuthCode(String phone, String platform) {
 
         String text = "[爱秀]您的注册验证码为：";

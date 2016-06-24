@@ -79,15 +79,15 @@ public class UserController {
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
                     list = userService.selectBySearch(page_number, page_size, corp_code, "");
-                }else if (role_code.equals(Common.ROLE_STAFF)){
-                    User user= userService.getUserById(user_id);
-                    List<User> users  = new ArrayList<User>();
+                } else if (role_code.equals(Common.ROLE_STAFF)) {
+                    User user = userService.getUserById(user_id);
+                    List<User> users = new ArrayList<User>();
                     users.add(user);
                     list = new PageInfo<User>();
                     list.setList(users);
-                }else {
+                } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = userService.selectBySearchPart(page_number,page_size,corp_code,"",store_code,role_code);
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, role_code);
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -136,9 +136,9 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            User user = new User();
             String user_code = jsonObject.get("user_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            User user = new User();
             user.setUser_code(user_code);
             user.setUser_name(jsonObject.get("username").toString());
             user.setAvatar(jsonObject.get("avater").toString());
@@ -149,7 +149,7 @@ public class UserController {
             user.setCorp_code(corp_code);
             user.setGroup_code(jsonObject.get("group_code").toString());
             String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.endsWith(",")){
+            if (!store_code.endsWith(",")) {
                 store_code = store_code + ",";
             }
             user.setStore_code(store_code);
@@ -162,20 +162,15 @@ public class UserController {
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
-
-            logger.info("------insert user" + user.toString());
-
-            String exist = userService.userCodeExist(user_code, corp_code);
-            if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
-                logger.info("------insert user-----用户编号已存在！--");
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("用户编号已存在！");
-            } else {
-                userService.insert(user);
+            String result = userService.insert(user);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -215,7 +210,7 @@ public class UserController {
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setGroup_code(jsonObject.get("group_code").toString());
             String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.endsWith(",")){
+            if (!store_code.endsWith(",")) {
                 store_code = store_code + ",";
             }
             user.setStore_code(store_code);
@@ -225,10 +220,16 @@ public class UserController {
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
             logger.info("------update user" + user.toString());
-            userService.update(user);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = userService.update(user);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("edit success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -432,7 +433,7 @@ public class UserController {
                 JSONArray array = new JSONArray();
                 for (int i = 0; i < ids.length; i++) {
                     logger.info("-------------store_code" + ids[i]);
-                    store = storeService.getStoreByCode(corp_code1, ids[i],Common.IS_ACTIVE_Y);
+                    store = storeService.getStoreByCode(corp_code1, ids[i], Common.IS_ACTIVE_Y);
                     array.add(store);
                 }
                 stores.put("stores", JSON.toJSONString(array));
@@ -517,16 +518,16 @@ public class UserController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             String search_value = "";
-            if (jsonObject.has("searchValue")){
+            if (jsonObject.has("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code,search_value);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code, search_value);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
             String corp_code = userService.getUserById(Integer.parseInt(user_id)).getCorp_code();
-            String role_code = groupService.selectByCode(corp_code ,group_code,Common.IS_ACTIVE_Y).getRole_code();
+            String role_code = groupService.selectByCode(corp_code, group_code, Common.IS_ACTIVE_Y).getRole_code();
             String user_code = userService.getUserById(Integer.parseInt(user_id)).getUser_code();
 
             //获取群组自定义的权限
@@ -668,7 +669,7 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String user_code = jsonObject.get("user_code").toString();
-            Corp corp = corpService.selectByCorpId(0,corp_code);
+            Corp corp = corpService.selectByCorpId(0, corp_code);
             String auth_appid = corp.getApp_id();
             String is_authorize = corp.getIs_authorize();
             if (auth_appid != null && auth_appid != "") {
