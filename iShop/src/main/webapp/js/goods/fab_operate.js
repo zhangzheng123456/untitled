@@ -79,9 +79,9 @@ var oc = new ObjectControl();
 					for(var i=0;i<img_url_list.length;i++){
 						img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com//goods-images/"+$("#GOODS_CODE").val()+"_"+i+".jpg");
 					}
-					for(var j=0;j<img_list.length;j++){
-						img_list_json[j]=img_list[j];
-					}
+					// for(var j=0;j<img_list.length;j++){
+					// 	img_list_json[j]=img_list[j];
+					// }
 					// img_list_json=JSON.stringify(img_list_json);
 				}else{
 					alert("商品图片最多可以上传5张");
@@ -92,7 +92,7 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":img_list_json,"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":img_list.toString(),"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
