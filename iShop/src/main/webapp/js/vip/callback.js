@@ -199,12 +199,12 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        // + "</td><td>"
-                        // + data[i].vip_name
-                        + "</td><td><span>"
-                        + data[i].user_name
                         + "</td><td>"
-                        + data[i].corp.corp_name
+                        + data[i].vipinfor.vip_name
+                        + "</td><td><span>"
+                        + data[i].user.user_name
+                        // + "</td><td>"
+                        // + data[i].corp.corp_name
                          +"</td><td>"
                         +data[i].callback_type
                         +"</td><td>"
