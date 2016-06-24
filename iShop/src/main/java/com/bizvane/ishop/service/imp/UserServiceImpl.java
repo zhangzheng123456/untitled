@@ -265,7 +265,7 @@ public class UserServiceImpl implements UserService {
 
                     //插入用户信息
                     User user = new User();
-                    user.setUser_code("SY001");
+                    user.setUser_code("SY0001");
                     user.setUser_name(user_name);
                     user.setPhone(phone);
                     user.setAvatar("../img/a3.jpg");
@@ -289,6 +289,7 @@ public class UserServiceImpl implements UserService {
                     corp.setAddress(address);
                     corp.setContact(user_name);
                     corp.setContact_phone(phone);
+                    corp.setIs_authorize("N");
                     corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     corp.setCreater("root");
                     corp.setModified_date(Common.DATETIME_FORMAT.format(now));

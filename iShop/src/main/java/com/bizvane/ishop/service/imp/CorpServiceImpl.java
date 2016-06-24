@@ -49,7 +49,7 @@ public class CorpServiceImpl implements CorpService {
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
             corp.setApp_id(jsonObject.get("app_id").toString());
-
+            corp.setIs_authorize("N");
             Date now = new Date();
             corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
             corp.setCreater(user_id);

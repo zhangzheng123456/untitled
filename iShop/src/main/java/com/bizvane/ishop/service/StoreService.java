@@ -32,14 +32,13 @@ public interface StoreService {
 
     List<Store> getCorpStore(String corp_code) throws SQLException;
 
-
     Store getStoreByCode(String corp_code, String store_code,String isactive);
 
     List<User> getStoreUser(String corp_code, String store_code);
 
     String insert(String message, String user_id) throws SQLException;
 
-    String update(String message, String user_id);
+    String update(String message, String user_id) throws SQLException;
 
     int delete(int id) throws SQLException;
 

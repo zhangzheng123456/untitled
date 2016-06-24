@@ -117,15 +117,20 @@ public class StoreServiceImpl implements StoreService {
 
     //新增店铺
     @Override
-    public String insert(String message, String user_id) {
+    public String insert(String message, String user_id) throws SQLException{
         JSONObject jsonObject = new JSONObject(message);
-        try {
-
+        String result = Common.DATABEAN_CODE_ERROR;
+        String store_code = jsonObject.get("store_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString();
+        String store_name = jsonObject.get("store_name").toString();
+        Store store = getStoreByCode(corp_code,store_code,"");
+        Store store1 = getStoreByName(corp_code,store_name);
+        if (store == null && store1 == null) {
             Store shop = new Store();
-            shop.setStore_code(jsonObject.get("store_code").toString());
-            shop.setStore_name(jsonObject.get("store_name").toString());
+            shop.setStore_code(store_code);
+            shop.setStore_name(store_name);
             shop.setArea_code(jsonObject.get("area_code").toString());
-            shop.setCorp_code(jsonObject.get("corp_code").toString());
+            shop.setCorp_code(corp_code);
             shop.setBrand_code(jsonObject.get("brand_code").toString());
             shop.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
@@ -135,25 +140,38 @@ public class StoreServiceImpl implements StoreService {
             shop.setModifier(user_id);
             shop.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.insertStore(shop);
-
-            return Common.DATABEAN_CODE_SUCCESS;
-        } catch (Exception ex) {
-            return ex.getMessage();
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else if(store != null){
+            result = "店铺编号已存在";
+        }else {
+            result = "店铺名称已存在";
         }
+        return result;
+
     }
 
     //修改店铺
     @Override
-    public String update(String message, String user_id) {
-        String result = "";
-        try {
-            JSONObject jsonObject = new JSONObject(message);
-            Store store = new Store();
-            store.setId(Integer.valueOf(jsonObject.get("id").toString()));
-            store.setStore_code(jsonObject.get("store_code").toString());
-            store.setStore_name(jsonObject.get("store_name").toString());
+    public String update(String message, String user_id) throws SQLException{
+        String result = Common.DATABEAN_CODE_ERROR;
+        JSONObject jsonObject = new JSONObject(message);
+        int store_id = Integer.valueOf(jsonObject.get("id").toString());
+        String store_code = jsonObject.get("store_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString();
+        String store_name = jsonObject.get("store_name").toString();
+
+        Store store = getStoreById(store_id);
+        Store store1 = getStoreByCode(corp_code,store_code,"");
+        Store store2 = getStoreByName(corp_code,store_name);
+
+        if ((store.getArea_code().equals(store_code) || store1 == null)
+                && (store.getArea_name().equals(store_name) || store2 == null)) {
+            store = new Store();
+            store.setId(store_id);
+            store.setStore_code(store_code);
+            store.setStore_name(store_name);
             store.setArea_code(jsonObject.get("area_code").toString());
-            store.setCorp_code(jsonObject.get("corp_code").toString());
+            store.setCorp_code(corp_code);
             store.setBrand_code(jsonObject.get("brand_code").toString());
             store.setFlg_tob(jsonObject.get("flg_tob").toString());
             Date now = new Date();
@@ -162,8 +180,10 @@ public class StoreServiceImpl implements StoreService {
             store.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.updateStore(store);
             result = Common.DATABEAN_CODE_SUCCESS;
-        } catch (Exception ex) {
-            return ex.getMessage();
+        }else if (!store.getArea_code().equals(store_code) && store1 != null){
+            result = "店铺编号已存在";
+        }else {
+            result = "店铺名称已存在";
         }
         return result;
     }
