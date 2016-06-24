@@ -103,7 +103,7 @@ public class GoodsServiceImpl implements GoodsService {
         while (it.hasNext()) {
             String key = it.next();
             String value = jsonObject.get(key).toString();
-            sb.append(key + "," + value + ",");
+            sb.append(value + ",");
         }
 
 //            GsonBuilder gb = new GsonBuilder();
