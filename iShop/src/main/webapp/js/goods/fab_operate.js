@@ -190,7 +190,13 @@ jQuery(document).ready(function(){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
 				var goods_img=JSON.parse(msg.goods_image);
-				console.log(goods_img.map);
+				console.log(goods_img);
+				if(goods_img.indexOf(',')!==-1){
+					goods_img= s.split(",");
+					console.log(goods_img);
+				}else{
+					goods_img=goods_img;
+				}
 				// console.log(goods_img.map.length);
 				// console.log(JSON.parse(goods_img.map));
 				// for(var i=0;i<goods_img.length;i++){

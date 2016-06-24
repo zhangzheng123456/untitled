@@ -104,35 +104,17 @@ public class CorpController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            Corp corp = new Corp();
-            //为新增企业，计算corp_code
-//            String max_code = corpService.selectMaxCorpCode();
-//            int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
-//            Integer c = code;
-//            int length = max_code.length() - c.toString().length() - 1;
-//            String corp_code = "C";
-//            for (int i = 0; i < length; i++) {
-//                corp_code = corp_code + "0";
-//            }
-//            corp_code = corp_code + code;
-            corp.setCorp_code(jsonObject.get("corp_code").toString());
-            corp.setCorp_name(jsonObject.get("corp_name").toString());
-            corp.setAddress(jsonObject.get("address").toString());
-            corp.setContact(jsonObject.get("contact").toString());
-            corp.setContact_phone(jsonObject.get("phone").toString());
-            corp.setApp_id(jsonObject.get("app_id").toString());
 
-            Date now = new Date();
-            corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            corp.setCreater(user_id);
-            corp.setModified_date(Common.DATETIME_FORMAT.format(now));
-            corp.setModifier(user_id);
-            corp.setIsactive(jsonObject.get("isactive").toString());
-            corpService.insertCorp(corp);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("add success");
+            String result = corpService.insert(message,user_id);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -156,33 +138,16 @@ public class CorpController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            Corp corp = new Corp();
-            corp.setId(Integer.parseInt(jsonObject.get("id").toString()));
-            corp.setCorp_code(jsonObject.get("corp_code").toString());
-            corp.setCorp_name(jsonObject.get("corp_name").toString());
-            corp.setAddress(jsonObject.get("address").toString());
-            corp.setContact(jsonObject.get("contact").toString());
-            corp.setContact_phone(jsonObject.get("phone").toString());
-            corp.setAvater(jsonObject.get("avater").toString());
-            corp.setApp_id(jsonObject.get("app_id").toString());
-
-            Date now = new Date();
-            corp.setModified_date(Common.DATETIME_FORMAT.format(now));
-            corp.setModifier(user_id);
-            corp.setIsactive(jsonObject.get("isactive").toString());
-
-
-//            int count = corpService.getAreaCount(corp.getCorp_code());
-//            if (count == 0) {
-//                dataBean.setId(id);
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage("企业中有区域，请处理区域后再编辑！！");
-//            }
-            corpService.updateByCorpId(corp);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = corpService.update(message,user_id);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("edit success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

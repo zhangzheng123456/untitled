@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.BrandMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Brand;
@@ -7,10 +8,13 @@ import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BrandService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,16 +61,75 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public int insert(Brand brand) throws SQLException {
-        return brandMapper.insertBrand(brand);
+    @Transactional
+    public String insert(String message,String user_id) throws SQLException {
+        String result = Common.DATABEAN_CODE_ERROR;
+        JSONObject jsonObject = new JSONObject(message);
+        String brand_code = jsonObject.get("brand_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString();
+        String brand_name = jsonObject.get("brand_name").toString();
+
+        Brand brand = getBrandByCode(corp_code,brand_code);
+        Brand brand1 = getBrandByName(corp_code,brand_name);
+        if (brand == null && brand1 == null) {
+            brand = new Brand();
+            Date now = new Date();
+            brand.setBrand_code(brand_code);
+            brand.setBrand_name(brand_name);
+            brand.setCorp_code(corp_code);
+            brand.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            brand.setCreater(user_id);
+            brand.setModified_date(Common.DATETIME_FORMAT.format(now));
+            brand.setModifier(user_id);
+            brand.setIsactive(jsonObject.get("isactive").toString());
+            brandMapper.insertBrand(brand);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else if(brand != null){
+            result = "品牌编号已存在";
+        }else {
+            result = "品牌名称已存在";
+        }
+        return result;
     }
 
     @Override
-    public int update(Brand brand) throws SQLException {
-        return brandMapper.updateBrand(brand);
+    @Transactional
+    public  String update(String message,String user_id) throws SQLException {
+        String result = Common.DATABEAN_CODE_ERROR;
+        JSONObject jsonObject = new JSONObject(message);
+        int brand_id = Integer.parseInt(jsonObject.get("id").toString());
+
+        String brand_code = jsonObject.get("brand_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString();
+        String brand_name = jsonObject.get("brand_name").toString();
+
+        Brand brand = getBrandById(brand_id);
+        Brand brand1 = getBrandByCode(corp_code,brand_code);
+        Brand brand2 = getBrandByCode(corp_code,brand_name);
+
+        if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
+                (brand.getBrand_name().equals(brand_name) || brand2 == null)) {
+            brand = new Brand();
+            Date now = new Date();
+            brand.setId(brand_id);
+            brand.setBrand_code(brand_code);
+            brand.setBrand_name(brand_name);
+            brand.setCorp_code(corp_code);
+            brand.setModified_date(Common.DATETIME_FORMAT.format(now));
+            brand.setModifier(user_id);
+            brand.setIsactive(jsonObject.get("isactive").toString());
+            brandMapper.updateBrand(brand);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else if (!brand.getBrand_code().equals(brand_code) && brand1 != null){
+            result = "品牌编号已存在";
+        }else {
+            result = "品牌名称已存在";
+        }
+        return result;
     }
 
     @Override
+    @Transactional
     public int delete(int id) throws SQLException {
         return brandMapper.deleteByBrandId(id);
     }

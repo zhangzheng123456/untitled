@@ -94,21 +94,17 @@ public class BrandController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            Brand brand = new Brand();
-            Date now = new Date();
-            brand.setBrand_code(jsonObject.get("brand_code").toString());
-            brand.setBrand_name(jsonObject.get("brand_name").toString());
-            brand.setCorp_code(jsonObject.get("corp_code").toString());
-            brand.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            brand.setCreater(user_id);
-            brand.setModified_date(Common.DATETIME_FORMAT.format(now));
-            brand.setModifier(user_id);
-            brand.setIsactive(jsonObject.get("isactive").toString());
-            brandService.insert(brand);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("add success");
+
+            String result = brandService.insert(message,user_id);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -132,20 +128,16 @@ public class BrandController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            Brand brand = new Brand();
-            Date now = new Date();
-            brand.setId(Integer.parseInt(jsonObject.get("id").toString()));
-            brand.setBrand_code(jsonObject.get("brand_code").toString());
-            brand.setBrand_name(jsonObject.get("brand_name").toString());
-            brand.setCorp_code(jsonObject.get("corp_code").toString());
-            brand.setModifier(user_id);
-            brand.setModified_date(Common.DATETIME_FORMAT.format(now));
-            brand.setIsactive(jsonObject.get("isactive").toString());
-            brandService.update(brand);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = brandService.update(message,user_id);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("edit success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

@@ -7,10 +7,13 @@ import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.service.CorpService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -28,14 +31,77 @@ public class CorpServiceImpl implements CorpService {
         return corpMapper.selectByCorpId(corp_id, corp_code);
     }
 
-    public int insertCorp(Corp record) throws SQLException {
-        return corpMapper.insertCorp(record);
+    @Transactional
+    public String insert(String message,String user_id) throws SQLException {
+
+        String result = Common.DATABEAN_CODE_ERROR;
+        JSONObject jsonObject = new JSONObject(message);
+        String corp_code = jsonObject.get("corp_code").toString();
+        String corp_name = jsonObject.get("corp_name").toString();
+        Corp corp = selectByCorpId(0,corp_code);
+        String exist = getCorpByCorpName(corp_name);
+        if (corp == null && exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+            corp = new Corp();
+
+            corp.setCorp_code(corp_code);
+            corp.setCorp_name(corp_name);
+            corp.setAddress(jsonObject.get("address").toString());
+            corp.setContact(jsonObject.get("contact").toString());
+            corp.setContact_phone(jsonObject.get("phone").toString());
+            corp.setApp_id(jsonObject.get("app_id").toString());
+
+            Date now = new Date();
+            corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            corp.setCreater(user_id);
+            corp.setModified_date(Common.DATETIME_FORMAT.format(now));
+            corp.setModifier(user_id);
+            corp.setIsactive(jsonObject.get("isactive").toString());
+            corpMapper.insertCorp(corp);
+            result = Common.DATABEAN_CODE_SUCCESS;
+
+        }else if(corp != null){
+            result = "企业编号已存在";
+        }else {
+            result = "企业名称已存在";
+        }
+        return result;
     }
 
-    public int updateByCorpId(Corp record) throws SQLException {
-        return corpMapper.updateByCorpId(record);
+    @Transactional
+    public String update(String message,String user_id) throws SQLException {
+        String result = Common.DATABEAN_CODE_ERROR;
+        JSONObject jsonObject = new JSONObject(message);
+        int corp_id = Integer.parseInt(jsonObject.get("id").toString());
+
+        String corp_code = jsonObject.get("corp_code").toString();
+        String corp_name = jsonObject.get("corp_name").toString();
+
+        Corp corp = selectByCorpId(corp_id,"");
+        Corp corp1 = selectByCorpId(0,corp_code);
+        String exist = getCorpByCorpName(corp_name);
+
+        if ((corp.getCorp_code().equals(corp_code) || corp1 == null)
+                && (corp.getCorp_name().equals(corp_name) || exist.equals(Common.DATABEAN_CODE_SUCCESS))) {
+            corp = new Corp();
+            corp.setId(corp_id);
+            corp.setCorp_code(corp_code);
+            corp.setCorp_name(corp_name);
+            corp.setAddress(jsonObject.get("address").toString());
+            corp.setContact(jsonObject.get("contact").toString());
+            corp.setContact_phone(jsonObject.get("phone").toString());
+            corp.setAvater(jsonObject.get("avater").toString());
+            corp.setApp_id(jsonObject.get("app_id").toString());
+            corpMapper.updateByCorpId(corp);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else if (!corp.getCorp_code().equals(corp_code) || corp1 != null){
+            result = "企业编号已存在";
+        }else {
+            result = "企业名称已存在";
+        }
+        return result;
     }
 
+    @Transactional
     public int deleteByCorpId(int id) throws SQLException {
         return corpMapper.deleteByCorpId(id);
     }

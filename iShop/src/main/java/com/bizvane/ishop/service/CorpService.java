@@ -14,9 +14,9 @@ public interface CorpService {
 
     Corp selectByCorpId(int corp_id, String corp_code) throws SQLException;
 
-    int insertCorp(Corp corp) throws SQLException;
+    String insert(String message,String user_id) throws SQLException;
 
-    int updateByCorpId(Corp corp) throws SQLException;
+    String update(String message,String user_id) throws SQLException;
 
     int deleteByCorpId(int id) throws SQLException;
 

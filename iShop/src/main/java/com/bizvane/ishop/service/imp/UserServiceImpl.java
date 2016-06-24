@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.dao.GroupMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.dao.UserMapper;
@@ -20,7 +21,6 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.System;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 
@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    CorpService corpService;
+    CorpMapper corpMapper;
     @Autowired
     StoreService storeService;
     @Autowired
@@ -252,7 +252,7 @@ public class UserServiceImpl implements UserService {
                     System.out.println("---------auth_code----------");
 
                     //拼接corp_code
-                    String max_corp_code = corpService.selectMaxCorpCode();
+                    String max_corp_code = corpMapper.selectMaxCorpCode();
                     int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
                     Integer c = code_tail;
                     int length = 5 - c.toString().length();
@@ -268,6 +268,7 @@ public class UserServiceImpl implements UserService {
                     user.setUser_code("SY001");
                     user.setUser_name(user_name);
                     user.setPhone(phone);
+                    user.setAvatar("../img/a3.jpg");
                     user.setLogin_time_recently("");
                     user.setSex("M");
                     user.setPassword(password);
@@ -294,7 +295,7 @@ public class UserServiceImpl implements UserService {
                     corp.setModifier("root");
                     corp.setIsactive(Common.IS_ACTIVE_Y);
                     log.info("----------register corp" + corp.toString());
-                    corpService.insertCorp(corp);
+                    corpMapper.insertCorp(corp);
 
                     //插入群组
                     Group group = new Group();
