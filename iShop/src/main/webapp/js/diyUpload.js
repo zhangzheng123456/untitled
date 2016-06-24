@@ -66,7 +66,17 @@
 			//绑定文件加入队列事件;
 			webUploader.on('fileQueued', function( file ) {
 				if($("#GOODS_CODE").val()!==''){
-					createBox( $fileInput, file ,webUploader);
+					if($('.parentFileBox ul li').length<5){
+						createBox( $fileInput, file ,webUploader);
+					}else{
+							art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content:'上传文件数量超过限制!'
+						});
+						return false;
+					}
 				}else{
 					art.dialog({
 						time: 1,
