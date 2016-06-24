@@ -36,13 +36,13 @@ var oc = new ObjectControl();
 		}
 	};
 	useroperatejs.checkCode=function(obj,hint){
-		var isCode=/^[S]{1}[Y]{1}[0-9]{1,7}$/;
+		var isCode=/^[S]{1}[Y]{1}[0-9]{4}$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"请以大写字母SY开头从一位到七位之间的数字!");
+				this.displayHint(hint,"请以大写字母SY开头必须是4位数字的组合!");
 				return false;
 			}
 		}else{

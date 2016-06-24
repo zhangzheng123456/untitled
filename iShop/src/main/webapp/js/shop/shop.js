@@ -20,13 +20,13 @@ var oc = new ObjectControl();
 		}
 	};
 	shopjs.checkCode=function(obj,hint){
-		var isCode=/^[D]{1}[0-9]{1,7}$/;
+		var isCode=/^[D]{1}[0-9]{4}$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"店仓编号为必填项,支持以大写D开头1到7位的数字的组合！");
+				this.displayHint(hint,"店仓编号为必填项,支持以大写D开头必须是4位数字的组合！");
 				return false;
 			}
 		}else{

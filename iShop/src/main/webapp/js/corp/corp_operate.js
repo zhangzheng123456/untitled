@@ -39,13 +39,13 @@ var message=JSON.parse(val.message);
 		}
 	};
 	corpjs.checkCode=function(obj,hint){
-		var isCode=/^[C]{1}[0-9]{1,7}$/;
+		var isCode=/^[C]{1}[0-9]{5}$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"企业编号为必填项，支持以大写C开头1到7位的数字的组合！");
+				this.displayHint(hint,"企业编号为必填项，支持以大写C开头必须是5位数字的组合！");
 				return false;
 			}
 		}else{

@@ -20,13 +20,13 @@ var oc = new ObjectControl();
 		}
 	};
 	brandjs.checkCode=function(obj,hint){
-		var isCode=/^[B]{1}[0-9]{1,7}$/;
+		var isCode=/^[B]{1}[0-9]{4}$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"品牌编号为必填项，支持以大写B开头1到7位的数字的组合！");
+				this.displayHint(hint,"品牌编号为必填项，支持以大写B开头必须是4位数字的组合！");
 				return false;
 			}
 		}else{
