@@ -142,7 +142,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/VIP/label/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/VIP/callback/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
@@ -160,7 +160,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/VIP/label/search","0",param,function(data){
+            oc.postRequire("post","/VIP/callback/search","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
@@ -199,14 +199,18 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
-                        + data[i].tag_name
+                        // + "</td><td>"
+                        // + data[i].vip_name
                         + "</td><td><span>"
-                        + data[i].tag_type
+                        + data[i].user_name
                         + "</td><td>"
                         + data[i].corp.corp_name
-                        // +"</td><td>"
-                        // +data[i].modifier
+                         +"</td><td>"
+                        +data[i].callback_type
+                        +"</td><td>"
+                        +data[i].callback_time
+                         +"</td><td>"
+                        +data[i].remark
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
@@ -230,7 +234,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/VIP/label/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/VIP/callback/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
@@ -274,13 +278,13 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/callback_add.html");
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/callback_edit.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -288,7 +292,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/vip/callback_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -328,7 +332,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/VIP/label/find","0",param,function(data){
+    oc.postRequire("post","/VIP/callback/find","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -377,7 +381,7 @@ $("#delete").click(function(){
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/VIP/label/delete","0",param,function(data){
+    oc.postRequire("post","/VIP/callback/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""){
                frame();
