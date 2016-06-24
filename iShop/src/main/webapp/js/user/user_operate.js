@@ -678,6 +678,7 @@ jQuery(document).ready(function(){
 				c_code=msg.corp_code;
 				r_code=msg.group_code;
 				$("#USERID").val(msg.user_code);
+				$("#USERID").attr("data-name",msg.user_code);
 				$("#USER_NAME").val(msg.user_name);
 				$("#preview img").attr("src",msg.avatar);
 				$("#USER_PHONE").val(msg.phone);
@@ -758,11 +759,12 @@ jQuery(document).ready(function(){
 	});
 	//验证编号是否唯一的方法
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[S]{1}[Y]{1}[0-9]{1,7}$/;
+    	var isCode=/^[S]{1}[Y]{1}[0-9]{4}$/;
     	var _params={};
     	var user_code=$(this).val();//员工编号
     	var corp_code=$("#OWN_CORP").val();//公司编号
-		if(user_code!==""&&isCode.test(user_code)==true){
+    	var user_code1=$(this).attr("data-name");
+		if(user_code!==""&&user_code!==user_code1&&isCode.test(user_code)==true){
 			_params["user_code"]=user_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
@@ -848,10 +850,12 @@ function getcorplist(){
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
 			$('.searchable-select-item').click(function(){
-				$("input[verify='Code']").val("");
-				$("#AREA_NAME").val("");
-				$("input[verify='Code']").attr("data-mark","");
-				$("#AREA_NAME").attr("data-mark","");
+					$("#USER_PHONE").val("");
+					$("#USER_EMAIL").val("");
+					$("#USERID").val("");
+					$("#USERID").attr("data-mark","");
+					$("#USER_PHONE").attr("data-mark","");
+					$("#USER_EMAIL").attr("data-mark","");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
