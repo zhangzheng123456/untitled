@@ -84,7 +84,12 @@ var oc = new ObjectControl();
 					}
 					img_list_json=JSON.stringify(img_list_json);
 				}else{
-					alert("商品图片最多可以上传5张");
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"商品图片最多可以上传5张!"
+					});
 				}
 				var _command="/goods/fab/add";//接口名
 				var opt = {//返回成功后的操作
@@ -119,27 +124,33 @@ var oc = new ObjectControl();
 				/*
 				获取上传的图片地址
 				 */
-				// var img_list=[];
-				// var img_list_json={};
-				// var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
-				// if(img_url_list.length<=5){
-				// 	for(var i=0;i<img_url_list.length;i++){
-				// 		img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com//goods-images/"+$("#GOODS_CODE").val()+"_"+i+".jpg");
-				// 	}
-				// 	for(var j=0;j<img_list.length;j++){
-				// 		img_list_json[j]=img_list[j];
-				// 	}
-				// 	img_list_json=JSON.stringify(img_list_json);
-				// }else{
-				// 	alert("商品图片最多可以上传5张");
-				// }
+				var img_list=[];
+				var isexit_flg=[];
+				var img_list_json={};
+				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
+				if(img_url_list.length<=5){
+					for(var i=0;i<img_url_list.length;i++){
+						img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com/goods-images/"+$("#GOODS_CODE").val()+"_img"+i+".jpg");
+					}
+					for(var j=0;j<img_list.length;j++){
+						img_list_json[j]=img_list[j];
+					}
+					img_list_json=JSON.stringify(img_list_json);
+				}else{
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"商品图片最多可以上传5张!"
+					});
+				}
 				var _command="/goods/fab/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":"","goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":img_list_json,"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
