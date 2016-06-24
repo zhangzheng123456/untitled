@@ -77,7 +77,7 @@ var oc = new ObjectControl();
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
 				if(img_url_list.length<=5){
 					for(var i=0;i<img_url_list.length;i++){
-						img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com//goods-images/"+$("#GOODS_CODE").val()+"_"+i+".jpg");
+						img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com/goods-images/"+$("#GOODS_CODE").val()+"_img"+i+".jpg");
 					}
 					for(var j=0;j<img_list.length;j++){
 						img_list_json[j]=img_list[j];
@@ -207,24 +207,28 @@ jQuery(document).ready(function(){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
 				var goods_img=msg.goods_image;
-				console.log(goods_img);
+				var goods_arr=[];
+				var filename;//图片名
 				if(goods_img.indexOf(',')!==-1){
-					goods_img= goods_img.split(",");
-					console.log(goods_img);
+					goods_arr= goods_img.split(",");
 				}else{
-					goods_img=goods_img;
+					goods_arr.push(goods_img);
 				}
-				for(var i=0;i<goods_img.length;i++){
-					img_html +='<li id="fileBox_WU_FILE_'+(i+10)+'" class="diyUploadHover">'
-                                   	+'<div class="viewThumb"><img src="'+goods_img[i]+'"></div>'
+				for(var i=0;i<goods_arr.length;i++){
+					if(goods_arr[i].indexOf("/")>0)//如果包含有"/"号 从最后一个"/"号+1的位置开始截取字符串
+					{
+					    filename=goods_arr[i].substring(goods_arr[i].lastIndexOf("/")+1,goods_arr[i].length);
+					    img_html +='<li id="fileBox_WU_FILE_'+(i+10)+'" class="diyUploadHover">'
+                                   	+'<div class="viewThumb"><img src="'+goods_arr[i]+'"></div>'
                                    	+'<div class="diyCancel" onclick="img_del(this)"></div>'
                                     +'<div class="diySuccess"></div>'
-                                    +'<div class="diyFileName">'+(i+1)+'</div>'
+                                    +'<div class="diyFileName">'+filename+'</div>'
                                     +'<div class="diyBar">'
                                         +'<div class="diyProgress"></div>'
                                         +'<div class="diyProgressText">0%</div>'
                                     +'</div>'
                                 +'</li>';
+					}
 				}
 				$(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
