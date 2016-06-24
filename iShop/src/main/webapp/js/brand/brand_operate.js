@@ -219,7 +219,7 @@ jQuery(document).ready(function(){
 		getcorplist();
 	}
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[B]{1}[0-9]{1,7}$/;
+    	var isCode=/^[B]{1}[0-9]{4}$/;
     	var _params={};
     	var brand_code=$(this).val();
     	var corp_code=$("#OWN_CORP").val();

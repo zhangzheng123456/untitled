@@ -220,7 +220,7 @@ jQuery(document).ready(function(){
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[A]{1}[0-9]{1,7}$/;
+    	var isCode=/^[A]{1}[0-9]{4}$/;
     	var _params={};
     	var area_code=$(this).val();
     	var area_code1=$(this).attr("data-name");

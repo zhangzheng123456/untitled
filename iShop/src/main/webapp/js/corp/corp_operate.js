@@ -275,7 +275,7 @@ jQuery(document).ready(function(){
 		});
 	}
     $("input[verify='Code']").blur(function(){
-    	var isCode=/^[C]{1}[0-9]{1,7}$/;
+    	var isCode=/^[C]{1}[0-9]{5}$/;
     	var _params={};
     	var corp_code=$(this).val();
     	var corp_code1=$(this).attr("data-name");

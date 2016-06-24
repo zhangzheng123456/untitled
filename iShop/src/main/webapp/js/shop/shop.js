@@ -262,7 +262,7 @@ jQuery(document).ready(function(){
 		getcorplist();
 	}
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[D]{1}[0-9]{1,7}$/;
+    	var isCode=/^[D]{1}[0-9]{4}$/;
     	var _params={};
     	var store_code=$(this).val();//店仓编号
     	var store_code1=$(this).attr("data-name");//标志
