@@ -87,31 +87,32 @@ public class GoodsServiceImpl implements GoodsService {
      * @param goods ： 商品对象
      */
     private void Transter(Goods goods) {
-        try {
-            String jsString = goods.getGoods_image();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+        //    try {
+        String jsString = goods.getGoods_image();
+        org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
 //            System.out.println(jsonObject.get("1"));
 //            System.out.println(jsonObject.get("2"));
-            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-            result.put("test", JSON.toJSONString(jsonObject));
-            System.out.println(result.toString());
-            Iterator<String> it = jsonObject.keySet().iterator();
-            org.json.JSONObject tempObj = new org.json.JSONObject();
-            List<String> list = new ArrayList<String>();
-            while (it.hasNext()) {
-                String key = it.next();
-                String value = jsonObject.get(key).toString();
-                //System.out.println(key + ":" + value);
-                tempObj.put(key, value);
-                list.add(value);
-            }
-            GsonBuilder gb = new GsonBuilder();
-            gb.disableHtmlEscaping();
-            String temp1 = gb.create().toJson(list);
-            goods.setGoods_image(temp1);
-        } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+        result.put("test", JSON.toJSONString(jsonObject));
+        System.out.println(result.toString());
+        Iterator<String> it = jsonObject.keySet().iterator();
+        StringBuffer sb = new StringBuffer();
+        //org.json.JSONObject tempObj = new org.json.JSONObject();
+
+//            List<String> list = new ArrayList<String>();
+        while (it.hasNext()) {
+            String key = it.next();
+            String value = jsonObject.get(key).toString();
+            sb.append(key + "," + value + ",");
         }
+
+//            GsonBuilder gb = new GsonBuilder();
+//            gb.disableHtmlEscaping();
+//            String temp1 = gb.create().toJson(list);
+        goods.setGoods_image(sb.toString());
+//        } catch (Exception ex) {
+//            System.out.println(ex.getMessage());
+//        }
     }
 
     @Override
