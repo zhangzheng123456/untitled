@@ -150,12 +150,12 @@
     });
 
 	//Web Uploader默认配置;
-	var orig_li=0;
-	setTimeout(function(){
-		orig_li=$('.parentFileBox ul li').length;
-	},100);
-	var Q=5;
-	Q=5-orig_li;
+	// var orig_li=0;
+	// setTimeout(function(){
+	// 	orig_li=$('.parentFileBox ul li').length;
+	// },100);
+	// var Q=5;
+	// Q=5-orig_li;
 	function getOption(objId) {
 		/*
 		*	配置文件同webUploader一致,这里只给出默认配置.
@@ -198,7 +198,7 @@
 			// 分片大小
 			chunkSize:512 * 1024,
 			//最大上传的文件数量, 总文件大小,单个文件大小(单位字节);
-			fileNumLimit:Q,
+			fileNumLimit:5,
 			fileSizeLimit:5000 * 1024,
 			fileSingleSizeLimit:500 * 1024
 		};

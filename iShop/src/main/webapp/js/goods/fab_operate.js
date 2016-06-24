@@ -189,29 +189,27 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
-				var goods_img=JSON.parse(msg.goods_image);
+				var goods_img=msg.goods_image;
 				console.log(goods_img);
 				if(goods_img.indexOf(',')!==-1){
-					goods_img= s.split(",");
+					goods_img= goods_img.split(",");
 					console.log(goods_img);
 				}else{
 					goods_img=goods_img;
 				}
-				// console.log(goods_img.map.length);
-				// console.log(JSON.parse(goods_img.map));
-				// for(var i=0;i<goods_img.length;i++){
-				// 	img_html +='<li id="fileBox_WU_FILE_'+i+'" class="diyUploadHover">'
-    //                                	+'<div class="viewThumb"><img src="'+goods_img[i]+'"></div>'
-    //                                	+'<div class="diyCancel"></div>'
-    //                                 +'<div class="diySuccess"></div>'
-    //                                 +'<div class="diyFileName"></div>'
-    //                                 +'<div class="diyBar">'
-    //                                     +'<div class="diyProgress"></div>'
-    //                                     +'<div class="diyProgressText">0%</div>'
-    //                                 +'</div>'
-    //                             +'</li>';
-				// }
-				// $(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
+				for(var i=0;i<goods_img.length;i++){
+					img_html +='<li id="fileBox_WU_FILE_'+(i+10)+'" class="diyUploadHover">'
+                                   	+'<div class="viewThumb"><img src="'+goods_img[i]+'"></div>'
+                                   	+'<div class="diyCancel" onclick="img_del(this)"></div>'
+                                    +'<div class="diySuccess"></div>'
+                                    +'<div class="diyFileName">'+(i+1)+'</div>'
+                                    +'<div class="diyBar">'
+                                        +'<div class="diyProgress"></div>'
+                                        +'<div class="diyProgressText">0%</div>'
+                                    +'</div>'
+                                +'</li>';
+				}
+				$(".good_imgs .parentFileBox .fileBoxUl").append(img_html);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#GOODS_CODE").val(msg.goods_code);
@@ -275,3 +273,7 @@ jQuery(document).ready(function(){
 	});
 
 });
+// 删除加载的已存在的商品图片
+function img_del(obj) {
+	$(obj).parent().remove();
+}
