@@ -46,16 +46,21 @@ public interface UserAchvGoalService {
     int insert(UserAchvGoal userAchvGoal)throws SQLException;
 
     /**
-     *
-     * @param page_number
-     * @param page_size
-     * @param s
-     * @param s1
+     * 获取用户业绩目标的分页信息
+     * @param page_number ： 起始分页
+     * @param page_size ： 分页大小
+     * @param corp_code ： 公司编号
+     * @param search_value ： 查询信息
      * @return
      * @throws SQLException
      */
     PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws SQLException;
 
-
+    /**
+     * 判断用户业绩业绩是否存在
+     * @param user_code ： 用户编号
+     * @return
+     * @throws SQLException
+     */
     String userAchvGoalExist(String user_code)throws SQLException;
 }

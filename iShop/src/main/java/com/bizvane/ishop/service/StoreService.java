@@ -23,6 +23,7 @@ public interface StoreService {
      */
     PageInfo<Store> selectByUserId(int page_number, int page_size, String user_id, String corp_code, String search_value);
 
+
     int deleteStoreUser(String user_id, String store_code);
 
     Store getStoreById(int id) throws SQLException;
