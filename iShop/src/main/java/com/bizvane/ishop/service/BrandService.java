@@ -21,9 +21,9 @@ public interface BrandService {
 
     List<Store> getBrandStore(String corp_code, String brand_code) throws SQLException;
 
-    int insert(Brand brand) throws SQLException;
+    String insert(String message,String user_id) throws SQLException;
 
-    int update(Brand brand) throws SQLException;
+    String update(String message,String user_id) throws SQLException;
 
     int delete(int id) throws SQLException;
 

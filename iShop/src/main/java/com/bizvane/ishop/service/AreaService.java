@@ -21,9 +21,9 @@ public interface AreaService {
 
     List<Store> getAreaStore(String corp_code, String area_code) throws SQLException;
 
-    int insert(Area area) throws SQLException;
+    String insert(String message,String user_id) throws SQLException;
 
-    int update(Area area) throws SQLException;
+    String update(String message,String user_id) throws SQLException;
 
     int delete(int id) throws SQLException;
 

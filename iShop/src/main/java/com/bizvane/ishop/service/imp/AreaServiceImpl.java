@@ -8,10 +8,13 @@ import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -70,16 +73,74 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public int insert(Area area) throws SQLException {
-        return areaMapper.insertArea(area);
+    @Transactional
+    public String insert(String message,String user_id) throws SQLException {
+        String result = Common.DATABEAN_CODE_ERROR;
+        JSONObject jsonObject = new JSONObject(message);
+        String area_code = jsonObject.get("area_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString();
+        String area_name = jsonObject.get("area_name").toString();
+        Area area = getAreaByCode(corp_code,area_code);
+        Area area1 = getAreaByName(corp_code,area_name);
+        if (area == null && area1 == null) {
+            area = new Area();
+            Date now = new Date();
+            area.setArea_code(area_code);
+            area.setArea_name(area_name);
+            area.setCorp_code(corp_code);
+            area.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            area.setCreater(user_id);
+            area.setModified_date(Common.DATETIME_FORMAT.format(now));
+            area.setModifier(user_id);
+            area.setIsactive(jsonObject.get("isactive").toString());
+            areaMapper.insertArea(area);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else if(area != null){
+            result = "区域编号已存在";
+        }else {
+            result = "区域名称已存在";
+        }
+        return result;
     }
 
     @Override
-    public int update(Area area) throws SQLException {
-        return areaMapper.updateArea(area);
+    @Transactional
+    public String update(String message,String user_id) throws SQLException {
+        String result = Common.DATABEAN_CODE_ERROR;
+        JSONObject jsonObject = new JSONObject(message);
+        int area_id = Integer.parseInt(jsonObject.get("id").toString());
+
+        String area_code = jsonObject.get("area_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString();
+        String area_name = jsonObject.get("area_name").toString();
+
+        Area area = getAreaById(area_id);
+        Area area1 = getAreaByCode(corp_code,area_code);
+        Area area2 = getAreaByName(corp_code,area_code);
+
+        if ((area.getArea_code().equals(area_code) || area1 == null)
+                && (area.getArea_name().equals(area_name) || area2 == null)) {
+            area = new Area();
+            Date now = new Date();
+            area.setId(area_id);
+            area.setArea_code(area_code);
+            area.setArea_name(area_name);
+            area.setCorp_code(corp_code);
+            area.setModified_date(Common.DATETIME_FORMAT.format(now));
+            area.setModifier(user_id);
+            area.setIsactive(jsonObject.get("isactive").toString());
+            areaMapper.updateArea(area);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else if (!area.getArea_code().equals(area_code) && area1 != null){
+            result = "区域编号已存在";
+        }else {
+            result = "区域名称已存在";
+        }
+        return result;
     }
 
     @Override
+    @Transactional
     public int delete(int id) throws SQLException {
         return areaMapper.deleteByAreaId(id);
     }
