@@ -167,7 +167,7 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="编辑会员标签"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/VIP/label/select";
+		var _command="/VIP/callback/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
