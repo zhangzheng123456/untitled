@@ -1,16 +1,16 @@
 var oc = new ObjectControl();
 (function(root,factory){
-	root.viplabel = factory();
+	root.callback = factory();
 }(this,function(){
-	var viplabeljs={};
-	viplabeljs.isEmpty=function(obj){
+	var callbackjs={};
+	callbackjs.isEmpty=function(obj){
 		if(obj.trim() == "" || obj.trim() == undefined){
 			return true;
 		}else{
 			return false;
 		}
 	};
-	viplabeljs.checkEmpty = function(obj,hint){
+	callbackjs.checkEmpty = function(obj,hint){
 		if(!this.isEmpty(obj)){
 			this.hiddenHint(hint);
 			return true;
@@ -19,7 +19,7 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	viplabeljs.checkPhone = function(obj,hint){
+	callbackjs.checkPhone = function(obj,hint){
 		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
 		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
 		if(!this.isEmpty(obj)){
@@ -35,30 +35,29 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	viplabeljs.hiddenHint = function(hint){
+	callbackjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
 	};
-	viplabeljs.displayHint = function(hint,content){
+	callbackjs.displayHint = function(hint,content){
 		hint.addClass("error_tips");
 		if(!content)hint.html(hint.attr("hintInfo"));//错误提示
 		else hint.html(content);
 	};
-	viplabeljs.firstStep = function(){
+	callbackjs.firstStep = function(){
 		var inputText = jQuery(".conpany_msg").find(":text");
 		for(var i=0,length=inputText.length;i<length;i++){
 			if(!bindFun(inputText[i]))return false;
 		}
 		return true;
 	};
-	viplabeljs.bindbutton=function(){
+	callbackjs.bindbutton=function(){
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
-			if(viplabeljs.firstStep()){
-				// var CORPID=$("#CORPID").val();
-				var OWN_CORP=$("#OWN_CORP").val();
-				var LABEL_NAME=$("#LABEL_NAME").val();
-				var LABEL_TYPE=$("#LABEL_TYPE").val();
-				// var check_per=$("#check_per").val();
+			if(callbackjs.firstStep()){
+				var CALLBACK_STUFF=$("#CALLBACK_STUFF").val();
+				var VIP=$("#VIP").val();
+				var CALLBACK_DATE=$("#CALLBACK_DATE").val();
+				var CALLBACK_TYPE=$("#CALLBACK_TYPE").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -66,29 +65,26 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/VIP/label/add";//接口名
+				var _command="/VIP/callback/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
-				viplabeljs.ajaxSubmit(_command,_params,opt);
+				var _params={"user_code":CALLBACK_STUFF,"vip_code":VIP,"callback_time":CALLBACK_DATE,
+				"callback_type":CALLBACK_TYPE,"isactive":ISACTIVE};
+				callbackjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
 		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
-			if(viplabeljs.firstStep()){
+			if(callbackjs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 
-				var OWN_CORP=$("#OWN_CORP").val();
-				var LABEL_NAME=$("#LABEL_NAME").val();
-				var LABEL_TYPE=$("#LABEL_TYPE").val();
-
-				// var ROLE_NUM=$("#ROLE_NUM").val();
-				// var ROLE_NAME=$("#ROLE_NAME").val();
-				// var BEIZHU=$("#BEIZHU").val();
-				// var check_per=$("#check_per").val();
+				var CALLBACK_STUFF=$("#CALLBACK_STUFF").val();
+				var VIP=$("#VIP").val();
+				var CALLBACK_DATE=$("#CALLBACK_DATE").val();
+				var CALLBACK_TYPE=$("#CALLBACK_TYPE").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -96,19 +92,20 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/VIP/label/edit";//接口名
+				var _command="/VIP/callback/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
-				viplabeljs.ajaxSubmit(_command,_params,opt);
+				var _params={"id":ID,"user_code":CALLBACK_STUFF,"vip_code":VIP,"callback_time":CALLBACK_DATE,
+				"callback_type":CALLBACK_TYPE,"isactive":ISACTIVE};
+				callbackjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
 	};
-	viplabeljs.ajaxSubmit=function(_command,_params,opt){
+	callbackjs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
 		console.log(_params);
@@ -120,7 +117,7 @@ var oc = new ObjectControl();
 				// 	cancel: false,
 				// 	content: data.message
 				// });
-				$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
+				$(window.parent.document).find('#iframepage').attr("src","/vip/callback.html");
 			}else if(data.code=="-1"){
 				// alert(data.message);
 				// art.dialog({
@@ -142,8 +139,8 @@ var oc = new ObjectControl();
 		var command = _this.attr("verify");
 		var obj = _this.val();
 		var hint = _this.nextAll(".hint").children();
-		if(viplabeljs['check' + command]){
-			if(!viplabeljs['check' + command].apply(viplabeljs,[obj,hint])){
+		if(callbackjs['check' + command]){
+			if(!callbackjs['check' + command].apply(callbackjs,[obj,hint])){
 				return false;
 			}
 		}
@@ -158,15 +155,15 @@ var oc = new ObjectControl();
 		clearInterval(interval);
 	});
 	var init=function(){
-		viplabeljs.bindbutton();
+		callbackjs.bindbutton();
 	}
 	var obj = {};
-	obj.viplabeljs = viplabeljs;
+	obj.callbackjs = callbackjs;
 	obj.init = init;
 	return obj;
 }));
 jQuery(document).ready(function(){
-	window.viplabel.init();//初始化
+	window.callback.init();//初始化
 	if($(".pre_title label").text()=="编辑会员标签"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
@@ -176,24 +173,20 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				// var OWN_CORP=$("#OWN_CORP").val(msg.role_code);
-				// var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
-				// var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
-				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
-				var LABEL_NAME=$("#LABEL_NAME").val(msg.tag_name);
-				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.tag_type);
-				// var check_per=$("#check_per").val(msg.check_per);
-				// $("#ROLE_NUM").val(msg.role_num);
-				// $("#ROLE_NAME").val(msg.role_name);
-				// $("#BEIZHU").val(msg.beizhu);
+				var CALLBACK_STUFF=$("#CALLBACK_STUFF").val(msg.user_code);
+				var VIP=$("#VIP").val(msg.vip_code);
+				var CALLBACK_DATE=$("#CALLBACK_DATE").val(msg.callback_time);
+				var CALLBACK_TYPE=$("#CALLBACK_TYPE").val(msg.callback_type);
+
 				var created_time=$("#created_time").val(msg.created_date);
 				var creator=$("#creator").val(msg.creater);
 				var modify_time=$("#modify_time").val(msg.modified_date);
 				var modifier=$("#modifier").val(msg.modifier);			
 
-				$("#OWN_CORP").val(msg.corp_code);
-				$("#LABEL_NAME").val(msg.tag_name);
-				$("#LABEL_TYPE").val(msg.tag_type);
+				$("#CALLBACK_STUFF").val(msg.user_code);
+				$("#VIP").val(msg.vip_code);
+				$("#CALLBACK_DATE").val(msg.callback_time);
+				$("#CALLBACK_TYPE").val(msg.callback_type);
 				// $("#OWN_DOCU").val(msg.own_docu);
 				
 				$("#created_time").val(msg.created_date);
@@ -247,10 +240,10 @@ jQuery(document).ready(function(){
 		console.log(123);
 	})
 	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
+		$(window.parent.document).find('#iframepage').attr("src","/vip/callback.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
+		$(window.parent.document).find('#iframepage').attr("src","/vip/callback.html");
 	});
 });
 
