@@ -32,6 +32,26 @@ public class VipCallbackRecord {
     //企业编号
     private String corp_code;
 
+    private User user;
+    private VIPInfo vipinfo;
+
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public VIPInfo getVipinfo() {
+        return vipinfo;
+    }
+
+    public void setVipinfo(VIPInfo vipinfo) {
+        this.vipinfo = vipinfo;
+    }
+
     public String getModifier() {
         return modifier;
     }

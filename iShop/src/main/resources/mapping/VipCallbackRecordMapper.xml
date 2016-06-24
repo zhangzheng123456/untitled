@@ -14,6 +14,12 @@
         <result column="isactive" property="isactive"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
+        <association property="vipinfo" javaType="com.bizvane.ishop.entity.VIPInfo">
+            <result column="vip_name" property="vip_name"/>
+        </association>
+        <association property="user" javaType="com.bizvane.ishop.entity.User">
+            <result column="user_name" property="user_name"/>
+        </association>
     </resultMap>
 
     <select id="selecctById" resultType="com.bizvane.ishop.entity.VipCallbackRecord">
@@ -96,23 +102,33 @@
         WHERE id=#{id}
     </delete>
     <select id="selectAllVipCallBackRecordInfo" resultMap="VipInfos">
-        select * from DEF_VIP_CALLBACK_RECORD
-        WHERE 1=1
+        select
+        dvc.id    ,
+        dvc.vip_code    ,
+        dvc.user_code,
+        dvc.callback_type,
+        dvc.callback_time,
+        dvc.remark,
+        dvc.modified_date ,
+        dvc.modifier,
+        dvc.isactive,
+        dvc.created_date  ,
+        dvc.creater,
+        dv.vip_name,
+        du.user_name
+        from DEF_VIP_CALLBACK_RECORD dvc  ,DEF_VIP dv,DEF_USER du
+        WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code
         <if test="corp_code!=null and corp_code!=''">
-            corp_code=#{corp_code}
+            dvc.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null search_value!=''">
             and (
-            vip_code like concat('%',#{search_value},'%')
-            or user_code like concat('%',#{search_value},'%')
-            or callback_type like concat('%',#{search_value},'%')
-            or callback_time like concat('%',#{search_value},'%')
-            or remark like concat('%',#{search_value},'%')
-            or modified_date like concat('%',#{search_value},'%')
-            or modifier like concat('%',#{search_value},'%')
-            or isactive like concat('%',#{search_value},'%')
-            or creater like concat('%',#{search_value},'%')
-            or corp_code like concat('%',#{search_value},'%')
+            dv.vip_name like concat('%',#{search_value},'%')
+            or dvc.callback_type like concat('%',#{search_value},'%')
+            or dvc.callback_time like concat('%',#{search_value},'%')
+            or dvc.remark like concat('%',#{search_value},'%')
+            or dvc.modified_date like concat('%',#{search_value},'%')
+            or dvc.isactive like concat('%',#{search_value},'%')
             )
         </if>
     </select>

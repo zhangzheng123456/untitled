@@ -169,6 +169,7 @@ public class VIPController {
 
     /**
      * 编辑前获取数据
+     *
      * @param request
      * @return
      */
@@ -349,6 +350,7 @@ public class VIPController {
 
     /**
      * 编辑标签前，获取数据
+     *
      * @param request
      * @return
      */
@@ -653,15 +655,14 @@ public class VIPController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            // org.json.JSONArray actions = functionService.selectActionByFun(user_id, role_code, function_code, group_code);
             JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
-            PageInfo<VIPtag> list;
+            PageInfo<VipCallbackRecord> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipTagService.selectBySearch(page_number, page_size, "", "");
+                list = this.vipCallbackRecordService.selectBySearch(page_number, page_size, "", "");
             } else {
-                list = vipTagService.selectBySearch(page_number, page_size, corp_code, "");
+                list = vipCallbackRecordService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
