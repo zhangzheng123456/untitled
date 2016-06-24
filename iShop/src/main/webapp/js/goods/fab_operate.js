@@ -82,7 +82,7 @@ var oc = new ObjectControl();
 					for(var j=0;j<img_list.length;j++){
 						img_list_json[j]=img_list[j];
 					}
-					img_list_json=JSON.stringify(img_list_json);
+					// img_list_json=JSON.stringify(img_list_json);
 				}else{
 					alert("商品图片最多可以上传5张");
 				}
@@ -191,8 +191,8 @@ jQuery(document).ready(function(){
 				var msg=JSON.parse(m.goods);
 				var goods_img=JSON.parse(msg.goods_image);
 				console.log(goods_img.map);
-				console.log(goods_img.map.length);
-				console.log(JSON.parse(goods_img.map));
+				// console.log(goods_img.map.length);
+				// console.log(JSON.parse(goods_img.map));
 				// for(var i=0;i<goods_img.length;i++){
 				// 	img_html +='<li id="fileBox_WU_FILE_'+i+'" class="diyUploadHover">'
     //                                	+'<div class="viewThumb"><img src="'+goods_img[i]+'"></div>'
