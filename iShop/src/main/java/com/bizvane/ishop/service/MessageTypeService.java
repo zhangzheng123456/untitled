@@ -47,14 +47,25 @@ public interface MessageTypeService {
     PageInfo<Message_type> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
 
     /**
-     *
-     * @param type_code
-     * @param corp_code
+     *判断短信类型编号是否存在，通过短信类型编号
+     * @param type_code ： 短信类型的编号
+     * @param corp_code ：短信类型所在企业
      * @return
      */
     String MessageTypeCodeExist(String type_code, String corp_code);
 
+    /**
+     *短信类型名称是否存在，通过短信类型名称
+     * @param type_name ：短信类型名称
+     * @param corp_code ： 短信类型所在企业编号
+     * @return
+     */
     String MessageTypeNameExist(String type_name, String corp_code);
 
+    /**
+     * 删除短信类型，通过ID
+     * @param id
+     * @return
+     */
     int deleteById(int id);
 }

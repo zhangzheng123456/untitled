@@ -12,12 +12,37 @@ import java.sql.SQLException;
  */
 public interface UserAchvGoalService {
 
+
+    /**
+     * 获取用户业绩目标，通过ID
+     * @param id ： 用户业绩目标ID
+     * @return
+     * @throws SQLException
+     */
     UserAchvGoal getUserAchvGoalById(int id )throws SQLException;
 
+    /**
+     * 更新用户业绩目标ID
+     * @param userAchvGoal
+     * @return
+     * @throws SQLException
+     */
     int updateUserAchvGoal(UserAchvGoal userAchvGoal)throws SQLException;
 
+    /**
+     * 删除用户业绩目标ID
+     * @param user_code
+     * @return
+     * @throws SQLException
+     */
     int deleteUserAchvGoalById(String user_code)throws SQLException;
 
+    /**
+     * 插入用户业绩目标ID
+     * @param userAchvGoal
+     * @return
+     * @throws SQLException
+     */
     int insert(UserAchvGoal userAchvGoal)throws SQLException;
 
     /**

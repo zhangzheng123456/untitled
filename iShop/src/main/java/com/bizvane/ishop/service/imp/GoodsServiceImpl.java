@@ -35,8 +35,7 @@ public class GoodsServiceImpl implements GoodsService {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
         String jsString = goods.getGoods_image();
         org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
-        System.out.println(jsonObject.get("1"));
-        System.out.println(jsonObject.get("2"));
+
         com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
         result.put("test", JSON.toJSONString(jsonObject));
         System.out.println(result.toString());
@@ -82,6 +81,10 @@ public class GoodsServiceImpl implements GoodsService {
         return page;
     }
 
+    /**
+     * 将商品图片转换为前台能够读取的JSON格式
+     * @param goods ： 商品对象
+     */
     private void Transter(Goods goods) {
         String jsString = goods.getGoods_image();
         org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);

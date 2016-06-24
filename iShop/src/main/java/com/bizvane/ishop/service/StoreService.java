@@ -12,6 +12,15 @@ import java.util.List;
  */
 public interface StoreService {
 
+    /**
+     * 分页获取店铺列表信息
+     * @param page_number ： 起始页码
+     * @param page_size ： 分页大小
+     * @param user_id ： 用户ID
+     * @param corp_code ： 公司编号
+     * @param search_value ： 产需条件
+     * @return
+     */
     PageInfo<Store> selectByUserId(int page_number, int page_size, String user_id, String corp_code, String search_value);
 
     int deleteStoreUser(String user_id, String store_code);
