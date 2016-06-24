@@ -25,7 +25,7 @@ public interface CorpMapper {
 
     List<Corp> selectByCorpName(@Param("corp_name") String corp_name);
 
-    int selectCount();
+    int selectCount(@Param("created_date") String created_date);
 
     int getAreaCount(@Param("corp_code") String corp_code);
 

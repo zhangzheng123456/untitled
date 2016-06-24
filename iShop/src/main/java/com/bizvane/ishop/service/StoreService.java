@@ -44,5 +44,4 @@ public interface StoreService {
 
     Store getStoreByName(String corp_code, String store_name) throws SQLException;
 
-    int selectCount() throws SQLException;
 }

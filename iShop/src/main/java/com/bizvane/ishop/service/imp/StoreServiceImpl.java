@@ -200,7 +200,4 @@ public class StoreServiceImpl implements StoreService {
         return store;
     }
 
-    public int selectCount() throws SQLException{
-        return storeMapper.selectCount();
-    }
 }

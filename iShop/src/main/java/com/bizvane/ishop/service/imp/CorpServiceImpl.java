@@ -149,10 +149,6 @@ public class CorpServiceImpl implements CorpService {
         return Common.DATABEAN_CODE_ERROR;
     }
 
-    public int selectCount() throws SQLException {
-        return corpMapper.selectCount();
-    }
-
     @Override
     public int getAreaCount(String corp_code) {
         return this.corpMapper.getAreaCount(corp_code);
