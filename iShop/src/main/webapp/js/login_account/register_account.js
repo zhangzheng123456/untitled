@@ -165,7 +165,7 @@ $(function(){
 		oc.postRequire("post", "/register", "reg", param, function(data){
 			console.log(data);
 			if(data.code=="0"){
-				window.location.href="home/index_gm.html";
+				window.location.href="sucess.html";
 			}else if(data.code=="-1"){
 				alert("注册失败");
 			}
