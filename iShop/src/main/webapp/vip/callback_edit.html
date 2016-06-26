@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
@@ -48,9 +49,21 @@
                      <div>
                         <span><label style="color:#c26555;">会员*</label><input type="text" id="VIP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="会员为必填项，不能为空！"></div></div></span>
                     </div>
-                    <div>
+                    <!-- <div>
                         <span><label>回访日期</label><input type="text" id="CALLBACK_DATE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访日期为必填项，不能为空！"></div></div></span>
+                    </div> -->
+                    <div id="day">
+                        <span><label>回访日期</label><input type="text" id="CALLBACK_DATE" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/></span>
+                        <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
                     </div>
+                    <div id="week_p" style="display:none;">
+                        <span>
+                            <label>回访日期</label>
+                            <input type="text" id="year" class="week" value="2016" readonly="true">
+                            <ul class="year">
+                            </ul>
+                        </span>
+                    </div> 
                     <!-- <div class="drop_down item_1">
                     <span><label>回访类型</label><input class="input_select" id="CALLBACK_TYPE" type="text" placeholder="请选择回访类型" readonly/>
                             <ul>
@@ -121,6 +134,8 @@
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+    <!-- 日期选择器 -->
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
     <script type="text/javascript" src="../js/vip/callback_operate.js"></script>
     <!-- con_arrow -->
    <!--  <script type="text/javascript" src="../js/con_arrow.js"></script>

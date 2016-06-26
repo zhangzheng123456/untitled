@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
@@ -44,8 +45,21 @@
                     <div>
                         <span><label style="color:#c26555;">会员*</label><input type="text" id="VIP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="会员不能为空！"></div></div></span>
                     </div>
-                    <div>
+                    <!-- <div>
                         <span><label>回访日期</label><input type="text" id="CALLBACK_DATE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访日期不能为空！"></div></div></span>
+                    </div> -->
+                    <div id="day">
+                        <span><label>回访日期</label><input type="text" id="CALLBACK_DATE" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
+                        <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
+                        </span>
+                    </div>
+                    <div id="week_p" style="display:none;">
+                        <span>
+                            <label>回访日期</label>
+                            <input type="text" id="year" class="week" value="2016" readonly="true">
+                            <ul class="year">
+                            </ul>
+                        </span>
                     </div>
                     <div>
                         <ul style="display:inline-flex;">
@@ -75,8 +89,8 @@
             <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="operadd_btn">
                     <ul>
-                        <li><i class="icon-ishop_6-04"></i>保存</li>
-                        <li><i class="icon-ishop_6-12"></i>关闭</li>
+                        <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
                  <form class="msg_detail">
@@ -91,12 +105,6 @@
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <!-- side_menu -->
-    <script type="text/javascript" src="../js/side_menu.js"></script>
-    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- Custom and plugin javascript -->
-    <script src="../js/hplus.js?v=2.2.0"></script>
     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
@@ -104,7 +112,22 @@
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <script type="text/javascript" src="../js/vip/callback_operate.js"></script>
+     <script type="text/javascript" src="../js/vip/callback_operate.js"></script>
+      <!-- 日期选择器 -->
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+
+
+    <script type="text/javascript" src="../js/side_menu.js"></script>
+    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
+    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <!-- Custom and plugin javascript -->
+    <script src="../js/hplus.js?v=2.2.0"></script>
+    
+
+    
+
+   
     <!-- con_arrow -->
     <!-- <script type="text/javascript" src="../js/con_arrow.js"></script>
     <script type="text/javascript">
