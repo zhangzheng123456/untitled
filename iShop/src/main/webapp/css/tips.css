@@ -52,3 +52,16 @@
 	border: 1px solid #a9c9e2;
 	display: none;
 }
+.er_code{
+	position: relative;
+}
+.kuang{
+	width: 200px;
+	border:1px solid #ddd;
+	position: absolute;
+	top:2px;
+	left: 180px;
+}
+.kuang img{
+	width: 100%;
+}

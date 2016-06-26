@@ -38,12 +38,17 @@ var oc = new ObjectControl();
 	shopgoaljs.bindbutton=function(){
 		$(".shopgoaladd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(shopgoaljs.firstStep()){
-				var OWN_CORP=$("#OWN_CORP").val();
-				var SHOP_ID=$("#SHOP_ID").val();
-				var SHOP_NAME=$("#SHOP_NAME").val();
-				var TIME_TYPE=$("#TIME_TYPE").val();
-				var PER_GOAL=$("#PER_GOAL").val();
-				var DATE=$("#DATE").val();
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
+				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
+				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
+				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				var DATE="";
+				if(TIME_TYPE!=="年"){
+					DATE=$("#GOODS_RELEASETIME").val();
+				}else if(TIME_TYPE=="年"){
+					DATE=$("#year").val();
+				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -59,8 +64,8 @@ var oc = new ObjectControl();
 				var _params = {
 					"corp_code": OWN_CORP,
 					"store_code": SHOP_ID,
-					"store_name": SHOP_NAME,
 					"achv_type": TIME_TYPE,
+					"store_name":SHOP_NAME,
 					"achv_goal": PER_GOAL,
 					"end_time": DATE,
 					"isactive": ISACTIVE
@@ -73,12 +78,17 @@ var oc = new ObjectControl();
 		$(".shopgoaledit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(shopgoaljs.firstStep()){
 				var ID=sessionStorage.getItem("id");
-				var OWN_CORP=$("#OWN_CORP").val();
-				var SHOP_ID=$("#SHOP_ID").val();
-				var SHOP_NAME=$("#SHOP_NAME").val();
-				var TIME_TYPE=$("#TIME_TYPE").val();
-				var PER_GOAL=$("#PER_GOAL").val();
-				var DATE=$("#DATE").val();
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
+				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
+				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
+				var DATE="";
+				if(TIME_TYPE!=="年"){
+					DATE=$("#GOODS_RELEASETIME").val();
+				}else if(TIME_TYPE=="年"){
+					DATE=$("#year").val();
+				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -91,8 +101,17 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
-				shopgoaljs.ajaxSubmit(_command,_params,opt);
+				var _params = {
+					"id": ID,
+					"corp_code": OWN_CORP,
+					"store_code": SHOP_ID,
+					"store_name":SHOP_NAME,
+					"achv_type": TIME_TYPE,
+					"achv_goal": PER_GOAL,
+					"end_time": DATE,
+					"isactive": ISACTIVE
+				};
+				shopgoaljs.ajaxSubmit(_command, _params, opt);
 			}else{
 				return;
 			}
@@ -221,10 +240,17 @@ jQuery(document).ready(function(){
     	var text=$(this).html();
     	if(text=="日"){
     		$('#day').show();
+    		$('#week_p').hide();
+    	}else if(text=="周"){
+    		$('#day').show();
+    		$('#week_p').hide();
     	}else if(text=="年"){
     		$('#day').hide();
     		$('#week_p').show();
-    		$('#month').hide();
+    		year();
+    	}else if(text=="月"){
+    		$('#day').show();
+    		$('#week_p').hide();
     	}
     })
     //点击年的input出来ul
