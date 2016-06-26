@@ -164,8 +164,8 @@ public class StoreServiceImpl implements StoreService {
         Store store1 = getStoreByCode(corp_code,store_code,"");
         Store store2 = getStoreByName(corp_code,store_name);
 
-        if ((store.getArea_code().equals(store_code) || store1 == null)
-                && (store.getArea_name().equals(store_name) || store2 == null)) {
+        if ((store.getStore_code().equals(store_code) || store1 == null)
+                && (store.getStore_name().equals(store_name) || store2 == null)) {
             store = new Store();
             store.setId(store_id);
             store.setStore_code(store_code);
@@ -180,7 +180,7 @@ public class StoreServiceImpl implements StoreService {
             store.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.updateStore(store);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else if (!store.getArea_code().equals(store_code) && store1 != null){
+        }else if (!store.getStore_code().equals(store_code) && store1 != null){
             result = "店铺编号已存在";
         }else {
             result = "店铺名称已存在";
