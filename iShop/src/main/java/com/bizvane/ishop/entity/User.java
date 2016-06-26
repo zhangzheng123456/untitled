@@ -26,6 +26,8 @@ public class User {
 	private String group_code;
 	//二维码图片地址
 	private String qrcode;
+	//二维码图片地址
+	private String qrcode_url;
 	//上次登录时间
 	private String login_time_recently;
 	//修改时间
@@ -155,6 +157,14 @@ public class User {
 
 	public void setQrcode(String qrcode) {
 		this.qrcode = qrcode;
+	}
+
+	public String getQrcode_url() {
+		return qrcode_url;
+	}
+
+	public void setQrcode_url(String qrcode_url) {
+		this.qrcode_url = qrcode_url;
 	}
 
 	public String getLogin_time_recently() {

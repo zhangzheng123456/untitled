@@ -680,8 +680,10 @@ public class UserController {
                     String result = IshowHttpClient.get(url);
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
+                    String qrcode_url = obj.get("url").toString();
                     User user = userService.userCodeExist(user_code,corp_code);
                     user.setQrcode(picture);
+                    user.setQrcode_url(qrcode_url);
                     userService.update(user);
                     dataBean.setId(id);
                     dataBean.setMessage(picture);
