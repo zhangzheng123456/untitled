@@ -2,19 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.SignMapper">
     <select id="selectSignface" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT ds.ID,ds.USER_NAME,ds.CORP_CODE,ds.STORE_CODE,du.PHONE,ds.STATUS,ds.DISTANCE,ds.MODIFIER
+        SELECT ds.ID,ds.USER_NAME,ds.CORP_CODE,ds.STORE_CODE,du.PHONE,ds.STATUS,ds.DISTANCE,ds.MODIFIER,ds.MODIFIED_DATE
         FROM def_sign  ds  INNER JOIN  def_user du ON ds.USER_CODE=du.USER_CODE
         WHERE 1 = 1
         <if test="search_value != null and search_value !=''">
             AND
             (
-            USER_NAME LIKE concat('%', #{search_value},'%')
-            OR CORP_CODE LIKE concat('%', #{search_value},'%')
-            OR STORE_CODE LIKE concat('%', #{search_value},'%')
-            OR PHONE LIKE concat('%',#{search_value},'%')
+            ds.USER_NAME LIKE concat('%', #{search_value},'%')
+            OR ds.CORP_CODE LIKE concat('%', #{search_value},'%')
+            OR ds.STORE_CODE LIKE concat('%', #{search_value},'%')
+            OR du.PHONE LIKE concat('%',#{search_value},'%')
             OR STATUS LIKE concat('%', #{search_value},'%')
             OR DISTANCE LIKE concat('%',#{search_value},'%')
-            OR MODIFIER LIKE concat('%', #{search_value},'%')
+            OR ds.MODIFIER LIKE concat('%', #{search_value},'%')
+            OR ds.MODIFIED_DATE LIKE concat('%', #{search_value},'%')
+
             )
         </if>
         ORDER BY ID

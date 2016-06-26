@@ -8,6 +8,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreAchvGoalService;
+import com.bizvane.ishop.utils.TimeUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -85,7 +86,7 @@ public class StoreAchvGoalController {
     }
 
     /**
-     * 员工最新业绩目标修改或添加
+     * 店铺业绩目标修改或添加
      *
      * @param request
      * @return
@@ -95,8 +96,6 @@ public class StoreAchvGoalController {
     public String addStoreAchvGoal(HttpServletRequest request) {
 
         DataBean dataBean = new DataBean();
-//        String user_id = WebUtils.getValueForSession(request, "user_id");
-//        String corp_code = WebUtils.getValueForSession(request, "corp_code");
         String user_id = request.getSession(false).getAttribute("user_id").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
@@ -108,32 +107,39 @@ public class StoreAchvGoalController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             StoreAchvGoal storeAchvGoal1 = new StoreAchvGoal();
+            storeAchvGoal1.setCorp_code(jsonObject.get("corp_code").toString());
             storeAchvGoal1.setStore_name(jsonObject.get("store_name").toString());
             storeAchvGoal1.setStore_name(jsonObject.get("store_code").toString());
             storeAchvGoal1.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
-            storeAchvGoal1.setAchv_type(jsonObject.get("achv_type").toString());
+            String achv_type = jsonObject.get("achv_type").toString();
+            storeAchvGoal1.setAchv_type(achv_type);
+
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+                String time = jsonObject.get("end_time").toString();
+                String week = TimeUtils.getWeek(time);
+                storeAchvGoal1.setEnd_time(week);
+            }else{
+                storeAchvGoal1.setEnd_time(jsonObject.get("end_time").toString());
+            }
             Date now = new Date();
-            storeAchvGoal1.setStart_time(Common.DATETIME_FORMAT.format(now));
-            storeAchvGoal1.setEnd_time(jsonObject.get("end_time").toString());
             storeAchvGoal1.setModifier(user_id);
             storeAchvGoal1.setModified_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal1.setCreater(user_id);
             storeAchvGoal1.setCreated_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
 
-
-            String exist = storeAchvGoalService.storeAchvExist(corp_code, storeAchvGoal1.getStore_code());
-            if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
+//            String exist = storeAchvGoalService.storeAchvExist(corp_code, storeAchvGoal1.getStore_code());
+//            if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
                 //storeAchvGoalService.update(storeAchvGoal1);
                 storeAchvGoalService.insert(storeAchvGoal1);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add error ");
-            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("商户已存在！！");
-            }
+//            } else {
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setId(id);
+//                dataBean.setMessage("商户已存在！！");
+//            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -144,7 +150,7 @@ public class StoreAchvGoalController {
     }
 
     /**
-     * 用户业绩目标
+     *店铺业绩目标
      * 选择业绩
      *
      * @param request
@@ -179,7 +185,7 @@ public class StoreAchvGoalController {
     }
 
     /**
-     * 用户业绩目标编辑
+     * 店铺业绩目标编辑
      *
      * @param request
      * @return
@@ -196,7 +202,30 @@ public class StoreAchvGoalController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            StoreAchvGoal storeAchvGoal = WebUtils.JSON2Bean(jsonObject, StoreAchvGoal.class);
+
+            StoreAchvGoal storeAchvGoal = new StoreAchvGoal();
+            storeAchvGoal.setId(Integer.parseInt(jsonObject.get("id").toString()));
+            storeAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
+            storeAchvGoal.setStore_name(jsonObject.get("store_name").toString());
+            storeAchvGoal.setStore_name(jsonObject.get("store_code").toString());
+            storeAchvGoal.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
+            String achv_type = jsonObject.get("achv_type").toString();
+            storeAchvGoal.setAchv_type(achv_type);
+            String time = jsonObject.get("end_time").toString();
+
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+                String week = TimeUtils.getWeek(time);
+                storeAchvGoal.setEnd_time(week);
+            }else{
+                storeAchvGoal.setEnd_time(time);
+            }
+            Date now = new Date();
+            storeAchvGoal.setModifier(user_id);
+            storeAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
+            storeAchvGoal.setCreater(user_id);
+            storeAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            storeAchvGoal.setIsactive(jsonObject.get("isactive").toString());
+
             storeAchvGoalService.update(storeAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -210,7 +239,7 @@ public class StoreAchvGoalController {
     }
 
     /**
-     * 用户业绩目标删除
+     * 店铺业绩目标删除
      *
      * @param request
      * @return
