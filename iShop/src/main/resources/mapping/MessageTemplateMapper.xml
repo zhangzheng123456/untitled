@@ -18,6 +18,9 @@
         <association property="message_type" javaType="com.bizvane.ishop.entity.Message_type">
             <result column="type_name" property="type_name"/>
         </association>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
     </resultMap>
 
     <select id="selectBySearch" resultMap="MessageTemplates">
@@ -33,9 +36,10 @@
         dmt.created_date,
         dmt.creater,
         dmt.type_code,
-        dmtype.type_name
-        from def_message_template dmt,def_message_type dmtype
-        WHERE dmt.type_code=dmtype.type_code
+        dmtype.type_name,
+        dc.corp_name
+        from def_message_template dmt,def_message_type dmtype,DEF_CORP dc
+        WHERE dmt.type_code=dmtype.type_code and dmt.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and dmt.corp_code=#{corp_code}
         </if>

@@ -374,7 +374,7 @@ public class MessageController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/getMessageTypeByUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/type/getMessageTypeByUser", method = RequestMethod.POST)
     @ResponseBody
     public String getMessageTypeByUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -394,7 +394,6 @@ public class MessageController {
                 list = messageTypeService.getMessageTypeByCorp(corp_code, "");
             }
             for (int i = 0; list != null && i < list.size(); i++) {
-                //Corp corp = list.get(i);
                 Message_type message_type = list.get(i);
                 String type_code = message_type.getType_code();
                 String type_name = message_type.getType_name();

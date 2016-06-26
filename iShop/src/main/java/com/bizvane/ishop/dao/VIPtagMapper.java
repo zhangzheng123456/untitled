@@ -23,6 +23,8 @@ public interface VIPtagMapper {
     List<VIPtag> selectAllVipTag(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
 
-    VIPtag selectVipTagCode(@Param("tag_code") String tag_code, @Param("corp_code") String corp_code);
+    VIPtag selectVipTagCode(@Param("corp_code") String corp_code, @Param("tag_code") String tag_code);
+
+    VIPtag vipTagNameExist(@Param("corp_code") String corp_code, @Param("tag_name") String tag_name);
 
 }

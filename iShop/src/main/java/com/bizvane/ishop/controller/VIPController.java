@@ -11,19 +11,15 @@ import com.bizvane.ishop.entity.VipCallbackRecord;
 import com.bizvane.ishop.entity.VipTagType;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
-import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -451,6 +447,77 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 会员标签管理
+     * 查看是否有重复的标签
+     */
+    @RequestMapping(value = "/label/VipLabelCodeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String VipLabelCodeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            String corp_code = jsonObject2.getString("corp_code");
+            String tag_code = jsonObject2.getString("tag_code");
+            String existInfo = this.vipTagService.vipTagCodeExist(corp_code, tag_code);
+            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("标签编号未被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("标签编号已被使用！！！");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 会员标签管理
+     * 判断企业内标签名称是否唯一
+     */
+    @RequestMapping(value = "/label/VipLabelNameExist")
+    @ResponseBody
+    public String VipLabelNameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            String tag_name = jsonObject2.getString("tag_name");
+            String corp_code = jsonObject2.getString("corp_code");
+            String existInfo = this.vipTagService.vipTagNameExist(corp_code, tag_name);
+
+            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("标签名称未被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("标签名称已被使用！！！");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
     /**
      * 会员标签管理
      * 查找
@@ -764,7 +831,9 @@ public class VIPController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int vipCallbackRecord_id = Integer.parseInt(jsonObject.get("id").toString());
+            //  int vipCallbackRecord_id = Integer.parseInt(jsonObject.getString("id"));
+            int vipCallbackRecord_id = jsonObject.getInt("id");
+
             VipCallbackRecord vipCallbackRecord = this.vipCallbackRecordService.getVipCallbackRecord(vipCallbackRecord_id);
             if (vipCallbackRecord != null) {
                 dataBean.setId(id);
@@ -782,6 +851,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
 
     /**
      * 回访记录管理

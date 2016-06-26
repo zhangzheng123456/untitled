@@ -15,8 +15,7 @@ public class MessageTemplate {
     private String tem_content;
     //是否可用
     private String isactive;
-    //企业编号
-    private String corp_code;
+
     //修改日期
     private String modified_date;
     //修改人
@@ -30,7 +29,8 @@ public class MessageTemplate {
 
     private Message_type message_type;
 
-
+    //企业编号
+    private String corp_code;
     private Corp corp;
 
     public MessageTemplate() {

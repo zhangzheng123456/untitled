@@ -160,4 +160,12 @@
          and
          corp_code=#{corp_code}
     </select>
+
+    <select id="vipTagNameExist" resultType="com.bizvane.ishop.entity.VIPtag">
+        select * from DEF_VIP_TAG
+         where
+         tag_name=#{tag_name}
+         and
+        corp_code=#{corp_code}
+    </select>
 </mapper>
