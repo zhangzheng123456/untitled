@@ -15,31 +15,40 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="isactive" property="isactive"/>
-        <association property="area" javaType="com.bizvane.ishop.entity.Area">
-            <result column="area_name" property="area_name"/>
-        </association>
+        <!--<association property="area" javaType="com.bizvane.ishop.entity.Area">-->
+            <!--<result column="area_name" property="area_name"/>-->
+        <!--</association>-->
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
 
 
     </resultMap>
-    <select id="selectById" resultType="com.bizvane.ishop.entity.StoreAchvGoal">
-        select * from DEF_STORE_ACHV_GOAL
-        where id=#{id}
+
+    <select id="selectById" resultMap="storeAchvGoals">
+        select sa.id,sa.store_code,sa.store_name,sa.corp_code,
+        sa.area_code,sa.achv_goal,sa.achv_type,sa.start_time,
+        sa.end_time,sa.modified_date,sa.modifier,sa.created_date,
+        sa.creater,sa.isactive,c.corp_name
+        from
+        DEF_STORE_ACHV_GOAL sa,
+        DEF_CORP c
+        WHERE
+        sa.corp_code=c.corp_code
+        AND sa.id=#{id}
     </select>
+
     <select id="selectUsersBySearch" resultMap="storeAchvGoals">
         select
         sa.id,sa.store_code,sa.store_name,sa.corp_code,
         sa.area_code,sa.achv_goal,sa.achv_type,sa.start_time,
         sa.end_time,sa.modified_date,sa.modifier,sa.created_date,
-        sa.creater,sa.isactive,c.corp_name,a.area_name
+        sa.creater,sa.isactive,c.corp_name
         from
         DEF_STORE_ACHV_GOAL sa,
-        DEF_AREA a,
         DEF_CORP c
         WHERE
-        sa.corp_code=c.corp_code and sa.area_code=a.area_code
+        sa.corp_code=c.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND
             c.corp_code=#{corp_code}
@@ -48,8 +57,7 @@
             and
             ( sa.STORE_CODE like concat('%',#{search_value},'%')
             OR sa.STORE_NAME LIKE concat('%',#{search_value},'%')
-            OR sa.CORP_CODE LIKE concat('%',#{search_value},'%')
-            OR sa.AREA_CODE LIKE concat('%',#{search_value},'%')
+            OR c.corp_name LIKE concat('%',#{search_value},'%')
             OR sa.ACHV_GOAL like concat('%',#{search_value},'%')
             OR sa.ACHV_TYPE like concat('%',#{search_value},'%')
             OR sa.MODIFIER like concat('%',#{search_value},'%')
@@ -192,12 +200,15 @@
         WHERE id=#{id}
 
     </update>
+
     <delete id="deleteById">
         DELETE  from DEF_STORE_ACHV_GOAL
         WHERE id=#{id}
     </delete>
+
     <select id="selectByCorpAndUserCode">
         select * from DEF_STORE_ACHV_GOAL
         WHERE  corp_code=#{corp_code} and store_code=#{store_code}
     </select>
+
 </mapper>

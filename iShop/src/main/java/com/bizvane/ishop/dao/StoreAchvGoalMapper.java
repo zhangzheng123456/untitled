@@ -41,7 +41,7 @@ public interface StoreAchvGoalMapper {
      * @param id
      * @return
      */
-    int deleteById(int id);
+    int deleteById(@Param("id") int id);
 
 
     /**

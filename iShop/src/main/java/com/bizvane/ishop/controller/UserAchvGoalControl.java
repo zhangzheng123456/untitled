@@ -8,6 +8,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.UserAchvGoalService;
+import com.bizvane.ishop.utils.TimeUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.LoggerFactory;
@@ -19,8 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -38,6 +37,7 @@ public class UserAchvGoalControl {
     @Autowired
     private FunctionService functionService = null;
 
+    String id;
     /**
      * 用户管理
      *用户业绩目标的列表展示
@@ -99,12 +99,36 @@ public class UserAchvGoalControl {
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            UserAchvGoal userAchvGoal = WebUtils.request2Bean(request, UserAchvGoal.class);
+
+            UserAchvGoal userAchvGoal = new UserAchvGoal();
+            userAchvGoal.setId(Integer.parseInt(jsonObj.get("id").toString()));
+            userAchvGoal.setCorp_code(jsonObj.get("corp_code").toString());
+            userAchvGoal.setStore_code(jsonObj.get("store_code").toString());
+            userAchvGoal.setUser_code(jsonObj.get("user_code").toString());
+            userAchvGoal.setUser_name(jsonObj.get("user_name").toString());
+            userAchvGoal.setAchv_goal(Double.parseDouble(jsonObj.get("achv_goal").toString()));
+            String achv_type = jsonObj.get("achv_type").toString();
+            userAchvGoal.setAchv_type(achv_type);
+
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+                String time = jsonObj.get("end_time").toString();
+                String week = TimeUtils.getWeek(time);
+                userAchvGoal.setEnd_time(week);
+            }else{
+                userAchvGoal.setEnd_time(jsonObj.get("end_time").toString());
+            }
+            Date now = new Date();
+            userAchvGoal.setModifier(user_id);
+            userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
+            userAchvGoal.setCreater(user_id);
+            userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
+
             userAchvGoalService.updateUserAchvGoal(userAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(e.getMessage());
@@ -165,43 +189,39 @@ public class UserAchvGoalControl {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            //   UserAchvGoal userAchvGoal = WebUtils.request2Bean(request, UserAchvGoal.class);
             UserAchvGoal userAchvGoal = new UserAchvGoal();
-            Date now = new Date();
-            userAchvGoal.setCreater(user_id);
+            userAchvGoal.setId(Integer.parseInt(jsonObject.get("id").toString()));
+            userAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
             userAchvGoal.setStore_code(jsonObject.get("store_code").toString());
-
-            userAchvGoal.setUser_code(jsonObject.getString("user_code"));
-            userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
-            //   userAchvGoal.setUser_name();
-            userAchvGoal.setAchv_goal(jsonObject.getDouble("achv_goal"));
-            String achv_type = jsonObject.getString("achv_type");
+            userAchvGoal.setUser_code(jsonObject.get("user_code").toString());
+            userAchvGoal.setUser_name(jsonObject.get("user_name").toString());
+            userAchvGoal.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
+            String achv_type = jsonObject.get("achv_type").toString();
             userAchvGoal.setAchv_type(achv_type);
-            DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date start_time = null;
-            Date end_time = null;
 
-            userAchvGoal.setStart_time(jsonObject.getString("start_time"));
-
-
-            //userAchvGoal.setEnd_time(jsonObject.getString("end_time"));
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+                String time = jsonObject.get("end_time").toString();
+                String week = TimeUtils.getWeek(time);
+                userAchvGoal.setEnd_time(week);
+            }else{
+                userAchvGoal.setEnd_time(jsonObject.get("end_time").toString());
+            }
+            Date now = new Date();
+            userAchvGoal.setModifier(user_id);
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setCreater(user_id);
-            userAchvGoal.setIsactive(jsonObject.getString("isactive"));
-            userAchvGoal.setCorp_code(jsonObject.getString("corp_code"));
             userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            userAchvGoal.setCreater(user_id);
+            userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
 
-
-            String existInfo = this.userAchvGoalService.userAchvGoalExist(userAchvGoal.getUser_code());
-            if (existInfo.equals(Common.DATABEAN_CODE_ERROR)) {
+//            String existInfo = this.userAchvGoalService.userAchvGoalExist(userAchvGoal.getUser_code());
+//            if (existInfo.equals(Common.DATABEAN_CODE_ERROR)) {
                 userAchvGoalService.insert(userAchvGoal);
-            } else {
-                userAchvGoalService.updateUserAchvGoal(userAchvGoal);
-            }
+//            } else {
+//                userAchvGoalService.updateUserAchvGoal(userAchvGoal);
+//    }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("修改SUCCESS   ！！！！");
+            dataBean.setMessage("add SUCCESS！");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -220,7 +240,6 @@ public class UserAchvGoalControl {
     public String findById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String data = null;
-        String id = "";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -255,7 +274,7 @@ public class UserAchvGoalControl {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNum").toString());
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();

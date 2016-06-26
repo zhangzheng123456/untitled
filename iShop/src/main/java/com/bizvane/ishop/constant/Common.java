@@ -36,12 +36,12 @@ public class Common {
     public static final SimpleDateFormat DATETIME_FORMAT_DAY = new SimpleDateFormat("yyyy-MM-dd");
 
     //时间类型（日）
-    public static final String TIME_TYPE_DAY = "1";
+    public static final String TIME_TYPE_DAY = "日";
     //时间类型（周）
-    public static final String TIME_TYPE_WEEK = "2";
+    public static final String TIME_TYPE_WEEK = "周";
     //时间类型（月）
-    public static final String TIME_TYPE_MONTH = "3";
+    public static final String TIME_TYPE_MONTH = "月";
     //时间类型（年）
-    public static final String TIME_TYPE_YEAR = "4";
+    public static final String TIME_TYPE_YEAR = "年";
 
 }

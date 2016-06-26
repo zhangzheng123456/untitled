@@ -19,12 +19,34 @@
         <association property="store" javaType="com.bizvane.ishop.entity.Store">
             <result column="store_name" property="store_name"/>
         </association>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
     </resultMap>
 
-    <select id="selectById" resultType="com.bizvane.ishop.entity.UserAchvGoal">
-        select * from
-        DEF_USER_ACHV_GOAL
-        WHERE id=#{id}
+    <select id="selectById" resultMap="userAchvGoals">
+        select ua.id,
+        ua.user_code,
+        ua.user_name,
+        ua.store_code,
+        ua.corp_code,
+        ua.achv_goal,
+        ua.achv_type,
+        ua.start_time,
+        ua.end_time,
+        ua.modified_date,
+        ua.modifier,
+        ua.created_date,
+        ua.creater,
+        ua.isactive,
+        s.store_name,
+        c.corp_name
+        from
+        DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c
+        WHERE ua.store_code=s.store_code
+        AND ua.corp_code = c.corp_code
+        AND c.corp_code = s.corp_code
+        AND ua.id=#{id}
     </select>
     <select id="userAchvGoalExist">
         select * from DEF_USER_ACHV_GOAL WHERE USER_CODE=#{user_code}
@@ -209,17 +231,26 @@
         ua.created_date,
         ua.creater,
         ua.isactive,
-        s.store_name
+        s.store_name,
+        c.corp_name
         from
-        DEF_USER_ACHV_GOAL ua,DEF_STORE s
+        DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c
         WHERE ua.store_code=s.store_code
+        AND ua.corp_code = c.corp_code
+        AND c.corp_code = s.corp_code
         <if test="userAchvGoalId!=null and userAchvGoalId!=''">
             and ua.id=#{userAchvGoalId}
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
             (ua.user_name like concat('%',#{search_value},'%')
+            OR ua.user_code like concat('%',#{search_value},'%')
+            OR s.store_name like concat('%',#{search_value},'%')
+            OR c.corp_name like concat('%',#{search_value},'%')
             OR ua.ACHV_GOAL like concat('%',#{search_value},'%')
+            OR ua.achv_type like concat('%',#{search_value},'%')
+            OR ua.ACHV_GOAL like concat('%',#{search_value},'%')
+            OR ua.end_time like concat('%',#{search_value},'%')
             OR ua.MODIFIER like concat('%',#{search_value},'%')
             OR ua.modified_date like concat('%',#{search_value},'%')
             )

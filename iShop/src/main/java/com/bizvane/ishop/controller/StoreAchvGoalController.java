@@ -2,15 +2,16 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreAchvGoalService;
 import com.bizvane.ishop.utils.TimeUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,8 +21,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -41,6 +40,7 @@ public class StoreAchvGoalController {
     @Autowired
     FunctionService functionService = null;
 
+    String id;
     /**
      * 用户管理
      * 列表展示
@@ -109,7 +109,7 @@ public class StoreAchvGoalController {
             StoreAchvGoal storeAchvGoal1 = new StoreAchvGoal();
             storeAchvGoal1.setCorp_code(jsonObject.get("corp_code").toString());
             storeAchvGoal1.setStore_name(jsonObject.get("store_name").toString());
-            storeAchvGoal1.setStore_name(jsonObject.get("store_code").toString());
+            storeAchvGoal1.setStore_code(jsonObject.get("store_code").toString());
             storeAchvGoal1.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
             String achv_type = jsonObject.get("achv_type").toString();
             storeAchvGoal1.setAchv_type(achv_type);
@@ -134,7 +134,7 @@ public class StoreAchvGoalController {
                 storeAchvGoalService.insert(storeAchvGoal1);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add error ");
+                dataBean.setMessage("add success ");
 //            } else {
 //                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
 //                dataBean.setId(id);
@@ -207,10 +207,9 @@ public class StoreAchvGoalController {
             storeAchvGoal.setId(Integer.parseInt(jsonObject.get("id").toString()));
             storeAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
             storeAchvGoal.setStore_name(jsonObject.get("store_name").toString());
-            storeAchvGoal.setStore_name(jsonObject.get("store_code").toString());
+            storeAchvGoal.setStore_code(jsonObject.get("store_code").toString());
             storeAchvGoal.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
             String achv_type = jsonObject.get("achv_type").toString();
-            storeAchvGoal.setAchv_type(achv_type);
             String time = jsonObject.get("end_time").toString();
 
             if (achv_type.equals(Common.TIME_TYPE_WEEK)){
@@ -248,18 +247,19 @@ public class StoreAchvGoalController {
     @ResponseBody
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String id = "1";
         try {
-            String jsString = WebUtils.getValueForSession(request, "param");
+            String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String storeAchvGoal_id = jsonObj.get("id").toString();
+            id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String storeAchvGoal_id = jsonObject.get("id").toString();
             String[] ids = storeAchvGoal_id.split(",");
             for (int i = 0; ids != null && i < ids.length; i++) {
                 storeAchvGoalService.deleteById(Integer.parseInt(ids[i]));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
+            dataBean.setId(id);
             dataBean.setMessage("scuccess");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -269,5 +269,44 @@ public class StoreAchvGoalController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 页面查找
+     */
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @ResponseBody
+    public String search(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = jsonObject.get("searchValue").toString();
+
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<StoreAchvGoal> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
+            } else {
+                String corp_code = request.getSession().getAttribute("corp_code").toString();
+                list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 }
