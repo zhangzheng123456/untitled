@@ -1,8 +1,10 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.MessageTemplate;
 import com.bizvane.ishop.entity.Message_type;
 import com.bizvane.ishop.entity.VipTagType;
@@ -12,6 +14,7 @@ import com.bizvane.ishop.service.MessageTypeService;
 import com.bizvane.ishop.service.VipTagTypeService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -283,6 +287,7 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+
     /**
      * 手机消息类型添加
      */
@@ -362,6 +367,58 @@ public class MessageController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 根据用户的ID输出用户的企业
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getMessageTypeByUser", method = RequestMethod.POST)
+    @ResponseBody
+    public String getMessageTypeByUser(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject corps = new JSONObject();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONArray array = new JSONArray();
+            if (role_code.equals((Common.ROLE_SYS))) {
+                //List<Corp> list = corpService.selectAllCorp();
+                List<Message_type> list = messageTypeService.selectAllMessageType();
+                for (int i = 0; i < list.size(); i++) {
+                    //Corp corp = list.get(i);
+                    Message_type message_type = list.get(i);
+                    String type_code = message_type.getType_code();
+                    String type_name = message_type.getType_name();
+                    //   String corp_name = corp.getCorp_name();
+                    JSONObject obj = new JSONObject();
+                    obj.put("type_code", type_code);
+                    obj.put("type_name", type_name);
+                    array.add(obj);
+                }
+            } else {
+//                String corp_code = request.getSession().getAttribute("corp_code").toString();
+//                // Corp corp = corpService.selectByCorpId(0, corp_code);
+//                Message_type message_type = messageTypeService.getMessageTypeByCorp(corp_code);
+//                String c_code = corp.getCorp_code();
+//                String corp_name = corp.getCorp_name();
+//                JSONObject obj = new JSONObject();
+//                obj.put("corp_code", c_code);
+//                obj.put("corp_name", corp_name);
+//                array.add(obj);
+            }
+            corps.put("corps", array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(corps.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 
     /**
      * 手机消息模板

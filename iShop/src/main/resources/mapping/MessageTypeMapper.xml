@@ -24,6 +24,10 @@
         select * from def_message_type where  id=#{id}
     </select>
 
+    <select id="selectAllMessageType" resultMap="Message_typeInfo">
+        select * from def_message_type
+    </select>
+
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Message_type">
         insert into def_message_type
         <trim prefix="(" suffixOverrides="," suffix=")">
@@ -145,16 +149,20 @@
         vtt.isactive,
         vtt.corp_code
         FROM def_message_type vtt
-        WHERE
-        1=1
+        WHERE 1=1
+        <if test="corp_code!=null and corp_code!=''">
+            and vtt.corp_code=#{corp_code}
+        </if>
         <if test="search_value!=null and search_value!=''">
-            and vtt.type_name like concat('%',#{search_value},'%')
+            and
+            (vtt.type_name like concat('%',#{search_value},'%')
             or vtt.type_description like concat('%',#{search_value},'%')
             or vtt.modified_date like concat('%',#{search_value},'%')
             or vtt.modifier like concat('%',#{search_value},'%')
             or vtt.creater like concat('%',#{search_value},'%')
             or vtt.created_date like concat('%',#{search_value},'%')
             or vtt.isactive like concat('%',#{search_value},'%')
+            )
         </if>
         ORDER BY vtt.id
     </select>
