@@ -198,8 +198,8 @@ jQuery(document).ready(function(){
 				msg=JSON.parse(msg.storeAchvGoal);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
-				getcorplist();
 				$("#SHOP_NAME option[value='"+msg.store_code+"']").attr("select",true);
+				$("#SHOP_NAME option").text(msg.store_name);
 				$("#PER_GOAL").val(msg.achv_goal);
 				if(msg.achv_type!=="年"){
 					$("#GOODS_RELEASETIME").val(msg.end_time);
@@ -220,6 +220,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist();
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
@@ -282,13 +283,13 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
-			$("#OWN_CORP").searchableSelect();
-			var c=$('#corp_select .selected').attr("data-value");
-			store_data(c);
-			$("#corp_select .searchable-select-item").click(function(){
-				var c=$(this).attr("data-value");
-				store_data(c);
-			})
+			$('.corp_select select').searchableSelect();
+			// $('.searchable-select-item').click(function(){
+			// 	$("input[verify='Code']").val("");
+			// 	$("#AREA_NAME").val("");
+			// 	$("input[verify='Code']").attr("data-mark","");
+			// 	$("#AREA_NAME").attr("data-mark","");
+			// })
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -308,6 +309,7 @@ function store_data(c){
 			var msg=JSON.parse(data.message);
 			console.log(msg.stores);
 			var msg_stores=JSON.parse(msg.stores);
+			$('#SHOP_NAME').empty();
 			$('#shop_select .searchable-select').remove();
 			if(msg_stores.length>0){
 				for(var i=0;i<msg_stores.length;i++){
