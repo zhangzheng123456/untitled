@@ -15,17 +15,17 @@ public interface GroupService {
 
     List<Group> selectUserGroup(String corp_code, String role_code) throws SQLException;
 
-   List<Group> selectByRole(String role_code) throws SQLException;
+    List<Group> selectByRole(String role_code) throws SQLException;
 
-    Group selectByCode(String corp_code ,String group_code,String isactive) throws SQLException;
+    Group selectByCode(String corp_code, String group_code, String isactive) throws SQLException;
 
-    PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code,String role_code, String search_value) throws SQLException;
+    PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException;
 
     String selectMaxCode();
 
-    int insertGroup(Group group) throws SQLException;
+    String insertGroup(Group group) throws SQLException;
 
-    int updateGroup(Group group) throws SQLException;
+    String updateGroup(Group group) throws SQLException;
 
     int deleteGroup(int id) throws SQLException;
 

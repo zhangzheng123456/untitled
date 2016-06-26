@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GroupMapper;
 import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.service.GroupService;
@@ -47,12 +48,34 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.selectMaxCode();
     }
 
-    public int insertGroup(Group group) throws SQLException {
-        return groupMapper.insertGroup(group);
+    public String insertGroup(Group group) throws SQLException {
+        String result = "";
+        String group_code = group.getGroup_code();
+        String corp_code = group.getCorp_code();
+        Group group1 = selectByCode(corp_code,group_code,"");
+        if (group1 == null){
+            groupMapper.insertGroup(group);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else {
+            result = "该群组编号已存在！";
+        }
+        return result;
     }
 
-    public int updateGroup(Group group) throws SQLException {
-        return groupMapper.updateGroup(group);
+    public String updateGroup(Group group) throws SQLException {
+        String result = "";
+        int id = group.getId();
+        String group_code = group.getGroup_code();
+        String corp_code = group.getCorp_code();
+        Group group2 = getGroupById(id);
+        Group group1 = selectByCode(corp_code,group_code,"");
+        if (group2.getGroup_code().equals("group_code") || group1 == null){
+            groupMapper.insertGroup(group);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }else {
+            result = "该群组编号已存在！";
+        }
+        return result;
     }
 
     public int deleteGroup(int id) throws SQLException {

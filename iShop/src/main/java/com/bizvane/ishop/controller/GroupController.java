@@ -107,19 +107,18 @@ public class GroupController {
             JSONObject jsonObject = new JSONObject(message);
             Group group = new Group();
             Date now = new Date();
-
             //为新增群组，计算group_code
-            String max_code = groupService.selectMaxCode();
-            int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
-            Integer c = code;
-            int length = max_code.length() - c.toString().length() - 1;
-            String group_code = "G";
-            for (int i = 0; i < length; i++) {
-                group_code = group_code + "0";
-            }
-            group_code = group_code + code;
+//            String max_code = groupService.selectMaxCode();
+//            int code = Integer.parseInt(max_code.substring(1, max_code.length())) + 1;
+//            Integer c = code;
+//            int length = max_code.length() - c.toString().length() - 1;
+//            String group_code = "G";
+//            for (int i = 0; i < length; i++) {
+//                group_code = group_code + "0";
+//            }
+//            group_code = group_code + code;
 
-            group.setGroup_code(group_code);
+            group.setGroup_code(jsonObject.get("group_code").toString());
             group.setGroup_name(jsonObject.get("group_name").toString());
             group.setRole_code(jsonObject.get("role_code").toString());
             group.setCorp_code(jsonObject.get("corp_code").toString());
@@ -129,10 +128,16 @@ public class GroupController {
             group.setModified_date(Common.DATETIME_FORMAT.format(now));
             group.setModifier(user_id);
             group.setIsactive(jsonObject.get("isactive").toString());
-            groupService.insertGroup(group);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("add success");
+            String result = groupService.insertGroup(group);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -169,13 +174,19 @@ public class GroupController {
             group.setModifier(user_id);
             group.setModified_date(Common.DATETIME_FORMAT.format(now));
             group.setIsactive(jsonObject.get("isactive").toString());
-            groupService.updateGroup(group);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = groupService.updateGroup(group);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("edit success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
+            dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
@@ -494,4 +505,36 @@ public class GroupController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/code_exist", method = RequestMethod.POST)
+    @ResponseBody
+    public String codeExist(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        try {
+            String user_id = request.getSession().getAttribute("user_id").toString();
+
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String group_code = jsonObject.get("group_code").toString();
+            Group group = groupService.selectByCode(corp_code, group_code, "");
+            if (group == null){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("该群组编号已存在！");
+            }
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }
