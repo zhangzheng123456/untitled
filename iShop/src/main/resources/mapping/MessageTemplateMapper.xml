@@ -189,7 +189,7 @@
         delete FROM  def_message_template WHERE id=#{id}
     </delete>
 
-    <select id="selectByName" parameterType="com.bizvane.ishop.entity.MessageTemplate">
+    <select id="selectByName" resultType="com.bizvane.ishop.entity.MessageTemplate">
         select * from def_message_template WHERE tem_name=#{tem_name} and corp_code=#{corp_code}
     </select>
 
