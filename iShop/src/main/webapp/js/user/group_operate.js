@@ -19,22 +19,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	groupjs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	groupjs.checkCode=function(obj,hint){
+		var isCode=/^[G]{1}[0-9]{4}$/;
 		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
+			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
+				this.displayHint(hint,"群组编号为必填项，支持以大写G开头必须是4位数字的组合！");
 				return false;
 			}
 		}else{
 			this.displayHint(hint);
 			return false;
 		}
-	};
+	}
 	groupjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -156,10 +155,7 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.group.init();//初始化
-	
 	if($(".pre_title label").text()=="新增群组"){
-		$('#GROUP_USER').parent().parent().css("display","none");
-		$('#GROUP_RIGHT').parent().parent().css("display","none");
 		getcorplist();
 	}else if($(".pre_title label").text()=="编辑群组"){
 		$('#GROUP_USER').parent().parent().css("display","block");
@@ -174,6 +170,7 @@ jQuery(document).ready(function(){
 				console.log(msg);
 				var mg=JSON.parse(msg.data);
 				$("#GROUP_ID").val(mg.group_code);
+				$("#GROUP_ID").attr("data-name",msg.group_code);
 				$("#GROUP_NAME").val(mg.group_name);
 				$("#OWN_CORP option").val(mg.corp.corp_code);
 				$("#OWN_CORP option").text(mg.corp.corp_name);
@@ -242,6 +239,28 @@ jQuery(document).ready(function(){
 			}
 		});
 	});
+	$("input[verify='Code']").blur(function(){
+    	var isCode=/^[G]{1}[0-9]{4}$/;
+    	var _params={};
+    	var group_code=$(this).val();//店仓编号
+    	var group_code1=$(this).attr("data-name");//标志
+    	var corp_code=$("#OWN_CORP").val();//公司编号
+		if(group_code!==""&&group_code!==group_code1&&isCode.test(group_code)==true){
+			_params["group_code"]=group_code;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/user/group/code_exist","", _params, function(data){
+	               if(data.code=="0"){
+	                    div.html("");
+	                    $("#GROUP_ID").attr("data-mark","Y");
+	               }else if(data.code=="-1"){
+	               		$("#GROUP_ID").attr("data-mark","N");
+	               		div.addClass("error_tips");
+						div.html("该编号已经存在！");	
+	               }
+		    })
+		}
+    })
 	$(".groupadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/group.html");
 	});
