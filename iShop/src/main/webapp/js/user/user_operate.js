@@ -615,8 +615,7 @@ jQuery(document).ready(function(){
     $("#create").click(function(){
     	var user_creat="/user/creatQrcode";
     	var user_code=$('#USERID').val();
-    	// var corp_code=$('#OWN_CORP').val();
-    	var corp_code="C11112";
+    	var corp_code=$('#OWN_CORP').val();
     	var _params={};
     	_params["user_code"]=user_code;
     	_params["corp_code"]=corp_code;

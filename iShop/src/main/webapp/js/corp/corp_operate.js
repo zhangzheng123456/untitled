@@ -314,10 +314,28 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     })
-    //授权的点击事件
-    $("#power").click(function(){
-    	 window.parent.location.href="http://wx.bizvane.com/wechat/Authorization.html";
-    })
+    jQuery.ajax({
+		url:"/wechat/authorize",
+		type:"post",
+		dataType: 'text',
+		data:{param:JSON.stringify(_params)},
+		success:function(data){
+			if(data){
+				callback(data);
+			}else{
+							
+			}
+		},
+		error:function(data){
+			console.log(data);
+				
+		}
+	});
+    function callback(data){
+        var a="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxb0a4eb02ba4f1df4&pre_auth_code="+data+"&redirect_uri=http://wx.bizvane.com/wechat/callback";
+        $('#power').html('<a href="'+a+'" target="_parent">授权</a>');
+    }
+    // window.parent.location.href="http://wx.bizvane.com/wechat/Authorization.html";
     //检查是否可否授权状态、
     $("#state").click(function(){
     	var corp_code=$("#CORPID").val();

@@ -170,7 +170,7 @@ jQuery(document).ready(function(){
 				console.log(msg);
 				var mg=JSON.parse(msg.data);
 				$("#GROUP_ID").val(mg.group_code);
-				$("#GROUP_ID").attr("data-name",msg.group_code);
+				$("#GROUP_ID").attr("data-name",mg.group_code);
 				$("#GROUP_NAME").val(mg.group_name);
 				$("#OWN_CORP option").val(mg.corp.corp_code);
 				$("#OWN_CORP option").text(mg.corp.corp_name);
@@ -285,6 +285,10 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("input[verify='Code']").attr("data-mark","");
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,

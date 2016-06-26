@@ -283,13 +283,13 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
-			$('.corp_select select').searchableSelect();
-			// $('.searchable-select-item').click(function(){
-			// 	$("input[verify='Code']").val("");
-			// 	$("#AREA_NAME").val("");
-			// 	$("input[verify='Code']").attr("data-mark","");
-			// 	$("#AREA_NAME").attr("data-mark","");
-			// })
+			$("#OWN_CORP").searchableSelect();
+			var c=$('#corp_select .selected').attr("data-value");
+			store_data(c);
+			$("#corp_select .searchable-select-item").click(function(){
+				var c=$(this).attr("data-value");
+				store_data(c);
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
