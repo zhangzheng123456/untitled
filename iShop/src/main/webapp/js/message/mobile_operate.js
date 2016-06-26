@@ -264,12 +264,12 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
-			$('.searchable-select-item').click(function(){
-				$("input[verify='Code']").val("");
-				$("#MOBAN_NAME").val("");
-				$("input[verify='Code']").attr("data-mark","");
-				$("#MOBAN_NAME").attr("data-mark","");
-			})
+			// $('.searchable-select-item').click(function(){
+			// 	$("input[verify='Code']").val("");
+			// 	$("#MOBAN_NAME").val("");
+			// 	$("input[verify='Code']").attr("data-mark","");
+			// 	$("#MOBAN_NAME").attr("data-mark","");
+			// })
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
