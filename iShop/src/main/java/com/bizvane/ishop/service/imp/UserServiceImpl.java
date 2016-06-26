@@ -133,17 +133,16 @@ public class UserServiceImpl implements UserService {
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
         String phone_exist = userPhoneExist(phone);
-        String code_exist = userCodeExist(user_code,corp_code);
+        User code_exist = userCodeExist(user_code,corp_code);
         String email_exist = userEmailExist(email);
 
         if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
             result = "手机号已存在";
-        }else if (!code_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+        }else if (code_exist != null){
             result = "员工编号已存在";
         }else if (!email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
             result = "邮箱已存在";
-        }else if(phone_exist.equals(Common.DATABEAN_CODE_SUCCESS) && code_exist.equals(Common.DATABEAN_CODE_SUCCESS)
-                && email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+        }else{
             userMapper.insertUser(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
@@ -160,15 +159,15 @@ public class UserServiceImpl implements UserService {
         String email = user.getEmail();
         User user1 = getUserById(user_id);
         String phone_exist = userPhoneExist(phone);
-        String code_exist = userCodeExist(user_code,corp_code);
-        String email_exist = userEmailExist(email);
+        User code_exist = userCodeExist(user_code,corp_code);
+
 
         if (!user1.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
             result = "手机号已存在";
-        }else if (!user1.getUser_code().equals(user_code) && !code_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+        }else if (!user1.getUser_code().equals(user_code) && code_exist != null){
             result = "员工编号已存在";
-        }else if (!user1.getEmail().equals(email) && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
-            result = "邮箱已存在";
+        }else if (user.getEmail()!=null && !user.getEmail().equals("") && !user1.getEmail().equals(email)&& !userEmailExist(email).equals(Common.DATABEAN_CODE_SUCCESS)){
+                result = "邮箱已存在";
         }else{
             userMapper.updateByUserId(user);
             result = Common.DATABEAN_CODE_SUCCESS;
@@ -262,13 +261,9 @@ public class UserServiceImpl implements UserService {
     /**
      * 验证企业下用户编号是否已存在
      */
-    public String userCodeExist(String user_code, String corp_code) throws SQLException {
+    public User userCodeExist(String user_code, String corp_code) throws SQLException {
         User user = userMapper.selectUserCode(user_code, corp_code);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (user == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
+        return user;
     }
 
 

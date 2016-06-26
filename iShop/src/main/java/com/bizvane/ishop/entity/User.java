@@ -24,6 +24,8 @@ public class User {
 	private String store_code;
 	//群组编号
 	private String group_code;
+	//二维码图片地址
+	private String qrcode;
 	//上次登录时间
 	private String login_time_recently;
 	//修改时间
@@ -145,6 +147,14 @@ public class User {
 
 	public void setGroup_code(String group_code) {
 		this.group_code = group_code;
+	}
+
+	public String getQrcode() {
+		return qrcode;
+	}
+
+	public void setQrcode(String qrcode) {
+		this.qrcode = qrcode;
 	}
 
 	public String getLogin_time_recently() {

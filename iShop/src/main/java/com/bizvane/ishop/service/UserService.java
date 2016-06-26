@@ -37,7 +37,7 @@ public interface UserService {
 
     String userEmailExist(String email);
 
-    String userCodeExist(String user_code, String corp_code) throws SQLException;
+    User userCodeExist(String user_code, String corp_code) throws SQLException;
 
     String register(String message) throws Exception;
 

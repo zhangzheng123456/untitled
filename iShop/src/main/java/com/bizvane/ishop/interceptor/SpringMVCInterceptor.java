@@ -24,10 +24,8 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
         // TODO Auto-generated method stub
         HttpSession session = request.getSession(true);
         if (session.getAttribute("user_id") != null) {
-            System.out.println("-------------1");
             return true;
         }
-        System.out.println("-------------2");
         response.sendRedirect("login.html");
         return false;
     }
