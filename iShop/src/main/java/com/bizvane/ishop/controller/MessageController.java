@@ -17,6 +17,7 @@ import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -240,6 +241,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/type/edit", method = RequestMethod.GET)
     @ResponseBody
+    @Transactional
     public String MessageTypeEdit(HttpServletRequest request) {
 
         DataBean dataBean = new DataBean();
@@ -254,17 +256,16 @@ public class MessageController {
             Message_type message_type = WebUtils.JSON2Bean(jsonObject, Message_type.class);
             String existInfo1 = this.messageTemplateService.messageTemplateExist(message_type.getType_code(), message_type.getCorp_code());
             String existInfo2 = this.messageTemplateService.messageTemplateNameExist(message_type.getType_name(), message_type.getCorp_code());
-          //  if(existInfo1.contains())
-//            String result = String.valueOf(this.messageTypeService.update(message_type));
-//            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setId(id);
-//                dataBean.setMessage(result);
-//            } else {
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setId(id);
-//                dataBean.setMessage("add success");
-//            }
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            if (existInfo1.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("信息类型编号已经存在！！！");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("信息类型名已经存在！！！");
+            } else {
+                this.messageTypeService.update(message_type);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            }
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -326,15 +327,18 @@ public class MessageController {
             message_type.setModified_date(Common.DATETIME_FORMAT.format(now));
             message_type.setCreated_date(Common.DATETIME_FORMAT.format(now));
             message_type.setCreater(user_id);
-            String result = String.valueOf(messageTypeService.insert(message_type));
-            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
+
+            String existInfo1 = this.messageTemplateService.messageTemplateExist(message_type.getType_code(), message_type.getCorp_code());
+            String existInfo2 = this.messageTemplateService.messageTemplateNameExist(message_type.getType_name(), message_type.getCorp_code());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            if (existInfo1.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("信息类型编号已经存在！！！");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("信息类型名已经存在！！！");
             } else {
+                this.messageTypeService.update(message_type);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add success");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -511,7 +515,8 @@ public class MessageController {
     @ResponseBody
     public String MessageModernEdit(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = WebUtils.getValueForSession(request, "user_id");
+        //     String user_id = WebUtils.getValueForSession(request, "user_id");
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -520,16 +525,22 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             MessageTemplate messageTemplate = WebUtils.JSON2Bean(jsonObject, MessageTemplate.class);
-            String result = String.valueOf(this.messageTemplateService.update(messageTemplate));
-            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
+
+            String existInfo1 = this.messageTemplateService.messageTemplateExist(messageTemplate.getCorp_code(), messageTemplate.getTem_code());
+            String existInfo2 = this.messageTemplateService.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_name());
+
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("消息模板编号已存在");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("消息模板名称已经存在!!!");
             } else {
+                this.messageTemplateService.update(messageTemplate);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage("修改成功！！！");
             }
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -629,15 +640,16 @@ public class MessageController {
             messageTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreater(user_id);
-            String result = String.valueOf(messageTemplateService.insert(messageTemplate));
-            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
+            String existInfo1 = messageTemplateService.messageTemplateExist(messageTemplate.getCorp_code(), messageTemplate.getTem_code());
+            String existInfo2 = messageTemplateService.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_name());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("消息模板编号已经存在！！！");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("消息模板名称已经存在!!!");
             } else {
+                this.messageTemplateService.insert(messageTemplate);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add success");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
