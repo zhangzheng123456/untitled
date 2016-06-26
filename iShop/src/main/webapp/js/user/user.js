@@ -262,6 +262,39 @@ function superaddition(data,num){
                         +data[i].isactive
                         +"</td></tr>");
         }
+        if(data[i].sex!=="F"&&data[i].sex!=="M"){
+            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxTwoInput"
+                        + i
+                        + 1
+                        + "'></label></div>"
+                        + "</td><td style='text-align:left;'>"
+                        + a
+                        +"</td><td>"
+                        + data[i].user_code
+                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
+                        + "</td><td>"
+                        + data[i].user_name
+                        + "</td><td>"
+                        + ""
+                        +"</td><td>"
+                        +data[i].phone
+                        + "</td><td>"
+                        +data[i].corp.corp_name
+                        + "</td><td>"
+                        +data[i].login_time_recently
+                        + "</td><td>"
+                        +data[i].group.group_name
+                        + "</td><td>"
+                        +data[i].modifier
+                        + "</td><td>"
+                        +data[i].modified_date
+                        + "</td><td>"
+                        +data[i].isactive
+                        +"</td></tr>");
+        }
     }
 };
 //权限配置
