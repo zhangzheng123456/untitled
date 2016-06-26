@@ -369,7 +369,7 @@ public class MessageController {
     }
 
     /**
-     * 根据用户的ID输出用户的企业
+     * 根据用户和企业输出企业消息类型
      *
      * @param request
      * @return
@@ -379,38 +379,35 @@ public class MessageController {
     public String getMessageTypeByUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            JSONObject corps = new JSONObject();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("messsage").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.getString("corp_code");
+            JSONObject result = new JSONObject();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            JSONArray array = new JSONArray();
+            JSONArray messageTypes = new JSONArray();
+            List<Message_type> list = null;
             if (role_code.equals((Common.ROLE_SYS))) {
-                //List<Corp> list = corpService.selectAllCorp();
-                List<Message_type> list = messageTypeService.selectAllMessageType();
-                for (int i = 0; i < list.size(); i++) {
-                    //Corp corp = list.get(i);
-                    Message_type message_type = list.get(i);
-                    String type_code = message_type.getType_code();
-                    String type_name = message_type.getType_name();
-                    //   String corp_name = corp.getCorp_name();
-                    JSONObject obj = new JSONObject();
-                    obj.put("type_code", type_code);
-                    obj.put("type_name", type_name);
-                    array.add(obj);
-                }
+                list = messageTypeService.getMessageTypeByCorp("", "");
             } else {
-//                String corp_code = request.getSession().getAttribute("corp_code").toString();
-//                // Corp corp = corpService.selectByCorpId(0, corp_code);
-//                Message_type message_type = messageTypeService.getMessageTypeByCorp(corp_code);
-//                String c_code = corp.getCorp_code();
-//                String corp_name = corp.getCorp_name();
-//                JSONObject obj = new JSONObject();
-//                obj.put("corp_code", c_code);
-//                obj.put("corp_name", corp_name);
-//                array.add(obj);
+                list = messageTypeService.getMessageTypeByCorp(corp_code, "");
             }
-            corps.put("corps", array);
+            for (int i = 0; list != null && i < list.size(); i++) {
+                //Corp corp = list.get(i);
+                Message_type message_type = list.get(i);
+                String type_code = message_type.getType_code();
+                String type_name = message_type.getType_name();
+                //   String corp_name = corp.getCorp_name();
+                JSONObject obj = new JSONObject();
+                obj.put("type_code", type_code);
+                obj.put("type_name", type_name);
+                messageTypes.add(obj);
+            }
+            result.put("message_types", messageTypes);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(corps.toString());
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -610,6 +607,8 @@ public class MessageController {
             MessageTemplate messageTemplate = WebUtils.JSON2Bean(jsonObject, MessageTemplate.class);
             messageTemplate.setModifier(user_id);
             Date now = new Date();
+
+
             messageTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreater(user_id);

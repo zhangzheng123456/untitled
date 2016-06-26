@@ -169,5 +169,12 @@ public class testLixixi {
         vipTagTypeMapper.updateByPrimaryKey(vipTagType);
     }
 
+    @Autowired
+    public MessageTypeService messageTypeService;
+
+    @Test
+    public void test9() {
+     //   List<MessageTypethis.messageTypeService.getMessageTypeByCorp("", "");
+    }
 
 }
