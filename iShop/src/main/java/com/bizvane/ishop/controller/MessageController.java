@@ -239,7 +239,7 @@ public class MessageController {
     /**
      * 手机消息类型编辑
      */
-    @RequestMapping(value = "/mobile/type/edit", method = RequestMethod.GET)
+    @RequestMapping(value = "/mobile/type/edit", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
     public String MessageTypeEdit(HttpServletRequest request) {

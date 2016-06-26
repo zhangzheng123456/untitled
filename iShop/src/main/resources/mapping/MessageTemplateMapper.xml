@@ -59,8 +59,23 @@
 
     </select>
 
-    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.MessageTemplate">
-        select * from def_message_template where  id=#{id}
+    <select id="selectByPrimaryKey" resultMap="MessageTemplates">
+       select
+        dmt.id,
+        dmt.tem_code,
+        dmt.tem_name,
+        dmt.tem_content,
+        dmt.isactive,
+        dmt.corp_code,
+        dmt.modifier,
+        dmt.modified_date,
+        dmt.created_date,
+        dmt.creater,
+        dmt.type_code,
+        dmtype.type_name,
+        dc.corp_name
+        from def_message_template dmt,def_message_type dmtype,DEF_CORP dc
+        WHERE dmt.type_code=dmtype.type_code and dmt.corp_code=dc.corp_code  and  dmt.id=#{id}
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.MessageTemplate">
