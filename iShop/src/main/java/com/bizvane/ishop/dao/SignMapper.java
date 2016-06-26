@@ -12,5 +12,7 @@ import java.util.List;
 public interface SignMapper {
         List<Sign> selectSignface(@Param("search_value")String search_value);
 
+        Sign selectById(@Param("id")int id);
+
         int delSignById(@Param("id")int id);
 }

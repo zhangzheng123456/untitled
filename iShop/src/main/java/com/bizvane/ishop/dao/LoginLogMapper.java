@@ -15,8 +15,4 @@ public interface LoginLogMapper {
 
     int updateByLogId(LoginLog record);
 
-    int insertTest(VIPInfo vip);
-
-    List<VIPInfo> selectTest();
-
 }
