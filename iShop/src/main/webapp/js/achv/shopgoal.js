@@ -40,22 +40,19 @@ var oc = new ObjectControl();
 			if(shopgoaljs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
-				var TIME_TYPE1=$("#TIME_TYPE").val();//时间类型
+				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
-				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				// var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
-				var TIME_TYPE="";
-				if(TIME_TYPE1=="日"){
-					TIME_TYPE='1';
-				}else if(TIME_TYPE1=="周"){
-					TIME_TYPE='2';
-				}else if(TIME_TYPE1=="月"){
-					TIME_TYPE='3';
-				}else if(TIME_TYPE1=="年"){
-					TIME_TYPE='4';
-				}
 				if(TIME_TYPE!=="年"){
 					DATE=$("#GOODS_RELEASETIME").val();
+					if("DATE"==""){
+						var div=$("#GOODS_RELEASETIME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+		            	return;
+					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
 				}
@@ -89,24 +86,19 @@ var oc = new ObjectControl();
 			if(shopgoaljs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
-
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
-				var TIME_TYPE1=$("#TIME_TYPE").val();//时间类型
+				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
-				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
-				var TIME_TYPE="";
-				if(TIME_TYPE1=="日"){
-					TIME_TYPE='1';
-				}else if(TIME_TYPE1=="周"){
-					TIME_TYPE='2';
-				}else if(TIME_TYPE1=="月"){
-					TIME_TYPE='3';
-				}else if(TIME_TYPE1=="年"){
-					TIME_TYPE='4';
-				}
 				if(TIME_TYPE!=="年"){
 					DATE=$("#GOODS_RELEASETIME").val();
+					if("DATE"==""){
+						var div=$("#GOODS_RELEASETIME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+		            	return;
+					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
 				}
@@ -200,33 +192,24 @@ jQuery(document).ready(function(){
 		var _params={"id":id};
 		var _command="/storeAchvGoal/select";
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
+			// console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
+				msg=JSON.parse(msg.storeAchvGoal);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
-				$("#SHOP_NAME option").val(msg.corp.corp_code);
-				$("#SHOP_NAME option").text(msg.corp.corp_name);
-				if(msg.achv_type=="1"){
-					$("#TIME_TYPE").val("日");
-				}else if(msg.achv_type=="2"){
-					$("#TIME_TYPE").val("周");
-				}else if(msg.achv_type=="3"){
-					$("#TIME_TYPE").val("月");
-				}else if(msg.achv_type=="4"){
-					$("#TIME_TYPE").val("年");
-				}
+				getcorplist();
+				$("#SHOP_NAME option[value='"+msg.store_code+"']").attr("select",true);
 				$("#PER_GOAL").val(msg.achv_goal);
-				if(msg.achv_type!=="4"){
-					$("#DATE").val(msg.end_time);
-				}else if(msg.achv_type=="4"){
+				if(msg.achv_type!=="年"){
+					$("#GOODS_RELEASETIME").val(msg.end_time);
+					$("#TIME_TYPE").val(msg.achv_type);
+				}else if(msg.achv_type=="年"){
 					$('#day').hide();
     				$('#week_p').show();
 					$("#year").val(msg.end_time);
+					$("#TIME_TYPE").val(msg.achv_type);
 				}
-				// $("#OWN_DOCU").val(msg.own_docu);
-				
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -237,7 +220,6 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist();
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
@@ -326,7 +308,6 @@ function store_data(c){
 			var msg=JSON.parse(data.message);
 			console.log(msg.stores);
 			var msg_stores=JSON.parse(msg.stores);
-			$('#SHOP_NAME').empty();
 			$('#shop_select .searchable-select').remove();
 			if(msg_stores.length>0){
 				for(var i=0;i<msg_stores.length;i++){

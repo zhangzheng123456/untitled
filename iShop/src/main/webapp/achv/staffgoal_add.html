@@ -46,10 +46,20 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">员工编号*</label><input type="text" id="STAFF_ID" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="员工编号为必填项，不能为空！"></div></div></span>
+                        <ul style="display:inline-flex;">
+                            <li><label>员工名称</label></li>
+                            <li id="staff_select">
+                                <span class="corp_select">
+                                    <select id="STAFF_NAME" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
-                    <div class="drop_down item_1">
-                    <span><label>时间类型</label><input class="input_select" id="TIME_TYPE" type="text" placeholder="请选择时间类型" readonly/>
+                    <div>
+                        <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
+                    </div>
+                    <div class="drop_down item_1" id="drop_down">
+                        <span><label>时间类型</label><input class="input_select" type="text" id="TIME_TYPE" value="日" readonly/>
                             <ul>
                                 <li>日</li>
                                 <li>周</li>
@@ -58,16 +68,17 @@
                             </ul>
                         </span>
                     </div>
-                    <div>
-                        <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
+                    <div id="day">
+                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" verify="Empty" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/></span>
                     </div>
-                    <!-- <div>
-                        <span><label>日期</label><input type="text" id="DATE" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="日期为必填项，不能为空！"></div></div></span>
-                    </div> -->
-                    <div>
-                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/></span>
+                    <div id="week_p" style="display:none;">
+                        <span>
+                            <label>日期</label>
+                            <input type="text" id="year" class="week" value="2016" readonly="true">
+                            <ul class="year">
+                            </ul>
+                        </span>
                     </div>
-
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
@@ -98,7 +109,7 @@
     <!-- 带搜索的下拉菜单 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- input的验证情况 -->
-    <script type="text/javascript" src="../js/achv/shopgoal.js"></script>
+    <script type="text/javascript" src="../js/achv/staffgoal.js"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>

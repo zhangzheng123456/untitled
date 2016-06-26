@@ -210,7 +210,7 @@ function superaddition(data,num){//页面加载循环
                         +"</td><td>"
                         + data[i].achv_type
                         +"</td><td>"
-                        + data[i].start_time
+                        + data[i].end_time
                         +"</td><td>"
                         +data[i].modifier
                         + "</td><td>"

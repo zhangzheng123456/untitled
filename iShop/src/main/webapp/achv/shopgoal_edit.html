@@ -37,7 +37,9 @@
                             <li><label style="color:#c26555;">所属企业*</label></li>
                             <li id="corp_select">
                                 <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                                    <select id="OWN_CORP" style="display:inline-flex">
+                                        <option value="-1">请选择所属企业</option>
+                                    </select>
                                 </span>
                             </li>
                         </ul>
@@ -47,7 +49,9 @@
                             <li><label>店铺名称</label></li>
                             <li id="shop_select">
                                 <span class="corp_select">
-                                    <select id="SHOP_NAME" style="display:inline-flex"></select>
+                                    <select id="SHOP_NAME" style="display:inline-flex">
+                                        <option value="-1">请选择店铺名称</option>
+                                    </select>
                                 </span>
                             </li>
                         </ul>
@@ -67,6 +71,7 @@
                     </div>
                     <div id="day">
                         <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/></span>
+                        <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
                     </div>
                     <div id="week_p" style="display:none;">
                         <span>

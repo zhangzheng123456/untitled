@@ -19,22 +19,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	staffgoaljs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
 	staffgoaljs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -54,13 +38,17 @@ var oc = new ObjectControl();
 	staffgoaljs.bindbutton=function(){
 		$(".staffgoaladd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(staffgoaljs.firstStep()){
-				var OWN_CORP=$("#OWN_CORP").val();
-				var SHOP_ID=$("#SHOP_ID").val();
-				var STAFF_ID=$("#STAFF_ID").val();
-				var SHOP_NAME=$("#SHOP_NAME").val();
-				var TIME_TYPE=$("#TIME_TYPE").val();
-				var PER_GOAL=$("#PER_GOAL").val();
-				var DATE=$("#DATE").val();
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
+				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
+				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
+				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				var DATE="";
+				if(TIME_TYPE!=="年"){
+					DATE=$("#GOODS_RELEASETIME").val();
+				}else if(TIME_TYPE=="年"){
+					DATE=$("#year").val();
+				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -82,13 +70,17 @@ var oc = new ObjectControl();
 		$(".staffgoaledit_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(staffgoaljs.firstStep()){
 				var ID=sessionStorage.getItem("id");
-				var OWN_CORP=$("#OWN_CORP").val();
-				var SHOP_ID=$("#SHOP_ID").val();
-				var STAFF_ID=$("#STAFF_ID").val();
-				var SHOP_NAME=$("#SHOP_NAME").val();
-				var TIME_TYPE=$("#TIME_TYPE").val();
-				var PER_GOAL=$("#PER_GOAL").val();
-				var DATE=$("#DATE").val();
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
+				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
+				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
+				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				var DATE="";
+				if(TIME_TYPE!=="年"){
+					DATE=$("#GOODS_RELEASETIME").val();
+				}else if(TIME_TYPE=="年"){
+					DATE=$("#year").val();
+				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -173,13 +165,6 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
-				var SHOP_ID=$("#SHOP_ID").val(msg.store_code);
-				var STAFF_ID=$("#STAFF_ID").val(msg.user_code);
-				var SHOP_NAME=$("#SHOP_NAME").val(msg.store_name);
-				var TIME_TYPE=$("#TIME_TYPE").val(msg.achv_type);
-				var PER_GOAL=$("#PER_GOAL").val(msg.achv_goal);
-				var DATE=$("#DATE").val(msg.end_time);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
@@ -223,7 +208,120 @@ jQuery(document).ready(function(){
 	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
-	$("#che").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
-	})
+	//日期类型的点击事件
+    $("#drop_down li").click(function(){
+    	var text=$(this).html();
+    	if(text=="日"){
+    		$('#day').show();
+    		$('#week_p').hide();
+    	}else if(text=="周"){
+    		$('#day').show();
+    		$('#week_p').hide();
+    	}else if(text=="年"){
+    		$('#day').hide();
+    		$('#week_p').show();
+    		year();
+    	}else if(text=="月"){
+    		$('#day').show();
+    		$('#week_p').hide();
+    	}
+    })
+    //点击年的input出来ul
+    $("#year").click(function(){
+    	$("#week_p .year").show();
+    })
+    $("#year").blur(function(){
+    	setTimeout(function(){
+    		$("#week_p .year").hide();	
+    	},200);  
+    })
 });
+//获取企业列表信息
+function getcorplist(){
+	//获取所属企业列表
+	var corp_command="/user/getCorpByUser";
+	oc.postRequire("post", corp_command,"", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			var index=0;
+			var corp_html='';
+			var c=null;
+			for(index in msg.corps){
+				c=msg.corps[index];
+				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+			}
+			$("#OWN_CORP").append(corp_html);
+			$("#OWN_CORP").searchableSelect();
+			var c=$('#corp_select .selected').attr("data-value");
+			store_data(c);
+			$("#corp_select .searchable-select-item").click(function(){
+				var c=$(this).attr("data-value");
+				store_data(c);
+			})
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+}
+//获取店铺列表信息
+function store_data(c){
+	var _params={};
+	_params["corp_code"]=c;//企业编号
+	var _command="/user/store";//调取店铺的名字
+	oc.postRequire("post", _command,"", _params, function(data){
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg.stores);
+			var msg_stores=JSON.parse(msg.stores);
+			$('#SHOP_NAME').empty();
+			$('#shop_select .searchable-select').remove();
+			if(msg_stores.length>0){
+				for(var i=0;i<msg_stores.length;i++){
+					$('#SHOP_NAME').append("<option value='"+msg_stores[i].store_code+"'>"+msg_stores[i].store_name+"</option>");
+				}
+			}else if(msg_stores.length<=0){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "改企业没有店铺"
+			    });
+			}
+			$("#SHOP_NAME").searchableSelect();
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	})
+}
+//选择年
+function year(){
+	var myDate = new Date();
+	var year=myDate.getFullYear();
+	var year=year-1;
+	console.log($('#week_p .year'));
+	$('#week_p .year').empty();
+	for(var i=0;i<10;i++){
+		year++;
+		var li="<li>";
+		li+=""+year+"</li>"
+		$('#week_p .year').append(li);
+	}
+	$("#week_p .year>li").click(function(){
+    	console.log(this);
+    	var value=$(this).html();
+    	$('#year').val(value);
+    	$('#week_p .year').hide();
+    })
+}
