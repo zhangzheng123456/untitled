@@ -571,8 +571,8 @@ public class UserController {
             String corp_code = jsonObject.get("corp_code").toString();
             String current_corp_code = request.getSession(false).getAttribute("corp_code").toString();
             corp_code = (corp_code == null || corp_code.isEmpty()) ? current_corp_code : corp_code;
-            String existInfo = userService.userCodeExist(user_code, corp_code);
-            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+            User existInfo = userService.userCodeExist(user_code, corp_code);
+            if (existInfo != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("用户编号已被使用！！！");
@@ -679,6 +679,9 @@ public class UserController {
                     String result = IshowHttpClient.get(url);
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
+                    User user = userService.userCodeExist(user_code,corp_code);
+                    user.setQrcode(picture);
+                    userService.update(user);
                     dataBean.setId(id);
                     dataBean.setMessage(picture);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

@@ -72,7 +72,10 @@ public class GroupController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = groupService.getGroupAll(page_number, page_size, "", "", "");
-            } else {
+            } else if(role_code.equals(Common.ROLE_GM)){
+                list = groupService.getGroupAll(page_number, page_size,corp_code, "", "");
+            }
+            else {
                 list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -311,6 +314,9 @@ public class GroupController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = groupService.getGroupAll(page_number, page_size, "", "", search_value);
+            } else if(role_code.equals(Common.ROLE_GM)){
+                String corp_code = request.getSession().getAttribute("corp_code").toString();
+                list = groupService.getGroupAll(page_number, page_size,corp_code, "", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, search_value);
