@@ -26,6 +26,18 @@
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li style="width: 350px">
+                                <span class="corp_select" style="width: 350px">
+                                    <select id="OWN_CORP" style="display:inline-flex;width: 350px">
+                                        <option value="-1">请选择所属企业</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
                         <span><label style="color:#c26555;">回访员工*</label><input type="text" id="CALLBACK_STUFF" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访员工不能为空！"></div></div></span>
                     </div>
 
@@ -35,14 +47,29 @@
                     <div>
                         <span><label>回访日期</label><input type="text" id="CALLBACK_DATE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访日期不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down item_1">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label>回访类型</label></li>
+                            <li style="width: 350px">
+                                <span class="corp_select" style="width: 350px">
+                                    <select id="CALLBACK_TYPE" style="display:inline-flex;width: 350px">
+                                        <option value="-1">回访类型1</option>
+                                        <option value="-1">回访类型2</option>
+                                        <option value="-1">回访类型3</option>
+                                        <option value="-1">回访类型4</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- <div class="drop_down item_1">
                     <span><label>回访类型</label><input class="input_select" id="CALLBACK_TYPE" type="text" placeholder="请选择标签类型" readonly/>
                             <ul>
                                 <li>回访类型1</li>
                                 <li>回访类型2</li>
                             </ul>
                         </span>
-                    </div>
+                    </div> -->
                 </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">

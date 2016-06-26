@@ -31,6 +31,18 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex;">
+                                        <option value="-1">请选择所属企业</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
                         <span><label style="color:#c26555;">回访员工*</label><input type="text" id="CALLBACK_STUFF" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访员工为必填项，不能为空！"></div></div></span>
                     </div>
                      <div>
@@ -39,13 +51,28 @@
                     <div>
                         <span><label>回访日期</label><input type="text" id="CALLBACK_DATE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="回访日期为必填项，不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down item_1">
+                    <!-- <div class="drop_down item_1">
                     <span><label>回访类型</label><input class="input_select" id="CALLBACK_TYPE" type="text" placeholder="请选择回访类型" readonly/>
                             <ul>
                                 <li>电话回访</li>
                                 <li>邮件回访</li>
                             </ul>
                         </span>
+                    </div> -->
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label>回访类型</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="CALLBACK_TYPE" style="display:inline-flex;">
+                                        <option value="-1">电话回访</option>
+                                        <option value="-1">邮件回访</option>
+                                        <option value="-1">回访类型3</option>
+                                        <option value="-1">回访类型4</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                 </form>
             </div>
@@ -58,16 +85,16 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" /></span>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" /></span>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" /></span>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" /></span>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
                     </div>
                     <div>
                     <span><label>可用</label><em class="checkbox_isactive">

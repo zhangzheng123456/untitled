@@ -51,13 +51,28 @@
                     <div>
                         <span><label>标签名称</label><input type="text" id="LABEL_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="标签名称为必填项，不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down item_1">
+                    <!-- <div class="drop_down item_1">
                     <span><label>标签类型</label><input class="input_select" id="LABEL_TYPE" type="text" placeholder="请选择标签类型" readonly/>
                             <ul>
                                 <li>标签类型1</li>
                                 <li>标签类型2</li>
                             </ul>
                         </span>
+                    </div> -->
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label>标签类型</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="LABEL_TYPE" style="display:inline-flex;">
+                                        <option value="-1">标签类型1</option>
+                                        <option value="-1">标签类型2</option>
+                                        <option value="-1">标签类型3</option>
+                                        <option value="-1">标签类型4</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                 </form>
             </div>
