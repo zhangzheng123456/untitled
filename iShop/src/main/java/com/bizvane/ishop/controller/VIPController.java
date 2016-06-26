@@ -113,16 +113,19 @@ public class VIPController {
             vipInfo.setModifier(user_id);
             vipInfo.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipInfo.setCreater(user_id);
-            String exist = vipService.vipCodeExist(vipInfo.getVip_code(), corp_code);
-            if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage("此编号已经存在");
+
+            String existInfo1 = vipService.vipCodeExist(vipInfo.getVip_code(), vipInfo.getCorp_code());
+            String existInfo2 = vipService.vipNameExist(vipInfo.getVip_name(), vipInfo.getCorp_code());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("VIP 用户编号已经存在！！！");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("VIP 用户名称已经存在！！！");
+            } else {
+                vipService.insert(vipInfo);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("add success!!!");
             }
-            vipService.insert(vipInfo);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("add success !!!");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

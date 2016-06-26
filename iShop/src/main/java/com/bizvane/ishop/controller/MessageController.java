@@ -254,18 +254,9 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Message_type message_type = WebUtils.JSON2Bean(jsonObject, Message_type.class);
-            String existInfo1 = this.messageTemplateService.messageTemplateExist(message_type.getType_code(), message_type.getCorp_code());
-            String existInfo2 = this.messageTemplateService.messageTemplateNameExist(message_type.getType_name(), message_type.getCorp_code());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            if (existInfo1.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("信息类型编号已经存在！！！");
-            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("信息类型名已经存在！！！");
-            } else {
-                this.messageTypeService.update(message_type);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            }
+            this.messageTypeService.update(message_type);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("edit success !!!");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -309,6 +300,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/type/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String MessageTypeAdd(HttpServletRequest request) {
 
         DataBean dataBean = new DataBean();
@@ -339,6 +331,7 @@ public class MessageController {
             } else {
                 this.messageTypeService.update(message_type);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("add success !!!");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -513,6 +506,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/template/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String MessageModernEdit(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         //     String user_id = WebUtils.getValueForSession(request, "user_id");
@@ -526,20 +520,10 @@ public class MessageController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             MessageTemplate messageTemplate = WebUtils.JSON2Bean(jsonObject, MessageTemplate.class);
 
-            String existInfo1 = this.messageTemplateService.messageTemplateExist(messageTemplate.getCorp_code(), messageTemplate.getTem_code());
-            String existInfo2 = this.messageTemplateService.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_name());
+            this.messageTemplateService.update(messageTemplate);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("修改成功！！！");
 
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("消息模板编号已存在");
-            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("消息模板名称已经存在!!!");
-            } else {
-                this.messageTemplateService.update(messageTemplate);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("修改成功！！！");
-            }
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -622,6 +606,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/template/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String MessageTemplateAdd(HttpServletRequest request) {
 
         DataBean dataBean = new DataBean();
@@ -650,6 +635,7 @@ public class MessageController {
             } else {
                 this.messageTemplateService.insert(messageTemplate);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("add succcess !!!");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

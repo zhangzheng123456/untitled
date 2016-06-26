@@ -18,4 +18,5 @@ public interface VIPMapper {
 
     VIPInfo selectVipCode(@Param("vip_code") String vip_code, @Param("corp_code") String corp_code);
 
+    VIPInfo selectVipName(@Param("vip_name") String vip_name, @Param("corp_code") String corp_code);
 }

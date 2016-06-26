@@ -210,21 +210,10 @@ public class GoodsController {
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
+            this.goodsService.update(goods);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("商品更改成功！！");
 
-
-            String existInfo1 = goodsService.goodsCodeExist(goods.getCorp_code(), goods.getCorp_code());
-            String existInfo2 = goodsService.goodsNameExist(goods.getGoods_name(), goods.getCorp_code());
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("商品编号重复！！！");
-            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("商品名称重复！！！");
-            } else {
-                this.goodsService.update(goods);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("商品更改成功！！");
-            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

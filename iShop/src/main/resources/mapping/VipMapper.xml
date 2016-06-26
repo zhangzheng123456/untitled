@@ -27,6 +27,10 @@
        WHERE id=#{id}
     </select>
 
+    <select id="selectVipName" resultType="com.bizvane.ishop.entity.VIPInfo">
+        select * from DEF_VIP
+        where vip_name=#{vip_name} and corp_code=#{corp_code}
+    </select>
     <delete id="deleteByPrimaryKey">
         DELETE  FROM
         DEF_VIP

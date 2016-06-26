@@ -56,7 +56,7 @@ public class AreaController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Area> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -94,12 +94,12 @@ public class AreaController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
 
-            String result = areaService.insert(message,user_id);
+            String result = areaService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
@@ -127,13 +127,12 @@ public class AreaController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-
-            String result = areaService.update(message,user_id);
+            String result = areaService.update(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
@@ -179,7 +178,7 @@ public class AreaController {
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("区域"+area_code+"下有所属店铺，请先处理区域下店铺再删除！");
+                    dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除！");
                     return dataBean.getJsonStr();
                 }
             }

@@ -62,4 +62,15 @@ public class VipServiceImpl implements VipService {
         }
         return result;
     }
+
+    @Override
+    public String vipNameExist(String vip_name, String corp_code) {
+        //VIPInfo vipInfo = vipMapper.selectVipCode(vip_code, corp_code);
+        VIPInfo vipInfo = vipMapper.selectVipName(vip_name, corp_code);
+        String result = Common.DATABEAN_CODE_ERROR;
+        if (vipInfo == null) {
+            result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        return result;
+    }
 }
