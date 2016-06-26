@@ -73,4 +73,22 @@ public class MessageTypeServiceImpl implements MessageTypeService {
     public int deleteById(int id) {
         return this.messageTypeMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public List<Message_type> selectAllMessageType() {
+        return this.messageTypeMapper.selectAllMessageType();
+    }
+
+    @Override
+    public List<Message_type> getMessageTypeByCorp(String corp_code, String search_value) {
+        return this.messageTypeMapper.selectAllMessage_type(corp_code, search_value);
+    }
+
+//    @Override
+//    public List<Message_type> getMessageTypeByCorp(String corp_code) {
+//
+//        return this.messageTypeMapper.selectAllMessage_type(corp_code, "");
+//    }
+
+
 }
