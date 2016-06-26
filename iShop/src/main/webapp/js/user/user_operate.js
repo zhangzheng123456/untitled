@@ -476,6 +476,12 @@ jQuery(document).ready(function(){
 				}else if(msg.sex=="M"){
 					$("#USER_SEX").val("男");
 				}
+				if(msg.qrcode==""){
+					$("#kuang").hide();
+				}else if(msg.qrcode!==""){
+					$("#kuang").show();
+    				$('#kuang img').attr("src",msg.qrcode);
+				}
 				// $("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 				// $("#select_ownshop").css("display","block");
 				$("#OWN_CORP option").val(msg.corp.corp_code);
