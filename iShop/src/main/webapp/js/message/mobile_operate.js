@@ -249,7 +249,7 @@ jQuery(document).ready(function(){
 });
 function getcorplist(){
 //获取企业信息列表
-	var corp_command="/message/mobile/type/getMessageTypeByUser";
+	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
 		console.log(data);
 		if(data.code=="0"){
