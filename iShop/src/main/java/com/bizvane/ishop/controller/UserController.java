@@ -412,14 +412,15 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject stores = new JSONObject();
-            String corp_code = jsonObject.get("corp_code").toString();
+            //String corp_code = jsonObject.get("corp_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
 //            if (corp_code.equals("")) {
 //                //新增编辑系统管理员，corp_code为空
 //                stores.put("stores", "");
 //            } else {
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //登录用户为admin
+            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
+                //登录用户为admin或企业管理员
                 List<Store> list;
                 list = storeService.getCorpStore(corp_code);
                 stores.put("stores", JSON.toJSONString(list));
@@ -676,8 +677,10 @@ public class UserController {
                 if (is_authorize.equals("Y")) {
                     String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&guider_code=" + user_code;
                     String result = IshowHttpClient.get(url);
+                    JSONObject obj = new JSONObject(result);
+                    String picture = obj.get("picture").toString();
                     dataBean.setId(id);
-                    dataBean.setMessage(result);
+                    dataBean.setMessage(picture);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     return dataBean.getJsonStr();
                 }

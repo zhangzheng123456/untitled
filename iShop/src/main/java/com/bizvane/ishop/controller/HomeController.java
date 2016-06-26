@@ -47,24 +47,14 @@ public class HomeController {
     public String sysPage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            JSONObject dashboard = new JSONObject();
             JSONArray menu;
             String role_code = request.getSession().getAttribute("role_code").toString();
 
             if (role_code.equals(Common.ROLE_SYS)) {
-                int corp_count = corpService.selectCount();
-                int store_count = storeService.selectCount();
-                int user_count = userService.selectCount();
-
-                PageInfo<Feedback> feedback = feedbackService.selectAllFeedback(1,6,"");
-                dashboard.put("corp_count", corp_count);
-                dashboard.put("store_count", store_count);
-                dashboard.put("user_count", user_count);
-                dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
 
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage(dashboard.toString());
+                dataBean.setMessage("");
                 return dataBean.getJsonStr();
 
             }

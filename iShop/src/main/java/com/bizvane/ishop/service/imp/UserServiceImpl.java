@@ -170,7 +170,7 @@ public class UserServiceImpl implements UserService {
         }else if (!user1.getEmail().equals(email) && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
             result = "邮箱已存在";
         }else{
-            userMapper.insertUser(user);
+            userMapper.updateByUserId(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
         return result;
@@ -430,9 +430,4 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectGroupUser(corp_code, group_code);
     }
 
-
-    @Override
-    public int selectCount() throws SQLException{
-        return userMapper.selectCount();
-    }
 }

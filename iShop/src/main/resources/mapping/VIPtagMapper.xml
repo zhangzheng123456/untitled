@@ -85,7 +85,7 @@
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VIPtag">
         update DEF_VIP_TAG
-        <trim prefix="set "  suffixOverrides=",">
+        <trim prefix="set " suffixOverrides=",">
             <if test="tag_name!=null and tag_name!=''">
                 tag_name=#{tag_name} ,
             </if>
@@ -111,6 +111,7 @@
                 isactive=#{isactive},
             </if>
         </trim>
+        WHERE ID=#{ID}
     </update>
 
 
@@ -145,8 +146,8 @@
             or vt.tag_name like concat('%',#{search_value},'%')
             or vt.tag_type like concat('%',#{search_value},'%')
             or cc.corp_name like concat('%',#{search_value},'%')
-            or modified_date like concat('%',#{search_value},'%')
-            or isactive like concat('%',#{search_value},'%') )
+            or vt.modified_date like concat('%',#{search_value},'%')
+            or vt.isactive like concat('%',#{search_value},'%') )
         </if>
         ORDER BY vt.id
     </select>

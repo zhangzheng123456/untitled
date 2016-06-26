@@ -125,6 +125,7 @@
                 corp_code=#{corp_code} ,
             </if>
         </trim>
+        WHERE ID=#{ID}
     </update>
 
     <delete id="deleteByPrimaryKey">

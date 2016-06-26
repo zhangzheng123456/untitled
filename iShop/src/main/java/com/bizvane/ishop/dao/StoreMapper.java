@@ -28,6 +28,6 @@ public interface StoreMapper {
 
     Store selectByStoreName(@Param("corp_code") String corp_code, @Param("store_name") String store_name);
 
-    int selectCount();
+    int selectCount(@Param("created_date") String created_date);
 
 }
