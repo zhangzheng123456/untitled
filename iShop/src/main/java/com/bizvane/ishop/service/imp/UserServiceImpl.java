@@ -320,6 +320,7 @@ public class UserServiceImpl implements UserService {
                     user.setCreater("root");
                     user.setModified_date(Common.DATETIME_FORMAT.format(now));
                     user.setModifier("root");
+                    user.setQrcode("");
                     user.setIsactive(Common.IS_ACTIVE_Y);
                     user.setCan_login(Common.IS_ACTIVE_Y);
                     userMapper.insertUser(user);

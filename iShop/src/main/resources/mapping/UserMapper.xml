@@ -14,6 +14,7 @@
         <result column="corp_code" property="corp_code"/>
         <result column="store_code" property="store_code"/>
         <result column="group_code" property="group_code"/>
+        <result column="qrcode" property="qrcode"/>
         <result column="password" property="password"/>
         <result column="login_time_recently" property="login_time_recently"/>
         <result column="created_date" property="created_date"/>
@@ -36,6 +37,7 @@
         <result column="corp_code" property="corp_code"/>
         <result column="store_code" property="store_code"/>
         <result column="group_code" property="group_code"/>
+        <result column="qrcode" property="qrcode"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -137,6 +139,7 @@
         login_time_recently,
         store_code,
         can_login,
+        qrcode,
         DEF_USER.group_code,
         DEF_USER.corp_code,
         DEF_USER.modified_date,
@@ -281,6 +284,9 @@
             <if test="group_code!=null">
                 group_code,
             </if>
+            <if test="qrcode!=null">
+                qrcode,
+            </if>
             <if test="login_time_recently!=null">
                 login_time_recently,
             </if>
@@ -336,6 +342,9 @@
             </if>
             <if test="group_code!=null">
                 #{group_code},
+            </if>
+            <if test="qrcode!=null">
+                #{qrcode},
             </if>
             <if test="login_time_recently!=null">
                 #{login_time_recently},
@@ -393,6 +402,9 @@
             </if>
             <if test="group_code!=null and group_code!='' ">
                 GROUP_CODE = #{group_code},
+            </if>
+            <if test="qrcode!=null and qrcode!='' ">
+                qrcode = #{qrcode},
             </if>
             <if test="password!=null and password!='' ">
                 PASSWORD = #{password},

@@ -153,6 +153,7 @@ public class UserController {
                 store_code = store_code + ",";
             }
             user.setStore_code(store_code);
+            user.setQrcode("");
             user.setPassword(user_code);
             Date now = new Date();
             user.setLogin_time_recently("");

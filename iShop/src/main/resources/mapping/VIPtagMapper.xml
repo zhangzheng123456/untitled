@@ -138,7 +138,7 @@
         WHERE
         vt.corp_code=cc.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            and corp_code=#{corp_code}
+            and vt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             and(
