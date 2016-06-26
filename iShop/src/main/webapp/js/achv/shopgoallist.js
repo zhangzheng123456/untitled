@@ -206,8 +206,6 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].corp.corp_name
                         +"</td><td>"
-                        + data[i].area.area_name
-                        +"</td><td>"
                         + data[i].achv_goal
                         +"</td><td>"
                         + data[i].achv_type

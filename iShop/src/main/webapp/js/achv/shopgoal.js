@@ -202,6 +202,8 @@ jQuery(document).ready(function(){
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#SHOP_NAME option").val(msg.corp.corp_code);
