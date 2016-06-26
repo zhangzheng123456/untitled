@@ -42,7 +42,8 @@ public class StoreAchvGoalController {
 
     /**
      * 用户管理
-     *列表展示
+     * 列表展示
+     *
      * @param request
      * @return
      */
@@ -94,8 +95,10 @@ public class StoreAchvGoalController {
     public String addStoreAchvGoal(HttpServletRequest request) {
 
         DataBean dataBean = new DataBean();
-        String user_id = WebUtils.getValueForSession(request, "user_id");
-        String corp_code = WebUtils.getValueForSession(request, "corp_code");
+//        String user_id = WebUtils.getValueForSession(request, "user_id");
+//        String corp_code = WebUtils.getValueForSession(request, "corp_code");
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
         String id = "";
         try {
@@ -143,6 +146,7 @@ public class StoreAchvGoalController {
     /**
      * 用户业绩目标
      * 选择业绩
+     *
      * @param request
      * @return
      */
@@ -176,6 +180,7 @@ public class StoreAchvGoalController {
 
     /**
      * 用户业绩目标编辑
+     *
      * @param request
      * @return
      */
@@ -206,6 +211,7 @@ public class StoreAchvGoalController {
 
     /**
      * 用户业绩目标删除
+     *
      * @param request
      * @return
      */

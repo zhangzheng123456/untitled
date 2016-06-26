@@ -412,7 +412,8 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject stores = new JSONObject();
-            String corp_code = jsonObject.get("corp_code").toString();
+            //String corp_code = jsonObject.get("corp_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
 //            if (corp_code.equals("")) {
 //                //新增编辑系统管理员，corp_code为空
