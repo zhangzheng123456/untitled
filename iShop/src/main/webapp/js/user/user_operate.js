@@ -622,11 +622,16 @@ jQuery(document).ready(function(){
     	oc.postRequire("post",user_creat,"", _params, function(data){
     		var message=data.message;
     		if(data.code=="0"){
+    			$("#kuang").show();
     			$('#kuang img').attr("src",message);
     		}else if(data.code=="-1"){
     			alert(data.message);
     		}
     	})
+    })
+    //点击关闭按钮
+    $("#k_close").click(function(){
+    	$("#kuang").hide();
     })
 });
 $(".corp_select").click(function(){

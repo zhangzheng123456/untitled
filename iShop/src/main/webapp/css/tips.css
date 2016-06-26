@@ -58,10 +58,17 @@
 .kuang{
 	width: 200px;
 	border:1px solid #ddd;
-	position: absolute;
 	top:2px;
+	position: absolute;
 	left: 180px;
+	display: none;
 }
 .kuang img{
 	width: 100%;
+}
+#k_close{
+	position: absolute;
+	right: 0;
+	top:0;
+	font-size: 20px;
 }
