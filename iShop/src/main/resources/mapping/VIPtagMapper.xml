@@ -111,7 +111,7 @@
                 isactive=#{isactive},
             </if>
         </trim>
-        WHERE ID=#{ID}
+        WHERE id=#{id}
     </update>
 
 
