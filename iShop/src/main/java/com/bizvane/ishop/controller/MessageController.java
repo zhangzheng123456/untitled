@@ -152,15 +152,12 @@ public class MessageController {
             vipTagType.setModifier(user_id);
             vipTagType.setCreater(user_id);
             vipTagType.setCreated_date(Common.DATETIME_FORMAT.format(now));
-
-
             String result = String.valueOf(this.vipTagTypeService.insert(vipTagType));
             if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             } else {
-
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add success");
@@ -398,7 +395,7 @@ public class MessageController {
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("messsage").toString();
+            String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.getString("corp_code");
             JSONObject result = new JSONObject();

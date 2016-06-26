@@ -62,7 +62,6 @@ public class GoodsController {
             }
 
 
-
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setId("1");
@@ -140,18 +139,17 @@ public class GoodsController {
             goods.setCreater(user_id);
             String existInfo1 = this.goodsService.goodsCodeExist(corp_code, goods.getGoods_code());
             String existInfo2 = this.goodsService.goodsNameExist(corp_code, goods.getGoods_name());
-
-            String result = String.valueOf(this.goodsService.insert(goods));
-            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId(id);
-                dataBean.setMessage(result);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("编号已存在");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("商品名称已存在！！！");
             } else {
+                this.goodsService.insert(goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage("success !!!");
             }
-
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -225,6 +223,7 @@ public class GoodsController {
             } else {
                 this.goodsService.update(goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("商品更改成功！！");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
