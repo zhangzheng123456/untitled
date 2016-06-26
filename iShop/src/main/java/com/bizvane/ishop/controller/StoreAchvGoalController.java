@@ -16,6 +16,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,6 +42,7 @@ public class StoreAchvGoalController {
     FunctionService functionService = null;
 
     String id;
+
     /**
      * 用户管理
      * 列表展示
@@ -93,6 +95,7 @@ public class StoreAchvGoalController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addStoreAchvGoal(HttpServletRequest request) {
 
         DataBean dataBean = new DataBean();
@@ -114,11 +117,11 @@ public class StoreAchvGoalController {
             String achv_type = jsonObject.get("achv_type").toString();
             storeAchvGoal1.setAchv_type(achv_type);
 
-            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObject.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
                 storeAchvGoal1.setEnd_time(week);
-            }else{
+            } else {
                 storeAchvGoal1.setEnd_time(jsonObject.get("end_time").toString());
             }
             Date now = new Date();
@@ -127,19 +130,18 @@ public class StoreAchvGoalController {
             storeAchvGoal1.setCreater(user_id);
             storeAchvGoal1.setCreated_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
-
-//            String exist = storeAchvGoalService.storeAchvExist(corp_code, storeAchvGoal1.getStore_code());
-//            if (exist.equals(Common.DATABEAN_CODE_ERROR)) {
-                //storeAchvGoalService.update(storeAchvGoal1);
-                storeAchvGoalService.insert(storeAchvGoal1);
+            String result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal1));
+            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success ");
-//            } else {
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setId(id);
-//                dataBean.setMessage("商户已存在！！");
-//            }
+                dataBean.setMessage("add success");
+            }
+
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -150,7 +152,7 @@ public class StoreAchvGoalController {
     }
 
     /**
-     *店铺业绩目标
+     * 店铺业绩目标
      * 选择业绩
      *
      * @param request
@@ -192,6 +194,7 @@ public class StoreAchvGoalController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String editStoreAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = WebUtils.getValueForSession(request, "user_id");
@@ -211,11 +214,10 @@ public class StoreAchvGoalController {
             storeAchvGoal.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
             String achv_type = jsonObject.get("achv_type").toString();
             String time = jsonObject.get("end_time").toString();
-
-            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String week = TimeUtils.getWeek(time);
                 storeAchvGoal.setEnd_time(week);
-            }else{
+            } else {
                 storeAchvGoal.setEnd_time(time);
             }
             Date now = new Date();
@@ -225,7 +227,19 @@ public class StoreAchvGoalController {
             storeAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal.setIsactive(jsonObject.get("isactive").toString());
 
-            storeAchvGoalService.update(storeAchvGoal);
+
+            String result = String.valueOf(storeAchvGoalService.update(storeAchvGoal));
+            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else {
+
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success ");

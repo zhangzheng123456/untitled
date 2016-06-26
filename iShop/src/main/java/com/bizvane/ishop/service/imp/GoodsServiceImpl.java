@@ -71,22 +71,24 @@ public class GoodsServiceImpl implements GoodsService {
      */
     private void Transter(Goods goods) {
         //    try {
-        String jsString = goods.getGoods_image();
-        org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
-//            System.out.println(jsonObject.get("1"));
-//            System.out.println(jsonObject.get("2"));
-        com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
-        result.put("test", JSON.toJSONString(jsonObject));
-        System.out.println(result.toString());
-        Iterator<String> it = jsonObject.keySet().iterator();
-        StringBuffer sb = new StringBuffer();
-        while (it.hasNext()) {
-            String key = it.next();
-            String value = jsonObject.get(key).toString();
-            sb.append(value + ",");
+        try {
+            String jsString = goods.getGoods_image();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            Iterator<String> it = jsonObject.keySet().iterator();
+            StringBuffer sb = new StringBuffer();
+            while (it.hasNext()) {
+                String key = it.next();
+                String value = jsonObject.get(key).toString();
+                sb.append(value + ",");
+            }
+            if (sb.toString().length() < 1 || goods.toString().isEmpty()) {
+                return;
+            }
+            sb.deleteCharAt(sb.lastIndexOf(","));
+            goods.setGoods_image(sb.toString());
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
         }
-        sb.deleteCharAt(sb.lastIndexOf(","));
-        goods.setGoods_image(sb.toString());
     }
 
     @Override

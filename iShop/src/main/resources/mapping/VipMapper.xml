@@ -30,7 +30,7 @@
     <delete id="deleteByPrimaryKey">
         DELETE  FROM
         DEF_VIP
-        WHERE ID=#{id}
+        WHERE id=#{id}
     </delete>
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VIPInfo">
         INSERT INTO DEF_VIP
@@ -205,7 +205,7 @@
             </if>
 
         </trim>
-        WHERE ID=#{id}
+        WHERE id=#{id}
     </update>
 
 
@@ -231,7 +231,7 @@
             OR ISACTIVE LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY ID
+        ORDER BY id
     </select>
 
     <select id="selectVipCode" resultType="com.bizvane.ishop.entity.VIPInfo">

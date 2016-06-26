@@ -152,10 +152,19 @@ public class MessageController {
             vipTagType.setModifier(user_id);
             vipTagType.setCreater(user_id);
             vipTagType.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            this.vipTagTypeService.insert(vipTagType);
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("添加成功！！！");
+
+
+            String result = String.valueOf(this.vipTagTypeService.insert(vipTagType));
+            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else {
+
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -246,10 +255,19 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Message_type message_type = WebUtils.JSON2Bean(jsonObject, Message_type.class);
-            this.messageTypeService.update(message_type);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success ");
+            String existInfo1 = this.messageTemplateService.messageTemplateExist(message_type.getType_code(), message_type.getCorp_code());
+            String existInfo2 = this.messageTemplateService.messageTemplateNameExist(message_type.getType_name(), message_type.getCorp_code());
+          //  if(existInfo1.contains())
+//            String result = String.valueOf(this.messageTypeService.update(message_type));
+//            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setId(id);
+//                dataBean.setMessage(result);
+//            } else {
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setId(id);
+//                dataBean.setMessage("add success");
+//            }
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -311,16 +329,15 @@ public class MessageController {
             message_type.setModified_date(Common.DATETIME_FORMAT.format(now));
             message_type.setCreated_date(Common.DATETIME_FORMAT.format(now));
             message_type.setCreater(user_id);
-            String existInfo = this.messageTypeService.MessageTypeCodeExist(corp_code, message_type.getType_code());
-            if (existInfo.equals(Common.DATABEAN_CODE_ERROR)) {
-                messageTypeService.insert(message_type);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add error ");
-            } else {
+            String result = String.valueOf(messageTypeService.insert(message_type));
+            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("信息类型编号已存在！！");
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -506,10 +523,16 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             MessageTemplate messageTemplate = WebUtils.JSON2Bean(jsonObject, MessageTemplate.class);
-            this.messageTemplateService.update(messageTemplate);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success ");
+            String result = String.valueOf(this.messageTemplateService.update(messageTemplate));
+            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -606,21 +629,18 @@ public class MessageController {
             MessageTemplate messageTemplate = WebUtils.JSON2Bean(jsonObject, MessageTemplate.class);
             messageTemplate.setModifier(user_id);
             Date now = new Date();
-
-
             messageTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreater(user_id);
-            String existInfo = this.messageTemplateService.messageTemplateExist(corp_code, messageTemplate.getTem_code());
-            if (existInfo.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                messageTemplateService.insert(messageTemplate);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("add error ");
-            } else {
+            String result = String.valueOf(messageTemplateService.insert(messageTemplate));
+            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("模板类型编号已存在！！");
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

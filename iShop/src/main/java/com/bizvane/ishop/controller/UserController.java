@@ -162,6 +162,7 @@ public class UserController {
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
+
             String result = userService.insert(user);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

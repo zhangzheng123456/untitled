@@ -61,11 +61,7 @@ public class GoodsController {
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
             }
 
-            List<Goods> goods = list.getList();
-            for (int i = 0; i < goods.size(); i++) {
-                // goods.get(i).setGoods_image("");
-                goods.get(i).getGoods_image();
-            }
+
 
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -132,7 +128,7 @@ public class GoodsController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             // String user_code = jsonObject.get("user_code").toString();
-         //   String temp = jsonObject.get("goods_image").toString();
+            //   String temp = jsonObject.get("goods_image").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
@@ -142,10 +138,20 @@ public class GoodsController {
             goods.setModifier(user_id);
             goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
             goods.setCreater(user_id);
-            this.goodsService.insert(goods);
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("add success!!!");
+            String existInfo1 = this.goodsService.goodsCodeExist(corp_code, goods.getGoods_code());
+            String existInfo2 = this.goodsService.goodsNameExist(corp_code, goods.getGoods_name());
+
+            String result = String.valueOf(this.goodsService.insert(goods));
+            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }
+
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -206,17 +212,29 @@ public class GoodsController {
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
-            this.goodsService.update(goods);
+
+
+            String existInfo1 = goodsService.goodsCodeExist(goods.getCorp_code(), goods.getCorp_code());
+            String existInfo2 = goodsService.goodsNameExist(goods.getGoods_name(), goods.getCorp_code());
             dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("edit success !!! ");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("商品编号重复！！！");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("商品名称重复！！！");
+            } else {
+                this.goodsService.update(goods);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error !!! ");
         }
+
         return dataBean.getJsonStr();
     }
+
 
     /**
      * 商品培训

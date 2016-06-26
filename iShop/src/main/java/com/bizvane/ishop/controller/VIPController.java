@@ -871,6 +871,8 @@ public class VIPController {
             VipCallbackRecord vipCallbackRecord = WebUtils.JSON2Bean(jsonObject, VipCallbackRecord.class);
             vipCallbackRecord.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
             vipCallbackRecord.setModifier(user_id);
+
+
             this.vipCallbackRecordService.update(vipCallbackRecord);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
