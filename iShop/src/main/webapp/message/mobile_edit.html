@@ -16,6 +16,9 @@
         body{
             margin-top:81px;
         }
+        .searchable-select-items div:nth-of-type(1){
+          display:none;
+        }
     </style>
 </head>
 <body>
@@ -30,6 +33,18 @@
                     </ul>
                 </div>
                 <form class="conpany_msg">
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex;">
+                                        <option value="-1">请选择所属企业</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
                     <div>
                         <span><label>模板编号</label><input type="text" id="MOBAN_ID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板编号不能为空！"></div></div></span>
                     </div>
@@ -58,28 +73,20 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" /></span>
+                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" /></span>
+                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" /></span>
+                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" /></span>
+                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
                     </div>
                     <div>
-                    <form class="msg_detail">
-                    <div>
-                    <span><label>可用</label><em class="checkbox_isactive">
-                    <input type="checkbox" value="" name="test" class="check" id="is_active">
-                    <label for="is_active"></label></em></span>
+                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
-                </form>
-
-                    </div>
-
                 </form>
             </div>
         </div>
@@ -102,14 +109,14 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <script type="text/javascript" src="../js/message/mobile_operate.js"></script>
-    <script type="text/javascript">
+   <!--  <script type="text/javascript">
         $(function(){
             $('#side-menu li:nth-of-type(7)').addClass('active');
             $('.active ul').addClass('in');
             $('.active ul li:nth-of-type(2)').addClass('select_index');
             $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
         })
-    </script>
+    </script> -->
 </body>
 
 </html>

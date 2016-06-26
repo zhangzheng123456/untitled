@@ -205,8 +205,8 @@ function superaddition(data,num){//页面加载循环
                         + data[i].tem_content
                         + "</td><td>"
                         + data[i].tem_type
-                        // + "</td><td>"
-                        // + data[i].corp.corp_name
+                        + "</td><td>"
+                        + data[i].corp.corp_name
                         +"</td><td>"
                         +data[i].modifier
                         + "</td><td>"

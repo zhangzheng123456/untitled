@@ -55,6 +55,7 @@ var oc = new ObjectControl();
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
 			if(mobilejs.firstStep()){
 				// var CORPID=$("#CORPID").val();
+				var OWN_CORP=$("#OWN_CORP").val();
 				var MOBAN_ID=$("#MOBAN_ID").val();
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
@@ -72,7 +73,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"tem_code":MOBAN_ID,"tem_content":MOBAN_CONTENT,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"tem_code":MOBAN_ID,"tem_content":MOBAN_CONTENT,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
 				mobilejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -83,6 +84,7 @@ var oc = new ObjectControl();
 				var ID=sessionStorage.getItem("id");
 
 				var MOBAN_ID=$("#MOBAN_ID").val();
+				var OWN_CORP=$("#OWN_CORP").val();
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();
@@ -103,7 +105,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"tem_code":MOBAN_ID,"tem_content":MOBAN_CONTENT,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"tem_code":MOBAN_ID,"tem_content":MOBAN_CONTENT,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
 				mobilejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -178,33 +180,43 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				// var OWN_CORP=$("#OWN_CORP").val(msg.role_code);
-				// var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
-				// var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
+				// var MOBAN_ID=$("#MOBAN_ID").val(msg.tem_code);
+				// var MOBAN_NAME=$("#MOBAN_NAME").val(msg.tem_name);
+				// var MOBAN_TYPE=$("#MOBAN_TYPE").val(msg.type_code);
+				// var MOBAN_CONTENT=$("#MOBAN_CONTENT").val(msg.tem_content);
 
-				var MOBAN_ID=$("#MOBAN_ID").val(msg.tem_code);
-				var MOBAN_NAME=$("#MOBAN_NAME").val(msg.tem_name);
-				var MOBAN_TYPE=$("#MOBAN_TYPE").val(msg.type_code);
-				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val(msg.tem_content);
-				// var check_per=$("#check_per").val(msg.check_per);
-				// $("#ROLE_NUM").val(msg.role_num);
-				// $("#ROLE_NAME").val(msg.role_name);
-				// $("#BEIZHU").val(msg.beizhu);
-				var created_time=$("#created_time").val(msg.created_date);
-				var creator=$("#creator").val(msg.creater);
-				var modify_time=$("#modify_time").val(msg.modified_date);
-				var modifier=$("#modifier").val(msg.modifier);			
+				// var created_time=$("#created_time").val(msg.created_date);
+				// var creator=$("#creator").val(msg.creater);
+				// var modify_time=$("#modify_time").val(msg.modified_date);
+				// var modifier=$("#modifier").val(msg.modifier);			
+
+				// $("#MOBAN_ID").val(msg.tem_code);
+				// $("#MOBAN_NAME").val(msg.tem_name);
+				// $("#MOBAN_TYPE").val(msg.type_code);
+				// $("#MOBAN_CONTENT").val(msg.tem_content);
+				// // $("#OWN_DOCU").val(msg.own_docu);
+				
+				// $("#created_time").val(msg.created_date);
+				// $("#creator").val(msg.creater);
+				// $("#modify_time").val(msg.modified_date);
+				// $("#modifier").val(msg.modifier);
 
 				$("#MOBAN_ID").val(msg.tem_code);
+				$("#MOBAN_ID").attr("data-name",msg.tem_code);
 				$("#MOBAN_NAME").val(msg.tem_name);
+				$("#MOBAN_NAME").attr("data-name",msg.tem_name);
 				$("#MOBAN_TYPE").val(msg.type_code);
+				$("#MOBAN_TYPE").attr("data-name",msg.type_code);
 				$("#MOBAN_CONTENT").val(msg.tem_content);
-				// $("#OWN_DOCU").val(msg.own_docu);
-				
+				$("#MOBAN_CONTENT").attr("data-name",msg.tem_content);
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
+				// $("#OWN_CORP").val(msg.corp_code);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
+
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -220,8 +232,22 @@ jQuery(document).ready(function(){
 				// });
 			}
 		});
+	}else{
+		getcorplist();
 	}
 
+	//change 事件
+	$('#OWN_CORP').change(function(){
+		console.log(123);
+	})
+	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
+	});
+	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
+	});
+});
+function getcorplist(){
 //获取企业信息列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -238,6 +264,12 @@ jQuery(document).ready(function(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("#MOBAN_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#MOBAN_NAME").attr("data-mark","");
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -247,17 +279,9 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	//change 事件
-	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
-	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
-	});
-	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
-	});
-});
+}
+	
+
 
 //     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
 // 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");

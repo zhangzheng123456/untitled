@@ -199,7 +199,7 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
-				var input=$(".checkbox_isactive").find("input")[0];
+				var input=$(".checkbox_isactive").find(" input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
