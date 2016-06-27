@@ -210,9 +210,14 @@ public class GoodsController {
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
-            this.goodsService.update(goods);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("商品更改成功！！");
+            String result = goodsService.update(goods);
+            if (goodsService.update(goods).equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("商品更改成功！！");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("商品编号或者名称已使用！！！");
+            }
 
         } catch (Exception ex) {
             dataBean.setId(id);

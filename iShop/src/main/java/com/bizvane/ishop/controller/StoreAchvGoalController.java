@@ -227,14 +227,12 @@ public class StoreAchvGoalController {
             storeAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal.setIsactive(jsonObject.get("isactive").toString());
 
-
             String result = String.valueOf(storeAchvGoalService.update(storeAchvGoal));
             if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             } else {
-
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add success");

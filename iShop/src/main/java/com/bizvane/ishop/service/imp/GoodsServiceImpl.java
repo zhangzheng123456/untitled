@@ -43,8 +43,17 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public int update(Goods goods) throws SQLException {
-        return goodsMapper.updateByPrimaryKey(goods);
+    public String update(Goods goods) throws SQLException {
+        Goods old = this.goodsMapper.selectByPrimaryKey(goods.getId());
+        if ((!old.getGoods_code().equals(goods.getGoods_code()))
+                && (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "";
+        } else if (!old.getGoods_name().equals(goods.getGoods_name())) {
+            return this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name());
+        } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
     @Override
