@@ -4,16 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.AppversionMapper;
 import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.service.AppversionService;
-import com.bizvane.ishop.service.FeedbackService;
 import com.bizvane.ishop.service.FunctionService;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -124,7 +119,7 @@ public class AppversionController {
             appversion.setVersion_id(jsonObject.get("version_id").toString());
             appversion.setIs_force_update(jsonObject.get("is_force_update").toString());
             appversion.setVersion_describe(jsonObject.get("version_describe").toString());
-            appversion.setCrop_code(jsonObject.get("crop_code").toString());
+            appversion.setCorp_code(jsonObject.get("corp_code").toString());
             appversion.setCreater(user_id);
             appversion.setModifier(user_id);
             appversion.setIsactive(jsonObject.get("isactive").toString());
@@ -230,7 +225,7 @@ public class AppversionController {
             appversion.setVersion_id(jsonObject.get("version_id").toString());
             appversion.setIs_force_update(jsonObject.get("is_force_update").toString());
             appversion.setVersion_describe(jsonObject.get("version_describe").toString());
-            appversion.setCrop_code(jsonObject.get("crop_code").toString());
+            appversion.setCorp_code(jsonObject.get("corp_code").toString());
 
             appversion.setModifier(user_id);
             appversion.setIsactive(jsonObject.get("isactive").toString());

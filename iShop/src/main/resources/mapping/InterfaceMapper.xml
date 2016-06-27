@@ -24,8 +24,8 @@
             <if test="version != null">
                 VERSION,
             </if>
-            <if test="crop_code != null">
-                CROP_CODE,
+            <if test="corp_code != null">
+                CORP_CODE,
             </if>
             <if test="created_date != null">
                 CREATED_DATE,
@@ -49,8 +49,8 @@
                 #{version},
             </if>
 
-            <if test="crop_code != null">
-                #{crop_code},
+            <if test="corp_code != null">
+                #{corp_code},
             </if>
             <if test="created_date != null">
                 #{created_date},
@@ -77,8 +77,8 @@
                 VERSION=  #{version},
             </if>
 
-            <if test="crop_code != null">
-                CROP_CODE= #{crop_code},
+            <if test="corp_code != null">
+                CORP_CODE= #{corp_code},
             </if>
             <if test="created_date != null">
                 CREATED_DATE=  #{created_date},
