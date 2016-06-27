@@ -7,7 +7,7 @@ package com.bizvane.ishop.entity;
  */
 public class VipTagType {
     private int id;
-    //标签类型编号
+    //标签类型编号。
     private String type_code;
     //类型名称
     private String type_name;
