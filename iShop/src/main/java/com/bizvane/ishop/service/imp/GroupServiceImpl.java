@@ -69,7 +69,7 @@ public class GroupServiceImpl implements GroupService {
         String corp_code = group.getCorp_code();
         Group group2 = getGroupById(id);
         Group group1 = selectByCode(corp_code,group_code,"");
-        if (group2.getGroup_code().equals("group_code") || group1 == null){
+        if (group2.getGroup_code().equals(group_code) || group1 == null){
             groupMapper.updateGroup(group);
             result = Common.DATABEAN_CODE_SUCCESS;
         }else {
