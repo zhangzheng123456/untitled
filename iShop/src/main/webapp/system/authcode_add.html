@@ -3,12 +3,14 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>编辑验证码信息</title>
+    <title>新增验证码信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         body{
             margin-top:81px;
@@ -16,20 +18,25 @@
     </style>
 </head>
 <body>
-    <!-- <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>验证码管理<i class="icon-ishop_8-03"></i><label>新增验证码信息</label></div>
             <div class="editor_em col-lg-7  animated fadeInRight">
                 <form class="conpany_msg">
                      <div>
-                        <span><label style="color:#c26555;">手机号*</label><input type="text" id="phone" /></span>
+                        <span>
+                            <label style="color:#c26555;">手机号*</label><input type="text" id="phone" verify="Phone"/>
+                            <div style="padding-left:124px" class="hint"><div  hintinfo="手机号码格式不正确！"></div></div>
+                        </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">验证码*</label><input id="validate_code" type="text" /></span>
+                        <span>
+                            <label style="color:#c26555;">验证码*</label><input id="validate_code" type="text" verify="Empty" />
+                            <div style="padding-left:124px" class="hint"><div  hintinfo="验证码不能为空！"></div></div>
+                        </span>
                     </div>
                     <div class="drop_down item_2">
-                        <span><label style="color:#c26555;">来源*</label><input id="platform" class="input_select" type="text" value="APP" placeholder="请选择"  readonly/>
+                        <span>
+                            <label style="color:#c26555;">来源*</label><input id="platform" class="input_select" type="text" value="APP" readonly/>
                             <ul>
                                 <li>APP</li>
                                 <li>WEB</li>
@@ -39,7 +46,7 @@
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="oper_btn">
+                <div class="codeadd_oper_btn">
                     <ul>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
@@ -68,7 +75,7 @@
     <!-- con_arrow -->
     <script type="text/javascript" src="../js/con_arrow.js"></script>
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-    <script type="text/javascript" src="../js/system/appversion_operate.js"></script>
+    <script type="text/javascript" src="../js/system/authcode_operate.js"></script>
 </body>
 
 </html>
