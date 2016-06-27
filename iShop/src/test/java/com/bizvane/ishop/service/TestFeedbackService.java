@@ -187,20 +187,31 @@ public class TestFeedbackService {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", list);
             org.json.JSONArray array = jsonObject.getJSONArray("list");
-
             //String[][] str2=new String[cols.length][list.size()];
-
             List<List<String>> lists = new ArrayList<List<String>>();
             for (int i = 0; i < list.size(); i++) {
                 List<String> temp = new ArrayList<String>();
                 for (int j = 0; j < cols.length; j++) {
-                    String aa = array.getJSONObject(i).get(cols[j]).toString();
-                    temp.add(aa);
-                   // list2.add(aa);
+                    String b = array.getJSONObject(i).get(cols[j]).toString();
+                    temp.add(b);
                 }
                 lists.add(temp);
             }
-            System.out.println(lists.get(0).toString());
+            for(int i=0;i<cols.length;i++){
+                System.out.print("=="+cols[i]+"==");
+            }
+            System.out.println();
+            for (List<String> m : lists) {
+                String yy = m.toString();
+                String[] split = yy.split(",");
+                for (int i=0;i<split.length;i++){
+                    System.out.println(split[i].);
+                    System.out.print(split[i]);
+                }
+                System.out.println();
+            }
+
+
 
             // System.out.println(aa+"----");
             //     System.out.println(jsonObject.toString() + "--json--");
