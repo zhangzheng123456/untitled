@@ -131,14 +131,15 @@ public class GoodsController {
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
-
             Date now = new Date();
+
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
             goods.setCreater(user_id);
             String existInfo1 = this.goodsService.goodsCodeExist(corp_code, goods.getGoods_code());
             String existInfo2 = this.goodsService.goodsNameExist(corp_code, goods.getGoods_name());
+
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
@@ -204,6 +205,7 @@ public class GoodsController {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
+            dataBean.setId(id);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
@@ -211,20 +213,18 @@ public class GoodsController {
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             String result = goodsService.update(goods);
-            if (goodsService.update(goods).equals(Common.DATABEAN_CODE_SUCCESS)) {
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("商品更改成功！！");
-            }else{
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("商品编号或者名称已使用！！！");
+                dataBean.setMessage(result);
             }
-
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error !!! ");
         }
-
         return dataBean.getJsonStr();
     }
 

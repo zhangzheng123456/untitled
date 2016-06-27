@@ -14,6 +14,7 @@ public interface VipTagTypeService {
 
     /**
      * 获取VIP标签类型信息
+     *
      * @param id
      * @return
      * @throws SQLException
@@ -22,6 +23,7 @@ public interface VipTagTypeService {
 
     /**
      * 插入VIP标签类型信息
+     *
      * @param vipTagType
      * @return
      * @throws SQLException
@@ -30,17 +32,19 @@ public interface VipTagTypeService {
 
     /**
      * 更新VIP标签类型信息
+     *
      * @param vipTagType
      * @return
      * @throws SQLException
      */
-    int update(VipTagType vipTagType) throws SQLException;
+    String update(VipTagType vipTagType) throws SQLException;
 
     /**
      * 获取符合查询条件的分页信息
-     * @param page_number ： 起始页码
-     * @param page_size ： 分页大小
-     * @param corp_code ： 公司编号
+     *
+     * @param page_number  ： 起始页码
+     * @param page_size    ： 分页大小
+     * @param corp_code    ： 公司编号
      * @param search_value ： 查询条件
      * @return
      */
@@ -48,6 +52,7 @@ public interface VipTagTypeService {
 
     /**
      * 判断VIP标签类型编号是否在公司内唯一
+     *
      * @param type_code ： 类型编号
      * @param corp_code ： 公司编号
      * @return
@@ -56,6 +61,7 @@ public interface VipTagTypeService {
 
     /**
      * 判断VIP标签类型名称是否在公司内唯一
+     *
      * @param type_name ： 类型名称
      * @param corp_code ： 公司编号
      * @return
@@ -64,6 +70,7 @@ public interface VipTagTypeService {
 
     /**
      * 删除VIPb编号类型，通过ID
+     *
      * @param id
      * @return
      */

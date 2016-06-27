@@ -38,7 +38,7 @@ public interface MessageTypeService {
      * @return
      * @throws SQLException
      */
-    int update(Message_type messageType) throws SQLException;
+    String update(Message_type messageType) throws SQLException;
 
     /**
      * 获取信息编号信息，
@@ -80,5 +80,9 @@ public interface MessageTypeService {
     List<Message_type> selectAllMessageType();
 
 
-    List<Message_type> getMessageTypeByCorp(String corp_code,String search_value);
+    List<Message_type> getMessageTypeByCorp(String corp_code, String search_value);
+
+    String messageTypeNameExist(String corp_code, String type_name);
+
+    String messageTypeCodeExist(String type_code, String corp_code);
 }

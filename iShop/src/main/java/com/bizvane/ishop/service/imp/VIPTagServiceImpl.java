@@ -40,8 +40,17 @@ public class VIPTagServiceImpl implements VIPTagService {
     }
 
     @Override
-    public int update(VIPtag vipTag) {
-        return this.viPtagMapper.updateByPrimaryKey(vipTag);
+    public String update(VIPtag vipTag) throws SQLException {
+        VIPtag old = this.viPtagMapper.selectByPrimaryKey(vipTag.getId());
+        if ((!old.getTag_code().equals(vipTag.getTag_code()))
+                && (this.vipTagCodeExist(vipTag.getCorp_code(), vipTag.getTag_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "编号已经存在！！！！";
+        } else if (!old.getTag_name().equals(vipTag.getTag_name()) && (this.vipTagNameExist(vipTag.getCorp_code(), vipTag.getTag_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "名称已经存在！！！！";
+        } else if (this.viPtagMapper.updateByPrimaryKey(vipTag) >= 0) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
     @Override

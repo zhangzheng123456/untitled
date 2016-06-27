@@ -40,8 +40,19 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     }
 
     @Override
-    public int update(MessageTemplate messageTemplate) {
-        return this.messageTemplateMapper.updateByPrimaryKey(messageTemplate);
+    public String update(MessageTemplate messageTemplate) throws SQLException {
+        MessageTemplate old = this.messageTemplateMapper.selectByPrimaryKey(messageTemplate.getId());
+        if ((!old.getTem_code().equals(messageTemplate.getTem_code()))
+                && this.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_code()).equals(Common.DATABEAN_CODE_ERROR)
+                ) {
+            return "编号已经存在！！！！";
+        } else if (!old.getTem_name().equals(messageTemplate.getTem_name()) &&
+                (this.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "名称已经存在！！！！";
+        } else if (this.messageTemplateMapper.updateByPrimaryKey(messageTemplate) >= 0) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
     @Override
@@ -53,7 +64,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     }
 
     @Override
-    public String messageTemplateExist( String corp_code,String tem_code) throws SQLException {
+    public String messageTemplateExist(String corp_code, String tem_code) throws SQLException {
         List<MessageTemplate> list = this.messageTemplateMapper.selectByCode(corp_code, tem_code);
         if (list == null || list.size() < 1) {
             return Common.DATABEAN_CODE_SUCCESS;
@@ -62,7 +73,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     }
 
     @Override
-    public String messageTemplateNameExist( String corp_code,String tem_name) throws SQLException {
+    public String messageTemplateNameExist(String corp_code, String tem_name) throws SQLException {
         //messageTemplateNameExist
         List<MessageTemplate> list = this.messageTemplateMapper.selectByName(tem_name, corp_code);
         if (list == null || list.size() < 1) {

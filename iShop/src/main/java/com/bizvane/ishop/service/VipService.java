@@ -37,7 +37,7 @@ public interface VipService {
      * @return
      * @throws SQLException
      */
-    int update(VIPInfo vipInfo) throws SQLException;
+    String update(VIPInfo vipInfo) throws SQLException;
 
     /**
      * 删除VIP用户信息，通过ID

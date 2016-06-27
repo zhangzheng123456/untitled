@@ -45,7 +45,7 @@ public interface VIPTagService {
      * @param vipTag
      * @return
      */
-    int update(VIPtag vipTag);
+    String update(VIPtag vipTag) throws SQLException;
 
     /**
      * 获取用户分页信息

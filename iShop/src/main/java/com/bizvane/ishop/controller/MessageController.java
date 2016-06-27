@@ -243,7 +243,6 @@ public class MessageController {
     @ResponseBody
     @Transactional
     public String MessageTypeEdit(HttpServletRequest request) {
-
         DataBean dataBean = new DataBean();
         String user_id = WebUtils.getValueForSession(request, "user_id");
         String id = "";
@@ -254,14 +253,18 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Message_type message_type = WebUtils.JSON2Bean(jsonObject, Message_type.class);
-            this.messageTypeService.update(message_type);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("edit success !!!");
-
+            String result = this.messageTypeService.update(message_type);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("更改成功！！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("edit error !!! ");
         }
         return dataBean.getJsonStr();
     }
@@ -519,16 +522,20 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             MessageTemplate messageTemplate = WebUtils.JSON2Bean(jsonObject, MessageTemplate.class);
-
-            this.messageTemplateService.update(messageTemplate);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("修改成功！！！");
-
-
+            messageTemplate.setModifier(user_id);
+            messageTemplate.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
+            String result = this.messageTemplateService.update(messageTemplate);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("更改成功！！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("edit error !!! ");
         }
         return dataBean.getJsonStr();
     }
@@ -644,6 +651,9 @@ public class MessageController {
         }
         return dataBean.getJsonStr();
     }
+
+
+
 
 
 }

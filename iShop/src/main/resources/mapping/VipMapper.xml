@@ -15,6 +15,8 @@
         <result column="register_time" property="register_time"/>
         <result column="user_code" property="user_code"/>
         <result column="store_code" property="store_code"/>
+        <result column="tag_code" property="tag_code"/>
+
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="created_date" property="created_date"/>
@@ -94,6 +96,11 @@
                 isactive,
             </if>
 
+            <if test="tag_code!=null and tag_code!=''">
+                tag_code,
+            </if>
+
+
         </trim>
 
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -148,6 +155,9 @@
             </if>
             <if test="isactive!=null and isactive!=''">
                 #{isactive},
+            </if>
+            <if test="tag_code!=null and tag_code!=''">
+                #{tag_code},
             </if>
         </trim>
     </insert>
@@ -208,6 +218,9 @@
                 isactive=#{isactive},
             </if>
 
+            <if test="tag_code!=null and tag_code!=''">
+                tag_code=#{tag_code},
+            </if>
         </trim>
         WHERE id=#{id}
     </update>

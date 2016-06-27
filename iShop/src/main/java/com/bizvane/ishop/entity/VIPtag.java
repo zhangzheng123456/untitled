@@ -11,9 +11,11 @@ import java.util.Date;
 public class VIPtag {
     private int id;
     //用户标签编号
+    private String tag_code;
+    //会员标签名称
     private String tag_name;
     //标签类型
-    private String tag_type;
+    private String type_code;
     //企业编号
     private String corp_code;
     //修改日期
@@ -26,6 +28,9 @@ public class VIPtag {
     private String creater;
     //是否可用
     private String isactive;
+
+    private VipTagType vipTagType;
+
     private Corp corp;
 
     public Corp getCorp() {
@@ -38,6 +43,22 @@ public class VIPtag {
 
     public VIPtag() {
 
+    }
+
+    public String getTag_code() {
+        return tag_code;
+    }
+
+    public String getType_code() {
+        return type_code;
+    }
+
+    public void setType_code(String type_code) {
+        this.type_code = type_code;
+    }
+
+    public void setTag_code(String tag_code) {
+        this.tag_code = tag_code;
     }
 
     public int getId() {
@@ -56,13 +77,6 @@ public class VIPtag {
         this.tag_name = tag_name;
     }
 
-    public String getTag_type() {
-        return tag_type;
-    }
-
-    public void setTag_type(String tag_type) {
-        this.tag_type = tag_type;
-    }
 
     public String getCorp_code() {
         return corp_code;
@@ -71,7 +85,6 @@ public class VIPtag {
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
     }
-
 
     public String getModifier() {
         return modifier;
@@ -107,6 +120,14 @@ public class VIPtag {
 
     public String getIsactive() {
         return isactive;
+    }
+
+    public VipTagType getVipTagType() {
+        return vipTagType;
+    }
+
+    public void setVipTagType(VipTagType vipTagType) {
+        this.vipTagType = vipTagType;
     }
 
     public void setIsactive(String isactive) {
