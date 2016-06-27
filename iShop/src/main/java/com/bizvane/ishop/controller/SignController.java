@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by yin on 2016/6/23.
@@ -129,4 +130,7 @@ public class SignController {
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
     }
+
+
+
 }

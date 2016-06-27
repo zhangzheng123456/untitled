@@ -22,5 +22,7 @@ public interface ValidateCodeService {
 
     ValidateCode selValidateCodeById(int id);
 
+    List<ValidateCode> selectAll();
+
     PageInfo<ValidateCode> selectAllValidateCode(int page_number, int page_size, String search_value)throws SQLException;
 }

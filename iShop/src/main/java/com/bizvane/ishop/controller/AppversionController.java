@@ -126,7 +126,7 @@ public class AppversionController {
             appversion.setVersion_describe(jsonObject.get("version_describe").toString());
             appversion.setCrop_code(jsonObject.get("crop_code").toString());
             appversion.setCreater(user_id);
-            appversion.setModifier(jsonObject.get("modifier").toString());
+            appversion.setModifier(user_id);
             appversion.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
@@ -231,12 +231,12 @@ public class AppversionController {
             appversion.setIs_force_update(jsonObject.get("is_force_update").toString());
             appversion.setVersion_describe(jsonObject.get("version_describe").toString());
             appversion.setCrop_code(jsonObject.get("crop_code").toString());
-            appversion.setCreater(jsonObject.get("creater").toString());
+
             appversion.setModifier(user_id);
             appversion.setIsactive(jsonObject.get("isactive").toString());
             //------------操作日期-------------
             Date date=new Date();
-            appversion.setCreated_date(jsonObject.get("created_date").toString());
+
             appversion.setModified_date(Common.DATETIME_FORMAT.format(date));
             appversion.setId(Integer.parseInt(jsonObject.get("id").toString()));
             appversionService.updAppversionById(appversion);

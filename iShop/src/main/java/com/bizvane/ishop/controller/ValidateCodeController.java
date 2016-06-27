@@ -7,6 +7,7 @@ import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
+import com.google.gson.GsonBuilder;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Date;
+import javax.servlet.http.HttpServletResponse;
+import java.io.PrintWriter;
+import java.util.*;
 
 /**
  * Created by yin on 2016/6/23.
@@ -30,6 +33,7 @@ public class ValidateCodeController {
     String id;
 
     private static final Logger logger = Logger.getLogger(ValidateCodeController.class);
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     //列表
@@ -87,13 +91,14 @@ public class ValidateCodeController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 增加（用了事务）
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     @Transactional
-    public String addValidateCode(HttpServletRequest request){
+    public String addValidateCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
         try {
@@ -106,7 +111,7 @@ public class ValidateCodeController {
             JSONObject jsonObject = new JSONObject(message);
             ValidateCode validateCode = WebUtils.JSON2Bean(jsonObject, ValidateCode.class);
             //------------操作日期-------------
-            Date date=new Date();
+            Date date = new Date();
             validateCode.setCreated_date(Common.DATETIME_FORMAT.format(date));
             validateCode.setCreater(user_id);
             validateCode.setModified_date(Common.DATETIME_FORMAT.format(date));
@@ -115,13 +120,14 @@ public class ValidateCodeController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("add success");
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 删除(用了事务)
      */
@@ -155,12 +161,13 @@ public class ValidateCodeController {
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
     }
+
     /**
      * 根据ID查询
      */
     @RequestMapping(value = "/selectById", method = RequestMethod.POST)
     @ResponseBody
-    public String selectById(HttpServletRequest request){
+    public String selectById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
@@ -176,7 +183,7 @@ public class ValidateCodeController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -205,7 +212,7 @@ public class ValidateCodeController {
             JSONObject jsonObject = new JSONObject(message);
             ValidateCode validateCode = WebUtils.JSON2Bean(jsonObject, ValidateCode.class);
             //------------操作日期-------------
-            Date date=new Date();
+            Date date = new Date();
             validateCode.setModified_date(Common.DATETIME_FORMAT.format(date));
             validateCode.setModifier(user_id);
             validateCodeService.updateValidateCode(validateCode);
@@ -219,5 +226,69 @@ public class ValidateCodeController {
         }
         logger.info("info--------" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/testword", method = RequestMethod.POST)
+    @ResponseBody
+    public String testword(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        try {
+            List<ValidateCode> validateCodes = validateCodeService.selectAll();
+            //这个相当于前台传过来的字段
+            String[] cols = {"id", "phone"};
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("list", validateCodes);
+            org.json.JSONArray array = jsonObject.getJSONArray("list");
+            List<List<String>> lists = new ArrayList<List<String>>();
+            for (int i = 0; i < validateCodes.size(); i++) {
+                List<String> temp = new ArrayList<String>();
+                for (int j = 0; j < cols.length; j++) {
+                    String aa = array.getJSONObject(i).get(cols[j]).toString();
+                    temp.add(aa);
+                    // list2.add(aa);
+                }
+                lists.add(temp);
+            }
+            response.setContentType("application/vnd.ms-excel");
+            //设置响应的字符集
+            response.setCharacterEncoding("UTF-8");
+            //1  在servlet上获得out对象：
+            PrintWriter out = response.getWriter();
+            //2  打印标签
+            out.print("<table>");
+            out.print("<tr>");
+            for(int i=0;i<cols.length;i++){
+                out.print("<td>");
+                out.print(cols[i]);
+                out.print("</td>");
+            }
+            out.print("</tr>");
+            for (List<String> m : lists) {
+                    String[] str2= (String[]) m.toArray();
+                for (int i=0;i<str2.length;i++) {
+                    out.print("<tr>");
+                    out.print("<td>");
+                    out.print(str2[i]);
+                    out.print("</td>");
+                    out.print("<td>");
+                    out.print(str2[1]);
+                    out.print("</td>");
+                    out.print("</tr>");
+                }
+            }
+            out.print("</table>");
+            out.flush();
+            out.close();
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("word success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(e.getMessage());
+        }
+        return dataBean.getJsonStr();
+
     }
 }
