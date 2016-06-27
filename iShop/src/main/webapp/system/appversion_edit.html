@@ -10,6 +10,7 @@
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         body{
             margin-top:81px;
@@ -29,32 +30,48 @@
                 </div>
                 <form class="conpany_msg">
                     <div class="drop_down item_2">
-                        <span><label style="color:#c26555;">运行平台*</label><input id="platform" class="input_select" type="text" placeholder="请选择" readonly/>
+                        <span><label style="color:#c26555;">运行平台*</label><input id="platform" class="input_select" type="text" value="Andioid" placeholder="请选择"  readonly/>
                             <ul>
                                 <li>Andioid</li>
-                                <li>IOS</li>
+                                <li>iOS</li>
                             </ul>
                         </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">下载地址*</label><input id="download_addr" type="text" /></span>
+                        <span>
+                            <label style="color:#c26555;">下载地址*</label><input id="download_addr" type="text" verify="Empty"/>
+                            <div style="padding-left:122px" class="hint"><div  hintinfo="地址不能为空！"></div></div>
+                        </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">版本*</label><input id="version_id" type="text" /></span>
+                        <span>
+                            <label style="color:#c26555;">版本*</label><input id="version_id" type="text" verify="Empty"/>
+                            <div style="padding-left:122px" class="hint"><div  hintinfo="版本不能为空！"></div></div>
+                        </span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">企业编号*</label><input id="crop_code" type="text" /></span>
+                        <span style="display: inline-flex;width:100%">
+                            <label style="color:#c26555;" style="height: 120px;">企业编号*</label>
+                            <span class="tempalte_area" style="height: 120px">
+                                <textarea style="height: 100px" id="corp_code"></textarea>
+                            </span>
+                        </span>
                     </div>
                     <div>
                     <div class="drop_down item_1">
-                        <span><label>是否强制升级</label><input id="is_force_update" class="input_select" type="text" placeholder="请选择" readonly/>
+                        <span><label>是否强制升级</label><input id="is_force_update" value="是" class="input_select" type="text" placeholder="请选择" readonly/>
                             <ul>
                                 <li>是</li>
                                 <li>否</li>
                             </ul>
                         </span>
                     </div>
-                    <span style="display: inline-flex;width:100%"><label style="height:120px;">版本说明</label><span class="tempalte_area" style="height: 120px"><textarea style="height: 100px" id="version_describe"></textarea></span></span>
+                    <span style="display: inline-flex;width:100%">
+                        <label style="height:120px;">版本说明</label>
+                        <span class="tempalte_area" style="height: 120px">
+                            <textarea style="height: 100px" id="version_describe"></textarea>
+                        </span>
+                    </span>
                     </div>
                 </form>
             </div>

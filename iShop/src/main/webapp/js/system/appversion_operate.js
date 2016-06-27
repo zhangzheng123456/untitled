@@ -41,7 +41,7 @@ var oc = new ObjectControl();
 				var platform=$('#platform').val();//运行平台
 				var download_addr=$("#download_addr").val();//下载地址
 				var version_id=$("#version_id").val();//版本
-				var crop_code=$("#crop_code").val();//企业编号
+				var corp_code=$("#corp_code").val();//企业编号
 				var force_update=$("#is_force_update").val();//是否强制升级
 				var version_describe=$("#version_describe").val();//版本说明
 				var ISACTIVE="";
@@ -67,7 +67,7 @@ var oc = new ObjectControl();
 					"platform":platform,
 					"download_addr": download_addr,
 					"version_id": version_id,
-					"crop_code":crop_code,
+					"corp_code":corp_code,
 					"version_describe":version_describe,
 					"is_force_update":is_force_update,
 					"isactive": ISACTIVE
@@ -82,7 +82,7 @@ var oc = new ObjectControl();
 				var platform=$('#platform').val();//运行平台
 				var download_addr=$("#download_addr").val();//下载地址
 				var version_id=$("#version_id").val();//版本
-				var crop_code=$("#crop_code").val();//企业编号
+				var corp_code=$("#corp_code").val();//企业编号
 				var force_update=$("#is_force_update").val();//是否强制升级
 				var version_describe=$("#version_describe").val();//版本说明
 				var ISACTIVE="";
@@ -110,7 +110,7 @@ var oc = new ObjectControl();
 					"platform":platform,
 					"download_addr": download_addr,
 					"version_id": version_id,
-					"crop_code":crop_code,
+					"corp_code":corp_code,
 					"version_describe":version_describe,
 					"is_force_update":is_force_update,
 					"isactive": ISACTIVE
@@ -183,7 +183,7 @@ jQuery(document).ready(function(){
 				$('#platform').val(msg.platform);
 				$("#download_addr").val(msg.download_addr);
 				$("#version_id").val(msg.version_id);
-				$("#crop_code").val(msg.crop_code);
+				$("#corp_code").val(msg.corp_code);
 				if(msg.is_force_update=="Y"){
 					$("#is_force_update").val("是");
 				}else if(msg.is_force_update=="N"){

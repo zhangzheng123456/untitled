@@ -5,15 +5,9 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
-var key_val=sessionStorage.getItem("key_val");//取function_code的值
-// var val=sessionStorage.getItem("key");//取登录里面的key
-// val=JSON.parse(val);
-// var message=JSON.parse(val.message);
-// var user_type=message.user_type;//是否为系统管理员
-// var role_code=message.role_code;//角色编号
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-//模仿select
 $(function(){  
         $("#page_row").click(function(){
 
@@ -22,16 +16,17 @@ $(function(){
             }else{  
                 showLi();  
             }  
-        });            
+        });  
+                  
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
-            	pageSize=$(this).attr('id');  
+                pageSize=$(this).attr('id');  
                 if(value==""){
                     GET();
                 }else if(value!==""){
                     param["pageSize"]=pageSize;
                     POST(); 
-                }  
+                } 
                 $("#page_row").val($(this).html());  
                 hideLi();  
             });    
@@ -41,7 +36,6 @@ $(function(){
         });          
     }      
 );
-  
 function showLi(){  
     $("#liebiao").show();  
 }  
@@ -147,7 +141,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/user/list?pageNumber="+inx+"&pageSize="+pageSize
+            oc.postRequire("get","/validatecode/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
                     if(data.code=="0"){
@@ -156,7 +150,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }else if(data.code=="-1"){
                         // alert(data.message);
@@ -165,7 +159,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/user/search","0",param,function(data){
+            oc.postRequire("post","/validatecode/search","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
@@ -180,7 +174,6 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         superaddition(list,inx);
                         jumpBianse();
                     }
-                    setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
                 }else if(data.code=="-1"){
                     alert(data.message);
                 }
@@ -188,16 +181,16 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
         }
     }
 }
-//页面加载循环
-function superaddition(data,num){
+function superaddition(data,num){//页面加载循环
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
-            var a=i+num*pageSize;
+            var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }
-        if(data[i].sex=="F"){
-            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        
+        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -206,95 +199,25 @@ function superaddition(data,num){
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
+                        + "</td><td>"
+                        + data[i].platform
+                        + "</td><td><span title='"+data[i].download_addr+"'>"
+                        + data[i].download_addr
+                        + "</span></td><td><span>"
+                        + data[i].version_id
+                        + "</span></td><td>"
+                        + data[i].is_force_update
                         +"</td><td>"
-                        + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
-                        + "</td><td>"
-                        + data[i].user_name
-                        + "</td><td>"
-                        + "女"
-                        +"</td><td>"
-                        +data[i].phone
-                        + "</td><td>"
-                        +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
-                        + "</td><td>"
-                        +data[i].group.group_name
+                        +data[i].corp_code
+                        + "</td><td><span title='"+data[i].version_describe+"'>"
+                        +data[i].version_describe
+                        + "</span></td><td>"
+                        +data[i].modified_date
                         + "</td><td>"
                         +data[i].modifier
                         + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
-        }
-        if(data[i].sex=="M"){
-            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'></label></div>"
-                        + "</td><td style='text-align:left;'>"
-                        + a
-                        +"</td><td>"
-                        + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
-                        + "</td><td>"
-                        + data[i].user_name
-                        + "</td><td>"
-                        + "男"
-                        +"</td><td>"
-                        +data[i].phone
-                        + "</td><td>"
-                        +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
-                        + "</td><td>"
-                        +data[i].group.group_name
-                        + "</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
-        }
-        if(data[i].sex!=="F"&&data[i].sex!=="M"){
-            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'></label></div>"
-                        + "</td><td style='text-align:left;'>"
-                        + a
-                        +"</td><td>"
-                        + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
-                        + "</td><td>"
-                        + data[i].user_name
-                        + "</td><td>"
-                        + ""
-                        +"</td><td>"
-                        +data[i].phone
-                        + "</td><td>"
-                        +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
-                        + "</td><td>"
-                        +data[i].group.group_name
-                        + "</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
-        }
     }
 };
 //权限配置
@@ -302,21 +225,21 @@ function jurisdiction(actions){
     $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
-            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a><div class='fen'><div id='admin'>新增系统管理员</div><div id='corp'>新增企业用户</div></div></li>");
+            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
         }else if(actions[i].act_name=="delete"){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
-            $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
 }
 //页面加载时list请求
 function GET(){
-    oc.postRequire("get","/user/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/validatecode/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
+            // console.log(data);
             if(data.code=="0"){
-            	$(".table tbody").empty();
+                $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
@@ -327,46 +250,37 @@ function GET(){
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){
-                console.log(data.message);
+                // alert(data.message);
             }
     });
 }
 GET();
 //加载完成以后页面进行的操作
 function jumpBianse(){
-	$(document).ready(function(){//隔行变色 
-   		 $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-    	 $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-         $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
-	})
-	//双击跳转
-	$(".table tbody tr").dblclick(function(){
-	    var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
-	})
-	//点击tr input是选择状态  tr增加class属性
-	$(".table tbody tr").click(function(){
-		var input=$(this).find("input")[0];
-		var thinput=$("thead input")[0];
-		$(this).toggleClass("tr");  
-		console.log(input);
-		if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
-			input.checked = true;
-			$(this).addClass("tr");
-		}else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
-			if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
-				thinput.checked=false;
-			}
-			input.checked = false;
-			$(this).removeClass("tr");
-		}
-	})
+    $(document).ready(function(){//隔行变色 
+         $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+         $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+    })
+    //点击tr input是选择状态  tr增加class属性
+    $(".table tbody tr").click(function(){
+        var input=$(this).find("input")[0];
+        var thinput=$("thead input")[0];
+        $(this).toggleClass("tr");  
+        console.log(input);
+        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+            input.checked = true;
+            $(this).addClass("tr");
+        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+            if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
+                thinput.checked=false;
+            }
+            input.checked = false;
+            $(this).removeClass("tr");
+        }
+    })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
-        sessionStorage.removeItem('id');
+        $(window.parent.document).find('#iframepage').attr("src","/system/authcode_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -374,7 +288,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/system/authcode_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -382,6 +296,13 @@ function jumpBianse(){
             frame();
             $('.frame').html("不能选择多个");
         }
+    })
+     //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        console.log(id);
+        $(window.parent.document).find('#iframepage').attr("src","/system/authcode_edit.html");
     })
     //删除
     $("#remove").click(function(){
@@ -402,42 +323,41 @@ function jumpBianse(){
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
-	var event=window.event||arguments[0];
+    var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
-	param["searchValue"]=value;
-	param["pageNumber"]=inx;
-	param["pageSize"]=pageSize;
+    param["searchValue"]=value;
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
-	if(event.keyCode == 13){
-		POST();
-	}
+    if(event.keyCode == 13){
+        POST();
+    }
 });
 //搜索的请求函数
 function POST(){
-	oc.postRequire("post","/user/search","0",param,function(data){
-        console.log(data);
-		if(data.code=="0"){
-			$(".table tbody").empty();
+    oc.postRequire("post","/validatecode/search","0",param,function(data){
+        if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
             var list=list.list;
             var actions=message.actions;
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
-			if(list.length<=0){
-				$(".table p").remove();
-				$(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
-		 	}else if(list.length>0){
+            $(".table tbody").empty();
+            if(list.length<=0){
                 $(".table p").remove();
-		 		superaddition(list,inx);
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+            }else if(list.length>0){
+                $(".table p").remove();
+                superaddition(list,inx);
                 jumpBianse();
-		 	}
-		 	setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
-		}else if(data.code=="-1"){
-			console.log(data.message);
-		}
-	})
+            }
+            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+    })
 }
+console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -454,18 +374,18 @@ $("#delete").click(function(){
     $("#tk").hide();
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
     for(var i=0,ID="";i<tr.length;i++){
-    	var r=$(tr[i]).attr("id");
-	    if(i<tr.length-1){
-	    	ID+=r+",";
-	    }else{
-	    	 ID+=r;
-	    }     
+        var r=$(tr[i]).attr("id");
+        if(i<tr.length-1){
+            ID+=r+",";
+        }else{
+             ID+=r;
+        }     
     }
     var param={};
     param["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/user/delete","0",param,function(data){
-       if(data.code=="0"){
+    oc.postRequire("post","/validatecode/delete","0",param,function(data){
+        if(data.code=="0"){
             if(value==""){
                frame();
                $('.frame').html('删除成功');
@@ -474,22 +394,22 @@ $("#delete").click(function(){
                frame();
                $('.frame').html('删除成功');
                POST();
+            }else if(data.code=="-1"){
+                frame();
+                $('.frame').html(data.message);
             }
-        }else if(data.code=="-1"){
-            frame();
-            $('.frame').html(data.message);
         }
     })
 })
 //删除弹框
-function frame(){
+ function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-}  
+} 
 //全选
 function checkAll(name){
     var el=$("tbody input");

@@ -182,6 +182,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -207,13 +208,13 @@ function superaddition(data,num){//页面加载循环
                         + "</span></td><td>"
                         + data[i].is_force_update
                         +"</td><td>"
-                        +data[i].crop_code
+                        +data[i].corp_code
                         + "</td><td><span title='"+data[i].version_describe+"'>"
                         +data[i].version_describe
                         + "</span></td><td>"
                         +data[i].modified_date
                         + "</td><td>"
-                        +data[i].modified
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
