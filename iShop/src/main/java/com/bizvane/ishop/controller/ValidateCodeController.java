@@ -10,6 +10,12 @@ import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.GsonBuilder;
+import jxl.Workbook;
+import jxl.format.Alignment;
+import jxl.format.Colour;
+import jxl.format.UnderlineStyle;
+import jxl.format.VerticalAlignment;
+import jxl.write.*;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +28,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -253,37 +261,92 @@ public class ValidateCodeController {
                 }
                 lists.add(temp);
             }
-            response.setContentType("application/vnd.ms-excel");
+
+
+
+            //------------------------开启响应头---------------------------------------
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             //设置响应的字符集
-            response.setCharacterEncoding("UTF-8");
-            //1  在servlet上获得out对象：
-            PrintWriter out = response.getWriter();
-            //2  打印标签
-            out.print("<table>");
-            out.print("<tr>");
-            for(int i=0;i<cols.length;i++){
-                out.print("<td>");
-                out.print(cols[i]);
-                out.print("</td>");
+            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
+            String name = URLEncoder.encode("报表_"+sdf.format(new Date())+".xls", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename="+name);
+            //创建excel空白文档
+            WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
+            WritableSheet sheet = book.createSheet("报表", 0);
+            WritableFont font = new WritableFont(WritableFont.createFont("微软雅黑"), 18,
+                    WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+            WritableCellFormat format = new WritableCellFormat(font);
+            format.setAlignment(Alignment.CENTRE);
+            format.setVerticalAlignment(VerticalAlignment.CENTRE);
+            for (int i = 0; i < cols.length; i++) {
+                sheet.setColumnView(i, 40);
+                Label label = new Label(i, 0, cols[i]);
+                label.setCellFormat(format);
+                sheet.addCell(label);
             }
-            out.print("</tr>");
+            WritableFont font2 = new WritableFont(WritableFont.createFont("微软雅黑"), 15,
+                    WritableFont.NO_BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLUE);
+            WritableCellFormat format2 = new WritableCellFormat(font2);
+            format2.setAlignment(Alignment.CENTRE);
+            format2.setVerticalAlignment(VerticalAlignment.CENTRE);
+            format2.setShrinkToFit(false);
             for (List<String> m : lists) {
-                    String[] str2= (String[]) m.toArray();
-                    out.print("<tr>");
-                for (int i=0;i<str2.length;i++) {
-                    out.print("<td>");
-                    out.print(str2[i]);
-                    out.print("</td>");
+                for(int i=0;i<lists.size();i++){
+                    String str2 = m.toString();
+                    str2=str2.substring(1,str2.length()-1);
+                    String[] split = str2.split(",");
+                    List<String> slist = new ArrayList<String>();
+                    Collections.addAll(slist,split);
+                    Map map= (Map) slist;
+                    for (int j=0;j<split.length;j++) {
+                        Label lb = null;
+                        if(map.get(cols[j])!=null){
+                            lb=new Label(j,i+1,map.get(cols[j]).toString(),format2);
+                        }else{
+                            lb = new Label(j, i+1, "", format2);
+                        }
+                        sheet.addCell(lb);
+
+                    }
                 }
-//                    out.print("<td>");
-//                    out.print(str2[1]);
-//                    out.print("</td>");
-                    out.print("</tr>");
+
 
             }
-            out.print("</table>");
-            out.flush();
-            out.close();
+
+
+
+
+
+//            //1  在servlet上获得out对象：
+//            PrintWriter out = response.getWriter();
+//            //2  打印标签
+//            out.print("<table>");
+//            out.print("<tr>");
+//            for(int i=0;i<cols.length;i++){
+//                out.print("<td>");
+//                out.print(cols[i]);
+//                out.print("</td>");
+//            }
+//            out.print("</tr>");
+//            for (List<String> m : lists) {
+//                String str2 = m.toString();
+//                String[] split = str2.split(",");
+//                    out.print("<tr>");
+//                for (int i=0;i<split.length;i++) {
+//                    out.print("<td>");
+//                    out.print(split[i]);
+//                    out.print("</td>");
+//                }
+//                    out.print("</tr>");
+//
+//            }
+//            out.print("</table>");
+//            out.flush();
+//            out.close();
+            //写入文件
+            book.write();
+            //写入结束
+            book.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");

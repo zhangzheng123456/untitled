@@ -38,7 +38,7 @@
 		<aspectjweaver.version>1.8.9</aspectjweaver.version>
 		<pagehelper.version>4.0.1</pagehelper.version>
 		<ice>3.6.1</ice>
-
+		<jxl.version>2.6.6</jxl.version>
 	</properties>
 
 	<dependencies>
@@ -162,6 +162,12 @@
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>jxl</groupId>
+			<artifactId>jxl</artifactId>
+			<version>${jxl.version}</version>
 		</dependency>
 
 		<dependency>
