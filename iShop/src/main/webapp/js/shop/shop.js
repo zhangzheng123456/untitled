@@ -19,21 +19,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	shopjs.checkCode=function(obj,hint){
-		var isCode=/^[D]{1}[0-9]{4}$/;
-		if(!this.isEmpty(obj)){
-			if(isCode.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"店仓编号为必填项,支持以大写D开头必须是4位数字的组合！");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
 	shopjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -262,12 +247,11 @@ jQuery(document).ready(function(){
 		getcorplist();
 	}
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[D]{1}[0-9]{4}$/;
     	var _params={};
     	var store_code=$(this).val();//店仓编号
     	var store_code1=$(this).attr("data-name");//标志
     	var corp_code=$("#OWN_CORP").val();//公司编号
-		if(store_code!==""&&store_code!==store_code1&&isCode.test(store_code)==true){
+		if(store_code!==""&&store_code!==store_code1){
 			_params["store_code"]=store_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();

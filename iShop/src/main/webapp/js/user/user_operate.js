@@ -35,21 +35,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	useroperatejs.checkCode=function(obj,hint){
-		var isCode=/^[S]{1}[Y]{1}[0-9]{4}$/;
-		if(!this.isEmpty(obj)){
-			if(isCode.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"请以大写字母SY开头必须是4位数字的组合!");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
 	useroperatejs.checkMail = function(obj,hint){
 		var reg=/^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]+$/;
 		if(!this.isEmpty(obj)){
@@ -551,12 +536,11 @@ jQuery(document).ready(function(){
 	});
 	//验证编号是否唯一的方法
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[S]{1}[Y]{1}[0-9]{4}$/;
     	var _params={};
     	var user_code=$(this).val();//员工编号
     	var corp_code=$("#OWN_CORP").val();//公司编号
     	var user_code1=$(this).attr("data-name");
-		if(user_code!==""&&user_code!==user_code1&&isCode.test(user_code)==true){
+		if(user_code!==""&&user_code!==user_code1){
 			_params["user_code"]=user_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
