@@ -277,6 +277,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/fab/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String deleteGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";

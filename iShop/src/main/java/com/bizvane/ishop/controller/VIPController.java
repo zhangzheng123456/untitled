@@ -694,6 +694,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/type/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String findVIPLabelTypeDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -947,6 +948,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/callback/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String callbackDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";

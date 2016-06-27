@@ -14,6 +14,7 @@ import com.github.pagehelper.PageInfo;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -38,9 +39,11 @@ public class UserAchvGoalControl {
     private FunctionService functionService = null;
 
     String id;
+
     /**
      * 用户管理
-     *用户业绩目标的列表展示
+     * 用户业绩目标的列表展示
+     *
      * @param request
      * @return
      */
@@ -86,11 +89,13 @@ public class UserAchvGoalControl {
     /**
      * 用户业绩目标
      * 编辑
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String editUserAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getAttribute("user_id").toString();
@@ -109,11 +114,11 @@ public class UserAchvGoalControl {
             String achv_type = jsonObj.get("achv_type").toString();
             userAchvGoal.setAchv_type(achv_type);
 
-            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObj.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
                 userAchvGoal.setEnd_time(week);
-            }else{
+            } else {
                 userAchvGoal.setEnd_time(jsonObj.get("end_time").toString());
             }
             Date now = new Date();
@@ -139,11 +144,13 @@ public class UserAchvGoalControl {
     /**
      * 用户业绩目标
      * 删除
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String deleteUserAchvGoalById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -170,11 +177,13 @@ public class UserAchvGoalControl {
     /**
      * 用户业绩目标
      * 添加
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String insertUserAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -198,11 +207,11 @@ public class UserAchvGoalControl {
             String achv_type = jsonObject.get("achv_type").toString();
             userAchvGoal.setAchv_type(achv_type);
 
-            if (achv_type.equals(Common.TIME_TYPE_WEEK)){
+            if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObject.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
                 userAchvGoal.setEnd_time(week);
-            }else{
+            } else {
                 userAchvGoal.setEnd_time(jsonObject.get("end_time").toString());
             }
             Date now = new Date();
@@ -214,7 +223,7 @@ public class UserAchvGoalControl {
 
 //            String existInfo = this.userAchvGoalService.userAchvGoalExist(userAchvGoal.getUser_code());
 //            if (existInfo.equals(Common.DATABEAN_CODE_ERROR)) {
-                userAchvGoalService.insert(userAchvGoal);
+            userAchvGoalService.insert(userAchvGoal);
 //            } else {
 //                userAchvGoalService.updateUserAchvGoal(userAchvGoal);
 //    }

@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -65,7 +66,7 @@ public class StoreController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
@@ -133,6 +134,7 @@ public class StoreController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
@@ -166,6 +168,7 @@ public class StoreController {
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String editShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
@@ -202,6 +205,7 @@ public class StoreController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -228,7 +232,7 @@ public class StoreController {
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("店铺"+store_code+"下有所属员工，请先处理店铺下员工再删除！");
+                    dataBean.setMessage("店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！");
                     return dataBean.getJsonStr();
                 }
             }
@@ -415,6 +419,7 @@ public class StoreController {
 
     @RequestMapping(value = "/staff/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String deleteStaff(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -426,7 +431,7 @@ public class StoreController {
             String store_code = jsonObject.get("store_code").toString();
             String user_id = jsonObject.get("user_id").toString();
 
-            storeService.deleteStoreUser(user_id,store_code);
+            storeService.deleteStoreUser(user_id, store_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("delete success");
@@ -451,7 +456,7 @@ public class StoreController {
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             //         Area area = areaService.getAreaByName(corp_code, store_code);
-            Store store = storeService.getStoreByCode(corp_code, store_code,"");
+            Store store = storeService.getStoreByCode(corp_code, store_code, "");
 
             if (store != null) {
                 dataBean.setId(id);

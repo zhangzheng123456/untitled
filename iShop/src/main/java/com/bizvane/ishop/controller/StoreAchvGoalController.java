@@ -254,6 +254,7 @@ public class StoreAchvGoalController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {

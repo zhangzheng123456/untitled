@@ -274,6 +274,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/type/delete", method = RequestMethod.GET)
     @ResponseBody
+    @Transactional
     public String MessageTypeDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "1";
@@ -545,6 +546,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/template/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String MessageModernDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "1";
