@@ -18,7 +18,7 @@ public interface UserMapper {
 
     User selectLogin(String phone, String password);
 
-    User userEmailExist(@Param("email") String email);
+    List<User> userEmailExist(@Param("email") String email);
 
     User selectUserCode(String user_code, String corp_code);
 

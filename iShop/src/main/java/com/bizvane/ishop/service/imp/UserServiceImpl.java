@@ -161,13 +161,14 @@ public class UserServiceImpl implements UserService {
         String phone_exist = userPhoneExist(phone);
         User code_exist = userCodeExist(user_code,corp_code);
 
+        String emails = userEmailExist(email);
 
         if (!user1.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
             result = "手机号已存在";
         }else if (!user1.getUser_code().equals(user_code) && code_exist != null){
             result = "员工编号已存在";
-//        }else if (!user.getEmail().equals("") && !user1.getEmail().equals(email)&& !userEmailExist(email).equals(Common.DATABEAN_CODE_SUCCESS)){
-//                result = "邮箱已存在";
+        }else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))){
+                result = "邮箱已存在";
         }else{
             userMapper.updateByUserId(user);
             result = Common.DATABEAN_CODE_SUCCESS;
@@ -250,10 +251,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public String userEmailExist(String email) {
-        User user = this.userMapper.userEmailExist(email);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (user == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
+        List<User> user = this.userMapper.userEmailExist(email);
+        String result = Common.DATABEAN_CODE_SUCCESS;
+        if (user.size() > 0) {
+            result = Common.DATABEAN_CODE_ERROR;
         }
         return result;
     }
