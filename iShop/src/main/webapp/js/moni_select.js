@@ -49,12 +49,12 @@ $(function(){
 	})
 	$(".item_2 .input_select").blur(function(){
 		var ul = $(".item_2 ul");
-		setTimeout(hideLi1,200);
+		setTimeout(hideli,200);
 	})
 	function hideLi(){
 	    $(".item_1 ul").hide();
 	}
-	function hideli1(){
+	function hideli(){
 		$(".item_2 ul").hide();
 	}
 });
