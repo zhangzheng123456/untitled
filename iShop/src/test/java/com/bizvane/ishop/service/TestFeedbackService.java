@@ -1,26 +1,18 @@
 package com.bizvane.ishop.service;
 
-import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.github.pagehelper.PageInfo;
-import org.apache.velocity.runtime.directive.Foreach;
 import org.json.JSONObject;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.expression.MapAccessor;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -143,7 +135,7 @@ public class TestFeedbackService {
         interfacers.setModifier("1");
         interfacers.setCreater("1");
         interfacers.setCreated_date("2010/2/3");
-        interfacers.setCrop_code("222");
+        interfacers.setCorp_code("222");
         interfacers.setIsactive("1");
         interfacers.setVersion("安卓4.7");
         int i = 0;
@@ -205,7 +197,7 @@ public class TestFeedbackService {
                 String yy = m.toString();
                 String[] split = yy.split(",");
                 for (int i=0;i<split.length;i++){
-                    System.out.println(split[i].);
+                    System.out.println(split[i].substring(0,1));
                     System.out.print(split[i]);
                 }
                 System.out.println();

@@ -8,11 +8,10 @@
         <if test="search_value != null and search_value !=''">
             AND
             (
-            USER_CODE LIKE concat('%', #{search_value},'%')
-            OR FEEDBACK_CONTENT LIKE concat('%', #{search_value},'%')
-            OR PHONE LIKE concat('%', #{search_value},'%')
-            OR FEEDBACK_DATE LIKE concat('%',#{search_value},'%')
-            OR PROCESS_STATE LIKE concat('%', #{search_value},'%')
+            PHONE LIKE concat('%', #{search_value},'%')
+            OR VALIDATE_CODE LIKE concat('%', #{search_value},'%')
+            OR CREATED_DATE LIKE concat('%', #{search_value},'%')
+            OR MODIFIER LIKE concat('%',#{search_value},'%')
             OR ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
