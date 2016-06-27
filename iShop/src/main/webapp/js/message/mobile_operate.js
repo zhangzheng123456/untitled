@@ -223,6 +223,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist();
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
@@ -235,12 +236,7 @@ jQuery(document).ready(function(){
 	}else{
 		getcorplist();
 	}
-
-	//change 事件
-	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
-	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
+	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
