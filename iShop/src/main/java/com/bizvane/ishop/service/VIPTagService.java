@@ -68,5 +68,12 @@ public interface VIPTagService {
      */
     String vipTagCodeExist(String tag_code, String corp_code) throws SQLException;
 
+    /**
+     * 判断VIP标签名称是否公司内唯一
+     * @param corp_code ： 公司编号
+     * @param tag_name ： VIP标签名称
+     * @return
+     * @throws SQLException
+     */
     String vipTagNameExist(String corp_code, String tag_name) throws SQLException;
 }
