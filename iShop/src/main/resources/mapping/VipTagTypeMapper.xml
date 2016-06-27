@@ -96,7 +96,6 @@
             <if test="type_name!=null  and type_name!=''">
                 type_name=#{type_name},
             </if>
-
             <if test="type_description!=null and type_description!=''">
                 type_description=#{type_description},
             </if>
