@@ -166,8 +166,8 @@ public class UserServiceImpl implements UserService {
             result = "手机号已存在";
         }else if (!user1.getUser_code().equals(user_code) && code_exist != null){
             result = "员工编号已存在";
-        }else if (user.getEmail()!=null && !user.getEmail().equals("") && !user1.getEmail().equals(email)&& !userEmailExist(email).equals(Common.DATABEAN_CODE_SUCCESS)){
-                result = "邮箱已存在";
+//        }else if (!user.getEmail().equals("") && !user1.getEmail().equals(email)&& !userEmailExist(email).equals(Common.DATABEAN_CODE_SUCCESS)){
+//                result = "邮箱已存在";
         }else{
             userMapper.updateByUserId(user);
             result = Common.DATABEAN_CODE_SUCCESS;
