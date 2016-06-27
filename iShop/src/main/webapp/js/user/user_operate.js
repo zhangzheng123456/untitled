@@ -21,7 +21,7 @@ var oc = new ObjectControl();
 	};
 	useroperatejs.checkPhone = function(obj,hint){
 		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+		var isMob=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;//验证手机号码格式正不正确
 		if(!this.isEmpty(obj)){
 			if(isPhone.test(obj)||isMob.test(obj)){
 				this.hiddenHint(hint);
@@ -43,11 +43,11 @@ var oc = new ObjectControl();
 				return true;
 			}else{
 				this.displayHint(hint,"邮箱格式不正确！")
-				return false;
+				return true;
 			}
 		}else{
 			this.displayHint(hint);
-			return false;
+			return true;
 		}
 	};
 	useroperatejs.hiddenHint = function(hint){
@@ -181,7 +181,7 @@ var oc = new ObjectControl();
                 var input1=$("#invisible")[0];
                 if(input1.checked==true){
                 	can_login="Y";
-                }else if(input.checked==false){
+                }else if(input1.checked==false){
                 	can_login="N";
                 }
 
