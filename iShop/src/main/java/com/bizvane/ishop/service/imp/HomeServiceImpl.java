@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.dao.UserMapper;
@@ -47,16 +48,23 @@ public class HomeServiceImpl implements HomeService {
             int store_count_yest = storeMapper.selectCount(yesterday);
             int user_count_yest = userMapper.selectCount(yesterday);
 
-            JSONObject count = new JSONObject();
+            JSONArray array = new JSONArray();
             for (int i = 0; i < 7; i++) {
+                JSONObject count = new JSONObject();
                 String date = TimeUtils.beforDays(i);
                 int user_count_day = userMapper.selectCount(date);
                 count.put(String.valueOf(i),user_count_day);
+                array.add(count);
             }
             PageInfo<Feedback> feedback = feedbackService.selectAllFeedback(1, 6, "");
             dashboard.put("corp_count", corp_count);
+            dashboard.put("corp_count_yest", corp_count_yest);
             dashboard.put("store_count", store_count);
+            dashboard.put("store_count_yest", store_count_yest);
             dashboard.put("user_count", user_count);
+            dashboard.put("user_count_yest", user_count_yest);
+
+            dashboard.put("user_increase", JSON.toJSONString(array));
             dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
         }catch (Exception ex){
 
