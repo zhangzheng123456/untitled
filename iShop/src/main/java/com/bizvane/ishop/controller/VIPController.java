@@ -14,6 +14,7 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -290,6 +291,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -655,6 +657,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/type/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String findVIPLabelTypeAdd(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
 
@@ -722,6 +725,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/type/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String findVIPLabelTypeEdit(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -803,6 +807,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/callback/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_id").toString();
@@ -873,6 +878,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/callback/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String editCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -914,7 +920,6 @@ public class VIPController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
-
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<VipCallbackRecord> list = null;
@@ -965,6 +970,4 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
-
-
 }

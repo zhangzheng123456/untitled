@@ -11,6 +11,7 @@ import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -116,6 +117,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/fab/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_id").toString();
@@ -197,6 +199,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/fab/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String editGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -312,9 +315,6 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String goods_code = jsonObject.get("goods_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            //String current_corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            //corp_code = (corp_code == null || corp_code.isEmpty()) ? current_corp_code : corp_code;
-            // String existInfo = goodsService.userCodeExist(user_code, corp_code);
             String existInfo = goodsService.goodsCodeExist(goods_code, corp_code);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);

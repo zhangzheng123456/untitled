@@ -652,8 +652,50 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/mobile/template/messageTemplateNameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String messageTemplateNameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.get("id").toString();
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            String corp_code = jsonObject2.getString("corp_code");
+            String tem_name = jsonObject2.getString("tem_name");
+            String result = this.messageTemplateService.messageTemplateNameExist(corp_code, tem_name);
+            dataBean.setId(id);
+            dataBean.setCode(result);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
-
-
+    @RequestMapping(value = "/mobile/template/messageTemplateCodeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String messageTemplateCodeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.get("id").toString();
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            String corp_code = jsonObject2.getString("corp_code");
+            String tem_code = jsonObject2.getString("tem_code");
+            String result = this.messageTemplateService.messageTemplateExist(corp_code, tem_code);
+            dataBean.setId(id);
+            dataBean.setCode(result);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 }

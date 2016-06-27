@@ -97,7 +97,6 @@ public class StoreAchvGoalController {
     @ResponseBody
     @Transactional
     public String addStoreAchvGoal(HttpServletRequest request) {
-
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_id").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -140,8 +139,6 @@ public class StoreAchvGoalController {
                 dataBean.setId(id);
                 dataBean.setMessage("add success");
             }
-
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
