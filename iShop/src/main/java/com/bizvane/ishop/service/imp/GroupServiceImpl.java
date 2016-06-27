@@ -70,7 +70,7 @@ public class GroupServiceImpl implements GroupService {
         Group group2 = getGroupById(id);
         Group group1 = selectByCode(corp_code,group_code,"");
         if (group2.getGroup_code().equals("group_code") || group1 == null){
-            groupMapper.insertGroup(group);
+            groupMapper.updateGroup(group);
             result = Common.DATABEAN_CODE_SUCCESS;
         }else {
             result = "该群组编号已存在！";

@@ -78,16 +78,22 @@ public class UserController {
                 list = userService.selectBySearch(page_number, page_size, "", "");
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
+                    //系统管理员
                     list = userService.selectBySearch(page_number, page_size, corp_code, "");
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
+                    //员工
                     User user = userService.getUserById(user_id);
                     List<User> users = new ArrayList<User>();
                     users.add(user);
                     list = new PageInfo<User>();
                     list.setList(users);
                 } else {
+                    //店长或区经
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, role_code);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
                 }
             }
             result.put("list", JSON.toJSONString(list));
