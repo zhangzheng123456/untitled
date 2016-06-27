@@ -228,7 +228,7 @@ public class ValidateCodeController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/testword", method = RequestMethod.POST)
+    @RequestMapping(value = "/testword", method = RequestMethod.GET)
     @ResponseBody
     public String testword(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
@@ -245,7 +245,6 @@ public class ValidateCodeController {
                 for (int j = 0; j < cols.length; j++) {
                     String aa = array.getJSONObject(i).get(cols[j]).toString();
                     temp.add(aa);
-                    // list2.add(aa);
                 }
                 lists.add(temp);
             }
@@ -265,16 +264,17 @@ public class ValidateCodeController {
             out.print("</tr>");
             for (List<String> m : lists) {
                     String[] str2= (String[]) m.toArray();
-                for (int i=0;i<str2.length;i++) {
                     out.print("<tr>");
+                for (int i=0;i<str2.length;i++) {
                     out.print("<td>");
                     out.print(str2[i]);
                     out.print("</td>");
-                    out.print("<td>");
-                    out.print(str2[1]);
-                    out.print("</td>");
-                    out.print("</tr>");
                 }
+//                    out.print("<td>");
+//                    out.print(str2[1]);
+//                    out.print("</td>");
+                    out.print("</tr>");
+
             }
             out.print("</table>");
             out.flush();
