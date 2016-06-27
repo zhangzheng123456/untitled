@@ -48,14 +48,29 @@
                     <div>
                         <span><label>模板名称</label><input type="text" id="MOBAN_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板名称不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down item_1">
+                    <!-- <div class="drop_down item_1">
                         <span><label>模板类型</label><input class="input_select" id="MOBAN_TYPE" type="text" placeholder="请选择模板类型" readonly/>
                             <ul>
                                 <li>祝福</li>
                                 <li>通知</li>
                             </ul>
                         </span>
-                    </div>
+                    </div> -->
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label>模板类型</label></li>
+                            <li>
+                                <span class="corp_select">
+                                    <select id="MOBAN_TYPE" style="display:inline-flex;">
+                                        <option value="-1">模板类型1</option>
+                                        <option value="-1">模板类型2</option>
+                                        <option value="-1">模板类型3</option>
+                                        <option value="-1">模板类型4</option>
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div> 
                     <div>
                     <span style="display: inline-flex;width:100%"><label style="height:100px;">模板内容</label><span class="tempalte_area"><textarea id="MOBAN_CONTENT"></textarea></span></span>
                     </div>
