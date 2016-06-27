@@ -238,7 +238,7 @@ public class LoginController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-            ex.printStackTrace();;
+            ex.printStackTrace();
         }
         return dataBean.getJsonStr();
     }
@@ -253,17 +253,21 @@ public class LoginController {
         try {
             JSONObject menus = new JSONObject();
             JSONArray menu;
+            String user_id = request.getSession().getAttribute("user_id").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_type = request.getSession().getAttribute("user_type").toString();
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
+            User user = userService.getUserById(Integer.parseInt(user_id));
             menu = functionService.selectAllFunctions(corp_code+user_code,corp_code+group_code, role_code);
             request.getSession().setAttribute("menu", menu);
             menus.put("menu",menu);
             menus.put("user_type",user_type);
             menus.put("role_code",role_code);
+            menus.put("avatar",user.getAvatar());
+            menus.put("user_name",user.getUser_name());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
