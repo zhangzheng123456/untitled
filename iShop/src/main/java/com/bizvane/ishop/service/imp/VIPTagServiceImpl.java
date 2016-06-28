@@ -74,7 +74,7 @@ public class VIPTagServiceImpl implements VIPTagService {
 
     @Override
     public String vipTagNameExist(String corp_code, String tag_name) throws SQLException {
-        VIPtag viPtag = viPtagMapper.vipTagNameExist(corp_code, tag_name);
+        VIPtag viPtag = viPtagMapper.selectVipTagName(corp_code, tag_name);
         String result = Common.DATABEAN_CODE_ERROR;
         if (viPtag == null) {
             result = Common.DATABEAN_CODE_SUCCESS;

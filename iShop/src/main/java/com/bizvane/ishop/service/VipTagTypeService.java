@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.VipTagType;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by lixiang on 2016/6/21.
@@ -75,4 +76,6 @@ public interface VipTagTypeService {
      * @return
      */
     int deleteById(int id);
+
+    List<VipTagType> getAllVipTagType(String corp_code, String search_value);
 }

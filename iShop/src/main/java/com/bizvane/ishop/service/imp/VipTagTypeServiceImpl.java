@@ -81,4 +81,9 @@ public class VipTagTypeServiceImpl implements VipTagTypeService {
     public int deleteById(int id) {
         return this.vipTagTypeMapper.deleteByPrimaryKey(id);
     }
+
+    @Override
+    public List<VipTagType> getAllVipTagType(String corp_code, String search_value) {
+        return this.vipTagTypeMapper.selectAllVipTagType(corp_code, search_value);
+    }
 }

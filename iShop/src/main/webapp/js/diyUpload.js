@@ -258,7 +258,7 @@
 			if ( $parentFileBox.length <= 0 ) {
 
 				var div = '<span class="parentFileBox" style="display:inline-flex;vertical-align: middle;"> \
-							<ul class="fileBoxUl"></ul>\
+							<ul class="fileBoxUl" data-name="0,1,2,3,4"></ul>\
 						</span>';
 				$fileInput.after( div );
 				$parentFileBox = $('.parentFileBox').insertBefore($fileInput.parent());
@@ -336,25 +336,25 @@
 			//生成预览缩略图;
 			webUploader.makeThumb( file, function( error, dataSrc ) {
 				if ( !error ) {
-					$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" >');
-				}
+					$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" />');
+			    }
 			});
 	}
 })( jQuery );
 function li_remove(){
-		var original_li=$('.parentFileBox ul li');
-		for(var i=0;i<original_li.length;i++){
-			if(original_li[i].id.replace(/[^\d]/g,'')>=10){
-				$(original_li[i]).children('.diyCancel').one('click',function(){
-					var len=$('.parentFileBox ul li').length;
-					if(len<=1){
-						$(this).parent().parent().parent().remove();
-					}else{
-						$(this).parent().remove();
-					}
-				});
-			}
+	var original_li=$('.parentFileBox ul li');
+	for(var i=0;i<original_li.length;i++){
+		if(original_li[i].id.replace(/[^\d]/g,'')>=10){
+			$(original_li[i]).children('.diyCancel').one('click',function(){
+				var len=$('.parentFileBox ul li').length;
+				if(len<=1){
+					$(this).parent().parent().parent().remove();
+				}else{
+					$(this).parent().remove();
+				}
+			});
 		}
+	}
 }
 $(function(){
 	li_remove();

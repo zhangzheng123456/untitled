@@ -146,6 +146,9 @@
         dc.corp_name
         FROM def_vip_tag_type vtt,DEF_CORP dc
         WHERE vtt.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            and vtt.corp_code=#{corp_code}
+        </if>
         <if test="search_value!=null and search_value!=''">
             and vtt.type_name like concat('%',#{search_value},'%')
             or vtt.type_description like concat('%',#{search_value},'%')

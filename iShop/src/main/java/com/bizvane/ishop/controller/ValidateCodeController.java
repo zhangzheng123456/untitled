@@ -256,6 +256,7 @@ public class ValidateCodeController {
             for (int i = 0; i < validateCodes.size(); i++) {
                 List<String> temp = new ArrayList<String>();
                 for (int j = 0; j < cols.length; j++) {
+
                     String aa = array.getJSONObject(i).get(cols[j]).toString();
                     temp.add(aa);
                 }
