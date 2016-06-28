@@ -187,14 +187,14 @@ jQuery(document).ready(function(){
 				// var created_time=$("#created_time").val(msg.created_date);
 				// var creator=$("#creator").val(msg.creater);
 				// var modify_time=$("#modify_time").val(msg.modified_date);
-				// var modifier=$("#modifier").val(msg.modifier);			
+				// var modifier=$("#modifier").val(msg.modifier);
 
 				// $("#MOBAN_ID").val(msg.tem_code);
 				// $("#MOBAN_NAME").val(msg.tem_name);
 				// $("#MOBAN_TYPE").val(msg.type_code);
 				// $("#MOBAN_CONTENT").val(msg.tem_content);
 				// // $("#OWN_DOCU").val(msg.own_docu);
-				
+
 				// $("#created_time").val(msg.created_date);
 				// $("#creator").val(msg.creater);
 				// $("#modify_time").val(msg.modified_date);
@@ -234,61 +234,51 @@ jQuery(document).ready(function(){
 	}else{
 		getcorplist();
 	}
-<<<<<<< HEAD
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[M]{1}[0-9]{4}$/;
-    	var _params={};
-    	var tem_code=$(this).val();
-    	var tem_code1=$(this).attr("data-name");
-    	var corp_code=$("#OWN_CORP").val();
+		var isCode=/^[M]{1}[0-9]{4}$/;
+		var _params={};
+		var tem_code=$(this).val();
+		var tem_code1=$(this).attr("data-name");
+		var corp_code=$("#OWN_CORP").val();
 		if(tem_code!==""&&tem_code!==tem_code1&&isCode.test(tem_code)==true){
 			_params["tem_code"]=tem_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
 			oc.postRequire("post","/message/mobile/template/messageTemplateCodeExist","", _params, function(data){
-	               if(data.code=="0"){
-	                    div.html("");
-	                    $("#MOBAN_ID").attr("data-mark","Y");
-	               }else if(data.code=="-1"){
-	               		$("#MOBAN_ID").attr("data-mark","N");
-	               		div.addClass("error_tips");
-						div.html("该编号已经存在！");	
-	               }
-		    })
+				if(data.code=="0"){
+					div.html("");
+					$("#MOBAN_ID").attr("data-mark","Y");
+				}else if(data.code=="-1"){
+					$("#MOBAN_ID").attr("data-mark","N");
+					div.addClass("error_tips");
+					div.html("该编号已经存在！");
+				}
+			})
 		}
-    });
-    //验证名称是否唯一
-    $("#MOBAN_NAME").blur(function(){
-    	var corp_code=$("#OWN_CORP").val();
-    	var tem_name=$("#MOBAN_NAME").val();
-    	var tem_name1=$("#MOBAN_NAME").attr("data-name");
-    	var div=$(this).next('.hint').children();
-    	if(tem_name!==""&&tem_name!==tem_name1){
-	    	var _params={};
-	    	_params["tem_name"]=tem_name;
-	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/message/mobile/template/messageTemplateNameExist","", _params, function(data){
-	            if(data.code=="0"){
-	            	div.html("");
-	            	$("#MOBAN_NAME").attr("data-mark","Y");
-	            }else if(data.code=="-1"){
-	            	div.html("该名称已经存在！")
-	            	div.addClass("error_tips");
-	            	$("#MOBAN_NAME").attr("data-mark","N");
-	            }
-	    	})
-	    }
-    });
-
-	//change 事件
-	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
-	
-
-=======
->>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
+	});
+	//验证名称是否唯一
+	$("#MOBAN_NAME").blur(function(){
+		var corp_code=$("#OWN_CORP").val();
+		var tem_name=$("#MOBAN_NAME").val();
+		var tem_name1=$("#MOBAN_NAME").attr("data-name");
+		var div=$(this).next('.hint').children();
+		if(tem_name!==""&&tem_name!==tem_name1){
+			var _params={};
+			_params["tem_name"]=tem_name;
+			_params["corp_code"]=corp_code;
+			oc.postRequire("post","/message/mobile/template/messageTemplateNameExist","", _params, function(data){
+				if(data.code=="0"){
+					div.html("");
+					$("#MOBAN_NAME").attr("data-mark","Y");
+				}else if(data.code=="-1"){
+					div.html("该名称已经存在！")
+					div.addClass("error_tips");
+					$("#MOBAN_NAME").attr("data-mark","N");
+				}
+			})
+		}
+	});
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
@@ -313,7 +303,6 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
-<<<<<<< HEAD
 			var c=$('#corp_select .selected').attr("data-value");
 			mobileType(c);
 			$("#corp_select .searchable-select-item").click(function(){
@@ -326,14 +315,6 @@ function getcorplist(){
 				$("input[verify='Code']").attr("data-mark","");
 				$("#MOBAN_NAME").attr("data-mark","");
 			})
-=======
-			// $('.searchable-select-item').click(function(){
-			// 	$("input[verify='Code']").val("");
-			// 	$("#MOBAN_NAME").val("");
-			// 	$("input[verify='Code']").attr("data-mark","");
-			// 	$("#MOBAN_NAME").attr("data-mark","");
-			// })
->>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -344,7 +325,6 @@ function getcorplist(){
 		}
 	});
 }
-<<<<<<< HEAD
 function mobileType(code){
 	var _command = "/message/mobile/type/getMessageTypeByUser";
 	var _params = {};
@@ -374,18 +354,3 @@ function mobileType(code){
 		}
 	});
 }
-=======
-	
-
-
-//     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$("#che").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
-// 	})
-// });
->>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484

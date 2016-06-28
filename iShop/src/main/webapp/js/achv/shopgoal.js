@@ -307,6 +307,7 @@ function store_data(c){
 	oc.postRequire("post", _command,"", _params, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
+			console.log(msg.stores);
 			var msg_stores=JSON.parse(msg.stores);
 			$('#SHOP_NAME').empty();
 			$('#shop_select .searchable-select').remove();

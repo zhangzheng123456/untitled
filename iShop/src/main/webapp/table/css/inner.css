@@ -464,7 +464,7 @@ input::-webkit-input-placeholder{
 }
 .foot-num li{
 	display: inline-block;
-	min-width: 30px;
+	width: 30px;
 	height: 30px;
 	line-height: 30px;
 	font-size: 30px;
@@ -473,7 +473,7 @@ input::-webkit-input-placeholder{
 }
 .foot-num li span.icon-ishop_4-01,.foot-num li span.icon-ishop_4-02{
 	display: block;
-	min-width: 30px;
+	width: 30px;
 	height: 30px;
 	font-size: 30px;
 	margin-top: 0;
@@ -484,7 +484,7 @@ input::-webkit-input-placeholder{
 	display:block;
 	margin-top: 4px;
 	margin-left: 4px;
-	min-width: 22px;
+	width: 22px;
 	height: 22px;
 	line-height: 22px;
 	font-size: 14px;
