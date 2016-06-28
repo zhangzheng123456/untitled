@@ -33,6 +33,7 @@ $(function(){
         // var val=sessionStorage.getItem("key");
         // val=JSON.parse(val);
         var message=JSON.parse(data.message);
+        $('#img img').attr("src",message.avatar);
         var menu=message.menu;
         for(var i=0;i<menu.length;i++){
         	var li="<li>";

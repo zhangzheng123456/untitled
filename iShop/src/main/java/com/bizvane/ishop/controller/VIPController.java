@@ -14,6 +14,7 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -154,14 +155,18 @@ public class VIPController {
             VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
             vipInfo.setModifier(user_id);
             vipInfo.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
-            vipService.update(vipInfo);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success !!! ");
+            String result = vipService.update(vipInfo);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("商品更改成功！！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("edit error !!! ");
         }
         return dataBean.getJsonStr();
     }
@@ -286,6 +291,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -335,14 +341,19 @@ public class VIPController {
             Date now = new Date();
             viPtag.setModified_date(Common.DATETIME_FORMAT.format(now));
             viPtag.setModifier(user_id);
-            this.vipTagService.update(viPtag);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success ");
+
+            String result = vipTagService.update(viPtag);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("商品更改成功！！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
             dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("edit error !!! ");
         }
         return dataBean.getJsonStr();
     }
@@ -646,6 +657,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/type/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String findVIPLabelTypeAdd(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
 
@@ -682,6 +694,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/type/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String findVIPLabelTypeDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -713,6 +726,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/type/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String findVIPLabelTypeEdit(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -726,17 +740,19 @@ public class VIPController {
             VipTagType vipTagType = WebUtils.JSON2Bean(jsonObject, VipTagType.class);
             vipTagType.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
             vipTagType.setModifier(user_id);
-            String existInfo = this.vipTagTypeService.vipTagTypeCodeExist(vipTagType.getType_code(), corp_code);
-            if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("edit success!!!s");
-            } else {
-                this.vipTagTypeService.update(vipTagType);
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("edit error !!!");
-            }
+            String result = this.vipTagTypeService.update(vipTagType);
+
+//            String existInfo = this.vipTagTypeService.vipTagTypeCodeExist(vipTagType.getType_code(), corp_code);
+//            if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("edit success!!!s");
+//            } else {
+//                this.vipTagTypeService.update(vipTagType);
+//                dataBean.setId(id);
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setMessage("edit error !!!");
+//            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -792,6 +808,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/callback/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_id").toString();
@@ -862,6 +879,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/callback/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String editCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -903,12 +921,10 @@ public class VIPController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
-
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<VipCallbackRecord> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
-                //list = vipCallbackRecordService.selectBySearch(page_number, page_size, "", search_value);
                 list = vipCallbackRecordService.selectBySearch(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -932,6 +948,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/callback/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String callbackDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -955,6 +972,4 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
-
-
 }

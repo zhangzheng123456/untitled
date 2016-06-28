@@ -97,6 +97,7 @@
         ORDER BY user_code
     </select>
 
+    <!--获取店长区经下员工-->
     <select id="selectPartUser" resultMap="UserInfo">
         SELECT *
         from DEF_USER,DEF_GROUP,DEF_CORP
@@ -187,6 +188,7 @@
         WHERE email = #{email}
     </select>
 
+    <!--获取店铺下员工-->
     <select id="selectStoreUser" resultMap="UserInfo">
         SELECT
         DEF_USER.id,
@@ -420,16 +422,16 @@
             <if test="password!=null and password!='' ">
                 PASSWORD = #{password},
             </if>
-            <if test="login_time_recently!=null">
+            <if test="login_time_recently!=null and login_time_recently!='' ">
                 LOGIN_TIME_RECENTLY = #{login_time_recently},
             </if>
-            <if test="modified_date!=null">
+            <if test="modified_date!=null and modified_date!='' ">
                 MODIFIED_DATE = #{modified_date},
             </if>
             <if test="modifier!=null and modifier!='' ">
                 MODIFIER = #{modifier},
             </if>
-            <if test="created_date!=null">
+            <if test="created_date!=null and created_date!='' ">
                 CREATED_DATE = #{created_date},
             </if>
             <if test="creater!=null and creater!='' ">

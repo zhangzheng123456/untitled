@@ -296,7 +296,9 @@ jQuery(document).ready(function(){
 	$('#OWN_CORP').change(function(){
 		console.log(123);
 	})
-	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
+	
+
+	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
@@ -345,8 +347,6 @@ $(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-
-				
 				var index=0;
 				var message_types='';
 				 for(index in msg.message_types){

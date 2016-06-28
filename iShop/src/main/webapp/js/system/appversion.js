@@ -182,6 +182,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -200,20 +201,20 @@ function superaddition(data,num){//页面加载循环
                         + a
                         + "</td><td>"
                         + data[i].platform
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].download_addr+"'>"
                         + data[i].download_addr
-                        + "</td><td><span>"
+                        + "</span></td><td><span>"
                         + data[i].version_id
                         + "</span></td><td>"
                         + data[i].is_force_update
                         +"</td><td>"
-                        +data[i].crop_code
-                        + "</td><td>"
+                        +data[i].corp_code
+                        + "</td><td><span title='"+data[i].version_describe+"'>"
                         +data[i].version_describe
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].modified_date
                         + "</td><td>"
-                        +data[i].modified
+                        +data[i].modifier
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");

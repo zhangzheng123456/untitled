@@ -45,7 +45,7 @@ public interface MessageTemplateService {
      * @param messageTemplate
      * @return
      */
-    int update(MessageTemplate messageTemplate);
+    String update(MessageTemplate messageTemplate) throws SQLException;
 
     /**
      * 获取分页信息
@@ -56,7 +56,7 @@ public interface MessageTemplateService {
      * @param search_value ：查询信息
      * @return
      */
-    PageInfo<MessageTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<MessageTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
     /**
      * 通过模板编号，判断模板在企业内是否存在

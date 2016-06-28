@@ -13,7 +13,7 @@
             OR VERSION_ID LIKE concat('%', #{search_value},'%')
             OR IS_FORCE_UPDATE LIKE concat('%',#{search_value},'%')
             OR VERSION_DESCRIBE LIKE concat('%', #{search_value},'%')
-            OR CROP_CODE LIKE concat('%', #{search_value},'%')
+            OR CORP_CODE LIKE concat('%', #{search_value},'%')
             OR MODIFIED_DATE LIKE concat('%', #{search_value},'%')
             OR MODIFIER LIKE concat('%', #{search_value},'%')
             OR ISACTIVE LIKE concat('%', #{search_value},'%')
@@ -40,8 +40,8 @@
             <if test="version_describe != null">
                 VERSION_DESCRIBE,
             </if>
-            <if test="crop_code != null">
-                CROP_CODE,
+            <if test="corp_code != null">
+                CORP_CODE,
             </if>
             <if test="created_date != null">
                 CREATED_DATE,
@@ -76,8 +76,8 @@
             <if test="version_describe != null">
                 #{version_describe},
             </if>
-            <if test="crop_code != null">
-                #{crop_code},
+            <if test="corp_code != null">
+                #{corp_code},
             </if>
             <if test="created_date != null">
                 #{created_date},
@@ -115,8 +115,8 @@
             <if test="version_describe != null">
                 VERSION_DESCRIBE= #{version_describe},
             </if>
-            <if test="crop_code != null">
-                CROP_CODE=  #{crop_code},
+            <if test="corp_code != null">
+                CORP_CODE=  #{corp_code},
             </if>
             <if test="created_date != null">
                 CREATED_DATE=   #{created_date},

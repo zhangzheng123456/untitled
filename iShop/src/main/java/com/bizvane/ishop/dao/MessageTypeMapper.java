@@ -27,4 +27,6 @@ public interface MessageTypeMapper {
     Message_type selectName(@Param("corp_code") String corp_code, @Param("type_name") String type_name);
 
     List<Message_type> selectAllMessageType();
+
+    String messageTypeCodeExist(@Param("type_code") String type_code, @Param("corp_code") String corp_code);
 }

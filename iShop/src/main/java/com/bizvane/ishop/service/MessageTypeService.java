@@ -38,7 +38,7 @@ public interface MessageTypeService {
      * @return
      * @throws SQLException
      */
-    int update(Message_type messageType) throws SQLException;
+    String update(Message_type messageType) throws SQLException;
 
     /**
      * 获取信息编号信息，
@@ -77,8 +77,38 @@ public interface MessageTypeService {
      */
     int deleteById(int id);
 
+    /**
+     * 获取所有的消息类型
+     *
+     * @return
+     */
     List<Message_type> selectAllMessageType();
 
 
-    List<Message_type> getMessageTypeByCorp(String corp_code,String search_value);
+    /**
+     * 获取符合搜索条件的消息类型，若corp_code或search_value 为空值或空字符串，则默认找到所有
+     *
+     * @param corp_code    ： 企业编号
+     * @param search_value ： 搜索字段
+     * @return
+     */
+    List<Message_type> getMessageTypeByCorp(String corp_code, String search_value);
+
+    /**
+     * 判断消息类型编号是否唯一
+     *
+     * @param corp_code ： 公司编号
+     * @param type_name ： 类型名称
+     * @return
+     */
+    String messageTypeNameExist(String corp_code, String type_name);
+
+    /**
+     * 判断消息类型编号是否存在
+     *
+     * @param type_code
+     * @param corp_code
+     * @return
+     */
+    String messageTypeCodeExist(String type_code, String corp_code);
 }

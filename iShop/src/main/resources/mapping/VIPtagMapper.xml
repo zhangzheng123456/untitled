@@ -4,34 +4,58 @@
 <mapper namespace="com.bizvane.ishop.dao.VIPtagMapper">
     <resultMap id="VIPTags" type="com.bizvane.ishop.entity.VIPtag">
         <id column="id" property="id"/>
+        <result column="tag_code" property="tag_code"/>
         <result column="tag_name" property="tag_name"/>
-        <result column="tag_type" property="tag_type"/>
+
         <result column="corp_code" property="corp_code"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="isactive" property="isactive"/>
+        <result column="type_code" property="type_code"/>
+        <association property="vipTagType" javaType="com.bizvane.ishop.entity.VipTagType">
+            <result column="type_name" property="type_name"/>
+        </association>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
 
 
-    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VIPtag">
-        select * from DEF_VIP_TAG
-        WHERE  id=#{id}
+    <select id="selectByPrimaryKey" resultMap="VIPTags">
+         SELECT
+        vt.id,
+        vt.tag_code,
+        vt.tag_name,
+        vt.type_code,
+        vt.corp_code,
+        vt.modified_date,
+        vt.modifier,
+        vt.created_date,
+        vt.creater,
+        vt.isactive,
+        dvtt.type_name,
+        cc.corp_name
+        FROM
+        DEF_VIP_TAG vt,DEF_CORP cc,def_vip_tag_type dvtt
+        WHERE
+        vt.corp_code=cc.corp_code and vt.type_code=dvtt.type_code
+        and  vt.id=#{id}
     </select>
 
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VIPtag">
         INSERT INTO DEF_VIP_TAG
         <trim prefix="(" suffixOverrides="," suffix=")">
+            <if test="tag_code!=null and tag_code!=''">
+                tag_code ,
+            </if>
             <if test="tag_name!=null and tag_name!=''">
                 tag_name ,
             </if>
-            <if test="tag_type!=null and tag_type!=''">
-                tag_type,
+            <if test="type_code!=null and type_code!=''">
+                type_code,
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code ,
@@ -42,7 +66,6 @@
             <if test="modifier!=null and  modifier!=''">
                 modifier,
             </if>
-
             <if test="created_date!=null">
                 created_date ,
             </if>
@@ -52,13 +75,19 @@
             <if test="isactive!=null and isactive!=''">
                 isactive,
             </if>
+            <if test="type_code!=null and type_code!=''">
+                type_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="tag_code!=null and tag_code!=''">
+                #{tag_code},
+            </if>
             <if test="tag_name!=null and tag_name!=''">
                 #{tag_name} ,
             </if>
-            <if test="tag_type!=null and tag_type!=''">
-                #{tag_type},
+            <if test="type_code!=null and type_code!=''">
+                #{type_code},
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 #{corp_code},
@@ -78,6 +107,9 @@
             <if test="isactive!=null and isactive!=''">
                 #{isactive},
             </if>
+            <if test="type_code!=null and type_code!=''">
+                #{type_code},
+            </if>
         </trim>
 
     </insert>
@@ -86,11 +118,14 @@
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VIPtag">
         update DEF_VIP_TAG
         <trim prefix="set " suffixOverrides=",">
+            <if test="tag_code!=null and tag_code!=''">
+                tag_code= #{tag_code},
+            </if>
             <if test="tag_name!=null and tag_name!=''">
                 tag_name=#{tag_name} ,
             </if>
-            <if test="tag_type!=null and tag_type!=''">
-                tag_type=#{tag_type},
+            <if test="type_code!=null and type_code!=''">
+                type_code=#{type_code},
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},
@@ -110,6 +145,9 @@
             <if test="isactive!=null and isactive!=''">
                 isactive=#{isactive},
             </if>
+            <if test="type_code!=null and type_code!=''">
+                type_code=#{type_code},
+            </if>
         </trim>
         WHERE id=#{id}
     </update>
@@ -124,30 +162,35 @@
     <select id="selectAllVipTag" resultMap="VIPTags">
         SELECT
         vt.id,
+        vt.tag_code,
         vt.tag_name,
-        vt.tag_type,
+        vt.type_code,
         vt.corp_code,
         vt.modified_date,
         vt.modifier,
         vt.created_date,
         vt.creater,
         vt.isactive,
+        dvtt.type_name,
         cc.corp_name
         FROM
-        DEF_VIP_TAG vt,DEF_CORP cc
+        DEF_VIP_TAG vt,DEF_CORP cc,def_vip_tag_type dvtt
         WHERE
-        vt.corp_code=cc.corp_code
+        vt.corp_code=cc.corp_code and vt.type_code=dvtt.type_code
         <if test="corp_code!=null and corp_code!=''">
             and vt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
-            and(
+            and
+            (
             vt.id like concat('%',#{search_value},'%')
             or vt.tag_name like concat('%',#{search_value},'%')
-            or vt.tag_type like concat('%',#{search_value},'%')
+            or vt.type_code like concat('%',#{search_value},'%')
             or cc.corp_name like concat('%',#{search_value},'%')
             or vt.modified_date like concat('%',#{search_value},'%')
-            or vt.isactive like concat('%',#{search_value},'%') )
+            or vt.isactive like concat('%',#{search_value},'%')
+            or dvtt.type_name like concat('%',#{search_value},'%')
+            )
         </if>
         ORDER BY vt.id
     </select>

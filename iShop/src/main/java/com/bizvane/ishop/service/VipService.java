@@ -37,7 +37,7 @@ public interface VipService {
      * @return
      * @throws SQLException
      */
-    int update(VIPInfo vipInfo) throws SQLException;
+    String update(VIPInfo vipInfo) throws SQLException;
 
     /**
      * 删除VIP用户信息，通过ID
@@ -70,5 +70,13 @@ public interface VipService {
     String vipCodeExist(String vip_code, String corp_code) throws SQLException;
 
 
+    /**
+     * 判断VIP用户名称是否存在
+     *
+     * @param vip_name  ： VIP 用户的标签名称
+     * @param corp_code ： 公司编号
+     * @return
+     * @throws SQLException
+     */
     String vipNameExist(String vip_name, String corp_code) throws SQLException;
 }

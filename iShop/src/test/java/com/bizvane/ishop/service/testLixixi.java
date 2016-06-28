@@ -174,7 +174,9 @@ public class testLixixi {
 
     @Test
     public void test9() {
-     //   List<MessageTypethis.messageTypeService.getMessageTypeByCorp("", "");
+        //this.vipTagTypeMapper.selectName("C00001", "tettest");
+        this.goodsService.goodsCodeExist("C00001", "test");
+        System.out.println("tankong");
     }
 
 }

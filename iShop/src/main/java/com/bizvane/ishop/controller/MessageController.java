@@ -243,7 +243,6 @@ public class MessageController {
     @ResponseBody
     @Transactional
     public String MessageTypeEdit(HttpServletRequest request) {
-
         DataBean dataBean = new DataBean();
         String user_id = WebUtils.getValueForSession(request, "user_id");
         String id = "";
@@ -254,14 +253,18 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Message_type message_type = WebUtils.JSON2Bean(jsonObject, Message_type.class);
-            this.messageTypeService.update(message_type);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("edit success !!!");
-
+            String result = this.messageTypeService.update(message_type);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("更改成功！！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("edit error !!! ");
         }
         return dataBean.getJsonStr();
     }
@@ -271,6 +274,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/type/delete", method = RequestMethod.GET)
     @ResponseBody
+    @Transactional
     public String MessageTypeDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "1";
@@ -408,7 +412,6 @@ public class MessageController {
                 Message_type message_type = list.get(i);
                 String type_code = message_type.getType_code();
                 String type_name = message_type.getType_name();
-                //   String corp_name = corp.getCorp_name();
                 JSONObject obj = new JSONObject();
                 obj.put("type_code", type_code);
                 obj.put("type_name", type_name);
@@ -519,16 +522,20 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             MessageTemplate messageTemplate = WebUtils.JSON2Bean(jsonObject, MessageTemplate.class);
-
-            this.messageTemplateService.update(messageTemplate);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("修改成功！！！");
-
-
+            messageTemplate.setModifier(user_id);
+            messageTemplate.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
+            String result = this.messageTemplateService.update(messageTemplate);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("更改成功！！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage("edit error !!! ");
         }
         return dataBean.getJsonStr();
     }
@@ -538,6 +545,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/mobile/template/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String MessageModernDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "1";
@@ -578,8 +586,8 @@ public class MessageController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_Number = jsonObject.getInt("pageNumber");
             int page_Size = jsonObject.getInt("pageSize");
-            String search_value = jsonObject.getString("search_value").toString();
-            String role_code = jsonObject.getString("role_code");
+            String search_value = jsonObject.getString("searchValue").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<MessageTemplate> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -645,5 +653,50 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/mobile/template/messageTemplateNameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String messageTemplateNameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.get("id").toString();
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            String corp_code = jsonObject2.getString("corp_code");
+            String tem_name = jsonObject2.getString("tem_name");
+            String result = this.messageTemplateService.messageTemplateNameExist(corp_code, tem_name);
+            dataBean.setId(id);
+            dataBean.setCode(result);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/mobile/template/messageTemplateCodeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String messageTemplateCodeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.get("id").toString();
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            String corp_code = jsonObject2.getString("corp_code");
+            String tem_code = jsonObject2.getString("tem_code");
+            String result = this.messageTemplateService.messageTemplateExist(corp_code, tem_code);
+            dataBean.setId(id);
+            dataBean.setCode(result);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 }

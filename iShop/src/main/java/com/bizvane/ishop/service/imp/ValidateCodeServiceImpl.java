@@ -44,6 +44,11 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
     }
 
     @Override
+    public List<ValidateCode> selectAll() {
+        return validataCodeMapper.selectAllValidateCode("");
+    }
+
+    @Override
     public PageInfo<ValidateCode> selectAllValidateCode(int page_number, int page_size, String search_value) throws SQLException{
         PageHelper.startPage(page_number, page_size);
         List<ValidateCode> validateCodes = validataCodeMapper.selectAllValidateCode(search_value);

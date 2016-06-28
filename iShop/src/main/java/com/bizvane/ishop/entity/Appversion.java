@@ -10,7 +10,7 @@ public class Appversion {
     private String version_id;
     private String is_force_update;
     private String version_describe;
-    private String crop_code;
+    private String corp_code;
     private String created_date;
     private String creater;
     private String modifier;
@@ -73,12 +73,12 @@ public class Appversion {
         this.version_describe = version_describe;
     }
 
-    public String getCrop_code() {
-        return crop_code;
+    public String getCorp_code() {
+        return corp_code;
     }
 
-    public void setCrop_code(String crop_code) {
-        this.crop_code = crop_code;
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
     }
 
     public String getCreated_date() {

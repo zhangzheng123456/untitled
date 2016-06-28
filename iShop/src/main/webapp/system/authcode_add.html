@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>编辑验证码信息</title>
+    <title>新增验证码信息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -18,18 +18,11 @@
     </style>
 </head>
 <body>
-    <!-- <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>验证码管理<i class="icon-ishop_8-03"></i><label>编辑验证码信息</label></div>
+            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>验证码管理<i class="icon-ishop_8-03"></i><label>新增验证码信息</label></div>
             <div class="editor_em col-lg-7  animated fadeInRight">
-                <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div>
                 <form class="conpany_msg">
-                    <div>
+                     <div>
                         <span>
                             <label style="color:#c26555;">手机号*</label><input type="text" id="phone" verify="Phone"/>
                             <div style="padding-left:124px" class="hint"><div  hintinfo="手机号码格式不正确！"></div></div>
@@ -37,13 +30,13 @@
                     </div>
                     <div>
                         <span>
-                            <label style="color:#c26555;">验证码*</label><input type="text" id="validate_code" verify="Empty"/>
+                            <label style="color:#c26555;">验证码*</label><input id="validate_code" type="text" verify="Empty" />
                             <div style="padding-left:124px" class="hint"><div  hintinfo="验证码不能为空！"></div></div>
                         </span>
                     </div>
                     <div class="drop_down item_2">
                         <span>
-                            <label style="color:#c26555;">来源*</label><input id="platform" class="input_select" type="text" value="APP" placeholder="请选择"  readonly/>
+                            <label style="color:#c26555;">来源*</label><input id="platform" class="input_select" type="text" value="APP" readonly/>
                             <ul>
                                 <li>APP</li>
                                 <li>WEB</li>
@@ -53,25 +46,13 @@
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="codeedit_oper_btn">
+                <div class="codeadd_oper_btn">
                     <ul>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
                  <form class="msg_detail">
-                    <div>
-                        <span><label>创建时间</label><input id="created_date" type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input id="creater" type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input id="modified_date" type="text" /></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input id="modifier" type="text" /></span>
-                    </div>
                     <div>
                         <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
                     </div>

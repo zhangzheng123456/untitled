@@ -35,8 +35,17 @@ public class VipTagTypeServiceImpl implements VipTagTypeService {
     }
 
     @Override
-    public int update(VipTagType vipTagType) throws SQLException {
-        return this.vipTagTypeMapper.updateByPrimaryKey(vipTagType);
+    public String update(VipTagType vipTagType) throws SQLException {
+        VipTagType old = this.vipTagTypeMapper.selectByPrimaryKey(vipTagType.getId());
+        if ((!old.getType_code().equals(vipTagType.getType_code()))
+                && (this.vipTagTypeCodeExist(vipTagType.getCorp_code(), vipTagType.getType_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "编号已经存在！！！！";
+        } else if (!old.getType_name().equals(vipTagType.getType_name()) && (this.vipTagTypeNameExist(vipTagType.getCorp_code(), vipTagType.getType_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "名称已经存在！！！！";
+        } else if (this.vipTagTypeMapper.updateByPrimaryKey(vipTagType) >= 0) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
     @Override

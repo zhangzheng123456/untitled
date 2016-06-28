@@ -11,6 +11,7 @@ import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -116,6 +117,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/fab/add", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String addGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_id").toString();
@@ -131,14 +133,15 @@ public class GoodsController {
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
-
             Date now = new Date();
+
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
             goods.setCreater(user_id);
             String existInfo1 = this.goodsService.goodsCodeExist(corp_code, goods.getGoods_code());
             String existInfo2 = this.goodsService.goodsNameExist(corp_code, goods.getGoods_name());
+
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
@@ -196,6 +199,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/fab/edit", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String editGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -204,6 +208,7 @@ public class GoodsController {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
+            dataBean.setId(id);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
@@ -211,20 +216,18 @@ public class GoodsController {
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             String result = goodsService.update(goods);
-            if (goodsService.update(goods).equals(Common.DATABEAN_CODE_SUCCESS)) {
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("商品更改成功！！");
-            }else{
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("商品编号或者名称已使用！！！");
+                dataBean.setMessage(result);
             }
-
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error !!! ");
         }
-
         return dataBean.getJsonStr();
     }
 
@@ -274,6 +277,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/fab/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String deleteGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -312,9 +316,6 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String goods_code = jsonObject.get("goods_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            //String current_corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            //corp_code = (corp_code == null || corp_code.isEmpty()) ? current_corp_code : corp_code;
-            // String existInfo = goodsService.userCodeExist(user_code, corp_code);
             String existInfo = goodsService.goodsCodeExist(goods_code, corp_code);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);

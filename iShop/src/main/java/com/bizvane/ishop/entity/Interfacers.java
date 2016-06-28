@@ -6,7 +6,7 @@ package com.bizvane.ishop.entity;
 public class Interfacers {
     private int id;
     private String version;
-    private String crop_code;
+    private String corp_code;
     private String created_date;
     private String creater;
     private String modified_date;
@@ -29,12 +29,12 @@ public class Interfacers {
         this.version = version;
     }
 
-    public String getCrop_code() {
-        return crop_code;
+    public String getCorp_code() {
+        return corp_code;
     }
 
-    public void setCrop_code(String crop_code) {
-        this.crop_code = crop_code;
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
     }
 
     public String getCreated_date() {
