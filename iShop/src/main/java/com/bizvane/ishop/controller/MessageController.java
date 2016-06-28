@@ -412,7 +412,6 @@ public class MessageController {
                 Message_type message_type = list.get(i);
                 String type_code = message_type.getType_code();
                 String type_name = message_type.getType_name();
-                //   String corp_name = corp.getCorp_name();
                 JSONObject obj = new JSONObject();
                 obj.put("type_code", type_code);
                 obj.put("type_name", type_name);

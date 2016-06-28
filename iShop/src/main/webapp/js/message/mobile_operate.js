@@ -276,6 +276,42 @@ function getcorplist(){
 		}
 	});
 }
+
+
+
+$(document).ready(function(){
+	$("#MOBAN_TYPE").click(function(){
+		var _command="/message/mobile/type/getMessageTypeByUser";
+		var _params={"id":"test","corp_code":$("#OWN_CORP").val()};;
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				var index=0;
+				var message_types='';
+				for(index in msg.message_types){
+					type_tmp=msg.message_types[index];
+					message_types+='<option value="'+type_tmp.type_code+'">'+type_tmp.type_name+'</option>';
+				}
+				$("#MOBAN_TYPE").append(message_types);
+				$('.message_type_select select').searchableSelect();
+			}else if(data.code="1"){
+				art.dialog({
+					time:1,
+					lock:true,
+					cancel:false,
+					content:data.message
+				})
+			}
+
+
+			// $.get("/user/getCorpByUser",function(data,status){
+			// 	alert("数据："+data+"\n状态:"+status);
+		});
+	});
+});
+
 	
 
 
