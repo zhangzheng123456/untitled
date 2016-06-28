@@ -179,27 +179,6 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				// var MOBAN_ID=$("#MOBAN_ID").val(msg.tem_code);
-				// var MOBAN_NAME=$("#MOBAN_NAME").val(msg.tem_name);
-				// var MOBAN_TYPE=$("#MOBAN_TYPE").val(msg.type_code);
-				// var MOBAN_CONTENT=$("#MOBAN_CONTENT").val(msg.tem_content);
-
-				// var created_time=$("#created_time").val(msg.created_date);
-				// var creator=$("#creator").val(msg.creater);
-				// var modify_time=$("#modify_time").val(msg.modified_date);
-				// var modifier=$("#modifier").val(msg.modifier);			
-
-				// $("#MOBAN_ID").val(msg.tem_code);
-				// $("#MOBAN_NAME").val(msg.tem_name);
-				// $("#MOBAN_TYPE").val(msg.type_code);
-				// $("#MOBAN_CONTENT").val(msg.tem_content);
-				// // $("#OWN_DOCU").val(msg.own_docu);
-				
-				// $("#created_time").val(msg.created_date);
-				// $("#creator").val(msg.creater);
-				// $("#modify_time").val(msg.modified_date);
-				// $("#modifier").val(msg.modifier);
-
 				$("#MOBAN_ID").val(msg.tem_code);
 				$("#MOBAN_ID").attr("data-name",msg.tem_code);
 				$("#MOBAN_NAME").val(msg.tem_name);

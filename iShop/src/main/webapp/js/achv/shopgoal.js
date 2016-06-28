@@ -198,7 +198,6 @@ jQuery(document).ready(function(){
 				msg=JSON.parse(msg.storeAchvGoal);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
-				$("#SHOP_NAME option[value='"+msg.store_code+"']").attr("select",true);
 				$("#SHOP_NAME option").text(msg.store_name);
 				$("#PER_GOAL").val(msg.achv_goal);
 				if(msg.achv_type!=="年"){
@@ -221,6 +220,7 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 				getcorplist();
+				console.log($("#SHOP_NAME option[value='"+msg.store_code+"']"));
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
