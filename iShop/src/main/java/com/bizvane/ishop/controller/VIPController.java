@@ -11,6 +11,7 @@ import com.bizvane.ishop.entity.VipCallbackRecord;
 import com.bizvane.ishop.entity.VipTagType;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -436,6 +438,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/label/delete", method = RequestMethod.POST)
     @ResponseBody
+    @Transactional
     public String findVIPLabelDelete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
@@ -456,6 +459,49 @@ public class VIPController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 会员标签类型管理
+     * 获取标签
+     */
+    @RequestMapping(value = "/label/getTypes", method = RequestMethod.POST)
+    @ResponseBody
+    public String getTypes(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            com.alibaba.fastjson.JSONArray array = new com.alibaba.fastjson.JSONArray();
+            org.json.JSONObject result = new org.json.JSONObject();
+            List<VipTagType> list = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = vipTagTypeService.getAllVipTagType("", "");
+            } else {
+                String jsString = request.getParameter("param");
+                org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+                String message = jsonObject.get("message").toString();
+                org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
+                String corp_code = jsonObject1.getString("corp_code");
+                list = vipTagTypeService.getAllVipTagType(corp_code, "");
+            }
+            for (int i = 0; list != null && i < list.size(); i++) {
+                VipTagType vipTagType = list.get(i);
+                org.json.JSONObject jsonTemp = new org.json.JSONObject();
+                jsonTemp.put("type_code", vipTagType.getType_code());
+                jsonTemp.put("type_name", vipTagType.getType_name());
+                array.add(jsonTemp);
+            }
+            result.put("list", array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
