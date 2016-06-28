@@ -671,7 +671,8 @@ public class MessageController {
             dataBean.setCode(result);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setCode(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -694,7 +695,8 @@ public class MessageController {
             dataBean.setCode(result);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setCode(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
