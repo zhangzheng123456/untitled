@@ -91,16 +91,20 @@ public class UserServiceImpl implements UserService {
             String store_name = "";
             String corp_code = user.getCorp_code();
             String[] ids = user.getStore_code().split(",");
+            String store_code = "";
             for (int i = 0; i < ids.length; i++) {
                 ids[i] = ids[i].substring(1, ids[i].length());
                 Store store = storeService.getStoreByCode(corp_code, ids[i], "");
                 String store_name1 = store.getStore_name();
                 store_name = store_name + store_name1;
+                store_code = store_code + ids[i];
                 if (i != ids.length - 1) {
                     store_name = store_name + ",";
+                    store_code = store_code + ",";
                 }
             }
             user.setStore_name(store_name);
+            user.setStore_code(store_code);
         }
         return user;
     }
