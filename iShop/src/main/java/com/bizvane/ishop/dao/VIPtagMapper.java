@@ -25,6 +25,6 @@ public interface VIPtagMapper {
 
     VIPtag selectVipTagCode(@Param("corp_code") String corp_code, @Param("tag_code") String tag_code);
 
-    VIPtag vipTagNameExist(@Param("corp_code") String corp_code, @Param("tag_name") String tag_name);
+    VIPtag selectVipTagName(@Param("corp_code") String corp_code, @Param("tag_name") String tag_name);
 
 }

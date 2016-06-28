@@ -181,7 +181,7 @@ jQuery(document).ready(function(){
 				// var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
 				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
 				var LABEL_NAME=$("#LABEL_NAME").val(msg.tag_name);
-				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.tag_type);
+				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.vipTagType.type_name);
 				// var check_per=$("#check_per").val(msg.check_per);
 				// $("#ROLE_NUM").val(msg.role_num);
 				// $("#ROLE_NAME").val(msg.role_name);
@@ -193,7 +193,12 @@ jQuery(document).ready(function(){
 
 				$("#OWN_CORP").val(msg.corp_code);
 				$("#LABEL_NAME").val(msg.tag_name);
-				$("#LABEL_TYPE").val(msg.tag_type);
+		/*		$("#LABEL_TYPE").val(msg.vipTagType.type_name);*/
+				/*$("#LABEL_TYPE").append(msg.vipTagType.type_name);*/
+
+				var str='<option value="'+msg.vipTagType.type_code+'">'+msg.vipTagType.type_name+'</option>';
+				$("#LABEL_TYPE").append(str);
+
 				// $("#OWN_DOCU").val(msg.own_docu);
 				
 				$("#created_time").val(msg.created_date);
@@ -253,6 +258,40 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
 });
+
+
+
+$(document).ready(function(){
+	$("#LABEL_TYPE").click(function(){
+		var _command="/VIP/label/getTypes";
+		var _params={"id":"test","corp_code":$("#OWN_CORP").val()};;
+		oc.postRequire("post", _command,"", _params, function(data){
+			console.log(data);
+			if(data.code=="0"){
+				var msg=JSON.parse(data.message);
+				console.log(msg);
+				var index=0;
+				var vipLabeTypes='';
+				 for(index in msg.list){
+				 	 type_tmp=msg.list[index];
+				 	 vipLabeTypes+='<option value="'+type_tmp.type_code+'">'+type_tmp.type_name+'</option>';
+				 }
+ 				$("#LABEL_TYPE").append(vipLabeTypes);
+ 				$('.tag_type_select select').searchableSelect();
+			}else if(data.code="1"){
+					art.dialog({
+						time:1,
+						lock:true,
+						cancel:false,
+						content:data.message
+					})
+			}
+		 // $.get("/user/getCorpByUser",function(data,status){
+		 // 	alert("数据："+data+"\n状态:"+status);
+		 });
+	});
+});
+
 
 //     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
 // 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
