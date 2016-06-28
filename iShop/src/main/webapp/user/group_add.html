@@ -24,7 +24,7 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="col-lg-12 pre_title">用户及权限<i class="icon-ishop_8-03"></i>群组管理<i class="icon-ishop_8-03"></i><label>新增群组</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
-                <div class="conpany_msg" style="margin-left:0px">
+                <form class="conpany_msg" style="margin-left:0px">
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属企业</label></li>
@@ -42,13 +42,11 @@
                     </div>
                     <div>
                         <span><label>群组编号</label><input type="text" id="GROUP_ID" verify="Code"/>
-                        <div style="padding-left:125px" class="hint"><div  hintinfo="群组编号为必填项，支持以大写G开头必须是4位数字的组合！"></div></div>
+                        <div style="padding-left:80px" class="hint"><div  hintinfo="群组编号为必填项，支持以大写G开头必须是4位数字的组合！"></div></div>
                         </span>
                     </div>
                     <div>
-                        <span><label>群组名称</label><input type="text" id="GROUP_NAME" verify="Empty"/>
-                        <div style="padding-left:125px" class="hint"><div  hintinfo="群组名称不能为空!"></div></div>
-                        </span>
+                        <span><label>群组名称</label><input type="text" id="GROUP_NAME" verify="Empty"/></span>
                     </div>
                     <div id="check_per">
                     <!-- <span><label>群组用户</label><input type="text" id="GROUP_USER" placeholder="共有1269位用户" readonly/><span class="check_icon" id="check_name">查看名单<i class="icon-ishop_8-03"></i></span>
@@ -64,8 +62,7 @@
                         <div style="padding-left:80px" class="hint"><div></div></div>
                         </span>
                     </div>
-                </div>
-            </div>
+                </form>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="groupadd_oper_btn">
@@ -74,13 +71,12 @@
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
-                <div class="msg_detail">
+                <form class="msg_detail">
                     <div>
                     <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
-                </div>
+                </form>
             </div>
-        </div>
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>

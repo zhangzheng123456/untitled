@@ -97,7 +97,6 @@
         ORDER BY user_code
     </select>
 
-    <!--获取店长区经下员工-->
     <select id="selectPartUser" resultMap="UserInfo">
         SELECT *
         from DEF_USER,DEF_GROUP,DEF_CORP
@@ -188,7 +187,6 @@
         WHERE email = #{email}
     </select>
 
-    <!--获取店铺下员工-->
     <select id="selectStoreUser" resultMap="UserInfo">
         SELECT
         DEF_USER.id,

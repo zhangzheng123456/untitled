@@ -20,6 +20,7 @@
         <result column="corp_code" property="corp_code"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
+            <result column="corp_code" property="corp_code"/>
         </association>
     </resultMap>
     <select id="selectAllGoods" resultMap="GoodsInfo">
@@ -39,6 +40,7 @@
         ,g.goods_description
         ,g.corp_code
         ,cp.corp_name
+        ,cp.corp_code
         FROM DEF_GOODS g,DEF_CORP cp
         WHERE g.corp_code=cp.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -79,12 +81,12 @@
         ,g.created_date
         ,g.creater
         ,g.goods_description
-        ,g.corp_code
         ,cp.corp_name
+        ,cp.corp_code
          from DEF_GOODS g,DEF_CORP cp
          WHERE
           g.corp_code=cp.corp_code  AND
-          g.id=#{id}
+          g.ID=#{id}
     </select>
 
 
