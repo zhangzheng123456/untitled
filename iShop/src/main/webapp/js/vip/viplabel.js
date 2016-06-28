@@ -202,7 +202,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].tag_name
                         + "</td><td><span>"
-                        + data[i].vipTagType.type_name
+                        + data[i].tag_type
                         + "</td><td>"
                         + data[i].corp.corp_name
                         // +"</td><td>"

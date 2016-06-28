@@ -196,7 +196,7 @@
     </select>
 
 
-    <select id="selectVIPTag_code" resultType="com.bizvane.ishop.entity.VIPtag">
+    <select id="selectVipTagCode" resultType="com.bizvane.ishop.entity.VIPtag">
         select * from DEF_VIP_TAG
          WHERE
          tag_code=#{tag_code}
@@ -204,7 +204,7 @@
          corp_code=#{corp_code}
     </select>
 
-    <select id="vipTagNameExist" resultType="com.bizvane.ishop.entity.VIPtag">
+    <select id="selectVipTagName" resultType="com.bizvane.ishop.entity.VIPtag">
         select * from DEF_VIP_TAG
          where
          tag_name=#{tag_name}

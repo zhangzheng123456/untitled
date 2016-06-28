@@ -200,12 +200,18 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].phone
+                        + data[i].platform
+                        + "</td><td><span title='"+data[i].download_addr+"'>"
+                        + data[i].download_addr
+                        + "</span></td><td><span>"
+                        + data[i].version_id
+                        + "</span></td><td>"
+                        + data[i].is_force_update
                         +"</td><td>"
-                        + data[i].validate_code
-                        +"</td><td>"
-                        +data[i].platform
-                        +"</td><td>"
+                        +data[i].corp_code
+                        + "</td><td><span title='"+data[i].version_describe+"'>"
+                        +data[i].version_describe
+                        + "</span></td><td>"
                         +data[i].modified_date
                         + "</td><td>"
                         +data[i].modifier

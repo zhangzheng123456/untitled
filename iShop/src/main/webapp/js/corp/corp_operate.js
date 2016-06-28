@@ -134,7 +134,7 @@ var message=JSON.parse(val.message);
 				var ID=sessionStorage.getItem("id");
 				var HEADPORTRAIT="";
 				if($("#CORPID").val()!==''&&$("#preview img").attr("src")!=='../img/bg.png'){
-				   HEADPORTRAIT="http://goods-image.oss-cn-hangzhou.aliyuncs.com/Avater/User/iShow/"+$("#CORPID").val().trim()+".jpg";
+				   HEADPORTRAIT="http://products-image.oss-cn-hangzhou.aliyuncs.com/Corp_logo/ishow/"+$("#CORPID").val().trim()+".jpg";
 				}else{
 				   HEADPORTRAIT="";
 				}

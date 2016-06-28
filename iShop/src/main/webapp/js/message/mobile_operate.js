@@ -52,22 +52,7 @@ var oc = new ObjectControl();
 	};
 	mobilejs.bindbutton=function(){
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
-			var nameMark=$("#MOBAN_NAME").attr("data-mark");//模板名称是否唯一的标志
-			var codeMark=$("#MOBAN_ID").attr("data-mark");//模板编号是否唯一的标志
 			if(mobilejs.firstStep()){
-				if(nameMark=="N"||codeMark=="N"){
-					if(nameMark=="N"){
-						var div=$("#MOBAN_NAME").next('.hint').children();
-						div.html("该名称已经存在！");
-		            	div.addClass("error_tips");
-					}
-					if(codeMark=="N"){
-						var div=$("#MOBAN_ID").next('.hint').children();
-						div.html("该编号已经存在！");
-		            	div.addClass("error_tips");
-					}
-	            	return;
-				}
 				// var CORPID=$("#CORPID").val();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var MOBAN_ID=$("#MOBAN_ID").val();
@@ -94,24 +79,9 @@ var oc = new ObjectControl();
 			}
 		});
 		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
-			var nameMark=$("#MOBAN_NAME").attr("data-mark");//模板名称是否唯一的标志
-			var codeMark=$("#MOBAN_ID").attr("data-mark");//模板编号是否唯一的标志
 			if(mobilejs.firstStep()){
-				if(nameMark=="N"||codeMark=="N"){
-					if(nameMark=="N"){
-						var div=$("#MOBAN_NAME").next('.hint').children();
-						div.html("该名称已经存在！");
-		            	div.addClass("error_tips");
-					}
-					if(codeMark=="N"){
-						var div=$("#MOBAN_ID").next('.hint').children();
-						div.html("该编号已经存在！");
-		            	div.addClass("error_tips");
-					}
-	            	return;
-				}
-
 				var ID=sessionStorage.getItem("id");
+
 				var MOBAN_ID=$("#MOBAN_ID").val();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
@@ -155,13 +125,13 @@ var oc = new ObjectControl();
 				// });
 				$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 			}else if(data.code=="-1"){
-				alert(data.message);
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
+				// alert(data.message);
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 			}
 		});
 	};
@@ -209,6 +179,27 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
+				// var MOBAN_ID=$("#MOBAN_ID").val(msg.tem_code);
+				// var MOBAN_NAME=$("#MOBAN_NAME").val(msg.tem_name);
+				// var MOBAN_TYPE=$("#MOBAN_TYPE").val(msg.type_code);
+				// var MOBAN_CONTENT=$("#MOBAN_CONTENT").val(msg.tem_content);
+
+				// var created_time=$("#created_time").val(msg.created_date);
+				// var creator=$("#creator").val(msg.creater);
+				// var modify_time=$("#modify_time").val(msg.modified_date);
+				// var modifier=$("#modifier").val(msg.modifier);			
+
+				// $("#MOBAN_ID").val(msg.tem_code);
+				// $("#MOBAN_NAME").val(msg.tem_name);
+				// $("#MOBAN_TYPE").val(msg.type_code);
+				// $("#MOBAN_CONTENT").val(msg.tem_content);
+				// // $("#OWN_DOCU").val(msg.own_docu);
+				
+				// $("#created_time").val(msg.created_date);
+				// $("#creator").val(msg.creater);
+				// $("#modify_time").val(msg.modified_date);
+				// $("#modifier").val(msg.modifier);
+
 				$("#MOBAN_ID").val(msg.tem_code);
 				$("#MOBAN_ID").attr("data-name",msg.tem_code);
 				$("#MOBAN_NAME").val(msg.tem_name);
@@ -232,17 +223,18 @@ jQuery(document).ready(function(){
 				}
 				getcorplist();
 			}else if(data.code=="-1"){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: data.message
-				});
+				// art.dialog({
+				// 	time: 1,
+				// 	lock:true,
+				// 	cancel: false,
+				// 	content: data.message
+				// });
 			}
 		});
 	}else{
 		getcorplist();
 	}
+<<<<<<< HEAD
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
     	var isCode=/^[M]{1}[0-9]{4}$/;
@@ -295,6 +287,8 @@ jQuery(document).ready(function(){
 	})
 	
 
+=======
+>>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
@@ -319,6 +313,7 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+<<<<<<< HEAD
 			var c=$('#corp_select .selected').attr("data-value");
 			mobileType(c);
 			$("#corp_select .searchable-select-item").click(function(){
@@ -331,6 +326,14 @@ function getcorplist(){
 				$("input[verify='Code']").attr("data-mark","");
 				$("#MOBAN_NAME").attr("data-mark","");
 			})
+=======
+			// $('.searchable-select-item').click(function(){
+			// 	$("input[verify='Code']").val("");
+			// 	$("#MOBAN_NAME").val("");
+			// 	$("input[verify='Code']").attr("data-mark","");
+			// 	$("#MOBAN_NAME").attr("data-mark","");
+			// })
+>>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -341,6 +344,7 @@ function getcorplist(){
 		}
 	});
 }
+<<<<<<< HEAD
 function mobileType(code){
 	var _command = "/message/mobile/type/getMessageTypeByUser";
 	var _params = {};
@@ -370,3 +374,18 @@ function mobileType(code){
 		}
 	});
 }
+=======
+	
+
+
+//     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
+// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+// 	});
+// 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
+// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
+// 	});
+// 	$("#che").click(function(){
+// 		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
+// 	})
+// });
+>>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
