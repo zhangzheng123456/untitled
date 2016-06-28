@@ -202,9 +202,9 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].phone
                         +"</td><td>"
-                        + data[i].platform
+                        + data[i].validate_code
                         +"</td><td>"
-                        +data[i].validate_code
+                        +data[i].platform
                         +"</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
