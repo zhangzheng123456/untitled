@@ -327,7 +327,7 @@ function getcorplist(){
 }
 function mobileType(code){
 	var _command = "/message/mobile/type/getMessageTypeByUser";
-	var _params = {};
+	var _params = {"corp_code":$("#OWN_CORP")};
 	_params["corp_code"]=code;
 	oc.postRequire("post", _command, "", _params, function(data) {
 		console.log(data);
