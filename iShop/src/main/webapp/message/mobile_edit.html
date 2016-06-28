@@ -33,7 +33,7 @@
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属企业*</label></li>
-                            <li>
+                            <li id="corp_select">
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex;">
                                         <option value="-1">请选择所属企业</option>
@@ -48,18 +48,10 @@
                     <div>
                         <span><label>模板名称</label><input type="text" id="MOBAN_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板名称不能为空！"></div></div></span>
                     </div>
-                    <!-- <div class="drop_down item_1">
-                        <span><label>模板类型</label><input class="input_select" id="MOBAN_TYPE" type="text" placeholder="请选择模板类型" readonly/>
-                            <ul>
-                                <li>祝福</li>
-                                <li>通知</li>
-                            </ul>
-                        </span>
-                    </div> -->
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label>模板类型</label></li>
-                            <li>
+                            <li id="type_select">
                                 <span class="message_type_select" id="corp_html">
                                     <select id="MOBAN_TYPE" style="display:inline-flex;">
                                         <!-- <option value="-1">1</option> -->
