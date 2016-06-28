@@ -267,8 +267,8 @@ public class ValidateCodeController {
             //------------------------开启响应头---------------------------------------
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             //设置响应的字符集
-            response.setContentType("text/plain;charset=utf-8");
-            String name = URLEncoder.encode("报表_"+sdf.format(new Date())+".txt", "UTF-8");
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+            String name = URLEncoder.encode("报表_"+sdf.format(new Date())+".xls", "UTF-8");
             response.setHeader("Content-Disposition", "attachment;filename="+name);
             //创建excel空白文档
             WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
