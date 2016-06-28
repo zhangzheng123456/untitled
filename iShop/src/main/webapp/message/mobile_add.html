@@ -24,13 +24,14 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>手机短信<i class="icon-ishop_8-03"></i><label>新增短信模板</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
-                <form class="conpany_msg">
+                <form class="conpany_msg" style="margin-left:0px">
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属企业*</label></li>
                             <li style="width: 350px;">
                                 <span class="corp_select" style="width: 350px;">
                                     <select id="OWN_CORP" style="display:inline-flex;width: 350px;" >
+                                        <option value="-1">请选择所属企业</option>
                                     </select>
                                 </span>
                             </li>
@@ -53,9 +54,9 @@
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label>模板类型</label></li>
-                            <li>
-                                <span class="message_type_select">
-                                    <select id="MOBAN_TYPE" style="display:inline-flex;">
+                            <li style="width: 350px">
+                                <span class="message_type_select" style="width: 350px">
+                                    <select id="MOBAN_TYPE" style="display:inline-flex;width: 350px">
                                         <!-- <option value="-1">1</option> -->
                                     </select>
                                 </span>
