@@ -234,7 +234,6 @@ jQuery(document).ready(function(){
 	}else{
 		getcorplist();
 	}
-<<<<<<< HEAD
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
     	var isCode=/^[M]{1}[0-9]{4}$/;
@@ -280,15 +279,6 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     });
-
-	//change 事件
-	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
-	
-
-=======
->>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
@@ -313,7 +303,6 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
-<<<<<<< HEAD
 			var c=$('#corp_select .selected').attr("data-value");
 			mobileType(c);
 			$("#corp_select .searchable-select-item").click(function(){
@@ -326,14 +315,6 @@ function getcorplist(){
 				$("input[verify='Code']").attr("data-mark","");
 				$("#MOBAN_NAME").attr("data-mark","");
 			})
-=======
-			// $('.searchable-select-item').click(function(){
-			// 	$("input[verify='Code']").val("");
-			// 	$("#MOBAN_NAME").val("");
-			// 	$("input[verify='Code']").attr("data-mark","");
-			// 	$("#MOBAN_NAME").attr("data-mark","");
-			// })
->>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -344,7 +325,6 @@ function getcorplist(){
 		}
 	});
 }
-<<<<<<< HEAD
 function mobileType(code){
 	var _command = "/message/mobile/type/getMessageTypeByUser";
 	var _params = {};
@@ -374,18 +354,3 @@ function mobileType(code){
 		}
 	});
 }
-=======
-	
-
-
-//     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$("#che").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
-// 	})
-// });
->>>>>>> 61fd3e783c0329ca9723d0bba8c3d6d9d2957484
