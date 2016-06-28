@@ -248,7 +248,7 @@ public class ValidateCodeController {
         try {
             List<ValidateCode> validateCodes = validateCodeService.selectAll();
             //这个相当于前台传过来的字段
-            String[] cols = {"id", "phone"};
+            String[] cols = {"id", "phone","platform"};
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", validateCodes);
             org.json.JSONArray array = jsonObject.getJSONArray("list");
@@ -267,8 +267,8 @@ public class ValidateCodeController {
             //------------------------开启响应头---------------------------------------
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             //设置响应的字符集
-            response.setContentType("application/vnd.ms-excel;charset=UTF-8");
-            String name = URLEncoder.encode("报表_"+sdf.format(new Date())+".xls", "UTF-8");
+            response.setContentType("text/plain;charset=utf-8");
+            String name = URLEncoder.encode("报表_"+sdf.format(new Date())+".txt", "UTF-8");
             response.setHeader("Content-Disposition", "attachment;filename="+name);
             //创建excel空白文档
             WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
@@ -290,34 +290,27 @@ public class ValidateCodeController {
             format2.setAlignment(Alignment.CENTRE);
             format2.setVerticalAlignment(VerticalAlignment.CENTRE);
             format2.setShrinkToFit(false);
+            int i=0;
             for (List<String> m : lists) {
-                for(int i=0;i<lists.size();i++){
                     String str2 = m.toString();
                     str2=str2.substring(1,str2.length()-1);
                     String[] split = str2.split(",");
-                    List<String> slist = new ArrayList<String>();
-                    Collections.addAll(slist,split);
-                    Map map= (Map) slist;
+//                    List<String> slist = new ArrayList<String>();
+//                    Collections.addAll(slist,split);
+                   //System.out.println(str2+"======");
+                   // Map map= (Map) slist;
                     for (int j=0;j<split.length;j++) {
                         Label lb = null;
-                        if(map.get(cols[j])!=null){
-                            lb=new Label(j,i+1,map.get(cols[j]).toString(),format2);
+                        System.out.println(split[j]+"------");
+                        if(split[j]!=null){
+                            lb=new Label(j,i+1,split[j],format2);
                         }else{
                             lb = new Label(j, i+1, "", format2);
                         }
                         sheet.addCell(lb);
-
                     }
-                }
-
-
-            }
-
-
-
-
-
-//            //1  在servlet上获得out对象：
+                i++;
+            }  //1  在servlet上获得out对象：
 //            PrintWriter out = response.getWriter();
 //            //2  打印标签
 //            out.print("<table>");
