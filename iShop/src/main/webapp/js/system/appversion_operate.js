@@ -184,6 +184,10 @@ jQuery(document).ready(function(){
 				$("#download_addr").val(msg.download_addr);
 				$("#version_id").val(msg.version_id);
 				$("#corp_code").val(msg.corp_code);
+				$("#creater").val(msg.creater);
+				$("#created_date").val(msg.created_date);
+				$("#modified_date").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
 				if(msg.is_force_update=="Y"){
 					$("#is_force_update").val("是");
 				}else if(msg.is_force_update=="N"){
