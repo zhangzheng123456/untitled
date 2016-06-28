@@ -263,16 +263,19 @@
         where ID=#{id}
     </delete>
 
+    <!--删除店铺下员工-->
     <update id="deleteStoreByUserid">
       update DEF_USER
       set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_code},','),'') where id=#{user_id}
     </update>
 
+    <!--判断店铺名称是否重复-->
     <select id="selectByStoreName" resultType="com.bizvane.ishop.entity.Store">
         select * from DEF_STORE
         WHERE  corp_code=#{corp_code} and store_name=#{store_name}
     </select>
 
+    <!--店铺数量  / 店铺新增数量-->
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT COUNT(1) FROM DEF_STORE
         WHERE 1=1

@@ -38,7 +38,6 @@
 		<aspectjweaver.version>1.8.9</aspectjweaver.version>
 		<pagehelper.version>4.0.1</pagehelper.version>
 		<ice>3.6.1</ice>
-		<jxl.version>2.6.6</jxl.version>
 	</properties>
 
 	<dependencies>
@@ -162,18 +161,6 @@
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl.version}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>jxl</groupId>
-			<artifactId>jxl</artifactId>
-			<version>${jxl.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
-		<dependency>
-			<groupId>org.apache.poi</groupId>
-			<artifactId>poi</artifactId>
-			<version>3.15-beta1</version>
 		</dependency>
 
 		<dependency>

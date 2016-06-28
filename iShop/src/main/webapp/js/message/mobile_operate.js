@@ -19,15 +19,14 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	mobilejs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	mobilejs.checkCode=function(obj,hint){
+		var isCode=/^[M]{1}[0-9]{4}$/;
 		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
+			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
+				this.displayHint(hint,"模板编号为必填项，支持以大写M开头必须是4位数字的组合！");
 				return false;
 			}
 		}else{
@@ -188,14 +187,14 @@ jQuery(document).ready(function(){
 				// var created_time=$("#created_time").val(msg.created_date);
 				// var creator=$("#creator").val(msg.creater);
 				// var modify_time=$("#modify_time").val(msg.modified_date);
-				// var modifier=$("#modifier").val(msg.modifier);			
+				// var modifier=$("#modifier").val(msg.modifier);
 
 				// $("#MOBAN_ID").val(msg.tem_code);
 				// $("#MOBAN_NAME").val(msg.tem_name);
 				// $("#MOBAN_TYPE").val(msg.type_code);
 				// $("#MOBAN_CONTENT").val(msg.tem_content);
 				// // $("#OWN_DOCU").val(msg.own_docu);
-				
+
 				// $("#created_time").val(msg.created_date);
 				// $("#creator").val(msg.creater);
 				// $("#modify_time").val(msg.modified_date);
@@ -208,7 +207,6 @@ jQuery(document).ready(function(){
 				$("#MOBAN_TYPE").val(msg.type_code);
 				$("#MOBAN_TYPE").attr("data-name",msg.type_code);
 				$("#MOBAN_CONTENT").val(msg.tem_content);
-				$("#MOBAN_CONTENT").attr("data-name",msg.tem_content);
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				// $("#OWN_CORP").val(msg.corp_code);
@@ -236,6 +234,51 @@ jQuery(document).ready(function(){
 	}else{
 		getcorplist();
 	}
+	//验证编号是不是唯一
+	$("input[verify='Code']").blur(function(){
+		var isCode=/^[M]{1}[0-9]{4}$/;
+		var _params={};
+		var tem_code=$(this).val();
+		var tem_code1=$(this).attr("data-name");
+		var corp_code=$("#OWN_CORP").val();
+		if(tem_code!==""&&tem_code!==tem_code1&&isCode.test(tem_code)==true){
+			_params["tem_code"]=tem_code;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/message/mobile/template/messageTemplateCodeExist","", _params, function(data){
+				if(data.code=="0"){
+					div.html("");
+					$("#MOBAN_ID").attr("data-mark","Y");
+				}else if(data.code=="-1"){
+					$("#MOBAN_ID").attr("data-mark","N");
+					div.addClass("error_tips");
+					div.html("该编号已经存在！");
+				}
+			})
+		}
+	});
+	//验证名称是否唯一
+	$("#MOBAN_NAME").blur(function(){
+		var corp_code=$("#OWN_CORP").val();
+		var tem_name=$("#MOBAN_NAME").val();
+		var tem_name1=$("#MOBAN_NAME").attr("data-name");
+		var div=$(this).next('.hint').children();
+		if(tem_name!==""&&tem_name!==tem_name1){
+			var _params={};
+			_params["tem_name"]=tem_name;
+			_params["corp_code"]=corp_code;
+			oc.postRequire("post","/message/mobile/template/messageTemplateNameExist","", _params, function(data){
+				if(data.code=="0"){
+					div.html("");
+					$("#MOBAN_NAME").attr("data-mark","Y");
+				}else if(data.code=="-1"){
+					div.html("该名称已经存在！")
+					div.addClass("error_tips");
+					$("#MOBAN_NAME").attr("data-mark","N");
+				}
+			})
+		}
+	});
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
@@ -260,12 +303,18 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
-			// $('.searchable-select-item').click(function(){
-			// 	$("input[verify='Code']").val("");
-			// 	$("#MOBAN_NAME").val("");
-			// 	$("input[verify='Code']").attr("data-mark","");
-			// 	$("#MOBAN_NAME").attr("data-mark","");
-			// })
+			var c=$('#corp_select .selected').attr("data-value");
+			mobileType(c);
+			$("#corp_select .searchable-select-item").click(function(){
+				var c=$(this).attr("data-value");
+				mobileType(c);
+			})
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("#MOBAN_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#MOBAN_NAME").attr("data-mark","");
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -276,16 +325,32 @@ function getcorplist(){
 		}
 	});
 }
-	
-
-
-//     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$("#che").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
-// 	})
-// });
+function mobileType(code){
+	var _command = "/message/mobile/type/getMessageTypeByUser";
+	var _params = {};
+	_params["corp_code"]=code;
+	oc.postRequire("post", _command, "", _params, function(data) {
+		console.log(data);
+		if (data.code == "0") {
+			var msg = JSON.parse(data.message);
+			console.log(msg);
+			var index = 0;
+			var message_types = '';
+			$('#MOBAN_TYPE').empty();
+			$('#type_select .searchable-select').remove();
+			for (index in msg.message_types) {
+				type_tmp = msg.message_types[index];
+				message_types += '<option value="' + type_tmp.type_code + '">' + type_tmp.type_name + '</option>';
+			}
+			$("#MOBAN_TYPE").append(message_types);
+			$('.message_type_select select').searchableSelect();
+		} else if (data.code = "1") {
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: data.message
+			})
+		}
+	});
+}

@@ -77,11 +77,7 @@ var oc = new ObjectControl();
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
 				if(img_url_list.length<=5){
 					for(var i=0;i<img_url_list.length;i++){
-						if(img_url_list[i].src.indexOf("http")!==-1){
-							img_list.push(img_url_list[i].src);
-						}else{
-							img_list.push($(img_url_list[i]).attr("data-name"));
-						}
+						img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com/goods-images/"+$("#GOODS_CODE").val()+"_img"+i+".jpg");
 					}
 					for(var j=0;j<img_list.length;j++){
 						img_list_json[j]=img_list[j];
@@ -134,11 +130,7 @@ var oc = new ObjectControl();
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
 				if(img_url_list.length<=5){
 					for(var i=0;i<img_url_list.length;i++){
-						if(img_url_list[i].src.indexOf("http")!==-1){
-							img_list.push(img_url_list[i].src);
-						}else{
-							img_list.push($(img_url_list[i]).attr("data-name"));
-						}
+						img_list.push("http://goods-image.oss-cn-hangzhou.aliyuncs.com/goods-images/"+$("#GOODS_CODE").val()+"_img"+i+".jpg");
 					}
 					for(var j=0;j<img_list.length;j++){
 						img_list_json[j]=img_list[j];
