@@ -63,10 +63,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *用户拥有店铺下的员工
+     * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
-    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value,String store_code,String role_code) throws SQLException {
+    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String role_code) throws SQLException {
 
         String[] stores = store_code.split(",");
         Map<String, Object> params = new HashMap<String, Object>();
@@ -92,7 +92,8 @@ public class UserServiceImpl implements UserService {
             String corp_code = user.getCorp_code();
             String[] ids = user.getStore_code().split(",");
             for (int i = 0; i < ids.length; i++) {
-                Store store = storeService.getStoreByCode(corp_code, ids[i],"");
+                ids[i] = ids[i].substring(1, ids[i].length());
+                Store store = storeService.getStoreByCode(corp_code, ids[i], "");
                 String store_name1 = store.getStore_name();
                 store_name = store_name + store_name1;
                 if (i != ids.length - 1) {
@@ -133,16 +134,16 @@ public class UserServiceImpl implements UserService {
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
         String phone_exist = userPhoneExist(phone);
-        User code_exist = userCodeExist(user_code,corp_code);
+        User code_exist = userCodeExist(user_code, corp_code);
         String email_exist = userEmailExist(email);
 
-        if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+        if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "手机号已存在";
-        }else if (code_exist != null){
+        } else if (code_exist != null) {
             result = "员工编号已存在";
-        }else if (!email_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+        } else if (!email.equals("") && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "邮箱已存在";
-        }else{
+        } else {
             userMapper.insertUser(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
@@ -159,17 +160,17 @@ public class UserServiceImpl implements UserService {
         String email = user.getEmail();
         User user1 = getUserById(user_id);
         String phone_exist = userPhoneExist(phone);
-        User code_exist = userCodeExist(user_code,corp_code);
+        User code_exist = userCodeExist(user_code, corp_code);
 
         String emails = userEmailExist(email);
 
-        if (!user1.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)){
+        if (!user1.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "手机号已存在";
-        }else if (!user1.getUser_code().equals(user_code) && code_exist != null){
+        } else if (!user1.getUser_code().equals(user_code) && code_exist != null) {
             result = "员工编号已存在";
-        }else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))){
-                result = "邮箱已存在";
-        }else{
+        } else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
+            result = "邮箱已存在";
+        } else {
             userMapper.updateByUserId(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
@@ -198,7 +199,7 @@ public class UserServiceImpl implements UserService {
             String corp_code = login_user.getCorp_code();
             String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
-            String role_code = groupMapper.selectByCode(corp_code,group_code,"").getRole_code();
+            String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code();
 
             request.getSession().setAttribute("user_id", user_id);
             request.getSession().setAttribute("user_code", user_code);
@@ -209,25 +210,23 @@ public class UserServiceImpl implements UserService {
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
             login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
-            update(login_user);
+            userMapper.updateByUserId(login_user);
             String user_type;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 user_type = "admin";
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                //总经理
+                user_type = "gm";
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                //区经
+                user_type = "am";
+            } else if (role_code.equals(Common.ROLE_SM)) {
+                //店长
+                user_type = "sm";
             } else {
-                if (role_code.equals(Common.ROLE_GM)) {
-                    //总经理
-                    user_type = "gm";
-                } else if (role_code.equals(Common.ROLE_AM)) {
-                    //区经
-                    user_type = "am";
-                } else if (role_code.equals(Common.ROLE_SM)) {
-                    //店长
-                    user_type = "sm";
-                } else {
-                    //导购
-                    user_type = "staff";
-                }
+                //导购
+                user_type = "staff";
             }
             request.getSession().setAttribute("user_type", user_type);
             user_info.put("user_type", user_type);
@@ -236,6 +235,7 @@ public class UserServiceImpl implements UserService {
         }
         return user_info;
     }
+
     /**
      * 验证手机号是否已注册
      */
@@ -356,10 +356,10 @@ public class UserServiceImpl implements UserService {
                     groupMapper.insertGroup(group);
 
                     result = Common.DATABEAN_CODE_SUCCESS;
-                }else {
+                } else {
                     result = "验证码错误！！！";
                 }
-            }else {
+            } else {
                 result = "该手机号已注册！！！";
             }
         } catch (Exception ex) {
