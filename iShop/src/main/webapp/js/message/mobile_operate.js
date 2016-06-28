@@ -215,49 +215,49 @@ jQuery(document).ready(function(){
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[M]{1}[0-9]{4}$/;
-    	var _params={};
-    	var tem_code=$(this).val();
-    	var tem_code1=$(this).attr("data-name");
-    	var corp_code=$("#OWN_CORP").val();
+		var isCode=/^[M]{1}[0-9]{4}$/;
+		var _params={};
+		var tem_code=$(this).val();
+		var tem_code1=$(this).attr("data-name");
+		var corp_code=$("#OWN_CORP").val();
 		if(tem_code!==""&&tem_code!==tem_code1&&isCode.test(tem_code)==true){
 			_params["tem_code"]=tem_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
 			oc.postRequire("post","/message/mobile/template/messageTemplateCodeExist","", _params, function(data){
-	               if(data.code=="0"){
-	                    div.html("");
-	                    $("#MOBAN_ID").attr("data-mark","Y");
-	               }else if(data.code=="-1"){
-	               		$("#MOBAN_ID").attr("data-mark","N");
-	               		div.addClass("error_tips");
-						div.html("该编号已经存在！");	
-	               }
-		    })
+				if(data.code=="0"){
+					div.html("");
+					$("#MOBAN_ID").attr("data-mark","Y");
+				}else if(data.code=="-1"){
+					$("#MOBAN_ID").attr("data-mark","N");
+					div.addClass("error_tips");
+					div.html("该编号已经存在！");
+				}
+			})
 		}
-    });
-    //验证名称是否唯一
-    $("#MOBAN_NAME").blur(function(){
-    	var corp_code=$("#OWN_CORP").val();
-    	var tem_name=$("#MOBAN_NAME").val();
-    	var tem_name1=$("#MOBAN_NAME").attr("data-name");
-    	var div=$(this).next('.hint').children();
-    	if(tem_name!==""&&tem_name!==tem_name1){
-	    	var _params={};
-	    	_params["tem_name"]=tem_name;
-	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/message/mobile/template/messageTemplateNameExist","", _params, function(data){
-	            if(data.code=="0"){
-	            	div.html("");
-	            	$("#MOBAN_NAME").attr("data-mark","Y");
-	            }else if(data.code=="-1"){
-	            	div.html("该名称已经存在！")
-	            	div.addClass("error_tips");
-	            	$("#MOBAN_NAME").attr("data-mark","N");
-	            }
-	    	})
-	    }
-    });
+	});
+	//验证名称是否唯一
+	$("#MOBAN_NAME").blur(function(){
+		var corp_code=$("#OWN_CORP").val();
+		var tem_name=$("#MOBAN_NAME").val();
+		var tem_name1=$("#MOBAN_NAME").attr("data-name");
+		var div=$(this).next('.hint').children();
+		if(tem_name!==""&&tem_name!==tem_name1){
+			var _params={};
+			_params["tem_name"]=tem_name;
+			_params["corp_code"]=corp_code;
+			oc.postRequire("post","/message/mobile/template/messageTemplateNameExist","", _params, function(data){
+				if(data.code=="0"){
+					div.html("");
+					$("#MOBAN_NAME").attr("data-mark","Y");
+				}else if(data.code=="-1"){
+					div.html("该名称已经存在！")
+					div.addClass("error_tips");
+					$("#MOBAN_NAME").attr("data-mark","N");
+				}
+			})
+		}
+	});
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});

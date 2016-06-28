@@ -412,7 +412,6 @@ public class MessageController {
                 Message_type message_type = list.get(i);
                 String type_code = message_type.getType_code();
                 String type_name = message_type.getType_name();
-                //   String corp_name = corp.getCorp_name();
                 JSONObject obj = new JSONObject();
                 obj.put("type_code", type_code);
                 obj.put("type_name", type_name);
@@ -587,8 +586,8 @@ public class MessageController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_Number = jsonObject.getInt("pageNumber");
             int page_Size = jsonObject.getInt("pageSize");
-            String search_value = jsonObject.getString("search_value").toString();
-            String role_code = jsonObject.getString("role_code");
+            String search_value = jsonObject.getString("searchValue").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<MessageTemplate> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -672,7 +671,8 @@ public class MessageController {
             dataBean.setCode(result);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setCode(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -695,7 +695,8 @@ public class MessageController {
             dataBean.setCode(result);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setCode(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

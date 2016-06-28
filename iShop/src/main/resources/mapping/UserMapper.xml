@@ -97,6 +97,7 @@
         ORDER BY user_code
     </select>
 
+    <!--获取店长区经下员工-->
     <select id="selectPartUser" resultMap="UserInfo">
         SELECT *
         from DEF_USER,DEF_GROUP,DEF_CORP
@@ -107,7 +108,7 @@
         AND DEF_GROUP.role_code &lt; #{role_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            store_code regexp #{item}
+            store_code like concat('%',#{item},'%')
         </foreach>
 
         <if test="search_value != null and search_value !=''">
@@ -187,6 +188,7 @@
         WHERE email = #{email}
     </select>
 
+    <!--获取店铺下员工-->
     <select id="selectStoreUser" resultMap="UserInfo">
         SELECT
         DEF_USER.id,
@@ -209,7 +211,7 @@
         FROM DEF_USER,DEF_GROUP
         where DEF_USER.group_code = DEF_GROUP.group_code
         AND DEF_USER.CORP_CODE = #{corp_code}
-        AND DEF_USER.store_code regexp #{search_value}
+        AND DEF_USER.store_code like #{search_value}
     </select>
 
     <select id="selectGroupUser" resultMap="UserInfo">

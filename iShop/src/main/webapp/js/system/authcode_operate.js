@@ -53,92 +53,58 @@ var oc = new ObjectControl();
 	};
 	codejs.bindbutton=function(){
 		$(".codeadd_oper_btn ul li:nth-of-type(1)").click(function(){
-			var nameMark=$("#codeNAME").attr("data-mark");
-			var codeMark=$("#codeID").attr("data-mark");
-			console.log(nameMark);
 			if(codejs.firstStep()){
-				if(nameMark=="N"||codeMark=="N"){
-					if(nameMark=="N"){
-						var div=$("#codeNAME").next('.hint').children();
-						div.html("该名称已经存在！");
-		            	div.addClass("error_tips");
-					}
-					if(codeMark=="N"){
-						var div=$("#codeID").next('.hint').children();
-						div.html("该编号已经存在！");
-		            	div.addClass("error_tips");
-					}
-	            	return;
-	            }
-				var codeID=$("#codeID").val();
-				var WXID=$("#WXID").val();
-				var codeNAME=$("#codeNAME").val();
-				var codeADDRESS=$("#codeADDRESS").val();
-				var CONTACTS=$("#CONTACTS").val();
-				var PHONE=$("#PHONE").val();
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
+				var phone=$('#phone').val();//手机号
+				var validate_code=$('#validate_code').val();//验证码
+				var platform=$('#platform').val();//来源
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
-				var _command="/code/add";//接口名
+				var _command="/validatecode/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
 
 					}
 				};
-				var _params={"code_code":codeID,"app_id":WXID,"code_name":codeNAME,"address":codeADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
+				var _params = {
+					"phone": phone,
+					"validate_code": validate_code,
+					"platform": platform,
+					"isactive": ISACTIVE
+				};
 				codejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
 			}
 		});
 		$(".codeedit_oper_btn ul li:nth-of-type(1)").click(function(){
-			var nameMark=$("#codeNAME").attr("data-mark");
-			var codeMark=$("#codeID").attr("data-mark");
-			console.log(nameMark);
 			if(codejs.firstStep()){
-				if(nameMark=="N"||codeMark=="N"){
-					if(nameMark=="N"){
-						var div=$("#codeNAME").next('.hint').children();
-						div.html("该名称已经存在！");
-		            	div.addClass("error_tips");
-					}
-					if(codeMark=="N"){
-						var div=$("#codeID").next('.hint').children();
-						div.html("该编号已经存在！");
-		            	div.addClass("error_tips");
-					}
-	            	return;
-	            }
 				var ID=sessionStorage.getItem("id");
-				var HEADPORTRAIT="";
-				if($("#codeID").val()!==''&&$("#preview img").attr("src")!=='../img/bg.png'){
-				   HEADPORTRAIT="http://goods-image.oss-cn-hangzhou.aliyuncs.com/Avater/User/iShow/"+$("#codeID").val().trim()+".jpg";
-				}else{
-				   HEADPORTRAIT="";
-				}
-				var codeID=$("#codeID").val();
-				var WXID=$("#WXID").val();
-				var codeNAME=$("#codeNAME").val();
-				var codeADDRESS=$("#codeADDRESS").val();
-				var CONTACTS=$("#CONTACTS").val();
-				var PHONE=$("#PHONE").val();
-				var input=$(".checkbox_isactive").find("input")[0];
+				var phone=$('#phone').val();//手机号
+				var validate_code=$('#validate_code').val();//验证码
+				var platform=$('#platform').val();//来源
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
 						ISACTIVE="N";
 				}
-				var _command="/code/edit";//接口名
+				var _command="/validatecode/edit";//接口名
 				var opt = {//返回成功后的操作s
 					success:function(){
 
 					}
 				};
-				var _params={"id":ID,"avater":HEADPORTRAIT,"code_code":codeID,"app_id":WXID,"code_name":codeNAME,"address":codeADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
+				var _params = {
+					"id": ID,
+					"phone": phone,
+					"validate_code": validate_code,
+					"platform": platform,
+					"isactive": ISACTIVE
+				};
 				codejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -146,17 +112,9 @@ var oc = new ObjectControl();
 		});
 	};
 	codejs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
 				$(window.parent.document).find('#iframepage').attr("src","/system/authcode.html");
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -207,40 +165,24 @@ jQuery(document).ready(function(){
 	if($(".pre_title label").text()=="编辑验证码信息"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
-		var _command="/code/select";
+		var _command="/validatecode/selectById";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
-				$("#preview img").attr("src",msg.avater);
-				if($("#preview img").attr("src").indexOf('http')!==-1){
-					$("#c_logo label").html("更换logo");
-				}else{
-					$("#c_logo label").html("上传logo");
-				}
-				$("#WXID").val(msg.app_id);
-				$("#codeID").val(msg.code_code);
-				$("#codeID").attr("data-name",msg.code_code);
-				$("#codeNAME").val(msg.code_name);
-				$("#codeADDRESS").val(msg.address);
-				$("#CONTACTS").val(msg.contact);
-				$("#PHONE").val(msg.contact_phone);
-				$("#created_time").val(msg.created_date);
-				$("#creator").val(msg.creater);
-				$("#modify_time").val(msg.modified_date);
+				msg=JSON.parse(msg.validateCode);
+				$('#phone').val(msg.phone);//手机号
+				$('#validate_code').val(msg.validate_code);//验证码
+				$('#platform').val(msg.platform);//来源
+				$("#creater").val(msg.creater);
+				$("#created_date").val(msg.created_date);
+				$("#modified_date").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
-				$("#codeNAME").attr("data-name",msg.code_name);
-				var input=$(".checkbox_isactive").find("input")[0];
+				var input=$("#is_active")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
 					input.checked=false;
-				}
-				if(msg.is_authorize=="Y"){
-					$("#state_val").val("已授权");
-				}else if(msg.is_authorize=="N"){
-					$("#state_val").val("未授权");
 				}
 			}else if(data.code=="-1"){
 				art.dialog({

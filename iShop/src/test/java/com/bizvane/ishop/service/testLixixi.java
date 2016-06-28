@@ -173,10 +173,14 @@ public class testLixixi {
     public MessageTypeService messageTypeService;
 
     @Test
-    public void test9() {
-        //this.vipTagTypeMapper.selectName("C00001", "tettest");
-        this.goodsService.goodsCodeExist("C00001", "test");
-        System.out.println("tankong");
+    public void test9() throws SQLException {
+        try {
+            String corp_code = "C00000";
+            String tem_name = "testr34";
+            this.messageTemplateService.messageTemplateNameExist(corp_code, tem_name);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 
 }
