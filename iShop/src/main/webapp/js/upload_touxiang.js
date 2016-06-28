@@ -56,25 +56,18 @@ function clacImgZoomParam(maxWidth, maxHeight, width, height) {
 $(function(){
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
-        accessKeyId: 'wA6nbdOTkdNvajg3',
-        accessKeySecret: 'j1Nv6xi16lmOkangJfPxc6Y4gPTq15',
-        bucket: 'goods-image'
+        accessKeyId: 'fKjYsWXmOd7MHG4I',
+        accessKeySecret: 'DTAJNaALuE6MErpVrC5y3l7tYxGUPd',
+        bucket: 'products-image'
     });
     document.getElementById('file').addEventListener('change', function (e) {
         var file = e.target.files[0];
-        var storeAs = '/Avater/User/iShow/'+$("#CORPID").val().trim()+'.jpg';
+        var storeAs = '/Corp_logo/ishow/'+$("#CORPID").val().trim()+'.jpg';
         console.log(file.name + ' => ' + storeAs);
         client.multipartUpload(storeAs, file).then(function (result) {
             console.log(result);
         }).catch(function (err) {
             console.log(err);
         });
-    });
-    client.list({
-        'max-keys': 10
-    }).then(function (result) {
-        console.log(result);
-    }).catch(function (err) {
-        console.log(err);
     });
 });
