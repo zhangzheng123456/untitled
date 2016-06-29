@@ -26,7 +26,7 @@ var oc = new ObjectControl();
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"商品编号为必填项，支持以大写B开头必须是4位数字的组合！");
+				this.displayHint(hint,"商品编号为必填项，支持以大写G开头必须是4位数字的组合！");
 				return false;
 			}
 		}else{
