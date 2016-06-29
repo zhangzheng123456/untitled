@@ -1,11 +1,13 @@
 package com.bizvane.ishop.controller;
 
+import IceInternal.Ex;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.*;
+import com.bizvane.sun.v1.common.Data;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -41,58 +43,79 @@ public class LoginController {
 
     @RequestMapping(value = "/")
     public String index(HttpServletRequest request) {
-        String role_code = request.getSession().getAttribute("role_code").toString();
-        System.out.println(role_code);
         String home = "";
-        if (role_code.equals(Common.ROLE_SYS)){
-            home = "home/index_admin";
-        }else if(role_code.equals(Common.ROLE_GM)){
-            home = "home/index_gm";
-        }else if(role_code.equals(Common.ROLE_AM)){
-            home = "home/index_am";
-        }else if(role_code.equals(Common.ROLE_STAFF)){
-           home = "home/index_staff";
-        }else {
-            home = "login";
-        }
-        System.out.println(home);
+        try {
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            System.out.println(role_code);
 
-        return home;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                home = "home/index_admin";
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                home = "home/index_gm";
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                home = "home/index_am";
+            } else if (role_code.equals(Common.ROLE_STAFF)) {
+                home = "home/index_staff";
+            } else {
+                home = "login";
+            }
+            System.out.println(home);
+
+            return home;
+        } catch (Exception ex) {
+            log.info(ex.getMessage());
+        }
+        return "";
     }
 
     @RequestMapping(value = "/login")
     public String loginIndex(HttpServletRequest request) {
-        request.getSession().removeAttribute("user_id");
-        request.getSession().removeAttribute("role_code");
-        request.getSession().removeAttribute("group_code");
-        request.getSession().removeAttribute("corp_code");
-        request.getSession().removeAttribute("store_code");
-        request.getSession().removeAttribute("menu");
-
-        return "login";
+        try {
+            request.getSession().removeAttribute("user_id");
+            request.getSession().removeAttribute("role_code");
+            request.getSession().removeAttribute("group_code");
+            request.getSession().removeAttribute("corp_code");
+            request.getSession().removeAttribute("store_code");
+            request.getSession().removeAttribute("menu");
+            return "login";
+        } catch (Exception ex) {
+            log.info(ex.getMessage());
+        }
+        return "";
     }
 
     @RequestMapping(value = "/home/login")
     public String loginHome(HttpServletRequest request) {
-        request.getSession().removeAttribute("user_id");
-        request.getSession().removeAttribute("role_code");
-        request.getSession().removeAttribute("group_code");
-        request.getSession().removeAttribute("corp_code");
-        request.getSession().removeAttribute("store_code");
-        request.getSession().removeAttribute("menu");
+        try {
+            request.getSession().removeAttribute("user_id");
+            request.getSession().removeAttribute("role_code");
+            request.getSession().removeAttribute("group_code");
+            request.getSession().removeAttribute("corp_code");
+            request.getSession().removeAttribute("store_code");
+            request.getSession().removeAttribute("menu");
 
-        return "login";
+            return "login";
+        } catch (Exception ex) {
+            log.info(ex.getMessage());
+        }
+        return "";
     }
+
     @RequestMapping(value = "/login_out")
     public String loginOut(HttpServletRequest request) {
-        request.getSession().removeAttribute("user_id");
-        request.getSession().removeAttribute("role_code");
-        request.getSession().removeAttribute("group_code");
-        request.getSession().removeAttribute("corp_code");
-        request.getSession().removeAttribute("store_code");
-        request.getSession().removeAttribute("menu");
+        try {
+            request.getSession().removeAttribute("user_id");
+            request.getSession().removeAttribute("role_code");
+            request.getSession().removeAttribute("group_code");
+            request.getSession().removeAttribute("corp_code");
+            request.getSession().removeAttribute("store_code");
+            request.getSession().removeAttribute("menu");
 
-        return "login";
+            return "login";
+        } catch (Exception ex) {
+            log.info(ex.getMessage());
+        }
+        return "";
     }
 
     /**
@@ -127,6 +150,7 @@ public class LoginController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -138,23 +162,30 @@ public class LoginController {
     @ResponseBody
     public String getAuthCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String param = request.getParameter("param");
-        log.info("json--authcode-------------" + param);
-        JSONObject jsonObj = new JSONObject(param);
-        id = jsonObj.get("id").toString();
-        String message = jsonObj.get("message").toString();
-        JSONObject jsonObject = new JSONObject(message);
-        String phone = jsonObject.get("PHONENUMBER").toString();
-        System.out.println(phone);
-        String msg = userService.getAuthCode(phone, "网页注册");
-        if (msg.equals(Common.DATABEAN_CODE_SUCCESS)) {
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
-        } else {
+        try {
+            String param = request.getParameter("param");
+            log.info("json--authcode-------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String phone = jsonObject.get("PHONENUMBER").toString();
+            System.out.println(phone);
+            String msg = userService.getAuthCode(phone, "网页注册");
+            if (msg.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("fail");
+            }
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage("fail");
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -188,6 +219,7 @@ public class LoginController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -239,6 +271,7 @@ public class LoginController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             ex.printStackTrace();
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -261,20 +294,21 @@ public class LoginController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             User user = userService.getUserById(Integer.parseInt(user_id));
-            menu = functionService.selectAllFunctions(corp_code+user_code,corp_code+group_code, role_code);
+            menu = functionService.selectAllFunctions(corp_code + user_code, corp_code + group_code, role_code);
             request.getSession().setAttribute("menu", menu);
-            menus.put("menu",menu);
-            menus.put("user_type",user_type);
-            menus.put("role_code",role_code);
-            menus.put("avatar",user.getAvatar());
-            menus.put("user_name",user.getUser_name());
+            menus.put("menu", menu);
+            menus.put("user_type", user_type);
+            menus.put("role_code", role_code);
+            menus.put("avatar", user.getAvatar());
+            menus.put("user_name", user.getUser_name());
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
