@@ -1,5 +1,6 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.VIPRelation;
@@ -74,9 +75,16 @@ public class WebController {
                     String guider_code = entity.getGuider_code();
                     String corp_code = corpService.getCorpByAppUserName(app_user_name).getCorp_code();
                     String store_code = userService.userCodeExist(guider_code,corp_code).getStore_code();
+                    String[] ids = store_code.split(",");
+                    String code = "";
+                    JSONArray array = new JSONArray();
+                    for (int i = 0; i < ids.length; i++) {
+                        ids[i] = ids[i].substring(1, ids[i].length());
+                        array.add(ids[i]);
+                    }
                     JSONObject obj = new JSONObject();
                     obj.put("emp_code",guider_code);
-                    obj.put("store_code",store_code);
+                    obj.put("store_code",array);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setMessage(obj.toString());
                 }
