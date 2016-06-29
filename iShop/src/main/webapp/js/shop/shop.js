@@ -246,7 +246,7 @@ jQuery(document).ready(function(){
 	}else{
 		getcorplist();
 	}
-	$("input[verify='Code']").blur(function(){
+	$("#STORE_ID").blur(function(){
     	var _params={};
     	var store_code=$(this).val();//店仓编号
     	var store_code1=$(this).attr("data-name");//标志
