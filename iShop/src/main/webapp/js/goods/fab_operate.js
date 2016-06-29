@@ -333,7 +333,7 @@ jQuery(document).ready(function(){
     	var goods_name1=$("#GOODS_NAME").attr("data-name");
     	var div=$(this).next('.hint').children();
     	var corp_code=$("#OWN_CORP").val();
-    	if(brand_name!==""&&brand_name!==brand_name1){
+    	if(goods_name!==""&&goods_name!==goods_name1){
 	    	var _params={};
 	    	_params["goods_name"]=goods_name;
 	    	_params["corp_code"]=corp_code;
