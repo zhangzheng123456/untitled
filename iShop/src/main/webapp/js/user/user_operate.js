@@ -535,7 +535,7 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
 	//验证编号是否唯一的方法
-	$("input[verify='Code']").blur(function(){
+	$("#USERID").blur(function(){
     	var _params={};
     	var user_code=$(this).val();//员工编号
     	var corp_code=$("#OWN_CORP").val();//公司编号

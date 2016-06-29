@@ -412,6 +412,15 @@ $("#search").keydown(function() {
 		POST();
 	}
 });
+//点击放大镜触发搜索
+$("#d_search").click(function(){
+    value=$("#search").val().replace(/\s+/g,"");
+    param["searchValue"]=value;
+    param["pageNumber"]=inx;
+    param["pageSize"]=pageSize;
+    param["funcCode"]=funcCode;
+    POST();
+})
 //搜索的请求函数
 function POST(){
 	oc.postRequire("post","/user/search","0",param,function(data){

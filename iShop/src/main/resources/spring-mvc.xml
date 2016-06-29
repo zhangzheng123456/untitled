@@ -88,6 +88,7 @@
         <mvc:exclude-mapping path="/register_account.html"/>
         <mvc:exclude-mapping path="/phone_exist"/>
         <mvc:exclude-mapping path="/userlogin"/>
+        <mvc:exclude-mapping path="/api/getviprelation"/>
         <bean class="com.bizvane.ishop.interceptor.SpringMVCInterceptor"/>
     </mvc:interceptor>
         <!--定义本地化变更拦截器-->

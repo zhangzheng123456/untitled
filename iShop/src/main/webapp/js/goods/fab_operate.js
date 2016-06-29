@@ -19,21 +19,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	fabjs.checkCode=function(obj,hint){
-		var isCode=/^[G]{1}[0-9]{4}$/;
-		if(!this.isEmpty(obj)){
-			if(isCode.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"商品编号为必填项，支持以大写G开头必须是4位数字的组合！");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
 	fabjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -306,14 +291,13 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[G]{1}[0-9]{4}$/;
+	$("#GOODS_CODE").blur(function(){
     	var _params={};
     	var goods_code=$(this).val();
     	var corp_code=$("#OWN_CORP").val();
     	var goods_code1=$(this).attr("data-name");
-		if(goods_code!==""&&goods_code!==goods_code1&&isCode.test(goods_code)==true){
-			_params["goods_code"]=brand_code;
+		if(goods_code!==""&&goods_code!==goods_code1){
+			_params["goods_code"]=goods_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
 			oc.postRequire("post","/goods/FabCodeExist","", _params, function(data){

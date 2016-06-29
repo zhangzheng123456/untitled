@@ -155,7 +155,7 @@ public class UserController {
             user.setCorp_code(corp_code);
             user.setGroup_code(jsonObject.get("group_code").toString());
             String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.equals("all")){
+            if (!store_code.equals("all")  && !store_code.equals("")){
                 String[] codes = store_code.split(",");
                 store_code = "";
                 for (int i = 0; i < codes.length; i++) {
@@ -223,7 +223,7 @@ public class UserController {
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setGroup_code(jsonObject.get("group_code").toString());
             String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.equals("all")){
+            if (!store_code.equals("all") && !store_code.equals("")){
                 String[] codes = store_code.split(",");
                 store_code = "";
                 for (int i = 0; i < codes.length; i++) {
@@ -231,7 +231,6 @@ public class UserController {
                     store_code = store_code+codes[i];
                 }
             }
-
             user.setStore_code(store_code);
             Date now = new Date();
             user.setModified_date(Common.DATETIME_FORMAT.format(now));

@@ -165,4 +165,7 @@ public class CorpServiceImpl implements CorpService {
         return 0;
     }
 
+    public Corp getCorpByAppUserName(String app_user_name){
+        return corpMapper.selectByAppUserName(app_user_name);
+    }
 }
