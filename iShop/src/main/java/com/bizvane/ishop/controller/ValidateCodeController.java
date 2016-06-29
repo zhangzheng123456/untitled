@@ -9,7 +9,6 @@ import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
-import com.google.gson.GsonBuilder;
 import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Colour;
@@ -27,7 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -256,15 +254,11 @@ public class ValidateCodeController {
             for (int i = 0; i < validateCodes.size(); i++) {
                 List<String> temp = new ArrayList<String>();
                 for (int j = 0; j < cols.length; j++) {
-
                     String aa = array.getJSONObject(i).get(cols[j]).toString();
                     temp.add(aa);
                 }
                 lists.add(temp);
             }
-
-
-
             //------------------------开启响应头---------------------------------------
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             //设置响应的字符集
@@ -296,10 +290,6 @@ public class ValidateCodeController {
                     String str2 = m.toString();
                     str2=str2.substring(1,str2.length()-1);
                     String[] split = str2.split(",");
-//                    List<String> slist = new ArrayList<String>();
-//                    Collections.addAll(slist,split);
-                   //System.out.println(str2+"======");
-                   // Map map= (Map) slist;
                     for (int j=0;j<split.length;j++) {
                         Label lb = null;
                         System.out.println(split[j]+"------");
@@ -311,32 +301,7 @@ public class ValidateCodeController {
                         sheet.addCell(lb);
                     }
                 i++;
-            }  //1  在servlet上获得out对象：
-//            PrintWriter out = response.getWriter();
-//            //2  打印标签
-//            out.print("<table>");
-//            out.print("<tr>");
-//            for(int i=0;i<cols.length;i++){
-//                out.print("<td>");
-//                out.print(cols[i]);
-//                out.print("</td>");
-//            }
-//            out.print("</tr>");
-//            for (List<String> m : lists) {
-//                String str2 = m.toString();
-//                String[] split = str2.split(",");
-//                    out.print("<tr>");
-//                for (int i=0;i<split.length;i++) {
-//                    out.print("<td>");
-//                    out.print(split[i]);
-//                    out.print("</td>");
-//                }
-//                    out.print("</tr>");
-//
-//            }
-//            out.print("</table>");
-//            out.flush();
-//            out.close();
+            }
             //写入文件
             book.write();
             //写入结束
