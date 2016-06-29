@@ -19,15 +19,14 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	fabjs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
+	fabjs.checkCode=function(obj,hint){
+		var isCode=/^[G]{1}[0-9]{4}$/;
 		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
+			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
+				this.displayHint(hint,"商品编号为必填项，支持以大写B开头必须是4位数字的组合！");
 				return false;
 			}
 		}else{
@@ -253,7 +252,9 @@ jQuery(document).ready(function(){
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#GOODS_CODE").val(msg.goods_code);
+				$("#GOODS_CODE").attr("data-name",msg.goods_code);//编辑的时候code区分
 				$("#GOODS_NAME").val(msg.goods_name);
+				$("#GOODS_NAME").attr("data-name",msg.goods_name);//编辑的时候名称的区分
 				$("#GOODS_PRICE").val(msg.goods_price);
 				$("#GOODS_QUARTER").val(msg.goods_quarter);
 				$("#GOODS_BAND").val(msg.goods_wave);
@@ -305,6 +306,49 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
+	$("input[verify='Code']").blur(function(){
+    	var isCode=/^[G]{1}[0-9]{4}$/;
+    	var _params={};
+    	var goods_code=$(this).val();
+    	var corp_code=$("#OWN_CORP").val();
+    	var goods_code1=$(this).attr("data-name");
+		if(goods_code!==""&&goods_code!==goods_code1&&isCode.test(goods_code)==true){
+			_params["goods_code"]=brand_code;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/goods/FabCodeExist","", _params, function(data){
+	               if(data.code=="0"){
+	                    div.html("");
+	                    $("#GOODS_CODE").attr("data-mark","Y");
+	               }else if(data.code=="-1"){
+	               		$("#GOODS_CODE").attr("data-mark","N");
+	               		div.addClass("error_tips");
+						div.html("该编号已经存在！");	
+	               }
+		    })
+		}
+    })
+    $("#GOODS_NAME").blur(function(){
+    	var goods_name=$("#GOODS_NAME").val();
+    	var goods_name1=$("#GOODS_NAME").attr("data-name");
+    	var div=$(this).next('.hint').children();
+    	var corp_code=$("#OWN_CORP").val();
+    	if(brand_name!==""&&brand_name!==brand_name1){
+	    	var _params={};
+	    	_params["goods_name"]=goods_name;
+	    	_params["corp_code"]=corp_code;
+	    	oc.postRequire("post","/goods/FabNameExist","", _params, function(data){
+	            if(data.code=="0"){
+	            	div.html("");
+	            	$("#GOODS_NAME").attr("data-mark","Y");
+	            }else if(data.code=="-1"){
+	            	div.html("该名称已经存在！")
+	            	div.addClass("error_tips");
+	            	$("#GOODS_NAME").attr("data-mark","N");
+	            }
+	    	})
+	    }
+    })
 	$(".fabadd_oper_btn ul li:nth-of-type(2").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
