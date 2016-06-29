@@ -83,6 +83,7 @@ public class StoreAchvGoalController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(e.getMessage());
             e.printStackTrace();
+            logger.info(e.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -144,6 +145,7 @@ public class StoreAchvGoalController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             ex.printStackTrace();
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -179,6 +181,7 @@ public class StoreAchvGoalController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(Common.DATABEAN_CODE_ERROR);
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -242,6 +245,7 @@ public class StoreAchvGoalController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -275,6 +279,7 @@ public class StoreAchvGoalController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -315,6 +320,7 @@ public class StoreAchvGoalController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

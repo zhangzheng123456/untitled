@@ -13,6 +13,7 @@ import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -51,7 +52,7 @@ public class VIPController {
     private VipCallbackRecordService vipCallbackRecordService;
     @Autowired
     private VipTagTypeService vipTagTypeService;
-
+    private static final Logger log = Logger.getLogger(LoginController.class);
 
     /**
      * 会员列表
@@ -87,6 +88,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -134,6 +136,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -169,6 +172,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error !!! ");
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -201,6 +205,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -241,6 +246,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -283,6 +289,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -319,6 +326,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -356,6 +364,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error !!! ");
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -388,6 +397,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -428,6 +438,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -460,6 +471,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -503,6 +515,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -538,6 +551,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -573,6 +587,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -613,6 +628,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -653,6 +669,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -692,6 +709,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -729,6 +747,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -761,6 +780,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -803,6 +823,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -844,6 +865,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -877,6 +899,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -914,6 +937,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -946,6 +970,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -984,6 +1009,7 @@ public class VIPController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -1015,6 +1041,7 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
