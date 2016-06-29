@@ -716,25 +716,28 @@ public class UserController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
+            logger.info("------------UserController creatQrcode"+jsString);
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String user_code = jsonObject.get("user_code").toString();
             Corp corp = corpService.selectByCorpId(0, corp_code);
-            String auth_appid = corp.getApp_id();
             String is_authorize = corp.getIs_authorize();
-            if (auth_appid != null && auth_appid != "") {
+            if (corp.getApp_id() != null && corp.getApp_id() != "") {
+                String auth_appid = corp.getApp_id();
                 if (is_authorize.equals("Y")) {
                     String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&guider_code=" + user_code;
                     String result = IshowHttpClient.get(url);
+                    logger.info("------------creatQrcode  result"+result);
+
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
                     User user = userService.userCodeExist(user_code,corp_code);
                     user.setQrcode(picture);
                     user.setQrcode_url(qrcode_url);
-                    userService.update(user);
+                    userService.updateUser(user);
                     dataBean.setId(id);
                     dataBean.setMessage(picture);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
