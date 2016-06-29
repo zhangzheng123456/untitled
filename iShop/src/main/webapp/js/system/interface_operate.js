@@ -81,7 +81,7 @@ var oc = new ObjectControl();
 				return;
 			}
 		});
-	};r
+	};
 	interfacejs.ajaxSubmit=function(_command,_params,opt){
 		// console.log(JSON.stringify(_params));
 		// _params=JSON.stringify(_params);
