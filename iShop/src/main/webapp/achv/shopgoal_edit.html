@@ -17,12 +17,13 @@
         body{
             margin-top:81px;
         }
+        #corp_select .searchable-select-items div:nth-of-type(1){
+          display:none;
+        }
     </style>
 </head>
 
 <body>
-    <!-- <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="col-lg-12 pre_title">业绩管理<i class="icon-ishop_8-03"></i>店铺业绩目标<i class="icon-ishop_8-03"></i><label>编辑店铺业绩目标</label></div>
             <div class="editor_em col-lg-7  animated fadeInRight">
@@ -44,7 +45,7 @@
                             </li>
                         </ul>
                     </div>
-                   <!--  <div>
+                    <div>
                         <ul style="display:inline-flex;">
                             <li><label>店铺名称</label></li>
                             <li id="shop_select">
@@ -55,9 +56,9 @@
                                 </span>
                             </li>
                         </ul>
-                    </div> -->
+                    </div>
                     <div>
-                        <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
+                        <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
                     </div>
                     <div class="drop_down item_1" id="drop_down">
                         <span><label>时间类型</label><input class="input_select" type="text" id="TIME_TYPE" value="日" readonly/>

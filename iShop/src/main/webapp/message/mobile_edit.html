@@ -33,7 +33,7 @@
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属企业*</label></li>
-                            <li>
+                            <li id="corp_select">
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex;">
                                         <option value="-1">请选择所属企业</option>
@@ -43,29 +43,18 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label>模板编号</label><input type="text" id="MOBAN_ID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板编号不能为空！"></div></div></span>
+                         <span><label>模板编号</label><input type="text" id="MOBAN_ID" verify="Code"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板编号为必填项，支持以大写M开头必须是4位数字的组合！"></div></div></span>
                     </div>
                     <div>
                         <span><label>模板名称</label><input type="text" id="MOBAN_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板名称不能为空！"></div></div></span>
                     </div>
-                    <!-- <div class="drop_down item_1">
-                        <span><label>模板类型</label><input class="input_select" id="MOBAN_TYPE" type="text" placeholder="请选择模板类型" readonly/>
-                            <ul>
-                                <li>祝福</li>
-                                <li>通知</li>
-                            </ul>
-                        </span>
-                    </div> -->
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label>模板类型</label></li>
-                            <li>
-                                <span class="corp_select">
+                            <li id="type_select">
+                                <span class="message_type_select" id="corp_html">
                                     <select id="MOBAN_TYPE" style="display:inline-flex;">
-                                        <option value="-1">模板类型1</option>
-                                        <option value="-1">模板类型2</option>
-                                        <option value="-1">模板类型3</option>
-                                        <option value="-1">模板类型4</option>
+                                        <option value="-1">1</option>
                                     </select>
                                 </span>
                             </li>
@@ -121,14 +110,6 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <script type="text/javascript" src="../js/message/mobile_operate.js"></script>
-   <!--  <script type="text/javascript">
-        $(function(){
-            $('#side-menu li:nth-of-type(7)').addClass('active');
-            $('.active ul').addClass('in');
-            $('.active ul li:nth-of-type(2)').addClass('select_index');
-            $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
-        })
-    </script> -->
 </body>
 
 </html>

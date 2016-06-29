@@ -23,13 +23,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
 /**
  * Created by yin on 2016/6/23.
  */
@@ -246,7 +244,7 @@ public class ValidateCodeController {
         try {
             List<ValidateCode> validateCodes = validateCodeService.selectAll();
             //这个相当于前台传过来的字段
-            String[] cols = {"id", "phone","platform"};
+            String[] cols = {"id", "phone", "platform"};
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", validateCodes);
             org.json.JSONArray array = jsonObject.getJSONArray("list");
@@ -263,8 +261,8 @@ public class ValidateCodeController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
             //设置响应的字符集
             response.setContentType("application/vnd.ms-excel;charset=utf-8");
-            String name = URLEncoder.encode("报表_"+sdf.format(new Date())+".xls", "UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename="+name);
+            String name = URLEncoder.encode("报表_" + sdf.format(new Date()) + ".xls", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + name);
             //创建excel空白文档
             WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
             WritableSheet sheet = book.createSheet("报表", 0);
@@ -285,21 +283,21 @@ public class ValidateCodeController {
             format2.setAlignment(Alignment.CENTRE);
             format2.setVerticalAlignment(VerticalAlignment.CENTRE);
             format2.setShrinkToFit(false);
-            int i=0;
+            int i = 0;
             for (List<String> m : lists) {
-                    String str2 = m.toString();
-                    str2=str2.substring(1,str2.length()-1);
-                    String[] split = str2.split(",");
-                    for (int j=0;j<split.length;j++) {
-                        Label lb = null;
-                        System.out.println(split[j]+"------");
-                        if(split[j]!=null){
-                            lb=new Label(j,i+1,split[j],format2);
-                        }else{
-                            lb = new Label(j, i+1, "", format2);
-                        }
-                        sheet.addCell(lb);
+                String str2 = m.toString();
+                str2 = str2.substring(1, str2.length() - 1);
+                String[] split = str2.split(",");
+                for (int j = 0; j < split.length; j++) {
+                    Label lb = null;
+                    System.out.println(split[j] + "------");
+                    if (split[j] != null) {
+                        lb = new Label(j, i + 1, split[j], format2);
+                    } else {
+                        lb = new Label(j, i + 1, "", format2);
                     }
+                    sheet.addCell(lb);
+                }
                 i++;
             }
             //写入文件
@@ -319,3 +317,4 @@ public class ValidateCodeController {
 
     }
 }
+

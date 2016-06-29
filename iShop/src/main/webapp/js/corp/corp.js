@@ -391,10 +391,10 @@ $("#delete").click(function(){
                frame();
                $('.frame').html('删除成功');
                POST();
-            }else if(data.code=="-1"){
-                frame();
-                $('.frame').html(data.message);
             }
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html(data.message);
         }
     })
 })

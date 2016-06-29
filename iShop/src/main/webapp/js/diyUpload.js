@@ -336,7 +336,8 @@
 			//生成预览缩略图;
 			webUploader.makeThumb( file, function( error, dataSrc ) {
 				if ( !error ) {
-					$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" />');
+					var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/'+$("#GOODS_CODE").val()+'/'+file.name.replace(/,/g,'');
+					$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" data-name="'+storeAs+'"/>');
 			    }
 			});
 	}
