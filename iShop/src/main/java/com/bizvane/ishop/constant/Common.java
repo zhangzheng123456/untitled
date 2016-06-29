@@ -44,4 +44,5 @@ public class Common {
     //时间类型（年）
     public static final String TIME_TYPE_YEAR = "年";
 
+    public static final String STORE_HEAD = "§";
 }
