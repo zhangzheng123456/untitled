@@ -157,4 +157,10 @@ public class AreaServiceImpl implements AreaService {
         return list;
     }
 
+    @Override
+    public Area selAreaByCorp(String corp_code, String area_code, String isactive) {
+        return areaMapper.selAreaByCorp(corp_code,area_code,isactive);
+    }
+
+
 }

@@ -179,4 +179,14 @@
         select * from DEF_AREA
         WHERE corp_code=#{corp_code}
     </select>
+    <!--根据企业code和用户登录时得到的区域code查找所属的区域-->
+    <select id="selAreaByCorp" resultType="com.bizvane.ishop.entity.Area">
+        select *
+        from DEF_AREA
+        where CORP_CODE = #{corp_code}
+        AND area_code = #{area_code}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
+    </select>
 </mapper>

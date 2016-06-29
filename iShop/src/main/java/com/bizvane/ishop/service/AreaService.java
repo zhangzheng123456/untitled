@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.List;
@@ -30,4 +31,8 @@ public interface AreaService {
     Area getAreaByName(String corp_code, String area_name);
 
     List<Area> getAreaByCorp(String corp_code);
+
+    Area selAreaByCorp(String corp_code,String area_code,String isactive);
+
+
 }
