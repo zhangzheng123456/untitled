@@ -349,10 +349,12 @@ jQuery(document).ready(function(){
     });
     $(document).click(function(e){
 	    $("#OWN_AREA").parent().children('ul').css("display","none");
+	    if($(e.target).is('#brand_data')||$(e.target).is('#OWN_BRAND')||$(e.target).is('.checkboxselect-item')||$(e.target).is('.checkboxselect-item input')){
+	    	return;
+	    }else{
+	    	$("#OWN_BRAND").parent().children("#brand_data").css("display","none");
+	    }
 	});
-    // $("#OWN_BRAND").parent().children(".down_icon").click(function() {
-    // 	$("#OWN_BRAND").parent().children("#brand_data").toggle();
-    // });
     var brandname=[];
 	$("#brand_data").remove();
 	var brand_param={"corp_code":$("#OWN_CORP").val()};
