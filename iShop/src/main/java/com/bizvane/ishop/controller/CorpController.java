@@ -192,7 +192,7 @@ public class CorpController {
             if (flag) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("企业" + corp_id + "下有未处理的区域，请先处理区域！！！");
+                dataBean.setMessage("企业" + corp_id + "下有未处理的区域，请先处理区域！");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

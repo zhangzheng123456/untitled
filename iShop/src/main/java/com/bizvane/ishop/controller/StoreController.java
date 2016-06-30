@@ -239,6 +239,8 @@ public class StoreController {
                 String store_code = store.getStore_code();
                 String corp_code = store.getCorp_code();
                 List<User> user = storeService.getStoreUser(corp_code, store_code);
+
+
                 if (user.size() == 0) {
                     storeService.delete(Integer.valueOf(ids[i]));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
