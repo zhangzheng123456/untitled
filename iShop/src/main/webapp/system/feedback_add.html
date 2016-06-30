@@ -24,15 +24,10 @@
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>用户反馈<i class="icon-ishop_8-03"></i><label>反馈详情</label></div>
             <div class="editor_em col-lg-7  animated fadeInRight">
-                <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div>
                 <form class="conpany_msg">
                     <div>
                         <span><label style="color:#c26555;">用户ID*</label><input type="text" id="USER_CODE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="用户ID不能为空！"></div></div></span>
-                    </div>
+                    </div> 
                     <div>
                         <span><label>反馈时间</label><input type="text" id="FEEDBACK_DATE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="反馈时间不能为空！"></div></div></span>
                     </div>
@@ -53,25 +48,13 @@
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="operedit_btn">
+                <div class="operadd_btn">
                     <ul>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
                  <form class="msg_detail">
-                    <div>
-                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
-                    </div>
                     <div>
                     <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
@@ -87,13 +70,14 @@
     <script src="../js/hplus.js?v=2.2.0"></script>
     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
-
+    <!-- Dialog -->
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+    <!-- error tips -->
     <script type="text/javascript" src="../js/system/feedback_operate.js"></script>
 </body>
 
