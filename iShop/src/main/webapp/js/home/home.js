@@ -48,6 +48,7 @@ $(function(){
                 content: data.message
             });
         }
+        //li被点击时的样式切换
         $("#side-menu li").click(function(){
             if($(this).children('ul').children('li').length>0){
                 $(this).children('ul').slideToggle();
@@ -58,6 +59,7 @@ $(function(){
         });
     });
 });
+//退出按钮
 function login_out(){
     // var _command="/login_out";
     // oc.postRequire("get", _command,"", "", function(data){

@@ -307,7 +307,7 @@ jQuery(document).ready(function(){
 	               }else if(data.code=="-1"){
 	               		$("#GOODS_CODE").attr("data-mark","N");
 	               		div.addClass("error_tips");
-						div.html("该编号已经存在！");	
+						div.html("该编号已经存在！");
 	               }
 		    })
 		}
