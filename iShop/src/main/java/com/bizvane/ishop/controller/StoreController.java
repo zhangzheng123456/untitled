@@ -7,6 +7,12 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.github.pagehelper.PageInfo;
+import jxl.Workbook;
+import jxl.format.Alignment;
+import jxl.format.Colour;
+import jxl.format.UnderlineStyle;
+import jxl.format.VerticalAlignment;
+import jxl.write.*;
 import org.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +23,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
+import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,7 +58,8 @@ public class StoreController {
     private AreaService areaService;
     @Autowired
     private FunctionService functionService;
-
+    @Autowired
+    private TableManagerService managerService;
     /**
      * 店铺管理
      */
@@ -128,6 +139,10 @@ public class StoreController {
         return dataBean.getJsonStr();
 
     }
+
+
+
+
 
     /**
      * 新增
@@ -506,5 +521,119 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
+    }
+
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "getCols" ,method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request){
+        DataBean dataBean=new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code=jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers",JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex){
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/testword", method = RequestMethod.GET)
+    @ResponseBody
+    public String testword(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String user_id = jsonObject.get("user_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<Store> stores = storeService.selectAll(user_id, corp_code);
+            String column_name = jsonObject.get("column_name").toString();
+            String[] cols =column_name.split(",");//前台传过来的字段
+            JSONObject jsonObject2 = new JSONObject();
+            jsonObject2.put("list", stores);
+            org.json.JSONArray array = jsonObject2.getJSONArray("list");
+            List<List<String>> lists = new ArrayList<List<String>>();
+            for (int i = 0; i < stores.size(); i++) {
+                List<String> temp = new ArrayList<String>();
+                for (int j = 0; j < cols.length; j++) {
+                    String aa = array.getJSONObject(i).get(cols[j]).toString();
+                    temp.add(aa);
+                }
+                lists.add(temp);
+            }
+            //------------------------开启响应头---------------------------------------
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            //设置响应的字符集
+            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+            String name = URLEncoder.encode("报表_" + sdf.format(new Date()) + ".xls", "UTF-8");
+            response.setHeader("Content-Disposition", "attachment;filename=" + name);
+            //创建excel空白文档
+            WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
+            WritableSheet sheet = book.createSheet("报表", 0);
+            WritableFont font = new WritableFont(WritableFont.createFont("微软雅黑"), 18,
+                    WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
+            WritableCellFormat format = new WritableCellFormat(font);
+            format.setAlignment(Alignment.CENTRE);
+            format.setVerticalAlignment(VerticalAlignment.CENTRE);
+            for (int i = 0; i < cols.length; i++) {
+                sheet.setColumnView(i, 40);
+                Label label = new Label(i, 0, cols[i]);
+                label.setCellFormat(format);
+                sheet.addCell(label);
+            }
+            WritableFont font2 = new WritableFont(WritableFont.createFont("微软雅黑"), 15,
+                    WritableFont.NO_BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLUE);
+            WritableCellFormat format2 = new WritableCellFormat(font2);
+            format2.setAlignment(Alignment.CENTRE);
+            format2.setVerticalAlignment(VerticalAlignment.CENTRE);
+            format2.setShrinkToFit(false);
+            int i = 0;
+            for (List<String> m : lists) {
+                String str2 = m.toString();
+                str2 = str2.substring(1, str2.length() - 1);
+                String[] split = str2.split(",");
+                for (int j = 0; j < split.length; j++) {
+                    Label lb = null;
+                    System.out.println(split[j] + "------");
+                    if (split[j] != null) {
+                        lb = new Label(j, i + 1, split[j], format2);
+                    } else {
+                        lb = new Label(j, i + 1, "", format2);
+                    }
+                    sheet.addCell(lb);
+                }
+                i++;
+            }
+            //写入文件
+            book.write();
+            //写入结束
+            book.close();
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("word success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(e.getMessage());
+        }
+        return dataBean.getJsonStr();
+
     }
 }
