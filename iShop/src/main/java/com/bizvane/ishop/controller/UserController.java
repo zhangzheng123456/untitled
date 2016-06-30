@@ -357,8 +357,8 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String user_id = jsonObject.get("id").toString();
-
             data = JSON.toJSONString(userService.getUserById(Integer.parseInt(user_id)));
+            System.out.println(data.toString());
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
