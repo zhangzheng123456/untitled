@@ -339,11 +339,11 @@ jQuery(document).ready(function(){
 	});
 	//点击生成二维码
     $("#create").click(function(){
-    	var user_creat="/store/creatQrcode";
-    	var user_code=$('#STORE_ID').val();
+    	var user_creat="/shop/creatQrcode";
+    	var store_code=$('#STORE_ID').val();
     	var corp_code=$('#OWN_CORP').val();
     	var _params={};
-    	_params["user_code"]=user_code;
+    	_params["store_code"]=store_code;
     	_params["corp_code"]=corp_code;
     	oc.postRequire("post",user_creat,"", _params, function(data){
     		var message=data.message;
