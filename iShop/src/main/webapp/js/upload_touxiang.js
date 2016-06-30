@@ -56,8 +56,8 @@ function clacImgZoomParam(maxWidth, maxHeight, width, height) {
 $(function(){
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
-        accessKeyId: 'fKjYsWXmOd7MHG4I',
-        accessKeySecret: 'DTAJNaALuE6MErpVrC5y3l7tYxGUPd',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
         bucket: 'products-image'
     });
     document.getElementById('file').addEventListener('change', function (e) {
