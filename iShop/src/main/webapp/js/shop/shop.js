@@ -262,7 +262,7 @@ jQuery(document).ready(function(){
 	               }else if(data.code=="-1"){
 	               		$("#STORE_ID").attr("data-mark","N");
 	               		div.addClass("error_tips");
-						div.html("该编号已经存在！");	
+						div.html("该编号已经存在！");
 	               }
 		    })
 		}
@@ -289,9 +289,12 @@ jQuery(document).ready(function(){
 	    }
     })
 
-	$("#OWN_AREA").click(function(){
+	$("#OWN_AREA").click(function(event){
+		$("#OWN_BRAND").parent().children("#brand_data").css("display","none");
 		$("#area_select").html('');
-		 $(this).parent().children('ul').toggle();
+		event=event||window.event;
+    	event.stopPropagation();
+		$(this).parent().children('ul').toggle();
 		var area_param={"corp_code":$("#OWN_CORP").val()};
 		var area_command="/shop/area";
 		oc.postRequire("post", area_command,"",area_param, function(data){
@@ -315,7 +318,7 @@ jQuery(document).ready(function(){
 						area_html+='<li data-areacode="'+a.area_code+'">'+a.area_name+'</li>';
 					}
 					$("#area_select").append(area_html);
-					$("#area_select li").click(function(){
+					$("#area_select li").click(function(event){
 			            var this_=this;
 			            var txt = $(this_).text();
 			            var a_code=$(this_).data("areacode");
@@ -342,11 +345,16 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
 	$("#OWN_BRAND").click(function(){
-       $("#OWN_BRAND").parent().children("#brand_data").toggle();
-    })
-    $("#OWN_BRAND").parent().children(".down_icon").click(function() {
-    	$("#OWN_BRAND").parent().children("#brand_data").toggle();
+       	$("#OWN_BRAND").parent().children("#brand_data").toggle();
     });
+    $(document).click(function(e){
+	    $("#OWN_AREA").parent().children('ul').css("display","none");
+	    if($(e.target).is('#brand_data')||$(e.target).is('#OWN_BRAND')||$(e.target).is('.checkboxselect-item')||$(e.target).is('.checkboxselect-item input')){
+	    	return;
+	    }else{
+	    	$("#OWN_BRAND").parent().children("#brand_data").css("display","none");
+	    }
+	});
     var brandname=[];
 	$("#brand_data").remove();
 	var brand_param={"corp_code":$("#OWN_CORP").val()};
@@ -445,7 +453,7 @@ jQuery(document).ready(function(){
 							}
 						}
 					}
-					
+
 				}
 			}else if(data.code=="-1"){
 				art.dialog({

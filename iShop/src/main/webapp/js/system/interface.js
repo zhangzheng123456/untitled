@@ -201,7 +201,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].version
                         + "</td><td>"
-                        + data[i].crop_code
+                        + data[i].corp_code
                         + "</td><td><span>"
                         +data[i].modifier
                         + "</td><td>"
@@ -271,7 +271,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/syste/interface_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/system/interface_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -279,7 +279,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/syste/interface_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/system/interface_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -293,7 +293,7 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/syste/interface_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/system/interface_edit.html");
     })
     //删除
     $("#remove").click(function(){

@@ -100,7 +100,14 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
-
+    /***
+     * 获取页面的所有数据
+     *
+     */
+    @Override
+    public  List<Store> selectAll(String user_id,String corp_code){
+        return storeMapper.selectByUserId(user_id,corp_code,"");
+    }
     //店铺下所属用户
     public List<User> getStoreUser(String corp_code, String store_code) {
         List<User> user = userMapper.selectStoreUser(corp_code, store_code );
