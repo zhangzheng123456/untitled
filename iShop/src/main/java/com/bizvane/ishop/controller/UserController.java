@@ -158,10 +158,10 @@ public class UserController {
             //    String role_code = jsonObject.get("role_code").toString();
             Group group = groupService.selectByCode(user.getCorp_code(), user.getGroup_code(), "");
             String role_code = group.getRole_code();
-            if (role_code == Common.ROLE_SYS || role_code == Common.ROLE_GM) {
+            if (role_code.equals(Common.ROLE_SYS)  || role_code.equals(Common.ROLE_GM)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
             }
-            if(role_code==Common.ROLE_AM){
+            if(role_code.equals(Common.ROLE_AM)){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String area_code = jsonObject.get("area_code").toString();
                 if (!area_code.equals("all") && !area_code.equals("")) {
@@ -174,7 +174,7 @@ public class UserController {
                 }
                 user.setArea_code(area_code);
             }
-            if(role_code==Common.ROLE_SM || role_code==Common.ROLE_STAFF){
+            if(role_code.equals(Common.ROLE_SM)|| role_code.equals(Common.ROLE_STAFF)){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all") && !store_code.equals("")) {
@@ -245,10 +245,10 @@ public class UserController {
             user.setCorp_code(jsonObject.get("corp_code").toString());
 
             String role_code = jsonObject.get("role_code").toString();
-            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM) {
+            if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
             }
-            if(role_code==Common.ROLE_AM){
+            if(role_code.equals(Common.ROLE_AM)){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String area_code = jsonObject.get("area_code").toString();
                 if (!area_code.equals("all") && !area_code.equals("")) {
@@ -261,7 +261,7 @@ public class UserController {
                 }
                 user.setArea_code(area_code);
             }
-            if(role_code==Common.ROLE_SM||role_code==Common.ROLE_STAFF){
+            if(role_code.equals(Common.ROLE_SM)||role_code.equals(Common.ROLE_STAFF)){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all") && !store_code.equals("")) {
