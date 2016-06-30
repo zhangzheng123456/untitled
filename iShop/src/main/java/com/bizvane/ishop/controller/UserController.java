@@ -48,7 +48,8 @@ public class UserController {
     private CorpService corpService;
     @Autowired
     private GroupService groupService;
-
+    @Autowired
+    private AreaService areaService;
     String id;
 
 
@@ -153,17 +154,34 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
-            user.setGroup_code(jsonObject.get("group_code").toString());
-            String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.equals("all")  && !store_code.equals("")){
-                String[] codes = store_code.split(",");
-                store_code = "";
-                for (int i = 0; i < codes.length; i++) {
-                    codes[i] = Common.STORE_HEAD + codes[i] +",";
-                    store_code = store_code+codes[i];
+
+            String role_code = jsonObject.get("role_code").toString();
+            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+            }else if(role_code==Common.ROLE_AM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+                String area_code=jsonObject.get("area_code").toString();
+                if(!area_code.equals("all") &&  !area_code.equals("")){
+                    String[] areas = area_code.split(",");
+                    area_code="";
+                    for (int i=0;i<areas.length;i++){
+                        areas[i]=Common.STORE_HEAD + areas[i] +",";
+                        area_code=area_code+areas[i];
+                    }
                 }
+                user.setArea_code(area_code);
+            }else{
+                String store_code = jsonObject.get("store_code").toString();
+                if (!store_code.equals("all")  && !store_code.equals("")){
+                    String[] codes = store_code.split(",");
+                    store_code = "";
+                    for (int i = 0; i < codes.length; i++) {
+                        codes[i] = Common.STORE_HEAD + codes[i] +",";
+                        store_code = store_code+codes[i];
+                    }
+                }
+                user.setStore_code(store_code);
             }
-            user.setStore_code(store_code);
             user.setQrcode("");
             user.setPassword(user_code);
             Date now = new Date();
@@ -174,7 +192,6 @@ public class UserController {
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
-
             String result = userService.insert(user);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -222,16 +239,33 @@ public class UserController {
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setGroup_code(jsonObject.get("group_code").toString());
-            String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.equals("all") && !store_code.equals("")){
-                String[] codes = store_code.split(",");
-                store_code = "";
-                for (int i = 0; i < codes.length; i++) {
-                    codes[i] = Common.STORE_HEAD + codes[i] +",";
-                    store_code = store_code+codes[i];
+            String role_code = jsonObject.get("role_code").toString();
+            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+            }else if(role_code==Common.ROLE_AM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+                String area_code=jsonObject.get("area_code").toString();
+                if(!area_code.equals("all") &&  !area_code.equals("")){
+                    String[] areas = area_code.split(",");
+                    area_code="";
+                    for (int i=0;i<areas.length;i++){
+                        areas[i]=Common.STORE_HEAD + areas[i] +",";
+                        area_code=area_code+areas[i];
+                    }
                 }
+                user.setArea_code(area_code);
+            }else{
+                String store_code = jsonObject.get("store_code").toString();
+                if (!store_code.equals("all")  && !store_code.equals("")){
+                    String[] codes = store_code.split(",");
+                    store_code = "";
+                    for (int i = 0; i < codes.length; i++) {
+                        codes[i] = Common.STORE_HEAD + codes[i] +",";
+                        store_code = store_code+codes[i];
+                    }
+                }
+                user.setStore_code(store_code);
             }
-            user.setStore_code(store_code);
             Date now = new Date();
             user.setModified_date(Common.DATETIME_FORMAT.format(now));
             user.setModifier(user_id);
