@@ -19,6 +19,10 @@ public class Store {
     private String flg_tob;
     //公司编号
     private String corp_code;
+    //二维码图片地址
+    private String qrcode;
+    //二维码图片地址
+    private String qrcode_url;
     //修改时间
     private String modified_date;
     //修改人
@@ -100,6 +104,22 @@ public class Store {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
+    }
+
+    public String getQrcode_url() {
+        return qrcode_url;
+    }
+
+    public void setQrcode_url(String qrcode_url) {
+        this.qrcode_url = qrcode_url;
     }
 
     public String getModified_date() {

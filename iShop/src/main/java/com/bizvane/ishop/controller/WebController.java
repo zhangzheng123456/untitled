@@ -52,7 +52,7 @@ public class WebController {
             String app_user_name = request.getParameter("app_user_name");
             String open_id = request.getParameter("open_id");
             String app_key = request.getParameter("app_key");
-            logger.debug("input key=" + app_key + "app_user_name=" + app_user_name + "open_id" + open_id);
+            logger.info("input key=" + app_key + "app_user_name=" + app_user_name + "open_id" + open_id);
 
             if (app_key == null || app_key.equals("")) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

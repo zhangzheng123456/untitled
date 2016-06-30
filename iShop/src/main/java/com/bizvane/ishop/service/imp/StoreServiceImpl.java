@@ -195,6 +195,10 @@ public class StoreServiceImpl implements StoreService {
         return result;
     }
 
+    public int updateStore(Store store) throws SQLException{
+        return storeMapper.updateStore(store);
+    }
+
     //删除店铺
     @Override
     public int delete(int id) throws SQLException {

@@ -4,7 +4,7 @@
 
 
     <select id="selectVip" resultType="com.bizvane.ishop.entity.VIPRelation">
-       select * from rel_vip_guider
+       select * from rel_vip_emp
          where open_id = #{open_id}
          and app_user_name = #{app_user_name}
     </select>
