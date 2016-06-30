@@ -41,6 +41,16 @@ public class testLixixi {
     private MessageTemplateService messageTemplateService;
 
     @Test
+    public void test11() {
+        try {
+            Store store = storeService.getStoreById(112122);
+            System.out.println(store.getStore_name());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Test
     public void test1() {
         try {
             PageInfo<MessageTemplate> messageTemplates = this.messageTemplateService.selectBySearch(1, 10, "", "");
