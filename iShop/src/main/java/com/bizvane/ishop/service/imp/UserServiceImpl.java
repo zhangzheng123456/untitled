@@ -87,7 +87,7 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
-
+        System.out.println(user.toString());
         if (user.getStore_code() == null || user.getStore_code().equals("")) {
             user.setStore_code("");
             user.setStore_name("");
@@ -112,6 +112,15 @@ public class UserServiceImpl implements UserService {
             }
             user.setStore_name(store_name);
             user.setStore_code(store_code);
+        }
+        if(user.getArea_code()==null || user.getArea_code().equals("")){
+            user.setArea_code("");
+            user.setArea_name("");
+        }else {
+            if (!user.getArea_code().startsWith(Common.STORE_HEAD)){
+                ProcessStoreCode(user);
+            }
+            String corp_code = user.getCorp_code();
             String area_name="";
             String[] areaCodes=user.getArea_code().split(",");
             String areaCode="";
@@ -128,8 +137,8 @@ public class UserServiceImpl implements UserService {
             }
             user.setArea_code(areaCode);
             user.setArea_name(area_name);
-
         }
+        System.out.println(user.toString());
         return user;
     }
 
