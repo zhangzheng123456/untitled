@@ -43,6 +43,7 @@ public class User {
 	//是否可登录
 	private String can_login;
 	private String area_code;
+	private String area_name;
 	private String store_name;
 
 	private Group group;
@@ -50,6 +51,14 @@ public class User {
 	private Corp corp;
 
 	public User(){}
+
+	public String getArea_name() {
+		return area_name;
+	}
+
+	public void setArea_name(String area_name) {
+		this.area_name = area_name;
+	}
 
 	public User(int id){
 		this.id = id;

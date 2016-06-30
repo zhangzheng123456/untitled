@@ -146,6 +146,7 @@
         can_login,
         qrcode,
         DEF_USER.group_code,
+        DEF_USER.area_code,
         DEF_USER.corp_code,
         DEF_USER.modified_date,
         DEF_USER.modifier,
@@ -229,6 +230,7 @@
         store_code,
         DEF_USER.group_code,
         DEF_USER.corp_code,
+        DEF_USER.area_code,
         login_time_recently,
         DEF_USER.modified_date,
         DEF_USER.modifier,
@@ -318,6 +320,9 @@
             <if test="can_login != null">
                 can_login,
             </if>
+            <if test="area_code != null">
+                area_code,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="user_code!=null">
@@ -379,6 +384,9 @@
             </if>
             <if test="can_login != null">
                 #{can_login},
+            </if>
+            <if test="area_code != null">
+                #{area_code},
             </if>
         </trim>
     </insert>
@@ -445,6 +453,9 @@
             </if>
             <if test="can_login!=null and can_login!='' ">
                 can_login = #{can_login},
+            </if>
+            <if test="area_code!=null and area_code!='' ">
+                area_code = #{area_code},
             </if>
         </trim>
         WHERE ID = #{id};
