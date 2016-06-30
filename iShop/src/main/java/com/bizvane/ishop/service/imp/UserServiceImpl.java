@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.dao.GroupMapper;
 import com.bizvane.ishop.entity.*;
@@ -34,6 +35,8 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    AreaService areaService;
     @Autowired
     CorpMapper corpMapper;
     @Autowired
@@ -109,6 +112,23 @@ public class UserServiceImpl implements UserService {
             }
             user.setStore_name(store_name);
             user.setStore_code(store_code);
+            String area_name="";
+            String[] areaCodes=user.getArea_code().split(",");
+            String areaCode="";
+            for(int i=0;i<areaCodes.length;i++){
+                areaCodes[i]=areaCodes[i].substring(1,areaCodes[i].length());
+                Area area = areaService.selAreaByCorp(corp_code, areaCodes[i], "");
+                String area_name1 = area.getArea_name();
+                area_name=area_name+area_name1;
+                areaCode=areaCode+areaCodes[i];
+                if(i!=areaCodes.length-1){
+                    area_name=area_name+",";
+                    areaCode=areaCode+",";
+                }
+            }
+            user.setArea_code(areaCode);
+            user.setArea_name(area_name);
+
         }
         return user;
     }
