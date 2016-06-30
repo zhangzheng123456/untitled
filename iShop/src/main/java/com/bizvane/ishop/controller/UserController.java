@@ -154,19 +154,22 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
-            String role_code = jsonObject.get("role_code").toString();
-            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM){
+            user.setGroup_code(jsonObject.get("group_code").toString());
+            //    String role_code = jsonObject.get("role_code").toString();
+            Group group = groupService.selectByCode(user.getCorp_code(), user.getGroup_code(), "");
+            String role_code = group.getRole_code();
+            if (role_code == Common.ROLE_SYS || role_code == Common.ROLE_GM) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
             }
             if(role_code==Common.ROLE_AM){
                 user.setGroup_code(jsonObject.get("group_code").toString());
-                String area_code=jsonObject.get("area_code").toString();
-                if(!area_code.equals("all") &&  !area_code.equals("")){
+                String area_code = jsonObject.get("area_code").toString();
+                if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
-                    area_code="";
-                    for (int i=0;i<areas.length;i++){
-                        areas[i]=Common.STORE_HEAD + areas[i] +",";
-                        area_code=area_code+areas[i];
+                    area_code = "";
+                    for (int i = 0; i < areas.length; i++) {
+                        areas[i] = Common.STORE_HEAD + areas[i] + ",";
+                        area_code = area_code + areas[i];
                     }
                 }
                 user.setArea_code(area_code);
@@ -174,12 +177,12 @@ public class UserController {
             if(role_code==Common.ROLE_SM || role_code==Common.ROLE_STAFF){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
-                if (!store_code.equals("all")  && !store_code.equals("")){
+                if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
                     store_code = "";
                     for (int i = 0; i < codes.length; i++) {
-                        codes[i] = Common.STORE_HEAD + codes[i] +",";
-                        store_code = store_code+codes[i];
+                        codes[i] = Common.STORE_HEAD + codes[i] + ",";
+                        store_code = store_code + codes[i];
                     }
                 }
                 user.setStore_code(store_code);
@@ -240,19 +243,20 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
+
             String role_code = jsonObject.get("role_code").toString();
             if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
             }
             if(role_code==Common.ROLE_AM){
                 user.setGroup_code(jsonObject.get("group_code").toString());
-                String area_code=jsonObject.get("area_code").toString();
-                if(!area_code.equals("all") &&  !area_code.equals("")){
+                String area_code = jsonObject.get("area_code").toString();
+                if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
-                    area_code="";
-                    for (int i=0;i<areas.length;i++){
-                        areas[i]=Common.STORE_HEAD + areas[i] +",";
-                        area_code=area_code+areas[i];
+                    area_code = "";
+                    for (int i = 0; i < areas.length; i++) {
+                        areas[i] = Common.STORE_HEAD + areas[i] + ",";
+                        area_code = area_code + areas[i];
                     }
                 }
                 user.setArea_code(area_code);
@@ -260,12 +264,12 @@ public class UserController {
             if(role_code==Common.ROLE_SM||role_code==Common.ROLE_STAFF){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
-                if (!store_code.equals("all")  && !store_code.equals("")){
+                if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
                     store_code = "";
                     for (int i = 0; i < codes.length; i++) {
-                        codes[i] = Common.STORE_HEAD + codes[i] +",";
-                        store_code = store_code+codes[i];
+                        codes[i] = Common.STORE_HEAD + codes[i] + ",";
+                        store_code = store_code + codes[i];
                     }
                 }
                 user.setStore_code(store_code);
@@ -723,7 +727,7 @@ public class UserController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            logger.info("------------UserController creatQrcode"+jsString);
+            logger.info("------------UserController creatQrcode" + jsString);
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
@@ -734,14 +738,14 @@ public class UserController {
             if (corp.getApp_id() != null && corp.getApp_id() != "") {
                 String auth_appid = corp.getApp_id();
                 if (is_authorize.equals("Y")) {
-                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&guider_code=" + user_code;
+                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid="+auth_appid+"&prd=ishop&src=e&emp_id=" + user_code;
                     String result = IshowHttpClient.get(url);
-                    logger.info("------------creatQrcode  result"+result);
+                    logger.info("------------creatQrcode  result" + result);
 
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
-                    User user = userService.userCodeExist(user_code,corp_code);
+                    User user = userService.userCodeExist(user_code, corp_code);
                     user.setQrcode(picture);
                     user.setQrcode_url(qrcode_url);
                     Date now = new Date();
