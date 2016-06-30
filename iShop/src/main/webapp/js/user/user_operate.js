@@ -638,13 +638,13 @@ jQuery(document).ready(function(){
 						$("#OWN_STORE").val(area_lists[0]);
 						$("#OWN_STORE").attr("data-myscode",msg.area_code);
 					}else{
-						$("#OWN_STORE").val(store_lists[0]);
+						$("#OWN_STORE").val(area_lists[0]);
 						$("#OWN_STORE").attr("data-myscode",areacode_list[0]);
 						var html='';
 						for(var i=1;i<area_lists.length;i++){
 							html +='<div id="per_type">'
 						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
-						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+area_lists[i]+'"  value="'+area_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+areacode_list[i]+'"  value="'+area_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 						        +'<ul style="margin-left:0px">'
 						        +'</ul>'
 						        +'</span>'
