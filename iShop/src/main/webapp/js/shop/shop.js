@@ -287,8 +287,7 @@ jQuery(document).ready(function(){
 	            }
 	    	})
 	    }
-    })
-
+    });
 	$("#OWN_AREA").click(function(event){
 		$("#OWN_BRAND").parent().children("#brand_data").css("display","none");
 		$("#area_select").html('');
@@ -337,7 +336,25 @@ jQuery(document).ready(function(){
 				});
 			}
 		});
-	})
+	});
+	//点击生成二维码
+    $("#create").click(function(){
+    	var user_creat="/store/creatQrcode";
+    	var user_code=$('#STORE_ID').val();
+    	var corp_code=$('#OWN_CORP').val();
+    	var _params={};
+    	_params["user_code"]=user_code;
+    	_params["corp_code"]=corp_code;
+    	oc.postRequire("post",user_creat,"", _params, function(data){
+    		var message=data.message;
+    		if(data.code=="0"){
+    			$("#kuang").show();
+    			$('#kuang img').attr("src",message);
+    		}else if(data.code=="-1"){
+    			alert(data.message);
+    		}
+    	})
+    })
 	$(".shopadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
