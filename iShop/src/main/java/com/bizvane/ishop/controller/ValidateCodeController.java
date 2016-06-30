@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.ValidateCodeService;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import jxl.Sheet;
@@ -245,8 +246,8 @@ public class ValidateCodeController {
         DataBean dataBean = new DataBean();
         try {
             List<ValidateCode> validateCodes = validateCodeService.selectAll();
-            //这个相当于前台传过来的字段
             String[] cols = {"id", "phone", "platform"};
+            //这个相当于前台传过来的字段
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", validateCodes);
             org.json.JSONArray array = jsonObject.getJSONArray("list");
