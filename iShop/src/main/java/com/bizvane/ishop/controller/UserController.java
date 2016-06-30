@@ -243,6 +243,8 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
+         //   String role_code = jsonObject.get("role_code").toString();
+            user.setGroup_code(jsonObject.get("group_code").toString());
 
             String role_code = jsonObject.get("role_code").toString();
             if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
