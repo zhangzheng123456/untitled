@@ -185,8 +185,9 @@ var oc = new ObjectControl();
 				}else if(USER_SEX=="女"){
 					SEX="F";
 				}
-				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");//群组编号
+				var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 				var ISACTIVE="";
 				var input=$("#is_active")[0];
 				if(input.checked==true){
@@ -219,21 +220,37 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params = {
-					"id": ID,
-					"user_code": USERID,
-					"username": USER_NAME,
-					"avater": HEADPORTRAIT,
-					"phone": USER_PHONE,
-					"email": USER_EMAIL,
-					"sex": SEX,
-					"group_code": OWN_RIGHT,
-					"isactive": ISACTIVE,
-					"corp_code": OWN_CORP,
-					"store_code": STORE_CODE,
-					"password": PSW,
-					"can_login":can_login
-				};
+				var _params={};
+				_params["user_code"]=USERID;//员工编号
+				_params["username"]=USER_NAME;//员工名称
+				_params["avater"]=HEADPORTRAIT;//头像
+				_params["phone"]=USER_PHONE;//手机
+				_params["email"]=USER_EMAIL//邮箱
+				_params["sex"]=SEX//性别
+				_params["group_code"]=OWN_RIGHT;//群组编号
+				_params["role_code"]=r_code;//角色编号
+				_params["isactive"]=ISACTIVE;//是否可用
+				_params["corp_code"]=OWN_CORP;//公司编号
+				_params["can_login"]=can_login;//是否登录
+				_params["password"]=PSW;//密码
+				_params["id"]=ID;//ID
+				if(r_code=="R2000"){
+	            	_params["store_code"]=STORE_CODE;//店铺编号
+	            	_params["area_code"]="";//区域编号
+	            }else if(r_code=="R3000"){
+	            	_params["store_code"]=STORE_CODE;//店铺编号
+	            	_params["area_code"]="";//区域编号
+	            }else if(r_code=="R4000"){
+	            	_params["store_code"]=""//店铺编号
+	            	_params["area_code"]=STORE_CODE;//区域编号
+	            }
+	            else if(r_code=="R5000"){
+	            	_params["store_code"]=""//店铺编号
+	            	_params["area_code"]=""//区域编号
+	            }else if(r_code=="R6000"){
+	            	_params["store_code"]=""//店铺编号
+	            	_params["area_code"]=""//区域编号
+	            }
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -357,7 +374,7 @@ function role_data(c){
             var j_code=$(this_).data("jucode");
             $(this_).parent().parent().children(".input_select").val(txt);
             $(this_).parent().parent().children(".input_select").attr('data-myrcode',r_code);
-            $(this_).parent().parent().children(".input_select").attr('data-myjcode',j_code);
+            $(this_).parent().parent().children(".input_select").attr('data-myjcode',j_code);//角色编号
             $(this_).addClass('rel').siblings().removeClass('rel');
             if(j_code=="R2000"){
             	$('#sidename label').html("所属店铺");
@@ -398,7 +415,7 @@ function role_data(c){
         });
 	});
 }
-function store_li_list(p) {//店铺
+function store_li_list(p){//店铺
 	var c_code=$('#OWN_CORP').val();
 	store_data(p,c_code);
 }
@@ -513,9 +530,7 @@ jQuery(document).ready(function(){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
-				c_code=msg.corp_code;
-				r_code=msg.group_code;
+				var j_code=msg.group.role_code;//角色编号
 				$("#USERID").val(msg.user_code);
 				$("#USERID").attr("data-name",msg.user_code);
 				$("#USER_NAME").val(msg.user_name);
@@ -533,14 +548,48 @@ jQuery(document).ready(function(){
 					$("#kuang").hide();
 				}else if(msg.qrcode!==""){
 					$("#kuang").show();
-    				$('#kuang img').attr("src",msg.qrcode);
+    				$('#kuang img').attr("src",j_code);
 				}
 				// $("#OWN_CORP").parent().parent().parent().parent().css("display","block");
 				// $("#select_ownshop").css("display","block");
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_RIGHT").val(msg.group.group_name);
-				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);
+				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);//编辑的时候赋值给群组编号
+				$("#OWN_RIGHT").attr("data-myjcode",msg.j_code);//编辑的时候赋值给角色编号
+				if(j_code=="R2000"){
+	            	$('#sidename label').html("所属店铺");
+	            	$('#OWN_STORE').attr("placeholder","请选着所属店铺");
+	            	$('#OWN_STORE').attr("data-myscode","");
+	            	$('#OWN_STORE').val("");
+	            	$('#sidedown').attr("onclick","selectownshop(this)");
+	            	$('#add_per_icon').attr("onclick","addshopselect()");
+	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
+	            	$("#ownshop_list").show();
+            	}else if(j_code=="R3000"){
+	            	$('#sidename label').html("所属店铺");
+	            	$('#OWN_STORE').attr("placeholder","请选着所属店铺");
+	            	$('#OWN_STORE').attr("data-myscode","");
+	            	$('#OWN_STORE').val("");
+	            	$('#sidedown').attr("onclick","selectownshop(this)");
+	            	$('#add_per_icon').attr("onclick","addshopselect()");
+	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
+	            	$("#ownshop_list").show();
+            	}else if(j_code=="R4000"){
+	            	$('#sidename label').html("所属区域");
+	            	$('#OWN_STORE').attr("placeholder","请选着所属区域");
+	            	$('#OWN_STORE').attr("data-myscode","");
+	            	$('#OWN_STORE').val("");
+	            	$('#sidedown').attr("onclick","selectownarea(this)");
+	            	$('#add_per_icon').attr("onclick","addareaselect()");
+	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
+	            	$("#ownshop_list").show();
+            	}
+	            else if(j_code=="R5000"){
+            		$("#ownshop_list").hide();
+            	}else if(j_code=="R6000"){
+            		$("#ownshop_list").hide();
+            	}	
 				var store_lists=msg.store_name.split(",");
 				var storecode_list=msg.store_code.split(",");
 				if(store_lists.length==0){
@@ -564,9 +613,9 @@ jQuery(document).ready(function(){
 					}
 					$(".shop_list").append(html);
 				}
-				$("#register_time").val(msg.created_date);
-				$("#recently_login").val(msg.login_time_recently);
-				$("#created_time").val(msg.created_date);
+				$("#register_time").val(msg.created_date);//创建时间
+				$("#recently_login").val(msg.login_time_recently);//是否登录
+				$("#created_time").val(msg.created_date);//
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
