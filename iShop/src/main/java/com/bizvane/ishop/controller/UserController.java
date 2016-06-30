@@ -679,6 +679,7 @@ public class UserController {
     @ResponseBody
     public String creatQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_id").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -703,6 +704,11 @@ public class UserController {
                     User user = userService.userCodeExist(user_code,corp_code);
                     user.setQrcode(picture);
                     user.setQrcode_url(qrcode_url);
+                    Date now = new Date();
+                    user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    user.setModifier(user_id);
+                    logger.info("------------creatQrcode  update user");
+
                     userService.updateUser(user);
                     dataBean.setId(id);
                     dataBean.setMessage(picture);
@@ -710,14 +716,15 @@ public class UserController {
                     return dataBean.getJsonStr();
                 }
             }
+            dataBean.setId(id);
+            dataBean.setMessage("所属企业未授权！");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
-        dataBean.setId(id);
-        dataBean.setMessage("所属企业未授权！");
-        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
         return dataBean.getJsonStr();
     }
 }
