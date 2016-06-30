@@ -9,6 +9,7 @@ import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
+import jxl.Sheet;
 import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Colour;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -316,5 +318,51 @@ public class ValidateCodeController {
         return dataBean.getJsonStr();
 
     }
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.GET)
+    @ResponseBody
+    @Transactional
+    public String addByExecl(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_id").toString();
+       // String file="F:/报表/Test2.xls";
+        try {
+            Workbook rwb=Workbook.getWorkbook(new File("F:/报表/Test2.xls"));
+            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos=rs.getColumns();//得到所有的列
+            int rows=rs.getRows();//得到所有的行
+            for(int i=1;i<rows;i++){
+                for(int j=0;j<clos;j++){
+                    ValidateCode validateCode=new ValidateCode();
+                    //第一个是列数，第二个是行数
+                    String phone = rs.getCell(j++, i).getContents();//默认最左边编号也算一列 所以这里得j++
+                    String platform = rs.getCell(j++,i).getContents();
+                    String validate_code = rs.getCell(j++,i).getContents();
+                    String isactive = rs.getCell(j++,i).getContents();
+                    validateCode.setPhone(phone);
+                    validateCode.setPlatform(platform);
+                    validateCode.setValidate_code(validate_code);
+                    validateCode.setIsactive(isactive);
+                    Date date = new Date();
+                    validateCode.setCreated_date(Common.DATETIME_FORMAT.format(date));
+                    validateCode.setCreater(user_id);
+                    validateCode.setModified_date(Common.DATETIME_FORMAT.format(date));
+                    validateCode.setModifier(user_id);
+                    validateCodeService.insertValidateCode(validateCode);
+                }
+            }
+            System.out.println(clos+" rows:"+rows);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("word success");
+        }catch (Exception e){
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(e.getMessage());
+        }
+        return dataBean.getJsonStr();
+
+    }
+
 }
 

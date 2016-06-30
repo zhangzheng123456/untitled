@@ -42,7 +42,7 @@ public class User {
 	private String isactive;
 	//是否可登录
 	private String can_login;
-
+	private String area_code;
 	private String store_name;
 
 	private Group group;
@@ -73,6 +73,14 @@ public class User {
 
 	public String getAvatar() {
 		return avatar;
+	}
+
+	public String getArea_code() {
+		return area_code;
+	}
+
+	public void setArea_code(String area_code) {
+		this.area_code = area_code;
 	}
 
 	public void setAvatar(String avatar) {

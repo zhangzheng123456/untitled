@@ -186,6 +186,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
+    public void updateUser(User user) throws SQLException {
+        userMapper.updateByUserId(user);
+    }
+
+    @Transactional
     public int delete(int id) throws SQLException {
         return userMapper.deleteByUserId(id);
     }
@@ -257,6 +262,9 @@ public class UserServiceImpl implements UserService {
         return result;
     }
 
+    /**
+     * 验证邮箱是否已注册
+     */
     @Override
     public String userEmailExist(String email) {
         String result = Common.DATABEAN_CODE_SUCCESS;
@@ -437,6 +445,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.selectGroupUser(corp_code, group_code);
     }
 
+    /**
+     * 若导入数据
+     * 将store_code封装成固定格式
+     */
     public void ProcessStoreCode(User user){
         String[] ids = user.getStore_code().split(",");
         String store_code = "";

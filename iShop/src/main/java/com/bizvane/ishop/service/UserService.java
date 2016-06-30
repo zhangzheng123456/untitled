@@ -21,6 +21,8 @@ public interface UserService {
 
     String update(User user) throws SQLException;
 
+    void updateUser(User user) throws SQLException;
+
     int delete(int id) throws SQLException;
 
     JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException;

@@ -11,6 +11,7 @@ import com.bizvane.ishop.service.UserAchvGoalService;
 import com.bizvane.ishop.utils.TimeUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -31,7 +32,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/userAchvGoal")
 public class UserAchvGoalControl {
-    private static org.slf4j.Logger logger = LoggerFactory.getLogger(UserAchvGoalControl.class);
+    private static final Logger logger = Logger.getLogger(LoginController.class);
 
     @Autowired
     private UserAchvGoalService userAchvGoalService = null;
@@ -81,6 +82,7 @@ public class UserAchvGoalControl {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -137,6 +139,7 @@ public class UserAchvGoalControl {
             dataBean.setId(id);
             dataBean.setMessage(e.getMessage());
             e.printStackTrace();
+            logger.info(e.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -170,6 +173,7 @@ public class UserAchvGoalControl {
             dataBean.setId(id);
             dataBean.setMessage(e.getMessage());
             e.printStackTrace();
+            logger.info(e.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -235,6 +239,7 @@ public class UserAchvGoalControl {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -263,6 +268,7 @@ public class UserAchvGoalControl {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -303,6 +309,7 @@ public class UserAchvGoalControl {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

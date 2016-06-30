@@ -48,7 +48,8 @@ public class UserController {
     private CorpService corpService;
     @Autowired
     private GroupService groupService;
-
+    @Autowired
+    private AreaService areaService;
     String id;
 
 
@@ -153,17 +154,34 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
-            user.setGroup_code(jsonObject.get("group_code").toString());
-            String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.equals("all")  && !store_code.equals("")){
-                String[] codes = store_code.split(",");
-                store_code = "";
-                for (int i = 0; i < codes.length; i++) {
-                    codes[i] = Common.STORE_HEAD + codes[i] +",";
-                    store_code = store_code+codes[i];
+
+            String role_code = jsonObject.get("role_code").toString();
+            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+            }else if(role_code==Common.ROLE_AM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+                String area_code=jsonObject.get("area_code").toString();
+                if(!area_code.equals("all") &&  !area_code.equals("")){
+                    String[] areas = area_code.split(",");
+                    area_code="";
+                    for (int i=0;i<areas.length;i++){
+                        areas[i]=Common.STORE_HEAD + areas[i] +",";
+                        area_code=area_code+areas[i];
+                    }
                 }
+                user.setArea_code(area_code);
+            }else{
+                String store_code = jsonObject.get("store_code").toString();
+                if (!store_code.equals("all")  && !store_code.equals("")){
+                    String[] codes = store_code.split(",");
+                    store_code = "";
+                    for (int i = 0; i < codes.length; i++) {
+                        codes[i] = Common.STORE_HEAD + codes[i] +",";
+                        store_code = store_code+codes[i];
+                    }
+                }
+                user.setStore_code(store_code);
             }
-            user.setStore_code(store_code);
             user.setQrcode("");
             user.setPassword(user_code);
             Date now = new Date();
@@ -174,7 +192,6 @@ public class UserController {
             user.setModifier(user_id);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
-
             String result = userService.insert(user);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -222,16 +239,33 @@ public class UserController {
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
             user.setGroup_code(jsonObject.get("group_code").toString());
-            String store_code = jsonObject.get("store_code").toString();
-            if (!store_code.equals("all") && !store_code.equals("")){
-                String[] codes = store_code.split(",");
-                store_code = "";
-                for (int i = 0; i < codes.length; i++) {
-                    codes[i] = Common.STORE_HEAD + codes[i] +",";
-                    store_code = store_code+codes[i];
+            String role_code = jsonObject.get("role_code").toString();
+            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+            }else if(role_code==Common.ROLE_AM){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+                String area_code=jsonObject.get("area_code").toString();
+                if(!area_code.equals("all") &&  !area_code.equals("")){
+                    String[] areas = area_code.split(",");
+                    area_code="";
+                    for (int i=0;i<areas.length;i++){
+                        areas[i]=Common.STORE_HEAD + areas[i] +",";
+                        area_code=area_code+areas[i];
+                    }
                 }
+                user.setArea_code(area_code);
+            }else{
+                String store_code = jsonObject.get("store_code").toString();
+                if (!store_code.equals("all")  && !store_code.equals("")){
+                    String[] codes = store_code.split(",");
+                    store_code = "";
+                    for (int i = 0; i < codes.length; i++) {
+                        codes[i] = Common.STORE_HEAD + codes[i] +",";
+                        store_code = store_code+codes[i];
+                    }
+                }
+                user.setStore_code(store_code);
             }
-            user.setStore_code(store_code);
             Date now = new Date();
             user.setModified_date(Common.DATETIME_FORMAT.format(now));
             user.setModifier(user_id);
@@ -679,42 +713,52 @@ public class UserController {
     @ResponseBody
     public String creatQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_id").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
+            logger.info("------------UserController creatQrcode"+jsString);
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String user_code = jsonObject.get("user_code").toString();
             Corp corp = corpService.selectByCorpId(0, corp_code);
-            String auth_appid = corp.getApp_id();
             String is_authorize = corp.getIs_authorize();
-            if (auth_appid != null && auth_appid != "") {
+            if (corp.getApp_id() != null && corp.getApp_id() != "") {
+                String auth_appid = corp.getApp_id();
                 if (is_authorize.equals("Y")) {
                     String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&guider_code=" + user_code;
                     String result = IshowHttpClient.get(url);
+                    logger.info("------------creatQrcode  result"+result);
+
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
                     User user = userService.userCodeExist(user_code,corp_code);
                     user.setQrcode(picture);
                     user.setQrcode_url(qrcode_url);
-                    userService.update(user);
+                    Date now = new Date();
+                    user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    user.setModifier(user_id);
+                    logger.info("------------creatQrcode  update user");
+
+                    userService.updateUser(user);
                     dataBean.setId(id);
                     dataBean.setMessage(picture);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     return dataBean.getJsonStr();
                 }
             }
+            dataBean.setId(id);
+            dataBean.setMessage("所属企业未授权！");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
-        dataBean.setId(id);
-        dataBean.setMessage("所属企业未授权！");
-        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
         return dataBean.getJsonStr();
     }
 }
