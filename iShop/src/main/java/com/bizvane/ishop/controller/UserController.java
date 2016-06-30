@@ -157,7 +157,8 @@ public class UserController {
             String role_code = jsonObject.get("role_code").toString();
             if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM){
                 user.setGroup_code(jsonObject.get("group_code").toString());
-            }else if(role_code==Common.ROLE_AM){
+            }
+            if(role_code==Common.ROLE_AM){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String area_code=jsonObject.get("area_code").toString();
                 if(!area_code.equals("all") &&  !area_code.equals("")){
@@ -169,7 +170,8 @@ public class UserController {
                     }
                 }
                 user.setArea_code(area_code);
-            }else{
+            }
+            if(role_code==Common.ROLE_SM || role_code==Common.ROLE_STAFF){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all")  && !store_code.equals("")){
@@ -238,11 +240,11 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
-         //   user.setGroup_code(jsonObject.get("group_code").toString());
             String role_code = jsonObject.get("role_code").toString();
-            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM){
+            if(role_code==Common.ROLE_SYS||role_code==Common.ROLE_GM) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
-            }else if(role_code==Common.ROLE_AM){
+            }
+            if(role_code==Common.ROLE_AM){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String area_code=jsonObject.get("area_code").toString();
                 if(!area_code.equals("all") &&  !area_code.equals("")){
@@ -254,7 +256,8 @@ public class UserController {
                     }
                 }
                 user.setArea_code(area_code);
-            }else{
+            }
+            if(role_code==Common.ROLE_SM||role_code==Common.ROLE_STAFF){
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all")  && !store_code.equals("")){
@@ -267,6 +270,8 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
+
+
             Date now = new Date();
             user.setModified_date(Common.DATETIME_FORMAT.format(now));
             user.setModifier(user_id);
