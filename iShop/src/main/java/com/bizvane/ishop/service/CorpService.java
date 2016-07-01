@@ -35,4 +35,8 @@ public interface CorpService {
     int getGoodCount(String corp_code);
 
     Corp getCorpByAppUserName(String app_user_name);
+
+    int getGroupCount(String corp_code);
+
+    int getGoodsCount(String corp_code);
 }

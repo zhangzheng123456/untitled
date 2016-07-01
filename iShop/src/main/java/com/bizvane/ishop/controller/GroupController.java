@@ -543,4 +543,42 @@ public class GroupController {
         }
         return dataBean.getJsonStr();
     }
+
+
+
+    @RequestMapping(value = "/name_exist", method = RequestMethod.POST)
+    @ResponseBody
+    public String name_exist(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        try {
+            String user_id = request.getSession().getAttribute("user_id").toString();
+
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String group_name = jsonObject.get("group_name").toString();
+            Group group = groupService.selectByCode(corp_code, group_name, "");
+            if (group == null){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            }else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("该群组名称已存在！");
+            }
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+
 }

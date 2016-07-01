@@ -29,7 +29,11 @@ public interface CorpMapper {
 
     int getAreaCount(@Param("corp_code") String corp_code);
 
-    int getBrandCount(String corp_code);
+    int getBrandCount(@Param("corp_code") String corp_code);
 
     Corp selectByAppUserName(@Param("app_user_name") String app_user_name);
+
+    int getGoodCount(@Param("corp_code") String corp_code);
+
+    int getGroupCount(@Param("corp_code") String corp_code);
 }
