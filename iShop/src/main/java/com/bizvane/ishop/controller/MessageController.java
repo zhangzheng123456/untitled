@@ -281,15 +281,31 @@ public class MessageController {
         try {
             String jsString = WebUtils.getValueForSession(request, "param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String messageType_id = jsonObj.get("id").toString();
+            id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String messageType_id = jsonObject.getString("id");
             String[] ids = messageType_id.split(",");
+            int count = 0;
+            String msg = null;
             for (int i = 0; ids != null && i < ids.length; i++) {
+                Message_type message_type = this.messageTypeService.getMessageTypeById(Integer.parseInt(ids[i]));
+                count = this.messageTypeService.selectMessageTemplateCount(message_type.getType_code(), message_type.getCorp_code());
+                if (count > 0) {
+                    msg = "请先删除使用消息类型的消息" + message_type.getType_code();
+                    break;
+                }
                 messageTypeService.deleteById(Integer.parseInt(ids[i]));
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("scuccess!!!!");
+            if (count > 0) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("scuccess!!!!");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

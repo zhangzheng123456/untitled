@@ -47,4 +47,5 @@ public interface StoreService {
 
     Store getStoreByName(String corp_code, String store_name) throws SQLException;
 
+    int selectAchCount(String store_code)throws SQLException;
 }

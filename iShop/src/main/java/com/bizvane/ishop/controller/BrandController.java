@@ -57,7 +57,7 @@ public class BrandController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Brand> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -95,12 +95,12 @@ public class BrandController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
 
-            String result = brandService.insert(message,user_id);
+            String result = brandService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
@@ -128,12 +128,12 @@ public class BrandController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = brandService.update(message,user_id);
+            String result = brandService.update(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
@@ -173,10 +173,13 @@ public class BrandController {
                 List<Store> stores = brandService.getBrandStore(corp_code, brand_code);
                 if (stores.size() == 0) {
                     brandService.delete(Integer.valueOf(ids[i]));
+                    dataBean.setId(id);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("删除成功！");
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("品牌"+brand_code+"下有所属店铺，请先处理品牌下店铺再删除！");
+                    dataBean.setMessage("品牌" + brand_code + "下有所属店铺，请先处理品牌下店铺再删除！");
                     return dataBean.getJsonStr();
                 }
             }

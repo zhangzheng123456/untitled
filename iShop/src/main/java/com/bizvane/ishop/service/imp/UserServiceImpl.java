@@ -1,11 +1,8 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.AreaMapper;
-import com.bizvane.ishop.dao.CorpMapper;
-import com.bizvane.ishop.dao.GroupMapper;
+import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.service.*;
 import com.bizvane.sun.app.client.Client;
 import com.bizvane.sun.v1.common.Data;
@@ -47,6 +44,9 @@ public class UserServiceImpl implements UserService {
     ValidateCodeService validateCodeService;
     @Autowired
     GroupMapper groupMapper;
+
+    @Autowired
+    private MessageTypeMapper messageTypeMapper;
 
     private static final Logger log = Logger.getLogger(UserServiceImpl.class);
     String[] arg = new String[]{"--Ice.Config=client.config"};
@@ -92,7 +92,7 @@ public class UserServiceImpl implements UserService {
             user.setStore_code("");
             user.setStore_name("");
         } else {
-            if (!user.getStore_code().startsWith(Common.STORE_HEAD)){
+            if (!user.getStore_code().startsWith(Common.STORE_HEAD)) {
                 ProcessStoreCode(user);
             }
             String store_name = "";
@@ -113,26 +113,26 @@ public class UserServiceImpl implements UserService {
             user.setStore_name(store_name);
             user.setStore_code(store_code);
         }
-        if(user.getArea_code()==null || user.getArea_code().equals("")){
+        if (user.getArea_code() == null || user.getArea_code().equals("")) {
             user.setArea_code("");
             user.setArea_name("");
-        }else {
-            if (!user.getArea_code().startsWith(Common.STORE_HEAD)){
+        } else {
+            if (!user.getArea_code().startsWith(Common.STORE_HEAD)) {
                 ProcessStoreCode(user);
             }
             String corp_code = user.getCorp_code();
-            String area_name="";
-            String[] areaCodes=user.getArea_code().split(",");
-            String areaCode="";
-            for(int i=0;i<areaCodes.length;i++){
-                areaCodes[i]=areaCodes[i].substring(1,areaCodes[i].length());
+            String area_name = "";
+            String[] areaCodes = user.getArea_code().split(",");
+            String areaCode = "";
+            for (int i = 0; i < areaCodes.length; i++) {
+                areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
                 Area area = areaService.selAreaByCorp(corp_code, areaCodes[i], "");
                 String area_name1 = area.getArea_name();
-                area_name=area_name+area_name1;
-                areaCode=areaCode+areaCodes[i];
-                if(i!=areaCodes.length-1){
-                    area_name=area_name+",";
-                    areaCode=areaCode+",";
+                area_name = area_name + area_name1;
+                areaCode = areaCode + areaCodes[i];
+                if (i != areaCodes.length - 1) {
+                    area_name = area_name + ",";
+                    areaCode = areaCode + ",";
                 }
             }
             user.setArea_code(areaCode);
@@ -297,7 +297,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public String userEmailExist(String email) {
         String result = Common.DATABEAN_CODE_SUCCESS;
-        if (!email.equals("")){
+        if (!email.equals("")) {
             List<User> user = this.userMapper.userEmailExist(email);
             if (user.size() > 0) {
                 result = Common.DATABEAN_CODE_ERROR;
@@ -478,13 +478,18 @@ public class UserServiceImpl implements UserService {
      * 若导入数据
      * 将store_code封装成固定格式
      */
-    public void ProcessStoreCode(User user){
+    public void ProcessStoreCode(User user) {
         String[] ids = user.getStore_code().split(",");
         String store_code = "";
         for (int i = 0; i < ids.length; i++) {
-            store_code = store_code + Common.STORE_HEAD + ids[i]+",";
+            store_code = store_code + Common.STORE_HEAD + ids[i] + ",";
         }
         user.setStore_code(store_code);
         userMapper.updateByUserId(user);
+    }
+
+    @Override
+    public int selectUserAchvCount(String corp_code, String user_code) {
+        return this.messageTypeMapper.selectUserAchvCount(corp_code, user_code);
     }
 }

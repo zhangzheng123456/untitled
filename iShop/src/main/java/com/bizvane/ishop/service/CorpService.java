@@ -39,4 +39,6 @@ public interface CorpService {
     int getGroupCount(String corp_code);
 
     int getGoodsCount(String corp_code);
+
+    int getMessagesTypeCount(String corp_code);
 }

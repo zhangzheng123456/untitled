@@ -187,5 +187,13 @@
         vtt.type_name=#{type_name}
     </select>
 
+    <select id="selectUserAchvCount" resultType="java.lang.Integer">
+        select count(*)
+        from DEF_USER_ACHV_GOAL
+        WHERE
+        user_code=#{user_code}
+        and
+        corp_code=#{corp_code}
+    </select>
 
 </mapper>

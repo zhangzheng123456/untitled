@@ -50,4 +50,6 @@ public interface UserService {
 //    String userNameExist(String user_name, String corp_code);
 
     void ProcessStoreCode(User user);
+
+    int selectUserAchvCount(String  corp_code, String user_code);
 }

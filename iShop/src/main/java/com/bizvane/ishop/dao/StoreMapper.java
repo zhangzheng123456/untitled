@@ -30,4 +30,5 @@ public interface StoreMapper {
 
     int selectCount(@Param("created_date") String created_date);
 
+    int selectAchCount(@Param("store_code") String store_code);
 }

@@ -36,4 +36,6 @@ public interface CorpMapper {
     int getGoodCount(@Param("corp_code") String corp_code);
 
     int getGroupCount(@Param("corp_code") String corp_code);
+
+    int getMessageTypeCount(@Param("corp_code") String corp_code);
 }

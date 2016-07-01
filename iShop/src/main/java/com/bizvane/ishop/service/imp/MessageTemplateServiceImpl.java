@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.MessageTemplateMapper;
 import com.bizvane.ishop.entity.MessageTemplate;
+import com.bizvane.ishop.entity.Message_type;
 import com.bizvane.ishop.service.MessageTemplateService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -22,6 +23,7 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
 
     @Autowired
     private MessageTemplateMapper messageTemplateMapper;
+
 
 
     @Override
@@ -81,4 +83,8 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
         }
         return Common.DATABEAN_CODE_ERROR;
     }
+
+
+
+
 }
