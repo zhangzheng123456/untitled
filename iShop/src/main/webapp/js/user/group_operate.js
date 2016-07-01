@@ -172,6 +172,7 @@ jQuery(document).ready(function(){
 				$("#GROUP_ID").val(mg.group_code);
 				$("#GROUP_ID").attr("data-name",mg.group_code);
 				$("#GROUP_NAME").val(mg.group_name);
+				$("#GROUP_NAME").attr("data-name",mg.group_name);//给群组名称一个标志
 				$("#OWN_CORP option").val(mg.corp.corp_code);
 				$("#OWN_CORP option").text(mg.corp.corp_name);
 				$("#OWN_ROLE").val(mg.role.role_name);
@@ -239,10 +240,15 @@ jQuery(document).ready(function(){
 			}
 		});
 	});
-	$("input[verify='Code']").blur(function(){
+	$("#OWN_ROLE").blur(function(){
+        setTimeout(function(){
+        	$("#grouprole_select").hide();
+        },200);  
+    });     
+	$("input[verify='Code']").blur(function(){//
     	var isCode=/^[G]{1}[0-9]{4}$/;
     	var _params={};
-    	var group_code=$(this).val();//店仓编号
+    	var group_code=$(this).val();//群组编号
     	var group_code1=$(this).attr("data-name");//标志
     	var corp_code=$("#OWN_CORP").val();//公司编号
 		if(group_code!==""&&group_code!==group_code1&&isCode.test(group_code)==true){
@@ -260,7 +266,29 @@ jQuery(document).ready(function(){
 	               }
 		    })
 		}
+    });
+    $("#GROUP_NAME").blur(function(){//群组名称失去焦点的的时候验证唯一性
+    	var group_name=$(this).val();//群组名称
+    	var group_name1=$(this).attr("data-name");//标志
+    	var corp_code=$("#OWN_CORP").val();//公司编号
+    	if(group_name!==""&&group_name!==group_name1){
+    		var _params={};
+    		_params["corp_code"]=corp_code;
+    		_params["group_name"]=group_name;
+    		var div=$(this).next('.hint').children();
+    		oc.postRequire("post","/user/group/name_exist","", _params, function(data){
+    			if(data.code=="0"){
+    				div.html("");
+    				$("#GROUP_NAME").attr("data-mark","Y");
+    			}else if(data.code=="-1"){
+    				$("#GROUP_NAME").attr("data-mark","N");
+	               	div.addClass("error_tips");
+					div.html("该编号已经存在！");	
+    			}
+    		})
+    	}
     })
+
 	$(".groupadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/group.html");
 	});

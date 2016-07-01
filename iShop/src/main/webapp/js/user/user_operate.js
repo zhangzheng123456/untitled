@@ -307,14 +307,18 @@ var oc = new ObjectControl();
 }));
 function selectownshop(obj){//店铺
 	$(".shop_list ul").html('');
+	console.log(obj);
+	var input=$(obj).find("input");
+	console.log(input);
 	store_li_list(obj.id);
+	$(obj).find()
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
     }else{
         ul.hide();
     }
-    $(obj).blur(function(){  
+    $(input).blur(function(){  
         setTimeout(function(){
         	ul.hide();
         },200);  
@@ -322,6 +326,8 @@ function selectownshop(obj){//店铺
 }
 function selectownarea(obj){//区域
 	$(".shop_list ul").html('');
+	console.log(obj);
+	var input=$(obj).find("input");
 	area_li_list(obj.id);
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -329,7 +335,7 @@ function selectownarea(obj){//区域
     }else{
         ul.hide();
     }
-    $(obj).blur(function(){  
+    $(input).blur(function(){  
         setTimeout(function(){
         	ul.hide();
         },200);  
@@ -338,13 +344,15 @@ function selectownarea(obj){//区域
 function selectownrole(obj){
 	$("#role_list").html('');
 	role_li_list();
+	var input=$(obj).find("input");
 	var ul=$(obj).children('ul');
+
     if(ul.css("display")=="none"){
         ul.show();
     }else{
         ul.hide();
     }
-    $(obj).blur(function(){  
+    $(input).blur(function(){  
         setTimeout(function(){
         	ul.hide();
         },200);  
@@ -497,6 +505,7 @@ function area_data(p,c){//区域
 		}
 		$("#"+p+" ul").html(html);
 		$("#"+p+" ul li").click(function(){
+			var group_code=$('')
             var this_=this;
             var txt = $(this_).text();
             var s_code=$(this_).data("storecode");
