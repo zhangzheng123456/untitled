@@ -29,6 +29,7 @@
         store_name,
         brand_code,
         flg_tob,
+        qrcode,
         DEF_STORE.AREA_CODE,
         DEF_STORE.corp_code,
         DEF_STORE.modified_date,

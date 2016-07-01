@@ -73,9 +73,9 @@ public class WebController {
                     dataBean.setMessage("客户未绑定");
                 } else {
                     JSONObject result = new JSONObject();
-                    String guider_code = entity.getGuider_code();
+                    String emp_id = entity.getEmp_id();
                     String corp_code = corpService.getCorpByAppUserName(app_user_name).getCorp_code();
-                    String store_code = userService.userCodeExist(guider_code,corp_code).getStore_code();
+                    String store_code = userService.userCodeExist(emp_id,corp_code).getStore_code();
                     String[] ids = store_code.split(",");
                     JSONArray array = new JSONArray();
                     for (int i = 0; i < ids.length; i++) {
@@ -83,7 +83,7 @@ public class WebController {
                         array.add(i,ids[i]);
                     }
                     JSONObject obj = new JSONObject();
-                    obj.put("emp_code",guider_code);
+                    obj.put("emp_code",emp_id);
                     obj.put("store_code",array);
                     result.put("code",Common.DATABEAN_CODE_SUCCESS);
                     result.put("message",obj);
