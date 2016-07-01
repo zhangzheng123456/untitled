@@ -38,7 +38,7 @@ public class MessageTypeServiceImpl implements MessageTypeService {
         // this.messageTypeMapper.updateByPrimaryKey(messageType);
         Message_type old = this.messageTypeMapper.selectByPrimaryKey(messageType.getId());
         if (!old.getType_code().equals(messageType.getType_code())
-                && (this.messageTypeCodeExist(messageType.getCorp_code(),messageType.getType_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+                && (this.messageTypeCodeExist(messageType.getCorp_code(), messageType.getType_code()).equals(Common.DATABEAN_CODE_ERROR))) {
             return "编号已经存在！！！！";
         } else if (!old.getType_name().equals(messageType.getType_name())
                 && (this.messageTypeNameExist(messageType.getCorp_code(), messageType.getType_name()).equals(Common.DATABEAN_CODE_ERROR))) {
@@ -59,7 +59,7 @@ public class MessageTypeServiceImpl implements MessageTypeService {
     }
 
     @Override
-    public String MessageTypeCodeExist( String corp_code,String type_code) {
+    public String MessageTypeCodeExist(String corp_code, String type_code) {
 
         Message_type message_type = this.messageTypeMapper.selectCode(corp_code, type_code);
         String result = Common.DATABEAN_CODE_ERROR;
@@ -70,7 +70,7 @@ public class MessageTypeServiceImpl implements MessageTypeService {
     }
 
     @Override
-    public String MessageTypeNameExist( String corp_code,String type_name) {
+    public String MessageTypeNameExist(String corp_code, String type_name) {
 
         Message_type message_type = this.messageTypeMapper.selectName(corp_code, type_name);
         String result = Common.DATABEAN_CODE_ERROR;
@@ -114,6 +114,12 @@ public class MessageTypeServiceImpl implements MessageTypeService {
         }
         return result;
     }
+
+    @Override
+    public int selectMessageTemplateCount(String corp_code, String type_code) {
+        return this.messageTypeMapper.selectUserAchvCount(corp_code, type_code);
+    }
+
 
 //    @Override
 //    public List<Message_type> getMessageTypeByCorp(String corp_code) {

@@ -178,4 +178,9 @@ public class CorpServiceImpl implements CorpService {
     public int getGoodsCount(String corp_code) {
         return corpMapper.getGoodCount(corp_code);
     }
+
+    @Override
+    public int getMessagesTypeCount(String corp_code) {
+        return corpMapper.getMessageTypeCount(corp_code);
+    }
 }

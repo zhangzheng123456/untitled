@@ -38,7 +38,7 @@ public class StoreServiceImpl implements StoreService {
     /**
      * 通过用户ID和制定的店仓来删除用户的店仓
      *
-     * @param user_id  ： 用户ID
+     * @param user_id    ： 用户ID
      * @param store_code ： 店仓ID
      * @return 执行结果
      */
@@ -102,15 +102,15 @@ public class StoreServiceImpl implements StoreService {
 
     /***
      * 获取页面的所有数据
-     *
      */
     @Override
-    public  List<Store> selectAll(String user_id,String corp_code){
-        return storeMapper.selectByUserId(user_id,corp_code,"");
+    public List<Store> selectAll(String user_id, String corp_code) {
+        return storeMapper.selectByUserId(user_id, corp_code, "");
     }
+
     //店铺下所属用户
     public List<User> getStoreUser(String corp_code, String store_code) {
-        List<User> user = userMapper.selectStoreUser(corp_code, store_code );
+        List<User> user = userMapper.selectStoreUser(corp_code, store_code);
         return user;
     }
 
@@ -124,14 +124,14 @@ public class StoreServiceImpl implements StoreService {
 
     //新增店铺
     @Override
-    public String insert(String message, String user_id) throws SQLException{
+    public String insert(String message, String user_id) throws SQLException {
         JSONObject jsonObject = new JSONObject(message);
         String result = Common.DATABEAN_CODE_ERROR;
         String store_code = jsonObject.get("store_code").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String store_name = jsonObject.get("store_name").toString();
-        Store store = getStoreByCode(corp_code,store_code,"");
-        Store store1 = getStoreByName(corp_code,store_name);
+        Store store = getStoreByCode(corp_code, store_code, "");
+        Store store1 = getStoreByName(corp_code, store_name);
         if (store == null && store1 == null) {
             Store shop = new Store();
             shop.setStore_code(store_code);
@@ -148,9 +148,9 @@ public class StoreServiceImpl implements StoreService {
             shop.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.insertStore(shop);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else if(store != null){
+        } else if (store != null) {
             result = "店铺编号已存在";
-        }else {
+        } else {
             result = "店铺名称已存在";
         }
         return result;
@@ -159,7 +159,7 @@ public class StoreServiceImpl implements StoreService {
 
     //修改店铺
     @Override
-    public String update(String message, String user_id) throws SQLException{
+    public String update(String message, String user_id) throws SQLException {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int store_id = Integer.valueOf(jsonObject.get("id").toString());
@@ -168,8 +168,8 @@ public class StoreServiceImpl implements StoreService {
         String store_name = jsonObject.get("store_name").toString();
 
         Store store = getStoreById(store_id);
-        Store store1 = getStoreByCode(corp_code,store_code,"");
-        Store store2 = getStoreByName(corp_code,store_name);
+        Store store1 = getStoreByCode(corp_code, store_code, "");
+        Store store2 = getStoreByName(corp_code, store_name);
 
         if ((store.getStore_code().equals(store_code) || store1 == null)
                 && (store.getStore_name().equals(store_name) || store2 == null)) {
@@ -187,15 +187,15 @@ public class StoreServiceImpl implements StoreService {
             store.setIsactive(jsonObject.get("isactive").toString());
             storeMapper.updateStore(store);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else if (!store.getStore_code().equals(store_code) && store1 != null){
+        } else if (!store.getStore_code().equals(store_code) && store1 != null) {
             result = "店铺编号已存在";
-        }else {
+        } else {
             result = "店铺名称已存在";
         }
         return result;
     }
 
-    public int updateStore(Store store) throws SQLException{
+    public int updateStore(Store store) throws SQLException {
         return storeMapper.updateStore(store);
     }
 
@@ -209,6 +209,11 @@ public class StoreServiceImpl implements StoreService {
     public Store getStoreByName(String corp_code, String store_name) throws SQLException {
         Store store = this.storeMapper.selectByStoreName(corp_code, store_name);
         return store;
+    }
+
+    @Override
+    public int selectAchCount(String store_code) throws SQLException {
+        return this.storeMapper.selectAchCount(store_code);
     }
 
 }

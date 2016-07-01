@@ -120,14 +120,14 @@
         AND position(DEF_STORE.STORE_CODE IN (SELECT STORE_CODE FROM DEF_USER WHERE ID=#{user_id}))
         AND DEF_STORE.CORP_CODE = #{corp_code}
         <if test="search_value != null and search_value !=''">
-            AND STORE_CODE like  concat('%',#{search_value},'%')
-            OR DEF_STORE.ID like  concat('%',#{search_value},'%')
-            OR STORE_NAME like  concat('%',#{search_value},'%')
-            OR DEF_AREA.AREA_NAME like  concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like  concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIED_DATE like  concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIER like  concat('%',#{search_value},'%')
-            OR DEF_STORE.ISACTIVE like  concat('%',#{search_value},'%')
+            AND STORE_CODE like concat('%',#{search_value},'%')
+            OR DEF_STORE.ID like concat('%',#{search_value},'%')
+            OR STORE_NAME like concat('%',#{search_value},'%')
+            OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
+            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
+            OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
+            OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
         </if>
         ORDER BY STORE_CODE
     </select>
@@ -253,7 +253,7 @@
                 flg_tob = #{flg_tob},
             </if>
             <if test="qrcode!=null and qrcode!=''">
-                 qrcode = #{qrcode},
+                qrcode = #{qrcode},
             </if>
             <if test="qrcode_content!=null and qrcode_content!=''">
                 qrcode_content = #{qrcode_content},
@@ -305,6 +305,11 @@
         <if test="created_date !=''">
             AND created_date LIKE concat(#{created_date},'%')
         </if>
+    </select>
+
+    <select id="selectAchCount" resultType="java.lang.Integer">
+        select count(1) from  DEF_STORE_ACHV_GOAL
+        WHERE store_code=#{store_code}
     </select>
 
 </mapper>

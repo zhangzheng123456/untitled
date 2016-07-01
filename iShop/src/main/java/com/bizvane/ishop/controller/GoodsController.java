@@ -61,8 +61,12 @@ public class GoodsController {
                 //   String corp_code = request.getParameter("corp_code");
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
             }
-
-
+            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+                String goods_image = list.getList().get(i).getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+                }
+            }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setId("1");
@@ -97,6 +101,12 @@ public class GoodsController {
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+                String goods_image = list.getList().get(i).getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+                }
             }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));

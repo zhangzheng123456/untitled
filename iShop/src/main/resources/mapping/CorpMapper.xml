@@ -230,6 +230,11 @@
     <select id="getGroupCount" resultType="java.lang.Integer">
         select count(*) from DEF_GROUP WHERE corp_code=#{corp_code}
     </select>
+    <select id="getMessageTypeCount" resultType="java.lang.Integer">
+        select count(*) from DEF_MESSAGE_TYPE WHERE corp_code=#{corp_code}
+    </select>
+
+
 
 
 

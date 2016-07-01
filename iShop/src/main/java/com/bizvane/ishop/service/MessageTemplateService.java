@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.MessageTemplate;
+import com.bizvane.ishop.entity.Message_type;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;

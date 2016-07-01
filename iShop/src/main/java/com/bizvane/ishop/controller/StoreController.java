@@ -61,6 +61,7 @@ public class StoreController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
+
     /**
      * 店铺管理
      */
@@ -140,9 +141,6 @@ public class StoreController {
         return dataBean.getJsonStr();
 
     }
-
-
-
 
 
     /**
@@ -234,25 +232,34 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String shop_id = jsonObject.get("id").toString();
             String[] ids = shop_id.split(",");
+            String msg = null;
+            int count = 0;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
                 Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
                 String store_code = store.getStore_code();
                 String corp_code = store.getCorp_code();
                 List<User> user = storeService.getStoreUser(corp_code, store_code);
-
-
-                if (user.size() == 0) {
-                    storeService.delete(Integer.valueOf(ids[i]));
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage("店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！");
-                    return dataBean.getJsonStr();
+                count = user.size();
+                if (count > 0) {
+                    msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
+                    break;
                 }
+                count = storeService.selectAchCount(store.getStore_code());
+                if (count > 0) {
+                    msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除！";
+                    break;
+                }
+                storeService.delete(Integer.valueOf(ids[i]));
+            }
+            if (count > 0) {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
             }
         } catch (Exception ex) {
             //	return "Error deleting the user:" + ex.toString();
@@ -528,7 +535,7 @@ public class StoreController {
 
 
     /**
-     *根据store_code生成店铺二维码
+     * 根据store_code生成店铺二维码
      */
     @RequestMapping(value = "/creatQrcode", method = RequestMethod.POST)
     @ResponseBody
@@ -549,14 +556,14 @@ public class StoreController {
             if (corp.getApp_id() != null && corp.getApp_id() != "") {
                 String auth_appid = corp.getApp_id();
                 if (is_authorize.equals("Y")) {
-                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid="+auth_appid+"&prd=ishop&src=s&store_id=" + store_code;
+                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
                     String result = IshowHttpClient.get(url);
                     logger.info("------------creatQrcode  result" + result);
 
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
-                    Store store = storeService.getStoreByCode(corp_code,store_code,"");
+                    Store store = storeService.getStoreByCode(corp_code, store_code, "");
                     store.setQrcode(picture);
                     store.setQrcode_content(qrcode_url);
                     Date now = new Date();
@@ -583,7 +590,7 @@ public class StoreController {
 
 
     /**
-     *一键生成所选店铺的店铺二维码
+     * 一键生成所选店铺的店铺二维码
      */
     @RequestMapping(value = "/creatStoresQrcode", method = RequestMethod.POST)
     @ResponseBody
@@ -608,14 +615,14 @@ public class StoreController {
                     String[] stores = store_codes.split(",");
                     for (int i = 0; i < stores.length; i++) {
                         String store_code = stores[i];
-                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid="+auth_appid+"&prd=ishop&src=s&store_id=" + store_code;
+                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
                         String result = IshowHttpClient.get(url);
                         logger.info("------------creatQrcode  result" + result);
 
                         JSONObject obj = new JSONObject(result);
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();
-                        Store store = storeService.getStoreByCode(corp_code,store_code,"");
+                        Store store = storeService.getStoreByCode(corp_code, store_code, "");
                         store.setQrcode(picture);
                         store.setQrcode_content(qrcode_url);
                         Date now = new Date();
@@ -644,28 +651,29 @@ public class StoreController {
     /***
      * 查出要导出的列
      */
-    @RequestMapping(value = "getCols" ,method = RequestMethod.POST)
-    public String selAllByCode(HttpServletRequest request){
-        DataBean dataBean=new DataBean();
+    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String function_code=jsonObject.get("function_code").toString();
+            String function_code = jsonObject.get("function_code").toString();
             List<TableManager> tableManagers = managerService.selAllByCode(function_code);
             JSONObject result = new JSONObject();
-            result.put("tableManagers",JSON.toJSONString(tableManagers));
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -682,7 +690,7 @@ public class StoreController {
             String corp_code = jsonObject.get("corp_code").toString();
             List<Store> stores = storeService.selectAll(user_id, corp_code);
             String column_name = jsonObject.get("column_name").toString();
-            String[] cols =column_name.split(",");//前台传过来的字段
+            String[] cols = column_name.split(",");//前台传过来的字段
             JSONObject jsonObject2 = new JSONObject();
             jsonObject2.put("list", stores);
             org.json.JSONArray array = jsonObject2.getJSONArray("list");

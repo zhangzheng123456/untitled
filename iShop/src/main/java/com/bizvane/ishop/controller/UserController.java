@@ -154,10 +154,10 @@ public class UserController {
             //    String role_code = jsonObject.get("role_code").toString();
             Group group = groupService.selectByCode(user.getCorp_code(), user.getGroup_code(), "");
             String role_code = group.getRole_code();
-            if (role_code.equals(Common.ROLE_SYS)  || role_code.equals(Common.ROLE_GM)) {
+            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
             }
-            if(role_code.equals(Common.ROLE_AM)){
+            if (role_code.equals(Common.ROLE_AM)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String area_code = jsonObject.get("area_code").toString();
                 if (!area_code.equals("all") && !area_code.equals("")) {
@@ -170,7 +170,7 @@ public class UserController {
                 }
                 user.setArea_code(area_code);
             }
-            if(role_code.equals(Common.ROLE_SM)|| role_code.equals(Common.ROLE_STAFF)){
+            if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all") && !store_code.equals("")) {
@@ -239,14 +239,14 @@ public class UserController {
             user.setSex(jsonObject.get("sex").toString());
             //       user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(jsonObject.get("corp_code").toString());
-         //   String role_code = jsonObject.get("role_code").toString();
+            //   String role_code = jsonObject.get("role_code").toString();
             user.setGroup_code(jsonObject.get("group_code").toString());
 
             String role_code = jsonObject.get("role_code").toString();
-            if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
+            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
             }
-            if(role_code.equals(Common.ROLE_AM)){
+            if (role_code.equals(Common.ROLE_AM)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String area_code = jsonObject.get("area_code").toString();
                 if (!area_code.equals("all") && !area_code.equals("")) {
@@ -259,7 +259,7 @@ public class UserController {
                 }
                 user.setArea_code(area_code);
             }
-            if(role_code.equals(Common.ROLE_SM)||role_code.equals(Common.ROLE_STAFF)){
+            if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 user.setGroup_code(jsonObject.get("group_code").toString());
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all") && !store_code.equals("")) {
@@ -318,13 +318,27 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String user_id = jsonObject.get("id").toString();
             String[] ids = user_id.split(",");
+            int count = 0;
+            String msg = "";
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
+                User user = userService.getUserById(Integer.parseInt(ids[i]));
+                count = userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
+                if (count > 0) {
+                    msg = "请先删除用户的业绩目标，再删除用户" + user.getUser_code();
+                    break;
+                }
                 userService.delete(Integer.valueOf(ids[i]));
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("success");
+            if (count > 0) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(msg);
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -736,7 +750,7 @@ public class UserController {
             if (corp.getApp_id() != null && corp.getApp_id() != "") {
                 String auth_appid = corp.getApp_id();
                 if (is_authorize.equals("Y")) {
-                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid="+auth_appid+"&prd=ishop&src=e&emp_id=" + user_code;
+                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
                     String result = IshowHttpClient.get(url);
                     logger.info("------------creatQrcode  result" + result);
 
