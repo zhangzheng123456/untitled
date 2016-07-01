@@ -8,7 +8,7 @@ public class VIPRelation {
 
 	private String app_user_name;
 
-	private String guider_code;
+	private String emp_id;
 
 	private String create_date;
 
@@ -36,12 +36,12 @@ public class VIPRelation {
 		this.app_user_name = app_user_name;
 	}
 
-	public String getGuider_code() {
-		return guider_code;
+	public String getEmp_id() {
+		return emp_id;
 	}
 
-	public void setGuider_code(String guider_code) {
-		this.guider_code = guider_code;
+	public void setEmp_id(String emp_id) {
+		this.emp_id = emp_id;
 	}
 
 	public String getCreate_date() {
