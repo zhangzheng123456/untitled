@@ -314,6 +314,11 @@ function selectownshop(obj){//店铺
     }else{
         ul.hide();
     }
+    $(obj).blur(function(){  
+        setTimeout(function(){
+        	ul.hide();
+        },200);  
+    });     
 }
 function selectownarea(obj){//区域
 	$(".shop_list ul").html('');
@@ -324,6 +329,11 @@ function selectownarea(obj){//区域
     }else{
         ul.hide();
     }
+    $(obj).blur(function(){  
+        setTimeout(function(){
+        	ul.hide();
+        },200);  
+    });     
 }
 function selectownrole(obj){
 	$("#role_list").html('');
@@ -334,6 +344,11 @@ function selectownrole(obj){
     }else{
         ul.hide();
     }
+    $(obj).blur(function(){  
+        setTimeout(function(){
+        	ul.hide();
+        },200);  
+    });   
 }
 // var c_code="";
 // var r_code="";
@@ -546,7 +561,7 @@ jQuery(document).ready(function(){
 				}
 				if(msg.qrcode==""){
 					$("#kuang").hide();
-				}else if(msg.qrcode!==""){
+				}else if(msg.qrcode!==""&&msg.qrcode!==undefined){
 					$("#kuang").show();
     				$('#kuang img').attr("src",msg.qrcode);
 				}
@@ -624,8 +639,8 @@ jQuery(document).ready(function(){
 	            	$('#add_per_icon').attr("onclick","addareaselect()");
 	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
 	            	$("#ownshop_list").show();
-	            	var area_lists=msg.store_name.split(",");
-					var areacode_list=msg.store_code.split(",");
+	            	var area_lists=msg.area_name.split(",");
+					var areacode_list=msg.area_code.split(",");
 	            	if(area_lists.length==0){
 						$("#OWN_STORE").val("");
 					}else if(area_lists==1){
@@ -637,12 +652,12 @@ jQuery(document).ready(function(){
 						var html='';
 						for(var i=1;i<area_lists.length;i++){
 							html +='<div id="per_type">'
-						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownshop(this)">'
+						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'" onclick="selectownarea(this)">'
 						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+areacode_list[i]+'"  value="'+area_lists[i]+'" placeholder="请选择所属店铺" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
 						        +'<ul style="margin-left:0px">'
 						        +'</ul>'
 						        +'</span>'
-						        +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
+						        +' <span class="minus_per_icon" onclick="minusareaselect(this)"><i class="icon-ishop_6-12"></i>删除区域</span>'
 						        +'</div>';
 						}
 						$(".shop_list").append(html);
