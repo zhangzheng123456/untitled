@@ -107,6 +107,11 @@ var oc = new ObjectControl();
 				var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 				var ISACTIVE="";//是否可用字段
 				var input=$("#is_active")[0];//是否可用
+				if(OWN_RIGHT==""){//群组
+					$("#group").html("群组不能为空！");
+					$("#group").attr("class","error_tips");
+					return;
+				}
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -127,6 +132,14 @@ var oc = new ObjectControl();
 						STORE_CODE +=r+",";
 					}else{
 						STORE_CODE +=r;
+					}
+				}
+				//如果角色是导购，店长，区经的时候
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+					if(STORE_CODE==""){
+						$('#shop_t').html("不能为空！");
+						$('#shop_t').attr("class","error_tips");
+						return;
 					}
 				}
 				var _command="/user/add";//接口名
@@ -195,6 +208,11 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				if(OWN_RIGHT==""){//群组
+					$("#group").html("群组不能为空！");
+					$("#group").attr("class","error_tips");
+					return;
+				}
 				var can_login="";//可登录状态
                 var input1=$("#invisible")[0];
                 if(input1.checked==true){
@@ -211,6 +229,14 @@ var oc = new ObjectControl();
 						STORE_CODE +=r+",";
 					}else{
 						STORE_CODE +=r;
+					}
+				}
+				//如果角色是导购，店长，区经的时候
+				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
+					if(STORE_CODE==""){
+						$('#shop_t').html("不能为空！");
+						$('#shop_t').attr("class","error_tips");
+						return;
 					}
 				}
 				var PSW=$("#init_password").val();

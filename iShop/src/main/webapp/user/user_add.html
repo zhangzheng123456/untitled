@@ -50,7 +50,7 @@
                         <span><label>手机</label><input type="text" id="USER_PHONE" verify="Phone"/><div style="padding-left:125px" class="hint"><div  hintinfo="手机号码为必填项，不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>邮箱</label><input type="text" id="USER_EMAIL" verify="Mail"/><div style="padding-left:125px" class="hint"><div  hintinfo="邮箱可不项！"></div></div></span>
+                        <span><label>邮箱</label><input type="text" id="USER_EMAIL" verify="Mail"/><div style="padding-left:125px" class="hint"><div  hintinfo=""></div></div></span>
                     </div>
                     <div class="drop_down item_1">
                         <span><label>性别</label><input class="input_select" id="USER_SEX" type="text" placeholder="请选择性别" readonly/>
@@ -61,9 +61,10 @@
                         </span>
                     </div>
                     <div id="per_type" >
-                        <span onclick="selectownrole(this)"><label>所属群组</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
+                        <span onclick="selectownrole(this)"><label>所属群组</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" data-myrcode="" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
                             <ul id="role_list">
                             </ul></span><span class="add_per_icon" id="add_power"><i class="icon-ishop_8-03"></i>编辑权限</span>
+                            <div style="padding-left:125px" class="hint"><div id="group"></div></div>
                     </div>
                     <div id="select_ownshop">
                         <ul id="ownshop_list">
@@ -79,6 +80,7 @@
                                 </div>
                             <li>
                         </ul>
+                        <div style="padding-left:125px" class="hint"><div id="shop_t"></div></div>
                     </div>
                 </form>
             </div>

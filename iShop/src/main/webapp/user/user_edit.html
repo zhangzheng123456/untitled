@@ -61,7 +61,7 @@
                     </div>
                     <div>
                         <span><label>邮箱</label><input type="text" id="USER_EMAIL" verify="Mail"/>
-                            <div style="padding-left:125px" class="hint"><div  hintinfo="可不填！"></div></div>
+                            <div style="padding-left:125px" class="hint"><div  hintinfo=""></div></div>
                         </span>
                     </div>
                     <div class="drop_down item_1">
@@ -73,9 +73,10 @@
                         </span>
                     </div>
                     <div id="per_type" >
-                        <span onclick="selectownrole(this)"><label>所属群组</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
+                        <span onclick="selectownrole(this)"><label>所属群组</label><input class="input_select" type="text" id="OWN_RIGHT"  placeholder="请选择所属群组" data-myrcode="" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>
                             <ul id="role_list">
                             </ul></span><span class="add_per_icon" id="edit_power"><i class="icon-ishop_8-03"></i>编辑权限</span>
+                            <div style="padding-left:125px" class="hint"><div  hintinfo="可不填！" id="group"></div></div>
                     </div>
                     <div id="select_ownshop">
                         <ul id="ownshop_list">
@@ -91,6 +92,7 @@
                                 </div>
                             <li>
                         </ul>
+                        <div style="padding-left:125px" class="hint"><div id="shop_t"></div></div>
                     </div>
                     <div>
                         <span>
