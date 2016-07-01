@@ -1,7 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 2016/5/19.
  */
@@ -22,7 +20,7 @@ public class Store {
     //二维码图片地址
     private String qrcode;
     //二维码图片地址
-    private String qrcode_url;
+    private String qrcode_content;
     //修改时间
     private String modified_date;
     //修改人
@@ -114,12 +112,12 @@ public class Store {
         this.qrcode = qrcode;
     }
 
-    public String getQrcode_url() {
-        return qrcode_url;
+    public String getQrcode_content() {
+        return qrcode_content;
     }
 
-    public void setQrcode_url(String qrcode_url) {
-        this.qrcode_url = qrcode_url;
+    public void setQrcode_content(String qrcode_content) {
+        this.qrcode_content = qrcode_content;
     }
 
     public String getModified_date() {
