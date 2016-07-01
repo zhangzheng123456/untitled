@@ -168,11 +168,16 @@ public class BrandController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 Brand brand = brandService.getBrandById(Integer.valueOf(ids[i]));
+                logger.info("------------得到brand" + brand.getId());
                 String brand_code = brand.getBrand_code();
                 String corp_code = brand.getCorp_code();
+                logger.info("-------------获取企业店铺之前---" + corp_code);
                 List<Store> stores = brandService.getBrandStore(corp_code, brand_code);
+                logger.info(stores.toString() + "lixixitest 111" + "删除前 。。。");
                 if (stores.size() == 0) {
+                    logger.info("----------" + ids[i] + "\n");
                     brandService.delete(Integer.valueOf(ids[i]));
+                    logger.info("删除之后！！！" + "lixixitest1111s");
                     dataBean.setId(id);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setMessage("删除成功！");

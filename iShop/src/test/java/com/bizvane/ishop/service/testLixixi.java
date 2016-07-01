@@ -4,10 +4,7 @@ import IceInternal.Ex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.MessageTemplateMapper;
-import com.bizvane.ishop.dao.VIPtagMapper;
-import com.bizvane.ishop.dao.VipCallbackRecordMapper;
-import com.bizvane.ishop.dao.VipTagTypeMapper;
+import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
 import com.github.pagehelper.PageInfo;
 import com.google.gson.GsonBuilder;
@@ -38,7 +35,13 @@ public class testLixixi {
     private StoreService storeService;
 
     @Autowired
+    private BrandMapper brandMapper;
+
+    @Autowired
     private MessageTemplateService messageTemplateService;
+
+    @Autowired
+    private BrandService brandService;
 
     @Test
     public void test11() {
@@ -63,13 +66,9 @@ public class testLixixi {
     @Test
     public void test2() {
         try {
-            MessageTemplate messageTemplate = this.messageTemplateService.getMessageTemplateById(1);
-            messageTemplate.setId(2);
-            messageTemplate.setCreated_date(Common.DATETIME_FORMAT.format(new Date()));
-            this.messageTemplateService.insert(messageTemplate);
-            System.out.println(messageTemplate.getCreater());
+
         } catch (Exception ex) {
-            System.out.println(ex.getMessage());
+            System.out.println("Errorlixixi : " + ex.getMessage());
         }
     }
 
@@ -188,6 +187,15 @@ public class testLixixi {
             String corp_code = "C00000";
             String tem_name = "testr34";
             this.messageTemplateService.messageTemplateNameExist(corp_code, tem_name);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void test911() {
+        try {
+            brandService.delete(61);
         } catch (Exception ex) {
             System.out.println(ex.getMessage());
         }
