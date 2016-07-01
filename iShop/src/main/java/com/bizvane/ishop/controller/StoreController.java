@@ -582,7 +582,7 @@ public class StoreController {
                     String qrcode_url = obj.get("url").toString();
                     Store store = storeService.getStoreByCode(corp_code,store_code,"");
                     store.setQrcode(picture);
-                    store.setQrcode_url(qrcode_url);
+                    store.setQrcode_content(qrcode_url);
                     Date now = new Date();
                     store.setModified_date(Common.DATETIME_FORMAT.format(now));
                     store.setModifier(user_id);
@@ -590,6 +590,66 @@ public class StoreController {
                     storeService.updateStore(store);
                     dataBean.setId(id);
                     dataBean.setMessage(picture);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    return dataBean.getJsonStr();
+                }
+            }
+            dataBean.setId(id);
+            dataBean.setMessage("所属企业未授权！");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     *一键生成所选店铺的店铺二维码
+     */
+    @RequestMapping(value = "/creatStoresQrcode", method = RequestMethod.POST)
+    @ResponseBody
+    public String creatStoresQrcode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_id").toString();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("------------StoreController creatStoresQrcode" + jsString);
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String store_codes = jsonObject.get("store_code").toString();
+            Corp corp = corpService.selectByCorpId(0, corp_code);
+            String is_authorize = corp.getIs_authorize();
+            if (corp.getApp_id() != null && corp.getApp_id() != "") {
+                String auth_appid = corp.getApp_id();
+                if (is_authorize.equals("Y")) {
+
+                    String[] stores = store_codes.split(",");
+                    for (int i = 0; i < stores.length; i++) {
+                        String store_code = stores[i];
+                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid="+auth_appid+"&prd=ishop&src=s&store_id=" + store_code;
+                        String result = IshowHttpClient.get(url);
+                        logger.info("------------creatQrcode  result" + result);
+
+                        JSONObject obj = new JSONObject(result);
+                        String picture = obj.get("picture").toString();
+                        String qrcode_url = obj.get("url").toString();
+                        Store store = storeService.getStoreByCode(corp_code,store_code,"");
+                        store.setQrcode(picture);
+                        store.setQrcode_content(qrcode_url);
+                        Date now = new Date();
+                        store.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        store.setModifier(user_id);
+                        logger.info("------------creatQrcode  update store---");
+                        storeService.updateStore(store);
+                    }
+                    dataBean.setId(id);
+                    dataBean.setMessage("生成完成");
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     return dataBean.getJsonStr();
                 }

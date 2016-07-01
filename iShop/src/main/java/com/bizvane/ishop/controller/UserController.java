@@ -8,21 +8,17 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.IshowHttpClient;
 import com.github.pagehelper.PageInfo;
-import org.json.HTTP;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.System;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -749,7 +745,7 @@ public class UserController {
                     String qrcode_url = obj.get("url").toString();
                     User user = userService.userCodeExist(user_code, corp_code);
                     user.setQrcode(picture);
-                    user.setQrcode_url(qrcode_url);
+                    user.setQrcode_content(qrcode_url);
                     Date now = new Date();
                     user.setModified_date(Common.DATETIME_FORMAT.format(now));
                     user.setModifier(user_id);

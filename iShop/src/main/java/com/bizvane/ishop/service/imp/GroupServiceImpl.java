@@ -32,14 +32,19 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.selectByRole(role_code);
     }
 
-    public Group selectByCode(String corp_code ,String group_code,String isactive) throws SQLException {
-        return groupMapper.selectByCode(corp_code,group_code,isactive);
+    public Group selectByCode(String corp_code, String group_code, String isactive) throws SQLException {
+        return groupMapper.selectByCode(corp_code, group_code, isactive);
+    }
+
+    @Override
+    public Group selectByName(String corp_code, String group_name, String isactive) throws SQLException {
+        return groupMapper.selectByName(corp_code, group_name);
     }
 
     public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
-        groups = groupMapper.selectAllGroup(corp_code,role_code, search_value);
+        groups = groupMapper.selectAllGroup(corp_code, role_code, search_value);
         PageInfo<Group> page = new PageInfo<Group>(groups);
         return page;
     }
@@ -52,11 +57,11 @@ public class GroupServiceImpl implements GroupService {
         String result = "";
         String group_code = group.getGroup_code();
         String corp_code = group.getCorp_code();
-        Group group1 = selectByCode(corp_code,group_code,"");
-        if (group1 == null){
+        Group group1 = selectByCode(corp_code, group_code, "");
+        if (group1 == null) {
             groupMapper.insertGroup(group);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else {
+        } else {
             result = "该群组编号已存在！";
         }
         return result;
@@ -68,11 +73,11 @@ public class GroupServiceImpl implements GroupService {
         String group_code = group.getGroup_code();
         String corp_code = group.getCorp_code();
         Group group2 = getGroupById(id);
-        Group group1 = selectByCode(corp_code,group_code,"");
-        if (group2.getGroup_code().equals(group_code) || group1 == null){
+        Group group1 = selectByCode(corp_code, group_code, "");
+        if (group2.getGroup_code().equals(group_code) || group1 == null) {
             groupMapper.updateGroup(group);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else {
+        } else {
             result = "该群组编号已存在！";
         }
         return result;

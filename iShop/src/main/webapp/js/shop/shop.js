@@ -223,6 +223,12 @@ jQuery(document).ready(function(){
 				}else if(msg.flg_tob=="N"){
 					$("#FLG_TOB").val("否");
 				}
+				if(msg.qrcode==""){
+					$("#kuang").hide();
+				}else if(msg.qrcode!==""&&msg.qrcode!==undefined){
+					$("#kuang").show();
+    				$('#kuang img').attr("src",msg.qrcode);
+				}
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -339,11 +345,11 @@ jQuery(document).ready(function(){
 	});
 	//点击生成二维码
     $("#create").click(function(){
-    	var user_creat="/store/creatQrcode";
-    	var user_code=$('#STORE_ID').val();
+    	var user_creat="/shop/creatQrcode";
+    	var store_code=$('#STORE_ID').val();
     	var corp_code=$('#OWN_CORP').val();
     	var _params={};
-    	_params["user_code"]=user_code;
+    	_params["store_code"]=store_code;
     	_params["corp_code"]=corp_code;
     	oc.postRequire("post",user_creat,"", _params, function(data){
     		var message=data.message;
@@ -354,6 +360,10 @@ jQuery(document).ready(function(){
     			alert(data.message);
     		}
     	})
+    })
+     //点击关闭按钮
+    $("#k_close").click(function(){
+    	$("#kuang").hide();
     })
 	$(".shopadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");

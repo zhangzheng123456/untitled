@@ -52,6 +52,16 @@
         </if>
     </select>
 
+    <select id="selectByName" resultType="com.bizvane.ishop.entity.Group">
+        select *
+        from DEF_GROUP
+        where group_name = #{group_name}
+        and corp_code = #{corp_code}
+        <if test="isactive !=''">
+            and isactive = #{isactive}
+        </if>
+    </select>
+
     <select id="selectAllGroup" resultMap="GroupInfo">
         select
         DEF_GROUP.id,

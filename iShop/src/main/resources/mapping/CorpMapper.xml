@@ -218,9 +218,22 @@
         </if>
     </select>
 
-
-    <select id="selectByAppUserName" resultType="com.bizvane.ishop.entity.Corp">
-        SELECT * FROM DEF_CORP
-        WHERE APP_USER_NAME = #{app_user_name}
+    <select id="getBrandCount" resultType="java.lang.Integer">
+        select count(*) from DEF_BRAND  WHERE corp_code=#{corp_code}
     </select>
+
+    <select id="getGoodCount" resultType="java.lang.Integer">
+        select count(*) from DEF_GOODS WHERE corp_code=#{corp_code}
+    </select>
+
+
+    <select id="getGroupCount" resultType="java.lang.Integer">
+        select count(*) from DEF_GROUP WHERE corp_code=#{corp_code}
+    </select>
+
+
+
+
+
+
 </mapper>

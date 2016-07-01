@@ -15,7 +15,7 @@
         <result column="store_code" property="store_code"/>
         <result column="group_code" property="group_code"/>
         <result column="qrcode" property="qrcode"/>
-        <result column="qrcode_url" property="qrcode_url"/>
+        <result column="qrcode_content" property="qrcode_content"/>
         <result column="password" property="password"/>
         <result column="login_time_recently" property="login_time_recently"/>
         <result column="created_date" property="created_date"/>
@@ -41,7 +41,7 @@
         <result column="store_code" property="store_code"/>
         <result column="group_code" property="group_code"/>
         <result column="qrcode" property="qrcode"/>
-        <result column="qrcode_url" property="qrcode_url"/>
+        <result column="qrcode_content" property="qrcode_content"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -296,8 +296,8 @@
             <if test="qrcode!=null">
                 qrcode,
             </if>
-            <if test="qrcode_url!=null">
-                qrcode_url,
+            <if test="qrcode_content!=null">
+                qrcode_content,
             </if>
             <if test="login_time_recently!=null">
                 login_time_recently,
@@ -361,8 +361,8 @@
             <if test="qrcode!=null">
                 #{qrcode},
             </if>
-            <if test="qrcode_url!=null">
-                #{qrcode_url},
+            <if test="qrcode_content!=null">
+                #{qrcode_content},
             </if>
             <if test="login_time_recently!=null">
                 #{login_time_recently},
@@ -427,8 +427,8 @@
             <if test="qrcode!=null and qrcode!='' ">
                 qrcode = #{qrcode},
             </if>
-            <if test="qrcode_url!=null and qrcode_url!='' ">
-                qrcode_url = #{qrcode_url},
+            <if test="qrcode_content!=null and qrcode_content!='' ">
+                qrcode_content = #{qrcode_content},
             </if>
             <if test="password!=null and password!='' ">
                 PASSWORD = #{password},

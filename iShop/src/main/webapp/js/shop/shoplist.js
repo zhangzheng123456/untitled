@@ -318,39 +318,6 @@ function jumpBianse(){
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
-    //弹框删除关闭
-    $("#delete").click(function(){
-        $("#p").hide();
-        $("#tk").hide();
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        for(var i=0,ID="";i<tr.length;i++){
-            var r=$(tr[i]).attr("id");
-            if(i<tr.length-1){
-                ID+=r+",";
-            }else{
-                 ID+=r;
-            }     
-        }
-        var param={};
-        param["id"]=ID;
-        console.log(param);
-        oc.postRequire("post","/shop/delete","0",param,function(data){
-            if(data.code=="0"){
-                if(value==""){
-                    frame();
-                    $('.frame').html('删除成功');
-                    GET(); 
-                }else if(value!==""){
-                    frame();
-                    $('.frame').html('删除成功');
-                    POST();
-                }
-            }else if(data.code=="-1"){
-                frame();
-                $('.frame').html(data.message);
-            }
-        })
-    })
     //查看员工跳转查看员工页面
     $('.staff').click(function(){
         if(event.stopPropagation){
@@ -429,7 +396,40 @@ function frame(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-} 
+}
+//弹框删除关闭
+    $("#delete").click(function() {
+        $("#p").hide();
+        $("#tk").hide();
+        var tr = $("tbody input[type='checkbox']:checked").parents("tr");
+        for (var i = 0, ID = ""; i < tr.length; i++) {
+            var r = $(tr[i]).attr("id");
+            if (i < tr.length - 1) {
+                ID += r + ",";
+            } else {
+                ID += r;
+            }
+        }
+        var param = {};
+        param["id"] = ID;
+        console.log(param);
+        oc.postRequire("post", "/shop/delete", "0", param, function(data) {
+            if (data.code == "0") {
+                if (value == "") {
+                    frame();
+                    $('.frame').html('删除成功');
+                    GET();
+                } else if (value !== "") {
+                    frame();
+                    $('.frame').html('删除成功');
+                    POST();
+                }
+            } else if (data.code == "-1") {
+                frame();
+                $('.frame').html(data.message);
+            }
+        })
+    })
 //全选
 function checkAll(name){
     var el=$("tbody input");

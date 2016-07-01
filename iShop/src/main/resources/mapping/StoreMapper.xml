@@ -11,6 +11,7 @@
         <result column="area_code" property="area_code"/>
         <result column="flg_tob" property="flg_tob"/>
         <result column="corp_code" property="corp_code"/>
+        <result column="qrcode" property="qrcode"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -29,6 +30,7 @@
         store_name,
         brand_code,
         flg_tob,
+        qrcode,
         DEF_STORE.AREA_CODE,
         DEF_STORE.corp_code,
         DEF_STORE.modified_date,
@@ -197,8 +199,8 @@
             <if test="qrcode!=null">
                 qrcode,
             </if>
-            <if test="qrcode_url!=null">
-                qrcode_url,
+            <if test="qrcode_content!=null">
+                qrcode_content,
             </if>
             <if test="flg_tob!=null">
                 flg_tob,
@@ -238,8 +240,8 @@
             <if test="flg_tob!=null">
                 #{flg_tob},
             </if>
-            <if test="qrcode_url!=null">
-                #{qrcode_url},
+            <if test="qrcode_content!=null">
+                #{qrcode_content},
             </if>
             <if test="qrcode!=null">
                 #{qrcode},
@@ -286,8 +288,8 @@
             <if test="qrcode!=null and qrcode!=''">
                  qrcode = #{qrcode},
             </if>
-            <if test="qrcode_url!=null and qrcode_url!=''">
-                qrcode_url = #{qrcode_url},
+            <if test="qrcode_content!=null and qrcode_content!=''">
+                qrcode_content = #{qrcode_content},
             </if>
             <if test="flg_tob!=null and flg_tob!=''">
                 flg_tob = #{flg_tob},

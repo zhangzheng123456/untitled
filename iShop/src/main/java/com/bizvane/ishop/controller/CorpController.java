@@ -178,21 +178,40 @@ public class CorpController {
             boolean flag = false;
             int corp_id = -1;
             String[] ids = corp_ids.split(",");
+            String msg = null;
             for (int i = 0; i < ids.length; i++) {
                 corp_id = Integer.valueOf(ids[i]);
                 Corp corp = this.corpService.selectByCorpId(corp_id, "");
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
-                int count = corpService.getAreaCount(corp.getCorp_code());
+                int count = 0;
+                count = corpService.getAreaCount(corp.getCorp_code());
                 if (count > 0) {
-                    flag = true;
+                    msg = "企业" + corp_id + "下有未处理的区域，请先处理区域！";
+                    break;
+                }
+                count = this.corpService.getBranCount(corp.getCorp_code());
+                if (count > 0) {
+                    msg = "企业" + corp_id + "下有未处理的品牌，请先处理品牌！";
+                    break;
+                }
+                count = this.corpService.getGroupCount(corp.getCorp_code());
+                if (count > 0) {
+                    msg = "企业" + corp_id + "下有未处理的群组，请先处理群组！";
+                    break;
+                }
+                count = this.corpService.getGoodsCount(corp.getCorp_code());
+                if (count > 0) {
+                    msg = "企业" + corp_id + "下有未处理的商品，请先处理商品！";
                     break;
                 }
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }
-            if (flag) {
+
+
+            if (msg != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("企业" + corp_id + "下有未处理的区域，请先处理区域！");
+                dataBean.setMessage(msg);
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

@@ -32,13 +32,13 @@ public class CorpServiceImpl implements CorpService {
     }
 
     @Transactional
-    public String insert(String message,String user_id) throws SQLException {
+    public String insert(String message, String user_id) throws SQLException {
 
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String corp_code = jsonObject.get("corp_code").toString();
         String corp_name = jsonObject.get("corp_name").toString();
-        Corp corp = selectByCorpId(0,corp_code);
+        Corp corp = selectByCorpId(0, corp_code);
         String exist = getCorpByCorpName(corp_name);
         if (corp == null && exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             corp = new Corp();
@@ -59,16 +59,16 @@ public class CorpServiceImpl implements CorpService {
             corpMapper.insertCorp(corp);
             result = Common.DATABEAN_CODE_SUCCESS;
 
-        }else if(corp != null){
+        } else if (corp != null) {
             result = "企业编号已存在";
-        }else {
+        } else {
             result = "企业名称已存在";
         }
         return result;
     }
 
     @Transactional
-    public String update(String message,String user_id) throws SQLException {
+    public String update(String message, String user_id) throws SQLException {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int corp_id = Integer.parseInt(jsonObject.get("id").toString());
@@ -76,8 +76,8 @@ public class CorpServiceImpl implements CorpService {
         String corp_code = jsonObject.get("corp_code").toString();
         String corp_name = jsonObject.get("corp_name").toString();
 
-        Corp corp = selectByCorpId(corp_id,"");
-        Corp corp1 = selectByCorpId(0,corp_code);
+        Corp corp = selectByCorpId(corp_id, "");
+        Corp corp1 = selectByCorpId(0, corp_code);
         String exist = getCorpByCorpName(corp_name);
 
         if ((corp.getCorp_code().equals(corp_code) || corp1 == null)
@@ -94,9 +94,9 @@ public class CorpServiceImpl implements CorpService {
             corp.setIsactive(jsonObject.get("isactive").toString());
             corpMapper.updateByCorpId(corp);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else if (!corp.getCorp_code().equals(corp_code) || corp1 != null){
+        } else if (!corp.getCorp_code().equals(corp_code) || corp1 != null) {
             result = "企业编号已存在";
-        }else {
+        } else {
             result = "企业名称已存在";
         }
         return result;
@@ -162,10 +162,20 @@ public class CorpServiceImpl implements CorpService {
 
     @Override
     public int getGoodCount(String corp_code) {
-        return 0;
+        return this.corpMapper.getGoodCount(corp_code);
     }
 
-    public Corp getCorpByAppUserName(String app_user_name){
+    public Corp getCorpByAppUserName(String app_user_name) {
         return corpMapper.selectByAppUserName(app_user_name);
+    }
+
+    @Override
+    public int getGroupCount(String corp_code) {
+        return corpMapper.getGroupCount(corp_code);
+    }
+
+    @Override
+    public int getGoodsCount(String corp_code) {
+        return corpMapper.getGoodCount(corp_code);
     }
 }
