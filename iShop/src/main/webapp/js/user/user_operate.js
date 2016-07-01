@@ -305,23 +305,29 @@ var oc = new ObjectControl();
 	obj.init = init;
 	return obj;
 }));
-function selectownshop(obj){//店铺
+function selectownshop(obj){//加载店铺列表的时候
 	$(".shop_list ul").html('');
+	console.log(obj);
+	var input=$(obj).find("input");
+	console.log(input);
 	store_li_list(obj.id);
+	$(obj).find()
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
     }else{
         ul.hide();
     }
-    $(obj).blur(function(){  
+    $(input).blur(function(){  
         setTimeout(function(){
         	ul.hide();
         },200);  
     });     
 }
-function selectownarea(obj){//区域
+function selectownarea(obj){//加载区域列表的时候
 	$(".shop_list ul").html('');
+	console.log(obj);
+	var input=$(obj).find("input");
 	area_li_list(obj.id);
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
@@ -329,22 +335,24 @@ function selectownarea(obj){//区域
     }else{
         ul.hide();
     }
-    $(obj).blur(function(){  
+    $(input).blur(function(){  
         setTimeout(function(){
         	ul.hide();
         },200);  
     });     
 }
-function selectownrole(obj){
+function selectownrole(obj){//加载群组列表的时候
 	$("#role_list").html('');
 	role_li_list();
+	var input=$(obj).find("input");
 	var ul=$(obj).children('ul');
+
     if(ul.css("display")=="none"){
         ul.show();
     }else{
         ul.hide();
     }
-    $(obj).blur(function(){  
+    $(input).blur(function(){  
         setTimeout(function(){
         	ul.hide();
         },200);  
@@ -356,7 +364,7 @@ function role_li_list(){
 	var c_code=$('#OWN_CORP').val();
 	role_data(c_code);
 }
-function role_data(c){
+function role_data(c){//
 	// var _params={"group_code":r,"corp_code":c};
 	var _params={"corp_code":c};
 	var _command="/user/role";
@@ -393,7 +401,7 @@ function role_data(c){
             $(this_).addClass('rel').siblings().removeClass('rel');
             if(j_code=="R2000"){
             	$('#sidename label').html("所属店铺");
-            	$('#OWN_STORE').attr("placeholder","请选着所属店铺");
+            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
             	$('#OWN_STORE').attr("data-myscode","");
             	$('#OWN_STORE').val("");
             	$('#sidedown').attr("onclick","selectownshop(this)");
@@ -403,7 +411,7 @@ function role_data(c){
             	$("#ownshop_list .per_type").nextAll().remove();
             }else if(j_code=="R3000"){
             	$('#sidename label').html("所属店铺");
-            	$('#OWN_STORE').attr("placeholder","请选着所属店铺");
+            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
             	$('#OWN_STORE').attr("data-myscode","");
             	$('#OWN_STORE').val("");
             	$('#sidedown').attr("onclick","selectownshop(this)");
@@ -413,7 +421,7 @@ function role_data(c){
             	$("#ownshop_list .per_type").nextAll().remove();
             }else if(j_code=="R4000"){
             	$('#sidename label').html("所属区域");
-            	$('#OWN_STORE').attr("placeholder","请选着所属区域");
+            	$('#OWN_STORE').attr("placeholder","请选择所属区域");
             	$('#OWN_STORE').attr("data-myscode","");
             	$('#OWN_STORE').val("");
             	$('#sidedown').attr("onclick","selectownarea(this)");
@@ -497,6 +505,7 @@ function area_data(p,c){//区域
 		}
 		$("#"+p+" ul").html(html);
 		$("#"+p+" ul li").click(function(){
+			var group_code=$('')
             var this_=this;
             var txt = $(this_).text();
             var s_code=$(this_).data("storecode");
@@ -565,8 +574,6 @@ jQuery(document).ready(function(){
 					$("#kuang").show();
     				$('#kuang img').attr("src",msg.qrcode);
 				}
-				// $("#OWN_CORP").parent().parent().parent().parent().css("display","block");
-				// $("#select_ownshop").css("display","block");
 				$("#OWN_CORP option").val(msg.corp.corp_code);
 				$("#OWN_CORP option").text(msg.corp.corp_name);
 				$("#OWN_RIGHT").val(msg.group.group_name);
@@ -574,7 +581,7 @@ jQuery(document).ready(function(){
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
 				if(j_code=="R2000"){
 	            	$('#sidename label').html("所属店铺");
-	            	$('#OWN_STORE').attr("placeholder","请选着所属店铺");
+	            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
 	            	$('#sidedown').attr("onclick","selectownshop(this)");
 	            	$('#add_per_icon').attr("onclick","addshopselect()");
 	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
@@ -604,7 +611,7 @@ jQuery(document).ready(function(){
 					}	
             	}else if(j_code=="R3000"){
 	            	$('#sidename label').html("所属店铺");
-	            	$('#OWN_STORE').attr("placeholder","请选着所属店铺");
+	            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
 	            	$('#sidedown').attr("onclick","selectownshop(this)");
 	            	$('#add_per_icon').attr("onclick","addshopselect()");
 	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
@@ -634,7 +641,7 @@ jQuery(document).ready(function(){
 					}	
             	}else if(j_code=="R4000"){
 	            	$('#sidename label').html("所属区域");
-	            	$('#OWN_STORE').attr("placeholder","请选着所属区域");
+	            	$('#OWN_STORE').attr("placeholder","请选择所属区域");
 	            	$('#sidedown').attr("onclick","selectownarea(this)");
 	            	$('#add_per_icon').attr("onclick","addareaselect()");
 	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
