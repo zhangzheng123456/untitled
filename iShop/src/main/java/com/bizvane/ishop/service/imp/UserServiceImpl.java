@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    AreaService areaService;
+    private AreaMapper areaMapper;
     @Autowired
     CorpMapper corpMapper;
     @Autowired
@@ -87,58 +87,63 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
-        System.out.println(user.toString());
-        if (user.getStore_code() == null || user.getStore_code().equals("")) {
-            user.setStore_code("");
-            user.setStore_name("");
-        } else {
-            if (!user.getStore_code().startsWith(Common.STORE_HEAD)){
-                ProcessStoreCode(user);
-            }
-            String store_name = "";
-            String corp_code = user.getCorp_code();
-            String[] ids = user.getStore_code().split(",");
-            String store_code = "";
-            for (int i = 0; i < ids.length; i++) {
-                ids[i] = ids[i].substring(1, ids[i].length());
-                Store store = storeService.getStoreByCode(corp_code, ids[i], "");
-                String store_name1 = store.getStore_name();
-                store_name = store_name + store_name1;
-                store_code = store_code + ids[i];
-                if (i != ids.length - 1) {
-                    store_name = store_name + ",";
-                    store_code = store_code + ",";
+        try {
+
+            System.out.println(user.toString());
+            if (user.getStore_code() == null || user.getStore_code().equals("")) {
+                user.setStore_code("");
+                user.setStore_name("");
+            } else {
+                if (!user.getStore_code().startsWith(Common.STORE_HEAD)) {
+                    ProcessStoreCode(user);
                 }
-            }
-            user.setStore_name(store_name);
-            user.setStore_code(store_code);
-        }
-        if(user.getArea_code()==null || user.getArea_code().equals("")){
-            user.setArea_code("");
-            user.setArea_name("");
-        }else {
-            if (!user.getArea_code().startsWith(Common.STORE_HEAD)){
-                ProcessStoreCode(user);
-            }
-            String corp_code = user.getCorp_code();
-            String area_name="";
-            String[] areaCodes=user.getArea_code().split(",");
-            String areaCode="";
-            for(int i=0;i<areaCodes.length;i++){
-                areaCodes[i]=areaCodes[i].substring(1,areaCodes[i].length());
-                Area area = areaService.selAreaByCorp(corp_code, areaCodes[i], "");
-                String area_name1 = area.getArea_name();
-                area_name=area_name+area_name1;
-                areaCode=areaCode+areaCodes[i];
-                if(i!=areaCodes.length-1){
-                    area_name=area_name+",";
-                    areaCode=areaCode+",";
+                String store_name = "";
+                String corp_code = user.getCorp_code();
+                String[] ids = user.getStore_code().split(",");
+                String store_code = "";
+                for (int i = 0; i < ids.length; i++) {
+                    ids[i] = ids[i].substring(1, ids[i].length());
+                    Store store = storeService.getStoreByCode(corp_code, ids[i], "");
+                    String store_name1 = store.getStore_name();
+                    store_name = store_name + store_name1;
+                    store_code = store_code + ids[i];
+                    if (i != ids.length - 1) {
+                        store_name = store_name + ",";
+                        store_code = store_code + ",";
+                    }
                 }
+                user.setStore_name(store_name);
+                user.setStore_code(store_code);
             }
-            user.setArea_code(areaCode);
-            user.setArea_name(area_name);
+            if (user.getArea_code() == null || user.getArea_code().equals("")) {
+                user.setArea_code("");
+                user.setArea_name("");
+            } else {
+                if(!user.getArea_code().startsWith(Common.STORE_HEAD)){
+                    ProcessAreaCode(user);
+                }
+                String corp_code = user.getCorp_code();
+                String area_name = "";
+                String[] areaCodes = user.getArea_code().split(",");
+                String areaCode = "";
+                for (int i = 0; i < areaCodes.length; i++) {
+                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                    Area area = areaMapper.selAreaByCorp(corp_code, areaCodes[i], "");
+                    String area_name1 = area.getArea_name();
+                    area_name = area_name + area_name1;
+                    areaCode = areaCode + areaCodes[i];
+                    if (i != areaCodes.length - 1) {
+                        area_name = area_name + ",";
+                        areaCode = areaCode + ",";
+                    }
+                }
+                user.setArea_code(areaCode);
+                user.setArea_name(area_name);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        System.out.println(user.toString());
+
         return user;
     }
 
@@ -241,6 +246,7 @@ public class UserServiceImpl implements UserService {
             String corp_code = login_user.getCorp_code();
             String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
+            String area_code =  login_user.getArea_code();
             String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code();
 
             request.getSession().setAttribute("user_id", user_id);
@@ -249,6 +255,7 @@ public class UserServiceImpl implements UserService {
             request.getSession().setAttribute("role_code", role_code);
             request.getSession().setAttribute("store_code", store_code);
             request.getSession().setAttribute("group_code", group_code);
+            request.getSession().setAttribute("area_code",area_code);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
             login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
@@ -487,4 +494,18 @@ public class UserServiceImpl implements UserService {
         user.setStore_code(store_code);
         userMapper.updateByUserId(user);
     }
+    /**
+     * 若导入数据
+     * 将AREA_CODE封装成固定格式
+     */
+    public void ProcessAreaCode(User user){
+        String[] ids=user.getArea_code().split(",");
+        String area_code="";
+        for(int i=0;i<ids.length;i++){
+            area_code=area_code+Common.STORE_HEAD+ids[i]+",";
+        }
+        user.setArea_code(area_code);
+        userMapper.updateByUserId(user);
+    }
+
 }

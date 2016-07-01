@@ -23,6 +23,8 @@ public interface StoreService {
      */
     PageInfo<Store> selectByUserId(int page_number, int page_size, String user_id, String corp_code, String search_value);
 
+    PageInfo<Store> selectByAreaCode(int page_number,int page_size,String user_id,String corp_code,String area_code,String search_value);
+
     List<Store> selectAll(String user_id, String corp_code);
 
     int deleteStoreUser(String user_id, String store_code);

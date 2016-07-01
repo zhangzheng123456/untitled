@@ -100,6 +100,14 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
+    @Override
+    public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String user_id, String corp_code, String area_code, String search_value) {
+        PageHelper.startPage(page_number, page_size);
+        List<Store> stores = storeMapper.selectByAreaCode(user_id, corp_code, area_code, search_value);
+        PageInfo<Store> page=new PageInfo<Store>(stores);
+        return page;
+    }
+
     /***
      * 获取页面的所有数据
      *

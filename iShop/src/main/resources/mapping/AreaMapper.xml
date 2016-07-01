@@ -184,7 +184,7 @@
         select *
         from DEF_AREA
         where CORP_CODE = #{corp_code}
-        AND area_code = #{area_code}
+        AND AREA_CODE = #{area_code}
         <if test="isactive != null and isactive !=''">
             AND isactive = #{isactive}
         </if>
