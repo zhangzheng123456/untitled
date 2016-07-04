@@ -46,6 +46,12 @@ var oc = new ObjectControl();
 				var DATE="";
 				if(TIME_TYPE!=="年"){
 					DATE=$("#GOODS_RELEASETIME").val();
+					if("DATE"==""){
+						var div=$("#GOODS_RELEASETIME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+		            	return;
+					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
 				}
@@ -74,10 +80,17 @@ var oc = new ObjectControl();
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
 				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
-				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				// var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
+				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();
 				var DATE="";
 				if(TIME_TYPE!=="年"){
 					DATE=$("#GOODS_RELEASETIME").val();
+					if("DATE"==""){
+						var div=$("#GOODS_RELEASETIME").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+		            	return;
+					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
 				}
@@ -93,7 +106,9 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,
+				"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,
+				"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -161,27 +176,35 @@ jQuery(document).ready(function(){
 		var _params={"id":id};
 		var _command="/userAchvGoal/select";
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
+			//console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
-				// var check_per=$("#check_per").val(msg.check_per);
-				// $("#ROLE_NUM").val(msg.role_num);
-				// $("#ROLE_NAME").val(msg.role_name);
-				// $("#BEIZHU").val(msg.beizhu);
-				var created_time=$("#created_time").val(msg.created_date);
-				var creator=$("#creator").val(msg.creater);
-				var modify_time=$("#modify_time").val(msg.modified_date);
-				var modifier=$("#modifier").val(msg.modifier);			
-
-				$("#OWN_CORP").val(msg.own_corp);
+				//console.log(msg);
+				msg=JSON.parse(msg.userAchvGoal);
+				// var created_time=$("#created_time").val(msg.created_date);
+				// var creator=$("#creator").val(msg.creater);
+				// var modify_time=$("#modify_time").val(msg.modified_date);
+				// var modifier=$("#modifier").val(msg.modifier);			
+				$("#OWN_CORP option").val(msg.corp.corp_code);
+				$("#OWN_CORP option").text(msg.corp.corp_name);
+				$("#SHOP_NAME option").text(msg.store_name);
+				$("#STAFF_NAME option").text(msg.store_name);
+				// $("#OWN_CORP").val(msg.own_corp);
 				$("#SHOP_ID").val(msg.shop_id);
-				$("#SHOP_NAME").val(msg.shop_name);
+				// $("#SHOP_NAME").val(msg.shop_name);
 				$("#TIME_TYPE").val(msg.time_type);
 				$("#PER_GOAL").val(msg.per_goal);
 				$("#DATE").val(msg.date);
-				// $("#OWN_DOCU").val(msg.own_docu);
 				
+				if(msg.achv_type!=="年"){
+					$("#GOODS_RELEASETIME").val(msg.end_time);
+					$("#TIME_TYPE").val(msg.achv_type);
+				}else if(msg.achv_type=="年"){
+					$('#day').hide();
+    				$('#week_p').show();
+					$("#year").val(msg.end_time);
+					$("#TIME_TYPE").val(msg.achv_type);
+				}
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -192,6 +215,8 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist();
+				console.log($("#SHOP_NAME option[value='"+msg.store_code+"']"));
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
@@ -201,11 +226,13 @@ jQuery(document).ready(function(){
 				// });
 			}
 		});
+	}else{
+		getcorplist();
 	}
-    $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
+    $(".staffgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
-	$(".shopgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$(".staffgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
 	//日期类型的点击事件
@@ -278,7 +305,7 @@ function store_data(c){
 	oc.postRequire("post", _command,"", _params, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
-			console.log(msg.stores);
+			// console.log(msg.stores);
 			var msg_stores=JSON.parse(msg.stores);
 			$('#SHOP_NAME').empty();
 			$('#shop_select .searchable-select').remove();

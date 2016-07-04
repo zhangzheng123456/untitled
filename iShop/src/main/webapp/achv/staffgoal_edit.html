@@ -31,21 +31,42 @@
                         <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
                     </ul>
                 </div>
-                <form class="conpany_msg">
+                <form class="conpany_msg" style="margin-left:0px">
                     <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="所属企业为必填项，不能为空！"></div></div></span>
+                        <ul style="display:inline-flex;">
+                            <li><label style="color:#c26555;">所属企业*</label></li>
+                            <li id="corp_select">
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">店铺编号*</label><input type="text" id="SHOP_ID" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="店铺编号为必填项，不能为空！"></div></div></span>
+                        <ul style="display:inline-flex;">
+                            <li><label>店铺名称</label></li>
+                            <li id="shop_select">
+                                <span class="corp_select">
+                                    <select id="SHOP_NAME" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">员工编号*</label><input type="text" id="STAFF_ID" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="员工编号为必填项，不能为空！"></div></div></span>
+                        <ul style="display:inline-flex;">
+                            <li><label>员工名称</label></li>
+                            <li id="staff_select">
+                                <span class="corp_select">
+                                    <select id="STAFF_NAME" style="display:inline-flex"></select>
+                                </span>
+                            </li>
+                        </ul>
                     </div>
                     <div>
-                        <span><label>店铺名称</label><input type="text" id="SHOP_NAME" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="店铺名称为必填项，不能为空！"></div></div></span>
+                        <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
                     </div>
-                    <div class="drop_down item_1">
-                    <span><label>时间类型</label><input class="input_select" type="text" id="TIME_TYPE" placeholder="请选择时间类型" readonly/>
+                    <div class="drop_down item_1" id="drop_down">
+                        <span><label>时间类型</label><input class="input_select" type="text" id="TIME_TYPE" value="日" readonly/>
                             <ul>
                                 <li>日</li>
                                 <li>周</li>
@@ -54,15 +75,18 @@
                             </ul>
                         </span>
                     </div>
-                    <div>
-                        <span><label>目标业绩</label><input type="text" id="PER_GOAL" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="目标业绩不能为空！"></div></div></span>
+                    <div id="day">
+                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" verify="Empty" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
+                        <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
+                        </span>
                     </div>
-                   <!--  <div>
-                        <span><label>日期</label><input type="text" id="DATE" verify="Empty"/><div style="padding-left:135px" class="hint"><div  hintinfo="日期为必填项，不能为空！"></div></div></span>
-                    </div> -->
-
-                     <div>
-                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"/></span>
+                    <div id="week_p" style="display:none;">
+                        <span>
+                            <label>日期</label>
+                            <input type="text" id="year" class="week" value="2016" readonly="true">
+                            <ul class="year">
+                            </ul>
+                        </span>
                     </div>
                 </form>
             </div>
@@ -75,22 +99,24 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" readonly/></span>
+                        <span><label>创建时间</label><input type="text" readonly id="created_time"/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" readonly/></span>
+                        <span><label>创建人</label><input type="text" readonly id="creator"/></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" readonly/></span>
+                        <span><label>修改时间</label><input type="text" readonly id="modify_time"/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" readonly/></span>
+                        <span><label>修改人</label><input type="text" readonly id="modifier"/></span>
                     </div>
+                    <form class="msg_detail">
                     <div>
                     <span><label>可用</label><em class="checkbox_isactive">
                     <input type="checkbox" value="" name="test" class="check" id="is_active">
                     <label for="is_active"></label></em></span>
                     </div>
+                </form>
                 </form>
             </div>
         </div>
