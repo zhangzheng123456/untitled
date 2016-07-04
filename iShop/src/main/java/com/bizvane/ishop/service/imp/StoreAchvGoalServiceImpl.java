@@ -40,7 +40,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 
         PageHelper.startPage(page_number, page_size);
         List<StoreAchvGoal> storeAchvGoals;
-        storeAchvGoals = storeAchvGoalMapper.selectUsersBySearch(corp_code, search_value);
+        storeAchvGoals = storeAchvGoalMapper.selectBySearch(corp_code, search_value);
         PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
         return page;
     }

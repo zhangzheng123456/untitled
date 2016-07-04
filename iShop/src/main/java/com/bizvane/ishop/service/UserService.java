@@ -52,4 +52,6 @@ public interface UserService {
     void ProcessStoreCode(User user);
 
     int selectUserAchvCount(String  corp_code, String user_code);
+
+    int selectCount(String created_date);
 }

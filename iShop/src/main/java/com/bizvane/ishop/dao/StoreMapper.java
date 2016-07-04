@@ -14,7 +14,7 @@ public interface StoreMapper {
 
     List<Store> selectStores(@Param("corp_code") String corp_code);
 
-    List<Store> selectByUserId(@Param("user_id") String user_id, @Param("corp_code") String corp_code, @Param("search_value") String search_value);
+    List<Store> selectByUserId(@Param("store_codes") String store_codes, @Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
     List<Store> selectStoreBrandArea(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code, @Param("area_code") String area_code);
 

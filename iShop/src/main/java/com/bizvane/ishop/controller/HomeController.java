@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.TimeUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -47,18 +48,32 @@ public class HomeController {
     public String sysPage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            JSONArray menu;
-            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject dashboard = new JSONObject();
 
-            if (role_code.equals(Common.ROLE_SYS)) {
+            int corp_count = corpService.selectCount("");
+            int store_count = storeService.selectCount("");
+            int user_count = userService.selectCount("");
+            String yesterday = TimeUtils.beforDays(1);
+            int corp_new_count = corpService.selectCount(yesterday);
+            int store_new_count = storeService.selectCount(yesterday);
+            int user_new_count = userService.selectCount(yesterday);
 
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("");
-                return dataBean.getJsonStr();
+            PageInfo<Feedback> feedback = feedbackService.selectAllFeedback(1, 6, "");
+            dashboard.put("corp_count", corp_count);
+            dashboard.put("store_count", store_count);
+            dashboard.put("user_count", user_count);
+            dashboard.put("corp_new_count", corp_new_count);
+            dashboard.put("store_new_count", store_new_count);
+            dashboard.put("user_new_count", user_new_count);
+            dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
 
-            }
-        }catch (Exception ex) {
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("");
+            return dataBean.getJsonStr();
+
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());

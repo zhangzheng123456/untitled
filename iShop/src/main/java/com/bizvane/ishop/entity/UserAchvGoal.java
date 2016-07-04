@@ -1,7 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
-
 /**
  * Created by lixiang on 2016/6/1.
  *
@@ -12,20 +10,16 @@ public class UserAchvGoal {
     private int id;
     //用户编号
     private String user_code;
-    //用户名称
-    private String user_name;
     //店仓编号
     private String store_code;
     //企业编号
     private String corp_code;
     //业绩目标
-    private double achv_goal;
+    private String user_target;
     //业绩类型
-    private String achv_type;
-    //开始时间
-    private String start_time;
+    private String target_type;
     //结束时间
-    private String end_time;
+    private String target_time;
     //修改时间
     private String modified_date;
     //修改人
@@ -93,14 +87,6 @@ public class UserAchvGoal {
         this.user_code = user_code;
     }
 
-    public String getUser_name() {
-        return user_name;
-    }
-
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
-    }
-
     public String getStore_code() {
         return store_code;
     }
@@ -109,20 +95,20 @@ public class UserAchvGoal {
         this.store_code = store_code;
     }
 
-    public double getAchv_goal() {
-        return achv_goal;
+    public String getUser_target() {
+        return user_target;
     }
 
-    public void setAchv_goal(double achv_goal) {
-        this.achv_goal = achv_goal;
+    public void setUser_target(String user_target) {
+        this.user_target = user_target;
     }
 
-    public String getAchv_type() {
-        return achv_type;
+    public String getTarget_type() {
+        return target_type;
     }
 
-    public void setAchv_type(String achv_type) {
-        this.achv_type = achv_type;
+    public void setTarget_type(String target_type) {
+        this.target_type = target_type;
     }
 
     public String getModifier() {
@@ -132,7 +118,6 @@ public class UserAchvGoal {
     public void setModifier(String modifier) {
         this.modifier = modifier;
     }
-
 
     public String getCreater() {
         return creater;
@@ -150,20 +135,12 @@ public class UserAchvGoal {
         this.isactive = isactive;
     }
 
-    public String getStart_time() {
-        return start_time;
+    public String getTarget_time() {
+        return target_time;
     }
 
-    public void setStart_time(String start_time) {
-        this.start_time = start_time;
-    }
-
-    public String getEnd_time() {
-        return end_time;
-    }
-
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
+    public void setTarget_time(String target_time) {
+        this.target_time = target_time;
     }
 
     public String getModified_date() {

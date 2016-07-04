@@ -331,7 +331,9 @@ public class StoreController {
                 if (role_code.equals(Common.ROLE_GM)) {
                     list = storeService.getAllStore(page_number, page_size, corp_code, search_value);
                 } else {
-                    list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, search_value);
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+
+                    list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, search_value);
                 }
             }
             result.put("list", JSON.toJSONString(list));

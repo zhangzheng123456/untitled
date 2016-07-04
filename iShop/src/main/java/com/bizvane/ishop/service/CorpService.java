@@ -41,4 +41,6 @@ public interface CorpService {
     int getGoodsCount(String corp_code);
 
     int getMessagesTypeCount(String corp_code);
+
+    int selectCount(String create_date);
 }

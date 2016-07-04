@@ -27,30 +27,27 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     private static final Logger logger = Logger.getLogger(UserAchvGoalService.class);
 
 
-    public PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String userAchvGoalId, String search_value) throws SQLException {
+    public PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
 
         List<UserAchvGoal> userAchvGoals = null;
 
         PageHelper.startPage(page_number, page_size);
-        userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(userAchvGoalId, search_value);
-        //PageInfo<UserAchvGoal> page = (PageInfo<UserAchvGoal>) userAchvGoals;
+        userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value);
         PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
         return page;
 
     }
 
-    @Override
-    public String userAchvGoalExist(String user_code) throws SQLException {
-
-        //UserAchvGoal userAchvGoal = this.userAchvGoalMapper.selectByUser_code(user_code);
-        List<UserAchvGoal> list = this.userAchvGoalMapper.selectUserAchvGoalBySearch(user_code, "");
-
-        //UserAchvGoal userAchvGoal = this.userAchvGoalMapper.selectUserAchvGoalBySearch(user_code, "").get(0);
-        if (list == null || list.size() < 1) {
-            return Common.DATABEAN_CODE_ERROR;
-        }
-        return Common.DATABEAN_CODE_SUCCESS;
-    }
+//    public String userAchvGoalExist(String user_code) throws SQLException {
+//
+//        UserAchvGoal userAchvGoal = this.userAchvGoalMapper.userAchvGoalExist(user_code);
+//
+//        //UserAchvGoal userAchvGoal = this.userAchvGoalMapper.selectUserAchvGoalBySearch(user_code, "").get(0);
+//        if (list == null || list.size() < 1) {
+//            return Common.DATABEAN_CODE_ERROR;
+//        }
+//        return Common.DATABEAN_CODE_SUCCESS;
+//    }
 
     @Override
     public UserAchvGoal getUserAchvGoalById(int id) throws SQLException {
@@ -63,8 +60,8 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public int deleteUserAchvGoalById(String user_code) throws SQLException {
-        return this.userAchvGoalMapper.delelteByUser_code(user_code);
+    public int deleteUserAchvGoalById(String id) throws SQLException {
+        return this.userAchvGoalMapper.delelte(id);
     }
 
     @Override

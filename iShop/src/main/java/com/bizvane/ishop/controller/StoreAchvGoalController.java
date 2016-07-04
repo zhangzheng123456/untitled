@@ -4,7 +4,6 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreAchvGoalService;
@@ -113,16 +112,16 @@ public class StoreAchvGoalController {
             storeAchvGoal1.setCorp_code(jsonObject.get("corp_code").toString());
             storeAchvGoal1.setStore_name(jsonObject.get("store_name").toString());
             storeAchvGoal1.setStore_code(jsonObject.get("store_code").toString());
-            storeAchvGoal1.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
+            storeAchvGoal1.setTarget_amount(jsonObject.get("achv_goal").toString());
             String achv_type = jsonObject.get("achv_type").toString();
-            storeAchvGoal1.setAchv_type(achv_type);
+            storeAchvGoal1.setTime_type(achv_type);
 
             if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObject.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
-                storeAchvGoal1.setEnd_time(week);
+                storeAchvGoal1.setTarget_time(week);
             } else {
-                storeAchvGoal1.setEnd_time(jsonObject.get("end_time").toString());
+                storeAchvGoal1.setTarget_time(jsonObject.get("end_time").toString());
             }
             Date now = new Date();
             storeAchvGoal1.setModifier(user_id);
@@ -211,14 +210,14 @@ public class StoreAchvGoalController {
             storeAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
             storeAchvGoal.setStore_name(jsonObject.get("store_name").toString());
             storeAchvGoal.setStore_code(jsonObject.get("store_code").toString());
-            storeAchvGoal.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
+            storeAchvGoal.setTarget_amount(jsonObject.get("achv_goal").toString());
             String achv_type = jsonObject.get("achv_type").toString();
             String time = jsonObject.get("end_time").toString();
             if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String week = TimeUtils.getWeek(time);
-                storeAchvGoal.setEnd_time(week);
+                storeAchvGoal.setTarget_time(week);
             } else {
-                storeAchvGoal.setEnd_time(time);
+                storeAchvGoal.setTarget_time(time);
             }
             Date now = new Date();
             storeAchvGoal.setModifier(user_id);

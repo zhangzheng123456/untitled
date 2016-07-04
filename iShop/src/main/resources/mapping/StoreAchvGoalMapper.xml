@@ -6,29 +6,23 @@
         <result column="store_code" property="store_code"/>
         <result column="store_name" property="store_name"/>
         <result column="corp_code" property="corp_code"/>
-        <result column="achv_goal" property="achv_goal"/>
-        <result column="achv_type" property="achv_type"/>
-        <result column="start_time" property="start_time"/>
-        <result column="end_time" property="end_time"/>
+        <result column="target_amount" property="target_amount"/>
+        <result column="time_type" property="time_type"/>
+        <result column="target_time" property="target_time"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="isactive" property="isactive"/>
-        <!--<association property="area" javaType="com.bizvane.ishop.entity.Area">-->
-            <!--<result column="area_name" property="area_name"/>-->
-        <!--</association>-->
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
-
-
     </resultMap>
 
     <select id="selectById" resultMap="storeAchvGoals">
         select sa.id,sa.store_code,sa.store_name,sa.corp_code,
-        sa.area_code,sa.achv_goal,sa.achv_type,sa.start_time,
-        sa.end_time,sa.modified_date,sa.modifier,sa.created_date,
+        sa.target_amount,sa.time_type,
+        sa.target_time,sa.modified_date,sa.modifier,sa.created_date,
         sa.creater,sa.isactive,c.corp_name
         from
         DEF_STORE_ACHV_GOAL sa,
@@ -38,11 +32,11 @@
         AND sa.id=#{id}
     </select>
 
-    <select id="selectUsersBySearch" resultMap="storeAchvGoals">
+    <select id="selectBySearch" resultMap="storeAchvGoals">
         select
         sa.id,sa.store_code,sa.store_name,sa.corp_code,
-        sa.area_code,sa.achv_goal,sa.achv_type,sa.start_time,
-        sa.end_time,sa.modified_date,sa.modifier,sa.created_date,
+        sa.target_amount,sa.time_type,
+        sa.target_time,sa.modified_date,sa.modifier,sa.created_date,
         sa.creater,sa.isactive,c.corp_name
         from
         DEF_STORE_ACHV_GOAL sa,
@@ -58,14 +52,15 @@
             ( sa.STORE_CODE like concat('%',#{search_value},'%')
             OR sa.STORE_NAME LIKE concat('%',#{search_value},'%')
             OR c.corp_name LIKE concat('%',#{search_value},'%')
-            OR sa.ACHV_GOAL like concat('%',#{search_value},'%')
-            OR sa.ACHV_TYPE like concat('%',#{search_value},'%')
+            OR sa.target_amount like concat('%',#{search_value},'%')
+            OR sa.time_type like concat('%',#{search_value},'%')
             OR sa.MODIFIER like concat('%',#{search_value},'%')
             OR sa.modified_date like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY sa.ID
     </select>
+
     <insert id="insert">
         insert into DEF_STORE_ACHV_GOAL
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -73,26 +68,19 @@
                 store_code,
             </if>
             <if test="store_name!=null and store_name!=''">
-                store_name ,
+                store_name,
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code,
             </if>
-            <if test="area_name!=null and area_code!=''">
-                area_name,
+            <if test="target_amount!=null and target_amount!=''">
+                target_amount,
             </if>
-
-            <if test="achv_goal!=null and achv_goal!=''">
-                achv_goal,
+            <if test="time_type!=null and time_type!=''">
+                time_type,
             </if>
-            <if test="achv_type!=null and achv_type!=''">
-                achv_type,
-            </if>
-            <if test="start_time!=null">
-                start_time,
-            </if>
-            <if test="end_time!=null">
-                end_time,
+            <if test="target_time!=null">
+                target_time,
             </if>
             <if test="modified_date!=null">
                 modified_date,
@@ -120,21 +108,14 @@
             <if test="corp_code!=null and corp_code!=''">
                 #{corp_code},
             </if>
-
-            <if test="area_name!=null and area_code!=''">
-                #{area_name},
+            <if test="target_amount!=null and target_amount!=''">
+                #{target_amount},
             </if>
-            <if test="achv_goal!=null and achv_goal!=''">
-                #{achv_goal},
+            <if test="time_type!=null and time_type!=''">
+                #{time_type},
             </if>
-            <if test="achv_type!=null and achv_type!=''">
-                #{achv_type},
-            </if>
-            <if test="start_time!=null">
-                #{start_time},
-            </if>
-            <if test="end_time!=null">
-                #{end_time},
+            <if test="target_time!=null">
+                #{target_time},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -145,7 +126,6 @@
             <if test="created_date!=null">
                 #{created_date},
             </if>
-
             <if test="creater!=null and creater!=''">
                 #{creater},
             </if>
@@ -155,7 +135,7 @@
         </trim>
     </insert>
 
-    <update id="updateById">
+    <update id="update">
         update DEF_STORE_ACHV_GOAL
         <trim prefix="set" suffixOverrides=",">
             <if test="store_code!=null and store_code!=''">
@@ -167,17 +147,14 @@
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},
             </if>
-            <if test="achv_goal!=null and achv_goal!=''">
-                achv_goal=#{achv_goal},
+            <if test="target_amount!=null and target_amount!=''">
+                target_amount=#{target_amount},
             </if>
-            <if test="achv_type!=null and achv_type!=''">
-                achv_type=#{achv_type},
+            <if test="time_type!=null and time_type!=''">
+                time_type=#{time_type},
             </if>
-            <if test="start_time!=null">
-                start_time=#{start_time},
-            </if>
-            <if test="end_time!=null">
-                end_time=#{end_time},
+            <if test="target_time!=null">
+                target_time=#{target_time},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
@@ -188,17 +165,14 @@
             <if test="created_date!=null ">
                 created_date=#{created_date},
             </if>
-
             <if test="creater!=null and creater!=''">
                 creater=#{creater},
             </if>
             <if test="isactive!=null and isactive!=''">
                 isactive=#{isactive},
             </if>
-
         </trim>
         WHERE id=#{id}
-
     </update>
 
     <delete id="deleteById">

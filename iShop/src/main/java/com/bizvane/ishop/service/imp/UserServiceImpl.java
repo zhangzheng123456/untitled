@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
-        System.out.println(user.toString());
         if (user.getStore_code() == null || user.getStore_code().equals("")) {
             user.setStore_code("");
             user.setStore_name("");
@@ -491,5 +490,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public int selectUserAchvCount(String corp_code, String user_code) {
         return this.messageTypeMapper.selectUserAchvCount(corp_code, user_code);
+    }
+
+    public int selectCount(String created_date){
+        return userMapper.selectCount(created_date);
     }
 }
