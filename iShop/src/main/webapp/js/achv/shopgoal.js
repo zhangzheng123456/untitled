@@ -187,6 +187,8 @@ var oc = new ObjectControl();
 //编辑页面赋值
 jQuery(document).ready(function(){
 	window.shopgoal.init();//初始化
+	var a="";//
+	var b="";//
 	if($(".pre_title label").text()=="编辑店铺业绩目标"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
@@ -196,9 +198,11 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				msg=JSON.parse(msg.storeAchvGoal);
-				$("#OWN_CORP option").val(msg.corp.corp_code);
+				// $("#OWN_CORP option").val(msg.corp.corp_code);
+				var corp_code=msg.corp_code;//公司编号
+				var store_code=msg.store_code;//店铺编号
 				$("#OWN_CORP option").text(msg.corp.corp_name);
-				$("#SHOP_NAME option").text(msg.store_name);
+				// $("#SHOP_NAME option").text(msg.store_name);
 				$("#PER_GOAL").val(msg.achv_goal);
 				if(msg.achv_type!=="年"){
 					$("#GOODS_RELEASETIME").val(msg.end_time);
@@ -207,7 +211,7 @@ jQuery(document).ready(function(){
 					$('#day').hide();
     				$('#week_p').show();
 					$("#year").val(msg.end_time);
-					$("#TIME_TYPE").val(msg.achv_type);
+					$("#TIME_TYPE").val(msg.achv_type);      
 				}
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
@@ -219,8 +223,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist();
-				console.log($("#SHOP_NAME option[value='"+msg.store_code+"']"));
+				getcorplist(corp_code,store_code);
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
@@ -231,7 +234,7 @@ jQuery(document).ready(function(){
 			}
 		});
 	}else{
-		getcorplist();
+		getcorplist(a,b);
 	}
     $(".shopgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal.html");
@@ -251,7 +254,6 @@ jQuery(document).ready(function(){
     	}else if(text=="年"){
     		$('#day').hide();
     		$('#week_p').show();
-    		year();
     	}else if(text=="月"){
     		$('#day').show();
     		$('#week_p').hide();
@@ -259,7 +261,7 @@ jQuery(document).ready(function(){
     })
     //点击年的input出来ul
     $("#year").click(function(){
-    	$("#week_p .year").show();
+    	$(".year").toggle();
     })
     $("#year").blur(function(){
     	setTimeout(function(){
@@ -267,7 +269,7 @@ jQuery(document).ready(function(){
     	},200);  
     })
 });
-function getcorplist(){
+function getcorplist(a,b){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -283,9 +285,12 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$("#OWN_CORP").searchableSelect();
 			var c=$('#corp_select .selected').attr("data-value");
-			store_data(c);
+			store_data(c,b);
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
 				store_data(c);
@@ -300,7 +305,7 @@ function getcorplist(){
 		}
 	});
 }
-function store_data(c){
+function store_data(c,b){
 	var _params={};
 	_params["corp_code"]=c;//企业编号
 	var _command="/user/store";//调取店铺的名字
@@ -321,6 +326,9 @@ function store_data(c){
 					cancel: false,
 					content: "改企业没有店铺"
 			    });
+			}
+			if(b!==""){
+				$("#SHOP_NAME option[value='"+b+"']").attr("selected","true")
 			}
 			$("#SHOP_NAME").searchableSelect();
 		}else if(data.code=="-1"){
@@ -352,3 +360,4 @@ function year(){
     	$('#week_p .year').hide();
     })
 }
+year();

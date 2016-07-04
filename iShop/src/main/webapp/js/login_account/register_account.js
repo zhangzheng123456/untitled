@@ -30,7 +30,7 @@ $("#PHONECODE").focus(function(){//验证码获取
 })
 $("#PHONECODE").blur(function(){//验证码失去焦点的时候的验证
 	var PHONECODE=$('#PHONECODE').val();//验证码
-    if(PHONECODE==""||PHONECODE!==""&&PHONECODE.length<6){
+    if(PHONECODE==""||PHONECODE!==""&&PHONECODE.length<6){//验证码的长度的验证
     	$('.PHONECODE .notice').html("验证码长度不正确！");
     }   
 });
@@ -38,7 +38,7 @@ $("#PASSWORD").focus(function(){//密码获取
 	$('.PASSWORD .notice').html("密码6位-16位字母、数字或者英文符号，区分大小写!");
 })
 $("#PASSWORD").blur(function(){//密码框失去焦点的时候的验证
-	var reg =/^[^\u4e00-\u9fa5]{6,16}$/;
+	var reg =/^[^\u4e00-\u9fa5]{6,16}$/;//密码框的正则表达式
 	var PASSWORD=$('#PASSWORD').val();//密码
     if(PASSWORD==""||PASSWORD!==""&&reg.test(PASSWORD)==false){
     	$('.PASSWORD .notice').html("密码格式不正确!");
@@ -51,7 +51,7 @@ $("#repswd").focus(function(){//确认密码获取
 });
 $("#repswd").blur(function(){//确认密码框失去焦点的时候的验证
 	var repswd=$('#repswd').val();//确认密码
-	var PASSWORD=$('#PASSWORD').val();
+	var PASSWORD=$('#PASSWORD').val();//密码框
     if(repswd==""||repswd!==""&&repswd!==PASSWORD){
     	$('.repswd .notice').html("密码不一致!");
     }
@@ -59,20 +59,62 @@ $("#repswd").blur(function(){//确认密码框失去焦点的时候的验证
 $("#USERNAME").focus(function(){//姓名
 	$('.USERNAME .notice').html("");
 });
+
 $("#USERNAME").blur(function(){//姓名框失去焦点的时候的验证
 	var USERNAME=$('#USERNAME').val();//姓名
-	var PASSWORD=$('#PASSWORD').val();
     if(USERNAME==""){
     	$('.USERNAME .notice').html("姓名不能为空！");
     }
 });
-$("#COMPANY").focus(function(){//姓名
+
+$("#COMPANY").focus(function(){//公司
 	$('.COMPANY .notice').html("");
 });
+
 $("#COMPANY").blur(function(){//企业搜索框失去焦点的时候的验证
-	var COMPANY=$('#USERNAME').val();//姓名
+	var COMPANY=$('#COMPANY').val();//企业名称
+	var _params={};
     if(COMPANY==""){
     	$('.COMPANY .notice').html("企业名称不能为空！");
+    }
+    if(COMPANY!==""){
+    	oc.postRequire("post","/corp/CorpNameExist","", _params, function(data){
+    		if(data.code=="0"){
+	            $('.COMPANY .notice').html("");
+	            $("#COMPANY").attr("data-mark","Y");
+	        }else if(data.code=="-1"){
+	            $('.COMPANY .notice').html("企业名称已经存在");
+	            $("#COMPANY").attr("data-mark","N");
+	        }
+    	})
+    }
+});
+
+$("#CORPCODE").focus(function(){//公司编号的验证
+	$('.CORPCODE .notice').html("支持以大写C开头必须是5位数字的组合！");
+});
+
+$("#CORPCODE").blur(function(){//企业编号搜索框失去焦点的时候的验证
+	var reg=/^[C]{1}[0-9]{5}$/;//企业编号的格式
+	var CORPCODE=$('#CORPCODE').val();//姓名
+	var _params={};
+    if(CORPCODE==""){
+    	$('.CORPCODE .notice').html("企业编号不能为空！");
+    }
+    if(CORPCODE!==""&&reg.test(CORPCODE)==false){
+    	$('.CORPCODE .notice').html("企业编号格式不正确！");
+    }
+    if(CORPCODE!==""&&reg.test(CORPCODE)==true){
+    	_params["corp_code"]=CORPCODE;
+		oc.postRequire("post","/corp/Corp_codeExist","", _params, function(data){
+	        if(data.code=="0"){
+	            $('#CORPCODE').attr("data-mark","Y");
+	            $('.CORPCODE .notice').html("");
+	        }else if(data.code=="-1"){
+	            $('#CORPCODE').attr("data-mark","N");
+			    $('.CORPCODE .notice').html("企业编号已经存在！");
+	        }
+		});
     }
 });
 $("#addInfo").focus(function(){
@@ -84,7 +126,6 @@ $("#addInfo").blur(function(){
     	$('.addInfo .notice').html("详细地址不能为空!");
     }
 })
-
 function sendSMS(btn){//手机获取验证码的验证
 	var btn=btn;
 	var num=59;

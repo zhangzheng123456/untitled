@@ -8,6 +8,9 @@
 #week_p .week{
 	width: 100px;
 }
+#week_p{
+	position: relative;
+}
 .power{
 	display: inline-block;
 	width: 50px;
@@ -28,26 +31,19 @@
 	text-align: center;
 	cursor: pointer;
 }
-.year li,.month li{
+.year li{
 	width: 97px;
 	height: 26px;
 	line-height: 26px;
 	padding-left: 5px;
 }
-.year li:hover,.month li:hover{
+.year li:hover{
 	background: #6cc1c8;
     color: #ffffff;
 }
 #week_p .year{
 	position:absolute;
-	left: 137px;
-	background: #e8f5fe;
-	border: 1px solid #a9c9e2;
-	display: none;
-}
-#week_p .month{
-	position:absolute;
-	left: 241px;
+	left: 128px;
 	background: #e8f5fe;
 	border: 1px solid #a9c9e2;
 	display: none;
