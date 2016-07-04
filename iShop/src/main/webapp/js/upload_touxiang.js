@@ -1,3 +1,4 @@
+//单个上传头像
 function previewImage(file) {
     var MAXWIDTH = 200;
     var MAXHEIGHT = 200;
@@ -5,12 +6,10 @@ function previewImage(file) {
     if (file.files && file.files[0]) {
         div.innerHTML = '<img id=imghead>';
         var img = document.getElementById('imghead');
-        img.onload = function() {
+        img.onload = function() { //图片预加载
             var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
             img.width = rect.width;
             img.height = rect.height;
-            //                 img.style.marginLeft = rect.left+'px';
-            // img.style.marginTop = rect.top + 'px';
         }
         var reader = new FileReader();
         reader.onload = function(evt) {
@@ -19,9 +18,9 @@ function previewImage(file) {
         reader.readAsDataURL(file.files[0]);
     } else //兼容IE
     {
-        var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';
+        var sFilter = 'filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod=scale,src="';//过滤适应对象的尺寸边界
         file.select();
-        var src = document.selection.createRange().text;
+        var src = document.selection.createRange().text;//运用IE滤镜获取路径数据
         div.innerHTML = '<img id=imghead>';
         var img = document.getElementById('imghead');
         img.filters.item('DXImageTransform.Microsoft.AlphaImageLoader').src = src;

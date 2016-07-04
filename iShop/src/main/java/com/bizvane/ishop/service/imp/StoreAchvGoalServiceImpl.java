@@ -35,12 +35,35 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value)
+    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code,String area_code,String store_code, String search_value)
             throws SQLException {
+        String area_codes = "";
+        String store_codes = "";
 
+        if (!area_code.equals("")){
+            String[] areaCodes = area_code.split(",");
+            for (int i = 0; i < areaCodes.length; i++) {
+                areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                System.out.println(areaCodes[i] + "-----");
+                area_codes = area_codes + areaCodes[i];
+                if (i != areaCodes.length - 1) {
+                    area_codes = area_codes + ",";
+                }
+            }
+        }
+        if(!store_code.equals("")){
+            String[] ids = store_code.split(",");
+            for (int i = 0; i < ids.length; i++) {
+                ids[i] = ids[i].substring(1, ids[i].length());
+                store_codes = store_codes + ids[i];
+                if (i != ids.length - 1) {
+                    store_codes = store_codes + ",";
+                }
+            }
+        }
         PageHelper.startPage(page_number, page_size);
         List<StoreAchvGoal> storeAchvGoals;
-        storeAchvGoals = storeAchvGoalMapper.selectBySearch(corp_code, search_value);
+        storeAchvGoals = storeAchvGoalMapper.selectBySearch(corp_code, area_codes,store_codes,search_value);
         PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
         return page;
     }

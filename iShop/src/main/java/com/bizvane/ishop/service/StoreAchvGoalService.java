@@ -60,7 +60,7 @@ public interface StoreAchvGoalService {
      * @return
      * @throws SQLException
      */
-    PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value)
+    PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code,String user_id,String search_value)
             throws SQLException;
 
     /**

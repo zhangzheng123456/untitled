@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
     @Autowired
-    AreaService areaService;
+    private AreaMapper areaMapper;
     @Autowired
     CorpMapper corpMapper;
     @Autowired
@@ -116,8 +116,8 @@ public class UserServiceImpl implements UserService {
             user.setArea_code("");
             user.setArea_name("");
         } else {
-            if (!user.getArea_code().startsWith(Common.STORE_HEAD)) {
-                ProcessStoreCode(user);
+            if(!user.getArea_code().startsWith(Common.STORE_HEAD)){
+                ProcessAreaCode(user);
             }
             String corp_code = user.getCorp_code();
             String area_name = "";
@@ -125,7 +125,7 @@ public class UserServiceImpl implements UserService {
             String areaCode = "";
             for (int i = 0; i < areaCodes.length; i++) {
                 areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                Area area = areaService.selAreaByCorp(corp_code, areaCodes[i], "");
+                Area area = areaMapper.selAreaByCorp(corp_code, areaCodes[i], "");
                 String area_name1 = area.getArea_name();
                 area_name = area_name + area_name1;
                 areaCode = areaCode + areaCodes[i];
@@ -137,7 +137,6 @@ public class UserServiceImpl implements UserService {
             user.setArea_code(areaCode);
             user.setArea_name(area_name);
         }
-        System.out.println(user.toString());
         return user;
     }
 
@@ -240,6 +239,8 @@ public class UserServiceImpl implements UserService {
             String corp_code = login_user.getCorp_code();
             String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
+            String area_code =  login_user.getArea_code();
+
             String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code();
 
             request.getSession().setAttribute("user_id", user_id);
@@ -248,6 +249,7 @@ public class UserServiceImpl implements UserService {
             request.getSession().setAttribute("role_code", role_code);
             request.getSession().setAttribute("store_code", store_code);
             request.getSession().setAttribute("group_code", group_code);
+            request.getSession().setAttribute("area_code",area_code);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
             login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
@@ -484,6 +486,15 @@ public class UserServiceImpl implements UserService {
             store_code = store_code + Common.STORE_HEAD + ids[i] + ",";
         }
         user.setStore_code(store_code);
+        userMapper.updateByUserId(user);
+    }
+    public void ProcessAreaCode(User user){
+        String[] ids=user.getArea_code().split(",");
+        String area_code="";
+        for(int i=0;i<ids.length;i++){
+            area_code=area_code+Common.STORE_HEAD+ids[i]+",";
+        }
+        user.setArea_code(area_code);
         userMapper.updateByUserId(user);
     }
 

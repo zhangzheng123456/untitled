@@ -40,12 +40,20 @@
         sa.creater,sa.isactive,c.corp_name
         from
         DEF_STORE_ACHV_GOAL sa,
-        DEF_CORP c
+        DEF_CORP c,
+        DEF_STORE st
         WHERE
         sa.corp_code=c.corp_code
+      AND  st.STORE_CODE =sa.STORE_CODE
         <if test="corp_code!=null and corp_code!=''">
             AND
             c.corp_code=#{corp_code}
+        </if>
+        <if test="area_code !=null and area_code!=''">
+            AND st.AREA_CODE IN (#{area_code})
+        </if>
+        <if test="store_code !=null and store_code !=''">
+            AND sa.STORE_CODE IN (#{store_code})
         </if>
         <if test="search_value!=null and search_value!=''">
             and

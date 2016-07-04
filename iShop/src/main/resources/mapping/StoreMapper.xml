@@ -98,6 +98,40 @@
         where CORP_CODE = #{corp_code}
         AND isactive = 'Y'
     </select>
+    <select id="selectByAreaCode" resultMap="Store">
+        select
+        DEF_STORE.id,
+        store_code,
+        store_name,
+        brand_code,
+        flg_tob,
+        DEF_STORE.AREA_CODE,
+        DEF_STORE.corp_code,
+        DEF_STORE.modified_date,
+        DEF_STORE.modifier,
+        DEF_STORE.isactive,
+        DEF_CORP.CORP_NAME,
+        DEF_AREA.AREA_NAME
+        from DEF_STORE,DEF_CORP,DEF_AREA
+        WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
+        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND DEF_STORE.CORP_CODE = #{corp_code}
+        AND DEF_STORE.AREA_CODE IN (#{area_code})
+
+        <if test="search_value != null and search_value !=''">
+            AND STORE_CODE like  concat('%',#{search_value},'%')
+            OR DEF_STORE.ID like  concat('%',#{search_value},'%')
+            OR STORE_NAME like  concat('%',#{search_value},'%')
+            OR DEF_AREA.AREA_NAME like  concat('%',#{search_value},'%')
+            OR DEF_CORP.CORP_NAME like  concat('%',#{search_value},'%')
+            OR DEF_STORE.MODIFIED_DATE like  concat('%',#{search_value},'%')
+            OR DEF_STORE.MODIFIER like  concat('%',#{search_value},'%')
+            OR DEF_STORE.ISACTIVE like  concat('%',#{search_value},'%')
+        </if>
+        ORDER BY STORE_CODE
+    </select>
+
 
     <select id="selectByUserId" resultMap="Store">
         select
@@ -117,7 +151,7 @@
         WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND position(DEF_STORE.STORE_CODE IN (#{store_codes}))
+        AND DEF_STORE.STORE_CODE IN (#{store_codes})
         AND DEF_STORE.CORP_CODE = #{corp_code}
         <if test="search_value != null and search_value !=''">
             AND STORE_CODE like concat('%',#{search_value},'%')
