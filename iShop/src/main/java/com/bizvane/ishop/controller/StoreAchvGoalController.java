@@ -85,7 +85,6 @@ public class StoreAchvGoalController {
                     }
                 }
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code,areaCode,"", "");
-
             }else{
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code,"",user_id+"", "");
 
