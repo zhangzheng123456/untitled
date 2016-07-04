@@ -50,7 +50,7 @@ public interface StoreAchvGoalMapper {
      * @param search_value
      * @return
      */
-    List<StoreAchvGoal> selectUsersBySearch(@Param("corp_code") String store_code, @Param("search_value") String search_value);
+    List<StoreAchvGoal> selectUsersBySearch(@Param("corp_code") String store_code, @Param("area_code")String area_code,@Param("user_id")String user_id,@Param("search_value") String search_value);
 
 
     /**
