@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.VIPRelation;
+import com.bizvane.ishop.entity.VIPEmpRelation;
+import com.bizvane.ishop.entity.VIPStoreRelation;
 
 import java.sql.SQLException;
 
@@ -11,6 +12,7 @@ import java.sql.SQLException;
  */
 public interface WebService {
 
-    VIPRelation selectVip(String app_user_name, String open_id) throws SQLException;
+    VIPEmpRelation selectEmpVip(String app_user_name, String open_id) throws SQLException;
 
+    VIPStoreRelation selectStoreVip(String app_user_name, String open_id) throws SQLException;
 }

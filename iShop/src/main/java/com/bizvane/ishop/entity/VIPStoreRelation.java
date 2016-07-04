@@ -1,6 +1,6 @@
 package com.bizvane.ishop.entity;
 
-public class VIPRelation {
+public class VIPStoreRelation {
 
 	private int id;
 
@@ -8,7 +8,7 @@ public class VIPRelation {
 
 	private String app_user_name;
 
-	private String emp_id;
+	private String store_id;
 
 	private String create_date;
 
@@ -36,12 +36,12 @@ public class VIPRelation {
 		this.app_user_name = app_user_name;
 	}
 
-	public String getEmp_id() {
-		return emp_id;
+	public String getStore_id() {
+		return store_id;
 	}
 
-	public void setEmp_id(String emp_id) {
-		this.emp_id = emp_id;
+	public void setStore_id(String store_id) {
+		this.store_id = store_id;
 	}
 
 	public String getCreate_date() {

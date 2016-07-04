@@ -3,7 +3,8 @@ package com.bizvane.ishop.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.VIPRelation;
+import com.bizvane.ishop.entity.VIPEmpRelation;
+import com.bizvane.ishop.entity.VIPStoreRelation;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.service.WebService;
@@ -17,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-
-import java.util.Date;
-
-import static com.bizvane.ishop.service.imp.WebServiceImpl.*;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -67,10 +64,26 @@ public class WebController {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("app_key Invalid签名无效");
             } else {
-                VIPRelation entity = webService.selectVip(app_user_name, open_id);
+                VIPEmpRelation entity = webService.selectEmpVip(app_user_name, open_id);
                 if (entity == null) {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setMessage("客户未绑定");
+
+                    VIPStoreRelation relation = webService.selectStoreVip(app_user_name,open_id);
+                    if (relation == null){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setMessage("客户未绑定");
+                    }else {
+                        JSONObject result = new JSONObject();
+                        String store_id = relation.getStore_id();
+                        JSONArray array = new JSONArray();
+                        array.add(store_id);
+                        JSONObject obj = new JSONObject();
+                        obj.put("store_code",array);
+                        obj.put("emp_code","");
+
+                        result.put("code",Common.DATABEAN_CODE_SUCCESS);
+                        result.put("message",obj);
+                        return result.toString();
+                    }
                 } else {
                     JSONObject result = new JSONObject();
                     String emp_id = entity.getEmp_id();

@@ -3,10 +3,16 @@
 <mapper namespace="com.bizvane.ishop.dao.VIPRelationMapper">
 
 
-    <select id="selectVip" resultType="com.bizvane.ishop.entity.VIPRelation">
+    <select id="selectEmpVip" resultType="com.bizvane.ishop.entity.VIPEmpRelation">
        select * from rel_vip_emp
          where open_id = #{open_id}
          and app_user_name = #{app_user_name}
+    </select>
+
+    <select id="selectStoreVip" resultType="com.bizvane.ishop.entity.VIPStoreRelation">
+        select * from rel_vip_store
+        where open_id = #{open_id}
+        and app_user_name = #{app_user_name}
     </select>
 
 </mapper>
