@@ -49,11 +49,17 @@
             AND
             c.corp_code=#{corp_code}
         </if>
-        <if test="area_code !=null and area_code!=''">
-            AND st.AREA_CODE IN (#{area_code})
+        <if test="area_codes !=null and area_codes!=''">
+            AND st.AREA_CODE IN
+            <foreach item="item" index="index" collection="area_codes" open="(" separator="," close=")">
+            #{item}
+            </foreach>
         </if>
-        <if test="store_code !=null and store_code !=''">
-            AND sa.STORE_CODE IN (#{store_code})
+        <if test="store_codes !=null and store_codes !=''">
+            AND sa.STORE_CODE IN
+            <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         <if test="search_value!=null and search_value!=''">
             and
