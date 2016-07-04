@@ -19,6 +19,22 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
+	feedbackjs.checkPhone = function(obj,hint){
+		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
+		var isMob=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;//验证手机号码格式正不正确
+		if(!this.isEmpty(obj)){
+			if(isPhone.test(obj)||isMob.test(obj)){
+				this.hiddenHint(hint);
+				return true;
+			}else{
+				this.displayHint(hint,"联系电话格式不正确!");
+				return false;
+			}
+		}else{
+			this.displayHint(hint);
+			return false;
+		}
+	};
 	feedbackjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -37,7 +53,21 @@ var oc = new ObjectControl();
 	};
 	feedbackjs.bindbutton=function(){
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
+			// var codeMark=$("#USER_CODE").attr("data-mark");
+			// var phoneMark=$("#PHONE").attr("data-mark");//手机号码是否唯一的标志
 			if(feedbackjs.firstStep()){
+			// 	if(phoneMark=="N"){
+			// 		var div=$("#PHONE").next('.hint').children();
+			// 		div.html("该手机号码已经存在！");
+		 //            div.addClass("error_tips");
+		 //            return;
+			// 	}
+			// 	if(codeMark=="N"){
+			// 		var div=$("#USER_CODE").next('.hint').children();
+			// 		div.html("该编号已经存在！");
+		 //            div.addClass("error_tips");
+		 //            return;
+			// 	}
 				var USER_CODE=$("#USER_CODE").val();
 				var FEEDBACK_DATE=$("#FEEDBACK_DATE").val();
 				var PHONE=$("#PHONE").val();
@@ -192,4 +222,28 @@ jQuery(document).ready(function(){
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/system/feedback.html");
 	});
+
+
+	 //验证手机是否唯一的方法
+    // $("#PHONE").blur(function(){
+    // 	var phone=$("#PHONE").val();//手机号码
+    // 	var phone1=$("#PHONE").attr("data-name");//取手机号的一个标志
+    // 	var div=$(this).next('.hint').children();
+    // 	var corp_code=$("#OWN_CORP").val();
+    // 	if(phone!==""&&phone!==phone1){
+	   //  	var _params={};
+	   //  	_params["phone"]=phone;
+	   //  	_params["corp_code"]=corp_code;
+	   //  	oc.postRequire("post","/user/PhoneExist","", _params, function(data){
+	   //          if(data.code=="0"){
+	   //          	div.html("");
+	   //          	$("#PHONE").attr("data-mark","Y");
+	   //          }else if(data.code=="-1"){
+	   //          	div.html("该名称已经存在！");
+	   //          	div.addClass("error_tips");
+	   //          	$("#PHONE").attr("data-mark","N");
+	   //          }
+	   //  	})
+	   //  }
+    // })
 });
