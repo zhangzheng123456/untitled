@@ -48,4 +48,6 @@ public interface StoreService {
     Store getStoreByName(String corp_code, String store_name) throws SQLException;
 
     int selectAchCount(String store_code)throws SQLException;
+
+    PageInfo<Store> selectByAreaCode(int page_number,int page_size,String corp_code,String area_code,String search_value);
 }
