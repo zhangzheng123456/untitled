@@ -252,6 +252,17 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
+    public List<Store> selectByAreaCode(String corp_code, String[] area_code) {
+
+        Map<String, Object> params =  new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("area_code",area_code);
+        params.put("search_value","");
+
+        List<Store> stores = storeMapper.selectByAreaCode(params);
+        return stores;
+    }
+
     public int selectCount(String created_date) {
         return this.storeMapper.selectCount(created_date);
     }
