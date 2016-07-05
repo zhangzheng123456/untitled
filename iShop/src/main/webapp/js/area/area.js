@@ -226,6 +226,14 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
+    for(var i=0;i<actions.length;i++){
+        if(actions[i].act_name=="edit"){
+            $('#search').attr("data-edit","edit");
+            break;
+        }else{
+            $('#search').attr("data-edit","");
+        }
+    }
 }
 //页面加载时list请求
 function GET(){
@@ -279,7 +287,6 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
-        sessionStorage.setItem("funcCode",funcCode);
         $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
     })
     //点击编辑时页面进行的跳转

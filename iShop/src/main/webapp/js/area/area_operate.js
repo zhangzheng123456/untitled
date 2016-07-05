@@ -183,7 +183,6 @@ jQuery(document).ready(function(){
 		var id=sessionStorage.getItem("id");
 		var _params={};
 		_params["id"]=id;
-		_params["funcCode"]=funcCode;
 		var _command="/area/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);

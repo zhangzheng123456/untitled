@@ -171,6 +171,9 @@ $(function(){
 	$('#nextSub').click(function(){
 		var reg=/^((\(\d{2,3}\))|(\d{3}\-))?1[3,4,5,7,8]{1}\d{9}$/;//手机号码的验证
 		var red=/^[^\u4e00-\u9fa5]{6,16}$/;//密码的验证
+		var phoneMark=$('#PHONENUMBER').attr("data-mark");//phone是否唯一的标志
+		var nameMark=$('#COMPANY').attr("data-mark");//公司名称是否唯一的标志
+		var codeMark=$('#CORPCODE').attr("data-mark");//公司编号是否唯一的标志
 		var PHONENUMBER=$('#PHONENUMBER').val();//手机号码
 		var PHONECODE=$('#PHONECODE').val();//验证码
 		var PASSWORD=$('#PASSWORD').val();//密码
@@ -205,6 +208,9 @@ $(function(){
     		$('.PASSWORD .notice').html("密码格式不正确!");
     		return;
         };
+        if(phoneMark=="N"||nameMark=="N"||codeMark=="N"){
+        	return;
+        }
 		oc.postRequire("post", "/register", "reg", param, function(data){
 			console.log(data);
 			if(data.code=="0"){
