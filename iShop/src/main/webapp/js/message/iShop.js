@@ -1,0 +1,10 @@
+var oc = new ObjectControl();
+var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
+var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
+var inx=1;//默认是第一页
+var pageSize=10;//默认传的每页多少行
+var value="";//收索的关键词
+var param={};//定义的对象
+var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+key_val=JSON.parse(key_val);
+var funcCode=key_val.func_code;

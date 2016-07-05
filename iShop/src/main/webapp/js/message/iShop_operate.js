@@ -100,8 +100,6 @@ var oc = new ObjectControl();
 		});
 	};
 	iShopjs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
@@ -156,27 +154,30 @@ var oc = new ObjectControl();
 //编辑页面赋值
 jQuery(document).ready(function(){
 	window.iShop.init();//初始化
-	var a="";//
-	var b="";//
 	if($(".pre_title label").text()=="编辑店铺业绩目标"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/storeAchvGoal/select";
 		oc.postRequire("post", _command,"", _params, function(data){
-			// console.log(data);
+			 console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				msg=JSON.parse(msg.storeAchvGoal);
-				var corp_code=msg.corp_code;//公司编号
-				var store_code=msg.store_code;//店铺编号
+				console.log(msg);
+				var RESERVEL=$("#RESERVEL").val(msg.reservel);
+				var MESSAGE_TYPE=$("#MESSAGE_TYPE").val(msg.message_type);
+				var CONTENT_TITEL=$("#CONTENT_TITEL").val(msg.content_titel);
+				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val(msg.moban_content);
 
+				$("#RESERVEL").val(msg.reservel);
+				$("#MESSAGE_TYPE").val(msg.message_type);
+				$("#CONTENT_TITEL").val(msg.content_titel);
+				$("#MOBAN_CONTENT").val(msg.moban_content);
 
-				$("#PER_GOAL").val(msg.target_amount);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
-				
+
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
@@ -203,75 +204,3 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/iShop.html");
 	});
 });
-function getcorplist(a,b){
-	//获取所属企业列表
-	var corp_command="/user/getCorpByUser";
-	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			console.log(msg);
-			var index=0;
-			var corp_html='';
-			var c=null;
-			for(index in msg.corps){
-				c=msg.corps[index];
-				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-			}
-			$("#OWN_CORP").append(corp_html);
-			if(a!==""){
-				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
-			}
-			$("#OWN_CORP").searchableSelect();
-			var c=$('#corp_select .selected').attr("data-value");
-			store_data(c,b);
-			$("#corp_select .searchable-select-item").click(function(){
-				var c=$(this).attr("data-value");
-				store_data(c);
-			})
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
-		}
-	});
-}
-function store_data(c,b){
-	var _params={};
-	_params["corp_code"]=c;//企业编号
-	var _command="/user/store";//调取店铺的名字
-	oc.postRequire("post", _command,"", _params, function(data){
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			var msg_stores=JSON.parse(msg.stores);
-			$('#SHOP_NAME').empty();
-			$('#shop_select .searchable-select').remove();
-			if(msg_stores.length>0){
-				for(var i=0;i<msg_stores.length;i++){
-					$('#SHOP_NAME').append("<option value='"+msg_stores[i].store_code+"'>"+msg_stores[i].store_name+"</option>");
-				}
-			}else if(msg_stores.length<=0){
-				art.dialog({
-					time: 1,
-					lock:true,
-					cancel: false,
-					content: "改企业没有店铺"
-			    });
-			}
-			if(b!==""){
-				$("#SHOP_NAME option[value='"+b+"']").attr("selected","true")
-			}
-			$("#SHOP_NAME").searchableSelect();
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
-		}
-	})
-}

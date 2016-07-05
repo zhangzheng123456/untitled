@@ -212,24 +212,7 @@ jQuery(document).ready(function(){
 				// $("#OWN_CORP option").text(msg.corp.corp_name);
 				// $("#SHOP_NAME option").text(msg.store_name);
 				$("#PER_GOAL").val(msg.target_amount);
-				if(msg.time_type!=="年"&&msg.time_type!=="月"){
-					$("#GOODS_RELEASETIME").val(msg.target_time);
-					$("#TIME_TYPE").val(msg.time_type);
-				}else if(msg.time_type=="年"){
-					$('#day').hide();
-    				$('#week_p').show();
-    				$('#month').hide();
-					$("#year").val(msg.target_time);
-					$("#TIME_TYPE").val(msg.time_type);      
-				}else if(msg.time_type=="月"){
-					$('#day').hide();
-    				$('#week_p').show();
-    				var target_time=msg.target_time;
-    				var target_time=target_time.split('-');
-					$("#year").val(target_time[0]);
-					$("#month").val(target_time[1]);
-					$("#TIME_TYPE").val(msg.time_type);  
-				}
+				
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
