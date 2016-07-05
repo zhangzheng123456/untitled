@@ -11,10 +11,12 @@ import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.sun.glass.ui.Application;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -76,11 +78,13 @@ public class StoreServiceImpl implements StoreService {
 
 
     //分页显示所有店铺
-    public PageInfo<Store> getAllStore(int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<Store> getAllStore(HttpServletRequest request,int page_number, int page_size, String corp_code, String search_value) {
         List<Store> shops;
 
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectAllStore(corp_code, search_value);
+        //报表调用
+        request.getSession().setAttribute("size",shops.size());
 
         PageInfo<Store> page = new PageInfo<Store>(shops);
 

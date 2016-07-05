@@ -56,11 +56,12 @@ public class UserServiceImpl implements UserService {
      * @param corp_code
      * @param search_value
      */
-    public PageInfo<User> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+    public PageInfo<User> selectBySearch(HttpServletRequest request,int page_number, int page_size, String corp_code, String search_value) throws SQLException {
 
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUser(corp_code, search_value);
+        request.getSession().setAttribute("size",users.size());
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }

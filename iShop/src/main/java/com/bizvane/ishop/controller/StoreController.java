@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.IshowHttpClient;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.github.pagehelper.PageInfo;
 import jxl.Workbook;
 import jxl.format.Alignment;
@@ -85,10 +86,10 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = storeService.getAllStore(page_number, page_size, "", "");
+                list = storeService.getAllStore(request,page_number, page_size, "", "");
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStore(page_number, page_size, corp_code, "");
+                    list = storeService.getAllStore(request,page_number, page_size, corp_code, "");
                 } else if(role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
 
@@ -342,9 +343,9 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = storeService.getAllStore(page_number, page_size, "", search_value);
+                list = storeService.getAllStore(request,page_number, page_size, "", search_value);
             }else if(role_code.equals(Common.ROLE_GM)){
-                list = storeService.getAllStore(page_number, page_size, corp_code, search_value);
+                list = storeService.getAllStore(request,page_number, page_size, corp_code, search_value);
 
             }
             else if(role_code.equals(Common.ROLE_AM)){
@@ -720,67 +721,9 @@ public class StoreController {
             String user_id = jsonObject.get("user_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             List<Store> stores = storeService.selectAll(user_id, corp_code);
-            String column_name = jsonObject.get("column_name").toString();
+            String column_name =request.getParameter("column_name");
             String[] cols = column_name.split(",");//前台传过来的字段
-            JSONObject jsonObject2 = new JSONObject();
-            jsonObject2.put("list", stores);
-            org.json.JSONArray array = jsonObject2.getJSONArray("list");
-            List<List<String>> lists = new ArrayList<List<String>>();
-            for (int i = 0; i < stores.size(); i++) {
-                List<String> temp = new ArrayList<String>();
-                for (int j = 0; j < cols.length; j++) {
-                    String aa = array.getJSONObject(i).get(cols[j]).toString();
-                    temp.add(aa);
-                }
-                lists.add(temp);
-            }
-            //------------------------开启响应头---------------------------------------
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
-            //设置响应的字符集
-            response.setContentType("application/vnd.ms-excel;charset=utf-8");
-            String name = URLEncoder.encode("报表_" + sdf.format(new Date()) + ".xls", "UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename=" + name);
-            //创建excel空白文档
-            WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
-            WritableSheet sheet = book.createSheet("报表", 0);
-            WritableFont font = new WritableFont(WritableFont.createFont("微软雅黑"), 18,
-                    WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
-            WritableCellFormat format = new WritableCellFormat(font);
-            format.setAlignment(Alignment.CENTRE);
-            format.setVerticalAlignment(VerticalAlignment.CENTRE);
-            for (int i = 0; i < cols.length; i++) {
-                sheet.setColumnView(i, 40);
-                Label label = new Label(i, 0, cols[i]);
-                label.setCellFormat(format);
-                sheet.addCell(label);
-            }
-            WritableFont font2 = new WritableFont(WritableFont.createFont("微软雅黑"), 15,
-                    WritableFont.NO_BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLUE);
-            WritableCellFormat format2 = new WritableCellFormat(font2);
-            format2.setAlignment(Alignment.CENTRE);
-            format2.setVerticalAlignment(VerticalAlignment.CENTRE);
-            format2.setShrinkToFit(false);
-            int i = 0;
-            for (List<String> m : lists) {
-                String str2 = m.toString();
-                str2 = str2.substring(1, str2.length() - 1);
-                String[] split = str2.split(",");
-                for (int j = 0; j < split.length; j++) {
-                    Label lb = null;
-                    System.out.println(split[j] + "------");
-                    if (split[j] != null) {
-                        lb = new Label(j, i + 1, split[j], format2);
-                    } else {
-                        lb = new Label(j, i + 1, "", format2);
-                    }
-                    sheet.addCell(lb);
-                }
-                i++;
-            }
-            //写入文件
-            book.write();
-            //写入结束
-            book.close();
+            OutExeclHelper.OutExecl(stores,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");

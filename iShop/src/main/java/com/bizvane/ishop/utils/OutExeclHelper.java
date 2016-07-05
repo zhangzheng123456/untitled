@@ -8,22 +8,21 @@ import jxl.format.Colour;
 import jxl.format.UnderlineStyle;
 import jxl.format.VerticalAlignment;
 import jxl.write.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by yin on 2016/6/30.
  */
 public class OutExeclHelper {
-
-    public static void OutExecl(List<T> olist, String[] cols, HttpServletResponse response){
+    public static void OutExecl(List olist, String[] cols, HttpServletResponse response){
         try {
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", olist);
@@ -46,7 +45,7 @@ public class OutExeclHelper {
             //创建excel空白文档
             WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
             WritableSheet sheet = book.createSheet("报表", 0);
-            WritableFont font = new WritableFont(WritableFont.createFont("微软雅黑"), 18,
+            WritableFont font = new WritableFont(WritableFont.createFont("微软雅黑"), 15,
                     WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
             WritableCellFormat format = new WritableCellFormat(font);
             format.setAlignment(Alignment.CENTRE);
@@ -57,8 +56,8 @@ public class OutExeclHelper {
                 label.setCellFormat(format);
                 sheet.addCell(label);
             }
-            WritableFont font2 = new WritableFont(WritableFont.createFont("微软雅黑"), 15,
-                    WritableFont.NO_BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLUE);
+            WritableFont font2 = new WritableFont(WritableFont.createFont("微软雅黑"), 10,
+                    WritableFont.NO_BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
             WritableCellFormat format2 = new WritableCellFormat(font2);
             format2.setAlignment(Alignment.CENTRE);
             format2.setVerticalAlignment(VerticalAlignment.CENTRE);
@@ -70,7 +69,6 @@ public class OutExeclHelper {
                 String[] split = str2.split(",");
                 for (int j = 0; j < split.length; j++) {
                     Label lb = null;
-                    System.out.println(split[j] + "------");
                     if (split[j] != null) {
                         lb = new Label(j, i + 1, split[j], format2);
                     } else {
