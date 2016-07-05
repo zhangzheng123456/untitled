@@ -201,17 +201,17 @@ jQuery(document).ready(function(){
 				// $("#OWN_CORP option").val(msg.corp.corp_code);
 				var corp_code=msg.corp_code;//公司编号
 				var store_code=msg.store_code;//店铺编号
-				$("#OWN_CORP option").text(msg.corp.corp_name);
+				// $("#OWN_CORP option").text(msg.corp.corp_name);
 				// $("#SHOP_NAME option").text(msg.store_name);
-				$("#PER_GOAL").val(msg.achv_goal);
-				if(msg.achv_type!=="年"){
-					$("#GOODS_RELEASETIME").val(msg.end_time);
-					$("#TIME_TYPE").val(msg.achv_type);
-				}else if(msg.achv_type=="年"){
+				$("#PER_GOAL").val(msg.target_amount);
+				if(msg.time_type!=="年"){
+					$("#GOODS_RELEASETIME").val(msg.target_time);
+					$("#TIME_TYPE").val(msg.time_type);
+				}else if(msg.time_type=="年"){
 					$('#day').hide();
     				$('#week_p').show();
 					$("#year").val(msg.end_time);
-					$("#TIME_TYPE").val(msg.achv_type);      
+					$("#TIME_TYPE").val(msg.time_type);      
 				}
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);

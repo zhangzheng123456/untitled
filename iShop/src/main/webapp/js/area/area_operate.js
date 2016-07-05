@@ -181,7 +181,10 @@ jQuery(document).ready(function(){
 	window.area.init();//初始化
 	if($(".pre_title label").text()=="编辑区域信息"){
 		var id=sessionStorage.getItem("id");
-		var _params={"id":id};
+		var funcCode=sessionStorage.getItem("funcCode");
+		var _params={};
+		_params["id"]=id;
+		_params["funcCode"]=funcCode;
 		var _command="/area/select";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);

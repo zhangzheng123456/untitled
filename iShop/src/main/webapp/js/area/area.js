@@ -279,6 +279,7 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
+        sessionStorage.setItem("funcCode",funcCode);
         $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
     })
     //点击编辑时页面进行的跳转
@@ -287,6 +288,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
+            sessionStorage.setItem("funcCode",funcCode);
             $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
         }else if(tr.length==0){
             frame();
