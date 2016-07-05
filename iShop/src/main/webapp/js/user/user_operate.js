@@ -103,13 +103,17 @@ var oc = new ObjectControl();
 					SEX="F";
 				}
 				var OWN_CORP=$("#OWN_CORP").val();//公司code
-				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");//群组编号
+				var OWN_RIGHT=$("#OWN_RIGHT").attr("data-myrcode");//群组编号
 				var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 				var ISACTIVE="";//是否可用字段
 				var input=$("#is_active")[0];//是否可用
 				if(OWN_RIGHT==""){//群组
-					$("#group").html("群组不能为空！");
-					$("#group").attr("class","error_tips");
+					art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content:"所属群组不能为空！"
+						});
 					return;
 				}
 				if(input.checked==true){
@@ -127,7 +131,7 @@ var oc = new ObjectControl();
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list input");;
 				for(var i=0;i<storelist_length.length;i++){
-					var r=$(storelist_length[i]).data("myscode");
+					var r=$(storelist_length[i]).attr("data-myscode");
 					if(i<storelist_length.length-1){
 						STORE_CODE +=r+",";
 					}else{
@@ -137,8 +141,12 @@ var oc = new ObjectControl();
 				//如果角色是导购，店长，区经的时候
 				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
 					if(STORE_CODE==""){
-						$('#shop_t').html("不能为空！");
-						$('#shop_t').attr("class","error_tips");
+						art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content:"所属店铺或所属区域不能为空！"
+						});
 						return;
 					}
 				}
@@ -199,7 +207,7 @@ var oc = new ObjectControl();
 					SEX="F";
 				}
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
-				var OWN_RIGHT=$("#OWN_RIGHT").data("myrcode");//群组编号
+				var OWN_RIGHT=$("#OWN_RIGHT").attr("data-myrcode");//群组编号
 				var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 				var ISACTIVE="";
 				var input=$("#is_active")[0];
@@ -209,8 +217,12 @@ var oc = new ObjectControl();
 					ISACTIVE="N";
 				}
 				if(OWN_RIGHT==""){//群组
-					$("#group").html("群组不能为空！");
-					$("#group").attr("class","error_tips");
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"所属群组不能为空！"
+					});
 					return;
 				}
 				var can_login="";//可登录状态
@@ -224,22 +236,35 @@ var oc = new ObjectControl();
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list input");;
 				for(var i=0;i<storelist_length.length;i++){
-					var r=$(storelist_length[i]).data("myscode");
+					var r=$(storelist_length[i]).attr("data-myscode");
 					if(i<storelist_length.length-1){
 						STORE_CODE +=r+",";
 					}else{
 						STORE_CODE +=r;
 					}
 				}
+				var PSW=$("#init_password").val();
 				//如果角色是导购，店长，区经的时候
 				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
 					if(STORE_CODE==""){
-						$('#shop_t').html("不能为空！");
-						$('#shop_t').attr("class","error_tips");
+						art.dialog({
+							time: 1,
+							lock:true,
+							cancel: false,
+							content:"所属店铺或所属区域不能为空！"
+						});
 						return;
 					}
 				}
-				var PSW=$("#init_password").val();
+				if(PSW==""){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"密码不能为空！"
+					});
+					return;
+				}
 				var _command="/user/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){

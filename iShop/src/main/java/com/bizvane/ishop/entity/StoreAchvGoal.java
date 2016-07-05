@@ -1,7 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
-
 /**
  * Created by lixiang on 2016/6/1.
  * 店铺业绩目标
@@ -17,13 +15,11 @@ public class StoreAchvGoal {
     //公司编号
     private String corp_code;
     //业绩目标
-    private double achv_goal;
+    private String target_amount;
     //业绩类型
-    private String achv_type;
-    //开始时间
-    private String start_time;
+    private String time_type;
     //结束时间
-    private String end_time;
+    private String target_time;
     //修改时间
     private String modified_date;
     //修改人
@@ -34,18 +30,8 @@ public class StoreAchvGoal {
     private String creater;
     //是否可用
     private String isactive;
-    //区域名称
-    private String area_name;
-    private Area area;
+
     private Corp corp;
-
-    public String getArea_name() {
-        return area_name;
-    }
-
-    public void setArea_name(String area_name) {
-        this.area_name = area_name;
-    }
 
     public StoreAchvGoal() {
     }
@@ -82,37 +68,28 @@ public class StoreAchvGoal {
         this.corp_code = corp_code;
     }
 
-    public double getAchv_goal() {
-        return achv_goal;
+    public String getTarget_amount() {
+        return target_amount;
     }
 
-    public void setAchv_goal(double achv_goal) {
-        this.achv_goal = achv_goal;
+    public void setTarget_amount(String target_amount) {
+        this.target_amount = target_amount;
     }
 
-    public String getAchv_type() {
-        return achv_type;
+    public String getTime_type() {
+        return time_type;
     }
 
-    public void setAchv_type(String achv_type) {
-        this.achv_type = achv_type;
+    public void setTime_type(String time_type) {
+        this.time_type = time_type;
     }
 
-
-    public String getStart_time() {
-        return start_time;
+    public String getTarget_time() {
+        return target_time;
     }
 
-    public void setStart_time(String start_time) {
-        this.start_time = start_time;
-    }
-
-    public String getEnd_time() {
-        return end_time;
-    }
-
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
+    public void setTarget_time(String target_time) {
+        this.target_time = target_time;
     }
 
     public String getModified_date() {
@@ -156,13 +133,6 @@ public class StoreAchvGoal {
         this.isactive = isactive;
     }
 
-    public Area getArea() {
-        return area;
-    }
-
-    public void setArea(Area area) {
-        this.area = area;
-    }
 
     public Corp getCorp() {
         return corp;

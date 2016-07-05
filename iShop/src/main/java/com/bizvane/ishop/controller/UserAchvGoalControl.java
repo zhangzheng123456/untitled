@@ -9,10 +9,8 @@ import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.UserAchvGoalService;
 import com.bizvane.ishop.utils.TimeUtils;
-import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -111,17 +109,16 @@ public class UserAchvGoalControl {
             userAchvGoal.setCorp_code(jsonObj.get("corp_code").toString());
             userAchvGoal.setStore_code(jsonObj.get("store_code").toString());
             userAchvGoal.setUser_code(jsonObj.get("user_code").toString());
-            userAchvGoal.setUser_name(jsonObj.get("user_name").toString());
-            userAchvGoal.setAchv_goal(Double.parseDouble(jsonObj.get("achv_goal").toString()));
+            userAchvGoal.setUser_target(jsonObj.get("achv_goal").toString());
             String achv_type = jsonObj.get("achv_type").toString();
-            userAchvGoal.setAchv_type(achv_type);
+            userAchvGoal.setTarget_type(achv_type);
 
             if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObj.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
-                userAchvGoal.setEnd_time(week);
+                userAchvGoal.setTarget_time(week);
             } else {
-                userAchvGoal.setEnd_time(jsonObj.get("end_time").toString());
+                userAchvGoal.setTarget_time(jsonObj.get("end_time").toString());
             }
             Date now = new Date();
             userAchvGoal.setModifier(user_id);
@@ -206,17 +203,16 @@ public class UserAchvGoalControl {
             userAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
             userAchvGoal.setStore_code(jsonObject.get("store_code").toString());
             userAchvGoal.setUser_code(jsonObject.get("user_code").toString());
-            userAchvGoal.setUser_name(jsonObject.get("user_name").toString());
-            userAchvGoal.setAchv_goal(Double.parseDouble(jsonObject.get("achv_goal").toString()));
+            userAchvGoal.setUser_target(jsonObject.get("achv_goal").toString());
             String achv_type = jsonObject.get("achv_type").toString();
-            userAchvGoal.setAchv_type(achv_type);
+            userAchvGoal.setTarget_type(achv_type);
 
             if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObject.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
-                userAchvGoal.setEnd_time(week);
+                userAchvGoal.setTarget_time(week);
             } else {
-                userAchvGoal.setEnd_time(jsonObject.get("end_time").toString());
+                userAchvGoal.setTarget_time(jsonObject.get("end_time").toString());
             }
             Date now = new Date();
             userAchvGoal.setModifier(user_id);

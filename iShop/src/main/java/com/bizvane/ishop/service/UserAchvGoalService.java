@@ -31,11 +31,11 @@ public interface UserAchvGoalService {
 
     /**
      * 删除用户业绩目标ID
-     * @param user_code
+     * @param id
      * @return
      * @throws SQLException
      */
-    int deleteUserAchvGoalById(String user_code)throws SQLException;
+    int deleteUserAchvGoalById(String id)throws SQLException;
 
     /**
      * 插入用户业绩目标ID
@@ -62,5 +62,5 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    String userAchvGoalExist(String user_code)throws SQLException;
+//    String userAchvGoalExist(String user_code)throws SQLException;
 }

@@ -37,6 +37,7 @@
                             <li>
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex" >
+                                        <option value="-1">请选择所属企业</option>
                                     </select>
                                 </span>
                             </li>
@@ -56,34 +57,28 @@
                         <span class="good_imgs" style="display: inline-block;width:420px">
                             <span class="parentFileBox" style="display:inline-flex;vertical-align: middle;">
                                 <ul class="fileBoxUl">
-                                    <!-- <li id="fileBox_WU_FILE_10" class="diyUploadHover">
-                                        <div class="viewThumb"><img src="../img/p1.jpg"></div>                    <div class="diyCancel"></div>
-                                        <div class="diySuccess"></div>
-                                        <div class="diyFileName">p1.jpg</div>
-                                        <div class="diyBar">
-                                            <div class="diyProgress"></div>
-                                            <div class="diyProgressText">0%</div>
-                                        </div>
-                                    </li>
-                                    <li id="fileBox_WU_FILE_11" class="diyUploadHover">
-                                        <div class="viewThumb"><img src="../img/p2.jpg"></div>                    <div class="diyCancel"></div>
-                                        <div class="diySuccess"></div>
-                                        <div class="diyFileName">p2.jpg</div>
-                                        <div class="diyBar">
-                                            <div class="diyProgress"></div>
-                                            <div class="diyProgressText">0%</div>
-                                        </div>
-                                    </li> -->
                                 </ul>
                             </span>
                             <span class="add_new_touxiang" style="position: relative;"><span id="test"></span></span>
                         </span>
                     </div>
-                    <div>
-                        <span><label>季度</label><input type="text" id="GOODS_QUARTER" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="季度不能为空！"></div></div></span>
+                    <div class="drop_down item_1" >
+                        <span><label>季度</label><input type="text" class="input_select" id="GOODS_QUARTER" placeholder="请选择季度" readonly/></span>
+                        <ul style="margin-left:123px">
+                            <li>第一季度</li>
+                            <li>第二季度</li>
+                            <li>第三季度</li>
+                            <li>第四季度</li>
+                        </ul>
                     </div>
-                    <div>
-                        <span><label>波段</label><input type="text" id="GOODS_BAND" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="波段不能为空！"></div></div></span>
+                    <div class="drop_down item_2">
+                        <span><label>波段</label><input type="text" class="input_select" id="GOODS_BAND" placeholder="请选择波段" readonly/></span>
+                        <ul style="margin-left:123px">
+                            <li>第一波段</li>
+                            <li>第二波段</li>
+                            <li>第三波段</li>
+                            <li>第四波段</li>
+                        </ul>
                     </div>
                     <div>
                         <span><label>发布时间</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" /></span>

@@ -8,6 +8,9 @@
 #week_p .week{
 	width: 100px;
 }
+#week_p{
+	position: relative;
+}
 .power{
 	display: inline-block;
 	width: 50px;
@@ -40,14 +43,14 @@
 }
 #week_p .year{
 	position:absolute;
-	left: 137px;
+	left: 128px;
 	background: #e8f5fe;
 	border: 1px solid #a9c9e2;
 	display: none;
 }
 #week_p .month{
 	position:absolute;
-	left: 241px;
+	left: 232px;
 	background: #e8f5fe;
 	border: 1px solid #a9c9e2;
 	display: none;

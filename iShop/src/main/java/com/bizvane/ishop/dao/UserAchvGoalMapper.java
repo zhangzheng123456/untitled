@@ -20,11 +20,11 @@ public interface UserAchvGoalMapper {
 
     int update(UserAchvGoal userAchvGoal) throws SQLException;
 
-    int delelteByUser_code(String user_code) throws SQLException;
+    int delelte(@Param("id")String id) throws SQLException;
 
 
-    List<UserAchvGoal> selectUserAchvGoalBySearch(@Param("userAchvGoalId") String userAchvGoalId, @Param("search_value") String search_value) throws SQLException;
+    List<UserAchvGoal> selectUserAchvGoalBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
 
-    int userAchvGoalExist(@Param("user_code") String user_code) throws SQLException;
+//    UserAchvGoal userAchvGoalExist(@Param("user_code") String user_code) throws SQLException;
 }

@@ -14,7 +14,7 @@ $(function(){
 
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
-            }else{  
+            }else{
                 showLi();  
             }  
         });            
@@ -321,7 +321,7 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    value=this.value.replace(/\s+/g,"");
+    valsue=this.value.replace(/\s+/g,"");
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
@@ -329,7 +329,7 @@ $("#search").keydown(function() {
     if(event.keyCode == 13){
         POST();
     }
-
+});
 //点击放大镜触发搜索
 $("#d_search").click(function(){
     value=$("#search").val().replace(/\s+/g,"");
@@ -362,7 +362,6 @@ function POST(){
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();

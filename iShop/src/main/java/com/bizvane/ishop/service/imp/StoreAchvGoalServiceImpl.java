@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -35,12 +37,31 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code,String area_code,String user_id, String search_value)
+    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code,String area_code,String store_code, String search_value)
             throws SQLException {
+        String[] area_codes =null;
+        String[] store_codes = null;
 
-        PageHelper.startPage(page_number, page_size);
+        if (!area_code.equals("")){
+            area_codes = area_code.split(",");
+            for (int i = 0; i < area_codes.length; i++) {
+                area_codes[i] = area_codes[i].substring(1, area_codes[i].length());
+            }
+        }
+        if(!store_code.equals("")){
+           store_codes = store_code.split(",");
+            for (int i = 0; i < store_codes.length; i++) {
+                store_codes[i] = store_codes[i].substring(1, store_codes[i].length());
+            }
+        }
+        Map<String, Object> params =  new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("area_codes",area_codes);
+        params.put("store_codes",store_codes);
+        params.put("search_value",search_value);
         List<StoreAchvGoal> storeAchvGoals;
-        storeAchvGoals = storeAchvGoalMapper.selectUsersBySearch(corp_code, area_code,user_id,search_value);
+        PageHelper.startPage(page_number, page_size);
+        storeAchvGoals = storeAchvGoalMapper.selectBySearch(params);
         PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
         return page;
     }

@@ -338,7 +338,6 @@ public class CorpController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
@@ -370,14 +369,12 @@ public class CorpController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
 
-            //String existInfo = corpService.getCorpByCorpName(corp_name);
             Corp corp = corpService.selectByCorpId(0, corp_code);
             if (corp != null) {
                 dataBean.setId(id);

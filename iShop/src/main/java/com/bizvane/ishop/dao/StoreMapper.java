@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.Store;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StoreMapper {
     Store selectByStoreId(int id);
@@ -14,7 +15,7 @@ public interface StoreMapper {
 
     List<Store> selectStores(@Param("corp_code") String corp_code);
 
-    List<Store> selectByUserId(@Param("user_id") String user_id, @Param("corp_code") String corp_code, @Param("search_value") String search_value);
+    List<Store> selectByUserId(Map<String, Object> params);
 
     List<Store> selectStoreBrandArea(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code, @Param("area_code") String area_code);
 
@@ -32,5 +33,5 @@ public interface StoreMapper {
 
     int selectAchCount(@Param("store_code") String store_code);
 
-    List<Store> selectByAreaCode(@Param("corp_code")String corp_code,@Param("area_code")String area_code,@Param("search_value")String search_value);
+    List<Store> selectByAreaCode(Map<String, Object> params);
 }

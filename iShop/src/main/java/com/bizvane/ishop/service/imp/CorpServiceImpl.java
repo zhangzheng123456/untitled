@@ -183,4 +183,8 @@ public class CorpServiceImpl implements CorpService {
     public int getMessagesTypeCount(String corp_code) {
         return corpMapper.getMessageTypeCount(corp_code);
     }
+
+    public int selectCount(String create_date){
+        return corpMapper.selectCount(create_date);
+    }
 }

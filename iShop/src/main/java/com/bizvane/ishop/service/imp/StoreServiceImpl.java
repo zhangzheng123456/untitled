@@ -20,7 +20,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nanji on 2016/5/25.
@@ -95,10 +97,18 @@ public class StoreServiceImpl implements StoreService {
      * 获取用户的店仓信息
      */
     @Override
-    public PageInfo<Store> selectByUserId(int page_number, int page_size, String user_id, String corp_code, String search_value) {
+    public PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value) {
         List<Store> shops;
+        String[] ids = store_code.split(",");
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = ids[i].substring(1, ids[i].length());
+        }
+        Map<String, Object> params =  new HashMap<String, Object>();
+        params.put("store_codes",ids);
+        params.put("corp_code",corp_code);
+        params.put("search_value",search_value);
         PageHelper.startPage(page_number, page_size);
-        shops = storeMapper.selectByUserId(user_id, corp_code, search_value);
+        shops = storeMapper.selectByUserId(params);
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
         return page;
@@ -108,8 +118,17 @@ public class StoreServiceImpl implements StoreService {
      * 获取页面的所有数据
      */
     @Override
-    public List<Store> selectAll(String user_id, String corp_code) {
-        return storeMapper.selectByUserId(user_id, corp_code, "");
+    public List<Store> selectAll(String store_code, String corp_code) {
+        List<Store> shops;
+        String[] ids = store_code.split(",");
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = ids[i].substring(1, ids[i].length());
+        }
+        Map<String, Object> params =  new HashMap<String, Object>();
+        params.put("store_codes",ids);
+        params.put("corp_code",corp_code);
+        params.put("search_value","");
+        return storeMapper.selectByUserId(params);
     }
 
     //店铺下所属用户
@@ -220,11 +239,20 @@ public class StoreServiceImpl implements StoreService {
         return this.storeMapper.selectAchCount(store_code);
     }
     @Override
-    public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String area_code, String search_value) {
+    public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) {
+
+        Map<String, Object> params =  new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("area_code",area_code);
+        params.put("search_value",search_value);
+
         PageHelper.startPage(page_number, page_size);
-        List<Store> stores = storeMapper.selectByAreaCode(corp_code, area_code, search_value);
+        List<Store> stores = storeMapper.selectByAreaCode(params);
         PageInfo<Store> page=new PageInfo<Store>(stores);
         return page;
     }
 
+    public int selectCount(String created_date) {
+        return this.storeMapper.selectCount(created_date);
+    }
 }

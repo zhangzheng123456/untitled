@@ -256,6 +256,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -265,32 +266,9 @@ jQuery(document).ready(function(){
 				});
 			}
 		});
+	}else{
+		getcorplist();
 	}
-	//获取所属企业列表
-	var corp_command="/user/getCorpByUser";
-	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
-		if(data.code=="0"){
-			var msg=JSON.parse(data.message);
-			console.log(msg);
-			var index=0;
-			var corp_html='';
-			var c=null;
-			for(index in msg.corps){
-				c=msg.corps[index];
-				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
-			}
-			$("#OWN_CORP").append(corp_html);
-			$('.corp_select select').searchableSelect();
-		}else if(data.code=="-1"){
-			art.dialog({
-				time: 1,
-				lock:true,
-				cancel: false,
-				content: data.message
-			});
-		}
-	});
 	$("#GOODS_CODE").blur(function(){
     	var _params={};
     	var goods_code=$(this).val();
@@ -344,4 +322,37 @@ jQuery(document).ready(function(){
 // 删除加载的已存在的商品图片
 function img_del(obj) {
 	$(obj).parent().remove();
+}
+function getcorplist(){
+	//获取所属企业列表
+	var corp_command="/user/getCorpByUser";
+	oc.postRequire("post", corp_command,"", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			var index=0;
+			var corp_html='';
+			var c=null;
+			for(index in msg.corps){
+				c=msg.corps[index];
+				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+			}
+			$("#OWN_CORP").append(corp_html);
+			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("#BRAND_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#BRAND_NAME").attr("data-mark","");
+			})
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
 }

@@ -89,24 +89,20 @@ public class StoreController {
                 list = storeService.getAllStore(request,page_number, page_size, "", "");
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
+
                     list = storeService.getAllStore(request,page_number, page_size, corp_code, "");
-                } else if(role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equals(Common.ROLE_AM)) {
+
                     String area_code = request.getSession().getAttribute("area_code").toString();
 
                     String[] areaCodes = area_code.split(",");
-                    String areaCode = "";
                     for (int i = 0; i < areaCodes.length; i++) {
                         areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                        System.out.println(areaCodes[i] + "-----");
-                        areaCode = areaCode + areaCodes[i];
-                        if (i != areaCodes.length - 1) {
-                            areaCode = areaCode + ",";
-                        }
                     }
-
-                    list = storeService.selectByAreaCode(page_number, page_size,  corp_code, areaCode, "");
+                    list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, "");
                 } else {
-                    list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, "");
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, "");
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -343,29 +339,23 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
+
                 list = storeService.getAllStore(request,page_number, page_size, "", search_value);
             }else if(role_code.equals(Common.ROLE_GM)){
                 list = storeService.getAllStore(request,page_number, page_size, corp_code, search_value);
 
-            }
-            else if(role_code.equals(Common.ROLE_AM)){
+
+            }  else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 String[] areaCodes = area_code.split(",");
-                String areaCode = "";
                 for (int i = 0; i < areaCodes.length; i++) {
                     areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                    System.out.println(areaCodes[i] + "-----");
-                    areaCode = areaCode + areaCodes[i];
-                    if (i != areaCodes.length - 1) {
-                        areaCode = areaCode + ",";
-                    }
                 }
-
-                list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCode, search_value);
-            }else{
-                list = storeService.selectByUserId(page_number, page_size, user_id, corp_code, search_value);
+                list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, search_value);
+            } else {
+                String store_code = request.getSession().getAttribute("store_code").toString();
+                list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, search_value);
             }
-
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -718,10 +708,10 @@ public class StoreController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String user_id = jsonObject.get("user_id").toString();
+            String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            List<Store> stores = storeService.selectAll(user_id, corp_code);
-            String column_name =request.getParameter("column_name");
+            List<Store> stores = storeService.selectAll(store_code, corp_code);
+            String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             OutExeclHelper.OutExecl(stores,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

@@ -26,7 +26,7 @@ public class SpringMVCInterceptor implements HandlerInterceptor {
         if (session.getAttribute("user_id") != null) {
             return true;
         }
-        response.sendRedirect("login.html");
+        response.sendRedirect("/login.html");
         return false;
     }
 

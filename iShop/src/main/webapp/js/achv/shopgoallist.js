@@ -206,11 +206,11 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].corp.corp_name
                         +"</td><td>"
-                        + data[i].achv_goal
+                        + data[i].target_amount
                         +"</td><td>"
-                        + data[i].achv_type
+                        + data[i].time_type
                         +"</td><td>"
-                        + data[i].end_time
+                        + data[i].target_time
                         +"</td><td>"
                         +data[i].modifier
                         + "</td><td>"
