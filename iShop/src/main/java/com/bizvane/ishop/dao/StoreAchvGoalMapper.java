@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.StoreAchvGoal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -47,11 +48,11 @@ public interface StoreAchvGoalMapper {
     /**
      * 搜寻值
      *
-     * @param search_value
+     * @param params
      * @return
      */
 
-    List<StoreAchvGoal> selectBySearch(@Param("corp_code") String corp_code, @Param("area_code")String area_code,@Param("store_code")String store_code,@Param("search_value") String search_value);
+    List<StoreAchvGoal> selectBySearch(Map<String, Object> params);
 
 
     /**
