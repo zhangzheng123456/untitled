@@ -181,7 +181,6 @@ jQuery(document).ready(function(){
 	window.area.init();//初始化
 	if($(".pre_title label").text()=="编辑区域信息"){
 		var id=sessionStorage.getItem("id");
-		var funcCode=sessionStorage.getItem("funcCode");
 		var _params={};
 		_params["id"]=id;
 		_params["funcCode"]=funcCode;
