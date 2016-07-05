@@ -190,9 +190,6 @@ $(function(){
 		param["USERNAME"]=USERNAME;//姓名
 		param["COMPANY"]=COMPANY;//企业名称
 		param["CORPCODE"]=CORPCODE//企业编号
-		// param["PROVINCE"]=province;//所在省
-		// param["CITY"]=city;//城市
-		// param["REGIONID"]=regionId;//县区
 		param["ADDRESS"]=province+city+regionId+Address;//详细地址
 		if(CORPCODE==""||PHONENUMBER==""||PHONECODE==""||PASSWORD==""||repswd==""||USERNAME==""||COMPANY==""||province=="省份"||city=="城市"||regionId=="区县"||Address==""){
 			if(province=="省份"||city=="城市"||regionId=="区县"){

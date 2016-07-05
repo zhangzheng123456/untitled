@@ -44,7 +44,7 @@ function superaddition(data){
                         + "</td><td>"
                         +data[i].login_time_recently
                         + "</td><td>"
-                        +data[i].group_code
+                        +data[i].group.group_name
                         + "</td><td>"
                         +data[i].modifier
                         + "</td><td>"
