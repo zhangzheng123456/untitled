@@ -51,9 +51,7 @@ public class UserAchvGoalControl {
     public String userAchvGoalManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            //int user_id = Integer.parseInt(request.getParameter("user_id").toString());
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-            //String role_code = request.getParameter("role_code").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String group_code = request.getSession(false).getAttribute("group_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
@@ -221,16 +219,10 @@ public class UserAchvGoalControl {
             userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
 
-//            String existInfo = this.userAchvGoalService.userAchvGoalExist(userAchvGoal.getUser_code());
-//            if (existInfo.equals(Common.DATABEAN_CODE_ERROR)) {
             userAchvGoalService.insert(userAchvGoal);
-//            } else {
-//                userAchvGoalService.updateUserAchvGoal(userAchvGoal);
-//    }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("add SUCCESS！");
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

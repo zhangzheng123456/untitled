@@ -56,11 +56,12 @@ public class UserServiceImpl implements UserService {
      * @param corp_code
      * @param search_value
      */
-    public PageInfo<User> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+    public PageInfo<User> selectBySearch(HttpServletRequest request,int page_number, int page_size, String corp_code, String search_value) throws SQLException {
 
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUser(corp_code, search_value);
+        request.getSession().setAttribute("size",users.size());
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
@@ -69,9 +70,26 @@ public class UserServiceImpl implements UserService {
      * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
-    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String role_code) throws SQLException {
-
-        String[] stores = store_code.split(",");
+    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code,String area_code, String role_code) throws SQLException {
+        String[] stores = null;
+        if (!store_code.equals("")) {
+            stores = store_code.split(",");
+            for (int i = 0; i < stores.length; i++) {
+                stores[i] = stores[i].substring(1, stores[i].length());
+            }
+        }
+        if (!area_code.equals("")) {
+            String[] areas = area_code.split(",");
+            for (int i = 0;i<areas.length;i++){
+                areas[i] = areas[i].substring(1,areas[i].length());
+            }
+            List<Store> store = storeService.selectByAreaCode(corp_code,areas);
+            String a = "";
+            for (int i = 0; i < store.size(); i++) {
+                a = a+store.get(i).getStore_code()+",";
+            }
+            stores = a.split(",");
+        }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);
         params.put("search_value", search_value);
@@ -196,7 +214,6 @@ public class UserServiceImpl implements UserService {
         User user1 = getUserById(user_id);
         String phone_exist = userPhoneExist(phone);
         User code_exist = userCodeExist(user_code, corp_code);
-
         String emails = userEmailExist(email);
 
         if (!user1.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {

@@ -27,9 +27,9 @@ public interface UserService {
 
     JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException;
 
-    PageInfo<User> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<User> selectBySearch(HttpServletRequest request,int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
-    PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value,String store_code,String role_code) throws SQLException;
+    PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value,String store_code,String area_code,String role_code) throws SQLException;
 
     PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code) throws SQLException;
 
