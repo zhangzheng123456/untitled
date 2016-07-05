@@ -330,6 +330,7 @@ public class UserServiceImpl implements UserService {
             String password = jsonObject.get("PASSWORD").toString();
             String corp_name = jsonObject.get("COMPANY").toString();
             String address = jsonObject.get("ADDRESS").toString();
+            String corp_code = jsonObject.get("CORPCODE").toString();
 
             User u = this.userMapper.selectByPhone(phone);
             if (u == null) {
@@ -343,16 +344,16 @@ public class UserServiceImpl implements UserService {
                     System.out.println("---------auth_code----------");
 
                     //拼接corp_code
-                    String max_corp_code = corpMapper.selectMaxCorpCode();
-                    int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
-                    Integer c = code_tail;
-                    int length = 5 - c.toString().length();
-                    String corp_code = "C";
-                    for (int i = 0; i < length; i++) {
-                        corp_code = corp_code + "0";
-                    }
-                    corp_code = corp_code + code_tail;
-                    log.info("----------corp_code" + corp_code);
+//                    String max_corp_code = corpMapper.selectMaxCorpCode();
+//                    int code_tail = Integer.parseInt(max_corp_code.substring(1, max_corp_code.length())) + 1;
+//                    Integer c = code_tail;
+//                    int length = 5 - c.toString().length();
+//                    String corp_code = "C";
+//                    for (int i = 0; i < length; i++) {
+//                        corp_code = corp_code + "0";
+//                    }
+//                    corp_code = corp_code + code_tail;
+//                    log.info("----------corp_code" + corp_code);
 
                     //插入用户信息
                     User user = new User();

@@ -218,6 +218,7 @@ public class StoreAchvGoalController {
             storeAchvGoal.setStore_code(jsonObject.get("store_code").toString());
             storeAchvGoal.setTarget_amount(jsonObject.get("achv_goal").toString());
             String achv_type = jsonObject.get("achv_type").toString();
+            storeAchvGoal.setTime_type(achv_type);
             String time = jsonObject.get("end_time").toString();
             if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
                 String week = TimeUtils.getWeek(time);
@@ -231,7 +232,6 @@ public class StoreAchvGoalController {
             storeAchvGoal.setCreater(user_id);
             storeAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal.setIsactive(jsonObject.get("isactive").toString());
-
             String result = String.valueOf(storeAchvGoalService.update(storeAchvGoal));
             if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -242,7 +242,6 @@ public class StoreAchvGoalController {
                 dataBean.setId(id);
                 dataBean.setMessage("add success");
             }
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success ");
