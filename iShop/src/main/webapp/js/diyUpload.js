@@ -140,7 +140,7 @@
 					break;
 					case  'Q_EXCEED_NUM_LIMIT' : text = '上传文件数量超过限制!' ;
 					break;
-					case  'F_EXCEED_SIZE' : text = '文件大小超过限制!';
+					case  'F_EXCEED_SIZE' : text = '文件大小超过限制!最大尺寸为500 * 1024';
 					break;
 					case  'Q_EXCEED_SIZE_LIMIT' : text = '所有文件总大小超过限制!';
 					break;
