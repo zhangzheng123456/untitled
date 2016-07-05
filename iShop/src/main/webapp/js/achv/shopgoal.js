@@ -45,7 +45,7 @@ var oc = new ObjectControl();
 				// var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
 				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
-				if(TIME_TYPE!=="年"){
+				if(TIME_TYPE!=="年"&&TIME_TYPE!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if("DATE"==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
@@ -55,6 +55,10 @@ var oc = new ObjectControl();
 					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
+				}else if(TIME_TYPE=="月"){
+					var year=$("#year").val();//年份
+					var month=$("#month").val();//月份
+					DATE=year+"-"+month;
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -91,7 +95,7 @@ var oc = new ObjectControl();
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
 				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
-				if(TIME_TYPE!=="年"){
+				if(TIME_TYPE!=="年"&&TIME_TYPE!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if("DATE"==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
@@ -101,6 +105,10 @@ var oc = new ObjectControl();
 					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
+				}else if(TIME_TYPE=="月"){
+					var year=$("#year").val();//年份
+					var month=$("#month").val();//月份
+					DATE=year+"-"+month;
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -204,14 +212,23 @@ jQuery(document).ready(function(){
 				// $("#OWN_CORP option").text(msg.corp.corp_name);
 				// $("#SHOP_NAME option").text(msg.store_name);
 				$("#PER_GOAL").val(msg.target_amount);
-				if(msg.time_type!=="年"){
+				if(msg.time_type!=="年"&&msg.time_type!=="月"){
 					$("#GOODS_RELEASETIME").val(msg.target_time);
 					$("#TIME_TYPE").val(msg.time_type);
 				}else if(msg.time_type=="年"){
 					$('#day').hide();
     				$('#week_p').show();
-					$("#year").val(msg.end_time);
+    				$('#month').hide();
+					$("#year").val(msg.target_time);
 					$("#TIME_TYPE").val(msg.time_type);      
+				}else if(msg.time_type=="月"){
+					$('#day').hide();
+    				$('#week_p').show();
+    				var target_time=msg.target_time;
+    				var target_time=target_time.split('-');
+					$("#year").val(target_time[0]);
+					$("#month").val(target_time[1]);
+					$("#TIME_TYPE").val(msg.time_type);  
 				}
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
@@ -248,15 +265,19 @@ jQuery(document).ready(function(){
     	if(text=="日"){
     		$('#day').show();
     		$('#week_p').hide();
+    		$("#GOODS_RELEASETIME").val("");
     	}else if(text=="周"){
     		$('#day').show();
     		$('#week_p').hide();
+    		$("#GOODS_RELEASETIME").val("");
     	}else if(text=="年"){
     		$('#day').hide();
     		$('#week_p').show();
+    		$('#month').hide();
     	}else if(text=="月"){
-    		$('#day').show();
-    		$('#week_p').hide();
+    		$('#day').hide();
+    		$('#week_p').show();
+    		$('#month').show();
     	}
     })
     //点击年的input出来ul
@@ -266,6 +287,15 @@ jQuery(document).ready(function(){
     $("#year").blur(function(){
     	setTimeout(function(){
     		$("#week_p .year").hide();	
+    	},200);  
+    })
+    //点击月份的input出来ul
+    $("#month").click(function(){
+    	$(".month").toggle();
+    })
+    $("#month").blur(function(){
+    	setTimeout(function(){
+    		$("#week_p .month").hide();	
     	},200);  
     })
 });
@@ -363,7 +393,25 @@ function year(){
 function month(){
 	var myDate=new Date();
 	var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
-	console.log(month);
+	month=month+1;
+	if(month<10){
+		month="0"+month;
+	}
+	$('#month').val(month)
+	for(var i=1;i<=12;i++){
+		if(i<10){
+			i="0"+i;
+		}
+		var li="<li>";
+		li+=""+i+"</li>"
+		$('#week_p .month').append(li);
+	}
+	$("#week_p .month>li").click(function(){
+    	console.log(this);
+    	var value=$(this).html();
+    	$('#month').val(value);
+    	$('#week_p .month').hide();
+    })
 }
 month();
 year();

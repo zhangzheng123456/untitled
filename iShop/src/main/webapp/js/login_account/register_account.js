@@ -17,10 +17,12 @@ $("#PHONENUMBER").blur(function(){//手机号失去焦点的时候的验证
     			$('.PHONENUMBER .notice').html("该手机号已被绑定,请<a class='link_blue' href='login.html' target='_blank'>直接登录</a>或<a class='link_forget' href='findpwd.html' target='_blank'>忘记密码？</a>");
     			$("#btn").addClass("checkCode col col-30 disabled");
 				$("#btn").attr("disabled","true");
+				$('#PHONENUMBER').attr("data-mark","N");
     		}else if(data.code=="0"){
     			$('.PHONENUMBER .notice').html("手机号码可用！");
     			$("#btn").removeAttr("disabled");
 				$("#btn").removeClass("disabled");
+				$('#PHONENUMBER').attr("data-mark","Y");
     		};
     	})	
     }  
@@ -78,6 +80,7 @@ $("#COMPANY").blur(function(){//企业搜索框失去焦点的时候的验证
     	$('.COMPANY .notice').html("企业名称不能为空！");
     }
     if(COMPANY!==""){
+    	_params["corp_name"]=COMPANY;
     	oc.postRequire("post","/corp/CorpNameExist","", _params, function(data){
     		if(data.code=="0"){
 	            $('.COMPANY .notice').html("");
