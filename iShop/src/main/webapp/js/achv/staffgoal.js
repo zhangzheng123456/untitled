@@ -241,25 +241,37 @@ jQuery(document).ready(function(){
     	if(text=="日"){
     		$('#day').show();
     		$('#week_p').hide();
+    		$("#GOODS_RELEASETIME").val("");
     	}else if(text=="周"){
     		$('#day').show();
     		$('#week_p').hide();
+    		$("#GOODS_RELEASETIME").val("");
     	}else if(text=="年"){
     		$('#day').hide();
     		$('#week_p').show();
-    		year();
+    		$('#month').hide();
     	}else if(text=="月"){
-    		$('#day').show();
-    		$('#week_p').hide();
+    		$('#day').hide();
+    		$('#week_p').show();
+    		$('#month').show();
     	}
     })
     //点击年的input出来ul
     $("#year").click(function(){
-    	$("#week_p .year").show();
+    	$(".year").toggle();
     })
     $("#year").blur(function(){
     	setTimeout(function(){
     		$("#week_p .year").hide();	
+    	},200);  
+    })
+    //点击月份的input出来ul
+    $("#month").click(function(){
+    	$(".month").toggle();
+    })
+    $("#month").blur(function(){
+    	setTimeout(function(){
+    		$("#week_p .month").hide();	
     	},200);  
     })
 });
@@ -322,6 +334,13 @@ function store_data(c){
 			    });
 			}
 			$("#SHOP_NAME").searchableSelect();
+			var store_code=$('#SHOP_NAME').val();
+			staff_data(c,store_code);
+			$("#shop_select .searchable-select-item").click(function(){
+				var store_code=$(this).attr("data-value");
+				staff_data(c,store_code);
+			})
+			
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -332,10 +351,52 @@ function store_data(c){
 		}
 	})
 }
-//选择年
+//获取员工列表信息
+function staff_data(d,f){
+	var _params={};
+	if(f==null){
+		art.dialog({
+			time: 1,
+			lock:true,
+			cancel: false,
+			content: "请先定义店铺!"
+		});
+		return;
+	}
+	_params["corp_code"]=d;
+	_params["store_code"]=f;
+	oc.postRequire("post","/shop/staff","list",_params,function(data){
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			$('#STAFF_NAME').empty();
+			$('#staff_select .searchable-select').remove();
+			if(msg.length>0){
+				for(var i=0;i<msg.length;i++){
+					$('#STAFF_NAME').append("<option value='"+msg[i].user_code+"'>"+msg[i].user_name+"</option>");
+				}
+			}else if(msg.length<=0){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "改店铺没有员工!"
+			    });
+			}
+			$("#STAFF_NAME").searchableSelect();
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	})
+}
 function year(){
 	var myDate = new Date();
 	var year=myDate.getFullYear();
+	$('#year').val(year)
 	var year=year-1;
 	console.log($('#week_p .year'));
 	$('#week_p .year').empty();
@@ -352,3 +413,28 @@ function year(){
     	$('#week_p .year').hide();
     })
 }
+function month(){
+	var myDate=new Date();
+	var month=myDate.getMonth(); //获取当前月份(0-11,0代表1月)
+	month=month+1;
+	if(month<10){
+		month="0"+month;
+	}
+	$('#month').val(month);
+	for(var i=1;i<=12;i++){
+		if(i<10){
+			i="0"+i;
+		}
+		var li="<li>";
+		li+=""+i+"</li>"
+		$('#week_p .month').append(li);
+	}
+	$("#week_p .month>li").click(function(){
+    	console.log(this);
+    	var value=$(this).html();
+    	$('#month').val(value);
+    	$('#week_p .month').hide();
+    })
+}
+month();
+year();

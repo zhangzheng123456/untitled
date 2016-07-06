@@ -150,7 +150,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }else if(data.code=="-1"){
                         // alert(data.message);
@@ -186,7 +186,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
 function superaddition(data,num){
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
-            var a=i+num*pageSize;
+            var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }

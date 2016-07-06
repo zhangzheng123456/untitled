@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.MessageMapper">
 
-
     <resultMap type="com.bizvane.ishop.entity.Message" id="MessageInfo">
         <id column="id" property="id"/>
         <result column="tem_code" property="tem_code"/>
@@ -191,12 +190,7 @@
         order by DEF_USER.ID
     </select>
 
-<<<<<<< HEAD
     <select id="selectPartMessage" resultMap="MessageInfo">
-=======
-
-    <select id="selectPartMessage" resultMap="Messages">
->>>>>>> cd431841c885d456907c225a4d993bf2bb1c20a7
         select
         DEF_MESSAGE.*
         from DEF_USER,DEF_GROUP,DEF_CORP,DEF_MESSAGE
