@@ -16,12 +16,13 @@ public interface MessageMapper {
 
     int updateByPrimaryKey(Message record);
 
-
     List<Message> selectAllMessage(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
-    List<Message> selectByUser(@Param("corp_code") String corp_code, @Param("user_code") String user_code);
+    //List<Message> selectByUser(@Param("corp_code") String corp_code, @Param("user_code") String user_code);
 
     List<Message> selectPartMessage(Map<String, Object> params);
 
     Message selectByCode(@Param("corp_code") String corp_code, @Param("tem_code") String tem_code);
+
+    List<Message> selectByUser(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("search_value") String search_value);
 }

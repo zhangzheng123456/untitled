@@ -62,7 +62,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public PageInfo<Message> selectByUser(int page_number, int page_size, String corp_code, String user_code) throws SQLException {
         PageHelper.startPage(page_number, page_size);
-        List<Message> list = messageMapper.selectByUser(corp_code, user_code);
+        List<Message> list = messageMapper.selectByUser(corp_code, user_code, "");
         PageInfo<Message> page = new PageInfo<Message>(list);
         return page;
     }
@@ -81,4 +81,15 @@ public class MessageServiceImpl implements MessageService {
         PageInfo<Message> page = new PageInfo<Message>(messages);
         return page;
     }
+
+    @Override
+    public PageInfo<Message> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws SQLException {
+        PageHelper.startPage(page_number, page_size);
+
+        //List<Message> list = messageMapper.selectByUser(corp_code, user_code);
+        List<Message> list = messageMapper.selectByUser(corp_code, user_code, search_value);
+        PageInfo<Message> page = new PageInfo<Message>(list);
+        return page;
+    }
+
 }

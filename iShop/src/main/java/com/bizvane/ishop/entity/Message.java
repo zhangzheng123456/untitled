@@ -9,8 +9,11 @@ public class Message {
     private int id;
     //消息编号
     private String tem_code;
+    //消息名称
+    private String tem_name;
     //消息内容
     private String tem_content;
+
     //是否可用
     private String isactive;
     //企业编号
@@ -19,6 +22,8 @@ public class Message {
     private String modified_date;
     //修改人
     private String modifier;
+    //创建人
+    private String creater;
     //创建日期
     private String created_date;
     //消息类型
@@ -29,6 +34,21 @@ public class Message {
     public Message() {
     }
 
+    public String getCreater() {
+        return creater;
+    }
+
+    public void setCreater(String creater) {
+        this.creater = creater;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getTem_code() {
         return tem_code;
@@ -44,6 +64,14 @@ public class Message {
 
     public void setTem_content(String tem_content) {
         this.tem_content = tem_content;
+    }
+
+    public String getTem_name() {
+        return tem_name;
+    }
+
+    public void setTem_name(String tem_name) {
+        this.tem_name = tem_name;
     }
 
     public String getIsactive() {
@@ -68,6 +96,14 @@ public class Message {
 
     public void setModified_date(String modified_date) {
         this.modified_date = modified_date;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 
     public String getCreated_date() {

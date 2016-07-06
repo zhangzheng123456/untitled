@@ -43,6 +43,21 @@ public class testLixixi {
     @Autowired
     private BrandService brandService;
 
+    @Autowired
+    private MessageMapper messageMapper;
+
+    @Test
+    public void test_7_6() {
+        try {
+            Message message = messageMapper.selectByPrimaryKey(1);
+            System.out.println(message.getTem_content());
+        } catch (Exception ex) {
+            System.out.println(ex.toString());
+            System.out.println(ex.getMessage());
+        }
+    }
+
+
     @Test
     public void test11() {
         try {

@@ -31,8 +31,8 @@ public interface MessageService {
 
     PageInfo<Message> selectByUser(int page_number, int page_size, String corp_code, String user_code) throws SQLException;
 
-    PageInfo<Message> selectBySearchPart(int page_number, int page_size, String corp_code, String search_values, String store_code, String role_code);
+    PageInfo<Message> selectBySearchPart(int page_number, int page_size, String corp_code, String search_values, String store_code, String role_code) throws SQLException;
 
-    //String
 
+    PageInfo<Message> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws SQLException;
 }
