@@ -275,7 +275,6 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
-        console.log(id);
         $(window.parent.document).find('#iframepage').attr("src","/brand/brand_edit.html");
     })
     //点击新增时页面进行的跳转

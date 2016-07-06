@@ -87,7 +87,7 @@ var oc = new ObjectControl();
 				return;
 			}
 		});
-		$(".shopedit_oper_btn ul li:nth-of-type(1)").click(function(){
+		$("#edit_save").click(function(){
 			var nameMark=$("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
 			var codeMark=$("#STORE_ID").attr("data-mark");//店铺ID是否唯一的标志
 			if(shopjs.firstStep()){
@@ -365,10 +365,11 @@ jQuery(document).ready(function(){
     $("#k_close").click(function(){
     	$("#kuang").hide();
     })
-	$(".shopadd_oper_btn ul li:nth-of-type(2)").click(function(){
+	$(".shopadd_oper_btn ul li:nth-of-type(2)").click(function(){//点击关闭按钮跳转到列表页面
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
-	$(".shopedit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){//编辑页面点击关闭按钮跳转到列表页面
+		sessionStorage.removeItem("edit");
 		$(window.parent.document).find('#iframepage').attr("src","/shop/shop.html");
 	});
 	$("#OWN_BRAND").click(function(){
