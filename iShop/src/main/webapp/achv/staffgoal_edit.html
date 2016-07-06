@@ -21,8 +21,6 @@
 </head>
 
 <body>
-    <!-- <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="col-lg-12 pre_title">业绩管理<i class="icon-ishop_8-03"></i>员工业绩目标<i class="icon-ishop_8-03"></i><label>编辑员工业绩目标</label></div>
             <div class="editor_em col-lg-7  animated fadeInRight">
@@ -76,15 +74,19 @@
                         </span>
                     </div>
                     <div id="day">
-                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" verify="Empty" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
+                        <span><label>日期</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
                         <div style="padding-left:135px" class="hint"><div  hintinfo="日期不能为空！"></div></div>
                         </span>
                     </div>
                     <div id="week_p" style="display:none;">
                         <span>
                             <label>日期</label>
-                            <input type="text" id="year" class="week" value="2016" readonly="true">
+                            <input type="text" id="year" class="week" value="" readonly="true">
+                            <input type="text" id="month" class="week" value="" readonly="true">
                             <ul class="year">
+                            </ul>
+                            <ul class="month">
+                                
                             </ul>
                         </span>
                     </div>

@@ -49,13 +49,13 @@ var oc = new ObjectControl();
 				var TIME_TYPE="";//日期类型
 				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
-					if("DATE"==""){
+					if(DATE==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
-						div.html("该名称已经存在！");
+						div.html("不能为空！");
 		            	div.addClass("error_tips");
 		            	return;
 					}
-				}else if(TIME_TYPE=="年"){
+				}else if(TIME_TYPE1=="年"){
 					DATE=$("#year").val();
 				}else if(TIME_TYPE1=="月"){
 					var year=$("#year").val();//年份
@@ -63,13 +63,13 @@ var oc = new ObjectControl();
 					DATE=year+"-"+month;
 				}
 				if(TIME_TYPE1=="年"){
-                    TIME_TYPE=="Y";
+                    TIME_TYPE="Y";
 				}else if(TIME_TYPE1=="月"){
-					TIME_TYPE=="M";
+					TIME_TYPE="M";
 				}else if(TIME_TYPE1=="周"){
-					TIME_TYPE=="W";
+					TIME_TYPE="W";
 				}else if(TIME_TYPE1=="日"){
-					TIME_TYPE=="D";
+					TIME_TYPE="D";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -114,7 +114,7 @@ var oc = new ObjectControl();
 					DATE=$("#GOODS_RELEASETIME").val();
 					if("DATE"==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
-						div.html("该名称已经存在！");
+						div.html("不能为空！");
 		            	div.addClass("error_tips");
 		            	return;
 					}
@@ -174,7 +174,7 @@ var oc = new ObjectControl();
 				// 	opt.success();
 				// }
 				// window.location.href="";
-				$(window.parent.document).find('#iframepage').attr("src","/user/roles.html");
+				$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,

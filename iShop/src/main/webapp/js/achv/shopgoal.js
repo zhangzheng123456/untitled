@@ -47,9 +47,9 @@ var oc = new ObjectControl();
 				var DATE="";
 				if(TIME_TYPE!=="年"&&TIME_TYPE!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
-					if("DATE"==""){
+					if(DATE==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
-						div.html("该名称已经存在！");
+						div.html("不能为空！");
 		            	div.addClass("error_tips");
 		            	return;
 					}
@@ -97,9 +97,9 @@ var oc = new ObjectControl();
 				var DATE="";
 				if(TIME_TYPE!=="年"&&TIME_TYPE!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
-					if("DATE"==""){
+					if(DATE==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
-						div.html("该名称已经存在！");
+						div.html("不能为空！");
 		            	div.addClass("error_tips");
 		            	return;
 					}
