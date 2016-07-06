@@ -313,7 +313,7 @@ public class CorpController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Store> list = storeService.getAllStore(page_number, page_size, corp_code, "");
+            PageInfo<Store> list = storeService.getAllStore(request,page_number, page_size, corp_code, "");
             result.put("stores", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
