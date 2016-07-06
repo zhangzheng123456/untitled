@@ -226,14 +226,6 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
-    for(var i=0;i<actions.length;i++){
-        if(actions[i].act_name=="edit"){
-            $('#search').attr("data-edit","edit");
-            break;
-        }else{
-            $('#search').attr("data-edit","");
-        }
-    }
 }
 //页面加载时list请求
 function GET(){
@@ -293,7 +285,7 @@ function jumpBianse(){
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
-            id=$(tr).attr("id");
+            var id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
             $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
         }else if(tr.length==0){
