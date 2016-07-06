@@ -17,7 +17,7 @@ public interface MessageTemplateMapper {
 
     List<MessageTemplate> selectBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
-    List<MessageTemplate> selectByCode(@Param("corp_code") String corp_code, @Param("tem_code") String tem_code);
+    List<MessageTemplate> selectByCode(@Param("corp_code") String corp_code, @Param("template_code") String template_code);
 
-    List<MessageTemplate> selectByName(@Param("tem_name") String tem_name, @Param("corp_code") String corp_code);
+    List<MessageTemplate> selectByName(@Param("template_name") String template_name, @Param("corp_code") String corp_code);
 }

@@ -798,8 +798,8 @@ public class MessageController {
             messageTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
             messageTemplate.setCreater(user_id);
-            String existInfo1 = messageTemplateService.messageTemplateExist(messageTemplate.getCorp_code(), messageTemplate.getTem_code());
-            String existInfo2 = messageTemplateService.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_name());
+            String existInfo1 = messageTemplateService.messageTemplateExist(messageTemplate.getCorp_code(), messageTemplate.getTemplate_code());
+            String existInfo2 = messageTemplateService.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTemplate_name());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setMessage("消息模板编号已经存在！！！");
@@ -830,8 +830,8 @@ public class MessageController {
             String message = jsonObject1.get("message").toString();
             org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
             String corp_code = jsonObject2.getString("corp_code");
-            String tem_name = jsonObject2.getString("tem_name");
-            String result = this.messageTemplateService.messageTemplateNameExist(corp_code, tem_name);
+            String template_name = jsonObject2.getString("template_name");
+            String result = this.messageTemplateService.messageTemplateNameExist(corp_code, template_name);
             dataBean.setId(id);
             dataBean.setCode(result);
         } catch (Exception ex) {
@@ -854,8 +854,8 @@ public class MessageController {
             String message = jsonObject1.get("message").toString();
             org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
             String corp_code = jsonObject2.getString("corp_code");
-            String tem_code = jsonObject2.getString("tem_code");
-            String result = this.messageTemplateService.messageTemplateExist(corp_code, tem_code);
+            String template_code = jsonObject2.getString("template_code");
+            String result = this.messageTemplateService.messageTemplateExist(corp_code, template_code);
             dataBean.setId(id);
             dataBean.setCode(result);
         } catch (Exception ex) {

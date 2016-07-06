@@ -62,21 +62,21 @@ public interface MessageTemplateService {
     /**
      * 通过模板编号，判断模板在企业内是否存在
      *
-     * @param tem_code
+     * @param template_code
      * @param corp_code
      * @return
      * @throws SQLException
      */
-    String messageTemplateExist(String corp_code, String tem_code) throws SQLException;
+    String messageTemplateExist(String corp_code, String template_code) throws SQLException;
 
     /**
      * 通过模板名称，来判断模板名在企业内是否唯一
      *
-     * @param tem_name
+     * @param template_name
      * @param corp_code
      * @return
      * @throws SQLException
      */
-    String messageTemplateNameExist(String corp_code, String tem_name) throws SQLException;
+    String messageTemplateNameExist(String corp_code, String template_name) throws SQLException;
 
 }

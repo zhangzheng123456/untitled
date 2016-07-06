@@ -5,16 +5,16 @@
 
     <resultMap id="MessageTemplates" type="com.bizvane.ishop.entity.MessageTemplate">
         <id column="id" property="id"/>
-        <result column="tem_code" property="tem_code"/>
-        <result column="tem_name" property="tem_name"/>
-        <result column="tem_content" property="tem_content"/>
+        <result column="template_code" property="template_code"/>
+        <result column="template_name" property="template_name"/>
+        <result column="template_content" property="template_content"/>
         <result column="isactive" property="isactive"/>
         <result column="corp_code" property="corp_code"/>
         <result column="modifier" property="modifier"/>
         <result column="modified_date" property="modified_date"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
-        <result column="type_code" property="type_code"/>
+        <result column="template_type" property="template_type"/>
         <association property="message_type" javaType="com.bizvane.ishop.entity.Message_type">
             <result column="type_name" property="type_name"/>
         </association>
@@ -26,29 +26,29 @@
     <select id="selectBySearch" resultMap="MessageTemplates">
         select
         dmt.id,
-        dmt.tem_code,
-        dmt.tem_name,
-        dmt.tem_content,
+        dmt.template_code,
+        dmt.template_name,
+        dmt.template_content,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
         dmt.modified_date,
         dmt.created_date,
         dmt.creater,
-        dmt.type_code,
+        dmt.template_type,
         dmtype.type_name,
         dc.corp_name
         from def_message_template dmt,def_message_type dmtype,DEF_CORP dc
-        WHERE dmt.type_code=dmtype.type_code and dmt.corp_code=dc.corp_code
+        WHERE dmt.template_type=dmtype.template_type and dmt.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and dmt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
             (
-            dmt.tem_name like concat('%',#{search_value},'%')
-            or dmt.tem_content like concat('%',#{search_value},'%')
-            or dmt.type_code like concat('%',#{search_value},'%')
+            dmt.template_name like concat('%',#{search_value},'%')
+            or dmt.template_content like concat('%',#{search_value},'%')
+            or dmt.template_type like concat('%',#{search_value},'%')
             or dmt.isactive like concat('%',#{search_value},'%')
             or dmt.modified_date like concat('%',#{search_value},'%')
             or dmt.modifier like concat('%',#{search_value},'%')
@@ -62,33 +62,33 @@
     <select id="selectByPrimaryKey" resultMap="MessageTemplates">
        select
         dmt.id,
-        dmt.tem_code,
-        dmt.tem_name,
-        dmt.tem_content,
+        dmt.template_code,
+        dmt.template_name,
+        dmt.template_content,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
         dmt.modified_date,
         dmt.created_date,
         dmt.creater,
-        dmt.type_code,
+        dmt.template_type,
         dmtype.type_name,
         dc.corp_name
         from def_message_template dmt,def_message_type dmtype,DEF_CORP dc
-        WHERE dmt.type_code=dmtype.type_code and dmt.corp_code=dc.corp_code  and  dmt.id=#{id}
+        WHERE dmt.template_type=dmtype.template_type and dmt.corp_code=dc.corp_code  and  dmt.id=#{id}
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.MessageTemplate">
         insert into def_message_template
         <trim prefix="(" suffixOverrides="," suffix=")">
-            <if test="tem_code!=null and tem_code!=''">
-                tem_code,
+            <if test="template_code!=null and template_code!=''">
+                template_code,
             </if>
-            <if test="tem_name!=null  and tem_name!=''">
-                tem_name ,
+            <if test="template_name!=null  and template_name!=''">
+                template_name ,
             </if>
-            <if test="tem_content!=null and tem_content!=''">
-                tem_content ,
+            <if test="template_content!=null and template_content!=''">
+                template_content ,
             </if>
             <if test="isactive!=null and isactive!=''">
                 isactive ,
@@ -108,19 +108,19 @@
             <if test="creater!=null and  creater!=''">
                 creater ,
             </if>
-            <if test="type_code!=null and type_code!=''">
-                type_code,
+            <if test="template_type!=null and template_type!=''">
+                template_type,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="tem_code!=null and tem_code!=''">
-                #{tem_code},
+            <if test="template_code!=null and template_code!=''">
+                #{template_code},
             </if>
-            <if test="tem_name!=null  and tem_name!=''">
-                #{tem_name },
+            <if test="template_name!=null  and template_name!=''">
+                #{template_name },
             </if>
-            <if test="tem_content!=null and tem_content!=''">
-                #{tem_content},
+            <if test="template_content!=null and template_content!=''">
+                #{template_content},
             </if>
             <if test="isactive!=null and isactive!=''">
                 #{isactive} ,
@@ -141,8 +141,8 @@
                 #{creater} ,
             </if>
 
-            <if test="type_code!=null and type_code!=''">
-                #{type_code},
+            <if test="template_type!=null and template_type!=''">
+                #{template_type},
             </if>
         </trim>
     </insert>
@@ -150,14 +150,14 @@
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.MessageTemplate">
         update def_message_template
         <trim prefix="set" suffixOverrides=",">
-            <if test="tem_code!=null and tem_code!=''">
-                tem_code=#{tem_code},
+            <if test="template_code!=null and template_code!=''">
+                template_code=#{template_code},
             </if>
-            <if test="tem_name!=null  and tem_name!=''">
-                tem_name=#{tem_name},
+            <if test="template_name!=null  and template_name!=''">
+                template_name=#{template_name},
             </if>
-            <if test="tem_content!=null and tem_content!=''">
-                tem_content=#{tem_content},
+            <if test="template_content!=null and template_content!=''">
+                template_content=#{template_content},
             </if>
             <if test="isactive!=null and isactive!=''">
                 isactive=#{isactive} ,
@@ -178,8 +178,8 @@
                 creater=#{creater} ,
             </if>
 
-            <if test="type_code!=null and type_code!=''">
-                type_code=#{type_code},
+            <if test="template_type!=null and template_type!=''">
+                template_type=#{template_type},
             </if>
         </trim>
         WHERE id=#{id}
@@ -190,11 +190,11 @@
     </delete>
 
     <select id="selectByName" resultType="com.bizvane.ishop.entity.MessageTemplate">
-        select * from def_message_template WHERE tem_name=#{tem_name} and corp_code=#{corp_code}
+        select * from def_message_template WHERE template_name=#{template_name} and corp_code=#{corp_code}
     </select>
 
     <select id="selectByCode" resultType="com.bizvane.ishop.entity.MessageTemplate">
-          select * from def_message_template WHERE tem_code=#{tem_code} and corp_code=#{corp_code}
+          select * from def_message_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
     </select>
 
 

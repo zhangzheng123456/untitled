@@ -8,14 +8,15 @@ package com.bizvane.ishop.entity;
 public class MessageTemplate {
     private int id;
     //模板编号
-    private String tem_code;
+    private String template_code;
     //模板名称
-    private String tem_name;
+    private String template_name;
     //模板内容
-    private String tem_content;
-    //是否可用
-    private String isactive;
-
+    private String template_content;
+    //模板类型
+    private String template_type;
+    //企业编号
+    private String corp_code;
     //修改日期
     private String modified_date;
     //修改人
@@ -24,32 +25,10 @@ public class MessageTemplate {
     private String created_date;
     //创建人
     private String creater;
-    //消息类型
-    private String type_code;
-
-    private Message_type message_type;
-
-    //企业编号
-    private String corp_code;
-    private Corp corp;
+    //是否可用
+    private String isactive;
 
     public MessageTemplate() {
-    }
-
-    public Message_type getMessage_type() {
-        return message_type;
-    }
-
-    public void setMessage_type(Message_type message_type) {
-        this.message_type = message_type;
-    }
-
-    public String getType_code() {
-        return type_code;
-    }
-
-    public void setType_code(String type_code) {
-        this.type_code = type_code;
     }
 
     public int getId() {
@@ -60,36 +39,36 @@ public class MessageTemplate {
         this.id = id;
     }
 
-    public String getTem_code() {
-        return tem_code;
+    public String getTemplate_code() {
+        return template_code;
     }
 
-    public void setTem_code(String tem_code) {
-        this.tem_code = tem_code;
+    public void setTemplate_code(String template_code) {
+        this.template_code = template_code;
     }
 
-    public String getTem_name() {
-        return tem_name;
+    public String getTemplate_name() {
+        return template_name;
     }
 
-    public void setTem_name(String tem_name) {
-        this.tem_name = tem_name;
+    public void setTemplate_name(String template_name) {
+        this.template_name = template_name;
     }
 
-    public String getTem_content() {
-        return tem_content;
+    public String getTemplate_content() {
+        return template_content;
     }
 
-    public void setTem_content(String tem_content) {
-        this.tem_content = tem_content;
+    public void setTemplate_content(String template_content) {
+        this.template_content = template_content;
     }
 
-    public String getIsactive() {
-        return isactive;
+    public String getTemplate_type() {
+        return template_type;
     }
 
-    public void setIsactive(String isactive) {
-        this.isactive = isactive;
+    public void setTemplate_type(String template_type) {
+        this.template_type = template_type;
     }
 
     public String getCorp_code() {
@@ -132,12 +111,11 @@ public class MessageTemplate {
         this.creater = creater;
     }
 
-
-    public Corp getCorp() {
-        return corp;
+    public String getIsactive() {
+        return isactive;
     }
 
-    public void setCorp(Corp corp) {
-        this.corp = corp;
+    public void setIsactive(String isactive) {
+        this.isactive = isactive;
     }
 }

@@ -44,12 +44,12 @@ public class MessageTemplateServiceImpl implements MessageTemplateService {
     @Override
     public String update(MessageTemplate messageTemplate) throws SQLException {
         MessageTemplate old = this.messageTemplateMapper.selectByPrimaryKey(messageTemplate.getId());
-        if ((!old.getTem_code().equals(messageTemplate.getTem_code()))
-                && this.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_code()).equals(Common.DATABEAN_CODE_ERROR)
+        if ((!old.getTemplate_code().equals(messageTemplate.getTemplate_code()))
+                && this.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
                 ) {
             return "编号已经存在！！！！";
-        } else if (!old.getTem_name().equals(messageTemplate.getTem_name()) &&
-                (this.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTem_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+        } else if (!old.getTemplate_name().equals(messageTemplate.getTemplate_name()) &&
+                (this.messageTemplateNameExist(messageTemplate.getCorp_code(), messageTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR))) {
             return "名称已经存在！！！！";
         } else if (this.messageTemplateMapper.updateByPrimaryKey(messageTemplate) >= 0) {
             return Common.DATABEAN_CODE_SUCCESS;
