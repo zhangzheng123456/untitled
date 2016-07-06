@@ -190,7 +190,7 @@
         order by DEF_USER.ID
     </select>
 
-    <select id="selectPartMessage" resultMap="Messages">
+    <select id="selectPartMessage" resultMap="MessageInfo">
         select
         DEF_MESSAGE.*
         from DEF_USER,DEF_GROUP,DEF_CORP,DEF_MESSAGE
