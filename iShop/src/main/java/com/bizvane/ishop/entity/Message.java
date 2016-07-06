@@ -7,86 +7,43 @@ import java.util.Date;
  */
 public class Message {
     private int id;
-    private String message_code;
-    private String corp_code;
-    private String message_type;
-    private String message_receiver;
-    private String message_title;
-    private String message_time;
-    private String message_sender;
-    private String modified_date;
-    private String modifier;
+    //消息编号
+    private String tem_code;
+    //消息内容
+    private String tem_content;
+    //是否可用
     private String isactive;
+    //企业编号
+    private String corp_code;
+    //修改日期
+    private String modified_date;
+    //修改人
+    private String modifier;
+    //创建日期
     private String created_date;
-    private String creater;
+    //消息类型
+    private String type_code;
+    private Corp corp;
+    private Message_type message_type;
 
     public Message() {
     }
 
-    public String getMessage_code() {
-        return message_code;
+
+    public String getTem_code() {
+        return tem_code;
     }
 
-    public void setMessage_code(String message_code) {
-        this.message_code = message_code;
+    public void setTem_code(String tem_code) {
+        this.tem_code = tem_code;
     }
 
-    public String getCorp_code() {
-        return corp_code;
+    public String getTem_content() {
+        return tem_content;
     }
 
-    public void setCorp_code(String corp_code) {
-        this.corp_code = corp_code;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getMessage_type() {
-        return message_type;
-    }
-
-    public void setMessage_type(String message_type) {
-        this.message_type = message_type;
-    }
-
-    public String getMessage_receiver() {
-        return message_receiver;
-    }
-
-    public void setMessage_receiver(String message_receiver) {
-        this.message_receiver = message_receiver;
-    }
-
-    public String getMessage_title() {
-        return message_title;
-    }
-
-    public void setMessage_title(String message_title) {
-        this.message_title = message_title;
-    }
-
-
-    public String getMessage_sender() {
-        return message_sender;
-    }
-
-    public void setMessage_sender(String message_sender) {
-        this.message_sender = message_sender;
-    }
-
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
+    public void setTem_content(String tem_content) {
+        this.tem_content = tem_content;
     }
 
     public String getIsactive() {
@@ -97,17 +54,12 @@ public class Message {
         this.isactive = isactive;
     }
 
-
-    public String getCreater() {
-        return creater;
+    public String getCorp_code() {
+        return corp_code;
     }
 
-    public String getMessage_time() {
-        return message_time;
-    }
-
-    public void setMessage_time(String message_time) {
-        this.message_time = message_time;
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
     }
 
     public String getModified_date() {
@@ -126,7 +78,27 @@ public class Message {
         this.created_date = created_date;
     }
 
-    public void setCreater(String creater) {
-        this.creater = creater;
+    public String getType_code() {
+        return type_code;
+    }
+
+    public void setType_code(String type_code) {
+        this.type_code = type_code;
+    }
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
+    }
+
+    public Message_type getMessage_type() {
+        return message_type;
+    }
+
+    public void setMessage_type(Message_type message_type) {
+        this.message_type = message_type;
     }
 }

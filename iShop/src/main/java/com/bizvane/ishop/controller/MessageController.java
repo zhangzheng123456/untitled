@@ -4,17 +4,14 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.MessageTemplate;
-import com.bizvane.ishop.entity.Message_type;
-import com.bizvane.ishop.entity.VipTagType;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.MessageTemplateService;
-import com.bizvane.ishop.service.MessageTypeService;
-import com.bizvane.ishop.service.VipTagTypeService;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
+import com.sun.javafx.scene.control.behavior.DateCellBehavior;
 import org.json.JSONObject;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.System;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -36,6 +34,7 @@ import java.util.Map;
 @RequestMapping("/message")
 public class MessageController {
 
+    private static Logger logger = LoggerFactory.getLogger((MessageController.class));
     @Autowired
     private FunctionService functionService;
 
@@ -48,15 +47,51 @@ public class MessageController {
     @Autowired
     private MessageTypeService messageTypeService;
 
+    @Autowired
+    private MessageService messageService;
+
+
     /**
      * 爱秀消息
      */
     @RequestMapping(value = "/ishop/list", method = RequestMethod.GET)
     @ResponseBody
     public String ishopManage(HttpServletRequest request) {
-
-
-        return "iShop";
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String user_code = request.getSession(false).getAttribute("user_code").toString();
+            String function_code = request.getParameter("funcCode");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt("pageSize");
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<Message> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = messageService.selectBySearch(page_number, page_size, "", "");
+            } else {
+                if (role_code.equals(Common.ROLE_GM)) {
+                    //企业管理员
+                    list = messageService.selectBySearch(page_number, page_size, corp_code, "");
+                } else if (role_code.equals(Common.ROLE_STAFF)) {
+                    //员工
+                    list = messageService.selectByUser(page_number, page_size, corp_code, user_code);
+                } else {
+                    //店长或区经
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = messageService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, role_code);
+                }
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.toString());
+        }
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -66,7 +101,30 @@ public class MessageController {
     @RequestMapping(value = "/ishop/add", method = RequestMethod.GET)
     @ResponseBody
     public String addIshop(HttpServletRequest request) {
-        return "iShop_add";
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json:" + jsString);
+            System.out.println("json" + jsString);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            id = jsonObject.get("id").toString();
+            String message = jsonObject.get("message").toString();
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
+            Message message1 = WebUtils.JSON2Bean(jsonObject1, Message.class);
+            Date now = new Date();
+            message1.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            message1.setModified_date(Common.DATETIME_FORMAT.format(now));
+            int result = messageService.insert(message1);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("add  success ! ");
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.toString());
+        }
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -76,7 +134,28 @@ public class MessageController {
     @RequestMapping(value = "/ishop/edit", method = RequestMethod.GET)
     @ResponseBody
     public String editIshop(HttpServletRequest request) {
-        return "iShop_edit";
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            logger.info("jsString:begin：");
+            String jsString = request.getParameter("param");
+            logger.info("jsString:end:" + jsString);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            String message = jsonObject.get("message").toString();
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
+            logger.info("json to bean begin: ");
+            Message message1 = WebUtils.JSON2Bean(jsonObject1, Message.class);
+            logger.info("json to bean end : " + message1.toString());
+            this.messageService.insert(message1);
+            logger.info("insert messsage success !!");
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.toString());
+            logger.info(ex.getMessage());
+            logger.info(ex.toString());
+        }
+        return dataBean.getJsonStr();
     }
 
     /**
@@ -86,6 +165,32 @@ public class MessageController {
     @RequestMapping(value = "/ishop/find", method = RequestMethod.GET)
     @ResponseBody
     public String findIshop(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            String message = jsonObject.get("message").toString();
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject("message");
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String user_code = request.getSession(false).getAttribute("user_code").toString();
+
+            String function_code = request.getParameter("funcCode");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONObject result = new JSONObject();
+            PageInfo<Message> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = messageService.selectByUser(page_number, page_size, "", "");
+            } else {
+
+            }
+        } catch (Exception ex) {
+
+        }
         return "";
     }
 
