@@ -163,7 +163,7 @@
     </select>
 
 
-    <select id="selectPartMessage" parameterType="Messages">
+    <select id="selectPartMessage" resultMap="Messages">
         select
         DEF_MESSAGE.*
         from DEF_USER,DEF_GROUP,DEF_CORP

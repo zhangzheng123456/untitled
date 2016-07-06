@@ -64,10 +64,16 @@ public class UserAchvGoalControl {
             int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
             int page_size = Integer.parseInt(request.getParameter("pageSize").toString());
             PageInfo<UserAchvGoal> pages = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 pages = userAchvGoalService.selectBySearch(page_number, page_size, "", "");
-            } else {
+            } else if (role_code.equals(Common.ROLE_GM)){
                 pages = this.userAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
+            }else if (role_code.equals(Common.ROLE_AM)){
+                String area_code = request.getSession(false).getAttribute("area_code").toString();
+                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "","",area_code,Common.ROLE_AM);
+            }else if (role_code.equals(Common.ROLE_SM)){
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "",store_code,"",Common.ROLE_SM);
             }
             result.put("list", JSON.toJSONString(pages));
             result.put("actions", actions);
@@ -281,13 +287,21 @@ public class UserAchvGoalControl {
             String search_value = jsonObject.get("searchValue").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<UserAchvGoal> list;
+            PageInfo<UserAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 //系统管理员
                 list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
+                if (role_code.equals(Common.ROLE_GM)){
+                    list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
+                }else if (role_code.equals(Common.ROLE_AM)){
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value,"",area_code,Common.ROLE_AM);
+                }else if (role_code.equals(Common.ROLE_SM)){
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value,store_code,"",Common.ROLE_SM);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
