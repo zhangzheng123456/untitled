@@ -72,7 +72,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"tag_code":LABEL_TYPE,"isactive":ISACTIVE};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -103,7 +103,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"tag_code":LABEL_TYPE,"isactive":ISACTIVE};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
