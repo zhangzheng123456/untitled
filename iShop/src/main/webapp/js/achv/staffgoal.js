@@ -40,11 +40,14 @@ var oc = new ObjectControl();
 			if(staffgoaljs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
-				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
+				var TIME_TYPE1=$("#TIME_TYPE").val();//时间类型
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
-				var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
-				var DATE="";
-				if(TIME_TYPE!=="年"){
+				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
+				var user_code=$("#STAFF_NAME").val();//员工编号
+				var user_name=$("#STAFF_NAME").find("option:selected").text();//员工名称
+				var DATE="";//日期
+				var TIME_TYPE="";//日期类型
+				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if("DATE"==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
@@ -54,6 +57,19 @@ var oc = new ObjectControl();
 					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
+				}else if(TIME_TYPE1=="月"){
+					var year=$("#year").val();//年份
+					var month=$("#month").val();//月份
+					DATE=year+"-"+month;
+				}
+				if(TIME_TYPE1=="年"){
+                    TIME_TYPE=="Y";
+				}else if(TIME_TYPE1=="月"){
+					TIME_TYPE=="M";
+				}else if(TIME_TYPE1=="周"){
+					TIME_TYPE=="W";
+				}else if(TIME_TYPE1=="日"){
+					TIME_TYPE=="D";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -67,7 +83,17 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"store_code":SHOP_ID,"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
+				var _params = {
+					"corp_code": OWN_CORP,
+					"store_code": SHOP_ID,
+					"achv_type": TIME_TYPE,
+					"store_name":SHOP_NAME,
+					"achv_goal": PER_GOAL,
+					"end_time": DATE,
+                    "user_code":user_code,
+                    "user_name":user_name,
+					"isactive": ISACTIVE
+				};
 				staffgoaljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -82,8 +108,9 @@ var oc = new ObjectControl();
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
 				// var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
 				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();
-				var DATE="";
-				if(TIME_TYPE!=="年"){
+				var DATE="";//日期
+				var TIME_TYPE="";//日期类型
+				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if("DATE"==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
@@ -93,6 +120,19 @@ var oc = new ObjectControl();
 					}
 				}else if(TIME_TYPE=="年"){
 					DATE=$("#year").val();
+				}else if(TIME_TYPE1=="月"){
+					var year=$("#year").val();//年份
+					var month=$("#month").val();//月份
+					DATE=year+"-"+month;
+				}
+				if(TIME_TYPE1=="年"){
+                    TIME_TYPE=="Y";
+				}else if(TIME_TYPE1=="月"){
+					TIME_TYPE=="M";
+				}else if(TIME_TYPE1=="周"){
+					TIME_TYPE=="W";
+				}else if(TIME_TYPE1=="日"){
+					TIME_TYPE=="D";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -106,10 +146,19 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"store_code":SHOP_ID,
-				"user_code":STAFF_ID,"store_name":SHOP_NAME,"achv_type":TIME_TYPE,
-				"achv_goal":PER_GOAL,"end_time":DATE,"isactive":ISACTIVE};
-				staffgoaljs.ajaxSubmit(_command,_params,opt);
+				var _params = {
+					"id": ID,
+					"corp_code": OWN_CORP,
+					"store_code": SHOP_ID,
+					"achv_type": TIME_TYPE,
+					"store_name":SHOP_NAME,
+					"achv_goal": PER_GOAL,
+					"end_time": DATE,
+                    "user_code":user_code,
+                    "user_name":user_name,
+					"isactive": ISACTIVE
+				};
+				staffgoaljs.ajaxSubmit(_command, _params, opt);
 			}else{
 				return;
 			}
