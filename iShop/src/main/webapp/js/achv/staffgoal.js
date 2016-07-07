@@ -166,23 +166,16 @@ var oc = new ObjectControl();
 		});
 	};
 	staffgoaljs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
-		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// if(opt.success){
-				// 	opt.success();
-				// }
-				// window.location.href="";
 				$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 			}else if(data.code=="-1"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
 		});
 	};

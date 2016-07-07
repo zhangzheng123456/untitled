@@ -40,12 +40,13 @@ var oc = new ObjectControl();
 			if(shopgoaljs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
-				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
+				var TIME_TYPE1=$("#TIME_TYPE").val();//时间类型
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
 				// var SHOP_NAME=$("#SHOP_NAME").text();//店铺名称
 				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
-				if(TIME_TYPE!=="年"&&TIME_TYPE!=="月"){
+				var TIME_TYPE="";//日期类型
+				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if(DATE==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
@@ -53,12 +54,21 @@ var oc = new ObjectControl();
 		            	div.addClass("error_tips");
 		            	return;
 					}
-				}else if(TIME_TYPE=="年"){
+				}else if(TIME_TYPE1=="年"){
 					DATE=$("#year").val();
-				}else if(TIME_TYPE=="月"){
+				}else if(TIME_TYPE1=="月"){
 					var year=$("#year").val();//年份
 					var month=$("#month").val();//月份
 					DATE=year+"-"+month;
+				}
+				if(TIME_TYPE1=="年"){
+                    TIME_TYPE="Y";
+				}else if(TIME_TYPE1=="月"){
+					TIME_TYPE="M";
+				}else if(TIME_TYPE1=="周"){
+					TIME_TYPE="W";
+				}else if(TIME_TYPE1=="日"){
+					TIME_TYPE="D";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -91,11 +101,12 @@ var oc = new ObjectControl();
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var SHOP_ID=$("#SHOP_NAME").val();//店铺编号
-				var TIME_TYPE=$("#TIME_TYPE").val();//时间类型
+				var TIME_TYPE1=$("#TIME_TYPE").val();//时间类型
 				var PER_GOAL=$("#PER_GOAL").val();//业绩目标
 				var SHOP_NAME=$("#SHOP_NAME").find("option:selected").text();//店铺名称
 				var DATE="";
-				if(TIME_TYPE!=="年"&&TIME_TYPE!=="月"){
+				var TIME_TYPE="";//日期类型
+				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if(DATE==""){
 						var div=$("#GOODS_RELEASETIME").next('.hint').children();
@@ -103,12 +114,21 @@ var oc = new ObjectControl();
 		            	div.addClass("error_tips");
 		            	return;
 					}
-				}else if(TIME_TYPE=="年"){
+				}else if(TIME_TYPE1=="年"){
 					DATE=$("#year").val();
-				}else if(TIME_TYPE=="月"){
+				}else if(TIME_TYPE1=="月"){
 					var year=$("#year").val();//年份
 					var month=$("#month").val();//月份
 					DATE=year+"-"+month;
+				}
+				if(TIME_TYPE1=="年"){
+                    TIME_TYPE="Y";
+				}else if(TIME_TYPE1=="月"){
+					TIME_TYPE="M";
+				}else if(TIME_TYPE1=="周"){
+					TIME_TYPE="W";
+				}else if(TIME_TYPE1=="日"){
+					TIME_TYPE="D";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -206,29 +226,29 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				msg=JSON.parse(msg.storeAchvGoal);
-				// $("#OWN_CORP option").val(msg.corp.corp_code);
 				var corp_code=msg.corp_code;//公司编号
 				var store_code=msg.store_code;//店铺编号
-				// $("#OWN_CORP option").text(msg.corp.corp_name);
-				// $("#SHOP_NAME option").text(msg.store_name);
 				$("#PER_GOAL").val(msg.target_amount);
-				if(msg.time_type!=="年"&&msg.time_type!=="月"){
+				if(msg.target_type=="D"){
+					$('#TIME_TYPE').val("日");
 					$("#GOODS_RELEASETIME").val(msg.target_time);
-					$("#TIME_TYPE").val(msg.time_type);
-				}else if(msg.time_type=="年"){
+				}else if(msg.target_type=="W"){
+					$('#TIME_TYPE').val("周");
+					$("#GOODS_RELEASETIME").val(msg.target_time);
+				}else if(msg.target_type=="Y"){
+					$('#TIME_TYPE').val("年");
 					$('#day').hide();
     				$('#week_p').show();
     				$('#month').hide();
 					$("#year").val(msg.target_time);
-					$("#TIME_TYPE").val(msg.time_type);      
-				}else if(msg.time_type=="月"){
+				}else if(msg.target_type=="M"){
+					$('#TIME_TYPE').val("月");
 					$('#day').hide();
     				$('#week_p').show();
     				var target_time=msg.target_time;
     				var target_time=target_time.split('-');
 					$("#year").val(target_time[0]);
 					$("#month").val(target_time[1]);
-					$("#TIME_TYPE").val(msg.time_type);  
 				}
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
@@ -242,12 +262,12 @@ jQuery(document).ready(function(){
 				}
 				getcorplist(corp_code,store_code);
 			}else if(data.code=="-1"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
 		});
 	}else{
