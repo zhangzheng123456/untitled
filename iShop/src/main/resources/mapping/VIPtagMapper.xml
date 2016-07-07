@@ -75,10 +75,7 @@
             <if test="isactive!=null and isactive!=''">
                 isactive,
             </if>
-            <if test="type_code!=null and type_code!=''">
-                type_code,
-            </if>
-        </trim>
+         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="tag_code!=null and tag_code!=''">
                 #{tag_code},
@@ -107,10 +104,7 @@
             <if test="isactive!=null and isactive!=''">
                 #{isactive},
             </if>
-            <if test="type_code!=null and type_code!=''">
-                #{type_code},
-            </if>
-        </trim>
+         </trim>
 
     </insert>
 
@@ -145,10 +139,7 @@
             <if test="isactive!=null and isactive!=''">
                 isactive=#{isactive},
             </if>
-            <if test="type_code!=null and type_code!=''">
-                type_code=#{type_code},
-            </if>
-        </trim>
+         </trim>
         WHERE id=#{id}
     </update>
 

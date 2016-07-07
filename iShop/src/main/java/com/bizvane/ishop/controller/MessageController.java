@@ -85,10 +85,10 @@ public class MessageController {
             } else {
                 //店长或区经
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = messageService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, role_code);
+                list = messageService.selectBySearchPart(page_number, page_size, corp_code, store_code, role_code, "");
                 logger.info("获取店长或区经的详细信息" + list.toString());
                 List<Message> messages = list.getList();
-                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code);
+                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code, "");
                 logger.info("获取本店长或区经的详细信息:" + users.toString());
                 list.getList().addAll(users.getList());
                 logger.info("店长或区经的详细信息:" + list.toString());
@@ -216,10 +216,10 @@ public class MessageController {
             } else {
                 //店长或区经
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = messageService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, role_code);
+                list = messageService.selectBySearchPart(page_number, page_size, corp_code, store_code, role_code, search_value);
                 logger.info("获取店长或区经的详细信息" + list.toString());
                 List<Message> messages = list.getList();
-                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code);
+                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code, search_value);
                 logger.info("获取本店长或区经的详细信息:" + users.toString());
                 list.getList().addAll(users.getList());
                 logger.info("店长或区经的详细信息:" + list.toString());

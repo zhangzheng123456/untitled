@@ -60,7 +60,6 @@ public class MessageTypeServiceImpl implements MessageTypeService {
 
     @Override
     public String MessageTypeCodeExist(String corp_code, String type_code) {
-
         Message_type message_type = this.messageTypeMapper.selectCode(corp_code, type_code);
         String result = Common.DATABEAN_CODE_ERROR;
         if (message_type == null) {
