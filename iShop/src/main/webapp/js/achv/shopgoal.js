@@ -229,19 +229,19 @@ jQuery(document).ready(function(){
 				var corp_code=msg.corp_code;//公司编号
 				var store_code=msg.store_code;//店铺编号
 				$("#PER_GOAL").val(msg.target_amount);
-				if(msg.target_type=="D"){
+				if(msg.time_type=="D"){
 					$('#TIME_TYPE').val("日");
 					$("#GOODS_RELEASETIME").val(msg.target_time);
-				}else if(msg.target_type=="W"){
+				}else if(msg.time_type=="W"){
 					$('#TIME_TYPE').val("周");
 					$("#GOODS_RELEASETIME").val(msg.target_time);
-				}else if(msg.target_type=="Y"){
+				}else if(msg.time_type=="Y"){
 					$('#TIME_TYPE').val("年");
 					$('#day').hide();
     				$('#week_p').show();
     				$('#month').hide();
 					$("#year").val(msg.target_time);
-				}else if(msg.target_type=="M"){
+				}else if(msg.time_type=="M"){
 					$('#TIME_TYPE').val("月");
 					$('#day').hide();
     				$('#week_p').show();

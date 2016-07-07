@@ -127,13 +127,13 @@ var oc = new ObjectControl();
 					DATE=year+"-"+month;
 				}
 				if(TIME_TYPE1=="年"){
-                    TIME_TYPE=="Y";
+                    TIME_TYPE="Y";
 				}else if(TIME_TYPE1=="月"){
-					TIME_TYPE=="M";
+					TIME_TYPE="M";
 				}else if(TIME_TYPE1=="周"){
-					TIME_TYPE=="W";
+					TIME_TYPE="W";
 				}else if(TIME_TYPE1=="日"){
-					TIME_TYPE=="D";
+					TIME_TYPE="D";
 				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
