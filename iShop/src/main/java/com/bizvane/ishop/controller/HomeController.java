@@ -6,8 +6,12 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.LoginLog;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.TimeUtils;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -20,8 +24,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
+@RequestMapping("/home")
 public class HomeController {
     @Autowired
     UserService userService;
@@ -32,18 +39,15 @@ public class HomeController {
     @Autowired
     FeedbackService feedbackService;
     @Autowired
-    ValidateCodeService validateCodeService;
-    @Autowired
-    LoginLogService loginLogService;
-    @Autowired
-    FunctionService functionService;
+    IceInterfaceService iceInterfaceService;
 
-    private static final Logger log = Logger.getLogger(HomeController.class);
+
+    private static final Logger logger = Logger.getLogger(HomeController.class);
 
     String id;
 
     //系统管理员主页面
-    @RequestMapping(value = "/home/sys", method = RequestMethod.GET)
+    @RequestMapping(value = "/sys", method = RequestMethod.GET)
     @ResponseBody
     public String sysPage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -67,7 +71,6 @@ public class HomeController {
             dashboard.put("user_new_count", user_new_count);
             dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
 
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("");
@@ -81,6 +84,145 @@ public class HomeController {
         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         dataBean.setId(id);
         dataBean.setMessage("非系统管理员");
+        return dataBean.getJsonStr();
+    }
+
+    //企业管理员主页面
+    @RequestMapping(value = "/gm", method = RequestMethod.GET)
+    @ResponseBody
+    public String gmPage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_time_id.key, data_time_id);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.RegionACHVDashboard",datalist);
+            System.out.println(dataBox.data.get("message").value);
+            String message = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(message);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    //区经主页面
+    @RequestMapping(value = "/am", method = RequestMethod.GET)
+    @ResponseBody
+    public String amPage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_time_id.key, data_time_id);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.RegionACHVDashboard",datalist);
+            logger.info(dataBox.data.get("message").value);
+            String message = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(message);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    //店长主页面
+    @RequestMapping(value = "/sm", method = RequestMethod.GET)
+    @ResponseBody
+    public String smPage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            //店长有多个店铺，如何安排？？？？
+            String store_code = request.getSession().getAttribute("store_code").toString();
+
+            String time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_time_id.key, data_time_id);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ManagerACHVDashboard",datalist);
+            logger.info(dataBox.data.get("message").value);
+            String message = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(message);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    //导购主页面
+    @RequestMapping(value = "/staff", method = RequestMethod.GET)
+    @ResponseBody
+    public String staffPage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String store_code = request.getSession().getAttribute("store_code").toString();
+            store_code = store_code.substring(1,store_code.length()-1);
+            String time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_store_code = new Data("store_code", store_code, ValueType.PARAM);
+            Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_time_id.key, data_time_id);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.StaffACHVDashboard",datalist);
+            logger.info(dataBox.data.get("message").value);
+            String message = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(message);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
         return dataBean.getJsonStr();
     }
 }
