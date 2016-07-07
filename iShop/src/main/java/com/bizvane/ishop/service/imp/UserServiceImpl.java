@@ -4,7 +4,6 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.sun.app.client.Client;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.Status;
@@ -44,13 +43,12 @@ public class UserServiceImpl implements UserService {
     ValidateCodeService validateCodeService;
     @Autowired
     GroupMapper groupMapper;
-
+    @Autowired
+    IceInterfaceService iceInterfaceService;
     @Autowired
     private MessageTypeMapper messageTypeMapper;
 
-    private static final Logger log = Logger.getLogger(UserServiceImpl.class);
-    String[] arg = new String[]{"--Ice.Config=client.config"};
-    Client client = new Client(arg);
+    private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     /**
      * @param corp_code
@@ -246,7 +244,7 @@ public class UserServiceImpl implements UserService {
     public JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException {
         System.out.println("---------login--------");
         User login_user = userMapper.selectLogin(phone, password);
-        log.info("------------end search" + new Date());
+        logger.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
         if (login_user == null) {
             return null;
@@ -370,7 +368,7 @@ public class UserServiceImpl implements UserService {
 //                        corp_code = corp_code + "0";
 //                    }
 //                    corp_code = corp_code + code_tail;
-//                    log.info("----------corp_code" + corp_code);
+//                    logger.info("----------corp_code" + corp_code);
 
                     //插入用户信息
                     User user = new User();
@@ -405,7 +403,7 @@ public class UserServiceImpl implements UserService {
                     corp.setModified_date(Common.DATETIME_FORMAT.format(now));
                     corp.setModifier("root");
                     corp.setIsactive(Common.IS_ACTIVE_Y);
-                    log.info("----------register corp" + corp.toString());
+                    logger.info("----------register corp" + corp.toString());
                     corpMapper.insertCorp(corp);
 
                     //插入群组
@@ -451,15 +449,12 @@ public class UserServiceImpl implements UserService {
         Map datalist = new HashMap<String, Data>();
         datalist.put(data_phone.key, data_phone);
         datalist.put(data_text.key, data_text);
-        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", "com.bizvane.sun.app.method.SendSMS", datalist, null, null, System.currentTimeMillis());
-        System.out.println(dataBox1.data);
 
-        DataBox dataBox = client.put(dataBox1);
-        log.info("SendSMSMethod -->" + dataBox.data.get("message").value);
-        System.out.println("CaptchaMethod -->" + dataBox.data.get("message").value);
+        DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.SendSMS",datalist);
+        logger.info("SendSMSMethod -->" + dataBox.data.get("message").value);
         String msg = dataBox.data.get("message").value;
         System.out.println("------------" + msg);
-        log.info("------------" + msg);
+        logger.info("------------" + msg);
         JSONObject obj = new JSONObject(msg);
         if (obj.get("message").toString().equals("短信发送成功")) {
             //验证码存表

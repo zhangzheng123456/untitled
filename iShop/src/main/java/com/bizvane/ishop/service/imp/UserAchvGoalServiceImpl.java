@@ -104,7 +104,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
     @Override
     public int deleteUserAchvGoalById(String id) throws SQLException {
-        return this.userAchvGoalMapper.delelte(id);
+        return this.userAchvGoalMapper.delete(Integer.parseInt(id));
     }
 
     @Override

@@ -102,11 +102,13 @@ public class UserAchvGoalControl {
     @Transactional
     public String editUserAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getAttribute("user_id").toString();
-        String id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObject = JSONObject.parseObject(jsString);
+            id = jsonObject.get("id").toString();
+            String message = jsonObject.get("message").toString();
+            JSONObject jsonObj = JSONObject.parseObject(message);
 
             UserAchvGoal userAchvGoal = new UserAchvGoal();
             userAchvGoal.setId(Integer.parseInt(jsonObj.get("id").toString()));
@@ -161,7 +163,10 @@ public class UserAchvGoalControl {
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String user_id = jsonObj.get("id").toString();
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String user_id = jsonObject.get("id").toString();
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 userAchvGoalService.deleteUserAchvGoalById(ids[i]);
@@ -203,7 +208,6 @@ public class UserAchvGoalControl {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             UserAchvGoal userAchvGoal = new UserAchvGoal();
-            userAchvGoal.setId(Integer.parseInt(jsonObject.get("id").toString()));
             userAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
             userAchvGoal.setStore_code(jsonObject.get("store_code").toString());
             userAchvGoal.setUser_code(jsonObject.get("user_code").toString());
@@ -223,7 +227,7 @@ public class UserAchvGoalControl {
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setCreater(user_id);
             userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
+            userAchvGoal.setIsactive(jsonObject.get("isactive").toString());
 
             userAchvGoalService.insert(userAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
