@@ -483,8 +483,9 @@ input::-webkit-input-placeholder{
 .foot-num li span{
 	display:block;
 	margin-top: 4px;
-	margin-left: 4px;
-	min-width: 22px;
+	padding-left:4px;
+	padding-right:4px;
+	min-width: 14px;
 	height: 22px;
 	line-height: 22px;
 	font-size: 14px;

@@ -159,23 +159,17 @@ var oc = new ObjectControl();
 		});
 	};
 	shopgoaljs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// if(opt.success){
-				// 	opt.success();
-				// }
-				// window.location.href="";
 				$(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal.html");
 			}else if(data.code=="-1"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
 		});
 	};
@@ -394,8 +388,8 @@ function store_data(c,b){
 function year(){
 	var myDate = new Date();
 	var year=myDate.getFullYear();
+	$('#year').val(year)//给年赋值
 	var year=year-1;
-	console.log($('#week_p .year'));
 	$('#week_p .year').empty();
 	for(var i=0;i<10;i++){
 		year++;

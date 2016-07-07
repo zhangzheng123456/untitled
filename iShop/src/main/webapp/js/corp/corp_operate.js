@@ -230,6 +230,7 @@ jQuery(document).ready(function(){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/corp/select";
+		whir.loading.add("",0.5);
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -264,6 +265,7 @@ jQuery(document).ready(function(){
 				}else if(msg.is_authorize=="N"){
 					$("#state_val").val("未授权");
 				}
+				whir.loading.remove();//移除加载框
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,

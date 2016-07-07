@@ -190,6 +190,13 @@ function superaddition(data,num){
         }else{
             var a=i+1;
         }
+        var avatar="";
+        if(data[i].avatar==undefined){
+            avatar="../img/a3.jpg";
+        }
+        if(data[i].avatar!==""&&data[i].avatar!==undefined){
+            avatar=data[i].avatar;
+        }
         if(data[i].sex=="F"){
             $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
@@ -202,7 +209,7 @@ function superaddition(data,num){
                         + a
                         +"</td><td>"
                         + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
+                        + "</td><td><img src='"+avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
@@ -235,7 +242,7 @@ function superaddition(data,num){
                         + a
                         +"</td><td>"
                         + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
+                        + "</td><td><img src='"+avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
@@ -268,7 +275,7 @@ function superaddition(data,num){
                         + a
                         +"</td><td>"
                         + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
+                        + "</td><td><img src='"+avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"

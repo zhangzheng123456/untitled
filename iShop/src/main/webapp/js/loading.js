@@ -1,58 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>加载中</title>
-	<script src="js/jquery.js"></script>
-	<style>
-		*{
-			margin:0;
-			padding:0;
-		}
-		.a{
-			position:absolute;
-			z-index:3;
-		}
-		/**{
-			margin:0;
-			padding:0;
-		}
-		.black{
-			width:80px;
-			height:76px;
-			margin:0 auto;
-			background:rgba(0,0,0,0.5);
-			margin-top:345px;
-			border-radius:5px;
-			text-align:center;
-		}
-		.img{
-			padding-top:5px;
-			width:50px;
-			height:50px;
-			margin:0 auto;
-		}
-        .text{
-        	margin-top:5px;
-        	color:#fff;
-        	font-size:12px;
-        }*/
-	</style>
-</head>
-<body>
-	<div id="btn" onclick="lodding(true);">
-		dianwo 
-	</div>
-	<!-- <div class="bg">
-		<div class="black">
-			<div class="img">
-				<img src="img/loading.gif" alt="" width="100%">
-			</div>
-			<div class="text">正在加载中</div>
-		</div>
-	</div> -->
-</body>
-<script>
 var whir = window.whir || {};  
 whir.loading ={  
     add: function (title, opacity) {  
@@ -163,9 +108,7 @@ whir.loading ={
         return arrayPageSize;  
     }  
 };  
-window.onload = function () {  
-    whir.loading.remove();  
-};  
-whir.loading.add("",0.5);
-</script>
-</html>
+// window.onload = function () {  
+//     whir.loading.remove();  
+// };  
+// whir.loading.add("",0.5);
