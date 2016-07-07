@@ -21,7 +21,7 @@ public interface UserAchvGoalMapper {
 
     int update(UserAchvGoal userAchvGoal) throws SQLException;
 
-    int delelte(@Param("id")String id) throws SQLException;
+    int delete(@Param("id")int id) throws SQLException;
 
     List<UserAchvGoal> selectUserAchvGoalBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 

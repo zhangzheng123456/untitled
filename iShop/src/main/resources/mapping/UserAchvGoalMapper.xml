@@ -165,7 +165,7 @@
         </trim>
     </insert>
 
-    <delete id="delelte">
+    <delete id="delete" parameterType="java.lang.Integer">
         DELETE FROM DEF_USER_ACHV_GOAL
         WHERE id=#{id}
     </delete>

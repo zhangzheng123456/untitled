@@ -35,14 +35,16 @@ public class Common {
 
     public static final SimpleDateFormat DATETIME_FORMAT_DAY = new SimpleDateFormat("yyyy-MM-dd");
 
+    public static final SimpleDateFormat DATETIME_FORMAT_DAY_NO = new SimpleDateFormat("yyyyMMdd");
+
     //时间类型（日）
-    public static final String TIME_TYPE_DAY = "日";
+    public static final String TIME_TYPE_DAY = "D";
     //时间类型（周）
-    public static final String TIME_TYPE_WEEK = "周";
+    public static final String TIME_TYPE_WEEK = "W";
     //时间类型（月）
-    public static final String TIME_TYPE_MONTH = "月";
+    public static final String TIME_TYPE_MONTH = "M";
     //时间类型（年）
-    public static final String TIME_TYPE_YEAR = "年";
+    public static final String TIME_TYPE_YEAR = "Y";
 
     public static final String STORE_HEAD = "§";
 }
