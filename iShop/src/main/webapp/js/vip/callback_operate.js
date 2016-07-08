@@ -19,22 +19,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	callbackjs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
 	callbackjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -51,86 +35,99 @@ var oc = new ObjectControl();
 		}
 		return true;
 	};
-	callbackjs.bindbutton=function(){
-		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
-			if(callbackjs.firstStep()){
-				var OWN_CORP=$("#OWN_CORP").val();
-				var CALLBACK_STUFF=$("#CALLBACK_STUFF").val();
-				var VIP=$("#VIP").val();
-				var CALLBACK_DATE=$("#CALLBACK_DATE").val();
-				var CALLBACK_TYPE=$("#CALLBACK_TYPE").val();
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
-				if(input.checked==true){
-					ISACTIVE="Y";
-				}else if(input.checked==false){
-					ISACTIVE="N";
-				}
-				var _command="/VIP/callback/add";//接口名
-				var opt = {//返回成功后的操作
-					success:function(){
-					}
-				};
-				var _params={"corp_code":OWN_CORP,"user_code":CALLBACK_STUFF,"vip_code":VIP,"callback_time":CALLBACK_DATE,
-				"callback_type":CALLBACK_TYPE,"isactive":ISACTIVE};
-				callbackjs.ajaxSubmit(_command,_params,opt);
-			}else{
-				return;
-			}
-		});
-		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
-			if(callbackjs.firstStep()){
-				var ID=sessionStorage.getItem("id");
+	// callbackjs.bindbutton=function(){
+	// 	$(".operadd_btn ul li:nth-of-type(1)").click(function(){
+	// 		if(callbackjs.firstStep()){
+	// 			var OWN_CORP=$("#OWN_CORP").val();
+	// 			var CALLBACK_STUFF=$("#CALLBACK_STUFF").val();
+	// 			var VIP=$("#VIP").val();
+	// 			var CALLBACK_DATE=$("#CALLBACK_DATE").val();
+	// 			var CALLBACK_TYPE=$("#CALLBACK_TYPE").val();
+	// 			var ISACTIVE="";
+	// 			var input=$(".checkbox_isactive").find("input")[0];
+	// 			if(input.checked==true){
+	// 				ISACTIVE="Y";
+	// 			}else if(input.checked==false){
+	// 				ISACTIVE="N";
+	// 			}
+	// 			var _command="/VIP/callback/add";//接口名
+	// 			var opt = {//返回成功后的操作
+	// 				success:function(){
+	// 				}
+	// 			};
+	// 			var _params = {
+	// 				"corp_code": OWN_CORP,
+	// 				"user_code": CALLBACK_STUFF,
+	// 				"vip_code": VIP,
+	// 				"callback_time": CALLBACK_DATE,
+	// 				"callback_type": CALLBACK_TYPE,
+	// 				"isactive": ISACTIVE
+	// 			};
+	// 			callbackjs.ajaxSubmit(_command,_params,opt);
+	// 		}else{
+	// 			return;
+	// 		}
+	// 	});
+	// 	$(".operedit_btn ul li:nth-of-type(1)").click(function(){
+	// 		if(callbackjs.firstStep()){
+	// 			var ID=sessionStorage.getItem("id");
 
-				var CALLBACK_STUFF=$("#CALLBACK_STUFF").val();
-				var OWN_CORP=$("#OWN_CORP").val();
-				var VIP=$("#VIP").val();
-				var CALLBACK_DATE=$("#CALLBACK_DATE").val();
-				var CALLBACK_TYPE=$("#CALLBACK_TYPE").val();
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
-				if(input.checked==true){
-					ISACTIVE="Y";
-				}else if(input.checked==false){
-					ISACTIVE="N";
-				}
-				var _command="/VIP/callback/edit";//接口名
-				var opt = {//返回成功后的操作
-					success:function(){
-					}
-				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"user_code":CALLBACK_STUFF,"vip_code":VIP,"callback_time":CALLBACK_DATE,
-				"callback_type":CALLBACK_TYPE,"isactive":ISACTIVE};
-				callbackjs.ajaxSubmit(_command,_params,opt);
-			}else{
-				return;
-			}
-		});
-	};
-	callbackjs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
-		console.log(_params);
-		oc.postRequire("post", _command,"", _params, function(data){
-			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
-				$(window.parent.document).find('#iframepage').attr("src","/vip/callback.html");
-			}else if(data.code=="-1"){
-				// alert(data.message);
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
-			}
-		});
-	};
+	// 			var CALLBACK_STUFF=$("#CALLBACK_STUFF").val();
+	// 			var OWN_CORP=$("#OWN_CORP").val();
+	// 			var VIP=$("#VIP").val();
+	// 			var CALLBACK_DATE=$("#CALLBACK_DATE").val();
+	// 			var CALLBACK_TYPE=$("#CALLBACK_TYPE").val();
+	// 			var ISACTIVE="";
+	// 			var input=$(".checkbox_isactive").find("input")[0];
+	// 			if(input.checked==true){
+	// 				ISACTIVE="Y";
+	// 			}else if(input.checked==false){
+	// 				ISACTIVE="N";
+	// 			}
+	// 			var _command="/VIP/callback/edit";//接口名
+	// 			var opt = {//返回成功后的操作
+	// 				success:function(){
+	// 				}
+	// 			};
+	// 			var _params = {
+	// 				"id": ID,
+	// 				"corp_code": OWN_CORP,
+	// 				"user_code": CALLBACK_STUFF,
+	// 				"vip_code": VIP,
+	// 				"callback_time": CALLBACK_DATE,
+	// 				"callback_type": CALLBACK_TYPE,
+	// 				"isactive": ISACTIVE
+	// 			};
+	// 			callbackjs.ajaxSubmit(_command,_params,opt);
+	// 		}else{
+	// 			return;
+	// 		}
+	// 	});
+	// };
+	// callbackjs.ajaxSubmit=function(_command,_params,opt){
+	// 	// console.log(JSON.stringify(_params));
+	// 	// _params=JSON.stringify(_params);
+	// 	console.log(_params);
+	// 	oc.postRequire("post", _command,"", _params, function(data){
+	// 		if(data.code=="0"){
+	// 			// art.dialog({
+	// 			// 	time: 1,
+	// 			// 	lock:true,
+	// 			// 	cancel: false,
+	// 			// 	content: data.message
+	// 			// });
+	// 			$(window.parent.document).find('#iframepage').attr("src","/vip/callback.html");
+	// 		}else if(data.code=="-1"){
+	// 			// alert(data.message);
+	// 			// art.dialog({
+	// 			// 	time: 1,
+	// 			// 	lock:true,
+	// 			// 	cancel: false,
+	// 			// 	content: data.message
+	// 			// });
+	// 		}
+	// 	});
+	// };
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
 		var _this;
 		if(obj1){
@@ -175,26 +172,6 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				// var CALLBACK_STUFF=$("#CALLBACK_STUFF").val(msg.user_code);
-				// var VIP=$("#VIP").val(msg.vip_code);
-				// var CALLBACK_DATE=$("#CALLBACK_DATE").val(msg.callback_time);
-				// var CALLBACK_TYPE=$("#CALLBACK_TYPE").val(msg.callback_type);
-
-				// var created_time=$("#created_time").val(msg.created_date);
-				// var creator=$("#creator").val(msg.creater);
-				// var modify_time=$("#modify_time").val(msg.modified_date);
-				// var modifier=$("#modifier").val(msg.modifier);			
-
-				// $("#CALLBACK_STUFF").val(msg.user_code);
-				// $("#VIP").val(msg.vip_code);
-				// $("#CALLBACK_DATE").val(msg.callback_time);
-				// $("#CALLBACK_TYPE").val(msg.callback_type);
-				// // $("#OWN_DOCU").val(msg.own_docu);
-				
-				// $("#created_time").val(msg.created_date);
-				// $("#creator").val(msg.creater);
-				// $("#modify_time").val(msg.modified_date);
-				// $("#modifier").val(msg.modifier);
 				$("#CALLBACK_STUFF").val(msg.user_code);
 				$("#CALLBACK_STUFF").attr("data-name",msg.user_code);
 				$("#VIP").val(msg.vip_code);

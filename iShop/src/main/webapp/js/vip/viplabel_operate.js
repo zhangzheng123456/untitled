@@ -223,5 +223,5 @@ function getcorplist(a){
 				content: data.message
 			});
 		}
-	});
+	});//获取企业列表信息
 }

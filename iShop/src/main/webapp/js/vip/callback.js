@@ -200,17 +200,13 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].vipinfo.vip_name
+                        + data[i].vipInfo.vip_name
                         + "</td><td><span>"
                         + data[i].user.user_name
-                        // + "</td><td>"
-                        // + data[i].corp.corp_name
-                         +"</td><td>"
-                        +data[i].callback_type
                         +"</td><td>"
-                        +data[i].callback_time
-                         +"</td><td>"
-                        +data[i].remark
+                        +data[i].action
+                        +"</td><td>"
+                        +data[i].created_date
                         + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
