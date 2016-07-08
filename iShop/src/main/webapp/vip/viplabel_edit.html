@@ -32,11 +32,7 @@
                     </ul>
                 </div>
                 <form class="conpany_msg">
-                    <!-- <div>
-                        <span><label style="color:#c26555;">所属企业*</label><input type="text" id="OWN_CORP" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="所属企业*为必填项，不能为空！"></div></div></span>
-                    </div> -->
-
-                      <div>
+                    <div>
                         <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属企业*</label></li>
                             <li>
@@ -47,9 +43,6 @@
                             </li>
                         </ul>
                     </div>
-                     <div>
-                        <span><label>标签编号</label><input type="text" id="LABEL_CODE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="标签编号为必填项，不能为空！"></div></div></span>
-                    </div>
                     <div>
                         <span><label>标签名称</label><input type="text" id="LABEL_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="标签名称为必填项，不能为空！"></div></div></span>
                     </div>
@@ -59,8 +52,9 @@
                             <li>
                                 <span class="tag_type_select">
                                     <select id="LABEL_TYPE" style="display:inline-flex">
-                                       <!--
-                                        <option value="-1">标签类型2</option> -->
+                                        <option value="sys">系统</option>
+                                        <option value="org">企业</option>
+                                        <option value="user">用户</option> 
                                     </select>
                                 </span>
                             </li>
@@ -112,14 +106,6 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <script type="text/javascript" src="../js/vip/viplabel_operate.js"></script>
-   <!--  <script type="text/javascript">
-        $(function(){
-            $('#side-menu li:nth-of-type(5)').addClass('active');
-            $('.active ul').addClass('in');
-            $('.active ul li:nth-of-type(2)').addClass('select_index');
-            $('.select_index a label').append('<i class="icon-ishop_8-01"></i>');
-        })
-    </script> -->
 </body>
 
 </html>

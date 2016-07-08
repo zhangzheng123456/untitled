@@ -19,22 +19,6 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	viplabeljs.checkPhone = function(obj,hint){
-		var isPhone=/^([0-9]{3,4}-)?[0-9]{7,8}$/;
-		var isMob=/^((\+?86)|(\(\+86\)))?(13[012356789][0-9]{8}|15[012356789][0-9]{8}|18[02356789][0-9]{8}|147[0-9]{8}|1349[0-9]{7})$/;
-		if(!this.isEmpty(obj)){
-			if(isPhone.test(obj)||isMob.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"联系电话格式不正确!");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
 	viplabeljs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -54,12 +38,9 @@ var oc = new ObjectControl();
 	viplabeljs.bindbutton=function(){
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
 			if(viplabeljs.firstStep()){
-				// var CORPID=$("#CORPID").val();
-				var OWN_CORP=$("#OWN_CORP").val();
-				var LABEL_CODE=$("#LABEL_CODE").val();
-				var LABEL_NAME=$("#LABEL_NAME").val();
-				var LABEL_TYPE=$("#LABEL_TYPE").val();
-				// var check_per=$("#check_per").val();
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
+				var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -72,7 +53,12 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"type_code":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params = {
+					"corp_code": OWN_CORP,
+					"label_name": LABEL_NAME,
+					"label_type": LABEL_TYPE,
+					"isactive": ISACTIVE
+				};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -80,17 +66,10 @@ var oc = new ObjectControl();
 		});
 		$(".operedit_btn ul li:nth-of-type(1)").click(function(){
 			if(viplabeljs.firstStep()){
-				var ID=sessionStorage.getItem("id");
-
-				var OWN_CORP=$("#OWN_CORP").val();
-				var LABEL_CODE=$("#LABEL_CODE").val();
-				var LABEL_NAME=$("#LABEL_NAME").val();
-				var LABEL_TYPE=$("#LABEL_TYPE").val();
-
-				// var ROLE_NUM=$("#ROLE_NUM").val();
-				// var ROLE_NAME=$("#ROLE_NAME").val();
-				// var BEIZHU=$("#BEIZHU").val();
-				// var check_per=$("#check_per").val();
+				var ID=sessionStorage.getItem("id");//编辑时候的id
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
+				var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -103,7 +82,13 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"type_code":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params = {
+					"id": ID,
+					"corp_code": OWN_CORP,
+					"label_name": LABEL_NAME,
+					"label_type": LABEL_TYPE,
+					"isactive": ISACTIVE
+				};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -111,26 +96,18 @@ var oc = new ObjectControl();
 		});
 	};
 	viplabeljs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
 				$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 			}else if(data.code=="-1"){
-				// alert(data.message);
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				alert(data.message);
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
 		});
 	};
@@ -173,38 +150,14 @@ jQuery(document).ready(function(){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/VIP/label/select";
+		var a="";
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
-				// var OWN_CORP=$("#OWN_CORP").val(msg.role_code);
-				// var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
-				// var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
-				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
-				var LABEL_CODE=$("#LABEL_CODE").val(msg.tag_code);
-				var LABEL_NAME=$("#LABEL_NAME").val(msg.tag_name);
-				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.vipTagType.type_name);
-				// var check_per=$("#check_per").val(msg.check_per);
-				// $("#ROLE_NUM").val(msg.role_num);
-				// $("#ROLE_NAME").val(msg.role_name);
-				// $("#BEIZHU").val(msg.beizhu);
-				var created_time=$("#created_time").val(msg.created_date);
-				var creator=$("#creator").val(msg.creater);
-				var modify_time=$("#modify_time").val(msg.modified_date);
-				var modifier=$("#modifier").val(msg.modifier);			
-
-				$("#OWN_CORP").val(msg.corp_code);
-				$("#LABEL_CODE").val(msg.tag_code);
-				$("#LABEL_NAME").val(msg.tag_name);
-		/*		$("#LABEL_TYPE").val(msg.vipTagType.type_name);*/
-				/*$("#LABEL_TYPE").append(msg.vipTagType.type_name);*/
-
-				var str='<option value="'+msg.vipTagType.type_code+'">'+msg.vipTagType.type_name+'</option>';
-				$("#LABEL_TYPE").append(str);
-
-				// $("#OWN_DOCU").val(msg.own_docu);
-				
+				var corp_code=msg.corp_code;//公司编号
+				var label_type=msg.label_type//会员标签
+				$("#LABEL_TYPE option[value='"+label_type+"']").attr("selected","true");
+				$("#LABEL_NAME").val(msg.label_name);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -215,32 +168,53 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
+				getcorplist(corp_code);
+				$('#LABEL_TYPE').searchableSelect();
 			}else if(data.code=="-1"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
 		});
+	}else{
+		getcorplist(a);
+		$('#LABEL_TYPE').searchableSelect();
 	}
-//获取企业信息列表
+	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
+	});
+	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
+		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
+	});
+});
+function getcorplist(a){
+	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
 		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			console.log(msg);
-			var index=0;
 			var corp_html='';
 			var c=null;
-			for(index in msg.corps){
-				c=msg.corps[index];
+			for(var i=0;i<msg.corps.length;i++){
+				c=msg.corps[i];
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("input[verify='Code']").val("");
+				$("#STORE_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#STORE_NAME").attr("data-mark","");
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -250,42 +224,4 @@ jQuery(document).ready(function(){
 			});
 		}
 	});
-	//change 事件
-	$('#OWN_CORP').change(function(){
-		console.log(123);
-	})
-	 $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
-	});
-	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
-	});
-});
-$(document).ready(function(){
-	$("#LABEL_TYPE").click(function(){
-		var _command="/VIP/label/getTypes";
-		var _params={"id":"test","tag_type":$("#LABEL_TYPE").val()};;
-		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
-			if(data.code=="0"){
-				var msg=JSON.parse(data.message);
-				console.log(msg);
-				var index=0;
-				var vipLabeTypes='';
-				 for(index in msg.list){
-				 	 type_tmp=msg.list[index];
-				 	 vipLabeTypes+='<option value="'+type_tmp.type_code+'">'+type_tmp.type_name+'</option>';
-				 }
- 				$("#LABEL_TYPE").append(vipLabeTypes);
- 				$('.tag_type_select select').searchableSelect();
-			}else if(data.code="1"){
-					art.dialog({
-						time:1,
-						lock:true,
-						cancel:false,
-						content:data.message
-					})
-			}
-		 });
-	});
-});
+}

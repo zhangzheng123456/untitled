@@ -192,7 +192,7 @@ function superaddition(data,num){
         }
         var avatar="";
         if(data[i].avatar==undefined){
-            avatar="../img/a3.jpg";
+            avatar="../img/head.png";
         }
         if(data[i].avatar!==""&&data[i].avatar!==undefined){
             avatar=data[i].avatar;
