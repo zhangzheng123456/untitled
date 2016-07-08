@@ -227,6 +227,7 @@ public class UserController {
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file,ModelMap model) throws SQLException {
+        DataBean dataBean = new DataBean();
         //创建你要保存的文件的路径
         String path = request.getSession().getServletContext().getRealPath("lupload");
         //获取该文件的文件名
@@ -243,20 +244,10 @@ public class UserController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //将该文件的路径给客户端，让其可以请求该图片
+        //将该文件的路径给客户端，让其可以请求该wenjian
         model.addAttribute("fileUrl", request.getContextPath() + "/lupload/"+ fileName);
-
-        DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_id").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
-//        String jsString = request.getParameter("param");
-//        logger.info("json--user add-------------" + jsString);
-//        System.out.println("json---------------" + jsString);
-//        JSONObject jsonObj = new JSONObject(jsString);
-//        id = jsonObj.get("id").toString();
-//        String message = jsonObj.get("message").toString();
-//        JSONObject jsonObject = new JSONObject(message);
-//        String filePath = jsonObject.get("filePath").toString();
         String result="";
         try{
             Workbook rwb=Workbook.getWorkbook(targetFile);
@@ -267,7 +258,7 @@ public class UserController {
             for (int i = 3; i <column.length; i++) {
                 String existInfo = userService.userPhoneExist(column[i].getContents().toString());
                 if(!existInfo.contains("0")){
-                    result ="第"+i+"列的电话号码已存在";
+                    result ="第"+(i+1)+"列的电话号码已存在";
                     int b=5/0;
                     break;
                 }
@@ -276,7 +267,7 @@ public class UserController {
             for (int i = 3; i <column1.length; i++) {
                 User user = userService.userCodeExist(column1[i].getContents().toString(), corp_code);
                 if(user!=null){
-                    result ="第"+i+"列的用户编号已存在";
+                    result ="第"+(i+1)+"列的用户编号已存在";
                     int b=5/0;
                     break;
                 }

@@ -11,7 +11,7 @@
     <title>Title</title>
 </head>
 <body>
-    <form action="/user/addByExecl" method=post enctype="multipart/form-data">
+    <form action="/shop/addByExecl" method=post enctype="multipart/form-data">
         <input type="file" name="file" value="Test"/>
         <input type="submit" value="确定">
     </form>

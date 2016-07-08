@@ -55,4 +55,6 @@ public interface StoreService {
     PageInfo<Store> selectByAreaCode(int page_number,int page_size,String corp_code,String[] area_code,String search_value);
 
     List<Store> selectByAreaCode(String corp_code, String[] area_code);
+
+    String insertExecl(Store store);
 }

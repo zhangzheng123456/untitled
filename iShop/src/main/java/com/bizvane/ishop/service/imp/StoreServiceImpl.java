@@ -179,7 +179,10 @@ public class StoreServiceImpl implements StoreService {
         return result;
 
     }
-
+    public String insertExecl(Store store){
+        storeMapper.insertStore(store);
+        return "add success";
+    }
     //修改店铺
     @Override
     public String update(String message, String user_id) throws SQLException {
