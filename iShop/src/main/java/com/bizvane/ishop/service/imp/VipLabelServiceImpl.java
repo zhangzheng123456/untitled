@@ -43,7 +43,7 @@ public class VipLabelServiceImpl implements VipLabelService {
     @Override
     public String update(VipLabel VipLabel) throws SQLException {
         VipLabel old = this.vipLabelMapper.selectByPrimaryKey(VipLabel.getId());
-        if (!old.getlabel_name().equals(VipLabel.getlabel_name()) && (this.VipLabelNameExist(VipLabel.getCorp_code(), VipLabel.getlabel_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+        if (!old.getLabel_name().equals(VipLabel.getLabel_name()) && (this.VipLabelNameExist(VipLabel.getCorp_code(), VipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR))) {
             return "名称已经存在！！！！";
         } else if (this.vipLabelMapper.updateByPrimaryKey(VipLabel) >= 0) {
             return Common.DATABEAN_CODE_SUCCESS;
@@ -79,7 +79,6 @@ public class VipLabelServiceImpl implements VipLabelService {
         }
         return result;
     }
-
 
 
 }

@@ -23,9 +23,6 @@ public class VipLabel {
     private Corp corp;
 
 
-    public VipLabel() {
-    }
-
     public int getId() {
         return id;
     }
@@ -34,19 +31,19 @@ public class VipLabel {
         this.id = id;
     }
 
-    public String getlabel_name() {
+    public String getLabel_name() {
         return label_name;
     }
 
-    public void setlabel_name(String label_name) {
+    public void setLabel_name(String label_name) {
         this.label_name = label_name;
     }
 
-    public String getlabel_type() {
+    public String getLabel_type() {
         return label_type;
     }
 
-    public void setlabel_type(String label_type) {
+    public void setLabel_type(String label_type) {
         this.label_type = label_type;
     }
 

@@ -23,8 +23,7 @@ public interface VipLabelMapper {
 
     List<VipLabel> selectAllVipLabel(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
-
     VipLabel selectVipLabelName(@Param("corp_code") String corp_code, @Param("lable_name") String tag_name);
 
-    VipLabel selectTypeCodeByName(@Param("corp_code") String corp_code, @Param("type_name") String type_name);
+   // VipLabel selectTypeCodeByName(@Param("corp_code") String corp_code, @Param("type_name") String type_name);
 }

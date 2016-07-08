@@ -137,7 +137,7 @@
     </delete>
 
 
-    <select id="selectAllVipTag" resultMap="VipLabels">
+    <select id="selectAllVipLabel" resultMap="VipLabels">
         SELECT
         vt.id,
         vt.label_name,
@@ -171,7 +171,7 @@
     </select>
 
 
-    <select id="selectVipTagName" resultType="com.bizvane.ishop.entity.VipLabel">
+    <select id="selectVipLabelName" resultType="com.bizvane.ishop.entity.VipLabel">
         select * from DEF_VIPLABEL
          where
          label_name=#{label_name}
