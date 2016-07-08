@@ -15,6 +15,8 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
@@ -179,7 +181,7 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
-    @Transactional
+    @Transactional(readOnly = false , propagation = Propagation.REQUIRED,isolation= Isolation.READ_COMMITTED)
     public String insert(User user) throws SQLException {
         String result = "";
         String phone = user.getPhone();
@@ -189,17 +191,21 @@ public class UserServiceImpl implements UserService {
         String phone_exist = userPhoneExist(phone);
         User code_exist = userCodeExist(user_code, corp_code);
         String email_exist = userEmailExist(email);
-
-        if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+        if(phone.equals("")){
+            result="手机号不能为空";
+        }else if(user_code.equals("")){
+            result="员工编号不能为空";
+        }else if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "手机号已存在";
-        } else if (code_exist != null) {
+        }else if (code_exist != null) {
             result = "员工编号已存在";
-        } else if (!email.equals("") && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+        }else if (!email.equals("") && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "邮箱已存在";
         } else {
             userMapper.insertUser(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
+        System.out.println(result+"-----");
         return result;
     }
 

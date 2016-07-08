@@ -1,368 +1,130 @@
 package com.bizvane.ishop.utils;
+import java.io.File;
 import java.io.FileInputStream;
-import java.io.InputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream.GetField;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
+import java.util.Vector;
 
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFDataFormat;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+//import org.junit.Test;
+//import com.dao.WageDao;
+import org.springframework.web.context.ContextLoader;
+import org.springframework.web.context.WebApplicationContext;
+
 /**
  * Created by yin on 2016/7/5.
  */
 public class ImpExeclHelper {
-        @SuppressWarnings("unchecked")
-        public void createData(String path,String sheetname){
-            try {
-                String sourcefile = path;
-                InputStream is = new FileInputStream(sourcefile);
-                Workbook rwb = Workbook.getWorkbook(is);
+    Vector<String> titleList;
+    private WageDao wagedao = new WageDao();
+    public String importXls(String tbName, String file) throws Exception  {
+//        Workbook rwb=Workbook.getWorkbook(new File(file));
+//        Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
+//        int clos=rs.getColumns();//得到所有的列
+//        int rows=rs.getRows();//得到所有的行
 
-                //get sheet
-                Sheet sheet = rwb.getSheet(sheetname);
-                //System.out.println(sheet.getName());7
 
-                //get rows
-                int cr =sheet.getRows();
+        File file1=new File(file);
 
-                String header = "";
-                String preheader = "";
-                List<String> fieldsList = new ArrayList<String>();
-                List dataList = new ArrayList();
-                for(int i = 0;i<cr;i++){
-                    Cell[] testcell  = sheet.getRow(i);
-
-                    if(testcell.length == 0) continue;
-                    if(!header.equals(preheader)){
-                        fieldsList.clear();
-                        preheader = header;
-                    }
-                    String tempString  = testcell[0].getContents();
-                    int datatype = tempString.indexOf("&&");
-                    if(datatype != -1 ) continue;
-
-                    System.out.println("第"+i+"行------");
-                    //get cells of row
-                    for (int j = 0; j < testcell.length; j++) {
-                        String str1 = testcell[j].getContents();
-
-                        if(str1 != null && !"".equals(str1)){
-
-                            int fields = str1.indexOf("#");
-                            int cheader = str1.indexOf("**");
-//                        int coment = str1.indexOf("$$");
-                            //int datatype = str1.indexOf("&&");
-                            int length = str1.length();
-                            //get table name
-                            if(cheader != -1){
-                                header = str1.substring(cheader+2, length);
-                            }else if(fields != -1){
-                                fieldsList.add(str1.substring(fields+1, length));
-                            }else{
-                                dataList.add(str1);
-                            }
-                        }
-
-                    }
-                    if(!header.equals("") && fieldsList.size() != 0 && dataList.size() != 0 ){
-                        deleteData(header,dataList);
-                        System.out.println("成功删除");
-                        inserData(header,fieldsList,dataList);
-                        System.out.println("成功插入");
-                        dataList.clear();
-                    }
+      //  HSSFWorkbook book=new HSSFWorkbook(new FileInputStream(file1));
+      XSSFWorkbook book = new XSSFWorkbook(new FileInputStream(file1));// 获得文件
+         XSSFSheet sheet = book.getSheetAt(0);// 获得第一个工作表
+        XSSFRow title = sheet.getRow(1);// 获得标题行
+        int titles = title.getLastCellNum();// 获得字段总数
+        int rows = sheet.getLastRowNum();// 获得总行数
+        String message = "更新成功";
+        WebApplicationContext webApplicationContext = ContextLoader.getCurrentWebApplicationContext();
+        SqlSessionFactory sqlSessionFactory = (SqlSessionFactory )webApplicationContext.getBean("sqlSessionFactory");
+        SqlSession sqlSession = sqlSessionFactory.openSession();
+        Connection conn = sqlSession.getConnection();
+     //   Connection conn = ConnUtils.getConnection();//获得数据库连接，开启事务控制插入出错。
+        titleList = new Vector<String>();//接收第一行字段名
+        for (int i = 0; i < titles; i++) {
+            XSSFCell cel = title.getCell(i);
+            String result = getStringCellValue(cel);
+            titleList.add(result);
+        }
+        try {
+          //  wagedao.createTable(titleList, tbName);//将字段名交给数据库处理类生成表。
+            conn.setAutoCommit(false);//开启事务
+            for (int i = 5; i <= rows; i++) {// 遍历将表数据装进数组
+                ArrayList<String> v = new ArrayList<String>();
+                XSSFRow row = sheet.getRow(i);
+                int cels = row.getLastCellNum();
+                for (int j = 0; j < cels; j++) {
+                    String result = "";
+                    XSSFCell cel = row.getCell(j);
+                    result = getStringCellValue(cel);
+                    v.add(result);
                 }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
+                wagedao.insert(conn,titleList, v, tbName);// 将数级插入数据库。
             }
+            conn.setAutoCommit(true);//关闭事务，插入的数据会回滚，但是新表会建成只是没有数据。
+        } catch (Exception e) {
+
+            message = e.getMessage()+"更新失败";
+            e.printStackTrace();
+        }finally{
+            conn.close();
 
         }
-
-        public void deleteDataByid(String path,String sheetname){
-            try {
-                String sourcefile = path;
-                InputStream is = new FileInputStream(sourcefile);
-                Workbook rwb = Workbook.getWorkbook(is);
-
-                //get sheet
-                Sheet sheet = rwb.getSheet(sheetname);
-                //System.out.println(sheet.getName());
-
-                //get rows
-                int cr =sheet.getRows();
-
-                String header = "";
-                String preheader = "";
-                List<String> fieldsList = new ArrayList<String>();
-                List dataList = new ArrayList();
-                for(int i = 0;i<cr;i++){
-                    Cell[] testcell  = sheet.getRow(i);
-
-                    if(testcell.length == 0) continue;
-                    if(!header.equals(preheader)){
-                        fieldsList.clear();
-                        preheader = header;
-                    }
-                    String tempString  = testcell[0].getContents();
-                    int datatype = tempString.indexOf("&&");
-                    if(datatype != -1 ) continue;
-
-                    System.out.println("第"+i+"行------");
-                    //get cells of row
-                    for (int j = 0; j < testcell.length; j++) {
-                        String str1 = testcell[j].getContents();
-
-                        if(str1 != null && !"".equals(str1)){
-
-                            int fields = str1.indexOf("#");
-                            int cheader = str1.indexOf("**");
-//                        int coment = str1.indexOf("$$");
-                            //int datatype = str1.indexOf("&&");
-                            int length = str1.length();
-                            //get table name
-                            if(cheader != -1){
-                                header = str1.substring(cheader+2, length);
-                            }else if(fields != -1){
-                                fieldsList.add(str1.substring(fields+1, length));
-                            }else{
-                                dataList.add(str1);
-                            }
-                        }
-
-                    }
-                    if(!header.equals("") && fieldsList.size() != 0 && dataList.size() != 0 ){
-                        deleteData(header,dataList);
-                        System.out.println("成功删除");
-//                    inserData(header,fieldsList,dataList);
-//                    System.out.println("成功插入");
-                        dataList.clear();
-                    }
-                }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
+       // book.close();
+        return message;
+    }
+    public Vector<String> getTitles() {
+        return titleList;
+    }
+    private static String getStringCellValue(XSSFCell cell) {// 将XLSX内容转为STRING，空的将默认为0
+        String strCell = "";
+        int type = 0;
+        try {
+            switch (cell.getCellType()) {
+                case XSSFCell.CELL_TYPE_BLANK:
+                    strCell = "";
+                    break;
+                case XSSFCell.CELL_TYPE_STRING:
+                    strCell = cell.getStringCellValue();
+                    break;
+                case XSSFCell.CELL_TYPE_NUMERIC:
+                    strCell = String.valueOf(cell.getNumericCellValue());
+                    break;
+                case XSSFCell.CELL_TYPE_BOOLEAN:
+                    strCell = String.valueOf(cell.getBooleanCellValue());
+                    break;
+                default:
+                    strCell = "";
+                    break;
             }
-
-        }
-
-        public void deleteData(String header,List dataList){
-            try {
-                String sql = "delete from "+header + " where 1=1 and id = "+dataList.get(0);
-                excute(sql);
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-
-        }
-
-
-        public int inserData(String header,List<String> fieldsList,List<String> dataList){
-            StringBuffer sql = new StringBuffer("insert into ");
-            sql.append(header+" (");
-            for(int i = 0; i<fieldsList.size();i++){
-                sql.append(fieldsList.get(i)+",");
-
-            }
-            sql.delete(sql.length()-1, sql.length());
-            sql.append(") values(");
-
-            for(int i = 0; i<dataList.size();i++){
-                sql.append("'"+dataList.get(i)+"',");
-            }
-
-            sql.delete(sql.length()-1, sql.length());
-            sql.append(")");
-
-            excute(sql.toString());
-
-            return 0;
-        }
-
-
-        private void excute(String sql){
-            //载入Oracle驱动程序
-            try {
-                //Class.forName("oracle.jdbc.OracleDriver").newInstance();
-                Class.forName("com.mysql.jdbc.Driver").newInstance();
-            } catch (InstantiationException ex) {
-                ex.printStackTrace();
-                System.out.println("载入MySQL数据库驱动时出错");
-            } catch (ClassNotFoundException ex) {
-                ex.printStackTrace();
-                System.out.println("载入MySQL数据库驱动时出错");
-            } catch (IllegalAccessException ex) {
-                ex.printStackTrace();
-                System.out.println("载入MySQL数据库驱动时出错");
-            }
-            /////////////////////////////////////////////////////////////////////////
-
-            //连接到Oracle数据库
-            java.sql.Connection conn = null;
-            try{
-                //连接Oracle数据库
-//            conn = java.sql.DriverManager.getConnection(
-//                    "jdbc:oracle:thin:@192.168.1.2:1521:dbname", "username", "password");
-
-                //连接Mysql库
-
-
-                conn = java.sql.DriverManager.getConnection(
-
-                        "jdbc:mysql://dev.bizvane.com:3306/ishow_dev?useUnicode=true&characterEncoding=utf-8&useSSL=false", "root", "rootpassword");
-            } catch (Exception ex){
-                ex.printStackTrace();
-                System.out.println("连接到MySQL数据库时出错！");
-                System.exit(0);
-            }
-            ////////////////////////////////////////////////////////////////////////
-
-            //得到MySQL操作流
-
-            try {
-                System.out.println("-----------------  "+sql);
-                java.sql.PreparedStatement stat = conn.prepareStatement(sql);
-                boolean rs = stat.execute();
-
-            } catch(Exception ex) {
-                ex.printStackTrace();
-                System.exit(0);
-            }
-
-            //关半程序所占用的资源
-            try{
-                conn.close();
-            }catch(Exception ex){
-                ex.printStackTrace();
-                System.out.println("关闭程序所占用的资源时出错");
-                System.exit(0);
+        } catch (Exception e) {
+            if (e.getMessage() == null) {
+                strCell = " ";
             }
         }
 
-
-        public List<String> getData(String path,String sheetname){
-
-            List<String> dataList = new ArrayList();
-            try {
-                String sourcefile = path;
-                InputStream is = new FileInputStream(sourcefile);
-                Workbook rwb = Workbook.getWorkbook(is);
-
-                //get sheet
-                Sheet sheet = rwb.getSheet(sheetname);
-                //System.out.println(sheet.getName());
-
-                //get rows
-                int cr =sheet.getRows();
-
-                String header = "";
-                List<String> fieldsList = new ArrayList<String>();
-
-                for(int i = 0;i<cr;i++){
-                    Cell[] testcell  = sheet.getRow(i);
-
-                    //get cells of row
-                    for (int j = 0; j < testcell.length; j++) {
-                        String str1 = testcell[j].getContents();
-
-                        if(str1 != null && !"".equals(str1)){
-
-                            int fields = str1.indexOf("#");
-                            int cheader = str1.indexOf("**");
-                            int length = str1.length();
-                            //get table name
-                            if(cheader != -1){
-                                header = str1.substring(cheader+2, length);
-                            }else if(fields != -1){
-                                fieldsList.add(str1.substring(fields+1, length));
-                            }else{
-                                dataList.add(str1);
-                            }
-                        }
-
-                    }
-                }
-
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-            return dataList;
-
+        if (strCell.equals("") || strCell == null) {
+            return " ";
         }
-
-        public void deleteData(String path,String sheetname){
-
-            try {
-                String sourcefile = path;
-                InputStream is = new FileInputStream(sourcefile);
-                Workbook rwb = Workbook.getWorkbook(is);
-
-                //get sheet
-                Sheet sheet = rwb.getSheet(sheetname);
-                //System.out.println(sheet.getName());
-
-                //get rows
-                int cr =sheet.getRows();
-
-                for(int i = 0;i<cr;i++){
-                    String header = "";
-                    Cell[] testcell  = sheet.getRow(i);
-
-                    //get cells of row
-                    for (int j = 0; j < testcell.length; j++) {
-                        String str1 = testcell[j].getContents();
-
-                        if(str1 != null && !"".equals(str1)){
-
-                            int cheader = str1.indexOf("**");
-                            int length = str1.length();
-                            //get table name
-                            if(cheader != -1){
-                                header = str1.substring(cheader+2, length);
-                                String sql = "delete from "+header;
-                                excute(sql);
-                            }
-                        }
-
-                    }
-                }
-
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-
-
+        if (cell == null) {
+            return " ";
         }
-
-
-
-
-
-
-
-    //2、测试类
-
-
-
-        /**
-         * @param args
-         */
-        public static void main(String[] args) {
-            ImpExeclHelper readData = new ImpExeclHelper();
-
-            //造数据----------------------------------------------------------
-            String path = "E:/09.testdata/xxx.xls";
-
-            readData.createData(path, "yxl");
-
-//删除数据
-      readData.deleteDataByid(path, "md_data");
-//        readData.deleteData(path, "delete_data");
-        }
-
+        return strCell;
+    }
 }
 
