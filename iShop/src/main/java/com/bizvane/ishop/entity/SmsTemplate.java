@@ -5,7 +5,8 @@ package com.bizvane.ishop.entity;
  *
  * @@version
  */
-public class MessageTemplate {
+public class SmsTemplate {
+
     private int id;
     //模板编号
     private String template_code;
@@ -28,7 +29,7 @@ public class MessageTemplate {
     //是否可用
     private String isactive;
 
-    public MessageTemplate() {
+    public SmsTemplate() {
     }
 
     public int getId() {

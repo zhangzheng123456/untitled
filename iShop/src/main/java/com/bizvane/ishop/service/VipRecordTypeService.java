@@ -1,6 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.VipTagType;
+import com.bizvane.ishop.entity.VipRecordType;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @@version
  */
-public interface VipTagTypeService {
+public interface VipRecordTypeService {
 
     /**
      * 获取VIP标签类型信息
@@ -20,25 +20,27 @@ public interface VipTagTypeService {
      * @return
      * @throws SQLException
      */
-    VipTagType getVipTagTypeById(int id) throws SQLException;
+    VipRecordType getVipRecordTypeById(int id) throws SQLException;
+
+    VipRecordType getVipRecordTypeByName(String corp_code, String type_name) throws SQLException;
 
     /**
      * 插入VIP标签类型信息
      *
-     * @param vipTagType
+     * @param VipRecordType
      * @return
      * @throws SQLException
      */
-    int insert(VipTagType vipTagType) throws SQLException;
+    int insert(VipRecordType VipRecordType) throws SQLException;
 
     /**
      * 更新VIP标签类型信息
      *
-     * @param vipTagType
+     * @param VipRecordType
      * @return
      * @throws SQLException
      */
-    String update(VipTagType vipTagType) throws SQLException;
+    int update(VipRecordType VipRecordType) throws SQLException;
 
     /**
      * 获取符合查询条件的分页信息
@@ -49,7 +51,7 @@ public interface VipTagTypeService {
      * @param search_value ： 查询条件
      * @return
      */
-    PageInfo<VipTagType> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<VipRecordType> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
 
     /**
      * 判断VIP标签类型编号是否在公司内唯一
@@ -58,7 +60,7 @@ public interface VipTagTypeService {
      * @param corp_code ： 公司编号
      * @return
      */
-    String vipTagTypeCodeExist(String type_code, String corp_code);
+    //String VipRecordTypeCodeExist(String type_code, String corp_code);
 
     /**
      * 判断VIP标签类型名称是否在公司内唯一
@@ -67,7 +69,7 @@ public interface VipTagTypeService {
      * @param corp_code ： 公司编号
      * @return
      */
-    String vipTagTypeNameExist(String type_name, String corp_code);
+    String VipRecordTypeNameExist(String type_name, String corp_code);
 
     /**
      * 删除VIPb编号类型，通过ID
@@ -77,5 +79,5 @@ public interface VipTagTypeService {
      */
     int deleteById(int id);
 
-    List<VipTagType> getAllVipTagType(String corp_code, String search_value);
+    //List<VipRecordType> getAllVipRecordType(String corp_code, String search_value);
 }

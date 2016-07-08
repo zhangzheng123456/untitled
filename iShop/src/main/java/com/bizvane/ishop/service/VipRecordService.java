@@ -1,7 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.VIPInfo;
-import com.bizvane.ishop.entity.VipCallbackRecord;
+import com.bizvane.ishop.entity.VipRecord;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
@@ -11,7 +11,7 @@ import java.sql.SQLException;
  *
  * @@version
  */
-public interface VipCallbackRecordService {
+public interface VipRecordService {
 
     /**
      * 获取回访记录通过记录的ID
@@ -19,23 +19,23 @@ public interface VipCallbackRecordService {
      * @return
      * @throws SQLException
      */
-    VipCallbackRecord getVipCallbackRecord(int id) throws SQLException;
+    VipRecord getVipRecord(int id) throws SQLException;
 
     /**
      * 插入回访记录
-     * @param vipCallbackRecord
+     * @param VipRecord
      * @return
      * @throws SQLException
      */
-    int insert(VipCallbackRecord vipCallbackRecord) throws SQLException;
+    int insert(VipRecord VipRecord) throws SQLException;
 
     /**
      * 更改回访记录
-     * @param vipCallbackRecord
+     * @param VipRecord
      * @return
      * @throws SQLException
      */
-    int update(VipCallbackRecord vipCallbackRecord) throws SQLException;
+    int update(VipRecord VipRecord) throws SQLException;
 
     /**
      * 删除回访记录
@@ -53,7 +53,7 @@ public interface VipCallbackRecordService {
      * @param search_value ： 搜索数据
      * @return
      */
-    PageInfo<VipCallbackRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
 
 
 }

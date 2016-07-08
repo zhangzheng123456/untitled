@@ -45,8 +45,7 @@ public class UserServiceImpl implements UserService {
     GroupMapper groupMapper;
     @Autowired
     IceInterfaceService iceInterfaceService;
-    @Autowired
-    private MessageTypeMapper messageTypeMapper;
+
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -54,12 +53,12 @@ public class UserServiceImpl implements UserService {
      * @param corp_code
      * @param search_value
      */
-    public PageInfo<User> selectBySearch(HttpServletRequest request,int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+    public PageInfo<User> selectBySearch(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws SQLException {
 
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUser(corp_code, search_value);
-        request.getSession().setAttribute("size",users.size());
+        request.getSession().setAttribute("size", users.size());
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
@@ -68,7 +67,7 @@ public class UserServiceImpl implements UserService {
      * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
-    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code,String area_code, String role_code) throws SQLException {
+    public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
@@ -78,13 +77,13 @@ public class UserServiceImpl implements UserService {
         }
         if (!area_code.equals("")) {
             String[] areas = area_code.split(",");
-            for (int i = 0;i<areas.length;i++){
-                areas[i] = areas[i].substring(1,areas[i].length());
+            for (int i = 0; i < areas.length; i++) {
+                areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaCode(corp_code,areas);
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas);
             String a = "";
             for (int i = 0; i < store.size(); i++) {
-                a = a+store.get(i).getStore_code()+",";
+                a = a + store.get(i).getStore_code() + ",";
             }
             stores = a.split(",");
         }
@@ -132,7 +131,7 @@ public class UserServiceImpl implements UserService {
             user.setArea_code("");
             user.setArea_name("");
         } else {
-            if(!user.getArea_code().startsWith(Common.STORE_HEAD)){
+            if (!user.getArea_code().startsWith(Common.STORE_HEAD)) {
                 ProcessAreaCode(user);
             }
             String corp_code = user.getCorp_code();
@@ -254,7 +253,7 @@ public class UserServiceImpl implements UserService {
             String corp_code = login_user.getCorp_code();
             String group_code = login_user.getGroup_code();
             String store_code = login_user.getStore_code();
-            String area_code =  login_user.getArea_code();
+            String area_code = login_user.getArea_code();
 
             String role_code = groupMapper.selectByCode(corp_code, group_code, "").getRole_code();
 
@@ -264,7 +263,7 @@ public class UserServiceImpl implements UserService {
             request.getSession().setAttribute("role_code", role_code);
             request.getSession().setAttribute("store_code", store_code);
             request.getSession().setAttribute("group_code", group_code);
-            request.getSession().setAttribute("area_code",area_code);
+            request.getSession().setAttribute("area_code", area_code);
             System.out.println(request.getSession().getAttribute("user_id"));
             Date now = new Date();
             login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
@@ -450,7 +449,7 @@ public class UserServiceImpl implements UserService {
         datalist.put(data_phone.key, data_phone);
         datalist.put(data_text.key, data_text);
 
-        DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.SendSMS",datalist);
+        DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.SendSMS", datalist);
         logger.info("SendSMSMethod -->" + dataBox.data.get("message").value);
         String msg = dataBox.data.get("message").value;
         System.out.println("------------" + msg);
@@ -501,11 +500,12 @@ public class UserServiceImpl implements UserService {
         user.setStore_code(store_code);
         userMapper.updateByUserId(user);
     }
-    public void ProcessAreaCode(User user){
-        String[] ids=user.getArea_code().split(",");
-        String area_code="";
-        for(int i=0;i<ids.length;i++){
-            area_code=area_code+Common.STORE_HEAD+ids[i]+",";
+
+    public void ProcessAreaCode(User user) {
+        String[] ids = user.getArea_code().split(",");
+        String area_code = "";
+        for (int i = 0; i < ids.length; i++) {
+            area_code = area_code + Common.STORE_HEAD + ids[i] + ",";
         }
         user.setArea_code(area_code);
         userMapper.updateByUserId(user);
@@ -513,10 +513,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public int selectUserAchvCount(String corp_code, String user_code) {
-        return this.messageTypeMapper.selectUserAchvCount(corp_code, user_code);
+        return this.selectUserAchvCount(corp_code, user_code);
     }
 
-    public int selectCount(String created_date){
+    public int selectCount(String created_date) {
         return userMapper.selectCount(created_date);
     }
 }

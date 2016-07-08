@@ -1,6 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.VIPtag;
+import com.bizvane.ishop.entity.VipLabel;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
@@ -10,7 +10,7 @@ import java.sql.SQLException;
  *
  * @@version
  */
-public interface VIPTagService {
+public interface VipLabelService {
 
     /**
      * 获取VIP标签信息：通过变迁的ID
@@ -19,16 +19,16 @@ public interface VIPTagService {
      * @return
      * @throws SQLException
      */
-    VIPtag getVIPTagById(int id) throws SQLException;
+    VipLabel getVipLabelById(int id) throws SQLException;
 
     /**
      * 插入VIP用户的标签信息
      *
-     * @param vipTag
+     * @param
      * @return
      * @throws SQLException
      */
-    int insert(VIPtag vipTag) throws SQLException;
+    int insert(VipLabel vipLabel) throws SQLException;
 
     /**
      * 删除VIP用户的标签信息，通过VIP用户的标签编号
@@ -42,10 +42,10 @@ public interface VIPTagService {
     /**
      * 更新VIP标签信息
      *
-     * @param vipTag
+     * @param
      * @return
      */
-    String update(VIPtag vipTag) throws SQLException;
+    String update(VipLabel vipLabel) throws SQLException;
 
     /**
      * 获取用户分页信息
@@ -56,24 +56,17 @@ public interface VIPTagService {
      * @param search_value ： 搜索字段
      * @return
      */
-    PageInfo<VIPtag> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
-
-    /**
-     * 判断VIP标签编号是否公司内部唯一
-     *
-     * @param tag_code  ： 标签编号
-     * @param corp_code ： 公司编号
-     * @return
-     * @throws SQLException
-     */
-    String vipTagCodeExist(String tag_code, String corp_code) throws SQLException;
+    PageInfo<VipLabel> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
 
     /**
      * 判断VIP标签名称是否公司内唯一
+     *
      * @param corp_code ： 公司编号
-     * @param tag_name ： VIP标签名称
+     * @param tag_name  ： VIP标签名称
      * @return
      * @throws SQLException
      */
-    String vipTagNameExist(String corp_code, String tag_name) throws SQLException;
+    String VipLabelNameExist(String corp_code, String tag_name) throws SQLException;
+
+
 }

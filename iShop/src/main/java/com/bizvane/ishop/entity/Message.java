@@ -29,7 +29,7 @@ public class Message {
     //消息类型
     private String type_code;
     private Corp corp;
-    private Message_type message_type;
+    //private Message_type message_type;
 
     public Message() {
     }
@@ -130,11 +130,11 @@ public class Message {
         this.corp = corp;
     }
 
-    public Message_type getMessage_type() {
-        return message_type;
-    }
-
-    public void setMessage_type(Message_type message_type) {
-        this.message_type = message_type;
-    }
+//    public Message_type getMessage_type() {
+//        return message_type;
+//    }
+//
+//    public void setMessage_type(Message_type message_type) {
+//        this.message_type = message_type;
+//    }
 }

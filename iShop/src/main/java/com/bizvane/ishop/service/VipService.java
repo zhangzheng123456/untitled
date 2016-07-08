@@ -12,6 +12,9 @@ import java.sql.SQLException;
  */
 public interface VipService {
 
+
+
+
     /**
      * 获取VIP用户信息
      *

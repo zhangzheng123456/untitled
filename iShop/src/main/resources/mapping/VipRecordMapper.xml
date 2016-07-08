@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.VipCallbackRecordMapper">
+<mapper namespace="com.bizvane.ishop.dao.VipRecordMapper">
 
-    <resultMap id="VipInfos" type="com.bizvane.ishop.entity.VipCallbackRecord">
+    <resultMap id="VipInfos" type="com.bizvane.ishop.entity.VipRecord">
         <id column="id" property="id"/>
         <result column="vip_code" property="vip_code"/>
         <result column="user_code" property="user_code"/>
-        <result column="callback_type" property="callback_type"/>
-        <result column="callback_time" property="callback_time"/>
-        <result column="remark" property="remark"/>
+        <result column="action" property="action"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -23,14 +21,14 @@
         </association>
     </resultMap>
 
-    <select id="selecctById" resultType="com.bizvane.ishop.entity.VipCallbackRecord">
-        select * from DEF_VIP_CALLBACK_RECORD
+    <select id="selecctById" resultType="com.bizvane.ishop.entity.VipRecord">
+        select * from DEF_VIP_RECORD
         WHERE id=#{id}
     </select>
 
 
-    <insert id="insert" parameterType="com.bizvane.ishop.entity.VipCallbackRecord">
-        INSERT INTO DEF_VIP_CALLBACK_RECORD
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.VipRecord">
+        INSERT INTO DEF_VIP_RECORD
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="vip_code!=null and  vip_code!=''">
                 vip_code,
@@ -38,14 +36,9 @@
             <if test="user_code!=null and user_code!=''">
                 user_code ,
             </if>
-            <if test="callback_type!=null and  callback_type!=''">
-                callback_type ,
-            </if>
-            <if test="callback_time!=null">
-                callback_time ,
-            </if>
-            <if test="remark!=null and remark!=''">
-                remark ,
+
+            <if test="action!=null and action!=''">
+                action,
             </if>
             <if test="modified_date!=null">
                 modified_date ,
@@ -70,14 +63,8 @@
             <if test="user_code!=null and user_code!=''">
                 #{user_code},
             </if>
-            <if test="callback_type!=null and  callback_type!=''">
-                #{callback_type},
-            </if>
-            <if test="callback_time!=null">
-                #{callback_time},
-            </if>
-            <if test="remark!=null and remark!=''">
-                #{remark},
+            <if test="action!=null and action!=''">
+                #{action},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -99,17 +86,15 @@
     </insert>
     <delete id="deleteByPrimary">
         DELETE FROM
-        DEF_VIP_CALLBACK_RECORD
+        DEF_VIP_RECORD
         WHERE id=#{id}
     </delete>
-    <select id="selectAllVipCallBackRecordInfo" resultMap="VipInfos">
+    <select id="selectAllVipRecordInfo" resultMap="VipInfos">
         select
         dvc.id ,
         dvc.vip_code ,
         dvc.user_code,
-        dvc.callback_type,
-        dvc.callback_time,
-        dvc.remark,
+        dvc.action,
         dvc.modified_date ,
         dvc.modifier,
         dvc.isactive,
@@ -117,7 +102,7 @@
         dvc.creater,
         dv.vip_name,
         du.user_name
-        from DEF_VIP_CALLBACK_RECORD dvc,DEF_VIP dv,DEF_USER du
+        from DEF_VIP_RECORD dvc,DEF_VIP dv,DEF_USER du
         WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code
         <if test="corp_code!=null and corp_code!=''">
             dvc.corp_code=#{corp_code}
@@ -125,18 +110,16 @@
         <if test="search_value!=null and search_value!=''">
             and (
             dv.vip_name like concat('%',#{search_value},'%')
-            or dvc.callback_type like concat('%',#{search_value},'%')
-            or dvc.callback_time like concat('%',#{search_value},'%')
-            or dvc.remark like concat('%',#{search_value},'%')
             or dvc.modified_date like concat('%',#{search_value},'%')
             or dvc.isactive like concat('%',#{search_value},'%')
+            or dvc.action like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY dvc.id
     </select>
 
-    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipCallbackRecord">
-        update DEF_VIP_CALLBACK_RECORD
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipRecord">
+        update DEF_VIP_RECORD
         <trim prefix="set" suffixOverrides=",">
             <if test="vip_code!=null and  vip_code!=''">
                 vip_code=#{vip_code},
@@ -144,15 +127,11 @@
             <if test="user_code!=null and user_code!=''">
                 user_code=#{user_code},
             </if>
-            <if test="callback_type!=null and  callback_type!=''">
-                callback_type=#{callback_type},
+
+            <if test="action!=null and action!=''">
+                action=#{action},
             </if>
-            <if test="callback_time!=null">
-                callback_time=#{callback_time},
-            </if>
-            <if test="remark!=null and remark!=''">
-                remark=#{remark},
-            </if>
+
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>

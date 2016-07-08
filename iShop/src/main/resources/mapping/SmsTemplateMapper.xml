@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.bizvane.ishop.dao.MessageTemplateMapper">
+<mapper namespace="com.bizvane.ishop.dao.SmsTemplateMapper">
 
-    <resultMap id="MessageTemplates" type="com.bizvane.ishop.entity.MessageTemplate">
+    <resultMap id="MessageTemplates" type="com.bizvane.ishop.entity.SmsTemplate">
         <id column="id" property="id"/>
         <result column="template_code" property="template_code"/>
         <result column="template_name" property="template_name"/>
         <result column="template_content" property="template_content"/>
+        <result column="template_type" property="template_type"/>
         <result column="isactive" property="isactive"/>
         <result column="corp_code" property="corp_code"/>
         <result column="modifier" property="modifier"/>
@@ -15,9 +16,6 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="template_type" property="template_type"/>
-        <association property="message_type" javaType="com.bizvane.ishop.entity.Message_type">
-            <result column="type_name" property="type_name"/>
-        </association>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
@@ -29,17 +27,16 @@
         dmt.template_code,
         dmt.template_name,
         dmt.template_content,
+        dmt.template_type,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
         dmt.modified_date,
         dmt.created_date,
         dmt.creater,
-        dmt.template_type,
-        dmtype.type_name,
         dc.corp_name
-        from def_message_template dmt,def_message_type dmtype,DEF_CORP dc
-        WHERE dmt.template_type=dmtype.template_type and dmt.corp_code=dc.corp_code
+        from def_sms_template dmt,DEF_CORP dc
+        WHERE dmt.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and dmt.corp_code=#{corp_code}
         </if>
@@ -65,6 +62,7 @@
         dmt.template_code,
         dmt.template_name,
         dmt.template_content,
+        dmt.template_type,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
@@ -72,14 +70,13 @@
         dmt.created_date,
         dmt.creater,
         dmt.template_type,
-        dmtype.type_name,
         dc.corp_name
-        from def_message_template dmt,def_message_type dmtype,DEF_CORP dc
-        WHERE dmt.template_type=dmtype.template_type and dmt.corp_code=dc.corp_code  and  dmt.id=#{id}
+        from def_sms_template dmt,DEF_CORP dc
+        WHERE  dmt.corp_code=dc.corp_code  and  dmt.id=#{id}
     </select>
 
-    <insert id="insert" parameterType="com.bizvane.ishop.entity.MessageTemplate">
-        insert into def_message_template
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.SmsTemplate">
+        insert into def_sms_template
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="template_code!=null and template_code!=''">
                 template_code,
@@ -147,8 +144,8 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.MessageTemplate">
-        update def_message_template
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.SmsTemplate">
+        update def_sms_template
         <trim prefix="set" suffixOverrides=",">
             <if test="template_code!=null and template_code!=''">
                 template_code=#{template_code},
@@ -186,15 +183,15 @@
     </update>
 
     <delete id="deleteByPrimaryKey">
-        delete FROM  def_message_template WHERE id=#{id}
+        delete FROM  def_sms_template WHERE id=#{id}
     </delete>
 
-    <select id="selectByName" resultType="com.bizvane.ishop.entity.MessageTemplate">
-        select * from def_message_template WHERE template_name=#{template_name} and corp_code=#{corp_code}
+    <select id="selectByName" resultType="com.bizvane.ishop.entity.SmsTemplate">
+        select * from def_sms_template WHERE template_name=#{template_name} and corp_code=#{corp_code}
     </select>
 
-    <select id="selectByCode" resultType="com.bizvane.ishop.entity.MessageTemplate">
-          select * from def_message_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
+    <select id="selectByCode" resultType="com.bizvane.ishop.entity.SmsTemplate">
+          select * from def_sms_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
     </select>
 
 

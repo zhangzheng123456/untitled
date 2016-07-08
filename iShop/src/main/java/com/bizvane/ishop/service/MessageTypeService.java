@@ -110,7 +110,9 @@ public interface MessageTypeService {
      * @param corp_code
      * @return
      */
-    String messageTypeCodeExist( String corp_code,String type_code);
+    String messageTypeCodeExist(String corp_code, String type_code);
 
-    int selectMessageTemplateCount( String corp_code,String type_code);
+    int selectMessageTemplateCount(String corp_code, String type_code);
+
+    List<Message_type> getMessageTypeByCorp(String corp_code);
 }

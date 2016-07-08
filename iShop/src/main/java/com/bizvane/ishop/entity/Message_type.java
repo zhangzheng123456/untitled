@@ -27,19 +27,11 @@ public class Message_type {
     //企业编号
     private String corp_code;
     private Corp corp;
-    private Message_type message_type;
 
     public Message_type() {
     }
 
 
-    public Message_type getMessage_type() {
-        return message_type;
-    }
-
-    public void setMessage_type(Message_type message_type) {
-        this.message_type = message_type;
-    }
 
     public String getCorp_code() {
         return corp_code;

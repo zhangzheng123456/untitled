@@ -1,17 +1,19 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.MessageTemplate;
-import com.bizvane.ishop.entity.Message_type;
+import com.bizvane.ishop.entity.SmsTemplate;
+import com.bizvane.ishop.entity.VipRecord;
+import com.bizvane.ishop.entity.VipRecordType;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by lixiang on 2016/6/22.
  *
  * @@version
  */
-public interface MessageTemplateService {
+public interface SmsTemplateService {
 
     /**
      * 获取短信模板，通过ID
@@ -20,16 +22,16 @@ public interface MessageTemplateService {
      * @return
      * @throws SQLException
      */
-    MessageTemplate getMessageTemplateById(int id) throws SQLException;
+    SmsTemplate getSmsTemplateById(int id) throws SQLException;
 
     /**
      * 插入短您模板信息
      *
-     * @param messageTemplate
+     * @param SmsTemplate
      * @return
      * @throws SQLException
      */
-    int insert(MessageTemplate messageTemplate) throws SQLException;
+    int insert(SmsTemplate SmsTemplate) throws SQLException;
 
     /**
      * 删除短信模板信息，通过ID
@@ -43,10 +45,10 @@ public interface MessageTemplateService {
     /**
      * 更新短信模板信息，通过ID
      *
-     * @param messageTemplate
+     * @param SmsTemplate
      * @return
      */
-    String update(MessageTemplate messageTemplate) throws SQLException;
+    String update(SmsTemplate SmsTemplate) throws SQLException;
 
     /**
      * 获取分页信息
@@ -57,7 +59,7 @@ public interface MessageTemplateService {
      * @param search_value ：查询信息
      * @return
      */
-    PageInfo<MessageTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
     /**
      * 通过模板编号，判断模板在企业内是否存在
@@ -67,7 +69,7 @@ public interface MessageTemplateService {
      * @return
      * @throws SQLException
      */
-    String messageTemplateExist(String corp_code, String template_code) throws SQLException;
+    String SmsTemplateExist(String corp_code, String template_code) throws SQLException;
 
     /**
      * 通过模板名称，来判断模板名在企业内是否唯一
@@ -77,6 +79,7 @@ public interface MessageTemplateService {
      * @return
      * @throws SQLException
      */
-    String messageTemplateNameExist(String corp_code, String template_name) throws SQLException;
+    String SmsTemplateNameExist(String corp_code, String template_name) throws SQLException;
 
+//    List<VipRecordType> getMessageTypeByCorp(String corp_code, String s);
 }
