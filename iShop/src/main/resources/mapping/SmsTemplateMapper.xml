@@ -72,7 +72,7 @@
         dmt.template_type,
         dc.corp_name
         from def_sms_template dmt,DEF_CORP dc
-        WHERE  dmt.corp_code=dc.corp_code  and  dmt.id=#{id}
+        WHERE  dmt.corp_code=dc.corp_code   and  dmt.id=#{id}
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.SmsTemplate">

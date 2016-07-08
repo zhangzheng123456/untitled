@@ -27,10 +27,27 @@
         </association>
     </resultMap>
 
-    <select id="selecctById" resultType="com.bizvane.ishop.entity.VipRecord">
-        select * from DEF_VIP_RECORD
-        WHERE id=#{id}
-    </select>
+    <select id="selecctById" resultMap="VipInfos">
+        select
+        dvc.id ,
+        dvc.vip_code ,
+        dvc.user_code,
+        dvc.action,
+        dvc.modified_date ,
+        dvc.modifier,
+        dvc.isactive,
+        dvc.created_date ,
+        dvc.creater,
+        dvc.corp_code,
+        dv.vip_name,
+        du.user_name,
+        dc.corp_name,
+        dvrt.type_name
+        from DEF_VIP_RECORD dvc,DEF_VIP dv,DEF_USER du,DEF_VIP_RECORD_TYPE dvrt,DEF_CORP dc
+        WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code and dvc.action=dvrt.type_code and
+        dvc.corp_code=dc.corp_code
+                and dvc.id=#{id}
+     </select>
 
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipRecord">
@@ -120,8 +137,11 @@
         from DEF_VIP_RECORD dvc,DEF_VIP dv,DEF_USER du,DEF_VIP_RECORD_TYPE dvrt,DEF_CORP dc
         WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code and dvc.action=dvrt.type_code and
         dvc.corp_code=dc.corp_code
+        <!--    <if test="id!=null and id!=''">
+                dvc.id=#{id}
+            </if>-->
         <if test="corp_code!=null and corp_code!=''">
-            dvc.corp_code=#{corp_code}
+            and dvc.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             and (
