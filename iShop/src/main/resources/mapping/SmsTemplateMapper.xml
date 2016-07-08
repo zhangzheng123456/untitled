@@ -50,9 +50,9 @@
             or dmt.modified_date like concat('%',#{search_value},'%')
             or dmt.modifier like concat('%',#{search_value},'%')
             )
-            ORDER by dmt.id
-        </if>
 
+        </if>
+        ORDER by dmt.id
 
     </select>
 

@@ -29,7 +29,17 @@ public class SmsTemplate {
     //是否可用
     private String isactive;
 
+    private Corp corp;
+
     public SmsTemplate() {
+    }
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
     }
 
     public int getId() {

@@ -29,6 +29,7 @@ public class VipRecord {
     private User user;
     private Corp corp;
     private VIPInfo vipInfo;
+    private VipRecordType vipRecordType;
 
     public VipRecord() {
     }
@@ -135,5 +136,13 @@ public class VipRecord {
 
     public void setVipInfo(VIPInfo vipInfo) {
         this.vipInfo = vipInfo;
+    }
+
+    public VipRecordType getVipRecordType() {
+        return vipRecordType;
+    }
+
+    public void setVipRecordType(VipRecordType vipRecordType) {
+        this.vipRecordType = vipRecordType;
     }
 }

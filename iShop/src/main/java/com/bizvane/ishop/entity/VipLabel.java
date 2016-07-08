@@ -22,6 +22,8 @@ public class VipLabel {
     private String corp_code;
     private Corp corp;
 
+    public VipLabel() {
+    }
 
     public int getId() {
         return id;
