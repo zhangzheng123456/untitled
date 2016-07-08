@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 
-<mapper namespace="com.bizvane.ishop.dao.VipTagTypeMapper">
+<mapper namespace="com.bizvane.ishop.dao.VipRecordTypeMapper">
 
-    <resultMap id="vipTagTypeInfo" type="com.bizvane.ishop.entity.VipTagType">
+    <resultMap id="VipRecordTypeInfo" type="com.bizvane.ishop.entity.VipRecordType">
         <id column="id" property="id"/>
         <result column="type_code" property="type_code"/>
         <result column="type_name" property="type_name"/>
-        <result column="type_description" property="type_description"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="creater" property="creater"/>
@@ -20,21 +19,18 @@
     </resultMap>
 
 
-    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VipTagType">
-        select * from def_vip_tag_type where  id=#{id}
+    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VipRecordType">
+        select * from def_vip_record_type where  id=#{id}
     </select>
 
-    <insert id="insert" parameterType="com.bizvane.ishop.entity.VipTagType">
-        insert into def_vip_tag_type
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.VipRecordType">
+        insert into def_vip_record_type
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="type_code!=null and type_code!=''">
                 type_code,
             </if>
             <if test="type_name!=null  and type_name!=''">
                 type_name ,
-            </if>
-            <if test="type_description!=null and type_description!=''">
-                type_description ,
             </if>
             <if test="modified_date!=null and modified_date!=''">
                 modified_date ,
@@ -63,9 +59,6 @@
             <if test="type_name!=null  and type_name!=''">
                 #{type_name},
             </if>
-            <if test="type_description!=null and type_description!=''">
-                #{type_description},
-            </if>
             <if test="modified_date!=null and modified_date!=''">
                 #{modified_date} ,
             </if>
@@ -87,17 +80,14 @@
         </trim>
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipTagType">
-        update def_vip_tag_type
+    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipRecordType">
+        update def_vip_record_type
         <trim prefix="set" suffixOverrides=",">
             <if test="type_code!=null and type_code!=''">
                 type_code=#{type_code},
             </if>
             <if test="type_name!=null  and type_name!=''">
                 type_name=#{type_name},
-            </if>
-            <if test="type_description!=null and type_description!=''">
-                type_description=#{type_description},
             </if>
 
             <if test="modified_date!=null and modified_date!=''">
@@ -128,15 +118,14 @@
     </update>
 
     <delete id="deleteByPrimaryKey">
-          delete FROM  def_vip_tag_type WHERE id=#{id}
+          delete FROM  def_vip_record_type WHERE id=#{id}
     </delete>
 
-    <select id="selectAllVipTagType" resultMap="vipTagTypeInfo">
+    <select id="selectAllVipRecordType" resultMap="VipRecordTypeInfo">
         select
         vtt.id,
         vtt.type_code,
         vtt.type_name,
-        vtt.type_description,
         vtt.modified_date,
         vtt.modifier,
         vtt.creater,
@@ -144,14 +133,13 @@
         vtt.isactive,
         vtt.corp_code,
         dc.corp_name
-        FROM def_vip_tag_type vtt,DEF_CORP dc
+        FROM def_vip_record_type vtt,DEF_CORP dc
         WHERE vtt.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and vtt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             and vtt.type_name like concat('%',#{search_value},'%')
-            or vtt.type_description like concat('%',#{search_value},'%')
             or vtt.modified_date like concat('%',#{search_value},'%')
             or vtt.modifier like concat('%',#{search_value},'%')
             or vtt.creater like concat('%',#{search_value},'%')
@@ -161,20 +149,20 @@
         ORDER BY vtt.id
     </select>
 
-    <select id="selectCode" resultMap="vipTagTypeInfo">
+    <select id="selectCode" resultMap="VipRecordTypeInfo">
         select
         *
-        FROM def_vip_tag_type vtt
+        FROM def_vip_record_type vtt
         WHERE
         vtt.corp_code=#{corp_code}
         and
         vtt.type_code=#{type_code}
     </select>
 
-    <select id="selectName" resultType="com.bizvane.ishop.entity.VipTagType">
+    <select id="selectName" resultType="com.bizvane.ishop.entity.VipRecordType">
         select
         *
-        FROM def_vip_tag_type vtt
+        FROM def_vip_record_type vtt
         WHERE
         vtt.corp_code=#{corp_code}
         and

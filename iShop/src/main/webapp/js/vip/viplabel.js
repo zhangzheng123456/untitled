@@ -200,6 +200,8 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
+                        + data[i].tag_code
+                        + "</td><td>"
                         + data[i].tag_name
                         + "</td><td><span>"
                         + data[i].vipTagType.type_name

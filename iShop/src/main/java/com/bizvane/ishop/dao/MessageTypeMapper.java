@@ -31,4 +31,6 @@ public interface MessageTypeMapper {
     String messageTypeCodeExist(@Param("type_code") String type_code, @Param("corp_code") String corp_code);
 
     int selectUserAchvCount(@Param("corp_code") String corp_code, @Param("user_code") String user_code);
+
+//    List<Message_type> selectBySearch(String corp_code, String search_value);
 }

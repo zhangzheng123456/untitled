@@ -141,6 +141,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
+            whir.loading.add("",0.5);//加载等待框
             oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
@@ -157,6 +158,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     }
             });           
         }else if(value!==""){
+            whir.loading.add("",0.5);//加载等待框
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
             oc.postRequire("post","/corp/search","0",param,function(data){
@@ -169,6 +171,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     if(list.length<=0){
                         $(".table p").remove();
                         $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                        whir.loading.remove();//移除加载框
                     }else if(list.length>0){
                         $(".table p").remove();
                         superaddition(list,inx);
@@ -187,8 +190,7 @@ function superaddition(data,num){//页面加载循环
             var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
-        }
-        
+        } 
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -216,6 +218,7 @@ function superaddition(data,num){//页面加载循环
                         +data[i].isactive
                         +"</td></tr>");
     }
+    whir.loading.remove();//移除加载框
 };
 //权限配置
 function jurisdiction(actions){
@@ -232,6 +235,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             // console.log(data);
@@ -327,6 +331,7 @@ $("#search").keydown(function() {
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
+        whir.loading.add("",0.5);//加载等待框
         POST();
     }
 });
@@ -337,6 +342,7 @@ $("#d_search").click(function(){
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     POST();
 })
 //搜索的请求函数
@@ -352,6 +358,7 @@ function POST(){
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,inx);

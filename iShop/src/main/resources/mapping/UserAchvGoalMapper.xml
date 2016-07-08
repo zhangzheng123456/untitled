@@ -50,10 +50,6 @@
         AND ua.id=#{id}
     </select>
 
-    <!--<select id="userAchvGoalExist" resultType="com.bizvane.ishop.entity.UserAchvGoal">-->
-        <!--select * from DEF_USER_ACHV_GOAL WHERE USER_CODE=#{user_code}-->
-    <!--</select>-->
-
     <update id="update" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
         update DEF_USER_ACHV_GOAL
         <trim prefix="set" suffixOverrides=",">
@@ -169,11 +165,10 @@
         </trim>
     </insert>
 
-    <delete id="delelte">
+    <delete id="delete" parameterType="java.lang.Integer">
         DELETE FROM DEF_USER_ACHV_GOAL
         WHERE id=#{id}
     </delete>
-
 
     <select id="selectUserAchvGoalBySearch" resultMap="userAchvGoals">
         select ua.id,
@@ -216,4 +211,51 @@
 
     </select>
 
+    <select id="selectPartUserAchvGoalBySearch" resultMap="userAchvGoals">
+        select ua.id,
+        ua.user_code,
+        u.user_name,
+        ua.store_code,
+        ua.corp_code,
+        ua.user_target,
+        ua.target_type,
+        ua.target_time,
+        ua.modified_date,
+        ua.modifier,
+        ua.created_date,
+        ua.creater,
+        ua.isactive,
+        s.store_name,
+        c.corp_name
+        from
+        DEF_USER_ACHV_GOAL ua,
+        DEF_STORE s,
+        DEF_CORP c,
+        DEF_USER u,DEF_GROUP g
+        WHERE ua.store_code=s.store_code
+        AND ua.corp_code = c.corp_code
+        AND c.corp_code = s.corp_code
+        AND ua.user_code = u.user_code
+        AND u.group_code = g.group_code
+        AND ua.corp_code=#{corp_code}
+        AND g.role_code &lt; #{role_code}
+        AND ua.store_code IN
+        <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="search_value!=null and search_value!=''">
+            AND
+            (u.user_name like concat('%',#{search_value},'%')
+            OR ua.user_code like concat('%',#{search_value},'%')
+            OR s.store_name like concat('%',#{search_value},'%')
+            OR c.corp_name like concat('%',#{search_value},'%')
+            OR ua.user_target like concat('%',#{search_value},'%')
+            OR ua.target_type like concat('%',#{search_value},'%')
+            OR ua.target_time like concat('%',#{search_value},'%')
+            OR ua.MODIFIER like concat('%',#{search_value},'%')
+            OR ua.modified_date like concat('%',#{search_value},'%')
+            )
+        </if>
+
+    </select>
 </mapper>

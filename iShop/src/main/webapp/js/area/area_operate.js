@@ -90,7 +90,7 @@ var oc = new ObjectControl();
 				return;
 			}
 		});
-		$(".areaedit_oper_btn ul li:nth-of-type(1)").click(function(){
+		$("#edit_save").click(function(){
 			var codeMark=$("#AREA_ID").attr("data-mark");//区域名称是否唯一的标志
 			var nameMark=$("#AREA_NAME").attr("data-mark");//区域编号是否唯一的标志
 			if(areajs.firstStep()){
@@ -267,7 +267,7 @@ jQuery(document).ready(function(){
 	$(".areaadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/area/area.html");
 	});
-	$(".areaedit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/area/area.html");
 	});
 });

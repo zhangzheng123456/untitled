@@ -56,6 +56,7 @@ var oc = new ObjectControl();
 			if(viplabeljs.firstStep()){
 				// var CORPID=$("#CORPID").val();
 				var OWN_CORP=$("#OWN_CORP").val();
+				var LABEL_CODE=$("#LABEL_CODE").val();
 				var LABEL_NAME=$("#LABEL_NAME").val();
 				var LABEL_TYPE=$("#LABEL_TYPE").val();
 				// var check_per=$("#check_per").val();
@@ -71,7 +72,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"type_code":LABEL_TYPE,"isactive":ISACTIVE};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -82,6 +83,7 @@ var oc = new ObjectControl();
 				var ID=sessionStorage.getItem("id");
 
 				var OWN_CORP=$("#OWN_CORP").val();
+				var LABEL_CODE=$("#LABEL_CODE").val();
 				var LABEL_NAME=$("#LABEL_NAME").val();
 				var LABEL_TYPE=$("#LABEL_TYPE").val();
 
@@ -101,7 +103,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"tag_name":LABEL_NAME,"tag_type":LABEL_TYPE,"isactive":ISACTIVE};
+				var _params={"id":ID,"corp_code":OWN_CORP,"tag_code":LABEL_CODE,"tag_name":LABEL_NAME,"type_code":LABEL_TYPE,"isactive":ISACTIVE};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -180,6 +182,7 @@ jQuery(document).ready(function(){
 				// var LABEL_NAME=$("#LABEL_NAME").val(msg.role_name);
 				// var LABEL_TYPE=$("#LABEL_TYPE").val(msg.remark);
 				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
+				var LABEL_CODE=$("#LABEL_CODE").val(msg.tag_code);
 				var LABEL_NAME=$("#LABEL_NAME").val(msg.tag_name);
 				var LABEL_TYPE=$("#LABEL_TYPE").val(msg.vipTagType.type_name);
 				// var check_per=$("#check_per").val(msg.check_per);
@@ -192,6 +195,7 @@ jQuery(document).ready(function(){
 				var modifier=$("#modifier").val(msg.modifier);			
 
 				$("#OWN_CORP").val(msg.corp_code);
+				$("#LABEL_CODE").val(msg.tag_code);
 				$("#LABEL_NAME").val(msg.tag_name);
 		/*		$("#LABEL_TYPE").val(msg.vipTagType.type_name);*/
 				/*$("#LABEL_TYPE").append(msg.vipTagType.type_name);*/
@@ -221,7 +225,6 @@ jQuery(document).ready(function(){
 			}
 		});
 	}
-
 //获取企业信息列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -258,13 +261,10 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
 });
-
-
-
 $(document).ready(function(){
 	$("#LABEL_TYPE").click(function(){
 		var _command="/VIP/label/getTypes";
-		var _params={"id":"test","corp_code":$("#OWN_CORP").val()};;
+		var _params={"id":"test","tag_type":$("#LABEL_TYPE").val()};;
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -286,20 +286,6 @@ $(document).ready(function(){
 						content:data.message
 					})
 			}
-		 // $.get("/user/getCorpByUser",function(data,status){
-		 // 	alert("数据："+data+"\n状态:"+status);
 		 });
 	});
 });
-
-
-//     $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/achv/roles.html");
-// 	});
-// 	$("#che").click(function(){
-// 		$(window.parent.document).find('#iframepage').attr("src","/user/rolecheck_power.html");
-// 	})
-// });

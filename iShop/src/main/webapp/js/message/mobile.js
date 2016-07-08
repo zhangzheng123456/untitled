@@ -200,15 +200,13 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].tem_name
+                        + data[i].template_name
+                        + "</td><td>"
+                        + data[i].template_content
                         + "</td><td><span>"
-                        + data[i].tem_content
-                        // + "</td><td>"
-                        // + data[i].tem_type
-                        + "</td><td>"
-                        + data[i].message_type.type_name
-                        + "</td><td>"
-                        + data[i].corp.corp_name
+                        + data[i].template_type
+                        + "</span></td><td>"
+                        + data[i].corp_code
                         +"</td><td>"
                         +data[i].modifier
                         + "</td><td>"

@@ -190,6 +190,16 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
+        var time_type="";
+        if(data[i].target_type=="D"){
+            time_type="日";
+        }else if(data[i].target_type=="Y"){
+            time_type="年";
+        }else if(data[i].target_type=="W"){
+            time_type="周";
+        }else if(data[i].target_type=="M"){
+            time_type="月";
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -200,17 +210,17 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].user_code
+                        + data[i].user.user_code
                         + "</td><td>"
-                        + data[i].user_name
+                        + data[i].user.user_name
                         + "</td><td>"
                         + data[i].store.store_name
                         +"</td><td>"
-                        + data[i].achv_goal
+                        + data[i].user_target
                         +"</td><td>"
-                        + data[i].achv_type
+                        + time_type
                         +"</td><td>"
-                        + data[i].end_time
+                        + data[i].target_time
                         +"</td><td>"
                         +data[i].modifier
                         + "</td><td>"
@@ -230,13 +240,6 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
-            //双击跳转
-            $(".table tbody tr").dblclick(function(){
-                var id=$(this).attr("id");
-                sessionStorage.setItem("id",id);
-                console.log(id);
-                $(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal_add.html");
-            })
         }
     }
 }
@@ -303,6 +306,13 @@ function jumpBianse(){
             frame();
             $('.frame').html("不能选择多个");
         }
+    })
+     //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        console.log(id);
+        $(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal_edit.html");
     })
     //删除
     $("#remove").click(function(){

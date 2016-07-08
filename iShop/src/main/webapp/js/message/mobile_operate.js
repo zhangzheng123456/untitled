@@ -54,8 +54,8 @@ var oc = new ObjectControl();
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
 			if(mobilejs.firstStep()){
 				// var CORPID=$("#CORPID").val();
-				var OWN_CORP=$("#OWN_CORP").val();
-				var MOBAN_ID=$("#MOBAN_ID").val();
+				var OWN_CORP=$("#OWN_CORP").val();//企业编号
+				var MOBAN_ID=$("#MOBAN_ID").val();//
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();
@@ -72,7 +72,7 @@ var oc = new ObjectControl();
 					success:function(){
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"tem_code":MOBAN_ID,"tem_content":MOBAN_CONTENT,"tem_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
+				var _params={"corp_code":OWN_CORP,"template_code;":MOBAN_ID,"template_content":MOBAN_CONTENT,"template_name":MOBAN_NAME,"type_code":MOBAN_TYPE,"isactive":ISACTIVE};
 				mobilejs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;

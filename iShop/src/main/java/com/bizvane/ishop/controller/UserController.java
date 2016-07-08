@@ -155,27 +155,14 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
                 list = userService.selectBySearch(request,page_number, page_size, corp_code, "");
-            } else if (role_code.equals(Common.ROLE_STAFF)) {
-                //员工
-                User user = userService.getUserById(user_id);
-                List<User> users = new ArrayList<User>();
-                users.add(user);
-                list = new PageInfo<User>();
-                list.setList(users);
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
                 list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code,"", role_code);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
             }else if (role_code.equals(Common.ROLE_AM)){
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 list = userService.selectBySearchPart(page_number, page_size, corp_code, "","",area_code, role_code);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -635,13 +622,24 @@ public class UserController {
 
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<User> list;
+            PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = userService.selectBySearch(request,page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = userService.selectBySearch(request,page_number, page_size, corp_code, search_value);
+                if (role_code.equals(Common.ROLE_GM)) {
+                    //企业管理员
+                    list = userService.selectBySearch(request, page_number, page_size, corp_code, search_value);
+                } else if (role_code.equals(Common.ROLE_SM)) {
+                    //店长
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", role_code);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    //区经
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, "", area_code, role_code);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

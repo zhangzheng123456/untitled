@@ -262,7 +262,7 @@ function jumpBianse(){
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
+        sessionStorage.setItem("id",id);//把id好保存到本地
         console.log(id);
         $(window.parent.document).find('#iframepage').attr("src","/shop/shop_edit.html");
     })

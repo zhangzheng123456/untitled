@@ -64,10 +64,16 @@ public class UserAchvGoalControl {
             int page_number = Integer.parseInt(request.getParameter("pageNumber").toString());
             int page_size = Integer.parseInt(request.getParameter("pageSize").toString());
             PageInfo<UserAchvGoal> pages = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 pages = userAchvGoalService.selectBySearch(page_number, page_size, "", "");
-            } else {
+            } else if (role_code.equals(Common.ROLE_GM)){
                 pages = this.userAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
+            }else if (role_code.equals(Common.ROLE_AM)){
+                String area_code = request.getSession(false).getAttribute("area_code").toString();
+                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "","",area_code,Common.ROLE_AM);
+            }else if (role_code.equals(Common.ROLE_SM)){
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "",store_code,"",Common.ROLE_SM);
             }
             result.put("list", JSON.toJSONString(pages));
             result.put("actions", actions);
@@ -96,11 +102,13 @@ public class UserAchvGoalControl {
     @Transactional
     public String editUserAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getAttribute("user_id").toString();
-        String id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_id").toString();
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObject = JSONObject.parseObject(jsString);
+            id = jsonObject.get("id").toString();
+            String message = jsonObject.get("message").toString();
+            JSONObject jsonObj = JSONObject.parseObject(message);
 
             UserAchvGoal userAchvGoal = new UserAchvGoal();
             userAchvGoal.setId(Integer.parseInt(jsonObj.get("id").toString()));
@@ -155,7 +163,10 @@ public class UserAchvGoalControl {
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String user_id = jsonObj.get("id").toString();
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String user_id = jsonObject.get("id").toString();
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 userAchvGoalService.deleteUserAchvGoalById(ids[i]);
@@ -197,7 +208,6 @@ public class UserAchvGoalControl {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             UserAchvGoal userAchvGoal = new UserAchvGoal();
-            userAchvGoal.setId(Integer.parseInt(jsonObject.get("id").toString()));
             userAchvGoal.setCorp_code(jsonObject.get("corp_code").toString());
             userAchvGoal.setStore_code(jsonObject.get("store_code").toString());
             userAchvGoal.setUser_code(jsonObject.get("user_code").toString());
@@ -217,7 +227,7 @@ public class UserAchvGoalControl {
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setCreater(user_id);
             userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
+            userAchvGoal.setIsactive(jsonObject.get("isactive").toString());
 
             userAchvGoalService.insert(userAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -281,13 +291,21 @@ public class UserAchvGoalControl {
             String search_value = jsonObject.get("searchValue").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<UserAchvGoal> list;
+            PageInfo<UserAchvGoal> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 //系统管理员
                 list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
+                if (role_code.equals(Common.ROLE_GM)){
+                    list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
+                }else if (role_code.equals(Common.ROLE_AM)){
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value,"",area_code,Common.ROLE_AM);
+                }else if (role_code.equals(Common.ROLE_SM)){
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value,store_code,"",Common.ROLE_SM);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

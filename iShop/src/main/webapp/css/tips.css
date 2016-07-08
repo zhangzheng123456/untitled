@@ -79,3 +79,8 @@
 #add_power{
 	background-color: #ddd;
 }
+/*********日期后面下来样式**************/
+#year,#month{
+	background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+    background-size: 30px 30px;
+}

@@ -90,7 +90,7 @@ var oc = new ObjectControl();
 				return;
 			}
 		});
-		$(".brandedit_oper_btn ul li:nth-of-type(1)").click(function(){
+		$("#edit_save").click(function(){
 			var nameMark=$("#BRAND_NAME").attr("data-mark");//品牌编号是否唯一的标志
 			var codeMark=$("#BRAND_ID").attr("data-mark");//品牌名称是否唯一的标志
 			if(brandjs.firstStep()){
@@ -264,7 +264,8 @@ jQuery(document).ready(function(){
 	$(".brandadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
-	$(".brandedit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){
+		sessionStorage.removeItem("edit");//点击关闭按钮移除标志
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
 });

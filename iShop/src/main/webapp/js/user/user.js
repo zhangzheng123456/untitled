@@ -11,7 +11,6 @@ var funcCode=key_val.func_code;
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
-
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
             }else{  
@@ -151,7 +150,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
-                        superaddition(list);
+                        superaddition(list,inx);
                         jumpBianse();
                     }else if(data.code=="-1"){
                         // alert(data.message);
@@ -187,9 +186,16 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
 function superaddition(data,num){
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
-            var a=i+num*pageSize;
+            var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
+        }
+        var avatar="";
+        if(data[i].avatar==undefined){
+            avatar="../img/a3.jpg";
+        }
+        if(data[i].avatar!==""&&data[i].avatar!==undefined){
+            avatar=data[i].avatar;
         }
         if(data[i].sex=="F"){
             $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -203,7 +209,7 @@ function superaddition(data,num){
                         + a
                         +"</td><td>"
                         + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
+                        + "</td><td><img src='"+avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
@@ -236,7 +242,7 @@ function superaddition(data,num){
                         + a
                         +"</td><td>"
                         + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
+                        + "</td><td><img src='"+avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
@@ -269,7 +275,7 @@ function superaddition(data,num){
                         + a
                         +"</td><td>"
                         + data[i].user_code
-                        + "</td><td><img src='"+data[i].avatar+"' alt=''>"
+                        + "</td><td><img src='"+avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"

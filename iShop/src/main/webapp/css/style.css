@@ -7566,6 +7566,7 @@ body.skin-3 {
     border-radius: 4px;
     font-size: 14px;
     letter-spacing: 10px;
+    cursor: pointer;
 }
 .editor_detail_em ul li:nth-of-type(odd) {
     background: #6dc1c8;

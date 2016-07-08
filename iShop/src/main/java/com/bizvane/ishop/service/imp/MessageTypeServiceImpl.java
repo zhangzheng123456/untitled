@@ -52,7 +52,7 @@ public class MessageTypeServiceImpl implements MessageTypeService {
     @Override
     public PageInfo<Message_type> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         PageHelper.startPage(page_number, page_size);
-        //List<Message_type> list = this.messageTypeMapper.selectBySearch(corp_code, search_value);
+        // List<Message_type> list = this.messageTypeMapper.selectBySearch(corp_code, search_value);
         List<Message_type> list = this.messageTypeMapper.selectAllMessage_type(corp_code, search_value);
         PageInfo<Message_type> page = new PageInfo<Message_type>(list);
         return page;
@@ -60,7 +60,6 @@ public class MessageTypeServiceImpl implements MessageTypeService {
 
     @Override
     public String MessageTypeCodeExist(String corp_code, String type_code) {
-
         Message_type message_type = this.messageTypeMapper.selectCode(corp_code, type_code);
         String result = Common.DATABEAN_CODE_ERROR;
         if (message_type == null) {
@@ -121,11 +120,11 @@ public class MessageTypeServiceImpl implements MessageTypeService {
     }
 
 
-//    @Override
-//    public List<Message_type> getMessageTypeByCorp(String corp_code) {
-//
-//        return this.messageTypeMapper.selectAllMessage_type(corp_code, "");
-//    }
+    @Override
+    public List<Message_type> getMessageTypeByCorp(String corp_code) {
+
+        return this.messageTypeMapper.selectAllMessage_type(corp_code, "");
+    }
 
 
 }
