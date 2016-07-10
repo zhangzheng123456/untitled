@@ -1,5 +1,7 @@
 package com.bizvane.ishop.entity;
 
+import org.apache.velocity.Template;
+
 /**
  * Created by lixiang on 2016/6/22.
  *
@@ -16,6 +18,8 @@ public class SmsTemplate {
     private String template_content;
     //模板类型
     private String template_type;
+    private TemplateType templateType;
+
     //企业编号
     private String corp_code;
     //修改日期
@@ -124,6 +128,14 @@ public class SmsTemplate {
 
     public String getIsactive() {
         return isactive;
+    }
+
+    public TemplateType getTemplateType() {
+        return templateType;
+    }
+
+    public void setTemplateType(TemplateType templateType) {
+        this.templateType = templateType;
     }
 
     public void setIsactive(String isactive) {
