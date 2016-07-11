@@ -1,7 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 2016/5/24.
  */
@@ -30,8 +28,8 @@ public class Function {
     private String creater;
     //是否可用
     private String isactive;
-    //管理员拥有功能
-    private String admin_func;
+    //列表显示顺序
+    private String show_order;
 
     public int getId() {
         return id;
@@ -137,11 +135,11 @@ public class Function {
         this.isactive = isactive;
     }
 
-    public String getAdmin_func() {
-        return admin_func;
+    public String getShow_order() {
+        return show_order;
     }
 
-    public void setAdmin_func(String admin_func) {
-        this.admin_func = admin_func;
+    public void setShow_order(String show_order) {
+        this.show_order = show_order;
     }
 }

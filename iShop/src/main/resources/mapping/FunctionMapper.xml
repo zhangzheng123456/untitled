@@ -12,9 +12,10 @@
         and enable = 'Y'
         and isactive = 'Y')
         and ISACTIVE = 'Y'
-        order by FUNCTION_CODE
+        AND show_order IS NOT NULL
+        AND show_order != ""
+        order by show_order
     </select>
-
 
     <select id="selectActionByFun" resultType="com.bizvane.ishop.entity.Action">
        select *
@@ -30,7 +31,6 @@
         and ISACTIVE = 'Y'
         order by ACTION_CODE
     </select>
-
 
     <select id="selectRolePrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
@@ -99,7 +99,6 @@
         AND b.ISACTIVE = 'Y'
         order by a.FUNCTION_CODE
     </select>
-
 
     <insert id="insertFunction" parameterType="com.bizvane.ishop.entity.Function">
         insert into DEF_FUNCTION

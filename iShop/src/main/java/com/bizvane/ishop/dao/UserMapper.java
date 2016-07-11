@@ -30,6 +30,8 @@ public interface UserMapper {
 
     User selectUserById(int user_id);
 
+    User selectById(int user_id);
+
     List<User> selectStoreUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
 //    User selectUserName(@Param("user_name") String user_name, @Param("corp_oode") String corp_code);

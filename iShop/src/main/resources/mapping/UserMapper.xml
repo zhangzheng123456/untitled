@@ -163,6 +163,12 @@
         AND DEF_USER.ID = #{user_id}
     </select>
 
+    <select id="selectById" resultType="com.bizvane.ishop.entity.User">
+        select *
+        from DEF_USER
+        where  DEF_USER.ID = #{user_id}
+    </select>
+
     <select id="selectByPhone" resultMap="BaseMap">
         select *
         from DEF_USER

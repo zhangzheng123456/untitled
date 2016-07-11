@@ -17,6 +17,8 @@ public interface UserService {
 
     User getUserById(int id) throws SQLException;
 
+    User getById(int id) throws SQLException;
+
     String insert(User user) throws SQLException;
 
     String update(User user) throws SQLException;

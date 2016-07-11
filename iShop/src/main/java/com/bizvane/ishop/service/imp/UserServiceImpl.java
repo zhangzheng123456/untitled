@@ -158,6 +158,9 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public User getById(int id) throws SQLException{
+        return userMapper.selectById(id);
+    }
     /**
      * 群组管理
      * 查看用户名单

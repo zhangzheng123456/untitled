@@ -295,12 +295,41 @@ public class LoginController {
 
             User user = userService.getUserById(Integer.parseInt(user_id));
             menu = functionService.selectAllFunctions(corp_code + user_code, corp_code + group_code, role_code);
-            request.getSession().setAttribute("menu", menu);
             menus.put("menu", menu);
             menus.put("user_type", user_type);
             menus.put("role_code", role_code);
             menus.put("avatar", user.getAvatar());
             menus.put("user_name", user.getUser_name());
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(menus.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 获取详细画面权限
+     */
+    @RequestMapping(value = "/detail", method = RequestMethod.GET)
+    @ResponseBody
+    public String detailAction(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject menus = new JSONObject();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String function_code = request.getParameter("funcCode");
+
+            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+
+            menus.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());

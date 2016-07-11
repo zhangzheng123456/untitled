@@ -32,19 +32,14 @@ public class FunctionServiceImpl implements FunctionService {
     PrivilegeMapper privilegeMapper;
 
     /**
-     * 获取user所有功能模块
+     * 获取user所有列表功能模块
      */
     public JSONArray selectAllFunctions(String user_code, String group_code, String role_code) {
         List<Function> func_info;
-//        if (user_id == 0 && role_code.equals("")) {
-//            //获取所有功能模块(系统管理员)
-//            func_info = functionMapper.selectAll();
-//        } else {
+
         //获取user所有功能模块
         func_info = functionMapper.selectAllFun(user_code, group_code, role_code);
-        //       }
         JSONArray modules = new JSONArray();
-        String uri;
         for (int i = 0; i < func_info.size(); i++) {
             String module = func_info.get(i).getModule_name();
             String func = func_info.get(i).getFunction_name();
@@ -103,7 +98,6 @@ public class FunctionServiceImpl implements FunctionService {
         }
         return modules;
     }
-
 
     /**
      * 获取用户所有动作权限
@@ -243,6 +237,10 @@ public class FunctionServiceImpl implements FunctionService {
         return array;
     }
 
+    /**
+     * 更新（用户/群组/角色）的权限
+     *
+     */
     public String updatePrivilege(String master_code, String user_id, JSONArray array) {
         try {
             Date now = new Date();
