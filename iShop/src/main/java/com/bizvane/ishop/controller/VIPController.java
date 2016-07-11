@@ -962,7 +962,7 @@ public class VIPController {
      * 回访记录管理
      * 查找
      */
-    @RequestMapping(value = "/callback/find", method = RequestMethod.GET)
+    @RequestMapping(value = "/callback/find", method = RequestMethod.POST)
     @ResponseBody
     public String findCallBack(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

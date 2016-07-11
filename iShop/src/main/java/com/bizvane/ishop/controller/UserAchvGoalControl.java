@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.Random;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -66,14 +67,14 @@ public class UserAchvGoalControl {
             PageInfo<UserAchvGoal> pages = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 pages = userAchvGoalService.selectBySearch(page_number, page_size, "", "");
-            } else if (role_code.equals(Common.ROLE_GM)){
+            } else if (role_code.equals(Common.ROLE_GM)) {
                 pages = this.userAchvGoalService.selectBySearch(page_number, page_size, corp_code, "");
-            }else if (role_code.equals(Common.ROLE_AM)){
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
-                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "","",area_code,Common.ROLE_AM);
-            }else if (role_code.equals(Common.ROLE_SM)){
+                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, Common.ROLE_AM);
+            } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "",store_code,"",Common.ROLE_SM);
+                pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", Common.ROLE_SM);
             }
             result.put("list", JSON.toJSONString(pages));
             result.put("actions", actions);
@@ -159,7 +160,7 @@ public class UserAchvGoalControl {
     @Transactional
     public String deleteUserAchvGoalById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String id = "";
+        String id  = "";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -252,6 +253,7 @@ public class UserAchvGoalControl {
         DataBean dataBean = new DataBean();
         String data = null;
         try {
+
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
@@ -297,14 +299,14 @@ public class UserAchvGoalControl {
                 list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM)){
+                if (role_code.equals(Common.ROLE_GM)) {
                     list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
-                }else if (role_code.equals(Common.ROLE_AM)){
+                } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value,"",area_code,Common.ROLE_AM);
-                }else if (role_code.equals(Common.ROLE_SM)){
+                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value, "", area_code, Common.ROLE_AM);
+                } else if (role_code.equals(Common.ROLE_SM)) {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
-                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value,store_code,"",Common.ROLE_SM);
+                    list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", Common.ROLE_SM);
                 }
             }
             result.put("list", JSON.toJSONString(list));

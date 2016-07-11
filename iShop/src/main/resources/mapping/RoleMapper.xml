@@ -131,4 +131,11 @@
         DEF_ROLE
         where ID = #{id}
     </delete>
+    <select id="countRoleCode" resultType="java.lang.Integer">
+        select count(*) from def_role where role_code=#{role_code}
+    </select>
+
+    <select id="countRoleName" resultType="java.lang.Integer">
+        select count(*) from def_role where role_name=#{role_name}
+    </select>
 </mapper>

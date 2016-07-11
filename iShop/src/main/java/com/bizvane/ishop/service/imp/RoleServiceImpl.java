@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.RoleMapper;
 import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.service.RoleService;
@@ -26,12 +27,47 @@ public class RoleServiceImpl implements RoleService {
         return roleMapper.selectByRoleId(role_id);
     }
 
-    public int insertRole(Role record) throws SQLException {
-        return roleMapper.insertRole(record);
+    @Override
+    public String insertRole(Role record) throws SQLException {
+        if (this.roleCodeExist(record.getRole_code()).equals(Common.DATABEAN_CODE_ERROR)) {
+            return "角色编号已存在!";
+        } else if (this.roleNameExist(record.getRole_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+            return "角色名称已存在!";
+        } else if (roleMapper.insertRole(record) >= 0) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
-    public int updateByRoleId(Role record) throws SQLException {
-        return roleMapper.updateByRoleId(record);
+
+    @Override
+    public String roleCodeExist(String role_code) {
+        if (roleMapper.countRoleCode(role_code) > 0) {
+            return Common.DATABEAN_CODE_ERROR;
+        }
+        return Common.DATABEAN_CODE_SUCCESS;
+    }
+
+    @Override
+    public String roleNameExist(String role_name) throws SQLException {
+        if (roleMapper.countRoleName(role_name) > 0) {
+            return Common.DATABEAN_CODE_ERROR;
+        }
+        return Common.DATABEAN_CODE_SUCCESS;
+    }
+
+
+    public String updateByRoleId(Role record) throws SQLException {
+        Role old = this.roleMapper.selectByRoleId(record.getId());
+        if ((!old.getRole_code().equals(record.getRole_code()))
+                && (this.roleCodeExist(record.getRole_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "角色编号已存在!";
+        } else if (!old.getRole_name().equals(record.getRole_name()) && (this.roleNameExist(record.getRole_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+            return "角色名称已存在!";
+        } else if (roleMapper.insertRole(record) >= 0) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
     public int deleteByRoleId(int id) throws SQLException {

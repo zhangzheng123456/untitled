@@ -69,7 +69,7 @@ public class RoleController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code+user_code,corp_code+group_code, role_code, function_code);
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Role> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -100,8 +100,8 @@ public class RoleController {
         String id = "";
         try {
             String user_id = request.getSession(false).getAttribute("user_id").toString();
-           // String jsString = request.getSession(false).getAttribute("param").toString();
-            String jsString=request.getParameter("param");
+            // String jsString = request.getSession(false).getAttribute("param").toString();
+            String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -117,11 +117,16 @@ public class RoleController {
             role1.setCreated_date(Common.DATETIME_FORMAT.format(now));
             role1.setCreater(user_id);
             role1.setIsactive(jsonObject.get("isactive").toString());
-
-            roleService.insertRole(role1);
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("add role success !!!!");
+            String result = roleService.insertRole(role1);
+            if (!result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("add role success !!!!");
+            }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -155,7 +160,7 @@ public class RoleController {
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("角色"+role_code+"下有所属群组，请先处理角色下群组再删除！");
+                    dataBean.setMessage("角色" + role_code + "下有所属群组，请先处理角色下群组再删除！");
                     return dataBean.getJsonStr();
                 }
             }
@@ -174,7 +179,8 @@ public class RoleController {
     @RequestMapping(value = "/role/select", method = RequestMethod.POST)
     @ResponseBody
     public String editbefore(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();      String id = "";
+        DataBean dataBean = new DataBean();
+        String id = "";
         try {
 
             String user_id = request.getSession(false).getAttribute("user_id").toString();
@@ -191,8 +197,8 @@ public class RoleController {
 
             int privilege_count = role_privilege.size();
             JSONObject result = new JSONObject();
-            result.put("data",JSON.toJSONString(role));
-            result.put("privilege_count",privilege_count);
+            result.put("data", JSON.toJSONString(role));
+            result.put("privilege_count", privilege_count);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
@@ -269,11 +275,11 @@ public class RoleController {
             String login_group_code = request.getSession().getAttribute("group_code").toString();
 
             String search_value = "";
-            if (jsonObject.has("searchValue")){
+            if (jsonObject.has("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code+login_user_code, login_corp_code+login_group_code,search_value);
+            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code, search_value);
 
             String role_code = jsonObject.get("role_code").toString();
             //获取群组角色的权限
