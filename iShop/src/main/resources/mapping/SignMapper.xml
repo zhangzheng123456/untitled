@@ -15,6 +15,7 @@
         AND DEF_USER.corp_code = DEF_CORP.corp_code
         AND DEF_USER.corp_code = DEF_GROUP.corp_code
         AND DEF_USER.user_code = acc_sign.user_code
+        AND acc_sign.STATUS !='1'
         <if test="corp_code != null and corp_code !=''">
             AND DEF_USER.CORP_CODE = #{corp_code}
         </if>
@@ -46,6 +47,7 @@
         AND DEF_USER.corp_code = DEF_CORP.corp_code
         AND DEF_USER.corp_code = DEF_GROUP.corp_code
         AND DEF_USER.user_code = acc_sign.user_code
+        AND acc_sign.STATUS !='1'
         AND DEF_USER.CORP_CODE = #{corp_code}
         AND DEF_GROUP.role_code &lt; #{role_code}
         AND

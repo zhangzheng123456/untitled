@@ -68,6 +68,7 @@ public class SignController {
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 list = signService.selectSignByInp(page_number, page_size, corp_code, "","",area_code, role_code);
             }
+          //  System.out.println(list.getList().get(0).getSign_time()+"---"+list.getList().get(0).getUser_code());
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
