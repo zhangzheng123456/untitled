@@ -48,11 +48,8 @@
         dmt.created_date,
         dmt.creater,
         dc.corp_name,
-<<<<<<< HEAD
-        dmt.type_name
-=======
-        dtt.type_name
->>>>>>> ab1c752ecb366f25799b922460ca904d34932fcd
+        dmt.type_name,
+        dtt.type_name,
         from def_sms_template dmt,DEF_CORP dc,def_template_type dtt
         WHERE dmt.corp_code=dc.corp_code and dtt.id=dmt.template_type
         <if test="corp_code!=null and corp_code!=''">
@@ -89,16 +86,11 @@
         dmt.created_date,
         dmt.creater,
         dc.corp_name,
-<<<<<<< HEAD
         dmt.type_name
         from def_sms_template dmt,DEF_CORP dc,def_template_type dtt
         WHERE dmt.corp_code=dc.corp_code and dtt.id=dmt.template_type and dmt.id=#{id}
-=======
-        dtt.type_name
-        from def_sms_template dmt,DEF_CORP dc,def_template_type dtt
-        WHERE dmt.corp_code=dc.corp_code and dtt.type_code=dmt.template_type and dmt.id=#{id}
->>>>>>> ab1c752ecb366f25799b922460ca904d34932fcd
-    </select>
+         dtt.type_name
+          </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.SmsTemplate">
         insert into def_sms_template
