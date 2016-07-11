@@ -579,7 +579,7 @@ public class MessageController {
                 String type_code = message_type.getType_code();
                 String type_name = message_type.getType_name();
                 JSONObject obj = new JSONObject();
-                obj.put("type_code", type_code);
+                obj.put("id", type_code);
                 obj.put("type_name", type_name);
                 messageTypes.add(obj);
             }
@@ -823,7 +823,7 @@ public class MessageController {
                 String type_code = String.valueOf(list.get(i).getId());
                 String type_name = list.get(i).getType_name();
                 json = new com.alibaba.fastjson.JSONObject();
-                json.put("type_code", type_code);
+                json.put("id", type_code);
                 json.put("type_name", type_name);
                 array.add(json);
             }
