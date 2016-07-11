@@ -240,10 +240,16 @@ public class RoleController {
             role1.setModifier(user_id);
             role1.setIsactive(jsonObject.get("isactive").toString());
 
-            roleService.updateByRoleId(role1);
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("edit success !!! ");
+            String result = roleService.updateByRoleId(role1);
+            if (!result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result);
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success !!! ");
+            }
         } catch (Exception ex) {
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
