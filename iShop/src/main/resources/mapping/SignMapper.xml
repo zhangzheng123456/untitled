@@ -41,7 +41,7 @@
         acc_sign.STATUS,
         acc_sign.SIGN_TIME,
         acc_sign.ISACTIVE
-        from DEF_USER,DEF_GROUP,DEF_CORP
+        from DEF_USER,DEF_GROUP,DEF_CORP,acc_sign
         where DEF_USER.group_code = DEF_GROUP.group_code
         AND DEF_USER.corp_code = DEF_CORP.corp_code
         AND DEF_USER.corp_code = DEF_GROUP.corp_code
@@ -50,7 +50,7 @@
         AND DEF_GROUP.role_code &lt; #{role_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            store_code regexp #{item}
+            DEF_USER.store_code regexp #{item}
         </foreach>
 
         <if test="search_value != null and search_value !=''">
