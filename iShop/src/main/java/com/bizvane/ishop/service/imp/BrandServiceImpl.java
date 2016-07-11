@@ -91,7 +91,12 @@ public class BrandServiceImpl implements BrandService {
         }
         return result;
     }
-
+    @Override
+    @Transactional
+    public String insertExecl(Brand brand){
+        brandMapper.insertBrand(brand);
+        return "add success";
+    }
     @Override
     @Transactional
     public  String update(String message,String user_id) throws SQLException {

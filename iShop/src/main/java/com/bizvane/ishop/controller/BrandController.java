@@ -7,18 +7,31 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.BrandService;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.github.pagehelper.PageInfo;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -36,7 +49,8 @@ public class BrandController {
     private BrandService brandService;
     @Autowired
     private FunctionService functionService;
-
+    @Autowired
+    private TableManagerService managerService;
     private static final Logger logger = Logger.getLogger(BrandController.class);
 
 
@@ -331,6 +345,144 @@ public class BrandController {
         }
         return dataBean.getJsonStr();
     }
-
-
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            PageInfo<Brand> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = brandService.getAllBrandByPage(1, 10000, "", "");
+            } else {
+                list = brandService.getAllBrandByPage(1, 10000, corp_code, "");
+            }
+            List<Brand> brands = list.getList();
+            String column_name = jsonObject.get("column_name").toString();
+            String[] cols = column_name.split(",");//前台传过来的字段
+            OutExeclHelper.OutExecl(brands,cols,response);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("word success");
+        }catch (Exception e){
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(e.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * Execl增加用户
+     */
+    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional()
+    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
+        DataBean dataBean = new DataBean();
+        //创建你要保存的文件的路径
+        String path = request.getSession().getServletContext().getRealPath("lupload");
+        //获取该文件的文件名
+        String fileName = file.getOriginalFilename();
+        System.out.println(path);
+        File targetFile = new File(path, fileName);
+        if (!targetFile.exists()) {
+            targetFile.mkdirs();
+        }
+        // 保存
+        try {
+            file.transferTo(targetFile);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //将该文件的路径给客户端，让其可以请求该wenjian
+        model.addAttribute("fileUrl", request.getContextPath() + "/lupload/" + fileName);
+        String user_id = request.getSession().getAttribute("user_id").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String result = "";
+        try {
+            Workbook rwb=Workbook.getWorkbook(targetFile);
+            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos=rs.getColumns();//得到所有的列
+            int rows=rs.getRows();//得到所有的行
+            Cell[] column = rs.getColumn(0);
+            for (int i = 3; i <column.length; i++) {
+                Brand brand = brandService.getBrandByCode(corp_code, column[i].getContents().toString());
+                if(brand!=null){
+                    result ="第"+(i+1)+"列品牌编号已存在";
+                    int b=5/0;
+                    break;
+                }
+            }
+            Cell[] column1 = rs.getColumn(1);
+            for (int i = 3; i <column.length; i++) {
+                Brand brand = brandService.getBrandByName(corp_code, column1[i].getContents().toString());
+                if(brand!=null){
+                    result ="第"+(i+1)+"列品牌名称已存在";
+                    int b=5/0;
+                    break;
+                }
+            }
+            for(int i=3;i < rows;i++) {
+                for (int j = 0; j < clos; j++) {
+                    Brand brand=new Brand();
+                    brand.setBrand_code(rs.getCell(j++,i).getContents());
+                    brand.setBrand_name(rs.getCell(j++,i).getContents());
+                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                        brand.setIsactive("Y");
+                    }else{
+                        brand.setIsactive("N");
+                    }
+                    brand.setCorp_code(corp_code);
+                    Date now = new Date();
+                    brand.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    brand.setCreater(user_id);
+                    result = brandService.insertExecl(brand);
+                }
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        }catch (Exception e){
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        }
+        return dataBean.getJsonStr();
+    }
 }

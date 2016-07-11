@@ -12,11 +12,7 @@ import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-import jxl.format.Alignment;
-import jxl.format.Colour;
-import jxl.format.UnderlineStyle;
-import jxl.format.VerticalAlignment;
-import jxl.write.*;
+
 import org.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

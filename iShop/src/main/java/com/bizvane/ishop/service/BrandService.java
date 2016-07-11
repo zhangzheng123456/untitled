@@ -28,4 +28,6 @@ public interface BrandService {
     int delete(int id) throws SQLException;
 
     Brand getBrandByName(String corp_code, String brand_name);
+
+    String insertExecl(Brand brand);
 }
