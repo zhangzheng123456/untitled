@@ -66,7 +66,6 @@
             or dmt.modifier like concat('%',#{search_value},'%')
             or dtt.type_name like concat('%',#{search_value},'%')
             )
-
         </if>
         ORDER by dmt.id
 
