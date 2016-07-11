@@ -11,14 +11,14 @@ import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.sun.glass.ui.Application;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
