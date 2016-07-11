@@ -831,7 +831,7 @@ public class MessageController {
             result.put("types", array);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("success!!");
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
