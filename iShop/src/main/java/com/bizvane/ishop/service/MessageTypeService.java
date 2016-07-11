@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Message_type;
+import com.bizvane.ishop.entity.TemplateType;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
@@ -115,4 +116,5 @@ public interface MessageTypeService {
     int selectMessageTemplateCount(String corp_code, String type_code);
 
     List<Message_type> getMessageTypeByCorp(String corp_code);
+
 }

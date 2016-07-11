@@ -14,9 +14,7 @@
         <result column="created_date" property="created_date"/>
         <result column="isactive" property="isactive"/>
 
-        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
-            <result column="corp_code" property="corp_code"/>
-        </association>
+
     </resultMap>
 
 
@@ -55,9 +53,7 @@
             <if test="isactive!=null and  isactive!=''">
                 isactive ,
             </if>
-            <if test="corp_code!=null and  corp_code!=''">
-                corp_code ,
-            </if>
+
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
 
@@ -85,9 +81,7 @@
             <if test="isactive!=null and  isactive!=''">
                 #{isactive} ,
             </if>
-            <if test="corp_code!=null and  corp_code!=''">
-                #{corp_code} ,
-            </if>
+
         </trim>
     </insert>
 
@@ -125,9 +119,7 @@
                 isactive=#{isactive} ,
             </if>
 
-            <if test="corp_code!=null and  corp_code!=''">
-                corp_code=#{corp_code} ,
-            </if>
+
         </trim>
         WHERE ID=#{ID}
     </update>
@@ -147,12 +139,10 @@
         vtt.creater,
         vtt.created_date,
         vtt.isactive,
-        vtt.corp_code
+
         FROM def_message_type vtt
         WHERE 1=1
-        <if test="corp_code!=null and corp_code!=''">
-            and vtt.corp_code=#{corp_code}
-        </if>
+
         <if test="search_value!=null and search_value!=''">
             and
             (vtt.type_name like concat('%',#{search_value},'%')
@@ -172,8 +162,7 @@
         *
         FROM def_message_type vtt
         WHERE
-        vtt.corp_code=#{corp_code}
-        and
+
         vtt.type_code=#{type_code}
     </select>
 
@@ -182,8 +171,7 @@
         *
         FROM def_message_type vtt
         WHERE
-        vtt.corp_code=#{corp_code}
-        and
+
         vtt.type_name=#{type_name}
     </select>
 
@@ -192,8 +180,7 @@
         from DEF_USER_ACHV_GOAL
         WHERE
         user_code=#{user_code}
-        and
-        corp_code=#{corp_code}
+
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.SmsTemplate;
+import com.bizvane.ishop.entity.TemplateType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -20,4 +21,6 @@ public interface SmsTemplateMapper {
     List<SmsTemplate> selectByCode(@Param("corp_code") String corp_code, @Param("template_code") String template_code);
 
     List<SmsTemplate> selectByName(@Param("template_name") String template_name, @Param("corp_code") String corp_code);
+
+    List<TemplateType> getTypes();
 }

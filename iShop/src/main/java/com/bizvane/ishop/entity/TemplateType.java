@@ -1,18 +1,15 @@
 package com.bizvane.ishop.entity;
 
 /**
- * Created by lixiang on 2016/6/22.
- *
- * @@version
+ * Created by nanji on 2016/7/8.
  */
-public class Message_type {
-    //消息id
+public class TemplateType {
     private int id;
-    //消息类型编号
-    private String type_code;
-    //消息类型名称
+
+
+    //类型名称
     private String type_name;
-    //消息类型描述
+    //类型描述
     private String type_description;
     //修改时间
     private String modified_date;
@@ -24,14 +21,11 @@ public class Message_type {
     private String created_date;
     //是否可用
     private String isactive;
-
     //企业编号
     private String corp_code;
-    private Corp corp;
 
-    public Message_type() {
+    public TemplateType() {
     }
-
 
     public int getId() {
         return id;
@@ -41,32 +35,9 @@ public class Message_type {
         this.id = id;
     }
 
-    public String getType_code() {
-        return type_code;
-    }
-
-    public void setType_code(String type_code) {
-        this.type_code = type_code;
-    }
 
     public String getType_name() {
         return type_name;
-    }
-
-    public String getCorp_code() {
-        return corp_code;
-    }
-
-    public void setCorp_code(String corp_code) {
-        this.corp_code = corp_code;
-    }
-
-    public Corp getCorp() {
-        return corp;
-    }
-
-    public void setCorp(Corp corp) {
-        this.corp = corp;
     }
 
     public void setType_name(String type_name) {
@@ -121,5 +92,11 @@ public class Message_type {
         this.isactive = isactive;
     }
 
+    public String getCorp_code() {
+        return corp_code;
+    }
 
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
+    }
 }

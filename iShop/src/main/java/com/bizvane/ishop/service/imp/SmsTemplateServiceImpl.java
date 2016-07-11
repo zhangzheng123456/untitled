@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.SmsTemplateMapper;
 import com.bizvane.ishop.entity.SmsTemplate;
+import com.bizvane.ishop.entity.TemplateType;
 import com.bizvane.ishop.entity.VipRecordType;
 import com.bizvane.ishop.service.SmsTemplateService;
 import com.github.pagehelper.PageHelper;
@@ -23,7 +24,6 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
 
     @Autowired
     private SmsTemplateMapper smsTemplateMapper;
-
 
 
     @Override
@@ -82,6 +82,12 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             return Common.DATABEAN_CODE_SUCCESS;
         }
         return Common.DATABEAN_CODE_ERROR;
+    }
+
+    @Override
+    public List<TemplateType> getTypes() {
+        List<TemplateType> list = this.smsTemplateMapper.getTypes();
+        return list;
     }
 
 //    @Override
