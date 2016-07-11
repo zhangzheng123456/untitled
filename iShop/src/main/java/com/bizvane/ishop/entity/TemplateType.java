@@ -1,6 +1,7 @@
 package com.bizvane.ishop.entity;
 
 /**
+<<<<<<< HEAD
  * Created by nanji on 2016/7/8.
  */
 public class TemplateType {
@@ -22,6 +23,20 @@ public class TemplateType {
     //是否可用
     private String isactive;
     //企业编号
+=======
+ * Created by lixiang on 2016/7/10.
+ *
+ * @@version
+ */
+public class TemplateType {
+    private int id;
+    private String type_name;
+    private String modified_date;
+    private String modifier;
+    private String isactive;
+    private String creater;
+    private String created_date;
+>>>>>>> ab1c752ecb366f25799b922460ca904d34932fcd
     private String corp_code;
 
     public TemplateType() {
@@ -35,7 +50,10 @@ public class TemplateType {
         this.id = id;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> ab1c752ecb366f25799b922460ca904d34932fcd
     public String getType_name() {
         return type_name;
     }
@@ -44,6 +62,7 @@ public class TemplateType {
         this.type_name = type_name;
     }
 
+<<<<<<< HEAD
     public String getType_description() {
         return type_description;
     }
@@ -52,6 +71,8 @@ public class TemplateType {
         this.type_description = type_description;
     }
 
+=======
+>>>>>>> ab1c752ecb366f25799b922460ca904d34932fcd
     public String getModified_date() {
         return modified_date;
     }
@@ -68,6 +89,17 @@ public class TemplateType {
         this.modifier = modifier;
     }
 
+<<<<<<< HEAD
+=======
+    public String getIsactive() {
+        return isactive;
+    }
+
+    public void setIsactive(String isactive) {
+        this.isactive = isactive;
+    }
+
+>>>>>>> ab1c752ecb366f25799b922460ca904d34932fcd
     public String getCreater() {
         return creater;
     }
@@ -84,6 +116,7 @@ public class TemplateType {
         this.created_date = created_date;
     }
 
+<<<<<<< HEAD
     public String getIsactive() {
         return isactive;
     }
@@ -92,6 +125,8 @@ public class TemplateType {
         this.isactive = isactive;
     }
 
+=======
+>>>>>>> ab1c752ecb366f25799b922460ca904d34932fcd
     public String getCorp_code() {
         return corp_code;
     }

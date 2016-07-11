@@ -204,7 +204,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td><span>"
                         + data[i].user.user_name
                         +"</td><td>"
-                        +data[i].action
+                        +data[i].vipRecordType.type_name
                         +"</td><td>"
                         +data[i].created_date
                         + "</td><td>"

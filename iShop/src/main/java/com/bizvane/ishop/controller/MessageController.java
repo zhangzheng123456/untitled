@@ -807,6 +807,40 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/mobile/template/types", method = RequestMethod.POST)
+    @ResponseBody
+    public String getTypes(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            List<TemplateType> list = this.smsTemplateService.getTypes();
+            com.alibaba.fastjson.JSONArray array = new com.alibaba.fastjson.JSONArray();
+            com.alibaba.fastjson.JSONObject json = null;
+            for (int i = 0; list != null && i < list.size(); i++) {
+                String type_code = String.valueOf(list.get(i).getId());
+                String type_name = list.get(i).getType_name();
+                json = new com.alibaba.fastjson.JSONObject();
+                json.put("type_code", type_code);
+                json.put("type_name", type_name);
+                array.add(json);
+            }
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("types", array);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("success!!");
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
     /**
      * 手机消息类型模板添加
      */
