@@ -2,9 +2,11 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.Sign;
+import com.bizvane.ishop.entity.User;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -13,7 +15,10 @@ import java.util.List;
  */
 public interface SignService {
     //分页查询
-    PageInfo<Sign> selectAllSign(int page_number, int page_size, String search_value) throws SQLException;
+    PageInfo<Sign> selectSignAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+
+
+    PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException;
 
     int delSignById(int id);
 }

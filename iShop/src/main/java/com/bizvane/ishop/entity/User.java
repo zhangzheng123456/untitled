@@ -49,8 +49,16 @@ public class User {
 	private Group group;
 
 	private Corp corp;
-
+	private Sign sign;
 	public User(){}
+
+	public Sign getSign() {
+		return sign;
+	}
+
+	public void setSign(Sign sign) {
+		this.sign = sign;
+	}
 
 	public String getArea_name() {
 		return area_name;
