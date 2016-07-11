@@ -336,7 +336,8 @@ $("#d_search").click(function(){
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     POST();
-})//搜索的请求函数
+})
+//搜索的请求函数
 function POST(){
     oc.postRequire("post","/message/mobile/template/find","0",param,function(data){
         if(data.code=="0"){
@@ -417,7 +418,6 @@ function checkAll(name){
     var el=$("tbody input");
     el.parents("tr").addClass("tr");
     var len = el.length;
-
     for(var i=0; i<len; i++)
         {
            if((el[i].type=="checkbox") && (el[i].name==name))
@@ -426,7 +426,6 @@ function checkAll(name){
             }
         }
 };
-
 //取消全选
 function clearAll(name){
     var el=$("tbody input");

@@ -53,13 +53,11 @@ var oc = new ObjectControl();
 	mobilejs.bindbutton=function(){
 		$(".operadd_btn ul li:nth-of-type(1)").click(function(){
 			if(mobilejs.firstStep()){
-				// var CORPID=$("#CORPID").val();
 				var OWN_CORP=$("#OWN_CORP").val();//企业编号
 				var MOBAN_ID=$("#MOBAN_ID").val();//
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();
-				// var check_per=$("#check_per").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -87,11 +85,6 @@ var oc = new ObjectControl();
 				var MOBAN_NAME=$("#MOBAN_NAME").val();
 				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();
-
-				// var ROLE_NUM=$("#ROLE_NUM").val();
-				// var ROLE_NAME=$("#ROLE_NAME").val();
-				// var BEIZHU=$("#BEIZHU").val();
-				// var check_per=$("#check_per").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -112,26 +105,18 @@ var oc = new ObjectControl();
 		});
 	};
 	mobilejs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
-		// _params=JSON.stringify(_params);
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
 				$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 			}else if(data.code=="-1"){
-				// alert(data.message);
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				alert(data.message);
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
 		});
 	};
@@ -179,27 +164,6 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
-				// var MOBAN_ID=$("#MOBAN_ID").val(msg.tem_code);
-				// var MOBAN_NAME=$("#MOBAN_NAME").val(msg.tem_name);
-				// var MOBAN_TYPE=$("#MOBAN_TYPE").val(msg.type_code);
-				// var MOBAN_CONTENT=$("#MOBAN_CONTENT").val(msg.tem_content);
-
-				// var created_time=$("#created_time").val(msg.created_date);
-				// var creator=$("#creator").val(msg.creater);
-				// var modify_time=$("#modify_time").val(msg.modified_date);
-				// var modifier=$("#modifier").val(msg.modifier);			
-
-				// $("#MOBAN_ID").val(msg.tem_code);
-				// $("#MOBAN_NAME").val(msg.tem_name);
-				// $("#MOBAN_TYPE").val(msg.type_code);
-				// $("#MOBAN_CONTENT").val(msg.tem_content);
-				// // $("#OWN_DOCU").val(msg.own_docu);
-				
-				// $("#created_time").val(msg.created_date);
-				// $("#creator").val(msg.creater);
-				// $("#modify_time").val(msg.modified_date);
-				// $("#modifier").val(msg.modifier);
-
 				$("#MOBAN_ID").val(msg.tem_code);
 				$("#MOBAN_ID").attr("data-name",msg.tem_code);
 				$("#MOBAN_NAME").val(msg.tem_name);
@@ -223,12 +187,12 @@ jQuery(document).ready(function(){
 				}
 				getcorplist();
 			}else if(data.code=="-1"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
 			}
 		});
 	}else{
@@ -309,12 +273,6 @@ function getcorplist(){
 				var c=$(this).attr("data-value");
 				mobileType(c);
 			})
-			$('.searchable-select-item').click(function(){
-				$("input[verify='Code']").val("");
-				$("#MOBAN_NAME").val("");
-				$("input[verify='Code']").attr("data-mark","");
-				$("#MOBAN_NAME").attr("data-mark","");
-			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -326,7 +284,7 @@ function getcorplist(){
 	});
 }
 function mobileType(code){
-	var _command = "/message/mobile/type/getMessageTypeByUser";
+	var _command = "/message/mobile/template/types";
 	var _params = {"corp_code":$("#OWN_CORP")};
 	_params["corp_code"]=code;
 	oc.postRequire("post", _command, "", _params, function(data) {
@@ -334,14 +292,8 @@ function mobileType(code){
 		if (data.code == "0") {
 			var msg = JSON.parse(data.message);
 			console.log(msg);
-			var index = 0;
-			var message_types = '';
 			$('#MOBAN_TYPE').empty();
 			$('#type_select .searchable-select').remove();
-			for (index in msg.message_types) {
-				type_tmp = msg.message_types[index];
-				message_types += '<option value="' + type_tmp.type_code + '">' + type_tmp.type_name + '</option>';
-			}
 			$("#MOBAN_TYPE").append(message_types);
 			$('.message_type_select select').searchableSelect();
 		} else if (data.code = "1") {
