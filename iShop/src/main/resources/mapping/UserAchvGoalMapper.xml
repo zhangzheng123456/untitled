@@ -258,4 +258,9 @@
         </if>
 
     </select>
+
+    <select id="selectUserAchvCount" resultType="java.lang.Integer">
+        select count(*) from DEF_USER_ACHV_GOAL where corp_code=#{corp_code} and user_code=#{user_code}
+    </select>
+
 </mapper>

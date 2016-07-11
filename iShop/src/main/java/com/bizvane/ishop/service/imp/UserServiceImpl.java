@@ -47,7 +47,8 @@ public class UserServiceImpl implements UserService {
     GroupMapper groupMapper;
     @Autowired
     IceInterfaceService iceInterfaceService;
-
+    @Autowired
+    UserAchvGoalMapper userAchvGoalMapper;
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -178,7 +179,7 @@ public class UserServiceImpl implements UserService {
         return count;
     }
 
-    @Transactional(readOnly = false , propagation = Propagation.REQUIRED,isolation= Isolation.READ_COMMITTED)
+    @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public String insert(User user) throws SQLException {
         String result = "";
         String phone = user.getPhone();
@@ -188,21 +189,21 @@ public class UserServiceImpl implements UserService {
         String phone_exist = userPhoneExist(phone);
         User code_exist = userCodeExist(user_code, corp_code);
         String email_exist = userEmailExist(email);
-        if(phone.equals("")){
-            result="手机号不能为空";
-        }else if(user_code.equals("")){
-            result="员工编号不能为空";
-        }else if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+        if (phone.equals("")) {
+            result = "手机号不能为空";
+        } else if (user_code.equals("")) {
+            result = "员工编号不能为空";
+        } else if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "手机号已存在";
-        }else if (code_exist != null) {
+        } else if (code_exist != null) {
             result = "员工编号已存在";
-        }else if (!email.equals("") && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+        } else if (!email.equals("") && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "邮箱已存在";
         } else {
             userMapper.insertUser(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
-        System.out.println(result+"-----");
+        System.out.println(result + "-----");
         return result;
     }
 
@@ -517,9 +518,11 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByUserId(user);
     }
 
+
     @Override
     public int selectUserAchvCount(String corp_code, String user_code) {
-        return this.selectUserAchvCount(corp_code, user_code);
+        return this.userAchvGoalMapper.selectUserAchvCount(corp_code, user_code);
+        //return this.selectUserAchvCount(corp_code, user_code);
     }
 
     public int selectCount(String created_date) {
