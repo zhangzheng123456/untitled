@@ -182,13 +182,20 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }
 }
 function superaddition(data,num){//页面加载循环
+    console.log(data);
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }
-        
+        var status="";
+        if(data[i].status=="0"){
+            status="签到";
+        }
+        if(data[i].status=="-1"){
+            status="签退";
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -199,7 +206,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].store_code
+                        + data[i].user_code
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td><span>"
@@ -207,7 +214,9 @@ function superaddition(data,num){//页面加载循环
                         + "</span></td><td>"
                         + data[i].sign_total_days
                         + "</td><td>"
-                        +data[i].modified_date
+                        + data[i].sign_time
+                        + "</td><td>"
+                        + status
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
@@ -275,28 +284,28 @@ function jumpBianse(){
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_add.html");
     })
-    //点击编辑时页面进行的跳转
-    $('#compile').click(function(){
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        if(tr.length==1){
-            id=$(tr).attr("id");
-            sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_edit.html");
-        }else if(tr.length==0){
-            frame();
-            $('.frame').html("请先选择");
-        }else if(tr.length>1){
-            frame();
-            $('.frame').html("不能选择多个");
-        }
-    })
-     //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_edit.html");
-    })
+    // //点击编辑时页面进行的跳转
+    // $('#compile').click(function(){
+    //     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    //     if(tr.length==1){
+    //         id=$(tr).attr("id");
+    //         sessionStorage.setItem("id",id);
+    //         $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_edit.html");
+    //     }else if(tr.length==0){
+    //         frame();
+    //         $('.frame').html("请先选择");
+    //     }else if(tr.length>1){
+    //         frame();
+    //         $('.frame').html("不能选择多个");
+    //     }
+    // })
+    //  //双击跳转
+    // $(".table tbody tr").dblclick(function(){
+    //     var id=$(this).attr("id");
+    //     sessionStorage.setItem("id",id);
+    //     console.log(id);
+    //     $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_edit.html");
+    // })
     //删除
     $("#remove").click(function(){
         var l=$(window).width();
