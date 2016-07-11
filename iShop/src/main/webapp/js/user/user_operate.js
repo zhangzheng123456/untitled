@@ -824,7 +824,7 @@ jQuery(document).ready(function(){
 	            	div.html("");
 	            	$("#USER_PHONE").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
-	            	div.html("该名称已经存在！");
+	            	div.html("手机号码已经存在！");
 	            	div.addClass("error_tips");
 	            	$("#USER_PHONE").attr("data-mark","N");
 	            }
@@ -854,12 +854,12 @@ jQuery(document).ready(function(){
     	$("#kuang").hide();
     })
 });
-$(".corp_select").click(function(){
-	// $("select").change(function(){
-		$("#OWN_RIGHT").val('');
-		$("#OWN_STORE").val('');
-	// });
-});
+// $(".corp_select").click(function(){
+// 	// $("select").change(function(){
+// 		$("#OWN_RIGHT").val('');
+// 		$("#OWN_STORE").val('');
+// 	// });
+// });
 function getcorplist(){
 	//获取企业列表
 	var corp_command="/user/getCorpByUser";
@@ -884,6 +884,8 @@ function getcorplist(){
 					$("#USERID").attr("data-mark","");
 					$("#USER_PHONE").attr("data-mark","");
 					$("#USER_EMAIL").attr("data-mark","");
+					$("#OWN_RIGHT").val('');
+					$("#OWN_RIGHT").attr("data-myrcode","");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
