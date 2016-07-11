@@ -216,11 +216,9 @@ function superaddition(data,num){
                         + "女"
                         +"</td><td>"
                         +data[i].phone
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].corp.corp_name+"'>"
                         +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].group.group_name
                         + "</td><td>"
                         +data[i].modifier
@@ -249,11 +247,9 @@ function superaddition(data,num){
                         + "男"
                         +"</td><td>"
                         +data[i].phone
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].corp.corp_name+"'>"
                         +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].group.group_name
                         + "</td><td>"
                         +data[i].modifier
@@ -282,11 +278,9 @@ function superaddition(data,num){
                         + ""
                         +"</td><td>"
                         +data[i].phone
-                        + "</td><td>"
+                         + "</td><td><span title='"+data[i].corp.corp_name+"'>"
                         +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].group.group_name
                         + "</td><td>"
                         +data[i].modifier
