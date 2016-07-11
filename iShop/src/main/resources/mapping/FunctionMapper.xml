@@ -19,17 +19,17 @@
 
     <select id="selectActionByFun" resultType="com.bizvane.ishop.entity.Action">
        select *
-        from DEF_ACTION WHERE ACTION_CODE IN (
-          SELECT ACTION_CODE
-          FROM DEF_PRIVILEGE
-          WHERE FUNCTION_CODE = #{function_code}
-          AND (MASTER_CODE = #{user_code}
-            or MASTER_CODE = #{role_code}
-            or MASTER_CODE = #{group_code})
-           and enable = 'Y'
-        and isactive = 'Y')
-        and ISACTIVE = 'Y'
-        order by ACTION_CODE
+        from DEF_ACTION a, DEF_PRIVILEGE p
+        WHERE a.ACTION_CODE = p.ACTION_CODE
+        AND a.FUNCTION_CODE = p.FUNCTION_CODE
+        AND p.FUNCTION_CODE = #{function_code}
+        AND (p.MASTER_CODE = #{user_code}
+            or p.MASTER_CODE = #{role_code}
+            or p.MASTER_CODE = #{group_code})
+        and p.enable = 'Y'
+        and p.isactive = 'Y'
+        and a.ISACTIVE = 'Y'
+        order by a.ACTION_CODE
     </select>
 
     <select id="selectRolePrivilege" resultType="com.bizvane.ishop.entity.Function">
@@ -76,18 +76,17 @@
 
     <select id="selectPrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
-        FROM DEF_ACTION a,DEF_FUNCTION b
+        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND a.ACTION_CODE IN (
-        SELECT ACTION_CODE FROM DEF_PRIVILEGE
-        WHERE (MASTER_CODE = #{group_code}
+        AND a.ACTION_CODE = p.ACTION_CODE
+        AND a.FUNCTION_CODE = p.FUNCTION_CODE
+        AND (MASTER_CODE = #{group_code}
         OR MASTER_CODE = #{role_code}
         <if test="user_code!=''">
             OR MASTER_CODE = #{user_code}
         </if>
         )
-        and ISACTIVE = 'Y'
-        )
+        and p.ISACTIVE = 'Y'
         <if test="search_value!=''">
             AND (
             b.module_name like concat('%',#{search_value},'%')
