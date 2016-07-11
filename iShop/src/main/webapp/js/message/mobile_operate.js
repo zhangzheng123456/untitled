@@ -179,7 +179,6 @@ jQuery(document).ready(function(){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
 				var corp_code=msg.corp.corp_code;
 				var template_type=msg.template_type;
 				$("#MOBAN_ID").val(msg.template_code);
@@ -199,7 +198,8 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist();
+				getcorplist(corp_code);
+				mobileType(template_type);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -210,7 +210,8 @@ jQuery(document).ready(function(){
 			}
 		});
 	}else{
-		getcorplist();
+		getcorplist(a);
+		mobileType(b);
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
@@ -264,7 +265,7 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 	});
 });
-function getcorplist(){
+function getcorplist(a){
 //获取企业信息列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -280,13 +281,10 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
-			var c=$('#corp_select .selected').attr("data-value");
-			mobileType(c);
-			$("#corp_select .searchable-select-item").click(function(){
-				var c=$(this).attr("data-value");
-				mobileType(c);
-			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -297,11 +295,9 @@ function getcorplist(){
 		}
 	});
 }
-function mobileType(code){
+function mobileType(b){
 	var _command = "/message/mobile/template/types";
-	var _params = {"corp_code":$("#OWN_CORP")};
-	_params["corp_code"]=code;
-	oc.postRequire("post", _command, "", _params, function(data) {
+	oc.postRequire("post", _command, "","", function(data) {
 		console.log(data);
 		if (data.code == "0") {
 			var msg = JSON.parse(data.message);
@@ -311,6 +307,9 @@ function mobileType(code){
 				mobile_html+='<option value="'+msg.types[i].id+'">'+msg.types[i].type_name+'</option>';
 			}
 			$("#MOBAN_TYPE").html(mobile_html);
+			if(b!==""){
+				$("#type_select option[value='"+b+"']").attr("selected","true");
+			}
 			$('.message_type_select select').searchableSelect();
 		} else if (data.code = "1") {
 			art.dialog({

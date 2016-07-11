@@ -854,12 +854,6 @@ jQuery(document).ready(function(){
     	$("#kuang").hide();
     })
 });
-// $(".corp_select").click(function(){
-// 	// $("select").change(function(){
-// 		$("#OWN_RIGHT").val('');
-// 		$("#OWN_STORE").val('');
-// 	// });
-// });
 function getcorplist(){
 	//获取企业列表
 	var corp_command="/user/getCorpByUser";

@@ -447,9 +447,13 @@ input::-webkit-input-placeholder{
 	font-style: normal;
 	margin-left: 10px;
 }
-.foot-jum,.foot-num,.foot-sum{
+.foot-jum,.foot-sum{
 	float: left;
-	width: 33.3333%;
+	width: 32%;
+}
+.foot-num{
+	float: left;
+	width: 36%;
 }
 .foot-sum{
 	text-align: right;
