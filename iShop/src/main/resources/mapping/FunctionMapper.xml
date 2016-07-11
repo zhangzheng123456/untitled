@@ -34,44 +34,41 @@
 
     <select id="selectRolePrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
-        FROM DEF_ACTION a,DEF_FUNCTION b
+        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.ACTION_CODE IN (
-        SELECT ACTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{role_code}
-        and ISACTIVE = 'Y'
-        )
+        AND a.ACTION_CODE = p.ACTION_CODE
+        AND a.FUNCTION_CODE = p.FUNCTION_CODE
+        AND p.MASTER_CODE = #{role_code}
+        and p.ISACTIVE = 'Y'
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.FUNCTION_CODE
+        order by a.show_order
     </select>
 
     <select id="selectGroupPrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
-        FROM DEF_ACTION a,DEF_FUNCTION b
+        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.ACTION_CODE IN (
-        SELECT ACTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{group_code}
-        and ISACTIVE = 'Y'
-        )
+        AND a.ACTION_CODE = p.ACTION_CODE
+        AND a.FUNCTION_CODE = p.FUNCTION_CODE
+        AND p.MASTER_CODE = #{group_code}
+        and p.ISACTIVE = 'Y'
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.FUNCTION_CODE
+        order by a.show_order
     </select>
 
     <select id="selectUserPrivilege" resultType="com.bizvane.ishop.entity.Function">
         select *
-        FROM DEF_ACTION a,DEF_FUNCTION b
+        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND  a.ACTION_CODE IN (
-        SELECT ACTION_CODE FROM DEF_PRIVILEGE
-        WHERE MASTER_CODE = #{user_code}
-        and ISACTIVE = 'Y'
-        )
+        AND a.ACTION_CODE = p.ACTION_CODE
+        AND a.FUNCTION_CODE = p.FUNCTION_CODE
+        AND p.MASTER_CODE = #{user_code}
+        and p.ISACTIVE = 'Y'
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.FUNCTION_CODE
+        order by a.show_order
     </select>
 
     <select id="selectPrivilege" resultType="com.bizvane.ishop.entity.Function">
@@ -96,7 +93,7 @@
         </if>
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.FUNCTION_CODE
+        order by a.show_order
     </select>
 
     <insert id="insertFunction" parameterType="com.bizvane.ishop.entity.Function">

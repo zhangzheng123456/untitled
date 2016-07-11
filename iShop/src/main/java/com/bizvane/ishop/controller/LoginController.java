@@ -326,10 +326,18 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String function_code = request.getParameter("funcCode");
+            JSONArray actions_detail = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, "D"+function_code);
 
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions_fun = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            for (int i = 0; i < actions_fun.size(); i++) {
+                String act = actions_fun.get(i).toString();
+                JSONObject obj = new JSONObject(act);
+                if (obj.get("act_name").equals("edit")){
+                    actions_detail.add(obj);
+                }
+            }
 
-            menus.put("actions", actions);
+            menus.put("actions", actions_detail);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
