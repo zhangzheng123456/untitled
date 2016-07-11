@@ -67,6 +67,8 @@ public class SignController {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 list = signService.selectSignByInp(page_number, page_size, corp_code, "","",area_code, role_code);
+            }else if(role_code.equals(Common.ROLE_STAFF)){
+                list=signService.selectByUser(page_number,page_size,corp_code,user_code,"");
             }
           //  System.out.println(list.getList().get(0).getSign_time()+"---"+list.getList().get(0).getUser_code());
             result.put("list", JSON.toJSONString(list));
@@ -99,6 +101,7 @@ public class SignController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -117,6 +120,8 @@ public class SignController {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", area_code, role_code);
+                }else if(role_code.equals(Common.ROLE_STAFF)){
+                    list=signService.selectByUser(page_number,page_size,corp_code,user_code,search_value);
                 }
             }
             result.put("list", JSON.toJSONString(list));

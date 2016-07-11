@@ -6,9 +6,12 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreService;
+import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.RequestWrapper;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,7 +51,8 @@ public class CorpController {
     private StoreService storeService;
     @Autowired
     private FunctionService functionService;
-
+    @Autowired
+    private TableManagerService managerService;
     /*
     * 列表
     * */
@@ -392,7 +397,60 @@ public class CorpController {
         }
         return dataBean.getJsonStr();
     }
-
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject info = new JSONObject();
+            //系统管理员(官方画面)
+            PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 10000, "");
+            List<Corp> corps = corpInfo.getList();
+            String column_name = jsonObject.get("column_name").toString();
+            String[] cols = column_name.split(",");//前台传过来的字段
+            OutExeclHelper.OutExecl(corps,cols,response);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(info.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
     @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)
     @ResponseBody
     public String isAuthorize(HttpServletRequest request) {

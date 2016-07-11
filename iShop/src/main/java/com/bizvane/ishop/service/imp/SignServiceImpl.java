@@ -69,6 +69,14 @@ public class SignServiceImpl implements SignService{
     }
 
     @Override
+    public PageInfo<Sign> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws SQLException {
+        PageHelper.startPage(page_number, page_size);
+        List<Sign> signs = signMapper.selectByUser(corp_code,user_code,search_value);
+        PageInfo<Sign> page = new PageInfo<Sign>(signs);
+        return page;
+    }
+
+    @Override
     public int delSignById(int id) {
         return signMapper.delSignById(id);
     }
