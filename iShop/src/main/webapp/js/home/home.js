@@ -61,8 +61,9 @@ $(function(){
 });
 //退出按钮
 function login_out(){
-    // var _command="/login_out";
-    // oc.postRequire("get", _command,"", "", function(data){
-        window.location="http://dev.bizvane.com/login_out";
-    // });
+    var _command="/login_out";
+    oc.postRequire("get", _command,"", "", function(data){
+        console.log(data);
+        // window.location="/login.html";
+    });
 }
