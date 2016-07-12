@@ -52,61 +52,60 @@ public class MessageController {
     @Autowired
     private VipRecordService vipRecordService;
 
-//    /**
-//     * 爱秀消息
-//     */
-//    @RequestMapping(value = "/ishop/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String ishopManage(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String group_code = request.getSession(false).getAttribute("group_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//            String user_code = request.getSession(false).getAttribute("user_code").toString();
-//
-//            String function_code = request.getParameter("funcCode");
-//            logger.info("list : 获取用户相应的信息");
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            logger.info("获取动作信息之前");
-//            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
-//            logger.info("获取动作信息" + actions.toString());
-//            org.json.JSONObject result = new org.json.JSONObject();
-//            PageInfo<Message> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = messageService.selectBySearch(page_number, page_size, "", "");
-//            } else if (role_code.equals(Common.ROLE_GM)) {
-//                //企业管理员
-//                list = messageService.selectBySearch(page_number, page_size, corp_code, "");
-//            } else if (role_code.equals(Common.ROLE_STAFF)) {
-//                //员工
-//                list = messageService.selectByUser(page_number, page_size, corp_code, user_code);
-//            } else {
-//                //店长或区经
-//                String store_code = request.getSession(false).getAttribute("store_code").toString();
-//                list = messageService.selectBySearchPart(page_number, page_size, corp_code, store_code, role_code, "");
-//                logger.info("获取店长或区经的详细信息" + list.toString());
-//                List<Message> messages = list.getList();
-//                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code, "");
-//                logger.info("获取本店长或区经的详细信息:" + users.toString());
-//                list.getList().addAll(users.getList());
-//                logger.info("店长或区经的详细信息:" + list.toString());
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            result.put("actions", actions);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setId("1");
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage(ex.toString());
-//            logger.info("错误信息:" + ex.getMessage() + ex.toString());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    /**
+     * 爱秀消息
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public String ishopManage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String group_code = request.getSession(false).getAttribute("group_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String user_code = request.getSession(false).getAttribute("user_code").toString();
+
+            String function_code = request.getParameter("funcCode");
+            logger.info("list : 获取用户相应的信息");
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            logger.info("获取动作信息之前");
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
+            logger.info("获取动作信息" + actions.toString());
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<Message> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = messageService.selectBySearch(page_number, page_size, "", "");
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                //企业管理员
+                list = messageService.selectBySearch(page_number, page_size, corp_code, "");
+            } else if (role_code.equals(Common.ROLE_STAFF)) {
+                //员工
+                list = messageService.selectByUser(page_number, page_size, corp_code, user_code);
+            } else {
+                //店长或区经
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = messageService.selectBySearchPart(page_number, page_size, corp_code, store_code, role_code, "");
+                logger.info("获取店长或区经的详细信息" + list.toString());
+                List<Message> messages = list.getList();
+                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code, "");
+                logger.info("获取本店长或区经的详细信息:" + users.toString());
+                list.getList().addAll(users.getList());
+                logger.info("店长或区经的详细信息:" + list.toString());
+            }
+            result.put("list", JSON.toJSONString(list));
+            result.put("actions", actions);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.toString());
+            logger.info("错误信息:" + ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
 //
 //    /**
 //     * 爱秀消息
@@ -550,56 +549,10 @@ public class MessageController {
 //        return dataBean.getJsonStr();
 //    }
 
-    /**
-     * 根据用户和企业输出企业消息类型
-     * 即使根据企业编号，获取相应的信息。
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/mobile/type/getMessageTypeByUser", method = RequestMethod.POST)
-    @ResponseBody
-    public String getRecordTypeByUser(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String corp_code = jsonObject.getString("corp_code");
-            JSONObject result = new JSONObject();
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            JSONArray messageTypes = new JSONArray();
-            List<Message_type> list = null;
-            if (role_code.equals((Common.ROLE_SYS))) {
-                list = messageTypeService.getMessageTypeByCorp("", "");
-            } else {
-                list = messageTypeService.getMessageTypeByCorp(corp_code, "");
-            }
-            for (int i = 0; list != null && i < list.size(); i++) {
-                Message_type message_type = list.get(i);
-                String type_code = message_type.getType_code();
-                String type_name = message_type.getType_name();
-                JSONObject obj = new JSONObject();
-                obj.put("id", type_code);
-                obj.put("type_name", type_name);
-                messageTypes.add(obj);
-            }
-            result.put("message_types", messageTypes);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
 
     /**
-     * 手机消息模板
-     * 消息模板列表
+     * 消息模板
+     * 列表
      */
     @RequestMapping(value = "/mobile/template/list", method = RequestMethod.GET)
     @ResponseBody
@@ -639,9 +592,8 @@ public class MessageController {
     }
 
     /**
-     * 短信模板管理
-     * 短信模板的选择
-     * 编辑之前的编辑
+     * 消息模板
+     * 选择
      * @param request
      * @return
      */
@@ -672,7 +624,7 @@ public class MessageController {
     }
 
     /**
-     * 手机消息模板
+     * 消息模板
      * 编辑
      */
     @RequestMapping(value = "/mobile/template/edit", method = RequestMethod.POST)
@@ -709,7 +661,8 @@ public class MessageController {
     }
 
     /**
-     * 手机消息模板删除
+     * 消息模板
+     * 删除
      */
     @RequestMapping(value = "/mobile/template/delete", method = RequestMethod.POST)
     @ResponseBody
@@ -739,7 +692,8 @@ public class MessageController {
     }
 
     /**
-     * 手机消息类型模板查找
+     * 消息类型模板
+     * 查找
      */
     @RequestMapping(value = "/mobile/template/find", method = RequestMethod.POST)
     @ResponseBody
@@ -810,7 +764,7 @@ public class MessageController {
 //    }
 
     /**
-     * 获取所有的消息模板类型。
+     * 获取消息模板类型。
      * @param request
      * @return
      */
@@ -849,49 +803,49 @@ public class MessageController {
 
 
     /**
-     * 手机消息类型模板添加
+     * 消息模板类型添加
      *
      */
-    @RequestMapping(value = "/mobile/template/add", method = RequestMethod.POST)
-    @ResponseBody
-    @Transactional
-    public String SmsTemplateAdd(HttpServletRequest request) {
-
-        DataBean dataBean = new DataBean();
-        String user_id = WebUtils.getValueForSession(request, "user_id");
-        String corp_code = WebUtils.getValueForSession(request, "corp_code");
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            SmsTemplate SmsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
-            SmsTemplate.setModifier(user_id);
-            Date now = new Date();
-            SmsTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
-            SmsTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            SmsTemplate.setCreater(user_id);
-            String existInfo1 = smsTemplateService.SmsTemplateExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code());
-            String existInfo2 = smsTemplateService.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_name());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("消息模板编号已经存在！！！");
-            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("消息模板名称已经存在!!!");
-            } else {
-                this.smsTemplateService.insert(SmsTemplate);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("add succcess !!!");
-            }
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/mobile/template/add", method = RequestMethod.POST)
+//    @ResponseBody
+//    @Transactional
+//    public String SmsTemplateAdd(HttpServletRequest request) {
+//
+//        DataBean dataBean = new DataBean();
+//        String user_id = WebUtils.getValueForSession(request, "user_id");
+//        String corp_code = WebUtils.getValueForSession(request, "corp_code");
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            SmsTemplate SmsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
+//            SmsTemplate.setModifier(user_id);
+//            Date now = new Date();
+//            SmsTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
+//            SmsTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//            SmsTemplate.setCreater(user_id);
+//            String existInfo1 = smsTemplateService.SmsTemplateExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code());
+//            String existInfo2 = smsTemplateService.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_name());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setMessage("消息模板编号已经存在！！！");
+//            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setMessage("消息模板名称已经存在!!!");
+//            } else {
+//                this.smsTemplateService.insert(SmsTemplate);
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("add succcess !!!");
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 
     /**

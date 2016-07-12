@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas);
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas,"");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";

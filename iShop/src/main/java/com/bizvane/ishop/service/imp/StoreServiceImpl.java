@@ -107,6 +107,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("store_codes",ids);
         params.put("corp_code",corp_code);
         params.put("search_value",search_value);
+        params.put("isactive","");
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectByUserId(params);
         PageInfo<Store> page = new PageInfo<Store>(shops);
@@ -118,7 +119,7 @@ public class StoreServiceImpl implements StoreService {
      * 获取页面的所有数据
      */
     @Override
-    public List<Store> selectAll(String store_code, String corp_code) {
+    public List<Store> selectAll(String store_code, String corp_code,String isactive) {
         List<Store> shops;
         String[] ids = store_code.split(",");
         for (int i = 0; i < ids.length; i++) {
@@ -128,6 +129,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("store_codes",ids);
         params.put("corp_code",corp_code);
         params.put("search_value","");
+        params.put("isactive",isactive);
         return storeMapper.selectByUserId(params);
     }
 
@@ -248,20 +250,19 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code",corp_code);
         params.put("area_code",area_code);
         params.put("search_value",search_value);
-
+        params.put("isactive","");
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selectByAreaCode(params);
         PageInfo<Store> page=new PageInfo<Store>(stores);
         return page;
     }
 
-    public List<Store> selectByAreaCode(String corp_code, String[] area_code) {
-
+    public List<Store> selectByAreaCode(String corp_code, String[] area_code,String isactive) {
         Map<String, Object> params =  new HashMap<String, Object>();
         params.put("corp_code",corp_code);
         params.put("area_code",area_code);
         params.put("search_value","");
-
+        params.put("isactive",isactive);
         List<Store> stores = storeMapper.selectByAreaCode(params);
         return stores;
     }

@@ -24,7 +24,7 @@ public interface StoreService {
      */
     PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value);
 
-    List<Store> selectAll(String user_id, String corp_code);
+    List<Store> selectAll(String store_code, String corp_code,String isactive);
 
     int deleteStoreUser(String user_id, String store_code);
 
@@ -54,7 +54,7 @@ public interface StoreService {
 
     PageInfo<Store> selectByAreaCode(int page_number,int page_size,String corp_code,String[] area_code,String search_value);
 
-    List<Store> selectByAreaCode(String corp_code, String[] area_code);
+    List<Store> selectByAreaCode(String corp_code, String[] area_code,String isactive);
 
     String insertExecl(Store store);
 }

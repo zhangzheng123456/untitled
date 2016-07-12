@@ -92,12 +92,9 @@ public class StoreController {
                 list = storeService.getAllStore(request,page_number, page_size, "", "");
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
-
                     list = storeService.getAllStore(request,page_number, page_size, corp_code, "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
-
                     String area_code = request.getSession().getAttribute("area_code").toString();
-
                     String[] areaCodes = area_code.split(",");
                     for (int i = 0; i < areaCodes.length; i++) {
                         areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
@@ -336,7 +333,6 @@ public class StoreController {
             String search_value = jsonObject.get("searchValue").toString();
 
             String role_code = request.getSession().getAttribute("role_code").toString();
-            String user_id = request.getSession().getAttribute("user_id").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Store> list;

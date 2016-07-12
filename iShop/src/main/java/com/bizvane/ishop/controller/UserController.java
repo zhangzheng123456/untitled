@@ -710,30 +710,25 @@ public class UserController {
             JSONObject stores = new JSONObject();
             String corp_code = jsonObject.get("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-//            if (corp_code.equals("")) {
-//                //新增编辑系统管理员，corp_code为空
-//                stores.put("stores", "");
-//            } else {
+            List<Store> list;
             if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
                 //登录用户为admin或企业管理员
-                List<Store> list;
                 list = storeService.getCorpStore(corp_code);
-                stores.put("stores", JSON.toJSONString(list));
-            } else {
-                //登录用户为普通用户
-                String store_code = request.getSession().getAttribute("store_code").toString();
+            } else if (role_code.equals(Common.ROLE_AM)){
+                //登录用户为区经
+                String area_code = request.getSession().getAttribute("area_code").toString();
                 String corp_code1 = request.getSession().getAttribute("corp_code").toString();
-                System.out.println(store_code);
-                String[] ids = store_code.split(",");
-                Store store;
-                JSONArray array = new JSONArray();
-                for (int i = 0; i < ids.length; i++) {
-                    logger.info("-------------store_code" + ids[i]);
-                    store = storeService.getStoreByCode(corp_code1, ids[i], Common.IS_ACTIVE_Y);
-                    array.add(store);
+                String[] areaCodes = area_code.split(",");
+                for (int i = 0; i < areaCodes.length; i++) {
+                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
                 }
-                stores.put("stores", JSON.toJSONString(array));
+                list = storeService.selectByAreaCode(corp_code, areaCodes, Common.IS_ACTIVE_Y);
+            } else {
+                //登录用户为店长或导购
+                String store_code = request.getSession().getAttribute("store_code").toString();
+                list = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
             }
+            stores.put("stores", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(stores.toString());
