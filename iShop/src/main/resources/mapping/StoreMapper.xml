@@ -98,6 +98,7 @@
         where CORP_CODE = #{corp_code}
         AND isactive = 'Y'
     </select>
+
     <select id="selectByAreaCode" resultMap="Store">
         select
         DEF_STORE.id,
@@ -130,6 +131,9 @@
             OR DEF_STORE.MODIFIED_DATE like  concat('%',#{search_value},'%')
             OR DEF_STORE.MODIFIER like  concat('%',#{search_value},'%')
             OR DEF_STORE.ISACTIVE like  concat('%',#{search_value},'%')
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND DEF_STORE.ISACTIVE = #{isactive}
         </if>
         ORDER BY STORE_CODE
     </select>
@@ -167,6 +171,9 @@
             OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
             OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
             OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND DEF_STORE.ISACTIVE = #{isactive}
         </if>
         ORDER BY STORE_CODE
     </select>

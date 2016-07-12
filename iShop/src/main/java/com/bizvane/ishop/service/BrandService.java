@@ -13,7 +13,7 @@ import java.util.List;
 public interface BrandService {
     Brand getBrandById(int id) throws SQLException;
 
-    Brand getBrandByCode(String corp_code,String brand_code) throws SQLException;
+    Brand getBrandByCode(String corp_code, String brand_code) throws SQLException;
 
     PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 
@@ -21,13 +21,17 @@ public interface BrandService {
 
     List<Store> getBrandStore(String corp_code, String brand_code) throws SQLException;
 
-    String insert(String message,String user_id) throws SQLException;
+    String insert(String message, String user_id) throws SQLException;
 
-    String update(String message,String user_id) throws SQLException;
+    String update(String message, String user_id) throws SQLException;
 
     int delete(int id) throws SQLException;
 
-    Brand getBrandByName(String corp_code, String brand_name);
+    Brand getBrandByName(String corp_code, String brand_name) throws SQLException;
 
-    String insertExecl(Brand brand);
+    String insertExecl(Brand brand) throws SQLException;
+
+    int getGoodsCount(String brand_code) throws SQLException;
+
+    int getStoresCount(String brand_code) throws SQLException;
 }

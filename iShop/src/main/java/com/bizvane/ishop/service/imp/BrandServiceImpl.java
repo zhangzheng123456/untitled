@@ -57,20 +57,20 @@ public class BrandServiceImpl implements BrandService {
     //获得品牌下店铺
     @Override
     public List<Store> getBrandStore(String corp_code, String brand_code) throws SQLException {
-        return storeMapper.selectStoreBrandArea(corp_code, "%" + brand_code  + "%", "");
+        return storeMapper.selectStoreBrandArea(corp_code, "%" + brand_code + "%", "");
     }
 
     @Override
     @Transactional
-    public String insert(String message,String user_id) throws SQLException {
+    public String insert(String message, String user_id) throws SQLException {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String brand_code = jsonObject.get("brand_code").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String brand_name = jsonObject.get("brand_name").toString();
 
-        Brand brand = getBrandByCode(corp_code,brand_code);
-        Brand brand1 = getBrandByName(corp_code,brand_name);
+        Brand brand = getBrandByCode(corp_code, brand_code);
+        Brand brand1 = getBrandByName(corp_code, brand_name);
         if (brand == null && brand1 == null) {
             brand = new Brand();
             Date now = new Date();
@@ -84,22 +84,34 @@ public class BrandServiceImpl implements BrandService {
             brand.setIsactive(jsonObject.get("isactive").toString());
             brandMapper.insertBrand(brand);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else if(brand != null){
+        } else if (brand != null) {
             result = "品牌编号已存在";
-        }else {
+        } else {
             result = "品牌名称已存在";
         }
         return result;
     }
+
     @Override
     @Transactional
-    public String insertExecl(Brand brand){
+    public String insertExecl(Brand brand) {
         brandMapper.insertBrand(brand);
         return "add success";
     }
+
+    @Override
+    public int getGoodsCount(String brand_code) throws SQLException {
+        return brandMapper.getGoodsCount(brand_code);
+    }
+
+    @Override
+    public int getStoresCount(String brand_code) throws SQLException {
+        return brandMapper.getStoresCount(brand_code);
+    }
+
     @Override
     @Transactional
-    public  String update(String message,String user_id) throws SQLException {
+    public String update(String message, String user_id) throws SQLException {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int brand_id = Integer.parseInt(jsonObject.get("id").toString());
@@ -109,8 +121,8 @@ public class BrandServiceImpl implements BrandService {
         String brand_name = jsonObject.get("brand_name").toString();
 
         Brand brand = getBrandById(brand_id);
-        Brand brand1 = getBrandByCode(corp_code,brand_code);
-        Brand brand2 = getBrandByCode(corp_code,brand_name);
+        Brand brand1 = getBrandByCode(corp_code, brand_code);
+        Brand brand2 = getBrandByCode(corp_code, brand_name);
 
         if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
                 (brand.getBrand_name().equals(brand_name) || brand2 == null)) {
@@ -125,9 +137,9 @@ public class BrandServiceImpl implements BrandService {
             brand.setIsactive(jsonObject.get("isactive").toString());
             brandMapper.updateBrand(brand);
             result = Common.DATABEAN_CODE_SUCCESS;
-        }else if (!brand.getBrand_code().equals(brand_code) && brand1 != null){
+        } else if (!brand.getBrand_code().equals(brand_code) && brand1 != null) {
             result = "品牌编号已存在";
-        }else {
+        } else {
             result = "品牌名称已存在";
         }
         return result;

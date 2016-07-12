@@ -84,3 +84,8 @@
 	background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
     background-size: 30px 30px;
 }
+.per_type .input_select{
+	width: 280px;
+    height: 30px;
+    line-height: 30px;
+}

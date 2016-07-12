@@ -42,7 +42,7 @@
         and p.ISACTIVE = 'Y'
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.show_order
+        order by b.show_order
     </select>
 
     <select id="selectGroupPrivilege" resultType="com.bizvane.ishop.entity.Function">
@@ -55,7 +55,7 @@
         and p.ISACTIVE = 'Y'
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.show_order
+        order by b.show_order
     </select>
 
     <select id="selectUserPrivilege" resultType="com.bizvane.ishop.entity.Function">
@@ -68,7 +68,7 @@
         and p.ISACTIVE = 'Y'
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.show_order
+        order by b.show_order
     </select>
 
     <select id="selectPrivilege" resultType="com.bizvane.ishop.entity.Function">
@@ -93,7 +93,7 @@
         </if>
         AND a.ISACTIVE = 'Y'
         AND b.ISACTIVE = 'Y'
-        order by a.show_order
+        order by b.show_order
     </select>
 
     <insert id="insertFunction" parameterType="com.bizvane.ishop.entity.Function">

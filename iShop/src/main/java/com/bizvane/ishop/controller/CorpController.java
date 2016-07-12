@@ -225,12 +225,8 @@ public class CorpController {
                     msg = "企业" + corp_id + "下有未处理的消息类型，请先处理消息类型！";
                     break;
                 }
-
-
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }
-
-
             if (msg != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

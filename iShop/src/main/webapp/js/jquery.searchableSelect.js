@@ -68,7 +68,7 @@
       this.searchableElement = $('<div tabindex="0" class="searchable-select" style="margin-bottom:0px;height:30px"></div>');
       this.holder = $('<div class="searchable-select-holder" style="margin-bootom:0px"></div>');
       this.dropdown = $('<div class="searchable-select-dropdown searchable-select-hide"></div>');
-      this.input = $('<input type="text" class="searchable-select-input" style="width:410px"/>');
+      this.input = $('<input type="text" class="searchable-select-input"/>');
       this.items = $('<div class="searchable-select-items"></div>');
       this.caret = $('<span class="searchable-select-caret"></span>');
 

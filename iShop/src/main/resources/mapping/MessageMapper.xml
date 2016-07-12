@@ -137,7 +137,6 @@
         </trim>
     </update>
 
-
     <select id="selectAllMessage" resultMap="MessageInfo">
         select
         dm.*,
@@ -165,13 +164,6 @@
         ORDER BY dm.id
     </select>
 
-
-    <!--<select id="selectByUser" resultMap="MessageInfo">-->
-    <!--select * from DEF_MESSAGE-->
-    <!--WHERE corp_code=#{corp_code};-->
-    <!--and-->
-    <!--creater=#{user_code}-->
-    <!--</select>-->
     <select id="selectByUser" resultMap="MessageInfo">
         select * from DEF_MESSAGE,DEF_USER
         where DEF_MESSAGE.creater=DEF_USER.user_code,

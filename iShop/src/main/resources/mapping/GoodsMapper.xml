@@ -17,9 +17,13 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="goods_description" property="goods_description"/>
+        <result column="brand_code" property="brand_code"/>
         <result column="corp_code" property="corp_code"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
+        </association>
+        <association property="brand" javaType="com.bizvane.ishop.entity.Brand">
+            <result column="brand_name" property="brand_name"/>
         </association>
     </resultMap>
     <select id="selectAllGoods" resultMap="GoodsInfo">
@@ -39,8 +43,8 @@
         ,g.goods_description
         ,g.corp_code
         ,cp.corp_name
-        FROM DEF_GOODS g,DEF_CORP cp
-        WHERE g.corp_code=cp.corp_code
+        FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
+        WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND g.corp_code=#{corp_code}
         </if>
@@ -81,9 +85,8 @@
         ,g.goods_description
         ,g.corp_code
         ,cp.corp_name
-         from DEF_GOODS g,DEF_CORP cp
-         WHERE
-          g.corp_code=cp.corp_code  AND
+        FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
+        WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
           g.id=#{id}
     </select>
 
@@ -133,6 +136,9 @@
             <if test="corp_code!=null and corp_code!=''">
                 corp_code,
             </if>
+            <if test="brand_code!=null and brand_code!=''">
+                brand_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="goods_code!=null  and goods_code!=''">
@@ -176,6 +182,9 @@
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 #{corp_code},
+            </if>
+            <if test="brand_code!=null and brand_code!=''">
+                #{brand_code},
             </if>
         </trim>
     </insert>
@@ -224,6 +233,9 @@
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code=#{corp_code},
+            </if>
+            <if test="brand_code!=null and brand_code!=''">
+                brand_code=#{brand_code},
             </if>
         </trim>
         where id=#{id}

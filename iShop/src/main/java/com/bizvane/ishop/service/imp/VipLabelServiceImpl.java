@@ -2,7 +2,6 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipLabelMapper;
-import com.bizvane.ishop.dao.VipLabelMapper;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.VipLabelService;
 import com.github.pagehelper.PageHelper;
@@ -31,8 +30,13 @@ public class VipLabelServiceImpl implements VipLabelService {
     }
 
     @Override
-    public int insert(VipLabel VipLabel) throws SQLException {
-        return vipLabelMapper.insert(VipLabel);
+    public String insert(VipLabel vipLabel) throws SQLException {
+        if (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+            return "名称已经存在！！！！";
+        } else if (vipLabelMapper.insert(vipLabel) >= 0) {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
+        return Common.DATABEAN_CODE_ERROR;
     }
 
     @Override
@@ -62,9 +66,9 @@ public class VipLabelServiceImpl implements VipLabelService {
 //
 //    @Override
 //    public String VipLabelCodeExist(String corp_code, String tag_code) throws SQLException {
-//        VipLabel VipLabel = vipLabelMapper.selectVipLabelCode(tag_code, corp_code);
+//        vipLabel vipLabel = vipLabelMapper.selectVipLabelCode(tag_code, corp_code);
 //        String result = Common.DATABEAN_CODE_ERROR;
-//        if (VipLabel == null) {
+//        if (vipLabel == null) {
 //            result = Common.DATABEAN_CODE_SUCCESS;
 //        }
 //        return result;

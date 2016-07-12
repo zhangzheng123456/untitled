@@ -62,6 +62,7 @@ public class VIPController {
     //    @Autowired
 //    private VipLabelTypeService VipLabelTypeService;
     private static final Logger log = Logger.getLogger(LoginController.class);
+
     String id;
     /**
      * 会员列表
@@ -260,6 +261,205 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+//
+//    /**
+//     * 会员列表
+//     */
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String VIPManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String group_code = request.getSession(false).getAttribute("group_code").toString();
+//            String user_code = request.getSession().getAttribute("user_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//
+//            String function_code = request.getParameter("funcCode");
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+//
+//            JSONObject result = new JSONObject();
+//            PageInfo<VIPInfo> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = vipService.selectBySearch(page_number, page_size, "", "");
+//            } else {
+//                list = vipService.selectBySearch(page_number, page_size, corp_code, "");
+//            }
+//            result.put("list", list);
+//            result.put("actions", actions);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+//
+//    /**
+//     * 会员列表
+//     * 新增
+//     */
+//    @RequestMapping(value = "/add", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String addVIP(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        String user_id = request.getSession(false).getAttribute("user_id").toString();
+//        try {
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.getString("id");
+//            //  String message = jsonObj.getString("message");
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
+//            Date now = new Date();
+//            //      vipInfo.setRegister_time(Common.DATETIME_FORMAT.format(now));
+//            vipInfo.setModified_date(Common.DATETIME_FORMAT.format(now));
+//            vipInfo.setModifier(user_id);
+//            vipInfo.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//            vipInfo.setCreater(user_id);
+//
+//            String existInfo1 = vipService.vipCodeExist(vipInfo.getVip_code(), vipInfo.getCorp_code());
+//            String existInfo2 = vipService.vipNameExist(vipInfo.getVip_name(), vipInfo.getCorp_code());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setMessage("VIP 用户编号已经存在！！！");
+//            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setMessage("VIP 用户名称已经存在！！！");
+//            } else {
+//                vipService.insert(vipInfo);
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("add success!!!");
+//            }
+//
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+//
+//    /**
+//     * 会员列表
+//     * 编辑
+//     */
+//    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String editVIP(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String user_id = request.getSession(false).getAttribute("user_id").toString();
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.getString("id");
+//            String message = jsonObj.getString("message");
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
+//            vipInfo.setModifier(user_id);
+//            vipInfo.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
+//            String result = vipService.update(vipInfo);
+//            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                dataBean.setMessage("商品更改成功！！");
+//            } else {
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                dataBean.setMessage(result);
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage("edit error !!! ");
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+//
+//    /**
+//     * 编辑前获取数据
+//     *
+//     * @param request
+//     * @return
+//     */
+//    @RequestMapping(value = "/select", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String findVipById(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String data = null;
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.getString("id");
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            int vip_id = Integer.parseInt(jsonObject.getString("id"));
+//            VIPInfo vipInfo = vipService.getVipInfoById(vip_id);
+//            data = JSON.toJSONString(vipInfo);
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage(data);
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+//
+//
+//    /**
+//     * 会员列表
+//     * 查找
+//     */
+//    @RequestMapping(value = "/find", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String findVIP(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.getString("id");
+//            String message = jsonObj.getString("message");
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            int page_Number = jsonObject.getInt("pageNumber");
+//            int page_Size = jsonObject.getInt("pageSize");
+//            String search_value = jsonObject.getString("search_value").toString();
+//            String role_code = jsonObject.getString("role_code");
+//            org.json.JSONObject result = new org.json.JSONObject();
+//            PageInfo<VIPInfo> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = vipService.selectBySearch(page_Number, page_Size, "", search_value);
+//            } else {
+//                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//                list = vipService.selectBySearch(page_Number, page_Size, corp_code, search_value);
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId(id);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+
+
 
     /**
      * 会员标签管理
@@ -444,10 +644,23 @@ public class VIPController {
             vipLabel.setModifier(user_id);
             vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipLabel.setCreater(user_id);
-            vipLabelService.insert(vipLabel);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("标签创建成功！！");
-            dataBean.setId(id);
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            if (Common.ROLE_SYS.equals(role_code)) {
+                vipLabel.setLabel_type("sys");
+            }else{
+                vipLabel.setLabel_type("org");
+            }
+            String existInfo = vipLabelService.insert(vipLabel);
+            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("标签名称未被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("标签名称已被使用！！！");
+            }
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -977,6 +1190,7 @@ public class VIPController {
     }
     /**
      * 回访记录管理
+     * 列表
      */
     @RequestMapping(value = "/callback/list", method = RequestMethod.GET)
     @ResponseBody
@@ -1017,43 +1231,43 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 回访记录管理
-     * 新增
-     */
-    @RequestMapping(value = "/callback/add", method = RequestMethod.POST)
-    @ResponseBody
-    @Transactional
-    public String addCallBack(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            VipRecord VipRecord = WebUtils.JSON2Bean(jsonObject, VipRecord.class);
-            Date now = new Date();
-            VipRecord.setModified_date(Common.DATETIME_FORMAT.format(now));
-            VipRecord.setModifier(user_id);
-            this.vipRecordService.insert(VipRecord);
-            dataBean.setId(id);
-            dataBean.setMessage("add successs");
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 回访记录管理
+//     * 新增
+//     */
+//    @RequestMapping(value = "/callback/add", method = RequestMethod.POST)
+//    @ResponseBody
+//    @Transactional
+//    public String addCallBack(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String user_id = request.getSession(false).getAttribute("user_id").toString();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            VipRecord VipRecord = WebUtils.JSON2Bean(jsonObject, VipRecord.class);
+//            Date now = new Date();
+//            VipRecord.setModified_date(Common.DATETIME_FORMAT.format(now));
+//            VipRecord.setModifier(user_id);
+//            this.vipRecordService.insert(VipRecord);
+//            dataBean.setId(id);
+//            dataBean.setMessage("add successs");
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 回访记录管理
-     * 编辑前
+     * 编辑前获取数据
      */
 
     @RequestMapping(value = "/callback/select", method = RequestMethod.POST)
@@ -1088,38 +1302,38 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-
-    /**
-     * 回访记录管理
-     * 编辑
-     */
-    @RequestMapping(value = "/callback/edit", method = RequestMethod.POST)
-    @ResponseBody
-    @Transactional
-    public String editCallBack(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            VipRecord VipRecord = WebUtils.JSON2Bean(jsonObject, VipRecord.class);
-            VipRecord.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
-            VipRecord.setModifier(user_id);
-            this.vipRecordService.update(VipRecord);
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("edit success!!!s");
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//
+//    /**
+//     * 回访记录管理
+//     * 编辑
+//     */
+//    @RequestMapping(value = "/callback/edit", method = RequestMethod.POST)
+//    @ResponseBody
+//    @Transactional
+//    public String editCallBack(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String user_id = request.getSession(false).getAttribute("user_id").toString();
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            VipRecord VipRecord = WebUtils.JSON2Bean(jsonObject, VipRecord.class);
+//            VipRecord.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
+//            VipRecord.setModifier(user_id);
+//            this.vipRecordService.update(VipRecord);
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage("edit success!!!s");
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.getMessage());
+//            log.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 回访记录管理

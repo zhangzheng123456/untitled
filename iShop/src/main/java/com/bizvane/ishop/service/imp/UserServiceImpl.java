@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas);
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas,"");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -158,9 +158,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public User getById(int id) throws SQLException{
+    public User getById(int id) throws SQLException {
         return userMapper.selectById(id);
     }
+
     /**
      * 群组管理
      * 查看用户名单
@@ -256,7 +257,11 @@ public class UserServiceImpl implements UserService {
         logger.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
         if (login_user == null) {
-            return null;
+            user_info.put("error", "用户名或密码错误！");
+            user_info.put("status", Common.DATABEAN_CODE_ERROR);
+        } else if (login_user.getIsactive().contains("N")) {
+            user_info.put("error", "当前用户不可用！");
+            user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
             int user_id = login_user.getId();
             String user_code = login_user.getUser_code();
@@ -299,6 +304,7 @@ public class UserServiceImpl implements UserService {
             user_info.put("user_type", user_type);
             user_info.put("user_id", user_id);
             user_info.put("role_code", role_code);
+            user_info.put("status", Common.DATABEAN_CODE_SUCCESS);
         }
         return user_info;
     }

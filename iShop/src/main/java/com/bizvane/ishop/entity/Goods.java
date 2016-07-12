@@ -34,6 +34,10 @@ public class Goods {
     private String creater;
     //商品描述
     private String goods_description;
+    //商品品牌
+    private String brand_code;
+
+    private Brand brand;
 
     //商品编号
     private String corp_code;
@@ -175,5 +179,22 @@ public class Goods {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+
+    public String getBrand_code() {
+        return brand_code;
+    }
+
+    public void setBrand_code(String brand_code) {
+        this.brand_code = brand_code;
+    }
+
+    public Brand getBrand() {
+        return brand;
+    }
+
+    public void setBrand(Brand brand) {
+        this.brand = brand;
     }
 }
