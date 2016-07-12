@@ -567,7 +567,8 @@ function area_data(p,c){//区域
 	});//追加店铺
 }
 function addshopselect(){//店铺
-		var k=$("#select_ownshop #shop_list div").length;
+		var k=$("#select_ownshop .shop_list>div").length;
+		console.log(k);
 		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownshop(this)">'
                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode=""/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
@@ -578,7 +579,7 @@ function addshopselect(){//店铺
         +'</div>');
 }
 function addareaselect(){//区域
-		var k=$("#select_ownshop #shop_list div").length;
+		var k=$("#select_ownshop .shop_list>div").length;
 		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownarea(this)">'
                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属区域" readonly data-myscode=""/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'

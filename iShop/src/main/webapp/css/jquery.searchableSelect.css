@@ -63,7 +63,7 @@
   z-index:1000;
 }
 
-.searchable-select-input {
+.corp_select .searchable-select-input {
   width:410px;
   margin-top: 5px;
   border: 1px solid #ccc;

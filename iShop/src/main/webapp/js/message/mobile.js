@@ -319,7 +319,7 @@ function jumpBianse(){
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
-    valsue=this.value.replace(/\s+/g,"");
+    value=this.value.replace(/\s+/g,"");
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
