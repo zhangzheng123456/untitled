@@ -235,6 +235,8 @@ public class StoreController {
     @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -252,7 +254,7 @@ public class StoreController {
                 Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
                 String store_code = store.getStore_code();
                 String corp_code = store.getCorp_code();
-                List<User> user = storeService.getStoreUser(corp_code, store_code);
+                List<User> user = storeService.getStoreUser(corp_code, store_code,role_code);
                 count = user.size();
                 if (count > 0) {
                     msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
@@ -450,8 +452,9 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
 
-            List<User> user = storeService.getStoreUser(corp_code, store_code);
+            List<User> user = storeService.getStoreUser(corp_code, store_code,role_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(JSON.toJSONString(user));
