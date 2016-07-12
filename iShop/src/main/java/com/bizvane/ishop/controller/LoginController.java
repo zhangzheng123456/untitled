@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.management.monitor.CounterMonitor;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -244,10 +245,10 @@ public class LoginController {
             log.info("phone:" + phone + " password:" + password);
             log.info("------------start search" + new Date());
             JSONObject user_info = userService.login(request, phone, password);
-            if (user_info == null) {
+            if (user_info == null || user_info.getString("status").contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("login fail");
+                dataBean.setMessage(user_info.getString("error"));
             } else {
                 System.out.println(user_info);
                 //插入登录日志
@@ -326,13 +327,13 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String function_code = request.getParameter("funcCode");
-            JSONArray actions_detail = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, "D"+function_code);
+            JSONArray actions_detail = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, "D" + function_code);
 
             JSONArray actions_fun = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
             for (int i = 0; i < actions_fun.size(); i++) {
                 String act = actions_fun.get(i).toString();
                 JSONObject obj = new JSONObject(act);
-                if (obj.get("act_name").equals("edit")){
+                if (obj.get("act_name").equals("edit")) {
                     actions_detail.add(obj);
                 }
             }
