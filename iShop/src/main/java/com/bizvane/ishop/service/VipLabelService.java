@@ -28,7 +28,7 @@ public interface VipLabelService {
      * @return
      * @throws SQLException
      */
-    int insert(VipLabel vipLabel) throws SQLException;
+    String insert(VipLabel vipLabel) throws SQLException;
 
     /**
      * 删除VIP用户的标签信息，通过VIP用户的标签编号

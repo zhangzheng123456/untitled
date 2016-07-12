@@ -345,6 +345,7 @@ public class BrandController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 查出要导出的列
      */
@@ -370,6 +371,7 @@ public class BrandController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -394,11 +396,11 @@ public class BrandController {
             List<Brand> brands = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(brands,cols,response);
+            OutExeclHelper.OutExecl(brands, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -406,10 +408,11 @@ public class BrandController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * Execl增加用户
      */
-    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -435,36 +438,36 @@ public class BrandController {
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
         try {
-            Workbook rwb=Workbook.getWorkbook(targetFile);
-            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos=rs.getColumns();//得到所有的列
-            int rows=rs.getRows();//得到所有的行
+            Workbook rwb = Workbook.getWorkbook(targetFile);
+            Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos = rs.getColumns();//得到所有的列
+            int rows = rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(0);
-            for (int i = 3; i <column.length; i++) {
+            for (int i = 3; i < column.length; i++) {
                 Brand brand = brandService.getBrandByCode(corp_code, column[i].getContents().toString());
-                if(brand!=null){
-                    result ="第"+(i+1)+"列品牌编号已存在";
-                    int b=5/0;
+                if (brand != null) {
+                    result = "第" + (i + 1) + "列品牌编号已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
             Cell[] column1 = rs.getColumn(1);
-            for (int i = 3; i <column.length; i++) {
+            for (int i = 3; i < column.length; i++) {
                 Brand brand = brandService.getBrandByName(corp_code, column1[i].getContents().toString());
-                if(brand!=null){
-                    result ="第"+(i+1)+"列品牌名称已存在";
-                    int b=5/0;
+                if (brand != null) {
+                    result = "第" + (i + 1) + "列品牌名称已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    Brand brand=new Brand();
-                    brand.setBrand_code(rs.getCell(j++,i).getContents());
-                    brand.setBrand_name(rs.getCell(j++,i).getContents());
-                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                    Brand brand = new Brand();
+                    brand.setBrand_code(rs.getCell(j++, i).getContents());
+                    brand.setBrand_name(rs.getCell(j++, i).getContents());
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
                         brand.setIsactive("Y");
-                    }else{
+                    } else {
                         brand.setIsactive("N");
                     }
                     brand.setCorp_code(corp_code);
@@ -477,7 +480,7 @@ public class BrandController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
