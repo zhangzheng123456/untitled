@@ -68,6 +68,7 @@ public class UserController {
     @Autowired
     private TableManagerService managerService;
     String id;
+
     /***
      * 导出数据
      */
@@ -84,13 +85,13 @@ public class UserController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            PageInfo<User> list=null;
+            PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = userService.selectBySearch(request,1, size, "", "");
+                list = userService.selectBySearch(request, 1, size, "", "");
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
-                list = userService.selectBySearch(request,1, size, corp_code, "");
+                list = userService.selectBySearch(request, 1, size, corp_code, "");
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 //员工
                 User user = userService.getUserById(user_id);
@@ -101,22 +102,22 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = userService.selectBySearchPart(1, size, corp_code, "", store_code,"", role_code);
+                list = userService.selectBySearchPart(1, size, corp_code, "", store_code, "", role_code);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
-            }else if (role_code.equals(Common.ROLE_AM)){
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = userService.selectBySearchPart(1, size, corp_code, "","",area_code, role_code);
+                list = userService.selectBySearchPart(1, size, corp_code, "", "", area_code, role_code);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
             }
             List<User> users = list.getList();
-            String column_name=  jsonObject.get("column_name").toString();
+            String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(users,cols,response);
+            OutExeclHelper.OutExecl(users, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");
@@ -129,6 +130,7 @@ public class UserController {
         return dataBean.getJsonStr();
 
     }
+
     /**
      * 用户管理
      */
@@ -150,18 +152,18 @@ public class UserController {
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = userService.selectBySearch(request,page_number, page_size, "", "");
+                list = userService.selectBySearch(request, page_number, page_size, "", "");
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
-                list = userService.selectBySearch(request,page_number, page_size, corp_code, "");
+                list = userService.selectBySearch(request, page_number, page_size, corp_code, "");
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code,"", role_code);
-            }else if (role_code.equals(Common.ROLE_AM)){
+                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "","",area_code, role_code);
+                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -222,10 +224,10 @@ public class UserController {
     /***
      * Execl增加用户
      */
-    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
-    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file,ModelMap model) throws SQLException {
+    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         //创建你要保存的文件的路径
         String path = request.getSession().getServletContext().getRealPath("lupload");
@@ -244,49 +246,49 @@ public class UserController {
             e.printStackTrace();
         }
         //将该文件的路径给客户端，让其可以请求该wenjian
-        model.addAttribute("fileUrl", request.getContextPath() + "/lupload/"+ fileName);
+        model.addAttribute("fileUrl", request.getContextPath() + "/lupload/" + fileName);
         String user_id = request.getSession().getAttribute("user_id").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
-        String result="";
-        try{
-            Workbook rwb=Workbook.getWorkbook(targetFile);
-            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos=rs.getColumns();//得到所有的列
-            int rows=rs.getRows();//得到所有的行
+        String result = "";
+        try {
+            Workbook rwb = Workbook.getWorkbook(targetFile);
+            Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos = rs.getColumns();//得到所有的列
+            int rows = rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(2);
-            for (int i = 3; i <column.length; i++) {
+            for (int i = 3; i < column.length; i++) {
                 String existInfo = userService.userPhoneExist(column[i].getContents().toString());
-                if(!existInfo.contains("0")){
-                    result ="第"+(i+1)+"列的电话号码已存在";
-                    int b=5/0;
+                if (!existInfo.contains("0")) {
+                    result = "第" + (i + 1) + "列的电话号码已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
             Cell[] column1 = rs.getColumn(0);
-            for (int i = 3; i <column1.length; i++) {
+            for (int i = 3; i < column1.length; i++) {
                 User user = userService.userCodeExist(column1[i].getContents().toString(), corp_code);
-                if(user!=null){
-                    result ="第"+(i+1)+"列的用户编号已存在";
-                    int b=5/0;
+                if (user != null) {
+                    result = "第" + (i + 1) + "列的用户编号已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    User user =new User();
+                    User user = new User();
                     user.setCorp_code(corp_code);
-                    user.setUser_code(rs.getCell(j++,i).getContents());
-                    user.setUser_name(rs.getCell(j++,i).getContents());
+                    user.setUser_code(rs.getCell(j++, i).getContents());
+                    user.setUser_name(rs.getCell(j++, i).getContents());
                     user.setAvatar("");//头像
-                    user.setPhone(rs.getCell(j++,i).getContents());
-                    user.setEmail(rs.getCell(j++,i).getContents());
-                    if(rs.getCell(j++,i).getContents().equals("男")){
+                    user.setPhone(rs.getCell(j++, i).getContents());
+                    user.setEmail(rs.getCell(j++, i).getContents());
+                    if (rs.getCell(j++, i).getContents().equals("男")) {
                         user.setSex("M");
-                    }else{
+                    } else {
                         user.setSex("F");
                     }
-                    user.setGroup_code(rs.getCell(j++,i).getContents());
-                    String area_code = rs.getCell(j++,i).getContents().toString();
+                    user.setGroup_code(rs.getCell(j++, i).getContents());
+                    String area_code = rs.getCell(j++, i).getContents().toString();
                     if (!area_code.equals("all") && !area_code.equals("")) {
                         String[] areas = area_code.split(",");
                         area_code = "";
@@ -296,7 +298,7 @@ public class UserController {
                         }
                     }
                     user.setArea_code(area_code);
-                    String store_code = rs.getCell(j++,i).getContents().toString();
+                    String store_code = rs.getCell(j++, i).getContents().toString();
                     if (!store_code.equals("all") && !store_code.equals("")) {
                         String[] codes = store_code.split(",");
                         store_code = "";
@@ -316,9 +318,9 @@ public class UserController {
                     user.setModifier(user_id);
                     user.setIsactive("Y");
                     user.setCan_login("Y");
-                    result= userService.insert(user);
-                    if(!result.equals(Common.DATABEAN_CODE_SUCCESS)){
-                        int a=6/0;
+                    result = userService.insert(user);
+                    if (!result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                        int a = 6 / 0;
                         break;
                     }
                 }
@@ -333,7 +335,7 @@ public class UserController {
                 dataBean.setId(id);
                 dataBean.setMessage(result);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -341,6 +343,7 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 用户管理
      * 新增
@@ -615,7 +618,7 @@ public class UserController {
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = userService.selectBySearch(request,page_number, page_size, "", search_value);
+                list = userService.selectBySearch(request, page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
@@ -714,7 +717,7 @@ public class UserController {
             if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
                 //登录用户为admin或企业管理员
                 list = storeService.getCorpStore(corp_code);
-            } else if (role_code.equals(Common.ROLE_AM)){
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 //登录用户为区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 String corp_code1 = request.getSession().getAttribute("corp_code").toString();

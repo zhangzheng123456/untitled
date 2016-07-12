@@ -315,10 +315,23 @@ public class VIPController {
             vipLabel.setModifier(user_id);
             vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipLabel.setCreater(user_id);
-            vipLabelService.insert(vipLabel);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage("标签创建成功！！");
-            dataBean.setId(id);
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            if (Common.ROLE_SYS.equals(role_code)) {
+                vipLabel.setLabel_type("sys");
+            }else{
+                vipLabel.setLabel_type("org");
+            }
+            String existInfo = vipLabelService.insert(vipLabel);
+            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("标签名称未被使用！！！");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("标签名称已被使用！！！");
+            }
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
