@@ -13,7 +13,16 @@
   position: relative;
   outline: none;
 }
-
+.per_type .searchable-select{
+  display: inline-block;
+  min-width:310px;
+  font-size: 12px;
+  line-height:30px;
+  line-height: 1.428571429;
+  vertical-align: middle;
+  position: relative;
+  outline: none;
+}
 .searchable-select-holder{
   /*padding: 6px;*/
   background-color: #ffffff;
@@ -62,8 +71,21 @@
   right: 0;
   z-index:1000;
 }
-
-.corp_select .searchable-select-input {
+.per_type .searchable-select-dropdown {
+  width:310px;
+  position: absolute;
+  background-color: #e8f5fe;
+  border: 1px solid #a9c9e2;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+  padding: 4px;
+  /*border-top: none;*/
+  top: 32px;
+  /*left: 9px;*/
+  right: 0;
+  z-index:1000;
+}
+.corp_select .searchable-select-input,.message_type_select .searchable-select-input{
   width:410px;
   margin-top: 5px;
   border: 1px solid #ccc;
@@ -73,7 +95,16 @@
   box-sizing: border-box;
   width: 100%;
 }
-
+.per_type .searchable-select-input{
+  width:310px;
+  margin-top: 5px;
+  border: 1px solid #ccc;
+  outline: none;
+  padding: 4px;
+  width: 100%;
+  box-sizing: border-box;
+  width: 100%;
+}
 .searchable-scroll {
   margin-top: 4px;
   position: relative;
@@ -94,7 +125,6 @@
 .searchable-has-next {
   bottom: 0;
 }
-
 .searchable-has-privious, .searchable-has-next {
   height: 16px;
   left: 0;
