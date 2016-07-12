@@ -814,6 +814,7 @@ public class VIPController {
 
     /**
      * 回访记录管理
+     * 列表
      */
     @RequestMapping(value = "/callback/list", method = RequestMethod.GET)
     @ResponseBody
@@ -890,7 +891,7 @@ public class VIPController {
 
     /**
      * 回访记录管理
-     * 编辑前
+     * 编辑前获取数据
      */
 
     @RequestMapping(value = "/callback/select", method = RequestMethod.POST)

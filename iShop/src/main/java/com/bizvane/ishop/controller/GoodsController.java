@@ -38,6 +38,7 @@ public class GoodsController {
 
     /**
      * 商品培训
+     * 列表
      */
     @RequestMapping(value = "/fab/list", method = RequestMethod.GET)
     @ResponseBody
@@ -80,6 +81,13 @@ public class GoodsController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 商品管理
+     * 商品查找
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/fab/search", method = RequestMethod.GET)
     @ResponseBody
     public String selectBySearch(HttpServletRequest request) {
@@ -173,6 +181,7 @@ public class GoodsController {
 
     /**
      * 商品编辑之前
+     * 获取数据
      *
      * @param request
      * @return
@@ -314,6 +323,13 @@ public class GoodsController {
     }
 
 
+    /**
+     * 商品管理
+     * 确保商品中的商品编号在其公司内唯一性存在
+     *
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/FabCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String UserCodeExist(HttpServletRequest request) {
@@ -345,6 +361,11 @@ public class GoodsController {
     }
 
 
+    /**
+     * 确保商品名称在其公司内的唯一性存在.
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/FabNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String FabNameExist(HttpServletRequest request) {
@@ -375,14 +396,14 @@ public class GoodsController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 秀搭管理
-     */
-    @RequestMapping(value = "/xiuda/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String showMatchManage(HttpServletRequest request) {
-
-        return "xiuda";
-    }
+//    /**
+//     * 秀搭管理
+//     */
+//    @RequestMapping(value = "/xiuda/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String showMatchManage(HttpServletRequest request) {
+//
+//        return "xiuda";
+//    }
 
 }

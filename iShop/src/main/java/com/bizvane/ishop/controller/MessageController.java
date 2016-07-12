@@ -28,6 +28,7 @@ import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
+ * 消息管理
  */
 @Controller
 @RequestMapping("/message")
@@ -551,7 +552,7 @@ public class MessageController {
 
     /**
      * 根据用户和企业输出企业消息类型
-     *
+     * 即使根据企业编号，获取相应的信息。
      * @param request
      * @return
      */
@@ -598,6 +599,7 @@ public class MessageController {
 
     /**
      * 手机消息模板
+     * 消息模板列表
      */
     @RequestMapping(value = "/mobile/template/list", method = RequestMethod.GET)
     @ResponseBody
@@ -639,7 +641,7 @@ public class MessageController {
     /**
      * 短信模板管理
      * 短信模板的选择
-     *
+     * 编辑之前的编辑
      * @param request
      * @return
      */
@@ -807,6 +809,11 @@ public class MessageController {
 //        return dataBean.getJsonStr();
 //    }
 
+    /**
+     * 获取所有的消息模板类型。
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/mobile/template/types", method = RequestMethod.POST)
     @ResponseBody
     public String getTypes(HttpServletRequest request) {
@@ -843,6 +850,7 @@ public class MessageController {
 
     /**
      * 手机消息类型模板添加
+     *
      */
     @RequestMapping(value = "/mobile/template/add", method = RequestMethod.POST)
     @ResponseBody
@@ -885,6 +893,12 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 判断消息模板类型名称是否存在，确保消息模板名称的唯一性
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/mobile/template/messageTemplateNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String SmsTemplateNameExist(HttpServletRequest request) {
@@ -909,7 +923,11 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
-
+    /**
+     * 判断消息模板编号是否存在，确保模板编号的唯一性
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/mobile/template/messageTemplateCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String SmsTemplateCodeExist(HttpServletRequest request) {
