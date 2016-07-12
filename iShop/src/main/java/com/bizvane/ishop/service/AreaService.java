@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
@@ -34,5 +35,5 @@ public interface AreaService {
 
     Area selAreaByCorp(String corp_code,String area_code,String isactive);
 
-
+    String insertExecl(Area area);
 }

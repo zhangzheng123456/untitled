@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
@@ -11,19 +12,29 @@ import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.github.pagehelper.PageInfo;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.RequestWrapper;
+import java.io.File;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -434,7 +445,7 @@ public class CorpController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            JSONObject info = new JSONObject();
+
             //系统管理员(官方画面)
             PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 10000, "");
             List<Corp> corps = corpInfo.getList();
@@ -443,12 +454,78 @@ public class CorpController {
             OutExeclHelper.OutExecl(corps,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(info.toString());
+            dataBean.setMessage("word success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
         }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * Execl增加用户
+     */
+    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional()
+    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
+        DataBean dataBean = new DataBean();
+        File targetFile = LuploadHelper.lupload(request, file, model);
+        String user_id = request.getSession().getAttribute("user_id").toString();
+        String result = "";
+        try {
+            Workbook rwb = Workbook.getWorkbook(targetFile);
+            Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos = rs.getColumns();//得到所有的列
+            int rows = rs.getRows();//得到所有的行
+            Cell[] column = rs.getColumn(0);
+            for (int i = 3; i <column.length; i++) {
+                Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString());
+                if(corp!=null){
+                    result ="第"+(i+1)+"列企业编号已存在";
+                    int b=5/0;
+                    break;
+                }
+            }
+            Cell[] column1 = rs.getColumn(1);
+            for (int i = 3; i <column1.length; i++) {
+                String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString());
+                if(existInfo.contains(Common.DATABEAN_CODE_ERROR)){
+                    result ="第"+(i+1)+"列企业名称已存在";
+                    int b=5/0;
+                    break;
+                }
+            }
+            for(int i=3;i < rows;i++) {
+                for (int j = 0; j < clos; j++) {
+                    Corp corp=new Corp();
+                    corp.setCorp_code(rs.getCell(j++,i).getContents());
+                    corp.setCorp_name(rs.getCell(j++,i).getContents());
+                    corp.setAddress(rs.getCell(j++,i).getContents());
+                    corp.setContact(rs.getCell(j++,i).getContents());
+                    corp.setContact_phone(rs.getCell(j++,i).getContents());
+                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                        corp.setIsactive("Y");
+                    }else{
+                        corp.setIsactive("N");
+                    }
+                    corp.setCreater(user_id);
+                    Date now = new Date();
+                    corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    result =  corpService.insertExecl(corp);
+
+                }
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        }catch (Exception e){
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        }
+
         return dataBean.getJsonStr();
     }
     @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)

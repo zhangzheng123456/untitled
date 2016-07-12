@@ -162,5 +162,9 @@ public class AreaServiceImpl implements AreaService {
         return areaMapper.selAreaByCorp(corp_code,area_code,isactive);
     }
 
-
+    @Override
+    public String insertExecl(Area area) {
+        areaMapper.insertArea(area);
+        return "add success";
+    }
 }

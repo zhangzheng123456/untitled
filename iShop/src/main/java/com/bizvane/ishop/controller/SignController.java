@@ -6,9 +6,12 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.Sign;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.SignService;
+import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -21,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 /**
  * Created by yin on 2016/6/23.
@@ -32,6 +36,8 @@ public class SignController {
     private SignService signService;
     @Autowired
     private FunctionService functionService;
+    @Autowired
+    private TableManagerService managerService;
     String id;
 
     private static final Logger logger = Logger.getLogger(InterfaceController.class);
@@ -171,6 +177,76 @@ public class SignController {
         return dataBean.getJsonStr();
     }
 
-
-
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean=new DataBean();
+        try{
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            PageInfo<Sign> list = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = signService.selectSignAll(1, 10000, "", "");
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                //系统管理员
+                list =signService.selectSignAll(1, 10000, corp_code, "");
+            } else if (role_code.equals(Common.ROLE_SM)) {
+                //店长
+                String store_code = request.getSession().getAttribute("store_code").toString();
+                list = signService.selectSignByInp(1, 10000, corp_code, "", store_code,"", role_code);
+            }else if (role_code.equals(Common.ROLE_AM)){
+                //区经
+                String area_code = request.getSession().getAttribute("area_code").toString();
+                list = signService.selectSignByInp(1, 10000, corp_code, "","",area_code, role_code);
+            }else if(role_code.equals(Common.ROLE_STAFF)){
+                list=signService.selectByUser(1,10000,corp_code,user_code,"");
+            }
+            List<Sign> signs = list.getList();
+            String column_name = jsonObject.get("column_name").toString();
+            String[] cols = column_name.split(",");//前台传过来的字段
+            OutExeclHelper.OutExecl(signs,cols,response);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("word success");
+        }catch (Exception e){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(e.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

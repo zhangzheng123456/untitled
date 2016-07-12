@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
@@ -43,4 +44,6 @@ public interface CorpService {
     int getMessagesTypeCount(String corp_code);
 
     int selectCount(String create_date);
+
+    String insertExecl(Corp corp);
 }

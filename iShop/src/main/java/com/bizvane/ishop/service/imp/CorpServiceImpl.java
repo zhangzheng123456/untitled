@@ -117,6 +117,12 @@ public class CorpServiceImpl implements CorpService {
         return page;
     }
 
+    @Override
+    public String insertExecl(Corp corp) {
+        corpMapper.insertCorp(corp);
+        return "add success";
+    }
+
     /**
      * 显示所有企业
      */

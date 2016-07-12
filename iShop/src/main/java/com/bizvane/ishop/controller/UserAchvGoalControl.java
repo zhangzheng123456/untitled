@@ -5,22 +5,36 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.StoreAchvGoal;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.service.UserAchvGoalService;
+import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.TimeUtils;
 import com.github.pagehelper.PageInfo;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -37,7 +51,8 @@ public class UserAchvGoalControl {
     private UserAchvGoalService userAchvGoalService = null;
     @Autowired
     private FunctionService functionService = null;
-
+    @Autowired
+    private TableManagerService managerService;
     String id;
 
     /**
@@ -130,10 +145,7 @@ public class UserAchvGoalControl {
             Date now = new Date();
             userAchvGoal.setModifier(user_id);
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
-            userAchvGoal.setCreater(user_id);
-            userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
-
             userAchvGoalService.updateUserAchvGoal(userAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -318,6 +330,130 @@ public class UserAchvGoalControl {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            PageInfo<UserAchvGoal> pages = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                pages = userAchvGoalService.selectBySearch(1, 10000, "", "");
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                pages = this.userAchvGoalService.selectBySearch(1, 10000, corp_code, "");
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                String area_code = request.getSession(false).getAttribute("area_code").toString();
+                pages = this.userAchvGoalService.selectBySearchPart(1, 10000, corp_code, "", "", area_code, Common.ROLE_AM);
+            } else if (role_code.equals(Common.ROLE_SM)) {
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                pages = this.userAchvGoalService.selectBySearchPart(1, 10000, corp_code, "", store_code, "", Common.ROLE_SM);
+            }
+            List<UserAchvGoal> userAchvGoals = pages.getList();
+            String column_name = jsonObject.get("column_name").toString();
+            String[] cols = column_name.split(",");//前台传过来的字段
+            OutExeclHelper.OutExecl(userAchvGoals,cols,response);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("word success");
+        }catch (Exception e){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(e.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /***
+     * Execl增加
+     */
+    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional()
+    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
+        DataBean dataBean = new DataBean();
+        File targetFile = LuploadHelper.lupload(request, file, model);
+        String user_id = request.getSession().getAttribute("user_id").toString();
+        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+
+        String result = "";
+        try {
+            Workbook rwb = Workbook.getWorkbook(targetFile);
+            Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos = rs.getColumns();//得到所有的列
+            int rows = rs.getRows();//得到所有的行
+            Cell[] column = rs.getColumn(3);
+            for (int i = 3; i <column.length; i++) {
+                if(!column[i].getContents().toString().equals("D")||!column[i].getContents().toString().equals("W")||!column[i].getContents().toString().equals("M")||!column[i].getContents().toString().equals("Y")){
+                    result ="第"+(i+1)+"列的业绩日期类型缩写不对";
+                    int b=5/0;
+                    break;
+                }
+            }
+            for(int i=3;i < rows;i++) {
+                for (int j = 0; j < clos; j++) {
+                    UserAchvGoal userAchvGoal=new UserAchvGoal();
+                    userAchvGoal.setCorp_code(corp_code);
+                    userAchvGoal.setStore_code(rs.getCell(j++,i).getContents());
+                    userAchvGoal.setUser_code(rs.getCell(j++,i).getContents());
+                    userAchvGoal.setUser_target(rs.getCell(j++,i).getContents());
+                    userAchvGoal.setTarget_type(rs.getCell(j++,i).getContents());
+                    userAchvGoal.setTarget_time(rs.getCell(j++,i).getContents());
+                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                        userAchvGoal.setIsactive("Y");
+                    }else{
+                        userAchvGoal.setIsactive("N");
+                    }
+                    userAchvGoal.setCreater(user_id);
+                    Date now = new Date();
+                    userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    result=String.valueOf(userAchvGoalService.insert(userAchvGoal));
+                }
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        }catch (Exception e){
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
         }
         return dataBean.getJsonStr();
     }
