@@ -21,4 +21,8 @@ public interface BrandMapper {
     int deleteByBrandId(int id);
 
     Brand selectByBrandName(@Param("corp_code") String corp_code, @Param("brand_name") String brand_name);
+
+    int getGoodsCount(@Param("brand_code") String brand_code);
+
+    int getStoresCount(@Param("brand_code") String brand_code);
 }

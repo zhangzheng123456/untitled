@@ -119,7 +119,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public String goodsNameExist(String corp_code, String goods_name) {
-        Goods good = goodsMapper.getGoodsByName(corp_code,goods_name);
+        Goods good = goodsMapper.getGoodsByName(corp_code, goods_name);
         String result = Common.DATABEAN_CODE_ERROR;
         if (good == null) {
             result = Common.DATABEAN_CODE_SUCCESS;

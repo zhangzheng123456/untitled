@@ -173,5 +173,12 @@
         WHERE  corp_code=#{corp_code} and brand_name=#{brand_name}
     </select>
 
+    <select id="getGoodsCount" resultType="java.lang.Integer">
+        select count(*) from def_goods where brand_code=#{brand_code}
+    </select>
+
+    <select id="getStoresCount" resultType="java.lang.Integer">
+        select count(*) from def_store where brand_code=#{brand_code}
+    </select>
 
 </mapper>

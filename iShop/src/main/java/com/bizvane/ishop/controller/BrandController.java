@@ -179,6 +179,7 @@ public class BrandController {
             JSONObject jsonObject = new JSONObject(message);
             String brand_id = jsonObject.get("id").toString();
             String[] ids = brand_id.split(",");
+            String msg = null;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 Brand brand = brandService.getBrandById(Integer.valueOf(ids[i]));
@@ -186,21 +187,42 @@ public class BrandController {
                 String brand_code = brand.getBrand_code();
                 String corp_code = brand.getCorp_code();
                 logger.info("-------------获取企业店铺之前---" + corp_code);
-                List<Store> stores = brandService.getBrandStore(corp_code, brand_code);
-                logger.info(stores.toString() + "lixixitest 111" + "删除前 。。。");
-                if (stores.size() == 0) {
-                    logger.info("----------" + ids[i] + "\n");
-                    brandService.delete(Integer.valueOf(ids[i]));
-                    logger.info("删除之后！！！" + "lixixitest1111s");
-                    dataBean.setId(id);
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setMessage("删除成功！");
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage("品牌" + brand_code + "下有所属店铺，请先处理品牌下店铺再删除！");
-                    return dataBean.getJsonStr();
+                int count = 0;
+                count = brandService.getGoodsCount(brand_code);
+                if (count > 0) {
+                    msg = "有使用品牌" + brand_code + "的商品，请现行处理！";
+                    break;
                 }
+                count = brandService.getStoresCount(brand_code);
+                if (count > 0) {
+                    msg = "有使用品牌" + brand_code + "的店铺，请现行处理！";
+                    break;
+                }
+                brandService.delete(Integer.valueOf(ids[i]));
+//                List<Store> stores = brandService.getBrandStore(corp_code, brand_code);
+//                logger.info(stores.toString() + "lixixitest 111" + "删除前 。。。");
+//                if (stores.size() == 0) {
+//                    logger.info("----------" + ids[i] + "\n");
+//                    brandService.delete(Integer.valueOf(ids[i]));
+//                    logger.info("删除之后！！！" + "lixixitest1111s");
+//                    dataBean.setId(id);
+//                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//                    dataBean.setMessage("删除成功！");
+//                } else {
+//                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//                    dataBean.setId(id);
+//                    dataBean.setMessage("品牌" + brand_code + "下有所属店铺，请先处理品牌下店铺再删除！");
+//                    return dataBean.getJsonStr();
+//                }
+            }
+            if (msg == null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("删除成功！");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -415,7 +437,8 @@ public class BrandController {
     @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
-    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
+    public String addByExecl(HttpServletRequest
+                                     request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         //创建你要保存的文件的路径
         String path = request.getSession().getServletContext().getRealPath("lupload");

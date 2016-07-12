@@ -308,6 +308,7 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String goods_id = jsonObject.getString("id");
             String ids[] = goods_id.split(",");
+
             for (int i = 0; i < ids.length; i++) {
                 this.goodsService.delete(Integer.parseInt(ids[i]));
             }
