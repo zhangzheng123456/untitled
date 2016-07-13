@@ -85,7 +85,14 @@
     background-size: 30px 30px;
 }
 .per_type .input_select{
-	width: 280px;
+	width: 310px;
     height: 30px;
     line-height: 30px;
+}
+.select_ownshop{
+	margin-left: 50px;
+}
+.select_ownshop label{
+	width: 73px;
+	line-height: 30px;
 }
