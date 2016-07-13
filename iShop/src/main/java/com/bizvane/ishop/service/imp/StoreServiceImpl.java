@@ -80,13 +80,13 @@ public class StoreServiceImpl implements StoreService {
 
 
     //分页显示所有店铺
-    public PageInfo<Store> getAllStore(HttpServletRequest request,int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) {
         List<Store> shops;
 
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectAllStore(corp_code, search_value);
         //报表调用
-        request.getSession().setAttribute("size",shops.size());
+        request.getSession().setAttribute("size", shops.size());
 
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
@@ -103,11 +103,11 @@ public class StoreServiceImpl implements StoreService {
         for (int i = 0; i < ids.length; i++) {
             ids[i] = ids[i].substring(1, ids[i].length());
         }
-        Map<String, Object> params =  new HashMap<String, Object>();
-        params.put("store_codes",ids);
-        params.put("corp_code",corp_code);
-        params.put("search_value",search_value);
-        params.put("isactive","");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("store_codes", ids);
+        params.put("corp_code", corp_code);
+        params.put("search_value", search_value);
+        params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectByUserId(params);
         PageInfo<Store> page = new PageInfo<Store>(shops);
@@ -119,23 +119,23 @@ public class StoreServiceImpl implements StoreService {
      * 获取页面的所有数据
      */
     @Override
-    public List<Store> selectAll(String store_code, String corp_code,String isactive) {
+    public List<Store> selectAll(String store_code, String corp_code, String isactive) {
         List<Store> shops;
         String[] ids = store_code.split(",");
         for (int i = 0; i < ids.length; i++) {
             ids[i] = ids[i].substring(1, ids[i].length());
         }
-        Map<String, Object> params =  new HashMap<String, Object>();
-        params.put("store_codes",ids);
-        params.put("corp_code",corp_code);
-        params.put("search_value","");
-        params.put("isactive",isactive);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("store_codes", ids);
+        params.put("corp_code", corp_code);
+        params.put("search_value", "");
+        params.put("isactive", isactive);
         return storeMapper.selectByUserId(params);
     }
 
     //店铺下所属用户
     public List<User> getStoreUser(String corp_code, String store_code) {
-        List<User> user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD+store_code+",");
+        List<User> user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",");
         return user;
     }
 
@@ -181,10 +181,17 @@ public class StoreServiceImpl implements StoreService {
         return result;
 
     }
-    public String insertExecl(Store store){
+
+    public String insertExecl(Store store) {
         storeMapper.insertStore(store);
         return "add success";
     }
+
+    @Override
+    public int selectUserCount(String corp_code, String store_code) throws SQLException {
+        return storeMapper.selectUserCount(corp_code, store_code);
+    }
+
     //修改店铺
     @Override
     public String update(String message, String user_id) throws SQLException {
@@ -243,26 +250,27 @@ public class StoreServiceImpl implements StoreService {
     public int selectAchCount(String store_code) throws SQLException {
         return this.storeMapper.selectAchCount(store_code);
     }
+
     @Override
     public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) {
 
-        Map<String, Object> params =  new HashMap<String, Object>();
-        params.put("corp_code",corp_code);
-        params.put("area_code",area_code);
-        params.put("search_value",search_value);
-        params.put("isactive","");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_code", area_code);
+        params.put("search_value", search_value);
+        params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selectByAreaCode(params);
-        PageInfo<Store> page=new PageInfo<Store>(stores);
+        PageInfo<Store> page = new PageInfo<Store>(stores);
         return page;
     }
 
-    public List<Store> selectByAreaCode(String corp_code, String[] area_code,String isactive) {
-        Map<String, Object> params =  new HashMap<String, Object>();
-        params.put("corp_code",corp_code);
-        params.put("area_code",area_code);
-        params.put("search_value","");
-        params.put("isactive",isactive);
+    public List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_code", area_code);
+        params.put("search_value", "");
+        params.put("isactive", isactive);
         List<Store> stores = storeMapper.selectByAreaCode(params);
         return stores;
     }
