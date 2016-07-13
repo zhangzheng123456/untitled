@@ -14,13 +14,13 @@
         <result column="modified_date" property="modified_date"/>
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
-        <result column="template_type" property="template_type"/>
+        <!--<result column="template_type" property="template_type"/>-->
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
-        <association property="templateType" javaType="com.bizvane.ishop.entity.TemplateType">
-            <result column="type_name" property="type_name"/>
-        </association>
+        <!--<association property="templateType" javaType="com.bizvane.ishop.entity.TemplateType">-->
+            <!--<result column="type_name" property="type_name"/>-->
+        <!--</association>-->
     </resultMap>
 
     <!--<resultMap id="types" type="com.bizvane.ishop.entity.TemplateType">

@@ -1,7 +1,7 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.SmsTemplate;
-import com.bizvane.ishop.entity.TemplateType;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

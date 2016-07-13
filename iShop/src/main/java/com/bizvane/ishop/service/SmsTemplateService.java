@@ -1,7 +1,6 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.SmsTemplate;
-import com.bizvane.ishop.entity.TemplateType;
 import com.bizvane.ishop.entity.VipRecord;
 import com.bizvane.ishop.entity.VipRecordType;
 import com.github.pagehelper.PageInfo;
@@ -82,7 +81,7 @@ public interface SmsTemplateService {
      */
     String SmsTemplateNameExist(String corp_code, String template_name) throws SQLException;
 
-    List<TemplateType> getTypes();
+//    List<TemplateType> getTypes();
 
 //    List<VipRecordType> getMessageTypeByCorp(String corp_code, String s);
 }
