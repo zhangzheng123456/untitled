@@ -486,8 +486,10 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String store_code = jsonObject.get("store_code").toString();
             String user_id = jsonObject.get("user_id").toString();
-
-            storeService.deleteStoreUser(user_id, store_code);
+            String[] ids = user_id.split(",");
+            for (int i = 0; i < ids.length; i++) {
+                storeService.deleteStoreUser(user_id, store_code);
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("delete success");
