@@ -88,6 +88,7 @@
         ,g.goods_description
         ,g.corp_code
         ,cp.corp_name
+        ,g.brand_code
         ,db.brand_name
         FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
         WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
