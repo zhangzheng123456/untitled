@@ -1,4 +1,4 @@
-package com.bizvane.ishop.controller;
+﻿package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -278,8 +278,11 @@ public class StoreController {
             //	return "Error deleting the user:" + ex.toString();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            return dataBean.getJsonStr();
+
+
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
@@ -515,8 +518,12 @@ public class StoreController {
             }
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
+
         }
         return dataBean.getJsonStr();
     }
@@ -548,8 +555,12 @@ public class StoreController {
             }
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
+
         }
         return dataBean.getJsonStr();
     }
@@ -741,7 +752,12 @@ public class StoreController {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(e.getMessage());
+
+
+            dataBean.setMessage(e.getMessage() + e.toString());
+            logger.info(e.getMessage() + e.toString());
+    
+
         }
         return dataBean.getJsonStr();
     }

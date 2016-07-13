@@ -1,4 +1,4 @@
-package com.bizvane.ishop.controller;
+﻿package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -175,6 +175,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
+
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
@@ -428,6 +429,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
+
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
@@ -507,6 +509,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
+
             dataBean.setMessage(ex.getMessage());
         }
         logger.info("info--------" + dataBean.getJsonStr());
@@ -641,7 +644,9 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
+
             dataBean.setMessage(ex.getMessage());
+
         }
         return dataBean.getJsonStr();
     }
@@ -739,7 +744,9 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
+
             dataBean.setMessage(ex.getMessage());
+
         }
         return dataBean.getJsonStr();
     }
