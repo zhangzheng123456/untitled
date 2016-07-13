@@ -809,46 +809,46 @@ public class MessageController {
      * 消息模板类型添加
      *
      */
-//    @RequestMapping(value = "/mobile/template/add", method = RequestMethod.POST)
-//    @ResponseBody
-//    @Transactional
-//    public String SmsTemplateAdd(HttpServletRequest request) {
-//
-//        DataBean dataBean = new DataBean();
-//        String user_id = WebUtils.getValueForSession(request, "user_id");
-//        String corp_code = WebUtils.getValueForSession(request, "corp_code");
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            SmsTemplate SmsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
-//            SmsTemplate.setModifier(user_id);
-//            Date now = new Date();
-//            SmsTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
-//            SmsTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
-//            SmsTemplate.setCreater(user_id);
-//            String existInfo1 = smsTemplateService.SmsTemplateExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code());
-//            String existInfo2 = smsTemplateService.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_name());
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-//                dataBean.setMessage("消息模板编号已经存在！！！");
-//            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-//                dataBean.setMessage("消息模板名称已经存在!!!");
-//            } else {
-//                this.smsTemplateService.insert(SmsTemplate);
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setMessage("add succcess !!!");
-//            }
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    @RequestMapping(value = "/mobile/template/add", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String SmsTemplateAdd(HttpServletRequest request) {
+
+        DataBean dataBean = new DataBean();
+        String user_id = WebUtils.getValueForSession(request, "user_id");
+        String corp_code = WebUtils.getValueForSession(request, "corp_code");
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            SmsTemplate SmsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
+            SmsTemplate.setModifier(user_id);
+            Date now = new Date();
+            SmsTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
+            SmsTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            SmsTemplate.setCreater(user_id);
+            String existInfo1 = smsTemplateService.SmsTemplateExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code());
+            String existInfo2 = smsTemplateService.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_name());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("消息模板编号已经存在！！！");
+            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+                dataBean.setMessage("消息模板名称已经存在!!!");
+            } else {
+                this.smsTemplateService.insert(SmsTemplate);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("add succcess !!!");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 
     /**
