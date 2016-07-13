@@ -70,7 +70,6 @@
             OR sa.time_type like concat('%',#{search_value},'%')
             OR sa.MODIFIER like concat('%',#{search_value},'%')
             OR sa.modified_date like concat('%',#{search_value},'%')
-            OR sa.target_time like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY sa.ID

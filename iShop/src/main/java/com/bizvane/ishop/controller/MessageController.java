@@ -6,6 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -48,10 +50,11 @@ public class MessageController {
 
     @Autowired
     private MessageService messageService;
-
+    @Autowired
+    private TableManagerService managerService;
     @Autowired
     private VipRecordService vipRecordService;
-
+    String id;
     /**
      * 爱秀消息
      */
@@ -906,4 +909,80 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean=new DataBean();
+        try{
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String user_code = request.getSession(false).getAttribute("user_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            PageInfo<Message> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = messageService.selectBySearch(1, 10000, "", "");
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                //企业管理员
+                list = messageService.selectBySearch(1, 10000, corp_code, "");
+            } else if (role_code.equals(Common.ROLE_STAFF)) {
+                //员工
+                list = messageService.selectByUser(1, 10000, corp_code, user_code);
+            } else {
+                //店长或区经
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = messageService.selectBySearchPart(1, 10000, corp_code, store_code, role_code, "");
+                logger.info("获取店长或区经的详细信息" + list.toString());
+                List<Message> messages = list.getList();
+                PageInfo<Message> users = messageService.selectByUser(1, 10000, corp_code, user_code, "");
+                logger.info("获取本店长或区经的详细信息:" + users.toString());
+                list.getList().addAll(users.getList());
+                logger.info("店长或区经的详细信息:" + list.toString());
+            }
+            List<Message> messages = list.getList();
+            String column_name = jsonObject.get("column_name").toString();
+            String[] cols = column_name.split(",");//前台传过来的字段
+            OutExeclHelper.OutExecl(messages,cols,response);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("word success");
+        }
+        catch (Exception e){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(e.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

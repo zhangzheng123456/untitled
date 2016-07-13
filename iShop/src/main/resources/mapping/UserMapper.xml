@@ -222,8 +222,6 @@
         where DEF_USER.group_code = DEF_GROUP.group_code
         AND DEF_USER.CORP_CODE = #{corp_code}
         AND DEF_USER.store_code regexp #{search_value}
-        AND DEF_GROUP.role_code &lt; #{role_code}
-
     </select>
 
     <select id="selectGroupUser" resultMap="UserInfo">

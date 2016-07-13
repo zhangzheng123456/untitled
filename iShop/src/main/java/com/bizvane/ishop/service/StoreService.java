@@ -36,7 +36,7 @@ public interface StoreService {
 
     Store getStoreByCode(String corp_code, String store_code,String isactive);
 
-    List<User> getStoreUser(String corp_code, String store_code,String role_code);
+    List<User> getStoreUser(String corp_code, String store_code);
 
     String insert(String message, String user_id) throws SQLException;
 
