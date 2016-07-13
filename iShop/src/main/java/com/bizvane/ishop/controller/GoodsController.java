@@ -501,7 +501,7 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String goods_code = jsonObject.get("goods_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String existInfo = goodsService.goodsCodeExist(goods_code, corp_code);
+            String existInfo = goodsService.goodsCodeExist(corp_code, goods_code);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
