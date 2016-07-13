@@ -138,7 +138,7 @@
         vtt.modifier,
         vtt.creater,
         vtt.created_date,
-        vtt.isactive,
+        vtt.isactive
 
         FROM def_message_type vtt
         WHERE 1=1

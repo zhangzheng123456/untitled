@@ -144,7 +144,6 @@
         dmt.type_name
         from DEF_MESSAGE dm,DEF_MESSAGE,DEF_CORP dc,DEF_MESSAGE_TYPE dmt
         WHERE dm.corp_code=dc.corp_code and
-        dm.corp_code=dmt.corp_code and
         dm.type_code=dmt.type_code
         <if test="corp_code!=null and corp_code!=''">
             and dm.corp_code=#{corp_code}

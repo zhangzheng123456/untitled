@@ -27,7 +27,7 @@ public class Message_type {
 
     //企业编号
     private String corp_code;
-    private Corp corp;
+
 
     public Message_type() {
     }
@@ -59,14 +59,6 @@ public class Message_type {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
-    }
-
-    public Corp getCorp() {
-        return corp;
-    }
-
-    public void setCorp(Corp corp) {
-        this.corp = corp;
     }
 
     public void setType_name(String type_name) {
