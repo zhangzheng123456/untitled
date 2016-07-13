@@ -340,7 +340,11 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			var c=$("#OWN_CORP").val();//公司编号
+			getvarbrandlist(c);
 			$('.searchable-select-item').click(function(){
+				var c=$(this).attr("data-value");
+				getvarbrandlist(c);
 				$("input[verify='Code']").val("");
 				$("#BRAND_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
@@ -355,4 +359,34 @@ function getcorplist(){
 			});
 		}
 	});
+}
+function getvarbrandlist(b){
+	var _params={};
+	_params["corp_code"]=b;//公司编号
+	var brand_command="/shop/brand";
+	oc.postRequire("post", brand_command,"",_params,function(data){
+		if(data.code=="0"){
+			console.log(data);
+			var brands=JSON.parse(data.message);//品牌编号list
+			brands=brands.brands;
+			console.log(brands);
+			var brand_html="";
+			if(brands.length>0){
+				$('#brand_select .searchable-select').remove();//删除
+				for(var i=0;i<brands.length;i++){
+					brand_html+='<option value="'+brands[i].brand_code+'">'+brands[i].brand_name+'</option>';
+				}
+				$('#OWN_BRAND').html(brand_html);
+				$('#OWN_BRAND').searchableSelect();
+			}
+
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	})
 }

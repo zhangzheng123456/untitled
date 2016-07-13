@@ -61,20 +61,25 @@
                             <li>第四季度</li>
                         </ul>
                     </div>
-                    <div class="drop_down item_2">
-                        <span><label>波段</label><input type="text" class="input_select" id="GOODS_BAND" placeholder="请选择波段" readonly/></span>
-                        <ul style="margin-left:123px">
-                            <li>第一波段</li>
-                            <li>第二波段</li>
-                            <li>第三波段</li>
-                            <li>第四波段</li>
+                    <div>
+                        <span><label>波段</label><input type="text" id="GOODS_BAND" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品名称不能为空！"></div></div></span>
+                    </div>
+                    <div>
+                        <ul style="display:inline-flex;">
+                            <li><label>所属品牌</label></li>
+                            <li id="brand_select">
+                                <span class="message_type_select">
+                                    <select id="OWN_BRAND" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                            </li>
                         </ul>
                     </div>
                     <div>
                         <span><label>发布时间</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" /></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">商品买点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOODS_BUYPOINT"></textarea></span></span>
+                    <span style="display: inline-flex;width:100%"><label style="height:180px;">商品卖点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOODS_BUYPOINT"></textarea></span></span>
                     </div>
                 </form>
             </div>

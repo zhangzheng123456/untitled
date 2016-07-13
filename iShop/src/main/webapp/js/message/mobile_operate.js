@@ -56,7 +56,7 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();//企业编号
 				var MOBAN_ID=$("#MOBAN_ID").val();//模板编号
 				var MOBAN_NAME=$("#MOBAN_NAME").val();//模板名称
-				var MOBAN_TYPE=$("#MOBAN_TYPE").val();//模板类型
+				// var MOBAN_TYPE=$("#MOBAN_TYPE").val();//模板类型
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";//是否可用
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -75,7 +75,7 @@ var oc = new ObjectControl();
 					"template_code": MOBAN_ID,//模板编号
 					"template_content": MOBAN_CONTENT,//模板内容
 					"template_name": MOBAN_NAME,//模板名称
-					"template_type": MOBAN_TYPE,//模板类型
+					// "template_type": MOBAN_TYPE,//模板类型
 					"isactive": ISACTIVE//是否可用
 				};
 				mobilejs.ajaxSubmit(_command, _params, opt);
@@ -87,10 +87,10 @@ var oc = new ObjectControl();
 			if(mobilejs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var MOBAN_ID=$("#MOBAN_ID").val();
-				var OWN_CORP=$("#OWN_CORP").val();
-				var MOBAN_NAME=$("#MOBAN_NAME").val();
-				var MOBAN_TYPE=$("#MOBAN_TYPE").val();
-				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();
+				var OWN_CORP=$("#OWN_CORP").val();//模板编号
+				var MOBAN_NAME=$("#MOBAN_NAME").val();//模板名称
+				// var MOBAN_TYPE=$("#MOBAN_TYPE").val();//模板类型
+				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -109,7 +109,7 @@ var oc = new ObjectControl();
 					"template_code;": MOBAN_ID,//模板编号
 					"template_content": MOBAN_CONTENT,//模板内容
 					"template_name": MOBAN_NAME,//模板名称
-					"template_type": MOBAN_TYPE,//模板类型
+					// "template_type": MOBAN_TYPE,//模板类型
 					"isactive": ISACTIVE//是否可用
 				};
 				mobilejs.ajaxSubmit(_command,_params,opt);
@@ -180,7 +180,7 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				var corp_code=msg.corp.corp_code;
-				var template_type=msg.template_type;
+				// var template_type=msg.template_type;
 				$("#MOBAN_ID").val(msg.template_code);
 				$("#MOBAN_ID").attr("data-name",msg.template_code);
 				$("#MOBAN_NAME").val(msg.template_name);
@@ -199,7 +199,7 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 				getcorplist(corp_code);
-				mobileType(template_type);
+				// mobileType(template_type);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -211,7 +211,7 @@ jQuery(document).ready(function(){
 		});
 	}else{
 		getcorplist(a);
-		mobileType(b);
+		// mobileType(b);
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
@@ -295,29 +295,29 @@ function getcorplist(a){
 		}
 	});
 }
-function mobileType(b){
-	var _command = "/message/mobile/template/types";
-	oc.postRequire("post", _command, "","", function(data) {
-		console.log(data);
-		if (data.code == "0") {
-			var msg = JSON.parse(data.message);
-			$('#type_select .searchable-select').remove();
-			var	mobile_html="";
-			for(var i=0;i<msg.types.length;i++){
-				mobile_html+='<option value="'+msg.types[i].id+'">'+msg.types[i].type_name+'</option>';
-			}
-			$("#MOBAN_TYPE").html(mobile_html);
-			if(b!==""){
-				$("#type_select option[value='"+b+"']").attr("selected","true");
-			}
-			$('.message_type_select select').searchableSelect();
-		} else if (data.code = "1") {
-			art.dialog({
-				time: 1,
-				lock: true,
-				cancel: false,
-				content: data.message
-			})
-		}
-	});
-}
+// function mobileType(b){
+// 	var _command = "/message/mobile/template/types";
+// 	oc.postRequire("post", _command, "","", function(data) {
+// 		console.log(data);
+// 		if (data.code == "0") {
+// 			var msg = JSON.parse(data.message);
+// 			$('#type_select .searchable-select').remove();
+// 			var	mobile_html="";
+// 			for(var i=0;i<msg.types.length;i++){
+// 				mobile_html+='<option value="'+msg.types[i].id+'">'+msg.types[i].type_name+'</option>';
+// 			}
+// 			$("#MOBAN_TYPE").html(mobile_html);
+// 			if(b!==""){
+// 				$("#type_select option[value='"+b+"']").attr("selected","true");
+// 			}
+// 			$('.message_type_select select').searchableSelect();
+// 		} else if (data.code = "1") {
+// 			art.dialog({
+// 				time: 1,
+// 				lock: true,
+// 				cancel: false,
+// 				content: data.message
+// 			})
+// 		}
+// 	});
+// }
