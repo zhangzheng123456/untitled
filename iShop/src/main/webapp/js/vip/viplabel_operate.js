@@ -40,7 +40,7 @@ var oc = new ObjectControl();
 			if(viplabeljs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
-				var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
+				// var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -56,7 +56,7 @@ var oc = new ObjectControl();
 				var _params = {
 					"corp_code": OWN_CORP,
 					"label_name": LABEL_NAME,
-					"label_type": LABEL_TYPE,
+					// "label_type": LABEL_TYPE,
 					"isactive": ISACTIVE
 				};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
@@ -69,7 +69,7 @@ var oc = new ObjectControl();
 				var ID=sessionStorage.getItem("id");//编辑时候的id
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var LABEL_NAME=$("#LABEL_NAME").val();//标签名称
-				var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
+				// var LABEL_TYPE=$("#LABEL_TYPE").val();//标签类型
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -86,7 +86,7 @@ var oc = new ObjectControl();
 					"id": ID,
 					"corp_code": OWN_CORP,
 					"label_name": LABEL_NAME,
-					"label_type": LABEL_TYPE,
+					// "label_type": LABEL_TYPE,
 					"isactive": ISACTIVE
 				};
 				viplabeljs.ajaxSubmit(_command,_params,opt);
@@ -155,8 +155,8 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				var corp_code=msg.corp_code;//公司编号
-				var label_type=msg.label_type//会员标签
-				$("#LABEL_TYPE option[value='"+label_type+"']").attr("selected","true");
+				// var label_type=msg.label_type//会员标签
+				// $("#LABEL_TYPE option[value='"+label_type+"']").attr("selected","true");
 				$("#LABEL_NAME").val(msg.label_name);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
@@ -169,7 +169,7 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 				getcorplist(corp_code);
-				$('#LABEL_TYPE').searchableSelect();
+				// $('#LABEL_TYPE').searchableSelect();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -181,7 +181,7 @@ jQuery(document).ready(function(){
 		});
 	}else{
 		getcorplist(a);
-		$('#LABEL_TYPE').searchableSelect();
+		// $('#LABEL_TYPE').searchableSelect();
 	}
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
