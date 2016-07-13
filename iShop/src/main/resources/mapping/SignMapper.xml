@@ -10,11 +10,7 @@
         acc_sign.STATUS,
         acc_sign.SIGN_TIME,
         acc_sign.ISACTIVE
-        from DEF_USER,DEF_GROUP,DEF_CORP,acc_sign
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
-        AND DEF_USER.corp_code = DEF_GROUP.corp_code
-        AND DEF_USER.user_code = acc_sign.user_code
+        from acc_sign
         AND acc_sign.STATUS !='1'
         <if test="corp_code != null and corp_code !=''">
             AND DEF_USER.CORP_CODE = #{corp_code}
@@ -42,19 +38,22 @@
         acc_sign.STATUS,
         acc_sign.SIGN_TIME,
         acc_sign.ISACTIVE
-        from DEF_USER,DEF_GROUP,DEF_CORP,acc_sign
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
-        AND DEF_USER.corp_code = DEF_GROUP.corp_code
-        AND DEF_USER.user_code = acc_sign.user_code
-        AND acc_sign.STATUS !='1'
-        AND DEF_USER.CORP_CODE = #{corp_code}
-        AND DEF_GROUP.role_code &lt; #{role_code}
-        AND
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            DEF_USER.store_code regexp #{item}
-        </foreach>
-
+        from acc_sign
+        where acc_sign.STATUS !='1'
+        AND acc_sign.user_code IN
+        (
+            SELECT DEF_USER.user_code
+            from DEF_USER,DEF_GROUP,DEF_CORP
+            where DEF_USER.group_code = DEF_GROUP.group_code
+            AND DEF_USER.corp_code = DEF_CORP.corp_code
+            AND DEF_USER.corp_code = DEF_GROUP.corp_code
+            AND DEF_USER.CORP_CODE = #{corp_code}
+            AND DEF_GROUP.role_code &lt; #{role_code}
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                store_code regexp #{item}
+            </foreach>
+        )
         <if test="search_value != null and search_value !=''">
             AND
             (
