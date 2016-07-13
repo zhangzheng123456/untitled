@@ -22,5 +22,5 @@ public interface SmsTemplateMapper {
 
     List<SmsTemplate> selectByName(@Param("template_name") String template_name, @Param("corp_code") String corp_code);
 
-    List<TemplateType> getTypes();
+    /*List<TemplateType> getTypes();*/
 }

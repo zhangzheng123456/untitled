@@ -8,7 +8,6 @@
         <result column="template_code" property="template_code"/>
         <result column="template_name" property="template_name"/>
         <result column="template_content" property="template_content"/>
-        <result column="template_type" property="template_type"/>
         <result column="isactive" property="isactive"/>
         <result column="corp_code" property="corp_code"/>
         <result column="modifier" property="modifier"/>
@@ -24,7 +23,7 @@
         </association>
     </resultMap>
 
-    <resultMap id="types" type="com.bizvane.ishop.entity.TemplateType">
+    <!--<resultMap id="types" type="com.bizvane.ishop.entity.TemplateType">
         <id column="id" property="id"/>
         <result column="type_name" property="type_name"/>
         <result column="type_description" property="type_description"/>
@@ -34,23 +33,22 @@
         <result column="created_date" property="created_date"/>
         <result column="isactive" property="isactive"/>
     </resultMap>
+    -->
     <select id="selectBySearch" resultMap="MessageTemplates">
         select
         dmt.id,
         dmt.template_code,
         dmt.template_name,
         dmt.template_content,
-        dmt.template_type,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
         dmt.modified_date,
         dmt.created_date,
         dmt.creater,
-        dc.corp_name,
-        dtt.type_name
-        from def_sms_template dmt,DEF_CORP dc,def_template_type dtt
-        WHERE dmt.corp_code=dc.corp_code and dtt.id=dmt.template_type
+        dc.corp_name
+        from def_sms_template dmt,DEF_CORP dc
+        WHERE dmt.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and dmt.corp_code=#{corp_code}
         </if>
@@ -63,7 +61,6 @@
             or dmt.isactive like concat('%',#{search_value},'%')
             or dmt.modified_date like concat('%',#{search_value},'%')
             or dmt.modifier like concat('%',#{search_value},'%')
-            or dtt.type_name like concat('%',#{search_value},'%')
             )
         </if>
         ORDER by dmt.id
@@ -83,10 +80,9 @@
         dmt.modified_date,
         dmt.created_date,
         dmt.creater,
-        dc.corp_name,
-        dtt.type_name
-        from def_sms_template dmt,DEF_CORP dc,def_template_type dtt
-        WHERE dmt.corp_code=dc.corp_code and dtt.id=dmt.template_type and dmt.id=#{id}
+        dc.corp_name
+        from def_sms_template dmt,DEF_CORP dc
+        WHERE dmt.corp_code=dc.corp_code  and dmt.id=#{id}
            </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.SmsTemplate">
@@ -119,9 +115,6 @@
             <if test="creater!=null and  creater!=''">
                 creater ,
             </if>
-            <if test="template_type!=null and template_type!=''">
-                template_type,
-            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="template_code!=null and template_code!=''">
@@ -150,10 +143,6 @@
             </if>
             <if test="creater!=null and  creater!=''">
                 #{creater} ,
-            </if>
-
-            <if test="template_type!=null and template_type!=''">
-                #{template_type},
             </if>
         </trim>
     </insert>
@@ -188,10 +177,6 @@
             <if test="creater!=null and  creater!=''">
                 creater=#{creater} ,
             </if>
-
-            <if test="template_type!=null and template_type!=''">
-                template_type=#{template_type},
-            </if>
         </trim>
         WHERE id=#{id}
     </update>
@@ -208,8 +193,8 @@
         select * from def_sms_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
     </select>
 
-    <select id="getTypes" resultMap="types">
+ <!--   <select id="getTypes" resultMap="types">
         select * from def_template_type
     </select>
-
+-->
 </mapper>

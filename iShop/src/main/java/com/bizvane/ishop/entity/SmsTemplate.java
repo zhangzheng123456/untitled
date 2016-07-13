@@ -16,9 +16,6 @@ public class SmsTemplate {
     private String template_name;
     //模板内容
     private String template_content;
-    //模板类型
-    private String template_type;
-    private TemplateType templateType;
 
     //企业编号
     private String corp_code;
@@ -78,14 +75,6 @@ public class SmsTemplate {
         this.template_content = template_content;
     }
 
-    public String getTemplate_type() {
-        return template_type;
-    }
-
-    public void setTemplate_type(String template_type) {
-        this.template_type = template_type;
-    }
-
     public String getCorp_code() {
         return corp_code;
     }
@@ -128,14 +117,6 @@ public class SmsTemplate {
 
     public String getIsactive() {
         return isactive;
-    }
-
-    public TemplateType getTemplateType() {
-        return templateType;
-    }
-
-    public void setTemplateType(TemplateType templateType) {
-        this.templateType = templateType;
     }
 
     public void setIsactive(String isactive) {
