@@ -53,6 +53,7 @@ public class GoodsController {
     @Autowired
     private TableManagerService managerService;
     String id;
+
     /**
      * 商品培训
      * 列表
@@ -97,6 +98,7 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 查出要导出的列
      */
@@ -122,6 +124,7 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -154,7 +157,7 @@ public class GoodsController {
             List<Goods> goodses = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(goodses,cols,response);
+            OutExeclHelper.OutExecl(goodses, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage("word success");
@@ -213,10 +216,11 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * Execl增加用户
      */
-    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -231,38 +235,38 @@ public class GoodsController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(0);
-            for (int i = 3; i <column.length; i++) {
+            for (int i = 3; i < column.length; i++) {
                 String goodsCodeExist = goodsService.goodsCodeExist(corp_code, column[i].getContents().toString());
-                if(goodsCodeExist.contains(Common.DATABEAN_CODE_ERROR)){
-                    result ="第"+(i+1)+"列商品编号已存在";
-                    int b=5/0;
+                if (goodsCodeExist.contains(Common.DATABEAN_CODE_ERROR)) {
+                    result = "第" + (i + 1) + "列商品编号已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
             Cell[] column1 = rs.getColumn(1);
-            for (int i = 3; i <column1.length; i++) {
-                String goodsNameExist = goodsService.goodsNameExist(corp_code,column1[i].getContents().toString());
-                if(goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)){
-                    result ="第"+(i+1)+"列商品名称已存在";
-                    int b=5/0;
+            for (int i = 3; i < column1.length; i++) {
+                String goodsNameExist = goodsService.goodsNameExist(corp_code, column1[i].getContents().toString());
+                if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
+                    result = "第" + (i + 1) + "列商品名称已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    Goods goods=new Goods();
+                    Goods goods = new Goods();
                     goods.setCorp_code(corp_code);
-                    goods.setGoods_code(rs.getCell(j++,i).getContents());
-                    goods.setGoods_name(rs.getCell(j++,i).getContents());
-                    goods.setGoods_price(Float.parseFloat(rs.getCell(j++,i).getContents().toString()));
-                    goods.setGoods_image(rs.getCell(j++,i).getContents());
-                    goods.setGoods_quarter(rs.getCell(j++,i).getContents());
-                    goods.setGoods_wave(rs.getCell(j++,i).getContents());
-                    goods.setGoods_time(rs.getCell(j++,i).getContents());
-                    goods.setGoods_description(rs.getCell(j++,i).getContents());
-                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                    goods.setGoods_code(rs.getCell(j++, i).getContents());
+                    goods.setGoods_name(rs.getCell(j++, i).getContents());
+                    goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString()));
+                    goods.setGoods_image(rs.getCell(j++, i).getContents());
+                    goods.setGoods_quarter(rs.getCell(j++, i).getContents());
+                    goods.setGoods_wave(rs.getCell(j++, i).getContents());
+                    goods.setGoods_time(rs.getCell(j++, i).getContents());
+                    goods.setGoods_description(rs.getCell(j++, i).getContents());
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
                         goods.setIsactive("Y");
-                    }else{
+                    } else {
                         goods.setIsactive("N");
                     }
                     goods.setCreater(user_id);
@@ -274,7 +278,7 @@ public class GoodsController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -282,6 +286,7 @@ public class GoodsController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 商品培训
      * 添加
@@ -305,7 +310,7 @@ public class GoodsController {
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
             Date now = new Date();
-
+            goods.setGoods_price(Float.parseFloat(jsonObject.getString("goods_price")));
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -517,6 +522,7 @@ public class GoodsController {
 
     /**
      * 确保商品名称在其公司内的唯一性存在.
+     *
      * @param request
      * @return
      */

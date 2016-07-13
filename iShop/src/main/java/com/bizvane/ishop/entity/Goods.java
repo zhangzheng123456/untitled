@@ -45,23 +45,7 @@ public class Goods {
 
     private Corp corp;
 
-    public Corp getCorp() {
-        return corp;
-    }
-
-    public void setCorp(Corp corp) {
-        this.corp = corp;
-    }
-
     public Goods() {
-    }
-
-    public String getCorp_code() {
-        return corp_code;
-    }
-
-    public void setCorp_code(String corp_code) {
-        this.corp_code = corp_code;
     }
 
     public int getId() {
@@ -88,6 +72,13 @@ public class Goods {
         this.goods_name = goods_name;
     }
 
+    public String getGoods_image() {
+        return goods_image;
+    }
+
+    public void setGoods_image(String goods_image) {
+        this.goods_image = goods_image;
+    }
 
     public float getGoods_price() {
         return goods_price;
@@ -129,6 +120,22 @@ public class Goods {
         this.modified_date = modified_date;
     }
 
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
+    }
+
+    public String getIsactive() {
+        return isactive;
+    }
+
+    public void setIsactive(String isactive) {
+        this.isactive = isactive;
+    }
+
     public String getCreated_date() {
         return created_date;
     }
@@ -145,25 +152,6 @@ public class Goods {
         this.creater = creater;
     }
 
-
-    public String getGoods_image() {
-        return goods_image;
-    }
-
-    public void setGoods_image(String goods_image) {
-        this.goods_image = goods_image;
-    }
-
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-
     public String getGoods_description() {
         return goods_description;
     }
@@ -171,16 +159,6 @@ public class Goods {
     public void setGoods_description(String goods_description) {
         this.goods_description = goods_description;
     }
-
-
-    public String getIsactive() {
-        return isactive;
-    }
-
-    public void setIsactive(String isactive) {
-        this.isactive = isactive;
-    }
-
 
     public String getBrand_code() {
         return brand_code;
@@ -196,5 +174,21 @@ public class Goods {
 
     public void setBrand(Brand brand) {
         this.brand = brand;
+    }
+
+    public String getCorp_code() {
+        return corp_code;
+    }
+
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
+    }
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
     }
 }

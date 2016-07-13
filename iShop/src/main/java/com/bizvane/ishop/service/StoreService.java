@@ -57,4 +57,6 @@ public interface StoreService {
     List<Store> selectByAreaCode(String corp_code, String[] area_code,String isactive);
 
     String insertExecl(Store store);
+
+    int selectUserCount(String corp_code, String store_code);
 }
