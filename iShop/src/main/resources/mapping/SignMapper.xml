@@ -11,9 +11,9 @@
         acc_sign.SIGN_TIME,
         acc_sign.ISACTIVE
         from acc_sign
-        AND acc_sign.STATUS !='1'
+        WHERE acc_sign.STATUS !='1'
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_USER.CORP_CODE = #{corp_code}
+            AND acc_sign.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
