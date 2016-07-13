@@ -1,4 +1,4 @@
-package com.bizvane.ishop.controller;
+﻿package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -89,10 +89,10 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = storeService.getAllStore(request, page_number, page_size, "", "");
+                list = storeService.getAllStore(request,page_number, page_size, "", "");
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStore(request, page_number, page_size, corp_code, "");
+                    list = storeService.getAllStore(request,page_number, page_size, corp_code, "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     String[] areaCodes = area_code.split(",");
@@ -113,8 +113,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -150,8 +149,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
 
@@ -187,8 +185,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -222,8 +219,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -282,9 +278,9 @@ public class StoreController {
             //	return "Error deleting the user:" + ex.toString();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
+
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString());
-            return dataBean.getJsonStr();
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
@@ -314,8 +310,7 @@ public class StoreController {
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage(e.getMessage() + e.toString());
-            logger.info(e.getMessage() + e.toString());
+            bean.setMessage(e.getMessage());
         }
         logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();
@@ -345,12 +340,12 @@ public class StoreController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
 
-                list = storeService.getAllStore(request, page_number, page_size, "", search_value);
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value);
+                list = storeService.getAllStore(request,page_number, page_size, "", search_value);
+            }else if(role_code.equals(Common.ROLE_GM)){
+                list = storeService.getAllStore(request,page_number, page_size, corp_code, search_value);
 
 
-            } else if (role_code.equals(Common.ROLE_AM)) {
+            }  else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 String[] areaCodes = area_code.split(",");
                 for (int i = 0; i < areaCodes.length; i++) {
@@ -368,8 +363,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -404,8 +398,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -440,8 +433,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -467,8 +459,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -496,8 +487,7 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -528,9 +518,10 @@ public class StoreController {
             }
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
         }
         return dataBean.getJsonStr();
     }
@@ -562,9 +553,10 @@ public class StoreController {
             }
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
         }
         return dataBean.getJsonStr();
     }
@@ -618,8 +610,7 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -679,8 +670,7 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -706,8 +696,7 @@ public class StoreController {
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -730,10 +719,10 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = storeService.getAllStore(request, 1, 10000, "", "");
+                list = storeService.getAllStore(request,1, 10000, "", "");
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStore(request, 1, 10000, corp_code, "");
+                    list = storeService.getAllStore(request,1, 10000, corp_code, "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
 
                     String area_code = request.getSession().getAttribute("area_code").toString();
@@ -751,7 +740,7 @@ public class StoreController {
             List<Store> stores = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(stores, cols, response);
+            OutExeclHelper.OutExecl(stores,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");
@@ -759,9 +748,10 @@ public class StoreController {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
+
             dataBean.setMessage(e.getMessage() + e.toString());
-            logger.info(e
-                    .getMessage() + e.toString());
+            logger.info(e.getMessage() + e.toString());
+    
         }
         return dataBean.getJsonStr();
     }
@@ -769,7 +759,7 @@ public class StoreController {
     /***
      * Execl增加用户
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
+    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -795,44 +785,44 @@ public class StoreController {
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
         try {
-            Workbook rwb = Workbook.getWorkbook(targetFile);
-            Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos = rs.getColumns();//得到所有的列
-            int rows = rs.getRows();//得到所有的行
+            Workbook rwb=Workbook.getWorkbook(targetFile);
+            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos=rs.getColumns();//得到所有的列
+            int rows=rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(0);
-            for (int i = 3; i < column.length; i++) {
+            for (int i = 3; i <column.length; i++) {
                 Store store = storeService.getStoreByCode(corp_code, column[i].getContents().toString(), "");
-                if (store != null) {
-                    result = "第" + (i + 1) + "列店铺编号已存在";
-                    int b = 5 / 0;
+                if(store!=null){
+                    result ="第"+(i+1)+"列店铺编号已存在";
+                    int b=5/0;
                     break;
                 }
             }
             Cell[] column1 = rs.getColumn(1);
-            for (int i = 3; i < column1.length; i++) {
+            for (int i = 3; i <column1.length; i++) {
                 Store store = storeService.getStoreByName(corp_code, column1[i].getContents().toString());
-                if (store != null) {
-                    result = "第" + (i + 1) + "列店铺名称已存在";
-                    int b = 5 / 0;
+                if(store!=null){
+                    result ="第"+(i+1)+"列店铺名称已存在";
+                    int b=5/0;
                     break;
                 }
             }
-            for (int i = 3; i < rows; i++) {
+            for(int i=3;i < rows;i++) {
                 for (int j = 0; j < clos; j++) {
-                    Store store = new Store();
+                    Store store=new Store();
                     store.setCorp_code(corp_code);
-                    store.setStore_code(rs.getCell(j++, i).getContents());
-                    store.setStore_name(rs.getCell(j++, i).getContents());
-                    store.setArea_code(rs.getCell(j++, i).getContents());
-                    store.setBrand_code(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
+                    store.setStore_code(rs.getCell(j++,i).getContents());
+                    store.setStore_name(rs.getCell(j++,i).getContents());
+                    store.setArea_code(rs.getCell(j++,i).getContents());
+                    store.setBrand_code(rs.getCell(j++,i).getContents());
+                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
                         store.setFlg_tob("Y");
-                    } else {
+                    }else{
                         store.setFlg_tob("N");
                     }
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
+                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
                         store.setIsactive("Y");
-                    } else {
+                    }else{
                         store.setIsactive("N");
                     }
                     Date now = new Date();
@@ -852,4 +842,4 @@ public class StoreController {
         }
         return dataBean.getJsonStr();
     }
-}
+    }
