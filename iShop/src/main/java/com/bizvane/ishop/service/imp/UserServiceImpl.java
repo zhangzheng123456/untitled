@@ -276,10 +276,9 @@ public class UserServiceImpl implements UserService {
             request.getSession().setAttribute("user_code", user_code);
             request.getSession().setAttribute("corp_code", corp_code);
             request.getSession().setAttribute("role_code", role_code);
-            request.getSession().setAttribute("store_code", store_code);
             request.getSession().setAttribute("group_code", group_code);
-            request.getSession().setAttribute("area_code", area_code);
-            System.out.println(request.getSession().getAttribute("user_id"));
+            request.getSession().setAttribute("area_code", "");
+            request.getSession().setAttribute("store_code", "");
             Date now = new Date();
             login_user.setLogin_time_recently(Common.DATETIME_FORMAT.format(now));
             userMapper.updateByUserId(login_user);
@@ -293,12 +292,15 @@ public class UserServiceImpl implements UserService {
             } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 user_type = "am";
+                request.getSession().setAttribute("area_code", area_code);
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 user_type = "sm";
+                request.getSession().setAttribute("store_code", store_code);
             } else {
                 //导购
                 user_type = "staff";
+                request.getSession().setAttribute("store_code", store_code);
             }
             request.getSession().setAttribute("user_type", user_type);
             user_info.put("user_type", user_type);

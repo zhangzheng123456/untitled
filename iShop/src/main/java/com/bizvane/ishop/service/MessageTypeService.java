@@ -1,7 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.Message_type;
-import com.bizvane.ishop.entity.TemplateType;
+import com.bizvane.ishop.entity.MessageType;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
@@ -21,7 +20,7 @@ public interface MessageTypeService {
      * @return
      * @throws SQLException
      */
-    Message_type getMessageTypeById(int id) throws SQLException;
+    MessageType getMessageTypeById(int id) throws SQLException;
 
     /**
      * 插入信息类型信息
@@ -30,7 +29,7 @@ public interface MessageTypeService {
      * @return
      * @throws SQLException
      */
-    int insert(Message_type messageType) throws SQLException;
+    int insert(MessageType messageType) throws SQLException;
 
     /**
      * 更新企业类型信息
@@ -39,7 +38,7 @@ public interface MessageTypeService {
      * @return
      * @throws SQLException
      */
-    String update(Message_type messageType) throws SQLException;
+    String update(MessageType messageType) throws SQLException;
 
     /**
      * 获取信息编号信息，
@@ -50,7 +49,7 @@ public interface MessageTypeService {
      * @param search_value
      * @return
      */
-    PageInfo<Message_type> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<MessageType> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
 
     /**
      * 判断短信类型编号是否存在，通过短信类型编号
@@ -83,7 +82,7 @@ public interface MessageTypeService {
      *
      * @return
      */
-    List<Message_type> selectAllMessageType();
+    List<MessageType> selectAllMessageType();
 
 
     /**
@@ -93,7 +92,7 @@ public interface MessageTypeService {
      * @param search_value ： 搜索字段
      * @return
      */
-    List<Message_type> getMessageTypeByCorp(String corp_code, String search_value);
+    List<MessageType> getMessageTypeByCorp(String corp_code, String search_value);
 
     /**
      * 判断消息类型编号是否唯一
@@ -115,6 +114,6 @@ public interface MessageTypeService {
 
     int selectMessageTemplateCount(String corp_code, String type_code);
 
-    List<Message_type> getMessageTypeByCorp(String corp_code);
+    List<MessageType> getMessageTypeByCorp(String corp_code);
 
 }

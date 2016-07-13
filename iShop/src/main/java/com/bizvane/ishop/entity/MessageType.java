@@ -5,7 +5,7 @@ package com.bizvane.ishop.entity;
  *
  * @@version
  */
-public class Message_type {
+public class MessageType {
     //消息id
     private int id;
     //消息类型编号
@@ -29,7 +29,7 @@ public class Message_type {
     private String corp_code;
     private Corp corp;
 
-    public Message_type() {
+    public MessageType() {
     }
 
 
