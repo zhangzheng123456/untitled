@@ -58,57 +58,57 @@ public class MessageController {
     /**
      * 爱秀消息
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
-    @ResponseBody
-    public String ishopManage(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String user_code = request.getSession(false).getAttribute("user_code").toString();
-
-            String function_code = request.getParameter("funcCode");
-            logger.info("list : 获取用户相应的信息");
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            logger.info("获取动作信息之前");
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
-            logger.info("获取动作信息" + actions.toString());
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<Message> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = messageService.selectBySearch(page_number, page_size, "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                //企业管理员
-                list = messageService.selectBySearch(page_number, page_size, corp_code, "");
-            } else if (role_code.equals(Common.ROLE_STAFF)) {
-                //员工
-                list = messageService.selectByUser(page_number, page_size, corp_code, user_code);
-            } else {
-                //店长或区经
-                String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = messageService.selectBySearchPart(page_number, page_size, corp_code, store_code, role_code, "");
-                logger.info("获取店长或区经的详细信息" + list.toString());
-                List<Message> messages = list.getList();
-                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code, "");
-                logger.info("获取本店长或区经的详细信息:" + users.toString());
-                list.getList().addAll(users.getList());
-                logger.info("店长或区经的详细信息:" + list.toString());
-            }
-            result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId("1");
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage(ex.toString());
-            logger.info("错误信息:" + ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String ishopManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String group_code = request.getSession(false).getAttribute("group_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//            String user_code = request.getSession(false).getAttribute("user_code").toString();
+//
+//            String function_code = request.getParameter("funcCode");
+//            logger.info("list : 获取用户相应的信息");
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+//            logger.info("获取动作信息之前");
+//            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
+//            logger.info("获取动作信息" + actions.toString());
+//            org.json.JSONObject result = new org.json.JSONObject();
+//            PageInfo<Message> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = messageService.selectBySearch(page_number, page_size, "", "");
+//            } else if (role_code.equals(Common.ROLE_GM)) {
+//                //企业管理员
+//                list = messageService.selectBySearch(page_number, page_size, corp_code, "");
+//            } else if (role_code.equals(Common.ROLE_STAFF)) {
+//                //员工
+//                list = messageService.selectByUser(page_number, page_size, corp_code, user_code);
+//            } else {
+//                //店长或区经
+//                String store_code = request.getSession(false).getAttribute("store_code").toString();
+//                list = messageService.selectBySearchPart(page_number, page_size, corp_code, store_code, role_code, "");
+//                logger.info("获取店长或区经的详细信息" + list.toString());
+//                List<Message> messages = list.getList();
+//                PageInfo<Message> users = messageService.selectByUser(page_number, page_size, corp_code, user_code, "");
+//                logger.info("获取本店长或区经的详细信息:" + users.toString());
+//                list.getList().addAll(users.getList());
+//                logger.info("店长或区经的详细信息:" + list.toString());
+//            }
+//            result.put("list", JSON.toJSONString(list));
+//            result.put("actions", actions);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setId("1");
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setMessage(ex.toString());
+//            logger.info("错误信息:" + ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 //
 //    /**
 //     * 爱秀消息
@@ -938,51 +938,51 @@ public class MessageController {
     /***
      * 导出数据
      */
-    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
-    @ResponseBody
-    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
-        DataBean dataBean=new DataBean();
-        try{
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String user_code = request.getSession(false).getAttribute("user_code").toString();
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            PageInfo<Message> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = messageService.selectBySearch(1, 10000, "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                //企业管理员
-                list = messageService.selectBySearch(1, 10000, corp_code, "");
-            } else if (role_code.equals(Common.ROLE_STAFF)) {
-                //员工
-                list = messageService.selectByUser(1, 10000, corp_code, user_code);
-            } else {
-                //店长或区经
-                String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = messageService.selectBySearchPart(1, 10000, corp_code, store_code, role_code, "");
-                logger.info("获取店长或区经的详细信息" + list.toString());
-                List<Message> messages = list.getList();
-                PageInfo<Message> users = messageService.selectByUser(1, 10000, corp_code, user_code, "");
-                logger.info("获取本店长或区经的详细信息:" + users.toString());
-                list.getList().addAll(users.getList());
-                logger.info("店长或区经的详细信息:" + list.toString());
-            }
-            List<Message> messages = list.getList();
-            String column_name = jsonObject.get("column_name").toString();
-            String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(messages,cols,response);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("word success");
-        }
-        catch (Exception e){
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(e.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+//        DataBean dataBean=new DataBean();
+//        try{
+//            String role_code = request.getSession(false).getAttribute("role_code").toString();
+//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+//            String user_code = request.getSession(false).getAttribute("user_code").toString();
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            PageInfo<Message> list;
+//            if (role_code.equals(Common.ROLE_SYS)) {
+//                list = messageService.selectBySearch(1, 10000, "", "");
+//            } else if (role_code.equals(Common.ROLE_GM)) {
+//                //企业管理员
+//                list = messageService.selectBySearch(1, 10000, corp_code, "");
+//            } else if (role_code.equals(Common.ROLE_STAFF)) {
+//                //员工
+//                list = messageService.selectByUser(1, 10000, corp_code, user_code);
+//            } else {
+//                //店长或区经
+//                String store_code = request.getSession(false).getAttribute("store_code").toString();
+//                list = messageService.selectBySearchPart(1, 10000, corp_code, store_code, role_code, "");
+//                logger.info("获取店长或区经的详细信息" + list.toString());
+//                List<Message> messages = list.getList();
+//                PageInfo<Message> users = messageService.selectByUser(1, 10000, corp_code, user_code, "");
+//                logger.info("获取本店长或区经的详细信息:" + users.toString());
+//                list.getList().addAll(users.getList());
+//                logger.info("店长或区经的详细信息:" + list.toString());
+//            }
+//            List<Message> messages = list.getList();
+//            String column_name = jsonObject.get("column_name").toString();
+//            String[] cols = column_name.split(",");//前台传过来的字段
+//            OutExeclHelper.OutExecl(messages,cols,response);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setId("1");
+//            dataBean.setMessage("word success");
+//        }
+//        catch (Exception e){
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(e.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 }

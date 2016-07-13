@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.LoginLog;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.*;
 import com.bizvane.sun.v1.common.Data;
@@ -36,6 +37,8 @@ public class LoginController {
     LoginLogService loginLogService;
     @Autowired
     FunctionService functionService;
+    @Autowired
+    TableManagerService tableManagerService;
 
     private static final Logger log = Logger.getLogger(LoginController.class);
 
@@ -342,6 +345,63 @@ public class LoginController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 获取列表画面可筛选列
+     */
+    @RequestMapping(value = "/list/filter_column", method = RequestMethod.GET)
+    @ResponseBody
+    public String listFilterColumn(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONArray cols = new JSONArray();
+            String function_code = request.getParameter("funcCode");
+            List<TableManager> col = tableManagerService.selByCode(function_code,"Y");
+            for (int i = 0; i < col.size(); i++) {
+                TableManager table = col.get(i);
+                String col_name = table.getColumn_name();
+                String show_name = table.getShow_name();
+                JSONObject obj = new JSONObject();
+                obj.put("col_name",col_name);
+                obj.put("show_name",show_name);
+                cols.add(obj);
+            }
+            JSONObject filter = new JSONObject();
+            filter.put("filter",cols);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(filter.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    public String listFilter(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_id").toString();
+        try {
+            String jsString = request.getParameter("param");
+            System.out.println("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONArray array = JSONArray.parseArray(message);
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

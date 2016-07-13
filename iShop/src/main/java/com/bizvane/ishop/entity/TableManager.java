@@ -9,6 +9,7 @@ public class TableManager {
     private String column_name;
     private String show_name;
     private String is_show;
+    private String is_filter;
 
     public int getId() {
         return id;
@@ -48,5 +49,13 @@ public class TableManager {
 
     public void setColumn_name(String column_name) {
         this.column_name = column_name;
+    }
+
+    public String getIs_filter() {
+        return is_filter;
+    }
+
+    public void setIs_filter(String is_filter) {
+        this.is_filter = is_filter;
     }
 }

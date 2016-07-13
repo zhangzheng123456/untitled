@@ -1,4 +1,4 @@
-﻿package com.bizvane.ishop.controller;
+package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -12,7 +12,6 @@ import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-
 import org.json.JSONObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +28,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.System;
-import java.net.URLEncoder;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -113,7 +109,8 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -149,7 +146,8 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
 
@@ -185,7 +183,8 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -219,7 +218,8 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -235,6 +235,8 @@ public class StoreController {
     @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -252,7 +254,7 @@ public class StoreController {
                 Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
                 String store_code = store.getStore_code();
                 String corp_code = store.getCorp_code();
-                List<User> user = storeService.getStoreUser(corp_code, store_code);
+                List<User> user = storeService.getStoreUser(corp_code, store_code,role_code);
                 count = user.size();
                 if (count > 0) {
                     msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
@@ -282,7 +284,7 @@ public class StoreController {
 
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString());
-
+            return dataBean.getJsonStr();
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
@@ -312,7 +314,8 @@ public class StoreController {
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage(e.getMessage());
+            bean.setMessage(e.getMessage() + e.toString());
+            logger.info(e.getMessage() + e.toString());
         }
         logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();
@@ -365,7 +368,8 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -400,7 +404,8 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -435,7 +440,8 @@ public class StoreController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -453,15 +459,17 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
 
-            List<User> user = storeService.getStoreUser(corp_code, store_code);
+            List<User> user = storeService.getStoreUser(corp_code, store_code,role_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(JSON.toJSONString(user));
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -479,15 +487,18 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String store_code = jsonObject.get("store_code").toString();
             String user_id = jsonObject.get("user_id").toString();
-
-            storeService.deleteStoreUser(user_id, store_code);
+            String[] ids = user_id.split(",");
+            for (int i = 0; i < ids.length; i++) {
+                storeService.deleteStoreUser(user_id, store_code);
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("delete success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -614,7 +625,8 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -674,7 +686,8 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -700,7 +713,8 @@ public class StoreController {
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -767,7 +781,6 @@ public class StoreController {
      */
     @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
     @ResponseBody
-    @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         //创建你要保存的文件的路径

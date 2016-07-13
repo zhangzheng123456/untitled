@@ -10,4 +10,7 @@ import java.util.List;
  */
 public interface TableManagerMapper {
     List<TableManager> selAllByCode(@Param("function_code")String function_code);
+
+    List<TableManager> selByCode(@Param("function_code")String function_code,@Param("is_filter")String is_filter);
+
 }

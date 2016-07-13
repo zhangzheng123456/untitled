@@ -4,77 +4,105 @@
 
     <resultMap type="com.bizvane.ishop.entity.Message" id="MessageInfo">
         <id column="id" property="id"/>
-        <result column="tem_code" property="tem_code"/>
-        <result column="tem_name" property="tem_name"/>
-        <result column="tem_content" property="tem_content"/>
-        <result column="isactive" property="isactive"/>
+        <result column="message_sender" property="message_sender"/>
+        <result column="message_title" property="message_title"/>
+        <result column="message_content" property="message_content"/>
+        <result column="message_receiver" property="message_receiver"/>
+        <result column="receiver_type" property="receiver_type"/>
+        <result column="status" property="status"/>
+        <result column="message_type" property="message_type"/>
+        <result column="corp_code" property="corp_code"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="creater" property="creater"/>
         <result column="created_date" property="created_date"/>
-        <result column="corp_code" property="corp_code"/>
-        <result column="type_code" property="type_code"/>
+        <result column="isactive" property="isactive"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
-        <association property="message_type" javaType="com.bizvane.ishop.entity.Message_type">
+        <association property="messageType" javaType="com.bizvane.ishop.entity.MessageType">
             <result column="type_name" property="type_name"/>
         </association>
     </resultMap>
 
+    <select id="selectByPrimaryKey" resultMap="MessageInfo">
+        select m.*,
+        c.corp_name,
+        mt.type_description
+        from def_user_message m,def_corp c,def_message_type mt
+        where m.corp_code = c.corp_code
+        AND m.message_type = mt.type_code
+        AND m.id=#{id}
+    </select>
+
     <delete id="deleteByPrimaryKey">
-        DELETE  FROM  DEF_MESSAGE where id=#{id}
+        DELETE  FROM  def_user_message where id=#{id}
     </delete>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Message">
-        insert into DEF_MESSAGE
+        insert into def_user_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="tem_code!=null and tem_code!=''">
-                tem_code,
+            <if test="message_sender!=null and message_sender!=''">
+                message_sender,
             </if>
-            <if test="tem_name!=null and tem_name!='">
-                tem_name,
+            <if test="message_title!=null and message_title!=''">
+                message_title,
             </if>
-            <if test="tem_content!=null and tem_content!=''">
-                tem_content,
+            <if test="message_content!=null and message_content!=''">
+                message_content,
             </if>
-            <if test="isactive!=null and  isactive!=''">
-                isactive,
+            <if test="message_receiver!=null and message_receiver!=''">
+                message_receiver,
+            </if>
+            <if test="receiver_type!=null and receiver_type!=''">
+                receiver_type,
+            </if>
+            <if test="message_type!=null and message_type!=''">
+                message_type,
+            </if>
+            <if test="status!=null and status!=''">
+                status,
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 corp_code,
             </if>
-            <if test="modifer!=null and modifier!=''">
+            <if test="modifier!=null and modifier!=''">
                 modifier,
             </if>
             <if test="modified_date!=null and modified_date!=''">
                 modified_date,
             </if>
-
             <if test="creater!=null and creater!=''">
                 creater,
             </if>
-
             <if test="created_date!=null and created_date!=''">
                 created_date,
             </if>
-
-            <if test="type_code!=null type_code!=''">
-                type_code,
+            <if test="isactive!=null and isactive!=''">
+                isactive,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="tem_code!=null and tem_code!=''">
-                #{tem_code},
+            <if test="message_sender!=null and message_sender!=''">
+                #{message_sender},
             </if>
-            <if test="tem_name!=null and tem_name!='">
-                #{tem_name},
+            <if test="message_title!=null and message_title!='' ">
+                #{message_title},
             </if>
-            <if test="tem_content!=null and tem_content!=''">
-                #{tem_content},
+            <if test="message_content!=null and message_content!=''">
+                #{message_content},
             </if>
-            <if test="isactive!=null and  isactive!=''">
-                #{isative},
+            <if test="message_receiver!=null and message_receiver!=''">
+                #{message_receiver},
+            </if>
+            <if test="receiver_type!=null and receiver_type!=''">
+                #{receiver_type},
+            </if>
+            <if test="message_type!=null and message_type!=''">
+                #{message_type},
+            </if>
+            <if test="status!=null and status!=''">
+                #{status},
             </if>
             <if test="corp_code!=null and corp_code!=''">
                 #{corp_code},
@@ -91,129 +119,38 @@
             <if test="created_date!=null and created_date!=''">
                 #{created_date},
             </if>
-            <if test="type_code!=null type_code!=''">
-                #{type_code},
+            <if test="isactive!=null and  isactive!=''">
+                #{isactive},
             </if>
         </trim>
     </insert>
 
-    <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.Message">
-         select * from DEF_MESSAGE where id=#{id}
-     </select>
-
-    <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.Message">
-        update DEF_MESSAGE
-        <trim prefix="set " suffixOverrides=",">
-            <if test="tem_code!=null and tem_code!=''">
-                tem_code=#{tem_code},
-            </if>
-            <if test="tem_name!=null and tem_name!='">
-                tem_name=#{tem_name},
-            </if>
-            <if test="tem_content!=null and tem_content!=''">
-                tem_content=#{tem_content},
-            </if>
-            <if test="isactive!=null and  isactive!=''">
-                isactive=#{isactive},
-            </if>
-            <if test="corp_code!=null and corp_code!=''">
-                corp_code=#{corp_code},
-            </if>
-            <if test="modifier!=null and modifier!=''">
-                modifier=#{modifier},
-            </if>
-            <if test="modified_date!=null and modified_date!=''">
-                modified_date=#{modified_date},
-            </if>
-            <if test="creater!=null and creater!=''">
-                creater=#{creater}
-            </if>
-            <if test="created_date!=null and created_date!=''">
-                created_date=#{created_date},
-            </if>
-            <if test="type_code!=null type_code!=''">
-                type_code=#{type_code},
-            </if>
-        </trim>
-    </update>
-
     <select id="selectAllMessage" resultMap="MessageInfo">
-        select
-        dm.*,
-        dc.corp_name,
-        dmt.type_name
-        from DEF_MESSAGE dm,DEF_MESSAGE,DEF_CORP dc,DEF_MESSAGE_TYPE dmt
-        WHERE dm.corp_code=dc.corp_code and
-        dm.corp_code=dmt.corp_code and
-        dm.type_code=dmt.type_code
+        select m.*,
+        c.corp_name,
+        mt.type_description
+        from def_user_message m,def_corp c,def_message_type mt
+        where m.corp_code = c.corp_code
+        AND m.message_type = mt.type_code
         <if test="corp_code!=null and corp_code!=''">
-            and dm.corp_code=#{corp_code}
+            and m.corp_code=#{corp_code}
         </if>
-        <if test="search_value!=null and search_value!=''">
-            and
-            ( dm.id like concat('%',search_value,'%') OR
-            dm.tem_code like concat('%',search_value,'%') OR
-            dm.tem_name like concat('%',search_value,'%') OR
-            dm.tem_content like concat('%',search_value,'%') OR
-            dc.corp_name like concat('%',search_value,'%') OR
-            dmt.type_name like concat('%',search_value,'%') OR
-            dm.modified_date like concat('%',search_value,'%') OR
-            dm.created_date like concat('%',search_value,'%')
-            )
-        </if>
-        ORDER BY dm.id
-    </select>
-
-    <select id="selectByUser" resultMap="MessageInfo">
-        select * from DEF_MESSAGE,DEF_USER
-        where DEF_MESSAGE.creater=DEF_USER.user_code,
-        and DEF_MESSAGE.CORP_CODE=#{corp_code},
-        and DEF_USER=#{user_code}
         <if test="search_value!=null and search_value!=''">
             and
             (
-            DEF_MESSAGE.tem_code like concat('%',#{search_value},'%') or
-            DEF_MESSAGE.tem_name like concat('%',#{search_value},'%') or
-            DEF_MESSAGE.tem_content like concat('%',#{search_value},'%') or
-            DEF_MESSAGE.isactive like concat('%',#{search_value},'%') or
-            DEF_USER.USER_NAME like concat('%',#{search_value},'%')
+            m.message_sender like concat('%',search_value,'%')
+            OR m.message_title like concat('%',search_value,'%')
+            OR m.message_content like concat('%',search_value,'%')
+            OR m.message_receiver like concat('%',search_value,'%')
+            OR m.status like concat('%',search_value,'%')
+            OR c.corp_name like concat('%',search_value,'%')
+            OR mt.type_description like concat('%',search_value,'%')
+            OR m.modified_date like concat('%',search_value,'%')
+            OR m.modifier like concat('%',search_value,'%')
+            OR m.isactive like concat('%',search_value,'%')
             )
         </if>
-        order by DEF_USER.ID
+        ORDER BY m.id
     </select>
 
-    <select id="selectPartMessage" resultMap="MessageInfo">
-        select
-        DEF_MESSAGE.*
-        from DEF_USER,DEF_GROUP,DEF_CORP,DEF_MESSAGE
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
-        AND DEF_USER.corp_code = DEF_GROUP.corp_code
-        AND DEF_USER.CORP_CODE=#{corp_code}
-        AND DEF_MESSAGE.creater=DEF_USER.USER_CODE
-        AND DEF_GROUP.ROLE_CODE &lt; #{role_code}
-        AND
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            store_code regexp #{item}
-        </foreach>
-        <if test="search_value!=null and search_value!=''">
-            and
-            (
-            DEF_MESSAGE.id like concat('%',#{search_value},'%') OR
-            DEF_MESSAGE.tem_code like concat('%',#{search_value},'%') OR
-            DEF_MESSAGE.tem_name like concat('%',search_value,'%') OR
-            DEF_MESSAGE.tem_content like concat('%',search_value,'%') OR
-            DEF_CORP.corp_name like concat('%',search_value,'%')
-            )
-        </if>
-        ORDER BY DEF_MESSAGE.ID
-    </select>
-
-    <select id="selectByCode" resultMap="MessageInfo">
-        select * from def_message
-        where
-        corp_code=#{corp_code}
-        and
-        tem_code=#{tem_code}
-    </select>
 </mapper>

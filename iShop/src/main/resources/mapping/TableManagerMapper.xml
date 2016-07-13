@@ -6,4 +6,11 @@
         SELECT * FROM def_table_manager
         WHERE FUNCTION_CODE=#{function_code}
     </select>
+
+    <!--查询table-->
+    <select id="selByCode" resultType="com.bizvane.ishop.entity.TableManager">
+        SELECT * FROM def_table_manager
+        WHERE FUNCTION_CODE=#{function_code}
+        AND is_filter = #{is_filter}
+    </select>
  </mapper>
