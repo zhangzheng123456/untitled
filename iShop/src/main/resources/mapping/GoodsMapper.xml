@@ -42,7 +42,9 @@
         ,g.creater
         ,g.goods_description
         ,g.corp_code
+        ,g.brand_code
         ,cp.corp_name
+        ,db.brand_name
         FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
         WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
@@ -61,6 +63,7 @@
             OR g.isactive LIKE concat('%',#{search_value},'%')
             OR g.goods_description LIKE concat('%',#{search_value},'%')
             OR cp.corp_name LIKE concat('%',#{search_value},'%')
+            OR db.brand_name like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY g.id
@@ -68,8 +71,8 @@
 
 
     <select id="selectByPrimaryKey" resultMap="GoodsInfo">
-         select
-         g.id
+        select
+        g.id
         ,g.goods_code
         ,g.goods_name
         ,g.goods_image
@@ -85,9 +88,10 @@
         ,g.goods_description
         ,g.corp_code
         ,cp.corp_name
+        ,db.brand_name
         FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
         WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
-          g.id=#{id}
+        and g.id=#{id}
     </select>
 
 
