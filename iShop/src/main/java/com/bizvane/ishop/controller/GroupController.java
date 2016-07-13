@@ -4,28 +4,37 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Group;
-import com.bizvane.ishop.entity.Role;
-import com.bizvane.ishop.entity.User;
-import com.bizvane.ishop.entity.Function;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.GroupService;
-import com.bizvane.ishop.service.RoleService;
-import com.bizvane.ishop.service.UserService;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.github.pagehelper.PageInfo;
+import jxl.Cell;
+import jxl.Sheet;
+import jxl.Workbook;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.lang.System;
+import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhou on 2016/6/6.
@@ -45,7 +54,8 @@ public class GroupController {
     private RoleService roleService;
     @Autowired
     private FunctionService functionService;
-
+    @Autowired
+    private TableManagerService managerService;
     private static Logger logger = LoggerFactory.getLogger((GroupController.class));
     String id;
 
@@ -579,6 +589,144 @@ public class GroupController {
         return dataBean.getJsonStr();
     }
 
-
-
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        try {
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            //系统管理员(官方画面)
+            PageInfo<Group> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = groupService.getGroupAll(1, 10000, "", "", "");
+            } else if(role_code.equals(Common.ROLE_GM)){
+                list = groupService.getGroupAll(1, 10000,corp_code, "", "");
+            }
+            else {
+                list = groupService.getGroupAll(1, 10000, corp_code, role_code, "");
+            }
+            List<Group> groups = list.getList();
+            String column_name = jsonObject.get("column_name").toString();
+            String[] cols = column_name.split(",");//前台传过来的字段
+            OutExeclHelper.OutExecl(groups,cols,response);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("word success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+    /***
+     * Execl增加
+     */
+    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional()
+    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
+        DataBean dataBean = new DataBean();
+        File targetFile = LuploadHelper.lupload(request, file, model);
+        String user_id = request.getSession().getAttribute("user_id").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String result = "";
+        try {
+            Workbook rwb = Workbook.getWorkbook(targetFile);
+            Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
+            int clos = rs.getColumns();//得到所有的列
+            int rows = rs.getRows();//得到所有的行
+            Cell[] column2 = rs.getColumn(0);
+            for (int i = 3; i <column2.length; i++) {
+                if(!column2[i].getContents().toString().equals("R2000")||!column2[i].getContents().toString().equals("R3000")||!column2[i].getContents().toString().equals("R4000")){
+                    result ="第"+(i+1)+"列角色编号不对";
+                    int b=5/0;
+                    break;
+                }
+            }
+            Cell[] column = rs.getColumn(1);
+            Pattern pattern=Pattern.compile("G\\d{4}");
+            for (int i = 3; i <column.length; i++) {
+                Matcher matcher = pattern.matcher(column[i].getContents().toString());
+                if(matcher.matches()==false){
+                    result ="第"+(i+1)+"列群组编号格式不对";
+                    int b=5/0;
+                    break;
+                }
+                Group group = groupService.selectByCode(corp_code, column[i].getContents().toString(), "");
+                if(group!=null){
+                    result ="第"+(i+1)+"列群组编号已存在";
+                    int b=5/0;
+                    break;
+                }
+            }
+            Cell[] column1 = rs.getColumn(2);
+            for (int i = 3; i <column1.length; i++) {
+                Group group = groupService.selectByCode(corp_code, column1[i].getContents().toString(), "");
+                if(group!=null){
+                    result ="第"+(i+1)+"列群组名称已存在";
+                    int b=5/0;
+                    break;
+                }
+            }
+            for(int i=3;i < rows;i++) {
+                for (int j = 0; j < clos; j++) {
+                    Group group=new Group();
+                    group.setCorp_code(corp_code);
+                    group.setRole_code(rs.getCell(j++,i).getContents());
+                    group.setGroup_code(rs.getCell(j++,i).getContents());
+                    group.setGroup_name(rs.getCell(j++,i).getContents());
+                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                        group.setIsactive("Y");
+                    }else{
+                        group.setIsactive("N");
+                    }
+                    result = groupService.insertGroup(group);
+                }
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        }catch (Exception e){
+            e.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        }
+        return dataBean.getJsonStr();
+    }
 }
