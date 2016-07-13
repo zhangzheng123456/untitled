@@ -34,6 +34,4 @@ public interface StoreMapper {
     int selectAchCount(@Param("store_code") String store_code);
 
     List<Store> selectByAreaCode(Map<String, Object> params);
-
-    int selectUserCount(@Param("corp_code") String corp_code, @Param("store_code") String store_code);
 }

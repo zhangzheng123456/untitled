@@ -15,27 +15,26 @@ public interface StoreService {
 
     /**
      * 分页获取店铺列表信息
-     *
-     * @param page_number  ： 起始页码
-     * @param page_size    ： 分页大小
-     * @param store_code   ： 店铺编号
-     * @param corp_code    ： 公司编号
+     * @param page_number ： 起始页码
+     * @param page_size ： 分页大小
+     * @param store_code ： 店铺编号
+     * @param corp_code ： 公司编号
      * @param search_value ： 产需条件
      * @return
      */
     PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value);
 
-    List<Store> selectAll(String store_code, String corp_code, String isactive);
+    List<Store> selectAll(String store_code, String corp_code,String isactive);
 
     int deleteStoreUser(String user_id, String store_code);
 
     Store getStoreById(int id) throws SQLException;
 
-    PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<Store> getAllStore(HttpServletRequest request,int page_number, int page_size, String corp_code, String search_value);
 
     List<Store> getCorpStore(String corp_code) throws SQLException;
 
-    Store getStoreByCode(String corp_code, String store_code, String isactive);
+    Store getStoreByCode(String corp_code, String store_code,String isactive);
 
     List<User> getStoreUser(String corp_code, String store_code);
 
@@ -49,15 +48,13 @@ public interface StoreService {
 
     Store getStoreByName(String corp_code, String store_name) throws SQLException;
 
-    int selectAchCount(String store_code) throws SQLException;
+    int selectAchCount(String store_code)throws SQLException;
 
-    int selectCount(String created_date) throws SQLException;
+    int selectCount(String created_date);
 
-    PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws SQLException;
+    PageInfo<Store> selectByAreaCode(int page_number,int page_size,String corp_code,String[] area_code,String search_value);
 
-    List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) throws SQLException;
+    List<Store> selectByAreaCode(String corp_code, String[] area_code,String isactive);
 
-    String insertExecl(Store store) throws SQLException;
-
-    int selectUserCount(String corp_code, String store_code) throws SQLException;
+    String insertExecl(Store store);
 }

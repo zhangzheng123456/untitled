@@ -125,8 +125,7 @@ public class UserController {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(e.getMessage() + e.toString());
-            logger.info(e.getMessage() + e.toString());
+            dataBean.setMessage(e.getMessage());
         }
         return dataBean.getJsonStr();
 
@@ -174,8 +173,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -216,8 +214,7 @@ public class UserController {
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -343,7 +340,6 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
-            logger.info(e.getMessage() + e.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -432,8 +428,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -512,8 +507,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         logger.info("info--------" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
@@ -562,8 +556,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             return dataBean.getJsonStr();
         }
         logger.info("delete-----" + dataBean.getJsonStr());
@@ -596,8 +589,7 @@ public class UserController {
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage(e.getMessage() + e.toString());
-            logger.info(e.getMessage() + e.toString());
+            bean.setMessage(e.getMessage());
         }
         logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();
@@ -649,8 +641,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -697,8 +688,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -749,8 +739,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -797,8 +786,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -853,8 +841,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
@@ -889,8 +876,7 @@ public class UserController {
             }
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -922,8 +908,7 @@ public class UserController {
             }
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -955,8 +940,7 @@ public class UserController {
             }
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -1011,8 +995,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
 

@@ -123,14 +123,14 @@
             #{item}
         </foreach>
         <if test="search_value != null and search_value !=''">
-            AND STORE_CODE like concat('%',#{search_value},'%')
-            OR DEF_STORE.ID like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
-            OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
+            AND STORE_CODE like  concat('%',#{search_value},'%')
+            OR DEF_STORE.ID like  concat('%',#{search_value},'%')
+            OR STORE_NAME like  concat('%',#{search_value},'%')
+            OR DEF_AREA.AREA_NAME like  concat('%',#{search_value},'%')
+            OR DEF_CORP.CORP_NAME like  concat('%',#{search_value},'%')
+            OR DEF_STORE.MODIFIED_DATE like  concat('%',#{search_value},'%')
+            OR DEF_STORE.MODIFIER like  concat('%',#{search_value},'%')
+            OR DEF_STORE.ISACTIVE like  concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
@@ -358,10 +358,4 @@
         WHERE store_code=#{store_code}
     </select>
 
-    <select id="selectUserCount" resultType="java.lang.Integer">
-        select count(*) from def_user
-        where corp_code=#{corp_code}
-        and
-        store_code=#{store_code}
-    </select>
 </mapper>
