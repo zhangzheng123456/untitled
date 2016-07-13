@@ -38,15 +38,16 @@ var oc = new ObjectControl();
 	fabjs.bindbutton=function(){
 		$(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(fabjs.firstStep()){
-				var OWN_CORP=$("#OWN_CORP").val();
-				var GOODS_CODE=$("#GOODS_CODE").val();
-				var GOODS_NAME=$("#GOODS_NAME").val();
-				var GOODS_PRICE=$("#GOODS_PRICE").val();
-				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
-				var GOODS_BAND=$("#GOODS_BAND").val();
-				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
-				var GOODS_BUYPOINT=$("#GOODS_BUYPOINT").val();
-				var ISACTIVE="";
+				var OWN_CORP=$("#OWN_CORP").val();//公司编号
+				var GOODS_CODE=$("#GOODS_CODE").val();//商品编号
+				var GOODS_NAME=$("#GOODS_NAME").val();//商品名称
+				var GOODS_PRICE=$("#GOODS_PRICE").val();//商品价格
+				var GOODS_QUARTER=$("#GOODS_QUARTER").val();//季度
+				var GOODS_BAND=$("#GOODS_BAND").val();//波段
+				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();//发布时间
+				var GOODS_BUYPOINT=$("#GOODS_BUYPOINT").val();//商品卖点
+				var ISACTIVE="";//是否可用
+				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
@@ -85,7 +86,19 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":img_list_json,"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
+				var _params = {
+					"corp_code": OWN_CORP,
+					"goods_code": GOODS_CODE,
+					"goods_name": GOODS_NAME,
+					"brand_code":brand_code,
+					"goods_price": GOODS_PRICE,
+					"goods_image": img_list_json,
+					"goods_quarter": GOODS_QUARTER,
+					"goods_wave": GOODS_BAND,
+					"goods_time": GOODS_RELEASETIME,
+					"goods_description": GOODS_BUYPOINT,
+					"isactive": ISACTIVE
+				};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -102,6 +115,7 @@ var oc = new ObjectControl();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
 				var GOODS_BUYPOINT=$("#GOODS_BUYPOINT").val();
+				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -142,7 +156,20 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"goods_code":GOODS_CODE,"goods_name":GOODS_NAME,"goods_price":GOODS_PRICE,"goods_image":img_list_json,"goods_quarter":GOODS_QUARTER,"goods_wave":GOODS_BAND,"goods_time":GOODS_RELEASETIME,"goods_description":GOODS_BUYPOINT,"isactive":ISACTIVE};
+				var _params = {
+					"id": ID,
+					"corp_code": OWN_CORP,
+					"goods_code": GOODS_CODE,
+					"goods_name": GOODS_NAME,
+					"goods_price": GOODS_PRICE,
+					"brand_code":brand_code,
+					"goods_image": img_list_json,
+					"goods_quarter": GOODS_QUARTER,
+					"goods_wave": GOODS_BAND,
+					"goods_time": GOODS_RELEASETIME,
+					"goods_description": GOODS_BUYPOINT,
+					"isactive": ISACTIVE
+				};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -371,15 +398,22 @@ function getvarbrandlist(b){
 			brands=brands.brands;
 			console.log(brands);
 			var brand_html="";
+			$('#brand_select .searchable-select').remove();//删除
+			$('#OWN_BRAND').empty();//清空
 			if(brands.length>0){
-				$('#brand_select .searchable-select').remove();//删除
 				for(var i=0;i<brands.length;i++){
 					brand_html+='<option value="'+brands[i].brand_code+'">'+brands[i].brand_name+'</option>';
 				}
-				$('#OWN_BRAND').html(brand_html);
-				$('#OWN_BRAND').searchableSelect();
+			}else if(brands.length<=0){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "该企业没有品牌,请先定义品牌！"
+				});
 			}
-
+			$('#OWN_BRAND').html(brand_html);
+			$('#OWN_BRAND').searchableSelect();
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
