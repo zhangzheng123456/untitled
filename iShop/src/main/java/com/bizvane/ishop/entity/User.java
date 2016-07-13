@@ -47,10 +47,27 @@ public class User {
 	private String store_name;
 
 	private Group group;
-
+	private String corp_name;
+	private String group_name;
 	private Corp corp;
 	private Sign sign;
 	public User(){}
+
+	public String getCorp_name() {
+		return corp_name;
+	}
+
+	public void setCorp_name(String corp_name) {
+		this.corp_name = corp_name;
+	}
+
+	public String getGroup_name() {
+		return group_name;
+	}
+
+	public void setGroup_name(String group_name) {
+		this.group_name = group_name;
+	}
 
 	public Sign getSign() {
 		return sign;

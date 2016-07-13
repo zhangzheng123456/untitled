@@ -38,6 +38,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -441,7 +443,6 @@ public class CorpController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-
             //系统管理员(官方画面)
             PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 10000, "");
             List<Corp> corps = corpInfo.getList();
@@ -475,7 +476,14 @@ public class CorpController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(0);
+            Pattern pattern=Pattern.compile("C\\d{5}");
             for (int i = 3; i <column.length; i++) {
+                Matcher matcher = pattern.matcher(column[i].getContents().toString());
+                if(matcher.matches()==false){
+                    result ="第"+(i+1)+"列企业编号格式不对";
+                    int b=5/0;
+                    break;
+                }
                 Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString());
                 if(corp!=null){
                     result ="第"+(i+1)+"列企业编号已存在";
@@ -516,6 +524,7 @@ public class CorpController {
             dataBean.setId(id);
             dataBean.setMessage(result);
         }catch (Exception e){
+            System.out.println(result+"--错错错--");
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

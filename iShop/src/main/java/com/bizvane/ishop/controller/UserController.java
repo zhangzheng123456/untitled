@@ -80,7 +80,7 @@ public class UserController {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
-            int size = Integer.parseInt(request.getSession().getAttribute("size").toString());
+
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
@@ -88,10 +88,10 @@ public class UserController {
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = userService.selectBySearch(request, 1, size, "", "");
+                list = userService.selectBySearch(request, 1, 10000, "", "");
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
-                list = userService.selectBySearch(request, 1, size, corp_code, "");
+                list = userService.selectBySearch(request, 1, 10000, corp_code, "");
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 //员工
                 User user = userService.getUserById(user_id);
@@ -102,20 +102,22 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = userService.selectBySearchPart(1, size, corp_code, "", store_code, "", role_code);
+                list = userService.selectBySearchPart(1, 10000, corp_code, "", store_code, "", role_code);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = userService.selectBySearchPart(1, size, corp_code, "", "", area_code, role_code);
+                list = userService.selectBySearchPart(1, 10000, corp_code, "", "", area_code, role_code);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
             }
             List<User> users = list.getList();
-            String column_name = jsonObject.get("column_name").toString();
+           String column_name = jsonObject.get("column_name").toString();
+            //String column_name = "user_name,phone,corp_name,group_name";
+
             String[] cols = column_name.split(",");//前台传过来的字段
             OutExeclHelper.OutExecl(users, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -233,8 +235,6 @@ public class UserController {
         String path = request.getSession().getServletContext().getRealPath("lupload");
         //获取该文件的文件名
         String fileName = file.getOriginalFilename();
-
-        System.out.println(path);
         File targetFile = new File(path, fileName);
         if (!targetFile.exists()) {
             targetFile.mkdirs();
@@ -325,7 +325,6 @@ public class UserController {
                     }
                 }
             }
-
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -336,6 +335,7 @@ public class UserController {
                 dataBean.setMessage(result);
             }
         } catch (Exception e) {
+            System.out.println(result+"--error--");
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

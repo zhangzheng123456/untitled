@@ -36,6 +36,8 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -454,8 +456,15 @@ public class AreaController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            Cell[] column = rs.getColumn(1);
+            Pattern pattern=Pattern.compile("A\\d{4}");
+            Cell[] column = rs.getColumn(0);
             for (int i = 3; i <column.length; i++) {
+                Matcher matcher = pattern.matcher(column[i].getContents().toString());
+                if(matcher.matches()==false){
+                    result ="第"+(i+1)+"列区域编号格式不对";
+                    int b=5/0;
+                    break;
+                }
                 Area area = areaService.getAreaByCode(corp_code, column[i].getContents().toString());
                 if(area!=null){
                     result ="第"+(i+1)+"列区域编号已存在";
@@ -463,7 +472,7 @@ public class AreaController {
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(2);
+            Cell[] column1 = rs.getColumn(1);
             for (int i = 3; i <column1.length; i++) {
                 Area area = areaService.getAreaByName(corp_code, column1[i].getContents().toString());
                 if(area!=null){
