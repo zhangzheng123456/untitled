@@ -226,6 +226,8 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.fab.init();//初始化
+	var a="";
+	var b="";
 	if($(".pre_title label").text()=="编辑商品培训(FAB)"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
@@ -350,7 +352,7 @@ jQuery(document).ready(function(){
 function img_del(obj) {
 	$(obj).parent().remove();
 }
-function getcorplist(){
+function getcorplist(a){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
