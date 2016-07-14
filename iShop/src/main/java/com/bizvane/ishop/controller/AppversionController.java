@@ -43,7 +43,7 @@ public class AppversionController {
             String group_code = request.getSession(false).getAttribute("group_code").toString();
             String user_code = request.getSession(false).getAttribute("user_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-        
+
             //-------------------------------------------------------
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
@@ -104,7 +104,7 @@ public class AppversionController {
     @Transactional
     public String addAppversion(HttpServletRequest request){
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -210,7 +210,7 @@ public class AppversionController {
     @Transactional
     public String editAppversion(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);

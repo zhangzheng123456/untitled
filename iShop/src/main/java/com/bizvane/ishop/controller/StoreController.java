@@ -162,7 +162,7 @@ public class StoreController {
     @Transactional
     public String addShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -197,7 +197,7 @@ public class StoreController {
     @Transactional
     public String editShop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -586,7 +586,7 @@ public class StoreController {
     @ResponseBody
     public String creatQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -802,7 +802,7 @@ public class StoreController {
         }
         //将该文件的路径给客户端，让其可以请求该wenjian
         model.addAttribute("fileUrl", request.getContextPath() + "/lupload/" + fileName);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
         try {

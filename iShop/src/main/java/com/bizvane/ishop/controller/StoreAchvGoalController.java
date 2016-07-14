@@ -119,7 +119,7 @@ public class StoreAchvGoalController {
     @Transactional
     public String addStoreAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
         String id = "";
@@ -217,7 +217,7 @@ public class StoreAchvGoalController {
     @Transactional
     public String editStoreAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = WebUtils.getValueForSession(request, "user_id");
+        String user_id = WebUtils.getValueForSession(request, "user_code");
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -319,7 +319,7 @@ public class StoreAchvGoalController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = request.getSession().getAttribute("corp_code").toString();
-            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            int user_id = Integer.parseInt(request.getSession().getAttribute("user_code").toString());
 
             String search_value = jsonObject.get("searchValue").toString();
 
@@ -423,7 +423,7 @@ public class StoreAchvGoalController {
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
         String result = "";

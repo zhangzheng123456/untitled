@@ -64,6 +64,7 @@ public class VIPController {
     private static final Logger log = Logger.getLogger(LoginController.class);
 
     String id;
+
     /**
      * 会员列表
      */
@@ -112,7 +113,7 @@ public class VIPController {
     public String addVIP(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         try {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
@@ -161,7 +162,7 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String user_id = request.getSession(false).getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.getString("id");
@@ -310,7 +311,7 @@ public class VIPController {
 //    public String addVIP(HttpServletRequest request) {
 //        DataBean dataBean = new DataBean();
 //        String id = "";
-//        String user_id = request.getSession(false).getAttribute("user_id").toString();
+//        String user_id = request.getSession(false).getAttribute("user_code").toString();
 //        try {
 //            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 //            String jsString = request.getParameter("param");
@@ -359,7 +360,7 @@ public class VIPController {
 //        DataBean dataBean = new DataBean();
 //        String id = "";
 //        try {
-//            String user_id = request.getSession(false).getAttribute("user_id").toString();
+//            String user_id = request.getSession(false).getAttribute("user_code").toString();
 //            String jsString = request.getParameter("param");
 //            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
 //            id = jsonObj.getString("id");
@@ -460,7 +461,6 @@ public class VIPController {
 //    }
 
 
-
     /**
      * 会员标签管理
      * 列表
@@ -501,6 +501,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 查出要导出的列
      */
@@ -526,6 +527,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -549,27 +551,28 @@ public class VIPController {
             List<VipLabel> vipLabels = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(vipLabels,cols,response);
+            OutExeclHelper.OutExecl(vipLabels, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage("word success");
-        }catch (Exception e){
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(e.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * Execl增加
      */
-    @RequestMapping(value="/label/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/label/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String role_code = request.getSession(false).getAttribute("role_code").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
         String result = "";
@@ -579,33 +582,33 @@ public class VIPController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(0);
-            for (int i = 3; i <column.length; i++) {
+            for (int i = 3; i < column.length; i++) {
                 String existInfo = this.vipLabelService.VipLabelNameExist(corp_code, column[i].getContents().toString());
-                if(!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)){
-                    result ="第"+(i+1)+"列的会员标签已存在";
-                    int b=5/0;
+                if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                    result = "第" + (i + 1) + "列的会员标签已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    VipLabel vipLabel=new VipLabel();
+                    VipLabel vipLabel = new VipLabel();
                     vipLabel.setCorp_code(corp_code);
-                    vipLabel.setLabel_name(rs.getCell(j++,i).getContents());
-                    if(role_code.equals(Common.ROLE_SYS)){
+                    vipLabel.setLabel_name(rs.getCell(j++, i).getContents());
+                    if (role_code.equals(Common.ROLE_SYS)) {
                         vipLabel.setLabel_type("sys");
-                    }else{
+                    } else {
                         vipLabel.setLabel_type("org");
                     }
-                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
                         vipLabel.setIsactive("Y");
-                    }else{
+                    } else {
                         vipLabel.setIsactive("N");
                     }
                     vipLabel.setCreater(user_id);
                     Date now = new Date();
                     vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    result=String.valueOf(vipLabelService.insert(vipLabel));
+                    result = String.valueOf(vipLabelService.insert(vipLabel));
                 }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -630,7 +633,7 @@ public class VIPController {
     public String addVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         try {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
@@ -647,7 +650,7 @@ public class VIPController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             if (Common.ROLE_SYS.equals(role_code)) {
                 vipLabel.setLabel_type("sys");
-            }else{
+            } else {
                 vipLabel.setLabel_type("org");
             }
             String existInfo = vipLabelService.insert(vipLabel);
@@ -678,7 +681,7 @@ public class VIPController {
     @ResponseBody
     public String editVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -1051,7 +1054,7 @@ public class VIPController {
 //        DataBean dataBean = new DataBean();
 //
 //        String id = "";
-//        String user_id = request.getSession(false).getAttribute("user_id").toString();
+//        String user_id = request.getSession(false).getAttribute("user_code").toString();
 //        try {
 //            String jsString = request.getParameter("param");
 //            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -1122,7 +1125,7 @@ public class VIPController {
 //        DataBean dataBean = new DataBean();
 //        String id = "";
 //        try {
-//            String user_id = request.getSession(false).getAttribute("user_id").toString();
+//            String user_id = request.getSession(false).getAttribute("user_code").toString();
 //            String jsString = request.getParameter("param");
 //            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
 //            String message = jsonObj.get("message").toString();
@@ -1153,6 +1156,7 @@ public class VIPController {
 //        return dataBean.getJsonStr();
 //    }
 //
+
     /***
      * 导出数据
      */
@@ -1177,17 +1181,18 @@ public class VIPController {
             List<VipRecord> vipRecords = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(vipRecords,cols,response);
+            OutExeclHelper.OutExecl(vipRecords, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage("word success");
-        }catch (Exception e){
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(e.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 回访记录管理
      * 列表
@@ -1240,7 +1245,7 @@ public class VIPController {
 //    @Transactional
 //    public String addCallBack(HttpServletRequest request) {
 //        DataBean dataBean = new DataBean();
-//        String user_id = request.getSession(false).getAttribute("user_id").toString();
+//        String user_id = request.getSession(false).getAttribute("user_code").toString();
 //        String id = "";
 //        try {
 //            String jsString = request.getParameter("param");
@@ -1314,7 +1319,7 @@ public class VIPController {
 //        DataBean dataBean = new DataBean();
 //        String id = "";
 //        try {
-//            String user_id = request.getSession(false).getAttribute("user_id").toString();
+//            String user_id = request.getSession(false).getAttribute("user_code").toString();
 //            String jsString = request.getParameter("param");
 //            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
 //            String message = jsonObj.get("message").toString();

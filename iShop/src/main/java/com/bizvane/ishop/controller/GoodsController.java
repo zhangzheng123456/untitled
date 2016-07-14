@@ -226,7 +226,7 @@ public class GoodsController {
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
         try {
@@ -296,7 +296,7 @@ public class GoodsController {
     @Transactional
     public String addGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -381,7 +381,7 @@ public class GoodsController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String user_id = request.getSession(false).getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();

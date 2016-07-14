@@ -82,10 +82,9 @@ public class GroupController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = groupService.getGroupAll(page_number, page_size, "", "", "");
-            } else if(role_code.equals(Common.ROLE_GM)){
-                list = groupService.getGroupAll(page_number, page_size,corp_code, "", "");
-            }
-            else {
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = groupService.getGroupAll(page_number, page_size, corp_code, "", "");
+            } else {
                 list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -109,7 +108,7 @@ public class GroupController {
     @ResponseBody
     public String addGroup(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--area add-------------" + jsString);
@@ -142,11 +141,11 @@ public class GroupController {
             group.setModifier(user_id);
             group.setIsactive(jsonObject.get("isactive").toString());
             String result = groupService.insertGroup(group);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)){
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
@@ -167,7 +166,7 @@ public class GroupController {
     @ResponseBody
     public String editGroup(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--area edit-------------" + jsString);
@@ -188,11 +187,11 @@ public class GroupController {
             group.setModified_date(Common.DATETIME_FORMAT.format(now));
             group.setIsactive(jsonObject.get("isactive").toString());
             String result = groupService.updateGroup(group);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)){
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("edit success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
@@ -324,9 +323,9 @@ public class GroupController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = groupService.getGroupAll(page_number, page_size, "", "", search_value);
-            } else if(role_code.equals(Common.ROLE_GM)){
+            } else if (role_code.equals(Common.ROLE_GM)) {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = groupService.getGroupAll(page_number, page_size,corp_code, "", "");
+                list = groupService.getGroupAll(page_number, page_size, corp_code, "", "");
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = groupService.getGroupAll(page_number, page_size, corp_code, role_code, search_value);
@@ -483,7 +482,7 @@ public class GroupController {
     public String addGroupCheckPower(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            String user_id = request.getSession().getAttribute("user_code").toString();
 
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -523,7 +522,7 @@ public class GroupController {
 
     @RequestMapping(value = "/code_exist", method = RequestMethod.POST)
     @ResponseBody
-    public String codeExist(HttpServletRequest request){
+    public String codeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String user_id = request.getSession().getAttribute("user_id").toString();
@@ -537,16 +536,16 @@ public class GroupController {
             String corp_code = jsonObject.get("corp_code").toString();
             String group_code = jsonObject.get("group_code").toString();
             Group group = groupService.selectByCode(corp_code, group_code, "");
-            if (group == null){
+            if (group == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("该群组编号已存在！");
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -555,10 +554,9 @@ public class GroupController {
     }
 
 
-
     @RequestMapping(value = "/name_exist", method = RequestMethod.POST)
     @ResponseBody
-    public String name_exist(HttpServletRequest request){
+    public String name_exist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String user_id = request.getSession().getAttribute("user_id").toString();
@@ -572,16 +570,16 @@ public class GroupController {
             String corp_code = jsonObject.get("corp_code").toString();
             String group_name = jsonObject.get("group_name").toString();
             Group group = groupService.selectByCode(corp_code, group_name, "");
-            if (group == null){
+            if (group == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("该群组名称已存在！");
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -614,6 +612,7 @@ public class GroupController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -633,16 +632,15 @@ public class GroupController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = groupService.getGroupAll(1, 10000, "", "", "");
-            } else if(role_code.equals(Common.ROLE_GM)){
-                list = groupService.getGroupAll(1, 10000,corp_code, "", "");
-            }
-            else {
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = groupService.getGroupAll(1, 10000, corp_code, "", "");
+            } else {
                 list = groupService.getGroupAll(1, 10000, corp_code, role_code, "");
             }
             List<Group> groups = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(groups,cols,response);
+            OutExeclHelper.OutExecl(groups, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage("word success");
@@ -653,16 +651,17 @@ public class GroupController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * Execl增加
      */
-    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
         try {
@@ -671,48 +670,48 @@ public class GroupController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             Cell[] column2 = rs.getColumn(0);
-            for (int i = 3; i <column2.length; i++) {
-                if(!column2[i].getContents().toString().equals("R2000")||!column2[i].getContents().toString().equals("R3000")||!column2[i].getContents().toString().equals("R4000")){
-                    result ="第"+(i+1)+"列角色编号不对";
-                    int b=5/0;
+            for (int i = 3; i < column2.length; i++) {
+                if (!column2[i].getContents().toString().equals("R2000") || !column2[i].getContents().toString().equals("R3000") || !column2[i].getContents().toString().equals("R4000")) {
+                    result = "第" + (i + 1) + "列角色编号不对";
+                    int b = 5 / 0;
                     break;
                 }
             }
             Cell[] column = rs.getColumn(1);
-            Pattern pattern=Pattern.compile("G\\d{4}");
-            for (int i = 3; i <column.length; i++) {
+            Pattern pattern = Pattern.compile("G\\d{4}");
+            for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
-                if(matcher.matches()==false){
-                    result ="第"+(i+1)+"列群组编号格式不对";
-                    int b=5/0;
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "列群组编号格式不对";
+                    int b = 5 / 0;
                     break;
                 }
                 Group group = groupService.selectByCode(corp_code, column[i].getContents().toString(), "");
-                if(group!=null){
-                    result ="第"+(i+1)+"列群组编号已存在";
-                    int b=5/0;
+                if (group != null) {
+                    result = "第" + (i + 1) + "列群组编号已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
             Cell[] column1 = rs.getColumn(2);
-            for (int i = 3; i <column1.length; i++) {
+            for (int i = 3; i < column1.length; i++) {
                 Group group = groupService.selectByCode(corp_code, column1[i].getContents().toString(), "");
-                if(group!=null){
-                    result ="第"+(i+1)+"列群组名称已存在";
-                    int b=5/0;
+                if (group != null) {
+                    result = "第" + (i + 1) + "列群组名称已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    Group group=new Group();
+                    Group group = new Group();
                     group.setCorp_code(corp_code);
-                    group.setRole_code(rs.getCell(j++,i).getContents());
-                    group.setGroup_code(rs.getCell(j++,i).getContents());
-                    group.setGroup_name(rs.getCell(j++,i).getContents());
-                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                    group.setRole_code(rs.getCell(j++, i).getContents());
+                    group.setGroup_code(rs.getCell(j++, i).getContents());
+                    group.setGroup_name(rs.getCell(j++, i).getContents());
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
                         group.setIsactive("Y");
-                    }else{
+                    } else {
                         group.setIsactive("N");
                     }
                     result = groupService.insertGroup(group);
@@ -721,7 +720,7 @@ public class GroupController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

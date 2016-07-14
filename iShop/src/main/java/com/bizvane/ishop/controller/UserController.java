@@ -249,7 +249,7 @@ public class UserController {
         }
         //将该文件的路径给客户端，让其可以请求该wenjian
         model.addAttribute("fileUrl", request.getContextPath() + "/lupload/" + fileName);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
         try {
@@ -354,7 +354,7 @@ public class UserController {
     @ResponseBody
     public String addUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user add-------------" + jsString);
@@ -444,7 +444,7 @@ public class UserController {
     @ResponseBody
     public String editUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user edit-------------" + jsString);
@@ -493,7 +493,7 @@ public class UserController {
             }
             Date now = new Date();
             user.setModified_date(Common.DATETIME_FORMAT.format(now));
-            user.setModifier(user_id);
+            user.setModifier(user_code);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
             logger.info("------update user" + user.toString());
@@ -967,7 +967,7 @@ public class UserController {
     @ResponseBody
     public String creatQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");

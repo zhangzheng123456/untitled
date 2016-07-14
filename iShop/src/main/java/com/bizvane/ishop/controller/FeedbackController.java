@@ -107,7 +107,7 @@ public class FeedbackController {
     @Transactional
     public String addFeedback(HttpServletRequest request){
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -212,7 +212,7 @@ public class FeedbackController {
     @Transactional
     public String editCrop(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);

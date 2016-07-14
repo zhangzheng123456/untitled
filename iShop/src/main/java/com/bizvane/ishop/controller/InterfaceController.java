@@ -111,7 +111,7 @@ public class InterfaceController {
     @Transactional
     public String addInterface(HttpServletRequest request){
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -209,7 +209,7 @@ public class InterfaceController {
     @Transactional
     public String editInterface(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
