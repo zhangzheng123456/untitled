@@ -438,10 +438,10 @@ public class UserServiceImpl implements UserService {
 
                     result = Common.DATABEAN_CODE_SUCCESS;
                 } else {
-                    result = "验证码错误！！！";
+                    result = "验证码错误";
                 }
             } else {
-                result = "该手机号已注册！！！";
+                result = "该手机号码已注册";
             }
         } catch (Exception ex) {
             result = ex.getMessage();
@@ -496,7 +496,7 @@ public class UserServiceImpl implements UserService {
                 code.setIsactive(Common.IS_ACTIVE_Y);
                 validateCodeService.updateValidateCode(code);
             }
-            return Common.DATABEAN_CODE_SUCCESS;
+            return authcode;
         }
         return Common.DATABEAN_CODE_ERROR;
     }
