@@ -240,13 +240,6 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
-            //双击跳转
-            $(".table tbody tr").dblclick(function(){
-                var id=$(this).attr("id");
-                sessionStorage.setItem("id",id);
-                console.log(id);
-                $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
-            })
         }
     }
 }
@@ -313,6 +306,13 @@ function jumpBianse(){
             frame();
             $('.frame').html("不能选择多个");
         }
+    })
+    //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        sessionStorage.setItem("id",id);
+        console.log(id);
+        $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
     })
     //删除
     $("#remove").click(function(){

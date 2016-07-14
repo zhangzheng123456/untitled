@@ -230,6 +230,19 @@ jQuery(document).ready(function(){
 	var b="";
 	if($(".pre_title label").text()=="编辑商品培训(FAB)"){
 		var id=sessionStorage.getItem("id");
+		var key_val=sessionStorage.getItem("key_val");//取页面的function_code
+		key_val=JSON.parse(key_val);
+		var funcCode=key_val.func_code;
+		$.get("/detail?funcCode="+funcCode+"", function(data){
+			var data=JSON.parse(data);
+			if(data.code=="0"){
+				var message=JSON.parse(data.message);
+				var action=message.actions[0].act_name;
+				if(action==""){
+					$(".corpedit_oper_btn li:eq(0)").remove();
+				}
+			}
+		});
 		var _params={"id":id};
 		var _command="/goods/fab/select";
 		var img_html='';

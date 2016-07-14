@@ -371,7 +371,7 @@ function store_data(c,b){
 			var msg=JSON.parse(data.message);
 			var msg_stores=JSON.parse(msg.stores);
 			$('#SHOP_NAME').empty();
-			$('#brand_select .searchable-select').remove();
+			$('#shop_select .searchable-select').remove();
 			if(msg_stores.length>0){
 				for(var i=0;i<msg_stores.length;i++){
 					$('#SHOP_NAME').append("<option value='"+msg_stores[i].store_code+"'>"+msg_stores[i].store_name+"</option>");
