@@ -99,7 +99,7 @@ public class RoleController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            String user_id = request.getSession(false).getAttribute("user_id").toString();
+            String user_id = request.getSession(false).getAttribute("user_code").toString();
             // String jsString = request.getSession(false).getAttribute("param").toString();
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -222,7 +222,7 @@ public class RoleController {
     public String editRole(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);

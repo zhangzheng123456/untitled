@@ -102,7 +102,7 @@ public class AreaController {
     @ResponseBody
     public String addArea(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--area add-------------" + jsString);
@@ -136,7 +136,7 @@ public class AreaController {
     @ResponseBody
     public String editArea(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--area edit-------------" + jsString);
@@ -448,7 +448,7 @@ public class AreaController {
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean=new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
         try {

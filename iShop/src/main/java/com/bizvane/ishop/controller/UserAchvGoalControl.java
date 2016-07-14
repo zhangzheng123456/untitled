@@ -118,7 +118,7 @@ public class UserAchvGoalControl {
     @Transactional
     public String editUserAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObject = JSONObject.parseObject(jsString);
@@ -210,7 +210,7 @@ public class UserAchvGoalControl {
     public String insertUserAchvGoal(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user add-------------" + jsString);
@@ -409,7 +409,7 @@ public class UserAchvGoalControl {
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
         String result = "";

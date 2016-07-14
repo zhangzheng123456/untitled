@@ -294,7 +294,7 @@ public class MessageController {
 //        DataBean dataBean = new DataBean();
 //        String id = "";
 //        try {
-//            String user_id = request.getSession(false).getAttribute("user_id").toString();
+//            String user_id = request.getSession(false).getAttribute("user_code").toString();
 //            String jsString = request.getParameter("param");
 //            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
 //            String message = jsonObj.get("message").toString();
@@ -397,7 +397,7 @@ public class MessageController {
 //    @Transactional
 //    public String MessageTypeEdit(HttpServletRequest request) {
 //        DataBean dataBean = new DataBean();
-//        String user_id = WebUtils.getValueForSession(request, "user_id");
+//        String user_id = WebUtils.getValueForSession(request, "user_code");
 //        String id = "";
 //        try {
 //            String jsString = request.getParameter("param");
@@ -477,7 +477,7 @@ public class MessageController {
 //    public String MessageTypeAdd(HttpServletRequest request) {
 //
 //        DataBean dataBean = new DataBean();
-//        String user_id = WebUtils.getValueForSession(request, "user_id");
+//        String user_id = WebUtils.getValueForSession(request, "user_code");
 //        String corp_code = WebUtils.getValueForSession(request, "corp_code");
 //        String id = "";
 //        try {
@@ -636,7 +636,7 @@ public class MessageController {
     public String MessageModernEdit(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         //     String user_id = WebUtils.getValueForSession(request, "user_id");
-        String user_id = request.getSession(false).getAttribute("user_id").toString();
+        String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -815,7 +815,7 @@ public class MessageController {
     public String SmsTemplateAdd(HttpServletRequest request) {
 
         DataBean dataBean = new DataBean();
-        String user_id = WebUtils.getValueForSession(request, "user_id");
+        String user_id = WebUtils.getValueForSession(request, "user_code");
         String corp_code = WebUtils.getValueForSession(request, "corp_code");
         String id = "";
         try {

@@ -112,7 +112,7 @@ public class ValidateCodeController {
     @Transactional
     public String addValidateCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -213,7 +213,7 @@ public class ValidateCodeController {
     @Transactional
     public String editValidateCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -266,7 +266,7 @@ public class ValidateCodeController {
     @Transactional
     public String addByExecl(HttpServletRequest request){
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_id = request.getSession().getAttribute("user_code").toString();
        // String file="F:/报表/Test2.xls";
         try {
 

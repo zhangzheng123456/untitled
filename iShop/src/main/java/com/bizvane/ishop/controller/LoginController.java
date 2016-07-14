@@ -176,14 +176,14 @@ public class LoginController {
             String phone = jsonObject.get("PHONENUMBER").toString();
             System.out.println(phone);
             String msg = userService.getAuthCode(phone, "网页注册");
-            if (msg.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
-            } else {
+            if (msg.equals(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage("fail");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage(msg);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
