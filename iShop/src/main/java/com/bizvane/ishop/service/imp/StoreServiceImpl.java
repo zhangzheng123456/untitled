@@ -48,6 +48,7 @@ public class StoreServiceImpl implements StoreService {
      */
     @Override
     public int deleteStoreUser(String user_id, String store_code) {
+        store_code = Common.STORE_HEAD+store_code+",";
         return storeMapper.deleteStoreByUserid(user_id, store_code);
     }
 

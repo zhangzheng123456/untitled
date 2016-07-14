@@ -37,6 +37,8 @@ public class Common {
 
     public static final SimpleDateFormat DATETIME_FORMAT_DAY_NO = new SimpleDateFormat("yyyyMMdd");
 
+    public static final SimpleDateFormat DATETIME_FORMAT_DAY_NUM = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+
     //时间类型（日）
     public static final String TIME_TYPE_DAY = "D";
     //时间类型（周）

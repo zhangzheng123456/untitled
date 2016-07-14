@@ -335,7 +335,7 @@
     <!--删除店铺下员工-->
     <update id="deleteStoreByUserid">
       update DEF_USER
-      set STORE_CODE=replace(STORE_CODE,CONCAT(#{store_code},','),'') where id=#{user_id}
+      set STORE_CODE=replace(STORE_CODE,#{store_code},'') where id=#{user_id}
     </update>
 
     <!--判断店铺名称是否重复-->

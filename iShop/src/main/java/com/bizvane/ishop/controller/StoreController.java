@@ -491,7 +491,7 @@ public class StoreController {
             String user_id = jsonObject.get("user_id").toString();
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
-                storeService.deleteStoreUser(user_id, store_code);
+                storeService.deleteStoreUser(ids[i], store_code);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

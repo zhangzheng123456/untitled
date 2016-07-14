@@ -6,29 +6,15 @@ package com.bizvane.ishop.entity;
 public class Message {
     private int id;
 
-    //消息标题
-    private String message_title;
-
-    //消息发送方
-    private String message_sender;
-
-    //消息接收人类型
-    private String receiver_type;
-
-    //消息接收方
     private String message_receiver;
 
-    //消息状态
+    //接收人类型
+    private String receiver_type;
+
     private String status;
 
-    //消息内容
-    private String message_content;
-
-    //消息类型
-    private String message_type;
-
-    //企业编号
-    private String corp_code;
+    //消息编号
+    private String message_code;
 
     //修改日期
     private String modified_date;
@@ -45,40 +31,17 @@ public class Message {
     //是否可用
     private String isactive;
 
+    private MessageInfo messageInfo;
+
     private Corp corp;
 
     private MessageType messageType;
-
     public int getId() {
         return id;
     }
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public String getMessage_title() {
-        return message_title;
-    }
-
-    public void setMessage_title(String message_title) {
-        this.message_title = message_title;
-    }
-
-    public String getMessage_sender() {
-        return message_sender;
-    }
-
-    public void setMessage_sender(String message_sender) {
-        this.message_sender = message_sender;
-    }
-
-    public String getReceiver_type() {
-        return receiver_type;
-    }
-
-    public void setReceiver_type(String receiver_type) {
-        this.receiver_type = receiver_type;
     }
 
     public String getMessage_receiver() {
@@ -89,6 +52,14 @@ public class Message {
         this.message_receiver = message_receiver;
     }
 
+    public String getReceiver_type() {
+        return receiver_type;
+    }
+
+    public void setReceiver_type(String receiver_type) {
+        this.receiver_type = receiver_type;
+    }
+
     public String getStatus() {
         return status;
     }
@@ -97,28 +68,12 @@ public class Message {
         this.status = status;
     }
 
-    public String getMessage_content() {
-        return message_content;
+    public String getMessage_code() {
+        return message_code;
     }
 
-    public void setMessage_content(String message_content) {
-        this.message_content = message_content;
-    }
-
-    public String getMessage_type() {
-        return message_type;
-    }
-
-    public void setMessage_type(String message_type) {
-        this.message_type = message_type;
-    }
-
-    public String getCorp_code() {
-        return corp_code;
-    }
-
-    public void setCorp_code(String corp_code) {
-        this.corp_code = corp_code;
+    public void setMessage_code(String message_code) {
+        this.message_code = message_code;
     }
 
     public String getModified_date() {
@@ -159,6 +114,14 @@ public class Message {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public MessageInfo getMessageInfo() {
+        return messageInfo;
+    }
+
+    public void setMessageInfo(MessageInfo messageInfo) {
+        this.messageInfo = messageInfo;
     }
 
     public Corp getCorp() {

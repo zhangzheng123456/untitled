@@ -1,6 +1,8 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.Message;
+import com.bizvane.ishop.entity.MessageInfo;
+import com.bizvane.ishop.entity.MessageType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -12,8 +14,12 @@ public interface MessageMapper {
 
     int deleteByPrimaryKey(Integer id);
 
-    int insert(Message record);
+    int insertMessageInfo(MessageInfo record);
+
+    int insertMessage(Message record);
 
     List<Message> selectAllMessage(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
-   }
+    List<MessageType> selectAllMessageType();
+
+}
