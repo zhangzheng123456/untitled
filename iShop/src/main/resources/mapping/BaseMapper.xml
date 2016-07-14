@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.BaseMapper">
+        <select id="queryMetaList" resultType="Map" statementType="STATEMENT">
+            select * from ${tableName} t where 1=1
+            <foreach item="item" index="index" collection="map" open=" "
+                     separator="and" close=" ">
+                <choose>
+                    <when test="item.fieldType == 'DATE' and item.dateQueryFlag == 0">
+                        ${item.fieldCode} between
+                        to_date('${item.fieldValue}','yyyy-mm-dd
+                        hh24:mi:ss')
+                    </when>
+                    <when test="item.fieldType == 'DATE' and item.dateQueryFlag == 1">
+                        to_date('${item.fieldValue}','yyyy-mm-dd
+                        hh24:mi:ss')
+                    </when>
+                    <when test="item.fieldItemCode != null and item.fieldItemCode != ''">
+                        ${item.fieldCode} =
+                        '${item.fieldItemCode}'
+                    </when>
+                    <otherwise>
+                        ${item.fieldCode} =
+                        '${item.fieldValue}'
+                    </otherwise>
+                </choose>
+            </foreach>
+        </select>
+</mapper>

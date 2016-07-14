@@ -13,6 +13,7 @@ import com.bizvane.ishop.constant.Common;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 /**
@@ -134,6 +135,66 @@ public class WebUtils {
         Matcher isNum = pattern.matcher(orginal);
         return isNum.matches();
     }
+
+
+    public static Map Json2Map(JSONObject json)
+    {
+        if(json == null)
+        {
+            return null;
+        }
+
+        Map result = new HashMap();
+        Object key, value;
+        Iterator keyIterator = json.keys();
+        while(keyIterator.hasNext())
+        {
+            key = keyIterator.next();
+            value = json.get(key.toString());
+
+            if(value instanceof JSONObject)
+            {
+                result.put(key, Json2Map((JSONObject)value));
+            }
+            else if(value instanceof JSONArray)
+            {
+                result.put(key, Json2List((JSONArray)value));
+            }
+            else
+            {
+                result.put(key, value);
+            }
+        }
+
+        return result;
+    }
+    public static List Json2List(JSONArray json)
+    {
+        if(json == null)
+        {
+            return null;
+        }
+
+        List result = new ArrayList();
+        for(int i=0; i<json.length(); i++)
+        {
+            if(json.get(i) instanceof JSONObject)
+            {
+                result.add(Json2Map((JSONObject)json.get(i)));
+            }
+            else if(json.get(i) instanceof JSONArray)
+            {
+                result.add(Json2List((JSONArray)json.get(i)));
+            }
+            else
+            {
+                result.add(json.get(i));
+            }
+        }
+
+        return result;
+    }
+
 
 }
 
