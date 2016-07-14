@@ -19,7 +19,7 @@
             <result column="corp_name" property="corp_name"/>
         </association>
         <!--<association property="templateType" javaType="com.bizvane.ishop.entity.TemplateType">-->
-            <!--<result column="type_name" property="type_name"/>-->
+        <!--<result column="type_name" property="type_name"/>-->
         <!--</association>-->
     </resultMap>
 
@@ -61,6 +61,7 @@
             or dmt.isactive like concat('%',#{search_value},'%')
             or dmt.modified_date like concat('%',#{search_value},'%')
             or dmt.modifier like concat('%',#{search_value},'%')
+            or dc.corp_name like concat('%',#{search_value},'%')
             )
         </if>
         ORDER by dmt.id
@@ -193,8 +194,8 @@
         select * from def_sms_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
     </select>
 
- <!--   <select id="getTypes" resultMap="types">
-        select * from def_template_type
-    </select>
--->
+    <!--   <select id="getTypes" resultMap="types">
+           select * from def_template_type
+       </select>
+   -->
 </mapper>
