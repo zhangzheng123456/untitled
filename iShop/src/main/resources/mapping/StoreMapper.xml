@@ -356,12 +356,7 @@
     <select id="selectAchCount" resultType="java.lang.Integer">
         select count(1) from  DEF_STORE_ACHV_GOAL
         WHERE store_code=#{store_code}
+        AND corp_code = #{corp_code}
     </select>
 
-    <select id="selectUserCount" resultType="java.lang.Integer">
-        select count(*) from def_user
-        where  corp_code=#{corp_code}
-        and
-        store_code like concat('%',#{store_code},'%')
-    </select>
 </mapper>

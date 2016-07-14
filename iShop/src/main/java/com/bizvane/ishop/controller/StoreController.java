@@ -254,15 +254,13 @@ public class StoreController {
                 Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
                 String store_code = store.getStore_code();
                 String corp_code = store.getCorp_code();
-//                List<User> user = storeService.getStoreUser(corp_code, store_code,role_code);
-//                count = user.size();
-                count = storeService.selectUserCount(corp_code, store_code);
-
+                List<User> user = storeService.getStoreUser(corp_code, store_code,role_code);
+                count = user.size();
                 if (count > 0) {
                     msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
                     break;
                 }
-                count = storeService.selectAchCount(store.getStore_code());
+                count = storeService.selectAchCount(corp_code,store.getStore_code());
                 if (count > 0) {
                     msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除！";
                     break;
@@ -279,11 +277,8 @@ public class StoreController {
                 dataBean.setMessage("success");
             }
         } catch (Exception ex) {
-            //	return "Error deleting the user:" + ex.toString();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-
-
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString());
             return dataBean.getJsonStr();
@@ -642,29 +637,28 @@ public class StoreController {
     @ResponseBody
     public String creatStoresQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            logger.info("------------StoreController creatStoresQrcode" + jsString);
+            logger.info("------------UserController creatQrcode" + jsString);
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            String store_codes = jsonObject.get("store_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code);
-            String is_authorize = corp.getIs_authorize();
-            if (corp.getApp_id() != null && corp.getApp_id() != "") {
-                String auth_appid = corp.getApp_id();
-                if (is_authorize.equals("Y")) {
-
-                    String[] stores = store_codes.split(",");
-                    for (int i = 0; i < stores.length; i++) {
-                        String store_code = stores[i];
-                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
+            JSONArray list = JSONArray.parseArray(jsonObject.get("list").toString());
+            for (int i = 0; i < list.size(); i++) {
+                JSONObject json = new JSONObject(list.get(i));
+                String corp_code = json.get("corp_code").toString();
+                String store_code = json.get("store_code").toString();
+                Corp corp = corpService.selectByCorpId(0, corp_code);
+                String is_authorize = corp.getIs_authorize();
+                String corp_name = corp.getCorp_name();
+                if (corp.getApp_id() != null && corp.getApp_id() != "") {
+                    String auth_appid = corp.getApp_id();
+                    if (is_authorize.equals("Y")) {
+                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
                         String result = IshowHttpClient.get(url);
                         logger.info("------------creatQrcode  result" + result);
-
                         JSONObject obj = new JSONObject(result);
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();
@@ -673,19 +667,19 @@ public class StoreController {
                         store.setQrcode_content(qrcode_url);
                         Date now = new Date();
                         store.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        store.setModifier(user_id);
-                        logger.info("------------creatQrcode  update store---");
+                        store.setModifier(user_code);
+                        logger.info("------------creatQrcode  update store");
                         storeService.updateStore(store);
+                        dataBean.setId(id);
+                        dataBean.setMessage("生成完成");
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     }
-                    dataBean.setId(id);
-                    dataBean.setMessage("生成完成");
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    return dataBean.getJsonStr();
                 }
+                dataBean.setId(id);
+                dataBean.setMessage(corp_name+"企业未授权");
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                return dataBean.getJsonStr();
             }
-            dataBean.setId(id);
-            dataBean.setMessage("所属企业未授权！");
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());

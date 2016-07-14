@@ -48,7 +48,7 @@ public interface StoreService {
 
     Store getStoreByName(String corp_code, String store_name) throws SQLException;
 
-    int selectAchCount(String store_code)throws SQLException;
+    int selectAchCount(String corp_code,String store_code)throws SQLException;
 
     int selectCount(String created_date);
 
@@ -58,5 +58,4 @@ public interface StoreService {
 
     String insertExecl(Store store);
 
-    int selectUserCount(String corp_code, String store_code);
 }
