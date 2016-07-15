@@ -66,9 +66,8 @@
             OR db.brand_name like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY g.id
+        ORDER BY g.id DESC
     </select>
-
 
     <select id="selectByPrimaryKey" resultMap="GoodsInfo">
         select
@@ -94,7 +93,6 @@
         WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
         and g.id=#{id}
     </select>
-
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Goods">
         insert into DEF_GOODS

@@ -20,7 +20,7 @@ public interface MessageService {
 
     int delete(int id) throws SQLException;
 
-    PageInfo<Message> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<Message> selectBySearch(int page_number, int page_size, String corp_code,String user_code, String search_value) throws SQLException;
 
     List<MessageType> selectAllMessageType() throws SQLException;
 }

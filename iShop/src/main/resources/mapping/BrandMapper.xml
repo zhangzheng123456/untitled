@@ -65,7 +65,7 @@
             OR DEF_BRAND.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY brand_code
+        ORDER BY DEF_BRAND.id DESC
     </select>
 
     <select id="selectBrands" resultType="com.bizvane.ishop.entity.Brand">
@@ -73,7 +73,7 @@
         from DEF_BRAND
         where CORP_CODE = #{corp_code}
         and isactive = 'Y'
-        ORDER BY brand_code
+        ORDER BY DEF_BRAND.id DESC
     </select>
 
     <delete id="deleteByBrandId">
@@ -168,6 +168,7 @@
         </trim>
         WHERE ID=#{id};
     </update>
+
     <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
         select * from  DEF_BRAND
         WHERE  corp_code=#{corp_code} and brand_name=#{brand_name}

@@ -311,7 +311,7 @@ public class StoreController {
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage(e.getMessage() + e.toString());
+            bean.setMessage("店铺信息异常");
             logger.info(e.getMessage() + e.toString());
         }
         logger.info("info-----" + bean.getJsonStr());
@@ -647,7 +647,7 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             JSONArray list = JSONArray.parseArray(jsonObject.get("list").toString());
             for (int i = 0; i < list.size(); i++) {
-                JSONObject json = new JSONObject(list.get(i));
+                JSONObject json = new JSONObject(list.get(i).toString());
                 String corp_code = json.get("corp_code").toString();
                 String store_code = json.get("store_code").toString();
                 Corp corp = corpService.selectByCorpId(0, corp_code);
@@ -656,7 +656,7 @@ public class StoreController {
                 if (corp.getApp_id() != null && corp.getApp_id() != "") {
                     String auth_appid = corp.getApp_id();
                     if (is_authorize.equals("Y")) {
-                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
+                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
                         String result = IshowHttpClient.get(url);
                         logger.info("------------creatQrcode  result" + result);
                         JSONObject obj = new JSONObject(result);

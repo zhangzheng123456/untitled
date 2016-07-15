@@ -64,7 +64,7 @@
             OR DEF_AREA.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY area_code
+        ORDER BY DEF_AREA.id DESC
     </select>
 
     <select id="selectAreas" resultType="com.bizvane.ishop.entity.Area">
@@ -72,6 +72,7 @@
         from DEF_AREA
         where CORP_CODE = #{corp_code}
         AND ISACTIVE = 'Y'
+        ORDER BY DEF_AREA.id DESC
     </select>
 
     <delete id="deleteByAreaId">
@@ -136,7 +137,6 @@
         </trim>
     </insert>
 
-
     <update id="updateArea" parameterType="com.bizvane.ishop.entity.Area">
         UPDATE DEF_AREA
         <trim prefix="SET" suffixOverrides=",">
@@ -169,11 +169,11 @@
 
 
     </update>
+
     <select id="selectArea_Name" resultType="com.bizvane.ishop.entity.Area">
         select * from DEF_AREA
         WHERE corp_code=#{corp_code} and area_name=#{area_name}
     </select>
-
 
     <select id="getAreaByCorp" resultMap="Area">
         select * from DEF_AREA

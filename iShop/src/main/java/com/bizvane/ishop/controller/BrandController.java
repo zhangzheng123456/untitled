@@ -262,7 +262,7 @@ public class BrandController {
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage(e.getMessage());
+            bean.setMessage("品牌信息异常");
         }
         logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();

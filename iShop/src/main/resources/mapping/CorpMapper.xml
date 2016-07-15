@@ -33,7 +33,6 @@
         </if>
     </select>
 
-
     <select id="selectAllCorp" resultMap="CorpInfo">
         select *
         from DEF_CORP
@@ -51,7 +50,7 @@
             OR isactive like concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY corp_code
+        ORDER BY id DESC
     </select>
 
     <select id="getAreaCount" resultType="int">
@@ -62,7 +61,7 @@
     select *
     from DEF_CORP
     where isactive = 'Y'
-    ORDER BY corp_code
+    ORDER BY id DESC
     </select>
 
     <select id="selectMaxCorpCode" resultType="java.lang.String">
@@ -230,15 +229,10 @@
     <select id="getGroupCount" resultType="java.lang.Integer">
         select count(*) from DEF_GROUP WHERE corp_code=#{corp_code}
     </select>
-    <select id="getMessageTypeCount" resultType="java.lang.Integer">
-        select count(*) from DEF_MESSAGE_TYPE WHERE corp_code=#{corp_code}
-    </select>
 
     <select id="selectByAppUserName" resultType="com.bizvane.ishop.entity.Corp">
        SELECT * FROM DEF_CORP
         WHERE APP_USER_NAME = #{app_user_name}
     </select>
-
-
 
 </mapper>

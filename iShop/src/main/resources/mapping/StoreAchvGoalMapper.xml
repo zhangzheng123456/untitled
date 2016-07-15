@@ -42,17 +42,15 @@
         DEF_STORE_ACHV_GOAL sa,
         DEF_CORP c,
         DEF_STORE st
-        WHERE
-        sa.corp_code=c.corp_code
-      AND  st.STORE_CODE =sa.STORE_CODE
+        WHERE sa.corp_code=c.corp_code
+        AND  st.STORE_CODE =sa.STORE_CODE
         <if test="corp_code!=null and corp_code!=''">
-            AND
-            c.corp_code=#{corp_code}
+            AND c.corp_code=#{corp_code}
         </if>
         <if test="area_codes !=null and area_codes!=''">
             AND st.AREA_CODE IN
             <foreach item="item" index="index" collection="area_codes" open="(" separator="," close=")">
-            #{item}
+              #{item}
             </foreach>
         </if>
         <if test="store_codes !=null and store_codes !=''">
@@ -73,7 +71,7 @@
             OR sa.target_time like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY sa.ID
+        ORDER BY sa.ID DESC
     </select>
 
     <insert id="insert">

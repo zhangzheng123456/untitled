@@ -587,14 +587,13 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String user_id = jsonObject.get("id").toString();
             data = JSON.toJSONString(userService.getUserById(Integer.parseInt(user_id)));
-            System.out.println(data.toString());
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage(e.getMessage() + e.toString());
+            bean.setMessage("用户信息异常");
             logger.info(e.getMessage() + e.toString());
         }
         logger.info("info-----" + bean.getJsonStr());
@@ -1034,7 +1033,7 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             JSONArray list = JSONArray.parseArray(jsonObject.get("list").toString());
             for (int i = 0; i < list.size(); i++) {
-                JSONObject json = new JSONObject(list.get(i));
+                JSONObject json = new JSONObject(list.get(i).toString());
                 String corp_code = json.get("corp_code").toString();
                 String user_code = json.get("user_code").toString();
                 Corp corp = corpService.selectByCorpId(0, corp_code);

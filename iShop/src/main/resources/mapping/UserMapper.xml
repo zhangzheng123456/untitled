@@ -96,7 +96,7 @@
             OR DEF_USER.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY user_code
+        ORDER BY DEF_USER.id DESC
     </select>
 
     <!--获取店长区经下员工-->
@@ -127,7 +127,7 @@
             OR DEF_USER.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY user_code
+        ORDER BY DEF_USER.id DESC
     </select>
 
 
@@ -223,7 +223,7 @@
         AND DEF_USER.CORP_CODE = #{corp_code}
         AND DEF_USER.store_code regexp #{search_value}
         AND DEF_GROUP.role_code &lt; #{role_code}
-
+        ORDER BY DEF_USER.id DESC
     </select>
 
     <select id="selectGroupUser" resultMap="UserInfo">
@@ -256,7 +256,7 @@
         <if test="group_code != null and group_code !=''">
             AND DEF_USER.group_code = #{group_code}
         </if>
-        ORDER BY DEF_USER.ID
+        ORDER BY DEF_USER.ID DESC
     </select>
 
     <delete id="deleteByUserId">

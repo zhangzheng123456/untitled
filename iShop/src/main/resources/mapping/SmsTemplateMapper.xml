@@ -64,7 +64,7 @@
             or dc.corp_name like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER by dmt.id
+        ORDER by dmt.id DESC
 
     </select>
 

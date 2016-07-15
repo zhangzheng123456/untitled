@@ -154,7 +154,7 @@
             or dc.corp_name like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY dvc.id
+        ORDER BY dvc.id DESC
     </select>
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipRecord">

@@ -90,13 +90,14 @@
             OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY STORE_CODE
+        ORDER BY DEF_STORE.id DESC
     </select>
 
     <select id="selectStores" resultType="com.bizvane.ishop.entity.Store">
         SELECT * FROM DEF_STORE
         where CORP_CODE = #{corp_code}
         AND isactive = 'Y'
+        ORDER BY id DESC
     </select>
 
     <select id="selectByAreaCode" resultMap="Store">
@@ -135,9 +136,8 @@
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
         </if>
-        ORDER BY STORE_CODE
+        ORDER BY DEF_STORE.id DESC
     </select>
-
 
     <select id="selectByUserId" resultMap="Store">
         select
