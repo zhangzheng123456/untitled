@@ -223,6 +223,7 @@
         AND DEF_USER.CORP_CODE = #{corp_code}
         AND DEF_USER.store_code regexp #{search_value}
         AND DEF_GROUP.role_code &lt; #{role_code}
+        OR DEF_USER.id = #{user_id}
         ORDER BY DEF_USER.id DESC
     </select>
 

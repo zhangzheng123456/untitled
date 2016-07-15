@@ -190,14 +190,14 @@ public class BrandController {
                 String corp_code = brand.getCorp_code();
                 logger.info("-------------获取企业店铺之前---" + corp_code);
                 int count = 0;
-                count = brandService.getGoodsCount(brand_code);
+                count = brandService.getGoodsCount(corp_code, brand_code);
                 if (count > 0) {
-                    msg = "有使用品牌" + brand_code + "的商品，请现行处理！";
+                    msg = "有使用品牌" + brand_code + "的商品，请先行处理！";
                     break;
                 }
-                count = brandService.getStoresCount(brand_code);
+                count = brandService.getStoresCount(corp_code, brand_code);
                 if (count > 0) {
-                    msg = "有使用品牌" + brand_code + "的店铺，请现行处理！";
+                    msg = "有使用品牌" + brand_code + "的店铺，请先行处理！";
                     break;
                 }
                 brandService.delete(Integer.valueOf(ids[i]));
@@ -467,13 +467,13 @@ public class BrandController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            Pattern pattern=Pattern.compile("B\\d{4}");
+            Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column = rs.getColumn(0);
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
-                if(matcher.matches()==false){
-                    result ="第"+(i+1)+"列品牌编号格式不对";
-                    int b=5/0;
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "列品牌编号格式不对";
+                    int b = 5 / 0;
                     break;
                 }
                 Brand brand = brandService.getBrandByCode(corp_code, column[i].getContents().toString());
