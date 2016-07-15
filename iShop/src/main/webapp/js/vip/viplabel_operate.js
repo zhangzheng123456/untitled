@@ -199,7 +199,7 @@ jQuery(document).ready(function(){
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
-	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
 });

@@ -106,6 +106,7 @@ var message=JSON.parse(val.message);
 
 					}
 				};
+				whir.loading.add("",0.5);
 				var _params={"corp_code":CORPID,"app_id":WXID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -168,17 +169,12 @@ var message=JSON.parse(val.message);
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				// art.dialog({
-				// 	time: 1,
-				// 	lock:true,
-				// 	cancel: false,
-				// 	content: data.message
-				// });
 				if(message.user_type=="admin"){
 					$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
 				}else{
 					$(window.parent.document).find('#iframepage').attr("src","/corp/corp_user.html");
 				}
+				whir.loading.remove();//移除加载框
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
