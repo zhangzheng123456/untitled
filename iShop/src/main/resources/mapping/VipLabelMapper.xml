@@ -169,7 +169,31 @@
         </if>
         ORDER BY vt.id DESC
     </select>
-
+    <select id="selectAllVipLabelScreen" resultMap="VipLabels">
+        SELECT
+        vt.id,
+        vt.label_name,
+        vt.label_type,
+        vt.corp_code,
+        vt.modified_date,
+        vt.modifier,
+        vt.created_date,
+        vt.creater,
+        vt.isactive,
+        cc.corp_name
+        FROM
+        DEF_VIPLABEL vt,DEF_CORP cc
+        WHERE
+        vt.corp_code=cc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            and vt.corp_code=#{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+        </foreach>
+        ORDER BY vt.id DESC
+    </select>
 
     <select id="selectVipLabelName" resultType="com.bizvane.ishop.entity.VipLabel">
         select * from DEF_VIPLABEL

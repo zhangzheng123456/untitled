@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GoodsMapper;
 import com.bizvane.ishop.entity.Goods;
+import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.GoodsService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -12,9 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by lixiang on 2016/5/30.
@@ -70,6 +69,18 @@ public class GoodsServiceImpl implements GoodsService {
             Transter(list.get(i));
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        params.put("corp_code",corp_code);
+        List<Goods> labels;
+        PageHelper.startPage(page_number, page_size);
+        labels = goodsMapper.selectAllGoodsScreen(params);
+        PageInfo<Goods> page = new PageInfo<Goods>(labels);
         return page;
     }
 

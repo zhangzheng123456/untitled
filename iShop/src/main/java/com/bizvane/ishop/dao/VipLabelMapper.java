@@ -1,10 +1,12 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.entity.VipLabel;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/12.
@@ -22,6 +24,8 @@ public interface VipLabelMapper {
     int updateByPrimaryKey(VipLabel record);
 
     List<VipLabel> selectAllVipLabel(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
+
+    List<VipLabel> selectAllViplabelScreen(Map<String,Object> map);
 
     VipLabel selectVipLabelName(@Param("corp_code") String corp_code, @Param("label_name") String tag_name);
 

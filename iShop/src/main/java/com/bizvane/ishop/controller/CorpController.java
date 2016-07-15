@@ -409,7 +409,7 @@ public class CorpController {
     /***
      * 查出要导出的列
      */
-    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
     public String selAllByCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {

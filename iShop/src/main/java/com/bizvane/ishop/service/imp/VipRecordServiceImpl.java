@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.VipRecordMapper;
+import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.entity.VipRecord;
 import com.bizvane.ishop.service.VipRecordService;
 import com.github.pagehelper.PageHelper;
@@ -9,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/13.
@@ -22,6 +25,18 @@ public class VipRecordServiceImpl implements VipRecordService {
     @Autowired
     private VipRecordMapper VipRecordMapper;
 
+
+    @Override
+    public PageInfo<VipRecord> selectAllVipRecordScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        params.put("corp_code",corp_code);
+        List<VipRecord> records;
+        PageHelper.startPage(page_number, page_size);
+        records = this.VipRecordMapper.selectAllVipRecordScreen(params);
+        PageInfo<VipRecord> page = new PageInfo<VipRecord>(records);
+        return page;
+    }
 
     @Override
     public VipRecord getVipRecord(int id) throws SQLException {

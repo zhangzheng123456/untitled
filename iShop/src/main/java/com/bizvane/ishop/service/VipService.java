@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.VIPInfo;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/12.
@@ -61,6 +62,7 @@ public interface VipService {
      * @return
      */
     PageInfo<VIPInfo> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+
 
     /**
      * 判断VIP用户编号是否存在

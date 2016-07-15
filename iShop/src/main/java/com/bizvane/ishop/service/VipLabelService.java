@@ -1,9 +1,11 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipLabel;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/13.
@@ -57,6 +59,8 @@ public interface VipLabelService {
      * @return
      */
     PageInfo<VipLabel> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+
+    PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String,String> map);
 
     /**
      * 判断VIP标签名称是否公司内唯一

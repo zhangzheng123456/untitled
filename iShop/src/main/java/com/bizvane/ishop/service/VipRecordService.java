@@ -5,6 +5,7 @@ import com.bizvane.ishop.entity.VipRecord;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/13.
@@ -54,6 +55,8 @@ public interface VipRecordService {
      * @return
      */
     PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+
+    PageInfo<VipRecord> selectAllVipRecordScreen(int page_number, int page_size, String corp_code, Map<String,String> map);
 
 
 }

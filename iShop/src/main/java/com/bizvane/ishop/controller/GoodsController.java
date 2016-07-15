@@ -102,7 +102,7 @@ public class GoodsController {
     /***
      * 查出要导出的列
      */
-    @RequestMapping(value = "getCols", method = RequestMethod.POST)
+    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
     public String selAllByCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
@@ -197,6 +197,57 @@ public class GoodsController {
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+                String goods_image = list.getList().get(i).getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+                }
+            }
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * 商品管理
+     * 商品筛选
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/fab/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectByScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            String screen = jsonObject.get("screen").toString();
+            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String,String> map = WebUtils.Json2Map(jsonScreen);
+            PageInfo<Goods> list = null;
+            if (role_code.contains(Common.ROLE_SYS)) {
+                list = goodsService.selectAllGoodsScreen(page_number, page_size, "", map);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map);
             }
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
                 String goods_image = list.getList().get(i).getGoods_image();

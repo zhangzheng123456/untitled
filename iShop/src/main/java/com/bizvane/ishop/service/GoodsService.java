@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.Goods;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.Map;
 
 /**
  * Created by nanji on 2016/5/30.
@@ -50,6 +51,8 @@ public interface GoodsService {
      * @return
      */
     PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+
+    PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map);
 
     /**
      * 通过商品编号，获取商品信息

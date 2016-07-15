@@ -31,6 +31,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -772,6 +773,48 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 会员标签管理
+     * 筛选
+     */
+    @RequestMapping(value = "/label/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectAllVipScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_Number = jsonObject.getInt("pageNumber");
+            int page_Size = jsonObject.getInt("pageSize");
+            String screen = jsonObject.get("screen").toString();
+            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
+            Map<String,String> map = WebUtils.Json2Map(jsonScreen);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VipLabel> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = this.vipLabelService.selectAllVipScreen(page_Number, page_Size, "", map);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = this.vipLabelService.selectAllVipScreen(page_Number, page_Size, corp_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 //
 //    /**
 //     * 会员标签类型管理
@@ -1176,6 +1219,47 @@ public class VIPController {
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = vipRecordService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 回访记录管理
+     * 筛选
+     */
+    @RequestMapping(value = "/callback/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String findCallBackScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonobj = new org.json.JSONObject(jsString);
+            String message = jsonobj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String screen = jsonObject.get("screen").toString();
+            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
+            Map<String,String> map = WebUtils.Json2Map(jsonScreen);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<VipRecord> list = null;
+            if (role_code.contains(Common.ROLE_SYS)) {
+                list = vipRecordService.selectAllVipRecordScreen(page_number, page_size, "", map);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = vipRecordService.selectAllVipRecordScreen(page_number, page_size, corp_code, map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
