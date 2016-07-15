@@ -12,7 +12,7 @@ public interface GroupMapper {
 
     List<Group> selectAllGroup(@Param("corp_code")String corp_code, @Param("role_code")String role_code, @Param("search_value")String search_value);
 
-    List<Group> selectAllGroupScreen(@Param("corp_code")String corp_code, @Param("role_code")String role_code, Map<String,String> map);
+    List<Group> selectAllGroupScreen(Map<String,Object> map);
 
 
     Group selectByCode(@Param("corp_code")String corp_code,@Param("group_code")String group_code,@Param("isactive")String isactive);

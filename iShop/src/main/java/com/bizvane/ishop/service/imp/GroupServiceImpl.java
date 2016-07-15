@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -52,9 +53,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String, String> map) throws SQLException {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
-        groups = groupMapper.selectAllGroupScreen(corp_code, role_code, map);
+        groups = groupMapper.selectAllGroupScreen(params);
         PageInfo<Group> page = new PageInfo<Group>(groups);
         return page;
     }

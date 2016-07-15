@@ -1,9 +1,6 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.Appversion;
-import com.bizvane.ishop.entity.Feedback;
-import com.bizvane.ishop.entity.Interfacers;
-import com.bizvane.ishop.entity.ValidateCode;
+import com.bizvane.ishop.entity.*;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -13,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 
+import java.lang.System;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -31,7 +29,8 @@ public class TestFeedbackService {
     private InterfaceService interfaceService = null;
     @Autowired
     private ValidateCodeService validateCodeService = null;
-
+    @Autowired
+    private GroupService groupService=null;
     //成功
     @Test
     public void testselectAllFeedback() {
@@ -288,7 +287,18 @@ public class TestFeedbackService {
 
 
     @Test
-    public void TestlistTolist() {
+    public void Screen() throws SQLException {
+        try {
+            Map<String,String> map=new HashMap<String, String>();
+            map.put("corp_name","Y");
+            PageInfo<Group> allGroupScreen = groupService.getAllGroupScreen(1, 10, "", "", map);
+            List<Group> list = allGroupScreen.getList();
+            for (Group g : list) {
+                System.out.println(g.getGroup_name()+"--"+g.getCorp().getCorp_name());
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 

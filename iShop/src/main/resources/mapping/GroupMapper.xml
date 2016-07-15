@@ -101,7 +101,7 @@
     </select>
 
 
-    <select id="selectAllGroupScreen" resultMap="GroupInfo">
+    <select id="selectAllGroupScreen" resultMap="GroupInfo" >
         select
         DEF_GROUP.id,
         DEF_GROUP.group_code,
@@ -126,9 +126,10 @@
             AND DEF_GROUP.role_code &lt; #{role_code}
         </if>
         AND
-        <foreach collection="map" index="key" item="item" open="" separator="and" close="">
-            #{key}  LIKE concat('%',#{item},'%')
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            ${entryKey}  LIKE concat('%', #{entryValue},'%')
         </foreach>
+
         ORDER BY DEF_GROUP.ID
     </select>
 
