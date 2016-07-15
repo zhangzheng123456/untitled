@@ -262,204 +262,6 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-//
-//    /**
-//     * 会员列表
-//     */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String VIPManage(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String role_code = request.getSession(false).getAttribute("role_code").toString();
-//            String group_code = request.getSession(false).getAttribute("group_code").toString();
-//            String user_code = request.getSession().getAttribute("user_code").toString();
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//
-//            String function_code = request.getParameter("funcCode");
-//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-//            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
-//
-//            JSONObject result = new JSONObject();
-//            PageInfo<VIPInfo> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = vipService.selectBySearch(page_number, page_size, "", "");
-//            } else {
-//                list = vipService.selectBySearch(page_number, page_size, corp_code, "");
-//            }
-//            result.put("list", list);
-//            result.put("actions", actions);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId("1");
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-//
-//    /**
-//     * 会员列表
-//     * 新增
-//     */
-//    @RequestMapping(value = "/add", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String addVIP(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        String user_id = request.getSession(false).getAttribute("user_code").toString();
-//        try {
-//            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.getString("id");
-//            //  String message = jsonObj.getString("message");
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
-//            Date now = new Date();
-//            //      vipInfo.setRegister_time(Common.DATETIME_FORMAT.format(now));
-//            vipInfo.setModified_date(Common.DATETIME_FORMAT.format(now));
-//            vipInfo.setModifier(user_id);
-//            vipInfo.setCreated_date(Common.DATETIME_FORMAT.format(now));
-//            vipInfo.setCreater(user_id);
-//
-//            String existInfo1 = vipService.vipCodeExist(vipInfo.getVip_code(), vipInfo.getCorp_code());
-//            String existInfo2 = vipService.vipNameExist(vipInfo.getVip_name(), vipInfo.getCorp_code());
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-//                dataBean.setMessage("VIP 用户编号已经存在！！！");
-//            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-//                dataBean.setMessage("VIP 用户名称已经存在！！！");
-//            } else {
-//                vipService.insert(vipInfo);
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setMessage("add success!!!");
-//            }
-//
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-//
-//    /**
-//     * 会员列表
-//     * 编辑
-//     */
-//    @RequestMapping(value = "/edit", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String editVIP(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String user_id = request.getSession(false).getAttribute("user_code").toString();
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.getString("id");
-//            String message = jsonObj.getString("message");
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            VIPInfo vipInfo = WebUtils.JSON2Bean(jsonObject, VIPInfo.class);
-//            vipInfo.setModifier(user_id);
-//            vipInfo.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
-//            String result = vipService.update(vipInfo);
-//            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-//                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setMessage("商品更改成功！！");
-//            } else {
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage(result);
-//            }
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage("edit error !!! ");
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-//
-//    /**
-//     * 编辑前获取数据
-//     *
-//     * @param request
-//     * @return
-//     */
-//    @RequestMapping(value = "/select", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String findVipById(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String data = null;
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.getString("id");
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            int vip_id = Integer.parseInt(jsonObject.getString("id"));
-//            VIPInfo vipInfo = vipService.getVipInfoById(vip_id);
-//            data = JSON.toJSONString(vipInfo);
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(data);
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setMessage(ex.getMessage());
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-//
-//
-//    /**
-//     * 会员列表
-//     * 查找
-//     */
-//    @RequestMapping(value = "/find", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String findVIP(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.getString("id");
-//            String message = jsonObj.getString("message");
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            int page_Number = jsonObject.getInt("pageNumber");
-//            int page_Size = jsonObject.getInt("pageSize");
-//            String search_value = jsonObject.getString("search_value").toString();
-//            String role_code = jsonObject.getString("role_code");
-//            org.json.JSONObject result = new org.json.JSONObject();
-//            PageInfo<VIPInfo> list;
-//            if (role_code.equals(Common.ROLE_SYS)) {
-//                list = vipService.selectBySearch(page_Number, page_Size, "", search_value);
-//            } else {
-//                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-//                list = vipService.selectBySearch(page_Number, page_Size, corp_code, search_value);
-//            }
-//            result.put("list", JSON.toJSONString(list));
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setId(id);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//            log.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
-
 
     /**
      * 会员标签管理
@@ -682,6 +484,8 @@ public class VIPController {
     public String editVIPLabel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
+        String role_code = request.getSession(false).getAttribute("role_code").toString();
+
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -690,22 +494,29 @@ public class VIPController {
             String message = jsonobj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipLabel vipLabel = WebUtils.JSON2Bean(jsonObject, VipLabel.class);
-            Date now = new Date();
-            vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
-            vipLabel.setModifier(user_id);
-
-            String result = vipLabelService.update(vipLabel);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("商品更改成功！！");
-            } else {
+            int label_id = vipLabel.getId();
+            String label_type = vipLabelService.getVipLabelById(label_id).getLabel_type();
+            if (!role_code.equals(Common.ROLE_SYS) && label_type.equals(Common.VIP_LABEL_TYPE_SYS)){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage(result);
+                dataBean.setMessage("对不起，您不可以修改系统标签");
+            }else {
+                Date now = new Date();
+                vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
+                vipLabel.setModifier(user_id);
+
+                String result = vipLabelService.update(vipLabel);
+                if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setMessage("更改成功");
+                } else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setMessage(result);
+                }
             }
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("edit error !!! ");
+            dataBean.setMessage("会员标签更新失败");
             log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
