@@ -184,6 +184,7 @@ jQuery(document).ready(function(){
 		var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 		key_val=JSON.parse(key_val);
 		var funcCode=key_val.func_code;
+		whir.loading.add("",0.5);
 		$.get("/detail?funcCode="+funcCode+"", function(data){
 			var data=JSON.parse(data);
 			if(data.code=="0"){
@@ -228,6 +229,7 @@ jQuery(document).ready(function(){
 					content: data.message
 				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	}else{
 		getcorplist();

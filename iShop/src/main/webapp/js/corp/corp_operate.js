@@ -157,6 +157,7 @@ var message=JSON.parse(val.message);
 					}
 				};
 				var _params={"id":ID,"avater":HEADPORTRAIT,"corp_code":CORPID,"app_id":WXID,"corp_name":CORPNAME,"address":CORPADDRESS,"contact":CONTACTS,"phone":PHONE,"isactive":ISACTIVE};
+				whir.loading.add("",0.5);
 				corpjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
