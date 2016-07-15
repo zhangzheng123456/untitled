@@ -22,7 +22,7 @@ public interface BrandMapper {
 
     Brand selectByBrandName(@Param("corp_code") String corp_code, @Param("brand_name") String brand_name);
 
-    int getGoodsCount(@Param("brand_code") String brand_code);
+    int getGoodsCount(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code);
 
-    int getStoresCount(@Param("brand_code") String brand_code);
+    int getStoresCount(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code);
 }

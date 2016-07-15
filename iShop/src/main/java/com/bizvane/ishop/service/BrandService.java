@@ -31,7 +31,7 @@ public interface BrandService {
 
     String insertExecl(Brand brand) throws SQLException;
 
-    int getGoodsCount(String brand_code) throws SQLException;
+    int getGoodsCount(String corp_code, String brand_code) throws SQLException;
 
-    int getStoresCount(String brand_code) throws SQLException;
+    int getStoresCount(String corp_code, String brand_code) throws SQLException;
 }

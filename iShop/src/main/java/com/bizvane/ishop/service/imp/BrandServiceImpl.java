@@ -100,13 +100,13 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public int getGoodsCount(String brand_code) throws SQLException {
-        return brandMapper.getGoodsCount(brand_code);
+    public int getGoodsCount(String corp_code, String brand_code) throws SQLException {
+        return brandMapper.getGoodsCount(corp_code, brand_code);
     }
 
     @Override
-    public int getStoresCount(String brand_code) throws SQLException {
-        return brandMapper.getStoresCount(brand_code);
+    public int getStoresCount(String corp_code, String brand_code) throws SQLException {
+        return brandMapper.getStoresCount(corp_code, brand_code);
     }
 
     @Override
