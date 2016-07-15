@@ -189,6 +189,7 @@
         from
         DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c,DEF_USER u
         WHERE ua.store_code=s.store_code
+        AND ua.corp_code = u.corp_code
         AND ua.corp_code = c.corp_code
         AND c.corp_code = s.corp_code
         AND ua.user_code = u.user_code
@@ -233,9 +234,10 @@
         DEF_CORP c,
         DEF_USER u,DEF_GROUP g
         WHERE ua.store_code=s.store_code
+        AND ua.user_code = u.user_code
+        AND ua.corp_code = u.corp_code
         AND ua.corp_code = c.corp_code
         AND c.corp_code = s.corp_code
-        AND ua.user_code = u.user_code
         AND u.group_code = g.group_code
         AND ua.corp_code=#{corp_code}
         AND g.role_code &lt; #{role_code}

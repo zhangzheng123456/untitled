@@ -59,17 +59,19 @@ public class StoreServiceImpl implements StoreService {
         Store store = storeMapper.selectByStoreId(id);
         String corp_code = store.getCorp_code();
         String brand_name = "";
-        System.out.println(store.getBrand_code());
-        String[] ids = store.getBrand_code().split(",");
-        for (int i = 0; i < ids.length; i++) {
-            Brand brand = brandMapper.selectCorpBrand(corp_code, ids[i]);
-            String brand_name1 = brand.getBrand_name();
-            brand_name = brand_name + brand_name1;
-            if (i != ids.length - 1) {
-                brand_name = brand_name + ",";
+        String brand_code = store.getBrand_code();
+        if (brand_code != null && !brand_code.equals("") ) {
+            String[] ids = store.getBrand_code().split(",");
+            for (int i = 0; i < ids.length; i++) {
+                Brand brand = brandMapper.selectCorpBrand(corp_code, ids[i]);
+                String brand_name1 = brand.getBrand_name();
+                brand_name = brand_name + brand_name1;
+                if (i != ids.length - 1) {
+                    brand_name = brand_name + ",";
+                }
             }
+            store.setBrand_name(brand_name);
         }
-        store.setBrand_name(brand_name);
         return store;
     }
 
