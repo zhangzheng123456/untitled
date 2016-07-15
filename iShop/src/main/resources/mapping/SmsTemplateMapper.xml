@@ -55,13 +55,13 @@
         <if test="search_value!=null and search_value!=''">
             AND
             (
-            dmt.template_name like concat('%',#{search_value},'%')
+            dmt.template_code like concat('%',#{search_value},'%')
+            or dmt.template_name like concat('%',#{search_value},'%')
             or dmt.template_content like concat('%',#{search_value},'%')
-            or dmt.template_type like concat('%',#{search_value},'%')
-            or dmt.isactive like concat('%',#{search_value},'%')
-            or dmt.modified_date like concat('%',#{search_value},'%')
-            or dmt.modifier like concat('%',#{search_value},'%')
             or dc.corp_name like concat('%',#{search_value},'%')
+            or dmt.modifier like concat('%',#{search_value},'%')
+            or dmt.modified_date like concat('%',#{search_value},'%')
+            or dmt.isactive like concat('%',#{search_value},'%')
             )
         </if>
         ORDER by dmt.id
