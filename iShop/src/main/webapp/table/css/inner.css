@@ -651,3 +651,28 @@ input::-webkit-input-placeholder{
 .color{
 	color:red;
 }
+/*********导入和导出按钮样式****************/
+#more{
+	position: relative;
+}
+#more:hover .more_down{
+	display: block;
+}
+.more_down{
+	position: absolute;
+	top:30px;
+	left: 0;
+	display: none;
+	text-align: center;
+	border: 1px solid #a9c9e2;
+	width:80px;
+}
+.more_down div{
+	width:80px;
+	height: 30px;
+	background-color:#ddd; 
+}
+.more_down div:hover{
+	background: #6cc1c8;
+    color: #ffffff;
+}

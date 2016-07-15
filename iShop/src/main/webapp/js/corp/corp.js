@@ -451,3 +451,11 @@ function clearAll(name){
             }
         }
 };
+//导出
+$("#leading_out").click(function(){
+    var param={};
+    param["function_code"]=funcCode;
+    oc.postRequire("post","/corp/getCols","0",param,function(data){
+        console.log(data);
+    })
+})
