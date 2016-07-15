@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/6/6.
@@ -23,6 +24,7 @@ public interface GroupService {
 
     PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException;
 
+    PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String,String> map) throws SQLException;
     String selectMaxCode();
 
     String insertGroup(Group group) throws SQLException;

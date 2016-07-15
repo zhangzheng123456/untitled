@@ -8,6 +8,7 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -32,7 +33,9 @@ import java.lang.System;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -341,7 +344,49 @@ public class GroupController {
         }
         return dataBean.getJsonStr();
     }
-
+    /**
+     * 页面筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String Screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String screen = jsonObject.get("screen").toString();
+            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String,String> map = WebUtils.Json2Map(jsonScreen);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<Group> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = groupService.getAllGroupScreen(page_number, page_size, "", "", map);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                String corp_code = request.getSession().getAttribute("corp_code").toString();
+                list = groupService.getAllGroupScreen(page_number, page_size, corp_code, "",map);
+            } else {
+                String corp_code = request.getSession().getAttribute("corp_code").toString();
+                list = groupService.getAllGroupScreen(page_number, page_size, corp_code, role_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 群组管理之
      * 角色选择

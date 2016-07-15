@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/6/6.
@@ -45,6 +46,15 @@ public class GroupServiceImpl implements GroupService {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
         groups = groupMapper.selectAllGroup(corp_code, role_code, search_value);
+        PageInfo<Group> page = new PageInfo<Group>(groups);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String, String> map) throws SQLException {
+        List<Group> groups;
+        PageHelper.startPage(page_number, page_size);
+        groups = groupMapper.selectAllGroupScreen(corp_code, role_code, map);
         PageInfo<Group> page = new PageInfo<Group>(groups);
         return page;
     }
