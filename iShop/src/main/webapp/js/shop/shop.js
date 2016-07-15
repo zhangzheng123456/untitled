@@ -201,9 +201,10 @@ jQuery(document).ready(function(){
 			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
-				var action=message.actions[0].act_name;
-				if(action==""){
-					$(".corpedit_oper_btn li:eq(0)").remove();
+				var action=message.actions;
+				console.log(action.length);
+				if(action.length==0){
+					$("#edit_save").remove();
 				}
 			}
 		});

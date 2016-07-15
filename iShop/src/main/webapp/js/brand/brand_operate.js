@@ -189,9 +189,9 @@ jQuery(document).ready(function(){
 			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
-				var action=message.actions[0].act_name;
-				if(action==""){
-					$(".corpedit_oper_btn li:eq(0)").remove();
+				var action=message.actions;
+				if(action.length<=0){
+					$("#edit_save").remove();
 				}
 			}
 		});
@@ -278,7 +278,6 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
 	$("#edit_close").click(function(){
-		sessionStorage.removeItem("edit");//点击关闭按钮移除标志
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
 });

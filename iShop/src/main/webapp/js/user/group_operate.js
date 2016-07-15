@@ -168,8 +168,8 @@ jQuery(document).ready(function(){
 			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
-				var action=message.actions[0].act_name;
-				if(action==""){
+				var action=message.actions;
+				if(action.length<=0){
 					$(".corpedit_oper_btn li:eq(0)").remove();
 				}
 			}

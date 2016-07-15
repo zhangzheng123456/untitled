@@ -238,8 +238,8 @@ jQuery(document).ready(function(){
 			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
-				var action=message.actions[0].act_name;
-				if(action==""){
+				var action=message.actions;
+				if(action.length<=0){
 					$(".corpedit_oper_btn li:eq(0)").remove();
 				}
 			}
@@ -303,7 +303,7 @@ jQuery(document).ready(function(){
     $(".staffgoaladd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
-	$(".staffgoaledit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/achv/staffgoal.html");
 	});
 	//日期类型的点击事件

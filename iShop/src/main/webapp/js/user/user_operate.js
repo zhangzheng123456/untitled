@@ -606,9 +606,9 @@ jQuery(document).ready(function(){
 			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
-				var action=message.actions[0].act_name;
-				if(action==""){
-					$(".corpedit_oper_btn li:eq(0)").remove();
+				var action=message.actions;
+				if(action.length<=0){
+					$("#edit_save").remove();
 				}
 			}
 		});
@@ -774,7 +774,7 @@ jQuery(document).ready(function(){
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
-	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
 	//验证编号是否唯一的方法

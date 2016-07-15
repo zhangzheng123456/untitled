@@ -73,7 +73,6 @@ var message=JSON.parse(val.message);
 		$(".corpadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			var nameMark=$("#CORPNAME").attr("data-mark");
 			var codeMark=$("#CORPID").attr("data-mark");
-			console.log(nameMark);
 			if(corpjs.firstStep()){
 				if(nameMark=="N"||codeMark=="N"){
 					if(nameMark=="N"){
@@ -235,9 +234,9 @@ jQuery(document).ready(function(){
 			var data=JSON.parse(data);
 			if(data.code=="0"){
 				var message=JSON.parse(data.message);
-				var action=message.actions[0].act_name;
-				if(action==""){
-					$(".corpedit_oper_btn li:eq(0)").remove();
+				var action=message.actions;
+				if(action.length==0){
+					$("#edit_save").remove();
 				}
 			}
 		});
@@ -368,14 +367,14 @@ jQuery(document).ready(function(){
     	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
 			$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
 		});
-		$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$("#edit_close").click(function(){
 			$(window.parent.document).find('#iframepage').attr("src","/corp/corp.html");
 		});
     }else{
     	$(".corpadd_oper_btn ul li:nth-of-type(2)").click(function(){
 			$(window.parent.document).find('#iframepage').attr("src","/corp/corp_user.html");
 		});
-		$(".corpedit_oper_btn ul li:nth-of-type(2)").click(function(){
+		$("#edit_close").click(function(){
 			$(window.parent.document).find('#iframepage').attr("src","/corp/corp_user.html");
 		});
     }
