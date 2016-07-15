@@ -49,6 +49,7 @@ public class MessageController {
     private TableManagerService managerService;
 
     String id;
+
     /**
      * 发送消息
      */
@@ -77,7 +78,7 @@ public class MessageController {
                 //企业管理员
                 list = messageService.selectBySearch(page_number, page_size, corp_code,"", "");
             }else {
-                list = messageService.selectBySearch(page_number, page_size, corp_code,user_code, "");
+                list = messageService.selectBySearch(page_number, page_size, corp_code, user_code, "");
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -133,7 +134,7 @@ public class MessageController {
             String message = jsonObject.get("message").toString();
             String user_code = request.getSession(false).getAttribute("user_code").toString();
 
-            String result = messageService.insert(message,user_code);
+            String result = messageService.insert(message, user_code);
             logger.info("after insert result" + result);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -156,6 +157,7 @@ public class MessageController {
     /**
      * 发送消息
      * 选择
+     *
      * @param request
      * @return
      */
@@ -208,7 +210,7 @@ public class MessageController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
@@ -260,7 +262,6 @@ public class MessageController {
     }
 
 
-
     /**
      * 消息模板
      * 列表
@@ -305,6 +306,7 @@ public class MessageController {
     /**
      * 消息模板
      * 选择
+     *
      * @param request
      * @return
      */
@@ -514,7 +516,6 @@ public class MessageController {
 
     /**
      * 消息模板类型添加
-     *
      */
     @RequestMapping(value = "/mobile/template/add", method = RequestMethod.POST)
     @ResponseBody
@@ -560,6 +561,7 @@ public class MessageController {
 
     /**
      * 判断消息模板类型名称是否存在，确保消息模板名称的唯一性
+     *
      * @param request
      * @return
      */
@@ -589,6 +591,7 @@ public class MessageController {
 
     /**
      * 判断消息模板编号是否存在，确保模板编号的唯一性
+     *
      * @param request
      * @return
      */

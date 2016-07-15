@@ -19,6 +19,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
+	fabjs.checkNumber=function(obj,hint){
+		var isCode=/^[0-9]*$/;
+		if(!this.isEmpty(obj)){
+			if(isCode.test(obj)){
+				this.hiddenHint(hint);
+				return true;
+			}else{
+				this.displayHint(hint,"请输入数字！");
+				return false;
+			}
+		}else{
+			this.displayHint(hint);
+			return false;
+		}
+	}
 	fabjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -355,7 +370,7 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     })
-	$(".fabadd_oper_btn ul li:nth-of-type(2").click(function(){
+	$(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
 	$(".fabedit_oper_btn ul li:nth-of-type(2)").click(function(){

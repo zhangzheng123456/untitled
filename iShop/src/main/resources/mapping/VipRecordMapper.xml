@@ -151,7 +151,8 @@
             or dvrt.type_name like concat('%',#{search_value},'%')
             or dvc.id like concat('%',#{search_value},'%')
             or du.user_name like concat('%',#{search_value},'%')
-            or dc.corp_name like concat('%',#{search_value},'%')
+            or dvc.creater like concat('%',#{search_value},'%')
+
             )
         </if>
         ORDER BY dvc.id DESC
