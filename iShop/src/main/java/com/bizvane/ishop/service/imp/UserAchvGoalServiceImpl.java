@@ -81,16 +81,6 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(users);
         return page;
     }
-//    public String userAchvGoalExist(String user_code) throws SQLException {
-//
-//        UserAchvGoal userAchvGoal = this.userAchvGoalMapper.userAchvGoalExist(user_code);
-//
-//        //UserAchvGoal userAchvGoal = this.userAchvGoalMapper.selectUserAchvGoalBySearch(user_code, "").get(0);
-//        if (list == null || list.size() < 1) {
-//            return Common.DATABEAN_CODE_ERROR;
-//        }
-//        return Common.DATABEAN_CODE_SUCCESS;
-//    }
 
     @Override
     public UserAchvGoal getUserAchvGoalById(int id) throws SQLException {
@@ -110,5 +100,9 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     @Override
     public int insert(UserAchvGoal userAchvGoal) throws SQLException {
         return this.userAchvGoalMapper.insert(userAchvGoal);
+    }
+
+    public List<UserAchvGoal> userAchvGoalExist(String corp_code , String user_code)throws SQLException{
+        return userAchvGoalMapper.selectUserAchvCount(corp_code,user_code);
     }
 }

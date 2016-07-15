@@ -541,7 +541,8 @@ public class UserController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
                 User user = userService.getById(Integer.parseInt(ids[i]));
-                count = userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
+                List<UserAchvGoal> goal= userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
+                count = goal.size();
                 if (count > 0) {
                     msg = "请先删除用户的业绩目标，再删除用户" + user.getUser_code();
                     break;

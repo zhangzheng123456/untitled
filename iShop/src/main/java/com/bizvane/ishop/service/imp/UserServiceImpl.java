@@ -531,7 +531,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public int selectUserAchvCount(String corp_code, String user_code) {
+    public List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code) {
         return this.userAchvGoalMapper.selectUserAchvCount(corp_code, user_code);
         //return this.selectUserAchvCount(corp_code, user_code);
     }

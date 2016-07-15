@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.UserAchvGoal;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 
@@ -53,7 +54,7 @@ public interface UserService {
 
     void ProcessStoreCode(User user);
 
-    int selectUserAchvCount(String corp_code, String user_code);
+    List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code);
 
     int selectCount(String created_date);
 }

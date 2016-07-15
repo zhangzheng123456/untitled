@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.UserAchvGoal;
 import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -57,11 +58,13 @@ public interface UserAchvGoalService {
     PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws SQLException;
 
     PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code,String area_code, String role_code) throws SQLException;
+
     /**
-     * 判断用户业绩业绩是否存在
+     * 显示当前用户业绩目标
      * @param user_code ： 用户编号
+     * @param corp_code ： 企业编号
      * @return
      * @throws SQLException
      */
-//    String userAchvGoalExist(String user_code)throws SQLException;
+    List<UserAchvGoal> userAchvGoalExist(String corp_code , String user_code)throws SQLException;
 }

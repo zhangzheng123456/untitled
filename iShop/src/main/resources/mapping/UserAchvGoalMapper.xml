@@ -259,8 +259,29 @@
         ORDER BY ua.id DESC
     </select>
 
-    <select id="selectUserAchvCount" resultType="java.lang.Integer">
-        select count(*) from DEF_USER_ACHV_GOAL where corp_code=#{corp_code} and user_code=#{user_code}
+    <select id="selectUserAchvCount" resultMap="userAchvGoals">
+         select ua.id,
+        ua.user_code,
+        u.user_name,
+        ua.store_code,
+        ua.corp_code,
+        ua.user_target,
+        ua.target_type,
+        ua.target_time,
+        ua.modified_date,
+        ua.modifier,
+        ua.created_date,
+        ua.creater,
+        ua.isactive,
+        s.store_name,
+        c.corp_name
+        from
+        DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c,DEF_USER u
+        WHERE ua.store_code=s.store_code
+        AND ua.corp_code = c.corp_code
+        AND c.corp_code = s.corp_code
+        AND ua.user_code = u.user_code
+        AND ua.corp_code=#{corp_code}
+        and ua.user_code=#{user_code}
     </select>
-
 </mapper>

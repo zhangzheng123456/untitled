@@ -27,6 +27,5 @@ public interface UserAchvGoalMapper {
 
     List<UserAchvGoal> selectPartUserAchvGoalBySearch(Map<String, Object> params) throws SQLException;
 
-    int selectUserAchvCount(@Param("corp_code") String corp_code, @Param("user_code") String user_code);
-//    UserAchvGoal userAchvGoalExist(@Param("user_code") String user_code) throws SQLException;
+    List<UserAchvGoal> selectUserAchvCount(@Param("corp_code") String corp_code, @Param("user_code") String user_code);
 }

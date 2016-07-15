@@ -90,6 +90,10 @@ public class UserAchvGoalControl {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
                 pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", Common.ROLE_SM);
+            }else {
+                List<UserAchvGoal> goal = userAchvGoalService.userAchvGoalExist(corp_code,user_code);
+                pages = new PageInfo<UserAchvGoal>();
+                pages.setList(goal);
             }
             result.put("list", JSON.toJSONString(pages));
             result.put("actions", actions);
