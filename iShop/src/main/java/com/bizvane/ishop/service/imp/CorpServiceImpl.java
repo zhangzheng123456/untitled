@@ -92,6 +92,9 @@ public class CorpServiceImpl implements CorpService {
             corp.setAvater(jsonObject.get("avater").toString());
             corp.setApp_id(jsonObject.get("app_id").toString());
             corp.setIsactive(jsonObject.get("isactive").toString());
+            Date now = new Date();
+            corp.setModified_date(Common.DATETIME_FORMAT.format(now));
+            corp.setModifier(user_id);
             corpMapper.updateByCorpId(corp);
             result = Common.DATABEAN_CODE_SUCCESS;
         } else if (!corp.getCorp_code().equals(corp_code) || corp1 != null) {
