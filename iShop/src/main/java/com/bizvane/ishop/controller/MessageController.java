@@ -73,11 +73,11 @@ public class MessageController {
             JSONObject result = new JSONObject();
             PageInfo<Message> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = messageService.selectBySearch(page_number, page_size, "","", "");
+                list = messageService.selectBySearch(page_number, page_size, "", "", "");
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //企业管理员
-                list = messageService.selectBySearch(page_number, page_size, corp_code,"", "");
-            }else {
+                list = messageService.selectBySearch(page_number, page_size, corp_code, "", "");
+            } else {
                 list = messageService.selectBySearch(page_number, page_size, corp_code, user_code, "");
             }
             result.put("list", JSON.toJSONString(list));
@@ -140,7 +140,7 @@ public class MessageController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("add  success ! ");
-            }else {
+            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
                 dataBean.setMessage(result);
@@ -242,12 +242,12 @@ public class MessageController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Message> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = messageService.selectBySearch(page_number, page_size, "","", search_value);
+                list = messageService.selectBySearch(page_number, page_size, "", "", search_value);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //企业管理员
-                list = messageService.selectBySearch(page_number, page_size, corp_code,"", search_value);
-            }else {
-                list = messageService.selectBySearch(page_number, page_size, corp_code,user_code, search_value);
+                list = messageService.selectBySearch(page_number, page_size, corp_code, "", search_value);
+            } else {
+                list = messageService.selectBySearch(page_number, page_size, corp_code, user_code, search_value);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -428,7 +428,7 @@ public class MessageController {
                 list = this.smsTemplateService.selectBySearch(page_Number, page_Size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = this.smsTemplateService.selectBySearch(page_Number, page_Number, corp_code, search_value);
+                list = this.smsTemplateService.selectBySearch(page_Number, page_Size, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
