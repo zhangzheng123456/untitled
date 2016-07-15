@@ -342,6 +342,7 @@ public class UserAchvGoalControl {
      * 查出要导出的列
      */
     @RequestMapping(value = "/getCols", method = RequestMethod.POST)
+    @ResponseBody
     public String selAllByCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
