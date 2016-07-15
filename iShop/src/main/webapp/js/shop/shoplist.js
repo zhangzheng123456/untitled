@@ -320,6 +320,7 @@ function jumpBianse(){
     })
     //查看员工跳转查看员工页面
     $('.staff').click(function(){
+        var event=window.event||arguments[0];
         if(event.stopPropagation){
             event.stopPropagation();
         }else{

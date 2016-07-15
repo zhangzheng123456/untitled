@@ -146,7 +146,7 @@
             or vtt.created_date like concat('%',#{search_value},'%')
             or vtt.isactive like concat('%',#{search_value},'%')
         </if>
-        ORDER BY vtt.id
+        ORDER BY vtt.id DESC
     </select>
 
     <select id="selectCode" resultMap="VipRecordTypeInfo">

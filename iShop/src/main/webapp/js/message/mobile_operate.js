@@ -169,7 +169,7 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.mobile.init();//初始化
-	if($(".pre_title label").text()=="编辑短信模板"){
+	if($(".pre_title label").text()=="编辑消息模板"){
 		var id=sessionStorage.getItem("id");
 		var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 		key_val=JSON.parse(key_val);

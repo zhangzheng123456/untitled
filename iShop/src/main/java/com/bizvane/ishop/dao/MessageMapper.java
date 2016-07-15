@@ -18,7 +18,7 @@ public interface MessageMapper {
 
     int insertMessage(Message record);
 
-    List<Message> selectAllMessage(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
+    List<Message> selectAllMessage(@Param("corp_code") String corp_code,@Param("user_code") String user_code, @Param("search_value") String search_value);
 
     List<MessageType> selectAllMessageType();
 

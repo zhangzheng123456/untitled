@@ -115,7 +115,7 @@ public class UserController {
                 users.add(self);
             }
             List<User> users = list.getList();
-           String column_name = jsonObject.get("column_name").toString();
+            String column_name = jsonObject.get("column_name").toString();
             //String column_name = "user_name,phone,corp_name,group_name";
 
             String[] cols = column_name.split(",");//前台传过来的字段
@@ -176,7 +176,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -218,7 +218,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -337,7 +337,7 @@ public class UserController {
                 dataBean.setMessage(result);
             }
         } catch (Exception e) {
-            System.out.println(result+"--error--");
+            System.out.println(result + "--error--");
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -431,7 +431,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -511,7 +511,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         logger.info("info--------" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
@@ -561,7 +561,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             return dataBean.getJsonStr();
         }
         logger.info("delete-----" + dataBean.getJsonStr());
@@ -587,15 +587,14 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String user_id = jsonObject.get("id").toString();
             data = JSON.toJSONString(userService.getUserById(Integer.parseInt(user_id)));
-            System.out.println(data.toString());
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");
-            bean.setMessage(e.getMessage() + e.toString());
-            logger.info(e.getMessage()+e.toString());
+            bean.setMessage("用户信息异常");
+            logger.info(e.getMessage() + e.toString());
         }
         logger.info("info-----" + bean.getJsonStr());
         return bean.getJsonStr();
@@ -648,7 +647,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -696,7 +695,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -748,7 +747,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -796,7 +795,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -852,7 +851,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -888,7 +887,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -921,7 +920,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -954,7 +953,7 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
@@ -1010,11 +1009,69 @@ public class UserController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage()+ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
 
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 批量生成二维码
+     */
+    @RequestMapping(value = "/creatUsersQrcode", method = RequestMethod.POST)
+    @ResponseBody
+    public String creatUsersQrcode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_id = request.getSession().getAttribute("user_code").toString();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("------------UserController creatQrcode" + jsString);
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            JSONArray list = JSONArray.parseArray(jsonObject.get("list").toString());
+            for (int i = 0; i < list.size(); i++) {
+                JSONObject json = new JSONObject(list.get(i).toString());
+                String corp_code = json.get("corp_code").toString();
+                String user_code = json.get("user_code").toString();
+                Corp corp = corpService.selectByCorpId(0, corp_code);
+                String is_authorize = corp.getIs_authorize();
+                String corp_name = corp.getCorp_name();
+                if (corp.getApp_id() != null && corp.getApp_id() != "") {
+                    String auth_appid = corp.getApp_id();
+                    if (is_authorize.equals("Y")) {
+                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
+                        String result = IshowHttpClient.get(url);
+                        logger.info("------------creatQrcode  result" + result);
+                        JSONObject obj = new JSONObject(result);
+                        String picture = obj.get("picture").toString();
+                        String qrcode_url = obj.get("url").toString();
+                        User user = userService.userCodeExist(user_code, corp_code);
+                        user.setQrcode(picture);
+                        user.setQrcode_content(qrcode_url);
+                        Date now = new Date();
+                        user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        user.setModifier(user_id);
+                        logger.info("------------creatQrcode  update user");
+                        userService.updateUser(user);
+                        dataBean.setId(id);
+                        dataBean.setMessage("生成完成");
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    }
+                }
+                dataBean.setId(id);
+                dataBean.setMessage(corp_name+"企业未授权");
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                return dataBean.getJsonStr();
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 }

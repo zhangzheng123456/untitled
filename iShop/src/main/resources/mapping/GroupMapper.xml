@@ -97,7 +97,7 @@
             OR DEF_GROUP.isactive like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_GROUP.ID
+        ORDER BY DEF_GROUP.ID DESC
     </select>
 
 
@@ -143,7 +143,7 @@
             AND role_code &lt; #{role_code}
         </if>
         AND ISACTIVE = 'Y'
-        ORDER BY ID
+        ORDER BY ID DESC
     </select>
 
 
@@ -151,7 +151,7 @@
         select *
         from DEF_GROUP
         where role_code = #{role_code}
-        ORDER BY ID
+        ORDER BY ID DESC
     </select>
 
     <select id="selectMaxCode" resultType="java.lang.String">

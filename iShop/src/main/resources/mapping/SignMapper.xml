@@ -27,7 +27,7 @@
             OR  acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY acc_sign.ID
+        ORDER BY acc_sign.ID DESC
     </select>
     <select id="selectSignByInp" resultType="com.bizvane.ishop.entity.Sign">
         SELECT acc_sign.ID,
@@ -66,7 +66,7 @@
             OR  acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY acc_sign.ID
+        ORDER BY acc_sign.ID DESC
     </select>
     <select id="selectByUser" resultType="com.bizvane.ishop.entity.Sign">
         select acc_sign.* from acc_sign WHERE acc_sign.corp_code=#{corp_code} and acc_sign.user_code=#{user_code}
@@ -82,9 +82,8 @@
             OR  acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY acc_sign.ID
+        ORDER BY acc_sign.ID DESC
     </select>
-
 
     <delete id="delSignById">
         DELETE FROM ACC_SIGN

@@ -25,7 +25,7 @@
             OR isactive like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY role_code
+        ORDER BY id DESC
     </select>
 
     <select id="selectUserRole" resultType="com.bizvane.ishop.entity.Role">
@@ -36,7 +36,7 @@
             AND role_code &lt; #{role_code}
         </if>
         AND ISACTIVE = 'Y'
-        ORDER BY ID
+        ORDER BY ID DESC
     </select>
 
     <insert id="insertRole" parameterType="com.bizvane.ishop.entity.Role">

@@ -15,7 +15,7 @@
             OR ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY ID
+        ORDER BY ID DESC
     </select>
     <insert id="addInterface" parameterType="com.bizvane.ishop.entity.Interfacers">
         INSERT INTO  def_interface

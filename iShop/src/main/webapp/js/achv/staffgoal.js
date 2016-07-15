@@ -19,6 +19,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
+	staffgoaljs.checkNumber=function(obj,hint){
+		var isCode=/^[0-9]*$/;
+		if(!this.isEmpty(obj)){
+			if(isCode.test(obj)){
+				this.hiddenHint(hint);
+				return true;
+			}else{
+				this.displayHint(hint,"请输入数字！");
+				return false;
+			}
+		}else{
+			this.displayHint(hint);
+			return false;
+		}
+	}
 	staffgoaljs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示

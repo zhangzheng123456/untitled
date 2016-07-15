@@ -208,7 +208,7 @@
             OR ua.modified_date like concat('%',#{search_value},'%')
             )
         </if>
-
+        ORDER BY ua.id DESC
     </select>
 
     <select id="selectPartUserAchvGoalBySearch" resultMap="userAchvGoals">
@@ -256,7 +256,7 @@
             OR ua.modified_date like concat('%',#{search_value},'%')
             )
         </if>
-
+        ORDER BY ua.id DESC
     </select>
 
     <select id="selectUserAchvCount" resultType="java.lang.Integer">

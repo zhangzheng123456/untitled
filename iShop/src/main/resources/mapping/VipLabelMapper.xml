@@ -167,7 +167,7 @@
             or vt.isactive like concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY vt.id
+        ORDER BY vt.id DESC
     </select>
 
 

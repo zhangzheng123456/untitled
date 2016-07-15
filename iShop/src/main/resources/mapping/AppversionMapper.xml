@@ -19,7 +19,7 @@
             OR ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY ID
+        ORDER BY ID DESC
     </select>
     <insert id="addAppversion" parameterType="com.bizvane.ishop.entity.Appversion">
         INSERT INTO  def_app_version

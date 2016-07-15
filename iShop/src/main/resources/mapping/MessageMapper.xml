@@ -52,6 +52,9 @@
         <if test="corp_code!=null and corp_code!=''">
             and dum.corp_code=#{corp_code}
         </if>
+        <if test="user_code!=null and user_code!=''">
+            and dum.message_sender=#{user_code}
+        </if>
         <if test="search_value!=null and search_value!=''">
             and
             (
@@ -67,7 +70,7 @@
             OR dum.isactive like concat('%',search_value,'%')
             )
         </if>
-        ORDER BY rum.id
+        ORDER BY rum.id DESC
     </select>
 
     <select id="selectByPrimaryKey" resultMap="MessageInfo">
@@ -236,6 +239,8 @@
     </insert>
 
     <select id="selectAllMessageType"  resultType="com.bizvane.ishop.entity.MessageType">>
-        select * from def_message_type
+        select *
+        from def_message_type
+        ORDER BY id DESC
     </select>
 </mapper>

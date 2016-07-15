@@ -244,8 +244,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public int selectAchCount(String store_code) throws SQLException {
-        return this.storeMapper.selectAchCount(store_code);
+    public int selectAchCount(String corp_code,String store_code) throws SQLException {
+        return this.storeMapper.selectAchCount(corp_code,store_code);
     }
 
     @Override
@@ -276,9 +276,4 @@ public class StoreServiceImpl implements StoreService {
         return this.storeMapper.selectCount(created_date);
     }
 
-
-    @Override
-    public int selectUserCount(String corp_code, String store_code) {
-        return this.storeMapper.selectUserCount(corp_code, store_code);
-    }
 }
