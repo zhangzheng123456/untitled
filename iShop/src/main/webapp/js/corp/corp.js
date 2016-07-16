@@ -484,7 +484,7 @@ $("#file_submit").click(function(){
         }     
     }
     param["column_name"]=column_name;
-    oc.postRequire("post","/corp/exportExecl","0",param,function(data){
+    oc.postRequire("get","/corp/exportExecl","0",param,function(data){
         console.log(data);
     })
 })
