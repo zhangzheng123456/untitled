@@ -406,7 +406,7 @@ public class StoreAchvGoalController {
             String[] cols = column_name.split(",");//前台传过来的字段
             OutExeclHelper.OutExecl(storeAchvGoals,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
+            dataBean.setId(id);
             dataBean.setMessage("word success");
         }catch (Exception e){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

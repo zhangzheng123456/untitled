@@ -286,4 +286,11 @@
         AND ua.corp_code=#{corp_code}
         and ua.user_code=#{user_code}
     </select>
+
+    <delete id="deleteStoreUserAchv">
+        DELETE FROM DEF_USER_ACHV_GOAL
+        WHERE corp_code = #{corp_code}
+        AND store_code = #{store_code}
+        AND user_code = #{user_code}
+    </delete>
 </mapper>

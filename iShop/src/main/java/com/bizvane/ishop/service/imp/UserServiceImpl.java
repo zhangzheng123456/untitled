@@ -219,7 +219,9 @@ public class UserServiceImpl implements UserService {
         String user_code = user.getUser_code();
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
+        String store_code = user.getStore_code();
         User user1 = getUserById(user_id);
+        String[] store_code1 = user1.getStore_code().split(",");
         String phone_exist = userPhoneExist(phone);
         User code_exist = userCodeExist(user_code, corp_code);
         String emails = userEmailExist(email);
@@ -231,6 +233,11 @@ public class UserServiceImpl implements UserService {
         } else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
             result = "邮箱已存在";
         } else {
+            for (int i = 0; i < store_code1.length; i++) {
+                if (!store_code.contains(store_code1[i])){
+                    userAchvGoalMapper.deleteStoreUserAchv(corp_code,store_code1[i],user_code);
+                }
+            }
             userMapper.updateByUserId(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }

@@ -435,24 +435,26 @@ public class CorpController {
     /***
      * 导出数据
      */
-    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.GET)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
         try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            String jsString = request.getParameter("param");
+//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             //系统管理员(官方画面)
             PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 10000, "");
             List<Corp> corps = corpInfo.getList();
-            String column_name = jsonObject.get("column_name").toString();
-            String[] cols = column_name.split(",");//前台传过来的字段
+         //   String column_name = jsonObject.get("column_name").toString();
+            String column_name1 = "corp_code,corp_name";
+            String[] cols = column_name1.split(",");//前台传过来的字段
+
             OutExeclHelper.OutExecl(corps,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("word success");
+            dataBean.setId(id);
+            dataBean.setMessage("wordsuccess");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
