@@ -448,7 +448,9 @@ public class CorpController {
             PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 10000, "");
             List<Corp> corps = corpInfo.getList();
             String column_name = jsonObject.get("column_name").toString();
+          //  String column_name1 = "corp_code,corp_name";
             String[] cols = column_name.split(",");//前台传过来的字段
+
             OutExeclHelper.OutExecl(corps,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
