@@ -23,8 +23,6 @@
 </head>
 
 <body>
-    <!-- <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
         <div class="col-lg-12 pre_title">店铺管理<i class="icon-ishop_8-03"></i><label>新增店铺</label></div>
             <div class="editor_1 col-lg-6 editor_line  animated fadeInRight">
@@ -47,14 +45,14 @@
                         <span><label>店仓名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
                     </div>
                     <div class="drop_down">
-                        <span><label>所属区域</label><input type="text" id="OWN_AREA"  class="input_select" readonly />
+                        <span><label>所属区域</label><input data-myacode="" type="text" id="OWN_AREA"  class="input_select" readonly />
                             <ul id="area_select" style="margin-left:80px">
                             </ul>
                         </span>
                     </div>
                     <div>
                         <span><label>所属品牌</label><input type="text" id="OWN_BRAND"  style="width:420px;border-radius: 4px 0px 0px 4px;" name="checkboxSelect" readonly/></span>
-                        <input type="text" id="hiddencheckboxSelect" name="hiddencheckboxSelect" style="display:none;width:250px;">
+                        <input type="text" data-mybcode="" id="hiddencheckboxSelect" name="hiddencheckboxSelect" style="display:none;width:250px;">
                     </div>
                     <div class="drop_down item_1">
                     <span><label>是否直营</label><input class="input_select" id="FLG_TOB" type="text" placeholder="请选择是否直营" readonly />

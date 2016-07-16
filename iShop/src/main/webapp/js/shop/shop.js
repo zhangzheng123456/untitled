@@ -56,10 +56,26 @@ var oc = new ObjectControl();
 				var STORE_ID=$("#STORE_ID").val();
 				var STORE_NAME=$("#STORE_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_AREA=$("#OWN_AREA").data("myacode");
+				var OWN_AREA=$("#OWN_AREA").attr("data-myacode");
 				var OWN_BRAND=$("#OWN_BRAND").attr("data-mybcode");
-				// var BRAND_ID=$("#BRAND_ID").val();
-				// var AREA_ID=$("#AREA_ID").val();
+				if(OWN_AREA==""){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: "所属区域不能为空"
+					});
+					return;
+				}
+				if(OWN_BRAND==""){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: "所属区域不能为空"
+					});
+					return;
+				}
 				var is_zhiying=$("#FLG_TOB").val();
 				var FLG_TOB="";
 				if(is_zhiying=="是"){
@@ -107,11 +123,29 @@ var oc = new ObjectControl();
 				console.log($("#OWN_BRAND").data("mybcode"));
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
-				var OWN_AREA=$("#OWN_AREA").data("myacode");
+				var OWN_AREA=$("#OWN_AREA").attr("data-myacode");
 				var OWN_BRAND=$("#OWN_BRAND").attr("data-mybcode");
 				var STORE_ID=$("#STORE_ID").val();
 				var STORE_NAME=$("#STORE_NAME").val();
-				var is_zhiying=$("#FLG_TOB").val();
+				var is_zhiying=$("#FLG_TOB").val();\
+				if(OWN_AREA==""){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: "所属区域不能为空"
+					});
+					return;
+				}
+				if(OWN_BRAND==""){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: "所属区域不能为空"
+					});
+					return;
+				}
 				var FLG_TOB="";
 				if(is_zhiying=="是"){
 					FLG_TOB="Y";
@@ -340,7 +374,7 @@ jQuery(document).ready(function(){
 					$("#area_select li").click(function(event){
 			            var this_=this;
 			            var txt = $(this_).text();
-			            var a_code=$(this_).data("areacode");
+			            var a_code=$(this_).attr("data-areacode");
 			            $(this_).parent().parent().children(".input_select").val(txt);
 			            $(this_).parent().parent().children(".input_select").attr('data-myacode',a_code);
 			            $(this_).addClass('rel').siblings().removeClass('rel');
@@ -512,6 +546,7 @@ jQuery(document).ready(function(){
 		$("#OWN_AREA").val('');
 		$("#OWN_BRAND").val('');
 		$('#OWN_BRAND').attr('data-mybcode','');
+		$("#OWN_AREA").attr("data-myacode","");
 		flg_index ++;
 		checknow_data=[];
 		checknow_namedata=[];
@@ -538,6 +573,7 @@ function getcorplist(){
 				$("#STORE_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
 				$("#STORE_NAME").attr("data-mark","");
+
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
