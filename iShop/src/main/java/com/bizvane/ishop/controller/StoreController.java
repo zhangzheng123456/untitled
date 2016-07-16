@@ -763,7 +763,7 @@ public class StoreController {
         } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
+            dataBean.setId("1");
 
 
             dataBean.setMessage(e.getMessage() + e.toString());

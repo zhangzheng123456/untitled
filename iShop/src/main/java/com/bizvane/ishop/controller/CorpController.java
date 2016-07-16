@@ -451,8 +451,8 @@ public class CorpController {
             String[] cols = column_name.split(",");//前台传过来的字段
             OutExeclHelper.OutExecl(corps,cols,response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("word success");
+            dataBean.setId(id);
+            dataBean.setMessage("wordsuccess");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
