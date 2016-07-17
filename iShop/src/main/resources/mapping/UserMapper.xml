@@ -507,7 +507,7 @@
             and dg.role_code &lt;#{role_code}
         </if>
         AND
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+        <foreach collection="array" index="index" item="item" open="(" separator="AND" close=")">
             store_code regexp #{item}
         </foreach>
         AND
