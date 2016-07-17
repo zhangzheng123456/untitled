@@ -1,11 +1,13 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.BrandMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BrandService;
+import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -15,7 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/6/4.
@@ -109,6 +113,7 @@ public class BrandServiceImpl implements BrandService {
         return brandMapper.getStoresCount(corp_code, brand_code);
     }
 
+
     @Override
     @Transactional
     public String update(String message, String user_id) throws SQLException {
@@ -156,5 +161,20 @@ public class BrandServiceImpl implements BrandService {
         Brand brand = brandMapper.selectByBrandName(corp_code, brand_name);
         return brand;
     }
+
+
+    @Override
+    public PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+        List<Brand> brands;
+        PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+
+        params.put("map", map);
+        brands = brandMapper.selectAllBrandScreen(params);
+        PageInfo<Brand> page = new PageInfo<Brand>(brands);
+        return page;
+    }
+
 
 }

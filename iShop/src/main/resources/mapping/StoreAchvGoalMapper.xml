@@ -225,6 +225,7 @@
                 #{item}
             </foreach>
         </if>
+        AND
         <foreach collection="map" index="entryKey" open="(" separator="and" close=")" item="entryValue">
             ${entryKey} LIKE concat('%',#{entryValue},'%')
         </foreach>
