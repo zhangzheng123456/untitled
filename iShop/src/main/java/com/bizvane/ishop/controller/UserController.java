@@ -8,6 +8,7 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.IshowHttpClient;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -542,7 +543,7 @@ public class UserController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
                 User user = userService.getById(Integer.parseInt(ids[i]));
-                List<UserAchvGoal> goal= userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
+                List<UserAchvGoal> goal = userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
                 count = goal.size();
                 if (count > 0) {
                     msg = "请先删除用户的业绩目标，再删除用户" + user.getUser_code();
@@ -1064,7 +1065,7 @@ public class UserController {
                     }
                 }
                 dataBean.setId(id);
-                dataBean.setMessage(corp_name+"企业未授权");
+                dataBean.setMessage(corp_name + "企业未授权");
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 return dataBean.getJsonStr();
             }
@@ -1076,4 +1077,54 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 员工管理
+     * 筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String Screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.getString("id");
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            int page_number = Integer.parseInt(jsonObject2.get("pageNumber").toString());
+            int page_size = Integer.parseInt(jsonObject2.get("pageSize").toString());
+            String screen = jsonObject2.get("screen").toString();
+            org.json.JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<User> list = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = userService.getAllUserScreen(page_number, page_size, "", "", "", role_code, map);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", role_code, map);
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                String area_code = request.getSession(false).getAttribute("area_code").toString();
+                list = userService.getAllUserScreen(page_number, page_size, corp_code, area_code, "", role_code, map);
+            } else if (role_code.equals(Common.ROLE_SM)) {
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                String area_code = request.getSession(false).getAttribute("area_code").toString();
+                list = userService.getAllUserScreen(page_number, page_size, corp_code, area_code, store_code, role_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }

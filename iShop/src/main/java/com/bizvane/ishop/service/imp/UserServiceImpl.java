@@ -83,7 +83,7 @@ public class UserServiceImpl implements UserService {
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas,"");
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -234,8 +234,8 @@ public class UserServiceImpl implements UserService {
             result = "邮箱已存在";
         } else {
             for (int i = 0; i < store_code1.length; i++) {
-                if (!store_code.contains(store_code1[i])){
-                    userAchvGoalMapper.deleteStoreUserAchv(corp_code,store_code1[i],user_code);
+                if (!store_code.contains(store_code1[i])) {
+                    userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);
                 }
             }
             userMapper.updateByUserId(user);
@@ -545,5 +545,39 @@ public class UserServiceImpl implements UserService {
 
     public int selectCount(String created_date) {
         return userMapper.selectCount(created_date);
+    }
+
+    @Override
+    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) {
+        String area_codes[] = null;
+        String store_codes[] = null;
+        if (!store_code.equals("")) {
+            store_codes = store_code.split(",");
+            for (int i = 0; store_codes != null && i < store_codes.length; i++) {
+                store_codes[i] = store_codes[i].substring(1, store_codes[i].length());
+            }
+        }
+        if (!area_code.equals("")) {
+            area_codes = area_code.split(",");
+            for (int i = 0; area_code != null && i < area_code.length(); i++) {
+                area_codes[i] = area_codes[i].substring(1, store_codes[i].length());
+            }
+            List<Store> stores = storeService.selectByAreaCode(corp_code, area_codes, "");
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < stores.size(); i++) {
+                sb.append(stores.get(i).getStore_code() + ",");
+            }
+            store_codes = sb.toString().split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("array", store_codes);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        List<User> users;
+        PageHelper.startPage(page_number, page_size);
+        users = userMapper.selectAllUserScreen(params);
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
     }
 }
