@@ -1,6 +1,7 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.StoreAchvGoal;
+import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -63,4 +64,5 @@ public interface StoreAchvGoalMapper {
     StoreAchvGoal selectByCorpAndUserCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code);
 
 
+    List<StoreAchvGoal> selectAllStoreAchvScreen(Map<String, Object> params);
 }

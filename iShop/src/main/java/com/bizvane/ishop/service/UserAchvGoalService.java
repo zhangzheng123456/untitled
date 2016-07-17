@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -67,4 +68,6 @@ public interface UserAchvGoalService {
      * @throws SQLException
      */
     List<UserAchvGoal> userAchvGoalExist(String corp_code , String user_code)throws SQLException;
+
+    PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String s, String s1, Map<String, String> map);
 }

@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.UserAchvGoal;
@@ -14,6 +15,7 @@ import com.bizvane.ishop.service.UserAchvGoalService;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.TimeUtils;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -35,6 +37,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 /**
@@ -90,8 +93,8 @@ public class UserAchvGoalControl {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
                 pages = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", Common.ROLE_SM);
-            }else {
-                List<UserAchvGoal> goal = userAchvGoalService.userAchvGoalExist(corp_code,user_code);
+            } else {
+                List<UserAchvGoal> goal = userAchvGoalService.userAchvGoalExist(corp_code, user_code);
                 pages = new PageInfo<UserAchvGoal>();
                 pages.setList(goal);
             }
@@ -176,7 +179,7 @@ public class UserAchvGoalControl {
     @Transactional
     public String deleteUserAchvGoalById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String id  = "";
+        String id = "";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -364,6 +367,7 @@ public class UserAchvGoalControl {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -393,11 +397,11 @@ public class UserAchvGoalControl {
             List<UserAchvGoal> userAchvGoals = pages.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(userAchvGoals,cols,response);
+            OutExeclHelper.OutExecl(userAchvGoals, cols, response);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");
-        }catch (Exception e){
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(e.getMessage());
@@ -408,7 +412,7 @@ public class UserAchvGoalControl {
     /***
      * Execl增加
      */
-    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -424,41 +428,84 @@ public class UserAchvGoalControl {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(3);
-            for (int i = 3; i <column.length; i++) {
-                if(!column[i].getContents().toString().equals("D")||!column[i].getContents().toString().equals("W")||!column[i].getContents().toString().equals("M")||!column[i].getContents().toString().equals("Y")){
-                    result ="第"+(i+1)+"列的业绩日期类型缩写不对";
-                    int b=5/0;
+            for (int i = 3; i < column.length; i++) {
+                if (!column[i].getContents().toString().equals("D") || !column[i].getContents().toString().equals("W") || !column[i].getContents().toString().equals("M") || !column[i].getContents().toString().equals("Y")) {
+                    result = "第" + (i + 1) + "列的业绩日期类型缩写不对";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    UserAchvGoal userAchvGoal=new UserAchvGoal();
+                    UserAchvGoal userAchvGoal = new UserAchvGoal();
                     userAchvGoal.setCorp_code(corp_code);
-                    userAchvGoal.setStore_code(rs.getCell(j++,i).getContents());
-                    userAchvGoal.setUser_code(rs.getCell(j++,i).getContents());
-                    userAchvGoal.setUser_target(rs.getCell(j++,i).getContents());
-                    userAchvGoal.setTarget_type(rs.getCell(j++,i).getContents());
-                    userAchvGoal.setTarget_time(rs.getCell(j++,i).getContents());
-                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                    userAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
+                    userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
+                    userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
+                    userAchvGoal.setTarget_type(rs.getCell(j++, i).getContents());
+                    userAchvGoal.setTarget_time(rs.getCell(j++, i).getContents());
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
                         userAchvGoal.setIsactive("Y");
-                    }else{
+                    } else {
                         userAchvGoal.setIsactive("N");
                     }
                     userAchvGoal.setCreater(user_id);
                     Date now = new Date();
                     userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    result=String.valueOf(userAchvGoalService.insert(userAchvGoal));
+                    result = String.valueOf(userAchvGoalService.insert(userAchvGoal));
                 }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 页面筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String Screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-----------" + jsString);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            id = jsonObject.getString("id");
+            String message = jsonObject.get("message").toString();
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject1.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject1.get("pageSize").toString());
+            String screen = jsonObject1.get("screen").toString();
+            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<UserAchvGoal> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, "", "", map);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, "", map);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, role_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

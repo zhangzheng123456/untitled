@@ -43,14 +43,14 @@
         DEF_CORP c,
         DEF_STORE st
         WHERE sa.corp_code=c.corp_code
-        AND  st.STORE_CODE =sa.STORE_CODE
+        AND st.STORE_CODE =sa.STORE_CODE
         <if test="corp_code!=null and corp_code!=''">
             AND c.corp_code=#{corp_code}
         </if>
         <if test="area_codes !=null and area_codes!=''">
             AND st.AREA_CODE IN
             <foreach item="item" index="index" collection="area_codes" open="(" separator="," close=")">
-              #{item}
+                #{item}
             </foreach>
         </if>
         <if test="store_codes !=null and store_codes !=''">
@@ -198,4 +198,36 @@
         WHERE  corp_code=#{corp_code} and store_code=#{store_code}
     </select>
 
+    <select id="selectAllStoreAchvScreen" resultMap="storeAchvGoals">
+        select
+        sa.*,
+        dc.corp_name,
+        st.store_name
+        from
+        DEF_STORE_ACHV_GOAL sa,
+        DEF_STORE ds,
+        DEF_CORP dc
+        WHERE sa.corp_code=dc.corp_code
+        AND sa.corp_code=ds.corp_code
+        AND ds.store_code=sa.store_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dc.corp_code=#{corp_code}
+        </if>
+        <if test="area_codes !=null and area_codes!=''">
+            AND ds.AREA_CODE IN
+            <foreach item="item" index="index" collection="area_codes" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="store_codes !=null and store_codes !=''">
+            AND sa.STORE_CODE IN
+            <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <foreach collection="map" index="entryKey" open="(" separator="and" close=")" item="entryValue">
+            ${entryKey} LIKE concat('%',#{entryValue},'%')
+        </foreach>
+        ORDER BY sa.ID DESC
+    </select>
 </mapper>
