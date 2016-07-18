@@ -13,6 +13,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class StoreServiceImpl implements StoreService {
      */
     @Override
     public int deleteStoreUser(String user_id, String store_code) {
-        store_code = Common.STORE_HEAD+store_code+",";
+        store_code = Common.STORE_HEAD + store_code + ",";
         return storeMapper.deleteStoreByUserid(user_id, store_code);
     }
 
@@ -60,7 +61,7 @@ public class StoreServiceImpl implements StoreService {
         String corp_code = store.getCorp_code();
         String brand_name = "";
         String brand_code = store.getBrand_code();
-        if (brand_code != null && !brand_code.equals("") ) {
+        if (brand_code != null && !brand_code.equals("")) {
             String[] ids = store.getBrand_code().split(",");
             for (int i = 0; i < ids.length; i++) {
                 Brand brand = brandMapper.selectCorpBrand(corp_code, ids[i]);
@@ -137,8 +138,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     //店铺下所属用户
-    public List<User> getStoreUser(String corp_code, String store_code, String role_code,String user_id) {
-        List<User> user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", role_code,user_id);
+    public List<User> getStoreUser(String corp_code, String store_code, String role_code, String user_id) {
+        List<User> user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", role_code, user_id);
         return user;
     }
 
@@ -189,6 +190,44 @@ public class StoreServiceImpl implements StoreService {
         storeMapper.insertStore(store);
         return "add success";
     }
+
+    @Override
+    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        String[] areas = null;
+        String[] stores = null;
+        if (!area_codes.isEmpty()) {
+            areas = area_codes.split(",");
+            for (int i = 0; areas != null && i < areas.length; i++) {
+                areas[i] = areas[i].substring(1, areas[i].length());
+            }
+        }
+        if (!store_codes.isEmpty()) {
+            stores = store_codes.split(",");
+            for (int i = 0; stores != null && i < stores.length; i++) {
+                stores[i] = stores[i].substring(1, stores[i].length());
+            }
+        }
+        params.put("corp_code", corp_code);
+        params.put("area_codes", area_codes);
+        params.put("store_codes", store_codes);
+        params.put("map", map);
+        List<Store> list = storeMapper.selectAllStoreScreen(params);
+        PageInfo<Store> page = new PageInfo<Store>();
+        return page;
+    }
+//
+//    @Override
+//    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String[] area_codes, Map<String, String> map) {
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("corp_code", corp_code);
+//        params.put("area_codes", area_codes);
+//        params.put("map", map);
+//        PageHelper.startPage(page_number, page_size);
+//        List<Store> list = storeMapper.selectAllStoreScreen(params);
+//        PageInfo<Store> page = new PageInfo<Store>(list);
+//        return page;
+    //}
 
 
     //修改店铺
@@ -246,8 +285,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public int selectAchCount(String corp_code,String store_code) throws SQLException {
-        return this.storeMapper.selectAchCount(corp_code,store_code);
+    public int selectAchCount(String corp_code, String store_code) throws SQLException {
+        return this.storeMapper.selectAchCount(corp_code, store_code);
     }
 
     @Override
