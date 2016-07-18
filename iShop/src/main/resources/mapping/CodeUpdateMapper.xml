@@ -168,17 +168,11 @@
     <update id="updatePrivilege">
         UPDATE def_privilege
         <trim prefix="SET" suffixOverrides=",">
-            <if test="new_corp_code!=null and new_corp_code!='' ">
-                CORP_CODE = #{new_corp_code},
-            </if>
             <if test="new_master_code!=null and new_master_code!='' ">
                 MASTER_CODE = #{new_master_code},
             </if>
         </trim>
         WHERE 1=1
-        <if test="old_corp_code!=null and old_corp_code!='' ">
-            AND corp_code = #{old_corp_code}
-        </if>
         <if test="old_master_code!=null and old_master_code!='' ">
             AND MASTER_CODE = #{old_master_code}
         </if>

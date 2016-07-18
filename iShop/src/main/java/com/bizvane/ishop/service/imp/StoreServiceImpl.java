@@ -327,7 +327,7 @@ public class StoreServiceImpl implements StoreService {
     void updateCauseCodeChange(String corp_code,String new_store_code,String old_store_code){
 
         //更新签到列表
-        codeUpdateMapper.updateSign("",corp_code,new_store_code,old_store_code);
+        codeUpdateMapper.updateSign("",corp_code,new_store_code,old_store_code,"","");
         //更新店铺业绩目标
         codeUpdateMapper.updateStoreAchvGoal("",corp_code,new_store_code,old_store_code);
         //更新员工业绩目标

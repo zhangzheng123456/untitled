@@ -25,7 +25,7 @@ public class TableManagerServiceImpl implements TableManagerService {
      * 获取页面可筛选的列
      */
     @Override
-    public List<TableManager> selByCode(String function_code,String is_select) {
-        return managerMapper.selByCode(function_code,is_select);
+    public List<TableManager> selByCode(String function_code) {
+        return managerMapper.selByCode(function_code);
     }
 }

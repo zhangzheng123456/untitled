@@ -111,6 +111,10 @@ public class GroupServiceImpl implements GroupService {
         return groupMapper.deleteByGroupId(id);
     }
 
+    /**
+     * 更改群组编号时
+     * 级联更改关联此编号的员工，权限列表
+     */
     @Transactional
     void updateCauseCodeChange(String corp_code ,String new_group_code,String old_group_code){
         //若修改群组编号，对应修改员工信息中关联的群组编号
