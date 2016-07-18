@@ -459,10 +459,10 @@ public class CorpController {
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(corps, cols, response, request);
             JSONObject result = new JSONObject();
-            result.put("path","lupload/"+pathname);
+            result.put("path",JSON.toJSONString("lupload/"+pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("wordsuccess");
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
