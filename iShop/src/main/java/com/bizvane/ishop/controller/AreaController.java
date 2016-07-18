@@ -431,7 +431,9 @@ public class AreaController {
             List<Area> areas = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(areas, cols, response);
+
+            OutExeclHelper.OutExecl(areas,cols,response,request);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");

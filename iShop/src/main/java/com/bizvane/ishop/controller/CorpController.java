@@ -31,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -453,11 +454,12 @@ public class CorpController {
             //系统管理员(官方画面)
             PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 10000, "");
             List<Corp> corps = corpInfo.getList();
-            String column_name = jsonObject.get("column_name").toString();
-            //  String column_name1 = "corp_code,corp_name";
+           String column_name = jsonObject.get("column_name").toString();
+        // String column_name1 = "corp_code,corp_name";
             String[] cols = column_name.split(",");//前台传过来的字段
-
-            OutExeclHelper.OutExecl(corps, cols, response);
+            String pathname = OutExeclHelper.OutExecl(corps, cols, response, request);
+            JSONObject result = new JSONObject();
+            result.put("path","lupload/"+pathname);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("wordsuccess");
@@ -466,6 +468,7 @@ public class CorpController {
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
         }
+
         return dataBean.getJsonStr();
     }
 

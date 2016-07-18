@@ -355,7 +355,7 @@ public class VIPController {
             List<VipLabel> vipLabels = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(vipLabels, cols, response);
+            OutExeclHelper.OutExecl(vipLabels, cols, response,request);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage("word success");
@@ -1036,7 +1036,7 @@ public class VIPController {
             List<VipRecord> vipRecords = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(vipRecords, cols, response);
+            OutExeclHelper.OutExecl(vipRecords, cols, response,request);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage("word success");

@@ -12,6 +12,7 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.ss.formula.functions.T;
 import org.json.JSONObject;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLEncoder;
@@ -22,8 +23,10 @@ import java.util.*;
  * Created by yin on 2016/6/30.
  */
 public class OutExeclHelper {
-    public static void OutExecl(List olist, String[] cols, HttpServletResponse response){
+    public static String OutExecl(List olist, String[] cols, HttpServletResponse response, HttpServletRequest request){
+        String filename="";
         try {
+            response.setCharacterEncoding("UTF-8");
             JSONObject jsonObject = new JSONObject();
             jsonObject.put("list", olist);
             org.json.JSONArray array = jsonObject.getJSONArray("list");
@@ -36,14 +39,27 @@ public class OutExeclHelper {
                 }
                 lists.add(temp);
             }
+            response.reset();// 清空输出流
+
+            //输出流
+            OutputStream os = response.getOutputStream();
             //------------------------开启响应头---------------------------------------
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
+            response.reset(); // 非常重要 
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            String user_id =request.getSession().getAttribute("user_code").toString();
+            //设置响应头信息，为下载文件方式
+//            response.setContentType("APPLICATION/DOWNLOAD");
+//            response.setHeader("Content-Disposition", "attachment;filename=" + new String(name.getBytes("utf-8"),"ISO-8859-1"));
             //设置响应的字符集
-            response.setContentType("application/vnd.ms-excel;charset=utf-8");
-            String name = URLEncoder.encode("报表_" + sdf.format(new Date()) + ".xls", "UTF-8");
-            response.setHeader("Content-Disposition", "attachment;filename=" + name);
+//            response.setContentType("application/vnd.ms-excel;charset=utf-8");
+//             response.setHeader("Content-Disposition", "attachment;filename=" + name);
             //创建excel空白文档
-            WritableWorkbook book = Workbook.createWorkbook(response.getOutputStream());
+            filename = user_id +"_"+ sdf.format(new Date()) + ".xls";
+            filename = URLEncoder.encode(filename, "utf-8");
+            String path = request.getSession().getServletContext().getRealPath("lupload");
+            System.out.println("路径："+path);
+            File file =new File(path,filename);
+            WritableWorkbook book = Workbook.createWorkbook(file);
             WritableSheet sheet = book.createSheet("报表", 0);
             WritableFont font = new WritableFont(WritableFont.createFont("微软雅黑"), 15,
                     WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
@@ -82,9 +98,12 @@ public class OutExeclHelper {
             book.write();
             //写入结束
             book.close();
+            //设置为系统输出流 并清空
+            System.setOut(new PrintStream(os));
+            os.flush();
         }catch (Exception e){
             e.printStackTrace();
         }
-
+    return filename;
     }
 }
