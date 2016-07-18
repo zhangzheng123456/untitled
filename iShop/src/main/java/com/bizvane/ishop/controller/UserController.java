@@ -469,8 +469,11 @@ public class UserController {
             user.setGroup_code(jsonObject.get("group_code").toString());
 
             String role_code = jsonObject.get("role_code").toString();
+            String area_code = jsonObject.get("area_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            user.setArea_code(area_code);
+            user.setStore_code(store_code);
             if (role_code.equals(Common.ROLE_AM)) {
-                String area_code = jsonObject.get("area_code").toString();
                 if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
                     area_code = "";
@@ -482,7 +485,6 @@ public class UserController {
                 user.setArea_code(area_code);
             }
             if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
-                String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
                     store_code = "";

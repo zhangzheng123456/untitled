@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.BrandMapper;
+import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
@@ -30,6 +31,8 @@ public class BrandServiceImpl implements BrandService {
     BrandMapper brandMapper;
     @Autowired
     StoreMapper storeMapper;
+    @Autowired
+    private CodeUpdateMapper codeUpdateMapper;
 
     @Override
     public Brand getBrandById(int id) throws SQLException {
@@ -131,6 +134,9 @@ public class BrandServiceImpl implements BrandService {
 
         if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
                 (brand.getBrand_name().equals(brand_name) || brand2 == null)) {
+            if (!brand.getBrand_code().equals(brand_code)){
+                updateCauseCodeChange(corp_code,brand_code,brand.getBrand_code());
+            }
             brand = new Brand();
             Date now = new Date();
             brand.setId(brand_id);
@@ -176,5 +182,16 @@ public class BrandServiceImpl implements BrandService {
         return page;
     }
 
+    /**
+     * 更改品牌编号时
+     * 级联更改关联此编号的店铺，商品列表
+     */
+    @Transactional
+    void updateCauseCodeChange(String corp_code,String new_brand_code,String old_brand_code){
+        //店铺列表级联修改
+        codeUpdateMapper.updateGoods("",corp_code,new_brand_code,old_brand_code);
 
+        //商品列表级联修改
+        codeUpdateMapper.updateStore("",corp_code,new_brand_code,old_brand_code,"","");
+    }
 }

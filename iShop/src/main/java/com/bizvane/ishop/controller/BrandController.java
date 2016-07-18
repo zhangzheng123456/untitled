@@ -204,21 +204,6 @@ public class BrandController {
                     break;
                 }
                 brandService.delete(Integer.valueOf(ids[i]));
-//                List<Store> stores = brandService.getBrandStore(corp_code, brand_code);
-//                logger.info(stores.toString() + "lixixitest 111" + "删除前 。。。");
-//                if (stores.size() == 0) {
-//                    logger.info("----------" + ids[i] + "\n");
-//                    brandService.delete(Integer.valueOf(ids[i]));
-//                    logger.info("删除之后！！！" + "lixixitest1111s");
-//                    dataBean.setId(id);
-//                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                    dataBean.setMessage("删除成功！");
-//                } else {
-//                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                    dataBean.setId(id);
-//                    dataBean.setMessage("品牌" + brand_code + "下有所属店铺，请先处理品牌下店铺再删除！");
-//                    return dataBean.getJsonStr();
-//                }
             }
             if (msg == null) {
                 dataBean.setId(id);

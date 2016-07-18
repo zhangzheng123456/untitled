@@ -233,6 +233,7 @@ public class UserServiceImpl implements UserService {
         } else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
             result = "邮箱已存在";
         } else {
+            //若用户修改所属店铺，则删除该店铺员工的业绩目标
             for (int i = 0; i < store_code1.length; i++) {
                 if (!store_code.contains(store_code1[i])) {
                     userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);

@@ -33,34 +33,110 @@
         </if>
     </update>
 
-    <update id="updateUser">
-        UPDATE DEF_USER
+    <update id="updateStore">
+        UPDATE def_store
         <trim prefix="SET" suffixOverrides=",">
             <if test="new_corp_code!=null and new_corp_code!='' ">
                 CORP_CODE = #{new_corp_code},
             </if>
-            <if test="new_group_code!=null and new_group_code!='' ">
-                GROUP_CODE = #{new_group_code},
-            </if>
-            <if test="new_store_code!=null and new_store_code!='' ">
-                STORE_CODE=replace(STORE_CODE,#{old_store_code},#{new_store_code}),
+            <if test="new_brand_code!=null and new_brand_code!='' ">
+                BRAND_CODE = replace(BRAND_CODE,#{old_brand_code},#{new_brand_code}),
             </if>
             <if test="new_area_code!=null and new_area_code!='' ">
-                AREA_CODE=replace(AREA_CODE,#{old_area_code},#{new_area_code}),
+                AREA_CODE = #{new_area_code},
             </if>
         </trim>
         WHERE 1=1
         <if test="old_corp_code!=null and old_corp_code!='' ">
             AND corp_code = #{old_corp_code}
         </if>
-        <if test="old_group_code!=null and old_group_code!='' ">
-            AND GROUP_CODE = #{old_group_code}
-        </if>
-        <if test="old_store_code!=null and old_store_code!='' ">
-            AND STORE_CODE regexp #{old_store_code}
+        <if test="old_brand_code!=null and old_brand_code!='' ">
+            AND BRAND_CODE regexp #{old_brand_code}
         </if>
         <if test="old_area_code!=null and old_area_code!='' ">
-            AND AREA_CODE regexp #{old_area_code}
+            AND AREA_CODE = #{old_area_code}
+        </if>
+    </update>
+
+    <update id="updateUserAchvGoal">
+        UPDATE def_user_achv_goal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="new_corp_code!=null and new_corp_code!='' ">
+                CORP_CODE = #{new_corp_code},
+            </if>
+            <if test="new_store_code!=null and new_store_code!='' ">
+                STORE_CODE = #{new_store_code},
+            </if>
+            <if test="new_user_code!=null and new_user_code!='' ">
+                USER_CODE = #{new_user_code},
+            </if>
+        </trim>
+        WHERE 1=1
+        <if test="old_corp_code!=null and old_corp_code!='' ">
+            AND corp_code = #{old_corp_code}
+        </if>
+        <if test="old_store_code!=null and old_store_code!='' ">
+            AND STORE_CODE = #{old_store_code}
+        </if>
+        <if test="old_user_code!=null and old_user_code!='' ">
+            AND USER_CODE = #{old_user_code}
+        </if>
+    </update>
+
+    <update id="updateStoreAchvGoal">
+        UPDATE def_store_achv_goal
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="new_corp_code!=null and new_corp_code!='' ">
+                CORP_CODE = #{new_corp_code},
+            </if>
+            <if test="new_store_code!=null and new_store_code!='' ">
+                STORE_CODE = #{new_store_code},
+            </if>
+        </trim>
+        WHERE 1=1
+        <if test="old_corp_code!=null and old_corp_code!='' ">
+            AND corp_code = #{old_corp_code}
+        </if>
+        <if test="old_store_code!=null and old_store_code!='' ">
+            AND STORE_CODE = #{old_store_code}
+        </if>
+    </update>
+
+    <update id="updateSign">
+    UPDATE acc_sign
+    <trim prefix="SET" suffixOverrides=",">
+        <if test="new_corp_code!=null and new_corp_code!='' ">
+            CORP_CODE = #{new_corp_code},
+        </if>
+        <if test="new_store_code!=null and new_store_code!='' ">
+            STORE_CODE = #{new_store_code},
+        </if>
+    </trim>
+    WHERE 1=1
+    <if test="old_corp_code!=null and old_corp_code!='' ">
+        AND corp_code = #{old_corp_code}
+    </if>
+    <if test="old_store_code!=null and old_store_code!='' ">
+        AND STORE_CODE = #{old_store_code}
+    </if>
+</update>
+
+    <update id="updateGoods">
+        UPDATE def_goods
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="new_corp_code!=null and new_corp_code!='' ">
+                CORP_CODE = #{new_corp_code},
+            </if>
+            <if test="new_brand_code!=null and new_brand_code!='' ">
+                BRAND_CODE = #{new_brand_code},
+            </if>
+        </trim>
+        WHERE 1=1
+        <if test="old_corp_code!=null and old_corp_code!='' ">
+            AND corp_code = #{old_corp_code}
+        </if>
+        <if test="old_brand_code!=null and old_brand_code!='' ">
+            AND BRAND_CODE = #{old_brand_code}
         </if>
     </update>
 </mapper>
