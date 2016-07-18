@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserService {
     IceInterfaceService iceInterfaceService;
     @Autowired
     UserAchvGoalMapper userAchvGoalMapper;
+    @Autowired
+    CodeUpdateMapper codeUpdateMapper;
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -233,6 +235,9 @@ public class UserServiceImpl implements UserService {
         } else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
             result = "邮箱已存在";
         } else {
+            if (!user1.getUser_code().equals(user_code)){
+                updateCauseCodeChange(corp_code,user_code,user1.getUser_code());
+            }
             //若用户修改所属店铺，则删除该店铺员工的业绩目标
             for (int i = 0; i < store_code1.length; i++) {
                 if (!store_code.contains(store_code1[i])) {
@@ -580,5 +585,17 @@ public class UserServiceImpl implements UserService {
         users = userMapper.selectAllUserScreen(params);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
+    }
+
+    @Transactional
+    void updateCauseCodeChange(String corp_code ,String new_user_code,String old_user_code){
+        codeUpdateMapper.updateCalllback("",corp_code,new_user_code,old_user_code);
+
+        codeUpdateMapper.updateUserAchvGoal("",corp_code,"","",new_user_code,old_user_code);
+
+        codeUpdateMapper.updateSign("",corp_code,"","",new_user_code,old_user_code);
+
+        //若修改员工编号，对应修改权限中关联的群组编号
+        codeUpdateMapper.updatePrivilege("",corp_code,corp_code+new_user_code,corp_code+old_user_code);
     }
 }

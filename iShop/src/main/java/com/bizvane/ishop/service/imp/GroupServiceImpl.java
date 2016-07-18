@@ -97,8 +97,7 @@ public class GroupServiceImpl implements GroupService {
         Group group1 = selectByCode(corp_code, group_code, "");
         if (group2.getGroup_code().equals(group_code) || group1 == null) {
             if (!group2.getGroup_code().equals(group_code)){
-                //若修改群组编号，对应修改员工信息中关联的群组编号
-                codeUpdateMapper.updateUser("",corp_code,group_code,group2.getGroup_code(),"","","","");
+                updateCauseCodeChange(corp_code,group_code,group2.getGroup_code());
             }
             groupMapper.updateGroup(group);
             result = Common.DATABEAN_CODE_SUCCESS;
@@ -110,5 +109,14 @@ public class GroupServiceImpl implements GroupService {
 
     public int deleteGroup(int id) throws SQLException {
         return groupMapper.deleteByGroupId(id);
+    }
+
+    @Transactional
+    void updateCauseCodeChange(String corp_code ,String new_group_code,String old_group_code){
+        //若修改群组编号，对应修改员工信息中关联的群组编号
+        codeUpdateMapper.updateUser("",corp_code,new_group_code,old_group_code,"","","","");
+
+        //若修改群组编号，对应修改权限中关联的群组编号
+        codeUpdateMapper.updatePrivilege("",corp_code,corp_code+new_group_code,corp_code+old_group_code);
     }
 }

@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.System;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -53,6 +54,8 @@ public class StoreController {
 
     @Autowired
     private StoreService storeService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private CorpService corpService;
     @Autowired
@@ -347,8 +350,6 @@ public class StoreController {
                 list = storeService.getAllStore(request, page_number, page_size, "", search_value);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value);
-
-
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 String[] areaCodes = area_code.split(",");
@@ -460,8 +461,13 @@ public class StoreController {
             String corp_code = jsonObject.get("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_id = request.getSession().getAttribute("user_id").toString();
-
-            List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
+            List<User> user = new ArrayList<User>();
+            if (role_code.equals(Common.ROLE_STAFF)){
+                User user1 = userService.getUserById(Integer.parseInt(user_id));
+                user.add(user1);
+            }else {
+                user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(JSON.toJSONString(user));
