@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.Brand;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface BrandMapper {
     Brand selectByBrandId(int id);
@@ -25,4 +26,6 @@ public interface BrandMapper {
     int getGoodsCount(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code);
 
     int getStoresCount(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code);
+
+    List<Brand> selectAllBrandScreen(Map<String, Object> params);
 }

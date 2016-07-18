@@ -8,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/6/4.
@@ -23,9 +24,9 @@ public interface AreaService {
 
     List<Store> getAreaStore(String corp_code, String area_code) throws SQLException;
 
-    String insert(String message,String user_id) throws SQLException;
+    String insert(String message, String user_id) throws SQLException;
 
-    String update(String message,String user_id) throws SQLException;
+    String update(String message, String user_id) throws SQLException;
 
     int delete(int id) throws SQLException;
 
@@ -33,7 +34,9 @@ public interface AreaService {
 
     List<Area> getAreaByCorp(String corp_code);
 
-    Area selAreaByCorp(String corp_code,String area_code,String isactive);
+    Area selAreaByCorp(String corp_code, String area_code, String isactive);
 
     String insertExecl(Area area);
+
+    PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, Map<String, String> map);
 }

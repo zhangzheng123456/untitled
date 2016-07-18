@@ -30,4 +30,6 @@ public interface UserAchvGoalMapper {
     List<UserAchvGoal> selectUserAchvCount(@Param("corp_code") String corp_code, @Param("user_code") String user_code);
 
     int deleteStoreUserAchv(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("user_code") String user_code);
+
+    List<UserAchvGoal> selectAllUserAchvScreen(Map<String, Object> params);
 }

@@ -9,6 +9,7 @@ import org.json.JSONObject;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -57,4 +58,6 @@ public interface UserService {
     List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code);
 
     int selectCount(String created_date);
+
+    PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map);
 }

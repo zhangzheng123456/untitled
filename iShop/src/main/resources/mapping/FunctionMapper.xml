@@ -13,7 +13,7 @@
         and isactive = 'Y')
         and ISACTIVE = 'Y'
         AND show_order IS NOT NULL
-        AND show_order != ""
+        AND show_order != ''
         order by show_order
     </select>
 

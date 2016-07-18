@@ -49,6 +49,8 @@ public class UserServiceImpl implements UserService {
     IceInterfaceService iceInterfaceService;
     @Autowired
     UserAchvGoalMapper userAchvGoalMapper;
+    @Autowired
+    CodeUpdateMapper codeUpdateMapper;
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas,"");
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -233,9 +235,13 @@ public class UserServiceImpl implements UserService {
         } else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
             result = "邮箱已存在";
         } else {
+            if (!user1.getUser_code().equals(user_code)){
+                updateCauseCodeChange(corp_code,user_code,user1.getUser_code());
+            }
+            //若用户修改所属店铺，则删除该店铺员工的业绩目标
             for (int i = 0; i < store_code1.length; i++) {
-                if (!store_code.contains(store_code1[i])){
-                    userAchvGoalMapper.deleteStoreUserAchv(corp_code,store_code1[i],user_code);
+                if (!store_code.contains(store_code1[i])) {
+                    userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);
                 }
             }
             userMapper.updateByUserId(user);
@@ -545,5 +551,51 @@ public class UserServiceImpl implements UserService {
 
     public int selectCount(String created_date) {
         return userMapper.selectCount(created_date);
+    }
+
+    @Override
+    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) {
+        String area_codes[] = null;
+        String store_codes[] = null;
+        if (!store_code.equals("")) {
+            store_codes = store_code.split(",");
+            for (int i = 0; store_codes != null && i < store_codes.length; i++) {
+                store_codes[i] = store_codes[i].substring(1, store_codes[i].length());
+            }
+        }
+        if (!area_code.equals("")) {
+            area_codes = area_code.split(",");
+            for (int i = 0; area_code != null && i < area_code.length(); i++) {
+                area_codes[i] = area_codes[i].substring(1, store_codes[i].length());
+            }
+            List<Store> stores = storeService.selectByAreaCode(corp_code, area_codes, "");
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < stores.size(); i++) {
+                sb.append(stores.get(i).getStore_code() + ",");
+            }
+            store_codes = sb.toString().split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("array", store_codes);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        List<User> users;
+        PageHelper.startPage(page_number, page_size);
+        users = userMapper.selectAllUserScreen(params);
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
+    @Transactional
+    void updateCauseCodeChange(String corp_code ,String new_user_code,String old_user_code){
+        codeUpdateMapper.updateCalllback("",corp_code,new_user_code,old_user_code);
+
+        codeUpdateMapper.updateUserAchvGoal("",corp_code,"","",new_user_code,old_user_code);
+
+        codeUpdateMapper.updateSign("",corp_code,"","",new_user_code,old_user_code);
+
+        //若修改员工编号，对应修改权限中关联的群组编号
+        codeUpdateMapper.updatePrivilege("",corp_code,corp_code+new_user_code,corp_code+old_user_code);
     }
 }

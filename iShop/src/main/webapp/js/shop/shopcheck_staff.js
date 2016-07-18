@@ -155,14 +155,19 @@ function jumpBianse(){
         oc.postRequire("post","/shop/staff/delete","0",param,function(data){
             if(data.code=="0"){
                 if(value==""){
-                    frame();
-                    $('.frame').html('删除成功');
-                    GET(); 
+                   frame();
+                   $('.frame').html('删除成功');
+                   GET(); 
                 }else if(value!==""){
-                    frame();
-                    $('.frame').html('删除成功');
-                    POST();
+                   frame();
+                   $('.frame').html('删除成功');
+                   POST();
                 }
+            var thinput=$("thead input")[0];
+            thinput.checked =false;
+            }else if(data.code=="-1"){
+                frame();
+                $('.frame').html(data.message);
             }
         })
     })

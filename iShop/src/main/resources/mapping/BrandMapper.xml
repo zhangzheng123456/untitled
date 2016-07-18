@@ -181,5 +181,21 @@
     <select id="getStoresCount" resultType="java.lang.Integer">
         select count(*) from def_store where brand_code=#{brand_code} and corp_code=#{corp_code}
     </select>
-
+    <select id="selectAllBrandScreen" resultMap="Brand">
+        select
+        db.*,
+        dc.corp_name
+        from
+        DEF_BRAND db,
+        DEF_COPR dc
+        where db.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND db.corp_code=#{corp_code}
+        </if>
+        AND 
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="or" close=")">
+            ${entryKey} LIKE concat('%',#{entryValue},'%')
+        </foreach>
+        ORDER BY db.id desc
+    </select>
 </mapper>

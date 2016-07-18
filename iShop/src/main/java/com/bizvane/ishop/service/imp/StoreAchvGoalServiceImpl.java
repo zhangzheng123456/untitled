@@ -6,6 +6,7 @@ import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.StoreAchvGoalService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.ognl.ObjectElementsAccessor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,28 +38,28 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code,String area_code,String store_code, String search_value)
+    public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String store_code, String search_value)
             throws SQLException {
-        String[] area_codes =null;
+        String[] area_codes = null;
         String[] store_codes = null;
 
-        if (!area_code.equals("")){
+        if (!area_code.equals("")) {
             area_codes = area_code.split(",");
             for (int i = 0; i < area_codes.length; i++) {
                 area_codes[i] = area_codes[i].substring(1, area_codes[i].length());
             }
         }
-        if(!store_code.equals("")){
-           store_codes = store_code.split(",");
+        if (!store_code.equals("")) {
+            store_codes = store_code.split(",");
             for (int i = 0; i < store_codes.length; i++) {
                 store_codes[i] = store_codes[i].substring(1, store_codes[i].length());
             }
         }
-        Map<String, Object> params =  new HashMap<String, Object>();
-        params.put("corp_code",corp_code);
-        params.put("area_codes",area_codes);
-        params.put("store_codes",store_codes);
-        params.put("search_value",search_value);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_codes", area_codes);
+        params.put("store_codes", store_codes);
+        params.put("search_value", search_value);
         List<StoreAchvGoal> storeAchvGoals;
         PageHelper.startPage(page_number, page_size);
         storeAchvGoals = storeAchvGoalMapper.selectBySearch(params);
@@ -78,6 +79,48 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         }
         return Common.DATABEAN_CODE_ERROR;
     }
+
+    @Override
+    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map) {
+        String[] area_codes = null;
+        String[] store_codes = null;
+        if (!area_code.equals("")) {
+            area_codes = area_code.split(",");
+            for (int i = 0; area_codes != null && area_codes.length > i; i++) {
+                area_codes[i] = area_codes[i].substring(1, area_codes.length);
+            }
+        }
+        if (!store_code.equals("")) {
+            store_codes = store_code.split(",");
+            for (int i = 0; store_codes != null && i < area_codes.length; i++) {
+                store_codes[i] = store_codes[i].substring(1, store_codes[i].length());
+            }
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_codes", area_codes);
+        params.put("store_codes", store_codes);
+        params.put("map", map);
+        List<StoreAchvGoal> storeAchvGoals;
+        PageHelper.startPage(page_number, page_size);
+        storeAchvGoals = storeAchvGoalMapper.selectAllStoreAchvScreen(params);
+        PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
+        return page;
+    }
+
+
+//    @Override
+//    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String search_value,Map<String, String> map) {
+//        Map<String, Object> params = new HashMap<String, Object>();
+//        params.put("map", map);
+//        params.put("role_code", role_code);
+//        params.put("corp_code", corp_code);
+//        List<StoreAchvGoal> storeAchvGoals;
+//        PageHelper.startPage(page_number, page_size);
+//        storeAchvGoals = storeAchvGoalMapper.selectAllStoreAchvScreen(params);
+//        PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
+//        return page;
+//    }
 
     @Override
     public int deleteById(int id) {

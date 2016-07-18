@@ -359,4 +359,35 @@
         AND corp_code = #{corp_code}
     </select>
 
+
+    <select id="selectAllStoreScreen" resultMap="Store">
+        select
+        ds.*,
+        dc.CORP_NAME,
+        da.AREA_NAME
+        from DEF_STORE ds,DEF_CORP dc ,DEF_AREA da
+        where ds.CORP_CODE = dc.CORP_CODE
+        AND ds.CORP_CODE = da.CORP_CODE
+        AND ds.AREA_CODE = da.AREA_CODE
+        <if test="corp_code!=null and corp_code!=null">
+            AND da.corp_code=#{corp_code}
+        </if>
+        <if test="area_codes!=null">
+            AND ds.area_code in
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="store_codes!=null">
+            AND ds.store_code in
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
+            ${entryKey} LIKE concat('%',#{entryValue},'%')
+        </foreach>
+        ORDER BY ds.id DESC
+    </select>
 </mapper>

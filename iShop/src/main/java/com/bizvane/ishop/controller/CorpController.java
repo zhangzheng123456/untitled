@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
@@ -14,6 +15,7 @@ import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -39,6 +41,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,6 +70,7 @@ public class CorpController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
+
     /*
     * 列表
     * */
@@ -328,7 +332,7 @@ public class CorpController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Store> list = storeService.getAllStore(request,page_number, page_size, corp_code, "");
+            PageInfo<Store> list = storeService.getAllStore(request, page_number, page_size, corp_code, "");
             result.put("stores", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -407,6 +411,7 @@ public class CorpController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 查出要导出的列
      */
@@ -433,6 +438,7 @@ public class CorpController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -465,10 +471,11 @@ public class CorpController {
 
         return dataBean.getJsonStr();
     }
+
     /***
      * Execl增加用户
      */
-    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -482,55 +489,55 @@ public class CorpController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             Cell[] column = rs.getColumn(0);
-            Pattern pattern=Pattern.compile("C\\d{5}");
-            for (int i = 3; i <column.length; i++) {
+            Pattern pattern = Pattern.compile("C\\d{5}");
+            for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
-                if(matcher.matches()==false){
-                    result ="第"+(i+1)+"列企业编号格式不对";
-                    int b=5/0;
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "列企业编号格式不对";
+                    int b = 5 / 0;
                     break;
                 }
                 Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString());
-                if(corp!=null){
-                    result ="第"+(i+1)+"列企业编号已存在";
-                    int b=5/0;
+                if (corp != null) {
+                    result = "第" + (i + 1) + "列企业编号已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
             Cell[] column1 = rs.getColumn(1);
-            for (int i = 3; i <column1.length; i++) {
+            for (int i = 3; i < column1.length; i++) {
                 String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString());
-                if(existInfo.contains(Common.DATABEAN_CODE_ERROR)){
-                    result ="第"+(i+1)+"列企业名称已存在";
-                    int b=5/0;
+                if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+                    result = "第" + (i + 1) + "列企业名称已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    Corp corp=new Corp();
-                    corp.setCorp_code(rs.getCell(j++,i).getContents());
-                    corp.setCorp_name(rs.getCell(j++,i).getContents());
-                    corp.setAddress(rs.getCell(j++,i).getContents());
-                    corp.setContact(rs.getCell(j++,i).getContents());
-                    corp.setContact_phone(rs.getCell(j++,i).getContents());
-                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                    Corp corp = new Corp();
+                    corp.setCorp_code(rs.getCell(j++, i).getContents());
+                    corp.setCorp_name(rs.getCell(j++, i).getContents());
+                    corp.setAddress(rs.getCell(j++, i).getContents());
+                    corp.setContact(rs.getCell(j++, i).getContents());
+                    corp.setContact_phone(rs.getCell(j++, i).getContents());
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
                         corp.setIsactive("Y");
-                    }else{
+                    } else {
                         corp.setIsactive("N");
                     }
                     corp.setCreater(user_id);
                     Date now = new Date();
                     corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    result =  corpService.insertExecl(corp);
+                    result = corpService.insertExecl(corp);
 
                 }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }catch (Exception e){
-            System.out.println(result+"--错错错--");
+        } catch (Exception e) {
+            System.out.println(result + "--错错错--");
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -539,6 +546,7 @@ public class CorpController {
 
         return dataBean.getJsonStr();
     }
+
     @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)
     @ResponseBody
     public String isAuthorize(HttpServletRequest request) {
@@ -564,6 +572,41 @@ public class CorpController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 企业管理
+     * 筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String screen = jsonObject.get("screen").toString();
+            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<Corp> list = corpService.selectAllCorpScreen(page_number, page_size, map);
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }

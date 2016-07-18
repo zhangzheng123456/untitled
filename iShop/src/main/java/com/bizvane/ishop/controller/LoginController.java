@@ -364,7 +364,7 @@ public class LoginController {
         try {
             JSONArray cols = new JSONArray();
             String function_code = request.getParameter("funcCode");
-            List<TableManager> col = tableManagerService.selByCode(function_code,"Y");
+            List<TableManager> col = tableManagerService.selByCode(function_code);
             for (int i = 0; i < col.size(); i++) {
                 TableManager table = col.get(i);
                 String col_name = table.getColumn_name();
@@ -379,29 +379,6 @@ public class LoginController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(filter.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
-
-    public String listFilter(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_id").toString();
-        try {
-            String jsString = request.getParameter("param");
-            System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONArray array = JSONArray.parseArray(message);
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

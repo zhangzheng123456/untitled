@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/6/4.
@@ -34,4 +35,6 @@ public interface BrandService {
     int getGoodsCount(String corp_code, String brand_code) throws SQLException;
 
     int getStoresCount(String corp_code, String brand_code) throws SQLException;
+
+    PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map);
 }

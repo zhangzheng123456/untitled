@@ -679,6 +679,7 @@ input::-webkit-input-placeholder{
 .file{
 	background: #f4f4f4; 
 	overflow: hidden;
+	display: none;
 }
 .file li{
 	height: 30px;

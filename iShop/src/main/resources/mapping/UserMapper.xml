@@ -468,23 +468,53 @@
         </trim>
         WHERE ID = #{id};
     </update>
-<!--
-    <select id="selectUserName" resultType="com.bizvane.ishop.entity.User">
-        select * from DEF_USER
-        WHERE user_name=#{user_name} and user_code=#{user_code}
-    </select>
+    <!--
+        <select id="selectUserName" resultType="com.bizvane.ishop.entity.User">
+            select * from DEF_USER
+            WHERE user_name=#{user_name} and user_code=#{user_code}
+        </select>
 
-    <select id="selectPhone" resultType="com.bizvane.ishop.entity.User">
-        select * from DEF_USER
-        WHERE phone=#{phone} and corp_code=#{corp_code}
-    </select>
--->
+        <select id="selectPhone" resultType="com.bizvane.ishop.entity.User">
+            select * from DEF_USER
+            WHERE phone=#{phone} and corp_code=#{corp_code}
+        </select>
+    -->
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT count(1) from DEF_USER
         WHERE 1=1
         <if test="created_date !=''">
             AND created_date LIKE concat(#{created_date},'%')
         </if>
+    </select>
+
+    <select id="selectAllUserScreen" resultMap="UserInfo">
+        select
+        du.*,
+        dg.group_name,
+        dc.corp_name
+        from
+        def_user du,
+        def_corp dc,
+        def_group dg,
+        where
+        du.corp_code=dc.corp_code
+        and du.corp_code=du.dg.corp_code
+        and du.group_code=dg.group_code
+        <if test="corp_code!=null and corp_code!=''">
+            and du.corp_code=#{corp_code}
+        </if>
+        <if test="role_code!=null and role_code!=''">
+            and dg.role_code &lt;#{role_code}
+        </if>
+        AND
+        <foreach collection="array" index="index" item="item" open="(" separator="AND" close=")">
+            store_code regexp #{item}
+        </foreach>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            ${entryKey} LIKE concat('%',#{entryValue},'%')
+        </foreach>
+        ORDER BY du.id DESC
     </select>
 
 </mapper>

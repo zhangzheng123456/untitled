@@ -72,7 +72,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content: "所属区域不能为空"
+						content: "所属品牌不能为空"
 					});
 					return;
 				}
@@ -127,7 +127,7 @@ var oc = new ObjectControl();
 				var OWN_BRAND=$("#OWN_BRAND").attr("data-mybcode");
 				var STORE_ID=$("#STORE_ID").val();
 				var STORE_NAME=$("#STORE_NAME").val();
-				var is_zhiying=$("#FLG_TOB").val();\
+				var is_zhiying=$("#FLG_TOB").val();
 				if(OWN_AREA==""){
 					art.dialog({
 						time: 1,
@@ -142,7 +142,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content: "所属区域不能为空"
+						content: "所属品牌不能为空"
 					});
 					return;
 				}

@@ -10,5 +10,5 @@ import java.util.List;
 public interface TableManagerService {
     List<TableManager> selAllByCode(String function_code);
 
-    List<TableManager> selByCode(String function_code,String is_select);
+    List<TableManager> selByCode(String function_code);
 }

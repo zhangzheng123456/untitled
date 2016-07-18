@@ -61,7 +61,7 @@
                         </span>
                     </div>
                     <div class="drop_down item_1" >
-                        <span><label>季度</label><input type="text" class="input_select" id="GOODS_QUARTER" placeholder="请选择季度" readonly/></span>
+                        <span><label>季度</label><input type="text" value="第一季度" class="input_select" id="GOODS_QUARTER" placeholder="请选择季度" readonly/></span>
                         <ul style="margin-left:123px">
                             <li>第一季度</li>
                             <li>第二季度</li>
@@ -70,7 +70,7 @@
                         </ul>
                     </div>
                     <div>
-                         <span><label>波段</label><input type="text" id="GOODS_BAND" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="商品名称不能为空！"></div></div>
+                         <span><label>波段</label><input type="text" id="GOODS_BAND" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="波段不能为空！"></div></div>
                          </span>
                     </div>
                     <div>
@@ -85,7 +85,9 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label>发布时间</label><input type="text" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" /></span>
+                        <span><label>发布时间</label><input type="text" verify="Empty" id="GOODS_RELEASETIME" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})" />
+                        <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
+                        </span>
                     </div>
                     <div>
                     <span style="display: inline-flex;width:100%"><label style="height:180px;">商品卖点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOODS_BUYPOINT"></textarea></span></span>

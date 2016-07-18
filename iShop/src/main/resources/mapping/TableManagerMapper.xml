@@ -11,6 +11,8 @@
     <select id="selByCode" resultType="com.bizvane.ishop.entity.TableManager">
         SELECT * FROM def_table_manager
         WHERE FUNCTION_CODE=#{function_code}
-        AND is_filter = #{is_filter}
+        AND filter_weight IS NOT NULL
+        AND filter_weight != ''
+        ORDER BY filter_weight
     </select>
  </mapper>

@@ -189,4 +189,18 @@
             AND isactive = #{isactive}
         </if>
     </select>
+
+    <select id="selectAllAreaScreen" resultMap="Area">
+        SELECT *
+        FROM DEF_AREA da,DEF_CORP dc
+        WHERE da.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND da.corp_code=#{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="AND">
+            ${entryKey} LIKE concat('%',${entryValue},'%')
+        </foreach>
+        ORDER BY da.id
+    </select>
 </mapper>

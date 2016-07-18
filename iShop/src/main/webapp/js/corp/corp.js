@@ -408,6 +408,8 @@ $("#delete").click(function(){
                $('.frame').html('删除成功');
                POST();
             }
+        var thinput=$("thead input")[0];
+        thinput.checked =false;
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
@@ -453,6 +455,7 @@ function clearAll(name){
 };
 //导出
 $("#leading_out").click(function(){
+    $('.file').show();
     var param={};
     param["function_code"]=funcCode;
     oc.postRequire("post","/corp/getCols","0",param,function(data){
@@ -484,7 +487,31 @@ $("#file_submit").click(function(){
         }     
     }
     param["column_name"]=column_name;
-    oc.postRequire("get","/corp/exportExecl","0",param,function(data){
-        console.log(data);
-    })
+    var _params = {
+            "id":"",
+            "message":param
+        };
+    console.log(_params);
+        jQuery.ajax({
+            url:"/corp/exportExecl",
+            type:"get",
+            data:{param:JSON.stringify(_params)},
+            dataType:'',
+            success:function(data){
+                if(data){
+                    console.log(data);
+                }else{
+                }
+            },
+            error:function(data){
+                console.log(data);
+            }
+        });
+    // oc.postRequire("get","/corp/exportExecl","0",param,function(data){
+    //     console.log(data);
+    // })
+})
+//导出关闭按钮
+$('.file_close').click(function(){
+    $('.file').hide();
 })

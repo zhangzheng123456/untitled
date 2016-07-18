@@ -13,6 +13,7 @@ import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -36,6 +37,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -411,7 +413,7 @@ public class AreaController {
     @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
-        DataBean dataBean=new DataBean();
+        DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -429,25 +431,28 @@ public class AreaController {
             List<Area> areas = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
+
             OutExeclHelper.OutExecl(areas,cols,response,request);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");
-        }catch (Exception e){
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(e.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * Execl增加用户
      */
-    @RequestMapping(value="/addByExecl",method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
-        DataBean dataBean=new DataBean();
+        DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -457,52 +462,52 @@ public class AreaController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            Pattern pattern=Pattern.compile("A\\d{4}");
+            Pattern pattern = Pattern.compile("A\\d{4}");
             Cell[] column = rs.getColumn(0);
-            for (int i = 3; i <column.length; i++) {
+            for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
-                if(matcher.matches()==false){
-                    result ="第"+(i+1)+"列区域编号格式不对";
-                    int b=5/0;
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "列区域编号格式不对";
+                    int b = 5 / 0;
                     break;
                 }
                 Area area = areaService.getAreaByCode(corp_code, column[i].getContents().toString());
-                if(area!=null){
-                    result ="第"+(i+1)+"列区域编号已存在";
-                    int b=5/0;
+                if (area != null) {
+                    result = "第" + (i + 1) + "列区域编号已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
             Cell[] column1 = rs.getColumn(1);
-            for (int i = 3; i <column1.length; i++) {
+            for (int i = 3; i < column1.length; i++) {
                 Area area = areaService.getAreaByName(corp_code, column1[i].getContents().toString());
-                if(area!=null){
-                    result ="第"+(i+1)+"列区域名称已存在";
-                    int b=5/0;
+                if (area != null) {
+                    result = "第" + (i + 1) + "列区域名称已存在";
+                    int b = 5 / 0;
                     break;
                 }
             }
-            for(int i=3;i < rows;i++) {
+            for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
-                    Area area=new Area();
+                    Area area = new Area();
                     area.setCorp_code(corp_code);
-                    area.setArea_code(rs.getCell(j++,i).getContents());
-                    area.setArea_name(rs.getCell(j++,i).getContents());
-                    if(rs.getCell(j++,i).getContents().toString().toUpperCase().equals("Y")){
+                    area.setArea_code(rs.getCell(j++, i).getContents());
+                    area.setArea_name(rs.getCell(j++, i).getContents());
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
                         area.setIsactive("Y");
-                    }else{
+                    } else {
                         area.setIsactive("N");
                     }
                     area.setCreater(user_id);
                     Date now = new Date();
                     area.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    result=areaService.insertExecl(area);
+                    result = areaService.insertExecl(area);
                 }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -511,4 +516,46 @@ public class AreaController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 区域管理
+     * 筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String Screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String screen = jsonObject.get("screen").toString();
+            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<Area> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = areaService.getAllAreaScreen(page_number, page_size, "", map);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = areaService.getAllAreaScreen(page_number, page_size, corp_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
     }
+
+}

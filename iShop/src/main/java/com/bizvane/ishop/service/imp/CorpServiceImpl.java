@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
+import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.service.CorpService;
@@ -14,7 +15,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2016/5/23.
@@ -23,6 +26,9 @@ import java.util.List;
 public class CorpServiceImpl implements CorpService {
     @Autowired
     private CorpMapper corpMapper;
+
+    @Autowired
+    private CodeUpdateMapper codeUpdateMapper;
 
     @Autowired
     private AreaMapper areaMapper;
@@ -69,14 +75,18 @@ public class CorpServiceImpl implements CorpService {
 
     @Transactional
     public String update(String message, String user_id) throws SQLException {
+        String new_code = null;
+        String old_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int corp_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String corp_code = jsonObject.get("corp_code").toString();
+        new_code = corp_code;
         String corp_name = jsonObject.get("corp_name").toString();
 
         Corp corp = selectByCorpId(corp_id, "");
+        old_code = corp.getCorp_code();
         Corp corp1 = selectByCorpId(0, corp_code);
         String exist = getCorpByCorpName(corp_name);
 
@@ -95,7 +105,10 @@ public class CorpServiceImpl implements CorpService {
             Date now = new Date();
             corp.setModified_date(Common.DATETIME_FORMAT.format(now));
             corp.setModifier(user_id);
-            corpMapper.updateByCorpId(corp);
+
+            if (corpMapper.updateByCorpId(corp) > 0 && (!new_code.equals(old_code))) {
+                updateCorpcode(old_code, new_code);
+            }
             result = Common.DATABEAN_CODE_SUCCESS;
         } else if (!corp.getCorp_code().equals(corp_code) || corp1 != null) {
             result = "企业编号已存在";
@@ -103,6 +116,45 @@ public class CorpServiceImpl implements CorpService {
             result = "企业名称已存在";
         }
         return result;
+    }
+
+    /**
+     * 更改其他表中的corp_code
+     * def_app_version
+     * def_area
+     * def_brand
+     * def_cache
+     * def_corp
+     * def_corp_cfg
+     *
+     * @param old_corp_code
+     * @param new_corp_code
+     */
+    @Transactional
+    private void updateCorpcode(String old_corp_code, String new_corp_code) {
+        if (old_corp_code.equals(new_corp_code)) {
+            return;
+        }
+        codeUpdateMapper.updateAppVersion(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateCache(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateGoods(new_corp_code, old_corp_code, "", "");
+        codeUpdateMapper.updateGroup(new_corp_code, old_corp_code, "", "");
+        codeUpdateMapper.updateInterface(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateMessage(new_corp_code, old_corp_code);
+        codeUpdateMapper.updatePraise(new_corp_code, old_corp_code, "", "");
+        codeUpdateMapper.updateSms_template(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateStaff_detailInfo(new_corp_code, old_corp_code, "", "", "", "");
+        codeUpdateMapper.updateStaff_move_log(new_corp_code, old_corp_code, "", "");
+        codeUpdateMapper.updateStore(new_corp_code, old_corp_code, "", "", "", "");
+        codeUpdateMapper.updateStoreAchvGoal(new_corp_code, old_corp_code, "", "");
+        codeUpdateMapper.updateUser(new_corp_code, old_corp_code, "", "", "", "", "", "");
+        codeUpdateMapper.updateUserAchvGoal(new_corp_code, old_corp_code, "", "", "", "");
+        codeUpdateMapper.updateUser_message(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateVipAlbum(new_corp_code, old_corp_code, "", "");
+        codeUpdateMapper.updateVipMessage(new_corp_code, old_corp_code, "", "", "", "");
+        codeUpdateMapper.updateVipRecord(new_corp_code, old_corp_code, "", "", "", "");
+        codeUpdateMapper.updateVipRecordType(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateVipLabel(new_corp_code, old_corp_code);
     }
 
     @Transactional
@@ -124,6 +176,16 @@ public class CorpServiceImpl implements CorpService {
     public String insertExecl(Corp corp) {
         corpMapper.insertCorp(corp);
         return "add success";
+    }
+
+    @Override
+    public PageInfo<Corp> selectAllCorpScreen(int page_number, int page_size, Map<String, String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<Corp> list = corpMapper.selectAllCorpScreen(params);
+        PageInfo<Corp> page = new PageInfo<Corp>();
+        return page;
     }
 
     /**
@@ -193,7 +255,7 @@ public class CorpServiceImpl implements CorpService {
         return corpMapper.getMessageTypeCount(corp_code);
     }
 
-    public int selectCount(String create_date){
+    public int selectCount(String create_date) {
         return corpMapper.selectCount(create_date);
     }
 }

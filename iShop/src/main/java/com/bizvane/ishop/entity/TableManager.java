@@ -9,7 +9,7 @@ public class TableManager {
     private String column_name;
     private String show_name;
     private String is_show;
-    private String is_filter;
+    private String filter_weight;
 
     public int getId() {
         return id;
@@ -51,11 +51,11 @@ public class TableManager {
         this.column_name = column_name;
     }
 
-    public String getIs_filter() {
-        return is_filter;
+    public String getFilter_weight() {
+        return filter_weight;
     }
 
-    public void setIs_filter(String is_filter) {
-        this.is_filter = is_filter;
+    public void setFilter_weight(String filter_weight) {
+        this.filter_weight = filter_weight;
     }
 }

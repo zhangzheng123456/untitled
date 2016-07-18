@@ -34,4 +34,6 @@ public interface StoreMapper {
     int selectAchCount(@Param("corp_code") String corp_code,@Param("store_code") String store_code);
 
     List<Store> selectByAreaCode(Map<String, Object> params);
+
+    List<Store> selectAllStoreScreen(Map<String, Object> params);
 }
