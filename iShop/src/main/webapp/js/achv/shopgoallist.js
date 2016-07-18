@@ -414,6 +414,8 @@ $("#delete").click(function(){
                $('.frame').html('删除成功');
                POST();
             }
+        var thinput=$("thead input")[0];
+        thinput.checked =false;
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
