@@ -136,20 +136,20 @@ public class CorpServiceImpl implements CorpService {
             return;
         }
         codeUpdateMapper.updateAppVersion(new_corp_code, old_corp_code);
-        codeUpdateMapper.updateCache(new_corp_code, old_corp_code);
+        //   codeUpdateMapper.updateCache(new_corp_code, old_corp_code);
         codeUpdateMapper.updateGoods(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateGroup(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateInterface(new_corp_code, old_corp_code);
-        codeUpdateMapper.updateMessage(new_corp_code, old_corp_code);
+     //   codeUpdateMapper.updateMessage(new_corp_code, old_corp_code);
         codeUpdateMapper.updatePraise(new_corp_code, old_corp_code, "", "");
-        codeUpdateMapper.updateSms_template(new_corp_code, old_corp_code);
-        codeUpdateMapper.updateStaff_detailInfo(new_corp_code, old_corp_code, "", "", "", "");
-        codeUpdateMapper.updateStaff_move_log(new_corp_code, old_corp_code, "", "");
+        codeUpdateMapper.updateSmsTemplate(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateStaffDetailInfo(new_corp_code, old_corp_code, "", "", "", "");
+        codeUpdateMapper.updateStaffMoveLog(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateStore(new_corp_code, old_corp_code, "", "", "", "");
         codeUpdateMapper.updateStoreAchvGoal(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateUser(new_corp_code, old_corp_code, "", "", "", "", "", "");
         codeUpdateMapper.updateUserAchvGoal(new_corp_code, old_corp_code, "", "", "", "");
-        codeUpdateMapper.updateUser_message(new_corp_code, old_corp_code);
+        codeUpdateMapper.updateUserMessage(new_corp_code, old_corp_code);
         codeUpdateMapper.updateVipAlbum(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateVipMessage(new_corp_code, old_corp_code, "", "", "", "");
         codeUpdateMapper.updateVipRecord(new_corp_code, old_corp_code, "", "", "", "");
