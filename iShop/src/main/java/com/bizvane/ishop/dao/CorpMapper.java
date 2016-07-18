@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.Corp;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface CorpMapper {
 
@@ -38,4 +39,6 @@ public interface CorpMapper {
     int getGroupCount(@Param("corp_code") String corp_code);
 
     int getMessageTypeCount(@Param("corp_code") String corp_code);
+
+    List<Corp> selectAllCorpScreen(Map<String, Object> params);
 }
