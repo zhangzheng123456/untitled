@@ -239,7 +239,7 @@ public class SignController {
             List<Sign> signs = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(signs,cols,response);
+            OutExeclHelper.OutExecl(signs,cols,response,request);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");

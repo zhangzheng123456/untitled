@@ -248,7 +248,7 @@ public class ValidateCodeController {
             List<ValidateCode> validateCodes = validateCodeService.selectAll();
             String column_name =request.getParameter("column_name");
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(validateCodes,cols,response);
+            OutExeclHelper.OutExecl(validateCodes,cols,response,request);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");

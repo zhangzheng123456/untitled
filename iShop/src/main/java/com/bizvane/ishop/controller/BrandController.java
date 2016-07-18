@@ -421,7 +421,7 @@ public class BrandController {
             List<Brand> brands = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(brands, cols, response);
+            OutExeclHelper.OutExecl(brands, cols, response,request);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("word success");
