@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
+import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Store;
@@ -29,6 +30,9 @@ public class AreaServiceImpl implements AreaService {
     AreaMapper areaMapper;
     @Autowired
     StoreMapper storeMapper;
+
+    @Autowired
+    CodeUpdateMapper codeUpdateMapper;
 
     /**
      * 根据区域id
@@ -108,15 +112,19 @@ public class AreaServiceImpl implements AreaService {
     @Override
     @Transactional
     public String update(String message, String user_id) throws SQLException {
+        String old_area_code = null;
+        String new_area_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int area_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String area_code = jsonObject.get("area_code").toString();
+        new_area_code = area_code;
         String corp_code = jsonObject.get("corp_code").toString();
         String area_name = jsonObject.get("area_name").toString();
 
         Area area = getAreaById(area_id);
+        old_area_code = area.getArea_code();
         Area area1 = getAreaByCode(corp_code, area_code);
         Area area2 = getAreaByName(corp_code, area_code);
 
@@ -131,7 +139,9 @@ public class AreaServiceImpl implements AreaService {
             area.setModified_date(Common.DATETIME_FORMAT.format(now));
             area.setModifier(user_id);
             area.setIsactive(jsonObject.get("isactive").toString());
-            areaMapper.updateArea(area);
+            if (areaMapper.updateArea(area) > 0 && !new_area_code.equals(old_area_code)) {
+                updateAreaCode(corp_code, new_area_code, old_area_code);
+            }
             result = Common.DATABEAN_CODE_SUCCESS;
         } else if (!area.getArea_code().equals(area_code) && area1 != null) {
             result = "区域编号已存在";
@@ -139,6 +149,11 @@ public class AreaServiceImpl implements AreaService {
             result = "区域名称已存在";
         }
         return result;
+    }
+
+    private void updateAreaCode(String corp_code, String new_area_code, String old_area_code) {
+        codeUpdateMapper.updateUser("", corp_code, "", "", "", "", new_area_code, old_area_code);
+        codeUpdateMapper.updateStore("", corp_code, "", "", new_area_code, old_area_code);
     }
 
     @Override
