@@ -126,6 +126,24 @@ var oc = new ObjectControl();
 				var user_name=$("#STAFF_NAME").find("option:selected").text();//员工名称
 				var DATE="";//日期
 				var TIME_TYPE="";//日期类型
+				if(SHOP_ID==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: "店铺名称不能为空"
+					});
+					return;
+				}
+				if(user_code==null){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content: "员工名称不能为空"
+					});
+					return;
+				}
 				if(TIME_TYPE1!=="年"&&TIME_TYPE1!=="月"){
 					DATE=$("#GOODS_RELEASETIME").val();
 					if(DATE==""){
