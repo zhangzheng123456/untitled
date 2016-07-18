@@ -8,6 +8,7 @@ import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.IshowHttpClient;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -31,6 +32,7 @@ import java.lang.System;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -254,13 +256,13 @@ public class StoreController {
                 Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
                 String store_code = store.getStore_code();
                 String corp_code = store.getCorp_code();
-                List<User> user = storeService.getStoreUser(corp_code, store_code,role_code,user_id);
+                List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
                 count = user.size();
                 if (count > 0) {
                     msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
                     break;
                 }
-                count = storeService.selectAchCount(corp_code,store.getStore_code());
+                count = storeService.selectAchCount(corp_code, store.getStore_code());
                 if (count > 0) {
                     msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除！";
                     break;
@@ -459,7 +461,7 @@ public class StoreController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_id = request.getSession().getAttribute("user_id").toString();
 
-            List<User> user = storeService.getStoreUser(corp_code, store_code, role_code,user_id);
+            List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(JSON.toJSONString(user));
@@ -677,7 +679,7 @@ public class StoreController {
                     }
                 }
                 dataBean.setId(id);
-                dataBean.setMessage(corp_name+"企业未授权");
+                dataBean.setMessage(corp_name + "企业未授权");
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 return dataBean.getJsonStr();
             }
@@ -856,6 +858,53 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 店铺管理
+     * 筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String Screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String screen = jsonObject.get("screen").toString();
+            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String role_code = request.getSession(false).getAttribute("corp_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<Store> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = storeService.getAllStoreScreen(page_number, page_size, "", "", "", map);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "", "", map);
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                String area_codes = request.getSession(false).getAttribute("area_code").toString();
+                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, area_codes, "", map);
+            } else {
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = storeService.getAllStoreScreen(page_number, page_size, corp_code, "", store_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
