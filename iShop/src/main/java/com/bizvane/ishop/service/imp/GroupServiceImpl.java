@@ -121,6 +121,6 @@ public class GroupServiceImpl implements GroupService {
         codeUpdateMapper.updateUser("",corp_code,new_group_code,old_group_code,"","","","");
 
         //若修改群组编号，对应修改权限中关联的群组编号
-        codeUpdateMapper.updatePrivilege("",corp_code,corp_code+new_group_code,corp_code+old_group_code);
+        codeUpdateMapper.updatePrivilege(corp_code+new_group_code,corp_code+old_group_code);
     }
 }

@@ -587,15 +587,29 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
+    /**
+     * 更改员工编号时
+     * 级联更改关联此编号的回访记录，员工业绩目标，签到，权限列表
+     */
     @Transactional
     void updateCauseCodeChange(String corp_code ,String new_user_code,String old_user_code){
-        codeUpdateMapper.updateCalllback("",corp_code,new_user_code,old_user_code);
+        //若修改员工编号，对应修改回访记录中关联的用户编号
+        codeUpdateMapper.updateVipRecord("",corp_code,"","",new_user_code,old_user_code);
 
+        //若修改员工编号，对应修改员工业绩目标中关联的用户编号
         codeUpdateMapper.updateUserAchvGoal("",corp_code,"","",new_user_code,old_user_code);
 
+        //若修改员工编号，对应修改签到中关联的用户编号
         codeUpdateMapper.updateSign("",corp_code,"","",new_user_code,old_user_code);
 
-        //若修改员工编号，对应修改权限中关联的群组编号
-        codeUpdateMapper.updatePrivilege("",corp_code,corp_code+new_user_code,corp_code+old_user_code);
+        //若修改员工编号，对应修改权限中关联的用户编号
+        codeUpdateMapper.updatePrivilege(corp_code+new_user_code,corp_code+old_user_code);
+
+        codeUpdateMapper.updateVipMessage("",corp_code,"","",new_user_code,old_user_code);
+
+        codeUpdateMapper.updateStaffMoveLog("",corp_code,new_user_code,old_user_code);
+
+        codeUpdateMapper.updateStaffDetailInfo("",corp_code,new_user_code,old_user_code,"","");
+
     }
 }
