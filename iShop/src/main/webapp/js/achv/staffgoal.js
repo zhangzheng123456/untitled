@@ -20,7 +20,7 @@ var oc = new ObjectControl();
 		}
 	};
 	staffgoaljs.checkNumber=function(obj,hint){
-		var isCode=/^[0-9]*$/;
+		var isCode=/^[0-9]+([.]{1}[0-9]+){0,1}$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
 				this.hiddenHint(hint);
