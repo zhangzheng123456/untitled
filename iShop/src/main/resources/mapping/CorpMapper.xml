@@ -213,7 +213,7 @@
         SELECT COUNT(1) FROM DEF_CORP
         WHERE 1=1
         <if test="created_date !=''">
-           AND created_date LIKE concat(#{created_date},'%')
+            AND created_date LIKE concat(#{created_date},'%')
         </if>
     </select>
 
@@ -233,6 +233,17 @@
     <select id="selectByAppUserName" resultType="com.bizvane.ishop.entity.Corp">
        SELECT * FROM DEF_CORP
         WHERE APP_USER_NAME = #{app_user_name}
+    </select>
+
+    <select id="selectAllCorpScreen" resultMap="CorpInfo">
+        select *
+        from DEF_CORP
+        where
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            #{entryKey} LIKE concat('%',#{entryValue},'%')
+        </foreach>
+        ORDER BY id DESC
+
     </select>
 
 </mapper>

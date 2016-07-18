@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by maoweidong on 2016/2/15.
@@ -46,4 +47,6 @@ public interface CorpService {
     int selectCount(String create_date);
 
     String insertExecl(Corp corp);
+
+    PageInfo<Corp> selectAllCorpScreen(int page_number, int page_size, Map<String, String> map);
 }

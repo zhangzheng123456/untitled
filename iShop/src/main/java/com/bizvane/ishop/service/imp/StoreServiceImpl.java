@@ -1,7 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.*;
+import com.bizvane.ishop.dao.AreaMapper;
+import com.bizvane.ishop.dao.BrandMapper;
+import com.bizvane.ishop.dao.StoreMapper;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
@@ -13,7 +16,6 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
@@ -37,8 +39,7 @@ public class StoreServiceImpl implements StoreService {
     private BrandMapper brandMapper;
     @Autowired
     private AreaMapper areaMapper;
-    @Autowired
-    private CodeUpdateMapper codeUpdateMapper;
+
     /**
      * 通过用户ID和制定的店仓来删除用户的店仓
      *
@@ -245,9 +246,6 @@ public class StoreServiceImpl implements StoreService {
 
         if ((store.getStore_code().equals(store_code) || store1 == null)
                 && (store.getStore_name().equals(store_name) || store2 == null)) {
-            if (!store.getStore_code().equals(store_code)){
-                updateCauseCodeChange(corp_code,store_code,store.getStore_code());
-            }
             store = new Store();
             store.setId(store_id);
             store.setStore_code(store_code);
@@ -319,23 +317,4 @@ public class StoreServiceImpl implements StoreService {
         return this.storeMapper.selectCount(created_date);
     }
 
-    /**
-     * 更改店铺编号时
-     * 级联更改关联此编号的员工，员工业绩目标，店铺业绩目标，签到列表
-     */
-    @Transactional
-    void updateCauseCodeChange(String corp_code,String new_store_code,String old_store_code){
-
-        //更新签到列表
-        codeUpdateMapper.updateSign("",corp_code,new_store_code,old_store_code);
-        //更新店铺业绩目标
-        codeUpdateMapper.updateStoreAchvGoal("",corp_code,new_store_code,old_store_code);
-        //更新员工业绩目标
-        codeUpdateMapper.updateUserAchvGoal("",corp_code,new_store_code,old_store_code,"","");
-        //更新员工
-        new_store_code = Common.STORE_HEAD+new_store_code+",";
-        old_store_code = Common.STORE_HEAD+old_store_code+",";
-        codeUpdateMapper.updateUser("",corp_code,"","",new_store_code,old_store_code,"","");
-
-    }
 }
