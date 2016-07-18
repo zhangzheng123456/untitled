@@ -101,7 +101,6 @@ var oc = new ObjectControl();
 			if(data.code=="0"){
 				$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 			}else if(data.code=="-1"){
-				alert(data.message);
 				art.dialog({
 					time: 1,
 					lock:true,
