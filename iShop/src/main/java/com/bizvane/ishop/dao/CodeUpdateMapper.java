@@ -84,4 +84,8 @@ public interface CodeUpdateMapper {
 
     //会员标签
     int updateVipLabel(@Param("new_corp_code") String new_corp_code, @Param("old_corp_code") String old_corp_code);
+
+    //会员标签关系
+    int updateRelVipLabel(@Param("new_corp_code") String new_corp_code, @Param("old_corp_code") String old_corp_code,
+                          @Param("new_store_code") String new_store_code, @Param("old_store_code") String old_store_code);
 }

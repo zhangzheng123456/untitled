@@ -332,10 +332,14 @@ public class StoreServiceImpl implements StoreService {
         codeUpdateMapper.updateStoreAchvGoal("",corp_code,new_store_code,old_store_code);
         //更新员工业绩目标
         codeUpdateMapper.updateUserAchvGoal("",corp_code,new_store_code,old_store_code,"","");
+        //更新会员标签关系
+        codeUpdateMapper.updateRelVipLabel("",corp_code,new_store_code,old_store_code);
         //更新员工
         new_store_code = Common.STORE_HEAD+new_store_code+",";
         old_store_code = Common.STORE_HEAD+old_store_code+",";
         codeUpdateMapper.updateUser("",corp_code,"","",new_store_code,old_store_code,"","");
+        //更新员工详细信息
+        codeUpdateMapper.updateStaffDetailInfo("",corp_code,"","",new_store_code,old_store_code);
 
     }
 }

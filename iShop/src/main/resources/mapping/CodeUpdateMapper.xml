@@ -174,15 +174,6 @@
 
     </update>
 
-    <update id="updateCache">
-        update def_cache
-        <trim prefix="set" suffixOverrides=",">
-            <if test="corp_code!=null and corp_code!=''">
-                cor_code=#{corp_code},
-            </if>
-        </trim>
-    </update>
-
     <update id="updateGroup">
         update def_group
         <trim prefix="set" suffixOverrides=",">
@@ -317,7 +308,6 @@
         </if>
     </update>
 
-
     <update id="updateVipMessage">
         UPDATE def_vip_message
         <trim prefix="set" suffixOverrides=",">
@@ -342,7 +332,6 @@
             AND user_code=#{old_user_code}
         </if>
     </update>
-
 
     <update id="updateVipRecord">
         UPDATE def_vip_record
@@ -369,7 +358,6 @@
         </if>
     </update>
 
-
     <update id="updateVipRecordType">
         update def_vip_record_type
         <trim prefix="set" suffixOverrides=",">
@@ -393,6 +381,25 @@
         WHERE 1=1
         <if test="old_corp_code!=null and old_corp_code!='' ">
             AND corp_code = #{old_corp_code}
+        </if>
+    </update>
+
+    <update id="updateRelVipLabel">
+        update rel_vip_label
+        <trim prefix="set" suffixOverrides=",">
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
+            <if test="new_store_code!=null and new_store_code!='' ">
+                STORE_CODE = #{new_store_code},
+            </if>
+        </trim>
+        WHERE 1=1
+        <if test="old_corp_code!=null and old_corp_code!='' ">
+            AND corp_code = #{old_corp_code}
+        </if>
+        <if test="old_store_code!=null and old_store_code!='' ">
+            AND STORE_CODE = #{old_store_code}
         </if>
     </update>
 </mapper>

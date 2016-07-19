@@ -2,9 +2,11 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.MessageMapper;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.Message;
 import com.bizvane.ishop.entity.MessageInfo;
 import com.bizvane.ishop.entity.MessageType;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.MessageService;
 import com.bizvane.sun.v1.common.Data;
@@ -31,7 +33,8 @@ import java.util.Map;
 @Service
 public class MessageServiceImpl implements MessageService {
 
-
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private MessageMapper messageMapper;
     @Autowired
@@ -70,6 +73,9 @@ public class MessageServiceImpl implements MessageService {
             String isactive = json.get("isactive").toString();
             String message_type = json.get("message_type").toString();
 
+            User user = userMapper.selectUserCode(user_code,corp_code);
+            String avater = user.getAvatar();
+            String user_name = user.getUser_name();
             //调用ice接口，发送消息
 
             Data data_user_id = new Data("user_id", message_receiver, ValueType.PARAM);
@@ -77,6 +83,8 @@ public class MessageServiceImpl implements MessageService {
             Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
             Data data_message_title = new Data("message_title", message_title, ValueType.PARAM);
             Data data_message_type = new Data("message_type", message_type, ValueType.PARAM);
+            Data headimgurl = new Data("headimgurl", avater, ValueType.PARAM);
+            Data nickname = new Data("nickname", user_name, ValueType.PARAM);
 
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
@@ -84,6 +92,8 @@ public class MessageServiceImpl implements MessageService {
             datalist.put(data_message_content.key, data_message_content);
             datalist.put(data_message_title.key, data_message_title);
             datalist.put(data_message_type.key, data_message_type);
+            datalist.put(headimgurl.key, headimgurl);
+            datalist.put(nickname.key, nickname);
 
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ChatToUser",datalist);
             logger.info(dataBox.data.get("message").value);
