@@ -6,7 +6,6 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -20,13 +19,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -538,7 +533,7 @@ public class MessageController {
             SmsTemplate.setModified_date(Common.DATETIME_FORMAT.format(now));
             SmsTemplate.setCreated_date(Common.DATETIME_FORMAT.format(now));
             SmsTemplate.setCreater(user_id);
-            String existInfo1 = smsTemplateService.SmsTemplateExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code());
+            String existInfo1 = smsTemplateService.SmsTemplateCodeExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code());
             String existInfo2 = smsTemplateService.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_name());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
@@ -608,7 +603,7 @@ public class MessageController {
             org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
             String corp_code = jsonObject2.getString("corp_code");
             String template_code = jsonObject2.getString("template_code");
-            String result = this.smsTemplateService.SmsTemplateExist(corp_code, template_code);
+            String result = this.smsTemplateService.SmsTemplateCodeExist(corp_code, template_code);
             dataBean.setId(id);
             dataBean.setCode(result);
         } catch (Exception ex) {
