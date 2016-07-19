@@ -246,4 +246,8 @@
 
     </select>
 
+    <select id="getMessageTypeCount" resultType="java.lang.Integer">
+        select count(*) from def_message_type where corp_code=#{corp_code}
+    </select>
+
 </mapper>
