@@ -3,7 +3,6 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.SmsTemplateMapper;
 import com.bizvane.ishop.entity.SmsTemplate;
-import com.bizvane.ishop.entity.VipRecordType;
 import com.bizvane.ishop.service.SmsTemplateService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,7 +43,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     public String update(SmsTemplate SmsTemplate) throws SQLException {
         SmsTemplate old = this.smsTemplateMapper.selectByPrimaryKey(SmsTemplate.getId());
         if ((!old.getTemplate_code().equals(SmsTemplate.getTemplate_code()))
-                && this.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
+                && this.SmsTemplateCodeExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
                 ) {
             return "编号已经存在！！！！";
         } else if (!old.getTemplate_name().equals(SmsTemplate.getTemplate_name()) &&
@@ -64,8 +63,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         return page;
     }
 
-    @Override
-    public String SmsTemplateExist(String corp_code, String tem_code) throws SQLException {
+    public String SmsTemplateCodeExist(String corp_code, String tem_code) throws SQLException {
         List<SmsTemplate> list = this.smsTemplateMapper.selectByCode(corp_code, tem_code);
         if (list == null || list.size() < 1) {
             return Common.DATABEAN_CODE_SUCCESS;

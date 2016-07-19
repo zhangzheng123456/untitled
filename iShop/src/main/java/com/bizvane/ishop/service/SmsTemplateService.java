@@ -69,7 +69,7 @@ public interface SmsTemplateService {
      * @return
      * @throws SQLException
      */
-    String SmsTemplateExist(String corp_code, String template_code) throws SQLException;
+    String SmsTemplateCodeExist(String corp_code, String template_code) throws SQLException;
 
     /**
      * 通过模板名称，来判断模板名在企业内是否唯一

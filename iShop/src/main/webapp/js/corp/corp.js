@@ -490,9 +490,10 @@ $("#file_submit").click(function(){
     oc.postRequire("get","/corp/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            $(".file_content").html("<div class='download'><a href='"+message.path+"'>下载文件</a></div><div class='file_close'>关闭</div>")
+            var path=message.path;
+            var path=path.substring(1,path.length-1);
+            $(".file_content").html("<div class='download'><a href='/"+path+"'>下载文件</a></div><div class='file_close'>关闭</div>")
         }
-
     })
 })
 //导出关闭按钮

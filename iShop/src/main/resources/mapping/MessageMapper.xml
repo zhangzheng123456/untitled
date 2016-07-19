@@ -238,7 +238,7 @@
         </trim>
     </insert>
 
-    <select id="selectAllMessageType"  resultType="com.bizvane.ishop.entity.MessageType">>
+    <select id="selectAllMessageType" resultType="com.bizvane.ishop.entity.MessageType">>
         select *
         from def_message_type
         ORDER BY id DESC
