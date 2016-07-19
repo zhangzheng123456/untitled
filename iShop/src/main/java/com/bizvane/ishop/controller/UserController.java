@@ -120,10 +120,15 @@ public class UserController {
             //String column_name = "user_name,phone,corp_name,group_name";
 
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(users, cols, response,request);
+            String pathname = OutExeclHelper.OutExecl(users, cols, response, request);
+            JSONObject result = new JSONObject();
+            if(pathname==null||pathname.equals("")){
+                int a=8/0;
+            }
+            result.put("path",JSON.toJSONString("lupload/"+pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("word success");
+            dataBean.setMessage(result.toString());
         } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -239,10 +239,15 @@ public class SignController {
             List<Sign> signs = list.getList();
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(signs,cols,response,request);
+            String pathname = OutExeclHelper.OutExecl(signs, cols, response, request);
+            JSONObject result = new JSONObject();
+            if(pathname==null||pathname.equals("")){
+                int a=8/0;
+            }
+            result.put("path",JSON.toJSONString("lupload/"+pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("word success");
+            dataBean.setMessage(result.toString());
         }catch (Exception e){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
