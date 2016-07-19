@@ -89,15 +89,12 @@
                     </ul>
                 </div>
                 <div class="file_btn">
-
                     <div class="file_submit" id="file_submit">提交</div>
                 </div>
             </div>
             <div class="into_frame">
-                <div ><a href="/ExeclFormwork/Corp.xls">下载模板</a></div>
-                <div>
-                    <input type="file" id="file" >
-                </div>
+                <div class="down_load"><a href="/ExeclFormwork/Corp.xls">下载模板</a></div>
+                <input type="file" id="file" onchange="UpladFile(this)">
             </div>
             <div class="sxk" id="sxk">
                 <div class="btn">
@@ -254,5 +251,20 @@
                 $('html,body').animate({'scrollTop':btm},500);
             })
         });
+        function UpladFile(file) {
+            var fileObj = file.files[0]; // 获取文件对象
+            console.log(fileObj);
+            var FileController = "/corp/addByExecl";                    // 接收上传文件的后台地址
+            var form = new FormData();
+            // form.append("author", "hooyes");                        // 可以增加表单数据
+            form.append("file", fileObj);                           // 文件对象
+            // XMLHttpRequest 对象
+            var xhr = new XMLHttpRequest();
+            xhr.open("post", FileController, true);
+            xhr.onload = function () {
+                alert("上传完成!");
+            };
+            xhr.send(form);
+        }
     </script>
 </html>
