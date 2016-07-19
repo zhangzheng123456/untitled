@@ -599,19 +599,6 @@ jQuery(document).ready(function(){
 	window.user.init();//初始化
     if($(".pre_title label").text()=="编辑员工信息"){
     	var id=sessionStorage.getItem("id");
-    	var key_val=sessionStorage.getItem("key_val");//取页面的function_code
-		key_val=JSON.parse(key_val);
-		var funcCode=key_val.func_code;
-		$.get("/detail?funcCode="+funcCode+"", function(data){
-			var data=JSON.parse(data);
-			if(data.code=="0"){
-				var message=JSON.parse(data.message);
-				var action=message.actions;
-				if(action.length<=0){
-					$("#edit_save").remove();
-				}
-			}
-		});
 		var _params={"id":id};
 		var _command="/user/select";
 		oc.postRequire("post", _command,"", _params, function(data){
@@ -774,7 +761,7 @@ jQuery(document).ready(function(){
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
-	$("#edit_close").click(function(){
+	$(".useredit_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
 	});
 	//验证编号是否唯一的方法
