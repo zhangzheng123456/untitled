@@ -37,6 +37,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.ws.RequestWrapper;
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -478,10 +479,11 @@ public class CorpController {
     /***
      * Execl增加用户
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
-    @ResponseBody
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @Transactional()
-    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
+    @ResponseBody()
+    public String addByExecl(HttpServletRequest request,HttpServletResponse response, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException, UnsupportedEncodingException {
+        response.setContentType("text/html;charset=UTF-8");
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
@@ -546,7 +548,6 @@ public class CorpController {
             dataBean.setId(id);
             dataBean.setMessage(result);
         }
-
         return dataBean.getJsonStr();
     }
 

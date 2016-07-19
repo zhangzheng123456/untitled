@@ -12,7 +12,6 @@ import java.io.File;
  */
 public class LuploadHelper {
     public static File lupload(HttpServletRequest request,MultipartFile file,ModelMap model){
-        DataBean dataBean = new DataBean();
         //创建你要保存的文件的路径
         String path = request.getSession().getServletContext().getRealPath("lupload");
         //获取该文件的文件名
