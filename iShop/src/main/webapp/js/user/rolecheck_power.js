@@ -11,6 +11,9 @@ var group_corp=sessionStorage.getItem("group_corp");//取本地的群组编号
 if(group_corp!==null){
   group_corp=JSON.parse(group_corp);
   role_code=group_corp.role_code;
+  var role_name=group_corp.role_name;
+  $('#role_id').val(role_code);
+  $('#role_name').val(role_name);
   $("#page-wrapper").hide();
   $(".content").show();
   GET();  
@@ -18,11 +21,14 @@ if(group_corp!==null){
 //编辑页面点击弹出角色权限的框
 $('#edit_power').click(function(){
     role_code=$("#ROLE_NUM").val();
+    var role_name=$("#ROLE_NAME").val();
     if(role_code==''){
         frame();
         $('.frame').html("请先定义角色编号！");
         return;
     }
+    $('#role_id').val(role_code);
+    $('#role_name').val(role_name);
     $("#page-wrapper").hide();
     $(".content").show();
     GET();

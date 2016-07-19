@@ -487,29 +487,13 @@ $("#file_submit").click(function(){
         }     
     }
     param["column_name"]=column_name;
-    var _params = {
-            "id":"",
-            "message":param
-        };
-    console.log(_params);
-        jQuery.ajax({
-            url:"/corp/exportExecl",
-            type:"get",
-            data:{param:JSON.stringify(_params)},
-            dataType:'',
-            success:function(data){
-                if(data){
-                    console.log(data);
-                }else{
-                }
-            },
-            error:function(data){
-                console.log(data);
-            }
-        });
-    // oc.postRequire("get","/corp/exportExecl","0",param,function(data){
-    //     console.log(data);
-    // })
+    oc.postRequire("get","/corp/exportExecl","0",param,function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            $(".file_content").html("<div class='download'><a href='"+message.path+"'>下载文件</a></div><div class='file_close'>关闭</div>")
+        }
+
+    })
 })
 //导出关闭按钮
 $('.file_close').click(function(){

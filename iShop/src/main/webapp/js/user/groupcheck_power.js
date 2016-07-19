@@ -12,6 +12,9 @@ if(group_corp!==null){
     group_corp=JSON.parse(group_corp);
     corp_code=group_corp.corp_code;//企业编号
     group_code=group_corp.group_code;//群组编号
+    var group_name=group_corp.group_name;//群组名称
+    $('#group_code').val(group_code);
+    $('#group_name').val(group_name);
     $("#page-wrapper").hide();
     $(".content").show();
     GET();
@@ -20,6 +23,9 @@ if(group_corp!==null){
 $('#edit_power').click(function(){
     group_code=$("#GROUP_ID").val();
     corp_code=$('#OWN_CORP').val();
+    var group_name=$('#GROUP_NAME').val();
+    $('#group_code').val(group_code);
+    $('#group_name').val(group_name);
     $("#page-wrapper").hide();
     $(".content").show();
     GET();

@@ -10,6 +10,9 @@ $("#edit_power").click(function(){
     corp_code=$('#OWN_CORP').val();
 	group_code=$('#OWN_RIGHT').attr("data-myrcode");
     user_code=$('#USERID').val();
+    var user_name=$('#USER_NAME').val();
+    $('#user_code').val(user_code);
+    $('#user_name').val(user_name);
     $("#page-wrapper").hide();
     $(".content").show();
     GET();
