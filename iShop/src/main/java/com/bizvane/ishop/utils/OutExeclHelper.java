@@ -24,7 +24,7 @@ import java.util.*;
  */
 public class OutExeclHelper {
     public static String OutExecl(List olist, String[] cols, HttpServletResponse response, HttpServletRequest request){
-        String filename="";
+        String result="";
         try {
             response.setCharacterEncoding("UTF-8");
             JSONObject jsonObject = new JSONObject();
@@ -39,8 +39,6 @@ public class OutExeclHelper {
                 }
                 lists.add(temp);
             }
-            response.reset();// 清空输出流
-
             //输出流
             OutputStream os = response.getOutputStream();
             //------------------------开启响应头---------------------------------------
@@ -54,10 +52,11 @@ public class OutExeclHelper {
 //            response.setContentType("application/vnd.ms-excel;charset=utf-8");
 //             response.setHeader("Content-Disposition", "attachment;filename=" + name);
             //创建excel空白文档
-            filename = user_id +"_"+ sdf.format(new Date()) + ".xls";
+            String  filename = user_id +"_"+ sdf.format(new Date()) + ".xls";
             filename = URLEncoder.encode(filename, "utf-8");
             String path = request.getSession().getServletContext().getRealPath("lupload");
-            System.out.println("路径："+path);
+            result=filename;
+            System.out.println("路径："+result);
             File file =new File(path,filename);
             WritableWorkbook book = Workbook.createWorkbook(file);
             WritableSheet sheet = book.createSheet("报表", 0);
@@ -104,6 +103,6 @@ public class OutExeclHelper {
         }catch (Exception e){
             e.printStackTrace();
         }
-    return filename;
+    return result;
     }
 }
