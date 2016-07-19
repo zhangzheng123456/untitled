@@ -94,7 +94,8 @@
             </div>
             <div class="into_frame">
                 <div class="down_load"><a href="/ExeclFormwork/Corp.xls">下载模板</a></div>
-                <input type="file" id="file" onchange="UpladFile(this)">
+                <input type="file" id="file">
+                <input type="button" onclick="UpladFile()" value="提交">
             </div>
             <div class="sxk" id="sxk">
                 <div class="btn">
@@ -251,15 +252,31 @@
                 $('html,body').animate({'scrollTop':btm},500);
             })
         });
-        function UpladFile(file) {
-            var fileObj = file.files[0]; // 获取文件对象
+        function UpladFile() {
+            var fileObj = document.getElementById("file").files[0];
             console.log(fileObj);
-            var FileController = "/corp/addByExecl";                    // 接收上传文件的后台地址
+            var FileController = "/corp/addByExecl";//接收上传文件的后台地址
             var form = new FormData();
-            // form.append("author", "hooyes");                        // 可以增加表单数据
-            form.append("file", fileObj);                           // 文件对象
+            form.append("file", fileObj);// 文件对象
             // XMLHttpRequest 对象
-            var xhr = new XMLHttpRequest();
+            var xhr = null;
+            if(window.XMLHttpRequest){
+                xhr = new XMLHttpRequest();
+            }else {
+                xhr = new  ActiveXObject('Microsoft.XMLHTTP');
+            }
+            xhr.onreadystatechange = function(){
+                if(xhr.readyState===4){
+                    if(xhr.status === 200){
+                        doResult(  xhr.responseText  );
+                    }else{
+                        console.log('服务器返回了错误的响应状态码');
+                    }
+                }
+            }
+            function doResult(data){
+                console.log(data);
+            }
             xhr.open("post", FileController, true);
             xhr.onload = function () {
                 alert("上传完成!");
