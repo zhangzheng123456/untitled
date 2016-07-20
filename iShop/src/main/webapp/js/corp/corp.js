@@ -6,7 +6,7 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
-var list=[];//定义一个list
+var list="";
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
@@ -516,7 +516,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var filter=message.filter;
         $("#sxk .inputs ul").empty();
         for(var i=0;i<filter.length;i++){
-            $("#sxk .inputs ul").append("<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'><li>");
+            $("#sxk .inputs ul").append("<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>");
         }
     }
 });
@@ -527,6 +527,7 @@ $("#find").click(function(){
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
    var num=0;
+   list=[];//定义一个list
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
         var screen_value=$(input[i]).val();
@@ -538,7 +539,8 @@ $("#find").click(function(){
    }
    _param["list"]=list;
    if(num>0){
-        value="";
+        value="";//把搜索滞空
+        $("#search").val("");
         filtrate="sucess";
         filtrates();
    }else if(num<=0){
