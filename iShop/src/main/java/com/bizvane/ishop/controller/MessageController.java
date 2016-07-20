@@ -24,6 +24,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -649,8 +650,8 @@ public class MessageController {
     @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
-        DataBean dataBean=new DataBean();
-        try{
+        DataBean dataBean = new DataBean();
+        try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String user_code = request.getSession(false).getAttribute("user_code").toString();
@@ -672,19 +673,60 @@ public class MessageController {
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(messages, cols, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(e.getMessage());
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 消息管理
+     * （模板筛选）
+     */
+    @RequestMapping(value = "/mobile/template/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String Screen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+//            String screen = jsonObject.get("screen").toString();
+//            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<SmsTemplate> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = smsTemplateService.getAllSmsTemplateScreen(page_number, page_size, "", map);
+            } else {
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                list = smsTemplateService.getAllSmsTemplateScreen(page_number, page_size, corp_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }

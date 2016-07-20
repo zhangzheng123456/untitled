@@ -6,11 +6,14 @@ import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.service.SmsTemplateService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/22.
@@ -79,6 +82,18 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             return Common.DATABEAN_CODE_SUCCESS;
         }
         return Common.DATABEAN_CODE_ERROR;
+    }
+
+    @Override
+    public PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+        List<SmsTemplate> smsTemplates;
+        PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        smsTemplates = smsTemplateMapper.selectAllSmsTemplateScreen(params);
+        PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>();
+        return page;
     }
 
 //    @Override
