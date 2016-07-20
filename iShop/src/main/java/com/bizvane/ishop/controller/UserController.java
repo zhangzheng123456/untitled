@@ -372,11 +372,12 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String user_code = jsonObject.get("user_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String phone = jsonObject.get("phone").toString();
             User user = new User();
             user.setUser_code(user_code);
             user.setUser_name(jsonObject.get("username").toString());
             user.setAvatar(jsonObject.get("avater").toString());
-            user.setPhone(jsonObject.get("phone").toString());
+            user.setPhone(phone);
             user.setEmail(jsonObject.get("email").toString());
             user.setSex(jsonObject.get("sex").toString());
             //     user.setBirthday(jsonObject.get("birthday").toString());
@@ -415,7 +416,7 @@ public class UserController {
                 user.setStore_code(store_code);
             }
             user.setQrcode("");
-            user.setPassword(user_code);
+            user.setPassword(phone);
             Date now = new Date();
             user.setLogin_time_recently("");
             user.setCreated_date(Common.DATETIME_FORMAT.format(now));
