@@ -443,7 +443,7 @@ public class CorpController {
     /***
      * 导出数据
      */
-    @RequestMapping(value = "/exportExecl", method = RequestMethod.GET)
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
@@ -486,12 +486,11 @@ public class CorpController {
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);
         }
-
         return dataBean.getJsonStr();
     }
 
     /***
-     * Execl增加用户
+     * Execl增加
      */
     @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @Transactional()

@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.IshowHttpClient;
+import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
@@ -77,6 +78,7 @@ public class UserController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+        String errormessage="";
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
@@ -86,43 +88,64 @@ public class UserController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<User> list = null;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = userService.selectBySearch(request, 1, 10000, "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                //系统管理员
-                list = userService.selectBySearch(request, 1, 10000, corp_code, "");
-            } else if (role_code.equals(Common.ROLE_STAFF)) {
-                //员工
-                User user = userService.getUserById(user_id);
-                List<User> users = new ArrayList<User>();
-                users.add(user);
-                list = new PageInfo<User>();
-                list.setList(users);
-            } else if (role_code.equals(Common.ROLE_SM)) {
-                //店长
-                String store_code = request.getSession().getAttribute("store_code").toString();
-                list = userService.selectBySearchPart(1, 10000, corp_code, "", store_code, "", role_code);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
-            } else if (role_code.equals(Common.ROLE_AM)) {
-                //区经
-                String area_code = request.getSession().getAttribute("area_code").toString();
-                list = userService.selectBySearchPart(1, 10000, corp_code, "", "", area_code, role_code);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
+            if(screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    //系统管理员
+                    list = userService.selectBySearch(request, 1, 30000, "", search_value);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    //系统管理员
+                    list = userService.selectBySearch(request, 1, 30000, corp_code, search_value);
+                } else if (role_code.equals(Common.ROLE_STAFF)) {
+                    //员工
+                    User user = userService.getUserById(user_id);
+                    List<User> users = new ArrayList<User>();
+                    users.add(user);
+                    list = new PageInfo<User>();
+                    list.setList(users);
+                } else if (role_code.equals(Common.ROLE_SM)) {
+                    //店长
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = userService.selectBySearchPart(1, 30000, corp_code, search_value, store_code, "", role_code);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    //区经
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    list = userService.selectBySearchPart(1, 30000, corp_code, search_value, "", area_code, role_code);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = userService.getAllUserScreen(1, 30000, "", "", "", role_code, map);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    list = userService.getAllUserScreen(1, 30000, corp_code, "", "", role_code, map);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = userService.getAllUserScreen(1, 30000, corp_code, area_code, "", role_code, map);
+                } else if (role_code.equals(Common.ROLE_SM)) {
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = userService.getAllUserScreen(1, 30000, corp_code, area_code, store_code, role_code, map);
+                }
             }
             List<User> users = list.getList();
+            if(users.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
-            //String column_name = "user_name,phone,corp_name,group_name";
-
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(users, cols, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -133,7 +156,7 @@ public class UserController {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(e.getMessage());
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
 
@@ -235,27 +258,12 @@ public class UserController {
     /***
      * Execl增加用户
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
-        //创建你要保存的文件的路径
-        String path = request.getSession().getServletContext().getRealPath("lupload");
-        //获取该文件的文件名
-        String fileName = file.getOriginalFilename();
-        File targetFile = new File(path, fileName);
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
-        }
-        // 保存
-        try {
-            file.transferTo(targetFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //将该文件的路径给客户端，让其可以请求该wenjian
-        model.addAttribute("fileUrl", request.getContextPath() + "/lupload/" + fileName);
+        File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
@@ -264,6 +272,10 @@ public class UserController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            if(rows>9999){
+                result="数据量过大，导入失败";
+                int i=5 /0;
+            }
             Cell[] column = rs.getColumn(2);
             for (int i = 3; i < column.length; i++) {
                 String existInfo = userService.userPhoneExist(column[i].getContents().toString());
@@ -328,10 +340,6 @@ public class UserController {
                     user.setIsactive("Y");
                     user.setCan_login("Y");
                     result = userService.insert(user);
-                    if (!result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-                        int a = 6 / 0;
-                        break;
-                    }
                 }
             }
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {

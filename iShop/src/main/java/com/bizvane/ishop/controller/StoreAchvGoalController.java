@@ -385,6 +385,7 @@ public class StoreAchvGoalController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+        String errormessage="";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -392,24 +393,46 @@ public class StoreAchvGoalController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<StoreAchvGoal> list = null;
-            if (role_code.contains(Common.ROLE_SYS)) {
-                list = storeAchvGoalService.selectBySearch(1, 10000, "", "", "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                list = storeAchvGoalService.selectBySearch(1, 10000, corp_code, "", "", "");
-            } else if (role_code.equals(Common.ROLE_AM)) {
-                String area_code = request.getSession().getAttribute("area_code").toString();
-                list = storeAchvGoalService.selectBySearch(1, 10000, corp_code, area_code, "", "");
-            } else {
-                String store_code = request.getSession().getAttribute("store_code").toString();
-                list = storeAchvGoalService.selectBySearch(1, 10000, corp_code, "", store_code, "");
+            if(screen.equals("")) {
+                if (role_code.contains(Common.ROLE_SYS)) {
+                    list = storeAchvGoalService.selectBySearch(1, 30000, "", "", "", search_value);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", "", search_value);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, area_code, "", search_value);
+                } else {
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = storeAchvGoalService.selectBySearch(1, 30000, corp_code, "", store_code, search_value);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, "", "", "", map);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", "", map);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, area_code, "", map);
+                } else {
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = storeAchvGoalService.getAllStoreAchvScreen(1, 30000, corp_code, "", store_code, map);
+                }
             }
             List<StoreAchvGoal> storeAchvGoals = list.getList();
+            if(storeAchvGoals.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(storeAchvGoals, cols, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -418,8 +441,8 @@ public class StoreAchvGoalController {
             dataBean.setMessage(result.toString());
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(e.getMessage());
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
     }
@@ -427,7 +450,7 @@ public class StoreAchvGoalController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -435,13 +458,16 @@ public class StoreAchvGoalController {
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-
         String result = "";
         try {
             Workbook rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            if(rows>9999){
+                result="数据量过大，导入失败";
+                int i=5 /0;
+            }
             Cell[] column = rs.getColumn(2);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") || !column[i].getContents().toString().equals("W") || !column[i].getContents().toString().equals("M") || !column[i].getContents().toString().equals("Y")) {
@@ -466,6 +492,8 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setCreater(user_id);
                     Date now = new Date();
                     storeAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    storeAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    storeAchvGoal.setModifier(user_id);
                     result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal));
                 }
             }

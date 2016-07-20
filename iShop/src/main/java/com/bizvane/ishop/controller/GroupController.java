@@ -666,6 +666,7 @@ public class GroupController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+        String errormessage="";
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -673,22 +674,40 @@ public class GroupController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            //系统管理员(官方画面)
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<Group> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = groupService.getGroupAll(1, 10000, "", "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                list = groupService.getGroupAll(1, 10000, corp_code, "", "");
-            } else {
-                list = groupService.getGroupAll(1, 10000, corp_code, role_code, "");
+            if(screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    //系统管理员
+                    list = groupService.getGroupAll(1, 30000, "", "", search_value);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    list = groupService.getGroupAll(1, 30000, corp_code, "", search_value);
+                } else {
+                    list = groupService.getGroupAll(1, 30000, corp_code, role_code, search_value);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    //系统管理员
+                    list = groupService.getAllGroupScreen(1, 30000, "", "", map);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    list = groupService.getAllGroupScreen(1, 30000, corp_code, "",map);
+                } else {
+                    list = groupService.getAllGroupScreen(1, 30000, corp_code, role_code, map);
+                }
             }
             List<Group> groups = list.getList();
+            if(groups.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(groups, cols, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -697,8 +716,8 @@ public class GroupController {
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
     }

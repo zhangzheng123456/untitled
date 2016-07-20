@@ -24,6 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+
+import static com.sun.org.apache.xml.internal.serializer.utils.Utils.messages;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -646,10 +649,11 @@ public class MessageController {
     /***
      * 导出数据
      */
-    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/mobile/exportExecl", method = RequestMethod.POST)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean=new DataBean();
+        String errormessage="";
         try{
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -658,21 +662,31 @@ public class MessageController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            PageInfo<Message> list = null;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = messageService.selectBySearch(1, 10000, "", "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                //企业管理员
-                list = messageService.selectBySearch(1, 10000, corp_code, "", "");
-            } else {
-                list = messageService.selectBySearch(1, 10000, corp_code, user_code, "");
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
+            PageInfo<SmsTemplate> list;
+            if(screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = this.smsTemplateService.selectBySearch(1, 30000, "", search_value);
+                } else {
+                    list = this.smsTemplateService.selectBySearch(1, 30000, corp_code, search_value);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                //-----------筛选未好-------------------------
+                list=null;
             }
-            List<Message> messages = list.getList();
+            List<SmsTemplate> smsTemplates = list.getList();
+            if(smsTemplates.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(messages, cols, response, request);
+            String pathname = OutExeclHelper.OutExecl(smsTemplates, cols, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -682,8 +696,8 @@ public class MessageController {
         }
         catch (Exception e){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(e.getMessage());
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
     }

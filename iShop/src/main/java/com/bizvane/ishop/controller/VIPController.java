@@ -1255,9 +1255,9 @@ public class VIPController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String screen = jsonObject.get("screen").toString();
-            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-            Map<String,String> map = WebUtils.Json2Map(jsonScreen);
+//            String screen = jsonObject.get("screen").toString();
+//            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
+            Map<String,String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<VipRecord> list = null;

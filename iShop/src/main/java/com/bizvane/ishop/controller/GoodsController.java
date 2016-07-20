@@ -134,6 +134,7 @@ public class GoodsController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+        String errormessage="";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -142,13 +143,23 @@ public class GoodsController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<Goods> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.goodsService.selectBySearch(1, 10000, "", "");
-            } else {
-                //   String corp_code = request.getParameter("corp_code");
-                list = goodsService.selectBySearch(1, 10000, corp_code, "");
+            if(screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = this.goodsService.selectBySearch(1, 30000, "", search_value);
+                } else {
+                    //   String corp_code = request.getParameter("corp_code");
+                    list = goodsService.selectBySearch(1, 30000, corp_code, search_value);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.contains(Common.ROLE_SYS)) {
+                    list = goodsService.selectAllGoodsScreen(1, 30000, "", map);
+                } else {
+                    list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map);
+                }
             }
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
                 String goods_image = list.getList().get(i).getGoods_image();
@@ -157,11 +168,16 @@ public class GoodsController {
                 }
             }
             List<Goods> goodses = list.getList();
+            if(goodses.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(goodses, cols, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
+                errormessage="数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));
@@ -170,8 +186,8 @@ public class GoodsController {
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
     }
@@ -284,9 +300,9 @@ public class GoodsController {
     }
 
     /***
-     * Execl增加用户
+     * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -300,6 +316,10 @@ public class GoodsController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            if(rows>9999){
+                result="数据量过大，导入失败";
+                int i=5 /0;
+            }
             Cell[] column = rs.getColumn(0);
             for (int i = 3; i < column.length; i++) {
                 String goodsCodeExist = goodsService.goodsCodeExist(corp_code, column[i].getContents().toString());
@@ -338,6 +358,8 @@ public class GoodsController {
                     goods.setCreater(user_id);
                     Date now = new Date();
                     goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    goods.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    goods.setModifier(user_id);
                     result = String.valueOf(goodsService.insert(goods));
                 }
             }

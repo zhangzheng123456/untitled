@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.IshowHttpClient;
+import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
@@ -733,6 +734,7 @@ public class StoreController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+        String errormessage="";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -740,33 +742,53 @@ public class StoreController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<Store> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = storeService.getAllStore(request, 1, 10000, "", "");
-            } else {
-                if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStore(request, 1, 10000, corp_code, "");
-                } else if (role_code.equals(Common.ROLE_AM)) {
-
-                    String area_code = request.getSession().getAttribute("area_code").toString();
-
-                    String[] areaCodes = area_code.split(",");
-                    for (int i = 0; i < areaCodes.length; i++) {
-                        areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                    }
-                    list = storeService.selectByAreaCode(1, 10000, corp_code, areaCodes, "");
+            if(screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    //系统管理员
+                    list = storeService.getAllStore(request, 1, 30000, "", search_value);
                 } else {
-                    String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = storeService.selectByUserId(1, 10000, store_code, corp_code, "");
+                    if (role_code.equals(Common.ROLE_GM)) {
+                        list = storeService.getAllStore(request, 1, 30000, corp_code, search_value);
+                    } else if (role_code.equals(Common.ROLE_AM)) {
+                        String area_code = request.getSession().getAttribute("area_code").toString();
+                        String[] areaCodes = area_code.split(",");
+                        for (int i = 0; i < areaCodes.length; i++) {
+                            areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                        }
+                        list = storeService.selectByAreaCode(1, 30000, corp_code, areaCodes, search_value);
+                    } else {
+                        String store_code = request.getSession().getAttribute("store_code").toString();
+                        list = storeService.selectByUserId(1, 30000, store_code, corp_code, search_value);
+                    }
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = storeService.getAllStoreScreen(1, 30000, "", "", "", map);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "", "", map);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_codes = request.getSession(false).getAttribute("area_code").toString();
+                    list = storeService.getAllStoreScreen(1, 30000, corp_code, area_codes, "", map);
+                } else {
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = storeService.getAllStoreScreen(1, 30000, corp_code, "", store_code, map);
                 }
             }
             List<Store> stores = list.getList();
+            if(stores.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(stores, cols, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -776,41 +798,21 @@ public class StoreController {
         } catch (Exception e) {
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-
-
-            dataBean.setMessage(e.getMessage() + e.toString());
-            logger.info(e.getMessage() + e.toString());
-
-
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+            logger.info(errormessage);
         }
         return dataBean.getJsonStr();
     }
 
     /***
-     * Execl增加用户
+     * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
-        //创建你要保存的文件的路径
-        String path = request.getSession().getServletContext().getRealPath("lupload");
-        //获取该文件的文件名
-        String fileName = file.getOriginalFilename();
-        System.out.println(path);
-        File targetFile = new File(path, fileName);
-        if (!targetFile.exists()) {
-            targetFile.mkdirs();
-        }
-        // 保存
-        try {
-            file.transferTo(targetFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        //将该文件的路径给客户端，让其可以请求该wenjian
-        model.addAttribute("fileUrl", request.getContextPath() + "/lupload/" + fileName);
+        File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String result = "";
@@ -819,6 +821,10 @@ public class StoreController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            if(rows > 9999){
+                result="数据量过大，导入失败";
+                int i=5 /0;
+            }
             Cell[] column = rs.getColumn(0);
             for (int i = 3; i < column.length; i++) {
                 Store store = storeService.getStoreByCode(corp_code, column[i].getContents().toString(), "");
@@ -858,6 +864,8 @@ public class StoreController {
                     Date now = new Date();
                     store.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     store.setCreater(user_id);
+                    store.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    store.setModifier(user_id);
                     result = storeService.insertExecl(store);
                 }
             }
