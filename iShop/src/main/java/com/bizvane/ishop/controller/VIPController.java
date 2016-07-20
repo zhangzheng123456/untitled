@@ -339,6 +339,7 @@ public class VIPController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+        String errormessage="";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -346,18 +347,34 @@ public class VIPController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<VipLabel> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipLabelService.selectBySearch(1, 10000, "", "");
-            } else {
-                list = vipLabelService.selectBySearch(1, 10000, corp_code, "");
+            if(screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = vipLabelService.selectBySearch(1, 30000, "", search_value);
+                } else {
+                    list = vipLabelService.selectBySearch(1, 30000, corp_code, search_value);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = this.vipLabelService.selectAllVipScreen(1, 30000, "", map);
+                } else {
+                    list = this.vipLabelService.selectAllVipScreen(1, 30000, corp_code, map);
+                }
             }
             List<VipLabel> vipLabels = list.getList();
+            if(vipLabels.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(vipLabels, cols, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if(pathname==null||pathname.equals("")){
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -367,7 +384,7 @@ public class VIPController {
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage(e.getMessage());
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
     }
@@ -375,7 +392,7 @@ public class VIPController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/label/addByExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/label/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -390,6 +407,10 @@ public class VIPController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            if(rows>9999){
+                result="数据量过大，导入失败";
+                int i=5 /0;
+            }
             Cell[] column = rs.getColumn(0);
             for (int i = 3; i < column.length; i++) {
                 String existInfo = this.vipLabelService.VipLabelNameExist(corp_code, column[i].getContents().toString());
@@ -414,8 +435,10 @@ public class VIPController {
                     } else {
                         vipLabel.setIsactive("N");
                     }
-                    vipLabel.setCreater(user_id);
                     Date now = new Date();
+                    vipLabel.setCreater(user_id);
+                    vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    vipLabel.setModifier(user_id);
                     vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     result = String.valueOf(vipLabelService.insert(vipLabel));
                 }
@@ -1024,6 +1047,7 @@ public class VIPController {
     @ResponseBody
     public String exportExeclCallback(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+        String errormessage="";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -1031,24 +1055,45 @@ public class VIPController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<VipRecord> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = this.vipRecordService.selectBySearch(1, 10000, "", "");
-            } else {
+            if(screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = this.vipRecordService.selectBySearch(1, 30000, "", search_value);
+                } else {
 
-                list = vipRecordService.selectBySearch(1, 10000, corp_code, "");
+                    list = vipRecordService.selectBySearch(1, 30000, corp_code, search_value);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.contains(Common.ROLE_SYS)) {
+                    list = vipRecordService.selectAllVipRecordScreen(1, 30000, "", map);
+                } else {
+                    list = vipRecordService.selectAllVipRecordScreen(1, 30000, corp_code, map);
+                }
             }
             List<VipRecord> vipRecords = list.getList();
+            if(vipRecords.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(vipRecords, cols, response,request);
+            String pathname = OutExeclHelper.OutExecl(vipRecords, cols, response, request);
+            org.json.JSONObject result = new org.json.JSONObject();
+            if(pathname==null||pathname.equals("")){
+                errormessage="数据异常，导出失败";
+                int a=8/0;
+            }
+            result.put("path",JSON.toJSONString("lupload/"+pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage("word success");
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(e.getMessage());
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
     }

@@ -290,9 +290,9 @@ public class TestFeedbackService {
     public void Screen() throws SQLException {
         try {
             Map<String,String> map=new HashMap<String, String>();
-            map.put("corp_name","Y");
-            map.put("group_code","G0007");
-            PageInfo<Group> allGroupScreen = groupService.getAllGroupScreen(1, 10, "", "", map);
+            map.put("corp_name","罗莱");
+            map.put("group_code","G0114");
+            PageInfo<Group> allGroupScreen = groupService.getAllGroupScreen(1, 10, "C10141", "", map);
             List<Group> list = allGroupScreen.getList();
             for (Group g : list) {
                 System.out.println(g.getGroup_name()+"--"+g.getCorp().getCorp_name());

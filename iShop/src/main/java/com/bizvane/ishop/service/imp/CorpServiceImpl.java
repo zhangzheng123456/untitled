@@ -184,7 +184,7 @@ public class CorpServiceImpl implements CorpService {
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<Corp> list = corpMapper.selectAllCorpScreen(params);
-        PageInfo<Corp> page = new PageInfo<Corp>();
+        PageInfo<Corp> page = new PageInfo<Corp>(list);
         return page;
     }
 
