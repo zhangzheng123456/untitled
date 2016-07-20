@@ -447,20 +447,26 @@ public class CorpController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
+       String errormessage="";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             //系统管理员(官方画面)
-            PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 10000, "");
+            PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 30000, "");
             List<Corp> corps = corpInfo.getList();
+            if(corps.size()>=29999){
+                errormessage="导出数据过大";
+                int i=9/0;
+            }
            String column_name = jsonObject.get("column_name").toString();
         // String column_name1 = "corp_code,corp_name";
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(corps, cols, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
+               errormessage="数据异常，导出失败";
                int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -470,7 +476,7 @@ public class CorpController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
-            dataBean.setMessage(ex.getMessage());
+            dataBean.setMessage(errormessage);
         }
 
         return dataBean.getJsonStr();
@@ -493,6 +499,10 @@ public class CorpController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            if(rows>9999){
+                result="数据量过大，导入失败";
+                int i=5 /0;
+            }
             Cell[] column = rs.getColumn(0);
             Pattern pattern = Pattern.compile("C\\d{5}");
             for (int i = 3; i < column.length; i++) {
@@ -534,6 +544,8 @@ public class CorpController {
                     corp.setCreater(user_id);
                     Date now = new Date();
                     corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    corp.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    corp.setModifier(user_id);
                     result = corpService.insertExecl(corp);
 
                 }
