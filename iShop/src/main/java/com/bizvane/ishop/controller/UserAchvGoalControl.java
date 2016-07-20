@@ -488,9 +488,9 @@ public class UserAchvGoalControl {
             org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject1.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject1.get("pageSize").toString());
-            String screen = jsonObject1.get("screen").toString();
-            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+//            String screen = jsonObject1.get("screen").toString();
+//            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<UserAchvGoal> list;

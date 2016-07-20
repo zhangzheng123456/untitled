@@ -1102,9 +1102,9 @@ public class UserController {
             org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
             int page_number = Integer.parseInt(jsonObject2.get("pageNumber").toString());
             int page_size = Integer.parseInt(jsonObject2.get("pageSize").toString());
-            String screen = jsonObject2.get("screen").toString();
-            org.json.JSONObject jsonScreen = new JSONObject(screen);
-            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+//            String screen = jsonObject2.get("screen").toString();
+//            org.json.JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject2);
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
