@@ -730,10 +730,10 @@ input::-webkit-input-placeholder{
 	background-color: #4a5f7c;
 	cursor: pointer;
     float: right;
-    margin-top: 10px;
     margin-right: 10px;
 }
 .file_content{
+	margin-top: 10px;
 	width: 100%;
 	height: 30px;
 }
@@ -751,6 +751,5 @@ input::-webkit-input-placeholder{
 	background-color: #4a5f7c;
 	cursor:pointer;
     float: left;
-    margin-top: 10px;
     margin-left: 10px;
 }
