@@ -7,6 +7,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by lixiang on 2016/6/22.
@@ -80,6 +81,10 @@ public interface SmsTemplateService {
      * @throws SQLException
      */
     String SmsTemplateNameExist(String corp_code, String template_name) throws SQLException;
+
+    //PageInfo<SmsTemplate> selectAllSmsTemplate(int page_number, int page_size, Map<String, String> map);
+
+    PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String s, Map<String, String> map);
 
 //    List<TemplateType> getTypes();
 

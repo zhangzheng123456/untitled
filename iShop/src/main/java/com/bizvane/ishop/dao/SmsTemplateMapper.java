@@ -5,6 +5,7 @@ import com.bizvane.ishop.entity.SmsTemplate;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface SmsTemplateMapper {
 
@@ -21,6 +22,8 @@ public interface SmsTemplateMapper {
     List<SmsTemplate> selectByCode(@Param("corp_code") String corp_code, @Param("template_code") String template_code);
 
     List<SmsTemplate> selectByName(@Param("template_name") String template_name, @Param("corp_code") String corp_code);
+
+    List<SmsTemplate> selectAllSmsTemplateScreen(Map<String, Object> params);
 
     /*List<TemplateType> getTypes();*/
 }

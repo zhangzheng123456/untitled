@@ -198,4 +198,32 @@
            select * from def_template_type
        </select>
    -->
+
+    <select id="selectAllSmsTemplateScreen" resultMap="MessageTemplates">
+        select
+        dmt.id,
+        dmt.template_code,
+        dmt.template_name,
+        dmt.template_content,
+        dmt.isactive,
+        dmt.corp_code,
+        dmt.modifier,
+        dmt.modified_date,
+        dmt.created_date,
+        dmt.creater,
+        dc.corp_name
+        from def_sms_template dmt,DEF_CORP dc
+        WHERE dmt.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            and dmt.corp_code=#{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
+            #{entryKey} LIKE concat('%',#{entryKeyValue},'%')
+        </foreach>
+        ORDER by dmt.id DESC
+
+    </select>
+
+
 </mapper>

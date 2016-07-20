@@ -15,10 +15,11 @@ ObjectControl.prototype = {
 				if(data){
 				    callback(data);
 				}else{
+					
 				}
 			},
 			error:function(data){
-				window.location.reload();
+				// window.location.reload();
 				console.log(data.responseText);
 			}
 		});
