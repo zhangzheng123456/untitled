@@ -140,7 +140,7 @@ public class CorpServiceImpl implements CorpService {
         codeUpdateMapper.updateGoods(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateGroup(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateInterface(new_corp_code, old_corp_code);
-     //   codeUpdateMapper.updateMessage(new_corp_code, old_corp_code);
+        //   codeUpdateMapper.updateMessage(new_corp_code, old_corp_code);
         codeUpdateMapper.updatePraise(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateSmsTemplate(new_corp_code, old_corp_code);
         codeUpdateMapper.updateStaffDetailInfo(new_corp_code, old_corp_code, "", "", "", "");
@@ -184,7 +184,7 @@ public class CorpServiceImpl implements CorpService {
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<Corp> list = corpMapper.selectAllCorpScreen(params);
-        PageInfo<Corp> page = new PageInfo<Corp>();
+        PageInfo<Corp> page = new PageInfo<Corp>(list);
         return page;
     }
 
