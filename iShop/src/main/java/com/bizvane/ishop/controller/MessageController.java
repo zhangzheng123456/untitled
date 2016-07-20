@@ -136,7 +136,7 @@ public class MessageController {
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add  success ! ");
+                dataBean.setMessage("add  success  ");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -365,7 +365,7 @@ public class MessageController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("edit error !!! ");
+            dataBean.setMessage("edit error  ");
         }
         return dataBean.getJsonStr();
     }
@@ -391,7 +391,7 @@ public class MessageController {
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("scuccess!!!!");
+            dataBean.setMessage("scuccess");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -451,7 +451,7 @@ public class MessageController {
 //            List<TemplateType> list = this.smsTemplateService.getTypes();
 //            com.alibaba.fastjson.JSONArray array = new com.alibaba.fastjson.JSONArray();
 //            com.alibaba.fastjson.JSONObject json = null;
-//            for (int i = 0; list != null && i < list.size(); i++) {
+//            for (int i = 0; list = null && i < list.size(); i++) {
 //                String type_code = String.valueOf(list.get(i).getId());
 //                String type_name = list.get(i).getType_name();
 //                json = new com.alibaba.fastjson.JSONObject();
@@ -539,13 +539,13 @@ public class MessageController {
             String existInfo2 = smsTemplateService.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_name());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("消息模板编号已经存在！！！");
+                dataBean.setMessage("消息模板编号已经存在");
             } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("消息模板名称已经存在!!!");
+                dataBean.setMessage("消息模板名称已经存在");
             } else {
                 this.smsTemplateService.insert(SmsTemplate);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("add succcess !!!");
+                dataBean.setMessage("add succcess");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
