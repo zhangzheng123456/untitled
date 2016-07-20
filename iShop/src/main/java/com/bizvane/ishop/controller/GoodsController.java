@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
@@ -245,9 +246,16 @@ public class GoodsController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            String screen = jsonObject.get("screen").toString();
-            JSONObject jsonScreen = new JSONObject(screen);
-            Map<String,String> map = WebUtils.Json2Map(jsonScreen);
+            String jlist = jsonObject.get("list").toString();
+            JSONArray array = JSONArray.parseArray(jlist);
+            Map<String,String> map = new HashMap<String, String>();
+            for(int i=0;i<array.size();i++){
+                String info = array.get(i).toString();
+                JSONObject json = new JSONObject(info);
+                String screen_key = json.get("screen_key").toString();
+                String screen_value = json.get("screen_value").toString();
+                map.put(screen_key,screen_value);
+            }
             PageInfo<Goods> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = goodsService.selectAllGoodsScreen(page_number, page_size, "", map);
