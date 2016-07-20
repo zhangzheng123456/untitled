@@ -106,7 +106,7 @@ var oc = new ObjectControl();
 				var _params = {
 					"id": ID,
 					"corp_code": OWN_CORP,//公司编号
-					"template_code;": MOBAN_ID,//模板编号
+					"template_code": MOBAN_ID,//模板编号
 					"template_content": MOBAN_CONTENT,//模板内容
 					"template_name": MOBAN_NAME,//模板名称
 					// "template_type": MOBAN_TYPE,//模板类型
@@ -124,7 +124,6 @@ var oc = new ObjectControl();
 			if(data.code=="0"){
 				$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
 			}else if(data.code=="-1"){
-				alert(data.message);
 				art.dialog({
 					time: 1,
 					lock:true,
@@ -257,7 +256,7 @@ jQuery(document).ready(function(){
     	var div=$(this).next('.hint').children();
     	if(template_name!==""&&template_name!==template_name1){
 	    	var _params={};
-	    	_params["template_name"]=tem_name;
+	    	_params["template_name"]=template_name;
 	    	_params["corp_code"]=corp_code;
 	    	oc.postRequire("post","/message/mobile/template/messageTemplateNameExist","", _params, function(data){
 	            if(data.code=="0"){
@@ -298,6 +297,14 @@ function getcorplist(a){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}
 			$('.corp_select select').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				$("#MOBAN_ID").val("");
+				$("#MOBAN_NAME").val("");
+				$("input[verify='Code']").attr("data-mark","");
+				$("#STORE_NAME").attr("data-mark","");
+
+			})
+
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -308,29 +315,3 @@ function getcorplist(a){
 		}
 	});
 }
-// function mobileType(b){
-// 	var _command = "/message/mobile/template/types";
-// 	oc.postRequire("post", _command, "","", function(data) {
-// 		console.log(data);
-// 		if (data.code == "0") {
-// 			var msg = JSON.parse(data.message);
-// 			$('#type_select .searchable-select').remove();
-// 			var	mobile_html="";
-// 			for(var i=0;i<msg.types.length;i++){
-// 				mobile_html+='<option value="'+msg.types[i].id+'">'+msg.types[i].type_name+'</option>';
-// 			}
-// 			$("#MOBAN_TYPE").html(mobile_html);
-// 			if(b!==""){
-// 				$("#type_select option[value='"+b+"']").attr("selected","true");
-// 			}
-// 			$('.message_type_select select').searchableSelect();
-// 		} else if (data.code = "1") {
-// 			art.dialog({
-// 				time: 1,
-// 				lock: true,
-// 				cancel: false,
-// 				content: data.message
-// 			})
-// 		}
-// 	});
-// }

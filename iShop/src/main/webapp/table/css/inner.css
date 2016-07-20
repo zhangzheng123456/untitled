@@ -272,11 +272,12 @@ input::-webkit-input-placeholder{
 	color: #888;
 }
 .sxk{
-	height: 100px;
+	// height: 100px;
 	background-color: #d7d8da;
 	overflow: hidden;
 	display: none;
 	margin-bottom: 10px;
+	overflow: hidden;
 }
 .sxk .btn{
 	margin: 10px 10px 0 10px;
@@ -305,7 +306,7 @@ input::-webkit-input-placeholder{
 	float: right;
 }
 .sxk .btn .r_btn .pack_up,.sxk .btn .r_btn .find{
-	width: 100px;
+	min-width: 100px;
 	height: 30px;
 	border-radius: 5px;
 	text-align: center;
@@ -324,14 +325,20 @@ input::-webkit-input-placeholder{
 .sxk .inputs li{
 	float: left;
 	margin-left: 20px;
+	margin-bottom: 20px;
 }
 .sxk .inputs{
-	overflow: hidden;
 	margin-top: 20px;
 	margin-left: -10px;
 }
+// .sxk .inputs ul{
+// 	overflow: hidden;
+// }
 .sxk .inputs label{
+	display: inline-block;
+	width:56px;
 	color: #888;
+	text-align: right;
 }
 .sxk .inputs li input{
 	margin-left: 10px;
@@ -680,7 +687,7 @@ input::-webkit-input-placeholder{
 	width:500px;
 	background: #f4f4f4; 
 	overflow: hidden;
-	display:block;
+	display:none;
 	position: absolute;
 	top:50px;
 	left:70px;
@@ -728,6 +735,9 @@ input::-webkit-input-placeholder{
 .file_content{
 	width: 100%;
 	height: 30px;
+}
+.into_frame{
+	display: none;
 }
 .download{
 	width: 150px;

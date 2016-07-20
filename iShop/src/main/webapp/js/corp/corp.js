@@ -5,6 +5,8 @@ var inx=1;//默认是第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
+var _param={};//筛选定义的内容
+var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
@@ -501,3 +503,45 @@ $("#file_submit").click(function(){
 $('.file_close').click(function(){
     $('.file').hide();
 })
+//筛选按钮
+oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
+    if(data.code=="0"){
+        var message=JSON.parse(data.message);
+        var filter=message.filter;
+        $("#sxk .inputs ul").empty();
+        for(var i=0;i<filter.length;i++){
+            $("#sxk .inputs ul").append("<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'><li>");
+        }
+    }
+});
+//筛选查找
+$("#file_submit").click(function(){
+   var input=$('#sxk .inputs input');
+   _param["pageNumber"]=inx;
+   _param["pageSize"]=pageSize;
+   _param["funcCode"]=funcCode;
+   var list=[];
+   var num=0;
+   for(var i=0;i<input.length;i++){
+        var screen_key=$(input[i]).attr("id");
+        var screen_value=$(input[i]).val();
+        if(screen_value!=""){
+            num++;
+        }
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+   }
+   if(num>0){
+        filtrate=10;
+        filtrate();
+   }else if(num<=0){
+        frame();
+        $('.frame').html("请输入筛选值");
+   }
+})
+//筛选发送请求
+function filtrate(){
+   oc.postRequire("post","/corp/screen","0",_param,function(data){
+        console.log(data);
+   });
+}
