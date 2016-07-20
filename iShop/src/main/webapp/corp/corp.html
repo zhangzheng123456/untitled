@@ -79,13 +79,63 @@
                 </div>
                 <div id="file_list">
                     <ul>
-                        <!-- <li>
+                        <li>
                             <div class="checkbox1">
                                 <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
                                 <label for="checkboxInput11"></label>
                             </div>
                             <span class="p15">企业编号</span>
-                        </li> -->
+                        </li>
+                        <li>
+                            <div class="checkbox1">
+                                <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
+                                <label for="checkboxInput11"></label>
+                            </div>
+                            <span class="p15">企业编号</span>
+                        </li>
+                        <li>
+                            <div class="checkbox1">
+                                <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
+                                <label for="checkboxInput11"></label>
+                            </div>
+                            <span class="p15">企业编号</span>
+                        </li>
+                        <li>
+                            <div class="checkbox1">
+                                <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
+                                <label for="checkboxInput11"></label>
+                            </div>
+                            <span class="p15">企业编号</span>
+                        </li>
+                        <li>
+                            <div class="checkbox1">
+                                <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
+                                <label for="checkboxInput11"></label>
+                            </div>
+                            <span class="p15">企业编号</span>
+                        </li>
+                        <li>
+                            <div class="checkbox1">
+                                <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
+                                <label for="checkboxInput11"></label>
+                            </div>
+                            <span class="p15">企业编号</span>
+                        </li>
+                        <li>
+                            <div class="checkbox1">
+                                <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
+                                <label for="checkboxInput11"></label>
+                            </div>
+                            <span class="p15">企业编号</span>
+                        </li>
+                        <li>
+                            <div class="checkbox1">
+                                <input type="checkbox" value="" name="test"  class="check"  id="checkboxInput11"/>
+                                <label for="checkboxInput11"></label>
+                            </div>
+                            <span class="p15">企业编号</span>
+                        </li>
+                        
                     </ul>
                 </div>
                 <div class="file_btn">
@@ -259,7 +309,7 @@
             var form = new FormData();
             form.append("file", fileObj);// 文件对象
             // XMLHttpRequest 对象
-            var xhr = null;
+            var xhr=null;
             if(window.XMLHttpRequest){
                 xhr = new XMLHttpRequest();
             }else {
@@ -268,7 +318,7 @@
             xhr.onreadystatechange = function(){
                 if(xhr.readyState===4){
                     if(xhr.status === 200){
-                        doResult(  xhr.responseText  );
+                        doResult(xhr.responseText);
                     }else{
                         console.log('服务器返回了错误的响应状态码');
                     }
