@@ -434,10 +434,10 @@ public class AreaController {
 
             String pathname = OutExeclHelper.OutExecl(areas, cols, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -538,9 +538,9 @@ public class AreaController {
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String screen = jsonObject.get("screen").toString();
-            JSONObject jsonScreen = new JSONObject(screen);
-            Map<String, String> map = WebUtils.Json2Map(jsonScreen);
+//            String screen = jsonObject.get("screen").toString();
+//            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Area> list;
