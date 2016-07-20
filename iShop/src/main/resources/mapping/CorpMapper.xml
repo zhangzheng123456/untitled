@@ -58,10 +58,10 @@
     </select>
 
     <select id="selectCorps" resultMap="CorpInfo">
-    select *
-    from DEF_CORP
-    where isactive = 'Y'
-    ORDER BY id DESC
+        select *
+        from DEF_CORP
+        where isactive = 'Y'
+        ORDER BY id DESC
     </select>
 
     <select id="selectMaxCorpCode" resultType="java.lang.String">
@@ -218,7 +218,7 @@
     </select>
 
     <select id="getBrandCount" resultType="java.lang.Integer">
-        select count(*) from DEF_BRAND  WHERE corp_code=#{corp_code}
+        select count(*) from DEF_BRAND WHERE corp_code=#{corp_code}
     </select>
 
     <select id="getGoodCount" resultType="java.lang.Integer">
@@ -239,8 +239,10 @@
         select *
         from DEF_CORP
         where
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
-            #{entryKey} LIKE concat('%',#{entryValue},'%')
+        <foreach collection="map.keys" item="k" open="" separator="and" close="">
+            <if test="null!=map[k]">
+                ${k} LIKE CONCAT('%',#{map[${k}]},'%')
+            </if>
         </foreach>
         ORDER BY id DESC
 
