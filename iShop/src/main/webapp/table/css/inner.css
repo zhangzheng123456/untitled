@@ -691,6 +691,7 @@ input::-webkit-input-placeholder{
 	position: absolute;
 	top:50px;
 	left:70px;
+	z-index: 2;
 }
 .file li{
 	height: 30px;

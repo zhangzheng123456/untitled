@@ -426,7 +426,6 @@ $("#delete").click(function(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
-    $('.frame').hide();
 } 
 //全选
 function checkAll(name){
@@ -456,7 +455,7 @@ function clearAll(name){
             }
         }
 };
-//导出
+//导出拉出list
 $("#leading_out").click(function(){
     $('.file').show();
     var param={};
@@ -515,7 +514,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
     }
 });
 //筛选查找
-$("#file_submit").click(function(){
+$("#find").click(function(){
    var input=$('#sxk .inputs input');
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
@@ -531,16 +530,17 @@ $("#file_submit").click(function(){
         var param1={"screen_key":screen_key,"screen_value":screen_value};
         list.push(param1);
    }
+   _param["list"]=list;
    if(num>0){
-        filtrate=10;
-        filtrate();
+        filtrate="sucess";
+        filtrates();
    }else if(num<=0){
         frame();
         $('.frame').html("请输入筛选值");
    }
 })
 //筛选发送请求
-function filtrate(){
+function filtrates(){
    oc.postRequire("post","/corp/screen","0",_param,function(data){
         console.log(data);
    });
