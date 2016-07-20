@@ -1,7 +1,6 @@
 package com.bizvane.ishop.utils;
 
 import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -137,57 +136,50 @@ public class WebUtils {
     }
 
 
-    public static Map Json2Map(JSONObject json)
-    {
-        if(json == null)
-        {
+    public static Map Json2Map(JSONObject jsonObject) {
+        if (jsonObject == null) {
             return null;
         }
-
-        Map result = new HashMap();
-        Object key, value;
-        Iterator keyIterator = json.keys();
-        while(keyIterator.hasNext())
-        {
-            key = keyIterator.next();
-            value = json.get(key.toString());
-
-            if(value instanceof JSONObject)
-            {
-                result.put(key, Json2Map((JSONObject)value));
-            }
-            else if(value instanceof JSONArray)
-            {
-                result.put(key, Json2List((JSONArray)value));
-            }
-            else
-            {
-                result.put(key, value);
-            }
+        String jlist = jsonObject.get("list").toString();
+        com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(jlist);
+        Map<String, String> map = new HashMap<String, String>();
+        for (int i = 0; i < array.size(); i++) {
+            String info = array.get(i).toString();
+            JSONObject json = new JSONObject(info);
+            String screen_key = json.get("screen_key").toString();
+            String screen_value = json.get("screen_value").toString();
+            map.put(screen_key, screen_value);
         }
-
-        return result;
+//        Map result = new HashMap();
+//        Object key, value;
+//        Iterator keyIterator = jsonObject.keys();
+//        while (keyIterator.hasNext()) {
+//            key = keyIterator.next();
+//            value = jsonObject.get(key.toString());
+//
+//            if (value instanceof JSONObject) {
+//                result.put(key, Json2Map((JSONObject) value));
+//            } else if (value instanceof JSONArray) {
+//                result.put(key, Json2List((JSONArray) value));
+//            } else {
+//                result.put(key, value);
+//            }
+//        }
+        return map;
     }
-    public static List Json2List(JSONArray json)
-    {
-        if(json == null)
-        {
+
+    public static List Json2List(JSONArray json) {
+        if (json == null) {
             return null;
         }
 
         List result = new ArrayList();
-        for(int i=0; i<json.length(); i++)
-        {
-            if(json.get(i) instanceof JSONObject)
-            {
-                result.add(Json2Map((JSONObject)json.get(i)));
-            }
-            else if(json.get(i) instanceof JSONArray)
-            {
-                result.add(Json2List((JSONArray)json.get(i)));
-            }
-            else
-            {
+        for (int i = 0; i < json.length(); i++) {
+            if (json.get(i) instanceof JSONObject) {
+                result.add(Json2Map((JSONObject) json.get(i)));
+            } else if (json.get(i) instanceof JSONArray) {
+                result.add(Json2List((JSONArray) json.get(i)));
+            } else {
                 result.add(json.get(i));
             }
         }

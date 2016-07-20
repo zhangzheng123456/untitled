@@ -161,10 +161,10 @@ public class GoodsController {
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(goodses, cols, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -246,16 +246,17 @@ public class GoodsController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            String jlist = jsonObject.get("list").toString();
-            JSONArray array = JSONArray.parseArray(jlist);
-            Map<String,String> map = new HashMap<String, String>();
-            for(int i=0;i<array.size();i++){
-                String info = array.get(i).toString();
-                JSONObject json = new JSONObject(info);
-                String screen_key = json.get("screen_key").toString();
-                String screen_value = json.get("screen_value").toString();
-                map.put(screen_key,screen_value);
-            }
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+//            String jlist = jsonObject.get("list").toString();
+//            JSONArray array = JSONArray.parseArray(jlist);
+//            Map<String,String> map = new HashMap<String, String>();
+//            for(int i=0;i<array.size();i++){
+//                String info = array.get(i).toString();
+//                JSONObject json = new JSONObject(info);
+//                String screen_key = json.get("screen_key").toString();
+//                String screen_value = json.get("screen_value").toString();
+//                map.put(screen_key,screen_value);
+//            }
             PageInfo<Goods> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
                 list = goodsService.selectAllGoodsScreen(page_number, page_size, "", map);
