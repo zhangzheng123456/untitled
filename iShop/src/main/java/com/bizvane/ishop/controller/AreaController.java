@@ -414,7 +414,7 @@ public class AreaController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="";
+        String errormessage = "";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -425,14 +425,14 @@ public class AreaController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<Area> list;
-            if(screen.equals("")){
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = areaService.getAllAreaByPage(1, 30000, "", search_value);
                 } else {
                     list = areaService.getAllAreaByPage(1, 30000, corp_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = areaService.getAllAreaScreen(1, 30000, "", map);
@@ -441,16 +441,16 @@ public class AreaController {
                 }
             }
             List<Area> areas = list.getList();
-            if(areas.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (areas.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(areas, cols, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage="数据异常，导出失败";
+                errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));
@@ -468,7 +468,7 @@ public class AreaController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST ,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -482,9 +482,9 @@ public class AreaController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows>9999){
-                result="数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Pattern pattern = Pattern.compile("A\\d{4}");
             Cell[] column = rs.getColumn(0);
