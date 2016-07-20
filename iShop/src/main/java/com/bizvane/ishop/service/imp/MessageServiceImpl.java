@@ -85,6 +85,7 @@ public class MessageServiceImpl implements MessageService {
             Data data_message_type = new Data("message_type", message_type, ValueType.PARAM);
             Data headimgurl = new Data("headimgurl", avater, ValueType.PARAM);
             Data nickname = new Data("nickname", user_name, ValueType.PARAM);
+            Data send_type = new Data("send_type", "1", ValueType.PARAM);
 
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
@@ -94,6 +95,7 @@ public class MessageServiceImpl implements MessageService {
             datalist.put(data_message_type.key, data_message_type);
             datalist.put(headimgurl.key, headimgurl);
             datalist.put(nickname.key, nickname);
+            datalist.put(send_type.key, send_type);
 
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ChatToUser",datalist);
             logger.info(dataBox.data.get("message").value);
