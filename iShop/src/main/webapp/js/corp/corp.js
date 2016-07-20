@@ -6,6 +6,7 @@ var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
+var list=[];//定义一个list
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
@@ -489,7 +490,13 @@ $("#file_submit").click(function(){
         }     
     }
     param["column_name"]=column_name;
-    oc.postRequire("get","/corp/exportExecl","0",param,function(data){
+    param["search"]=value;
+    if(filtrate==""){
+        param["list"]="";
+    }else if(filtrate!==""){
+        param["list"]=list;
+    }
+    oc.postRequire("post","/corp/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var path=message.path;
@@ -519,19 +526,19 @@ $("#find").click(function(){
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
-   var list=[];
    var num=0;
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
         var screen_value=$(input[i]).val();
         if(screen_value!=""){
             num++;
+            var param1={"screen_key":screen_key,"screen_value":screen_value};
+            list.push(param1);
         }
-        var param1={"screen_key":screen_key,"screen_value":screen_value};
-        list.push(param1);
    }
    _param["list"]=list;
    if(num>0){
+        value="";
         filtrate="sucess";
         filtrates();
    }else if(num<=0){
