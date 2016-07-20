@@ -65,6 +65,7 @@ public class OutExeclHelper {
             WritableCellFormat format = new WritableCellFormat(font);
             format.setAlignment(Alignment.CENTRE);
             format.setVerticalAlignment(VerticalAlignment.CENTRE);
+            //这里可以改中文
             for (int i = 0; i < cols.length; i++) {
                 sheet.setColumnView(i, 40);
                 Label label = new Label(i, 0, cols[i]);

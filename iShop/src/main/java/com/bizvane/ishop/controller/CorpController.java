@@ -454,7 +454,15 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             //系统管理员(官方画面)
-            PageInfo<Corp> corpInfo = corpService.selectAllCorp(1, 30000, "");
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
+            PageInfo<Corp> corpInfo=null;
+            if(screen.equals("")) {
+                corpInfo= corpService.selectAllCorp(1, 30000, search_value);
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                corpInfo = corpService.selectAllCorpScreen(1, 30000, map);
+            }
             List<Corp> corps = corpInfo.getList();
             if(corps.size()>=29999){
                 errormessage="导出数据过大";
