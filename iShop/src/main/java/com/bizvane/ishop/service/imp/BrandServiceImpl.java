@@ -129,29 +129,49 @@ public class BrandServiceImpl implements BrandService {
         String brand_name = jsonObject.get("brand_name").toString();
 
         Brand brand = getBrandById(brand_id);
+
         Brand brand1 = getBrandByCode(corp_code, brand_code);
         Brand brand2 = getBrandByCode(corp_code, brand_name);
-
-        if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
-                (brand.getBrand_name().equals(brand_name) || brand2 == null)) {
-            if (!brand.getBrand_code().equals(brand_code)){
-                updateCauseCodeChange(corp_code,brand_code,brand.getBrand_code());
+        if (brand.getCorp_code().equals(corp_code)) {
+            if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
+                    (brand.getBrand_name().equals(brand_name) || brand2 == null)) {
+                if (!brand.getBrand_code().equals(brand_code)) {
+                    updateCauseCodeChange(corp_code, brand_code, brand.getBrand_code());
+                }
+                brand = new Brand();
+                Date now = new Date();
+                brand.setId(brand_id);
+                brand.setBrand_code(brand_code);
+                brand.setBrand_name(brand_name);
+                brand.setCorp_code(corp_code);
+                brand.setModified_date(Common.DATETIME_FORMAT.format(now));
+                brand.setModifier(user_id);
+                brand.setIsactive(jsonObject.get("isactive").toString());
+                brandMapper.updateBrand(brand);
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else if (!brand.getBrand_code().equals(brand_code) && brand1 != null) {
+                result = "品牌编号已存在";
+            } else {
+                result = "品牌名称已存在";
             }
-            brand = new Brand();
-            Date now = new Date();
-            brand.setId(brand_id);
-            brand.setBrand_code(brand_code);
-            brand.setBrand_name(brand_name);
-            brand.setCorp_code(corp_code);
-            brand.setModified_date(Common.DATETIME_FORMAT.format(now));
-            brand.setModifier(user_id);
-            brand.setIsactive(jsonObject.get("isactive").toString());
-            brandMapper.updateBrand(brand);
-            result = Common.DATABEAN_CODE_SUCCESS;
-        } else if (!brand.getBrand_code().equals(brand_code) && brand1 != null) {
-            result = "品牌编号已存在";
         } else {
-            result = "品牌名称已存在";
+            if (brand1 == null && brand2 == null) {
+                brand = new Brand();
+                Date now = new Date();
+                brand.setId(brand_id);
+                brand.setBrand_code(brand_code);
+                brand.setBrand_name(brand_name);
+                brand.setCorp_code(corp_code);
+                brand.setModified_date(Common.DATETIME_FORMAT.format(now));
+                brand.setModifier(user_id);
+                brand.setIsactive(jsonObject.get("isactive").toString());
+                brandMapper.updateBrand(brand);
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else if (!brand.getBrand_code().equals(brand_code) && brand1 != null) {
+                result = "品牌编号已存在";
+            } else {
+                result = "品牌名称已存在";
+            }
         }
         return result;
     }
@@ -187,11 +207,11 @@ public class BrandServiceImpl implements BrandService {
      * 级联更改关联此编号的店铺，商品列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code,String new_brand_code,String old_brand_code){
+    void updateCauseCodeChange(String corp_code, String new_brand_code, String old_brand_code) {
         //店铺列表级联修改
-        codeUpdateMapper.updateGoods("",corp_code,new_brand_code,old_brand_code);
+        codeUpdateMapper.updateGoods("", corp_code, new_brand_code, old_brand_code);
 
         //商品列表级联修改
-        codeUpdateMapper.updateStore("",corp_code,new_brand_code,old_brand_code,"","");
+        codeUpdateMapper.updateStore("", corp_code, new_brand_code, old_brand_code, "", "");
     }
 }

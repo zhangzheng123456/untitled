@@ -212,9 +212,9 @@ public class SignController {
     @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
-        DataBean dataBean=new DataBean();
+        DataBean dataBean = new DataBean();
         String errormessage = "";
-        try{
+        try {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
@@ -311,17 +311,17 @@ public class SignController {
             JSONObject result = new JSONObject();
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = signService.selectSignAllScreen(page_number, page_size, "", "", "", "", "", map);
+                list = signService.selectSignAllScreen(page_number, page_size, "", "", "", "", map);
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", "", "", map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", "", map);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", "", role_code, map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", role_code, map);
             } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", corp_code, "", role_code, map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", store_code, role_code, map);
             } else if (role_code.equals(Common.ROLE_STAFF)) {
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", "", user_code, map);
+                list = signService.selectSignAllScreenByUser(page_number, page_size, corp_code, user_code, map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

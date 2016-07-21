@@ -85,32 +85,32 @@ public class CorpServiceImpl implements CorpService {
         new_code = corp_code;
         String corp_name = jsonObject.get("corp_name").toString();
 
-        Corp corp = selectByCorpId(corp_id, "");
-        old_code = corp.getCorp_code();
+        Corp old_corp = selectByCorpId(corp_id, "");
+        old_code = old_corp.getCorp_code();
         Corp corp1 = selectByCorpId(0, corp_code);
         String exist = getCorpByCorpName(corp_name);
 
-        if ((corp.getCorp_code().equals(corp_code) || corp1 == null)
-                && (corp.getCorp_name().equals(corp_name) || exist.equals(Common.DATABEAN_CODE_SUCCESS))) {
-            corp = new Corp();
-            corp.setId(corp_id);
-            corp.setCorp_code(corp_code);
-            corp.setCorp_name(corp_name);
-            corp.setAddress(jsonObject.get("address").toString());
-            corp.setContact(jsonObject.get("contact").toString());
-            corp.setContact_phone(jsonObject.get("phone").toString());
-            corp.setAvater(jsonObject.get("avater").toString());
-            corp.setApp_id(jsonObject.get("app_id").toString());
-            corp.setIsactive(jsonObject.get("isactive").toString());
+        if ((old_corp.getCorp_code().equals(corp_code) || corp1 == null)
+                && (old_corp.getCorp_name().equals(corp_name) || exist.equals(Common.DATABEAN_CODE_SUCCESS))) {
+            old_corp = new Corp();
+            old_corp.setId(corp_id);
+            old_corp.setCorp_code(corp_code);
+            old_corp.setCorp_name(corp_name);
+            old_corp.setAddress(jsonObject.get("address").toString());
+            old_corp.setContact(jsonObject.get("contact").toString());
+            old_corp.setContact_phone(jsonObject.get("phone").toString());
+            old_corp.setAvater(jsonObject.get("avater").toString());
+            old_corp.setApp_id(jsonObject.get("app_id").toString());
+            old_corp.setIsactive(jsonObject.get("isactive").toString());
             Date now = new Date();
-            corp.setModified_date(Common.DATETIME_FORMAT.format(now));
-            corp.setModifier(user_id);
+            old_corp.setModified_date(Common.DATETIME_FORMAT.format(now));
+            old_corp.setModifier(user_id);
 
-            if (corpMapper.updateByCorpId(corp) > 0 && (!new_code.equals(old_code))) {
+            if (corpMapper.updateByCorpId(old_corp) > 0 && (!new_code.equals(old_code))) {
                 updateCorpcode(old_code, new_code);
             }
             result = Common.DATABEAN_CODE_SUCCESS;
-        } else if (!corp.getCorp_code().equals(corp_code) || corp1 != null) {
+        } else if (!old_corp.getCorp_code().equals(corp_code) || corp1 != null) {
             result = "企业编号已存在";
         } else {
             result = "企业名称已存在";

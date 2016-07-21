@@ -243,30 +243,55 @@ public class StoreServiceImpl implements StoreService {
         Store store = getStoreById(store_id);
         Store store1 = getStoreByCode(corp_code, store_code, "");
         Store store2 = getStoreByName(corp_code, store_name);
-
-        if ((store.getStore_code().equals(store_code) || store1 == null)
-                && (store.getStore_name().equals(store_name) || store2 == null)) {
-            if (!store.getStore_code().equals(store_code)) {
-                updateCauseCodeChange(corp_code, store_code, store.getStore_code());
+        if (store.getCorp_code().equals(corp_code)) {
+            if ((store.getStore_code().equals(store_code) || store1 == null)
+                    && (store.getStore_name().equals(store_name) || store2 == null)) {
+                if (!store.getStore_code().equals(store_code)) {
+                    updateCauseCodeChange(corp_code, store_code, store.getStore_code());
+                }
+                store = new Store();
+                store.setId(store_id);
+                store.setStore_code(store_code);
+                store.setStore_name(store_name);
+                store.setArea_code(jsonObject.get("area_code").toString());
+                store.setCorp_code(corp_code);
+                store.setBrand_code(jsonObject.get("brand_code").toString());
+                store.setFlg_tob(jsonObject.get("flg_tob").toString());
+                Date now = new Date();
+                store.setModified_date(Common.DATETIME_FORMAT.format(now));
+                store.setModifier(user_id);
+                store.setIsactive(jsonObject.get("isactive").toString());
+                storeMapper.updateStore(store);
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else if (!store.getStore_code().equals(store_code) && store1 != null) {
+                result = "店铺编号已存在";
+            } else {
+                result = "店铺名称已存在";
             }
-            store = new Store();
-            store.setId(store_id);
-            store.setStore_code(store_code);
-            store.setStore_name(store_name);
-            store.setArea_code(jsonObject.get("area_code").toString());
-            store.setCorp_code(corp_code);
-            store.setBrand_code(jsonObject.get("brand_code").toString());
-            store.setFlg_tob(jsonObject.get("flg_tob").toString());
-            Date now = new Date();
-            store.setModified_date(Common.DATETIME_FORMAT.format(now));
-            store.setModifier(user_id);
-            store.setIsactive(jsonObject.get("isactive").toString());
-            storeMapper.updateStore(store);
-            result = Common.DATABEAN_CODE_SUCCESS;
-        } else if (!store.getStore_code().equals(store_code) && store1 != null) {
-            result = "店铺编号已存在";
         } else {
-            result = "店铺名称已存在";
+            if (store1 == null && store2 == null) {
+                if (!store.getStore_code().equals(store_code)) {
+                    updateCauseCodeChange(corp_code, store_code, store.getStore_code());
+                }
+                store = new Store();
+                store.setId(store_id);
+                store.setStore_code(store_code);
+                store.setStore_name(store_name);
+                store.setArea_code(jsonObject.get("area_code").toString());
+                store.setCorp_code(corp_code);
+                store.setBrand_code(jsonObject.get("brand_code").toString());
+                store.setFlg_tob(jsonObject.get("flg_tob").toString());
+                Date now = new Date();
+                store.setModified_date(Common.DATETIME_FORMAT.format(now));
+                store.setModifier(user_id);
+                store.setIsactive(jsonObject.get("isactive").toString());
+                storeMapper.updateStore(store);
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else if (!store.getStore_code().equals(store_code) && store1 != null) {
+                result = "店铺编号已存在";
+            } else {
+                result = "店铺名称已存在";
+            }
         }
         return result;
     }
