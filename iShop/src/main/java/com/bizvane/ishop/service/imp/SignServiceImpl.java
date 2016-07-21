@@ -121,6 +121,7 @@ public class SignServiceImpl implements SignService {
         params.put("corp_code", corp_code);
         params.put("user_code", user_code);
         params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
         List<Sign> list = signMapper.selectSignAllScreenUser(params);
         PageInfo<Sign> page = new PageInfo<Sign>(list);
         return page;
