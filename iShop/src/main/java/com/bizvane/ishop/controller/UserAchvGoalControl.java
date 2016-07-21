@@ -485,6 +485,7 @@ public class UserAchvGoalControl {
                     result = String.valueOf(userAchvGoalService.insert(userAchvGoal));
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

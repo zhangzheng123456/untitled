@@ -787,6 +787,7 @@ public class GroupController {
                     result = groupService.insertGroup(group);
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

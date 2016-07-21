@@ -497,6 +497,7 @@ public class StoreAchvGoalController {
                     result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal));
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

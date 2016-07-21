@@ -363,6 +363,7 @@ public class GoodsController {
                     result = String.valueOf(goodsService.insert(goods));
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

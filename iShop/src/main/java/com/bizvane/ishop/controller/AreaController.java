@@ -530,6 +530,7 @@ public class AreaController {
                     result = areaService.insertExecl(area);
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
