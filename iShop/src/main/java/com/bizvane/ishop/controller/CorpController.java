@@ -5,8 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.CodeUpdateMapper;
-import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
@@ -31,15 +29,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.ws.RequestWrapper;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -89,7 +84,7 @@ public class CorpController {
             String function_code = request.getParameter("funcCode");
             JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
 
-            JSONObject info = new JSONObject();
+            org.json.JSONObject info = new org.json.JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员(官方画面)
                 int page_number = Integer.parseInt(request.getParameter("pageNumber"));
@@ -206,32 +201,34 @@ public class CorpController {
             for (int i = 0; i < ids.length; i++) {
                 corp_id = Integer.valueOf(ids[i]);
                 Corp corp = this.corpService.selectByCorpId(corp_id, "");
-                logger.info("inter---------------" + Integer.valueOf(ids[i]));
-                int count = 0;
-                count = corpService.getAreaCount(corp.getCorp_code());
-                if (count > 0) {
-                    msg = "企业" + corp_id + "下有未处理的区域，请先处理区域！";
-                    break;
-                }
-                count = this.corpService.getBranCount(corp.getCorp_code());
-                if (count > 0) {
-                    msg = "企业" + corp_id + "下有未处理的品牌，请先处理品牌！";
-                    break;
-                }
-                count = this.corpService.getGroupCount(corp.getCorp_code());
-                if (count > 0) {
-                    msg = "企业" + corp_id + "下有未处理的群组，请先处理群组！";
-                    break;
-                }
-                count = this.corpService.getGoodsCount(corp.getCorp_code());
-                if (count > 0) {
-                    msg = "企业" + corp_id + "下有未处理的商品，请先处理商品！";
-                    break;
-                }
-                count = this.corpService.getMessagesTypeCount(corp.getCorp_code());
-                if (count > 0) {
-                    msg = "企业" + corp_id + "下有未处理的消息类型，请先处理消息类型！";
-                    break;
+                if (corp != null) {
+                    logger.info("inter---------------" + Integer.valueOf(ids[i]));
+                    int count = 0;
+                    count = corpService.getAreaCount(corp.getCorp_code());
+                    if (count > 0) {
+                        msg = "企业" + corp_id + "下有未处理的区域，请先处理区域！";
+                        break;
+                    }
+                    count = this.corpService.getBranCount(corp.getCorp_code());
+                    if (count > 0) {
+                        msg = "企业" + corp_id + "下有未处理的品牌，请先处理品牌！";
+                        break;
+                    }
+                    count = this.corpService.getGroupCount(corp.getCorp_code());
+                    if (count > 0) {
+                        msg = "企业" + corp_id + "下有未处理的群组，请先处理群组！";
+                        break;
+                    }
+                    count = this.corpService.getGoodsCount(corp.getCorp_code());
+                    if (count > 0) {
+                        msg = "企业" + corp_id + "下有未处理的商品，请先处理商品！";
+                        break;
+                    }
+                    count = this.corpService.getMessagesTypeCount(corp.getCorp_code());
+                    if (count > 0) {
+                        msg = "企业" + corp_id + "下有未处理的消息类型，请先处理消息类型！";
+                        break;
+                    }
                 }
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }

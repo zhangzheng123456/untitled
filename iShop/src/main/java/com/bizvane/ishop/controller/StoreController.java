@@ -258,18 +258,20 @@ public class StoreController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
                 Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
-                String store_code = store.getStore_code();
-                String corp_code = store.getCorp_code();
-                List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
-                count = user.size();
-                if (count > 0) {
-                    msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
-                    break;
-                }
-                count = storeService.selectAchCount(corp_code, store.getStore_code());
-                if (count > 0) {
-                    msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除！";
-                    break;
+                if (store != null) {
+                    String store_code = store.getStore_code();
+                    String corp_code = store.getCorp_code();
+                    List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
+                    count = user.size();
+                    if (count > 0) {
+                        msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
+                        break;
+                    }
+                    count = storeService.selectAchCount(corp_code, store.getStore_code());
+                    if (count > 0) {
+                        msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除！";
+                        break;
+                    }
                 }
                 storeService.delete(Integer.valueOf(ids[i]));
             }

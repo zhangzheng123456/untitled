@@ -189,20 +189,22 @@ public class BrandController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 Brand brand = brandService.getBrandById(Integer.valueOf(ids[i]));
-                logger.info("------------得到brand" + brand.getId());
-                String brand_code = brand.getBrand_code();
-                String corp_code = brand.getCorp_code();
-                logger.info("-------------获取企业店铺之前---" + corp_code);
-                int count = 0;
-                count = brandService.getGoodsCount(corp_code, brand_code);
-                if (count > 0) {
-                    msg = "有使用品牌" + brand_code + "的商品，请先行处理！";
-                    break;
-                }
-                count = brandService.getStoresCount(corp_code, brand_code);
-                if (count > 0) {
-                    msg = "有使用品牌" + brand_code + "的店铺，请先行处理！";
-                    break;
+                if (brand != null) {
+                    logger.info("------------得到brand" + brand.getId());
+                    String brand_code = brand.getBrand_code();
+                    String corp_code = brand.getCorp_code();
+                    logger.info("-------------获取企业店铺之前---" + corp_code);
+                    int count = 0;
+                    count = brandService.getGoodsCount(corp_code, brand_code);
+                    if (count > 0) {
+                        msg = "有使用品牌" + brand_code + "的商品，请先行处理！";
+                        break;
+                    }
+                    count = brandService.getStoresCount(corp_code, brand_code);
+                    if (count > 0) {
+                        msg = "有使用品牌" + brand_code + "的店铺，请先行处理！";
+                        break;
+                    }
                 }
                 brandService.delete(Integer.valueOf(ids[i]));
             }

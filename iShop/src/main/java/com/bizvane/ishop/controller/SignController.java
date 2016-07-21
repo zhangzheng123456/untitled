@@ -284,7 +284,7 @@ public class SignController {
             org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
             id = jsonObject1.getString("id");
             String message = jsonObject1.get("message").toString();
-            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            JSONObject jsonObject2 = new JSONObject(message);
             int page_number = Integer.parseInt(jsonObject2.get("pageNumber").toString());
             int page_size = Integer.parseInt(jsonObject2.get("pageSize").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();

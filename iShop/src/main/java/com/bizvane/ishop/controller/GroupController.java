@@ -229,20 +229,23 @@ public class GroupController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 Group group = groupService.getGroupById(Integer.valueOf(ids[i]));
-                String group_code = group.getGroup_code();
-                String corp_code = group.getCorp_code();
-                List<User> users = userService.selectGroup(corp_code, group_code);
-                if (users.size() == 0) {
-                    groupService.deleteGroup(Integer.valueOf(ids[i]));
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
-                } else {
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    dataBean.setId(id);
-                    dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除！");
+                if (group != null) {
+                    String group_code = group.getGroup_code();
+                    String corp_code = group.getCorp_code();
+                    List<User> users = userService.selectGroup(corp_code, group_code);
+                    if (users.size() == 0) {
+                        groupService.deleteGroup(Integer.valueOf(ids[i]));
+                    } else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除！");
+                        return dataBean.getJsonStr();
+                    }
                 }
             }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
