@@ -20,4 +20,8 @@ public interface TaskTypeService {
     String updateTaskType(String message,String user_code);
 
     int deleteTaskType(int id);
+
+    List<TaskType> codeExist(String corp_code,String task_type_code);
+
+    List<TaskType> nameExist(String corp_code,String task_type_name);
 }

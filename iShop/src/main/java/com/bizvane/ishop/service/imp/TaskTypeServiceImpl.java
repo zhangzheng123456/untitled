@@ -109,4 +109,12 @@ public class TaskTypeServiceImpl implements TaskTypeService{
     public int deleteTaskType(int id){
         return taskTypeMapper.deleteById(id);
     }
+
+    public List<TaskType> codeExist(String corp_code,String task_type_code){
+        return taskTypeMapper.selectByCode(corp_code,task_type_code);
+    }
+
+    public List<TaskType> nameExist(String corp_code,String task_type_name){
+        return taskTypeMapper.selectByName(corp_code,task_type_name);
+    }
 }

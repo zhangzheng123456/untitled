@@ -250,4 +250,66 @@ public class TaskTypeController {
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
     }
+
+    @RequestMapping(value = "/codeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String codeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String task_type_code = jsonObject.get("task_type_code").toString();
+
+            List<TaskType> task_type = taskTypeService.codeExist(corp_code,task_type_code);
+            if (task_type.size() > 0 ) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("编号已被使用");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/nameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String nameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String task_type_name = jsonObject.get("task_type_name").toString();
+
+            List<TaskType> task_type = taskTypeService.codeExist(corp_code,task_type_name);
+            if (task_type.size() > 0 ) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("名称已被使用");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("名称不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 }
