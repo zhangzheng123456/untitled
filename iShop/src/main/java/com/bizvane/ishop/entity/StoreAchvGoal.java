@@ -32,6 +32,24 @@ public class StoreAchvGoal {
     private String isactive;
 
     private Corp corp;
+    private  String corp_name;
+    private String area_name;
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
+
+    public String getArea_name() {
+        return area_name;
+    }
+
+    public void setArea_name(String area_name) {
+        this.area_name = area_name;
+    }
 
     public StoreAchvGoal() {
     }

@@ -673,8 +673,11 @@ public class MessageController {
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                //-----------筛选未好-------------------------
-                list = null;
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = smsTemplateService.getAllSmsTemplateScreen(1, 30000, "", map);
+                } else {
+                    list = smsTemplateService.getAllSmsTemplateScreen(1, 30000, corp_code, map);
+                }
             }
             List<SmsTemplate> smsTemplates = list.getList();
             if (smsTemplates.size() >= 29999) {

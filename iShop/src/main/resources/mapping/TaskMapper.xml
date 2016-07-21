@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.TaskMapper">
+    <select id="selectAllTask" resultType="com.bizvane.ishop.entity.Task">
+        SELECT * from def_task,def_corp,def_user,def_task_type
+        where def_task.corp_code = def_corp.corp_code
+        AND  def_task.user_code = def_user.user_code
+        and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
+        <if test="corp_code != null and corp_code !=''">
+            AND def_task.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            def_task.task_title LIKE concat ('%', #{search_value},'%')
+            or def_task_type.task_type_name LIKE concat ('%', #{search_value},'%')
+            OR def_task.task_status LIKE concat('%', #{search_value},'%')
+            OR def_task.task_describe LIKE concat('%', #{search_value},'%')
+            OR def_user.user_name LIKE concat('%', #{search_value},'%')
+            OR def_task.end_time LIKE concat('%', #{search_value},'%')
+            OR def_task.modifier LIKE concat('%', #{search_value},'%')
+            OR def_task.modified_time LIKE concat('%', #{search_value},'%')
+            OR def_task.ISACTIVE LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+    </select>
+</mapper>

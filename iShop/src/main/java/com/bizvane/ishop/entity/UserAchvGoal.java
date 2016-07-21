@@ -30,11 +30,37 @@ public class UserAchvGoal {
     private String creater;
     //是否可用
     private String isactive;
+    private String user_name;
+    private String store_name;
+    private String corp_name;
+
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
 
     private User user;
     private Store store;
     private Corp corp;
 
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
 
     public UserAchvGoal() {
     }

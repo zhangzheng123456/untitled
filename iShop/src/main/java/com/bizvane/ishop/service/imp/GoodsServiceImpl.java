@@ -44,13 +44,23 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public String update(Goods goods) throws SQLException {
         Goods old = this.goodsMapper.selectByPrimaryKey(goods.getId());
-        if ((!old.getGoods_code().equals(goods.getGoods_code()))
-                && (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "编号已经存在！！！！";
-        } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "名称已经存在！！！！";
-        } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-            return Common.DATABEAN_CODE_SUCCESS;
+        if (goods.getCorp_code().equals(old.getCorp_code())) {
+            if ((!old.getGoods_code().equals(goods.getGoods_code()))
+                    && (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+                return "编号已经存在！！！！";
+            } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+                return "名称已经存在！！！！";
+            } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
+        } else {
+            if (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR)) {
+                return "编号已经存在！！！！";
+            } else if (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+                return "名称已经存在！！！！";
+            } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
         }
         return Common.DATABEAN_CODE_ERROR;
     }
@@ -73,10 +83,10 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map) {
+    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
-        params.put("corp_code",corp_code);
+        params.put("corp_code", corp_code);
         List<Goods> labels;
         PageHelper.startPage(page_number, page_size);
         labels = goodsMapper.selectAllGoodsScreen(params);

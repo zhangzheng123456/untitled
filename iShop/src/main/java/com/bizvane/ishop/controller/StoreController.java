@@ -871,6 +871,7 @@ public class StoreController {
                     result = storeService.insertExecl(store);
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

@@ -44,6 +44,24 @@ public class Goods {
 
 
     private Corp corp;
+    private String corp_name;
+    private String brand_name;
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
+
+    public String getBrand_name() {
+        return brand_name;
+    }
+
+    public void setBrand_name(String brand_name) {
+        this.brand_name = brand_name;
+    }
 
     public Goods() {
     }

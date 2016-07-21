@@ -342,6 +342,7 @@ public class UserController {
                     result = userService.insert(user);
                 }
             }
+            rwb.close();
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
