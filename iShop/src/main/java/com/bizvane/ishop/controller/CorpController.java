@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
@@ -21,7 +22,6 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -125,7 +125,7 @@ public class CorpController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = corpService.insert(message, user_id);
@@ -158,7 +158,7 @@ public class CorpController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String result = corpService.update(message, user_id);
@@ -194,10 +194,10 @@ public class CorpController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_ids = jsonObject.get("id").toString();
             boolean flag = false;
             int corp_id = -1;
@@ -266,10 +266,10 @@ public class CorpController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             System.out.println("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_id = jsonObject.get("id").toString();
 
             data = JSON.toJSONString(corpService.selectByCorpId(Integer.parseInt(corp_id), ""));
@@ -294,10 +294,10 @@ public class CorpController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
@@ -325,10 +325,10 @@ public class CorpController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
@@ -577,9 +577,9 @@ public class CorpController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
 
             Corp corp = corpService.selectByCorpId(0, corp_code);
@@ -610,10 +610,10 @@ public class CorpController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();

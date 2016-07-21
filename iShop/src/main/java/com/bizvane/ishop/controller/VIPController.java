@@ -165,7 +165,7 @@ public class VIPController {
         try {
             String user_id = request.getSession(false).getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.getString("id");
             String message = jsonObj.getString("message");
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
@@ -344,7 +344,7 @@ public class VIPController {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String search_value = jsonObject.get("searchValue").toString();
