@@ -554,9 +554,9 @@ public class CorpController {
                     corp.setModified_date(Common.DATETIME_FORMAT.format(now));
                     corp.setModifier(user_id);
                     result = corpService.insertExecl(corp);
-
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
