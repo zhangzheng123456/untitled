@@ -304,7 +304,7 @@ public class SignController {
                 list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", role_code, map);
             } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", corp_code, role_code, map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", store_code, role_code, map);
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 list = signService.selectSignAllScreenByUser(page_number, page_size, corp_code, user_code, map);
             }

@@ -162,9 +162,10 @@ public class AreaServiceImpl implements AreaService {
                 old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
                 old_area.setModifier(user_id);
                 old_area.setIsactive(jsonObject.get("isactive").toString());
-                if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
-                    updateAreaCode(corp_code, new_area_code, old_area_code);
-                }
+//                if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
+//                    updateAreaCode(corp_code, new_area_code, old_area_code);
+//                }
+                areaMapper.updateArea(old_area);
                 result = Common.DATABEAN_CODE_SUCCESS;
             } else if (areaByCode != null) {
                 result = "区域编号已存在";
