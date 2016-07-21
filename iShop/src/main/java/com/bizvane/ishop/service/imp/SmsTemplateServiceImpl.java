@@ -6,7 +6,6 @@ import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.service.SmsTemplateService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,18 +42,39 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
-    public String update(SmsTemplate SmsTemplate) throws SQLException {
-        SmsTemplate old = this.smsTemplateMapper.selectByPrimaryKey(SmsTemplate.getId());
-        if ((!old.getTemplate_code().equals(SmsTemplate.getTemplate_code()))
-                && this.SmsTemplateCodeExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
-                ) {
-            return "编号已经存在！！！！";
-        } else if (!old.getTemplate_name().equals(SmsTemplate.getTemplate_name()) &&
-                (this.SmsTemplateNameExist(SmsTemplate.getCorp_code(), SmsTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "名称已经存在！！！！";
-        } else if (this.smsTemplateMapper.updateByPrimaryKey(SmsTemplate) >= 0) {
-            return Common.DATABEAN_CODE_SUCCESS;
+    public String update(SmsTemplate smsTemplate) throws SQLException {
+        SmsTemplate old = this.smsTemplateMapper.selectByPrimaryKey(smsTemplate.getId());
+        if (old.getCorp().equals(smsTemplate.getCorp())) {
+            if ((!old.getTemplate_code().equals(smsTemplate.getTemplate_code()))
+                    && this.SmsTemplateCodeExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
+                    ) {
+                return "编号已经存在！！！！";
+            } else if (!old.getTemplate_name().equals(smsTemplate.getTemplate_name()) &&
+                    (this.SmsTemplateNameExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+                return "名称已经存在！！！！";
+            } else if (this.smsTemplateMapper.updateByPrimaryKey(smsTemplate) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
+        } else {
+            if (this.SmsTemplateCodeExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
+                    ) {
+                return "编号已经存在！！！！";
+            } else if (this.SmsTemplateNameExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+                return "名称已经存在！！！！";
+            } else if (this.smsTemplateMapper.updateByPrimaryKey(smsTemplate) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
         }
+//        if ((!old.getTemplate_code().equals(smsTemplate.getTemplate_code()))
+//                && this.SmsTemplateCodeExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
+//                ) {
+//            return "编号已经存在！！！！";
+//        } else if (!old.getTemplate_name().equals(smsTemplate.getTemplate_name()) &&
+//                (this.SmsTemplateNameExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+//            return "名称已经存在！！！！";
+//        } else if (this.smsTemplateMapper.updateByPrimaryKey(smsTemplate) >= 0) {
+//            return Common.DATABEAN_CODE_SUCCESS;
+//        }
         return Common.DATABEAN_CODE_ERROR;
     }
 
@@ -92,7 +112,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         params.put("corp_code", corp_code);
         params.put("map", map);
         smsTemplates = smsTemplateMapper.selectAllSmsTemplateScreen(params);
-        PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>();
+        PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>(smsTemplates);
         return page;
     }
 

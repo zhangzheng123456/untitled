@@ -39,6 +39,7 @@ public class StoreServiceImpl implements StoreService {
     private AreaMapper areaMapper;
     @Autowired
     private CodeUpdateMapper codeUpdateMapper;
+
     /**
      * 通过用户ID和制定的店仓来删除用户的店仓
      *
@@ -212,7 +213,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("store_codes", store_codes);
         params.put("map", map);
         List<Store> list = storeMapper.selectAllStoreScreen(params);
-        PageInfo<Store> page = new PageInfo<Store>();
+        PageInfo<Store> page = new PageInfo<Store>(list);
         return page;
     }
 //
@@ -245,8 +246,8 @@ public class StoreServiceImpl implements StoreService {
 
         if ((store.getStore_code().equals(store_code) || store1 == null)
                 && (store.getStore_name().equals(store_name) || store2 == null)) {
-            if (!store.getStore_code().equals(store_code)){
-                updateCauseCodeChange(corp_code,store_code,store.getStore_code());
+            if (!store.getStore_code().equals(store_code)) {
+                updateCauseCodeChange(corp_code, store_code, store.getStore_code());
             }
             store = new Store();
             store.setId(store_id);
@@ -324,22 +325,22 @@ public class StoreServiceImpl implements StoreService {
      * 级联更改关联此编号的员工，员工业绩目标，店铺业绩目标，签到列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code,String new_store_code,String old_store_code){
+    void updateCauseCodeChange(String corp_code, String new_store_code, String old_store_code) {
 
         //更新签到列表
-        codeUpdateMapper.updateSign("",corp_code,new_store_code,old_store_code,"","");
+        codeUpdateMapper.updateSign("", corp_code, new_store_code, old_store_code, "", "");
         //更新店铺业绩目标
-        codeUpdateMapper.updateStoreAchvGoal("",corp_code,new_store_code,old_store_code);
+        codeUpdateMapper.updateStoreAchvGoal("", corp_code, new_store_code, old_store_code);
         //更新员工业绩目标
-        codeUpdateMapper.updateUserAchvGoal("",corp_code,new_store_code,old_store_code,"","");
+        codeUpdateMapper.updateUserAchvGoal("", corp_code, new_store_code, old_store_code, "", "");
         //更新会员标签关系
-        codeUpdateMapper.updateRelVipLabel("",corp_code,new_store_code,old_store_code);
+        codeUpdateMapper.updateRelVipLabel("", corp_code, new_store_code, old_store_code);
         //更新员工
-        new_store_code = Common.STORE_HEAD+new_store_code+",";
-        old_store_code = Common.STORE_HEAD+old_store_code+",";
-        codeUpdateMapper.updateUser("",corp_code,"","",new_store_code,old_store_code,"","");
+        new_store_code = Common.STORE_HEAD + new_store_code + ",";
+        old_store_code = Common.STORE_HEAD + old_store_code + ",";
+        codeUpdateMapper.updateUser("", corp_code, "", "", new_store_code, old_store_code, "", "");
         //更新员工详细信息
-        codeUpdateMapper.updateStaffDetailInfo("",corp_code,"","",new_store_code,old_store_code);
+        codeUpdateMapper.updateStaffDetailInfo("", corp_code, "", "", new_store_code, old_store_code);
 
     }
 }
