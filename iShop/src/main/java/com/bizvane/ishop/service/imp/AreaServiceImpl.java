@@ -193,7 +193,7 @@ public class AreaServiceImpl implements AreaService {
         params.put("corp_code", corp_code);
         params.put("map", map);
         areas = areaMapper.selectAllAreaScreen(params);
-        PageInfo<Area> page = new PageInfo<Area>();
+        PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }
 }

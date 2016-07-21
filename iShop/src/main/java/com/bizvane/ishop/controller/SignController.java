@@ -12,6 +12,7 @@ import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.SignService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/6/23.
@@ -64,19 +66,19 @@ public class SignController {
                 list = signService.selectSignAll(page_number, page_size, "", "");
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
-                list =signService.selectSignAll(page_number, page_size, corp_code, "");
+                list = signService.selectSignAll(page_number, page_size, corp_code, "");
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code,"", role_code);
-            }else if (role_code.equals(Common.ROLE_AM)){
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "", store_code, "", role_code);
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = signService.selectSignByInp(page_number, page_size, corp_code, "","",area_code, role_code);
-            }else if(role_code.equals(Common.ROLE_STAFF)){
-                list=signService.selectByUser(page_number,page_size,corp_code,user_code,"");
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "", "", area_code, role_code);
+            } else if (role_code.equals(Common.ROLE_STAFF)) {
+                list = signService.selectByUser(page_number, page_size, corp_code, user_code, "");
             }
-          //  System.out.println(list.getList().get(0).getSign_time()+"---"+list.getList().get(0).getUser_code());
+            //  System.out.println(list.getList().get(0).getSign_time()+"---"+list.getList().get(0).getUser_code());
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -126,8 +128,8 @@ public class SignController {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", area_code, role_code);
-                }else if(role_code.equals(Common.ROLE_STAFF)){
-                    list=signService.selectByUser(page_number,page_size,corp_code,user_code,search_value);
+                } else if (role_code.equals(Common.ROLE_STAFF)) {
+                    list = signService.selectByUser(page_number, page_size, corp_code, user_code, search_value);
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -203,12 +205,14 @@ public class SignController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
     @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+
         DataBean dataBean=new DataBean();
         String errormessage = "";
         try{
@@ -240,6 +244,7 @@ public class SignController {
                 } else if (role_code.equals(Common.ROLE_STAFF)) {
                     list = signService.selectByUser(1, 30000, corp_code, user_code, search_value);
                 }
+
             }
             List<Sign> signs = list.getList();
             if (signs.size() >= 29999) {
@@ -254,14 +259,65 @@ public class SignController {
                 errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
-        }catch (Exception e){
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 签到管理
+     * 筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectAllSignScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.getString("id");
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            int page_number = Integer.parseInt(jsonObject2.get("pageNumber").toString());
+            int page_size = Integer.parseInt(jsonObject2.get("pageSize").toString());
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
+            Map<String, String> map = WebUtils.Json2Map(jsonObject2);
+            JSONObject result = new JSONObject();
+            PageInfo<Sign> list = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = signService.selectSignAllScreen(page_number, page_size, "", "", "", "", "", map);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", "", "", map);
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                String area_code = request.getSession(false).getAttribute("area_code").toString();
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", "", role_code, map);
+            } else if (role_code.equals(Common.ROLE_SM)) {
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", corp_code, "", role_code, map);
+            } else if (role_code.equals(Common.ROLE_STAFF)) {
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", "", user_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

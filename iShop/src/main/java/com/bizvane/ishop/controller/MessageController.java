@@ -353,10 +353,10 @@ public class MessageController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            SmsTemplate SmsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
-            SmsTemplate.setModifier(user_id);
-            SmsTemplate.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
-            String result = this.smsTemplateService.update(SmsTemplate);
+            SmsTemplate smsTemplate = WebUtils.JSON2Bean(jsonObject, SmsTemplate.class);
+            smsTemplate.setModifier(user_id);
+            smsTemplate.setModified_date(Common.DATETIME_FORMAT.format(new Date()));
+            String result = this.smsTemplateService.update(smsTemplate);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("更改成功！！");
@@ -652,9 +652,9 @@ public class MessageController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
 
-        DataBean dataBean=new DataBean();
-        String errormessage="";
-        try{
+        DataBean dataBean = new DataBean();
+        String errormessage = "";
+        try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String user_code = request.getSession(false).getAttribute("user_code").toString();
@@ -665,29 +665,29 @@ public class MessageController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<SmsTemplate> list;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = this.smsTemplateService.selectBySearch(1, 30000, "", search_value);
                 } else {
                     list = this.smsTemplateService.selectBySearch(1, 30000, corp_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 //-----------筛选未好-------------------------
-                list=null;
+                list = null;
             }
             List<SmsTemplate> smsTemplates = list.getList();
-            if(smsTemplates.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (smsTemplates.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(smsTemplates, cols, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
