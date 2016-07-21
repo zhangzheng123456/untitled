@@ -5,7 +5,7 @@
         SELECT * from def_task,def_corp,def_user,def_task_type
         where def_task.corp_code = def_corp.corp_code
         AND  def_task.user_code = def_user.user_code
-        and def_task.TASK_TYPE_CODE
+        and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
@@ -13,13 +13,14 @@
             AND
             (
             def_task.task_title LIKE concat ('%', #{search_value},'%')
-            or def_task.task_type_code LIKE concat ('%', #{search_value},'%')
-            OR def_corp.USER_NAME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_SERIAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_TOTAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.STATUS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
+            or def_task_type.task_type_name LIKE concat ('%', #{search_value},'%')
+            OR def_task.task_status LIKE concat('%', #{search_value},'%')
+            OR def_task.task_describe LIKE concat('%', #{search_value},'%')
+            OR def_user.user_name LIKE concat('%', #{search_value},'%')
+            OR def_task.end_time LIKE concat('%', #{search_value},'%')
+            OR def_task.modifier LIKE concat('%', #{search_value},'%')
+            OR def_task.modified_time LIKE concat('%', #{search_value},'%')
+            OR def_task.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
     </select>

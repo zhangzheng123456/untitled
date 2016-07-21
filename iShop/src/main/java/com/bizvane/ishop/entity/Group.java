@@ -29,6 +29,24 @@ public class Group {
     private Role role;
 
     private Corp corp;
+    private String role_name;
+    private String corp_name;
+
+    public String getRole_name() {
+        return role_name;
+    }
+
+    public void setRole_name(String role_name) {
+        this.role_name = role_name;
+    }
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
 
     public int getId() {
         return id;

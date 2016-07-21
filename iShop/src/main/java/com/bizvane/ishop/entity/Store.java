@@ -33,6 +33,15 @@ public class Store {
     private String isactive;
 
     private String brand_name;
+    private String corp_name;
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
 
     private String area_name;
 

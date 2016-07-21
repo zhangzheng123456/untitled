@@ -25,6 +25,24 @@ public class VipRecord {
     private String creater;
     //企业编号
     private String corp_code;
+    private String corp_name;
+    private String user_name;
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
 
     private User user;
     private Corp corp;

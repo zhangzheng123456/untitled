@@ -244,6 +244,21 @@ public class SignController {
                     list = signService.selectByUser(1, 30000, corp_code, user_code, search_value);
                 }
 
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    list = signService.selectSignAllScreen(1, 30000, "", "", "", "", "", map);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", "", "", "", map);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, area_code, "", "", role_code, map);
+                } else if (role_code.equals(Common.ROLE_SM)) {
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", store_code, "", role_code, map);
+                } else if (role_code.equals(Common.ROLE_STAFF)) {
+                    list = signService.selectSignAllScreen(1, 30000, corp_code, "", "", "", user_code, map);
+                }
             }
             List<Sign> signs = list.getList();
             if (signs.size() >= 29999) {
