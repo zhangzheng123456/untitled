@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.Converter;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 /**
  * Created by lixiang on 2016/6/3.
@@ -141,11 +141,11 @@ public class WebUtils {
             return null;
         }
         String jlist = jsonObject.get("list").toString();
-        com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(jlist);
+        JSONArray array = JSONArray.parseArray(jlist);
         Map<String, String> map = new HashMap<String, String>();
         for (int i = 0; i < array.size(); i++) {
             String info = array.get(i).toString();
-            JSONObject json = new JSONObject(info);
+            JSONObject json = JSONObject.parseObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
             map.put(screen_key, screen_value);
@@ -174,7 +174,7 @@ public class WebUtils {
         }
 
         List result = new ArrayList();
-        for (int i = 0; i < json.length(); i++) {
+        for (int i = 0; i < json.size(); i++) {
             if (json.get(i) instanceof JSONObject) {
                 result.add(Json2Map((JSONObject) json.get(i)));
             } else if (json.get(i) instanceof JSONArray) {
