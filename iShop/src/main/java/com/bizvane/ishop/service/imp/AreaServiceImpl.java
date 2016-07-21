@@ -123,31 +123,76 @@ public class AreaServiceImpl implements AreaService {
         String corp_code = jsonObject.get("corp_code").toString();
         String area_name = jsonObject.get("area_name").toString();
 
-        Area area = getAreaById(area_id);
-        old_area_code = area.getArea_code();
-        Area area1 = getAreaByCode(corp_code, area_code);
-        Area area2 = getAreaByName(corp_code, area_code);
-
-        if ((area.getArea_code().equals(area_code) || area1 == null)
-                && (area.getArea_name().equals(area_name) || area2 == null)) {
-            area = new Area();
-            Date now = new Date();
-            area.setId(area_id);
-            area.setArea_code(area_code);
-            area.setArea_name(area_name);
-            area.setCorp_code(corp_code);
-            area.setModified_date(Common.DATETIME_FORMAT.format(now));
-            area.setModifier(user_id);
-            area.setIsactive(jsonObject.get("isactive").toString());
-            if (areaMapper.updateArea(area) > 0 && !new_area_code.equals(old_area_code)) {
-                updateAreaCode(corp_code, new_area_code, old_area_code);
+        Area old_area = getAreaById(area_id);
+        old_area_code = old_area.getArea_code();
+        if (old_area.getCorp_code().equals(corp_code)) {
+            Area areaByCode = getAreaByCode(corp_code, area_code);
+            Area areaByName = getAreaByName(corp_code, area_code);
+            if ((old_area.getArea_code().equals(area_code) || areaByCode == null)
+                    && (old_area.getArea_name().equals(area_name) || areaByName == null)) {
+                old_area = new Area();
+                Date now = new Date();
+                old_area.setId(area_id);
+                old_area.setArea_code(area_code);
+                old_area.setArea_name(area_name);
+                old_area.setCorp_code(corp_code);
+                old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
+                old_area.setModifier(user_id);
+                old_area.setIsactive(jsonObject.get("isactive").toString());
+                if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
+                    updateAreaCode(corp_code, new_area_code, old_area_code);
+                }
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else if (!old_area.getArea_code().equals(area_code) && areaByCode != null) {
+                result = "区域编号已存在";
+            } else {
+                result = "区域名称已存在";
             }
-            result = Common.DATABEAN_CODE_SUCCESS;
-        } else if (!area.getArea_code().equals(area_code) && area1 != null) {
-            result = "区域编号已存在";
         } else {
-            result = "区域名称已存在";
+            Area areaByCode = getAreaByCode(corp_code, area_code);
+            Area areaByName = getAreaByName(corp_code, area_code);
+            if (areaByCode == null
+                    && areaByName == null) {
+                old_area = new Area();
+                Date now = new Date();
+                old_area.setId(area_id);
+                old_area.setArea_code(area_code);
+                old_area.setArea_name(area_name);
+                old_area.setCorp_code(corp_code);
+                old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
+                old_area.setModifier(user_id);
+                old_area.setIsactive(jsonObject.get("isactive").toString());
+                if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
+                    updateAreaCode(corp_code, new_area_code, old_area_code);
+                }
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else if (areaByCode != null) {
+                result = "区域编号已存在";
+            } else {
+                result = "区域名称已存在";
+            }
         }
+
+//        if ((old_area.getArea_code().equals(area_code) || areaByCode == null)
+//                && (old_area.getArea_name().equals(area_name) || areaByName == null)) {
+//            old_area = new Area();
+//            Date now = new Date();
+//            old_area.setId(area_id);
+//            old_area.setArea_code(area_code);
+//            old_area.setArea_name(area_name);
+//            old_area.setCorp_code(corp_code);
+//            old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
+//            old_area.setModifier(user_id);
+//            old_area.setIsactive(jsonObject.get("isactive").toString());
+//            if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
+//                updateAreaCode(corp_code, new_area_code, old_area_code);
+//            }
+//            result = Common.DATABEAN_CODE_SUCCESS;
+//        } else if (!old_area.getArea_code().equals(area_code) && areaByCode != null) {
+//            result = "区域编号已存在";
+//        } else {
+//            result = "区域名称已存在";
+//        }
         return result;
     }
 

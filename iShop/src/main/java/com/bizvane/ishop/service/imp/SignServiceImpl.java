@@ -82,7 +82,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, String user_code, Map<String, String> map) {
+    public PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) {
         Map<String, Object> params = new HashMap<String, Object>();
         String[] stores = null;
         if (!store_code.equals("")) {
@@ -106,13 +106,23 @@ public class SignServiceImpl implements SignService {
         params.put("array", stores);
         params.put("corp_code", corp_code);
         params.put("store_code", store_code);
-        params.put("user_code", user_code);
         params.put("role_code", role_code);
         params.put("map", map);
         List<Sign> signs;
         PageHelper.startPage(page_number, page_size);
         signs = signMapper.selectSignAllScreen(params);
         PageInfo<Sign> page = new PageInfo<Sign>(signs);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("user_code", user_code);
+        params.put("map", map);
+        List<Sign> list = signMapper.selectSignAllScreenUser(params);
+        PageInfo<Sign> page = new PageInfo<Sign>(list);
         return page;
     }
 }

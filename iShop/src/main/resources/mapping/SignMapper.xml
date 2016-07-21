@@ -100,16 +100,40 @@
         acc_sign.SIGN_TIME,
         acc_sign.ISACTIVE
         from acc_sign
-        WHERE acc_sign.STATUS !='1'
-        <if test="corp_code != null and corp_code !=''">
-            AND acc_sign.CORP_CODE = #{corp_code}
+        where acc_sign.STATUS !='1'
+        AND acc_sign.user_code IN
+        (
+        SELECT DEF_USER.user_code
+        from DEF_USER,DEF_GROUP,DEF_CORP
+        where DEF_USER.group_code = DEF_GROUP.group_code
+        AND DEF_USER.corp_code = DEF_CORP.corp_code
+        AND DEF_USER.corp_code = DEF_GROUP.corp_code
+        AND DEF_USER.CORP_CODE = #{corp_code}
+        AND DEF_GROUP.role_code &lt; #{role_code}
+        <if test="array!=null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                store_code regexp #{item}
+            </foreach>
         </if>
-
-        <if test="">
-
-        </if>
-
+        )
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
+            #{entryKey} LIKE concat('%',#{entryKeyValue},'%')
+        </foreach>
         ORDER BY acc_sign.ID DESC
+    </select>
 
+    <select id="selectSignAllScreenUser" resultType="com.bizvane.ishop.entity.Sign">
+        select acc_sign.* from acc_sign
+        WHERE
+        acc_sign.corp_code=#{corp_code}
+        AND
+        acc_sign.user_code=#{user_code}
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
+            #{entryKey} LIKE concat('%',#{entryKeyValue},'%')
+        </foreach>
+        ORDER BY acc_sign.ID DESC
     </select>
 </mapper>

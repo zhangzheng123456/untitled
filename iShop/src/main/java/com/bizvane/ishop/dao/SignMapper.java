@@ -21,4 +21,6 @@ public interface SignMapper {
         List<Sign> selectByUser(@Param("corp_code")String corp_code,@Param("user_code")String user_code,@Param("search_value") String search_value);
 
         List<Sign> selectSignAllScreen(Map<String, Object> params);
+
+        List<Sign> selectSignAllScreenUser(Map<String, Object> params);
 }
