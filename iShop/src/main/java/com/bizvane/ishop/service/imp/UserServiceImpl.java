@@ -222,30 +222,51 @@ public class UserServiceImpl implements UserService {
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
         String store_code = user.getStore_code();
-        User user1 = getUserById(user_id);
-        String[] store_code1 = user1.getStore_code().split(",");
+        User old_user = getUserById(user_id);
+        String[] store_code1 = old_user.getStore_code().split(",");
         String phone_exist = userPhoneExist(phone);
         User code_exist = userCodeExist(user_code, corp_code);
         String emails = userEmailExist(email);
-
-        if (!user1.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
-            result = "手机号已存在";
-        } else if (!user1.getUser_code().equals(user_code) && code_exist != null) {
-            result = "员工编号已存在";
-        } else if (!email.equals("") && user1.getEmail() != null && (!user1.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
-            result = "邮箱已存在";
-        } else {
-            if (!user1.getUser_code().equals(user_code)){
-                updateCauseCodeChange(corp_code,user_code,user1.getUser_code());
-            }
-            //若用户修改所属店铺，则删除该店铺员工的业绩目标
-            for (int i = 0; i < store_code1.length; i++) {
-                if (!store_code.contains(store_code1[i])) {
-                    userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);
+        if (old_user.getCorp_code().equals(corp_code)) {
+            if (!old_user.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                result = "手机号已存在";
+            } else if (!old_user.getUser_code().equals(user_code) && code_exist != null) {
+                result = "员工编号已存在";
+            } else if (!email.equals("") && old_user.getEmail() != null && (!old_user.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
+                result = "邮箱已存在";
+            } else {
+                if (!old_user.getUser_code().equals(user_code)) {
+                    updateCauseCodeChange(corp_code, user_code, old_user.getUser_code());
                 }
+                //若用户修改所属店铺，则删除该店铺员工的业绩目标
+                for (int i = 0; i < store_code1.length; i++) {
+                    if (!store_code.contains(store_code1[i])) {
+                        userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);
+                    }
+                }
+                userMapper.updateByUserId(user);
+                result = Common.DATABEAN_CODE_SUCCESS;
             }
-            userMapper.updateByUserId(user);
-            result = Common.DATABEAN_CODE_SUCCESS;
+        } else {
+            if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                result = "手机号已存在";
+            } else if (code_exist != null) {
+                result = "员工编号已存在";
+            } else if (!email.equals("") && old_user.getEmail() != null && emails.equals(Common.DATABEAN_CODE_ERROR)) {
+                result = "邮箱已存在";
+            } else {
+                if (!old_user.getUser_code().equals(user_code)) {
+                    updateCauseCodeChange(corp_code, user_code, old_user.getUser_code());
+                }
+                //若用户修改所属店铺，则删除该店铺员工的业绩目标
+                for (int i = 0; i < store_code1.length; i++) {
+                    if (!store_code.contains(store_code1[i])) {
+                        userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);
+                    }
+                }
+                userMapper.updateByUserId(user);
+                result = Common.DATABEAN_CODE_SUCCESS;
+            }
         }
         return result;
     }
@@ -592,24 +613,24 @@ public class UserServiceImpl implements UserService {
      * 级联更改关联此编号的回访记录，员工业绩目标，签到，权限列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code ,String new_user_code,String old_user_code){
+    void updateCauseCodeChange(String corp_code, String new_user_code, String old_user_code) {
         //若修改员工编号，对应修改回访记录中关联的用户编号
-        codeUpdateMapper.updateVipRecord("",corp_code,"","",new_user_code,old_user_code);
+        codeUpdateMapper.updateVipRecord("", corp_code, "", "", new_user_code, old_user_code);
 
         //若修改员工编号，对应修改员工业绩目标中关联的用户编号
-        codeUpdateMapper.updateUserAchvGoal("",corp_code,"","",new_user_code,old_user_code);
+        codeUpdateMapper.updateUserAchvGoal("", corp_code, "", "", new_user_code, old_user_code);
 
         //若修改员工编号，对应修改签到中关联的用户编号
-        codeUpdateMapper.updateSign("",corp_code,"","",new_user_code,old_user_code);
+        codeUpdateMapper.updateSign("", corp_code, "", "", new_user_code, old_user_code);
 
         //若修改员工编号，对应修改权限中关联的用户编号
-        codeUpdateMapper.updatePrivilege(corp_code+new_user_code,corp_code+old_user_code);
+        codeUpdateMapper.updatePrivilege(corp_code + new_user_code, corp_code + old_user_code);
 
-        codeUpdateMapper.updateVipMessage("",corp_code,"","",new_user_code,old_user_code);
+        codeUpdateMapper.updateVipMessage("", corp_code, "", "", new_user_code, old_user_code);
 
-        codeUpdateMapper.updateStaffMoveLog("",corp_code,new_user_code,old_user_code);
+        codeUpdateMapper.updateStaffMoveLog("", corp_code, new_user_code, old_user_code);
 
-        codeUpdateMapper.updateStaffDetailInfo("",corp_code,new_user_code,old_user_code,"","");
+        codeUpdateMapper.updateStaffDetailInfo("", corp_code, new_user_code, old_user_code, "", "");
 
     }
 }
