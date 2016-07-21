@@ -74,17 +74,12 @@
             </div>
             <div class="file">
                 <div class="file_content">
-                    <!-- <div class="download">下载文件</div> -->
+                    <div id="download"></div>
                     <div class="file_close">关闭</div>
                 </div>
                 <div id="file_list">
                     <ul>
-                        <li>
-                            <div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput'/><label for='checkboxInput'></label></div><span class='p15'>企业管理</span>
-                        </li>
-                        <li>
-                            <div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput'/><label for='checkboxInput'></label></div><span class='p15'>企业管理</span>
-                        </li>
+                       
                     </ul>
                 </div>
                 <div class="file_btn">
@@ -92,9 +87,14 @@
                 </div>
             </div>
             <div class="into_frame">
-                <div class="down_load"><a href="/ExeclFormwork/Corp.xls">下载模板</a></div>
-                <input type="file" id="file">
-                <input type="button" onclick="UpladFile()" value="提交">
+                <span class="icon-ishop_6-12" id="x1"></span>
+                <div class="into_frame_c">
+                    <div class="down_load"><a href="/ExeclFormwork/Corp.xls">下载模板</a></div>
+                    <div class="down_load_file">
+                        <label>导入文件</label>
+                        <input type="file" id="file" onchange="UpladFile()">
+                    </div>
+                </div>
             </div>
             <div class="sxk" id="sxk">
                 <div class="btn">
@@ -253,36 +253,5 @@
                 $('html,body').animate({'scrollTop':btm},500);
             })
         });
-        function UpladFile() {
-            var fileObj = document.getElementById("file").files[0];
-            console.log(fileObj);
-            var FileController = "/corp/addByExecl";//接收上传文件的后台地址
-            var form = new FormData();
-            form.append("file", fileObj);// 文件对象
-            // XMLHttpRequest 对象
-            var xhr=null;
-            if(window.XMLHttpRequest){
-                xhr = new XMLHttpRequest();
-            }else {
-                xhr = new  ActiveXObject('Microsoft.XMLHTTP');
-            }
-            xhr.onreadystatechange = function(){
-                if(xhr.readyState===4){
-                    if(xhr.status === 200){
-                        doResult(xhr.responseText);
-                    }else{
-                        console.log('服务器返回了错误的响应状态码');
-                    }
-                }
-            }
-            function doResult(data){
-                console.log(data);
-            }
-            xhr.open("post", FileController, true);
-            xhr.onload = function () {
-                alert("上传完成!");
-            };
-            xhr.send(form);
-        }
     </script>
 </html>

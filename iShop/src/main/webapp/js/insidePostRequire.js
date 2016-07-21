@@ -19,7 +19,7 @@ ObjectControl.prototype = {
 				}
 			},
 			error:function(data){
-				// window.location.reload();
+				window.location.reload();
 				console.log(data.responseText);
 			}
 		});
