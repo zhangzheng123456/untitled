@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Action;
-import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.TaskType;
-import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TaskTypeService;
 import com.github.pagehelper.PageInfo;
@@ -295,7 +292,7 @@ public class TaskTypeController {
             String corp_code = jsonObject.get("corp_code").toString();
             String task_type_name = jsonObject.get("task_type_name").toString();
 
-            List<TaskType> task_type = taskTypeService.codeExist(corp_code,task_type_name);
+            List<TaskType> task_type = taskTypeService.nameExist(corp_code,task_type_name);
             if (task_type.size() > 0 ) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);

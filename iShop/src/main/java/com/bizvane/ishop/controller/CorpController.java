@@ -452,7 +452,7 @@ public class CorpController {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             //系统管理员(官方画面)
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
@@ -613,7 +613,7 @@ public class CorpController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
