@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.management.monitor.CounterMonitor;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -69,11 +70,11 @@ public class LoginController {
         } catch (Exception ex) {
             log.info(ex.getMessage());
         }
-        return "";
+        return "login";
     }
 
     @RequestMapping(value = "/login")
-    public String loginIndex(HttpServletRequest request) {
+    public String loginIndex(HttpServletRequest request,HttpServletResponse response) {
         try {
             request.getSession().removeAttribute("user_id");
             request.getSession().removeAttribute("role_code");
@@ -85,11 +86,11 @@ public class LoginController {
         } catch (Exception ex) {
             log.info(ex.getMessage());
         }
-        return "";
+        return "login";
     }
 
     @RequestMapping(value = "/home/login")
-    public String loginHome(HttpServletRequest request) {
+    public String loginHome(HttpServletRequest request,HttpServletResponse response) {
         try {
             request.getSession().removeAttribute("user_id");
             request.getSession().removeAttribute("role_code");
@@ -97,6 +98,7 @@ public class LoginController {
             request.getSession().removeAttribute("corp_code");
             request.getSession().removeAttribute("store_code");
             request.getSession().removeAttribute("menu");
+            response.sendRedirect("/login.html");
 
             return "login";
         } catch (Exception ex) {

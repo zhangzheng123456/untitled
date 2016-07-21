@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.TaskTypeMapper">
+
+    <!--<resultMap type="com.bizvane.ishop.entity.TaskType" id="TaskType">-->
+        <!--<id column="id" property="id"/>-->
+        <!--<result column="task_type_code" property="task_type_code"/>-->
+        <!--<result column="task_type_name" property="task_type_name"/>-->
+        <!--<result column="corp_code" property="corp_code"/>-->
+        <!--<result column="modified_date" property="modified_date"/>-->
+        <!--<result column="modifier" property="modifier"/>-->
+        <!--<result column="isactive" property="isactive"/>-->
+        <!--<association property="corp" javaType="com.bizvane.ishop.entity.Corp">-->
+            <!--<result column="corp_name" property="corp_name"/>-->
+        <!--</association>-->
+    <!--</resultMap>-->
+
+    <select id="selectById" resultType="com.bizvane.ishop.entity.TaskType">
+        select
+        def_task_type.id,
+        task_type_code,
+        task_type_name,
+        def_task_type.corp_code,
+        def_task_type.modified_date,
+        def_task_type.modifier,
+        def_task_type.created_date,
+        def_task_type.creater,
+        def_task_type.isactive,
+        DEF_CORP.CORP_NAME
+        from def_task_type,DEF_CORP
+        where def_task_type.CORP_CODE = DEF_CORP.CORP_CODE
+        and  def_task_type.ID=#{id}
+    </select>
+
+    <select id="selectByCode" resultType="com.bizvane.ishop.entity.TaskType">
+        select *
+        from def_task_type
+        where CORP_CODE = #{corp_code}
+        AND task_type_code = #{task_type_code}
+    </select>
+
+    <select id="selectByName" resultType="com.bizvane.ishop.entity.TaskType">
+        select *
+        from def_task_type
+        where CORP_CODE = #{corp_code}
+        AND task_type_name = #{task_type_name}
+    </select>
+
+    <select id="selectAllTaskType" resultType="com.bizvane.ishop.entity.TaskType">
+        select
+        def_task_type.id,
+        task_type_code,
+        task_type_name,
+        def_task_type.corp_code,
+        def_task_type.modified_date,
+        def_task_type.modifier,
+        def_task_type.isactive,
+        DEF_CORP.CORP_NAME
+        from def_task_type,DEF_CORP
+        where def_task_type.CORP_CODE = DEF_CORP.CORP_CODE
+        <if test="corp_code != null and corp_code !=''">
+            AND def_task_type.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (task_type_code like concat('%',#{search_value},'%')
+            OR task_type_name like concat('%',#{search_value},'%')
+            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
+            OR def_task_type.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR def_task_type.MODIFIER like concat('%',#{search_value},'%')
+            OR def_task_type.ISACTIVE like concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY def_task_type.id DESC
+    </select>
+
+    <delete id="deleteById">
+        delete from
+        def_task_type
+        where ID=#{id}
+    </delete>
+
+    <insert id="insertTaskType" parameterType="com.bizvane.ishop.entity.TaskType">
+        insert into def_task_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="task_type_code!=null">
+                task_type_code,
+            </if>
+            <if test="task_type_name!=null">
+                task_type_name,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="task_type_code!=null">
+                #{task_type_code},
+            </if>
+            <if test="task_type_name!=null">
+                #{task_type_name},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateTaskType" parameterType="com.bizvane.ishop.entity.TaskType">
+        UPDATE def_task_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="task_type_code!=null and task_type_code!=''">
+                task_type_code=#{task_type_code},
+            </if>
+            <if test="task_type_name!=null and task_type_name!=''">
+                task_type_name=#{task_type_name},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+</mapper>
