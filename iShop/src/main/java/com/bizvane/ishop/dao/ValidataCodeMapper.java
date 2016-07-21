@@ -1,9 +1,11 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.ValidateCode;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface ValidataCodeMapper {
     int deleteByCodeId(int id);
@@ -17,4 +19,7 @@ public interface ValidataCodeMapper {
     ValidateCode selValidateCodeById(@Param("id")int id);
 
     List<ValidateCode> selectAllValidateCode(@Param("search_value")String search_value);
+
+    List<ValidateCode> selectAllScreen(Map<String,Object> params);
+
 }

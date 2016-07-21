@@ -5,8 +5,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Appversion;
+import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.Feedback;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.AppversionService;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -18,7 +24,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/6/21.
@@ -30,6 +39,8 @@ public class AppversionController {
     private AppversionService appversionService;
     @Autowired
     private FunctionService functionService;
+    @Autowired
+    private TableManagerService managerService;
     String id;
 
     private static final Logger logger = Logger.getLogger(AppversionController.class);
@@ -93,6 +104,37 @@ public class AppversionController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    //条件查询
+    public String selectByScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+//            String screen = jsonObject.get("screen").toString();
+//            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<Appversion> list = appversionService.selectAllScreen(page_number, page_size, map);
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }
@@ -244,6 +286,83 @@ public class AppversionController {
             dataBean.setMessage(ex.getMessage());
         }
         logger.info("info--------" + dataBean.getJsonStr());
+        return dataBean.getJsonStr();
+    }
+
+
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
+    @ResponseBody
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String errormessage = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            //系统管理员(官方画面)
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
+            PageInfo<Appversion> corpInfo = null;
+            if (screen.equals("")) {
+                corpInfo= appversionService.selectAllAppversion(1, 30000, search_value);
+            } else {
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                corpInfo = appversionService.selectAllScreen(1, 30000, map);
+            }
+            List<Appversion> appversions = corpInfo.getList();
+            if (appversions.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
+            String column_name = jsonObject.get("column_name").toString();
+            // String column_name1 = "corp_code,corp_name";
+            String[] cols = column_name.split(",");//前台传过来的字段
+            String pathname = OutExeclHelper.OutExecl(appversions, cols, response, request);
+            JSONObject result = new JSONObject();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
+            }
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
         return dataBean.getJsonStr();
     }
 }

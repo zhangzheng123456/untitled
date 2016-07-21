@@ -4,8 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Interfacers;
+import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.FunctionService;
+import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -41,6 +44,8 @@ public class ValidateCodeController {
     private ValidateCodeService validateCodeService;
     @Autowired
     private FunctionService functionService;
+    @Autowired
+    private TableManagerService managerService;
     String id;
 
     private static final Logger logger = Logger.getLogger(ValidateCodeController.class);
@@ -103,7 +108,37 @@ public class ValidateCodeController {
         }
         return dataBean.getJsonStr();
     }
-
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    //条件查询
+    public String selectByScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+//            String screen = jsonObject.get("screen").toString();
+//            JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<ValidateCode> list = validateCodeService.selectAllScreen(page_number, page_size, map);
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 增加（用了事务）
      */
@@ -261,51 +296,79 @@ public class ValidateCodeController {
         return dataBean.getJsonStr();
 
     }
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.GET)
+    /***
+     * 查出要导出的列
+     */
+    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
     @ResponseBody
-    @Transactional
-    public String addByExecl(HttpServletRequest request){
+    public String selAllByCode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_code").toString();
-       // String file="F:/报表/Test2.xls";
         try {
-
-            Workbook rwb=Workbook.getWorkbook(new File("F:/报表/Test2.xls"));
-            Sheet rs=rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos=rs.getColumns();//得到所有的列
-            int rows=rs.getRows();//得到所有的行
-            for(int i=1;i<rows;i++){
-                for(int j=0;j<clos;j++){
-                    ValidateCode validateCode=new ValidateCode();
-                    //第一个是列数，第二个是行数
-                    String phone = rs.getCell(j++, i).getContents();//默认最左边编号也算一列 所以这里得j++
-                    String platform = rs.getCell(j++,i).getContents();
-                    String validate_code = rs.getCell(j++,i).getContents();
-                    String isactive = rs.getCell(j++,i).getContents();
-                    validateCode.setPhone(phone);
-                    validateCode.setPlatform(platform);
-                    validateCode.setValidate_code(validate_code);
-                    validateCode.setIsactive(isactive);
-                    Date date = new Date();
-                    validateCode.setCreated_date(Common.DATETIME_FORMAT.format(date));
-                    validateCode.setCreater(user_id);
-                    validateCode.setModified_date(Common.DATETIME_FORMAT.format(date));
-                    validateCode.setModifier(user_id);
-                    validateCodeService.insertValidateCode(validateCode);
-                }
-            }
-            System.out.println(clos+" rows:"+rows);
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
+            JSONObject result = new JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
             dataBean.setId(id);
-            dataBean.setMessage("word success");
-        }catch (Exception e){
-            e.printStackTrace();
+            dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(e.getMessage());
         }
         return dataBean.getJsonStr();
-
+    }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String errormessage = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            //系统管理员(官方画面)
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
+            PageInfo<ValidateCode> corpInfo = null;
+            if (screen.equals("")) {
+                corpInfo= validateCodeService.selectAllValidateCode(1, 30000, search_value);
+            } else {
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                corpInfo = validateCodeService.selectAllScreen(1, 30000, map);
+            }
+            List<ValidateCode> feedbacks = corpInfo.getList();
+            if (feedbacks.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
+            String column_name = jsonObject.get("column_name").toString();
+            // String column_name1 = "corp_code,corp_name";
+            String[] cols = column_name.split(",");//前台传过来的字段
+            String pathname = OutExeclHelper.OutExecl(feedbacks, cols, response, request);
+            JSONObject result = new JSONObject();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
+            }
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
     }
 
 }

@@ -17,6 +17,15 @@
         </if>
         ORDER BY ID DESC
     </select>
+    <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.Interfacers">
+    SELECT *
+    FROM def_interface
+    WHERE 1 = 1
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+        </foreach>
+        ORDER BY ID DESC
+    </select>
     <insert id="addInterface" parameterType="com.bizvane.ishop.entity.Interfacers">
         INSERT INTO  def_interface
         <trim prefix="(" suffix=")" suffixOverrides=",">

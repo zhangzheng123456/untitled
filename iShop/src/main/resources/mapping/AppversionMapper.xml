@@ -21,6 +21,15 @@
         </if>
         ORDER BY ID DESC
     </select>
+    <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.Appversion">
+    SELECT *
+    FROM def_app_version
+    WHERE 1 = 1
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+        </foreach>
+        ORDER BY ID DESC
+    </select>
     <insert id="addAppversion" parameterType="com.bizvane.ishop.entity.Appversion">
         INSERT INTO  def_app_version
         <trim prefix="(" suffix=")" suffixOverrides=",">

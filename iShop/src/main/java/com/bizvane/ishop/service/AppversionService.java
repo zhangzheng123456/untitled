@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/6/21.
@@ -15,6 +16,7 @@ public interface AppversionService {
     List<Appversion> selectAllAppversion() throws SQLException;
     //分页查询
     PageInfo<Appversion> selectAllAppversion(int page_number, int page_size, String search_value) throws SQLException;
+    PageInfo<Appversion> selectAllScreen(int page_number, int page_size, Map<String,String> map);
     //根据ID查询
     Appversion selAppversionById(int id)throws SQLException;
     //根据ID删除

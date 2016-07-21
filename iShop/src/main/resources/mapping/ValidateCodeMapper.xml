@@ -17,6 +17,15 @@
         </if>
         ORDER BY id DESC
     </select>
+    <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.ValidateCode">
+    SELECT *
+    FROM DEF_VALIDATE_CODE
+    WHERE 1 = 1
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+        </foreach>
+        ORDER BY id DESC
+    </select>
     <select id="selValidateCodeById" resultType="com.bizvane.ishop.entity.ValidateCode">
         SELECT * FROM DEF_VALIDATE_CODE
         WHERE ID=#{id}

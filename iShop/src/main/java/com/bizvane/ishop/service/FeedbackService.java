@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/6/20.
@@ -15,6 +16,8 @@ public interface FeedbackService {
     List<Feedback> selectAllFeedback() throws SQLException;
     //分页查询
     PageInfo<Feedback> selectAllFeedback(int page_number, int page_size, String search_value) throws SQLException;
+
+    PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<String,String> map);
     //根据ID查询
     Feedback selFeedbackById(int id)throws SQLException;
     //根据ID删除

@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.InterfaceMapper;
 import com.bizvane.ishop.entity.Appversion;
+import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.service.InterfaceService;
 import com.github.pagehelper.PageHelper;
@@ -10,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/6/22.
@@ -19,6 +22,17 @@ import java.util.List;
 public class InterfaceServiceImpl implements InterfaceService{
     @Autowired
     private InterfaceMapper interfaceMapper;
+
+    @Override
+    public PageInfo<Interfacers> selectAllScreen(int page_number, int page_size, Map<String, String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<Interfacers> list = interfaceMapper.selectAllScreen(params);
+        PageInfo<Interfacers> page = new PageInfo<Interfacers>(list);
+        return page;
+    }
+
     @Override
     public List<Interfacers> selectAllInterface() throws SQLException {
         return interfaceMapper.selectAllInterface("");

@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/6/20.
@@ -39,8 +41,18 @@ public class FeedbackServiceImpl implements FeedbackService{
       return feedbackMapper.selectAllFeedback("");
 
     }
-//根据ID查询
-    @Override
+
+@Override
+public PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<String, String> map) {
+    Map<String, Object> params = new HashMap<String, Object>();
+    params.put("map", map);
+    PageHelper.startPage(page_number, page_size);
+    List<Feedback> list = feedbackMapper.selectAllScreen(params);
+    PageInfo<Feedback> page = new PageInfo<Feedback>(list);
+    return page;
+}
+    //根据ID查询
+@Override
     public Feedback selFeedbackById(int id) throws SQLException {
         return feedbackMapper.selFeedbackById(id);
     }

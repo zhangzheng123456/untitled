@@ -210,6 +210,7 @@ public class SignController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean=new DataBean();
+        String errormessage = "";
         try{
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -218,31 +219,40 @@ public class SignController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
             PageInfo<Sign> list = null;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                //系统管理员
-                list = signService.selectSignAll(1, 10000, "", "");
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                //系统管理员
-                list =signService.selectSignAll(1, 10000, corp_code, "");
-            } else if (role_code.equals(Common.ROLE_SM)) {
-                //店长
-                String store_code = request.getSession().getAttribute("store_code").toString();
-                list = signService.selectSignByInp(1, 10000, corp_code, "", store_code,"", role_code);
-            }else if (role_code.equals(Common.ROLE_AM)){
-                //区经
-                String area_code = request.getSession().getAttribute("area_code").toString();
-                list = signService.selectSignByInp(1, 10000, corp_code, "","",area_code, role_code);
-            }else if(role_code.equals(Common.ROLE_STAFF)){
-                list=signService.selectByUser(1,10000,corp_code,user_code,"");
+            if (screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    //系统管理员
+                    list = signService.selectSignAll(1, 30000, "", search_value);
+                } else if (role_code.equals(Common.ROLE_GM)) {
+                    //系统管理员
+                    list = signService.selectSignAll(1, 30000, corp_code, search_value);
+                } else if (role_code.equals(Common.ROLE_SM)) {
+                    //店长
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, store_code, "", role_code);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    //区经
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, "", area_code, role_code);
+                } else if (role_code.equals(Common.ROLE_STAFF)) {
+                    list = signService.selectByUser(1, 30000, corp_code, user_code, search_value);
+                }
             }
             List<Sign> signs = list.getList();
+            if (signs.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(signs, cols, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -251,7 +261,7 @@ public class SignController {
         }catch (Exception e){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage(e.getMessage());
+            dataBean.setMessage(errormessage);
         }
         return dataBean.getJsonStr();
     }

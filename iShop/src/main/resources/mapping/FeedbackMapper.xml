@@ -19,6 +19,15 @@
         </if>
         ORDER BY id DESC
     </select>
+    <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.Feedback">
+    SELECT *
+    FROM def_feedback
+    WHERE 1 = 1
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+        </foreach>
+        ORDER BY id DESC
+    </select>
     <insert id="addFeedback" parameterType="com.bizvane.ishop.entity.Feedback">
         INSERT INTO  def_feedback
         <trim prefix="(" suffix=")" suffixOverrides=",">
