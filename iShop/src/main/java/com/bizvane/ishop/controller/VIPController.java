@@ -443,6 +443,7 @@ public class VIPController {
                     result = String.valueOf(vipLabelService.insert(vipLabel));
                 }
             }
+            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
