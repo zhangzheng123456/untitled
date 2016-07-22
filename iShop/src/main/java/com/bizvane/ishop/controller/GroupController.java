@@ -665,7 +665,7 @@ public class GroupController {
     /***
      * 导出数据
      */
-    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
