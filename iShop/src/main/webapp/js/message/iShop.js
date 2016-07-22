@@ -206,15 +206,17 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].area_code
+                        + data[i].message_receiver
                         + "</td><td>"
-                        + data[i].area_name
+                        + data[i].messageType.type_description
                         + "</td><td>"
-                        + data[i].corp.corp_name
-                        +"</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
+                        + data[i].messageInfo.message_title
+                        +"</td><td><span title='"+data[i].messageInfo.message_content+"'>"
+                        + data[i].messageInfo.message_content
+                        +"</span></td><td>"
                         +data[i].modified_date
+                        +"</td><td>"
+                        +data[i].messageInfo.message_sender
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
