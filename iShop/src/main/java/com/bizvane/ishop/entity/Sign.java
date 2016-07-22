@@ -21,6 +21,15 @@ public class Sign {
     private String corp_code;
     private String store_code;
     private String phone;
+    private String corp_name;
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
 
     public int getId() {
         return id;
