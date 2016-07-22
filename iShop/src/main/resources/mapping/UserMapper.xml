@@ -493,12 +493,12 @@
         dg.group_name,
         dc.corp_name
         from
-        def_user du,
-        def_corp dc,
-        def_group dg,
+        DEF_USER du,
+        DEF_CORP dc,
+        DEF_GROUP dg
         where
         du.corp_code=dc.corp_code
-        and du.corp_code=du.dg.corp_code
+        and du.corp_code=dg.corp_code
         and du.group_code=dg.group_code
         <if test="corp_code!=null and corp_code!=''">
             and du.corp_code=#{corp_code}
@@ -506,13 +506,25 @@
         <if test="role_code!=null and role_code!=''">
             and dg.role_code &lt;#{role_code}
         </if>
-        AND
-        <foreach collection="array" index="index" item="item" open="(" separator="AND" close=")">
-            store_code regexp #{item}
-        </foreach>
+        <if test="array!=null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="AND" close=")">
+                store_code regexp #{item}
+            </foreach>
+        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
-            ${entryKey} LIKE concat('%',#{entryValue},'%')
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryKey=='group_name'">
+                    dg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    du.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY du.id DESC
     </select>
