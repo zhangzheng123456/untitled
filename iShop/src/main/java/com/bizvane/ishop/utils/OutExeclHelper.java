@@ -40,9 +40,9 @@ public class OutExeclHelper {
                 lists.add(temp);
             }
             //输出流
-            OutputStream os = response.getOutputStream();
+        //    OutputStream os = response.getOutputStream();
             //------------------------开启响应头---------------------------------------
-            response.reset(); // 非常重要 
+      //      response.reset(); // 非常重要 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String user_id =request.getSession().getAttribute("user_code").toString();
             //设置响应头信息，为下载文件方式
@@ -99,8 +99,8 @@ public class OutExeclHelper {
             //写入结束
             book.close();
             //设置为系统输出流 并清空
-            System.setOut(new PrintStream(os));
-            os.flush();
+//            System.setOut(new PrintStream(os));
+//            os.flush();
         }catch (Exception e){
             e.printStackTrace();
         }
