@@ -58,7 +58,7 @@
     </select>
     <select id="selectByUser" resultType="com.bizvane.ishop.entity.Sign">
         select * from acc_sign,def_corp
-        WHERE  acc_sign.STATUS !='1'
+        WHERE acc_sign.STATUS !='1'
         and acc_sign.corp_code=def_corp.corp_code
         acc_sign.corp_code=#{corp_code} and acc_sign.user_code=#{user_code}
         <if test="search_value != null and search_value !=''">

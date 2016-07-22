@@ -193,8 +193,15 @@
             AND db.corp_code=#{corp_code}
         </if>
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
-            db.${entryKey} LIKE concat('%',#{entryValue},'%')
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    db.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY db.id desc
     </select>
