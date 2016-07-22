@@ -519,7 +519,7 @@ public class AreaController {
                     int b = 5 / 0;
                     break;
                 }
-                Area area = areaService.getAreaByCode(corp_code, column[i].getContents().toString());
+                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column[i].getContents().toString());
                 if (area != null) {
                     result = "第" + (i + 1) + "行区域编号已存在";
                     int b = 5 / 0;
@@ -528,7 +528,7 @@ public class AreaController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                Area area = areaService.getAreaByName(corp_code, column1[i].getContents().toString());
+                Area area = areaService.getAreaByName(column3[i].getContents().toString(), column1[i].getContents().toString());
                 if (area != null) {
                     result = "第" + (i + 1) + "行区域名称已存在";
                     int b = 5 / 0;

@@ -782,7 +782,7 @@ public class GroupController {
                     int b = 5 / 0;
                     break;
                 }
-                Group group = groupService.selectByCode(corp_code, column[i].getContents().toString(), "");
+                Group group = groupService.selectByCode(column3[i].getContents().toString(), column[i].getContents().toString(), "");
                 if (group != null) {
                     result = "第" + (i + 1) + "列群组编号已存在";
                     int b = 5 / 0;
@@ -791,7 +791,7 @@ public class GroupController {
             }
             Cell[] column1 = rs.getColumn(3);
             for (int i = 3; i < column1.length; i++) {
-                Group group = groupService.selectByName(corp_code, column1[i].getContents().toString(), "");
+                Group group = groupService.selectByName(column3[i].getContents().toString(), column1[i].getContents().toString(), "");
                 if (group != null) {
                     result = "第" + (i + 1) + "列群组名称已存在";
                     int b = 5 / 0;

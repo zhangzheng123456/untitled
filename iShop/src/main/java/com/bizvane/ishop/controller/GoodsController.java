@@ -342,7 +342,7 @@ public class GoodsController {
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                String goodsCodeExist = goodsService.goodsCodeExist(corp_code, column[i].getContents().toString());
+                String goodsCodeExist = goodsService.goodsCodeExist(column3[i].getContents().toString(), column[i].getContents().toString());
                 if (goodsCodeExist.contains(Common.DATABEAN_CODE_ERROR)) {
                     result = "第" + (i + 1) + "列商品编号已存在";
                     int b = 5 / 0;
@@ -351,7 +351,7 @@ public class GoodsController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                String goodsNameExist = goodsService.goodsNameExist(corp_code, column1[i].getContents().toString());
+                String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString(), column1[i].getContents().toString());
                 if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
                     result = "第" + (i + 1) + "列商品名称已存在";
                     int b = 5 / 0;

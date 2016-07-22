@@ -497,7 +497,7 @@ public class BrandController {
                     int b = 5 / 0;
                     break;
                 }
-                Brand brand = brandService.getBrandByCode(corp_code, column[i].getContents().toString());
+                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column[i].getContents().toString());
                 if (brand != null) {
                     result = "第" + (i + 1) + "行品牌编号已存在";
                     int b = 5 / 0;
@@ -506,7 +506,7 @@ public class BrandController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column.length; i++) {
-                Brand brand = brandService.getBrandByName(corp_code, column1[i].getContents().toString());
+                Brand brand = brandService.getBrandByName(column3[i].getContents().toString(), column1[i].getContents().toString());
                 if (brand != null) {
                     result = "第" + (i + 1) + "行品牌名称已存在";
                     int b = 5 / 0;

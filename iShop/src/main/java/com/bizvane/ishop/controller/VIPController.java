@@ -432,7 +432,7 @@ public class VIPController {
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                String existInfo = this.vipLabelService.VipLabelNameExist(corp_code, column[i].getContents().toString());
+                String existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString(), column[i].getContents().toString());
                 if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
                     result = "第" + (i + 1) + "列的会员标签已存在";
                     int b = 5 / 0;

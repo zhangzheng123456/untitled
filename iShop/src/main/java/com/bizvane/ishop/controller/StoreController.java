@@ -850,7 +850,7 @@ public class StoreController {
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                Store store = storeService.getStoreByCode(corp_code, column[i].getContents().toString(), "");
+                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column[i].getContents().toString(), "");
                 if (store != null) {
                     result = "第" + (i + 1) + "列店铺编号已存在";
                     int b = 5 / 0;
@@ -859,7 +859,7 @@ public class StoreController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                Store store = storeService.getStoreByName(corp_code, column1[i].getContents().toString());
+                Store store = storeService.getStoreByName(column3[i].getContents().toString(), column1[i].getContents().toString());
                 if (store != null) {
                     result = "第" + (i + 1) + "列店铺名称已存在";
                     int b = 5 / 0;
