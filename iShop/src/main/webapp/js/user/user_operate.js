@@ -456,7 +456,7 @@ function role_data(c){//
             	$('#OWN_STORE').attr("data-myscode","");
             	$('#OWN_STORE').val("");
             	$('#sidedown').attr("onclick","selectownshop(this)");
-            	$('#add_per_icon').attr("onclick","addshopselect()");
+            	$('#add_per_icon').attr("onclick","");
             	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
             	$("#ownshop_list").show();
             	$("#ownshop_list .per_type").nextAll().remove();
