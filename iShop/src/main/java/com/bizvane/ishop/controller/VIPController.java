@@ -32,6 +32,8 @@ import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -411,7 +413,24 @@ public class VIPController {
                 result="数据量过大，导入失败";
                 int i=5 /0;
             }
-            Cell[] column = rs.getColumn(0);
+            Cell[] column3 = rs.getColumn(0);
+            Pattern pattern1 = Pattern.compile("C\\d{5}");
+            if(!role_code.equals(Common.ROLE_SYS)){
+                for (int i=3;i<column3.length;i++){
+                    if(!column3[i].getContents().toString().equals(corp_code)){
+                        result = "第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    if (matcher.matches() == false) {
+                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
+            Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 String existInfo = this.vipLabelService.VipLabelNameExist(corp_code, column[i].getContents().toString());
                 if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
@@ -423,7 +442,7 @@ public class VIPController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     VipLabel vipLabel = new VipLabel();
-                    vipLabel.setCorp_code(corp_code);
+                    vipLabel.setCorp_code(rs.getCell(j++, i).getContents());
                     vipLabel.setLabel_name(rs.getCell(j++, i).getContents());
                     if (role_code.equals(Common.ROLE_SYS)) {
                         vipLabel.setLabel_type("sys");

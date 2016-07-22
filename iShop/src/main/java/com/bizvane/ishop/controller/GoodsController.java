@@ -38,6 +38,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -310,6 +312,7 @@ public class GoodsController {
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         String result = "";
         try {
             Workbook rwb = Workbook.getWorkbook(targetFile);
@@ -320,7 +323,24 @@ public class GoodsController {
                 result="数据量过大，导入失败";
                 int i=5 /0;
             }
-            Cell[] column = rs.getColumn(0);
+            Cell[] column3 = rs.getColumn(0);
+            Pattern pattern1 = Pattern.compile("C\\d{5}");
+            if(!role_code.equals(Common.ROLE_SYS)){
+                for (int i=3;i<column3.length;i++){
+                    if(!column3[i].getContents().toString().equals(corp_code)){
+                        result = "第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    if (matcher.matches() == false) {
+                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
+            Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 String goodsCodeExist = goodsService.goodsCodeExist(corp_code, column[i].getContents().toString());
                 if (goodsCodeExist.contains(Common.DATABEAN_CODE_ERROR)) {
@@ -329,7 +349,7 @@ public class GoodsController {
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(1);
+            Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
                 String goodsNameExist = goodsService.goodsNameExist(corp_code, column1[i].getContents().toString());
                 if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
@@ -341,7 +361,7 @@ public class GoodsController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
-                    goods.setCorp_code(corp_code);
+                    goods.setCorp_code(rs.getCell(j++, i).getContents());
                     goods.setGoods_code(rs.getCell(j++, i).getContents());
                     goods.setGoods_name(rs.getCell(j++, i).getContents());
                     goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString()));

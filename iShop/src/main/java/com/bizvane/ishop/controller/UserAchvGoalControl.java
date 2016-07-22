@@ -39,6 +39,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by lixiang on 2016/6/1.
@@ -444,6 +446,7 @@ public class UserAchvGoalControl {
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
 
         String result = "";
         try {
@@ -455,7 +458,24 @@ public class UserAchvGoalControl {
                 result="数据量过大，导入失败";
                 int i=5 /0;
             }
-            Cell[] column = rs.getColumn(3);
+            Cell[] column3 = rs.getColumn(0);
+            Pattern pattern1 = Pattern.compile("C\\d{5}");
+            if(!role_code.equals(Common.ROLE_SYS)){
+                for (int i=3;i<column3.length;i++){
+                    if(!column3[i].getContents().toString().equals(corp_code)){
+                        result = "第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    if (matcher.matches() == false) {
+                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
+            Cell[] column = rs.getColumn(4);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") || !column[i].getContents().toString().equals("W") || !column[i].getContents().toString().equals("M") || !column[i].getContents().toString().equals("Y")) {
                     result = "第" + (i + 1) + "列的业绩日期类型缩写不对";
@@ -466,7 +486,7 @@ public class UserAchvGoalControl {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
-                    userAchvGoal.setCorp_code(corp_code);
+                    userAchvGoal.setCorp_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());

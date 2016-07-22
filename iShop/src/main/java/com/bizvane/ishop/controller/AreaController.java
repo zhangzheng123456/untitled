@@ -478,6 +478,7 @@ public class AreaController {
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         String result = "";
         try {
             Workbook rwb = Workbook.getWorkbook(targetFile);
@@ -488,27 +489,48 @@ public class AreaController {
                 result = "数据量过大，导入失败";
                 int i = 5 / 0;
             }
+            Cell[] column3 = rs.getColumn(0);
+            if(!role_code.equals(Common.ROLE_SYS)){
+                for (int i=3;i<column3.length;i++){
+                    if(!column3[i].getContents().toString().equals(corp_code)){
+                        result = "第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
+
+            Pattern pattern1 = Pattern.compile("C\\d{5}");
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+
+            }
             Pattern pattern = Pattern.compile("A\\d{4}");
-            Cell[] column = rs.getColumn(0);
+            Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "列区域编号格式不对";
+                    result = "第" + (i + 1) + "行区域编号格式不对";
                     int b = 5 / 0;
                     break;
                 }
                 Area area = areaService.getAreaByCode(corp_code, column[i].getContents().toString());
                 if (area != null) {
-                    result = "第" + (i + 1) + "列区域编号已存在";
+                    result = "第" + (i + 1) + "行区域编号已存在";
                     int b = 5 / 0;
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(1);
+            Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
                 Area area = areaService.getAreaByName(corp_code, column1[i].getContents().toString());
                 if (area != null) {
-                    result = "第" + (i + 1) + "列区域名称已存在";
+                    result = "第" + (i + 1) + "行区域名称已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -516,7 +538,7 @@ public class AreaController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Area area = new Area();
-                    area.setCorp_code(corp_code);
+                    area.setCorp_code(rs.getCell(j++, i).getContents());
                     area.setArea_code(rs.getCell(j++, i).getContents());
                     area.setArea_name(rs.getCell(j++, i).getContents());
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {

@@ -35,6 +35,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -817,6 +819,8 @@ public class StoreController {
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
         String result = "";
         try {
             Workbook rwb = Workbook.getWorkbook(targetFile);
@@ -827,7 +831,24 @@ public class StoreController {
                 result="数据量过大，导入失败";
                 int i=5 /0;
             }
-            Cell[] column = rs.getColumn(0);
+            Cell[] column3 = rs.getColumn(0);
+            Pattern pattern1 = Pattern.compile("C\\d{5}");
+            if(!role_code.equals(Common.ROLE_SYS)){
+                for (int i=3;i<column3.length;i++){
+                    if(!column3[i].getContents().toString().equals(corp_code)){
+                        result = "第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    if (matcher.matches() == false) {
+                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
+            Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 Store store = storeService.getStoreByCode(corp_code, column[i].getContents().toString(), "");
                 if (store != null) {
@@ -836,7 +857,7 @@ public class StoreController {
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(1);
+            Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
                 Store store = storeService.getStoreByName(corp_code, column1[i].getContents().toString());
                 if (store != null) {
@@ -848,7 +869,7 @@ public class StoreController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Store store = new Store();
-                    store.setCorp_code(corp_code);
+                    store.setCorp_code(rs.getCell(j++, i).getContents());
                     store.setStore_code(rs.getCell(j++, i).getContents());
                     store.setStore_name(rs.getCell(j++, i).getContents());
                     store.setArea_code(rs.getCell(j++, i).getContents());

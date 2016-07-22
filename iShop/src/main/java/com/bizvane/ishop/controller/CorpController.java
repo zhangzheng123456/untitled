@@ -512,13 +512,13 @@ public class CorpController {
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "列企业编号格式不对";
+                    result = "第" + (i + 1) + "行企业编号格式不对";
                     int b = 5 / 0;
                     break;
                 }
                 Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString());
                 if (corp != null) {
-                    result = "第" + (i + 1) + "列企业编号已存在";
+                    result = "第" + (i + 1) + "行企业编号已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -527,7 +527,7 @@ public class CorpController {
             for (int i = 3; i < column1.length; i++) {
                 String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString());
                 if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
-                    result = "第" + (i + 1) + "列企业名称已存在";
+                    result = "第" + (i + 1) + "行企业名称已存在";
                     int b = 5 / 0;
                     break;
                 }

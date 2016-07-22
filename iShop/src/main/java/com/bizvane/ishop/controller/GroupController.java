@@ -736,13 +736,36 @@ public class GroupController {
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
         String result = "";
         try {
             Workbook rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            Cell[] column2 = rs.getColumn(0);
+            if (rows > 9999) {
+                result = "数据量过大，导入失败";
+                int i = 5 / 0;
+            }
+            Cell[] column3 = rs.getColumn(0);
+            Pattern pattern1 = Pattern.compile("C\\d{5}");
+            if(!role_code.equals(Common.ROLE_SYS)){
+                for (int i=3;i<column3.length;i++){
+                    if(!column3[i].getContents().toString().equals(corp_code)){
+                        result = "第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    if (matcher.matches() == false) {
+                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
+            Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
                 if (!column2[i].getContents().toString().equals("R2000") || !column2[i].getContents().toString().equals("R3000") || !column2[i].getContents().toString().equals("R4000")) {
                     result = "第" + (i + 1) + "列角色编号不对";
@@ -750,7 +773,7 @@ public class GroupController {
                     break;
                 }
             }
-            Cell[] column = rs.getColumn(1);
+            Cell[] column = rs.getColumn(2);
             Pattern pattern = Pattern.compile("G\\d{4}");
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
@@ -766,9 +789,9 @@ public class GroupController {
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(2);
+            Cell[] column1 = rs.getColumn(3);
             for (int i = 3; i < column1.length; i++) {
-                Group group = groupService.selectByCode(corp_code, column1[i].getContents().toString(), "");
+                Group group = groupService.selectByName(corp_code, column1[i].getContents().toString(), "");
                 if (group != null) {
                     result = "第" + (i + 1) + "列群组名称已存在";
                     int b = 5 / 0;
@@ -778,7 +801,7 @@ public class GroupController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Group group = new Group();
-                    group.setCorp_code(corp_code);
+                    group.setCorp_code(rs.getCell(j++, i).getContents());
                     group.setRole_code(rs.getCell(j++, i).getContents());
                     group.setGroup_code(rs.getCell(j++, i).getContents());
                     group.setGroup_name(rs.getCell(j++, i).getContents());
