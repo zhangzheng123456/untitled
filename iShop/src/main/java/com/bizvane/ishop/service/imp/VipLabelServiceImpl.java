@@ -2,8 +2,6 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipLabelMapper;
-import com.bizvane.ishop.entity.Group;
-import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.VipLabelService;
 import com.github.pagehelper.PageHelper;
@@ -48,12 +46,20 @@ public class VipLabelServiceImpl implements VipLabelService {
     }
 
     @Override
-    public String update(VipLabel VipLabel) throws SQLException {
-        VipLabel old = this.vipLabelMapper.selectByPrimaryKey(VipLabel.getId());
-        if (!old.getLabel_name().equals(VipLabel.getLabel_name()) && (this.VipLabelNameExist(VipLabel.getCorp_code(), VipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "名称已经存在！！！！";
-        } else if (this.vipLabelMapper.updateByPrimaryKey(VipLabel) >= 0) {
-            return Common.DATABEAN_CODE_SUCCESS;
+    public String update(VipLabel vipLabel) throws SQLException {
+        VipLabel old = this.vipLabelMapper.selectByPrimaryKey(vipLabel.getId());
+        if (old.getCorp_code().equals(vipLabel.getCorp_code())) {
+            if (!old.getLabel_name().equals(vipLabel.getLabel_name()) && (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+                return "名称已经存在！！！！";
+            } else if (this.vipLabelMapper.updateByPrimaryKey(vipLabel) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
+        } else {
+            if (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+                return "名称已经存在！！！！";
+            } else if (this.vipLabelMapper.updateByPrimaryKey(vipLabel) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
         }
         return Common.DATABEAN_CODE_ERROR;
     }
@@ -71,7 +77,7 @@ public class VipLabelServiceImpl implements VipLabelService {
     public PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
-        params.put("corp_code",corp_code);
+        params.put("corp_code", corp_code);
         List<VipLabel> labels;
         PageHelper.startPage(page_number, page_size);
         labels = vipLabelMapper.selectAllViplabelScreen(params);
@@ -99,6 +105,4 @@ public class VipLabelServiceImpl implements VipLabelService {
         }
         return result;
     }
-
-
 }

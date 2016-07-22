@@ -93,16 +93,28 @@ public class GroupServiceImpl implements GroupService {
         int id = group.getId();
         String group_code = group.getGroup_code();
         String corp_code = group.getCorp_code();
-        Group group2 = getGroupById(id);
+        Group old_group = getGroupById(id);
         Group group1 = selectByCode(corp_code, group_code, "");
-        if (group2.getGroup_code().equals(group_code) || group1 == null) {
-            if (!group2.getGroup_code().equals(group_code)){
-                updateCauseCodeChange(corp_code,group_code,group2.getGroup_code());
+        if (old_group.getCorp_code().equals(group.getCorp_code())) {
+            if (old_group.getGroup_code().equals(group_code) || group1 == null) {
+                if (!old_group.getGroup_code().equals(group_code)) {
+                    updateCauseCodeChange(corp_code, group_code, old_group.getGroup_code());
+                }
+                groupMapper.updateGroup(group);
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else {
+                result = "该群组编号已存在！";
             }
-            groupMapper.updateGroup(group);
-            result = Common.DATABEAN_CODE_SUCCESS;
         } else {
-            result = "该群组编号已存在！";
+            if (group1 == null) {
+//                if (!old_group.getGroup_code().equals(group_code)) {
+//                    updateCauseCodeChange(corp_code, group_code, old_group.getGroup_code());
+//                }
+                groupMapper.updateGroup(group);
+                result = Common.DATABEAN_CODE_SUCCESS;
+            } else {
+                result = "该群组编号已存在！";
+            }
         }
         return result;
     }
@@ -116,11 +128,11 @@ public class GroupServiceImpl implements GroupService {
      * 级联更改关联此编号的员工，权限列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code ,String new_group_code,String old_group_code){
+    void updateCauseCodeChange(String corp_code, String new_group_code, String old_group_code) {
         //若修改群组编号，对应修改员工信息中关联的群组编号
-        codeUpdateMapper.updateUser("",corp_code,new_group_code,old_group_code,"","","","");
+        codeUpdateMapper.updateUser("", corp_code, new_group_code, old_group_code, "", "", "", "");
 
         //若修改群组编号，对应修改权限中关联的群组编号
-        codeUpdateMapper.updatePrivilege(corp_code+new_group_code,corp_code+old_group_code);
+        codeUpdateMapper.updatePrivilege(corp_code + new_group_code, corp_code + old_group_code);
     }
 }

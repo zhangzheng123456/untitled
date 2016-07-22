@@ -339,7 +339,7 @@ public class VIPController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="";
+        String errormessage = "";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -350,13 +350,13 @@ public class VIPController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<VipLabel> list;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = vipLabelService.selectBySearch(1, 30000, "", search_value);
                 } else {
                     list = vipLabelService.selectBySearch(1, 30000, corp_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = this.vipLabelService.selectAllVipScreen(1, 30000, "", map);
@@ -365,19 +365,19 @@ public class VIPController {
                 }
             }
             List<VipLabel> vipLabels = list.getList();
-            if(vipLabels.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (vipLabels.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(vipLabels, cols, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -392,7 +392,7 @@ public class VIPController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/label/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/label/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -407,9 +407,9 @@ public class VIPController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows>9999){
-                result="数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Cell[] column = rs.getColumn(0);
             for (int i = 3; i < column.length; i++) {
@@ -527,10 +527,10 @@ public class VIPController {
             VipLabel vipLabel = WebUtils.JSON2Bean(jsonObject, VipLabel.class);
             int label_id = vipLabel.getId();
             String label_type = vipLabelService.getVipLabelById(label_id).getLabel_type();
-            if (!role_code.equals(Common.ROLE_SYS) && label_type.equals(Common.VIP_LABEL_TYPE_SYS)){
+            if (!role_code.equals(Common.ROLE_SYS) && label_type.equals(Common.VIP_LABEL_TYPE_SYS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("对不起，您不可以修改系统标签");
-            }else {
+            } else {
                 Date now = new Date();
                 vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
                 vipLabel.setModifier(user_id);
@@ -822,7 +822,7 @@ public class VIPController {
             int page_Size = jsonObject.getInt("pageSize");
 //            String screen = jsonObject.get("screen").toString();
 //            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-            Map<String,String> map = WebUtils.Json2Map(jsonObject);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VipLabel> list;
@@ -1048,7 +1048,7 @@ public class VIPController {
     @ResponseBody
     public String exportExeclCallback(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="";
+        String errormessage = "";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -1059,14 +1059,14 @@ public class VIPController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<VipRecord> list;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = this.vipRecordService.selectBySearch(1, 30000, "", search_value);
                 } else {
 
                     list = vipRecordService.selectBySearch(1, 30000, corp_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.contains(Common.ROLE_SYS)) {
                     list = vipRecordService.selectAllVipRecordScreen(1, 30000, "", map);
@@ -1075,19 +1075,19 @@ public class VIPController {
                 }
             }
             List<VipRecord> vipRecords = list.getList();
-            if(vipRecords.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (vipRecords.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(vipRecords, cols, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -1303,7 +1303,7 @@ public class VIPController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
 //            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-            Map<String,String> map = WebUtils.Json2Map(jsonObject);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<VipRecord> list = null;
