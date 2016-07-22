@@ -2,14 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.SignMapper">
     <select id="selectSignAll" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT acc_sign.ID,
-        acc_sign.user_code,
-        acc_sign.USER_NAME,
-        acc_sign.SIGN_SERIAL_DAYS,
-        acc_sign.SIGN_TOTAL_DAYS,
-        acc_sign.STATUS,
-        acc_sign.SIGN_TIME,
-        acc_sign.ISACTIVE
+        SELECT *
         from acc_sign
         WHERE acc_sign.STATUS !='1'
         <if test="corp_code != null and corp_code !=''">
@@ -30,14 +23,7 @@
         ORDER BY acc_sign.ID DESC
     </select>
     <select id="selectSignByInp" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT acc_sign.ID,
-        acc_sign.user_code,
-        acc_sign.USER_NAME,
-        acc_sign.SIGN_SERIAL_DAYS,
-        acc_sign.SIGN_TOTAL_DAYS,
-        acc_sign.STATUS,
-        acc_sign.SIGN_TIME,
-        acc_sign.ISACTIVE
+        SELECT *
         from acc_sign
         where acc_sign.STATUS !='1'
         AND acc_sign.user_code IN
@@ -91,14 +77,7 @@
     </delete>
 
     <select id="selectSignAllScreen" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT acc_sign.ID,
-        acc_sign.user_code,
-        acc_sign.USER_NAME,
-        acc_sign.SIGN_SERIAL_DAYS,
-        acc_sign.SIGN_TOTAL_DAYS,
-        acc_sign.STATUS,
-        acc_sign.SIGN_TIME,
-        acc_sign.ISACTIVE
+        SELECT *
         from acc_sign
         where acc_sign.STATUS !='1'
         AND acc_sign.user_code IN
