@@ -32,6 +32,9 @@ $(function(){
         console.log(data);
         // var val=sessionStorage.getItem("key");
         // val=JSON.parse(val);
+        var str = JSON.stringify(data);
+        var key = "key";
+        sessionStorage.setItem(key, str);
         var message=JSON.parse(data.message);
         $('#img img').attr("src",message.avatar);
         var menu=message.menu;
