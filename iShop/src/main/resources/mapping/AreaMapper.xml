@@ -199,7 +199,7 @@
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
-            ${entryKey} LIKE concat('%', #{entryValue},'%')
+            dc.${entryKey} LIKE concat('%', #{entryValue},'%')
         </foreach>
         ORDER BY da.id
     </select>

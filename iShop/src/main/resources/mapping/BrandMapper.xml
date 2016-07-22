@@ -26,7 +26,7 @@
         DEF_BRAND.created_date,
         DEF_BRAND.creater,
         DEF_BRAND.isactive,
-        DEF_CORP.CORP_NAME
+        def_corp.CORP_NAME
       FROM DEF_BRAND,DEF_CORP
       WHERE DEF_BRAND.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_BRAND.ID=#{id}
@@ -187,14 +187,14 @@
         dc.corp_name
         from
         DEF_BRAND db,
-        DEF_COPR dc
+        DEF_CORP dc
         where db.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND db.corp_code=#{corp_code}
         </if>
-        AND 
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="or" close=")">
-            ${entryKey} LIKE concat('%',#{entryValue},'%')
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
+            db.${entryKey} LIKE concat('%',#{entryValue},'%')
         </foreach>
         ORDER BY db.id desc
     </select>
