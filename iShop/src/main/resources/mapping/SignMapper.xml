@@ -5,7 +5,7 @@
         SELECT *
         from acc_sign,DEF_CORP
         WHERE acc_sign.STATUS !='1'
-        and acc_sign.corp_code=def_corp.corp_code
+        and acc_sign.corp_code=DEF_CORP.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND acc_sign.CORP_CODE = #{corp_code}
         </if>
@@ -14,9 +14,7 @@
             (
             acc_sign.user_code LIKE concat('%', #{search_value},'%')
             OR acc_sign.USER_NAME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_SERIAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_TOTAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.STATUS LIKE concat('%', #{search_value},'%')
+            OR DEF_CORP.CORP_NAME LIKE concat('%', #{search_value},'%')
             OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
             OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
@@ -47,15 +45,14 @@
             (
             acc_sign.user_code LIKE concat('%', #{search_value},'%')
             OR acc_sign.USER_NAME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_SERIAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_TOTAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.STATUS LIKE concat('%', #{search_value},'%')
             OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
+            OR DEF_CORP.CORP_NAME LIKE concat('%', #{search_value},'%')
             OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY acc_sign.ID DESC
     </select>
+
     <select id="selectByUser" resultType="com.bizvane.ishop.entity.Sign">
         select * from acc_sign,def_corp
         WHERE  acc_sign.STATUS !='1'
@@ -66,10 +63,8 @@
             (
             acc_sign.user_code LIKE concat('%', #{search_value},'%')
             OR acc_sign.USER_NAME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_SERIAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_TOTAL_DAYS LIKE concat('%', #{search_value},'%')
-            OR acc_sign.STATUS LIKE concat('%', #{search_value},'%')
             OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
+            OR DEF_CORP.CORP_NAME LIKE concat('%', #{search_value},'%')
             OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
