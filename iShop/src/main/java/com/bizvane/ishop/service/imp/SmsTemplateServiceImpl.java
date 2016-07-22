@@ -44,7 +44,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     @Override
     public String update(SmsTemplate smsTemplate) throws SQLException {
         SmsTemplate old = this.smsTemplateMapper.selectByPrimaryKey(smsTemplate.getId());
-        if (old.getCorp().equals(smsTemplate.getCorp())) {
+        if (old.getCorp_code().equals(smsTemplate.getCorp_code())) {
             if ((!old.getTemplate_code().equals(smsTemplate.getTemplate_code()))
                     && this.SmsTemplateCodeExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
                     ) {
