@@ -94,7 +94,17 @@
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    cp.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryKey=='brand_name'">
+                    db.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    g.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY g.id DESC
     </select>
