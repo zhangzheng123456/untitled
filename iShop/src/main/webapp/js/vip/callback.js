@@ -203,7 +203,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].vipInfo.vip_name
+                        + data[i].vip_code
                         + "</td><td><span>"
                         + data[i].user.user_name
                         +"</td><td>"
