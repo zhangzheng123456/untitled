@@ -467,10 +467,10 @@ public class StoreController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_id = request.getSession().getAttribute("user_id").toString();
             List<User> user = new ArrayList<User>();
-            if (role_code.equals(Common.ROLE_STAFF)){
+            if (role_code.equals(Common.ROLE_STAFF)) {
                 User user1 = userService.getUserById(Integer.parseInt(user_id));
                 user.add(user1);
-            }else {
+            } else {
                 user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -738,7 +738,7 @@ public class StoreController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="";
+        String errormessage = "";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -749,7 +749,7 @@ public class StoreController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<Store> list;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = storeService.getAllStore(request, 1, 30000, "", search_value);
@@ -768,7 +768,7 @@ public class StoreController {
                         list = storeService.selectByUserId(1, 30000, store_code, corp_code, search_value);
                     }
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = storeService.getAllStoreScreen(1, 30000, "", "", "", map);
@@ -783,19 +783,19 @@ public class StoreController {
                 }
             }
             List<Store> stores = list.getList();
-            if(stores.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (stores.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(stores, cols, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -812,7 +812,7 @@ public class StoreController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
@@ -827,15 +827,15 @@ public class StoreController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows > 9999){
-                result="数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)){
-                for (int i=3;i<column3.length;i++){
-                    if(!column3[i].getContents().toString().equals(corp_code)){
+            if (!role_code.equals(Common.ROLE_SYS)) {
+                for (int i = 3; i < column3.length; i++) {
+                    if (!column3[i].getContents().toString().equals(corp_code)) {
                         result = "第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;

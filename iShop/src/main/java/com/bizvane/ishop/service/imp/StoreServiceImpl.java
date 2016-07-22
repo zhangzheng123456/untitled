@@ -213,8 +213,8 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         params.put("corp_code", corp_code);
-        params.put("area_codes", area_codes);
-        params.put("store_codes", store_codes);
+        params.put("area_codes", areas);
+        params.put("store_codes", stores);
         params.put("map", map);
         List<Store> list = storeMapper.selectAllStoreScreen(params);
         PageInfo<Store> page = new PageInfo<Store>(list);

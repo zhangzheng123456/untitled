@@ -8,8 +8,7 @@ public class Sign {
     private String user_code;
     private String user_name;
     private String status;
-    private int sign_serial_days;
-    private int sign_total_days;
+
     private String sign_time;
     private String modified_date;
     private String modifier;
@@ -63,21 +62,7 @@ public class Sign {
         this.status = status;
     }
 
-    public int getSign_serial_days() {
-        return sign_serial_days;
-    }
-
-    public void setSign_serial_days(int sign_serial_days) {
-        this.sign_serial_days = sign_serial_days;
-    }
-
-    public int getSign_total_days() {
-        return sign_total_days;
-    }
-
-    public void setSign_total_days(int sign_total_days) {
-        this.sign_total_days = sign_total_days;
-    }
+   
 
     public String getSign_time() {
         return sign_time;

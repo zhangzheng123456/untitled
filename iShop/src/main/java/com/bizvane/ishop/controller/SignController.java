@@ -244,7 +244,7 @@ public class SignController {
                     list = signService.selectByUser(1, 30000, corp_code, user_code, search_value);
                 }
 
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = signService.selectSignAllScreen(1, 30000, "", "", "", "", map);

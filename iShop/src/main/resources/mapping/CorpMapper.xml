@@ -239,8 +239,8 @@
         select *
         from DEF_CORP
         where
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
+            ${entryKey} LIKE concat('%', #{entryValue},'%')
         </foreach>
         ORDER BY id DESC
 

@@ -369,24 +369,34 @@
         where ds.CORP_CODE = dc.CORP_CODE
         AND ds.CORP_CODE = da.CORP_CODE
         AND ds.AREA_CODE = da.AREA_CODE
-        <if test="corp_code!=null and corp_code!=null">
+        <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null">
             AND ds.area_code in
-            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            <foreach collection="area_codes" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
         <if test="store_codes!=null">
             AND ds.store_code in
-            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+            <foreach collection="store_codes" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
-            ${entryKey} LIKE concat('%',#{entryValue},'%')
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%'),
+                </when>
+                <when test="entryKey=='area_name'">
+                    da.${entryKey} LIKE concat('%',#{entryValue},'%'),,
+                </when>
+                <otherwise>
+                    ds.${entryKey} LIKE concat('%',#{entryValue},'%'),,,
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY ds.id DESC
     </select>

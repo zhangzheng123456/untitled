@@ -4,7 +4,11 @@
     <!--查询table-->
     <select id="selAllByCode" resultType="com.bizvane.ishop.entity.TableManager">
         SELECT * FROM def_table_manager
-        WHERE FUNCTION_CODE=#{function_code}
+       WHERE FUNCTION_CODE=#{function_code}
+        and is_show = 'Y'
+        and is_show !=''
+        and is_show is not null
+
     </select>
 
     <!--查询table-->

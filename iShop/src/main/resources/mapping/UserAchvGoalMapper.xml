@@ -311,14 +311,26 @@
         AND ua.corp_code=u.corp_code
         AND ua.corp_code=g.corp_code
         AND ua.store_code=s.store_code
-
         AND ua.user_code = u.user_code
         AND u.group_code = g.group_code
         AND ua.corp_code=#{corp_code}
         AND g.role_code &lt; #{role_code}
         AND ua.store_code IN
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
-            ${entryKey} LIKE concat('%',#{entryValue},'%')
+            <choose>
+                <when test="entryKey=='user_name'">
+                    u.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryKey=='store_name'">
+                    s.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryKey=='corp_name'">
+                    c.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    ua.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY ua.id DESC
     </select>

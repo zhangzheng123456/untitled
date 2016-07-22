@@ -191,15 +191,24 @@
     </select>
 
     <select id="selectAllAreaScreen" resultMap="Area">
-        SELECT *
-        FROM DEF_AREA da,DEF_CORP dc
-        WHERE da.corp_code=dc.corp_code
+        select
+        da.*,
+        dc.CORP_NAME
+        from DEF_AREA da,DEF_CORP dc
+        where da.CORP_CODE = dc.CORP_CODE
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
-            dc.${entryKey} LIKE concat('%', #{entryValue},'%')
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    da.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY da.id
     </select>
