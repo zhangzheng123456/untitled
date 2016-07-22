@@ -31,7 +31,7 @@
         vt.isactive,
         cc.corp_name
         FROM
-        DEF_VIPLABEL vt,DEF_CORP cc
+        def_viplabel vt,DEF_CORP cc
         WHERE
         vt.corp_code=cc.corp_code
         and  vt.id=#{id}
@@ -39,7 +39,7 @@
 
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipLabel">
-        INSERT INTO DEF_VIPLABEL
+        INSERT INTO def_viplabel
         <trim prefix="(" suffixOverrides="," suffix=")">
 
             <if test="label_name!=null and label_name!=''">
@@ -99,7 +99,7 @@
 
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipLabel">
-        update DEF_VIPLABEL
+        update def_viplabel
         <trim prefix="set " suffixOverrides=",">
 
             <if test="label_name!=null and label_name!=''">
@@ -132,7 +132,7 @@
 
 
     <delete id="deleteByPrimaryKey">
-        delete from DEF_VIPLABEL
+        delete from def_viplabel
         WHERE id=#{id}
     </delete>
 
@@ -150,7 +150,7 @@
         vt.isactive,
         cc.corp_name
         FROM
-        DEF_VIPLABEL vt,DEF_CORP cc
+        def_viplabel vt,DEF_CORP cc
         WHERE
         vt.corp_code=cc.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -182,14 +182,14 @@
         vt.isactive,
         cc.corp_name
         FROM
-        DEF_VIPLABEL vt,DEF_CORP cc
+        def_viplabel vt,DEF_CORP cc
         WHERE
         vt.corp_code=cc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and vt.corp_code=#{corp_code}
         </if>
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryKey=='corp_name'">
                     cc.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -203,7 +203,7 @@
     </select>
 
     <select id="selectVipLabelName" resultType="com.bizvane.ishop.entity.VipLabel">
-        select * from DEF_VIPLABEL
+        select * from def_viplabel
          where
          label_name=#{label_name}
          and
