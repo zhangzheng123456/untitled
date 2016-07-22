@@ -61,13 +61,8 @@ public class VipRecordServiceImpl implements VipRecordService {
 
     @Override
     public PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
-        List<VipRecord> list = null;
         PageHelper.startPage(page_number, page_size);
-        if (search_value == null || search_value.isEmpty()) {
-            list = this.VipRecordMapper.selectAllVipRecordInfo(corp_code, "");
-        } else {
-            list = this.VipRecordMapper.selectAllVipRecordInfo(corp_code, search_value);
-        }
+        List<VipRecord> list = this.VipRecordMapper.selectAllVipRecordInfo(corp_code, search_value);
         PageInfo<VipRecord> page = new PageInfo<VipRecord>(list);
         return page;
     }
