@@ -13,14 +13,12 @@
         <result column="created_date" property="created_date"/>
         <result column="creater" property="creater"/>
         <result column="corp_code" property="corp_code"/>
+        <result column="corp_name" property="corp_name"/>
         <association property="vipRecordType" javaType="com.bizvane.ishop.entity.VipRecordType">
             <result column="type_name" property="type_name"/>
         </association>
         <association property="user" javaType="com.bizvane.ishop.entity.User">
             <result column="user_name" property="user_name"/>
-        </association>
-        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
-            <result property="corp_name" column="corp_name"/>
         </association>
     </resultMap>
 
@@ -127,12 +125,9 @@
         dvc.id ,
         dvc.vip_code ,
         dvc.user_code,
-        dvc.action,
         dvc.modified_date ,
         dvc.modifier,
         dvc.isactive,
-        dvc.created_date ,
-        dvc.creater,
         dvc.corp_code,
         du.user_name,
         dc.corp_name,
@@ -169,12 +164,9 @@
         dvc.id ,
         dvc.vip_code ,
         dvc.user_code,
-        dvc.action,
         dvc.modified_date ,
         dvc.modifier,
         dvc.isactive,
-        dvc.created_date ,
-        dvc.creater,
         dvc.corp_code,
         du.user_name,
         dc.corp_name,
@@ -186,9 +178,7 @@
         DEF_CORP dc
         WHERE
         dvc.corp_code=du.corp_code and
-        dvc.copr_code=dvrt.corp_code and
         dvc.corp_code=dc.corp_code and
-        dvc.vip_code=dv.vip_code and
         dvc.user_code=du.user_code and
         dvc.action=dvrt.type_code
 
@@ -211,6 +201,7 @@
         </foreach>
         ORDER BY dvc.id DESC
     </select>
+
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipRecord">
         update DEF_VIP_RECORD
         <trim prefix="set" suffixOverrides=",">
