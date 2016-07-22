@@ -458,6 +458,7 @@ function role_data(c){//
             	$('#sidedown').attr("onclick","selectownshop(this)");
             	$('#add_per_icon').attr("onclick","");
             	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
+            	$('#add_per_icon').css({"backgroundColor":"#ddd"});
             	$("#ownshop_list").show();
             	$("#ownshop_list .per_type").nextAll().remove();
             }else if(j_code=="R3000"){
@@ -468,6 +469,7 @@ function role_data(c){//
             	$('#sidedown').attr("onclick","selectownshop(this)");
             	$('#add_per_icon').attr("onclick","addshopselect()");
             	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
+            	$('#add_per_icon').css({"backgroundColor":"#6cc1c8"});
             	$("#ownshop_list").show();
             	$("#ownshop_list .per_type").nextAll().remove();
             }else if(j_code=="R4000"){
@@ -478,6 +480,7 @@ function role_data(c){//
             	$('#sidedown').attr("onclick","selectownarea(this)");
             	$('#add_per_icon').attr("onclick","addareaselect()");
             	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
+            	$('#add_per_icon').css({"backgroundColor":"#6cc1c8"});
             	$("#ownshop_list").show();
             	$("#ownshop_list .per_type").nextAll().remove();
             }
@@ -634,8 +637,9 @@ jQuery(document).ready(function(){
 	            	$('#sidename label').html("所属店铺");
 	            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
 	            	$('#sidedown').attr("onclick","selectownshop(this)");
-	            	$('#add_per_icon').attr("onclick","addshopselect()");
+	            	$('#add_per_icon').attr("onclick","");
 	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
+	            	$('#add_per_icon').css({"backgroundColor":"#ddd"});
 	            	$("#ownshop_list").show();
 		            var store_lists=msg.store_name.split(",");
 					var storecode_list=msg.store_code.split(",");
