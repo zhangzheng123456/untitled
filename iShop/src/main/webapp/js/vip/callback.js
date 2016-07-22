@@ -279,27 +279,6 @@ function jumpBianse(){
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/vip/callback_add.html");
     })
-    //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/callback_edit.html");
-    })
-    //点击编辑时页面进行的跳转
-    $('#compile').click(function(){
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        if(tr.length==1){
-            id=$(tr).attr("id");
-            sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/vip/callback_edit.html");
-        }else if(tr.length==0){
-            frame();
-            $('.frame').html("请先选择");
-        }else if(tr.length>1){
-            frame();
-            $('.frame').html("不能选择多个");
-        }
-    })
     //删除
     $("#remove").click(function(){
         var l=$(window).width();
