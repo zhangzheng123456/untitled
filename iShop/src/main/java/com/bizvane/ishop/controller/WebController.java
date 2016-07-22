@@ -1,13 +1,17 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.VIPEmpRelation;
 import com.bizvane.ishop.entity.VIPStoreRelation;
 import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.service.GoodsService;
 import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.service.WebService;
+import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,7 +43,12 @@ public class WebController {
     UserService userService;
     @Autowired
     CorpService corpService;
+    @Autowired
+    GoodsService goodsService;
 
+    /**
+     *
+    */
     @RequestMapping(value = "/api/getviprelation", method = RequestMethod.POST)
     @ResponseBody
     public String vipRelation(HttpServletRequest request) {
@@ -110,4 +119,39 @@ public class WebController {
         }
         return dataBean.getJsonStr();
     }
+
+    @RequestMapping(value = "/app/fab", method = RequestMethod.POST)
+    @ResponseBody
+    public String fab(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.parseInt(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.parseInt(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            JSONObject result = new JSONObject();
+            PageInfo<Goods> list;
+                list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
+            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+                String goods_image = list.getList().get(i).getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+                }
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }
