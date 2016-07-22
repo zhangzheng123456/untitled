@@ -190,7 +190,14 @@
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    cc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    vt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY vt.id DESC
     </select>

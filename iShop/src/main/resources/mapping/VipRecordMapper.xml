@@ -190,14 +190,24 @@
         dvc.corp_code=dc.corp_code and
         dvc.vip_code=dv.vip_code and
         dvc.user_code=du.user_code and
-        dvc.action=dvrt.type_code and
+        dvc.action=dvrt.type_code
 
         <if test="corp_code!=null and corp_code!=''">
             and dvc.corp_code=#{corp_code}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
-            ${entryKey} LIKE concat('%', #{entryValue},'%')
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryKey=='user_name'">
+                    du.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    dvrt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY dvc.id DESC
     </select>

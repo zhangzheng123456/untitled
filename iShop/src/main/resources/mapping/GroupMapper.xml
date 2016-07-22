@@ -127,7 +127,17 @@
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
-            ${entryKey} LIKE concat('%', #{entryValue},'%')
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryKey=='role_name'">
+                    DEF_ROLE.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    DEF_GROUP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
         </foreach>
 
         ORDER BY DEF_GROUP.ID
