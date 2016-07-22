@@ -48,9 +48,9 @@ public class MessageServiceImpl implements MessageService {
      * 系统管理员/企业管理员
      */
     @Override
-    public PageInfo<Message> selectBySearch(int page_number, int page_size, String corp_code,String user_code, String search_value) {
+    public PageInfo<Message> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) {
         PageHelper.startPage(page_number, page_size);
-        List<Message> list = this.messageMapper.selectAllMessage(corp_code,user_code, search_value);
+        List<Message> list = this.messageMapper.selectAllMessage(corp_code, user_code, search_value);
         PageInfo<Message> page = new PageInfo<Message>(list);
         return page;
     }
@@ -61,7 +61,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public String insert(String message,String user_code) {
+    public String insert(String message, String user_code) {
         String result = "";
         try {
             JSONObject json = new JSONObject(message);
@@ -73,7 +73,7 @@ public class MessageServiceImpl implements MessageService {
             String isactive = json.get("isactive").toString();
             String message_type = json.get("message_type").toString();
 
-            User user = userMapper.selectUserCode(user_code,corp_code);
+            User user = userMapper.selectUserCode(user_code, corp_code);
             String avater = user.getAvatar();
             String user_name = user.getUser_name();
             //调用ice接口，发送消息
@@ -97,7 +97,7 @@ public class MessageServiceImpl implements MessageService {
             datalist.put(nickname.key, nickname);
             datalist.put(send_type.key, send_type);
 
-            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ChatToUser",datalist);
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ChatToUser", datalist);
             logger.info(dataBox.data.get("message").value);
             String messgage1 = dataBox.data.get("message").value;
             if (messgage1.contains("发送成功")) {
@@ -130,10 +130,10 @@ public class MessageServiceImpl implements MessageService {
                 msg_info.setIsactive(isactive);
                 messageMapper.insertMessageInfo(msg_info);
                 return Common.DATABEAN_CODE_SUCCESS;
-            }else {
+            } else {
                 result = "发送失败";
             }
-        }catch (Exception ex){
+        } catch (Exception ex) {
             result = ex.getMessage();
         }
         return result;
@@ -146,7 +146,7 @@ public class MessageServiceImpl implements MessageService {
     }
 
 
-    public List<MessageType> selectAllMessageType() throws SQLException{
+    public List<MessageType> selectAllMessageType() throws SQLException {
         return messageMapper.selectAllMessageType();
     }
 }

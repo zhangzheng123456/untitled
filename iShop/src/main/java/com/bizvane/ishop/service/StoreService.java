@@ -32,6 +32,8 @@ public interface StoreService {
 
     Store getStoreById(int id) throws SQLException;
 
+    Store getById(int id) throws SQLException;
+
     PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value);
 
     List<Store> getCorpStore(String corp_code) throws SQLException;

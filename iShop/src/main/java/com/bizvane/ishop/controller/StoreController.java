@@ -259,7 +259,7 @@ public class StoreController {
             int count = 0;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
-                Store store = storeService.getStoreById(Integer.valueOf(ids[i]));
+                Store store = storeService.getById(Integer.valueOf(ids[i]));
                 if (store != null) {
                     String store_code = store.getStore_code();
                     String corp_code = store.getCorp_code();

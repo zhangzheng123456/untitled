@@ -37,13 +37,23 @@ public class VipServiceImpl implements VipService {
     @Override
     public String update(VIPInfo vipInfo) throws SQLException {
         VIPInfo old = this.vipMapper.selectByPrimaryKey(vipInfo.getId());
-        if ((!old.getVip_code().equals(vipInfo.getVip_code()))
-                && (this.vipCodeExist(vipInfo.getCorp_code(), vipInfo.getVip_code()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "编号已经存在！！！！";
-        } else if (!old.getVip_name().equals(vipInfo.getVip_name()) && (this.vipNameExist(vipInfo.getCorp_code(), vipInfo.getVip_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "名称已经存在！！！！";
-        } else if (this.vipMapper.updateByPrimaryKey(vipInfo) >= 0) {
-            return Common.DATABEAN_CODE_SUCCESS;
+        if (old.getCorp_code().equals(vipInfo.getCorp_code())) {
+            if ((!old.getVip_code().equals(vipInfo.getVip_code()))
+                    && (this.vipCodeExist(vipInfo.getCorp_code(), vipInfo.getVip_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+                return "编号已经存在！！！！";
+            } else if (!old.getVip_name().equals(vipInfo.getVip_name()) && (this.vipNameExist(vipInfo.getCorp_code(), vipInfo.getVip_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+                return "名称已经存在！！！！";
+            } else if (this.vipMapper.updateByPrimaryKey(vipInfo) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
+        } else {
+            if (this.vipCodeExist(vipInfo.getCorp_code(), vipInfo.getVip_code()).equals(Common.DATABEAN_CODE_ERROR)) {
+                return "编号已经存在！！！！";
+            } else if (this.vipNameExist(vipInfo.getCorp_code(), vipInfo.getVip_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+                return "名称已经存在！！！！";
+            } else if (this.vipMapper.updateByPrimaryKey(vipInfo) >= 0) {
+                return Common.DATABEAN_CODE_SUCCESS;
+            }
         }
         return Common.DATABEAN_CODE_ERROR;
     }
@@ -62,7 +72,6 @@ public class VipServiceImpl implements VipService {
         PageInfo<VIPInfo> page = new PageInfo<VIPInfo>(vipInfos);
         return page;
     }
-
 
 
     @Override

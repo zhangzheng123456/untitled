@@ -16,9 +16,6 @@
         <association property="vipRecordType" javaType="com.bizvane.ishop.entity.VipRecordType">
             <result column="type_name" property="type_name"/>
         </association>
-        <association property="vipInfo" javaType="com.bizvane.ishop.entity.VIPInfo">
-            <result column="vip_name" property="vip_name"/>
-        </association>
         <association property="user" javaType="com.bizvane.ishop.entity.User">
             <result column="user_name" property="user_name"/>
         </association>
@@ -39,12 +36,19 @@
         dvc.created_date ,
         dvc.creater,
         dvc.corp_code,
-        dv.vip_name,
         du.user_name,
         dc.corp_name,
         dvrt.type_name
-        from DEF_VIP_RECORD dvc,DEF_VIP dv,DEF_USER du,DEF_VIP_RECORD_TYPE dvrt,DEF_CORP dc
-        WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code and dvc.action=dvrt.type_code and
+        from
+         DEF_VIP_RECORD dvc,
+         DEF_USER du,
+         DEF_VIP_RECORD_TYPE dvrt,
+         DEF_CORP dc
+        WHERE
+        dvc.corp_code=du.corp_code AND
+        dcv.corp_code=dc.corp_code  AND
+        dvc.user_code=du.user_code and
+        dvc.action=dvrt.type_code and
         dvc.corp_code=dc.corp_code
                 and dvc.id=#{id}
      </select>
@@ -92,7 +96,7 @@
             <if test="action!=null and action!=''">
                 #{action},
             </if>
-            <if test="modified_date!=null">
+            <if test="modified_date!=null modified!=''">
                 #{modified_date},
             </if>
 
@@ -102,7 +106,7 @@
             <if test="isactive!=null and isactive!=''">
                 #{isactive},
             </if>
-            <if test="created_date!=null">
+            <if test="created_date!=null and created_date!=''">
                 #{created_date},
             </if>
             <if test="creater!=null and  creater!=''">
@@ -130,23 +134,25 @@
         dvc.created_date ,
         dvc.creater,
         dvc.corp_code,
-        dv.vip_name,
         du.user_name,
         dc.corp_name,
         dvrt.type_name
-        from DEF_VIP_RECORD dvc,DEF_VIP dv,DEF_USER du,DEF_VIP_RECORD_TYPE dvrt,DEF_CORP dc
-        WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code and dvc.action=dvrt.type_code and
-        dvc.corp_code=dc.corp_code
-        <!--    <if test="id!=null and id!=''">
-                dvc.id=#{id}
-            </if>-->
+        from
+        DEF_VIP_RECORD dvc,
+        DEF_USER du,
+        DEF_VIP_RECORD_TYPE dvrt,
+        DEF_CORP dc
+        WHERE
+        dvc.corp_code=du.corp_code and
+        dvc.corp_code=dc.corp_code and
+        dvc.user_code=du.user_code and
+        dvc.action=dvrt.type_code
         <if test="corp_code!=null and corp_code!=''">
             and dvc.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             and (
-            dv.vip_name like concat('%',#{search_value},'%')
-            or dvc.modified_date like concat('%',#{search_value},'%')
+            dvc.modified_date like concat('%',#{search_value},'%')
             or dvc.isactive like concat('%',#{search_value},'%')
             or dvrt.type_name like concat('%',#{search_value},'%')
             or dvc.id like concat('%',#{search_value},'%')
@@ -170,22 +176,28 @@
         dvc.created_date ,
         dvc.creater,
         dvc.corp_code,
-        dv.vip_name,
         du.user_name,
         dc.corp_name,
         dvrt.type_name
-        from DEF_VIP_RECORD dvc,DEF_VIP dv,DEF_USER du,DEF_VIP_RECORD_TYPE dvrt,DEF_CORP dc
-        WHERE dvc.vip_code=dv.vip_code and dvc.user_code=du.user_code and dvc.action=dvrt.type_code and
-        dvc.corp_code=dc.corp_code
-        <!--    <if test="id!=null and id!=''">
-                dvc.id=#{id}
-            </if>-->
+        from
+        DEF_VIP_RECORD dvc,
+        DEF_USER du,
+        DEF_VIP_RECORD_TYPE dvrt,
+        DEF_CORP dc
+        WHERE
+        dvc.corp_code=du.corp_code and
+        dvc.copr_code=dvrt.corp_code and
+        dvc.corp_code=dc.corp_code and
+        dvc.vip_code=dv.vip_code and
+        dvc.user_code=du.user_code and
+        dvc.action=dvrt.type_code and
+
         <if test="corp_code!=null and corp_code!=''">
             and dvc.corp_code=#{corp_code}
         </if>
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
+            ${entryKey} LIKE concat('%', #{entryValue},'%')
         </foreach>
         ORDER BY dvc.id DESC
     </select>

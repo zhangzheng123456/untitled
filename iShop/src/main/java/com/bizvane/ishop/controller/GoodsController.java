@@ -136,7 +136,7 @@ public class GoodsController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="";
+        String errormessage = "";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -148,14 +148,14 @@ public class GoodsController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<Goods> list;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = this.goodsService.selectBySearch(1, 30000, "", search_value);
                 } else {
                     //   String corp_code = request.getParameter("corp_code");
                     list = goodsService.selectBySearch(1, 30000, corp_code, search_value);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.contains(Common.ROLE_SYS)) {
                     list = goodsService.selectAllGoodsScreen(1, 30000, "", map);
@@ -170,16 +170,16 @@ public class GoodsController {
                 }
             }
             List<Goods> goodses = list.getList();
-            if(goodses.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (goodses.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
             String column_name = jsonObject.get("column_name").toString();
             String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(goodses, cols, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage="数据异常，导出失败";
+                errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));
@@ -304,7 +304,7 @@ public class GoodsController {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/fab/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/fab/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -319,9 +319,9 @@ public class GoodsController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows>9999){
-                result="数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
