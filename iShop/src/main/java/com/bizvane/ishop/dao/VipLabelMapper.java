@@ -25,7 +25,7 @@ public interface VipLabelMapper {
 
     List<VipLabel> selectAllVipLabel(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
 
-    List<VipLabel> selectAllViplabelScreen(Map<String,Object> map);
+    List<VipLabel> selectAllViplabelScreen(Map<String, Object> params);
 
     VipLabel selectVipLabelName(@Param("corp_code") String corp_code, @Param("label_name") String tag_name);
 

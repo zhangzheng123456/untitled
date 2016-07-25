@@ -107,11 +107,32 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String role_code, Map<String, String> map) {
+    public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) {
+        String[] stores = null;
+        if (!store_code.equals("")) {
+            stores = store_code.split(",");
+            for (int i = 0; i < stores.length; i++) {
+                stores[i] = stores[i].substring(1, stores[i].length());
+            }
+        }
+        if (!area_code.equals("")) {
+            String[] areas = area_code.split(",");
+            for (int i = 0; i < areas.length; i++) {
+                areas[i] = areas[i].substring(1, areas[i].length());
+            }
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
+            String a = "";
+            for (int i = 0; i < store.size(); i++) {
+                a = a + store.get(i).getStore_code() + ",";
+            }
+            stores = a.split(",");
+        }
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
-        params.put("role_code", role_code);
         params.put("corp_code", corp_code);
+        params.put("array", stores);
+        params.put("role_code", role_code);
         List<UserAchvGoal> userAchvGoals;
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = userAchvGoalMapper.selectAllUserAchvScreen(params);

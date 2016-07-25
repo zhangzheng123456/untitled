@@ -194,8 +194,11 @@
                 <when test="entryKey=='user_name'">
                     du.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryKey=='type_name'">
                     dvrt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    dvc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </otherwise>
             </choose>
         </foreach>

@@ -169,17 +169,9 @@
         </if>
         ORDER BY vt.id DESC
     </select>
-    <select id="selectAllVipLabelScreen" resultMap="VipLabels">
+    <select id="selectAllViplabelScreen" resultMap="VipLabels">
         SELECT
-        vt.id,
-        vt.label_name,
-        vt.label_type,
-        vt.corp_code,
-        vt.modified_date,
-        vt.modifier,
-        vt.created_date,
-        vt.creater,
-        vt.isactive,
+        vt.*,
         cc.corp_name
         FROM
         def_viplabel vt,DEF_CORP cc

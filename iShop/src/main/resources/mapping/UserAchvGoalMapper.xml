@@ -293,6 +293,8 @@
         AND store_code = #{store_code}
         AND user_code = #{user_code}
     </delete>
+
+
     <select id="selectAllUserAchvScreen" resultMap="userAchvGoals">
         select ua.*,
         u.user_name,
@@ -313,9 +315,20 @@
         AND ua.store_code=s.store_code
         AND ua.user_code = u.user_code
         AND u.group_code = g.group_code
-        AND ua.corp_code=#{corp_code}
-        AND g.role_code &lt; #{role_code}
-        AND ua.store_code IN
+
+        <if test="corp_code!=null and corp_code!=''">
+            AND ua.corp_code=#{corp_code}
+        </if>
+        <if test="role_code!=null and role_code!=''">
+            AND g.role_code &lt; #{role_code}
+        </if>
+        <if test="array!=null">
+            AND ua.store_code IN
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryKey=='user_name'">
