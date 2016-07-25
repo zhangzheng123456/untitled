@@ -384,6 +384,13 @@ function POST(){
                 superaddition(list,inx);
                 jumpBianse();
             }
+            var input=$(".inputs input");
+            for(var i=0;i<input.length;i++){
+                input[i].value="";
+            }
+            filtrate="";
+            list="";
+            $(".sxk").slideUp();
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
             alert(data.message);
@@ -502,16 +509,14 @@ $("#leading_out").click(function(){
 $("#file_submit").click(function(){
     var li=$("#file_list input[type='checkbox']:checked").parents("li");
     var param={};
-    console.log(li.length);
-    for(var i=0,column_name="";i<li.length;i++){
+    var tablemanager=[];
+    for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
-        if(i<li.length-1){
-            column_name+=r+",";
-        }else{
-             column_name+=r;
-        }     
+        var z=$(li[i]).children("span").html();
+        var param1={"column_name":r,"show_name":z};
+        tablemanager.push(param1);
     }
-    param["column_name"]=column_name;
+    param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
         param["list"]="";
@@ -639,7 +644,7 @@ function filtrates(){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
-            var list=list.lisst;
+            var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){

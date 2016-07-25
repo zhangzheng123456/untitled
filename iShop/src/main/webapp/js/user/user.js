@@ -144,6 +144,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
+            whir.loading.add("",0.5);//加载等待框
             oc.postRequire("get","/user/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
@@ -160,6 +161,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     }
             });           
         }else if(value!==""){
+            whir.loading.add("",0.5);//加载等待框
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
             oc.postRequire("post","/user/search","0",param,function(data){
@@ -172,6 +174,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     if(list.length<=0){
                         $(".table p").remove();
                         $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                        whir.loading.remove();//移除加载框
                     }else if(list.length>0){
                         $(".table p").remove();
                         superaddition(list,inx);
@@ -182,12 +185,38 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     alert(data.message);
                 }
             })        
+        }else if(filtrate!==""){
+            _param["pageNumber"]=inx;
+            _param["pageSize"]=pageSize;
+            oc.postRequire("post","/corp/screen","0",_param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var list=JSON.parse(message.list);
+                    var cout=list.pages;
+                    var list=list.list;
+                    var actions=message.actions;
+                    $(".table tbody").empty();
+                    if(list.length<=0){
+                        $(".table p").remove();
+                        $(".table").append("<p>没有找到与相关的信息请重新搜索</p>");
+                        whir.loading.remove();//移除加载框
+                    }else if(list.length>0){
+                        $(".table p").remove();
+                        superaddition(list,inx);
+                        jumpBianse();
+                    }
+                    setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value,filtrate);
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+            });
         }
     }
 }
 //页面加载循环
 function superaddition(data,num){
     for (var i = 0; i < data.length; i++) {
+
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
@@ -294,6 +323,7 @@ function superaddition(data,num){
                         +"</td></tr>");
         }
     }
+    whir.loading.remove();//移除加载框
 };
 //权限配置
 function jurisdiction(actions){
@@ -310,6 +340,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/user/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             console.log(data);
@@ -421,6 +452,7 @@ $("#d_search").click(function(){
 })
 //搜索的请求函数
 function POST(){
+    whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/user/search","0",param,function(data){
         console.log(data);
 		if(data.code=="0"){
@@ -434,6 +466,7 @@ function POST(){
 			if(list.length<=0){
 				$(".table p").remove();
 				$(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                whir.loading.remove();//移除加载框
 		 	}else if(list.length>0){
                 $(".table p").remove();
 		 		superaddition(list,inx);
@@ -562,17 +595,14 @@ $("#leading_out").click(function(){
 //导出提交的
 $("#file_submit").click(function(){
     var li=$("#file_list input[type='checkbox']:checked").parents("li");
-    var param={};
-    console.log(li.length);
-    for(var i=0,column_name="";i<li.length;i++){
+    var tablemanager=[];
+    for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
-        if(i<li.length-1){
-            column_name+=r+",";
-        }else{
-             column_name+=r;
-        }     
+        var z=$(li[i]).children("span").html();
+        var param1={"column_name":r,"show_name":z};
+        tablemanager.push(param1);
     }
-    param["column_name"]=column_name;
+    param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
         param["list"]="";

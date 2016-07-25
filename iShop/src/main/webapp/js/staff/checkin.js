@@ -144,6 +144,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
     }()
     function dian(inx){//
         if(value==""){
+            whir.loading.add("",0.5);//加载等待框
             oc.postRequire("get","/sign/list?pageNumber="+inx+"&pageSize="+pageSize
                 +"&funcCode="+funcCode+"","","",function(data){
                     console.log(data);
@@ -160,6 +161,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     }
             });           
         }else if(value!==""){
+            whir.loading.add("",0.5);//加载等待框
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
             oc.postRequire("post","/sign/search","0",param,function(data){
@@ -172,6 +174,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     if(list.length<=0){
                         $(".table p").remove();
                         $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                        whir.loading.remove();//移除加载框
                     }else if(list.length>0){
                         $(".table p").remove();
                         superaddition(list,inx);
@@ -181,6 +184,31 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     alert(data.message);
                 }
             })        
+        }else if(filtrate!==""){
+            _param["pageNumber"]=inx;
+            _param["pageSize"]=pageSize;
+            oc.postRequire("post","/corp/screen","0",_param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var list=JSON.parse(message.list);
+                    var cout=list.pages;
+                    var list=list.list;
+                    var actions=message.actions;
+                    $(".table tbody").empty();
+                    if(list.length<=0){
+                        $(".table p").remove();
+                        $(".table").append("<p>没有找到与相关的信息请重新搜索</p>");
+                        whir.loading.remove();//移除加载框
+                    }else if(list.length>0){
+                        $(".table p").remove();
+                        superaddition(list,inx);
+                        jumpBianse();
+                    }
+                    setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value,filtrate);
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+            });
         }
     }
 }
@@ -222,6 +250,7 @@ function superaddition(data,num){//页面加载循环
                         +data[i].isactive
                         +"</td></tr>");
     }
+    whir.loading.remove();//移除加载框
 };
 //权限配置
 function jurisdiction(actions){
@@ -238,6 +267,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/sign/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             // console.log(data);
@@ -316,6 +346,7 @@ $("#search").keydown(function() {
 });
 //搜索的请求函数
 function POST(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/sign/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -327,11 +358,19 @@ function POST(){
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,inx);
                 jumpBianse();
             }
+            var input=$(".inputs input");
+            for(var i=0;i<input.length;i++){
+                input[i].value="";
+            }
+            filtrate="";
+            list="";
+            $(".sxk").slideUp();
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
         }else if(data.code=="-1"){
             alert(data.message);
@@ -449,16 +488,14 @@ $("#leading_out").click(function(){
 $("#file_submit").click(function(){
     var li=$("#file_list input[type='checkbox']:checked").parents("li");
     var param={};
-    console.log(li.length);
-    for(var i=0,column_name="";i<li.length;i++){
+    var tablemanager=[];
+    for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
-        if(i<li.length-1){
-            column_name+=r+",";
-        }else{
-             column_name+=r;
-        }     
+        var z=$(li[i]).children("span").html();
+        var param1={"column_name":r,"show_name":z};
+        tablemanager.push(param1);
     }
-    param["column_name"]=column_name;
+    param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
         param["list"]="";
@@ -507,7 +544,7 @@ $("#find").click(function(){
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val();
+        var screen_value=$(input[i]).val().trim();
         if(screen_value!=""){
             num++;
             var param1={"screen_key":screen_key,"screen_value":screen_value};

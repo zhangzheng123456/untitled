@@ -270,7 +270,7 @@ function GET(){
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
-                var actions=messsage.actions;
+                var actions=message.actions;
                 superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();
@@ -511,6 +511,8 @@ $("#leading_out").click(function(){
 //导出提交的
 $("#file_submit").click(function(){
     var li=$("#file_list input[type='checkbox']:checked").parents("li");
+    var param={};
+    var tablemanager=[];
     for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
         var z=$(li[i]).children("span").html();
