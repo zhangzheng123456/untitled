@@ -498,8 +498,9 @@ public class CorpController {
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
         String result = "";
+        Workbook rwb=null;
         try {
-            Workbook rwb = Workbook.getWorkbook(targetFile);
+           rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
@@ -553,7 +554,6 @@ public class CorpController {
                     result = corpService.insertExecl(corp);
                 }
             }
-            rwb.close();
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
@@ -563,6 +563,10 @@ public class CorpController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
+        }finally {
+            if(rwb!=null){
+                rwb.close();
+            }
         }
         return dataBean.getJsonStr();
     }

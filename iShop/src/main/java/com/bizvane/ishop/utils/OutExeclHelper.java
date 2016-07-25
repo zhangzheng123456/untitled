@@ -25,6 +25,7 @@ import java.util.*;
 public class OutExeclHelper {
     public static String OutExecl(List olist, String[] cols, HttpServletResponse response, HttpServletRequest request){
         String result="";
+        WritableWorkbook book=null;
         try {
             response.setCharacterEncoding("UTF-8");
             JSONObject jsonObject = new JSONObject();
@@ -58,7 +59,7 @@ public class OutExeclHelper {
             result=filename;
             System.out.println("路径："+result);
             File file =new File(path,filename);
-            WritableWorkbook book = Workbook.createWorkbook(file);
+            book = Workbook.createWorkbook(file);
             WritableSheet sheet = book.createSheet("报表", 0);
             WritableFont font = new WritableFont(WritableFont.createFont("微软雅黑"), 15,
                     WritableFont.BOLD, false, UnderlineStyle.NO_UNDERLINE, Colour.BLACK);
@@ -96,13 +97,21 @@ public class OutExeclHelper {
             }
             //写入文件
             book.write();
-            //写入结束
-            book.close();
             //设置为系统输出流 并清空
 //            System.setOut(new PrintStream(os));
 //            os.flush();
         }catch (Exception e){
             e.printStackTrace();
+        }finally {
+            if(book!=null){
+                try {
+                    book.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (WriteException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     return result;
     }

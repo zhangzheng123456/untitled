@@ -462,8 +462,9 @@ public class StoreAchvGoalController {
         String corp_code = request.getSession(false).getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
         String result = "";
+        Workbook rwb=null;
         try {
-            Workbook rwb = Workbook.getWorkbook(targetFile);
+          rwb= Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
@@ -517,7 +518,7 @@ public class StoreAchvGoalController {
                     result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal));
                 }
             }
-            rwb.close();
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
@@ -526,6 +527,10 @@ public class StoreAchvGoalController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
+        }finally {
+            if(rwb!=null){
+                rwb.close();
+            }
         }
         return dataBean.getJsonStr();
     }
