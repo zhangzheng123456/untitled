@@ -265,7 +265,7 @@ public class SignController {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            Map<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(signs, map, response, request);
@@ -312,9 +312,9 @@ public class SignController {
             JSONObject result = new JSONObject();
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = signService.selectSignAllScreen(page_number, page_size, "", "", "", "", map);
+                list = signService.selectSignAllScreen(page_number, page_size, "", "", "", role_code, map);
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", "", map);
+                list = signService.selectSignAllScreen(page_number, page_size, corp_code, "", "", role_code, map);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = signService.selectSignAllScreen(page_number, page_size, corp_code, area_code, "", role_code, map);
