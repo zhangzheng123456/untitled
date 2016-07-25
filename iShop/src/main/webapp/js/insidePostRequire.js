@@ -19,6 +19,7 @@ ObjectControl.prototype = {
 				}
 			},
 			error:function(data){
+				console.log(data);
 				window.location.reload();
 				console.log(data.responseText);
 			}
