@@ -614,7 +614,7 @@ function filtrates(){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
-            var list=list.list;
+            var list=list.lisst;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
