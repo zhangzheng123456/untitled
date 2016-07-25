@@ -377,7 +377,7 @@ public class UserAchvGoalControl {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="";
+        String errormessage = "";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -388,7 +388,7 @@ public class UserAchvGoalControl {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<UserAchvGoal> pages = null;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     pages = userAchvGoalService.selectBySearch(1, 30000, "", search_value);
                 } else if (role_code.equals(Common.ROLE_GM)) {
@@ -400,31 +400,31 @@ public class UserAchvGoalControl {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     pages = this.userAchvGoalService.selectBySearchPart(1, 30000, corp_code, search_value, store_code, "", Common.ROLE_SM);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    pages = userAchvGoalService.getAllUserAchScreen(1, 30000, "", "", map);
+                    pages = userAchvGoalService.getAllUserAchScreen(1, 30000, "", "", "", "", map);
                 } else if (role_code.equals(Common.ROLE_GM)) {
-                    pages = userAchvGoalService.getAllUserAchScreen(1, 30000, corp_code, "", map);
+                    pages = userAchvGoalService.getAllUserAchScreen(1, 30000, corp_code, "", "", "", map);
                 } else {
-                    pages = userAchvGoalService.getAllUserAchScreen(1, 30000, corp_code, role_code, map);
+                    pages = userAchvGoalService.getAllUserAchScreen(1, 30000, corp_code, "", "", role_code, map);
                 }
             }
             List<UserAchvGoal> userAchvGoals = pages.getList();
-            if(userAchvGoals.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (userAchvGoals.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
-            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            Map<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(userAchvGoals, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -439,7 +439,7 @@ public class UserAchvGoalControl {
     /***
      * Execl增加
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -450,21 +450,21 @@ public class UserAchvGoalControl {
         String role_code = request.getSession().getAttribute("role_code").toString();
 
         String result = "";
-        Workbook rwb=null;
+        Workbook rwb = null;
         try {
-            rwb= Workbook.getWorkbook(targetFile);
+            rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows>9999){
-                result="数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)){
-                for (int i=3;i<column3.length;i++){
-                    if(!column3[i].getContents().toString().equals(corp_code)){
+            if (!role_code.equals(Common.ROLE_SYS)) {
+                for (int i = 3; i < column3.length; i++) {
+                    if (!column3[i].getContents().toString().equals(corp_code)) {
                         result = "第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
@@ -516,17 +516,13 @@ public class UserAchvGoalControl {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }finally {
-            if(rwb!=null){
+        } finally {
+            if (rwb != null) {
                 rwb.close();
             }
         }
         return dataBean.getJsonStr();
     }
-
-    /**
-     * 页面筛选
-     */
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String Screen(HttpServletRequest request) {
@@ -542,18 +538,23 @@ public class UserAchvGoalControl {
             int page_size = Integer.valueOf(jsonObject1.get("pageSize").toString());
 //            String screen = jsonObject1.get("screen").toString();
 //            org.json.JSONObject jsonScreen = new org.json.JSONObject(screen);
-            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject1);
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<UserAchvGoal> list;
+            PageInfo<UserAchvGoal> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, "", "", map);
-            } else if (role_code.equals(Common.ROLE_GM)) {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, "", map);
+                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, "", "", "", "", map);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, role_code, map);
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, "", "", "", map);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, area_code, "", role_code, map);
+                } else if (role_code.equals(Common.ROLE_SM)) {
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = userAchvGoalService.getAllUserAchScreen(page_number, page_size, corp_code, "", store_code, role_code, map);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
