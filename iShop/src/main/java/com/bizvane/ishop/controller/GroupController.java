@@ -788,7 +788,7 @@ public class GroupController {
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
                 if (!column2[i].getContents().toString().equals("R2000") && !column2[i].getContents().toString().equals("R3000") && !column2[i].getContents().toString().equals("R4000")) {
-                    result = "第" + (i + 1) + "列角色编号不对";
+                    result = "第" + (i + 1) + "行角色编号有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -798,13 +798,13 @@ public class GroupController {
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "列群组编号格式不对";
+                    result = "第" + (i + 1) + "行群组编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
                 Group group = groupService.selectByCode(column3[i].getContents().toString(), column[i].getContents().toString(), "");
                 if (group != null) {
-                    result = "第" + (i + 1) + "列群组编号已存在";
+                    result = "第" + (i + 1) + "行群组编号已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -813,7 +813,7 @@ public class GroupController {
             for (int i = 3; i < column1.length; i++) {
                 Group group = groupService.selectByName(column3[i].getContents().toString(), column1[i].getContents().toString(), "");
                 if (group != null) {
-                    result = "第" + (i + 1) + "列群组名称已存在";
+                    result = "第" + (i + 1) + "行群组名称已存在";
                     int b = 5 / 0;
                     break;
                 }

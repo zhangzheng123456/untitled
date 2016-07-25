@@ -870,7 +870,7 @@ public class StoreController {
             for (int i = 3; i < column.length; i++) {
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column[i].getContents().toString(), "");
                 if (store != null) {
-                    result = "第" + (i + 1) + "列店铺编号已存在";
+                    result = "第" + (i + 1) + "行店铺编号已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -879,7 +879,23 @@ public class StoreController {
             for (int i = 3; i < column1.length; i++) {
                 Store store = storeService.getStoreByName(column3[i].getContents().toString(), column1[i].getContents().toString());
                 if (store != null) {
-                    result = "第" + (i + 1) + "列店铺名称已存在";
+                    result = "第" + (i + 1) + "行店铺名称已存在";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
+            Pattern pattern7 = Pattern.compile("A\\d{4}");
+            Cell[] column7 = rs.getColumn(3);
+            for (int i = 3; i < column7.length; i++) {
+                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行区域编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString());
+                if (area == null) {
+                    result = "第" + (i + 1) + "行区域编号不存在";
                     int b = 5 / 0;
                     break;
                 }

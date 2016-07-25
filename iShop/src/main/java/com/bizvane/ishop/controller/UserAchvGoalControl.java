@@ -6,10 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.TableManagerService;
-import com.bizvane.ishop.service.UserAchvGoalService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.TimeUtils;
@@ -59,6 +56,10 @@ public class UserAchvGoalControl {
     private TableManagerService managerService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private StoreService storeService;
+    @Autowired
+    private UserService userService;
     String id;
 
     /**
@@ -492,14 +493,33 @@ public class UserAchvGoalControl {
                 }
 
             }
-            Cell[] column = rs.getColumn(4);
-            for (int i = 3; i < column.length; i++) {
-                if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
-                    result = "第" + (i + 1) + "列的业绩日期类型缩写有误";
+            Cell[] column2 = rs.getColumn(1);
+            for (int i = 3; i < column2.length; i++) {
+                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
+                if (store == null) {
+                    result = "第" + (i + 1) + "行店铺编号不存在";
                     int b = 5 / 0;
                     break;
                 }
             }
+            Cell[] column1 = rs.getColumn(2);
+            for (int i = 3; i < column1.length; i++) {
+                User user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
+                if (user == null) {
+                    result = "第" + (i + 1) + "行的用户编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
+            Cell[] column = rs.getColumn(4);
+            for (int i = 3; i < column.length; i++) {
+                if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
+                    result = "第" + (i + 1) + "行的业绩日期类型缩写有误";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
+
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();

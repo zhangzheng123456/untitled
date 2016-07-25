@@ -5,12 +5,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.entity.TableManager;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.StoreAchvGoalService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.TimeUtils;
@@ -62,6 +60,8 @@ public class StoreAchvGoalController {
     private TableManagerService managerService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private StoreService storeService;
     String id;
 
     /**
@@ -510,10 +510,19 @@ public class StoreAchvGoalController {
                 }
 
             }
+            Cell[] column2 = rs.getColumn(1);
+            for (int i = 3; i < column2.length; i++) {
+                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
+                if (store == null) {
+                    result = "第" + (i + 1) + "行店铺编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
-                    result = "第" + (i + 1) + "行的业绩日期类型缩写不对";
+                    result = "第" + (i + 1) + "行的业绩日期类型缩写不正确";
                     int b = 5 / 0;
                     break;
                 }

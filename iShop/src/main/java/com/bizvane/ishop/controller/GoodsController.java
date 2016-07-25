@@ -339,7 +339,7 @@ public class GoodsController {
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        result = "第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
@@ -348,7 +348,7 @@ public class GoodsController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    result = "第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -364,7 +364,7 @@ public class GoodsController {
             for (int i = 3; i < column.length; i++) {
                 String goodsCodeExist = goodsService.goodsCodeExist(column3[i].getContents().toString(), column[i].getContents().toString());
                 if (goodsCodeExist.contains(Common.DATABEAN_CODE_ERROR)) {
-                    result = "第" + (i + 1) + "列商品编号已存在";
+                    result = "第" + (i + 1) + "行商品编号已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -373,7 +373,7 @@ public class GoodsController {
             for (int i = 3; i < column1.length; i++) {
                 String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString(), column1[i].getContents().toString());
                 if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
-                    result = "第" + (i + 1) + "列商品名称已存在";
+                    result = "第" + (i + 1) + "行商品名称已存在";
                     int b = 5 / 0;
                     break;
                 }

@@ -311,13 +311,12 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
-
             }
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
                 String existInfo = userService.userPhoneExist(column[i].getContents().toString());
                 if (!existInfo.contains("0")) {
-                    result = "第" + (i + 1) + "列的电话号码已存在";
+                    result = "第" + (i + 1) + "行的电话号码已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -326,11 +325,52 @@ public class UserController {
             for (int i = 3; i < column1.length; i++) {
                 User user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
                 if (user != null) {
-                    result = "第" + (i + 1) + "列的用户编号已存在";
+                    result = "第" + (i + 1) + "行的用户编号已存在";
                     int b = 5 / 0;
                     break;
                 }
             }
+            Cell[] column6 = rs.getColumn(6);
+            Pattern pattern = Pattern.compile("G\\d{4}");
+            for (int i = 3; i < column6.length; i++) {
+                Matcher matcher = pattern.matcher(column6[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行群组编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Group group = groupService.selectByCode(column3[i].getContents().toString(), column6[i].getContents().toString(), "");
+                if (group == null) {
+                    result = "第" + (i + 1) + "行群组编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
+//            Pattern pattern7 = Pattern.compile("A\\d{4}");
+//            Cell[] column7 = rs.getColumn(7);
+//            for (int i = 3; i < column7.length; i++) {
+//                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
+//                if (matcher.matches() == false) {
+//                    result = "第" + (i + 1) + "行区域编号格式有误";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString());
+//                if (area == null) {
+//                    result = "第" + (i + 1) + "行区域编号不存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//            }
+//            Cell[] column2 = rs.getColumn(8);
+//            for (int i = 3; i < column2.length; i++) {
+//                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
+//                if (store == null) {
+//                    result = "第" + (i + 1) + "行店铺编号不存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//            }
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
