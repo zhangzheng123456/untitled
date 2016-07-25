@@ -185,6 +185,31 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                     alert(data.message);
                 }
             })        
+        }else if(filtrate!==""){
+            _param["pageNumber"]=inx;
+            _param["pageSize"]=pageSize;
+            oc.postRequire("post","/corp/screen","0",_param,function(data){
+                if(data.code=="0"){
+                    var message=JSON.parse(data.message);
+                    var list=JSON.parse(message.list);
+                    var cout=list.pages;
+                    var list=list.list;
+                    var actions=message.actions;
+                    $(".table tbody").empty();
+                    if(list.length<=0){
+                        $(".table p").remove();
+                        $(".table").append("<p>没有找到与相关的信息请重新搜索</p>");
+                        whir.loading.remove();//移除加载框
+                    }else if(list.length>0){
+                        $(".table p").remove();
+                        superaddition(list,inx);
+                        jumpBianse();
+                    }
+                    setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value,filtrate);
+                }else if(data.code=="-1"){
+                    alert(data.message);
+                }
+            });
         }
     }
 }
@@ -245,7 +270,7 @@ function GET(){
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
-                var actions=message.actions;
+                var actions=messsage.actions;
                 superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();

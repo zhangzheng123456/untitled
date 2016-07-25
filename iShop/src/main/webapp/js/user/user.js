@@ -439,6 +439,13 @@ function POST(){
 		 		superaddition(list,inx);
                 jumpBianse();
 		 	}
+            var input=$(".inputs input");
+            for(var i=0;i<input.length;i++){
+                input[i].value="";
+            }
+            filtrate="";
+            list="";
+            $(".sxk").slideUp();
 		 	setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
 		}else if(data.code=="-1"){
 			console.log(data.message);
@@ -667,7 +674,7 @@ $("#find").click(function(){
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val();
+        var screen_value=$(input[i]).val().trim();
         if(screen_value!=""){
             num++;
             var param1={"screen_key":screen_key,"screen_value":screen_value};
