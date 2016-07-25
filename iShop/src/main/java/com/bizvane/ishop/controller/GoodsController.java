@@ -372,10 +372,10 @@ public class GoodsController {
                     goods.setGoods_wave(rs.getCell(j++, i).getContents());
                     goods.setGoods_time(rs.getCell(j++, i).getContents());
                     goods.setGoods_description(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        goods.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         goods.setIsactive("N");
+                    } else {
+                        goods.setIsactive("Y");
                     }
                     goods.setCreater(user_id);
                     Date now = new Date();

@@ -451,10 +451,10 @@ public class VIPController {
                     } else {
                         vipLabel.setLabel_type("org");
                     }
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        vipLabel.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         vipLabel.setIsactive("N");
+                    } else {
+                        vipLabel.setIsactive("Y");
                     }
                     Date now = new Date();
                     vipLabel.setCreater(user_id);

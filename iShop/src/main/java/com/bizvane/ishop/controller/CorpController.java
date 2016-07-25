@@ -541,10 +541,10 @@ public class CorpController {
                     corp.setAddress(rs.getCell(j++, i).getContents());
                     corp.setContact(rs.getCell(j++, i).getContents());
                     corp.setContact_phone(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        corp.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         corp.setIsactive("N");
+                    } else {
+                        corp.setIsactive("Y");
                     }
                     corp.setCreater(user_id);
                     Date now = new Date();

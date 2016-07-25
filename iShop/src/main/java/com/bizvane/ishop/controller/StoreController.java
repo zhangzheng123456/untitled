@@ -876,15 +876,15 @@ public class StoreController {
                     store.setStore_name(rs.getCell(j++, i).getContents());
                     store.setArea_code(rs.getCell(j++, i).getContents());
                     store.setBrand_code(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        store.setFlg_tob("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         store.setFlg_tob("N");
-                    }
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        store.setIsactive("Y");
                     } else {
+                        store.setFlg_tob("Y");
+                    }
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         store.setIsactive("N");
+                    } else {
+                        store.setIsactive("Y");
                     }
                     Date now = new Date();
                     store.setCreated_date(Common.DATETIME_FORMAT.format(now));

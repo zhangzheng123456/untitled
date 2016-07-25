@@ -521,10 +521,10 @@ public class BrandController {
                     brand.setCorp_code(rs.getCell(j++, i).getContents());
                     brand.setBrand_code(rs.getCell(j++, i).getContents());
                     brand.setBrand_name(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        brand.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         brand.setIsactive("N");
+                    } else {
+                        brand.setIsactive("Y");
                     }
                     Date now = new Date();
                     brand.setCreated_date(Common.DATETIME_FORMAT.format(now));

@@ -506,10 +506,10 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setTarget_amount(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setTime_type(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setTarget_time(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        storeAchvGoal.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         storeAchvGoal.setIsactive("N");
+                    } else {
+                        storeAchvGoal.setIsactive("Y");
                     }
                     storeAchvGoal.setCreater(user_id);
                     Date now = new Date();

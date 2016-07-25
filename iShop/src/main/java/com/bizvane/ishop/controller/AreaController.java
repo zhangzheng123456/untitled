@@ -543,10 +543,10 @@ public class AreaController {
                     area.setCorp_code(rs.getCell(j++, i).getContents());
                     area.setArea_code(rs.getCell(j++, i).getContents());
                     area.setArea_name(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        area.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         area.setIsactive("N");
+                    } else {
+                        area.setIsactive("Y");
                     }
                     Date now = new Date();
                     area.setCreater(user_id);

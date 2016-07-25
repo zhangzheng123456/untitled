@@ -807,10 +807,10 @@ public class GroupController {
                     group.setRole_code(rs.getCell(j++, i).getContents());
                     group.setGroup_code(rs.getCell(j++, i).getContents());
                     group.setGroup_name(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        group.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         group.setIsactive("N");
+                    } else {
+                        group.setIsactive("Y");
                     }
                     result = groupService.insertGroup(group);
                 }

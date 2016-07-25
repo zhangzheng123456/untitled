@@ -494,10 +494,10 @@ public class UserAchvGoalControl {
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_type(rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_time(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("Y")) {
-                        userAchvGoal.setIsactive("Y");
-                    } else {
+                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");
+                    } else {
+                        userAchvGoal.setIsactive("Y");
                     }
                     userAchvGoal.setCreater(user_id);
                     Date now = new Date();
