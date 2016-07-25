@@ -89,8 +89,12 @@
         where DEF_USER.group_code = DEF_GROUP.group_code
         AND DEF_USER.corp_code = DEF_CORP.corp_code
         AND DEF_USER.corp_code = DEF_GROUP.corp_code
-        AND DEF_USER.CORP_CODE = #{corp_code}
-        AND DEF_GROUP.role_code &lt; #{role_code}
+        <if test="corp_code!=null and corp_code!=''">
+            AND DEF_USER.CORP_CODE = #{corp_code}
+        </if>
+        <if test="role_code!=null and corp_code!=''">
+            AND DEF_GROUP.role_code &lt; #{role_code}
+        </if>
         <if test="array!=null">
             AND
             <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
