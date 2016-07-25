@@ -248,7 +248,7 @@ function superaddition(data,num){
                         + "女"
                         +"</td><td>"
                         +data[i].phone
-                        + "</td><td><span title='"+data[i].corp.corp_name+"'>"
+                        + "</td><td class='corp_code' data-code='"+data[i].corp.corp_code+"'><span title='"+data[i].corp.corp_name+"'>"
                         +data[i].corp.corp_name
                         + "</span></td><td>"
                         +data[i].group.group_name
@@ -279,7 +279,7 @@ function superaddition(data,num){
                         + "男"
                         +"</td><td>"
                         +data[i].phone
-                        + "</td><td><span title='"+data[i].corp.corp_name+"'>"
+                        + "</td><td class='corp_code' data-code='"+data[i].corp.corp_code+"'><span title='"+data[i].corp.corp_name+"'>"
                         +data[i].corp.corp_name
                         + "</span></td><td>"
                         +data[i].group.group_name
@@ -310,7 +310,7 @@ function superaddition(data,num){
                         + ""
                         +"</td><td>"
                         +data[i].phone
-                         + "</td><td><span title='"+data[i].corp.corp_name+"'>"
+                        + "</td><td class='corp_code' data-code='"+data[i].corp.corp_code+"'><span title='"+data[i].corp.corp_name+"'>"
                         +data[i].corp.corp_name
                         + "</span></td><td>"
                         +data[i].group.group_name
@@ -335,6 +335,8 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+        }else if(actions[i].act_name=="qrcode"){
+            $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成</a></li>");
         }
     }
 }
@@ -428,6 +430,27 @@ function jumpBianse(){
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
+    //批量生成二维码
+    $('#qrcode').click(function(){
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        var param={};
+        var list=[];
+        if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        for(var i=0;i<tr.length;i++){
+            var store_code=$(tr[i]).find("td:eq(2)").html();
+            var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
+            var param1={"user_code":store_code,"corp_code":corp_code};
+            list.push(param1);
+        }
+        param["list"]=list;
+        oc.postRequire("post","/user/creatUsersQrcode","0",param,function(data){
+            console.log(data);
+        })
+    });
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {

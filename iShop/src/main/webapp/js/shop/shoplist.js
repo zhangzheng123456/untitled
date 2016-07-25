@@ -257,9 +257,11 @@ function jurisdiction(actions){
         if(actions[i].act_name=="add"){
             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
         }else if(actions[i].act_name=="delete"){
-            $('#jurisdiction').append("<li class='bg' id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+            $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+        }else if(actions[i].act_name=="qrcode"){
+            $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成</a></li>");
         }
     }
 }
@@ -291,6 +293,7 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+         $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
@@ -365,6 +368,27 @@ function jumpBianse(){
         sessionStorage.setItem("store_corp",JSON.stringify(store_corp));
         $(window.parent.document).find('#iframepage').attr("src","/shop/shopcheck_staff.html");
     })
+    //批量生成二维码
+    $('#qrcode').click(function(){
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        var param={};
+        var list=[];
+        if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        for(var i=0;i<tr.length;i++){
+            var store_code=$(tr[i]).find("td:eq(2)").html();
+            var corp_code=$(tr[i]).find(".staff").attr("data-code");
+            var param1={"store_code":store_code,"corp_code":corp_code};
+            list.push(param1);
+        }
+        param["list"]=list;
+        oc.postRequire("post","/shop/creatStoresQrcode","0",param,function(data){
+            console.log(data);
+        })
+    });
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
