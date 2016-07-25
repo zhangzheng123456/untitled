@@ -762,10 +762,14 @@ input::-webkit-input-placeholder{
 	border-radius: 10px;
 	z-index: 788;
 }
+.into_text{
+	margin-top:50px;
+	padding:0 10px;
+	height: 100px;
+}
 .into_frame_c{
 	width: 240px;
 	margin: 0 auto;
-	margin-top: 150px;
 }
 .into_frame span{
 	position: absolute;

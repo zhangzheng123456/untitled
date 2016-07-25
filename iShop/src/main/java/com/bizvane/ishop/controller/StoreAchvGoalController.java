@@ -554,7 +554,7 @@ public class StoreAchvGoalController {
             int page_size = Integer.valueOf(jsonObject1.get("pageSize").toString());
 //            String screen = jsonObject.get("screen").toString();
 //            JSONObject jsonScreen = new JSONObject(screen);
-            Map<String, String> map = new WebUtils().Json2Map(jsonObject);
+            Map<String, String> map = new WebUtils().Json2Map(jsonObject1);
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             JSONObject result = new org.json.JSONObject();

@@ -823,9 +823,9 @@ public class StoreController {
         String role_code = request.getSession().getAttribute("role_code").toString();
 
         String result = "";
-        Workbook rwb=null;
+        Workbook rwb = null;
         try {
-           rwb= Workbook.getWorkbook(targetFile);
+            rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
@@ -903,8 +903,8 @@ public class StoreController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }finally {
-            if(rwb!=null){
+        } finally {
+            if (rwb != null) {
                 rwb.close();
             }
         }
@@ -932,7 +932,7 @@ public class StoreController {
 //            JSONObject jsonScreen = new JSONObject(screen);
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String role_code = request.getSession(false).getAttribute("corp_code").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {

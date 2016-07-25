@@ -216,6 +216,7 @@ function superaddition(data,num){//页面加载循环
                         +data[i].isactive
                         +"</td></tr>");
     }
+    whir.loading.remove();//移除加载框
 };
 //权限配置
 function jurisdiction(actions){
@@ -232,6 +233,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/brand/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             if(data.code=="0"){
@@ -339,6 +341,7 @@ $("#d_search").click(function(){
 })
 //搜索的请求函数
 function POST(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/brand/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -350,6 +353,7 @@ function POST(){
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+                whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,inx);
@@ -584,7 +588,7 @@ $("#find").click(function(){
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val();
+        var screen_value=$(input[i]).val().trim();
         if(screen_value!=""){
             num++;
             var param1={"screen_key":screen_key,"screen_value":screen_value};
@@ -610,7 +614,7 @@ function filtrates(){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
-            var list=list.list;
+            var list=list.lisst;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
