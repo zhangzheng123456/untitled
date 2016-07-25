@@ -111,6 +111,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
         smsTemplates = smsTemplateMapper.selectAllSmsTemplateScreen(params);
         PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>(smsTemplates);
         return page;
