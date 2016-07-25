@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.TableManager;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.GoodsService;
 import com.bizvane.ishop.service.TableManagerService;
@@ -55,6 +56,8 @@ public class GoodsController {
     private GoodsService goodsService;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private CorpService corpService;
     String id;
 
     /**
@@ -263,8 +266,8 @@ public class GoodsController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
 //            String jlist = jsonObject.get("list").toString();
 //            JSONArray array = JSONArray.parseArray(jlist);
@@ -341,6 +344,21 @@ public class GoodsController {
                         break;
                     }
                 }
+            }
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                if (corp == null) {
+                    result = "第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {

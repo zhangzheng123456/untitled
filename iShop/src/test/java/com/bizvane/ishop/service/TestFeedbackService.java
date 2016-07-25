@@ -93,11 +93,14 @@ public class TestFeedbackService {
     //成功
     @Test
     public void testDel() {
-        try {
-            int i = feedbackService.delFeedbackById(4);
-            System.out.println(i + "----del--");
-        } catch (Exception ex) {
-            ex.printStackTrace();
+        String str="p";
+        if (!str.toString().equals("D") &&
+                !str.toString().equals("W") &&
+                !str.toString().equals("M") &&
+               !str.toString().equals("Y")) {
+            System.out.println("00000000000");
+        }else {
+            System.out.println("1111111111");
         }
     }
 

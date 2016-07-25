@@ -59,6 +59,8 @@ public class GroupController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private CorpService corpService;
     private static Logger logger = LoggerFactory.getLogger((GroupController.class));
     String id;
 
@@ -765,11 +767,27 @@ public class GroupController {
                         int b = 5 / 0;
                         break;
                     }
+
                 }
+            }
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                if (corp == null) {
+                    result = "第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
             }
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
-                if (!column2[i].getContents().toString().equals("R2000") || !column2[i].getContents().toString().equals("R3000") || !column2[i].getContents().toString().equals("R4000")) {
+                if (!column2[i].getContents().toString().equals("R2000") && !column2[i].getContents().toString().equals("R3000") && !column2[i].getContents().toString().equals("R4000")) {
                     result = "第" + (i + 1) + "列角色编号不对";
                     int b = 5 / 0;
                     break;

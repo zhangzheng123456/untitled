@@ -9,6 +9,7 @@ import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.AreaService;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.LuploadHelper;
@@ -56,6 +57,8 @@ public class AreaController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private CorpService corpService;
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
 
@@ -507,6 +510,12 @@ public class AreaController {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
                     result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                if (corp == null) {
+                    result = "第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
                     break;
                 }

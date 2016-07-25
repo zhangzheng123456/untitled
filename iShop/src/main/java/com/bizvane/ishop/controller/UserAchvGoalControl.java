@@ -5,10 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Interfacers;
-import com.bizvane.ishop.entity.StoreAchvGoal;
-import com.bizvane.ishop.entity.TableManager;
-import com.bizvane.ishop.entity.UserAchvGoal;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.service.UserAchvGoalService;
@@ -34,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.lang.System;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
@@ -58,6 +57,8 @@ public class UserAchvGoalControl {
     private FunctionService functionService = null;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private CorpService corpService;
     String id;
 
     /**
@@ -224,7 +225,6 @@ public class UserAchvGoalControl {
             String jsString = request.getParameter("param");
             logger.info("json--user add-------------" + jsString);
             System.out.println("json---------------" + jsString);
-
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -477,10 +477,25 @@ public class UserAchvGoalControl {
                     }
                 }
             }
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                if (corp == null) {
+                    result = "第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
+            }
             Cell[] column = rs.getColumn(4);
             for (int i = 3; i < column.length; i++) {
-                if (!column[i].getContents().toString().equals("D") || !column[i].getContents().toString().equals("W") || !column[i].getContents().toString().equals("M") || !column[i].getContents().toString().equals("Y")) {
-                    result = "第" + (i + 1) + "列的业绩日期类型缩写不对";
+                if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
+                    result = "第" + (i + 1) + "列的业绩日期类型缩写有误";
                     int b = 5 / 0;
                     break;
                 }

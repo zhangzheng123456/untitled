@@ -848,7 +848,23 @@ public class StoreController {
                         int b = 5 / 0;
                         break;
                     }
+
                 }
+            }
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                if (corp == null) {
+                    result = "第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {

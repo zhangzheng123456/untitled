@@ -4,8 +4,10 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.entity.TableManager;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.StoreAchvGoalService;
 import com.bizvane.ishop.service.TableManagerService;
@@ -58,6 +60,8 @@ public class StoreAchvGoalController {
     FunctionService functionService = null;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private CorpService corpService;
     String id;
 
     /**
@@ -488,12 +492,28 @@ public class StoreAchvGoalController {
                         int b = 5 / 0;
                         break;
                     }
+
                 }
+            }
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                if (corp == null) {
+                    result = "第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
             }
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
-                if (!column[i].getContents().toString().equals("D") || !column[i].getContents().toString().equals("W") || !column[i].getContents().toString().equals("M") || !column[i].getContents().toString().equals("Y")) {
-                    result = "第" + (i + 1) + "列的业绩日期类型缩写不对";
+                if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
+                    result = "第" + (i + 1) + "行的业绩日期类型缩写不对";
                     int b = 5 / 0;
                     break;
                 }

@@ -4,11 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Area;
-import com.bizvane.ishop.entity.Brand;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.TableManager;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.BrandService;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.LuploadHelper;
@@ -34,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.lang.System;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,6 +56,8 @@ public class BrandController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
+    @Autowired
+    private CorpService corpService;
     private static final Logger logger = Logger.getLogger(BrandController.class);
 
 
@@ -489,6 +490,21 @@ public class BrandController {
                         break;
                     }
                 }
+            }
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                if (corp == null) {
+                    result = "第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
             }
             Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column = rs.getColumn(1);
