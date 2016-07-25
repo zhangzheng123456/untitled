@@ -24,7 +24,7 @@
     </resultMap>
 
     <select id="selectByStoreId" resultMap="Store">
-    select
+        select
         DEF_STORE.id,
         store_code,
         store_name,
@@ -334,14 +334,14 @@
 
     <!--删除店铺下员工-->
     <update id="deleteStoreByUserid">
-      update DEF_USER
-      set STORE_CODE=replace(STORE_CODE,#{store_code},'') where id=#{user_id}
+        update DEF_USER
+        set STORE_CODE=replace(STORE_CODE,#{store_code},'') where id=#{user_id}
     </update>
 
     <!--判断店铺名称是否重复-->
     <select id="selectByStoreName" resultType="com.bizvane.ishop.entity.Store">
         select * from DEF_STORE
-        WHERE  corp_code=#{corp_code} and store_name=#{store_name}
+        WHERE corp_code=#{corp_code} and store_name=#{store_name}
     </select>
 
     <!--店铺数量  / 店铺新增数量-->
@@ -354,7 +354,7 @@
     </select>
 
     <select id="selectAchCount" resultType="java.lang.Integer">
-        select count(1) from  DEF_STORE_ACHV_GOAL
+        select count(1) from DEF_STORE_ACHV_GOAL
         WHERE store_code=#{store_code}
         AND corp_code = #{corp_code}
     </select>
@@ -388,13 +388,13 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryKey=='corp_name'">
-                    dc.${entryKey} LIKE concat('%',#{entryValue},'%'),
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <when test="entryKey=='area_name'">
-                    da.${entryKey} LIKE concat('%',#{entryValue},'%'),,
+                    da.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <otherwise>
-                    ds.${entryKey} LIKE concat('%',#{entryValue},'%'),,,
+                    ds.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </otherwise>
             </choose>
         </foreach>

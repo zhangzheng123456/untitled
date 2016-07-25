@@ -202,7 +202,7 @@
         select
         sa.*,
         dc.corp_name,
-        st.store_name
+        ds.store_name
         from
         DEF_STORE_ACHV_GOAL sa,
         DEF_STORE ds,
