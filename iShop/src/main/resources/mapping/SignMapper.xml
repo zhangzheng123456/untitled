@@ -23,9 +23,9 @@
     </select>
     <select id="selectSignByInp" resultType="com.bizvane.ishop.entity.Sign">
         SELECT *
-        from acc_sign,def_corp
+        from acc_sign,DEF_CORP
         where acc_sign.STATUS !='1'
-        and acc_sign.corp_code=def_corp.corp_code
+        and acc_sign.corp_code=DEF_CORP.corp_code
         AND acc_sign.user_code IN
         (
         SELECT DEF_USER.user_code
@@ -54,9 +54,9 @@
     </select>
 
     <select id="selectByUser" resultType="com.bizvane.ishop.entity.Sign">
-        select * from acc_sign,def_corp
+        select * from acc_sign,DEF_CORP
         WHERE acc_sign.STATUS !='1'
-        and acc_sign.corp_code=def_corp.corp_code
+        and acc_sign.corp_code=DEF_CORP.corp_code
         acc_sign.corp_code=#{corp_code} and acc_sign.user_code=#{user_code}
         <if test="search_value != null and search_value !=''">
             AND
@@ -77,10 +77,11 @@
     </delete>
 
     <select id="selectSignAllScreen" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT *
-        from acc_sign,def_corp
+        SELECT acc_sign.*,
+        DEF_CORP.CORP_NAME
+        from acc_sign,DEF_CORP
         where acc_sign.STATUS !='1'
-        and acc_sign.corp_code=def_corp.corp_code
+        and acc_sign.corp_code=DEF_CORP.corp_code
         AND acc_sign.user_code IN
         (
         SELECT DEF_USER.user_code
@@ -101,7 +102,7 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
                 <when test="entryKey=='corp_name'">
-                    def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <otherwise>
                     acc_sign.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -112,16 +113,16 @@
     </select>
 
     <select id="selectSignAllScreenUser" resultType="com.bizvane.ishop.entity.Sign">
-        select * from acc_sign,def_corp
+        select * from acc_sign,DEF_CORP
         where acc_sign.STATUS !='1'
-        and acc_sign.corp_code=def_corp.corp_code
+        and acc_sign.corp_code=DEF_CORP.corp_code
         AND
         acc_sign.user_code=#{user_code}
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
                 <when test="entryKey=='corp_name'">
-                    def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <otherwise>
                     acc_sign.${entryKey} LIKE concat('%',#{entryValue},'%')

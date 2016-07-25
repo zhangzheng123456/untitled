@@ -519,7 +519,7 @@
                     dc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <when test="entryKey=='group_name'">
-                    dg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    dg.${entryKey} LIKE concat('%',#{e},'%')
                 </when>
                 <otherwise>
                     du.${entryKey} LIKE concat('%',#{entryValue},'%')
