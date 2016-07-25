@@ -275,27 +275,7 @@ public class ValidateCodeController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/testword", method = RequestMethod.GET)
-    @ResponseBody
-    public String testword(HttpServletRequest request, HttpServletResponse response) {
-        DataBean dataBean = new DataBean();
-        try {
-            List<ValidateCode> validateCodes = validateCodeService.selectAll();
-            String column_name =request.getParameter("column_name");
-            String[] cols = column_name.split(",");//前台传过来的字段
-            OutExeclHelper.OutExecl(validateCodes,cols,response,request);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("word success");
-        } catch (Exception e) {
-            e.printStackTrace();
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(e.getMessage());
-        }
-        return dataBean.getJsonStr();
 
-    }
     /***
      * 查出要导出的列
      */
@@ -350,10 +330,10 @@ public class ValidateCodeController {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-            String column_name = jsonObject.get("column_name").toString();
+            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
-            String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(feedbacks, cols, response, request);
+            // String[] cols = column_name.split(",");//前台传过来的字段
+            String pathname = OutExeclHelper.OutExecl(feedbacks, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

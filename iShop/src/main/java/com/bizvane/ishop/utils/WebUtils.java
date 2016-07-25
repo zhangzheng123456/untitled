@@ -168,6 +168,23 @@ public class WebUtils {
         return map;
     }
 
+    public static Map Json2ShowName(JSONObject jsonObject) {
+        if (jsonObject == null) {
+            return null;
+        }
+        String jlist = jsonObject.get("tablemanager").toString();
+        com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(jlist);
+        Map<String, String> map = new HashMap<String, String>();
+        for (int i = 0; i < array.size(); i++) {
+            String info = array.get(i).toString();
+            JSONObject json = new JSONObject(info);
+            String screen_key = json.get("column_name").toString();
+            String screen_value = json.get("show_name").toString();
+            map.put(screen_key, screen_value);
+        }
+        return map;
+    }
+
     public static List Json2List(JSONArray json) {
         if (json == null) {
             return null;

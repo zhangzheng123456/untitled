@@ -340,10 +340,10 @@ public class FeedbackController {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-            String column_name = jsonObject.get("column_name").toString();
+            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
-            String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(feedbacks, cols, response, request);
+            // String[] cols = column_name.split(",");//前台传过来的字段
+            String pathname = OutExeclHelper.OutExecl(feedbacks, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

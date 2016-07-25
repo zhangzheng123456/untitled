@@ -23,9 +23,10 @@ import java.util.*;
  * Created by yin on 2016/6/30.
  */
 public class OutExeclHelper {
-    public static String OutExecl(List olist, String[] cols, HttpServletResponse response, HttpServletRequest request){
+    public static String OutExecl(List olist, Map<String,String> cols, HttpServletResponse response, HttpServletRequest request){
         String result="";
         WritableWorkbook book=null;
+        Set<String> keys = cols.keySet();
         try {
             response.setCharacterEncoding("UTF-8");
             JSONObject jsonObject = new JSONObject();
@@ -34,10 +35,11 @@ public class OutExeclHelper {
             List<List<String>> lists = new ArrayList<List<String>>();
             for (int i = 0; i < olist.size(); i++) {
                 List<String> temp = new ArrayList<String>();
-                for (int j = 0; j < cols.length; j++) {
-                    String aa = array.getJSONObject(i).get(cols[j]).toString();
-                    temp.add(aa);
-                }
+                    for (String key : cols.keySet()) {
+                       // System.out.println("key= "+ key + " and value= " + cols.get(key));
+                        String aa = array.getJSONObject(i).get(key).toString();
+                        temp.add(aa);
+                    }
                 lists.add(temp);
             }
             //输出流
@@ -67,9 +69,14 @@ public class OutExeclHelper {
             format.setAlignment(Alignment.CENTRE);
             format.setVerticalAlignment(VerticalAlignment.CENTRE);
             //这里可以改中文
-            for (int i = 0; i < cols.length; i++) {
+            List<String> values=new ArrayList<String>();
+            for (String key : cols.keySet()) {
+              //  System.out.println("key= " + key + " and value= " + map.get(key));
+                values.add(cols.get(key));
+            }
+            for(int i=0;i<values.size();i++){
                 sheet.setColumnView(i, 40);
-                Label label = new Label(i, 0, cols[i]);
+                Label label = new Label(i, 0, values.get(i));
                 label.setCellFormat(format);
                 sheet.addCell(label);
             }
