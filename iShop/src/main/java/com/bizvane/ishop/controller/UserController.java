@@ -1122,6 +1122,7 @@ public class UserController {
                         dataBean.setId(id);
                         dataBean.setMessage("生成完成");
                         dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        return dataBean.getJsonStr();
                     }
                 }
                 dataBean.setId(id);
