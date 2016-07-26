@@ -48,7 +48,7 @@ public class TaskTypeController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            int page_num = Integer.parseInt(request.getParameter("pageNum"));
+            int page_num = Integer.parseInt(request.getParameter("pageNumber"));
             String function_code = request.getParameter("funcCode");
             JSONArray actions = functionService.selectActionByFun(user_code,group_code,role_code,function_code);
 
