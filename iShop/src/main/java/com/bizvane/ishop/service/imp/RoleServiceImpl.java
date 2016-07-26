@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.PrivilegeMapper;
 import com.bizvane.ishop.dao.RoleMapper;
 import com.bizvane.ishop.entity.Role;
 import com.bizvane.ishop.service.RoleService;
@@ -22,6 +23,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Autowired
     private RoleMapper roleMapper;
+    @Autowired
+    private PrivilegeMapper privilegeMapper;
 
     public Role selectByRoleId(int role_id) throws SQLException {
         return roleMapper.selectByRoleId(role_id);
@@ -70,7 +73,9 @@ public class RoleServiceImpl implements RoleService {
         return Common.DATABEAN_CODE_ERROR;
     }
 
-    public int deleteByRoleId(int id) throws SQLException {
+    public int deleteByRoleId(int id,String role_code) throws SQLException {
+        privilegeMapper.delete(role_code);
+
         return roleMapper.deleteByRoleId(id);
     }
 

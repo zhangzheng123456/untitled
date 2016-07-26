@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>区域管理</title>
+	<title>任务类型</title>
 	<link rel="stylesheet" href="../table/css/inner.css">
     <link rel="stylesheet" href="../css/font_style.css">
 	<script src="../table/js/jquery.min.js"></script>
@@ -12,7 +12,7 @@
     <div class="content">
     	<div class="con_table" id="con_table">
     		<div class="title">
-    			<span>区域管理</span>
+    			<span>任务类型</span>
     		</div>
     		<div class="action">
                 <div class="action_l">
@@ -94,22 +94,6 @@
                 <div class="inputs">
                     <ul>     
                     </ul>
-                    <!-- <li>
-                       <label>公司名称</label>
-                       <input type="text" id="p1">
-                    </li>
-                    <li>
-                        <label>联系人</label>
-                        <input type="text" id="p2">
-                    </li>
-                    <li>
-                        <label>修改人</label>
-                        <input type="text" id="p3">
-                    </li>
-                    <li>
-                        <label>联系电话</label>
-                        <input type="text" id="p4">
-                    </li> -->
                 </div>
             </div>
     		<div class="table">
@@ -118,8 +102,8 @@
                  		<tr class="th">
                  			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                  			<th style="text-align: left;">序号</th>
-                 			<th>区域编号</th>
-                 			<th>区域名称</th>
+                 			<th>任务编号</th>
+                 			<th>任务名称</th>
 							<th>所属企业</th>
 							<th>修改人</th>
 							<th>修改时间</th>
@@ -156,18 +140,6 @@
     						</li>
     						<li>
                                 <span class="p-bg">1</span>
-    						</li>
-    						<li>
-    							<span>2</span>
-    						</li>
-    						<li>
-    							<span>3</span>
-    						</li>
-    						<li>
-    							<span>4</span>
-    						</li>
-    						<li>
-    							<span>5</span>
     						</li>
     						<li class="icon-ishop_4-02">
     							
@@ -210,24 +182,6 @@
     </div>
 </body>
     <script type="text/javascript" src="/js/insidePostRequire.js"></script>
-    <script src="/js/area/area.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            $(window).scroll(function(){
-                if($(window).scrollTop()>100){
-                    $("#side_bar .gotop").fadeIn(); 
-                }
-                else{
-                    $("#side-bar .gotop").hide();
-                }
-            });
-            $("#side_bar .gotop").click(function(){
-                $('html,body').animate({'scrollTop':0},500);
-            });
-            $("#side_bar .gobottom").click(function(){
-                var btm=$('html,body').height();
-                $('html,body').animate({'scrollTop':btm},500);
-            })
-        });
-    </script>
+    <script src="/js/task/task_type.js"></script>
+    <script src="/js/silide.js"></script>
 </html>

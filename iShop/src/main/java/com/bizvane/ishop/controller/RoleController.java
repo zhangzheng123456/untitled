@@ -153,7 +153,7 @@ public class RoleController {
                 String role_code = roleService.selectByRoleId(role_id).getRole_code();
                 List<Group> groups = groupService.selectByRole(role_code);
                 if (groups.size() == 0) {
-                    roleService.deleteByRoleId(role_id);
+                    roleService.deleteByRoleId(role_id,role_code);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
                     dataBean.setMessage("success");

@@ -51,6 +51,8 @@ public class UserServiceImpl implements UserService {
     UserAchvGoalMapper userAchvGoalMapper;
     @Autowired
     CodeUpdateMapper codeUpdateMapper;
+    @Autowired
+    private PrivilegeMapper privilegeMapper;
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -282,7 +284,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public int delete(int id) throws SQLException {
+    public int delete(int id,String user_code,String corp_code) throws SQLException {
+        privilegeMapper.delete(corp_code+user_code);
         return userMapper.deleteByUserId(id);
     }
 
