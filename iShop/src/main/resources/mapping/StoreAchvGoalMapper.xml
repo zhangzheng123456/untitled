@@ -34,7 +34,7 @@
 
     <select id="selectBySearch" resultMap="storeAchvGoals">
         select
-        sa.id,sa.store_code,sa.store_name,sa.corp_code,
+        sa.id,sa.store_code,st.store_name,sa.corp_code,
         sa.target_amount,sa.time_type,
         sa.target_time,sa.modified_date,sa.modifier,sa.created_date,
         sa.creater,sa.isactive,c.corp_name

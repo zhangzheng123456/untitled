@@ -166,12 +166,12 @@ public class GoodsController {
                     list = goodsService.selectAllGoodsScreen(1, 30000, corp_code, map);
                 }
             }
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
+//            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+//                String goods_image = list.getList().get(i).getGoods_image();
+//                if (goods_image != null && !goods_image.isEmpty()) {
+//                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+//                }
+//            }
             List<Goods> goodses = list.getList();
             if (goodses.size() >= 29999) {
                 errormessage = "导出数据过大";
@@ -286,12 +286,12 @@ public class GoodsController {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map);
             }
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
+//            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+//                String goods_image = list.getList().get(i).getGoods_image();
+//                if (goods_image != null && !goods_image.isEmpty()) {
+//                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+//                }
+//            }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
