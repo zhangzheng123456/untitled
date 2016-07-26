@@ -174,7 +174,7 @@ public class WebUtils {
         }
         String jlist = jsonObject.get("tablemanager").toString();
         com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(jlist);
-        Map<String, String> map = new HashMap<String, String>();
+        Map<String, String> map = new LinkedHashMap<String, String>();
         for (int i = 0; i < array.size(); i++) {
             String info = array.get(i).toString();
             JSONObject json = new JSONObject(info);

@@ -493,7 +493,7 @@ public class CorpController {
     @Transactional()
     @ResponseBody()
     public String addByExecl(HttpServletRequest request, HttpServletResponse response, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException, UnsupportedEncodingException {
-        response.setContentType("text/html;charset=UTF-8");
+
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
@@ -524,6 +524,16 @@ public class CorpController {
                 Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString());
                 if (corp != null) {
                     result = "第" + (i + 1) + "行企业编号已存在";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
+            Cell[] column4 = rs.getColumn(4);
+            Pattern pattern4 = Pattern.compile("^[0-9]*$");
+            for (int i = 3; i < column4.length; i++) {
+                Matcher matcher = pattern4.matcher(column4[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行电话格式有误";
                     int b = 5 / 0;
                     break;
                 }

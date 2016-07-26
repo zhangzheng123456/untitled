@@ -20,7 +20,7 @@ public class TableManagerServiceImpl implements TableManagerService {
     public List<TableManager> selAllByCode(String function_code) {
         List<TableManager> tableManagers = managerMapper.selAllByCode(function_code);
         for (TableManager manager: tableManagers) {
-            System.out.println(manager.getColumn_name()+"---"+manager.getIs_show());
+            System.out.println(manager.getColumn_name()+"---"+manager.getShow_name());
         }
         return managerMapper.selAllByCode(function_code);
     }

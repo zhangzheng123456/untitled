@@ -317,6 +317,15 @@ public class UserController {
                 }
             }
             Cell[] column = rs.getColumn(3);
+            Pattern pattern4 = Pattern.compile("^[0-9]*$");
+            for (int i = 3; i < column.length; i++) {
+                Matcher matcher = pattern4.matcher(column[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "第" + (i + 1) + "行电话格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
             for (int i = 3; i < column.length; i++) {
                 String existInfo = userService.userPhoneExist(column[i].getContents().toString());
                 if (!existInfo.contains("0")) {
