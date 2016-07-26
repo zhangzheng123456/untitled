@@ -236,7 +236,7 @@ public class GroupController {
                     String corp_code = group.getCorp_code();
                     List<User> users = userService.selectGroup(corp_code, group_code);
                     if (users.size() == 0) {
-                        groupService.deleteGroup(Integer.valueOf(ids[i]));
+                        groupService.deleteGroup(Integer.valueOf(ids[i]),group_code,corp_code);
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);

@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.GroupMapper;
+import com.bizvane.ishop.dao.PrivilegeMapper;
 import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.service.GroupService;
 import com.github.pagehelper.PageHelper;
@@ -21,11 +22,15 @@ import java.util.Map;
  */
 @Service
 public class GroupServiceImpl implements GroupService {
+
     @Autowired
     private GroupMapper groupMapper;
 
     @Autowired
     private CodeUpdateMapper codeUpdateMapper;
+
+    @Autowired
+    private PrivilegeMapper privilegeMapper;
 
     public Group getGroupById(int id) throws SQLException {
         return groupMapper.selectByGroupId(id);
@@ -119,7 +124,8 @@ public class GroupServiceImpl implements GroupService {
         return result;
     }
 
-    public int deleteGroup(int id) throws SQLException {
+    public int deleteGroup(int id,String group_code,String corp_code) throws SQLException {
+        privilegeMapper.delete(corp_code+group_code);
         return groupMapper.deleteByGroupId(id);
     }
 

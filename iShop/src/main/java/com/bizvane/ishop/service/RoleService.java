@@ -18,7 +18,7 @@ public interface RoleService {
 
     String updateByRoleId(Role record) throws SQLException;
 
-    int deleteByRoleId(int id) throws SQLException;
+    int deleteByRoleId(int id,String role_code) throws SQLException;
 
     PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws SQLException;
 
