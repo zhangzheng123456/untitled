@@ -101,3 +101,46 @@
 	color:#ccc;
 	width: 420px;
 }
+.add_apple{
+	width: 50px;
+	height: 30px;
+	padding-left: 10px;
+	margin-top: 15px;
+	background: #6cc1c8;
+	display: inline-block;
+	border-radius: 4px;
+	line-height: 30px;
+	margin-left: 10px;
+	color: #ffffff
+}
+.wx_app{
+	width: 650px;
+}
+.wx_app input{
+	width: 160px;
+	margin-top: 15px;
+}
+#WXID{
+	margin-left: 0;
+}
+#AppName{
+	margin-left: 4px;
+}
+.wx_app input:nth-child(odd){
+	margin-left: 0px;
+}
+.wx_app input:nth-child(even){
+	margin-left: 97px;
+}
+.remove_input{
+	width: 50px;
+	height: 30px;
+	padding-left: 10px;
+	margin-top: 15px;
+	background: #c26555;
+	display: inline-block;
+	border-radius:4px;
+	line-height: 30px;
+	margin-left:5px;
+	color:#ffffff;
+}
