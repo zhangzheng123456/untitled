@@ -107,8 +107,4 @@ whir.loading ={
         var arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);  
         return arrayPageSize;  
     }  
-};  
-// window.onload = function () {  
-//     whir.loading.remove();  
-// };  
-// whir.loading.add("",0.5);
+};
