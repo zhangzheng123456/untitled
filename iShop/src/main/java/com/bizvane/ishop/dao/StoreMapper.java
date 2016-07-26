@@ -1,5 +1,6 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
 import org.apache.ibatis.annotations.Param;
 
@@ -31,9 +32,11 @@ public interface StoreMapper {
 
     int selectCount(@Param("created_date") String created_date);
 
-    int selectAchCount(@Param("corp_code") String corp_code,@Param("store_code") String store_code);
+    int selectAchCount(@Param("corp_code") String corp_code, @Param("store_code") String store_code);
 
     List<Store> selectByAreaCode(Map<String, Object> params);
 
     List<Store> selectAllStoreScreen(Map<String, Object> params);
+
+    List<Brand> selectBrandsStore(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code);
 }

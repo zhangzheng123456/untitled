@@ -18,10 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by nanji on 2016/5/25.
@@ -215,12 +212,48 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code", corp_code);
         params.put("area_codes", areas);
         params.put("store_codes", stores);
-        params.put("map", map);
-        PageHelper.startPage(page_number,page_size);
-        List<Store> list = storeMapper.selectAllStoreScreen(params);
-        PageInfo<Store> page = new PageInfo<Store>(list);
+        String brand_name = map.get("brand_name");
+        map.remove("brand_name");
+        if (map.size() == 0) {
+            params.put("map", null);
+        } else {
+            params.put("map", map);
+        }
+        PageHelper.startPage(page_number, page_size);
+        List<Store> list1 = storeMapper.selectAllStoreScreen(params);
+        list1 = ComparaBrandName(list1, brand_name);
+        PageInfo<Store> page = new PageInfo<Store>();
+        page.setList(list1);
         return page;
     }
+
+    private List<Store> ComparaBrandName(List<Store> list, String brand_name) {
+        if (brand_name == null || brand_name.isEmpty()) {
+            return list;
+        }
+        List<Store> newList = new ArrayList<Store>();
+        for (int i = 0; list != null && i < list.size(); i++) {
+            Store store = list.get(i);
+            //获取店铺的所有品牌实体
+            List<Brand> brands = storeMapper.selectBrandsStore(store.getCorp_code(), store.getBrand_code());
+            boolean isContain = false;
+            //检查品牌实体中是否包含店铺
+            for (int j = 0; brands != null && j < brands.size(); j++) {
+                if (brands.get(j).getBrand_name().contains(brand_name)) {
+                    isContain = true;
+                }
+            }
+            if (isContain) {
+                newList.add(store);
+            }
+            if (newList.size() >= 10) {
+                return newList;
+            }
+        }
+        return newList;
+    }
+
+
 //
 //    @Override
 //    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String[] area_codes, Map<String, String> map) {
