@@ -7,8 +7,10 @@
        WHERE FUNCTION_CODE=#{function_code}
         and is_show = 'Y'
         and is_show !=''
+        AND filter_weight IS NOT NULL
+        AND filter_weight != ''
         and is_show is not null
-
+        ORDER BY filter_weight
     </select>
 
     <!--查询table-->
