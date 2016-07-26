@@ -654,7 +654,11 @@ public class UserController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
                 User user = userService.getById(Integer.parseInt(ids[i]));
+                String user_code="";
+                String corp_code="";
                 if (user != null) {
+                    user_code = user.getUser_code();
+                    corp_code = user.getCorp_code();
                     List<UserAchvGoal> goal = userService.selectUserAchvCount(user.getCorp_code(), user.getUser_code());
                     count = goal.size();
                     if (count > 0) {
@@ -662,7 +666,7 @@ public class UserController {
                         break;
                     }
                 }
-                userService.delete(Integer.valueOf(ids[i]));
+                userService.delete(Integer.valueOf(ids[i]),user_code,corp_code);
             }
             if (count > 0) {
                 dataBean.setId(id);
