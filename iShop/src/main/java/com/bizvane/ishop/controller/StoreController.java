@@ -69,7 +69,40 @@ public class StoreController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
-
+    /***
+     * 根据区域拉店铺
+     */
+    @RequestMapping(value = "/selectByAreaCode", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectByAreaCode(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+            String areas=jsonObject.get("areaCodes").toString();
+            String searchValue = jsonObject.get("searchValue").toString();
+            String[] areaCodes = areas.split(",");
+            PageInfo<Store> list=storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 店铺管理
      */

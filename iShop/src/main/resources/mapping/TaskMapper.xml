@@ -1,27 +1,267 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.TaskMapper">
+    <!--据角色企业查询任务列表 role_ident为角色标识，GM和SYS分企业，其他的只查和自己相关的任务-->
     <select id="selectAllTask" resultType="com.bizvane.ishop.entity.Task">
-        SELECT * from def_task,def_corp,def_user,def_task_type
+        SELECT * from def_task,def_corp,def_task_type
         where def_task.corp_code = def_corp.corp_code
-        AND  def_task.user_code = def_user.user_code
         and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
+        <if test="role_ident !=null and role_ident!=''">
+            and def_task.task_code in(select rel_task_allocation.task_code from rel_task_allocation
+            where rel_task_allocation.corp_code =#{corp_code} and rel_task_allocation.user_code=#{user_code} )
+        </if>
         <if test="search_value != null and search_value !=''">
             AND
             (
-            def_task.task_title LIKE concat ('%', #{search_value},'%')
+            def_task.task_code LIKE concat('%', #{search_value},'%')
+            or def_task.task_title LIKE concat ('%', #{search_value},'%')
             or def_task_type.task_type_name LIKE concat ('%', #{search_value},'%')
-            OR def_task.task_status LIKE concat('%', #{search_value},'%')
             OR def_task.task_describe LIKE concat('%', #{search_value},'%')
-            OR def_user.user_name LIKE concat('%', #{search_value},'%')
-            OR def_task.end_time LIKE concat('%', #{search_value},'%')
+            or def_task.target_start_time LIKE concat('%', #{search_value},'%')
+            or def_corp.corp_name LIKE concat('%', #{search_value},'%')
+            OR def_task.target_end_time LIKE concat('%', #{search_value},'%')
             OR def_task.modifier LIKE concat('%', #{search_value},'%')
-            OR def_task.modified_time LIKE concat('%', #{search_value},'%')
+            OR def_task.modified_date LIKE concat('%', #{search_value},'%')
             OR def_task.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
     </select>
+    <!--验证唯一或编辑时传值-->
+    <select id="selTaskByCode" resultType="com.bizvane.ishop.entity.Task">
+       SELECT  * from def_task
+        where task_code=#{task_code}
+    </select>
+    <!--查询出任务详情及编辑是传值-->
+    <select id="selAllTaskAllocation" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT  * from rel_task_allocation
+        where task_code=#{task_code}
+    </select>
+    <!--删除任务-->
+    <delete id="delTaskByCode">
+        delete from def_task where task_code =#{task_code}
+    </delete>
+    <!--删除任务详情-->
+    <delete id="delTaskAllocation">
+        delete from rel_task_allocation where task_code =#{task_code}
+    </delete>
+    <!--新增任务-->
+    <insert id="addTask" parameterType="com.bizvane.ishop.entity.Task">
+        insert into def_task
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="task_code!=null">
+                task_code,
+            </if>
+            <if test="task_title!=null">
+                task_title,
+            </if>
+            <if test="task_type_code!=null">
+                task_type_code,
+            </if>
+            <if test="task_describe!=null">
+                task_describe,
+            </if>
+            <if test="target_start_time!=null">
+                target_start_time,
+            </if>
+            <if test="target_end_time!=null">
+                target_end_time,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="task_code!=null">
+               #{task_code},
+            </if>
+            <if test="task_title!=null">
+               #{task_title},
+            </if>
+            <if test="task_type_code!=null">
+                #{task_type_code},
+            </if>
+            <if test="task_describe!=null">
+                #{task_describe},
+            </if>
+            <if test="target_start_time!=null">
+                #{target_start_time},
+            </if>
+            <if test="target_end_time!=null">
+                #{target_end_time},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+    <!--新增任务详情-->
+    <insert id="addTaskAllocation" parameterType="com.bizvane.ishop.entity.TaskAllocation">
+        insert into rel_task_allocation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="task_code!=null">
+                task_code,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="user_code!=null">
+                user_code,
+            </if>
+            <if test="task_status!=null">
+                task_status,
+            </if>
+            <if test="real_start_time!=null">
+                real_start_time,
+            </if>
+            <if test="real_end_time!=null">
+                real_end_time,
+            </if>
+            <if test="task_proof_image!=null">
+                task_proof_image,
+            </if>
+            <if test="task_proof_text!=null">
+                task_proof_text,
+            </if>
+            <if test="task_proof_mark!=null">
+                task_proof_mark,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="task_code!=null">
+                #{task_code},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="user_code!=null">
+                #{user_code},
+            </if>
+            <if test="task_status!=null">
+                #{task_status},
+            </if>
+            <if test="real_start_time!=null">
+                #{real_start_time},
+            </if>
+            <if test="real_end_time!=null">
+                #{real_end_time},
+            </if>
+            <if test="task_proof_image!=null">
+                #{task_proof_image},
+            </if>
+            <if test="task_proof_text!=null">
+                #{task_proof_text},
+            </if>
+            <if test="task_proof_mark!=null">
+                #{task_proof_mark},
+            </if>
+        </trim>
+    </insert>
+    <update id="updTask" parameterType="com.bizvane.ishop.entity.Task">
+        UPDATE  def_task
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="task_code!=null and task_code!=''">
+                task_code = #{task_code},
+            </if>
+            <if test="task_title!=null and task_title!=''">
+                task_title =  #{task_title},
+            </if>
+            <if test="task_type_code!=null and task_type_code != ''">
+                task_type_code= #{task_type_code},
+            </if>
+            <if test="task_describe!=null and task_describe != ''">
+                task_describe = #{task_describe},
+            </if>
+            <if test="target_start_time!=null and target_start_time != ''">
+                target_start_time = #{target_start_time},
+            </if>
+            <if test="target_end_time!=null and target_end_time != ''">
+                target_end_time = #{target_end_time},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code = #{corp_code},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier =  #{modifier},
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                created_date =  #{created_date},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive= #{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id}
+    </update>
+    <update id="updTaskAllocation" parameterType="com.bizvane.ishop.entity.TaskAllocation">
+        update rel_task_allocation
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="task_code!=null and task_code!=''">
+                task_code= #{task_code},
+            </if>
+            <if test="corp_code!=null and corp_code!=''">
+                corp_code=  #{corp_code},
+            </if>
+            <if test="user_code!=null and user_code!=''">
+                user_code= #{user_code},
+            </if>
+            <if test="task_status!=null and task_status!=''">
+                task_status = #{task_status},
+            </if>
+            <if test="real_start_time!=null and real_start_time!=''">
+                real_start_time =  #{real_start_time},
+            </if>
+            <if test="real_end_time!=null and real_end_time!=''">
+                real_end_time = #{real_end_time},
+            </if>
+            <if test="task_proof_image!=null and task_proof_image!=''">
+                task_proof_image =  #{task_proof_image},
+            </if>
+            <if test="task_proof_text!=null and task_proof_text!=''">
+                task_proof_text =#{task_proof_text},
+            </if>
+            <if test="task_proof_mark!=null and task_proof_mark!=''">
+                task_proof_mark = #{task_proof_mark},
+            </if>
+      </trim>
+        WHERE id=#{id}
+    </update>
 </mapper>

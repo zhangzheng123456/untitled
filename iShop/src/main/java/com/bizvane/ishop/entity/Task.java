@@ -11,14 +11,16 @@ public class Task {
     private String task_title;
     //任务类型
     private String task_type_code;
-    //任务状态 (待确认 0，已接受1，执行中2，已完成3，已拒绝 -1)
-    private String task_status;
+
+    //private String task_status;
     //任务描述
     private String task_description;
     //员工编号
     private String user_code;
+    //开始时间
+    private String target_start_time;
     //截止时间
-    private String end_time;
+    private String target_end_time;
     //企业编号
     private String corp_code;
     //修改时间
@@ -31,7 +33,21 @@ public class Task {
     private String creater;
     //是否可用
     private String isactive;
+    //标识
+    private String role_ident;
+    private Corp corp;
+    private String corp_name;
+    private User user;
 
+    public String getRole_ident() {
+        return role_ident;
+    }
+
+    public void setRole_ident(String role_ident) {
+        this.role_ident = role_ident;
+    }
+
+    // private String user_name;
     public int getId() {
         return id;
     }
@@ -64,13 +80,7 @@ public class Task {
         this.task_type_code = task_type_code;
     }
 
-    public String getTask_status() {
-        return task_status;
-    }
 
-    public void setTask_status(String task_status) {
-        this.task_status = task_status;
-    }
 
     public String getTask_description() {
         return task_description;
@@ -88,12 +98,44 @@ public class Task {
         this.user_code = user_code;
     }
 
-    public String getEnd_time() {
-        return end_time;
+    public String getTarget_start_time() {
+        return target_start_time;
     }
 
-    public void setEnd_time(String end_time) {
-        this.end_time = end_time;
+    public void setTarget_start_time(String target_start_time) {
+        this.target_start_time = target_start_time;
+    }
+
+    public String getTarget_end_time() {
+        return target_end_time;
+    }
+
+    public void setTarget_end_time(String target_end_time) {
+        this.target_end_time = target_end_time;
+    }
+
+    public Corp getCorp() {
+        return corp;
+    }
+
+    public void setCorp(Corp corp) {
+        this.corp = corp;
+    }
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getCorp_code() {

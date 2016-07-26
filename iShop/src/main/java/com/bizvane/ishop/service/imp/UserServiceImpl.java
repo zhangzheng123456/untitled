@@ -74,10 +74,15 @@ public class UserServiceImpl implements UserService {
      */
     public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException {
         String[] stores = null;
+
         if (!store_code.equals("")) {
             stores = store_code.split(",");
             for (int i = 0; i < stores.length; i++) {
+                if (!stores[i].startsWith(Common.STORE_HEAD)) {
+                    stores[i] = stores[i] + Common.STORE_HEAD;
+                }
                 stores[i] = stores[i].substring(1, stores[i].length());
+                System.out.println("--区域：---"+stores[i]);
             }
         }
         if (!area_code.equals("")) {
