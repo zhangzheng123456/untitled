@@ -447,8 +447,16 @@ function jumpBianse(){
             list.push(param1);
         }
         param["list"]=list;
+        whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/user/creatUsersQrcode","0",param,function(data){
-            console.log(data);
+            if(data.code=="0"){
+                frame();
+                $('.frame').html(data.message);
+            }else if(data.code=="-1"){
+                frame();
+                $('.frame').html(data.message);
+            }
+            whir.loading.remove();//移除加载框
         })
     });
 }
@@ -488,7 +496,7 @@ function POST(){
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
 			if(list.length<=0){
 				$(".table p").remove();
-				$(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
+				$(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
 		 	}else if(list.length>0){
                 $(".table p").remove();
@@ -561,6 +569,7 @@ function frame(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+    
 }  
 //全选
 function checkAll(name){

@@ -279,11 +279,11 @@ input::-webkit-input-placeholder{
 	margin-bottom: 10px;
 	overflow: hidden;
 }
-.sxk .btn{
+.sxk .sbtn{
 	margin: 10px 10px 0 10px;
 	overflow: hidden;
 }
-.sxk .btn i{
+.sxk .sbtn i{
 	width: 17px;
 	height: 18px;
 	margin-right: 8px;
@@ -291,7 +291,7 @@ input::-webkit-input-placeholder{
 	display: inline-block;
 	vertical-align: middle;
 }
-.sxk .btn .empty{
+.sxk .sbtn .empty{
 	float: left;
 	width: 100px;
 	height: 30px;
@@ -302,10 +302,10 @@ input::-webkit-input-placeholder{
 	background-color: #8C9DB4;
 	cursor: pointer;
 }
-.sxk .btn .r_btn{
+.sxk .sbtn .r_btn{
 	float: right;
 }
-.sxk .btn .r_btn .pack_up,.sxk .btn .r_btn .find{
+.sxk .sbtn .r_btn .pack_up,.sxk .sbtn .r_btn .find{
 	min-width: 100px;
 	height: 30px;
 	border-radius: 5px;
@@ -315,10 +315,10 @@ input::-webkit-input-placeholder{
 	float: left;
 	cursor: pointer;
 }
-.sxk .btn .r_btn .pack_up{
+.sxk .sbtn .r_btn .pack_up{
 	background-color: #6cc1c8;
 }
-.sxk .btn .r_btn .find{
+.sxk .sbtn .r_btn .find{
 	background-color: #4a5f7c;
 	margin-left: 10px;
 }
