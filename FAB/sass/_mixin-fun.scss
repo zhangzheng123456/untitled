@@ -1,0 +1,82 @@
+@mixin display-flex {
+  	display: -webkit-box;
+  	display: -webkit-flex;
+  	display: -moz-box;
+  	display: -moz-flex;
+  	display: -ms-flexbox;
+  	display: flex;
+}
+
+@mixin user-select($select) {
+  	-webkit-user-select: $select;
+       -moz-user-select: $select;
+        -ms-user-select: $select;
+            user-select: $select;
+}
+
+@mixin flex-wrap($value: nowrap) {
+	-webkit-flex-wrap: $value;
+  	-moz-flex-wrap: $value;
+  	@if $value == nowrap {
+    	-ms-flex-wrap: none;
+  	} @else {
+      	-ms-flex-wrap: $value;
+  	}
+  	flex-wrap: $value;
+}
+
+@mixin border-box {
+	-webkit-box-sizing: border-box;
+	   -moz-box-sizing: border-box;
+	    -ms-box-sizing: border-box;
+	        box-sizing: border-box;
+}
+
+@mixin flex($fg: 1, $fs: null, $fb: null) {
+  	-webkit-box-flex: $fg;
+  	-webkit-flex: $fg $fs $fb;
+  	-moz-box-flex: $fg;
+  	-moz-flex: $fg $fs $fb;
+  	-ms-flex: $fg $fs $fb;
+  	flex: $fg $fs $fb;
+}
+
+@mixin icon($name, $w, $h, $color: null) {
+		background: $color url(../../../img/#{$name}.png) no-repeat 0 0;
+		background-size: 100% 100%;
+		width: rem($w);
+		height: rem($h);
+}
+@mixin background($name, $w, $h, $color: null) {
+    background: $color url(../../../img/#{$name}.jpg) no-repeat 0 0;
+    background-size: 100% 100%;
+    width: rem($w);
+    height: rem($h);
+}
+
+@mixin font($px) {
+  [data-dpr="1"] & {
+    font-size: $px * 1px;
+  }
+  [data-dpr="2"] & {
+    font-size: $px * 2px;
+  }
+  [data-dpr="3"] & {
+    font-size: $px * 3px;
+  }
+}
+@mixin line-height($px) {
+  [data-dpr="1"] & {
+    line-height: $px * 1px;
+  }
+  [data-dpr="2"] & {
+    line-height: $px * 2px;
+  }
+  [data-dpr="3"] & {
+    line-height: $px * 3px;
+  }
+}
+$standardPx: 41.4 !default;
+@function rem($px) {
+	@return $px / $standardPx * 1rem;
+}

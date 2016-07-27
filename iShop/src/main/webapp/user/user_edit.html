@@ -94,7 +94,8 @@
                     </div>
                     <div>
                         <span>
-                            <label>设置密码</label><input type="text" id="init_password"/>
+                            <label>设置密码</label><input type="password"  id="init_password"/>
+                            <span class="pwd_btn" style="padding:5px 10px;background: #6cc1c8;color:#ffffff;border-radius: 4px" onclick="chongzhi()">重置</span>
                             <div style="padding-left:125px" class="hint"><div  hintinfo="密码不能为空！"></div></div>
                         </span>
                     </div>
@@ -327,5 +328,14 @@
     <!-- error tips -->
     <script type="text/javascript" src="../js/user/user_operate.js"></script>
     <script src="/js/user/usercheck_power.js"></script>
+    <script>
+        function chongzhi(){
+            var init_password=$("#init_password");
+            if(init_password.attr('type')=="password") {
+                init_password.attr('type', 'text');
+            } else{
+            init_password.attr('type', 'password');}
+        }
+    </script>
 </body>
 </html>
