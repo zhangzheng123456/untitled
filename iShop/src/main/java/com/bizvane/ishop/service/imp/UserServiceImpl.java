@@ -299,10 +299,10 @@ public class UserServiceImpl implements UserService {
         logger.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
         if (login_user == null) {
-            user_info.put("error", "用户名或密码错误！");
+            user_info.put("error", "用户名或密码错误");
             user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else if (login_user.getIsactive().contains("N")) {
-            user_info.put("error", "当前用户不可用！");
+            user_info.put("error", "当前用户不可用");
             user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
             int user_id = login_user.getId();

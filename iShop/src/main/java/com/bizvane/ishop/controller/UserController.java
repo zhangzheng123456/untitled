@@ -1031,7 +1031,7 @@ public class UserController {
             if (existInfo != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("用户编号已被使用！！！");
+                dataBean.setMessage("用户编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1064,11 +1064,11 @@ public class UserController {
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("手机号码已被使用！！！");
+                dataBean.setMessage("手机号码已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("手机号码未被使用！！！");
+                dataBean.setMessage("手机号码未被使用");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -1097,11 +1097,11 @@ public class UserController {
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("email已被使用！！！");
+                dataBean.setMessage("email已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("email未被使用！！！");
+                dataBean.setMessage("email未被使用");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -1157,7 +1157,7 @@ public class UserController {
                 }
             }
             dataBean.setId(id);
-            dataBean.setMessage("所属企业未授权！");
+            dataBean.setMessage("所属企业未授权");
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);

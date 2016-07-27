@@ -256,7 +256,7 @@ public class UserAchvGoalControl {
             userAchvGoalService.insert(userAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("add SUCCESS！");
+            dataBean.setMessage("add SUCCESS");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

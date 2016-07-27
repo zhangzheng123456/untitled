@@ -47,17 +47,17 @@ public class GoodsServiceImpl implements GoodsService {
         if (goods.getCorp_code().equals(old.getCorp_code())) {
             if ((!old.getGoods_code().equals(goods.getGoods_code()))
                     && (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR))) {
-                return "编号已经存在！！！！";
+                return "编号已经存在";
             } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-                return "名称已经存在！！！！";
+                return "名称已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
                 return Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
             if (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR)) {
-                return "编号已经存在！！！！";
+                return "编号已经存在";
             } else if (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR)) {
-                return "名称已经存在！！！！";
+                return "名称已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
                 return Common.DATABEAN_CODE_SUCCESS;
             }

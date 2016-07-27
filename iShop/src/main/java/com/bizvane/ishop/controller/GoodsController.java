@@ -463,7 +463,7 @@ public class GoodsController {
             } else {
                 this.goodsService.insert(goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("success !!!");
+                dataBean.setMessage("success");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -539,7 +539,7 @@ public class GoodsController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("edit error !!! ");
+            dataBean.setMessage("edit error");
         }
         return dataBean.getJsonStr();
     }

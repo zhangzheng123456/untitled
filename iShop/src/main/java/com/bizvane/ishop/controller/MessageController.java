@@ -359,7 +359,7 @@ public class MessageController {
             String result = this.smsTemplateService.update(smsTemplate);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("更改成功！！");
+                dataBean.setMessage("更改成功");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);

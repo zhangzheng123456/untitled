@@ -137,13 +137,13 @@ public class VIPController {
             String existInfo2 = vipService.vipNameExist(vipInfo.getVip_name(), vipInfo.getCorp_code());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("VIP 用户编号已经存在！！！");
+                dataBean.setMessage("VIP 用户编号已经存在");
             } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("VIP 用户名称已经存在！！！");
+                dataBean.setMessage("VIP 用户名称已经存在");
             } else {
                 vipService.insert(vipInfo);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("add success!!!");
+                dataBean.setMessage("add success");
             }
 
         } catch (Exception ex) {
@@ -177,7 +177,7 @@ public class VIPController {
             String result = vipService.update(vipInfo);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("商品更改成功！！");
+                dataBean.setMessage("商品更改成功");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
@@ -185,7 +185,7 @@ public class VIPController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("edit error !!! ");
+            dataBean.setMessage("edit error");
             log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
@@ -534,11 +534,11 @@ public class VIPController {
             if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("标签名称未被使用！！！");
+                dataBean.setMessage("标签名称未被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("标签名称已被使用！！！");
+                dataBean.setMessage("标签名称已被使用");
             }
 
         } catch (Exception ex) {
@@ -694,7 +694,7 @@ public class VIPController {
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage("scuccess!!!!");
+            dataBean.setMessage("scuccess");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -755,11 +755,11 @@ public class VIPController {
 //            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
 //                dataBean.setId(id);
 //                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//                dataBean.setMessage("标签编号未被使用！！！");
+//                dataBean.setMessage("标签编号未被使用");
 //            } else {
 //                dataBean.setId(id);
 //                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//                dataBean.setMessage("标签编号已被使用！！！");
+//                dataBean.setMessage("标签编号已被使用");
 //            }
 //        } catch (Exception ex) {
 //            dataBean.setId(id);
@@ -791,11 +791,11 @@ public class VIPController {
             if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("标签名称未被使用！！！");
+                dataBean.setMessage("标签名称未被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("标签名称已被使用！！！");
+                dataBean.setMessage("标签名称已被使用");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -997,7 +997,7 @@ public class VIPController {
 //            VipLabelType.setCreater(user_id);
 //            this.VipLabelTypeService.insert(VipLabelType);
 //            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage("标签类型创建成功！！");
+//            dataBean.setMessage("标签类型创建成功");
 //            dataBean.setId(id);
 //        } catch (Exception ex) {
 //            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1247,7 +1247,7 @@ public class VIPController {
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("not found VipRecord error !!!");
+                dataBean.setMessage("not found VipRecord error");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -1393,7 +1393,7 @@ public class VIPController {
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage("scuccess!!!!");
+            dataBean.setMessage("scuccess");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

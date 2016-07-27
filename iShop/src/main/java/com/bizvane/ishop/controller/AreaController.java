@@ -226,7 +226,7 @@ public class AreaController {
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除！");
+                        dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -333,7 +333,7 @@ public class AreaController {
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("区域编号已被使用！！！");
+                dataBean.setMessage("区域编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -363,7 +363,7 @@ public class AreaController {
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("区域编号已被使用！！！");
+                dataBean.setMessage("区域编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
