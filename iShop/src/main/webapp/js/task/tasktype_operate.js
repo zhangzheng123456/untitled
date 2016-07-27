@@ -117,6 +117,12 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					isactive="N";
 				}
+				var _command="/task_type/edit";//接口名
+				var opt = {//返回成功后的操作
+					success:function(){
+
+					}
+				};
 				var _params={"id":id,"corp_code":corp_code,"task_type_code":task_type_code,"task_type_name":task_type,"isactive":isactive};
 				tasktypejs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -173,6 +179,7 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.tasktype.init();//初始化
+	var a="";
 	if($(".pre_title label").text()=="编辑任务类型"){
 		var id=sessionStorage.getItem("id");
 		var key_val=sessionStorage.getItem("key_val");//取页面的function_code
@@ -205,13 +212,14 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
+				var corp_code=msg.corp_code;
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist();
+				getcorplist(corp_code);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -223,7 +231,7 @@ jQuery(document).ready(function(){
 			whir.loading.remove();//移除加载框
 		});
 	}else{
-		getcorplist();
+		getcorplist(a);
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
@@ -277,7 +285,7 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/task/tasktype.html");
 	});
 });
-function getcorplist(){
+function getcorplist(a){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -293,6 +301,9 @@ function getcorplist(){
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
+			if(a!==""){
+				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+			}
 			$('.corp_select select').searchableSelect();
 			$('.searchable-select-item').click(function(){
 				$("input[verify='Code']").val("");
