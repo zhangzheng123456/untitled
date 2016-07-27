@@ -37,7 +37,7 @@ jQuery(function(){
 					}
 					console.log(rowno);
 					console.log(key);
-					oc.webaction("IShowGetFABCommand",query,function(data){
+					oc.postRequire("post","/app/fab","0",param,function(data){
 						console.log(data);
 		                var goodsList=JSON.parse(data[0].message)["goodsList"];
 		                for(var i=0;i<goodsList.length;i++){
