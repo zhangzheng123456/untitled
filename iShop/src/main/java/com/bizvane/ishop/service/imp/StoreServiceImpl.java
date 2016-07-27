@@ -212,18 +212,20 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code", corp_code);
         params.put("area_codes", areas);
         params.put("store_codes", stores);
-        String brand_name = map.get("brand_name");
-        map.remove("brand_name");
-        if (map.size() == 0) {
-            params.put("map", null);
-        } else {
-            params.put("map", map);
-        }
+        params.put("map", map);
+//        String brand_name = map.get("brand_name");
+//        map.remove("brand_name");
+//        if (map.size() == 0) {
+//            params.put("map", null);
+//        } else {
+//            params.put("map", map);
+//        }
+
         PageHelper.startPage(page_number, page_size);
         List<Store> list1 = storeMapper.selectAllStoreScreen(params);
-        list1 = ComparaBrandName(list1, brand_name);
-        PageInfo<Store> page = new PageInfo<Store>();
-        page.setList(list1);
+        //  list1 = ComparaBrandName(list1, brand_name);
+        PageInfo<Store> page = new PageInfo<Store>(list1);
+        //page.setList(list1);
         return page;
     }
 
@@ -353,6 +355,17 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public int selectAchCount(String corp_code, String store_code) throws SQLException {
         return this.storeMapper.selectAchCount(corp_code, store_code);
+    }
+
+    @Override
+    public List<Store> selByAreaCodeList(String corp_code, String[] area_code, String search_value) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_code", area_code);
+        params.put("search_value", search_value);
+        params.put("isactive", "");
+        List<Store> stores = storeMapper.selectByAreaCode(params);
+        return stores;
     }
 
     @Override

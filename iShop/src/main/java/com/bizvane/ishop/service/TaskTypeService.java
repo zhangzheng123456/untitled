@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.TaskType;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/7/21.
@@ -24,4 +25,8 @@ public interface TaskTypeService {
     List<TaskType> codeExist(String corp_code,String task_type_code);
 
     List<TaskType> nameExist(String corp_code,String task_type_name);
+
+    PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map);
+
+
 }

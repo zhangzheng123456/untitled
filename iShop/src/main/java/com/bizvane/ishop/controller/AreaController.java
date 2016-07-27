@@ -61,7 +61,35 @@ public class AreaController {
     private CorpService corpService;
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
-
+    @RequestMapping(value = "/selAreaByCorpCode", method = RequestMethod.POST)
+    @ResponseBody
+    public String selAreaByCorpCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+            String searchValue = jsonObject.get("searchValue").toString();
+            PageInfo<Area> list = areaService.getAllAreaByPage(page_number, page_size, corp_code, searchValue);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 品牌列表
      */
@@ -198,7 +226,7 @@ public class AreaController {
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除！");
+                        dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -305,7 +333,7 @@ public class AreaController {
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("区域编号已被使用！！！");
+                dataBean.setMessage("区域编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -335,7 +363,7 @@ public class AreaController {
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("区域编号已被使用！！！");
+                dataBean.setMessage("区域编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

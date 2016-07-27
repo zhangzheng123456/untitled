@@ -457,13 +457,13 @@ public class GoodsController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("编号已存在");
+                dataBean.setMessage("商品编号已存在");
             } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("商品名称已存在！！！");
+                dataBean.setMessage("商品名称已存在");
             } else {
                 this.goodsService.insert(goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("success !!!");
+                dataBean.setMessage("success");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -531,7 +531,7 @@ public class GoodsController {
             String result = goodsService.update(goods);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("商品更改成功！！");
+                dataBean.setMessage("商品更改成功");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);
@@ -539,7 +539,7 @@ public class GoodsController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("edit error !!! ");
+            dataBean.setMessage("edit error");
         }
         return dataBean.getJsonStr();
     }
@@ -641,7 +641,7 @@ public class GoodsController {
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("商品编号已被使用！！！");
+                dataBean.setMessage("商品编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -678,7 +678,7 @@ public class GoodsController {
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("商品名称已被使用！！！");
+                dataBean.setMessage("商品名称已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

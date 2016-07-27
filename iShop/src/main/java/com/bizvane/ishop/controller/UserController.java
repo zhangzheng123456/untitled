@@ -6,10 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.IshowHttpClient;
-import com.bizvane.ishop.utils.LuploadHelper;
-import com.bizvane.ishop.utils.OutExeclHelper;
-import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.ishop.utils.*;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -73,6 +70,39 @@ public class UserController {
     private TableManagerService managerService;
     String id;
 
+    /***
+     * 根据企业，店铺拉取员工
+     */
+    @RequestMapping(value = "/selectByPart", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectByPart(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            String searchValue = jsonObject.get("searchValue").toString();
+            PageInfo<User> list = userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_SM);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
     /***
      * 导出数据
      */
@@ -317,7 +347,7 @@ public class UserController {
                 }
             }
             Cell[] column = rs.getColumn(3);
-            Pattern pattern4 = Pattern.compile("^[0-9]*$");
+            Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[0-9]{10})");
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern4.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
@@ -519,7 +549,8 @@ public class UserController {
                 user.setStore_code(store_code);
             }
             user.setQrcode("");
-            user.setPassword(phone);
+            String password = CheckUtils.encryptMD5Hash(phone);
+            user.setPassword(password);
             Date now = new Date();
             user.setLogin_time_recently("");
             user.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -568,7 +599,9 @@ public class UserController {
             user.setId(Integer.parseInt(jsonObject.get("id").toString()));
             user.setUser_code(jsonObject.get("user_code").toString());
             user.setUser_name(jsonObject.get("username").toString());
-            user.setPassword(jsonObject.get("password").toString());
+            String password = jsonObject.get("password").toString();
+            password = CheckUtils.encryptMD5Hash(password);
+            user.setPassword(password);
             user.setAvatar(jsonObject.get("avater").toString());
             user.setPhone(jsonObject.get("phone").toString());
             user.setEmail(jsonObject.get("email").toString());
@@ -998,7 +1031,7 @@ public class UserController {
             if (existInfo != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("用户编号已被使用！！！");
+                dataBean.setMessage("用户编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1031,11 +1064,11 @@ public class UserController {
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("手机号码已被使用！！！");
+                dataBean.setMessage("手机号码已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("手机号码未被使用！！！");
+                dataBean.setMessage("手机号码未被使用");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -1064,11 +1097,11 @@ public class UserController {
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("email已被使用！！！");
+                dataBean.setMessage("email已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("email未被使用！！！");
+                dataBean.setMessage("email未被使用");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -1124,7 +1157,7 @@ public class UserController {
                 }
             }
             dataBean.setId(id);
-            dataBean.setMessage("所属企业未授权！");
+            dataBean.setMessage("所属企业未授权");
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);

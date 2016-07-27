@@ -240,7 +240,7 @@ public class GroupController {
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除！");
+                        dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -593,7 +593,7 @@ public class GroupController {
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该群组编号已存在！");
+                dataBean.setMessage("该群组编号已存在");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -627,7 +627,7 @@ public class GroupController {
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该群组名称已存在！");
+                dataBean.setMessage("该群组名称已存在");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

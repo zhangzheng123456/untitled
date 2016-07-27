@@ -69,7 +69,40 @@ public class StoreController {
     private FunctionService functionService;
     @Autowired
     private TableManagerService managerService;
-
+    /***
+     * 根据区域拉店铺
+     */
+    @RequestMapping(value = "/selectByAreaCode", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectByAreaCode(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+            String areas=jsonObject.get("areaCodes").toString();
+            String searchValue = jsonObject.get("searchValue").toString();
+            String[] areaCodes = areas.split(",");
+            PageInfo<Store> list=storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 店铺管理
      */
@@ -145,7 +178,7 @@ public class StoreController {
             if (corp == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该企业编号不存在！");
+                dataBean.setMessage("该企业编号不存在");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -266,12 +299,12 @@ public class StoreController {
                     List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
                     count = user.size();
                     if (count > 0) {
-                        msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
+                        msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除";
                         break;
                     }
                     count = storeService.selectAchCount(corp_code, store.getStore_code());
                     if (count > 0) {
-                        msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除！";
+                        msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除";
                         break;
                     }
                 }
@@ -532,7 +565,7 @@ public class StoreController {
             if (store != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("店铺编号已被使用！！！");
+                dataBean.setMessage("店铺编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -569,7 +602,7 @@ public class StoreController {
             if (store != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("店铺名称已被使用！！！");
+                dataBean.setMessage("店铺名称已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -632,7 +665,7 @@ public class StoreController {
                 }
             }
             dataBean.setId(id);
-            dataBean.setMessage("所属企业未授权！");
+            dataBean.setMessage("所属企业未授权");
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);

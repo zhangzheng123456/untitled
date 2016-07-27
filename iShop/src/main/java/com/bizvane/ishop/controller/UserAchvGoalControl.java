@@ -31,6 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.System;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -255,7 +256,7 @@ public class UserAchvGoalControl {
             userAchvGoalService.insert(userAchvGoal);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("add SUCCESS！");
+            dataBean.setMessage("add SUCCESS");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -523,7 +524,8 @@ public class UserAchvGoalControl {
                     break;
                 }
             }
-
+            SimpleDateFormat sdf = new SimpleDateFormat("20yy-MM-dd");
+            Date date = null;
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
@@ -532,7 +534,8 @@ public class UserAchvGoalControl {
                     userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_type(rs.getCell(j++, i).getContents());
-                    userAchvGoal.setTarget_time(rs.getCell(j++, i).getContents());
+                    date= sdf.parse("20"+rs.getCell(j++, i).getContents());
+                    userAchvGoal.setTarget_time(sdf.format(date));
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");
                     } else {

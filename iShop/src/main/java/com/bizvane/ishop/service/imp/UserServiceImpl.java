@@ -4,6 +4,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.Status;
@@ -76,10 +77,15 @@ public class UserServiceImpl implements UserService {
      */
     public PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException {
         String[] stores = null;
+
         if (!store_code.equals("")) {
             stores = store_code.split(",");
             for (int i = 0; i < stores.length; i++) {
+                if (!stores[i].startsWith(Common.STORE_HEAD)) {
+                    stores[i] = stores[i] + Common.STORE_HEAD;
+                }
                 stores[i] = stores[i].substring(1, stores[i].length());
+                System.out.println("--区域：---"+stores[i]);
             }
         }
         if (!area_code.equals("")) {
@@ -288,18 +294,26 @@ public class UserServiceImpl implements UserService {
      * 登录查询
      */
     @Transactional
-    public JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException {
+    public JSONObject login(HttpServletRequest request, String phone, String password) throws Exception {
         System.out.println("---------login--------");
-        User login_user = userMapper.selectLogin(phone, password);
+        User login_user1 = userMapper.selectLogin(phone, password);
+        password = CheckUtils.encryptMD5Hash(password);
+        User login_user2 = userMapper.selectLogin(phone, password);
         logger.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
-        if (login_user == null) {
-            user_info.put("error", "用户名或密码错误！");
+        if (login_user2 == null && login_user1 == null) {
+            user_info.put("error", "用户名或密码错误");
             user_info.put("status", Common.DATABEAN_CODE_ERROR);
-        } else if (login_user.getIsactive().contains("N")) {
-            user_info.put("error", "当前用户不可用！");
-            user_info.put("status", Common.DATABEAN_CODE_ERROR);
+//        } else if (login_user.getIsactive().contains("N")) {
+//            user_info.put("error", "当前用户不可用");
+//            user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
+            User login_user;
+            if (login_user1 != null){
+                login_user = login_user1;
+            }else {
+                login_user = login_user2;
+            }
             int user_id = login_user.getId();
             String user_code = login_user.getUser_code();
             String corp_code = login_user.getCorp_code();

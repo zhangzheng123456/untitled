@@ -11,44 +11,46 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/7/21.
  */
 @Service
-public class TaskTypeServiceImpl implements TaskTypeService{
+public class TaskTypeServiceImpl implements TaskTypeService {
 
     @Autowired
     TaskTypeMapper taskTypeMapper;
 
-    public TaskType selectById(String id){
+    public TaskType selectById(String id) {
         return taskTypeMapper.selectById(Integer.parseInt(id));
     }
 
-    public List<TaskType> selectByCode(String corp_code,String task_type_code){
-        return taskTypeMapper.selectByCode(corp_code,task_type_code);
+    public List<TaskType> selectByCode(String corp_code, String task_type_code) {
+        return taskTypeMapper.selectByCode(corp_code, task_type_code);
     }
 
-    public PageInfo<TaskType> selectAllTaskType(int page_num,int page_size,String corp_code, String search_value){
-        PageHelper.startPage(page_num,page_size);
-        List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code,search_value);
-        PageInfo<TaskType> task= new PageInfo<TaskType>(task_types);
+    public PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value) {
+        PageHelper.startPage(page_num, page_size);
+        List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value);
+        PageInfo<TaskType> task = new PageInfo<TaskType>(task_types);
         return task;
     }
 
-    public String insertTaskType(String message,String user_code){
+    public String insertTaskType(String message, String user_code) {
         JSONObject jsonObject = new JSONObject(message);
         String task_type_code = jsonObject.get("task_type_code").toString();
         String task_type_name = jsonObject.get("task_type_name").toString();
         String corp_code = jsonObject.get("corp_code").toString();
-        List<TaskType> task_type1 = taskTypeMapper.selectByCode(corp_code,task_type_code);
-        List<TaskType> task_type2 = taskTypeMapper.selectByName(corp_code,task_type_name);
+        List<TaskType> task_type1 = taskTypeMapper.selectByCode(corp_code, task_type_code);
+        List<TaskType> task_type2 = taskTypeMapper.selectByName(corp_code, task_type_name);
 
-        if (task_type1.size()>0){
+        if (task_type1.size() > 0) {
             return "任务类型编号已存在";
         }
-        if (task_type2.size()>0){
+        if (task_type2.size() > 0) {
             return "任务类型名称已存在";
         }
         TaskType task_type = new TaskType();
@@ -64,27 +66,27 @@ public class TaskTypeServiceImpl implements TaskTypeService{
         int result = taskTypeMapper.insertTaskType(task_type);
         if (result == 1) {
             return Common.DATABEAN_CODE_SUCCESS;
-        }else {
+        } else {
             return "新增失败，请稍后再试";
         }
     }
 
-    public String updateTaskType(String message,String user_code){
+    public String updateTaskType(String message, String user_code) {
         JSONObject jsonObject = new JSONObject(message);
         int id = Integer.parseInt(jsonObject.get("id").toString());
         String task_type_code = jsonObject.get("task_type_code").toString();
         String task_type_name = jsonObject.get("task_type_name").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         TaskType task_type0 = taskTypeMapper.selectById(id);
-        List<TaskType> task_type1 = taskTypeMapper.selectByCode(corp_code,task_type_code);
-        List<TaskType> task_type2 = taskTypeMapper.selectByName(corp_code,task_type_name);
+        List<TaskType> task_type1 = taskTypeMapper.selectByCode(corp_code, task_type_code);
+        List<TaskType> task_type2 = taskTypeMapper.selectByName(corp_code, task_type_name);
 
-        if (task_type1.size()>0 &&
-                !(task_type0.getTask_type_code().equals(task_type_code) && task_type0.getCorp_code().equals(corp_code))){
+        if (task_type1.size() > 0 &&
+                !(task_type0.getTask_type_code().equals(task_type_code) && task_type0.getCorp_code().equals(corp_code))) {
             return "任务类型编号已存在";
         }
-        if (task_type2.size()>0 &&
-                !task_type0.getTask_type_name().equals(task_type_name) && task_type0.getCorp_code().equals(corp_code)){
+        if (task_type2.size() > 0 &&
+                !task_type0.getTask_type_name().equals(task_type_name) && task_type0.getCorp_code().equals(corp_code)) {
             return "任务类型名称已存在";
         }
         TaskType task_type = new TaskType();
@@ -98,23 +100,34 @@ public class TaskTypeServiceImpl implements TaskTypeService{
         task_type.setModified_date(Common.DATETIME_FORMAT.format(now));
         task_type.setModifier(user_code);
         task_type.setIsactive(jsonObject.get("isactive").toString());
-        int result = taskTypeMapper.insertTaskType(task_type);
+        int result = taskTypeMapper.updateTaskType(task_type);
         if (result == 1) {
             return Common.DATABEAN_CODE_SUCCESS;
-        }else {
+        } else {
             return "编辑失败，请稍后再试";
         }
     }
 
-    public int deleteTaskType(int id){
+    public int deleteTaskType(int id) {
         return taskTypeMapper.deleteById(id);
     }
 
-    public List<TaskType> codeExist(String corp_code,String task_type_code){
-        return taskTypeMapper.selectByCode(corp_code,task_type_code);
+    public List<TaskType> codeExist(String corp_code, String task_type_code) {
+        return taskTypeMapper.selectByCode(corp_code, task_type_code);
     }
 
-    public List<TaskType> nameExist(String corp_code,String task_type_name){
-        return taskTypeMapper.selectByName(corp_code,task_type_name);
+    public List<TaskType> nameExist(String corp_code, String task_type_name) {
+        return taskTypeMapper.selectByName(corp_code, task_type_name);
+    }
+
+    @Override
+    public PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<TaskType> list = taskTypeMapper.selectAllTaskTypeScreen(params);
+        PageInfo<TaskType> page = new PageInfo<TaskType>(list);
+        return page;
     }
 }

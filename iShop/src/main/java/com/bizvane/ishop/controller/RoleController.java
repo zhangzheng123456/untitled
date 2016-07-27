@@ -125,7 +125,7 @@ public class RoleController {
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("add role success !!!!");
+                dataBean.setMessage("add role success");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -160,13 +160,13 @@ public class RoleController {
                 } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
-                    dataBean.setMessage("角色" + role_code + "下有所属群组，请先处理角色下群组再删除！");
+                    dataBean.setMessage("角色" + role_code + "下有所属群组，请先处理角色下群组再删除");
                     return dataBean.getJsonStr();
                 }
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("success !!!!!");
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -248,7 +248,7 @@ public class RoleController {
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("edit success !!! ");
+                dataBean.setMessage("edit success");
             }
         } catch (Exception ex) {
             dataBean.setId("1");

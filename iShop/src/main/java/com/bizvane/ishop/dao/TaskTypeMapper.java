@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.TaskType;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/7/20.
@@ -23,4 +24,6 @@ public interface TaskTypeMapper {
     int updateTaskType(TaskType type);
 
     int deleteById(int id);
+
+    List<TaskType> selectAllTaskTypeScreen(Map<String, Object> params);
 }

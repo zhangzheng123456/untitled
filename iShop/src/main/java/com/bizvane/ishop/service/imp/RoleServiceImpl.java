@@ -33,9 +33,9 @@ public class RoleServiceImpl implements RoleService {
     @Override
     public String insertRole(Role record) throws SQLException {
         if (this.roleCodeExist(record.getRole_code()).equals(Common.DATABEAN_CODE_ERROR)) {
-            return "角色编号已存在!";
+            return "角色编号已存在";
         } else if (this.roleNameExist(record.getRole_name()).equals(Common.DATABEAN_CODE_ERROR)) {
-            return "角色名称已存在!";
+            return "角色名称已存在";
         } else if (roleMapper.insertRole(record) >= 0) {
             return Common.DATABEAN_CODE_SUCCESS;
         }
@@ -64,9 +64,9 @@ public class RoleServiceImpl implements RoleService {
         Role old = this.roleMapper.selectByRoleId(record.getId());
         if ((!old.getRole_code().equals(record.getRole_code()))
                 && (this.roleCodeExist(record.getRole_code()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "角色编号已存在!";
+            return "角色编号已存在";
         } else if (!old.getRole_name().equals(record.getRole_name()) && (this.roleNameExist(record.getRole_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-            return "角色名称已存在!";
+            return "角色名称已存在";
         } else if (roleMapper.updateByRoleId(record) >= 0) {
             return Common.DATABEAN_CODE_SUCCESS;
         }

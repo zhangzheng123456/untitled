@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Goods;
@@ -12,9 +13,8 @@ import com.bizvane.ishop.service.GoodsService;
 import com.bizvane.ishop.service.UserService;
 import com.bizvane.ishop.service.WebService;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +31,7 @@ import javax.servlet.http.HttpServletRequest;
 @Controller
 public class WebController {
 
-    private static Logger logger = LoggerFactory.getLogger((WebController.class));
+    private static final Logger logger = Logger.getLogger(WebController.class);
 
     private static long NETWORK_DELAY_SECONDS = 1000 * 60 * 10;// 10 mininutes
 
@@ -120,22 +120,23 @@ public class WebController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * app获取FAB列表接口
+     */
     @RequestMapping(value = "/app/fab", method = RequestMethod.POST)
     @ResponseBody
     public String fab(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            int page_number = Integer.parseInt(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.parseInt(jsonObject.get("pageSize").toString());
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            int rowno = Integer.parseInt(jsonObject.get("rowno").toString());
             String corp_code = jsonObject.get("corp_code").toString();
 
             JSONObject result = new JSONObject();
-            PageInfo<Goods> list;
-                list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
+            PageInfo<Goods> list = goodsService.selectBySearch(1+rowno/20, 20, corp_code, "");
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
                 String goods_image = list.getList().get(i).getGoods_image();
                 if (goods_image != null && !goods_image.isEmpty()) {
@@ -154,4 +155,32 @@ public class WebController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * app获取FAB详细接口
+     */
+    @RequestMapping(value = "/app/fab/select", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectGoodsTrain(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int goods_id = Integer.parseInt(jsonObject.getString("id"));
+            Goods goods = this.goodsService.getGoodsById(goods_id);
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("goods", JSON.toJSONString(goods));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+    
 }

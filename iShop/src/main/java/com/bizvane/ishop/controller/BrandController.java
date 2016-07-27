@@ -198,12 +198,12 @@ public class BrandController {
                     int count = 0;
                     count = brandService.getGoodsCount(corp_code, brand_code);
                     if (count > 0) {
-                        msg = "有使用品牌" + brand_code + "的商品，请先行处理！";
+                        msg = "有使用品牌" + brand_code + "的商品，请先行处理";
                         break;
                     }
                     count = brandService.getStoresCount(corp_code, brand_code);
                     if (count > 0) {
-                        msg = "有使用品牌" + brand_code + "的店铺，请先行处理！";
+                        msg = "有使用品牌" + brand_code + "的店铺，请先行处理";
                         break;
                     }
                 }
@@ -212,7 +212,7 @@ public class BrandController {
             if (msg == null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("删除成功！");
+                dataBean.setMessage("删除成功");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -317,7 +317,7 @@ public class BrandController {
             if (brand != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("品牌编号已被使用！！！");
+                dataBean.setMessage("品牌编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -348,7 +348,7 @@ public class BrandController {
             if (brand != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("品牌名称已被使用！！！");
+                dataBean.setMessage("品牌名称已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
