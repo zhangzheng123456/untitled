@@ -365,10 +365,11 @@
         ds.*,
         dc.CORP_NAME,
         da.AREA_NAME
-        from DEF_STORE ds,DEF_CORP dc ,DEF_AREA da
+        from DEF_STORE ds,DEF_CORP dc ,DEF_AREA da,DEF_BRAND db
         where ds.CORP_CODE = dc.CORP_CODE
         AND ds.CORP_CODE = da.CORP_CODE
         AND ds.AREA_CODE = da.AREA_CODE
+        AND ds.brand_code LIKE concat('%',db.brand_code,'%')
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
@@ -395,13 +396,17 @@
                     <when test="entryKey=='area_name'">
                         da.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
+
+                    <when test="entryKey=='brand_name'">
+                        db.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
                     <otherwise>
                         ds.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </otherwise>
                 </choose>
             </foreach>
         </if>
-        ORDER BY ds.id DESC
+        group by ds.id DESC
     </select>
 
 
