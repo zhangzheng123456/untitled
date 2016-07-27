@@ -98,7 +98,7 @@ public class TaskTypeServiceImpl implements TaskTypeService{
         task_type.setModified_date(Common.DATETIME_FORMAT.format(now));
         task_type.setModifier(user_code);
         task_type.setIsactive(jsonObject.get("isactive").toString());
-        int result = taskTypeMapper.insertTaskType(task_type);
+        int result = taskTypeMapper.updateTaskType(task_type);
         if (result == 1) {
             return Common.DATABEAN_CODE_SUCCESS;
         }else {
