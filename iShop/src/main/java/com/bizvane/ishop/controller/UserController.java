@@ -6,10 +6,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.IshowHttpClient;
-import com.bizvane.ishop.utils.LuploadHelper;
-import com.bizvane.ishop.utils.OutExeclHelper;
-import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.ishop.utils.*;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -552,7 +549,8 @@ public class UserController {
                 user.setStore_code(store_code);
             }
             user.setQrcode("");
-            user.setPassword(phone);
+            String password = CheckUtils.encryptMD5Hash(phone);
+            user.setPassword(password);
             Date now = new Date();
             user.setLogin_time_recently("");
             user.setCreated_date(Common.DATETIME_FORMAT.format(now));
@@ -601,7 +599,9 @@ public class UserController {
             user.setId(Integer.parseInt(jsonObject.get("id").toString()));
             user.setUser_code(jsonObject.get("user_code").toString());
             user.setUser_name(jsonObject.get("username").toString());
-            user.setPassword(jsonObject.get("password").toString());
+            String password = jsonObject.get("password").toString();
+            password = CheckUtils.encryptMD5Hash(password);
+            user.setPassword(password);
             user.setAvatar(jsonObject.get("avater").toString());
             user.setPhone(jsonObject.get("phone").toString());
             user.setEmail(jsonObject.get("email").toString());
