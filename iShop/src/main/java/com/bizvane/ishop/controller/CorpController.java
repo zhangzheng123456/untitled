@@ -529,7 +529,7 @@ public class CorpController {
                 }
             }
             Cell[] column4 = rs.getColumn(4);
-            Pattern pattern4 = Pattern.compile("^[0-9]*$");
+            Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[0-9]{10})");
             for (int i = 3; i < column4.length; i++) {
                 Matcher matcher = pattern4.matcher(column4[i].getContents().toString());
                 if (matcher.matches() == false) {

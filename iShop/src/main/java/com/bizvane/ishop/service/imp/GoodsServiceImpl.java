@@ -90,6 +90,9 @@ public class GoodsServiceImpl implements GoodsService {
         List<Goods> labels;
         PageHelper.startPage(page_number, page_size);
         labels = goodsMapper.selectAllGoodsScreen(params);
+        for (int i = 0; labels != null && i < labels.size(); i++) {
+            Transter(labels.get(i));
+        }
         PageInfo<Goods> page = new PageInfo<Goods>(labels);
         return page;
     }
