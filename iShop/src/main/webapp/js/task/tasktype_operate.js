@@ -20,13 +20,13 @@ var oc = new ObjectControl();
 		}
 	};
 	tasktypejs.checkCode=function(obj,hint){
-		var isCode=/^[T]{1}[0-9]{4}$/;
+		var isCode=/^[T]{1}[0-9]+$/;
 		if(!this.isEmpty(obj)){
 			if(isCode.test(obj)){
 				this.hiddenHint(hint);
 				return true;
 			}else{
-				this.displayHint(hint,"任务编号为必填项，支持以大写T开头必须是4位数字的组合！");
+				this.displayHint(hint,"任务编号为必填项，支持以大写T开头必须是数字的组合！");
 				return false;
 			}
 		}else{
@@ -52,22 +52,22 @@ var oc = new ObjectControl();
 	};
 	tasktypejs.bindbutton=function(){
 		$(".areaadd_oper_btn ul li:nth-of-type(1)").click(function(){
-			// var nameMark=$("#AREA_NAME").attr("data-mark");//区域编号是否唯一的标志
-			// var codeMark=$("#AREA_ID").attr("data-mark");//区域名称是否唯一的标志
+			var nameMark=$("#task_type").attr("data-mark");//类型名称是否唯一的标志
+			var codeMark=$("#task_type_code").attr("data-mark");//类型编号是否唯一的标志
 			if(tasktypejs.firstStep()){
-				// if(nameMark=="N"||codeMark=="N"){
-				// 	if(nameMark=="N"){
-				// 		var div=$("#AREA_NAME").next('.hint').children();
-				// 		div.html("该名称已经存在！");
-		  //           	div.addClass("error_tips");
-				// 	}
-				// 	if(codeMark=="N"){
-				// 		var div=$("#AREA_ID").next('.hint').children();
-				// 		div.html("该编号已经存在！");
-		  //           	div.addClass("error_tips");
-				// 	}
-	   //          	return;
-				// }
+				if(nameMark=="N"||codeMark=="N"){
+					if(nameMark=="N"){
+						var div=$("#task_type").next('.hint').children();
+						div.html("该名称已经存在！");
+		            	div.addClass("error_tips");
+					}
+					if(codeMark=="N"){
+						var div=$("#task_type_code").next('.hint').children();
+						div.html("该编号已经存在！");
+		            	div.addClass("error_tips");
+					}
+	            	return;
+				}
 				var task_type_code=$("#task_type_code").val();
 				var task_type=$("#task_type").val();
 				var corp_code=$("#OWN_CORP").val();
@@ -91,21 +91,21 @@ var oc = new ObjectControl();
 			}
 		});
 		$("#edit_save").click(function(){
-			// var codeMark=$("#AREA_ID").attr("data-mark");//区域名称是否唯一的标志
-			// var nameMark=$("#AREA_NAME").attr("data-mark");//区域编号是否唯一的标志
+			var nameMark=$("#task_type").attr("data-mark");//类型名称是否唯一的标志
+			var codeMark=$("#task_type_code").attr("data-mark");//类型编号是否唯一的标志
 			if(tasktypejs.firstStep()){
-				// if(nameMark=="N"){
-				// 	var div=$("#AREA_NAME").next('.hint').children();
-				// 	div.html("该名称已经存在！");
-		  //           div.addClass("error_tips");
-		  //           return;
-				// }
-				// if(codeMark=="N"){
-				// 	var div=$("#AREA_ID").next('.hint').children();
-				// 	div.html("该编号已经存在！");
-		  //           div.addClass("error_tips");
-		  //           return;
-				// }
+				if(nameMark=="N"){
+					var div=$("#task_type").next('.hint').children();
+					div.html("该名称已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(codeMark=="N"){
+					var div=$("#task_type_code").next('.hint').children();
+					div.html("该编号已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
 				var id=sessionStorage.getItem("id");
 				var task_type_code=$("#task_type_code").val();
 				var task_type=$("#task_type").val();
@@ -235,21 +235,21 @@ jQuery(document).ready(function(){
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[A]{1}[0-9]{4}$/;
+    	var isCode=/^[T]{1}[0-9]+$/;
     	var _params={};
-    	var area_code=$(this).val();
-    	var area_code1=$(this).attr("data-name");
+    	var task_type_code=$(this).val();
+    	var task_type_code1=$(this).attr("data-name");
     	var corp_code=$("#OWN_CORP").val();
-		if(area_code!==""&&area_code!==area_code1&&isCode.test(area_code)==true){
-			_params["area_code"]=area_code;
+		if(task_type_code!==""&&task_type_code!==task_type_code1&&isCode.test(task_type_code)==true){
+			_params["task_type_code"]=task_type_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/area/Area_codeExist","", _params, function(data){
+			oc.postRequire("post","/task_type/codeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
-	                    $("#AREA_ID").attr("data-mark","Y");
+	                    $("#task_type_code").attr("data-mark","Y");
 	               }else if(data.code=="-1"){
-	               		$("#AREA_ID").attr("data-mark","N");
+	               		$("#task_type_code").attr("data-mark","N");
 	               		div.addClass("error_tips");
 						div.html("该编号已经存在！");	
 	               }
@@ -257,23 +257,23 @@ jQuery(document).ready(function(){
 		}
     });
     //验证名称是否唯一
-    $("#AREA_NAME").blur(function(){
+    $("#task_type").blur(function(){
     	var corp_code=$("#OWN_CORP").val();
-    	var area_name=$("#AREA_NAME").val();
-    	var area_name1=$("#AREA_NAME").attr("data-name");
+    	var task_type=$("#task_type").val();
+    	var task_type1=$("#task_type").attr("data-name");
     	var div=$(this).next('.hint').children();
-    	if(area_name!==""&&area_name!==area_name1){
+    	if(task_type!==""&&task_type!==task_type1){
 	    	var _params={};
-	    	_params["area_name"]=area_name;
+	    	_params["task_type_name"]=task_type;
 	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/area/Area_nameExist","", _params, function(data){
+	    	oc.postRequire("post","/task_type/nameExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
-	            	$("#AREA_NAME").attr("data-mark","Y");
+	            	$("#task_type").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
 	            	div.html("该名称已经存在！")
 	            	div.addClass("error_tips");
-	            	$("#AREA_NAME").attr("data-mark","N");
+	            	$("#task_type").attr("data-mark","N");
 	            }
 	    	})
 	    }
@@ -307,9 +307,9 @@ function getcorplist(a){
 			$('.corp_select select').searchableSelect();
 			$('.searchable-select-item').click(function(){
 				$("input[verify='Code']").val("");
-				$("#AREA_NAME").val("");
+				$("#task_type").val("");
 				$("input[verify='Code']").attr("data-mark","");
-				$("#AREA_NAME").attr("data-mark","");
+				$("#task_type").attr("data-mark","");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
