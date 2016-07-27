@@ -8,9 +8,9 @@ import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TaskTypeService;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -35,7 +35,7 @@ public class TaskTypeController {
 
     String id;
 
-    private static Logger logger = LoggerFactory.getLogger((TaskTypeController.class));
+    private static final Logger logger = Logger.getLogger(TaskTypeController.class);
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
