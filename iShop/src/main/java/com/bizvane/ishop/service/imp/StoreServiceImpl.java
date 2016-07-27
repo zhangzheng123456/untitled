@@ -212,18 +212,20 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code", corp_code);
         params.put("area_codes", areas);
         params.put("store_codes", stores);
-        String brand_name = map.get("brand_name");
-        map.remove("brand_name");
-        if (map.size() == 0) {
-            params.put("map", null);
-        } else {
-            params.put("map", map);
-        }
+        params.put("map", map);
+//        String brand_name = map.get("brand_name");
+//        map.remove("brand_name");
+//        if (map.size() == 0) {
+//            params.put("map", null);
+//        } else {
+//            params.put("map", map);
+//        }
+
         PageHelper.startPage(page_number, page_size);
         List<Store> list1 = storeMapper.selectAllStoreScreen(params);
-        list1 = ComparaBrandName(list1, brand_name);
-        PageInfo<Store> page = new PageInfo<Store>();
-        page.setList(list1);
+        //  list1 = ComparaBrandName(list1, brand_name);
+        PageInfo<Store> page = new PageInfo<Store>(list1);
+        //page.setList(list1);
         return page;
     }
 

@@ -350,7 +350,7 @@ public class UserController {
                 }
             }
             Cell[] column = rs.getColumn(3);
-            Pattern pattern4 = Pattern.compile("^[0-9]*$");
+            Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[0-9]{10})");
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern4.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
