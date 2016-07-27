@@ -1186,6 +1186,12 @@ public class UserController {
                     String result = IshowHttpClient.get(url);
                     logger.info("------------creatQrcode  result" + result);
 
+                    if (!result.startsWith("{")){
+                        dataBean.setId(id);
+                        dataBean.setMessage("生成二维码失败");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
+                    }
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
@@ -1246,6 +1252,12 @@ public class UserController {
                         String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
                         String result = IshowHttpClient.get(url);
                         logger.info("------------creatQrcode  result" + result);
+                        if (!result.startsWith("{")){
+                            dataBean.setId(id);
+                            dataBean.setMessage("生成二维码失败");
+                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                            return dataBean.getJsonStr();
+                        }
                         JSONObject obj = new JSONObject(result);
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();
