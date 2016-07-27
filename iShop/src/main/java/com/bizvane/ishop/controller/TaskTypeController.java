@@ -7,6 +7,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TaskTypeService;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by ZhouZhou on 2016/7/21.
@@ -50,21 +52,21 @@ public class TaskTypeController {
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             int page_num = Integer.parseInt(request.getParameter("pageNumber"));
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(user_code,group_code,role_code,function_code);
+            JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
             PageInfo<TaskType> tasktype;
-            if (role_code.equals(Common.ROLE_SYS)){
-                tasktype = taskTypeService.selectAllTaskType(page_num,page_size,"","");
-            }else {
-                tasktype = taskTypeService.selectAllTaskType(page_num,page_size,corp_code,"");
+            if (role_code.equals(Common.ROLE_SYS)) {
+                tasktype = taskTypeService.selectAllTaskType(page_num, page_size, "", "");
+            } else {
+                tasktype = taskTypeService.selectAllTaskType(page_num, page_size, corp_code, "");
             }
-            result.put("actions",actions);
+            result.put("actions", actions);
             result.put("list", JSON.toJSONString(tasktype));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
-        }catch(Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage() + ex.toString());
@@ -86,7 +88,7 @@ public class TaskTypeController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
 
-            String result = taskTypeService.insertTaskType(message,user_code);
+            String result = taskTypeService.insertTaskType(message, user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -118,7 +120,7 @@ public class TaskTypeController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
 
-            String result = taskTypeService.updateTaskType(message,user_code);
+            String result = taskTypeService.updateTaskType(message, user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -184,10 +186,10 @@ public class TaskTypeController {
 
             JSONObject result = new JSONObject();
             PageInfo<TaskType> tasktype;
-            if (role_code.equals(Common.ROLE_SYS)){
-                tasktype = taskTypeService.selectAllTaskType(page_number,page_size,"",search_value);
-            }else {
-                tasktype = taskTypeService.selectAllTaskType(page_number,page_size,corp_code,search_value);
+            if (role_code.equals(Common.ROLE_SYS)) {
+                tasktype = taskTypeService.selectAllTaskType(page_number, page_size, "", search_value);
+            } else {
+                tasktype = taskTypeService.selectAllTaskType(page_number, page_size, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(tasktype));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -233,9 +235,9 @@ public class TaskTypeController {
 //                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
 //                dataBean.setMessage(msg);
 //            } else {
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
 //            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -261,8 +263,8 @@ public class TaskTypeController {
             String corp_code = jsonObject.get("corp_code").toString();
             String task_type_code = jsonObject.get("task_type_code").toString();
 
-            List<TaskType> task_type = taskTypeService.codeExist(corp_code,task_type_code);
-            if (task_type.size() > 0 ) {
+            List<TaskType> task_type = taskTypeService.codeExist(corp_code, task_type_code);
+            if (task_type.size() > 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("编号已被使用");
@@ -292,8 +294,8 @@ public class TaskTypeController {
             String corp_code = jsonObject.get("corp_code").toString();
             String task_type_name = jsonObject.get("task_type_name").toString();
 
-            List<TaskType> task_type = taskTypeService.nameExist(corp_code,task_type_name);
-            if (task_type.size() > 0 ) {
+            List<TaskType> task_type = taskTypeService.nameExist(corp_code, task_type_name);
+            if (task_type.size() > 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("名称已被使用");
@@ -306,6 +308,45 @@ public class TaskTypeController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String taskTypeScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.getString("id");
+            String message = jsonObject1.get("message").toString();
+            org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
+            int page_number = Integer.parseInt(jsonObject2.get("pageNumber").toString());
+            int page_size = Integer.parseInt(jsonObject2.get("pageSize").toString());
+//            String screen = jsonObject2.get("screen").toString();
+//            org.json.JSONObject jsonScreen = new JSONObject(screen);
+            Map<String, String> map = WebUtils.Json2Map(jsonObject2);
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<TaskType> taskType;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                taskType = taskTypeService.selectAllTaskTypeScreen(page_number, page_size, "", map);
+            } else {
+                taskType = taskTypeService.selectAllTaskTypeScreen(page_number, page_size, corp_code, map);
+            }
+            result.put("list", JSON.toJSONString(taskType));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }

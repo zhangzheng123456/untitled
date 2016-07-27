@@ -3,16 +3,16 @@
 <mapper namespace="com.bizvane.ishop.dao.TaskTypeMapper">
 
     <!--<resultMap type="com.bizvane.ishop.entity.TaskType" id="TaskType">-->
-        <!--<id column="id" property="id"/>-->
-        <!--<result column="task_type_code" property="task_type_code"/>-->
-        <!--<result column="task_type_name" property="task_type_name"/>-->
-        <!--<result column="corp_code" property="corp_code"/>-->
-        <!--<result column="modified_date" property="modified_date"/>-->
-        <!--<result column="modifier" property="modifier"/>-->
-        <!--<result column="isactive" property="isactive"/>-->
-        <!--<association property="corp" javaType="com.bizvane.ishop.entity.Corp">-->
-            <!--<result column="corp_name" property="corp_name"/>-->
-        <!--</association>-->
+    <!--<id column="id" property="id"/>-->
+    <!--<result column="task_type_code" property="task_type_code"/>-->
+    <!--<result column="task_type_name" property="task_type_name"/>-->
+    <!--<result column="corp_code" property="corp_code"/>-->
+    <!--<result column="modified_date" property="modified_date"/>-->
+    <!--<result column="modifier" property="modifier"/>-->
+    <!--<result column="isactive" property="isactive"/>-->
+    <!--<association property="corp" javaType="com.bizvane.ishop.entity.Corp">-->
+    <!--<result column="corp_name" property="corp_name"/>-->
+    <!--</association>-->
     <!--</resultMap>-->
 
     <select id="selectById" resultType="com.bizvane.ishop.entity.TaskType">
@@ -166,4 +166,29 @@
         </trim>
         WHERE ID=#{id};
     </update>
+
+    <select id="selectAllTaskTypeScreen" resultType="com.bizvane.ishop.entity.TaskType">
+        select
+        dt.*,
+        dc.CORP_NAME
+        from def_task_type dt,DEF_CORP dc
+        where dt.CORP_CODE = dc.CORP_CODE
+        <if test="corp_code != null and corp_code !=''">
+            AND dt.CORP_CODE = #{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    dt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
+        </foreach>
+        ORDER BY dt.id DESC
+    </select>
+
+
 </mapper>
