@@ -209,7 +209,7 @@ function jurisdiction(actions){
 //页面加载时list请求
 function GET(){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/task_type/list?pageNum="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/task_type/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             // console.log(data);
             if(data.code=="0"){
