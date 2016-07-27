@@ -34,9 +34,10 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 获取user所有列表功能模块
      */
-    public JSONArray selectAllFunctions(String user_code, String group_code, String role_code) {
+    public JSONArray selectAllFunctions(String corp_code,String user_code, String group_code, String role_code) {
         List<Function> func_info;
-
+        user_code = corp_code +"U"+user_code;
+        group_code = corp_code +"G"+group_code;
         //获取user所有功能模块
         func_info = functionMapper.selectAllFun(user_code, group_code, role_code);
         JSONArray modules = new JSONArray();
@@ -152,9 +153,10 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 按功能获取user动作权限
      */
-    public JSONArray selectActionByFun(String user_code, String group_code, String role_code, String function_code) {
+    public JSONArray selectActionByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) {
         List<Action> act_info;
-
+        user_code = corp_code +"U"+user_code;
+        group_code = corp_code +"G"+group_code;
         act_info = functionMapper.selectActionByFun(user_code, group_code, role_code, function_code);
         JSONArray actions = new JSONArray();
         for (int i = 0; i < act_info.size(); i++) {
@@ -169,7 +171,9 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 列出登录用户的所有权限
      */
-    public List<Function> selectAllPrivilege(String role_code, String user_code, String group_code, String search_value) {
+    public List<Function> selectAllPrivilege(String corp_code, String role_code, String user_code, String group_code, String search_value) {
+        user_code = corp_code +"U"+user_code;
+        group_code = corp_code +"G"+group_code;
         List<Function> privilege = functionMapper.selectPrivilege(user_code, role_code, group_code, search_value);
         return privilege;
     }
@@ -209,8 +213,9 @@ public class FunctionServiceImpl implements FunctionService {
      * 列出所选群组的权限
      * 返回action id
      */
-    public JSONArray selectGroupPrivilege(String group_code) {
+    public JSONArray selectGroupPrivilege(String corp_code,String group_code) {
         JSONArray array = new JSONArray();
+        group_code = corp_code +"G"+group_code;
         List<Function> act_info = functionMapper.selectGroupPrivilege(group_code);
         for (int i = 0; i < act_info.size(); i++) {
             int id = act_info.get(i).getId();
@@ -225,8 +230,9 @@ public class FunctionServiceImpl implements FunctionService {
      * 列出所选用户的权限
      * 返回action id
      */
-    public JSONArray selectUserPrivilege(String user_code) {
+    public JSONArray selectUserPrivilege(String corp_code,String user_code) {
         JSONArray array = new JSONArray();
+        user_code = corp_code +"U"+user_code;
         List<Function> act_info = functionMapper.selectUserPrivilege(user_code);
         for (int i = 0; i < act_info.size(); i++) {
             int id = act_info.get(i).getId();

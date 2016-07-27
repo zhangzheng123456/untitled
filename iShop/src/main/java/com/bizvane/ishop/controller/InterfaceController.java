@@ -67,7 +67,7 @@ public class InterfaceController {
             //   String search_value = jsonObject.get("searchValue").toString();
             JSONObject result = new JSONObject();
             PageInfo<Interfacers> list = interfaceService.selectAllInterface(page_number, page_size, "");
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);

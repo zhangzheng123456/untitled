@@ -12,19 +12,19 @@ import java.util.List;
  */
 public interface FunctionService {
 
-    JSONArray selectAllFunctions(String user_code,String group_code, String role_code);
+    JSONArray selectAllFunctions(String corp_code,String user_code,String group_code, String role_code);
 
-    JSONArray selectActionByFun(String user_code,String group_code, String role_code,String function_code);
+    JSONArray selectActionByFun(String corp_code,String user_code,String group_code, String role_code,String function_code);
 
-    List<Function> selectAllPrivilege(String role_code, String user_code, String group_code,String search_value);
+    List<Function> selectAllPrivilege(String corp_code,String role_code, String user_code, String group_code,String search_value);
 
     JSONArray selectRAGPrivilege(String role_code,String group_code);
 
     JSONArray selectRolePrivilege(String role_code);
 
-    JSONArray selectGroupPrivilege(String group_code);
+    JSONArray selectGroupPrivilege(String corp_code,String group_code);
 
-    JSONArray selectUserPrivilege(String user_code);
+    JSONArray selectUserPrivilege(String corp_code,String user_code);
 
     String updatePrivilege(String master_code,String user_id,JSONArray array);
 

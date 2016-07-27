@@ -297,7 +297,7 @@ public class LoginController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             User user = userService.getUserById(Integer.parseInt(user_id));
-            menu = functionService.selectAllFunctions(corp_code + user_code, corp_code + group_code, role_code);
+            menu = functionService.selectAllFunctions(corp_code,user_code, group_code, role_code);
             menus.put("menu", menu);
             menus.put("user_type", user_type);
             menus.put("role_code", role_code);
@@ -329,9 +329,9 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String function_code = request.getParameter("funcCode");
-            JSONArray actions_detail = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, "D" + function_code);
+            JSONArray actions_detail = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, "D" + function_code);
 
-            JSONArray actions_fun = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions_fun = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             for (int i = 0; i < actions_fun.size(); i++) {
                 String act = actions_fun.get(i).toString();
                 JSONObject obj = new JSONObject(act);

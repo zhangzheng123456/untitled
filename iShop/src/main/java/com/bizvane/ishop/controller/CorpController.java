@@ -82,7 +82,7 @@ public class CorpController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject info = new org.json.JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {

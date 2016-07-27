@@ -211,7 +211,7 @@ public class UserController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -978,7 +978,7 @@ public class UserController {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code, search_value);
+            List<Function> funcs = functionService.selectAllPrivilege(login_corp_code,login_role_code, login_user_code, login_group_code, search_value);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
@@ -987,10 +987,10 @@ public class UserController {
             String user_code = userService.getUserById(Integer.parseInt(user_id)).getUser_code();
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, corp_code + group_code);
+            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, corp_code+"G"+group_code);
 
             //获取用户自定义的权限
-            JSONArray user_privilege = functionService.selectUserPrivilege(corp_code + user_code);
+            JSONArray user_privilege = functionService.selectUserPrivilege(corp_code, user_code);
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));
@@ -1005,6 +1005,54 @@ public class UserController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 群组管理之
+     * 编辑群组信息之
+     * 查看权限之
+     * 新增权限
+     */
+    @RequestMapping(value = "/check_power/save", method = RequestMethod.POST)
+    @ResponseBody
+    public String addGroupCheckPower(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String user_id = request.getSession().getAttribute("user_code").toString();
+
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String list = jsonObject.get("list").toString();
+            JSONArray array = JSONArray.parseArray(list);
+
+            String user_code = jsonObject.get("group_code").toString();
+            String master_code;
+            if (jsonObject.has("corp_code")) {
+                String corp_code = jsonObject.get("corp_code").toString();
+                master_code = corp_code +"U"+ user_code;
+            } else {
+                master_code = user_code;
+            }
+            String result = functionService.updatePrivilege(master_code, user_id, array);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }

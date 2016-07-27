@@ -65,7 +65,7 @@ public class FeedbackController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Feedback> list = feedbackService.selectAllFeedback(page_number, page_size, "");
             result.put("list", JSON.toJSONString(list));

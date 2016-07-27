@@ -81,7 +81,7 @@ public class UserAchvGoalControl {
             String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String function_code = request.getParameter("funcCode").toString();
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
 

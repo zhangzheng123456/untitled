@@ -69,7 +69,7 @@ public class RoleController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Role> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -285,7 +285,7 @@ public class RoleController {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code, search_value);
+            List<Function> funcs = functionService.selectAllPrivilege(login_corp_code,login_role_code, login_user_code, login_group_code, search_value);
 
             String role_code = jsonObject.get("role_code").toString();
             //获取群组角色的权限
