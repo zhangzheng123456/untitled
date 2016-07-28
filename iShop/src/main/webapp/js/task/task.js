@@ -174,7 +174,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         } 
-        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -184,12 +184,20 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].task_type_code
+                        + data[i].task_code
+                        + "</td><td>"
+                        + data[i].task_title
                         + "</td><td>"
                         + data[i].task_type_name
                         + "</td><td><span>"
+                        + data[i].task_description
+                        + "</span></td><td><span>"
                         + data[i].corp_name
                         + "</span></td><td>"
+                        + data[i].target_start_time
+                        + "</td><td>"
+                         + data[i].target_end_time
+                        + "</td><td>"
                         + data[i].modifier
                         + "</td><td>"
                         + data[i].modified_date
@@ -208,7 +216,7 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="delete"){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
-            $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
 }
@@ -241,6 +249,7 @@ function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+         $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
