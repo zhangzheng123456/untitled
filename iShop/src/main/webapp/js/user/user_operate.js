@@ -243,7 +243,7 @@ var oc = new ObjectControl();
 						STORE_CODE +=r;
 					}
 				}
-				var PSW=$("#init_password").val();
+				// var PSW=$("#init_password").val();
 				//如果角色是导购，店长，区经的时候
 				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
 					if(STORE_CODE==""){
@@ -256,15 +256,15 @@ var oc = new ObjectControl();
 						return;
 					}
 				}
-				if(PSW==""){
-					art.dialog({
-						time: 1,
-						lock:true,
-						cancel: false,
-						content:"密码不能为空！"
-					});
-					return;
-				}
+				// if(PSW==""){
+				// 	art.dialog({
+				// 		time: 1,
+				// 		lock:true,
+				// 		cancel: false,
+				// 		content:"密码不能为空！"
+				// 	});
+				// 	return;
+				// }
 				var _command="/user/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
