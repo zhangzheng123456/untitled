@@ -5,12 +5,15 @@ import com.bizvane.ishop.entity.TaskAllocation;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yin on 2016/7/21.
  */
 public interface TaskMapper {
         List<Task> selectAllTask(@Param("corp_code")String corp_code,@Param("role_ident")String role_ident,@Param("user_code")String user_code,@Param("search_value")String search_value);
+
+        List<Task> selectAllTaskScreen(Map<String, Object> params);
 
         Task selTaskById(@Param("id")String id);
 

@@ -38,6 +38,24 @@ public class Task {
     private Corp corp;
     private String corp_name;
     private User user;
+    private String task_type_name;
+    private TaskType taskType;
+
+    public String getTask_type_name() {
+        return task_type_name;
+    }
+
+    public void setTask_type_name(String task_type_name) {
+        this.task_type_name = task_type_name;
+    }
+
+    public TaskType getTaskType() {
+        return taskType;
+    }
+
+    public void setTaskType(TaskType taskType) {
+        this.taskType = taskType;
+    }
 
     public String getRole_ident() {
         return role_ident;

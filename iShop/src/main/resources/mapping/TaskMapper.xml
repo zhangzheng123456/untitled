@@ -29,6 +29,33 @@
             )
         </if>
     </select>
+    <!--筛选-->
+    <select id="selectAllTaskScreen" resultType="com.bizvane.ishop.entity.Task">
+        SELECT * from def_task,DEF_CORP,def_task_type
+        where def_task.corp_code = DEF_CORP.corp_code
+        and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
+        <if test="corp_code != null and corp_code !=''">
+            AND def_task.CORP_CODE = #{corp_code}
+        </if>
+        <if test="role_ident !=null and role_ident!=''">
+            and def_task.task_code in(select rel_task_allocation.task_code from rel_task_allocation
+            where rel_task_allocation.corp_code =#{corp_code} and rel_task_allocation.user_code=#{user_code} )
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryKey=='task_type_name'">
+                    def_task_type.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    def_task.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
+        </foreach>
+    </select>
     <!--验证唯一或编辑时传值-->
     <select id="selTaskById" resultType="com.bizvane.ishop.entity.Task">
        SELECT  * from def_task

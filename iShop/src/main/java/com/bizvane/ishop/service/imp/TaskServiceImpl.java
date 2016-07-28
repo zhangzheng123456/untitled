@@ -32,11 +32,9 @@ import java.util.Map;
 @Service
 public class TaskServiceImpl implements TaskService{
     @Autowired
-    IceInterfaceService iceInterfaceService;
-    @Autowired
     private TaskMapper taskMapper;
     @Override
-    public PageInfo<Task> selectAllTask(int page_number, int page_size, String corp_code, String role_ident, String user_code, String search_value) {
+    public PageInfo<Task> selectAllTask(int page_num, int page_size, String corp_code, String role_ident, String user_code, String search_value) {
 
 //        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
 //        Data data_role_ident = new Data("role_ident", role_ident, ValueType.PARAM);
@@ -55,8 +53,21 @@ public class TaskServiceImpl implements TaskService{
 //        PageHelper.startPage(page_number, page_size);
 //        List<Task> list = WebUtils.Json2List(array);
 //        PageInfo<Task> page = new PageInfo<Task>(list);
-        PageHelper.startPage(page_number,page_size);
+        PageHelper.startPage(page_num, page_size);
         List<Task> tasks = taskMapper.selectAllTask(corp_code, role_ident, user_code, search_value);
+        PageInfo<Task> page= new PageInfo<Task>(tasks);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Task> selectSignAllScreen(int page_num, int page_size, String corp_code, String role_ident, String user_code, Map<String, String> map) {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("map",map);
+        params.put("corp_code",corp_code);
+        params.put("role_ident",role_ident);
+        params.put("user_code",user_code);
+        PageHelper.startPage(page_num, page_size);
+        List<Task> tasks = taskMapper.selectAllTaskScreen(params);
         PageInfo<Task> page= new PageInfo<Task>(tasks);
         return page;
     }
