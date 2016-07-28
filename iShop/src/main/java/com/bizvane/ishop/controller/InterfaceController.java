@@ -326,7 +326,7 @@ public class InterfaceController {
             }
             List<Interfacers> feedbacks = corpInfo.getList();
             if (feedbacks.size() >= 29999) {
-                errormessage = "导出数据过大";
+                errormessage = "：导出数据过大";
                 int i = 9 / 0;
             }
             Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
@@ -335,7 +335,7 @@ public class InterfaceController {
             String pathname = OutExeclHelper.OutExecl(feedbacks, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage = "数据异常，导出失败";
+                errormessage = "：数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));

@@ -89,7 +89,10 @@ public class UserController {
             String corp_code = jsonObject.get("corp_code").toString();
             String store_code = jsonObject.get("store_code").toString();
             String searchValue = jsonObject.get("searchValue").toString();
-            PageInfo<User> list = userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_SM);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            PageInfo<User> list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_SM);
+
+
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -161,15 +164,28 @@ public class UserController {
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = userService.getAllUserScreen(1, 30000, corp_code, area_code, "", role_code, map);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = userService.getAllUserScreen(1, 30000, corp_code, area_code, store_code, role_code, map);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }else if (role_code.equals(Common.ROLE_STAFF)) {
+                    //员工
+                    User user = userService.getUserById(user_id);
+                    List<User> users = new ArrayList<User>();
+                    users.add(user);
+                    list = new PageInfo<User>();
+                    list.setList(users);
                 }
             }
             List<User> users = list.getList();
             if(users.size()>=29999){
-                errormessage="导出数据过大";
+                errormessage="：导出数据过大";
                 int i=9/0;
             }
             Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
@@ -178,7 +194,7 @@ public class UserController {
             String pathname = OutExeclHelper.OutExecl(users, map, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
+                errormessage="：数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -308,11 +324,11 @@ public class UserController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             if(rows<4){
-                result="请从模板第4行开始插入正确数据";
+                result="：请从模板第4行开始插入正确数据";
                 int i=5/0;
             }
             if(rows>9999){
-                result="数据量过大，导入失败";
+                result="：数据量过大，导入失败";
                 int i=5 /0;
             }
             Cell[] column3 = rs.getColumn(0);
@@ -320,13 +336,13 @@ public class UserController {
             if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i=3;i<column3.length;i++){
                     if(!column3[i].getContents().toString().equals(corp_code)){
-                        result = "第" + (i + 1) + "行企业编号不存在";
+                        result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式不对";
                         int b = 5 / 0;
                         break;
                     }
@@ -335,13 +351,13 @@ public class UserController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式不对";
                     int b = 5 / 0;
                     break;
                 }
                 Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
                 if (corp == null) {
-                    result = "第" + (i + 1) + "行企业编号不存在";
+                    result = "：第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -351,7 +367,7 @@ public class UserController {
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern4.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行电话格式有误";
+                    result = "：第" + (i + 1) + "行电话格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -359,7 +375,7 @@ public class UserController {
             for (int i = 3; i < column.length; i++) {
                 String existInfo = userService.userPhoneExist(column[i].getContents().toString());
                 if (!existInfo.contains("0")) {
-                    result = "第" + (i + 1) + "行的电话号码已存在";
+                    result = "：第" + (i + 1) + "行的电话号码已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -368,7 +384,7 @@ public class UserController {
             for (int i = 3; i < column1.length; i++) {
                 User user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
                 if (user != null) {
-                    result = "第" + (i + 1) + "行的用户编号已存在";
+                    result = "：第" + (i + 1) + "行的用户编号已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -378,13 +394,13 @@ public class UserController {
             for (int i = 3; i < column6.length; i++) {
                 Matcher matcher = pattern.matcher(column6[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行群组编号格式有误";
+                    result = "：第" + (i + 1) + "行群组编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
                 Group group = groupService.selectByCode(column3[i].getContents().toString(), column6[i].getContents().toString(), "");
                 if (group == null) {
-                    result = "第" + (i + 1) + "行群组编号不存在";
+                    result = "：第" + (i + 1) + "行群组编号不存在";
                     int b = 5 / 0;
                     break;
                 }

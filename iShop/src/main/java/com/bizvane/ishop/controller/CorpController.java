@@ -500,11 +500,11 @@ public class CorpController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             if(rows<4){
-                result="请从模板第4行开始插入正确数据";
+                result="：请从模板第4行开始插入正确数据";
                 int i=5/0;
             }
             if (rows > 9999) {
-                result = "数据量过大，导入失败";
+                result = "：数据量过大，导入失败";
                 int i = 5 / 0;
             }
             Cell[] column = rs.getColumn(0);
@@ -512,13 +512,13 @@ public class CorpController {
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式不对";
                     int b = 5 / 0;
                     break;
                 }
                 Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString());
                 if (corp != null) {
-                    result = "第" + (i + 1) + "行企业编号已存在";
+                    result = "：第" + (i + 1) + "行企业编号已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -528,7 +528,7 @@ public class CorpController {
             for (int i = 3; i < column4.length; i++) {
                 Matcher matcher = pattern4.matcher(column4[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行电话格式有误";
+                    result = "：第" + (i + 1) + "行电话格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -537,7 +537,7 @@ public class CorpController {
             for (int i = 3; i < column1.length; i++) {
                 String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString());
                 if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
-                    result = "第" + (i + 1) + "行企业名称已存在";
+                    result = "：第" + (i + 1) + "行企业名称已存在";
                     int b = 5 / 0;
                     break;
                 }
