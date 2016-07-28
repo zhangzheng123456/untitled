@@ -60,6 +60,15 @@ var oc = new ObjectControl();
 				var REMARK=$("#REMARK").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
+				if(OWN_ROLE==undefined){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"所属角色不可为空"
+					});
+					return;
+				}
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -87,6 +96,15 @@ var oc = new ObjectControl();
 				var REMARK=$("#REMARK").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
+				if(OWN_ROLE==undefined){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"所属角色不可为空"
+					});
+					return;
+				}
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
