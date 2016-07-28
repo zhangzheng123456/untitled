@@ -123,7 +123,7 @@ public class WebController {
     /**
      * app获取FAB列表接口
      */
-    @RequestMapping(value = "/app/fab", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/fab", method = RequestMethod.POST)
     @ResponseBody
     public String fab(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -158,7 +158,7 @@ public class WebController {
     /**
      * app获取FAB详细接口
      */
-    @RequestMapping(value = "/app/fab/select", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/fab/select", method = RequestMethod.POST)
     @ResponseBody
     public String selectGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -182,5 +182,14 @@ public class WebController {
         }
         return dataBean.getJsonStr();
     }
-    
+
+    /**
+     * app获取FAB详细接口
+     */
+    @RequestMapping(value = "/api/test", method = RequestMethod.GET)
+    @ResponseBody
+    public String test(HttpServletRequest request) {
+
+        return "111";
+    }
 }
