@@ -326,7 +326,7 @@ jQuery(document).ready(function(){
 	    }
     })
     jQuery.ajax({
-		url:"/wechat/authorize",
+		url:"/app/wechat/authorize",
 		type:"post",
 		dataType: 'text',
 		data:{param:JSON.stringify(_params)},
