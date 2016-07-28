@@ -181,7 +181,6 @@
         dvc.corp_code=dc.corp_code and
         dvc.user_code=du.user_code and
         dvc.action=dvrt.type_code
-
         <if test="corp_code!=null and corp_code!=''">
             and dvc.corp_code=#{corp_code}
         </if>

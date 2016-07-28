@@ -29,7 +29,7 @@ public interface UserService {
 
     int delete(int id,String user_code,String corp_code) throws SQLException;
 
-    JSONObject login(HttpServletRequest request, String phone, String password) throws SQLException;
+    JSONObject login(HttpServletRequest request, String phone, String password) throws Exception;
 
     PageInfo<User> selectBySearch(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws SQLException;
 

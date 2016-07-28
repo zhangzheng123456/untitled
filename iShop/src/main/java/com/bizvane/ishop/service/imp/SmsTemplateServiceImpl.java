@@ -48,19 +48,19 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
             if ((!old.getTemplate_code().equals(smsTemplate.getTemplate_code()))
                     && this.SmsTemplateCodeExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
                     ) {
-                return "编号已经存在！";
+                return "编号已经存在";
             } else if (!old.getTemplate_name().equals(smsTemplate.getTemplate_name()) &&
                     (this.SmsTemplateNameExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-                return "名称已经存在！";
+                return "名称已经存在";
             } else if (this.smsTemplateMapper.updateByPrimaryKey(smsTemplate) >= 0) {
                 return Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
             if (this.SmsTemplateCodeExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
                     ) {
-                return "编号已经存在！";
+                return "编号已经存在";
             } else if (this.SmsTemplateNameExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR)) {
-                return "名称已经存在！";
+                return "名称已经存在";
             } else if (this.smsTemplateMapper.updateByPrimaryKey(smsTemplate) >= 0) {
                 return Common.DATABEAN_CODE_SUCCESS;
             }
@@ -68,10 +68,10 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
 //        if ((!old.getTemplate_code().equals(smsTemplate.getTemplate_code()))
 //                && this.SmsTemplateCodeExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_code()).equals(Common.DATABEAN_CODE_ERROR)
 //                ) {
-//            return "编号已经存在！！！！";
+//            return "编号已经存在";
 //        } else if (!old.getTemplate_name().equals(smsTemplate.getTemplate_name()) &&
 //                (this.SmsTemplateNameExist(smsTemplate.getCorp_code(), smsTemplate.getTemplate_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-//            return "名称已经存在！！！！";
+//            return "名称已经存在";
 //        } else if (this.smsTemplateMapper.updateByPrimaryKey(smsTemplate) >= 0) {
 //            return Common.DATABEAN_CODE_SUCCESS;
 //        }

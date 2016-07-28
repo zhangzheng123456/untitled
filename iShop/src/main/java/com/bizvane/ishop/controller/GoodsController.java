@@ -77,7 +77,7 @@ public class GoodsController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Goods> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -463,7 +463,7 @@ public class GoodsController {
             } else {
                 this.goodsService.insert(goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("success !!!");
+                dataBean.setMessage("success");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -539,7 +539,7 @@ public class GoodsController {
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setMessage("edit error !!! ");
+            dataBean.setMessage("edit error");
         }
         return dataBean.getJsonStr();
     }

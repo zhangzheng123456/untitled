@@ -86,7 +86,7 @@ public class StoreAchvGoalController {
             int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<StoreAchvGoal> list = null;

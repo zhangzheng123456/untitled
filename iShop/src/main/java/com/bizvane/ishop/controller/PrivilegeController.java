@@ -29,7 +29,7 @@ public class PrivilegeController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
-            JSONArray function = functionService.selectAllFunctions(corp_code+user_code,corp_code+group_code,role_code);
+            JSONArray function = functionService.selectAllFunctions(corp_code, user_code, group_code,role_code);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(function.toString());

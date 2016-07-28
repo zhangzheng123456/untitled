@@ -106,7 +106,7 @@ public class AreaController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Area> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -226,7 +226,7 @@ public class AreaController {
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除！");
+                        dataBean.setMessage("区域" + area_code + "下有所属店铺，请先处理区域下店铺再删除");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -333,7 +333,7 @@ public class AreaController {
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("区域编号已被使用！！！");
+                dataBean.setMessage("区域编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -363,7 +363,7 @@ public class AreaController {
             if (area != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("区域编号已被使用！！！");
+                dataBean.setMessage("区域编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

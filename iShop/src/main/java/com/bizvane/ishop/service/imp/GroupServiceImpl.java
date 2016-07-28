@@ -87,7 +87,7 @@ public class GroupServiceImpl implements GroupService {
             groupMapper.insertGroup(group);
             result = Common.DATABEAN_CODE_SUCCESS;
         } else {
-            result = "该群组编号已存在！";
+            result = "该群组编号已存在";
         }
         return result;
     }
@@ -108,7 +108,7 @@ public class GroupServiceImpl implements GroupService {
                 groupMapper.updateGroup(group);
                 result = Common.DATABEAN_CODE_SUCCESS;
             } else {
-                result = "该群组编号已存在！";
+                result = "该群组编号已存在";
             }
         } else {
             if (group1 == null) {
@@ -118,7 +118,7 @@ public class GroupServiceImpl implements GroupService {
                 groupMapper.updateGroup(group);
                 result = Common.DATABEAN_CODE_SUCCESS;
             } else {
-                result = "该群组编号已存在！";
+                result = "该群组编号已存在";
             }
         }
         return result;

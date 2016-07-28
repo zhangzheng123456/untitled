@@ -82,7 +82,7 @@ public class CorpController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject info = new org.json.JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -206,27 +206,27 @@ public class CorpController {
                     int count = 0;
                     count = corpService.getAreaCount(corp.getCorp_code());
                     if (count > 0) {
-                        msg = "企业" + corp_id + "下有未处理的区域，请先处理区域！";
+                        msg = "企业" + corp.getCorp_code() + "下有未处理的区域，请先处理区域";
                         break;
                     }
                     count = this.corpService.getBranCount(corp.getCorp_code());
                     if (count > 0) {
-                        msg = "企业" + corp_id + "下有未处理的品牌，请先处理品牌！";
+                        msg = "企业" + corp.getCorp_code() + "下有未处理的品牌，请先处理品牌";
                         break;
                     }
                     count = this.corpService.getGroupCount(corp.getCorp_code());
                     if (count > 0) {
-                        msg = "企业" + corp_id + "下有未处理的群组，请先处理群组！";
+                        msg = "企业" + corp.getCorp_code() + "下有未处理的群组，请先处理群组";
                         break;
                     }
                     count = this.corpService.getGoodsCount(corp.getCorp_code());
                     if (count > 0) {
-                        msg = "企业" + corp_id + "下有未处理的商品，请先处理商品！";
+                        msg = "企业" + corp.getCorp_code() + "下有未处理的商品，请先处理商品";
                         break;
                     }
                     count = this.corpService.getMessagesTypeCount(corp.getCorp_code());
                     if (count > 0) {
-                        msg = "企业" + corp_id + "下有未处理的消息类型，请先处理消息类型！";
+                        msg = "企业" + corp.getCorp_code() + "下有未处理的消息类型，请先处理消息类型";
                         break;
                     }
                 }
@@ -364,7 +364,7 @@ public class CorpController {
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("企业名已被使用！！！");
+                dataBean.setMessage("企业名已被使用");
                 //  dataBean.setCode();
             } else {
                 dataBean.setId(id);
@@ -396,7 +396,7 @@ public class CorpController {
             if (corp != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("企业编号已被使用！！！");
+                dataBean.setMessage("企业编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

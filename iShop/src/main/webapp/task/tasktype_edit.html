@@ -2,7 +2,8 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="renderer" content="webkit">
     <title>编辑任务类型</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
@@ -20,79 +21,113 @@
 </head>
 
 <body>
-   <!--  <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">任务管理<i class="icon-ishop_8-03"></i><label>编辑任务类型</label></div>
-            <div class="editor_1 col-lg-6  animated fadeInRight">
-                <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div>
-                <form class="conpany_msg">
-                    <div>
-                        <ul style="display:inline-flex;">
-                            <li><label style="color:#c26555;">所属企业</label></li>
-                            <li>
-                                <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex">
-                                        <option value="-1">请选择所属企业</option>
-                                    </select>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <span><label>任务编号</label><input type="text" id="task_type_code" verify="Code"/><div style="padding-left:80px" class="hint"><div  hintinfo="任务编号为必填项，支持以大写A开头必须是4位数字的组合！"></div></div></span>
-                    </div>
-                    <div>
-                        <span><label>任务类型</label><input type="text" id="task_type" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div></span>
-                    </div>
-                </form>
-            </div>
-            <div class="editor_detail col-lg-4  animated fadeInRight">
-                <div class="areaedit_oper_btn">
-                    <ul>
-                        <li id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
-                        <li id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
-                    </ul>
-                </div>
-                 <form class="msg_detail">
-                    <div>
-                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
-                    </div>
-                    <div>
-                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
-                    </div>
-                </form>
-            </div>
+        <div class="col-lg-12 pre_title">
+            任务管理 <i class="icon-ishop_8-03"></i>
+            <label>编辑任务类型</label>
         </div>
-    <!-- Mainly scripts -->
-    <script src="../js/jquery-2.1.1.min.js"></script>
-    <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- Custom and plugin javascript -->
-    <script src="../js/hplus.js?v=2.2.0"></script>
-    <script src="../js/loading.js"></script>
-   <!-- Dialog -->
-    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-    <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
-    <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-    <!-- 带搜索的下拉框 -->
-    <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <!-- error tips -->
-    <script type="text/javascript" src="../js/task/tasktype_operate.js"></script>
-
+        <div class="editor_1 col-lg-6  animated fadeInRight">
+            <div class="operation_conpany">
+                <ul>
+                    <li> <i class="icon-ishop_6-07"></i>
+                        刷新
+                    </li>
+                    <li>
+                        <i class="icon-ishop_6-01"></i>
+                        新增
+                    </li>
+                    <li>
+                        <i class="icon-ishop_6-02"></i>
+                        删除
+                    </li>
+                    <li>
+                        <i class="icon-ishop_6-10"></i>
+                        复制
+                    </li>
+                    <li>
+                        <i class="icon-ishop_6-11"></i>
+                        打印
+                    </li>
+                </ul>
+            </div>
+            <form class="conpany_msg">
+                <div>
+                    <ul style="display:inline-flex;">
+                        <li>
+                            <label style="color:#c26555;">所属企业</label>
+                        </li>
+                        <li>
+                            <span class="corp_select">
+                                <select id="OWN_CORP" style="display:inline-flex">
+                                    <option value="-1">请选择所属企业</option>
+                                </select>
+                            </span>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <span>
+                        <label>类型编号</label><input type="text" id="task_type_code" verify="Code"/>
+                        <div style="padding-left:80px" class="hint">
+                            <div  hintinfo="任务编号为必填项，支持以大写A开头必须是数字的组合！"></div>
+                        </div>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label>任务类型</label><input type="text" id="task_type" verify="Empty"/>
+                        <div style="padding-left:80px" class="hint">
+                            <div  hintinfo="任务名称不能为空！"></div>
+                        </div>
+                    </span>
+                </div>
+            </form>
+        </div>
+        <div class="editor_detail col-lg-4  animated fadeInRight">
+            <div class="areaedit_oper_btn">
+                <ul>
+                    <li id="edit_save">
+                        <i class="icon-ishop_6-04"></i>
+                        保存
+                    </li>
+                    <li id="edit_close">
+                        <i class="icon-ishop_6-12"></i>
+                        关闭
+                    </li>
+                </ul>
+            </div>
+            <form class="msg_detail">
+                <div>
+                    <span>
+                        <label>创建时间</label>
+                        <input type="text" id="created_time" readonly/>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label>创建人</label>
+                        <input type="text" id="creator" readonly/>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label>修改时间</label>
+                        <input type="text" id="modify_time" readonly/>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label>修改人</label>
+                        <input type="text" id="modifier" readonly/>
+                    </span>
+                </div>
+                <div>
+                    <span>
+                        <label>可用</label> <em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active">
+                            <label for="is_active"></label></em> 
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
 </html>

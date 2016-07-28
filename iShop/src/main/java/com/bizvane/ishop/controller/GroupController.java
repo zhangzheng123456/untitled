@@ -81,7 +81,7 @@ public class GroupController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Group> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -240,7 +240,7 @@ public class GroupController {
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除！");
+                        dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -287,7 +287,7 @@ public class GroupController {
             //获取群组角色的权限
             JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code + group_code);
+            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code, group_code);
             //群组权限个数
             int privilege_count = role_privilege.size() + group_privilege.size();
 
@@ -492,7 +492,7 @@ public class GroupController {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_role_code, login_corp_code + login_user_code, login_corp_code + login_group_code, search_value);
+            List<Function> funcs = functionService.selectAllPrivilege(login_corp_code,login_role_code, login_user_code, login_group_code, search_value);
 
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
@@ -503,7 +503,7 @@ public class GroupController {
             JSONArray role_privilege = functionService.selectRolePrivilege(role_code);
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code + group_code);
+            JSONArray group_privilege = functionService.selectGroupPrivilege(corp_code, group_code);
 
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(funcs));
@@ -547,11 +547,10 @@ public class GroupController {
             String master_code;
             if (jsonObject.has("corp_code")) {
                 String corp_code = jsonObject.get("corp_code").toString();
-                master_code = corp_code + group_code;
+                master_code = corp_code +"G"+ group_code;
             } else {
                 master_code = group_code;
             }
-
             String result = functionService.updatePrivilege(master_code, user_id, array);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -593,7 +592,7 @@ public class GroupController {
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该群组编号已存在！");
+                dataBean.setMessage("该群组编号已存在");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -627,7 +626,7 @@ public class GroupController {
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该群组名称已存在！");
+                dataBean.setMessage("该群组名称已存在");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -215,7 +215,7 @@ $('#save').click(function(){
         list.push(param1);
     }
     param["list"]=list;
-    oc.postRequire("post","/user/group/check_power/save","0",param,function(data){
+    oc.postRequire("post","/user/check_power/save","0",param,function(data){
     	console.log(data);
         if(data.code=="0"){
        		$("#page-wrapper").show();

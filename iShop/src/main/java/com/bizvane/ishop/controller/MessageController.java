@@ -67,7 +67,7 @@ public class MessageController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             logger.info("获取动作信息之前");
-            JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code,user_code, group_code, role_code, function_code);
             logger.info("获取动作信息" + actions.toString());
             JSONObject result = new JSONObject();
             PageInfo<Message> list = null;
@@ -281,7 +281,7 @@ public class MessageController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<SmsTemplate> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
@@ -359,7 +359,7 @@ public class MessageController {
             String result = this.smsTemplateService.update(smsTemplate);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("更改成功！！");
+                dataBean.setMessage("更改成功");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage(result);

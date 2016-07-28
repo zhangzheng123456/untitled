@@ -218,7 +218,7 @@
             and dmt.corp_code=#{corp_code}
         </if>
         AND
-        <foreach collection="map" index="entrsyKey" item="entryValue" open="(" separator="AND" close=")">
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
                 <when test="entryKey=='corp_name'">
                     dc.${entryKey} like concat('%',#{entryValue},'%')
@@ -229,8 +229,5 @@
             </choose>
         </foreach>
         ORDER by dmt.id DESC
-
     </select>
-
-
 </mapper>

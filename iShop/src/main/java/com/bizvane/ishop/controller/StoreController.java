@@ -120,7 +120,7 @@ public class StoreController {
             String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
             PageInfo<Store> list;
@@ -178,7 +178,7 @@ public class StoreController {
             if (corp == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该企业编号不存在！");
+                dataBean.setMessage("该企业编号不存在");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -299,12 +299,12 @@ public class StoreController {
                     List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
                     count = user.size();
                     if (count > 0) {
-                        msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除！";
+                        msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除";
                         break;
                     }
                     count = storeService.selectAchCount(corp_code, store.getStore_code());
                     if (count > 0) {
-                        msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除！";
+                        msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除";
                         break;
                     }
                 }
@@ -565,7 +565,7 @@ public class StoreController {
             if (store != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("店铺编号已被使用！！！");
+                dataBean.setMessage("店铺编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -602,7 +602,7 @@ public class StoreController {
             if (store != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("店铺名称已被使用！！！");
+                dataBean.setMessage("店铺名称已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -646,7 +646,12 @@ public class StoreController {
                     String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
                     String result = IshowHttpClient.get(url);
                     logger.info("------------creatQrcode  result" + result);
-
+                    if (!result.startsWith("{")){
+                        dataBean.setId(id);
+                        dataBean.setMessage("生成二维码失败");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
+                    }
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
@@ -665,7 +670,7 @@ public class StoreController {
                 }
             }
             dataBean.setId(id);
-            dataBean.setMessage("所属企业未授权！");
+            dataBean.setMessage("所属企业未授权");
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -706,6 +711,12 @@ public class StoreController {
                         String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
                         String result = IshowHttpClient.get(url);
                         logger.info("------------creatQrcode  result" + result);
+                        if (!result.startsWith("{")){
+                            dataBean.setId(id);
+                            dataBean.setMessage("生成二维码失败");
+                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                            return dataBean.getJsonStr();
+                        }
                         JSONObject obj = new JSONObject(result);
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();

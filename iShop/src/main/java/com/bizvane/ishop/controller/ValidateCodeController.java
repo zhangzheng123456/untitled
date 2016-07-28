@@ -65,7 +65,7 @@ public class ValidateCodeController {
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             // String search_value = jsonObject.get("searchValue").toString();
             JSONObject result = new JSONObject();
-            JSONArray actions = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             PageInfo<ValidateCode> list = validateCodeService.selectAllValidateCode(page_number, page_size, "");
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);

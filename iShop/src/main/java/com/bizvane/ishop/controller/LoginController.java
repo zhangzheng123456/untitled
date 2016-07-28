@@ -1,6 +1,5 @@
 package com.bizvane.ishop.controller;
 
-import IceInternal.Ex;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -8,7 +7,6 @@ import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.*;
-import com.bizvane.sun.v1.common.Data;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.management.monitor.CounterMonitor;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
@@ -300,7 +297,7 @@ public class LoginController {
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             User user = userService.getUserById(Integer.parseInt(user_id));
-            menu = functionService.selectAllFunctions(corp_code + user_code, corp_code + group_code, role_code);
+            menu = functionService.selectAllFunctions(corp_code,user_code, group_code, role_code);
             menus.put("menu", menu);
             menus.put("user_type", user_type);
             menus.put("role_code", role_code);
@@ -332,9 +329,9 @@ public class LoginController {
             String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String function_code = request.getParameter("funcCode");
-            JSONArray actions_detail = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, "D" + function_code);
+            JSONArray actions_detail = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, "D" + function_code);
 
-            JSONArray actions_fun = functionService.selectActionByFun(corp_code + user_code, corp_code + group_code, role_code, function_code);
+            JSONArray actions_fun = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             for (int i = 0; i < actions_fun.size(); i++) {
                 String act = actions_fun.get(i).toString();
                 JSONObject obj = new JSONObject(act);
