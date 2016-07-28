@@ -7,7 +7,7 @@ jQuery(function(){
 	var corp_code=strs;
 	console.log(corp_code);
 	var oc = new ObjectControl();
-	var rowno;
+	var rowno=0;
 	var key;
 	var query = {
         "rowno":rowno,
@@ -53,7 +53,7 @@ jQuery(function(){
 		        "key":key
 		    };
 		    console.log(rowno);
-		    oc.webaction("IShowGetFABCommand",query,function(data){
+		    oc.postRequire("post","/app/fab","0",param,function(data){
 		    	console.log(data);
 		    	var goodsList=JSON.parse(data[0].message)["goodsList"];
 		    	console.log(goodsList);

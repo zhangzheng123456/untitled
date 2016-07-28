@@ -653,6 +653,8 @@ $("#file_submit").click(function(){
             var path=path.substring(1,path.length-1);
             $('#download').html("<a href='/"+path+"'>下载文件</a>");
             $('#download').addClass("download");
+            $('#file_submit').hide();
+            $('#download').show();
             //导出关闭按钮
             $('.file_close').click(function(){
                 $('.file').hide();
@@ -666,6 +668,8 @@ $("#file_submit").click(function(){
 $('.file_close').click(function(){
     $("#p").hide();
     $('.file').hide();
+    $('#file_submit').show();
+    $('#download').hide();
 })
 //点击导入
 $("#guide_into").click(function(){

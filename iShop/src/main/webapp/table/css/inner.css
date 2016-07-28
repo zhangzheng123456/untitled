@@ -740,6 +740,9 @@ input::-webkit-input-placeholder{
 .download{
 	width: 150px;
 	height: 30px;
+	position: absolute;
+	left:165px;
+	bottom:10px;
 	line-height: 30px;
 	letter-spacing: 2px;
 	border-radius:5px; 
