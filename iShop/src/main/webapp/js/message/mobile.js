@@ -219,6 +219,7 @@ function superaddition(data,num){//页面加载循环
                         +"</td></tr>");
   
     }
+    whir.loading.remove();//移除加载框
 };
 //权限配置
 function jurisdiction(actions){
@@ -235,6 +236,7 @@ function jurisdiction(actions){
 }
 //页面加载时list请求
 function GET(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/message/mobile/template/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
             if(data.code=="0"){
@@ -342,6 +344,7 @@ $("#d_search").click(function(){
 })
 //搜索的请求函数
 function POST(){
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/message/mobile/template/find","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -353,6 +356,7 @@ function POST(){
             if(list.length<=0){
                 $(".table p").remove();
                 $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息，请重新搜索</p>");
+                whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
                 superaddition(list,inx);
@@ -547,7 +551,6 @@ $("#find").click(function(){
         value="";//把搜索滞空
         $("#search").val("");
         filtrate="sucess";
-        whir.loading.add("",0.5);//加载等待框
         filtrates();
    }else if(num<=0){
         frame();
@@ -556,7 +559,8 @@ $("#find").click(function(){
 })
 //筛选发送请求
 function filtrates(){
-   oc.postRequire("post","/message/mobile/template/screen","0",_param,function(data){
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/message/mobile/template/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);

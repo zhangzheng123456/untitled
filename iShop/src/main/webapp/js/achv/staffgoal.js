@@ -468,6 +468,8 @@ function store_data(c,b,e){
 function staff_data(d,f,b,e){
 	var _params={};
 	if(f==null){
+		$('#STAFF_NAME').empty();//清空员工selet
+		$('#staff_select .searchable-select').remove();//删除插件对应的ul
 		art.dialog({
 			time: 1,
 			lock:true,
