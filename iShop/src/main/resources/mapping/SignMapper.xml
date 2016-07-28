@@ -80,8 +80,7 @@
         SELECT acc_sign.*,
         DEF_CORP.CORP_NAME
         from acc_sign,DEF_CORP
-        where acc_sign.STATUS !='1'
-        and acc_sign.corp_code=DEF_CORP.corp_code
+        where acc_sign.corp_code=DEF_CORP.corp_code
         AND acc_sign.user_code IN
         (
         SELECT DEF_USER.user_code
@@ -118,8 +117,7 @@
 
     <select id="selectSignAllScreenUser" resultType="com.bizvane.ishop.entity.Sign">
         select * from acc_sign,DEF_CORP
-        where acc_sign.STATUS !='1'
-        and acc_sign.corp_code=DEF_CORP.corp_code
+        where acc_sign.corp_code=DEF_CORP.corp_code
         AND
         acc_sign.user_code=#{user_code}
         AND
