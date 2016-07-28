@@ -643,7 +643,7 @@ public class StoreController {
             if (corp.getApp_id() != null && corp.getApp_id() != "") {
                 String auth_appid = corp.getApp_id();
                 if (is_authorize.equals("Y")) {
-                    String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
+                    String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
                     String result = IshowHttpClient.get(url);
                     logger.info("------------creatQrcode  result" + result);
                     if (!result.startsWith("{")){
@@ -708,7 +708,7 @@ public class StoreController {
                 if (corp.getApp_id() != null && corp.getApp_id() != "") {
                     String auth_appid = corp.getApp_id();
                     if (is_authorize.equals("Y")) {
-                        String url = "http://wx.bizvane.com/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
+                        String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
                         String result = IshowHttpClient.get(url);
                         logger.info("------------creatQrcode  result" + result);
                         if (!result.startsWith("{")){
