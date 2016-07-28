@@ -19,7 +19,7 @@
             def_task.task_code LIKE concat('%', #{search_value},'%')
             or def_task.task_title LIKE concat ('%', #{search_value},'%')
             or def_task_type.task_type_name LIKE concat ('%', #{search_value},'%')
-            OR def_task.task_describe LIKE concat('%', #{search_value},'%')
+            OR def_task.TASK_DESCRIPTION LIKE concat('%', #{search_value},'%')
             or def_task.target_start_time LIKE concat('%', #{search_value},'%')
             or DEF_CORP.corp_name LIKE concat('%', #{search_value},'%')
             OR def_task.target_end_time LIKE concat('%', #{search_value},'%')

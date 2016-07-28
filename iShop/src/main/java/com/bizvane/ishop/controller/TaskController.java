@@ -193,16 +193,29 @@ public class TaskController {
             JSONObject jsonObject = new JSONObject(message);
             String list = jsonObject.get("list").toString();
             com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(list);
+
             for (int i=0;i<array.size();i++){
                 String info = array.get(i).toString();
                 JSONObject json = new JSONObject(info);
                 String id = json.get("id").toString();
                 String corp_code = json.get("corp_code").toString();
                 String task_code = json.get("task_code").toString();
-                taskService.delTask(id,corp_code,task_code);
-
+                String del = taskService.delTask(id, corp_code, task_code);
+                count=Integer.parseInt(del);
+            }
+            if(count>0){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("删除成功");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("-1");
+                dataBean.setMessage("删除失败");
             }
         }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage("删除失败");
         }
         return dataBean.getJsonStr();
     }
