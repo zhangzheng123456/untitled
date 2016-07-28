@@ -45,7 +45,7 @@ public class TaskController {
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             int page_num = Integer.parseInt(request.getParameter("pageNumber"));
             String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(user_code, group_code, role_code, function_code);
+            JSONArray actions = functionService.selectActionByFun(corp_code,user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<Task> tasks = null;
             if (role_code.equals(Common.ROLE_SYS)) {

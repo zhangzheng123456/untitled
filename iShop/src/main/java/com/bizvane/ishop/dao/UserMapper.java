@@ -1,6 +1,6 @@
 package com.bizvane.ishop.dao;
 
-import com.bizvane.ishop.entity.Corp;
+
 import com.bizvane.ishop.entity.User;
 import org.apache.ibatis.annotations.Param;
 

@@ -1,7 +1,6 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.CorpWechatRelation;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -21,11 +20,11 @@ public interface CorpMapper {
 
     int insertCorp(Corp record);
 
-    int insertCorpWechatRelation(CorpWechatRelation record);
+//    int insertCorpWechatRelation(CorpWechatRelation record);
 
     int updateByCorpId(Corp record);
 
-    int updateCorpWechatRelation(CorpWechatRelation record);
+//    int updateCorpWechatRelation(CorpWechatRelation record);
 
     int deleteByCorpId(Integer id);
 
@@ -33,9 +32,9 @@ public interface CorpMapper {
 
     Corp selectByAppUserName(@Param("app_user_name") String app_user_name);
 
-    CorpWechatRelation selectByAppid(@Param("app_id") String app_id);
+//    CorpWechatRelation selectByAppid(@Param("app_id") String app_id);
 
-    List<CorpWechatRelation> selectRelationByCode(@Param("corp_code") String corp_code);
+//    List<CorpWechatRelation> selectRelationByCode(@Param("corp_code") String corp_code);
 
     int selectCount(@Param("created_date") String created_date);
 
