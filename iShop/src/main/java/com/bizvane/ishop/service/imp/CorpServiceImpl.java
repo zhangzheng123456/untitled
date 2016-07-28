@@ -153,7 +153,7 @@ public class CorpServiceImpl implements CorpService {
         codeUpdateMapper.updateVipAlbum(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateVipMessage(new_corp_code, old_corp_code, "", "", "", "");
         codeUpdateMapper.updateVipRecord(new_corp_code, old_corp_code, "", "", "", "");
-        codeUpdateMapper.updateVipRecordType(new_corp_code, old_corp_code);
+        //codeUpdateMapper.updateVipRecordType(new_corp_code, old_corp_code);
         codeUpdateMapper.updateVipLabel(new_corp_code, old_corp_code);
     }
 
