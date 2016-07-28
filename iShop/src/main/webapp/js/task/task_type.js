@@ -61,6 +61,11 @@ $("#empty").click(function(){
     for(var i=0;i<input.length;i++){
         input[i].value="";
     }
+    $(".sxk").slideUp();
+    value="";
+    filtrate="";
+    $(".table p").remove();
+    GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode) {
     var container = container;
@@ -147,7 +152,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
         }
     }()
 }
-function dian(a,b){
+function dian(a,b){//点击分页的时候调什么接口
     if (value=="") {
         GET(a,b);
     }else if (value!==""){
@@ -160,6 +165,7 @@ function dian(a,b){
         filtrates(a,b);
     }
 }
+//页面加载循环
 function superaddition(data,num){//页面加载循环
     console.log(data);
     for (var i = 0; i < data.length; i++) {
@@ -228,6 +234,7 @@ function GET(a,b){
             }
     });
 }
+//get请求
 GET(inx,pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse(){
@@ -377,14 +384,17 @@ $("#delete").click(function(){
     console.log(param);
     oc.postRequire("post","/task_type/delete","0",param,function(data){
         if(data.code=="0"){
-            if(value==""){
+            if(value==""&&filtrate==""){
                frame();
                $('.frame').html('删除成功');
                GET(inx,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
-               POST();
+               POST(inx,pageSize);
+            }else if(filtrate==""){
+               frame();
+               $('.frame').html('删除成功');
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;
