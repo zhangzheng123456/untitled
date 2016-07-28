@@ -599,9 +599,7 @@ public class UserController {
             user.setId(Integer.parseInt(jsonObject.get("id").toString()));
             user.setUser_code(jsonObject.get("user_code").toString());
             user.setUser_name(jsonObject.get("username").toString());
-            String password = jsonObject.get("password").toString();
-            password = CheckUtils.encryptMD5Hash(password);
-            user.setPassword(password);
+
             user.setAvatar(jsonObject.get("avater").toString());
             user.setPhone(jsonObject.get("phone").toString());
             user.setEmail(jsonObject.get("email").toString());
@@ -1329,6 +1327,46 @@ public class UserController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 员工管理
+     * 筛选
+     */
+    @RequestMapping(value = "/change_passwd", method = RequestMethod.POST)
+    @ResponseBody
+    public String changePasswd(HttpServletRequest request) {
+        String user_code = request.getSession().getAttribute("user_code").toString();
+
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObject1 = new org.json.JSONObject(jsString);
+            id = jsonObject1.getString("id");
+            String message = jsonObject1.get("message").toString();
+            JSONObject jsonObject2 = new JSONObject(message);
+            String password = jsonObject2.get("password").toString();
+            int user_id = Integer.parseInt(jsonObject2.get("user_id").toString());
+
+            password = CheckUtils.encryptMD5Hash(password);
+            User user = userService.getUserById(user_id);
+            user.setPassword(password);
+            Date now = new Date();
+            user.setModified_date(Common.DATETIME_FORMAT.format(now));
+            user.setModifier(user_code);
+
+            userService.updateUser(user);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("重置密码成功");
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
