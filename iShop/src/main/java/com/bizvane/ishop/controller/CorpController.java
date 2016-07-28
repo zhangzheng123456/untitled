@@ -224,11 +224,6 @@ public class CorpController {
                         msg = "企业" + corp.getCorp_code() + "下有未处理的商品，请先处理商品";
                         break;
                     }
-                    count = this.corpService.getMessagesTypeCount(corp.getCorp_code());
-                    if (count > 0) {
-                        msg = "企业" + corp.getCorp_code() + "下有未处理的消息类型，请先处理消息类型";
-                        break;
-                    }
                 }
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }
