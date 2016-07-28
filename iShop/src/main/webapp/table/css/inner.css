@@ -36,7 +36,7 @@ input::-webkit-input-placeholder{
 }
 .con_table p{
 	height: 600px;
-	line-height: 600px;
+	line-height: 300px;
 	text-align: center;
 	color: #888;
 }

@@ -707,7 +707,7 @@ function filtrates(){
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
-                $(".table").append("<p>没有找到信息请重新搜索</p>");
+                $(".table").append("<p>没有找到信息,请重新搜索</p>");
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();

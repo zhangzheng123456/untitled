@@ -25,10 +25,6 @@ public class MessageType {
     //是否可用
     private String isactive;
 
-    //企业编号
-    private String corp_code;
-    private Corp corp;
-
     public MessageType() {
     }
 
@@ -51,22 +47,6 @@ public class MessageType {
 
     public String getType_name() {
         return type_name;
-    }
-
-    public String getCorp_code() {
-        return corp_code;
-    }
-
-    public void setCorp_code(String corp_code) {
-        this.corp_code = corp_code;
-    }
-
-    public Corp getCorp() {
-        return corp;
-    }
-
-    public void setCorp(Corp corp) {
-        this.corp = corp;
     }
 
     public void setType_name(String type_name) {
@@ -120,6 +100,7 @@ public class MessageType {
     public void setIsactive(String isactive) {
         this.isactive = isactive;
     }
+
 
 
 }

@@ -330,11 +330,7 @@
     <script src="/js/user/usercheck_power.js"></script>
     <script>
         function chongzhi(){
-            var init_password=$("#init_password");
-            if(init_password.attr('type')=="password") {
-                init_password.attr('type', 'text');
-            } else{
-            init_password.attr('type', 'password');}
+          $("#init_password").val("");
         }
     </script>
 </body>
