@@ -453,7 +453,7 @@ public class UserController {
                     }
                     user.setStore_code(store_code);
                     user.setQrcode("");
-                    user.setPassword(user.getUser_code());
+                    user.setPassword(user.getPhone());
                     Date now = new Date();
                     user.setLogin_time_recently("");
                     user.setCreated_date(Common.DATETIME_FORMAT.format(now));

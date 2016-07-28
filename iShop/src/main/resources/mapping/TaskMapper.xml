@@ -30,9 +30,9 @@
         </if>
     </select>
     <!--验证唯一或编辑时传值-->
-    <select id="selTaskByCode" resultType="com.bizvane.ishop.entity.Task">
+    <select id="selTaskById" resultType="com.bizvane.ishop.entity.Task">
        SELECT  * from def_task
-        where  corp_code =#{corp_code} AND  task_code=#{task_code}
+        where  id =#{id}
     </select>
     <!--查询出任务详情及编辑是传值-->
     <select id="selAllTaskAllocation" resultType="com.bizvane.ishop.entity.TaskAllocation">
@@ -40,12 +40,15 @@
         where corp_code =#{corp_code} AND task_code=#{task_code}
     </select>
     <!--删除任务-->
-    <delete id="delTaskByCode">
+    <delete id="delTaskById">
         delete from def_task where id =#{id}
     </delete>
-    <!--删除任务详情-->
+    <!--删除任务详情根据corpcode,taskcode-->
     <delete id="delTaskAllocation">
         delete from rel_task_allocation where  corp_code =#{corp_code} and task_code =#{task_code}
+    </delete>
+    <delete id="delTaskAllocationById">
+        delete from rel_task_allocation where id=#{id}
     </delete>
     <!--新增任务-->
     <insert id="addTask" parameterType="com.bizvane.ishop.entity.Task">
