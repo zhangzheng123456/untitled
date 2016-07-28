@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by yin on 2016/7/28.
@@ -47,7 +48,7 @@ public class TaskController {
             String function_code = request.getParameter("funcCode");
             JSONArray actions = functionService.selectActionByFun(corp_code,user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
-            PageInfo<Task> tasks = null;
+            PageInfo<Task> tasks;
             if (role_code.equals(Common.ROLE_SYS)) {
                 tasks = taskService.selectAllTask(page_size, page_num, "", "", "", "");
             } else if (role_code.equals(Common.ROLE_GM)) {
@@ -131,4 +132,31 @@ public class TaskController {
         }
         return dataBean.getJsonStr();
     }
+    @RequestMapping(value = "/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public String delete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        int count=0;
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String list = jsonObject.get("list").toString();
+            com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(list);
+
+            for (int i=0;i<array.size();i++){
+                String info = array.get(i).toString();
+                JSONObject json = new JSONObject(info);
+                String id = json.get("id").toString();
+                String corp_code = json.get("corp_code").toString();
+                String task_code = json.get("task_code").toString();
+                taskService.delTask(id,corp_code,task_code);
+            }
+        }catch (Exception ex){
+        }
+        return dataBean.getJsonStr();
+    }
+
 }
