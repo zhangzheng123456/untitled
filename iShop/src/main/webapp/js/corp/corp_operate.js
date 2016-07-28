@@ -343,7 +343,8 @@ jQuery(document).ready(function(){
 		}
 	});
     function callback(data){
-        var a="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxb0a4eb02ba4f1df4&pre_auth_code="+data+"&redirect_uri=http://wx.bizvane.com/wechat/callback";
+    	var a="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code="+data+"&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
+        // var a="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxb0a4eb02ba4f1df4&pre_auth_code="+data+"&redirect_uri=http://wx.bizvane.com/wechat/callback";
         $('#power').html('<a href="'+a+'" target="_parent">授权</a>');
     }
     // window.parent.location.href="http://wx.bizvane.com/wechat/Authorization.html";

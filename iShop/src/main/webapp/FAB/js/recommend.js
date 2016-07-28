@@ -9,7 +9,7 @@ jQuery(function(){
 	var oc = new ObjectControl();
 	var rowno=0;
 	var key;
-	var query = {
+	var param = {
         "rowno":rowno,
         "corp_code":corp_code,
         "key":key
