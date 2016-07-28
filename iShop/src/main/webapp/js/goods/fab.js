@@ -548,7 +548,7 @@ $("#file_submit").click(function(){
             $('#file_submit').hide();
             $('#download').show();
             //导出关闭按钮
-            $('.file_close').click(function(){
+            $('.icon-ishop_6-12').click(function(){
                 $('.file').hide();
             })
         }else if(data.code=="-1"){
@@ -557,7 +557,7 @@ $("#file_submit").click(function(){
     })
 })
 //导出关闭按钮
-$('.file_close').click(function(){
+$('.icon-ishop_6-12').click(function(){
     $("#p").hide();
     $('.file').hide();
     $('#file_submit').show();
