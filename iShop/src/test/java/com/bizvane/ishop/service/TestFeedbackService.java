@@ -31,12 +31,19 @@ public class TestFeedbackService {
     private ValidateCodeService validateCodeService = null;
     @Autowired
     private GroupService groupService=null;
+    @Autowired
+    private TaskService taskService;
+
+
     //成功
     @Test
     public void testselectAllFeedback() {
         try {
-            PageInfo<Feedback> feedbackPageInfo = feedbackService.selectAllFeedback(1, 10, "");
-            List<Feedback> list = feedbackPageInfo.getList();
+            PageInfo<Task> feedbackPageInfo = taskService.selectAllTask(1, 10, "","","","");
+            List<Task> list = feedbackPageInfo.getList();
+            for (Task task:list) {
+                System.out.println(task.getCorp_name());
+            }
             System.out.println(list.size());
         } catch (Exception x) {
             x.printStackTrace();
