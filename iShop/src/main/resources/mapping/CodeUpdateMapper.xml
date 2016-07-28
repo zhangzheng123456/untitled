@@ -247,13 +247,13 @@
         </trim>
         WHERE 1=1
         <if test="old_corp_code!=null and old_corp_code!='' ">
-            AND corp_code = #{old_corp_code},
+            AND corp_code = #{old_corp_code}
         </if>
         <if test="old_user_code!=null and old_user_code!=''">
-            AND user_code=#{old_user_code},
+            AND user_code=#{old_user_code}
         </if>
         <if test="old_store_code!=null and old_store_code!=''">
-            AND store_code=#{old_store_code},
+            AND store_code=#{old_store_code}
         </if>
     </update>
 
@@ -269,10 +269,10 @@
         </trim>
         WHERE 1=1
         <if test="old_corp_code!=null and old_corp_code!='' ">
-            AND corp_code = #{old_corp_code},
+            AND corp_code = #{old_corp_code}
         </if>
         <if test="old_user_code!=null and old_user_code!=''">
-            AND user_code=#{old_user_code},
+            AND user_code=#{old_user_code}
         </if>
     </update>
 
