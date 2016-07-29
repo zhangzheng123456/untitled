@@ -6,6 +6,7 @@ import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.UserAchvGoalService;
+import com.bizvane.ishop.utils.TimeUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -88,8 +89,29 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public int updateUserAchvGoal(UserAchvGoal userAchvGoal) throws SQLException {
-        return this.userAchvGoalMapper.update(userAchvGoal);
+    public String updateUserAchvGoal(UserAchvGoal userAchvGoal) throws Exception {
+        int count = -1;
+        if (userAchvGoal.getTarget_type().equals(Common.TIME_TYPE_WEEK)) {
+            String time = userAchvGoal.getTarget_time();
+            String week = TimeUtils.getWeek(time);
+            userAchvGoal.setTarget_time(week);
+        }
+        UserAchvGoal oldUserAchvGoal = userAchvGoalMapper.selectById(userAchvGoal.getId());
+        if (oldUserAchvGoal.getCorp_code().equals(userAchvGoal.getCorp_code())
+                && oldUserAchvGoal.getUser_code().equals(userAchvGoal.getUser_code())
+                && oldUserAchvGoal.getTarget_type().equals(userAchvGoal.getTarget_type())
+                && oldUserAchvGoal.getTarget_time().equals(userAchvGoal.getTarget_time())
+                ) {
+            userAchvGoalMapper.update(userAchvGoal);
+            return Common.DATABEAN_CODE_SUCCESS;
+        } else {
+            count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
+            if (count > 0) {
+                return Common.DATABEAN_CODE_ERROR;
+            }
+            userAchvGoalMapper.update(userAchvGoal);
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
     }
 
     @Override
@@ -107,7 +129,8 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) {
+    public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String
+            area_code, String store_code, String role_code, Map<String, String> map) {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");

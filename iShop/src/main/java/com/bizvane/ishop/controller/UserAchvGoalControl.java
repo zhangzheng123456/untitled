@@ -158,10 +158,16 @@ public class UserAchvGoalControl {
             userAchvGoal.setModifier(user_id);
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
-            userAchvGoalService.updateUserAchvGoal(userAchvGoal);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = userAchvGoalService.updateUserAchvGoal(userAchvGoal);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("用户" + userAchvGoal.getUser_code() + "业绩目标已经设定");
+            }
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -414,7 +420,7 @@ public class UserAchvGoalControl {
             }
             List<UserAchvGoal> userAchvGoals = pages.getList();
             if (userAchvGoals.size() >= 29999) {
-                errormessage = "：导出数据过大";
+                errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
             Map<String, String> map = WebUtils.Json2ShowName(jsonObject);
@@ -423,7 +429,7 @@ public class UserAchvGoalControl {
             String pathname = OutExeclHelper.OutExecl(userAchvGoals, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage = "：数据异常，导出失败";
+                errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));
@@ -458,12 +464,12 @@ public class UserAchvGoalControl {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows<4){
-                result="：请从模板第4行开始插入正确数据";
-                int i=5/0;
+            if (rows < 4) {
+                result = "请从模板第4行开始插入正确数据";
+                int i = 5 / 0;
             }
             if (rows > 9999) {
-                result = "：数据量过大，导入失败";
+                result = "数据量过大，导入失败";
                 int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
@@ -471,13 +477,13 @@ public class UserAchvGoalControl {
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
                     if (!column3[i].getContents().toString().equals(corp_code)) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
+                        result = "第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式不对";
+                        result = "第" + (i + 1) + "行企业编号格式不对";
                         int b = 5 / 0;
                         break;
                     }
@@ -486,13 +492,13 @@ public class UserAchvGoalControl {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式不对";
+                    result = "第" + (i + 1) + "行企业编号格式不对";
                     int b = 5 / 0;
                     break;
                 }
                 Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
                 if (corp == null) {
-                    result = "：第" + (i + 1) + "行企业编号不存在";
+                    result = "第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -502,7 +508,7 @@ public class UserAchvGoalControl {
             for (int i = 3; i < column2.length; i++) {
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
                 if (store == null) {
-                    result = "：第" + (i + 1) + "行店铺编号不存在";
+                    result = "第" + (i + 1) + "行店铺编号不存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -511,7 +517,7 @@ public class UserAchvGoalControl {
             for (int i = 3; i < column1.length; i++) {
                 User user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
                 if (user == null) {
-                    result = "：第" + (i + 1) + "行的用户编号不存在";
+                    result = "第" + (i + 1) + "行的用户编号不存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -519,7 +525,7 @@ public class UserAchvGoalControl {
             Cell[] column = rs.getColumn(4);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
-                    result = "：第" + (i + 1) + "行的业绩日期类型缩写有误";
+                    result = "第" + (i + 1) + "行的业绩日期类型缩写有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -534,7 +540,7 @@ public class UserAchvGoalControl {
                     userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_type(rs.getCell(j++, i).getContents());
-                    date= sdf.parse("20"+rs.getCell(j++, i).getContents());
+                    date = sdf.parse("20" + rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_time(sdf.format(date));
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");
@@ -565,6 +571,7 @@ public class UserAchvGoalControl {
         }
         return dataBean.getJsonStr();
     }
+
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String Screen(HttpServletRequest request) {

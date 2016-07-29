@@ -31,7 +31,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    int updateUserAchvGoal(UserAchvGoal userAchvGoal) throws SQLException;
+    String updateUserAchvGoal(UserAchvGoal userAchvGoal) throws Exception;
 
     /**
      * 删除用户业绩目标ID
