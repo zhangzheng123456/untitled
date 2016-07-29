@@ -1312,7 +1312,7 @@ public class UserController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = userService.getAllUserScreen(page_number, page_size, "", "", "", role_code, map);
+                list = userService.getAllUserScreen(page_number, page_size, "", "", "", "", map);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", role_code, map);
             } else if (role_code.equals(Common.ROLE_AM)) {

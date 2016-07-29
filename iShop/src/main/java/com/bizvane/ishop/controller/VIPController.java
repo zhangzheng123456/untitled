@@ -368,7 +368,7 @@ public class VIPController {
             }
             List<VipLabel> vipLabels = list.getList();
             if (vipLabels.size() >= 29999) {
-                errormessage = "导出数据过大";
+                errormessage = "：导出数据过大";
                 int i = 9 / 0;
             }
             Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
@@ -377,7 +377,7 @@ public class VIPController {
             String pathname = OutExeclHelper.OutExecl(vipLabels, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage = "数据异常，导出失败";
+                errormessage = "：数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));
@@ -412,11 +412,11 @@ public class VIPController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             if(rows<4){
-                result="请从模板第4行开始插入正确数据";
+                result="：请从模板第4行开始插入正确数据";
                 int i=5/0;
             }
             if (rows > 9999) {
-                result = "数据量过大，导入失败";
+                result = "：数据量过大，导入失败";
                 int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
@@ -424,13 +424,13 @@ public class VIPController {
             if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i=3;i<column3.length;i++){
                     if(!column3[i].getContents().toString().equals(corp_code)){
-                        result = "第" + (i + 1) + "行企业编号不存在";
+                        result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式不对";
                         int b = 5 / 0;
                         break;
                     }
@@ -439,13 +439,13 @@ public class VIPController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式不对";
                     int b = 5 / 0;
                     break;
                 }
                 Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
                 if (corp == null) {
-                    result = "第" + (i + 1) + "行企业编号不存在";
+                    result = "：第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -455,7 +455,7 @@ public class VIPController {
             for (int i = 3; i < column.length; i++) {
                 String existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString(), column[i].getContents().toString());
                 if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
-                    result = "第" + (i + 1) + "列的会员标签已存在";
+                    result = "：第" + (i + 1) + "列的会员标签已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -1120,7 +1120,7 @@ public class VIPController {
             }
             List<VipRecord> vipRecords = list.getList();
             if (vipRecords.size() >= 29999) {
-                errormessage = "导出数据过大";
+                errormessage = "：导出数据过大";
                 int i = 9 / 0;
             }
             Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
@@ -1129,7 +1129,7 @@ public class VIPController {
             String pathname = OutExeclHelper.OutExecl(vipRecords, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage = "数据异常，导出失败";
+                errormessage = "：数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));

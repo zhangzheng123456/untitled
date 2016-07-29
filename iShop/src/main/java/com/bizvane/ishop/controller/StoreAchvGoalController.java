@@ -431,7 +431,7 @@ public class StoreAchvGoalController {
             }
             List<StoreAchvGoal> storeAchvGoals = list.getList();
             if(storeAchvGoals.size()>=29999){
-                errormessage="导出数据过大";
+                errormessage="：导出数据过大";
                 int i=9/0;
             }
             Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
@@ -440,7 +440,7 @@ public class StoreAchvGoalController {
             String pathname = OutExeclHelper.OutExecl(storeAchvGoals, map, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
+                errormessage="：数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -475,11 +475,11 @@ public class StoreAchvGoalController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             if(rows<4){
-                result="请从模板第4行开始插入正确数据";
+                result="：请从模板第4行开始插入正确数据";
                 int i=5/0;
             }
             if(rows>9999){
-                result="数据量过大，导入失败";
+                result="：数据量过大，导入失败";
                 int i=5 /0;
             }
             Cell[] column3 = rs.getColumn(0);
@@ -487,13 +487,13 @@ public class StoreAchvGoalController {
             if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i=3;i<column3.length;i++){
                     if(!column3[i].getContents().toString().equals(corp_code)){
-                        result = "第" + (i + 1) + "行企业编号不存在";
+                        result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式不对";
                         int b = 5 / 0;
                         break;
                     }
@@ -503,13 +503,13 @@ public class StoreAchvGoalController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式不对";
                     int b = 5 / 0;
                     break;
                 }
                 Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
                 if (corp == null) {
-                    result = "第" + (i + 1) + "行企业编号不存在";
+                    result = "：第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -519,7 +519,7 @@ public class StoreAchvGoalController {
             for (int i = 3; i < column2.length; i++) {
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
                 if (store == null) {
-                    result = "第" + (i + 1) + "行店铺编号不存在";
+                    result = "：第" + (i + 1) + "行店铺编号不存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -527,7 +527,7 @@ public class StoreAchvGoalController {
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
-                    result = "第" + (i + 1) + "行的业绩日期类型缩写不正确";
+                    result = "：第" + (i + 1) + "行的业绩日期类型缩写不正确";
                     int b = 5 / 0;
                     break;
                 }

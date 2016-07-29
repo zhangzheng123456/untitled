@@ -158,10 +158,16 @@ public class UserAchvGoalControl {
             userAchvGoal.setModifier(user_id);
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
-            userAchvGoalService.updateUserAchvGoal(userAchvGoal);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = userAchvGoalService.updateUserAchvGoal(userAchvGoal);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("用户" + userAchvGoal.getUser_code() + "业绩目标已经设定");
+            }
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -458,9 +464,9 @@ public class UserAchvGoalControl {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows<4){
-                result="请从模板第4行开始插入正确数据";
-                int i=5/0;
+            if (rows < 4) {
+                result = "请从模板第4行开始插入正确数据";
+                int i = 5 / 0;
             }
             if (rows > 9999) {
                 result = "数据量过大，导入失败";
@@ -534,7 +540,7 @@ public class UserAchvGoalControl {
                     userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_type(rs.getCell(j++, i).getContents());
-                    date= sdf.parse("20"+rs.getCell(j++, i).getContents());
+                    date = sdf.parse("20" + rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_time(sdf.format(date));
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");
@@ -565,6 +571,7 @@ public class UserAchvGoalControl {
         }
         return dataBean.getJsonStr();
     }
+
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String Screen(HttpServletRequest request) {
