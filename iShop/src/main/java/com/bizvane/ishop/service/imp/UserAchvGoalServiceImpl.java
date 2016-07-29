@@ -120,8 +120,14 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public int insert(UserAchvGoal userAchvGoal) throws SQLException {
-        return this.userAchvGoalMapper.insert(userAchvGoal);
+    public String insert(UserAchvGoal userAchvGoal) throws SQLException {
+        int count = -1;
+        count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
+        if (count > 0) {
+            return "用户业绩重复";
+        } else {
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
     }
 
     public List<UserAchvGoal> userAchvGoalExist(String corp_code, String user_code) throws SQLException {
