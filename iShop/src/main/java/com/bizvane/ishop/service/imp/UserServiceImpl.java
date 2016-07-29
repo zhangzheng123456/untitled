@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
                     stores[i] = stores[i] + Common.STORE_HEAD;
                 }
                 stores[i] = stores[i].substring(1, stores[i].length());
-                System.out.println("--区域：---"+stores[i]);
+                System.out.println("--区域：---" + stores[i]);
             }
         }
         if (!area_code.equals("")) {
@@ -225,42 +225,44 @@ public class UserServiceImpl implements UserService {
     public String update(User user) throws SQLException {
         String result = "";
         int user_id = user.getId();
-        String phone = user.getPhone();
-        String user_code = user.getUser_code();
-        String corp_code = user.getCorp_code();
-        String email = user.getEmail();
-        String store_code = user.getStore_code();
+//        String phone = user.getPhone();
+//        String user_code = user.getUser_code();
+//        String corp_code = user.getCorp_code();
+//        String email = user.getEmail();
+//        String store_code = user.getStore_code();
         User old_user = getUserById(user_id);
         String[] store_code1 = old_user.getStore_code().split(",");
-        String phone_exist = userPhoneExist(phone);
-        User code_exist = userCodeExist(user_code, corp_code);
-        String emails = userEmailExist(email);
-        if (old_user.getCorp_code().equals(corp_code)) {
-            if (!old_user.getPhone().equals(phone) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+        String phone_exist = userPhoneExist(user.getPhone());
+        //User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
+        String emails = userEmailExist(user.getEmail());
+        if (old_user.getCorp_code().equals(user.getCorp_code())) {
+            User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
+            if (!old_user.getPhone().equals(user.getPhone()) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 result = "手机号已存在";
-            } else if (!old_user.getUser_code().equals(user_code) && code_exist != null) {
+            } else if (!old_user.getUser_code().equals(user.getUser_code()) && code_exist != null) {
                 result = "员工编号已存在";
-            } else if (!email.equals("") && old_user.getEmail() != null && (!old_user.getEmail().equals(email) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
+            } else if (!user.getEmail().equals("") && old_user.getEmail() != null && (!old_user.getEmail().equals(user.getEmail()) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
                 result = "邮箱已存在";
             } else {
-                if (!old_user.getUser_code().equals(user_code)) {
-                    updateCauseCodeChange(corp_code, user_code, old_user.getUser_code());
+                if (!old_user.getUser_code().equals(user.getUser_code())) {
+                    updateCauseCodeChange(user.getCorp_code(), user.getUser_code(), old_user.getUser_code());
                 }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
                 for (int i = 0; i < store_code1.length; i++) {
-                    if (!store_code.contains(store_code1[i])) {
-                        userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);
+                    if (!user.getStore_code().contains(store_code1[i])) {
+                        userAchvGoalMapper.deleteStoreUserAchv(user.getCorp_code(), store_code1[i], user.getUser_code());
                     }
                 }
                 userMapper.updateByUserId(user);
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
+            User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
             if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 result = "手机号已存在";
             } else if (code_exist != null) {
                 result = "员工编号已存在";
-            } else if (!email.equals("") && old_user.getEmail() != null && emails.equals(Common.DATABEAN_CODE_ERROR)) {
+            } else if (!user.getEmail().equals("") && old_user.getEmail() != null && emails.equals(Common.DATABEAN_CODE_ERROR)) {
                 result = "邮箱已存在";
             } else {
 //                if (!old_user.getUser_code().equals(user_code)) {
@@ -268,8 +270,8 @@ public class UserServiceImpl implements UserService {
 //                }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
                 for (int i = 0; i < store_code1.length; i++) {
-                    if (!store_code.contains(store_code1[i])) {
-                        userAchvGoalMapper.deleteStoreUserAchv(corp_code, store_code1[i], user_code);
+                    if (!user.getStore_code().contains(store_code1[i])) {
+                        userAchvGoalMapper.deleteStoreUserAchv(user.getCorp_code(), store_code1[i], user.getUser_code());
                     }
                 }
                 userMapper.updateByUserId(user);
@@ -285,8 +287,8 @@ public class UserServiceImpl implements UserService {
     }
 
     @Transactional
-    public int delete(int id,String user_code,String corp_code) throws SQLException {
-        privilegeMapper.delete(corp_code+user_code);
+    public int delete(int id, String user_code, String corp_code) throws SQLException {
+        privilegeMapper.delete(corp_code + user_code);
         return userMapper.deleteByUserId(id);
     }
 
@@ -309,9 +311,9 @@ public class UserServiceImpl implements UserService {
 //            user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
             User login_user;
-            if (login_user1 != null){
+            if (login_user1 != null) {
                 login_user = login_user1;
-            }else {
+            } else {
                 login_user = login_user2;
             }
             int user_id = login_user.getId();

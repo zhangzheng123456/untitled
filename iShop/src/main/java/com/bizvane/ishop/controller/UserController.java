@@ -91,8 +91,7 @@ public class UserController {
             String searchValue = jsonObject.get("searchValue").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             PageInfo<User> list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_SM);
-
-
+            
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1283,17 +1282,22 @@ public class UserController {
                         user.setModifier(user_id);
                         logger.info("------------creatQrcode  update user");
                         userService.updateUser(user);
+                    }else {
                         dataBean.setId(id);
-                        dataBean.setMessage("生成完成");
-                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
                     }
+                }else {
+                    dataBean.setId(id);
+                    dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    return dataBean.getJsonStr();
                 }
-                dataBean.setId(id);
-                dataBean.setMessage(corp_name + "企业未授权");
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                return dataBean.getJsonStr();
             }
+            dataBean.setId(id);
+            dataBean.setMessage("生成完成");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());

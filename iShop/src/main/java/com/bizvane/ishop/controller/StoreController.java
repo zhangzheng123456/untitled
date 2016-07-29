@@ -728,17 +728,22 @@ public class StoreController {
                         store.setModifier(user_code);
                         logger.info("------------creatQrcode  update store");
                         storeService.updateStore(store);
+                    }else {
                         dataBean.setId(id);
-                        dataBean.setMessage("生成完成");
-                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
                     }
+                }else {
+                    dataBean.setId(id);
+                    dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    return dataBean.getJsonStr();
                 }
-                dataBean.setId(id);
-                dataBean.setMessage(corp_name + "企业未授权");
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                return dataBean.getJsonStr();
             }
+            dataBean.setId(id);
+            dataBean.setMessage("生成完成");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
