@@ -132,14 +132,28 @@ public class StoreController {
                     list = storeService.getAllStore(request, page_number, page_size, corp_code, "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
-                    String[] areaCodes = area_code.split(",");
-                    for (int i = 0; i < areaCodes.length; i++) {
-                        areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                    if (area_code == null || area_code.equals("")){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId("1");
+                        dataBean.setMessage("您还没有所属区域");
+                        return dataBean.getJsonStr();
+                    }else {
+                        String[] areaCodes = area_code.split(",");
+                        for (int i = 0; i < areaCodes.length; i++) {
+                            areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                        }
+                        list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, "");
                     }
-                    list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, "");
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, "");
+                    if (store_code == null || store_code.equals("")){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId("1");
+                        dataBean.setMessage("您还没有所属店铺");
+                        return dataBean.getJsonStr();
+                    }else {
+                        list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, "");
+                    }
                 }
             }
             result.put("list", JSON.toJSONString(list));

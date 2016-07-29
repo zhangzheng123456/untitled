@@ -238,11 +238,25 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+                if (store_code == null || store_code.equals("")){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("您还没有所属店铺");
+                    return dataBean.getJsonStr();
+                }else {
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+                }
             } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
+                if (area_code == null || area_code.equals("")){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("您还没有所属区域");
+                    return dataBean.getJsonStr();
+                }else {
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
