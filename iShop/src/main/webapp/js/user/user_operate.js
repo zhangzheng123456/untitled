@@ -853,6 +853,50 @@ jQuery(document).ready(function(){
     		}
     	})
     })
+	//重置密码时提示消失
+	$("#first_pwd").focus(function () {
+		$(".em_1").css("display","none")
+	})
+	$("#second_pwd").focus(function () {
+		$(".em_2").css("display","none")
+	})
+	//重置密码
+	$("#baocun").click(function(){
+		if($("#first_pwd").val()==""||$("#second_pwd").val()==""||$("#first_pwd").val()!=$("#second_pwd").val()){
+             if($("#first_pwd").val()==""){
+				 $(".em_1").css("display","inline")
+			 }else if($("#second_pwd").val()!=$("#first_pwd").val()){
+				 $(".em_2").css("display","inline")
+			 }
+			return;
+		}
+		var pwd_creat="/user/change_passwd";
+		var user_id=sessionStorage.getItem("id");
+		var password=$('#first_pwd').val();
+		var _params={};
+		_params["password"]=password;
+		_params["user_id"]=user_id;
+		oc.postRequire("post",pwd_creat,"",_params,function (data) {
+			if(data.code=="0"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: data.message
+				});
+				$("#chongzhi_pwd").css('display','none');
+				$("#chongzhi_box").css('display','none');
+			}else if(data=="-1"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: 失败
+				});
+			}
+
+		})
+	})
     //点击关闭按钮
     $("#k_close").click(function(){
     	$("#kuang").hide();
@@ -895,4 +939,5 @@ function getcorplist(){
 		}
 	});
 }
+
 

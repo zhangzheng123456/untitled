@@ -827,7 +827,7 @@ input::-webkit-input-placeholder{
 
 .chongzhi_pwd{
 	display: none;
-	width:450px;
+	width:490px;
 	height: 300px;
 	overflow: hidden;
 	position: absolute;
@@ -835,6 +835,11 @@ input::-webkit-input-placeholder{
 	left:40%;
 	z-index: 3000;
 	background-color:rgba(244, 244, 244, 0.9) ;
+}
+.chongzhi_pwd p em{
+	color:red;
+	margin-left: 15px;
+	display:none;
 }
 .chongzhi_pwd p{
 	margin: 55px 80px;
