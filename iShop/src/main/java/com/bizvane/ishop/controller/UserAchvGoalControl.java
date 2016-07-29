@@ -158,10 +158,16 @@ public class UserAchvGoalControl {
             userAchvGoal.setModifier(user_id);
             userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setIsactive(jsonObj.get("isactive").toString());
-            userAchvGoalService.updateUserAchvGoal(userAchvGoal);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success");
+            String result = userAchvGoalService.updateUserAchvGoal(userAchvGoal);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("用户" + userAchvGoal.getUser_code() + "业绩目标已经设定");
+            }
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -253,10 +259,16 @@ public class UserAchvGoalControl {
             userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
             userAchvGoal.setIsactive(jsonObject.get("isactive").toString());
 
-            userAchvGoalService.insert(userAchvGoal);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("add SUCCESS");
+            String result = userAchvGoalService.insert(userAchvGoal);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("用户" + userAchvGoal.getUser_code() + "业绩目标已经设定");
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
