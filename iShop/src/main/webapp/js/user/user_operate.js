@@ -283,7 +283,7 @@ var oc = new ObjectControl();
 				_params["isactive"]=ISACTIVE;//是否可用
 				_params["corp_code"]=OWN_CORP;//公司编号
 				_params["can_login"]=can_login;//是否登录
-				_params["password"]=PSW;//密码
+				// _params["password"]=PSW;//密码
 				_params["id"]=ID;//ID
 				if(r_code=="R2000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号

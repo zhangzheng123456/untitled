@@ -13,25 +13,28 @@ key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 console.log(funcCode);
 //模仿select
-$(function(){
+$(function(){  
         $("#page_row").click(function(){
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
             }else{  
                 showLi();  
             }  
-        });            
+        });                                     
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
-                if(value==""){
-                    GET();
+                if(value==""&&filtrate==""){
+                    GET(inx,pageSize);
                 }else if(value!==""){
                     param["pageSize"]=pageSize;
-                    POST(); 
-                }    
+                    POST(inx,pageSize); 
+                }else if(filtrate!==""){
+                    _param["pageSize"]=pageSize;
+                    filtrates(inx,pageSize); 
+                }
                 $("#page_row").val($(this).html());  
-                hideLi();  
+                hideLi();
             });    
         });      
         $("#page_row").blur(function(){  
@@ -39,7 +42,6 @@ $(function(){
         });          
     }      
 );
-  
 function showLi(){  
     $("#liebiao").show();  
 }  
@@ -58,6 +60,11 @@ $("#empty").click(function(){
     for(var i=0;i<input.length;i++){
         input[i].value="";
     }
+    value="";
+    filtrate="";
+    $('#search').val("");
+    $(".table p").remove();
+    GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize,funcCode,value) {
     var container = container;

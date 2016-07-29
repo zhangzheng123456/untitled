@@ -55,7 +55,7 @@ $("#filtrate").click(function(){//点击筛选框弹出下拉框
 $("#pack_up").click(function(){//点击收回 取消下拉框
     $(".sxk").slideUp();
 })
-//点击清空  清空input的value值
+// 清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
