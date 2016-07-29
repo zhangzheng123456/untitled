@@ -94,10 +94,16 @@
     </select>
 
     <select id="selectStores" resultType="com.bizvane.ishop.entity.Store">
-        SELECT * FROM DEF_STORE
-        where CORP_CODE = #{corp_code}
-        AND isactive = 'Y'
-        ORDER BY id DESC
+        select
+        DEF_STORE.store_code,
+        DEF_STORE.store_name
+        from DEF_STORE,DEF_CORP,DEF_AREA
+        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
+        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND DEF_STORE.CORP_CODE = #{corp_code}
+        AND DEF_STORE.isactive = 'Y'
+        ORDER BY DEF_STORE.id DESC
     </select>
 
     <select id="selectByAreaCode" resultMap="Store">

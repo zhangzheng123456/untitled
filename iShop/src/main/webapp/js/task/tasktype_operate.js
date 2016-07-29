@@ -181,6 +181,60 @@ jQuery(document).ready(function(){
 
 	window.tasktype.init();//初始化
 	var a="";
+	if($(".pre_title label").text() == "编辑任务类型") {
+		var id = sessionStorage.getItem("id");
+		var key_val = sessionStorage.getItem("key_val"); //取页面的function_code
+		key_val = JSON.parse(key_val);
+		var funcCode = key_val.func_code;
+		whir.loading.add("", 0.5);
+		$.get("/detail?funcCode=" + funcCode + "", function(data) {
+			var data = JSON.parse(data);
+			if (data.code == "0") {
+				var message = JSON.parse(data.message);
+				var action = message.actions;
+				if (action.length <= 0) {
+					$("#edit_save").remove();
+				}
+			}
+		});
+		var _params = {};
+		_params["id"] = id;
+		var _command = "/task_type/select";
+		oc.postRequire("post", _command, "", _params, function(data) {
+			console.log(data);
+			if (data.code == "0") {
+				var msg = JSON.parse(data.message);
+				console.log(msg);
+				$("#task_type_code").val(msg.task_type_code);
+				$("#task_type_code").attr("data-name", msg.task_type_code);
+				$("#task_type").val(msg.task_type_name);
+				$("#task_type").attr("data-name", msg.task_type_name);
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
+				var corp_code = msg.corp_code;
+				var input = $(".checkbox_isactive").find("input")[0];
+				if (msg.isactive == "Y") {
+					input.checked = true;
+				} else if (msg.isactive == "N") {
+					input.checked = false;
+				}
+				getcorplist(corp_code);
+			} else if (data.code == "-1") {
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content: data.message
+				});
+			}
+			whir.loading.remove(); //移除加载框
+		});
+	} else {
+	  getcorplist(a);
+	}
+
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
     	var isCode=/^[T]{1}[0-9]+$/;

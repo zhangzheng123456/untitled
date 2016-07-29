@@ -119,7 +119,11 @@ input::-webkit-input-placeholder{
 .list .list_r{
 	float: right;
 }
-.list .list_r div{
+.list .list_ren{
+	float: right;
+	margin-bottom: 10px;
+}
+.list .list_r div,.list .list_ren div{
 	float: left;
 	width: 160px;
 	height:30px;
@@ -139,7 +143,7 @@ input::-webkit-input-placeholder{
 	background-color: #6dc1c8;
 	cursor: pointer;
 }
-.list .list_r div.turnoff{
+.list .list_r div.turnoff,.list .list_ren div.turnoff{
 	margin-left: 20px;
 	background-color: #4a5f7c;
 	cursor: pointer;
