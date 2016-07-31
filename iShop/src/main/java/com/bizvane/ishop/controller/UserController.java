@@ -1,4 +1,4 @@
-﻿package com.bizvane.ishop.controller;
+package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -1348,7 +1348,7 @@ public class UserController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = userService.getAllUserScreen(page_number, page_size, "", "", "", "", map);
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", role_code, map);
+                list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", "", map);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = userService.getAllUserScreen(page_number, page_size, corp_code, area_code, "", role_code, map);

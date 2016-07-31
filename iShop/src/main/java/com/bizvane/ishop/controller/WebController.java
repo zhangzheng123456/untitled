@@ -5,13 +5,8 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Goods;
-import com.bizvane.ishop.entity.VIPEmpRelation;
-import com.bizvane.ishop.entity.VIPStoreRelation;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.GoodsService;
-import com.bizvane.ishop.service.UserService;
-import com.bizvane.ishop.service.WebService;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.*;
 import com.github.pagehelper.PageInfo;
 
 import org.apache.log4j.Logger;
@@ -22,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 /**
  * Created by zhouying on 2016-04-20.
@@ -45,6 +41,10 @@ public class WebController {
     CorpService corpService;
     @Autowired
     GoodsService goodsService;
+    @Autowired
+    GroupService groupService;
+    @Autowired
+    StoreService storeService;
 
     /**
      *
@@ -97,12 +97,28 @@ public class WebController {
                     JSONObject result = new JSONObject();
                     String emp_id = entity.getEmp_id();
                     String corp_code = corpService.getCorpByAppUserName(app_user_name).getCorp_code();
-                    String store_code = userService.userCodeExist(emp_id,corp_code).getStore_code();
-                    String[] ids = store_code.split(",");
+                    User user  = userService.userCodeExist(emp_id,corp_code);
+                    String group_code = user.getGroup_code();
+                    String role_code = groupService.selectByCode(corp_code, group_code, "").getRole_code();
                     JSONArray array = new JSONArray();
-                    for (int i = 0; i < ids.length; i++) {
-                        ids[i] = ids[i].substring(1, ids[i].length());
-                        array.add(i,ids[i]);
+
+                    if (role_code.equals(Common.ROLE_AM)){
+                        String area_code = user.getArea_code();
+                        String[] areaCodes = area_code.split(",");
+                        areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
+                        String[] ids = new String[]{areaCodes[0]};
+                        List<Store> list = storeService.selectByAreaCode(corp_code, ids, Common.IS_ACTIVE_Y);
+                            array.add(list.get(0).getStore_code());
+                    }else if (role_code.equals(Common.ROLE_GM)){
+                        String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
+                        array.add(store_code);
+                    }else {
+                        String store_code = user.getStore_code();
+                        String[] ids = store_code.split(",");
+                        for (int i = 0; i < ids.length; i++) {
+                            ids[i] = ids[i].substring(1, ids[i].length());
+                            array.add(i, ids[i]);
+                        }
                     }
                     JSONObject obj = new JSONObject();
                     obj.put("emp_code",emp_id);
