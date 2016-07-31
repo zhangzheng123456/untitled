@@ -28,9 +28,9 @@
                     <div class="wx_app">
                         <span  style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>
                             <input type="text" id="WXID" style="margin-top:15px" placeholder="此项可不填"/>
-                            <label style="width: inherit;margin:15px 10px">公众号名称</label>
-                            <input type="text" id="AppName" style="margin-top:15px" placeholder="此项可不填"/>
-                            <span onclick="add()" class="add_apple">添加</span>
+                            <!-- <label style="width: inherit;margin:15px 10px">公众号名称</label> -->
+                            <!-- <input type="text" id="AppName" style="margin-top:15px" placeholder="此项可不填"/>
+                            <span onclick="add()" class="add_apple">添加</span> -->
                         </span>
                     </div>
                     <div>
@@ -82,14 +82,14 @@
     <script type="text/javascript" src="../js/corp/corp_operate.js"></script>
     <script>
 
-        function add(){
-            $(".wx_app").append('<div style="margin-left: 75px">'+'<input type="text" placeholder="此项可不填"/>'+'<input type="text"   placeholder="此项可不填"/>'
-                    +' <span class="remove_input" onclick="removeselect(this)">删除</span>'+'</div>')
-        }
+        // function add(){
+        //     $(".wx_app").append('<div style="margin-left: 75px">'+'<input type="text" placeholder="此项可不填"/>'+'<input type="text"   placeholder="此项可不填"/>'
+        //             +' <span class="remove_input" onclick="removeselect(this)">删除</span>'+'</div>')
+        // }
 
-        function removeselect(obj){//区域  删除
-            $(obj).parent().remove();
-        }
+        // function removeselect(obj){//区域  删除
+        //     $(obj).parent().remove();
+        // }
     </script>
 </body>
 </html>

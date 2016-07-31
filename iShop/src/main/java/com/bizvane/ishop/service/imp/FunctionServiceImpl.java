@@ -47,7 +47,6 @@ public class FunctionServiceImpl implements FunctionService {
             String func_code = func_info.get(i).getFunction_code();
             String url = func_info.get(i).getUrl();
             String icon = func_info.get(i).getIcon();
-            System.out.println(module + "---------" + func);
             if (func.equals("")) {
                 JSONObject obj1 = new JSONObject();
                 obj1.put("mod_name", module);

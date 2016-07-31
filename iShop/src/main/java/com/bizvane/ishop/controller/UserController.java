@@ -265,11 +265,25 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+                if (store_code == null || store_code.equals("")){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("您还没有所属店铺");
+                    return dataBean.getJsonStr();
+                }else {
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+                }
             } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
+                if (area_code == null || area_code.equals("")){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("您还没有所属区域");
+                    return dataBean.getJsonStr();
+                }else {
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -1309,17 +1323,22 @@ public class UserController {
                         user.setModifier(user_id);
                         logger.info("------------creatQrcode  update user");
                         userService.updateUser(user);
+                    }else {
                         dataBean.setId(id);
-                        dataBean.setMessage("生成完成");
-                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
                     }
+                }else {
+                    dataBean.setId(id);
+                    dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    return dataBean.getJsonStr();
                 }
-                dataBean.setId(id);
-                dataBean.setMessage(corp_name + "企业未授权");
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                return dataBean.getJsonStr();
             }
+            dataBean.setId(id);
+            dataBean.setMessage("生成完成");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
@@ -1354,9 +1373,9 @@ public class UserController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = userService.getAllUserScreen(page_number, page_size, "", "", "", role_code, map);
+                list = userService.getAllUserScreen(page_number, page_size, "", "", "", "", map);
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", role_code, map);
+                list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", "", map);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = userService.getAllUserScreen(page_number, page_size, corp_code, area_code, "", role_code, map);

@@ -31,7 +31,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    int updateUserAchvGoal(UserAchvGoal userAchvGoal) throws SQLException;
+    String updateUserAchvGoal(UserAchvGoal userAchvGoal) throws Exception;
 
     /**
      * 删除用户业绩目标ID
@@ -49,7 +49,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    int insert(UserAchvGoal userAchvGoal) throws SQLException;
+    String insert(UserAchvGoal userAchvGoal) throws SQLException;
 
     /**
      * 获取用户业绩目标的分页信息

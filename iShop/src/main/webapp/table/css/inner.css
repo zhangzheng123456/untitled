@@ -119,7 +119,11 @@ input::-webkit-input-placeholder{
 .list .list_r{
 	float: right;
 }
-.list .list_r div{
+.list .list_ren{
+	float: right;
+	margin-bottom: 10px;
+}
+.list .list_r div,.list .list_ren div{
 	float: left;
 	width: 160px;
 	height:30px;
@@ -139,7 +143,7 @@ input::-webkit-input-placeholder{
 	background-color: #6dc1c8;
 	cursor: pointer;
 }
-.list .list_r div.turnoff{
+.list .list_r div.turnoff,.list .list_ren div.turnoff{
 	margin-left: 20px;
 	background-color: #4a5f7c;
 	cursor: pointer;
@@ -719,7 +723,7 @@ input::-webkit-input-placeholder{
 	background-color: #6dc1c8;
 	cursor: pointer;
 }
-.icon-ishop_6-12{
+#file_close{
 	font-size: 25px;
 	letter-spacing: 2px;
 	color:#483737;
@@ -827,7 +831,7 @@ input::-webkit-input-placeholder{
 
 .chongzhi_pwd{
 	display: none;
-	width:450px;
+	width:490px;
 	height: 300px;
 	overflow: hidden;
 	position: absolute;
@@ -835,6 +839,11 @@ input::-webkit-input-placeholder{
 	left:40%;
 	z-index: 3000;
 	background-color:rgba(244, 244, 244, 0.9) ;
+}
+.chongzhi_pwd p em{
+	color:red;
+	margin-left: 15px;
+	display:none;
 }
 .chongzhi_pwd p{
 	margin: 55px 80px;

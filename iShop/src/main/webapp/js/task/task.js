@@ -55,13 +55,12 @@ $("#filtrate").click(function(){//点击筛选框弹出下拉框
 $("#pack_up").click(function(){//点击收回 取消下拉框
     $(".sxk").slideUp();
 })
-//点击清空  清空input的value值
+// 清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
         input[i].value="";
     }
-    $(".sxk").slideUp();
     value="";
     filtrate="";
     $(".table p").remove();
@@ -174,7 +173,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         } 
-        $(".table tbody").append("<tr id='"+data[i].id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table #table tbody").append("<tr id='"+data[i].id+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -191,9 +190,11 @@ function superaddition(data,num){//页面加载循环
                         + data[i].task_type_name
                         + "</td><td><span>"
                         + data[i].task_description
-                        + "</span></td><td><span>"
+                        + "</span></td><td class='corp_code' data-code='"+data[i].corp_code+"'><span>"
                         + data[i].corp_name
-                        + "</span></td><td>"
+                        + "</span></td><td class='details'><a href='javascript:void(0)'>"
+                        + "查看"
+                        + "</a></td><td>"
                         + data[i].target_start_time
                         + "</td><td>"
                          + data[i].target_end_time
@@ -227,7 +228,7 @@ function GET(a,b){
         +"&funcCode="+funcCode+"","","",function(data){
             console.log(data);
             if(data.code=="0"){
-                $(".table tbody").empty();
+                $("#table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
@@ -254,7 +255,7 @@ function jumpBianse(){
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
-        var thinput=$("thead input")[0];
+        var thinput=$("#table thead input")[0];
         $(this).toggleClass("tr");  
         console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
@@ -274,7 +275,7 @@ function jumpBianse(){
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
@@ -298,7 +299,7 @@ function jumpBianse(){
     $("#remove").click(function(){
         var l=$(window).width();
         var h=$(document.body).height();
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -309,6 +310,51 @@ function jumpBianse(){
         console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
+    })
+    //查看任务详情跳转查看员工页面
+    $('.details').click(function(){
+        var event=window.event||arguments[0];
+        if(event.stopPropagation){
+            event.stopPropagation();
+        }else{
+            event.cancelBubble=true;
+        }
+        var param={};
+        var corp_code=$(this).parents('tr').find(".corp_code").attr("data-code");
+        var task_code=$(this).parents('tr').find("td:eq(2)").html();
+        param["corp_code"]=corp_code;
+        param["task_code"]=task_code;
+        whir.loading.add("",0.5);//加载等待框
+        oc.postRequire("post","/task/userlist","0",param,function(data){
+            if(data.code=="0"){
+                $('#details').show();
+                $('#content').hide();
+                var message=JSON.parse(data.message);
+                var list=JSON.parse(message.list);
+                console.log(list);
+                $(".table #table_r tbody").empty();
+                for(var i=0;i<list.length;i++){
+                    var a=i+1;
+                    $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
+                                + a
+                                + "</td><td>"
+                                + list[i].user_name
+                                + "</td><td>"
+                                + list[i].task_status
+                                + "</td><td>"
+                                + list[i].target_start_time
+                                + "</td><td>"
+                                + list[i].target_end_time
+                                +"</td></tr>");
+                    }
+                }
+                whir.loading.remove();//移除加载框
+        })
+    })
+    //任务详情关闭按钮
+    $('#turnoff').click(function(){
+        $('#details').hide();
+        $('#content').show();
     })
 }
 //鼠标按下时触发的收索
@@ -379,18 +425,17 @@ $("#cancel").click(function(){
 $("#delete").click(function(){
     $("#p").hide();
     $("#tk").hide();
-    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    for(var i=0,ID="";i<tr.length;i++){
-        var r=$(tr[i]).attr("id");
-        if(i<tr.length-1){
-            ID+=r+",";
-        }else{
-             ID+=r;
-        }     
-    }
+    var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
     var param={};
-    param["id"]=ID;
-    console.log(param);
+    var list=[];
+    for(var i=0;i<tr.length;i++){
+        var id=$(tr[i]).attr("id");
+        var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
+        var task_code=$(tr[i]).find("td:eq(2)").html();
+        var param1={"id":id,"corp_code":corp_code,"task_code":task_code};
+        list.push(param1);
+    }
+    param["list"]=list;
     oc.postRequire("post","/task/delete","0",param,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
@@ -405,7 +450,7 @@ $("#delete").click(function(){
                frame();
                $('.frame').html('删除成功');
             }
-        var thinput=$("thead input")[0];
+        var thinput=$("#table thead input")[0];
         thinput.checked =false;
         }else if(data.code=="-1"){
             frame();
@@ -414,7 +459,7 @@ $("#delete").click(function(){
     })
 })
 //删除弹框
- function frame(){
+function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
     var tp=($(window).height()-$("#frame").height())/2;//弹框定位的top值
     $('.frame').remove();
@@ -427,7 +472,7 @@ $("#delete").click(function(){
 } 
 //全选
 function checkAll(name){
-    var el=$("tbody input");
+    var el=$("#table tbody input");
     el.parents("tr").addClass("tr");
     var len = el.length;
 
@@ -439,10 +484,9 @@ function checkAll(name){
             }
         }
 };
-
 //取消全选
 function clearAll(name){
-    var el=$("tbody input");
+    var el=$("#table tbody input");
     el.parents("tr").removeClass("tr");
     var len = el.length;
     for(var i=0; i<len; i++)
@@ -506,7 +550,7 @@ $("#file_submit").click(function(){
             $('#file_submit').hide();
             $('#download').show();
             //导出关闭按钮
-            $('.icon-ishop_6-12').click(function(){
+            $('#file_close').click(function(){
                 $('.file').hide();
             })
         }else if(data.code=="-1"){
@@ -515,7 +559,7 @@ $("#file_submit").click(function(){
     })
 })
 //导出关闭按钮
-$('.icon-ishop_6-12').click(function(){
+$('#file_close').click(function(){
     $("#p").hide();
     $('.file').hide();
     $('#file_submit').show();

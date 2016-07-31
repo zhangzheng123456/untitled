@@ -96,10 +96,10 @@
                         <span>
                             <label>设置密码</label><input type="password"  id="init_password" readonly="readonly"/>
                             <span class="pwd_btn" style="padding:5px 10px;background: #6cc1c8;color:#ffffff;border-radius: 4px" onclick="chongzhi()">重置</span>
-                            <div style="padding-left:125px" class="hint"><div  hintinfo="密码不能为空！"></div></div>
+                            <!--<div style="padding-left:125px" class="hint"><div  hintinfo="密码不能为空！"></div></div>-->
                             <div class="chongzhi_pwd" id="chongzhi_pwd">
-                                <p>修改密码:    <input type="password" id="first_pwd"></p>
-                                <p>确认密码:    <input type="password" id="second_pwd"></p>
+                                <p>修改密码:    <input type="password" id="first_pwd"><em class="em_1">密码不能为空</em></p>
+                                <p>确认密码:    <input type="password" id="second_pwd"><em class="em_2">密码不一致</em></p>
                                 <span class="save" id="baocun"  onclick="check()">保存</span>
                                 <span class="quxiao" id="quxiao" onclick="quxiao()">取消</span>
                             </div>
@@ -329,31 +329,25 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-    <!--<script type="text/javascript" src="../js/insidePostRequire.js"></script>-->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
      <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/user/user_operate.js"></script>
     <script src="/js/user/usercheck_power.js"></script>
 <script>
+
     function chongzhi() {
         $("#chongzhi_pwd").css('display','block');
         $("#chongzhi_box").css('display','block');
-    }
-    function check() {
-        var first=document.getElementById('first_pwd');
-        var second=document.getElementById('second_pwd');
-        if (first.value!=second.value){
-            alert("对不起!两次密码不一致");
-            return false;
-        }
-        return true;
     }
     function quxiao() {
         $("#first_pwd").val("");
         $("#second_pwd").val("");
         $("#chongzhi_pwd").css('display','none');
         $("#chongzhi_box").css('display','none');
+        $(".em_1").css("display","none");
+        $(".em_2").css("display","none")
     }
 </script>
 </body>
