@@ -14,24 +14,26 @@ var funcCode=key_val.func_code;
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
-
             if("block" == $("#liebiao").css("display")){  
                 hideLi();  
-            }else{
+            }else{  
                 showLi();  
             }  
-        });            
+        });                                     
         $("#liebiao li").each(function(i,v){  
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
-                if(value==""){
-                    GET();
+                if(value==""&&filtrate==""){
+                    GET(inx,pageSize);
                 }else if(value!==""){
                     param["pageSize"]=pageSize;
-                    POST(); 
-                } 
+                    POST(inx,pageSize); 
+                }else if(filtrate!==""){
+                    _param["pageSize"]=pageSize;
+                    filtrates(inx,pageSize); 
+                }
                 $("#page_row").val($(this).html());  
-                hideLi();  
+                hideLi();
             });    
         });      
         $("#page_row").blur(function(){  
@@ -58,8 +60,13 @@ $("#empty").click(function(){
     for(var i=0;i<input.length;i++){
         input[i].value="";
     }
+    value="";
+    filtrate="";
+    $('#search').val("");
+    $(".table p").remove();
+    GET(inx,pageSize);
 })
-function setPage(container, count, pageindex,pageSize,funcCode,value) {
+function setPage(container, count, pageindex,pageSize,funcCode) {
     var container = container;
     var count = count;
     var pageindex = pageindex;
@@ -121,15 +128,15 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                 return false;
             }
             inx--;
-            dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            dian(inx,pageSize);
+            // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
-                dian(inx);
-                setPage(container, count, inx,pageSize,funcCode,value);
+                dian(inx,pageSize);
+                // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
         }
@@ -138,53 +145,35 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                 return false;
             }
             inx++;
-            dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            dian(inx,pageSize);
+            // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
     }()
-    function dian(inx){//
-        if(value==""){
-            oc.postRequire("get","/message/mobile/template/list?pageNumber="+inx+"&pageSize="+pageSize
-                +"&funcCode="+funcCode+"","","",function(data){
-                    console.log(data);
-                    if(data.code=="0"){
-                        $(".table tbody").empty();
-                        var message=JSON.parse(data.message);
-                        var list=JSON.parse(message.list);
-                        var cout=list.pages;
-                        var list=list.list;
-                        superaddition(list,inx);
-                        jumpBianse();
-                    }else if(data.code=="-1"){
-                        alert(data.message);
-                    }
-            });           
-        }else if(value!==""){
-            param["pageNumber"]=inx;
-            param["pageSize"]=pageSize;
-            oc.postRequire("post","/message/mobile/template/search","0",param,function(data){
-                if(data.code=="0"){
-                    var message=JSON.parse(data.message);
-                    var list=JSON.parse(message.list);
-                    var cout=list.pages;
-                    var list=list.list;
-                    $(".table tbody").empty();
-                    if(list.length<=0){
-                        $(".table p").remove();
-                        $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
-                    }else if(list.length>0){
-                        $(".table p").remove();
-                        superaddition(list,inx);
-                        jumpBianse();
-                    }
-                }else if(data.code=="-1"){
-                    alert(data.message);
-                }
-            })        
-        }
-    }
 }
+//页面加载时list请求
+function GET(a,b){
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("get","/corp/list?pageNumber="+a+"&pageSize="+b
+        +"&funcCode="+funcCode+"","","",function(data){
+            // console.log(data);
+            if(data.code=="0"){
+                $(".table tbody").empty();
+                var message=JSON.parse(data.message);
+                var list=JSON.parse(message.list);
+                var cout=list.pages;
+                var list=list.list;
+                var actions=message.actions;
+                superaddition(list,inx);
+                jurisdiction(actions);
+                jumpBianse();
+                setPage($("#foot-num")[0],cout,a,b,funcCode);
+            }else if(data.code=="-1"){
+                // alert(data.message);
+            }
+    });
+}
+GET(inx,pageSize);
 function superaddition(data,num){//页面加载循环
     console.log(data);
     for (var i = 0; i < data.length; i++) {
@@ -235,9 +224,9 @@ function jurisdiction(actions){
     }
 }
 //页面加载时list请求
-function GET(){
+function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/message/mobile/template/list?pageNumber="+inx+"&pageSize="+pageSize
+    oc.postRequire("get","/message/mobile/template/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
             if(data.code=="0"){
                 $(".table tbody").empty();
@@ -249,13 +238,13 @@ function GET(){
                 superaddition(list,inx);
                 jurisdiction(actions);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+                setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
                 alert(data.message);
             }
     });
 }
-GET();
+GET(inx,pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
@@ -330,7 +319,7 @@ $("#search").keydown(function() {
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        POST();
+       POST(inx,pageSize);
     }
 });
 //点击放大镜触发搜索
@@ -340,10 +329,10 @@ $("#d_search").click(function(){
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
-    POST();
+    POST(inx,pageSize);
 })
 //搜索的请求函数
-function POST(){
+function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/message/mobile/template/find","0",param,function(data){
         if(data.code=="0"){
@@ -362,7 +351,14 @@ function POST(){
                 superaddition(list,inx);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+            var input=$(".inputs input");
+            for(var i=0;i<input.length;i++){
+                input[i].value="";
+            }
+            filtrate="";
+            list="";
+            $(".sxk").slideUp();
+            setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -539,7 +535,7 @@ $("#find").click(function(){
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val();
+        var screen_value=$(input[i]).val().trim();
         if(screen_value!=""){
             num++;
             var param1={"screen_key":screen_key,"screen_value":screen_value};
@@ -551,14 +547,14 @@ $("#find").click(function(){
         value="";//把搜索滞空
         $("#search").val("");
         filtrate="sucess";
-        filtrates();
+        filtrates(inx,pageSize);
    }else if(num<=0){
         frame();
         $('.frame').html("请输入筛选值");
    }
 })
 //筛选发送请求
-function filtrates(){
+function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/message/mobile/template/screen","0",_param,function(data){
         if(data.code=="0"){
@@ -577,7 +573,7 @@ function filtrates(){
                 superaddition(list,inx);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value,filtrate);
+            setPage($("#foot-num")[0],cout,a,b,funcCode,value);
         }else if(data.code=="-1"){
             alert(data.message);
         }

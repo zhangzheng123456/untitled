@@ -11,6 +11,7 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
+//模仿select
 $(function(){  
         $("#page_row").click(function(){
             if("block" == $("#liebiao").css("display")){  
