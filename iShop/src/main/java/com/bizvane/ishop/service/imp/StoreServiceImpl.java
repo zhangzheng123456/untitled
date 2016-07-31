@@ -370,12 +370,11 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) {
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
         params.put("search_value", search_value);
-        params.put("isactive", "");
+        params.put("isactive", "Y");
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selectByAreaCode(params);
         PageInfo<Store> page = new PageInfo<Store>(stores);

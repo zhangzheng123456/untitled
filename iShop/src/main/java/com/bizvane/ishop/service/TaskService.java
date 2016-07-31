@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskAllocation;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -23,6 +24,8 @@ public interface TaskService {
     String updTask(Task task,String[] user_codes);
 
     Task selectTaskById(String id);
+
+    TaskAllocation selTaskAllocationById(String id);
 
     List<TaskAllocation> selTaskAllocation(String corp_code,String task_code);
 

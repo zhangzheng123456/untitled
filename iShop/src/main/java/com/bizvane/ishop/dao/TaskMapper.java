@@ -17,7 +17,12 @@ public interface TaskMapper {
 
         Task selTaskById(@Param("id")String id);
 
+        TaskAllocation selTaskAllocationById(@Param("id")String id);
+
         List<TaskAllocation> selAllTaskAllocation(@Param("corp_code")String corp_code,@Param("task_code")String task_code);
+
+
+        TaskAllocation selAllTaskAllocationByUser(@Param("corp_code")String corp_code,@Param("task_code")String task_code,@Param("user_code")String user_code);
 
         int delTaskById(@Param("id")String id);
 

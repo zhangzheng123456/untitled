@@ -4,11 +4,8 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Task;
-import com.bizvane.ishop.entity.TaskAllocation;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.TaskService;
-import com.bizvane.ishop.service.TaskTypeService;
+import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
@@ -22,7 +19,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.lang.System;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +37,14 @@ public class TaskController {
     private FunctionService functionService;
     @Autowired
     private TaskService taskService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private CorpService corpService;
+    @Autowired
+    private StoreService storeService;
+    @Autowired
+    private AreaService areaService;
     String id;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
@@ -211,7 +218,7 @@ public class TaskController {
                     del= taskService.delTask(id, corp_code, task_code);
                 }else{
                     if(!user_code.equals(task.getCreater())){
-                        del="权限不足:无法删除他人创建的任务";
+                        del="无法删除他人创建的任务";
                     }else{
                         del= taskService.delTask(id, corp_code, task_code);
                     }
@@ -249,7 +256,7 @@ public class TaskController {
             JSONObject jsonObject = new JSONObject(message);
             Task task=new Task();
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-            task.setTask_code("T"+sdf.format(new Date()));
+            task.setTask_code("T"+sdf.format(new Date())+Math.round(Math.random()*9));
             task.setTask_title(jsonObject.get("task_title").toString());
             task.setTask_type_code(jsonObject.get("task_type_code").toString());
             task.setTask_description(jsonObject.get("task_description").toString());
@@ -282,7 +289,55 @@ public class TaskController {
         }
         return  dataBean.getJsonStr();
     }
-
+    @RequestMapping(value = "/edit", method = RequestMethod.POST)
+    @ResponseBody
+    @Transactional
+    public String updTask(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        int count = 0;
+        try {
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            Task task=new Task();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            task.setTask_code("T"+sdf.format(new Date())+Math.round(Math.random()*9));
+            task.setTask_title(jsonObject.get("task_title").toString());
+            task.setTask_type_code(jsonObject.get("task_type_code").toString());
+            task.setTask_description(jsonObject.get("task_description").toString());
+            task.setTarget_start_time(jsonObject.get("target_start_time").toString());
+            task.setTarget_end_time(jsonObject.get("target_end_time").toString());
+            task.setCorp_code(jsonObject.get("corp_code").toString());
+            task.setId(Integer.parseInt(jsonObject.get("id").toString()));
+            Date now = new Date();
+            task.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            task.setCreater(user_code);
+            task.setModified_date(Common.DATETIME_FORMAT.format(now));
+            task.setModifier(user_code);
+            task.setIsactive(jsonObject.get("isactive").toString());
+            String user_codes = jsonObject.get("user_codes").toString();
+            String[] split = user_codes.split(",");
+            String add = taskService.updTask(task, split);
+            count=Integer.parseInt(add);
+            if(count>0){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("编辑成功");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("-1");
+                dataBean.setMessage("编辑失败");
+            }
+        }catch (Exception ex){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage("编辑失败");
+        }
+        return  dataBean.getJsonStr();
+    }
     /***
      * 导出数据
      */
@@ -343,4 +398,65 @@ public class TaskController {
         }
         return dataBean.getJsonStr();
     }
+
+    /***
+     * 查询该员工的详情
+     */
+    @RequestMapping(value = "/selectByRole", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectByRole(HttpServletRequest request){
+        DataBean bean=new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = jsonObject.get("searchValue").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            JSONObject result = new JSONObject();
+            User user = userService.getUserById(Integer.parseInt(user_id));
+            if(role_code.equals(Common.ROLE_SYS)){
+                PageInfo<Corp> pages = corpService.selectAllCorp(page_number, page_size, search_value);
+                result.put("list", JSON.toJSONString(pages));
+                result.put("user",JSON.toJSONString(user));
+            }else if(role_code.equals(Common.ROLE_GM)){
+                PageInfo<Area> pages = areaService.getAllAreaByPage(page_number, page_size, corp_code, "");
+                result.put("list", JSON.toJSONString(pages));
+                result.put("user",JSON.toJSONString(user));
+            }else if(role_code.equals(Common.ROLE_AM)){
+                String areaCode = user.getArea_code();
+                String[] areaCodes = areaCode.split(",");
+                PageInfo<Store> pages=storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, search_value);
+                result.put("list", JSON.toJSONString(pages));
+                result.put("user",JSON.toJSONString(user));
+            }else if(role_code.equals(Common.ROLE_SM)){
+                String store_code = user.getStore_code();
+                PageInfo<User> pages = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", Common.ROLE_STAFF);
+                result.put("list", JSON.toJSONString(pages));
+                result.put("user",JSON.toJSONString(user));
+            }else if(role_code.equals(Common.ROLE_STAFF)){
+                PageInfo<User> pages = null;
+                List<User> users = new ArrayList<User>();
+                users.add(user);
+                pages = new PageInfo<User>();
+                pages.setList(users);
+                result.put("list", JSON.toJSONString(pages));
+            }
+            bean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            bean.setId("1");
+            bean.setMessage(result.toString());
+        } catch (Exception e) {
+            bean.setCode(Common.DATABEAN_CODE_ERROR);
+            bean.setId("1");
+            bean.setMessage("信息异常");
+        }
+        return bean.getJsonStr();
+
+    }
+
 }

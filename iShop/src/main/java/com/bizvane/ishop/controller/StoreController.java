@@ -85,11 +85,28 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String areas=jsonObject.get("areaCodes").toString();
             String searchValue = jsonObject.get("searchValue").toString();
-            String[] areaCodes = areas.split(",");
-            PageInfo<Store> list=storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+            PageInfo<Store> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
+            } else {
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = storeService.getAllStore(request, page_number, page_size, corp_code, searchValue);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    String[] areaCodes = area_code.split(",");
+                    for (int i = 0; i < areaCodes.length; i++) {
+                        areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                    }
+                    list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                } else {
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, searchValue);
+                }
+            }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
