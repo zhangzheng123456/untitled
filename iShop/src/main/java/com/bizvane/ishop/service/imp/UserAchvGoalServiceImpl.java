@@ -126,6 +126,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         if (count > 0) {
             return "用户业绩重复";
         } else {
+            userAchvGoalMapper.insert(userAchvGoal);
             return Common.DATABEAN_CODE_SUCCESS;
         }
     }

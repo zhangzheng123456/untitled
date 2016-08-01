@@ -38,5 +38,7 @@ public interface AreaService {
 
     String insertExecl(Area area);
 
-    PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, Map<String, String> map);
+    PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map);
+
+    PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value);
 }
