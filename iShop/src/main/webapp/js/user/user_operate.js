@@ -928,6 +928,9 @@ function getcorplist(){
 					$("#USER_EMAIL").attr("data-mark","");
 					$("#OWN_RIGHT").val('');
 					$("#OWN_RIGHT").attr("data-myrcode","");
+					$("#OWN_STORE").val('');
+					$("#OWN_STORE").attr("data-myscode","");
+					$("#ownshop_list .per_type").nextAll().remove();
 			})
 		}else if(data.code=="-1"){
 			art.dialog({

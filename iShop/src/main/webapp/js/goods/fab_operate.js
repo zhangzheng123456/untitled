@@ -69,6 +69,15 @@ var oc = new ObjectControl();
 				}else if(input.checked==false){
 					ISACTIVE="N";
 				}
+				if(GOODS_RELEASETIME==""){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"发布时间不能为空!"
+					});
+					return;
+				}
 				/*
 				获取上传的图片地址
 				 */
@@ -137,6 +146,15 @@ var oc = new ObjectControl();
 					ISACTIVE="Y";
 				}else if(input.checked==false){
 					ISACTIVE="N";
+				}
+				if(GOODS_RELEASETIME==""){
+					art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"发布时间不能为空!"
+					});
+					return;
 				}
 				/*
 				获取上传的图片地址

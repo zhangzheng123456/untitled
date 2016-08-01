@@ -364,14 +364,21 @@ $("#delete").click(function(){
     console.log(param);
     oc.postRequire("post","/sign/delete","0",param,function(data){
         if(data.code=="0"){
-            if(value==""){
-               frame();
-               $('.frame').html('删除成功');
-               GET(); 
-            }else if(value!==""){
-               frame();
-               $('.frame').html('删除成功');
-               POST();
+            if (value == "" && filtrate == "") {
+                frame();
+                $('.frame').html('删除成功');
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                frame();
+                $('.frame').html('删除成功');
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                frame();
+                $('.frame').html('删除成功');
+                filtrates(inx, pageSize);
+            }
+            var thinput=$("thead input")[0];
+            thinput.checked =false;
             }else if(data.code=="-1"){
                 frame();
                 $('.frame').html(data.message);

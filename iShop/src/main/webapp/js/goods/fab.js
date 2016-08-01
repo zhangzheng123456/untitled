@@ -26,9 +26,11 @@ $(function(){
                 if(value==""&&filtrate==""){
                     GET(inx,pageSize);
                 }else if(value!==""){
+                    param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
+                    _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
@@ -342,7 +344,7 @@ function POST(a,b){
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
-                $(".table").append("<p>没有找到与"+value+"相关的信息，请重新搜索</p>");
+                $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息，请重新搜索</p>");
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
@@ -391,14 +393,18 @@ $("#delete").click(function(){
     console.log(param);
     oc.postRequire("post","/goods/fab/delete","0",param,function(data){
         if(data.code=="0"){
-            if(value==""){
-               frame();
-               $('.frame').html('删除成功');
-               GET(); 
-            }else if(value!==""){
-               frame();
-               $('.frame').html('删除成功');
-               POST();
+            if (value == "" && filtrate == "") {
+                frame();
+                $('.frame').html('删除成功');
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                frame();
+                $('.frame').html('删除成功');
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                frame();
+                $('.frame').html('删除成功');
+                filtrates(inx, pageSize);
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;
