@@ -15,20 +15,21 @@ jQuery(function(){
         "key":key
 	};
 	if(corp_code!=""){
-		oc.postRequire("post","/app/fab","0",param,function(data){
+		oc.postRequire("post","/api/fab","0",param,function(data){
 			console.log(data);
-			console.log(data[0].message);
-			var goodsList=JSON.parse(data[0].message)["goodsList"];
-			console.log(goodsList);
-			for(var i=0;i<goodsList.length;i++){
-				jQuery('.allShops').append('<div class="shop"><div class="img"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><img src="'+goodsList[i].picture+'"><a/></div><div class="shop-t"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><h1>'+goodsList[i].goods_name+'</h1></a><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p>货号:'+goodsList[i].goods_code+'</p><a/><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p class="pice">价格:<span>￥'+goodsList[i].goods_price+'</span></p></a></div></div>');
+			var list=JSON.parse(data.message);
+			var list=JSON.parse(list.list);
+			var list=list.list;
+			console.log(list);
+			for(var i=0;i<list.length;i++){
+				jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='+corp_code+'&id='+list[i].id+'"><div class="img"><img src="'+list[i].goods_image+'"></div><div class="shop-t"><h1>'+list[i].goods_name+'</h1><p>货号:'+list[i].goods_code+'</p><p class="pice">价格:<span>￥'+list[i].goods_price+'</span></p></div></a></div>');
 			}
 		});
 			jQuery(window).scroll(function(){
-				totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop())+150; 
+				 var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop())+150;
 
 				// if((jQuery(document).scrollTop())==(jQuery(document).height()-jQuery(window).height())){
-				if($(document).height() <= totalheight){ 
+				if($(document).height() <= totalheight){
 					var rowno=jQuery('.allShops .shop').length+1;
 					query={
 						"rowno":rowno,
@@ -37,11 +38,13 @@ jQuery(function(){
 					}
 					console.log(rowno);
 					console.log(key);
-					oc.postRequire("post","/app/fab","0",param,function(data){
+					oc.postRequire("post","/api/fab","0",query,function(data){
 						console.log(data);
-		                var goodsList=JSON.parse(data[0].message)["goodsList"];
-		                for(var i=0;i<goodsList.length;i++){
-				          jQuery('.allShops').append('<div class="shop"><div class="img"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><img src="'+goodsList[i].picture+'"><a/></div><div class="shop-t"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><h1>'+goodsList[i].goods_name+'</h1></a><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p>货号:'+goodsList[i].goods_code+'</p><a/><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p class="pice">价格:<span>￥'+goodsList[i].goods_price+'</span></p></a></div></div>');
+						var list=JSON.parse(data.message);
+						var list=JSON.parse(list.list);
+						var list=list.list;
+		                for(var i=0;i<list.length;i++){
+				          jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='+corp_code+'&goods_price='+list[i].goods_code+'"><div class="img"><img src="'+list[i].goods_image+'"></div><div class="shop-t"><h1>'+list[i].goods_name+'</h1><p>货号:'+list[i].goods_code+'</p><p class="pice">价格:<span>￥'+list[i].goods_price+'</span></p></div></a></div>');
 			}
 		        	})
 				}
@@ -53,21 +56,23 @@ jQuery(function(){
 		        "key":key
 		    };
 		    console.log(rowno);
-		    oc.postRequire("post","/app/fab","0",param,function(data){
+		    oc.postRequire("post","/api/fab","0",query,function(data){
 		    	console.log(data);
-		    	var goodsList=JSON.parse(data[0].message)["goodsList"];
-		    	console.log(goodsList);
-		    	if(goodsList.length>=1){
+				var list=JSON.parse(data.message);
+				var list=JSON.parse(list.list);
+				var list=list.list;
+		    	console.log(list);
+		    	if(list.length>=1){
 		    		jQuery('.allShops').empty();
-		    		for(var i=0;i<goodsList.length;i++){
-				    		jQuery('.allShops').append('<div class="shop"><div class="img"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><img src="'+goodsList[i].picture+'"><a/></div><div class="shop-t"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><h1>'+goodsList[i].goods_name+'</h1></a><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p>货号:'+goodsList[i].goods_code+'</p><a/><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p class="pice">价格:<span>￥'+goodsList[i].goods_price+'</span></p></a></div></div>');
+		    		for(var i=0;i<list.length;i++){
+				    		jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='+corp_code+'&id='+list[i].id+'"><div class="img"><img src="'+list[i].goods_image+'"></div><div class="shop-t"><h1>'+list[i].goods_name+'</h1><p>货号:'+list[i].goods_code+'</p><p class="pice">价格:<span>￥'+list[i].goods_price+'</span></p></div></a></div>');
 			}
-		    	}else if(goodsList.length==0){
+		    	}else if(list.length==0){
 		    		jQuery('.allShops').empty();
 		    		jQuery(".allShops").append("<p>没有收索结果</p><p class='p'>没有找到相关宝贝<p/>")
 		    	}else if(key==""){
 		    		jQuery('.allShops').empty();
-		    			jQuery('.allShops').append('<div class="shop"><div class="img"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><img src="'+goodsList[i].picture+'"><a/></div><div class="shop-t"><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><h1>'+goodsList[i].goods_name+'</h1></a><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p>货号:'+goodsList[i].goods_code+'</p><a/><a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><p class="pice">价格:<span>￥'+goodsList[i].goods_price+'</span></p></a></div></div>');
+		    			jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='+corp_code+'&id='+list[i].id+'"><div class="img"><img src="'+list[i].goods_image+'"></div><div class="shop-t"><h1>'+list[i].goods_name+'</h1><p>货号:'+list[i].goods_code+'</p><p class="pice">价格:<span>￥'+list[i].goods_price+'</span></p></div></a></div>');
 			}
 		    });
 		  console.log(key); 
