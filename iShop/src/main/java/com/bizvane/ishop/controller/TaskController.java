@@ -398,7 +398,33 @@ public class TaskController {
         }
         return dataBean.getJsonStr();
     }
-
+    /***
+     * 查询该员工的详情
+     */
+    @RequestMapping(value = "/selectAllTaskType", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectAllTaskType(HttpServletRequest request){
+        DataBean bean=new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<TaskType> taskTypes = taskService.selectAllTaskType(corp_code);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(taskTypes));
+            bean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            bean.setId("1");
+            bean.setMessage(result.toString());
+        }catch (Exception e){
+            bean.setCode(Common.DATABEAN_CODE_ERROR);
+            bean.setId("1");
+            bean.setMessage("类型异常");
+        }
+        return bean.getJsonStr();
+    }
     /***
      * 查询该员工的详情
      */
@@ -458,5 +484,6 @@ public class TaskController {
         return bean.getJsonStr();
 
     }
+
 
 }

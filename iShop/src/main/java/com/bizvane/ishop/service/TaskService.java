@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskAllocation;
+import com.bizvane.ishop.entity.TaskType;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,4 +31,6 @@ public interface TaskService {
     List<TaskAllocation> selTaskAllocation(String corp_code,String task_code);
 
     String delTaskAllocation(String id);
+
+    List<TaskType> selectAllTaskType(String corp_code);
 }

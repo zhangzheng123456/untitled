@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.TaskMapper;
+import com.bizvane.ishop.dao.TaskTypeMapper;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskAllocation;
 import com.bizvane.ishop.entity.TaskType;
@@ -34,6 +35,9 @@ import java.util.Map;
 public class TaskServiceImpl implements TaskService{
     @Autowired
     private TaskMapper taskMapper;
+    @Autowired
+    private TaskTypeMapper typeMapper;
+
     @Override
     public PageInfo<Task> selectAllTask(int page_num, int page_size, String corp_code, String role_ident, String user_code, String search_value) {
 
@@ -173,5 +177,10 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public String delTaskAllocation(String id) {
         return null;
+    }
+
+    @Override
+    public List<TaskType> selectAllTaskType(String corp_code) {
+        return typeMapper.selectAllTaskType(corp_code,"");
     }
 }
