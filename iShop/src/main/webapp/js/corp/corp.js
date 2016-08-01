@@ -11,6 +11,7 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
+//模仿select
 $(function(){  
         $("#page_row").click(function(){
             if("block" == $("#liebiao").css("display")){  
@@ -53,6 +54,15 @@ $("#filtrate").click(function(){//点击筛选框弹出下拉框
 })
 $("#pack_up").click(function(){//点击收回 取消下拉框
     $(".sxk").slideUp();
+})
+$.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+      return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
+$("#search").on('keyup', function(event){
+    var text=$(this).val();
+    $('#table').find('td:searchableSelectContains('+text+')').addClass('searchable-select-hide');
 })
 //点击清空  清空input的value值
 $("#empty").click(function(){
@@ -385,14 +395,18 @@ $("#delete").click(function(){
     console.log(param);
     oc.postRequire("post","/corp/delete","0",param,function(data){
         if(data.code=="0"){
-            if(value==""){
+            if(value==""&&filtrate==""){
                frame();
                $('.frame').html('删除成功');
-               GET(); 
+               GET(inx,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
-               POST();
+               POST(inx,pageSize);
+            }else if(filtrate!==""){
+                frame();
+                $('.frame').html('删除成功');
+                filtrates(inx,pageSize); 
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;

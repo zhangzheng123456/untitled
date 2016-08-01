@@ -58,14 +58,24 @@
     </select>
     <!--验证唯一或编辑时传值-->
     <select id="selTaskById" resultType="com.bizvane.ishop.entity.Task">
-       SELECT  * from def_task
-        where  id =#{id}
+       SELECT  * FROM def_task
+        WHERE  id =#{id}
+    </select>
+    <select id="selTaskAllocationById" resultType="com.bizvane.ishop.entity.TaskAllocation">
+         SELECT  * FROM rel_task_allocation
+        WHERE  id =#{id}
     </select>
     <!--查询出任务详情及编辑是传值-->
     <select id="selAllTaskAllocation" resultType="com.bizvane.ishop.entity.TaskAllocation">
         SELECT  * from rel_task_allocation,DEF_CORP
         where  rel_task_allocation.corp_code=DEF_CORP.corp_code AND
-         corp_code =#{corp_code} AND task_code=#{task_code}
+         rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
+    </select>
+    <select id="selAllTaskAllocationByUser" resultType="com.bizvane.ishop.entity.TaskAllocation">
+        SELECT  * from rel_task_allocation,DEF_CORP
+        where  rel_task_allocation.corp_code=DEF_CORP.corp_code AND
+        rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
+        AND rel_task_allocation.user_code=#{user_code}
     </select>
     <!--删除任务-->
     <delete id="delTaskById">

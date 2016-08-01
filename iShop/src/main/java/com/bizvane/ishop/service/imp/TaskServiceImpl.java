@@ -1,6 +1,8 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.TaskMapper;
+import com.bizvane.ishop.dao.TaskTypeMapper;
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskAllocation;
 import com.bizvane.ishop.entity.TaskType;
@@ -14,16 +16,14 @@ import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
+import org.apache.velocity.runtime.directive.Foreach;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yin on 2016/7/27.
@@ -33,6 +33,9 @@ import java.util.Map;
 public class TaskServiceImpl implements TaskService{
     @Autowired
     private TaskMapper taskMapper;
+    @Autowired
+    private TaskTypeMapper typeMapper;
+
     @Override
     public PageInfo<Task> selectAllTask(int page_num, int page_size, String corp_code, String role_ident, String user_code, String search_value) {
 
@@ -60,6 +63,11 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
+    public TaskAllocation selTaskAllocationById(String id) {
+        return taskMapper.selTaskAllocationById(id);
+    }
+
+    @Override
     public PageInfo<Task> selectSignAllScreen(int page_num, int page_size, String corp_code, String role_ident, String user_code, Map<String, String> map) {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map",map);
@@ -77,7 +85,7 @@ public class TaskServiceImpl implements TaskService{
     public String delTask(String id, String corp_code, String task_code) {
         int count=0;
         try {
-            count = taskMapper.delTaskById(id);
+            count += taskMapper.delTaskById(id);
             List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(corp_code, task_code);
             for (TaskAllocation taskAllocation : taskAllocations) {
                count += taskMapper.delTaskAllocationById(taskAllocation.getId() + "");
@@ -90,10 +98,10 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public String addTask(Task task, String[] user_codes) {
+    public String addTask(Task task, String[] user_codes,String user_code) {
         int count=0;
         try {
-            count=taskMapper.addTask(task);
+            count+=taskMapper.addTask(task);
            for(int i=0;i<user_codes.length;i++){
                TaskAllocation allocation=new TaskAllocation();
                allocation.setCorp_code(task.getCorp_code());
@@ -102,6 +110,11 @@ public class TaskServiceImpl implements TaskService{
                allocation.setTask_status("1");
                allocation.setReal_start_time("");
                allocation.setReal_end_time("");
+               Date now = new Date();
+               allocation.setCreated_date(Common.DATETIME_FORMAT.format(now));
+               allocation.setCreater(user_code);
+               allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+               allocation.setModifier(user_code);
               count += taskMapper.addTaskAllocation(allocation);
            }
         }catch (Exception e){
@@ -111,8 +124,52 @@ public class TaskServiceImpl implements TaskService{
     }
 
     @Override
-    public String updTask(Task task, String[] user_codes) {
-        return null;
+    @Transactional
+    public String updTask(Task task, String[] user_codes,String user_code) {
+        int count =0;
+        try{
+                count += taskMapper.updTask(task);
+                TaskAllocation allocation=new TaskAllocation();
+                String id="";
+                List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(task.getCorp_code(), task.getTask_code());
+                for (int i=0;i<user_codes.length;i++) {
+                    TaskAllocation taskAllocation = taskMapper.selAllTaskAllocationByUser(task.getCorp_code(),task.getTask_code(),user_codes[i]);
+                    id=id+taskAllocation.getId()+",";
+                    if(taskAllocation==null){
+                        allocation.setCorp_code(task.getCorp_code());
+                        allocation.setTask_code(task.getTask_code());
+                        allocation.setUser_code(user_codes[i]);
+                        allocation.setTask_status("1");
+                        allocation.setReal_start_time("");
+                        allocation.setReal_end_time("");
+                        Date now = new Date();
+                        allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        allocation.setModifier(user_code);
+                       count+=taskMapper.addTaskAllocation(allocation);
+                    }else{
+                        allocation.setCorp_code(task.getCorp_code());
+                        allocation.setTask_code(task.getTask_code());
+                        allocation.setUser_code(user_codes[i]);
+                        allocation.setTask_status("1");
+                        allocation.setReal_start_time("");
+                        allocation.setReal_end_time("");
+                        Date now = new Date();
+                        allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        allocation.setModifier(user_code);
+                        allocation.setId(taskAllocation.getId());
+                      count+=taskMapper.updTaskAllocation(allocation);
+                    }
+                }
+                for (int i=0;i<taskAllocations.size();i++){
+                    if(!id.contains(taskAllocations.get(i).getId()+"")){
+                      count+=taskMapper.delTaskAllocationById(taskAllocations.get(i).getId()+"");
+                    }
+                }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        return count+"";
     }
 
     @Override
@@ -129,5 +186,10 @@ public class TaskServiceImpl implements TaskService{
     @Override
     public String delTaskAllocation(String id) {
         return null;
+    }
+
+    @Override
+    public List<TaskType> selectAllTaskType(String corp_code) {
+        return typeMapper.selectAllTaskType(corp_code,"");
     }
 }

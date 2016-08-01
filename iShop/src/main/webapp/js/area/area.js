@@ -379,14 +379,18 @@ $("#delete").click(function(){
     console.log(param);
     oc.postRequire("post","/area/delete","0",param,function(data){
         if(data.code=="0"){
-            if(value==""){
+            if(value==""&&filtrate==""){
                frame();
                $('.frame').html('删除成功');
-               GET(); 
+               GET(inx,pageSize);
             }else if(value!==""){
                frame();
                $('.frame').html('删除成功');
-               POST();
+               POST(inx,pageSize);
+            }else if(filtrate!==""){
+                frame();
+                $('.frame').html('删除成功');
+                filtrates(inx,pageSize); 
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;

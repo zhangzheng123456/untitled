@@ -33,18 +33,23 @@ public class TestFeedbackService {
     private GroupService groupService=null;
     @Autowired
     private TaskService taskService;
-
+    @Autowired
+    private StoreService storeService;
 
     //成功
     @Test
     public void testselectAllFeedback() {
         try {
-            PageInfo<Task> feedbackPageInfo = taskService.selectAllTask(1, 10, "","","","");
-            List<Task> list = feedbackPageInfo.getList();
-            for (Task task:list) {
-                System.out.println(task.getCorp_name());
+            String areas="2631,2632,2257";
+            String[] split = areas.split(",");
+            for (int i=0;i<split.length;i++){
+                System.out.println(split[i]);
             }
-            System.out.println(list.size());
+            PageInfo<Store> pageInfo = storeService.selectByAreaCode(1, 100, "C10125", split, "");
+            List<Store> list = pageInfo.getList();
+            for (Store store:list) {
+                System.out.println(store.getCorp_name()+"---"+store.getStore_name());
+            }
         } catch (Exception x) {
             x.printStackTrace();
         }

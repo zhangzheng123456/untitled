@@ -87,11 +87,41 @@ public class UserController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
-            String store_code = jsonObject.get("store_code").toString();
             String searchValue = jsonObject.get("searchValue").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            PageInfo<User> list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_SM);
-            
+            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+            PageInfo<User> list = null;
+            if(role_code.equals(Common.ROLE_SYS)) {
+                String store_code = jsonObject.get("store_code").toString();
+                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                List<User> users = list.getList();
+                User self = userService.getUserById(user_id);
+                users.add(self);
+            }else if (role_code.equals(Common.ROLE_GM)){
+                String store_code = jsonObject.get("store_code").toString();
+                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                List<User> users = list.getList();
+                User self = userService.getUserById(user_id);
+                users.add(self);
+            }else if(role_code.equals(Common.ROLE_STAFF)){
+                User user = userService.getUserById(user_id);
+                List<User> users = new ArrayList<User>();
+                users.add(user);
+                list = new PageInfo<User>();
+                list.setList(users);
+            }else if(role_code.equals(Common.ROLE_SM)){
+                String store_code = request.getSession().getAttribute("store_code").toString();
+                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                List<User> users = list.getList();
+                User self = userService.getUserById(user_id);
+                users.add(self);
+            }else if(role_code.equals(Common.ROLE_AM)){
+                String store_code = jsonObject.get("store_code").toString();
+                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                List<User> users = list.getList();
+                User self = userService.getUserById(user_id);
+                users.add(self);
+            }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -184,16 +214,16 @@ public class UserController {
             }
             List<User> users = list.getList();
             if(users.size()>=29999){
-                errormessage="：导出数据过大";
+                errormessage="导出数据过大";
                 int i=9/0;
             }
-            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(users, map, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
-                errormessage="：数据异常，导出失败";
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -238,11 +268,25 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+                if (store_code == null || store_code.equals("")){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("您还没有所属店铺");
+                    return dataBean.getJsonStr();
+                }else {
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+                }
             } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
+                if (area_code == null || area_code.equals("")){
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("您还没有所属区域");
+                    return dataBean.getJsonStr();
+                }else {
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -898,7 +942,7 @@ public class UserController {
                 for (int i = 0; i < areaCodes.length; i++) {
                     areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
                 }
-                list = storeService.selectByAreaCode(corp_code, areaCodes, Common.IS_ACTIVE_Y);
+                list = storeService.selectByAreaCode(corp_code1, areaCodes, Common.IS_ACTIVE_Y);
             } else {
                 //登录用户为店长或导购
                 String store_code = request.getSession().getAttribute("store_code").toString();
@@ -1332,9 +1376,9 @@ public class UserController {
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = userService.getAllUserScreen(page_number, page_size, "", "", "", role_code, map);
+                list = userService.getAllUserScreen(page_number, page_size, "", "", "", "", map);
             } else if (role_code.equals(Common.ROLE_GM)) {
-                list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", role_code, map);
+                list = userService.getAllUserScreen(page_number, page_size, corp_code, "", "", "", map);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = userService.getAllUserScreen(page_number, page_size, corp_code, area_code, "", role_code, map);

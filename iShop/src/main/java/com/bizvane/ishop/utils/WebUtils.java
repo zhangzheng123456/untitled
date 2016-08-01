@@ -168,13 +168,13 @@ public class WebUtils {
         return map;
     }
 
-    public static Map Json2ShowName(JSONObject jsonObject) {
+    public static LinkedHashMap Json2ShowName(JSONObject jsonObject) {
         if (jsonObject == null) {
             return null;
         }
         String jlist = jsonObject.get("tablemanager").toString();
         com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(jlist);
-        Map<String, String> map = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> map = new LinkedHashMap<String, String>();
         for (int i = 0; i < array.size(); i++) {
             String info = array.get(i).toString();
             JSONObject json = new JSONObject(info);

@@ -139,8 +139,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     //店铺下所属用户
-    public List<User> getStoreUser(String corp_code, String store_code, String role_code, String user_id) {
-        List<User> user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", role_code, user_id);
+    public List<User> getStoreUser(String corp_code, String store_code,String area_code, String role_code) {
+        List<User> user = new ArrayList<User>();
+        if (!store_code.equals("")) {
+            user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", "", role_code);
+        }
+        if (!area_code.equals("")){
+            user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD + area_code + ",", role_code);
+        }
         return user;
     }
 
@@ -370,12 +376,11 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) {
-
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
         params.put("search_value", search_value);
-        params.put("isactive", "");
+        params.put("isactive", "Y");
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selectByAreaCode(params);
         PageInfo<Store> page = new PageInfo<Store>(stores);

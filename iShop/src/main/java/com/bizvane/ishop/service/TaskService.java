@@ -2,7 +2,9 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskAllocation;
+import com.bizvane.ishop.entity.TaskType;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -18,13 +20,17 @@ public interface TaskService {
 
     String delTask(String id,String corp_code,String task_code);
 
-    String addTask(Task task,String[] user_codes);
+    String addTask(Task task,String[] user_codes,String user_code);
 
-    String updTask(Task task,String[] user_codes);
+    String updTask(Task task,String[] user_codes,String user_code);
 
     Task selectTaskById(String id);
+
+    TaskAllocation selTaskAllocationById(String id);
 
     List<TaskAllocation> selTaskAllocation(String corp_code,String task_code);
 
     String delTaskAllocation(String id);
+
+    List<TaskType> selectAllTaskType(String corp_code);
 }

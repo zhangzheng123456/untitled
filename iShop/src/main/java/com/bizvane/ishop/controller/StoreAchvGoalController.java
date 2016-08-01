@@ -36,6 +36,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -431,16 +432,16 @@ public class StoreAchvGoalController {
             }
             List<StoreAchvGoal> storeAchvGoals = list.getList();
             if(storeAchvGoals.size()>=29999){
-                errormessage="：导出数据过大";
+                errormessage="导出数据过大";
                 int i=9/0;
             }
-            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(storeAchvGoals, map, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
-                errormessage="：数据异常，导出失败";
+                errormessage="数据异常，导出失败";
                 int a=8/0;
             }
             result.put("path",JSON.toJSONString("lupload/"+pathname));
@@ -537,7 +538,7 @@ public class StoreAchvGoalController {
 //                date= sdf.parse("20"+column4[i].getContents().toString());
 //                System.out.println("--日期--"+sdf.format(date));
 //            }
-            SimpleDateFormat sdf = new SimpleDateFormat("20yy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = null;
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
@@ -547,6 +548,7 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setTarget_amount(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setTime_type(rs.getCell(j++, i).getContents());
                     date= sdf.parse("20"+rs.getCell(j++, i).getContents());
+                    System.out.println("----"+sdf.format(date)+"---");
                     storeAchvGoal.setTarget_time(sdf.format(date));
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         storeAchvGoal.setIsactive("N");

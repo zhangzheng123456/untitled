@@ -35,10 +35,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -177,7 +174,7 @@ public class GoodsController {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(goodses, map, response, request);

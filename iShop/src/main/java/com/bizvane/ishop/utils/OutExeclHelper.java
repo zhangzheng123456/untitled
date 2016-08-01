@@ -23,7 +23,7 @@ import java.util.*;
  * Created by yin on 2016/6/30.
  */
 public class OutExeclHelper {
-    public static String OutExecl(List olist, Map<String,String> cols, HttpServletResponse response, HttpServletRequest request){
+    public static String OutExecl(List olist, LinkedHashMap<String,String> cols, HttpServletResponse response, HttpServletRequest request){
         String result="";
         WritableWorkbook book=null;
         Set<String> keys = cols.keySet();
