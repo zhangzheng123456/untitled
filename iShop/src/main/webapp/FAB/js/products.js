@@ -25,34 +25,36 @@ jQuery(function(){
         }
         var a=GetRequest();
         console.log(a);
-        var goods_code=a.goods_price;
+        var id=a.id;
         var corp_code=a.corp_code;      
 	    var oc = new ObjectControl();
 	    var query = {
-            "goods_code":goods_code,
+            "id":id,
              "corp_code":corp_code
 	    };
 	    var oc = new ObjectControl();
 	    var query = {
-            "goods_code":goods_code,
+            "id":id,
              "corp_code":corp_code
 	    };
-	    oc.postRequire("post","/app/fab/select","",param,function(data){
+	    oc.postRequire("post","/api/fab/select","",query,function(data){
             console.log(data);
-		    console.log(data[0].message);
-		    var goodsLists=JSON.parse(data[0].message);
-		    var goodsList=goodsLists["goodsList"];
-		    console.log(goodsList);
-		    console.log(goodsLists.selling_point);
-		    for(var i=0;i<goodsLists.picture.length;i++){
-		    	jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><img src="'+goodsLists.picture[i]+'"></div>');
+		    console.log(data.message);
+		    var list=JSON.parse(data.message);
+			var list=JSON.parse(list.goods);
+		    console.log(list);
+		    // console.log(list.selling_point);
+			var goodsImage=list.goods_image.split(",");
+			console.log(goodsImage);
+		    for(var i=0;i<goodsImage.length;i++){
+		    	jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><img src="'+goodsImage[i]+'"></div>');
 		    	console.log(i);
 		    }
-		    document.title=goodsLists.goods_name;
-		    jQuery('.detail').html('<p class="product_code">货号:'+goodsLists.goods_code+'</p><p class="pice">价格:<span>￥'+goodsLists.goods_price+'</span></p><div class="total"><p>年份:'+goodsLists.production_year+'</p><p>季度:'+goodsLists.quarter+'</p><p>波段:'+goodsLists.wave_band+'</p></div>');
-		    jQuery('#content').html(goodsLists.selling_point);
-            for(var i=0;i<goodsList.length;i++){
-               jQuery('#match-con ul').append('<a href="goods.html?corp_code='+corp_code+'&goods_price='+goodsList[i].goods_code+'"><li><img src="'+goodsList[i].picture+'" alt="暂无图片"><p>'+goodsList[i].goods_code+'</p></li></a>');
+		    document.title=list.goods_name;
+		    jQuery('.detail').html('<p class="product_code">货号:'+list.goods_code+'</p><p class="pice">价格:<span>￥'+list.goods_price+'</span></p><div class="total"><p>年份:'+list.production_year+'</p><p>季度:'+list.quarter+'</p><p>波段:'+list.wave_band+'</p></div>');
+		    jQuery('#content').html(list.selling_point);
+            for(var i=0;i<list.length;i++){
+               jQuery('#match-con ul').append('<a href="goods.html?corp_code='+corp_code+'&goods_price='+list[i].goods_code+'"><li><img src="'+list[i].goods_image+'" alt="暂无图片"><p>'+list[i].goods_code+'</p></li></a>');
             }
             $('#swipe').swiper({
 	          pagination: '#swipe .swiper-pagination',
