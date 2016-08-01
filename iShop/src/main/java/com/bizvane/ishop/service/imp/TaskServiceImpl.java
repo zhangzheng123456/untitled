@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.TaskMapper;
 import com.bizvane.ishop.dao.TaskTypeMapper;
 import com.bizvane.ishop.entity.Task;
@@ -22,10 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by yin on 2016/7/27.
@@ -100,7 +98,7 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public String addTask(Task task, String[] user_codes) {
+    public String addTask(Task task, String[] user_codes,String user_code) {
         int count=0;
         try {
             count+=taskMapper.addTask(task);
@@ -112,6 +110,11 @@ public class TaskServiceImpl implements TaskService{
                allocation.setTask_status("1");
                allocation.setReal_start_time("");
                allocation.setReal_end_time("");
+               Date now = new Date();
+               allocation.setCreated_date(Common.DATETIME_FORMAT.format(now));
+               allocation.setCreater(user_code);
+               allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+               allocation.setModifier(user_code);
               count += taskMapper.addTaskAllocation(allocation);
            }
         }catch (Exception e){
@@ -122,7 +125,7 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public String updTask(Task task, String[] user_codes) {
+    public String updTask(Task task, String[] user_codes,String user_code) {
         int count =0;
         try{
                 count += taskMapper.updTask(task);
@@ -139,6 +142,9 @@ public class TaskServiceImpl implements TaskService{
                         allocation.setTask_status("1");
                         allocation.setReal_start_time("");
                         allocation.setReal_end_time("");
+                        Date now = new Date();
+                        allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        allocation.setModifier(user_code);
                        count+=taskMapper.addTaskAllocation(allocation);
                     }else{
                         allocation.setCorp_code(task.getCorp_code());
@@ -147,6 +153,9 @@ public class TaskServiceImpl implements TaskService{
                         allocation.setTask_status("1");
                         allocation.setReal_start_time("");
                         allocation.setReal_end_time("");
+                        Date now = new Date();
+                        allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        allocation.setModifier(user_code);
                         allocation.setId(taskAllocation.getId());
                       count+=taskMapper.updTaskAllocation(allocation);
                     }

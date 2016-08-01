@@ -271,7 +271,7 @@ public class TaskController {
             task.setIsactive(jsonObject.get("isactive").toString());
             String user_codes = jsonObject.get("user_codes").toString();
             String[] split = user_codes.split(",");
-            String add = taskService.addTask(task, split);
+            String add = taskService.addTask(task, split,user_code);
             count=Integer.parseInt(add);
             if(count>0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -320,7 +320,7 @@ public class TaskController {
             task.setIsactive(jsonObject.get("isactive").toString());
             String user_codes = jsonObject.get("user_codes").toString();
             String[] split = user_codes.split(",");
-            String add = taskService.updTask(task, split);
+            String add = taskService.updTask(task, split,user_code);
             count=Integer.parseInt(add);
             if(count>0){
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -399,7 +399,7 @@ public class TaskController {
         return dataBean.getJsonStr();
     }
     /***
-     * 查询该员工的详情
+     * 获取任务类型
      */
     @RequestMapping(value = "/selectAllTaskType", method = RequestMethod.POST)
     @ResponseBody

@@ -20,9 +20,9 @@ public interface TaskService {
 
     String delTask(String id,String corp_code,String task_code);
 
-    String addTask(Task task,String[] user_codes);
+    String addTask(Task task,String[] user_codes,String user_code);
 
-    String updTask(Task task,String[] user_codes);
+    String updTask(Task task,String[] user_codes,String user_code);
 
     Task selectTaskById(String id);
 
