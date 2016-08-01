@@ -529,13 +529,21 @@ public class StoreController {
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            String user_id = request.getSession().getAttribute("user_id").toString();
             List<User> user = new ArrayList<User>();
             if (role_code.equals(Common.ROLE_STAFF)) {
+                //列表只显示自己
+                String user_id = request.getSession().getAttribute("user_id").toString();
                 User user1 = userService.getUserById(Integer.parseInt(user_id));
                 user.add(user1);
-            } else {
-                user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
+            } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_AM)){
+                //显示导购，店长
+                user = storeService.getStoreUser(corp_code, store_code, "",role_code);
+            }else {
+                user = storeService.getStoreUser(corp_code, store_code,"", Common.ROLE_AM);
+//                Store store = storeService.getStoreByCode(corp_code,store_code,"");
+//                String area_code = store.getArea_code();
+//                List<User> user1 = storeService.getStoreUser(corp_code, "",area_code, role_code);
+//                user.addAll(user1);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

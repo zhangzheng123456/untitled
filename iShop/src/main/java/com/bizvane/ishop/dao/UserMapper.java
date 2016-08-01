@@ -32,7 +32,7 @@ public interface UserMapper {
 
     User selectById(int user_id);
 
-    List<User> selectStoreUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("role_code") String role_code, @Param("user_id") String user_id);
+    List<User> selectStoreUser(@Param("corp_code") String corp_code, @Param("store_code") String store_code,@Param("area_code") String area_code, @Param("role_code") String role_code);
 
 //    User selectUserName(@Param("user_name") String user_name, @Param("corp_oode") String corp_code);
 //

@@ -55,7 +55,7 @@
     </resultMap>
 
     <select id="selectAllUser" resultMap="UserInfo">
-        select DEF_USER.id,
+        SELECT def_user.id,
         user_code,
         user_name,
         sex,
@@ -65,49 +65,49 @@
         birthday,
         store_code,
         can_login,
-        DEF_USER.group_code,
-        DEF_USER.corp_code,
+        def_user.group_code,
+        def_user.corp_code,
         login_time_recently,
-        DEF_USER.modified_date,
-        DEF_USER.modifier,
-        DEF_USER.created_date,
-        DEF_USER.creater,
-        DEF_USER.isactive,
-        DEF_GROUP.group_name,
-        DEF_CORP.corp_name
-        from DEF_USER,DEF_GROUP,DEF_CORP
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
-        AND DEF_USER.corp_code = DEF_GROUP.corp_code
+        def_user.modified_date,
+        def_user.modifier,
+        def_user.created_date,
+        def_user.creater,
+        def_user.isactive,
+        def_group.group_name,
+        def_corp.corp_name
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_user.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_USER.CORP_CODE = #{corp_code}
+            AND def_user.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (USER_NAME like concat('%',#{search_value},'%')
-            OR user_code like concat('%',#{search_value},'%')
-            OR PHONE like concat('%',#{search_value},'%')
-            OR SEX like concat('%',#{search_value},'%')
-            OR DEF_CORP.corp_name like concat('%',#{search_value},'%')
-            OR DEF_GROUP.group_name like concat('%',#{search_value},'%')
-            OR LOGIN_TIME_RECENTLY like concat('%',#{search_value},'%')
-            OR DEF_USER.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_USER.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_USER.ISACTIVE like concat('%',#{search_value},'%')
+            (user_name LIKE concat('%',#{search_value},'%')
+            OR user_code LIKE concat('%',#{search_value},'%')
+            OR phone LIKE concat('%',#{search_value},'%')
+            OR sex LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR def_group.group_name LIKE concat('%',#{search_value},'%')
+            OR login_time_recently LIKE concat('%',#{search_value},'%')
+            OR def_user.modified_date LIKE concat('%',#{search_value},'%')
+            OR def_user.modifier LIKE concat('%',#{search_value},'%')
+            OR def_user.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_USER.id DESC
+        ORDER BY def_user.id DESC
     </select>
 
     <!--获取店长区经下员工-->
     <select id="selectPartUser" resultMap="UserInfo">
         SELECT *
-        from DEF_USER,DEF_GROUP,DEF_CORP
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
-        AND DEF_USER.corp_code = DEF_GROUP.corp_code
-        AND DEF_USER.CORP_CODE = #{corp_code}
-        AND DEF_GROUP.role_code &lt; #{role_code}
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_user.CORP_CODE = #{corp_code}
+        AND def_group.role_code &lt; #{role_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
@@ -115,24 +115,24 @@
 
         <if test="search_value != null and search_value !=''">
             AND
-            (USER_NAME like concat('%',#{search_value},'%')
-            OR user_code like concat('%',#{search_value},'%')
-            OR PHONE like concat('%',#{search_value},'%')
-            OR SEX like concat('%',#{search_value},'%')
-            OR DEF_CORP.corp_name like concat('%',#{search_value},'%')
-            OR DEF_GROUP.group_name like concat('%',#{search_value},'%')
-            OR LOGIN_TIME_RECENTLY like concat('%',#{search_value},'%')
-            OR DEF_USER.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_USER.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_USER.ISACTIVE like concat('%',#{search_value},'%')
+            (USER_NAME LIKE concat('%',#{search_value},'%')
+            OR user_code LIKE concat('%',#{search_value},'%')
+            OR phone LIKE concat('%',#{search_value},'%')
+            OR SEX LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR def_group.group_name LIKE concat('%',#{search_value},'%')
+            OR LOGIN_TIME_RECENTLY LIKE concat('%',#{search_value},'%')
+            OR def_user.MODIFIED_DATE LIKE concat('%',#{search_value},'%')
+            OR def_user.MODIFIER LIKE concat('%',#{search_value},'%')
+            OR def_user.ISACTIVE LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_USER.id DESC
+        ORDER BY def_user.id DESC
     </select>
 
 
     <select id="selectUserById" resultMap="UserInfo">
-        select DEF_USER.id,
+        SELECT def_user.id,
         user_code,
         user_name,
         sex,
@@ -145,63 +145,63 @@
         store_code,
         can_login,
         qrcode,
-        DEF_USER.group_code,
-        DEF_USER.area_code,
-        DEF_USER.corp_code,
-        DEF_USER.modified_date,
-        DEF_USER.modifier,
-        DEF_USER.created_date,
-        DEF_USER.creater,
-        DEF_USER.isactive,
-        DEF_CORP.corp_name,
-        DEF_GROUP.group_name,
-        DEF_GROUP.role_code
-        from DEF_USER,DEF_CORP,DEF_GROUP
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_GROUP.corp_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
-        AND DEF_USER.ID = #{user_id}
+        def_user.group_code,
+        def_user.area_code,
+        def_user.corp_code,
+        def_user.modified_date,
+        def_user.modifier,
+        def_user.created_date,
+        def_user.creater,
+        def_user.isactive,
+        def_corp.corp_name,
+        def_group.group_name,
+        def_group.role_code
+        FROM def_user,def_corp,def_group
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.id = #{user_id}
     </select>
 
     <select id="selectById" resultType="com.bizvane.ishop.entity.User">
-        select *
-        from DEF_USER
-        where  DEF_USER.ID = #{user_id}
+        SELECT *
+        FROM def_user
+        WHERE  def_user.id = #{user_id}
     </select>
 
     <select id="selectByPhone" resultMap="BaseMap">
-        select *
-        from DEF_USER
-        where
-            PHONE = #{phone}
+        SELECT *
+        FROM def_user
+        WHERE
+            phone = #{phone}
     </select>
 
     <select id="selectLogin" resultMap="BaseMap">
         SELECT *
-        FROM DEF_USER
-        WHERE (PHONE = #{0}
-        OR EMAIL = #{0})
-        AND PASSWORD = #{1}
-        AND ISACTIVE = 'Y'
-        AND CAN_LOGIN = 'Y'
+        FROM def_user
+        WHERE (phone = #{0}
+        OR email = #{0})
+        AND password = #{1}
+        AND isactive = 'Y'
+        AND can_login = 'Y'
     </select>
 
     <select id="selectUserCode" resultMap="BaseMap">
-    select *
-    from DEF_USER
+    SELECT *
+    FROM def_user
     WHERE
-    USER_CODE = #{0} AND CORP_CODE = #{1}
+    user_code = #{0} AND corp_code = #{1}
    </select>
 
     <select id="userEmailExist" resultType="com.bizvane.ishop.entity.User">
-        select * from DEF_USER
+        SELECT * FROM def_user
         WHERE email = #{email}
     </select>
 
     <!--获取店铺下员工-->
     <select id="selectStoreUser" resultMap="UserInfo">
         SELECT
-        DEF_USER.id,
+        def_user.id,
         user_code,
         user_name,
         sex,
@@ -211,23 +211,30 @@
         birthday,
         password,
         login_time_recently,
-        DEF_USER.group_code,
-        DEF_USER.modified_date,
-        DEF_USER.modifier,
-        DEF_USER.created_date,
-        DEF_USER.creater,
-        DEF_USER.isactive,
-        DEF_GROUP.group_name
-        FROM DEF_USER,DEF_GROUP
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.CORP_CODE = #{corp_code}
-        AND DEF_USER.store_code regexp #{search_value}
-        AND DEF_GROUP.role_code &lt; #{role_code}
-        ORDER BY DEF_USER.id DESC
+        def_user.group_code,
+        def_user.modified_date,
+        def_user.modifier,
+        def_user.created_date,
+        def_user.creater,
+        def_user.isactive,
+        def_group.group_name
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = #{corp_code}
+        <if test="store_code != null and store_code !=''">
+        AND def_user.store_code regexp #{store_code}
+        </if>
+        <if test="area_code != null and area_code !=''">
+            AND def_user.area_code regexp #{area_code}
+        </if>
+        AND def_group.role_code &lt; #{role_code}
+        ORDER BY def_user.id DESC
     </select>
 
     <select id="selectGroupUser" resultMap="UserInfo">
-        select DEF_USER.id,
+        SELECT def_user.id,
         user_code,
         user_name,
         sex,
@@ -236,37 +243,37 @@
         email,
         birthday,
         store_code,
-        DEF_USER.group_code,
-        DEF_USER.corp_code,
-        DEF_USER.area_code,
+        def_user.group_code,
+        def_user.corp_code,
+        def_user.area_code,
         login_time_recently,
-        DEF_USER.modified_date,
-        DEF_USER.modifier,
-        DEF_USER.created_date,
-        DEF_USER.creater,
-        DEF_USER.isactive,
-        DEF_GROUP.group_name,
-        DEF_CORP.corp_name
-        from DEF_USER,DEF_GROUP,DEF_CORP
-        where DEF_USER.group_code = DEF_GROUP.group_code
-        AND DEF_USER.corp_code = DEF_CORP.corp_code
+        def_user.modified_date,
+        def_user.modifier,
+        def_user.created_date,
+        def_user.creater,
+        def_user.isactive,
+        def_group.group_name,
+        def_corp.corp_name
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_USER.CORP_CODE = #{corp_code}
+            AND def_user.CORP_CODE = #{corp_code}
         </if>
         <if test="group_code != null and group_code !=''">
-            AND DEF_USER.group_code = #{group_code}
+            AND def_user.group_code = #{group_code}
         </if>
-        ORDER BY DEF_USER.ID DESC
+        ORDER BY def_user.ID DESC
     </select>
 
     <delete id="deleteByUserId">
-        delete from
-        DEF_USER
-        where ID = #{id}
+        DELETE FROM
+        def_user
+        WHERE id = #{id}
     </delete>
 
     <insert id="insertUser" parameterType="com.bizvane.ishop.entity.User">
-        insert into DEF_USER
+        INSERT INTO def_user
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="user_code!=null">
                 user_code,
@@ -311,19 +318,19 @@
                 login_time_recently,
             </if>
             <if test="modified_date != null">
-                MODIFIED_DATE,
+                modified_date,
             </if>
             <if test="modifier != null">
-                MODIFIER,
+                modifier,
             </if>
             <if test="created_date != null">
-                CREATED_DATE,
+                created_date,
             </if>
             <if test="creater != null">
-                CREATER,
+                creater,
             </if>
             <if test="isactive != null">
-                ISACTIVE,
+                isactive,
             </if>
             <if test="can_login != null">
                 can_login,
@@ -400,37 +407,37 @@
     </insert>
 
     <update id="updateByUserId" parameterType="com.bizvane.ishop.entity.User">
-        UPDATE DEF_USER
+        UPDATE def_user
         <trim prefix="SET" suffixOverrides=",">
             <if test="user_code!=null and user_code!='' ">
-                USER_CODE = #{user_code},
+                user_code = #{user_code},
             </if>
             <if test="avatar!=null and avatar!='' ">
-                AVATAR = #{avatar},
+                avatar = #{avatar},
             </if>
             <if test="user_name!=null and user_name!='' ">
-                USER_NAME = #{user_name},
+                user_name = #{user_name},
             </if>
             <if test="sex!=null and sex!='' ">
-                SEX = #{sex},
+                sex = #{sex},
             </if>
             <if test="phone!=null and phone!='' ">
-                PHONE = #{phone},
+                phone = #{phone},
             </if>
             <if test="email!=null and email!='' ">
-                EMAIL = #{email},
+                email = #{email},
             </if>
             <if test="birthday!=null and birthday!='' ">
-                BIRTHDAY = #{birthday},
+                birthday = #{birthday},
             </if>
             <if test="corp_code!=null and corp_code!='' ">
-                CORP_CODE = #{corp_code},
+                corp_code = #{corp_code},
             </if>
             <if test="store_code!=null and store_code!='' ">
-                STORE_CODE = #{store_code},
+                store_code = #{store_code},
             </if>
             <if test="group_code!=null and group_code!='' ">
-                GROUP_CODE = #{group_code},
+                group_code = #{group_code},
             </if>
             <if test="qrcode!=null and qrcode!='' ">
                 qrcode = #{qrcode},
@@ -470,17 +477,17 @@
     </update>
     <!--
         <select id="selectUserName" resultType="com.bizvane.ishop.entity.User">
-            select * from DEF_USER
+            select * from def_user
             WHERE user_name=#{user_name} and user_code=#{user_code}
         </select>
 
         <select id="selectPhone" resultType="com.bizvane.ishop.entity.User">
-            select * from DEF_USER
+            select * from def_user
             WHERE phone=#{phone} and corp_code=#{corp_code}
         </select>
     -->
     <select id="selectCount" resultType="java.lang.Integer">
-        SELECT count(1) from DEF_USER
+        SELECT count(1) from def_user
         WHERE 1=1
         <if test="created_date !=''">
             AND created_date LIKE concat(#{created_date},'%')
@@ -493,9 +500,9 @@
         dg.group_name,
         dc.corp_name
         from
-        DEF_USER du,
-        DEF_CORP dc,
-        DEF_GROUP dg
+        def_user du,
+        def_corp dc,
+        def_group dg
         where
         du.corp_code=dc.corp_code
         and du.corp_code=dg.corp_code
