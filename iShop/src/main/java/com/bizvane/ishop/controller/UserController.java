@@ -87,17 +87,18 @@ public class UserController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
-            String store_code = jsonObject.get("store_code").toString();
             String searchValue = jsonObject.get("searchValue").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             PageInfo<User> list = null;
             if(role_code.equals(Common.ROLE_SYS)) {
+                String store_code = jsonObject.get("store_code").toString();
                 list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
             }else if (role_code.equals(Common.ROLE_GM)){
+                String store_code = jsonObject.get("store_code").toString();
                 list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
@@ -109,11 +110,13 @@ public class UserController {
                 list = new PageInfo<User>();
                 list.setList(users);
             }else if(role_code.equals(Common.ROLE_SM)){
+                String store_code = request.getSession().getAttribute("store_code").toString();
                 list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
             }else if(role_code.equals(Common.ROLE_AM)){
+                String store_code = jsonObject.get("store_code").toString();
                 list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
