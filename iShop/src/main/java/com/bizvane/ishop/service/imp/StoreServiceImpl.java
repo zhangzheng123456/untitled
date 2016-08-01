@@ -139,8 +139,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     //店铺下所属用户
-    public List<User> getStoreUser(String corp_code, String store_code, String role_code, String user_id) {
-        List<User> user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", role_code, user_id);
+    public List<User> getStoreUser(String corp_code, String store_code,String area_code, String role_code) {
+        List<User> user = new ArrayList<User>();
+        if (!store_code.equals("")) {
+            user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", "", role_code);
+        }
+        if (!area_code.equals("")){
+            user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD + area_code + ",", role_code);
+        }
         return user;
     }
 
