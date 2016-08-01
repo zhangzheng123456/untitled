@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -460,7 +461,7 @@ public class CorpController {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
            // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(corps, map, response, request);

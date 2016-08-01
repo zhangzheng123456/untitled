@@ -32,10 +32,7 @@ import java.io.File;
 import java.lang.System;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -426,16 +423,16 @@ public class UserAchvGoalControl {
             }
             List<UserAchvGoal> userAchvGoals = pages.getList();
             if (userAchvGoals.size() >= 29999) {
-                errormessage = "：导出数据过大";
+                errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
-            Map<String, String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(userAchvGoals, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage = "：数据异常，导出失败";
+                errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));

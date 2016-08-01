@@ -21,10 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.lang.System;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -380,7 +377,7 @@ public class TaskController {
                 errormessage = "：导出数据过大";
                 int i = 9 / 0;
             }
-            Map<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             String pathname = OutExeclHelper.OutExecl(list, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
