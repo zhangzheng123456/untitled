@@ -91,10 +91,22 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
+                String area_code = jsonObject.get("area_code").toString();
+                String[] areaCodes = area_code.split(",");
+                for (int i = 0; i < areaCodes.length; i++) {
+                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                }
+                list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
-                    list = storeService.getAllStore(request, page_number, page_size, corp_code, searchValue);
+                    String area_code = jsonObject.get("area_code").toString();
+                    String[] areaCodes = area_code.split(",");
+                    for (int i = 0; i < areaCodes.length; i++) {
+                        areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                    }
+                    list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                   // list = storeService.getAllStore(request, page_number, page_size, corp_code, searchValue);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     String[] areaCodes = area_code.split(",");
