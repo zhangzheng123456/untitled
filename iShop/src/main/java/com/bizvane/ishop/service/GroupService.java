@@ -33,4 +33,6 @@ public interface GroupService {
 
     int deleteGroup(int id,String group_code,String corp_code) throws SQLException;
 
+    String selRoleByGroupCode(String corp_code,String group_code);
+
 }
