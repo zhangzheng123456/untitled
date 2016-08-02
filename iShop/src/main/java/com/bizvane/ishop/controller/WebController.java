@@ -172,6 +172,42 @@ public class WebController {
     }
 
     /**
+     * app获取FAB列表搜索接口
+     */
+    @RequestMapping(value = "/api/fab/search", method = RequestMethod.POST)
+    @ResponseBody
+    public String fabSearch(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            int rowno = Integer.parseInt(jsonObject.get("rowno").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = jsonObject.get("search_value").toString();
+
+            JSONObject result = new JSONObject();
+            PageInfo<Goods> list = goodsService.selectBySearch(1+rowno/20, 20, corp_code, search_value);
+            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+                String goods_image = list.getList().get(i).getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+                }
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
      * app获取FAB详细接口
      */
     @RequestMapping(value = "/api/fab/select", method = RequestMethod.POST)
