@@ -26,13 +26,24 @@
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
                         <ul style="display:inline-flex;">
+                            <li><label>所属企业</label></li>
+                            <li id="corp_select">
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex" >
+                                    </select>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <ul style="display:inline-flex;">
                             <li><label>任务类型</label></li>
                             <li>
                                 <span class="corp_select">
                                     <select id="task_type_code" style="display:inline-flex" >
                                     </select>
                                 </span>
-                            </li>
+                            </li> 
                         </ul>
                     </div>
                     <div>
@@ -56,21 +67,12 @@
                     </div>
                 </form>
                 <div class="distribution_frame" id="distribution_frame">
-                    <div id="corp_code" class="drop-down">
-                        <h5>所属企业</h5>
-                        <input type="text" class="input">                
-                        <ul>
-                            <li>
-                                <div class="checkbox_isactive">
-                                    <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>  
-                                </div>
-                                <span class="">员工名称</span>
-                            </li>
-                        </ul> 
-                    </div>
                     <div id="area_code" class="drop-down">
                         <h5>所属区域</h5>
-                        <input type="text" class="input">
+                        <input type="text" class="input" readonly="true">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息">
+                        </div>    
                         <ul>
                             <li>
                                 <div class="checkbox_isactive">
@@ -82,11 +84,17 @@
                     </div>
                     <div id="store_code" class="drop-down">
                         <h5>所属店铺</h5>
-                        <input type="text" class="input">
+                        <input type="text" class="input" readonly="true">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息">
+                        </div>    
                     </div>
                     <div id="staff_code" class="drop-down">
                         <h5>员工名称</h5>
-                        <input type="text" class="input">
+                        <input type="text" class="input" readonly="true">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息">
+                        </div>    
                     </div>
                 </div>
             </div>

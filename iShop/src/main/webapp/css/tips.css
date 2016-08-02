@@ -147,7 +147,7 @@
 /******分配任务弹框样式*********/
 .distribution_frame{
 	position: absolute;
-	top:410px;
+	top:460px;
 	left:100px;
 	width:1100px; 
 	z-index: 3;
@@ -162,14 +162,25 @@
 	margin-bottom: 10px;
 }
 #distribution_frame .drop-down .input{
-	width: 180px;
+	width: 190px;
 	height: 30px;
 	outline: none;
 	border:1px solid #ddd;
 	line-height: 30px;
-	margin-left: 10px;
+	margin-left: 5px;
 	border-radius: 5px;
 	padding-left: 5px;
+}
+#distribution_frame .drop-down .search input{
+	width: 190px;
+	height: 30px;
+	outline: none;
+	border:1px solid #ddd;
+	line-height: 30px;
+	margin-left: 5px;
+	border-radius: 5px;
+	padding-left: 5px;
+	margin-top: 3px;
 }
 #distribution_frame .drop-down h5{
 	text-align: left;
