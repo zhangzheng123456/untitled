@@ -234,7 +234,7 @@ function GET(a,b){
                 var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list,inx);
+                superaddition(list,a);
                 jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);

@@ -351,7 +351,6 @@ jQuery(document).ready(function(){
 		var area_param={"corp_code":$("#OWN_CORP").val()};
 		var area_command="/shop/area";
 		oc.postRequire("post", area_command,"",area_param, function(data){
-			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				console.log(msg);
