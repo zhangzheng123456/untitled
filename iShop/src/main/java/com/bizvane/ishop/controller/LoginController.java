@@ -368,9 +368,18 @@ public class LoginController {
                 TableManager table = col.get(i);
                 String col_name = table.getColumn_name();
                 String show_name = table.getShow_name();
+                String type = table.getFilter_type();
+
                 JSONObject obj = new JSONObject();
                 obj.put("col_name",col_name);
                 obj.put("show_name",show_name);
+                obj.put("type",type);
+                if (type.equals("select")){
+                    String value = table.getFilter_value();
+                    obj.put("value",value);
+                }else{
+                    obj.put("value","");
+                }
                 cols.add(obj);
             }
             JSONObject filter = new JSONObject();

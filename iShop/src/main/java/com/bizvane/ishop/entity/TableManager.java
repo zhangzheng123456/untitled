@@ -5,11 +5,20 @@ package com.bizvane.ishop.entity;
  */
 public class TableManager {
     private int id;
+    //功能编号
     private String function_code;
+    //列名
     private String column_name;
+    //页面显示名
     private String show_name;
+    //筛选 是否显示
     private String is_show;
+    //筛选 显示顺序
     private String filter_weight;
+    //筛选 显示格式（text/select）
+    private String filter_type;
+    //筛选 下拉框值（select用）
+    private String filter_value;
 
     public int getId() {
         return id;
@@ -57,5 +66,21 @@ public class TableManager {
 
     public void setFilter_weight(String filter_weight) {
         this.filter_weight = filter_weight;
+    }
+
+    public String getFilter_type() {
+        return filter_type;
+    }
+
+    public void setFilter_type(String filter_type) {
+        this.filter_type = filter_type;
+    }
+
+    public String getFilter_value() {
+        return filter_value;
+    }
+
+    public void setFilter_value(String filter_value) {
+        this.filter_value = filter_value;
     }
 }
