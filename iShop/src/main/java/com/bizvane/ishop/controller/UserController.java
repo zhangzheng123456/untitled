@@ -450,20 +450,21 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
-                Matcher matcher7 = pattern7.matcher(column7[i].getContents().toString());
-                if (matcher7.matches() == false) {
-                    result = "第" + (i + 1) + "行区域编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
+
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column6[i].getContents().toString());
                 if(role.equals(Common.ROLE_AM) || role.equals(Common.ROLE_SM)||role.equals(Common.ROLE_STAFF)){
                     String areas = column7[i].getContents().toString();
                     String[] splitAreas = areas.split(",");
                     for (int j=0;j<splitAreas.length;j++){
+                        Matcher matcher7 = pattern7.matcher(splitAreas[j]);
+                        if (matcher7.matches() == false) {
+                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号格式有误";
+                            int b = 5 / 0;
+                            break;
+                        }
                         Area area = areaService.getAreaByCode(column3[i].getContents().toString(), splitAreas[j]);
                         if (area == null) {
-                            result = "第" + (i + 1) + "行,第"+(j+1)+"个区域编号不存在";
+                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号不存在";
                             int b = 5 / 0;
                             break;
                         }
@@ -475,39 +476,13 @@ public class UserController {
                     for (int j=0;j<splitAreas.length;j++){
                         Store store = storeService.getStoreByCode(column3[i].getContents().toString(), splitAreas[j], "");
                         if (store == null) {
-                            result = "第" + (i + 1) + "行,第"+(j+1)+"个店铺编号不存在";
+                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个店铺编号不存在";
                             int b = 5 / 0;
                             break;
                         }
                     }
                 }
             }
-
-//            Pattern pattern7 = Pattern.compile("A\\d{4}");
-//            Cell[] column7 = rs.getColumn(7);
-//            for (int i = 3; i < column7.length; i++) {
-//                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
-//                if (matcher.matches() == false) {
-//                    result = "第" + (i + 1) + "行区域编号格式有误";
-//                    int b = 5 / 0;
-//                    break;
-//                }
-//                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString());
-//                if (area == null) {
-//                    result = "第" + (i + 1) + "行区域编号不存在";
-//                    int b = 5 / 0;
-//                    break;
-//                }
-//            }
-//            Cell[] column2 = rs.getColumn(8);
-//            for (int i = 3; i < column2.length; i++) {
-//                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
-//                if (store == null) {
-//                    result = "第" + (i + 1) + "行店铺编号不存在";
-//                    int b = 5 / 0;
-//                    break;
-//                }
-//            }
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     User user = new User();

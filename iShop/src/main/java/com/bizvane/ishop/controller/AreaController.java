@@ -569,6 +569,16 @@ public class AreaController {
                 }
 
             }
+            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            if(onlyCell1.equals("存在重复值")){
+                result = "：Execl中区域编号存在重复值";
+                int b = 5 / 0;
+            }
+            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
+            if(onlyCell2.equals("存在重复值")){
+                result = "：Execl中区域名称存在重复值";
+                int b = 5 / 0;
+            }
             Pattern pattern = Pattern.compile("A\\d{4}");
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {

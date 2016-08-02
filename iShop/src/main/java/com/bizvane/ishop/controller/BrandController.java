@@ -516,7 +516,7 @@ public class BrandController {
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行品牌编号格式不对";
+                    result = "：第" + (i + 1) + "行品牌编号格式有误";
                     int b = 5 / 0;
                     break;
                 }

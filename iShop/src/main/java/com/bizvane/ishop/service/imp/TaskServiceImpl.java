@@ -3,10 +3,9 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.TaskMapper;
 import com.bizvane.ishop.dao.TaskTypeMapper;
-import com.bizvane.ishop.entity.Task;
-import com.bizvane.ishop.entity.TaskAllocation;
-import com.bizvane.ishop.entity.TaskType;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.dao.UserMapper;
+import com.bizvane.ishop.dao.UserMessageMapper;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.TaskService;
 import com.bizvane.ishop.utils.WebUtils;
@@ -23,6 +22,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.lang.System;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -35,7 +36,12 @@ public class TaskServiceImpl implements TaskService{
     private TaskMapper taskMapper;
     @Autowired
     private TaskTypeMapper typeMapper;
-
+    @Autowired
+    IceInterfaceService iceInterfaceService;
+    @Autowired
+    private UserMessageMapper userMessageMapper;
+    @Autowired
+    private UserMapper userMapper;
     @Override
     public PageInfo<Task> selectAllTask(int page_num, int page_size, String corp_code, String role_ident, String user_code, String search_value) {
 
@@ -98,7 +104,7 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     @Transactional
-    public String addTask(Task task, String[] user_codes,String user_code) {
+    public String addTask(Task task, String[] user_codes,String phone,String users,String user_code) {
         int count=0;
         try {
             count+=taskMapper.addTask(task);
@@ -115,8 +121,24 @@ public class TaskServiceImpl implements TaskService{
                allocation.setCreater(user_code);
                allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
                allocation.setModifier(user_code);
-              count += taskMapper.addTaskAllocation(allocation);
+               count += taskMapper.addTaskAllocation(allocation);
            }
+            if(count>0){
+                Data data_phone = new Data("phone", phone, ValueType.PARAM);
+                Data data_corp_code = new Data("corp_code", task.getCorp_code(), ValueType.PARAM);
+                Data data_task_code = new Data("task_code", task.getTask_code(), ValueType.PARAM);
+                Data data_task_title = new Data("task_title", task.getTask_title(), ValueType.PARAM);
+                Data data_user = new Data("user_code", users, ValueType.PARAM);
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_phone.key, data_phone);
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_task_code.key, data_task_code);
+                datalist.put(data_task_title.key, data_task_title);
+                datalist.put(data_user.key, data_user);
+                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
+                String msg = dataBox.data.get("message").value;
+                System.out.println(msg);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -126,45 +148,70 @@ public class TaskServiceImpl implements TaskService{
     @Override
     @Transactional
     public String updTask(Task task, String[] user_codes,String user_code) {
-        int count =0;
+         int count =0;
+         int appCount=0;
         try{
-                count += taskMapper.updTask(task);
-                TaskAllocation allocation=new TaskAllocation();
-                String id="";
-                List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(task.getCorp_code(), task.getTask_code());
-                for (int i=0;i<user_codes.length;i++) {
-                    TaskAllocation taskAllocation = taskMapper.selAllTaskAllocationByUser(task.getCorp_code(),task.getTask_code(),user_codes[i]);
-                    id=id+taskAllocation.getId()+",";
-                    if(taskAllocation==null){
-                        allocation.setCorp_code(task.getCorp_code());
-                        allocation.setTask_code(task.getTask_code());
-                        allocation.setUser_code(user_codes[i]);
-                        allocation.setTask_status("1");
-                        allocation.setReal_start_time("");
-                        allocation.setReal_end_time("");
-                        Date now = new Date();
-                        allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        allocation.setModifier(user_code);
-                       count+=taskMapper.addTaskAllocation(allocation);
-                    }else{
-                        allocation.setCorp_code(task.getCorp_code());
-                        allocation.setTask_code(task.getTask_code());
-                        allocation.setUser_code(user_codes[i]);
-                        allocation.setTask_status("1");
-                        allocation.setReal_start_time("");
-                        allocation.setReal_end_time("");
-                        Date now = new Date();
-                        allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        allocation.setModifier(user_code);
-                        allocation.setId(taskAllocation.getId());
-                      count+=taskMapper.updTaskAllocation(allocation);
-                    }
+            count += taskMapper.updTask(task);
+            TaskAllocation allocation=new TaskAllocation();
+            String id="";
+            String phone="";
+            String users="";
+            List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(task.getCorp_code(), task.getTask_code());
+            for (int i=0;i<user_codes.length;i++) {
+                TaskAllocation taskAllocation = taskMapper.selAllTaskAllocationByUser(task.getCorp_code(),task.getTask_code(),user_codes[i]);
+                id=id+taskAllocation.getId()+",";
+                if(taskAllocation==null){
+                    allocation.setCorp_code(task.getCorp_code());
+                    allocation.setTask_code(task.getTask_code());
+                    allocation.setUser_code(user_codes[i]);
+                    User user = userMapper.selectUserCode(user_codes[i], task.getCorp_code());
+                    String userPhone = user.getPhone();
+                    phone = phone + userPhone+",";
+                    users = users + user_codes[i];
+                    System.out.println(phone+"----"+users);
+                    allocation.setTask_status("1");
+                    allocation.setReal_start_time("");
+                    allocation.setReal_end_time("");
+                    Date now = new Date();
+                    allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    allocation.setModifier(user_code);
+                    count+=taskMapper.addTaskAllocation(allocation);
+                    appCount = count;
+                }else{
+                    allocation.setCorp_code(task.getCorp_code());
+                    allocation.setTask_code(task.getTask_code());
+                    allocation.setUser_code(user_codes[i]);
+                    allocation.setTask_status("1");
+                    allocation.setReal_start_time("");
+                    allocation.setReal_end_time("");
+                    Date now = new Date();
+                    allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    allocation.setModifier(user_code);
+                    allocation.setId(taskAllocation.getId());
+                  count+=taskMapper.updTaskAllocation(allocation);
                 }
-                for (int i=0;i<taskAllocations.size();i++){
-                    if(!id.contains(taskAllocations.get(i).getId()+"")){
-                      count+=taskMapper.delTaskAllocationById(taskAllocations.get(i).getId()+"");
-                    }
+            }
+            for (int i=0;i<taskAllocations.size();i++){
+                if(!id.contains(taskAllocations.get(i).getId()+"")){
+                  count+=taskMapper.delTaskAllocationById(taskAllocations.get(i).getId()+"");
                 }
+            }
+            if(appCount>0){
+                Data data_phone = new Data("phone", phone, ValueType.PARAM);
+                Data data_corp_code = new Data("corp_code", task.getCorp_code(), ValueType.PARAM);
+                Data data_task_code = new Data("task_code", task.getTask_code(), ValueType.PARAM);
+                Data data_task_title = new Data("task_title", task.getTask_title(), ValueType.PARAM);
+                Data data_user = new Data("user_code", users, ValueType.PARAM);
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_phone.key, data_phone);
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_task_code.key, data_task_code);
+                datalist.put(data_task_title.key, data_task_title);
+                datalist.put(data_user.key, data_user);
+                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
+                String msg = dataBox.data.get("message").value;
+                System.out.println(msg);
+            }
         }catch (Exception e){
             e.printStackTrace();
         }
