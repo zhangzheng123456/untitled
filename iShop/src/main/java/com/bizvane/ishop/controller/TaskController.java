@@ -311,8 +311,6 @@ public class TaskController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             Task task=new Task();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-            task.setTask_code("T"+sdf.format(new Date())+Math.round(Math.random()*9));
             task.setTask_title(jsonObject.get("task_title").toString());
             task.setTask_type_code(jsonObject.get("task_type_code").toString());
             task.setTask_description(jsonObject.get("task_description").toString());
@@ -321,8 +319,6 @@ public class TaskController {
             task.setCorp_code(jsonObject.get("corp_code").toString());
             task.setId(Integer.parseInt(jsonObject.get("id").toString()));
             Date now = new Date();
-            task.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            task.setCreater(user_code);
             task.setModified_date(Common.DATETIME_FORMAT.format(now));
             task.setModifier(user_code);
             task.setIsactive(jsonObject.get("isactive").toString());

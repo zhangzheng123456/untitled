@@ -6,7 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
-import com.bizvane.ishop.entity.CorpWechatRelation;
+//import com.bizvane.ishop.entity.CorpWechatRelation;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.CorpService;
@@ -509,12 +509,22 @@ public class CorpController {
                 result = "：数据量过大，导入失败";
                 int i = 5 / 0;
             }
+            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(0));
+            if(onlyCell1.equals("存在重复值")){
+                result = "：Execl中企业编号存在重复值";
+                int b = 5 / 0;
+            }
+            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            if(onlyCell2.equals("存在重复值")){
+                result = "：Execl中企业名称存在重复值";
+                int b = 5 / 0;
+            }
             Cell[] column = rs.getColumn(0);
             Pattern pattern = Pattern.compile("C\\d{5}");
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -582,33 +592,33 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)
-    @ResponseBody
-    public String isAuthorize(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            String app_id = jsonObject.get("app_id").toString();
-            CorpWechatRelation corp = corpService.getCorpByAppUserId(app_id);
-            String is_authorize = corp.getIs_authorize();
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            if (is_authorize.equals(Common.IS_AUTHORIZE_Y)) {
-                dataBean.setMessage("已授权");
-            } else {
-                dataBean.setMessage("未授权");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
-        return dataBean.getJsonStr();
-    }
+//    @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String isAuthorize(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        String id = "";
+//        try {
+//            String jsString = request.getParameter("param");
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            String message = jsonObj.get("message").toString();
+//            JSONObject jsonObject = JSONObject.parseObject(message);
+//            String app_id = jsonObject.get("app_id").toString();
+//            CorpWechatRelation corp = corpService.getCorpByAppUserId(app_id);
+//            String is_authorize = corp.getIs_authorize();
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            if (is_authorize.equals(Common.IS_AUTHORIZE_Y)) {
+//                dataBean.setMessage("已授权");
+//            } else {
+//                dataBean.setMessage("未授权");
+//            }
+//        } catch (Exception ex) {
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage());
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
     /**
      * 企业管理
@@ -645,33 +655,33 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 选择公众号
-     */
-    @RequestMapping(value = "/selectWx", method = RequestMethod.POST)
-    @ResponseBody
-    public String selectWx(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = JSONObject.parseObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            JSONObject result = new JSONObject();
-            List<CorpWechatRelation> wechat_list = corpService.getRelationByCorp(corp_code);
-            result.put("list", JSON.toJSONString(wechat_list));
-            dataBean.setId(id);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
+//    /**
+//     * 选择公众号
+//     */
+//    @RequestMapping(value = "/selectWx", method = RequestMethod.POST)
+//    @ResponseBody
+//    public String selectWx(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//            String jsString = request.getParameter("param");
+//            logger.info("json---------------" + jsString);
+//            JSONObject jsonObj = JSONObject.parseObject(jsString);
+//            id = jsonObj.get("id").toString();
+//            String message = jsonObj.get("message").toString();
+//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+//            String corp_code = jsonObject.get("corp_code").toString();
+//            JSONObject result = new JSONObject();
+//            List<CorpWechatRelation> wechat_list = corpService.getRelationByCorp(corp_code);
+//            result.put("list", JSON.toJSONString(wechat_list));
+//            dataBean.setId(id);
+//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+//            dataBean.setMessage(result.toString());
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId(id);
+//            dataBean.setMessage(ex.getMessage() + ex.toString());
+//        }
+//        return dataBean.getJsonStr();
+//    }
 
 }

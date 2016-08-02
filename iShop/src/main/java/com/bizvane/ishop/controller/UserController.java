@@ -405,12 +405,22 @@ public class UserController {
                     break;
                 }
             }
+            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(3));
+            if(onlyCell1.equals("存在重复值")){
+                result = "：Execl中手机号码存在重复值";
+                int b = 5 / 0;
+            }
+            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            if(onlyCell2.equals("存在重复值")){
+                result = "：Execl中用户编号存在重复值";
+                int b = 5 / 0;
+            }
             Cell[] column = rs.getColumn(3);
             Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern4.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行电话格式有误";
+                    result = "：第" + (i + 1) + "行手机号码格式有误";
                     int b = 5 / 0;
                     break;
                 }

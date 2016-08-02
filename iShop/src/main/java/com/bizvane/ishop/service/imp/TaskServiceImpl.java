@@ -128,13 +128,16 @@ public class TaskServiceImpl implements TaskService{
                 Data data_corp_code = new Data("corp_code", task.getCorp_code(), ValueType.PARAM);
                 Data data_task_code = new Data("task_code", task.getTask_code(), ValueType.PARAM);
                 Data data_task_title = new Data("task_title", task.getTask_title(), ValueType.PARAM);
-                Data data_user = new Data("user_code", users, ValueType.PARAM);
+                Data data_user = new Data("user", users, ValueType.PARAM);
+                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_phone.key, data_phone);
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_task_code.key, data_task_code);
                 datalist.put(data_task_title.key, data_task_title);
                 datalist.put(data_user.key, data_user);
+                datalist.put(data_user_id.key, data_user_id);
                 DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
                 String msg = dataBox.data.get("message").value;
                 System.out.println(msg);
@@ -173,6 +176,8 @@ public class TaskServiceImpl implements TaskService{
                     allocation.setReal_start_time("");
                     allocation.setReal_end_time("");
                     Date now = new Date();
+                    allocation.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    allocation.setCreater(user_code);
                     allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
                     allocation.setModifier(user_code);
                     count+=taskMapper.addTaskAllocation(allocation);
@@ -202,12 +207,15 @@ public class TaskServiceImpl implements TaskService{
                 Data data_task_code = new Data("task_code", task.getTask_code(), ValueType.PARAM);
                 Data data_task_title = new Data("task_title", task.getTask_title(), ValueType.PARAM);
                 Data data_user = new Data("user_code", users, ValueType.PARAM);
+                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+
                 Map datalist = new HashMap<String, Data>();
                 datalist.put(data_phone.key, data_phone);
                 datalist.put(data_corp_code.key, data_corp_code);
                 datalist.put(data_task_code.key, data_task_code);
                 datalist.put(data_task_title.key, data_task_title);
                 datalist.put(data_user.key, data_user);
+                datalist.put(data_user_id.key, data_user_id);
                 DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
                 String msg = dataBox.data.get("message").value;
                 System.out.println(msg);

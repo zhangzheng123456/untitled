@@ -486,7 +486,7 @@ public class UserAchvGoalControl {
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
@@ -495,7 +495,7 @@ public class UserAchvGoalControl {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -533,7 +533,7 @@ public class UserAchvGoalControl {
                     break;
                 }
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("20yy-MM-dd");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Date date = null;
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {

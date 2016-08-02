@@ -763,7 +763,7 @@ public class GroupController {
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
@@ -773,7 +773,7 @@ public class GroupController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -792,6 +792,16 @@ public class GroupController {
                     int b = 5 / 0;
                     break;
                 }
+            }
+            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(2));
+            if(onlyCell1.equals("存在重复值")){
+                result = "：Execl中群组编号存在重复值";
+                int b = 5 / 0;
+            }
+            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(3));
+            if(onlyCell2.equals("存在重复值")){
+                result = "：Execl中群组名称存在重复值";
+                int b = 5 / 0;
             }
             Cell[] column = rs.getColumn(2);
             Pattern pattern = Pattern.compile("G\\d{4}");

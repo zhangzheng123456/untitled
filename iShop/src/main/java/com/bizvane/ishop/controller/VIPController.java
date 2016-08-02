@@ -431,7 +431,7 @@ public class VIPController {
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
@@ -440,7 +440,7 @@ public class VIPController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -452,11 +452,16 @@ public class VIPController {
                 }
 
             }
+            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            if(onlyCell1.equals("存在重复值")){
+                result = "：Execl中会员标签名称存在重复值";
+                int b = 5 / 0;
+            }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 String existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString(), column[i].getContents().toString());
                 if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
-                    result = "：第" + (i + 1) + "列的会员标签已存在";
+                    result = "：第" + (i + 1) + "列的会员标签名称已存在";
                     int b = 5 / 0;
                     break;
                 }

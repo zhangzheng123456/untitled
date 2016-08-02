@@ -361,6 +361,16 @@ public class GoodsController {
                 }
 
             }
+            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            if(onlyCell1.equals("存在重复值")){
+                result = "：Execl中商品编号存在重复值";
+                int b = 5 / 0;
+            }
+            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
+            if(onlyCell2.equals("存在重复值")){
+                result = "：Execl中商品名称存在重复值";
+                int b = 5 / 0;
+            }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 String goodsCodeExist = goodsService.goodsCodeExist(column3[i].getContents().toString(), column[i].getContents().toString());

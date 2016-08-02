@@ -946,7 +946,7 @@ public class StoreController {
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
@@ -956,7 +956,7 @@ public class StoreController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -967,6 +967,16 @@ public class StoreController {
                     break;
                 }
 
+            }
+            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            if(onlyCell1.equals("存在重复值")){
+                result = "：Execl中店铺编号存在重复值";
+                int b = 5 / 0;
+            }
+            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
+            if(onlyCell2.equals("存在重复值")){
+                result = "：Execl中店铺名称存在重复值";
+                int b = 5 / 0;
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
