@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.MessageDigest;
 import java.sql.SQLException;
+import java.util.List;
 
 /**
  * Created by zhou on 2016/6/1.
@@ -30,11 +31,11 @@ public class WebServiceImpl implements WebService {
     VIPRelationMapper vipRelationMapper;
 
 
-    public VIPEmpRelation selectEmpVip(String app_user_name, String open_id) throws SQLException {
+    public List<VIPEmpRelation> selectEmpVip(String app_user_name, String open_id) throws SQLException {
         return vipRelationMapper.selectEmpVip(open_id, app_user_name);
     }
 
-    public VIPStoreRelation selectStoreVip(String app_user_name, String open_id) throws SQLException {
+    public List<VIPStoreRelation> selectStoreVip(String app_user_name, String open_id) throws SQLException {
         return vipRelationMapper.selectStoreVip(open_id, app_user_name);
     }
 }

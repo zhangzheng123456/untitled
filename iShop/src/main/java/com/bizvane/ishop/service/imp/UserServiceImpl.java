@@ -115,15 +115,14 @@ public class UserServiceImpl implements UserService {
 
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
-        if (user.getStore_code() == null || user.getStore_code().equals("")) {
-            user.setStore_code("");
-            user.setStore_name("");
-        } else {
+        String corp_code = user.getCorp_code();
+
+        String role_code = groupMapper.selectByCode(corp_code,user.getGroup_code(),"").getRole_code();
+        if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
             if (!user.getStore_code().startsWith(Common.STORE_HEAD)) {
                 ProcessStoreCode(user);
             }
             String store_name = "";
-            String corp_code = user.getCorp_code();
             String[] ids = user.getStore_code().split(",");
             String store_code = "";
             for (int i = 0; i < ids.length; i++) {
@@ -139,15 +138,14 @@ public class UserServiceImpl implements UserService {
             }
             user.setStore_name(store_name);
             user.setStore_code(store_code);
+        }else {
+            user.setStore_name("");
+            user.setStore_code("");
         }
-        if (user.getArea_code() == null || user.getArea_code().equals("")) {
-            user.setArea_code("");
-            user.setArea_name("");
-        } else {
+        if (role_code.equals(Common.ROLE_AM)) {
             if (!user.getArea_code().startsWith(Common.STORE_HEAD)) {
                 ProcessAreaCode(user);
             }
-            String corp_code = user.getCorp_code();
             String area_name = "";
             String[] areaCodes = user.getArea_code().split(",");
             String areaCode = "";
@@ -164,6 +162,9 @@ public class UserServiceImpl implements UserService {
             }
             user.setArea_code(areaCode);
             user.setArea_name(area_name);
+        }else {
+            user.setArea_code("");
+            user.setArea_name("");
         }
         return user;
     }
@@ -467,7 +468,6 @@ public class UserServiceImpl implements UserService {
                     corp.setAddress(address);
                     corp.setContact(user_name);
                     corp.setContact_phone(phone);
-                    corp.setIs_authorize("N");
                     corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     corp.setCreater("root");
                     corp.setModified_date(Common.DATETIME_FORMAT.format(now));

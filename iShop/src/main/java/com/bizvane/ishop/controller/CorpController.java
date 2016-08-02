@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.CorpWechatRelation;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.CorpService;
@@ -591,9 +592,8 @@ public class CorpController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-
-            Corp corp = corpService.selectByCorpId(0, corp_code);
+            String app_id = jsonObject.get("app_id").toString();
+            CorpWechatRelation corp = corpService.getCorpByAppUserId(app_id);
             String is_authorize = corp.getIs_authorize();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -634,6 +634,35 @@ public class CorpController {
             JSONObject result = new JSONObject();
             PageInfo<Corp> list = corpService.selectAllCorpScreen(page_number, page_size, map);
             result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 选择公众号
+     */
+    @RequestMapping(value = "/selectWx", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectWx(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            JSONObject result = new JSONObject();
+            List<CorpWechatRelation> wechat_list = corpService.getRelationByCorp(corp_code);
+            result.put("list", JSON.toJSONString(wechat_list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

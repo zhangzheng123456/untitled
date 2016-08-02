@@ -73,16 +73,16 @@ public class WebController {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("app_key Invalid签名无效");
             } else {
-                VIPEmpRelation entity = webService.selectEmpVip(app_user_name, open_id);
-                if (entity == null) {
+                List<VIPEmpRelation> entity = webService.selectEmpVip(app_user_name, open_id);
+                if (entity.size() == 0) {
 
-                    VIPStoreRelation relation = webService.selectStoreVip(app_user_name,open_id);
-                    if (relation == null){
+                    List<VIPStoreRelation> relation = webService.selectStoreVip(app_user_name,open_id);
+                    if (relation.size() == 0){
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setMessage("客户未绑定");
                     }else {
                         JSONObject result = new JSONObject();
-                        String store_id = relation.getStore_id();
+                        String store_id = relation.get(0).getStore_id();
                         JSONArray array = new JSONArray();
                         array.add(store_id);
                         JSONObject obj = new JSONObject();
@@ -95,7 +95,7 @@ public class WebController {
                     }
                 } else {
                     JSONObject result = new JSONObject();
-                    String emp_id = entity.getEmp_id();
+                    String emp_id = entity.get(0).getEmp_id();
                     String corp_code = corpService.getCorpByAppUserName(app_user_name).getCorp_code();
                     User user  = userService.userCodeExist(emp_id,corp_code);
                     String group_code = user.getGroup_code();
