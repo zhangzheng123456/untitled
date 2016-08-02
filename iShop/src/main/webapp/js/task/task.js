@@ -271,7 +271,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/task/tasktype_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/task/task_add.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -279,7 +279,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/task/tasktype_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -293,7 +293,7 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/task/tasktype_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
     })
     //删除
     $("#remove").click(function(){
@@ -348,7 +348,12 @@ function jumpBianse(){
                                 +"</td></tr>");
                     }
                 }
+                $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+                $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
                 whir.loading.remove();//移除加载框
+            if(data.code=="-1"){
+                alert(data.message);
+            }
         })
     })
     //任务详情关闭按钮
@@ -449,6 +454,7 @@ $("#delete").click(function(){
             }else if(filtrate==""){
                frame();
                $('.frame').html('删除成功');
+               filtrates(inx,pageSize);
             }
         var thinput=$("#table thead input")[0];
         thinput.checked =false;
@@ -651,7 +657,6 @@ $("#find").click(function(){
         value="";//把搜索滞空
         $("#search").val("");
         filtrate="sucess";
-        whir.loading.add("",0.5);//加载等待框
         filtrates(inx,pageSize);
    }else if(num<=0){
         frame();
@@ -660,7 +665,8 @@ $("#find").click(function(){
 })
 //筛选发送请求
 function filtrates(a,b){
-   oc.postRequire("post","/task/screen","0",_param,function(data){
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/task/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
