@@ -13,6 +13,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.lang.System;
 import java.sql.SQLException;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by yin on 2016/6/20.
@@ -60,18 +62,13 @@ public class TestFeedbackService {
     @Test
     public void testAddFeedback() {
         try {
-            Feedback f = new Feedback();
-            f.setUser_code("1");
-            f.setIsactive("1");
-            f.setModifier("1");
-            f.setModified_date("2015/6/3");
-            f.setFeedback_content("1");
-            f.setPhone("1");
-            f.setProcess_state("1");
-            f.setCreater("1");
-            f.setFeedback_date("2015/6/3");
-            f.setCreated_date("2015/6/3");
-            feedbackService.addFeedback(f);
+            Pattern pattern1 = Pattern.compile("A\\d{4}");
+            Matcher matcher = pattern1.matcher("A0000");
+            if (matcher.matches() == false) {
+                System.out.println("----------");
+            }else{
+                System.out.println("=======");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

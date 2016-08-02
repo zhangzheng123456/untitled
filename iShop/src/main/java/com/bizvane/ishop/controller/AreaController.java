@@ -83,7 +83,7 @@ public class AreaController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage() + ex.toString());
@@ -91,6 +91,7 @@ public class AreaController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 品牌列表
      */
@@ -109,12 +110,19 @@ public class AreaController {
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
-            PageInfo<Area> list;
+            PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = areaService.getAllAreaByPage(page_number, page_size, "", "");
             } else {
-                list = areaService.getAllAreaByPage(page_number, page_size, corp_code, "");
+                //String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", "");
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    // list = areaService.getAllAreaByPage(page_number, page_size, corp
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, "");
+                }
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -297,13 +305,19 @@ public class AreaController {
 
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Area> list;
+            PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = areaService.getAllAreaByPage(page_number, page_size, "", search_value);
             } else {
-                String corp_code = request.getSession().getAttribute("corp_code").toString();
-                list = areaService.getAllAreaByPage(page_number, page_size, corp_code, search_value);
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", search_value);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    // list = areaService.getAllAreaByPage(page_number, page_size, corp
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, search_value);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -469,9 +483,9 @@ public class AreaController {
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = areaService.getAllAreaScreen(1, 30000, "", map);
+                    list = areaService.getAllAreaScreen(1, 30000, "", "", map);
                 } else {
-                    list = areaService.getAllAreaScreen(1, 30000, corp_code, map);
+                    list = areaService.getAllAreaScreen(1, 30000, corp_code, "", map);
                 }
             }
             List<Area> areas = list.getList();
@@ -480,7 +494,7 @@ public class AreaController {
                 int i = 9 / 0;
             }
 
-            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(areas, map, response, request);
@@ -514,24 +528,24 @@ public class AreaController {
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
         String result = "";
-        Workbook rwb=null;
+        Workbook rwb = null;
         try {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            if(rows<4){
-                result="：请从模板第4行开始插入正确数据";
-                int i=5/0;
+            if (rows < 4) {
+                result = "：请从模板第4行开始插入正确数据";
+                int i = 5 / 0;
             }
             if (rows > 9999) {
                 result = "：数据量过大，导入失败";
                 int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
-            if(!role_code.equals(Common.ROLE_SYS)){
-                for (int i=3;i<column3.length;i++){
-                    if(!column3[i].getContents().toString().equals(corp_code)){
+            if (!role_code.equals(Common.ROLE_SYS)) {
+                for (int i = 3; i < column3.length; i++) {
+                    if (!column3[i].getContents().toString().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
@@ -607,8 +621,8 @@ public class AreaController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }finally {
-            if(rwb!=null){
+        } finally {
+            if (rwb != null) {
                 rwb.close();
             }
         }
@@ -638,12 +652,17 @@ public class AreaController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<Area> list;
+            PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = areaService.getAllAreaScreen(page_number, page_size, "", map);
+                list = areaService.getAllAreaScreen(page_number, page_size, "", "", map);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = areaService.getAllAreaScreen(page_number, page_size, corp_code, map);
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = areaService.getAllAreaScreen(page_number, page_size, corp_code, "", map);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_codes = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.getAllAreaScreen(page_number, page_size, corp_code, area_codes, map);
+                }
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);

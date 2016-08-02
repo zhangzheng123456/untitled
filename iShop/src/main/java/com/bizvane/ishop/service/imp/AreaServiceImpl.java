@@ -232,13 +232,41 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) {
+        String[] areaArray = null;
+        if (null != area_codes && !area_codes.isEmpty()) {
+            areaArray = area_codes.split(",");
+            for (int i = 0; areaArray != null && i < areaArray.length; i++) {
+                areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
+            }
+        }
         List<Area> areas;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
+        params.put("area_codes", areaArray);
         params.put("corp_code", corp_code);
         params.put("map", map);
         areas = areaMapper.selectAllAreaScreen(params);
+        PageInfo<Area> page = new PageInfo<Area>(areas);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) {
+
+        String[] areaArray = null;
+        if (null != area_codes && !area_codes.isEmpty()) {
+            areaArray = area_codes.split(",");
+            for (int i = 0; areaArray != null && i < areaArray.length; i++) {
+                areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
+            }
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_codes", areaArray);
+        params.put("search_value", search_value);
+        PageHelper.startPage(page_number, page_size);
+        List<Area> areas = areaMapper.selectByAreaCodeSearch(params);
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }

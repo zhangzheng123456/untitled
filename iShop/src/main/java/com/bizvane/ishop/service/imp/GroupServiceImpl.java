@@ -141,4 +141,10 @@ public class GroupServiceImpl implements GroupService {
         //若修改群组编号，对应修改权限中关联的群组编号
         codeUpdateMapper.updatePrivilege(corp_code + new_group_code, corp_code + old_group_code);
     }
+
+    @Override
+    public String selRoleByGroupCode(String corp_code, String group_code) {
+        Group group = groupMapper.selectByCode(corp_code, group_code, "");
+        return group.getRole_code();
+    }
 }

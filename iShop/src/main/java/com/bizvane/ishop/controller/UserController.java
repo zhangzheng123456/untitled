@@ -385,7 +385,7 @@ public class UserController {
                     }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式不对";
+                        result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
@@ -394,7 +394,7 @@ public class UserController {
             for (int i = 3; i < column3.length; i++) {
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                 if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式不对";
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
@@ -406,7 +406,7 @@ public class UserController {
                 }
             }
             Cell[] column = rs.getColumn(3);
-            Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[0-9]{10})");
+            Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
             for (int i = 3; i < column.length; i++) {
                 Matcher matcher = pattern4.matcher(column[i].getContents().toString());
                 if (matcher.matches() == false) {
@@ -434,6 +434,9 @@ public class UserController {
             }
             Cell[] column6 = rs.getColumn(6);
             Pattern pattern = Pattern.compile("G\\d{4}");
+            Pattern pattern7 = Pattern.compile("A\\d{4}");
+            Cell[] column7 = rs.getColumn(7);
+            Cell[] column2 = rs.getColumn(8);
             for (int i = 3; i < column6.length; i++) {
                 Matcher matcher = pattern.matcher(column6[i].getContents().toString());
                 if (matcher.matches() == false) {
@@ -447,7 +450,39 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
+                Matcher matcher7 = pattern7.matcher(column7[i].getContents().toString());
+                if (matcher7.matches() == false) {
+                    result = "第" + (i + 1) + "行区域编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column6[i].getContents().toString());
+                if(role.equals(Common.ROLE_AM) || role.equals(Common.ROLE_SM)||role.equals(Common.ROLE_STAFF)){
+                    String areas = column7[i].getContents().toString();
+                    String[] splitAreas = areas.split(",");
+                    for (int j=0;j<splitAreas.length;j++){
+                        Area area = areaService.getAreaByCode(column3[i].getContents().toString(), splitAreas[j]);
+                        if (area == null) {
+                            result = "第" + (i + 1) + "行,第"+(j+1)+"个区域编号不存在";
+                            int b = 5 / 0;
+                            break;
+                        }
+                    }
+                }
+                if(role.equals(Common.ROLE_SM)||role.equals(Common.ROLE_STAFF)){
+                    String stores = column2[i].getContents().toString();
+                    String[] splitAreas = stores.split(",");
+                    for (int j=0;j<splitAreas.length;j++){
+                        Store store = storeService.getStoreByCode(column3[i].getContents().toString(), splitAreas[j], "");
+                        if (store == null) {
+                            result = "第" + (i + 1) + "行,第"+(j+1)+"个店铺编号不存在";
+                            int b = 5 / 0;
+                            break;
+                        }
+                    }
+                }
             }
+
 //            Pattern pattern7 = Pattern.compile("A\\d{4}");
 //            Cell[] column7 = rs.getColumn(7);
 //            for (int i = 3; i < column7.length; i++) {
@@ -479,7 +514,7 @@ public class UserController {
                     user.setCorp_code(rs.getCell(j++, i).getContents());
                     user.setUser_code(rs.getCell(j++, i).getContents());
                     user.setUser_name(rs.getCell(j++, i).getContents());
-                    user.setAvatar("");//头像
+                    user.setAvatar("../img/head.png");//头像
                     user.setPhone(rs.getCell(j++, i).getContents());
                     user.setEmail(rs.getCell(j++, i).getContents());
                     if (rs.getCell(j++, i).getContents().equals("男")) {

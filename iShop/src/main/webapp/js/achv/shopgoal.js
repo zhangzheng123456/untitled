@@ -384,7 +384,7 @@ function getcorplist(a,b){
 			store_data(c,b);
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
-				store_data(c);
+				store_data(c,b);
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
