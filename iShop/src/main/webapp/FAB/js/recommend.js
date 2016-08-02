@@ -53,10 +53,10 @@ jQuery(function(){
 	        query = {
 		        "rowno":rowno,
 		        "corp_code":corp_code,
-		        "key":key
+		        "search_value":key
 		    };
 		    console.log(rowno);
-		    oc.postRequire("post","/api/fab","0",query,function(data){
+		    oc.postRequire("post","/api/fab/search","0",query,function(data){
 		    	console.log(data);
 				var list=JSON.parse(data.message);
 				var list=JSON.parse(list.list);
