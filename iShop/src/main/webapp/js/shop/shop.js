@@ -221,8 +221,6 @@ var oc = new ObjectControl();
 	obj.init = init;
 	return obj;
 }));
-var checknow_data=[];
-var checknow_namedata=[];
 var flg_index=0;
 jQuery(document).ready(function(){
 	window.shop.init();//初始化
