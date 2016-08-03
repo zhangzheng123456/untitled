@@ -927,6 +927,7 @@ public class StoreController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            System.out.println(clos);
             if(rows<4){
                 result="：请从模板第4行开始插入正确数据";
                 int i=5/0;
@@ -1006,8 +1007,8 @@ public class StoreController {
                     break;
                 }
                 Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column4[i].getContents().toString());
-                if (brand != null) {
-                    result = "：第" + (i + 1) + "行品牌编号已存在";
+                if (brand == null) {
+                    result = "：第" + (i + 1) + "行品牌编号不存在";
                     int b = 5 / 0;
                     break;
                 }

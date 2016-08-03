@@ -834,9 +834,9 @@ input::-webkit-input-placeholder{
 	width:490px;
 	height: 300px;
 	overflow: hidden;
-	position: absolute;
-	top: 300px;;
-	left:40%;
+	position: fixed;
+	top: 220px;;
+	left:35%;
 	z-index: 3000;
 	background-color:rgba(244, 244, 244, 0.9) ;
 }
