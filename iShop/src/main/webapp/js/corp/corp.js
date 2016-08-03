@@ -580,8 +580,13 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var message=JSON.parse(data.message);
         var filter=message.filter;
         $("#sxk .inputs ul").empty();
-        for(var i=0;i<filter.length;i++){
-            $("#sxk .inputs ul").append("<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>");
+        for(var i=0;i<filter.length;i++) {
+            if (filter[i].type == "text") {
+                $("#sxk .inputs ul").append("<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>");
+            }
+            if(filter[i].type=="select"){
+                $("#sxk .inputs ul").append("<li class='isActive_select'><lable>"+filter[i].show_name+"</lable><input value='可用'>"+"<ul class='isActive_select_down'><li>可用</li><li>不可用</li><li>全部</li></ul></li>")
+            }
         }
     }
 });

@@ -100,6 +100,15 @@ var oc = new ObjectControl();
 				var PHONE=$("#PHONE").val();
 				var FEEDBACK_CONTENT=$("#FEEDBACK_CONTENT").val();
 				var PROCESS_STATE=$("#PROCESS_STATE").val();
+				if(PROCESS_STATE=="未处理"){
+					PROCESS_STATE="0";
+				}
+				if(PROCESS_STATE=="处理中"){
+					PROCESS_STATE="1";
+				}
+				if(PROCESS_STATE=="已完成"){
+					PROCESS_STATE="2";
+				}
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(input.checked==true){
@@ -181,7 +190,7 @@ var oc = new ObjectControl();
 
 jQuery(document).ready(function(){
 	window.feedback.init();//初始化
-	if($(".pre_title label").text()=="编辑用户反馈"){
+	if($(".pre_title label").text()=="反馈详情"){
 		var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/feedback/selectById";
@@ -189,12 +198,27 @@ jQuery(document).ready(function(){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
+				var msg=JSON.parse(msg.feedback);
+				var process_state="";
+				if(msg.process_state=="0"){
+					process_state="未处理";
+				}
+				if(msg.process_state=="1"){
+					process_state="处理中";
+				}
+				if(msg.process_state=="2"){
+					process_state="已完成";
+				}
 				console.log(msg);
 				$('#USER_CODE').val(msg.user_code);
-				$("#FEEDBACK_DATE").val(msg.feedback_date);
+				$("#FEEDBACK_DATE").val(msg.created_date);
 				$("#PHONE").val(msg.phone);
 				$("#FEEDBACK_CONTENT").val(msg.feedback_content);
-				$("#PROCESS_STATE").val(msg.process_state);
+				$("#PROCESS_STATE").val(process_state);
+				$("#created_time").val(msg.created_date);
+				$("#creator").val(msg.creater);
+				$("#modify_time").val(msg.modified_date);
+				$("#modifier").val(msg.modifier);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;

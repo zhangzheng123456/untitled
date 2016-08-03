@@ -872,3 +872,27 @@ input::-webkit-input-placeholder{
 	top: 0;
 	left: 0;
 }
+.isActive_select{
+	background: url(../../img/btn_dropmenu.png) no-repeat 100% 50%;;
+}
+.sxk .inputs .isActive_select_down{
+	display: none;
+	position: absolute;
+	left: 550px;
+	top: 325px;
+	width: 170px;
+	border: 1px solid #a9c9e2;
+	background: #e8f5fe;
+}
+.sxk .inputs .isActive_select_down li{
+	width:170px;
+	height:35px;
+	margin:0;
+	line-height: 30px;
+	text-indent: 10px;
+	color:#807a62;
+}
+.isActive_select_down li:hover{
+	color: #ffffff;
+	background: #6cc1c8;
+}

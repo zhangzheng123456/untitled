@@ -31,22 +31,23 @@
                 </div>
                 <form class="conpany_msg">
                     <div>
-                        <span><label style="color:#c26555;">用户ID*</label><input type="text" id="USER_CODE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="用户ID不能为空！"></div></div></span>
+                        <span><label>员工编号</label><input type="text" id="USER_CODE" verify="Empty" readonly="readonly" /><div style="padding-left:125px" class="hint"><div  hintinfo="用户ID不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label>反馈时间</label><input type="text" id="FEEDBACK_DATE" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="反馈时间不能为空！"></div></div></span>
+                        <span><label>反馈时间</label><input type="text" id="FEEDBACK_DATE" verify="Empty" readonly="readonly" /><div style="padding-left:125px" class="hint"><div  hintinfo="反馈时间不能为空！"></div></div></span>
                     </div>
                     <div>
-                        <span><label style="color:#c26555;">手机号码*</label><input type="text" id="PHONE" verify="Phone"/><div style="padding-left:125px" class="hint"><div  hintinfo="手机号码不能为空！"></div></div></span>
+                        <span><label>手机号码*</label><input type="text" id="PHONE" verify="Phone" readonly="readonly" /><div style="padding-left:125px" class="hint"><div  hintinfo="手机号码不能为空！"></div></div></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">反馈内容</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px" id="FEEDBACK_CONTENT"></textarea></span></span>
+                    <span style="display: inline-flex;width:100%"><label style="height:180px;">反馈内容</label><span class="tempalte_area" style="height: 180px"><textarea style="height: 160px" id="FEEDBACK_CONTENT" readonly="readonly"></textarea></span></span>
                     </div>
                     <div class="drop_down item_1">
                         <span><label>处理状态</label><input class="input_select" type="text" id="PROCESS_STATE" placeholder="请选择处理状态" readonly/>
                             <ul>
-                                <li>已解决</li>
-                                <li>待解决</li>
+                                <li>未处理</li>
+                                <li>处理中</li>
+                                <li>已完成</li>
                             </ul>
                         </span>
                     </div>
