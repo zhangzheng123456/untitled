@@ -2,11 +2,15 @@ package com.bizvane.ishop.utils;
 
 import com.bizvane.ishop.bean.DataBean;
 import jxl.Cell;
+import jxl.CellType;
+import jxl.DateCell;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.LinkedHashMap;
 
 /**
@@ -47,6 +51,17 @@ public class LuploadHelper {
             result="存在重复值";
         }
         return result;
+    }
+
+    public  static String getCellTypeForDate(Cell cellObject) {
+        String dateStr="";
+        if(cellObject.getType()== CellType.DATE){
+            DateCell cellValue   =   (DateCell)cellObject;
+            Date dt   =   cellValue.getDate();
+            SimpleDateFormat formatter   =   new   SimpleDateFormat("yyyy-MM-dd");
+            dateStr  =  formatter.format(dt);
+        }
+        return dateStr;
     }
 
 

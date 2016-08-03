@@ -533,13 +533,6 @@ public class StoreAchvGoalController {
                     break;
                 }
             }
-         //   Cell[] column4 = rs.getColumn(4);
-//            for (int i = 3; i < column4.length; i++) {
-//                date= sdf.parse("20"+column4[i].getContents().toString());
-//                System.out.println("--日期--"+sdf.format(date));
-//            }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = null;
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     StoreAchvGoal storeAchvGoal = new StoreAchvGoal();
@@ -547,9 +540,8 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setTarget_amount(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setTime_type(rs.getCell(j++, i).getContents());
-                    date= sdf.parse("20"+rs.getCell(j++, i).getContents());
-                    System.out.println("----"+sdf.format(date)+"---");
-                    storeAchvGoal.setTarget_time(sdf.format(date));
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i));
+                    storeAchvGoal.setTarget_time(cellTypeForDate);
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         storeAchvGoal.setIsactive("N");
                     } else {

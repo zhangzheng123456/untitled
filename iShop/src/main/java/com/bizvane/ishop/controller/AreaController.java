@@ -69,6 +69,7 @@ public class AreaController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
+            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -77,7 +78,20 @@ public class AreaController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             String searchValue = jsonObject.get("searchValue").toString();
-            PageInfo<Area> list = areaService.getAllAreaByPage(page_number, page_size, corp_code, searchValue);
+            PageInfo<Area> list = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", searchValue);
+            } else {
+                //String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                if (role_code.equals(Common.ROLE_GM)) {
+                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", searchValue);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    // list = areaService.getAllAreaByPage(page_number, page_size, corp
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, searchValue);
+                }
+            }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

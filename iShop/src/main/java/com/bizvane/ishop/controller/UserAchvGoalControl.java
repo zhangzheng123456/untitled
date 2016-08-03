@@ -533,8 +533,6 @@ public class UserAchvGoalControl {
                     break;
                 }
             }
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-            Date date = null;
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
@@ -543,8 +541,8 @@ public class UserAchvGoalControl {
                     userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
                     userAchvGoal.setTarget_type(rs.getCell(j++, i).getContents());
-                    date = sdf.parse("20" + rs.getCell(j++, i).getContents());
-                    userAchvGoal.setTarget_time(sdf.format(date));
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i));
+                    userAchvGoal.setTarget_time(cellTypeForDate);
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");
                     } else {
