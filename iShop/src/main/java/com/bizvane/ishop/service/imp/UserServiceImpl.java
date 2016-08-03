@@ -72,7 +72,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("M")){
+            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
                 user.setSex("男");
             }else{
                 user.setSex("女");
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("M")){
+            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
                 user.setSex("男");
             }else{
                 user.setSex("女");
@@ -210,7 +210,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("M")){
+            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
                 user.setSex("男");
             }else{
                 user.setSex("女");
@@ -665,7 +665,7 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("M")){
+            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
                 user.setSex("男");
             }else{
                 user.setSex("女");
