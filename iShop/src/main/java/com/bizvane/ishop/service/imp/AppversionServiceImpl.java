@@ -30,6 +30,13 @@ public class AppversionServiceImpl implements AppversionService{
     public PageInfo<Appversion> selectAllAppversion(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Appversion> appversions = appversionMapper.selectAllAppversion(search_value);
+        for (Appversion appversion:appversions) {
+            if(appversion.getIsactive().equals("Y")){
+                appversion.setIsactive("可用");
+            }else{
+                appversion.setIsactive("不可用");
+            }
+        }
         PageInfo<Appversion> page = new PageInfo<Appversion>(appversions);
         return page;
     }

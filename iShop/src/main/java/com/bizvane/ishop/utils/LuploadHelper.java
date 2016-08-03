@@ -17,6 +17,9 @@ import java.util.LinkedHashMap;
  * Created by yin on 2016/7/12.
  */
 public class LuploadHelper {
+    /**
+     * 上传execl文件
+     */
     public static File lupload(HttpServletRequest request,MultipartFile file,ModelMap model){
         //创建你要保存的文件的路径
         String path = request.getSession().getServletContext().getRealPath("lupload");
@@ -38,6 +41,9 @@ public class LuploadHelper {
         return targetFile;
     }
 
+    /***
+     * 验证execl中唯一的列是否有重复值
+     */
     public  static  String CheckOnly(Cell[] cells){
         String result="";
         LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
@@ -53,6 +59,9 @@ public class LuploadHelper {
         return result;
     }
 
+    /***
+     * 把jxl.jar中日期类型进行转换
+     */
     public  static String getCellTypeForDate(Cell cellObject) {
         String dateStr="";
         if(cellObject.getType()== CellType.DATE){

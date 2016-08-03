@@ -104,9 +104,6 @@ public class OutExeclHelper {
             }
             //写入文件
             book.write();
-            //设置为系统输出流 并清空
-//            System.setOut(new PrintStream(os));
-//            os.flush();
         }catch (Exception e){
             e.printStackTrace();
         }finally {
