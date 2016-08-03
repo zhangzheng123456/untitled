@@ -179,7 +179,6 @@ function superaddition(data,num){
         if(data[i].avatar!==""&&data[i].avatar!==undefined){
             avatar=data[i].avatar;
         }
-        if(data[i].sex=="F"){
             $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -195,7 +194,7 @@ function superaddition(data,num){
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
-                        + "女"
+                        + data[i].sex
                         +"</td><td>"
                         +data[i].phone
                         + "</td><td class='corp_code' data-code='"+data[i].corp.corp_code+"'><span title='"+data[i].corp.corp_name+"'>"
@@ -209,69 +208,6 @@ function superaddition(data,num){
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
-        }
-        if(data[i].sex=="M"){
-            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'></label></div>"
-                        + "</td><td style='text-align:left;'>"
-                        + a
-                        +"</td><td>"
-                        + data[i].user_code
-                        + "</td><td><img src='"+avatar+"' alt=''>"
-                        + "</td><td>"
-                        + data[i].user_name
-                        + "</td><td>"
-                        + "男"
-                        +"</td><td>"
-                        +data[i].phone
-                        + "</td><td class='corp_code' data-code='"+data[i].corp.corp_code+"'><span title='"+data[i].corp.corp_name+"'>"
-                        +data[i].corp.corp_name
-                        + "</span></td><td>"
-                        +data[i].group.group_name
-                        + "</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
-        }
-        if(data[i].sex!=="F"&&data[i].sex!=="M"){
-            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'></label></div>"
-                        + "</td><td style='text-align:left;'>"
-                        + a
-                        +"</td><td>"
-                        + data[i].user_code
-                        + "</td><td><img src='"+avatar+"' alt=''>"
-                        + "</td><td>"
-                        + data[i].user_name
-                        + "</td><td>"
-                        + ""
-                        +"</td><td>"
-                        +data[i].phone
-                        + "</td><td class='corp_code' data-code='"+data[i].corp.corp_code+"'><span title='"+data[i].corp.corp_name+"'>"
-                        +data[i].corp.corp_name
-                        + "</span></td><td>"
-                        +data[i].group.group_name
-                        + "</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
-        }
     }
     whir.loading.remove();//移除加载框
 };

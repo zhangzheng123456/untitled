@@ -170,13 +170,13 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        var status="";
-        if(data[i].status=="0"){
-            status="签到";
-        }
-        if(data[i].status=="-1"){
-            status="签退";
-        }
+        // var status="";
+        // if(data[i].status=="0"){
+        //     status="签到";
+        // }
+        // if(data[i].status=="-1"){
+        //     status="签退";
+        // }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -195,7 +195,7 @@ function superaddition(data,num){//页面加载循环
                         + "</span></td><td>"
                         + data[i].sign_time
                         + "</td><td>"
-                        + status
+                        + data[i].status
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");

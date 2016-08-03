@@ -171,16 +171,16 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        var time_type="";
-        if(data[i].time_type=="D"){
-            time_type="日";
-        }else if(data[i].time_type=="Y"){
-            time_type="年";
-        }else if(data[i].time_type=="W"){
-            time_type="周";
-        }else if(data[i].time_type=="M"){
-            time_type="月";
-        }
+        // var time_type="";
+        // if(data[i].time_type=="D"){
+        //     time_type="日";
+        // }else if(data[i].time_type=="Y"){
+        //     time_type="年";
+        // }else if(data[i].time_type=="W"){
+        //     time_type="周";
+        // }else if(data[i].time_type=="M"){
+        //     time_type="月";
+        // }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -199,7 +199,7 @@ function superaddition(data,num){//页面加载循环
                         +"</td><td>"
                         + data[i].target_amount
                         +"</td><td>"
-                        + time_type
+                        + data[i].time_type
                         +"</td><td>"
                         + data[i].target_time
                         +"</td><td>"
