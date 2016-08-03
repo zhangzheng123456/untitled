@@ -149,7 +149,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
-                        superaddition(list,inx);
+                        superaddition(list,a);
                         jumpBianse();
                     }else if(data.code=="-1"){
                         alert(data.message);
@@ -170,7 +170,7 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                         $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
                     }else if(list.length>0){
                         $(".table p").remove();
-                        superaddition(list,inx);
+                        superaddition(list,a);
                         jumpBianse();
                     }
                 }else if(data.code=="-1"){
@@ -239,7 +239,7 @@ function GET(){
                 var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list,inx);
+                superaddition(list,a);
                 // jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
@@ -376,7 +376,7 @@ function POST(){
                 $(".table").append("<p>没有找到与"+value+"相关的信息，请重新搜索</p>")
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,inx);
+                superaddition(list,a);
                 jumpBianse();
             }
             setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
