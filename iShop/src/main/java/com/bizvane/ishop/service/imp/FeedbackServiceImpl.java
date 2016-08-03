@@ -39,6 +39,13 @@ public class FeedbackServiceImpl implements FeedbackService{
             }else{
                 feedback.setIsactive("否");
             }
+            if(feedback.getProcess_state().equals("0")){
+                feedback.setProcess_state("未处理");
+            }else if(feedback.getProcess_state().equals("1")){
+                feedback.setProcess_state("处理中");
+            }else if(feedback.getProcess_state().equals("2")){
+                feedback.setProcess_state("已完成");
+            }
         }
         PageInfo<Feedback> page = new PageInfo<Feedback>(feedbacks);
         return page;
@@ -61,6 +68,13 @@ public PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<St
             feedback.setIsactive("是");
         }else{
             feedback.setIsactive("否");
+        }
+        if(feedback.getProcess_state().equals("0")){
+            feedback.setProcess_state("未处理");
+        }else if(feedback.getProcess_state().equals("1")){
+            feedback.setProcess_state("处理中");
+        }else if(feedback.getProcess_state().equals("2")){
+            feedback.setProcess_state("已完成");
         }
     }
     PageInfo<Feedback> page = new PageInfo<Feedback>(list);
