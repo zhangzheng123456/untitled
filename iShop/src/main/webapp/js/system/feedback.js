@@ -200,7 +200,7 @@ function superaddition(data,num){//页面加载循环
                         + a
                         + "</td><td>"
                         + data[i].user_code
-                        + "</td><td><span>"
+                        + "</td><td><span title='"+data[i].feedback_content+"'>"
                         + data[i].feedback_content
                         + "</span></td><td>"
                         + data[i].phone
