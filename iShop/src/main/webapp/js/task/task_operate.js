@@ -86,14 +86,15 @@ function getarealist(){
 				});
 			} else {
 				for (var i = 0; i < msg.areas.length; i++) {
-					a = msg.areas[i];
-					//<div class="checkbox_isactive">
-                       //<input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>  
-                    //</div>
-                    //<span class="">员工名称</span>
-					area_html += '<li data-areacode="' + a.area_code + '">' + a.area_name + '</li>';
+				    area_html+="<li data-areacode='"+ msg.areas[i].area_code+"'><div class='checkbox_isactive'><input  type='checkbox' value='' name='test'  class='check'  id='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'></label></div><span class='p16'>"+msg.areas[i].area_name+"</span></li>"
 				}
-				$("#area_select").html(area_html);
+				$("#area_code ul").html(area_html);
 			}
 		} else if (data.code == "-1") {
 			art.dialog({
