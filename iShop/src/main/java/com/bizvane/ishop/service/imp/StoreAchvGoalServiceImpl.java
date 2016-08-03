@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.StoreAchvGoalMapper;
+import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.StoreAchvGoalService;
 import com.github.pagehelper.PageHelper;
@@ -63,6 +64,22 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         List<StoreAchvGoal> storeAchvGoals;
         PageHelper.startPage(page_number, page_size);
         storeAchvGoals = storeAchvGoalMapper.selectBySearch(params);
+        for (StoreAchvGoal storeAchvGoal:storeAchvGoals) {
+            if(storeAchvGoal.getIsactive().equals("Y")){
+                storeAchvGoal.setIsactive("是");
+            }else{
+                storeAchvGoal.setIsactive("否");
+            }
+            if(storeAchvGoal.getTime_type().equals("D")){
+                storeAchvGoal.setTime_type("日");
+            }else if(storeAchvGoal.getTime_type().equals("W")){
+                storeAchvGoal.setTime_type("周");
+            }else if(storeAchvGoal.getTime_type().equals("M")){
+                storeAchvGoal.setTime_type("月");
+            }else if(storeAchvGoal.getTime_type().equals("Y")){
+                storeAchvGoal.setTime_type("年");
+            }
+        }
         PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
         return page;
     }
@@ -104,6 +121,22 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         List<StoreAchvGoal> storeAchvGoals;
         PageHelper.startPage(page_number, page_size);
         storeAchvGoals = storeAchvGoalMapper.selectAllStoreAchvScreen(params);
+        for (StoreAchvGoal storeAchvGoal:storeAchvGoals) {
+            if(storeAchvGoal.getIsactive().equals("Y")){
+                storeAchvGoal.setIsactive("是");
+            }else{
+                storeAchvGoal.setIsactive("否");
+            }
+            if(storeAchvGoal.getTime_type().equals("D")){
+                storeAchvGoal.setTime_type("日");
+            }else if(storeAchvGoal.getTime_type().equals("W")){
+                storeAchvGoal.setTime_type("周");
+            }else if(storeAchvGoal.getTime_type().equals("M")){
+                storeAchvGoal.setTime_type("月");
+            }else if(storeAchvGoal.getTime_type().equals("Y")){
+                storeAchvGoal.setTime_type("年");
+            }
+        }
         PageInfo<StoreAchvGoal> page = new PageInfo<StoreAchvGoal>(storeAchvGoals);
         return page;
     }

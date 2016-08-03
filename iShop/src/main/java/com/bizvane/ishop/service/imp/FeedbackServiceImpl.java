@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.FeedbackMapper;
+import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.service.FeedbackService;
@@ -32,6 +33,13 @@ public class FeedbackServiceImpl implements FeedbackService{
     public PageInfo<Feedback> selectAllFeedback(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Feedback> feedbacks = feedbackMapper.selectAllFeedback(search_value);
+        for (Feedback feedback:feedbacks) {
+            if(feedback.getIsactive().equals("Y")){
+                feedback.setIsactive("是");
+            }else{
+                feedback.setIsactive("否");
+            }
+        }
         PageInfo<Feedback> page = new PageInfo<Feedback>(feedbacks);
         return page;
     }
@@ -48,6 +56,13 @@ public PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<St
     params.put("map", map);
     PageHelper.startPage(page_number, page_size);
     List<Feedback> list = feedbackMapper.selectAllScreen(params);
+    for (Feedback feedback:list) {
+        if(feedback.getIsactive().equals("Y")){
+            feedback.setIsactive("是");
+        }else{
+            feedback.setIsactive("否");
+        }
+    }
     PageInfo<Feedback> page = new PageInfo<Feedback>(list);
     return page;
 }

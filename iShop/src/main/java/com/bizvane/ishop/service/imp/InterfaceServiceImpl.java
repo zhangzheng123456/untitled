@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.dao.InterfaceMapper;
 import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Feedback;
+import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.service.InterfaceService;
 import com.github.pagehelper.PageHelper;
@@ -29,6 +30,13 @@ public class InterfaceServiceImpl implements InterfaceService{
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<Interfacers> list = interfaceMapper.selectAllScreen(params);
+        for (Interfacers interfacers:list) {
+            if(interfacers.getIsactive().equals("Y")){
+                interfacers.setIsactive("是");
+            }else{
+                interfacers.setIsactive("否");
+            }
+        }
         PageInfo<Interfacers> page = new PageInfo<Interfacers>(list);
         return page;
     }
@@ -42,6 +50,13 @@ public class InterfaceServiceImpl implements InterfaceService{
     public PageInfo<Interfacers> selectAllInterface(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Interfacers> interfacerses = interfaceMapper.selectAllInterface(search_value);
+        for (Interfacers interfacers:interfacerses) {
+            if(interfacers.getIsactive().equals("Y")){
+                interfacers.setIsactive("是");
+            }else{
+                interfacers.setIsactive("否");
+            }
+        }
         PageInfo<Interfacers> page = new PageInfo<Interfacers>(interfacerses);
         return page;
     }

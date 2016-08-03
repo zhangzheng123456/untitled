@@ -32,9 +32,9 @@ public class AppversionServiceImpl implements AppversionService{
         List<Appversion> appversions = appversionMapper.selectAllAppversion(search_value);
         for (Appversion appversion:appversions) {
             if(appversion.getIsactive().equals("Y")){
-                appversion.setIsactive("可用");
+                appversion.setIsactive("是");
             }else{
-                appversion.setIsactive("不可用");
+                appversion.setIsactive("否");
             }
         }
         PageInfo<Appversion> page = new PageInfo<Appversion>(appversions);
@@ -47,6 +47,13 @@ public class AppversionServiceImpl implements AppversionService{
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<Appversion> list = appversionMapper.selectAllScreen(params);
+        for (Appversion appversion:list) {
+            if(appversion.getIsactive().equals("Y")){
+                appversion.setIsactive("是");
+            }else{
+                appversion.setIsactive("否");
+            }
+        }
         PageInfo<Appversion> page = new PageInfo<Appversion>(list);
         return page;
     }

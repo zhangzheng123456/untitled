@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipLabelMapper;
+import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.VipLabelService;
 import com.github.pagehelper.PageHelper;
@@ -69,6 +70,20 @@ public class VipLabelServiceImpl implements VipLabelService {
         List<VipLabel> list = null;
         PageHelper.startPage(page_number, page_size);
         list = vipLabelMapper.selectAllVipLabel(corp_code, search_value);
+        for (VipLabel vipLabel:list) {
+            if (vipLabel.getIsactive().equals("Y")) {
+                vipLabel.setIsactive("是");
+            } else {
+                vipLabel.setIsactive("否");
+            }
+            if(vipLabel.getLabel_type().equals("user")){
+                vipLabel.setLabel_type("用户");
+            }else if(vipLabel.getLabel_type().equals("sys")){
+                vipLabel.setLabel_type("系统");
+            }else if(vipLabel.getLabel_type().equals("org")){
+                vipLabel.setLabel_type("企业");
+            }
+        }
         PageInfo<VipLabel> page = new PageInfo<VipLabel>(list);
         return page;
     }
@@ -81,6 +96,20 @@ public class VipLabelServiceImpl implements VipLabelService {
         List<VipLabel> labels;
         PageHelper.startPage(page_number, page_size);
         labels = vipLabelMapper.selectAllViplabelScreen(params);
+        for (VipLabel vipLabel:labels) {
+            if (vipLabel.getIsactive().equals("Y")) {
+                vipLabel.setIsactive("是");
+            } else {
+                vipLabel.setIsactive("否");
+            }
+            if(vipLabel.getLabel_type().equals("user")){
+                vipLabel.setLabel_type("用户");
+            }else if(vipLabel.getLabel_type().equals("sys")){
+                vipLabel.setLabel_type("系统");
+            }else if(vipLabel.getLabel_type().equals("org")){
+                vipLabel.setLabel_type("企业");
+            }
+        }
         PageInfo<VipLabel> page = new PageInfo<VipLabel>(labels);
         return page;
 

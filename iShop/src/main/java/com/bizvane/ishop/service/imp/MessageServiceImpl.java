@@ -3,10 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.MessageMapper;
 import com.bizvane.ishop.dao.UserMapper;
-import com.bizvane.ishop.entity.Message;
-import com.bizvane.ishop.entity.MessageInfo;
-import com.bizvane.ishop.entity.MessageType;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.MessageService;
 import com.bizvane.sun.v1.common.Data;
@@ -51,6 +48,13 @@ public class MessageServiceImpl implements MessageService {
     public PageInfo<Message> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) {
         PageHelper.startPage(page_number, page_size);
         List<Message> list = this.messageMapper.selectAllMessage(corp_code, user_code, search_value);
+        for (Message message:list) {
+            if(message.getIsactive().equals("Y")){
+                message.setIsactive("是");
+            }else{
+                message.setIsactive("否");
+            }
+        }
         PageInfo<Message> page = new PageInfo<Message>(list);
         return page;
     }

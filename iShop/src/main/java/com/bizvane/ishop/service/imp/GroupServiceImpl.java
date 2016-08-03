@@ -4,6 +4,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.GroupMapper;
 import com.bizvane.ishop.dao.PrivilegeMapper;
+import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.service.GroupService;
 import com.github.pagehelper.PageHelper;
@@ -57,6 +58,13 @@ public class GroupServiceImpl implements GroupService {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
         groups = groupMapper.selectAllGroup(corp_code, role_code, search_value);
+        for (Group group:groups) {
+            if(group.getIsactive().equals("Y")){
+                group.setIsactive("是");
+            }else{
+                group.setIsactive("否");
+            }
+        }
         PageInfo<Group> page = new PageInfo<Group>(groups);
         return page;
     }
@@ -70,6 +78,13 @@ public class GroupServiceImpl implements GroupService {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
         groups = groupMapper.selectAllGroupScreen(params);
+        for (Group group:groups) {
+            if(group.getIsactive().equals("Y")){
+                group.setIsactive("是");
+            }else{
+                group.setIsactive("否");
+            }
+        }
         PageInfo<Group> page = new PageInfo<Group>(groups);
         return page;
     }

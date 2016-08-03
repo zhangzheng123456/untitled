@@ -1,10 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.dao.SignMapper;
-import com.bizvane.ishop.entity.Interfacers;
-import com.bizvane.ishop.entity.Sign;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.SignService;
 import com.bizvane.ishop.service.StoreService;
 import com.github.pagehelper.PageHelper;
@@ -31,6 +28,20 @@ public class SignServiceImpl implements SignService {
     public PageInfo<Sign> selectSignAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Sign> signs = signMapper.selectSignAll(corp_code, search_value);
+        for (Sign sign:signs) {
+            if(sign.getIsactive().equals("Y")){
+                sign.setIsactive("是");
+            }else{
+                sign.setIsactive("否");
+            }
+            //0是签到，-1是签退
+            if(sign.getStatus().equals("0")){
+                sign.setStatus("签到");
+            }else{
+                sign.setStatus("签退");
+            }
+        }
+
         PageInfo<Sign> page = new PageInfo<Sign>(signs);
         return page;
     }
@@ -64,6 +75,19 @@ public class SignServiceImpl implements SignService {
         List<Sign> signs;
         PageHelper.startPage(page_number, page_size);
         signs = signMapper.selectSignByInp(params);
+        for (Sign sign:signs) {
+            if(sign.getIsactive().equals("Y")){
+                sign.setIsactive("是");
+            }else{
+                sign.setIsactive("否");
+            }
+            //0是签到，-1是签退
+            if(sign.getStatus().equals("0")){
+                sign.setStatus("签到");
+            }else{
+                sign.setStatus("签退");
+            }
+        }
         PageInfo<Sign> page = new PageInfo<Sign>(signs);
         return page;
     }
@@ -72,6 +96,19 @@ public class SignServiceImpl implements SignService {
     public PageInfo<Sign> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Sign> signs = signMapper.selectByUser(corp_code, user_code, search_value);
+        for (Sign sign:signs) {
+            if(sign.getIsactive().equals("Y")){
+                sign.setIsactive("是");
+            }else{
+                sign.setIsactive("否");
+            }
+            //0是签到，-1是签退
+            if(sign.getStatus().equals("0")){
+                sign.setStatus("签到");
+            }else{
+                sign.setStatus("签退");
+            }
+        }
         PageInfo<Sign> page = new PageInfo<Sign>(signs);
         return page;
     }
@@ -111,6 +148,19 @@ public class SignServiceImpl implements SignService {
         List<Sign> signs;
         PageHelper.startPage(page_number, page_size);
         signs = signMapper.selectSignAllScreen(params);
+        for (Sign sign:signs) {
+            if(sign.getIsactive().equals("Y")){
+                sign.setIsactive("是");
+            }else{
+                sign.setIsactive("否");
+            }
+            //0是签到，-1是签退
+            if(sign.getStatus().equals("0")){
+                sign.setStatus("签到");
+            }else{
+                sign.setStatus("签退");
+            }
+        }
         PageInfo<Sign> page = new PageInfo<Sign>(signs);
         return page;
     }
@@ -123,6 +173,19 @@ public class SignServiceImpl implements SignService {
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<Sign> list = signMapper.selectSignAllScreenUser(params);
+        for (Sign sign:list) {
+            if(sign.getIsactive().equals("Y")){
+                sign.setIsactive("是");
+            }else{
+                sign.setIsactive("否");
+            }
+            //0是签到，-1是签退
+            if(sign.getStatus().equals("0")){
+                sign.setStatus("签到");
+            }else{
+                sign.setStatus("签退");
+            }
+        }
         PageInfo<Sign> page = new PageInfo<Sign>(list);
         return page;
     }

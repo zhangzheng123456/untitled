@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GoodsMapper;
+import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.GoodsService;
@@ -75,6 +76,13 @@ public class GoodsServiceImpl implements GoodsService {
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoods(corp_code, search_value);
+        for (Goods goods:list) {
+            if(goods.getIsactive().equals("Y")){
+                goods.setIsactive("是");
+            }else{
+                goods.setIsactive("否");
+            }
+        }
         for (int i = 0; list != null && i < list.size(); i++) {
             Transter(list.get(i));
         }
@@ -90,6 +98,13 @@ public class GoodsServiceImpl implements GoodsService {
         List<Goods> labels;
         PageHelper.startPage(page_number, page_size);
         labels = goodsMapper.selectAllGoodsScreen(params);
+        for (Goods goods:labels) {
+            if(goods.getIsactive().equals("Y")){
+                goods.setIsactive("是");
+            }else{
+                goods.setIsactive("否");
+            }
+        }
         for (int i = 0; labels != null && i < labels.size(); i++) {
             Transter(labels.get(i));
         }

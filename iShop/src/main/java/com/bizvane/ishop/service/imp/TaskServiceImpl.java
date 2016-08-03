@@ -64,6 +64,13 @@ public class TaskServiceImpl implements TaskService{
 //        PageInfo<Task> page = new PageInfo<Task>(list);
         PageHelper.startPage(page_num, page_size);
         List<Task> tasks = taskMapper.selectAllTask(corp_code, role_ident, user_code, search_value);
+        for (Task task:tasks) {
+            if(task.getIsactive().equals("Y")){
+                task.setIsactive("是");
+            }else{
+                task.setIsactive("否");
+            }
+        }
         PageInfo<Task> page= new PageInfo<Task>(tasks);
         return page;
     }
@@ -82,6 +89,13 @@ public class TaskServiceImpl implements TaskService{
         params.put("user_code",user_code);
         PageHelper.startPage(page_num, page_size);
         List<Task> tasks = taskMapper.selectAllTaskScreen(params);
+        for (Task task:tasks) {
+            if(task.getIsactive().equals("Y")){
+                task.setIsactive("是");
+            }else{
+                task.setIsactive("否");
+            }
+        }
         PageInfo<Task> page= new PageInfo<Task>(tasks);
         return page;
     }
@@ -235,7 +249,28 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     public List<TaskAllocation> selTaskAllocation(String corp_code, String task_code) {
-        return taskMapper.selAllTaskAllocation(corp_code,task_code);
+        List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(corp_code, task_code);
+            for (TaskAllocation allocation:taskAllocations) {
+                if(allocation.getIsactive().equals("Y")){
+                    allocation.setIsactive("是");
+                }else{
+                    allocation.setIsactive("否");
+                }
+                if(allocation.getTask_status().equals("1")){
+                    allocation.setTask_status("待确认");
+                }else if(allocation.getTask_status().equals("2")){
+                    allocation.setTask_status("已接受");
+                }else if(allocation.getTask_status().equals("3")){
+                    allocation.setTask_status("执行中");
+                }
+                else if(allocation.getTask_status().equals("4")){
+                    allocation.setTask_status("已完成");
+                }
+                else if(allocation.getTask_status().equals("-1")){
+                    allocation.setTask_status("已拒绝");
+                }
+        }
+        return taskAllocations;
     }
 
     @Override

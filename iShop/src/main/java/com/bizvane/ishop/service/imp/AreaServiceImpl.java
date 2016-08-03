@@ -5,6 +5,7 @@ import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
 import com.github.pagehelper.PageHelper;
@@ -60,6 +61,13 @@ public class AreaServiceImpl implements AreaService {
         List<Area> areas;
         PageHelper.startPage(page_number, page_size);
         areas = areaMapper.selectAllArea(corp_code, search_value);
+        for (Area area:areas) {
+            if(area.getIsactive().equals("Y")){
+                area.setIsactive("是");
+            }else{
+                area.setIsactive("否");
+            }
+        }
         PageInfo<Area> page = new PageInfo<Area>(areas);
 
         return page;
@@ -247,6 +255,13 @@ public class AreaServiceImpl implements AreaService {
         params.put("corp_code", corp_code);
         params.put("map", map);
         areas = areaMapper.selectAllAreaScreen(params);
+        for (Area area:areas) {
+            if(area.getIsactive().equals("Y")){
+                area.setIsactive("是");
+            }else{
+                area.setIsactive("否");
+            }
+        }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }
@@ -267,6 +282,13 @@ public class AreaServiceImpl implements AreaService {
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selectByAreaCodeSearch(params);
+        for (Area area:areas) {
+            if(area.getIsactive().equals("Y")){
+                area.setIsactive("是");
+            }else{
+                area.setIsactive("否");
+            }
+        }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }

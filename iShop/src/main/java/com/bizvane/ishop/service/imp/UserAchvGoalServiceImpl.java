@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.UserAchvGoalMapper;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.UserAchvGoalService;
@@ -41,6 +42,22 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
 
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value);
+        for (UserAchvGoal userAchvGoal:userAchvGoals) {
+            if(userAchvGoal.getIsactive().equals("Y")){
+                userAchvGoal.setIsactive("是");
+            }else{
+                userAchvGoal.setIsactive("否");
+            }
+            if(userAchvGoal.getTarget_type().equals("D")){
+                userAchvGoal.setTarget_type("日");
+            }else if(userAchvGoal.getTarget_type().equals("W")){
+                userAchvGoal.setTarget_type("周");
+            }else if(userAchvGoal.getTarget_type().equals("M")){
+                userAchvGoal.setTarget_type("月");
+            }else if(userAchvGoal.getTarget_type().equals("Y")){
+                userAchvGoal.setTarget_type("年");
+            }
+        }
         PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
         return page;
 
@@ -79,6 +96,22 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         List<UserAchvGoal> users;
         PageHelper.startPage(page_number, page_size);
         users = userAchvGoalMapper.selectPartUserAchvGoalBySearch(params);
+        for (UserAchvGoal userAchvGoal:users) {
+            if(userAchvGoal.getIsactive().equals("Y")){
+                userAchvGoal.setIsactive("是");
+            }else{
+                userAchvGoal.setIsactive("否");
+            }
+            if(userAchvGoal.getTarget_type().equals("D")){
+                userAchvGoal.setTarget_type("日");
+            }else if(userAchvGoal.getTarget_type().equals("W")){
+                userAchvGoal.setTarget_type("周");
+            }else if(userAchvGoal.getTarget_type().equals("M")){
+                userAchvGoal.setTarget_type("月");
+            }else if(userAchvGoal.getTarget_type().equals("Y")){
+                userAchvGoal.setTarget_type("年");
+            }
+        }
         PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(users);
         return page;
     }
@@ -166,6 +199,22 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         List<UserAchvGoal> userAchvGoals;
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = userAchvGoalMapper.selectAllUserAchvScreen(params);
+        for (UserAchvGoal userAchvGoal:userAchvGoals) {
+            if(userAchvGoal.getIsactive().equals("Y")){
+                userAchvGoal.setIsactive("是");
+            }else{
+                userAchvGoal.setIsactive("否");
+            }
+            if(userAchvGoal.getTarget_type().equals("D")){
+                userAchvGoal.setTarget_type("日");
+            }else if(userAchvGoal.getTarget_type().equals("W")){
+                userAchvGoal.setTarget_type("周");
+            }else if(userAchvGoal.getTarget_type().equals("M")){
+                userAchvGoal.setTarget_type("月");
+            }else if(userAchvGoal.getTarget_type().equals("Y")){
+                userAchvGoal.setTarget_type("年");
+            }
+        }
         PageInfo<UserAchvGoal> page = new PageInfo<UserAchvGoal>(userAchvGoals);
         return page;
     }

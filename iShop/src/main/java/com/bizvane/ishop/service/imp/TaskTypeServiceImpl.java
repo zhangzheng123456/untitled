@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.TaskTypeMapper;
+import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.service.TaskTypeService;
 import com.github.pagehelper.PageHelper;
@@ -35,6 +36,13 @@ public class TaskTypeServiceImpl implements TaskTypeService {
     public PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value) {
         PageHelper.startPage(page_num, page_size);
         List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value);
+        for (TaskType taskType:task_types) {
+            if(taskType.getIsactive().equals("Y")){
+                taskType.setIsactive("是");
+            }else{
+                taskType.setIsactive("否");
+            }
+        }
         PageInfo<TaskType> task = new PageInfo<TaskType>(task_types);
         return task;
     }
@@ -127,6 +135,13 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<TaskType> list = taskTypeMapper.selectAllTaskTypeScreen(params);
+        for (TaskType taskType:list) {
+            if(taskType.getIsactive().equals("Y")){
+                taskType.setIsactive("是");
+            }else{
+                taskType.setIsactive("否");
+            }
+        }
         PageInfo<TaskType> page = new PageInfo<TaskType>(list);
         return page;
     }

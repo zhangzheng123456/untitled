@@ -5,6 +5,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.BrandMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.StoreMapper;
+import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.BrandService;
@@ -49,6 +50,13 @@ public class BrandServiceImpl implements BrandService {
         List<Brand> brands;
         PageHelper.startPage(page_number, page_size);
         brands = brandMapper.selectAllBrand(corp_code, search_value);
+        for (Brand brand:brands) {
+            if(brand.getIsactive().equals("Y")){
+                brand.setIsactive("是");
+            }else{
+                brand.setIsactive("否");
+            }
+        }
         PageInfo<Brand> page = new PageInfo<Brand>(brands);
 
         return page;
@@ -198,6 +206,13 @@ public class BrandServiceImpl implements BrandService {
 
         params.put("map", map);
         brands = brandMapper.selectAllBrandScreen(params);
+        for (Brand brand:brands) {
+            if(brand.getIsactive().equals("Y")){
+                brand.setIsactive("是");
+            }else{
+                brand.setIsactive("否");
+            }
+        }
         PageInfo<Brand> page = new PageInfo<Brand>(brands);
         return page;
     }

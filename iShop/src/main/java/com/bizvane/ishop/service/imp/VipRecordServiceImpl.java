@@ -34,6 +34,13 @@ public class VipRecordServiceImpl implements VipRecordService {
         List<VipRecord> records;
         PageHelper.startPage(page_number, page_size);
         records = this.VipRecordMapper.selectAllVipRecordScreen(params);
+        for (VipRecord vipRecord:records) {
+            if (vipRecord.getIsactive().equals("Y")) {
+                vipRecord.setIsactive("是");
+            } else {
+                vipRecord.setIsactive("否");
+            }
+        }
         PageInfo<VipRecord> page = new PageInfo<VipRecord>(records);
         return page;
     }
@@ -63,6 +70,13 @@ public class VipRecordServiceImpl implements VipRecordService {
     public PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
         PageHelper.startPage(page_number, page_size);
         List<VipRecord> list = this.VipRecordMapper.selectAllVipRecordInfo(corp_code, search_value);
+        for (VipRecord vipRecord:list) {
+            if (vipRecord.getIsactive().equals("Y")) {
+                vipRecord.setIsactive("是");
+            } else {
+                vipRecord.setIsactive("否");
+            }
+        }
         PageInfo<VipRecord> page = new PageInfo<VipRecord>(list);
         return page;
     }

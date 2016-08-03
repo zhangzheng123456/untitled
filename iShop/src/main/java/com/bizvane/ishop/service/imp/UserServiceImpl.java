@@ -66,6 +66,18 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUser(corp_code, search_value);
+        for (User user : users) {
+            if (user.getIsactive().equals("Y")) {
+                user.setIsactive("是");
+            } else {
+                user.setIsactive("否");
+            }
+            if(user.getSex().equals("M")){
+                user.setSex("男");
+            }else{
+                user.setSex("女");
+            }
+        }
         request.getSession().setAttribute("size", users.size());
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
@@ -109,6 +121,18 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectPartUser(params);
+        for (User user : users) {
+            if (user.getIsactive().equals("Y")) {
+                user.setIsactive("是");
+            } else {
+                user.setIsactive("否");
+            }
+            if(user.getSex().equals("M")){
+                user.setSex("男");
+            }else{
+                user.setSex("女");
+            }
+        }
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
@@ -180,6 +204,18 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<User> users = userMapper.selectGroupUser(corp_code, group_code);
+        for (User user : users) {
+            if (user.getIsactive().equals("Y")) {
+                user.setIsactive("是");
+            } else {
+                user.setIsactive("否");
+            }
+            if(user.getSex().equals("M")){
+                user.setSex("男");
+            }else{
+                user.setSex("女");
+            }
+        }
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
@@ -623,6 +659,18 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUserScreen(params);
+        for (User user : users) {
+            if (user.getIsactive().equals("Y")) {
+                user.setIsactive("是");
+            } else {
+                user.setIsactive("否");
+            }
+            if(user.getSex().equals("M")){
+                user.setSex("男");
+            }else{
+                user.setSex("女");
+            }
+        }
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }

@@ -4,6 +4,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.CorpMapper;
+import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.service.CorpService;
 import com.github.pagehelper.PageHelper;
@@ -168,6 +169,13 @@ public class CorpServiceImpl implements CorpService {
     public PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<Corp> corps = corpMapper.selectAllCorp(search_value);
+        for (Corp corp:corps) {
+            if(corp.getIsactive().equals("Y")){
+                corp.setIsactive("是");
+            }else{
+                corp.setIsactive("否");
+            }
+        }
         PageInfo<Corp> page = new PageInfo<Corp>(corps);
         return page;
     }
@@ -184,6 +192,13 @@ public class CorpServiceImpl implements CorpService {
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<Corp> list = corpMapper.selectAllCorpScreen(params);
+        for (Corp corp:list) {
+            if(corp.getIsactive().equals("Y")){
+                corp.setIsactive("是");
+            }else{
+                corp.setIsactive("否");
+            }
+        }
         PageInfo<Corp> page = new PageInfo<Corp>(list);
         return page;
     }

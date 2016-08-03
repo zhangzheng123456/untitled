@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.Brand;
+import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.StoreService;
@@ -92,7 +93,13 @@ public class StoreServiceImpl implements StoreService {
         shops = storeMapper.selectAllStore(corp_code, search_value);
         //报表调用
         request.getSession().setAttribute("size", shops.size());
-
+        for (Store store:shops) {
+            if(store.getIsactive().equals("Y")){
+                store.setIsactive("是");
+            }else{
+                store.setIsactive("否");
+            }
+        }
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
         return page;
@@ -115,6 +122,13 @@ public class StoreServiceImpl implements StoreService {
         params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectByUserId(params);
+        for (Store store:shops) {
+            if(store.getIsactive().equals("Y")){
+                store.setIsactive("是");
+            }else{
+                store.setIsactive("否");
+            }
+        }
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
         return page;
@@ -229,6 +243,13 @@ public class StoreServiceImpl implements StoreService {
 
         PageHelper.startPage(page_number, page_size);
         List<Store> list1 = storeMapper.selectAllStoreScreen(params);
+        for (Store store:list1) {
+            if(store.getIsactive().equals("Y")){
+                store.setIsactive("是");
+            }else{
+                store.setIsactive("否");
+            }
+        }
         //  list1 = ComparaBrandName(list1, brand_name);
         PageInfo<Store> page = new PageInfo<Store>(list1);
         //page.setList(list1);
@@ -383,6 +404,13 @@ public class StoreServiceImpl implements StoreService {
         params.put("isactive", "Y");
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selectByAreaCode(params);
+        for (Store store:stores) {
+            if(store.getIsactive().equals("Y")){
+                store.setIsactive("是");
+            }else{
+                store.setIsactive("否");
+            }
+        }
         PageInfo<Store> page = new PageInfo<Store>(stores);
         return page;
     }

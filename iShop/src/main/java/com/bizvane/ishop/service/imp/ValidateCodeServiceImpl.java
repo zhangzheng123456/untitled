@@ -3,6 +3,7 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.dao.ValidataCodeMapper;
 import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Feedback;
+import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.ValidateCodeService;
 import com.github.pagehelper.PageHelper;
@@ -35,6 +36,13 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<ValidateCode> list = validataCodeMapper.selectAllScreen(params);
+        for (ValidateCode validateCode:list) {
+            if (validateCode.getIsactive().equals("Y")) {
+                validateCode.setIsactive("是");
+            } else {
+                validateCode.setIsactive("否");
+            }
+        }
         PageInfo<ValidateCode> page = new PageInfo<ValidateCode>(list);
         return page;
     }
@@ -65,6 +73,13 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
     public PageInfo<ValidateCode> selectAllValidateCode(int page_number, int page_size, String search_value) throws SQLException{
         PageHelper.startPage(page_number, page_size);
         List<ValidateCode> validateCodes = validataCodeMapper.selectAllValidateCode(search_value);
+        for (ValidateCode validateCode:validateCodes) {
+            if (validateCode.getIsactive().equals("Y")) {
+                validateCode.setIsactive("是");
+            } else {
+                validateCode.setIsactive("否");
+            }
+        }
         PageInfo<ValidateCode> page=new PageInfo<ValidateCode>(validateCodes);
         return page;
     }
