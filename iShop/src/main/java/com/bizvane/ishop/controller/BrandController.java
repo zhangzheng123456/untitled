@@ -470,6 +470,11 @@ public class BrandController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            int actualRows = LuploadHelper.getRightRows(rs);
+            if(actualRows != rows){
+                result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+                int i = 5 / 0;
+            }
             if(rows<4){
                 result="：请从模板第4行开始插入正确数据";
                 int i=5/0;
