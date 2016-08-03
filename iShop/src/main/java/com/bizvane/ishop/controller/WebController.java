@@ -71,7 +71,7 @@ public class WebController {
                 dataBean.setMessage("need open_id");
             } else if (!app_key.equals(APP_KEY)) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("app_key Invalid");
+                dataBean.setMessage("app_key Invalid签名无效");
             } else {
                 List<VIPEmpRelation> entity = webService.selectEmpVip(app_user_name, open_id);
                 if (entity.size() == 0) {
@@ -79,7 +79,7 @@ public class WebController {
                     List<VIPStoreRelation> relation = webService.selectStoreVip(app_user_name,open_id);
                     if (relation.size() == 0){
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        dataBean.setMessage("the open_id is new");
+                        dataBean.setMessage("客户未绑定");
                     }else {
                         JSONObject result = new JSONObject();
                         String store_id = relation.get(0).getStore_id();
