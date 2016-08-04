@@ -331,3 +331,46 @@ $("#store_code_drop").click(function(e){
 	}
 	getstafflist();
 })
+//点击员工确定
+$("#staff_code_drop").click(function(e){
+	var event = window.event || arguments[0];
+	if (event.stopPropagation) {
+		event.stopPropagation();
+	} else {
+		event.cancelBubble = true;
+	}
+	var user_names=$('#staff_input').val();
+	var user_codes=$('#staff_input').attr("data-usercode");
+	var phone=$('#staff_input').attr("data-userphone");
+})
+//点击保存
+$("#edit_save").click(function(){
+	var _param={};
+	var user_codes=$('#staff_input').attr("data-usercode");//员工编号
+	var phone=$('#staff_input').attr("data-userphone");//手机号
+	var corp_code = $('#OWN_CORP').val();//公司编号
+	var task_type_code = $('#task_type_code').val();//公司类型
+	var task_title=$('#task_title').val();//任务名称
+	var task_description=$("#task_describe").val();//任务描述
+	var target_end_time=$("#target_end_time").val();//截止时间
+	var target_start_time=$("#target_start_time").val();//开始时间
+	var isactive = "";//是否可用
+	var input = $(".checkbox_isactive").find("input")[0];
+	if (input.checked == true) {
+		isactive = "Y";
+	} else if (input.checked == false) {
+		isactive = "N";
+	}
+	_param["user_codes"]=user_codes;
+	_param["phone"]=phone;
+	_param["corp_code"]=corp_code;
+	_param["task_type_code"]=task_type_code;
+	_param["task_title"]=task_title;
+	_param["task_description"]=task_description;
+	_param["target_end_time"]=target_end_time;
+	_param["target_start_time"]=target_start_time;
+	_param["isactive"]=isactive;
+	oc.postRequire("post","/task/addTask","", _param, function(data) {
+		console.log(data);
+	})
+})

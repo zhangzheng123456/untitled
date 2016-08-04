@@ -588,7 +588,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
-        var ul=$(".isActive_select_down");
+        var ul=$(this).find(".isActive_select_down");
         if(ul.css("display")=="none"){
             ul.show();
         }else{
