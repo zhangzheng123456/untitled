@@ -137,7 +137,7 @@
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = def_group.corp_code
         AND def_user.CORP_CODE = #{corp_code}
-        AND CDATA[ def_group.role_code &gt;= #{role_code}
+        AND def_group.role_code &gt;= #{role_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
