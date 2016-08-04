@@ -242,7 +242,7 @@
                 user_code=#{new_user_code},
             </if>
             <if test="new_store_code!=null and new_store_code!=''">
-                store_code=#{store_code},
+                store_code=#{new_store_code},
             </if>
         </trim>
         WHERE 1=1
@@ -387,8 +387,8 @@
     <update id="updateRelVipLabel">
         update rel_vip_label
         <trim prefix="set" suffixOverrides=",">
-            <if test="corp_code!=null and corp_code!=''">
-                corp_code=#{corp_code},
+            <if test="new_corp_code!=null and new_corp_code!=''">
+                corp_code=#{new_corp_code},
             </if>
             <if test="new_store_code!=null and new_store_code!='' ">
                 STORE_CODE = #{new_store_code},
