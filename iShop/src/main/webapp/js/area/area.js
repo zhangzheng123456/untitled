@@ -473,6 +473,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -565,10 +566,33 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var filter=message.filter;
         $("#sxk .inputs ul").empty();
         for(var i=0;i<filter.length;i++){
-            $("#sxk .inputs ul").append("<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>");
+            if(filter[i].type=="text"){
+                $("#sxk .inputs ul").append("<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>");  
+            }else if(filter[i].type=="select"){
+                var msg=filter[i].value;
+                console.log(msg);
+                var ul="<ul class='isActive_select_down'>";
+                for(var j=0;j<msg.length;j++){
+                    ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+                }
+                ul+="</ul>";
+                $("#sxk .inputs ul").append("<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'>"+ul+"</li>");
+            }
+            
         }
+        filtrateDown();
     }
 });
+function filtrateDown(){
+    //筛选select框
+    $(".isActive_select input").click(function (){
+        $(".isActive_select_down").slideToggle();
+    })
+    $(".isActive_select_down li").click(function () {
+        var html=$(this).text();
+        $(this).parents("li").find("input").val(html);
+    })
+}
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');

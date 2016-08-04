@@ -134,14 +134,21 @@ function getarealist(){
 		}
 	})
 }
-//获取企业
+//执行企业的拉取方法
 getcorplist(a,b);
-var flase=0;
 //获取店铺列表
 function getstorelist(){
 	var corp_code = $('#OWN_CORP').val();
 	var area_code =$('#area_input').attr("data-areacode");
 	var searchValue=$("#store_search").val();
+	if(corp_code==""||area_code==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择区域"
+		});
+	}
 	var pageSize=20;
 	var pageNumber=1;
 	var _param={};
@@ -207,21 +214,18 @@ function getstorelist(){
 //获取员工列表
 function getstafflist(){
 	var corp_code = $('#OWN_CORP').val();
-	var area_code =$('#area_input').attr("data-areacode");
-	var searchValue=$("#store_search").val();
-	var pageSize=20;
-	var pageNumber=1;
-	var _param={};
-	_param['corp_code']=corp_code;
-	_param['area_code']=area_code;
-	_param['searchValue']=searchValue;
-	_param['pageNumber']=pageNumber;
-	_param['pageSize']=pageSize;
-	var corp_code = $('#OWN_CORP').val();
 	var store_code =$('#store_input').attr("data-storecode");
 	var searchValue=$("#staff_search").val();
 	var pageSize=20;
 	var pageNumber=1;
+	if(corp_code==""||store_code==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择店铺"
+		});
+	}
 	var _param={};
 	var checknow_data=[];
     var checknow_namedata=[];
@@ -231,12 +235,61 @@ function getstafflist(){
 	_param['pageNumber']=pageNumber;
 	_param['pageSize']=pageSize;
 	oc.postRequire("post","/user/selectByPart", "", _param, function(data) {
-		console.log(data);
+		if (data.code == "0") {
+			var message=JSON.parse(data.message);
+            var list=JSON.parse(message.list);
+            var cout=list.pages;
+            var list=list.list;
+            console.log(list);
+			var staff_html = '';
+			if (list.length == 0) {
+				art.dialog({
+					time: 1,
+					lock: true,
+					cancel: false,
+					content: "该店铺没有员工"
+				});
+			} else {
+				for (var i = 0; i < list.length; i++) {
+				    staff_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].user_code+"' data-username='"+list[i].user_name+"' name='test'  class='check'  id='checkboxThreeInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxThreeInput"
+                        + i
+                        + 1
+                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
+				}
+				$("#staff_code ul").html(staff_html);
+				var check_input = $('#staff_code ul input');
+				for (var c = 0; c < check_input.length; c++) {
+					check_input[c].onclick = function() {
+						if (this.checked == true) {
+							checknow_data.push($(this).val());
+							checknow_namedata.push($(this).attr("data-username"));
+							$('#staff_input').val(checknow_namedata.toString());
+							$('#staff_input').attr('data-usercode', checknow_data.toString());
+						} else if (this.checked == false) {
+							checknow_namedata.remove($(this).attr("data-username"));
+							checknow_data.remove($(this).val());
+							$('#staff_input').val(checknow_namedata.toString());
+							$('#staff_input').attr('data-usercode', checknow_data.toString());
+						}
+					}
+				}
+			}
+		} else if (data.code == "-1") {
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: data.message
+			});
+		}
 	})
-
 }
-//
 //点击弹出框
+var flase=0;
+var corp_code1="";
 $('#test').click(function(e){
 	var event = window.event || arguments[0];
 	if (event.stopPropagation) {
@@ -246,8 +299,8 @@ $('#test').click(function(e){
 	}
 	if(flase=="0"){
 		$(".distribution_frame").show();
-		getarealist();
 		flase=1;
+		getarealist();
 	}else if(flase=="1"){
 		$(".distribution_frame").hide();
 		flase=0;
