@@ -376,7 +376,8 @@ public class LoginController {
                 obj.put("type",type);
                 if (type.equals("select")){
                     String value = table.getFilter_value();
-                    obj.put("value",value);
+                    JSONArray values = JSONArray.parseArray(value);
+                    obj.put("value",values);
                 }else{
                     obj.put("value","");
                 }
