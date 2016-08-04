@@ -75,10 +75,12 @@ public class VipServiceImpl implements VipService {
             } else {
                 vipInfo.setIsactive("否");
             }
-            if(vipInfo.getSex()==null||vipInfo.getSex().equals("")||vipInfo.getSex().equals("M")){
+            if(vipInfo.getSex()==null){
                 vipInfo.setSex("男");
-            }else{
+            }else if(vipInfo.getSex().equals("F")){
                 vipInfo.setSex("女");
+            }else{
+                vipInfo.setSex("男");
             }
         }
         PageInfo<VIPInfo> page = new PageInfo<VIPInfo>(vipInfos);

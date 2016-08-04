@@ -430,56 +430,24 @@ public class TaskController {
         return bean.getJsonStr();
     }
     /***
-     * 查询该员工的详情
+     * 查询该任务的详情
      */
-    @RequestMapping(value = "/selectByRole", method = RequestMethod.POST)
+    @RequestMapping(value = "/selectTaskById", method = RequestMethod.POST)
     @ResponseBody
-    public String selectByRole(HttpServletRequest request){
+    public String selectTaskById(HttpServletRequest request){
         DataBean bean=new DataBean();
+        String data = null;
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String search_value = jsonObject.get("searchValue").toString();
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String user_id = request.getSession().getAttribute("user_id").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            JSONObject result = new JSONObject();
-            User user = userService.getUserById(Integer.parseInt(user_id));
-            if(role_code.equals(Common.ROLE_SYS)){
-                PageInfo<Corp> pages = corpService.selectAllCorp(page_number, page_size, search_value);
-                result.put("list", JSON.toJSONString(pages));
-                result.put("user",JSON.toJSONString(user));
-            }else if(role_code.equals(Common.ROLE_GM)){
-                PageInfo<Area> pages = areaService.getAllAreaByPage(page_number, page_size, corp_code, "");
-                result.put("list", JSON.toJSONString(pages));
-                result.put("user",JSON.toJSONString(user));
-            }else if(role_code.equals(Common.ROLE_AM)){
-                String areaCode = user.getArea_code();
-                String[] areaCodes = areaCode.split(",");
-                PageInfo<Store> pages=storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, search_value);
-                result.put("list", JSON.toJSONString(pages));
-                result.put("user",JSON.toJSONString(user));
-            }else if(role_code.equals(Common.ROLE_SM)){
-                String store_code = user.getStore_code();
-                PageInfo<User> pages = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", Common.ROLE_STAFF);
-                result.put("list", JSON.toJSONString(pages));
-                result.put("user",JSON.toJSONString(user));
-            }else if(role_code.equals(Common.ROLE_STAFF)){
-                PageInfo<User> pages = null;
-                List<User> users = new ArrayList<User>();
-                users.add(user);
-                pages = new PageInfo<User>();
-                pages.setList(users);
-                result.put("list", JSON.toJSONString(pages));
-            }
+            String task_id = jsonObject.get("id").toString();
+            data = JSON.toJSONString(taskService.selectTaskById(task_id));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
-            bean.setMessage(result.toString());
+            bean.setMessage(data);
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");

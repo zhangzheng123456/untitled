@@ -746,7 +746,11 @@ public class GroupController {
             int rows = rs.getRows();//得到所有的行
             int actualRows = LuploadHelper.getRightRows(rs);
             if(actualRows != rows){
-                result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+                if(rows-actualRows==1){
+                    result = "：第"+rows+"行存在空白行,请删除";
+                }else{
+                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+                }
                 int i = 5 / 0;
             }
             if(rows<4){

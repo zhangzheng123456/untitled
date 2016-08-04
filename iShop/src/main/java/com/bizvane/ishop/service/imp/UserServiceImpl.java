@@ -72,10 +72,12 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
+            if(user.getSex()==null){
                 user.setSex("男");
-            }else{
+            }else if(user.getSex().equals("F")){
                 user.setSex("女");
+            }else{
+                user.setSex("男");
             }
         }
         request.getSession().setAttribute("size", users.size());
@@ -94,7 +96,7 @@ public class UserServiceImpl implements UserService {
             stores = store_code.split(",");
             for (int i = 0; i < stores.length; i++) {
                 if (!stores[i].startsWith(Common.STORE_HEAD)) {
-                    stores[i] = stores[i] + Common.STORE_HEAD;
+                    stores[i] = Common.STORE_HEAD + stores[i];
                 }
                 stores[i] = stores[i].substring(1, stores[i].length());
                 System.out.println("--区域：---" + stores[i]);
@@ -127,10 +129,12 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
+            if(user.getSex()==null){
                 user.setSex("男");
-            }else{
+            }else if(user.getSex().equals("F")){
                 user.setSex("女");
+            }else{
+                user.setSex("男");
             }
         }
         PageInfo<User> page = new PageInfo<User>(users);
@@ -210,10 +214,12 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
+            if(user.getSex()==null){
                 user.setSex("男");
-            }else{
+            }else if(user.getSex().equals("F")){
                 user.setSex("女");
+            }else{
+                user.setSex("男");
             }
         }
         PageInfo<User> page = new PageInfo<User>(users);
@@ -665,10 +671,12 @@ public class UserServiceImpl implements UserService {
             } else {
                 user.setIsactive("否");
             }
-            if(user.getSex().equals("")||user.getSex()==null||user.getSex().equals("M")){
+            if(user.getSex()==null){
                 user.setSex("男");
-            }else{
+            }else if(user.getSex().equals("F")){
                 user.setSex("女");
+            }else{
+                user.setSex("男");
             }
         }
         PageInfo<User> page = new PageInfo<User>(users);

@@ -509,6 +509,9 @@ public class AreaController {
             }
 
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
+            for (String str:map.keySet()) {
+                System.out.println("key= "+ str + " and value= " + map.get(str));
+            }
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(areas, map, response, request);
@@ -550,7 +553,11 @@ public class AreaController {
             int rows= rs.getRows();//得到所有的行
             int actualRows = LuploadHelper.getRightRows(rs);
             if(actualRows != rows){
-                result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+                if(rows-actualRows==1){
+                    result = "：第"+rows+"行存在空白行,请删除";
+                }else{
+                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+                }
                 int i = 5 / 0;
             }
             if (rows < 4) {
