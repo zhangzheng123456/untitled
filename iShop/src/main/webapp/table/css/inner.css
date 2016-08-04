@@ -873,8 +873,13 @@ input::-webkit-input-placeholder{
 	left: 0;
 }
 .isActive_select{
-	background: url(../../img/btn_dropmenu.png) no-repeat 100% 50%;;
+	color: #888;
 }
+.isActive_select input{
+	background:#fff url(../../img/btn_dropmenu.png) no-repeat 100% 50%;
+	background-size:30px;
+}
+
 .sxk .inputs .isActive_select_down{
 	display: none;
 	position: absolute;
@@ -893,6 +898,6 @@ input::-webkit-input-placeholder{
 	color:#807a62;
 }
 .isActive_select_down li:hover{
-	color: #ffffff;
+	color: #fff;
 	background: #6cc1c8;
 }
