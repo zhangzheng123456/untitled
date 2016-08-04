@@ -278,10 +278,11 @@ input::-webkit-input-placeholder{
 .sxk{
 	// height: 100px;
 	background-color: #d7d8da;
-	overflow: hidden;
+	/*overflow: hidden;*/
 	display: none;
 	margin-bottom: 10px;
-	overflow: hidden;
+	height: 160px;
+	padding-top: 3px;
 }
 .sxk .sbtn{
 	margin: 10px 10px 0 10px;
@@ -874,17 +875,19 @@ input::-webkit-input-placeholder{
 }
 .isActive_select{
 	color: #888;
+	position: relative;
 }
 .isActive_select input{
 	background:#fff url(../../img/btn_dropmenu.png) no-repeat 100% 50%;
 	background-size:30px;
+
 }
 
 .sxk .inputs .isActive_select_down{
 	display: none;
 	position: absolute;
-	left: 550px;
-	top: 325px;
+	left: 65px;
+	top: 32px;
 	width: 170px;
 	border: 1px solid #a9c9e2;
 	background: #e8f5fe;

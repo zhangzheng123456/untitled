@@ -5,6 +5,7 @@ import com.bizvane.ishop.dao.StoreAchvGoalMapper;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.StoreAchvGoalService;
+import com.bizvane.ishop.utils.TimeUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.ognl.ObjectElementsAccessor;
@@ -32,10 +33,31 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 
 
     @Override
-    public int update(StoreAchvGoal storeAchvGoal) {
+    public String  update(StoreAchvGoal storeAchvGoal) throws Exception{
 
 
-        return storeAchvGoalMapper.update(storeAchvGoal);
+        int count = -1;
+        if (storeAchvGoal.getTarget_time().equals(Common.TIME_TYPE_WEEK)) {
+            String time = storeAchvGoal.getTarget_time();
+            String week = TimeUtils.getWeek(time);
+            storeAchvGoal.setTarget_time(week);
+        }
+        StoreAchvGoal oldStoreAchvGoal = storeAchvGoalMapper.selectById(storeAchvGoal.getId());
+        if (oldStoreAchvGoal.getCorp_code().equalsIgnoreCase(storeAchvGoal.getCorp_code())
+                && oldStoreAchvGoal.getStore_code().equalsIgnoreCase(storeAchvGoal.getStore_code())
+                && oldStoreAchvGoal.getTime_type().equalsIgnoreCase(storeAchvGoal.getTime_type())
+                && oldStoreAchvGoal.getTarget_time().equalsIgnoreCase(storeAchvGoal.getTarget_time())
+                ) {
+            storeAchvGoalMapper.update(storeAchvGoal);
+            return Common.DATABEAN_CODE_SUCCESS;
+        } else {
+            count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time());
+            if (count > 0) {
+                return Common.DATABEAN_CODE_ERROR;
+            }
+            storeAchvGoalMapper.update(storeAchvGoal);
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
     }
 
     @Override
@@ -165,8 +187,16 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public int insert(StoreAchvGoal storeAchvGoal) {
-        return this.storeAchvGoalMapper.insert(storeAchvGoal);
+    public String insert(StoreAchvGoal storeAchvGoal) {
+        int count = -1;
+
+        count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time());
+        if (count > 0) {
+            return "店铺业绩重复";
+        } else {
+            storeAchvGoalMapper.insert(storeAchvGoal);
+            return Common.DATABEAN_CODE_SUCCESS;
+        }
     }
 
     @Override

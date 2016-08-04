@@ -159,21 +159,20 @@ public class StoreAchvGoalController {
             storeAchvGoal1.setCreater(user_id);
             storeAchvGoal1.setCreated_date(Common.DATETIME_FORMAT.format(now));
             storeAchvGoal1.setIsactive(jsonObject.get("isactive").toString());
-            String result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal1));
-            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            String result = storeAchvGoalService.insert(storeAchvGoal1);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
-                dataBean.setMessage(result);
-            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success");
+            } else {
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("店铺"  +storeAchvGoal1.getStore_code()+ "业绩目标已经设定");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-            ex.printStackTrace();
             logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
@@ -255,19 +254,16 @@ public class StoreAchvGoalController {
             storeAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
 
             storeAchvGoal.setIsactive(jsonObject.get("isactive").toString());
-            String result = String.valueOf(storeAchvGoalService.update(storeAchvGoal));
-            if (result.equals(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            String result = storeAchvGoalService.update(storeAchvGoal);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
-                dataBean.setMessage(result);
-            } else {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("edit success");
+            } else {
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("店铺" + storeAchvGoal.getStore_code()+ "的业绩目标已经设定");
             }
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("edit success ");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

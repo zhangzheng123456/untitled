@@ -79,6 +79,16 @@ public class UserServiceImpl implements UserService {
             }else{
                 user.setSex("男");
             }
+            String store = user.getStore_code();
+            String area = user.getArea_code();
+            if (store != null && store.contains(Common.STORE_HEAD)){
+                String store_code1 = store.replace(Common.STORE_HEAD,"");
+                user.setStore_code(store_code1);
+            }
+            if (area != null && area.contains(Common.STORE_HEAD)) {
+                String area_code1 = area.replace(Common.STORE_HEAD, "");
+                user.setArea_code(area_code1);
+            }
         }
         request.getSession().setAttribute("size", users.size());
         PageInfo<User> page = new PageInfo<User>(users);
@@ -133,6 +143,16 @@ public class UserServiceImpl implements UserService {
                 user.setSex("女");
             }else{
                 user.setSex("男");
+            }
+            String store = user.getStore_code();
+            String area = user.getArea_code();
+            if (store != null && store.contains(Common.STORE_HEAD)){
+                String store_code1 = store.replace(Common.STORE_HEAD,"");
+                user.setStore_code(store_code1);
+            }
+            if (area != null && area.contains(Common.STORE_HEAD)) {
+                String area_code1 = area.replace(Common.STORE_HEAD, "");
+                user.setArea_code(area_code1);
             }
         }
         System.out.println("--大小：-----"+users.size());
@@ -246,6 +266,16 @@ public class UserServiceImpl implements UserService {
             }else{
                 user.setSex("男");
             }
+            String store = user.getStore_code();
+            String area = user.getArea_code();
+            if (store != null && store.contains(Common.STORE_HEAD)){
+                String store_code1 = store.replace(Common.STORE_HEAD,"");
+                user.setStore_code(store_code1);
+            }
+            if (area != null && area.contains(Common.STORE_HEAD)) {
+                String area_code1 = area.replace(Common.STORE_HEAD, "");
+                user.setArea_code(area_code1);
+            }
         }
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
@@ -303,16 +333,16 @@ public class UserServiceImpl implements UserService {
         String phone_exist = userPhoneExist(user.getPhone());
         //User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
         String emails = userEmailExist(user.getEmail());
-        if (old_user.getCorp_code().equals(user.getCorp_code())) {
+        if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
             User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
             if (!old_user.getPhone().equals(user.getPhone()) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 result = "手机号已存在";
-            } else if (!old_user.getUser_code().equals(user.getUser_code()) && code_exist != null) {
+            } else if (!old_user.getUser_code().equalsIgnoreCase(user.getUser_code()) && code_exist != null) {
                 result = "员工编号已存在";
-            } else if (!user.getEmail().equals("") && old_user.getEmail() != null && (!old_user.getEmail().equals(user.getEmail()) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
+            } else if (!user.getEmail().equalsIgnoreCase("") && old_user.getEmail() != null && (!old_user.getEmail().equalsIgnoreCase(user.getEmail()) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
                 result = "邮箱已存在";
             } else {
-                if (!old_user.getUser_code().equals(user.getUser_code())) {
+                if (!old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
                     updateCauseCodeChange(user.getCorp_code(), user.getUser_code(), old_user.getUser_code());
                 }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
@@ -330,7 +360,7 @@ public class UserServiceImpl implements UserService {
                 result = "手机号已存在";
             } else if (code_exist != null) {
                 result = "员工编号已存在";
-            } else if (!user.getEmail().equals("") && old_user.getEmail() != null && emails.equals(Common.DATABEAN_CODE_ERROR)) {
+            } else if (!user.getEmail().equalsIgnoreCase("") && old_user.getEmail() != null && emails.equals(Common.DATABEAN_CODE_ERROR)) {
                 result = "邮箱已存在";
             } else {
 //                if (!old_user.getUser_code().equals(user_code)) {

@@ -241,4 +241,15 @@
         </foreach>
         ORDER BY sa.ID DESC
     </select>
+    <select id="selectStoreAchvCountType" resultType="java.lang.Integer">
+        select count(*)
+        from
+        DEF_STORE_ACHV_GOAL duag
+        WHERE
+        duag.corp_code=#{corp_code}
+        and duag.store_code=#{store_code}
+        AND duag.time_type=#{time_type}
+        AND  duag.target_time=#{target_time}
+    </select>
+
 </mapper>
