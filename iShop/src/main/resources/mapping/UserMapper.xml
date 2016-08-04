@@ -137,7 +137,7 @@
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = def_group.corp_code
         AND def_user.CORP_CODE = #{corp_code}
-        AND <![CDATA[ def_group.role_code >= #{role_code} ]]> 
+        AND CDATA[ def_group.role_code &gt;= #{role_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
@@ -146,15 +146,7 @@
         <if test="search_value != null and search_value !=''">
             AND
             (USER_NAME LIKE concat('%',#{search_value},'%')
-            OR user_code LIKE concat('%',#{search_value},'%')
-            OR phone LIKE concat('%',#{search_value},'%')
-            OR SEX LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
-            OR def_group.group_name LIKE concat('%',#{search_value},'%')
-            OR LOGIN_TIME_RECENTLY LIKE concat('%',#{search_value},'%')
-            OR def_user.MODIFIED_DATE LIKE concat('%',#{search_value},'%')
-            OR def_user.MODIFIER LIKE concat('%',#{search_value},'%')
-            OR def_user.ISACTIVE LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY def_user.id DESC
