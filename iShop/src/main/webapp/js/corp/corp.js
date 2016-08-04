@@ -592,7 +592,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
                 }
                 ul+="</ul>";
-                $("#sxk .inputs ul").append("<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code=''>"+ul+"</li>");
+                $("#sxk .inputs ul").append("<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>");
             }
 
         }
@@ -603,7 +603,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
 function filtrateDown(){
     //筛选select框
     $(".isActive_select input").click(function (){
-        var ul=$(".isActive_select_down");
+        var ul=$(this).next(".isActive_select_down");
         if(ul.css("display")=="none"){
             ul.show();
         }else{
