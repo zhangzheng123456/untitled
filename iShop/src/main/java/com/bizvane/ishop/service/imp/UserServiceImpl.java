@@ -79,10 +79,6 @@ public class UserServiceImpl implements UserService {
             }else{
                 user.setSex("男");
             }
-            String store_code = user.getStore_code().replace(Common.STORE_HEAD,"");
-            String area_code = user.getArea_code().replace(Common.STORE_HEAD,"");
-            user.setStore_code(store_code);
-            user.setArea_code(area_code);
         }
         request.getSession().setAttribute("size", users.size());
         PageInfo<User> page = new PageInfo<User>(users);
