@@ -145,6 +145,8 @@ function getstorelist(){
 	var pageSize=20;
 	var pageNumber=1;
 	var _param={};
+	var checknow_data=[];
+    var checknow_namedata=[];
 	_param['corp_code']=corp_code;
 	_param['area_code']=area_code;
 	_param['searchValue']=searchValue;
@@ -174,7 +176,7 @@ function getstorelist(){
                         + 1
                         + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
 				}
-				$("#store_code ul").html(area_html);
+				$("#store_code ul").html(store_html);
 				var check_input = $('#store_code ul input');
 				for (var c = 0; c < check_input.length; c++) {
 					check_input[c].onclick = function() {
@@ -201,6 +203,37 @@ function getstorelist(){
 			});
 		}
 	})
+}
+//获取员工列表
+function getstafflist(){
+	var corp_code = $('#OWN_CORP').val();
+	var area_code =$('#area_input').attr("data-areacode");
+	var searchValue=$("#store_search").val();
+	var pageSize=20;
+	var pageNumber=1;
+	var _param={};
+	_param['corp_code']=corp_code;
+	_param['area_code']=area_code;
+	_param['searchValue']=searchValue;
+	_param['pageNumber']=pageNumber;
+	_param['pageSize']=pageSize;
+	var corp_code = $('#OWN_CORP').val();
+	var store_code =$('#store_input').attr("data-storecode");
+	var searchValue=$("#staff_search").val();
+	var pageSize=20;
+	var pageNumber=1;
+	var _param={};
+	var checknow_data=[];
+    var checknow_namedata=[];
+	_param['corp_code']=corp_code;
+	_param['store_code']=store_code;
+	_param['searchValue']=searchValue;
+	_param['pageNumber']=pageNumber;
+	_param['pageSize']=pageSize;
+	oc.postRequire("post","/user/selectByPart", "", _param, function(data) {
+		console.log(data);
+	})
+
 }
 //
 //点击弹出框
@@ -229,4 +262,14 @@ $("#area_code_drop").click(function(e){
 		event.cancelBubble = true;
 	}
 	getstorelist();
+})
+//点击店铺拉去员工
+$("#store_code_drop").click(function(e){
+	var event = window.event || arguments[0];
+	if (event.stopPropagation) {
+		event.stopPropagation();
+	} else {
+		event.cancelBubble = true;
+	}
+	getstafflist();
 })
