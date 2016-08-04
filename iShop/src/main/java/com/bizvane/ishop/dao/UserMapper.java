@@ -28,6 +28,9 @@ public interface UserMapper {
 
     List<User> selectPartUser(Map<String, Object> params);
 
+
+    List<User> selUserByStoreCode(Map<String, Object> params);
+
     User selectUserById(int user_id);
 
     User selectById(int user_id);

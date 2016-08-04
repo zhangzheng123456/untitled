@@ -119,10 +119,8 @@ public class UserServiceImpl implements UserService {
         params.put("search_value", search_value);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
-
-        List<User> users;
         PageHelper.startPage(page_number, page_size);
-        users = userMapper.selectPartUser(params);
+        List<User>  users = userMapper.selectPartUser(params);
         for (User user : users) {
             if (user.getIsactive().equals("Y")) {
                 user.setIsactive("是");
@@ -137,6 +135,33 @@ public class UserServiceImpl implements UserService {
                 user.setSex("男");
             }
         }
+        System.out.println("--大小：-----"+users.size());
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
+    /**
+     *根据店铺拉取员工
+     */
+    @Override
+    public PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String role_code) throws SQLException {
+        String[] stores = null;
+        if (!store_code.equals("")) {
+            stores = store_code.split(",");
+            for (int i = 0; i < stores.length; i++) {
+                if (!stores[i].startsWith(Common.STORE_HEAD)) {
+                    stores[i] = Common.STORE_HEAD + stores[i];
+                }
+                stores[i] = stores[i].substring(1, stores[i].length());
+            }
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("array", stores);
+        params.put("search_value", search_value);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+        PageHelper.startPage(page_number, page_size);
+        List<User>  users = userMapper.selUserByStoreCode(params);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }

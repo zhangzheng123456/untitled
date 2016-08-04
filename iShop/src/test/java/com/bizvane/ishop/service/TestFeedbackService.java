@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -37,20 +38,17 @@ public class TestFeedbackService {
     private TaskService taskService;
     @Autowired
     private StoreService storeService;
-
+    @Autowired
+    private UserService userService;
     //成功
     @Test
     public void testselectAllFeedback() {
         try {
-            String areas="2631,2632,2257";
-            String[] split = areas.split(",");
-            for (int i=0;i<split.length;i++){
-                System.out.println(split[i]);
-            }
-            PageInfo<Store> pageInfo = storeService.selectByAreaCode(1, 100, "C10125", split, "");
-            List<Store> list = pageInfo.getList();
-            for (Store store:list) {
-                System.out.println(store.getCorp_name()+"---"+store.getStore_name());
+            String stroes="1,2";
+            PageInfo<User> pageInfo = userService.selectBySearchPart(1, 100, "C10001","",stroes, "", Common.ROLE_STAFF);
+            List<User> list = pageInfo.getList();
+            for (User store:list) {
+                System.out.println(store.getStore_name()+"---"+store.getUser_name());
             }
         } catch (Exception x) {
             x.printStackTrace();

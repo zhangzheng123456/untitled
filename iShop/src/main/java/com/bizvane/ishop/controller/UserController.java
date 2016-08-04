@@ -93,13 +93,13 @@ public class UserController {
             PageInfo<User> list = null;
             if(role_code.equals(Common.ROLE_SYS)) {
                 String store_code = jsonObject.get("store_code").toString();
-                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
             }else if (role_code.equals(Common.ROLE_GM)){
                 String store_code = jsonObject.get("store_code").toString();
-                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code,Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
@@ -111,13 +111,13 @@ public class UserController {
                 list.setList(users);
             }else if(role_code.equals(Common.ROLE_SM)){
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
             }else if(role_code.equals(Common.ROLE_AM)){
                 String store_code = jsonObject.get("store_code").toString();
-                list= userService.selectBySearchPart(page_number, page_size, corp_code, searchValue, store_code, "", Common.ROLE_STAFF);
+                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code,Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
