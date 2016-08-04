@@ -229,6 +229,7 @@ function getstafflist(){
 	var _param={};
 	var checknow_data=[];
     var checknow_namedata=[];
+    var checknow_phone=[];
 	_param['corp_code']=corp_code;
 	_param['store_code']=store_code;
 	_param['searchValue']=searchValue;
@@ -251,7 +252,7 @@ function getstafflist(){
 				});
 			} else {
 				for (var i = 0; i < list.length; i++) {
-				    staff_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].user_code+"' data-username='"+list[i].user_name+"' name='test'  class='check'  id='checkboxThreeInput"
+				    staff_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].user_code+"' data-username='"+list[i].user_name+"' name='"+list[i].phone+"'  class='check'  id='checkboxThreeInput"
                         + i
                         + 1
                         + "'/><label for='checkboxThreeInput"
@@ -266,13 +267,17 @@ function getstafflist(){
 						if (this.checked == true) {
 							checknow_data.push($(this).val());
 							checknow_namedata.push($(this).attr("data-username"));
+							checknow_phone.push($(this).attr("name"));
 							$('#staff_input').val(checknow_namedata.toString());
 							$('#staff_input').attr('data-usercode', checknow_data.toString());
+							$('#staff_input').attr('data-userphone', checknow_phone.toString());
 						} else if (this.checked == false) {
 							checknow_namedata.remove($(this).attr("data-username"));
 							checknow_data.remove($(this).val());
+							checknow_phone.remove($(this).attr("name"));
 							$('#staff_input').val(checknow_namedata.toString());
 							$('#staff_input').attr('data-usercode', checknow_data.toString());
+							$('#staff_input').attr('data-userphone', checknow_phone.toString());
 						}
 					}
 				}
