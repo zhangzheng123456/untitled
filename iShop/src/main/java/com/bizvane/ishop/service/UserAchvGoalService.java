@@ -65,6 +65,7 @@ public interface UserAchvGoalService {
 
     PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException;
 
+    int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws  SQLException;
     /**
      * 显示当前用户业绩目标
      *

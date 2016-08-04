@@ -70,7 +70,9 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
             }else{
                 storeAchvGoal.setIsactive("否");
             }
-            if(storeAchvGoal.getTime_type().equals("D")){
+            if(storeAchvGoal.getTime_type()==null) {
+                storeAchvGoal.setTime_type("未设定");
+            }else if(storeAchvGoal.getTime_type().equals("D")){
                 storeAchvGoal.setTime_type("日");
             }else if(storeAchvGoal.getTime_type().equals("W")){
                 storeAchvGoal.setTime_type("周");
@@ -127,7 +129,9 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
             }else{
                 storeAchvGoal.setIsactive("否");
             }
-            if(storeAchvGoal.getTime_type().equals("D")){
+            if(storeAchvGoal.getTime_type()==null) {
+                storeAchvGoal.setTime_type("未设定");
+            }else if(storeAchvGoal.getTime_type().equals("D")){
                 storeAchvGoal.setTime_type("日");
             }else if(storeAchvGoal.getTime_type().equals("W")){
                 storeAchvGoal.setTime_type("周");

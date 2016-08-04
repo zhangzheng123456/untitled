@@ -86,8 +86,6 @@ public class VipServiceImpl implements VipService {
         PageInfo<VIPInfo> page = new PageInfo<VIPInfo>(vipInfos);
         return page;
     }
-
-
     @Override
     public String vipCodeExist(String vip_code, String corp_code) throws SQLException {
         VIPInfo vipInfo = vipMapper.selectVipCode(vip_code, corp_code);
