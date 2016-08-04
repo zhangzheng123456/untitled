@@ -103,8 +103,8 @@
             <if test="task_type_code!=null">
                 task_type_code,
             </if>
-            <if test="task_describe!=null">
-                task_describe,
+            <if test="task_description!=null">
+                task_description,
             </if>
             <if test="target_start_time!=null">
                 target_start_time,
@@ -141,8 +141,8 @@
             <if test="task_type_code!=null">
                 #{task_type_code},
             </if>
-            <if test="task_describe!=null">
-                #{task_describe},
+            <if test="task_description!=null">
+                #{task_description},
             </if>
             <if test="target_start_time!=null">
                 #{target_start_time},
@@ -244,8 +244,8 @@
             <if test="task_type_code!=null and task_type_code != ''">
                 task_type_code= #{task_type_code},
             </if>
-            <if test="task_describe!=null and task_describe != ''">
-                task_describe = #{task_describe},
+            <if test="task_description!=null and task_description != ''">
+                task_description = #{task_description},
             </if>
             <if test="target_start_time!=null and target_start_time != ''">
                 target_start_time = #{target_start_time},

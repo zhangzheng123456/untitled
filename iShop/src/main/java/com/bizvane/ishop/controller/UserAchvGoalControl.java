@@ -535,13 +535,25 @@ public class UserAchvGoalControl {
                 }
             }
             Cell[] column = rs.getColumn(4);
+            Cell[] column5 = rs.getColumn(5);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
                     result = "：第" + (i + 1) + "行的业绩日期类型缩写有误";
                     int b = 5 / 0;
                     break;
                 }
+                UserAchvGoal userAchvGoal = new UserAchvGoal();
+                userAchvGoal.setCorp_code(column3[i].getContents().toString());
+                userAchvGoal.setUser_code(column1[i].getContents().toString());
+                userAchvGoal.setTarget_type(column[i].getContents().toString());
+                userAchvGoal.setTarget_time(column5[i].getContents().toString());
+                int count = userAchvGoalService.checkUserAchvGoal(userAchvGoal);
+                if(count>0){
+                    result = "：用户" + userAchvGoal.getUser_code() + "业绩目标已经设定";
+                    int b = 5 / 0;
+                }
             }
+
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
@@ -563,6 +575,10 @@ public class UserAchvGoalControl {
                     userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
                     userAchvGoal.setModifier(user_id);
                     result = String.valueOf(userAchvGoalService.insert(userAchvGoal));
+                    if (result.equals("用户业绩重复")){
+                        result = "：用户" + userAchvGoal.getUser_code() + "业绩目标已经设定";
+                        int b = 5 / 0;
+                    }
                 }
             }
 

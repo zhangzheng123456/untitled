@@ -48,7 +48,10 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             }else{
                 userAchvGoal.setIsactive("否");
             }
-            if(userAchvGoal.getTarget_type().equalsIgnoreCase("D")){
+
+            if(userAchvGoal.getTarget_type()==null){
+                userAchvGoal.setTarget_type("未设定");
+            }else if(userAchvGoal.getTarget_type().equals("D")){
                 userAchvGoal.setTarget_type("日");
             }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("W")){
                 userAchvGoal.setTarget_type("周");
@@ -102,7 +105,9 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             }else{
                 userAchvGoal.setIsactive("否");
             }
-            if(userAchvGoal.getTarget_type().equalsIgnoreCase("D")){
+            if(userAchvGoal.getTarget_type()==null){
+                userAchvGoal.setTarget_type("未设定");
+            }else if(userAchvGoal.getTarget_type().equals("D")){
                 userAchvGoal.setTarget_type("日");
             }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("W")){
                 userAchvGoal.setTarget_type("周");
@@ -151,7 +156,10 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     public int deleteUserAchvGoalById(String id) throws SQLException {
         return this.userAchvGoalMapper.delete(Integer.parseInt(id));
     }
+    public int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws  SQLException{
+        return  userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
 
+    }
     @Override
     public String insert(UserAchvGoal userAchvGoal) throws SQLException {
         int count = -1;
@@ -205,7 +213,9 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             }else{
                 userAchvGoal.setIsactive("否");
             }
-            if(userAchvGoal.getTarget_type().equals("D")){
+            if(userAchvGoal.getTarget_type()==null){
+                userAchvGoal.setTarget_type("未设定");
+            }else if(userAchvGoal.getTarget_type().equals("D")){
                 userAchvGoal.setTarget_type("日");
             }else if(userAchvGoal.getTarget_type().equals("W")){
                 userAchvGoal.setTarget_type("周");

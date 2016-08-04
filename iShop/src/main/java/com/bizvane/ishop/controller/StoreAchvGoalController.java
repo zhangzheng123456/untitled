@@ -533,13 +533,14 @@ public class StoreAchvGoalController {
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
-                    result = "：第" + (i + 1) + "行的业绩日期类型缩写不正确";
+                    result = "：第" + (i + 1) + "行的业绩日期类型缩写有误";
                     int b = 5 / 0;
                     break;
                 }
             }
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
+
                     StoreAchvGoal storeAchvGoal = new StoreAchvGoal();
                     storeAchvGoal.setCorp_code(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
