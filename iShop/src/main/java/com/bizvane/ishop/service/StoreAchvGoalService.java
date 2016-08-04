@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import IceInternal.Ex;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.github.pagehelper.PageInfo;
@@ -21,7 +22,7 @@ public interface StoreAchvGoalService {
      * @param storeAchvGoal
      * @return
      */
-    int update(StoreAchvGoal storeAchvGoal);
+    String update(StoreAchvGoal storeAchvGoal)throws Exception;
 
     /**
      * 删除短噗业绩目标，通过ID
@@ -37,7 +38,7 @@ public interface StoreAchvGoalService {
      * @param storeAchvGoal
      * @return
      */
-    int insert(StoreAchvGoal storeAchvGoal);
+    String  insert(StoreAchvGoal storeAchvGoal);
 
     /**
      * 获取商品业绩目标，通过ID
