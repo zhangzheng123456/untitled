@@ -42,7 +42,11 @@ public class User {
 	private String isactive;
 	//是否可登录
 	private String can_login;
+	//区域编号
 	private String area_code;
+	//职位
+	private String position;
+
 	private String area_name;
 	private String store_name;
 
@@ -263,6 +267,14 @@ public class User {
 
 	public void setCan_login(String can_login) {
 		this.can_login = can_login;
+	}
+
+	public String getPosition() {
+		return position;
+	}
+
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	public Group getGroup() {

@@ -144,7 +144,7 @@ public class UserAchvGoalControl {
             String achv_type = jsonObj.get("achv_type").toString();
             userAchvGoal.setTarget_type(achv_type);
 
-            if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
+            if (achv_type.equalsIgnoreCase(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObj.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
                 userAchvGoal.setTarget_time(week);
@@ -242,7 +242,7 @@ public class UserAchvGoalControl {
             String achv_type = jsonObject.get("achv_type").toString();
             userAchvGoal.setTarget_type(achv_type);
 
-            if (achv_type.equals(Common.TIME_TYPE_WEEK)) {
+            if (achv_type.equalsIgnoreCase(Common.TIME_TYPE_WEEK)) {
                 String time = jsonObject.get("end_time").toString();
                 String week = TimeUtils.getWeek(time);
                 userAchvGoal.setTarget_time(week);
@@ -257,7 +257,7 @@ public class UserAchvGoalControl {
             userAchvGoal.setIsactive(jsonObject.get("isactive").toString());
 
             String result = userAchvGoalService.insert(userAchvGoal);
-            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+            if (result.equalsIgnoreCase(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("edit success");
@@ -331,12 +331,12 @@ public class UserAchvGoalControl {
                 list = userAchvGoalService.selectBySearch(page_number, page_size, "", search_value);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                if (role_code.equals(Common.ROLE_GM)) {
+                if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
                     list = userAchvGoalService.selectBySearch(page_number, page_size, corp_code, search_value);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equalsIgnoreCase(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value, "", area_code, Common.ROLE_AM);
-                } else if (role_code.equals(Common.ROLE_SM)) {
+                } else if (role_code.equalsIgnoreCase(Common.ROLE_SM)) {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     list = this.userAchvGoalService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", Common.ROLE_SM);
                 }
@@ -399,23 +399,23 @@ public class UserAchvGoalControl {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<UserAchvGoal> pages = null;
-            if (screen.equals("")) {
-                if (role_code.equals(Common.ROLE_SYS)) {
+            if (screen.equalsIgnoreCase("")) {
+                if (role_code.equalsIgnoreCase(Common.ROLE_SYS)) {
                     pages = userAchvGoalService.selectBySearch(1, 30000, "", search_value);
-                } else if (role_code.equals(Common.ROLE_GM)) {
+                } else if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
                     pages = this.userAchvGoalService.selectBySearch(1, 30000, corp_code, search_value);
-                } else if (role_code.equals(Common.ROLE_AM)) {
+                } else if (role_code.equalsIgnoreCase(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     pages = this.userAchvGoalService.selectBySearchPart(1, 30000, corp_code, search_value, "", area_code, Common.ROLE_AM);
-                } else if (role_code.equals(Common.ROLE_SM)) {
+                } else if (role_code.equalsIgnoreCase(Common.ROLE_SM)) {
                     String store_code = request.getSession(false).getAttribute("store_code").toString();
                     pages = this.userAchvGoalService.selectBySearchPart(1, 30000, corp_code, search_value, store_code, "", Common.ROLE_SM);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                if (role_code.equals(Common.ROLE_SYS)) {
+                if (role_code.equalsIgnoreCase(Common.ROLE_SYS)) {
                     pages = userAchvGoalService.getAllUserAchScreen(1, 30000, "", "", "", "", map);
-                } else if (role_code.equals(Common.ROLE_GM)) {
+                } else if (role_code.equalsIgnoreCase(Common.ROLE_GM)) {
                     pages = userAchvGoalService.getAllUserAchScreen(1, 30000, corp_code, "", "", "", map);
                 } else {
                     pages = userAchvGoalService.getAllUserAchScreen(1, 30000, corp_code, "", "", role_code, map);
@@ -486,9 +486,9 @@ public class UserAchvGoalControl {
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if (!role_code.equals(Common.ROLE_SYS)) {
+            if (!role_code.equalsIgnoreCase(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                    if (!column3[i].getContents().toString().equalsIgnoreCase(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;

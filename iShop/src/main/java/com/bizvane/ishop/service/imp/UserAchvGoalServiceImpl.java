@@ -43,18 +43,18 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value);
         for (UserAchvGoal userAchvGoal:userAchvGoals) {
-            if(userAchvGoal.getIsactive().equals("Y")){
+            if(userAchvGoal.getIsactive().equalsIgnoreCase("Y")){
                 userAchvGoal.setIsactive("是");
             }else{
                 userAchvGoal.setIsactive("否");
             }
-            if(userAchvGoal.getTarget_type().equals("D")){
+            if(userAchvGoal.getTarget_type().equalsIgnoreCase("D")){
                 userAchvGoal.setTarget_type("日");
-            }else if(userAchvGoal.getTarget_type().equals("W")){
+            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("W")){
                 userAchvGoal.setTarget_type("周");
-            }else if(userAchvGoal.getTarget_type().equals("M")){
+            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("M")){
                 userAchvGoal.setTarget_type("月");
-            }else if(userAchvGoal.getTarget_type().equals("Y")){
+            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("Y")){
                 userAchvGoal.setTarget_type("年");
             }
         }
@@ -97,18 +97,18 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         PageHelper.startPage(page_number, page_size);
         users = userAchvGoalMapper.selectPartUserAchvGoalBySearch(params);
         for (UserAchvGoal userAchvGoal:users) {
-            if(userAchvGoal.getIsactive().equals("Y")){
+            if(userAchvGoal.getIsactive().equalsIgnoreCase("Y")){
                 userAchvGoal.setIsactive("是");
             }else{
                 userAchvGoal.setIsactive("否");
             }
-            if(userAchvGoal.getTarget_type().equals("D")){
+            if(userAchvGoal.getTarget_type().equalsIgnoreCase("D")){
                 userAchvGoal.setTarget_type("日");
-            }else if(userAchvGoal.getTarget_type().equals("W")){
+            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("W")){
                 userAchvGoal.setTarget_type("周");
-            }else if(userAchvGoal.getTarget_type().equals("M")){
+            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("M")){
                 userAchvGoal.setTarget_type("月");
-            }else if(userAchvGoal.getTarget_type().equals("Y")){
+            }else if(userAchvGoal.getTarget_type().equalsIgnoreCase("Y")){
                 userAchvGoal.setTarget_type("年");
             }
         }
@@ -124,16 +124,16 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     @Override
     public String updateUserAchvGoal(UserAchvGoal userAchvGoal) throws Exception {
         int count = -1;
-        if (userAchvGoal.getTarget_type().equals(Common.TIME_TYPE_WEEK)) {
+        if (userAchvGoal.getTarget_type().equalsIgnoreCase(Common.TIME_TYPE_WEEK)) {
             String time = userAchvGoal.getTarget_time();
             String week = TimeUtils.getWeek(time);
             userAchvGoal.setTarget_time(week);
         }
         UserAchvGoal oldUserAchvGoal = userAchvGoalMapper.selectById(userAchvGoal.getId());
-        if (oldUserAchvGoal.getCorp_code().equals(userAchvGoal.getCorp_code())
-                && oldUserAchvGoal.getUser_code().equals(userAchvGoal.getUser_code())
-                && oldUserAchvGoal.getTarget_type().equals(userAchvGoal.getTarget_type())
-                && oldUserAchvGoal.getTarget_time().equals(userAchvGoal.getTarget_time())
+        if (oldUserAchvGoal.getCorp_code().equalsIgnoreCase(userAchvGoal.getCorp_code())
+                && oldUserAchvGoal.getUser_code().equalsIgnoreCase(userAchvGoal.getUser_code())
+                && oldUserAchvGoal.getTarget_type().equalsIgnoreCase(userAchvGoal.getTarget_type())
+                && oldUserAchvGoal.getTarget_time().equalsIgnoreCase(userAchvGoal.getTarget_time())
                 ) {
             userAchvGoalMapper.update(userAchvGoal);
             return Common.DATABEAN_CODE_SUCCESS;
