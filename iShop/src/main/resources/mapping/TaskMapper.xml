@@ -121,8 +121,8 @@
             <if test="modified_date!=null">
                 modified_date,
             </if>
-            <if test="modifier!=null">
-                modifier,
+            <if test="creater!=null">
+                creater,
             </if>
             <if test="created_date!=null">
                 created_date,
@@ -159,8 +159,8 @@
             <if test="modified_date!=null">
                 #{modified_date},
             </if>
-            <if test="modifier!=null">
-                #{modifier},
+            <if test="creater!=null">
+                #{creater},
             </if>
             <if test="created_date!=null">
                 #{created_date},
@@ -262,8 +262,8 @@
             <if test="modified_date!=null and modified_date!=''">
                 modified_date = #{modified_date},
             </if>
-            <if test="modifier!=null and modifier!=''">
-                modifier = #{modifier},
+            <if test="creater!=null and creater!=''">
+                creater = #{creater},
             </if>
             <if test="created_date!=null and created_date!=''">
                 created_date =  #{created_date},
