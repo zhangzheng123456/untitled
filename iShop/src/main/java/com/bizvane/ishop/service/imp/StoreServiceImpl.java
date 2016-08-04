@@ -310,10 +310,10 @@ public class StoreServiceImpl implements StoreService {
         Store store = getStoreById(store_id);
         Store store1 = getStoreByCode(corp_code, store_code, "");
         Store store2 = getStoreByName(corp_code, store_name);
-        if (store.getCorp_code().equals(corp_code)) {
-            if ((store.getStore_code().equals(store_code) || store1 == null)
-                    && (store.getStore_name().equals(store_name) || store2 == null)) {
-                if (!store.getStore_code().equals(store_code)) {
+        if (store.getCorp_code().equalsIgnoreCase(corp_code)) {
+            if ((store.getStore_code().equalsIgnoreCase(store_code) || store1 == null)
+                    && (store.getStore_name().equalsIgnoreCase(store_name) || store2 == null)) {
+                if (!store.getStore_code().equalsIgnoreCase(store_code)) {
                     updateCauseCodeChange(corp_code, store_code, store.getStore_code());
                 }
                 store = new Store();
@@ -337,7 +337,7 @@ public class StoreServiceImpl implements StoreService {
             }
         } else {
             if (store1 == null && store2 == null) {
-                if (!store.getStore_code().equals(store_code)) {
+                if (!store.getStore_code().equalsIgnoreCase(store_code)) {
                     updateCauseCodeChange(corp_code, store_code, store.getStore_code());
                 }
                 store = new Store();
