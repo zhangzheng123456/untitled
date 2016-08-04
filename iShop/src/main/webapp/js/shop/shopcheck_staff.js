@@ -26,34 +26,41 @@ function superaddition(data){
 if(data.length!=0) {
     for (var i = 0; i < data.length; i++) {
         var a = i + 1;
-        $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-            + i
-            + 1
-            + "'/><label for='checkboxTwoInput"
-            + i
-            + 1
-            + "'></label></div>"
-            + "</td><td style='text-align:left;'>"
-            + a
-            + "</td><td><img src='" + data[i].avatar + "' alt=''>"
-            + "</td><td>"
-            + data[i].user_name
-            + "</td><td>"
-            + data[i].sex
-            + "</td><td>"
-            + data[i].phone
-            + "</td><td>"
-            + data[i].login_time_recently
-            + "</td><td>"
-            + data[i].group.group_name
-            + "</td><td>"
-            + data[i].modifier
-            + "</td><td>"
-            + data[i].modified_date
-            + "</td><td>"
-            + data[i].isactive
-            + "</td></tr>");
-    }
+        var avatar="";
+        if(data[i].avatar==undefined){
+            avatar="../img/head.png";
+        }
+        if(data[i].avatar!==""&&data[i].avatar!==undefined){
+            avatar=data[i].avatar;
+        }
+        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxTwoInput"
+                        + i
+                        + 1
+                        + "'></label></div>"
+                        + "</td><td style='text-align:left;'>"
+                        + a
+                        +"</td><td>"
+                        + data[i].user_code
+                        + "</td><td><img src='"+avatar+"' alt=''>"
+                        + "</td><td>"
+                        + data[i].user_name
+                        + "</td><td>"
+                        + data[i].sex
+                        +"</td><td>"
+                        +data[i].phone
+                        + "</td><td>"
+                        +data[i].group.group_name
+                        + "</td><td>"
+                        +data[i].modifier
+                        + "</td><td>"
+                        +data[i].modified_date
+                        + "</td><td>"
+                        +data[i].isactive
+                        +"</td></tr>");
+        }
 }else {
     $(".table").append('<p style="height:100px;line-height: 110px;font-size: 15px;">该店铺下无员工</p>');
 }

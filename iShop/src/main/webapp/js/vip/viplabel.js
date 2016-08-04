@@ -171,14 +171,14 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        var label_type="";
-        if(data[i].label_type=="sys"){
-            label_type="系统";
-        }else if(data[i].label_type=="org"){
-            label_type="企业";
-        }else if(data[i].label_type=="user"){
-            label_type="用户";
-        }
+        // var label_type="";
+        // if(data[i].label_type=="sys"){
+        //     label_type="系统";
+        // }else if(data[i].label_type=="org"){
+        //     label_type="企业";
+        // }else if(data[i].label_type=="user"){
+        //     label_type="用户";
+        // }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -191,10 +191,10 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].label_name
                         + "</td><td><span>"
-                        + label_type
-                        + "</td><td>"
+                        + data[i].label_type
+                        + "</td><td><span title='"+data[i].corp.corp_name+"'>"
                         + data[i].corp.corp_name
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].modified_date
                         + "</td><td>"
                         +data[i].isactive

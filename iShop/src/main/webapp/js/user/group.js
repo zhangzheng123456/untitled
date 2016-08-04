@@ -267,6 +267,7 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
+        sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
         console.log(id);
         sessionStorage.removeItem('group_corp');
         $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
@@ -282,6 +283,7 @@ function jumpBianse(){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
             sessionStorage.removeItem('group_corp');
+            sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
             $(window.parent.document).find('#iframepage').attr("src","/user/group_edit.html");
             console.log(group_corp);
         }else if(tr.length==0){
@@ -318,6 +320,7 @@ function jumpBianse(){
         }
         var id=$(this).parents('tr').attr('id');
         sessionStorage.setItem("id",id);
+        sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
         var corp_code=$(this).parents('tr').attr("data-code");
         var group_code=$(this).parents('tr').find("td:eq(2)").html();
         var group_name=$(this).parents('tr').find("td:eq(3)").html();

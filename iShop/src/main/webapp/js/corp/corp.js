@@ -51,9 +51,11 @@ $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
     $('.file').hide();
     $(".into_frame").hide();
+    $(".isActive_select_down").css("display","none");
 })
 $("#pack_up").click(function(){//点击收回 取消下拉框
     $(".sxk").slideUp();
+    $(".isActive_select_down").css("display","none");
 })
 $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
     return function( elem ) {
@@ -192,9 +194,9 @@ function superaddition(data,num){//页面加载循环
                         + a
                         + "</td><td>"
                         + data[i].corp_code
-                        + "</td><td>"
+                        + "</td><td><span title="+data[i].corp_name+">"
                         + data[i].corp_name
-                        + "</td><td><span>"
+                        + "</span></td><td><span title="+data[i].address+">"
                         + data[i].address
                         + "</span></td><td>"
                         + data[i].contact
@@ -585,11 +587,20 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 $("#sxk .inputs ul").append("<li><label>" + filter[i].show_name + "</label><input type='text' id='" + filter[i].col_name + "'></li>");
             }
             if(filter[i].type=="select"){
-                $("#sxk .inputs ul").append("<li class='isActive_select'><lable>"+filter[i].show_name+"</lable><input value='可用'>"+"<ul class='isActive_select_down'><li>可用</li><li>不可用</li><li>全部</li></ul></li>")
+                $("#sxk .inputs ul").append("<li class='isActive_select' id='isActive_select'><lable>"+filter[i].show_name+"</lable><input  id='" + filter[i].col_name + "'>"+"<ul class='isActive_select_down'><li>可用</li><li>不可用</li><li>全部</li></ul></li>")
             }
         }
     }
+    //筛选select框
+    $("#isActive_select").click(function (){
+        $(".isActive_select_down").slideToggle();
+    })
+    $(".isActive_select_down li").click(function () {
+        var html=$(this).text();
+        $("#isActive_select input").val(html);
+    })
 });
+
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
