@@ -216,7 +216,7 @@
                 </otherwise>
             </choose>
         </foreach>
-        ORDER BY da.id
+        ORDER BY da.id DESC
     </select>
 
     <select id="selectByAreaCodeSearch" resultMap="Area">
@@ -244,6 +244,6 @@
             OR da.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-
+        ORDER BY da.id DESC
     </select>
 </mapper>
