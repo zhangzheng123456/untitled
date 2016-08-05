@@ -83,14 +83,16 @@ public class UserServiceImpl implements UserService {
             String area = user.getArea_code();
             if (store != null && store.contains(Common.STORE_HEAD)){
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
-                user.setStore_code(store_code1);
+                String code = store_code1.substring(0,store_code1.length()-1);
+                user.setStore_code(code);
             }
             if (store == null){
                 user.setStore_code("");
             }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
-                user.setArea_code(area_code1);
+                String code = area_code1.substring(0,area_code1.length()-1);
+                user.setArea_code(code);
             }
             if (area == null){
                 user.setArea_code("");
@@ -154,14 +156,16 @@ public class UserServiceImpl implements UserService {
             String area = user.getArea_code();
             if (store != null && store.contains(Common.STORE_HEAD)){
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
-                user.setStore_code(store_code1);
+                String code = store_code1.substring(0,store_code1.length()-1);
+                user.setStore_code(code);
             }
             if (store == null){
                 user.setStore_code("");
             }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
-                user.setArea_code(area_code1);
+                String code = area_code1.substring(0,area_code1.length()-1);
+                user.setArea_code(code);
             }
             if (area == null){
                 user.setArea_code("");
@@ -293,14 +297,16 @@ public class UserServiceImpl implements UserService {
             String area = user.getArea_code();
             if (store != null && store.contains(Common.STORE_HEAD)){
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
-                user.setStore_code(store_code1);
+                String code = store_code1.substring(0,store_code1.length()-1);
+                user.setStore_code(code);
             }
             if (store == null){
                 user.setStore_code("");
             }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
-                user.setArea_code(area_code1);
+                String code = area_code1.substring(0,area_code1.length()-1);
+                user.setArea_code(code);
             }
             if (area == null){
                 user.setArea_code("");
