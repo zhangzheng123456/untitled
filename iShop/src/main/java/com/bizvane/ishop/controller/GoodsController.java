@@ -283,12 +283,12 @@ public class GoodsController {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = goodsService.selectAllGoodsScreen(page_number, page_size, corp_code, map);
             }
-//            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-//                String goods_image = list.getList().get(i).getGoods_image();
-//                if (goods_image != null && !goods_image.isEmpty()) {
-//                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-//                }
-//            }
+            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+                String goods_image = list.getList().get(i).getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+                }
+            }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
@@ -586,6 +586,12 @@ public class GoodsController {
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 list = this.goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+            }
+            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+                String goods_image = list.getList().get(i).getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+                }
             }
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list", JSON.toJSONString(list));

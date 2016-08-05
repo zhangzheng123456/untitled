@@ -29,7 +29,7 @@ public interface GroupMapper {
 
     int deleteByGroupId(Integer id);
 
-    Group selectByName(String corp_code, String group_name);
+    Group selectByName(String corp_code, String group_name,String isactive);
 
 
 }

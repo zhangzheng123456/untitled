@@ -7,6 +7,7 @@ var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
 var list="";
+var cout="";
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
@@ -59,13 +60,13 @@ $("#empty").click(function(){
         input[i].value="";
     }
 })
-function setPage(container, count, pageindex,pageSize,funcCode,value) {
+function setPage(container, count, pageindex,pageSize,funcCode){
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
     var a = [];
-              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
@@ -102,9 +103,9 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
             for (var i = pageindex - 2; i <= pageindex + 2; i++) {
                 setPageList();
             }
-                a[a.length] = "...<li><span>" + count + "</span></li>";
-            }
+            a[a.length] = "...<li><span>" + count + "</span></li>";
         }
+    }
     if (pageindex == count) {
         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
     }else{
@@ -121,15 +122,15 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                 return false;
             }
             inx--;
-            dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            dian(inx,pageSize);
+            // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
-            inx = parseInt(this.innerHTML);
-                dian(inx);
-                setPage(container, count, inx,pageSize,funcCode,value);
+                inx = parseInt(this.innerHTML);
+                dian(inx,pageSize);
+                // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
         }
@@ -138,54 +139,23 @@ function setPage(container, count, pageindex,pageSize,funcCode,value) {
                 return false;
             }
             inx++;
-            dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            dian(inx,pageSize);
+            // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
     }()
-    function dian(inx){//
-        if(value==""){
-            whir.loading.add("",0.5);//加载等待框
-            oc.postRequire("get","/message/list?pageNumber="+inx+"&pageSize="+pageSize
-                +"&funcCode="+funcCode+"","","",function(data){
-                    console.log(data);
-                    if(data.code=="0"){
-                        $(".table tbody").empty();
-                        var message=JSON.parse(data.message);
-                        var list=JSON.parse(message.list);
-                        var cout=list.pages;
-                        var list=list.list;
-                        superaddition(list,inx);
-                        jumpBianse();
-                    }else if(data.code=="-1"){
-                        alert(data.message);
-                    }
-            });           
-        }else if(value!==""){
-            whir.loading.add("",0.5);//加载等待框
-            param["pageNumber"]=inx;
-            param["pageSize"]=pageSize;
-            oc.postRequire("post","/message/search","0",param,function(data){
-                if(data.code=="0"){
-                    var message=JSON.parse(data.message);
-                    var list=JSON.parse(message.list);
-                    var cout=list.pages;
-                    var list=list.list;
-                    $(".table tbody").empty();
-                    if(list.length<=0){
-                        $(".table p").remove();
-                        $(".table").append("<p>没有找到与<span class='color'>“"+value+"”</span>相关的信息请重新搜索</p>");
-                        whir.loading.remove();//移除加载框
-                    }else if(list.length>0){
-                        $(".table p").remove();
-                        superaddition(list,inx);
-                        jumpBianse();
-                    }
-                }else if(data.code=="-1"){
-                    alert(data.message);
-                }
-            })        
-        }
+}
+function dian(a,b){//点击分页的时候调什么接口
+    if (value==""&&filtrate=="") {
+        GET(a,b);
+    }else if (value!==""){
+        param["pageNumber"] = a;
+        param["pageSize"] = b;
+        POST(a,b);
+    }else if (filtrate!=="") {
+        _param["pageNumber"] = a;
+        _param["pageSize"] = b;
+        filtrates(a,b);
     }
 }
 function superaddition(data,num){//页面加载循环
@@ -237,7 +207,7 @@ function jurisdiction(actions){
     }
 }
 //页面加载时list请求
-function GET(){
+function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/message/list?pageNumber="+inx+"&pageSize="+pageSize
         +"&funcCode="+funcCode+"","","",function(data){
@@ -245,19 +215,19 @@ function GET(){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
-                var cout=list.pages;
+               cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
-                superaddition(list,inx);
+                superaddition(list,a);
                 jurisdiction(actions);
                 jumpBianse();
-                setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+                setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
                 alert(data.message);
             }
     });
 }
-GET();
+GET(inx,pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
@@ -351,7 +321,7 @@ function POST(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -361,10 +331,10 @@ function POST(){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,inx);
+                superaddition(list,a);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+            setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -622,7 +592,7 @@ function filtrates(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -632,12 +602,33 @@ function filtrates(){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,inx);
+                superaddition(list,a);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value,filtrate);
+            setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
    });
 }
+//跳转页面的键盘按下事件
+$("#input-txt").keydown(function() {
+    var event=window.event||arguments[0];
+    var inx= this.value.replace(/[^1-9]/g, '');
+    if (inx > cout) {
+        inx = cout
+    };
+    if (inx > 0) {
+        if (event.keyCode == 13) {
+            if (value == "" && filtrate == "") {
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                param["pageSize"] = pageSize;
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                _param["pageSize"] = pageSize;
+                filtrates(inx, pageSize);
+            }
+        };
+    }
+})

@@ -252,7 +252,7 @@
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = #{corp_code}
         <if test="store_code != null and store_code !=''">
-        AND def_user.store_code regexp #{store_code}
+            AND def_user.store_code regexp #{store_code}
         </if>
         <if test="area_code != null and area_code !=''">
             AND def_user.area_code regexp #{area_code}
@@ -557,20 +557,24 @@
                 store_code regexp #{item}
             </foreach>
         </if>
-        AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
-            <choose>
-                <when test="entryKey=='corp_name'">
-                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
-                </when>
-                <when test="entryKey=='group_name'">
-                    dg.${entryKey} LIKE concat('%',#{entryValue},'%')
-                </when>
-                <otherwise>
-                    du.${entryKey} LIKE concat('%',#{entryValue},'%')
-                </otherwise>
-            </choose>
-        </foreach>
+        <if test="map!=null">
+
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+                <choose>
+                    <when test="entryKey=='corp_name'">
+                        dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <when test="entryKey=='group_name'">
+                        dg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <otherwise>
+                        du.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </otherwise>
+                </choose>
+            </foreach>
+
+        </if>
         ORDER BY du.id DESC
     </select>
 
