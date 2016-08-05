@@ -96,6 +96,7 @@ var oc = new ObjectControl();
 				var USER_PHONE=$("#USER_PHONE").val();//手机
 				var USER_EMAIL=$("#USER_EMAIL").val();//邮箱
 				var USER_SEX=$("#USER_SEX").val();//性别
+				var	position=$("#position").val();//职务
 				var SEX="";//性别
 				if(USER_SEX=="男"){
 					SEX="M";
@@ -161,6 +162,7 @@ var oc = new ObjectControl();
 				_params["username"]=USER_NAME;//员工名称
 				_params["avater"]=HEADPORTRAIT;//头像
 				_params["phone"]=USER_PHONE;//手机
+				_params["position"]=position;//职务
 				_params["email"]=USER_EMAIL//邮箱
 				_params["sex"]=SEX//性别
 				_params["group_code"]=OWN_RIGHT;//群组编号
@@ -200,6 +202,7 @@ var oc = new ObjectControl();
 				var USER_PHONE=$("#USER_PHONE").val();
 				var USER_EMAIL=$("#USER_EMAIL").val();
 				var USER_SEX=$("#USER_SEX").val();
+				var	position=$("#position").val();//职务
 				var SEX="";
 				if(USER_SEX=="男"){
 					SEX="M";
@@ -275,6 +278,7 @@ var oc = new ObjectControl();
 				_params["user_code"]=USERID;//员工编号
 				_params["username"]=USER_NAME;//员工名称
 				_params["avater"]=HEADPORTRAIT;//头像
+				_params["position"]=position;//职务
 				_params["phone"]=USER_PHONE;//手机
 				_params["email"]=USER_EMAIL//邮箱
 				_params["sex"]=SEX//性别
@@ -617,6 +621,7 @@ jQuery(document).ready(function(){
 				$("#USER_PHONE").attr("data-name",msg.phone);
 				$("#USER_EMAIL").val(msg.email);
 				$("#USER_EMAIL").attr("data-name",msg.email);
+				$("#position").val(msg.position);
 				if(msg.sex=="F"){
 					$("#USER_SEX").val("女");
 				}else if(msg.sex=="M"){
