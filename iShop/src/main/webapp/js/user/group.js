@@ -7,6 +7,7 @@ var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
 var list="";
+var cout="";
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
@@ -227,7 +228,7 @@ function GET(a,b){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
-                var cout=list.pages;
+                cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
                 superaddition(list,a);
@@ -357,7 +358,7 @@ function POST(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -637,7 +638,7 @@ function filtrates(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -656,3 +657,24 @@ function filtrates(a,b){
         }
    });
 }
+//跳转页面的键盘按下事件
+$("#input-txt").keydown(function() {
+    var event=window.event||arguments[0];
+    var inx= this.value.replace(/[^1-9]/g, '');
+    if (inx > cout) {
+        inx = cout
+    };
+    if (inx > 0) {
+        if (event.keyCode == 13) {
+            if (value == "" && filtrate == "") {
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                param["pageSize"] = pageSize;
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                _param["pageSize"] = pageSize;
+                filtrates(inx, pageSize);
+            }
+        };
+    }
+})

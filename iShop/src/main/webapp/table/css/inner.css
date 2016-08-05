@@ -381,6 +381,7 @@ input::-webkit-input-placeholder{
 	text-decoration: underline;
 }
 .table tr td img{
+	width: 45px;
 	height: 45px;
 	vertical-align: middle;
 }
@@ -891,6 +892,7 @@ input::-webkit-input-placeholder{
 	width: 170px;
 	border: 1px solid #a9c9e2;
 	background: #e8f5fe;
+	z-index: 1;
 }
 .sxk .inputs .isActive_select_down li{
 	width:170px;
