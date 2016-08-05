@@ -720,6 +720,20 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUserScreen(params);
+//        for (User user : users) {
+//            if (user.getIsactive().equals("Y")) {
+//                user.setIsactive("是");
+//            } else {
+//                user.setIsactive("否");
+//            }
+//            if(user.getSex()==null){
+//                user.setSex("男");
+//            }else if(user.getSex().equals("F")){
+//                user.setSex("女");
+//            }else{
+//                user.setSex("男");
+//            }
+//        }
         for (User user : users) {
             if (user.getIsactive().equals("Y")) {
                 user.setIsactive("是");
@@ -733,7 +747,18 @@ public class UserServiceImpl implements UserService {
             }else{
                 user.setSex("男");
             }
+            String store = user.getStore_code();
+            String area = user.getArea_code();
+            if (store != null && store.contains(Common.STORE_HEAD)){
+                String store_code1 = store.replace(Common.STORE_HEAD,"");
+                user.setStore_code(store_code1);
+            }
+            if (area != null && area.contains(Common.STORE_HEAD)) {
+                String area_code1 = area.replace(Common.STORE_HEAD, "");
+                user.setArea_code(area_code1);
+            }
         }
+
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
