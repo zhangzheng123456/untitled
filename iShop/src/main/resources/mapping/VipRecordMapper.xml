@@ -149,7 +149,8 @@
         </if>
         <if test="search_value!=null and search_value!=''">
             and (
-            dvc.modified_date like concat('%',#{search_value},'%')
+            dvc.user_code like concat('%',#{search_value},'%')
+            or dvc.modified_date like concat('%',#{search_value},'%')
             or dvc.isactive like concat('%',#{search_value},'%')
             or dvrt.type_name like concat('%',#{search_value},'%')
             or dvc.id like concat('%',#{search_value},'%')
