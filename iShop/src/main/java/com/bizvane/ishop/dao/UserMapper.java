@@ -43,5 +43,8 @@ public interface UserMapper {
 
     int selectCount(@Param("created_date") String created_date);
 
+    List<User> selectPartScreen(Map<String, Object> params);
+
+
     List<User> selectAllUserScreen(Map<String, Object> params);
 }

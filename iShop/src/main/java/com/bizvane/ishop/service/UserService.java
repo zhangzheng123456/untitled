@@ -62,5 +62,7 @@ public interface UserService {
 
     int selectCount(String created_date);
 
-    PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map);
+    PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code, String area_code, String role_code) throws SQLException;
+
+    PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code,Map<String,String> map);
 }
