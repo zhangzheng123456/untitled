@@ -328,7 +328,7 @@ public class UserServiceImpl implements UserService {
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
         String phone_exist = userPhoneExist(phone);
-        User code_exist = userCodeExist(user_code, corp_code);
+        List<User> code_exist = userCodeExist(user_code, corp_code);
         String email_exist = userEmailExist(email);
         if (phone.equals("")) {
             result = "手机号不能为空";
@@ -336,7 +336,7 @@ public class UserServiceImpl implements UserService {
             result = "员工编号不能为空";
         } else if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "手机号已存在";
-        } else if (code_exist != null) {
+        } else if (code_exist.size() > 0) {
             result = "员工编号已存在";
         } else if (!email.equals("") && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             result = "邮箱已存在";
@@ -363,12 +363,12 @@ public class UserServiceImpl implements UserService {
         //User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
         String emails = userEmailExist(user.getEmail());
         if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
-            User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
-            if (!old_user.getPhone().equals(user.getPhone()) && !phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
+            if ((!old_user.getPhone().trim().equals(user.getPhone()) && phone_exist.equals(Common.DATABEAN_CODE_ERROR)) || Integer.parseInt(phone_exist) > 0){
                 result = "手机号已存在";
-            } else if (!old_user.getUser_code().equalsIgnoreCase(user.getUser_code()) && code_exist != null) {
+            } else if ((!old_user.getUser_code().trim().equalsIgnoreCase(user.getUser_code()) && code_exist.size() != 0) || code_exist.size() > 1){
                 result = "员工编号已存在";
-            } else if (!user.getEmail().equalsIgnoreCase("") && old_user.getEmail() != null && (!old_user.getEmail().equalsIgnoreCase(user.getEmail()) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
+            } else if (!user.getEmail().trim().equalsIgnoreCase("") && old_user.getEmail() != null && (!old_user.getEmail().equalsIgnoreCase(user.getEmail()) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
                 result = "邮箱已存在";
             } else {
                 if (!old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
@@ -384,10 +384,10 @@ public class UserServiceImpl implements UserService {
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
-            User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
+            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
             if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 result = "手机号已存在";
-            } else if (code_exist != null) {
+            } else if (code_exist.size() != 0) {
                 result = "员工编号已存在";
             } else if (!user.getEmail().equalsIgnoreCase("") && old_user.getEmail() != null && emails.equals(Common.DATABEAN_CODE_ERROR)) {
                 result = "邮箱已存在";
@@ -425,12 +425,12 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public JSONObject login(HttpServletRequest request, String phone, String password) throws Exception {
         System.out.println("---------login--------");
-        User login_user1 = userMapper.selectLogin(phone, password);
+        List<User> user1 = userMapper.selectLogin(phone, password);
         password = CheckUtils.encryptMD5Hash(password);
-        User login_user2 = userMapper.selectLogin(phone, password);
+        List<User> user2 = userMapper.selectLogin(phone, password);
         logger.info("------------end search" + new Date());
         JSONObject user_info = new JSONObject();
-        if (login_user2 == null && login_user1 == null) {
+        if (user2.size() == 0 && user1.size() == 0) {
             user_info.put("error", "用户名或密码错误");
             user_info.put("status", Common.DATABEAN_CODE_ERROR);
 //        } else if (login_user.getIsactive().contains("N")) {
@@ -438,10 +438,10 @@ public class UserServiceImpl implements UserService {
 //            user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
             User login_user;
-            if (login_user1 != null) {
-                login_user = login_user1;
+            if (user1 != null) {
+                login_user = user1.get(0);
             } else {
-                login_user = login_user2;
+                login_user = user2.get(0);
             }
             int user_id = login_user.getId();
             String user_code = login_user.getUser_code();
@@ -496,10 +496,13 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public String userPhoneExist(String phone) {
-        User user = this.userMapper.selectByPhone(phone);
+        List<User> user = this.userMapper.selectByPhone(phone);
         String result = Common.DATABEAN_CODE_ERROR;
-        if (user == null) {
+        if (user.size() == 0) {
             result = Common.DATABEAN_CODE_SUCCESS;
+        }
+        if (user.size() > 1){
+            result = String.valueOf(user.size());
         }
         return result;
     }
@@ -522,8 +525,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 验证企业下用户编号是否已存在
      */
-    public User userCodeExist(String user_code, String corp_code) throws SQLException {
-        User user = userMapper.selectUserCode(user_code, corp_code);
+    public List<User> userCodeExist(String user_code, String corp_code) throws SQLException {
+        List<User> user = userMapper.selectUserCode(user_code, corp_code);
         return user;
     }
 
@@ -544,8 +547,8 @@ public class UserServiceImpl implements UserService {
             String address = jsonObject.get("ADDRESS").toString();
             String corp_code = jsonObject.get("CORPCODE").toString();
 
-            User u = this.userMapper.selectByPhone(phone);
-            if (u == null) {
+            List<User> u = this.userMapper.selectByPhone(phone);
+            if (u.size() == 0) {
 
                 ValidateCode code = validateCodeService.selectValidateCode(0, phone, Common.IS_ACTIVE_Y);
                 Date now = new Date();

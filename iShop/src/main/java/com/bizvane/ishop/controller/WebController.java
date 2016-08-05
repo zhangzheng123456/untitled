@@ -79,56 +79,58 @@ public class WebController {
                     JSONObject result = new JSONObject();
                     String emp_id = entity.get(0).getEmp_id();
                     String corp_code = corpService.getCorpByAppUserName(app_user_name).getCorp_code();
-                    User user = userService.userCodeExist(emp_id, corp_code);
-                    if (user != null && user.getIsactive().equals(Common.IS_ACTIVE_Y)) {
-                        String group_code = user.getGroup_code();
-                        String role_code = groupService.selectByCode(corp_code, group_code, "").getRole_code();
-                        JSONArray array = new JSONArray();
+                    List<User> users = userService.userCodeExist(emp_id, corp_code);
+                    if (users.size() != 0) {
+                        User user = users.get(0);
+                        if (user.getIsactive().equals(Common.IS_ACTIVE_Y)) {
+                            String group_code = user.getGroup_code();
+                            String role_code = groupService.selectByCode(corp_code, group_code, "").getRole_code();
+                            JSONArray array = new JSONArray();
 
-                        if (role_code.equals(Common.ROLE_AM)) {
-                            String area_code = user.getArea_code();
-                            String[] areaCodes = area_code.split(",");
-                            areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
-                            String[] ids = new String[]{areaCodes[0]};
-                            List<Store> list = storeService.selectByAreaCode(corp_code, ids, Common.IS_ACTIVE_Y);
-                            array.add(list.get(0).getStore_code());
-                        } else if (role_code.equals(Common.ROLE_GM)) {
-                            String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
-                            array.add(store_code);
-                        } else {
-                            String store_code = user.getStore_code();
-                            String[] ids = store_code.split(",");
-                            for (int i = 0; i < ids.length; i++) {
-                                ids[i] = ids[i].substring(1, ids[i].length());
-                                array.add(i, ids[i]);
+                            if (role_code.equals(Common.ROLE_AM)) {
+                                String area_code = user.getArea_code();
+                                String[] areaCodes = area_code.split(",");
+                                areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
+                                String[] ids = new String[]{areaCodes[0]};
+                                List<Store> list = storeService.selectByAreaCode(corp_code, ids, Common.IS_ACTIVE_Y);
+                                array.add(list.get(0).getStore_code());
+                            } else if (role_code.equals(Common.ROLE_GM)) {
+                                String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
+                                array.add(store_code);
+                            } else {
+                                String store_code = user.getStore_code();
+                                String[] ids = store_code.split(",");
+                                for (int i = 0; i < ids.length; i++) {
+                                    ids[i] = ids[i].substring(1, ids[i].length());
+                                    array.add(i, ids[i]);
+                                }
                             }
+                            JSONObject obj = new JSONObject();
+                            obj.put("emp_code", emp_id);
+                            obj.put("store_code", array);
+                            result.put("code", Common.DATABEAN_CODE_SUCCESS);
+                            result.put("message", obj);
+                            return result.toString();
                         }
-                        JSONObject obj = new JSONObject();
-                        obj.put("emp_code", emp_id);
-                        obj.put("store_code", array);
-                        result.put("code", Common.DATABEAN_CODE_SUCCESS);
-                        result.put("message", obj);
-                        return result.toString();
                     }
                 }
-                List<VIPStoreRelation> relation = webService.selectStoreVip(app_user_name,open_id);
-                if (relation.size() == 0){
+                List<VIPStoreRelation> relation = webService.selectStoreVip(app_user_name, open_id);
+                if (relation.size() == 0) {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setMessage("the open_id is new");
-                }else {
+                } else {
                     JSONObject result = new JSONObject();
                     String store_id = relation.get(0).getStore_id();
                     JSONArray array = new JSONArray();
                     array.add(store_id);
                     JSONObject obj = new JSONObject();
-                    obj.put("store_code",array);
-                    obj.put("emp_code","");
+                    obj.put("store_code", array);
+                    obj.put("emp_code", "");
 
-                    result.put("code",Common.DATABEAN_CODE_SUCCESS);
-                    result.put("message",obj);
+                    result.put("code", Common.DATABEAN_CODE_SUCCESS);
+                    result.put("message", obj);
                     return result.toString();
                 }
-
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
