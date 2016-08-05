@@ -869,9 +869,9 @@ jQuery(document).ready(function(){
 	$("#baocun").click(function(){
 		if($("#first_pwd").val()==""||$("#second_pwd").val()==""||$("#first_pwd").val()!=$("#second_pwd").val()){
              if($("#first_pwd").val()==""){
-				 $(".em_1").css("display","inline")
+				 $(".em_1").css("display","block")
 			 }else if($("#second_pwd").val()!=$("#first_pwd").val()){
-				 $(".em_2").css("display","inline")
+				 $(".em_2").css("display","block")
 			 }
 			return;
 		}
