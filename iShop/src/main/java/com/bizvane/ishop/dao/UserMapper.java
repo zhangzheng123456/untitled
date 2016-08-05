@@ -14,13 +14,13 @@ public interface UserMapper {
 
     int updateByUserId(User record);
 
-    User selectByPhone(String phone);
+    List<User> selectByPhone(String phone);
 
-    User selectLogin(String phone, String password);
+    List<User> selectLogin(String phone, String password);
 
     List<User> userEmailExist(@Param("email") String email);
 
-    User selectUserCode(String user_code, String corp_code);
+    List<User> selectUserCode(String user_code, String corp_code);
 
     List<User> selectGroupUser(@Param("corp_code") String corp_code, @Param("group_code") String group_code);
 
