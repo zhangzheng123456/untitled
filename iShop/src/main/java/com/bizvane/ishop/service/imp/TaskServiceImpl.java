@@ -154,7 +154,7 @@ public class TaskServiceImpl implements TaskService{
                 datalist.put(data_user_id.key, data_user_id);
                 DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
                 String msg = dataBox.data.get("message").value;
-                System.out.println(msg);
+                System.out.println("APP："+msg);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -181,7 +181,8 @@ public class TaskServiceImpl implements TaskService{
                     allocation.setCorp_code(task.getCorp_code());
                     allocation.setTask_code(task.getTask_code());
                     allocation.setUser_code(user_codes[i]);
-                    User user = userMapper.selectUserCode(user_codes[i], task.getCorp_code());
+                    List<User> userList = userMapper.selectUserCode(user_codes[i], task.getCorp_code());
+                    User user = userList.get(0);
                     String userPhone = user.getPhone();
                     phone = phone + userPhone+",";
                     users = users + user_codes[i];
@@ -232,7 +233,7 @@ public class TaskServiceImpl implements TaskService{
                 datalist.put(data_user_id.key, data_user_id);
                 DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
                 String msg = dataBox.data.get("message").value;
-                System.out.println(msg);
+                System.out.println("App："+msg);
             }
         }catch (Exception e){
             e.printStackTrace();
