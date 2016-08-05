@@ -553,7 +553,7 @@
         </if>
         <if test="array!=null">
             AND
-            <foreach collection="array" index="index" item="item" open="(" separator="AND" close=")">
+            <foreach collection="array" index="index" item="item" open="(" separator="OR" close=")">
                 store_code regexp #{item}
             </foreach>
         </if>
