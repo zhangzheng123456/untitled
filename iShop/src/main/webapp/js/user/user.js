@@ -203,9 +203,9 @@ function superaddition(data,num){
                         + "</span></td><td>"
                         +data[i].group.group_name
                         + "</td><td>"
-                        +data[i].modifier
+                        +data[i].store_code
                         + "</td><td>"
-                        +data[i].modified_date
+                        +data[i].area_code
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
