@@ -343,8 +343,15 @@ $("#staff_code_drop").click(function(e){
 	var user_codes=$('#staff_input').attr("data-usercode");
 	var phone=$('#staff_input').attr("data-userphone");
 })
+$(document).click(function(e){
+	    if($(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.checkbox_isactive')||$(e.target).is('.checkbox_isactive input')){
+	    	return;
+	    }else{
+	    	$("#distribution_frame").hide();
+	    }
+});
 //点击保存
-$("#edit_save").click(function(){
+$("#add_save").click(function(){
 	var _param={};
 	var user_codes=$('#staff_input').attr("data-usercode");//员工编号
 	var phone=$('#staff_input').attr("data-userphone");//手机号
@@ -374,4 +381,3 @@ $("#edit_save").click(function(){
 		console.log(data);
 	})
 })
-//点击编辑页面的保存
