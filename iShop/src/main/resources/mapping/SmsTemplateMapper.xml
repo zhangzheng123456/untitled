@@ -74,7 +74,6 @@
         dmt.template_code,
         dmt.template_name,
         dmt.template_content,
-        dmt.template_type,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
@@ -220,12 +219,16 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     dc.${entryKey} like concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryValue!='' and entryValue!=''">
                     dmt.${entryKey} LIKE concat('%',#{entryValue},'%')
+               </when>
+                <otherwise>
+                    1=1
                 </otherwise>
+
             </choose>
         </foreach>
         ORDER by dmt.id DESC

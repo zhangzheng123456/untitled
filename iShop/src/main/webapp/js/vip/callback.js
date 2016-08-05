@@ -7,6 +7,7 @@ var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
 var list="";
+var cout="";
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
@@ -58,6 +59,7 @@ $("#empty").click(function(){
     var input=$(".inputs input");
     for(var i=0;i<input.length;i++){
         input[i].value="";
+        $(input[i]).attr("data-code","");
     }
     value="";
     filtrate="";
@@ -187,8 +189,6 @@ function superaddition(data,num){//页面加载循环
                         +"</td><td>"
                         +data[i].vipRecordType.type_name
                         +"</td><td>"
-                        +data[i].created_date
-                        + "</td><td>"
                         +data[i].corp_name
                         + "</td><td>"
                         +data[i].modified_date
@@ -221,7 +221,7 @@ function GET(a,b){
                 $(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
-                var cout=list.pages;
+                cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
                 superaddition(list,a);
@@ -306,7 +306,7 @@ function POST(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -494,11 +494,50 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var message=JSON.parse(data.message);
         var filter=message.filter;
         $("#sxk .inputs ul").empty();
+        var li="";
         for(var i=0;i<filter.length;i++){
-            $("#sxk .inputs ul").append("<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>");
+            if(filter[i].type=="text"){
+                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+            }else if(filter[i].type=="select"){
+                var msg=filter[i].value;
+                console.log(msg);
+                var ul="<ul class='isActive_select_down'>";
+                for(var j=0;j<msg.length;j++){
+                    ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
+                }
+                ul+="</ul>";
+                li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+            }
+
         }
+        $("#sxk .inputs ul").html(li);
+        filtrateDown();
     }
 });
+function filtrateDown(){
+    //筛选select框
+    $(".isActive_select input").click(function (){
+        var ul=$(this).next(".isActive_select_down");
+        if(ul.css("display")=="none"){
+            ul.show();
+        }else{
+            ul.hide();
+        }
+    })
+    $(".isActive_select input").blur(function(){
+        var ul=$(this).next(".isActive_select_down");
+        setTimeout(function(){
+            ul.hide();
+        },200);
+    })
+    $(".isActive_select_down li").click(function () {
+        var html=$(this).text();
+        var code=$(this).attr("data-code");
+        $(this).parents("li").find("input").val(html);
+        $(this).parents("li").find("input").attr("data-code",code);
+        $(".isActive_select_down").hide();
+    })
+}
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
@@ -509,23 +548,28 @@ $("#find").click(function(){
    list=[];//定义一个list
    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val();
+        var screen_value=$(input[i]).val().trim();
+        var screen_value="";
+        if($(input[i]).parent("li").attr("class")=="isActive_select"){
+            screen_value=$(input[i]).attr("data-code");
+        }else{
+            screen_value=$(input[i]).val().trim();
+        }
         if(screen_value!=""){
             num++;
-            var param1={"screen_key":screen_key,"screen_value":screen_value};
-            list.push(param1);
         }
-   }
-   _param["list"]=list;
-   if(num>0){
-        value="";//把搜索滞空
-        $("#search").val("");
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+    }
+    _param["list"]=list;
+    value="";//把搜索滞空
+    $("#search").val("");
+    filtrates(inx,pageSize);
+    if(num>0){
         filtrate="sucess";
-        filtrates(inx,pageSize);
-   }else if(num<=0){
-        frame();
-        $('.frame').html("请输入筛选值");
-   }
+    }else if(num<=0){
+        filtrate="";
+    }
 })
 //筛选发送请求
 function filtrates(a,b){
@@ -534,7 +578,7 @@ function filtrates(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -553,3 +597,24 @@ function filtrates(a,b){
         }
    });
 }
+//跳转页面的键盘按下事件
+$("#input-txt").keydown(function() {
+    var event=window.event||arguments[0];
+    var inx= this.value.replace(/[^1-9]/g, '');
+    if (inx > cout) {
+        inx = cout
+    };
+    if (inx > 0) {
+        if (event.keyCode == 13) {
+            if (value == "" && filtrate == "") {
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                param["pageSize"] = pageSize;
+                POST(inx, pageSize);
+            } else if (filtrate !== "") {
+                _param["pageSize"] = pageSize;
+                filtrates(inx, pageSize);
+            }
+        };
+    }
+})

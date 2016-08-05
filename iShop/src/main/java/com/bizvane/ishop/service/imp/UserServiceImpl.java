@@ -85,9 +85,15 @@ public class UserServiceImpl implements UserService {
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
                 user.setStore_code(store_code1);
             }
+            if (store == null){
+                user.setStore_code("");
+            }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
                 user.setArea_code(area_code1);
+            }
+            if (area == null){
+                user.setArea_code("");
             }
         }
         request.getSession().setAttribute("size", users.size());
@@ -150,9 +156,15 @@ public class UserServiceImpl implements UserService {
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
                 user.setStore_code(store_code1);
             }
+            if (store == null){
+                user.setStore_code("");
+            }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
                 user.setArea_code(area_code1);
+            }
+            if (area == null){
+                user.setArea_code("");
             }
         }
         System.out.println("--大小：-----"+users.size());
@@ -272,9 +284,15 @@ public class UserServiceImpl implements UserService {
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
                 user.setStore_code(store_code1);
             }
+            if (store == null){
+                user.setStore_code("");
+            }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
                 user.setArea_code(area_code1);
+            }
+            if (area == null){
+                user.setArea_code("");
             }
         }
         PageInfo<User> page = new PageInfo<User>(users);
@@ -691,34 +709,80 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) {
-        String area_codes[] = null;
-        String store_codes[] = null;
+    public PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code, String area_code, String role_code) throws SQLException {
+        String[] stores = null;
+
         if (!store_code.equals("")) {
-            store_codes = store_code.split(",");
-            for (int i = 0; store_codes != null && i < store_codes.length; i++) {
-                store_codes[i] = store_codes[i].substring(1, store_codes[i].length());
+            stores = store_code.split(",");
+            for (int i = 0; i < stores.length; i++) {
+                if (!stores[i].startsWith(Common.STORE_HEAD)) {
+                    stores[i] = Common.STORE_HEAD + stores[i];
+                }
+                stores[i] = stores[i].substring(1, stores[i].length());
+                System.out.println("--区域：---" + stores[i]);
             }
         }
         if (!area_code.equals("")) {
-            area_codes = area_code.split(",");
-            for (int i = 0; area_code != null && i < area_code.length(); i++) {
-                area_codes[i] = area_codes[i].substring(1, store_codes[i].length());
+            String[] areas = area_code.split(",");
+            for (int i = 0; i < areas.length; i++) {
+                areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> stores = storeService.selectByAreaCode(corp_code, area_codes, "");
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < stores.size(); i++) {
-                sb.append(stores.get(i).getStore_code() + ",");
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
+            String a = "";
+            for (int i = 0; i < store.size(); i++) {
+                a = a + store.get(i).getStore_code() + ",";
             }
-            store_codes = sb.toString().split(",");
+            stores = a.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("array", store_codes);
+        params.put("array", stores);
+        params.put("map", map);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
-        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<User>  users = userMapper.selectPartScreen(params);
+        for (User user : users) {
+            if (user.getIsactive().equals("Y")) {
+                user.setIsactive("是");
+            } else {
+                user.setIsactive("否");
+            }
+            if(user.getSex()==null){
+                user.setSex("男");
+            }else if(user.getSex().equals("F")){
+                user.setSex("女");
+            }else{
+                user.setSex("男");
+            }
+            String store = user.getStore_code();
+            String area = user.getArea_code();
+            if (store != null && store.contains(Common.STORE_HEAD)){
+                String store_code1 = store.replace(Common.STORE_HEAD,"");
+                user.setStore_code(store_code1);
+            }
+            if (store == null){
+                user.setStore_code("");
+            }
+            if (area != null && area.contains(Common.STORE_HEAD)) {
+                String area_code1 = area.replace(Common.STORE_HEAD, "");
+                user.setArea_code(area_code1);
+            }
+            if (area == null){
+                user.setArea_code("");
+            }
+        }
+        System.out.println("--大小：-----"+users.size());
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
+    @Override
+    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
         List<User> users;
         PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("map", map);
         users = userMapper.selectAllUserScreen(params);
         for (User user : users) {
             if (user.getIsactive().equals("Y")) {
@@ -737,6 +801,7 @@ public class UserServiceImpl implements UserService {
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
+
 
     /**
      * 更改员工编号时

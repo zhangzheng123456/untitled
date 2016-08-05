@@ -69,12 +69,31 @@
     </select>
     <!--查询出任务详情及编辑是传值-->
     <select id="selAllTaskAllocation" resultType="com.bizvane.ishop.entity.TaskAllocation">
-        SELECT  * from rel_task_allocation,DEF_CORP
-        where  rel_task_allocation.corp_code=DEF_CORP.corp_code AND
-         rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
+         SELECT
+         rel_task_allocation.id,
+         rel_task_allocation.task_code,
+         rel_task_allocation.corp_code,
+         DEF_CORP.corp_name,
+         rel_task_allocation.user_code,
+         def_user.user_name,
+         rel_task_allocation.task_status,
+         rel_task_allocation.real_start_time,
+         rel_task_allocation.real_end_time,
+         rel_task_allocation.modified_date,
+         rel_task_allocation.modifier,
+         rel_task_allocation.created_date,
+         rel_task_allocation.creater,
+         rel_task_allocation.isactive
+         FROM rel_task_allocation,DEF_CORP,def_user
+        WHERE  rel_task_allocation.corp_code=DEF_CORP.corp_code
+        AND def_user.USER_CODE = rel_task_allocation.user_code
+        AND  rel_task_allocation.corp_code =#{corp_code}
+        AND rel_task_allocation.task_code=#{task_code}
     </select>
+
     <select id="selAllTaskAllocationByUser" resultType="com.bizvane.ishop.entity.TaskAllocation">
-        SELECT  * from rel_task_allocation,DEF_CORP
+        SELECT  *
+         from rel_task_allocation,DEF_CORP,
         where  rel_task_allocation.corp_code=DEF_CORP.corp_code AND
         rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
         AND rel_task_allocation.user_code=#{user_code}
@@ -201,6 +220,21 @@
             <if test="task_proof_mark!=null">
                 task_proof_mark,
             </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="task_code!=null">
@@ -230,8 +264,24 @@
             <if test="task_proof_mark!=null">
                 #{task_proof_mark},
             </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
         </trim>
     </insert>
+    <!--编辑任务-->
     <update id="updTask" parameterType="com.bizvane.ishop.entity.Task">
         UPDATE  def_task
         <trim prefix="SET" suffixOverrides=",">
@@ -274,6 +324,7 @@
         </trim>
         WHERE id=#{id}
     </update>
+    <!--编辑任务详情-->
     <update id="updTaskAllocation" parameterType="com.bizvane.ishop.entity.TaskAllocation">
         update rel_task_allocation
         <trim prefix="SET" suffixOverrides=",">
@@ -303,6 +354,21 @@
             </if>
             <if test="task_proof_mark!=null and task_proof_mark!=''">
                 task_proof_mark = #{task_proof_mark},
+            </if>
+            <if test="modifier!=null and modifier!=''">
+                modifier =  #{modifier},
+            </if>
+            <if test="modified_date!=null and modified_date!=''">
+                modified_date = #{modified_date},
+            </if>
+            <if test="creater!=null and creater!=''">
+                creater = #{creater},
+            </if>
+            <if test="created_date!=null and created_date!=''">
+                created_date =  #{created_date},
+            </if>
+            <if test="isactive!=null and isactive!=''">
+                isactive= #{isactive},
             </if>
       </trim>
         WHERE id=#{id}

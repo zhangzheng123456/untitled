@@ -615,7 +615,7 @@ public class GroupController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String group_name = jsonObject.get("group_name").toString();
-            Group group = groupService.selectByCode(corp_code, group_name, "");
+            Group group = groupService.selectByName(corp_code, group_name, "");
             if (group == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

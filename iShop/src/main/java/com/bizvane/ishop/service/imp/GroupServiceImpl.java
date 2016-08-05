@@ -51,7 +51,7 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group selectByName(String corp_code, String group_name, String isactive) throws SQLException {
-        return groupMapper.selectByName(corp_code, group_name);
+        return groupMapper.selectByName(corp_code, group_name,isactive);
     }
 
     public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException {
