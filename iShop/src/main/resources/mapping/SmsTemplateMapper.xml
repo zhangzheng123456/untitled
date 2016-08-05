@@ -219,10 +219,10 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     dc.${entryKey} like concat('%',#{entryValue},'%')
                 </when>
-                <when test="entryValue!=''">
+                <when test="entryValue!='' and entryValue!=''">
                     dmt.${entryKey} LIKE concat('%',#{entryValue},'%')
                </when>
                 <otherwise>
