@@ -85,9 +85,15 @@ public class UserServiceImpl implements UserService {
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
                 user.setStore_code(store_code1);
             }
+            if (store == null){
+                user.setStore_code("");
+            }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
                 user.setArea_code(area_code1);
+            }
+            if (area == null){
+                user.setArea_code("");
             }
         }
         request.getSession().setAttribute("size", users.size());
@@ -150,9 +156,15 @@ public class UserServiceImpl implements UserService {
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
                 user.setStore_code(store_code1);
             }
+            if (store == null){
+                user.setStore_code("");
+            }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
                 user.setArea_code(area_code1);
+            }
+            if (area == null){
+                user.setArea_code("");
             }
         }
         System.out.println("--大小：-----"+users.size());
@@ -272,9 +284,15 @@ public class UserServiceImpl implements UserService {
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
                 user.setStore_code(store_code1);
             }
+            if (store == null){
+                user.setStore_code("");
+            }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
                 user.setArea_code(area_code1);
+            }
+            if (area == null){
+                user.setArea_code("");
             }
         }
         PageInfo<User> page = new PageInfo<User>(users);

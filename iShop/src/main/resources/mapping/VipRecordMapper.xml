@@ -125,6 +125,8 @@
         dvc.id ,
         dvc.vip_code ,
         dvc.user_code,
+        dvc.created_date ,
+        dvc.creater,
         dvc.modified_date ,
         dvc.modifier,
         dvc.isactive,

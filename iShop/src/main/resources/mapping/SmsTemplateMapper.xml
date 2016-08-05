@@ -74,7 +74,6 @@
         dmt.template_code,
         dmt.template_name,
         dmt.template_content,
-        dmt.template_type,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
