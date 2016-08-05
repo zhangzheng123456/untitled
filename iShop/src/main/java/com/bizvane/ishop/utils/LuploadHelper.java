@@ -64,12 +64,19 @@ public class LuploadHelper {
     /***
      * 把jxl.jar中日期类型进行转换
      */
-    public  static String getCellTypeForDate(Cell cellObject) {
+    public  static String getCellTypeForDate(Cell cellObject,String target_type) {
         String dateStr="";
         if(cellObject.getType()== CellType.DATE){
             DateCell cellValue   =   (DateCell)cellObject;
             Date dt   =   cellValue.getDate();
-            SimpleDateFormat formatter   =   new   SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat formatter   =null;
+            if(target_type.equals("Y")){
+              formatter =  new   SimpleDateFormat("yyyy");
+            }else if(target_type.equals("M")){
+                formatter =  new   SimpleDateFormat("yyyy-MM");
+            }else{
+                formatter =  new   SimpleDateFormat("yyyy-MM-dd");
+            }
             dateStr  =  formatter.format(dt);
         }
         return dateStr;

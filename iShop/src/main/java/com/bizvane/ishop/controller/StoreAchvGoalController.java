@@ -545,8 +545,9 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setCorp_code(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
                     storeAchvGoal.setTarget_amount(rs.getCell(j++, i).getContents());
-                    storeAchvGoal.setTime_type(rs.getCell(j++, i).getContents());
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i));
+                    String target_type = rs.getCell(j++, i).getContents().toString();
+                    storeAchvGoal.setTime_type(target_type);
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
                     storeAchvGoal.setTarget_time(cellTypeForDate);
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         storeAchvGoal.setIsactive("N");

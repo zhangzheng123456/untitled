@@ -201,7 +201,18 @@ public class UserServiceImpl implements UserService {
     public User getUserById(int id) throws SQLException {
         User user = userMapper.selectUserById(id);
         String corp_code = user.getCorp_code();
-
+        if (user.getIsactive().equals("Y")) {
+            user.setIsactive("是");
+        } else {
+            user.setIsactive("否");
+        }
+        if(user.getSex()==null){
+            user.setSex("男");
+        }else if(user.getSex().equals("F")){
+            user.setSex("女");
+        }else{
+            user.setSex("男");
+        }
         String role_code = groupMapper.selectByCode(corp_code,user.getGroup_code(),"").getRole_code();
         if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
             if (!user.getStore_code().startsWith(Common.STORE_HEAD)) {
