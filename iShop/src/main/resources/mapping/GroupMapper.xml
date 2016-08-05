@@ -139,8 +139,7 @@
                 </otherwise>
             </choose>
         </foreach>
-
-        ORDER BY DEF_GROUP.ID
+        ORDER BY DEF_GROUP.ID DESC
     </select>
 
     <select id="selectUserGroup" resultType="com.bizvane.ishop.entity.Group">
