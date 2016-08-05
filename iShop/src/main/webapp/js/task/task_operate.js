@@ -344,7 +344,7 @@ $("#staff_code_drop").click(function(e){
 	var phone=$('#staff_input').attr("data-userphone");
 })
 $(document).click(function(e){
-	    if($(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.checkbox_isactive')||$(e.target).is('.checkbox_isactive input')){
+	    if($(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.drop-down span')||$(e.target).is('.checkbox_isactive label')||$(e.target).is('.drop-down ul li')||$(e.target).is('.drop-down ul')){
 	    	return;
 	    }else{
 	    	$("#distribution_frame").hide();
