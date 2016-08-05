@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>新增任务</title>
+    <title>编辑任务</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">任务管理<i class="icon-ishop_8-03"></i><label>新增任务</label></div>
+        <div class="col-lg-12 pre_title">任务管理<i class="icon-ishop_8-03"></i><label>编辑任务</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg" style="margin-left:0px">
                     <div>
@@ -125,11 +125,35 @@
             <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="fabadd_oper_btn">
                     <ul>
-                        <li id="add_save"><i class="icon-ishop_6-04"></i>保存</li>
+                        <li id="edit_save"><i class="icon-ishop_6-04"></i>保存</li>
                         <li id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
                  <form class="msg_detail">
+                    <div>
+                        <span>
+                            <label>创建时间</label>
+                            <input type="text" id="created_time" readonly/>                    
+                        </span>
+                    </div>
+                    <div>
+                        <span>
+                            <label>创建人</label>
+                            <input type="text" id="creator" readonly/>                    
+                        </span>
+                    </div>
+                    <div>
+                        <span>
+                            <label>修改时间</label>
+                            <input type="text" id="modify_time" readonly/>                    
+                        </span>
+                    </div>
+                    <div>
+                        <span>
+                            <label>修改人</label>
+                            <input type="text" id="modifier" readonly/>                    
+                        </span>
+                    </div>
                     <div>
                     <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
                     </div>
@@ -144,7 +168,7 @@
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/multiple_choice.js"></script>
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>

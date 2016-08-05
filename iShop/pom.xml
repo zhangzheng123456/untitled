@@ -9,8 +9,6 @@
     <name>iShop</name>
     <url>http://maven.apache.org</url>
 
-
-
     <repositories>
         <repository>
             <id>bizvane</id>

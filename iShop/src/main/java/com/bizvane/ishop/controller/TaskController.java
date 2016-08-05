@@ -193,6 +193,7 @@ public class TaskController {
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         int count=0;
+        String del="";
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
@@ -210,7 +211,6 @@ public class TaskController {
                 String corp_code = json.get("corp_code").toString();
                 String task_code = json.get("task_code").toString();
                 Task task = taskService.selectTaskById(id);
-                String del="";
                 if(role_code.equals(Common.ROLE_SYS)||role_code.equals(Common.ROLE_GM)) {
                     del= taskService.delTask(id, corp_code, task_code);
                 }else{
@@ -229,7 +229,7 @@ public class TaskController {
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId("-1");
-                dataBean.setMessage("删除失败");
+                dataBean.setMessage(del);
             }
         }catch (Exception ex){
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

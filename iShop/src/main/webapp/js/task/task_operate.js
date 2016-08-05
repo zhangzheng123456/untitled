@@ -374,3 +374,4 @@ $("#edit_save").click(function(){
 		console.log(data);
 	})
 })
+//点击编辑页面的保存

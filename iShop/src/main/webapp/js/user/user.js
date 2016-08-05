@@ -174,7 +174,7 @@ function superaddition(data,num){
             var a=i+1;
         }
         var avatar="";
-        if(data[i].avatar==undefined){
+        if(data[i].avatar==undefined||data[i].avatar==""){
             avatar="../img/head.png";
         }
         if(data[i].avatar!==""&&data[i].avatar!==undefined){
@@ -720,20 +720,18 @@ function filtrates(a,b){
 //跳转页面的键盘按下事件
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
-    var inx= this.value.replace(/[^1-9]/g, '');
-    if (inx > cout) {
-        inx = cout
+    var a= this.value.replace(/[^0-9]/g, '');
+    if (a > cout) {
+        a = cout
     };
-    if (inx > 0) {
+    if (a > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
-                GET(inx, pageSize);
+                GET(a, pageSize);
             } else if (value !== "") {
-                param["pageSize"] = pageSize;
-                POST(inx, pageSize);
+                POST(a, pageSize);
             } else if (filtrate !== "") {
-                _param["pageSize"] = pageSize;
-                filtrates(inx, pageSize);
+                filtrates(a, pageSize);
             }
         };
     }

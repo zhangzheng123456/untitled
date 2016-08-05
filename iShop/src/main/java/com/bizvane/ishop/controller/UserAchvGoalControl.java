@@ -527,8 +527,8 @@ public class UserAchvGoalControl {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                User user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
-                if (user == null) {
+                List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
+                if (user.size() == 0) {
                     result = "：第" + (i + 1) + "行的用户编号不存在";
                     int b = 5 / 0;
                     break;
@@ -561,8 +561,9 @@ public class UserAchvGoalControl {
                     userAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
-                    userAchvGoal.setTarget_type(rs.getCell(j++, i).getContents());
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i));
+                    String target_type = rs.getCell(j++, i).getContents().toString();
+                    userAchvGoal.setTarget_type(target_type);
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
                     userAchvGoal.setTarget_time(cellTypeForDate);
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");

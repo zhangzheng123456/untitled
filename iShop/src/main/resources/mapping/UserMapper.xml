@@ -565,10 +565,10 @@
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
                 <choose>
-                    <when test="entryKey=='corp_name'">
+                    <when test="entryValue!='' and entryKey=='corp_name'">
                         def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
-                    <when test="entryKey=='group_name'">
+                    <when test="entryValue!='' and entryKey=='group_name'">
                         def_group.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
                     <when test="entryValue!=''">
@@ -598,10 +598,10 @@
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
                 <choose>
-                    <when test="entryKey=='corp_name'">
+                    <when test="entryValue!='' and entryKey=='corp_name'">
                         def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
-                    <when test="entryKey=='group_name'">
+                    <when test="entryValue!='' and entryKey=='group_name'">
                         def_group.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
                     <when test="entryValue!=''">
