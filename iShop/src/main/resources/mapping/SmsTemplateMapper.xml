@@ -222,9 +222,13 @@
                 <when test="entryKey=='corp_name'">
                     dc.${entryKey} like concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryValue!=''">
                     dmt.${entryKey} LIKE concat('%',#{entryValue},'%')
+               </when>
+                <otherwise>
+                    1=1
                 </otherwise>
+
             </choose>
         </foreach>
         ORDER by dmt.id DESC
