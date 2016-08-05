@@ -1391,7 +1391,6 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String search_value = jsonObject.get("searchValue").toString();
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
