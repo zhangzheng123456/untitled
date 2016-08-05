@@ -92,10 +92,24 @@
     </select>
 
     <select id="selAllTaskAllocationByUser" resultType="com.bizvane.ishop.entity.TaskAllocation">
-        SELECT  *
-         from rel_task_allocation,DEF_CORP,
-        where  rel_task_allocation.corp_code=DEF_CORP.corp_code AND
-        rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
+        SELECT   rel_task_allocation.id,
+         rel_task_allocation.task_code,
+         rel_task_allocation.corp_code,
+         DEF_CORP.corp_name,
+         rel_task_allocation.user_code,
+         def_user.user_name,
+         rel_task_allocation.task_status,
+         rel_task_allocation.real_start_time,
+         rel_task_allocation.real_end_time,
+         rel_task_allocation.modified_date,
+         rel_task_allocation.modifier,
+         rel_task_allocation.created_date,
+         rel_task_allocation.creater,
+         rel_task_allocation.isactive
+         from rel_task_allocation,DEF_CORP,def_user
+        where  rel_task_allocation.corp_code=DEF_CORP.corp_code
+        AND def_user.USER_CODE = rel_task_allocation.user_code
+        AND rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
         AND rel_task_allocation.user_code=#{user_code}
     </select>
     <!--删除任务-->
