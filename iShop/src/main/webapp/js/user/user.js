@@ -203,9 +203,9 @@ function superaddition(data,num){
                         + "</span></td><td>"
                         +data[i].group.group_name
                         + "</td><td>"
-                        +data[i].modifier
+                        +data[i].store_code
                         + "</td><td>"
-                        +data[i].modified_date
+                        +data[i].area_code
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
@@ -720,18 +720,18 @@ function filtrates(a,b){
 //跳转页面的键盘按下事件
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
-    var a= this.value.replace(/[^0-9]/g, '');
-    if (a > cout) {
-        a = cout
+    inx= this.value.replace(/[^0-9]/g, '');
+    if (inx > cout) {
+        inx = cout
     };
-    if (a > 0) {
+    if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
-                GET(a, pageSize);
+                GET(inx, pageSize);
             } else if (value !== "") {
-                POST(a, pageSize);
+                POST(inx, pageSize);
             } else if (filtrate !== "") {
-                filtrates(a, pageSize);
+                filtrates(inx, pageSize);
             }
         };
     }

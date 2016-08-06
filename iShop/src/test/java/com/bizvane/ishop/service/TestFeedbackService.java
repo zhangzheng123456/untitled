@@ -40,21 +40,28 @@ public class TestFeedbackService {
     private StoreService storeService;
     @Autowired
     private UserService userService;
+
     //成功
     @Test
     public void testselectAllFeedback() {
         try {
-            String stroes="1,2";
-            PageInfo<User> pageInfo = userService.selectBySearchPart(1, 100, "C10001","",stroes, "", Common.ROLE_STAFF);
-            List<User> list = pageInfo.getList();
-            for (User store:list) {
-                System.out.println(store.getStore_name()+"---"+store.getUser_name());
-            }
+            Task task=new Task();
+            task.setTask_code("T201608051153111446");
+            task.setTask_title("顺哥DiuDiu~");
+            task.setTask_type_code("T0001");
+            task.setTask_description("加班加班Gogogogo");
+            task.setCorp_code("C00001");
+            task.setId(26);
+            String[] user_codes={"9999","008"};
+            String user_code="";
+            String result = taskService.updTask(task, user_codes, user_code);
+            System.out.println("-------"+result);
         } catch (Exception x) {
             x.printStackTrace();
         }
 
     }
+
 
     //成功
     @Test
