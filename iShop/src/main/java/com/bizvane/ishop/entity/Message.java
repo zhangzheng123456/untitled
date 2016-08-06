@@ -5,12 +5,13 @@ package com.bizvane.ishop.entity;
  */
 public class Message {
     private int id;
-
+    //接收人
     private String message_receiver;
 
     //接收人类型
     private String receiver_type;
 
+    //状态（已读，未读）
     private String status;
 
     //消息编号

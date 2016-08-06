@@ -39,6 +39,7 @@ public class MessageInfo {
     //是否可用
     private String isactive;
 
+    private String corp_name;
 
     public int getId() {
         return id;

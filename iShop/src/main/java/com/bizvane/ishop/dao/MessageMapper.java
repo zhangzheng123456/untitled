@@ -10,7 +10,7 @@ import java.util.Map;
 
 public interface MessageMapper {
 
-    Message selectByPrimaryKey(@Param("id") Integer id);
+    MessageInfo selectByPrimaryKey(@Param("id") Integer id);
 
     int deleteByPrimaryKey(Integer id);
 
@@ -18,7 +18,9 @@ public interface MessageMapper {
 
     int insertMessage(Message record);
 
-    List<Message> selectAllMessage(@Param("corp_code") String corp_code,@Param("user_code") String user_code, @Param("search_value") String search_value);
+    List<MessageInfo> selectAllMessageInfo(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("search_value") String search_value);
+
+    List<Message> selectMessageDetail(@Param("message_code") String message_code);
 
     List<MessageType> selectAllMessageType();
 

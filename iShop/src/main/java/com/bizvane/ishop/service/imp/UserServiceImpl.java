@@ -444,7 +444,7 @@ public class UserServiceImpl implements UserService {
 //            user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
             User login_user;
-            if (user1 != null) {
+            if (user1.size() != 0) {
                 login_user = user1.get(0);
             } else {
                 login_user = user2.get(0);
