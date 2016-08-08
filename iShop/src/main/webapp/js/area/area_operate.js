@@ -19,21 +19,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	areajs.checkCode=function(obj,hint){
-		var isCode=/^[A]{1}[0-9]{4}$/;
-		if(!this.isEmpty(obj)){
-			if(isCode.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"区域编号为必填项，支持以大写A开头必须是4位数字的组合！");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	}
+	// areajs.checkCode=function(obj,hint){
+	// 	var isCode=/^[A]{1}[0-9]{4}$/;
+	// 	if(!this.isEmpty(obj)){
+	// 		if(isCode.test(obj)){
+	// 			this.hiddenHint(hint);
+	// 			return true;
+	// 		}else{
+	// 			this.displayHint(hint,"区域编号为必填项，支持以大写A开头必须是4位数字的组合！");
+	// 			return false;
+	// 		}
+	// 	}else{
+	// 		this.displayHint(hint);
+	// 		return false;
+	// 	}
+	// };
 	areajs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -235,13 +235,13 @@ jQuery(document).ready(function(){
 		getcorplist();
 	}
 	//验证编号是不是唯一
-	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[A]{1}[0-9]{4}$/;
+	$("#AREA_ID").blur(function(){
+    	// var isCode=/^[A]{1}[0-9]{4}$/;
     	var _params={};
     	var area_code=$(this).val();
     	var area_code1=$(this).attr("data-name");
     	var corp_code=$("#OWN_CORP").val();
-		if(area_code!==""&&area_code!==area_code1&&isCode.test(area_code)==true){
+		if(area_code!==""&&area_code!==area_code1){
 			_params["area_code"]=area_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
@@ -269,7 +269,7 @@ jQuery(document).ready(function(){
 	    	_params["corp_code"]=corp_code;
 	    	oc.postRequire("post","/area/Area_nameExist","", _params, function(data){
 	            if(data.code=="0"){
-	            	div.html("");
+	            	div.shtml("");
 	            	$("#AREA_NAME").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
 	            	div.html("该名称已经存在！")
@@ -304,7 +304,7 @@ function getcorplist(){
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
 			$('.searchable-select-item').click(function(){
-				$("input[verify='Code']").val("");
+				$("#AREA_ID']").val("");
 				$("#AREA_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
 				$("#AREA_NAME").attr("data-mark","");

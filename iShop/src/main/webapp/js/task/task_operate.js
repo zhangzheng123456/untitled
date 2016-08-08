@@ -381,3 +381,4 @@ $("#add_save").click(function(){
 		console.log(data);
 	})
 })
+

@@ -142,7 +142,7 @@ public class UserController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="";
+        String errormessage="：数据异常，导出失败";
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
@@ -1428,7 +1428,7 @@ public class UserController {
 
     /**
      * 员工管理
-     * 筛选
+     * 重置密码
      */
     @RequestMapping(value = "/change_passwd", method = RequestMethod.POST)
     @ResponseBody

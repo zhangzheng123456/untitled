@@ -76,6 +76,7 @@
          DEF_CORP.corp_name,
          rel_task_allocation.user_code,
          def_user.user_name,
+         def_user.phone,
          rel_task_allocation.task_status,
          rel_task_allocation.real_start_time,
          rel_task_allocation.real_end_time,

@@ -282,7 +282,11 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
+            $("#page-wrapper").show();
+            $("#page-wrapper").show();
+            $("#content").hide();
+            $("#details").hide();
+            // $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -296,7 +300,10 @@ function jumpBianse(){
         var id=$(this).attr("id");
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
+        $("#page-wrapper").show();
+        $("#content").hide();
+        $("#details").hide();
+        // $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
     })
     //删除
     $("#remove").click(function(){
@@ -345,9 +352,9 @@ function jumpBianse(){
                                 + "</td><td>"
                                 + list[i].task_status
                                 + "</td><td>"
-                                + list[i].target_start_time
+                                + list[i].real_start_time
                                 + "</td><td>"
-                                + list[i].target_end_time
+                                + list[i].real_end_time
                                 +"</td></tr>");
                     }
                 }

@@ -311,6 +311,7 @@ public class TaskController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             Task task=new Task();
+            task.setTask_code(jsonObject.get("task_code").toString());
             task.setTask_title(jsonObject.get("task_title").toString());
             task.setTask_type_code(jsonObject.get("task_type_code").toString());
             task.setTask_description(jsonObject.get("task_description").toString());
@@ -349,7 +350,7 @@ public class TaskController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage = "";
+        String errormessage = "：数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -436,7 +437,6 @@ public class TaskController {
     @ResponseBody
     public String selectTaskById(HttpServletRequest request){
         DataBean bean=new DataBean();
-        String data = null;
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -444,10 +444,16 @@ public class TaskController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String task_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(taskService.selectTaskById(task_id));
+            String corp_code = jsonObject.get("corp_code").toString();
+            String task_code = jsonObject.get("task_code").toString();
+            List<TaskAllocation> taskAllocations = taskService.selTaskAllocation(corp_code, task_code);
+            Task task = taskService.selectTaskById(task_id);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(taskAllocations));
+            result.put("task", JSON.toJSONString(task));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
-            bean.setMessage(data);
+            bean.setMessage(result.toString());
         } catch (Exception e) {
             bean.setCode(Common.DATABEAN_CODE_ERROR);
             bean.setId("1");

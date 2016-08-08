@@ -4,9 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Task;
 import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TaskTypeService;
+import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
@@ -19,7 +21,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -351,6 +355,65 @@ public class TaskTypeController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 导出数据
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String errormessage = "：数据异常，导出失败";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
+            PageInfo<TaskType> taskTypes = null;
+            if (screen.equals("")) {
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    taskTypes = taskTypeService.selectAllTaskType(1, 30000, "", search_value);
+                } else {
+                    taskTypes = taskTypeService.selectAllTaskType(1, 30000, corp_code, search_value);
+                }
+            }else{
+                Map<String, String> map = WebUtils.Json2Map(jsonObject);
+                if (role_code.equals(Common.ROLE_SYS)) {
+                    taskTypes = taskTypeService.selectAllTaskTypeScreen(1, 30000, "", map);
+                } else {
+                    taskTypes = taskTypeService.selectAllTaskTypeScreen(1, 30000, corp_code, map);
+                }
+            }
+            List<TaskType> list = taskTypes.getList();
+            if (list.size() >= 29999) {
+                errormessage = "：导出数据过大";
+                int i = 9 / 0;
+            }
+            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
+            String pathname = OutExeclHelper.OutExecl(list, map, response, request);
+            JSONObject result = new JSONObject();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "：数据异常，导出失败";
+                int a = 8 / 0;
+            }
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        }catch (Exception e){
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("-1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
 
 
 }
