@@ -27,7 +27,7 @@
         <!--地域-->
         <result column="area_code" property="area_code"/>
         <result column="position" property="position"/>
-
+        <result column="role_code" property="role_code"/>
     </resultMap>
 
     <resultMap type="com.bizvane.ishop.entity.User" id="UserInfo">
@@ -48,6 +48,8 @@
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
         <result column="can_login" property="can_login"/>
+        <result column="position" property="position"/>
+        <result column="role_code" property="role_code"/>
         <association property="group" javaType="com.bizvane.ishop.entity.Group">
             <result column="group_name" property="group_name"/>
         </association>
@@ -78,6 +80,7 @@
         def_user.creater,
         def_user.isactive,
         def_group.group_name,
+        def_group.role_code,
         def_corp.corp_name
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
@@ -157,6 +160,7 @@
         </if>
         ORDER BY def_user.id DESC
     </select>
+
     <select id="selectUserById" resultMap="UserInfo">
         SELECT def_user.id,
         user_code,
@@ -245,7 +249,8 @@
         def_user.created_date,
         def_user.creater,
         def_user.isactive,
-        def_group.group_name
+        def_group.group_name,
+        def_group.role_code
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_group.corp_code
@@ -282,6 +287,7 @@
         def_user.creater,
         def_user.isactive,
         def_group.group_name,
+        def_group.role_code,
         def_corp.corp_name
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
@@ -531,6 +537,7 @@
             AND created_date LIKE concat(#{created_date},'%')
         </if>
     </select>
+
     <select id="selectAllUserScreen" resultMap="UserInfo">
         SELECT def_user.id,
         user_code,
@@ -553,6 +560,7 @@
         def_user.creater,
         def_user.isactive,
         def_group.group_name,
+        def_group.role_code,
         def_corp.corp_name
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
@@ -582,6 +590,7 @@
         </if>
         ORDER BY def_user.id DESC
     </select>
+
     <select id="selectPartScreen" resultMap="UserInfo">
         SELECT *
         FROM def_user,def_group,def_corp

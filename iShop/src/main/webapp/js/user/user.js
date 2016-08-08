@@ -595,10 +595,10 @@ function UpladFile() {
                 $('#file').val("");
             }
         }
-        whir.loading.remove();//移除加载框
     }
     function doResult(data) {
         var data=JSON.parse(data);
+        whir.loading.remove();//移除加载框
         if(data.code=="0"){
             alert('导入成功');
         }else if(data.code=="-1"){
