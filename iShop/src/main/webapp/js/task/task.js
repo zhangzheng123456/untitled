@@ -220,7 +220,7 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="delete"){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
-            $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            $('#jurisdiction').append("<li id='compile' onclick='editAssignmentb();'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
 }
@@ -280,13 +280,9 @@ function jumpBianse(){
     $('#compile').click(function(){
         var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
-            id=$(tr).attr("id");
-            sessionStorage.setItem("id",id);
-            $("#page-wrapper").show();
             $("#page-wrapper").show();
             $("#content").hide();
             $("#details").hide();
-            // $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
