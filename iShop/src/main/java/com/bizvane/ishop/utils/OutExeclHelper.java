@@ -71,7 +71,6 @@ public class OutExeclHelper {
             //这里可以改中文
             List<String> values=new ArrayList<String>();
             for (String key : cols.keySet()) {
-                System.out.println("key= " + key + " and value= " + cols.get(key));
                 values.add(cols.get(key));
             }
             for(int i=0;i<values.size();i++){
@@ -116,6 +115,7 @@ public class OutExeclHelper {
                     e.printStackTrace();
                 }
             }
+            System.gc();
         }
     return result;
     }

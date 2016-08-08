@@ -94,9 +94,6 @@ public class UserController {
             if(role_code.equals(Common.ROLE_SYS)) {
                 String store_code = jsonObject.get("store_code").toString();
                 list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, Common.ROLE_STAFF);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
             }else if (role_code.equals(Common.ROLE_GM)){
                 String store_code = jsonObject.get("store_code").toString();
                 list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code,Common.ROLE_STAFF);
@@ -496,6 +493,7 @@ public class UserController {
                 }
             }
             for (int i = 3; i < rows; i++) {
+                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column6[i].getContents().toString());
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
                     user.setCorp_code(rs.getCell(j++, i).getContents());
@@ -519,7 +517,11 @@ public class UserController {
                             area_code = area_code + areas[i2];
                         }
                     }
-                    user.setArea_code(area_code);
+                    if(!role.equals(Common.ROLE_AM)){
+                        user.setArea_code("");
+                    }else {
+                        user.setArea_code(area_code);
+                    }
                     String store_code = rs.getCell(j++, i).getContents().toString();
                     if (!store_code.equals("all") && !store_code.equals("")) {
                         String[] codes = store_code.split(",");
@@ -529,7 +531,12 @@ public class UserController {
                             store_code = store_code + codes[i2];
                         }
                     }
-                    user.setStore_code(store_code);
+                    if(role.equals(Common.ROLE_SM)||role.equals(Common.ROLE_STAFF)){
+                        user.setStore_code(store_code);
+                    }else{
+                        user.setStore_code("");
+                    }
+                    user.setPosition(rs.getCell(j++, i).getContents());
                     user.setQrcode("");
                     user.setPassword(user.getPhone());
                     Date now = new Date();

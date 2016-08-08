@@ -138,7 +138,7 @@ public class TaskServiceImpl implements TaskService{
                count += taskMapper.addTaskAllocation(allocation);
            }
             if(count>0){
-                Data data_phone = new Data("phone", phone, ValueType.PARAM);
+                Data data_phone = new Data("phone", "13800138000", ValueType.PARAM);
                 Data data_corp_code = new Data("corp_code", task.getCorp_code(), ValueType.PARAM);
                 Data data_task_code = new Data("task_code", task.getTask_code(), ValueType.PARAM);
                 Data data_task_title = new Data("task_title", task.getTask_title(), ValueType.PARAM);

@@ -15,6 +15,8 @@ public class TaskAllocation {
     private String user_code;
     //员工名
     private String user_name;
+    //员工名
+    private String phone;
     //任务状态
     private String task_status;
     //实际开始时间
@@ -39,6 +41,14 @@ public class TaskAllocation {
     private String creater;
     //是否可用
     private String isactive;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getModified_date() {
         return modified_date;
