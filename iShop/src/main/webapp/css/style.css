@@ -255,7 +255,7 @@ s{
   height: auto !important;
 }
 .nav-header a {
-  color: #DFE4ED;
+  color: #888;
 }
 .nav-header .text-muted {
   color: #8095a8;
@@ -8234,8 +8234,8 @@ li.select_index>a>label>i{
 }
 .nav .person_menu{
   position: absolute;
-  right: 10px;
-  top: 82px;
+  right: 25px;
+  top: -10px;
   width: 130px;
   text-align: center;
   background-color: #fff;
@@ -8249,13 +8249,13 @@ li.select_index>a>label>i{
   width: 40px;
   margin-left: -10px;
   height: 40px;
-  color:#888;
 }
 .nav .person_menu div{
   height: 50px;
   line-height: 50px;
   border-radius: 5px;
   position: relative;
+  color:#888;
 }
 .nav .person_menu i{
   position: absolute;
