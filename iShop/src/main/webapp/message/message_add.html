@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>编辑消息</title>
+    <title>新增消息</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/bootstrap-select.css">
     <style>
         body{
             margin-top:81px;
@@ -19,20 +20,23 @@
     </style>
 </head>
 <body>
-    <!-- <div id="wrapper">
-    </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>爱秀消息<i class="icon-ishop_8-03"></i><label>编辑消息</label></div>
-            <div class="editor_em col-lg-7  animated fadeInRight">
-                <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div>
-                <form class="conpany_msg">
-                    <div>
-                        <span><label style="color:#c26555;">接收人*</label><input type="text" id="RESERVEL" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="接收人不能为空！"></div></div></span>
+        <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>发送消息<i class="icon-ishop_8-03"></i><label>新增消息</label></div>
+            <!-- <div class="editor_em col-lg-6 editor_line  animated fadeInRight"> -->
+                <div style="display: inline-flex;">
+                        <li>所属企业</li>
+                        <li>
+                            <select id="RESERVEL" class="selectpicker bla bla bli" multiple  data-live-search="true">
+                                <option value="12">12ask</option>
+                                <option value="12">12</option>
+                                <option value="12">12</option>
+                                <option value="12">12</option>
+                                <option value="12">12</option>
+                            </select>
+                        </li>
+                        <!-- <span><label style="color:#c26555;">接收人*</label><input type="text" id="RESERVEL" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="接收人不能为空！"></div></div></span> -->
                     </div>
+                <!-- <form style="margin-left:0px">
                     <div id="drop_down" class="drop_down item_1">
                         <span><label>消息类型</label><input class="input_select" type="text" id="MESSAGE_TYPE" placeholder="请选择消息类型" readonly/>
                             <ul>
@@ -49,7 +53,7 @@
                     </div>
                 </form>
             </div>
-            <div class="editor_detail_em col-lg-4  animated fadeInRight">
+            <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="oper_btn">
                     <ul>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
@@ -58,43 +62,36 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" id="created_time"/></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input type="text" id="creator"/></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input type="text" id="modify_time"/></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input type="text" id="modifier"/></span>
-                    </div>
-                    <div>
                     <span><label>可用</label><em class="checkbox_isactive">
                     <input type="checkbox" value="" name="test" class="check" id="is_active">
                     <label for="is_active"></label></em></span>
                     </div>
                 </form>
-            </div>
-        </div>
+            </div> -->
+    </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-       <!-- Dialog -->
+      <!-- Dialog -->
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
     <!-- 带搜索的下拉菜单 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-
+    <script type="text/javascript" src="../js/bootstrap-select.js"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
-    <!-- moni select -->
+     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
-    <script type="text/javascript" src="../js/message/iShop_operate.js"></script>
+    <!-- <script type="text/javascript" src="../js/message/message_operate.js"></script> -->
+    <script>
+        $(window).on('load', function () {
+            $('#RESERVEL').selectpicker();
+        });
+    </script>
 </body>
 
 </html>

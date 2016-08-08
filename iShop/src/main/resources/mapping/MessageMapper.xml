@@ -61,9 +61,8 @@
         u.user_name message_sender ,
         dum.message_title,
         dum.message_content,
-        dum.message_type,
         c.corp_name corp_name,
-        mt.type_description,
+        mt.type_description message_type,
         dum.modified_date,
         dum.modifier,
         dum.isactive

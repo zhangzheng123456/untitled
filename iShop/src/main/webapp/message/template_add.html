@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>编辑短信模板</title>
+    <title>新增短信模板</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
@@ -20,55 +20,37 @@
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i><label>编辑消息模板</label></div>
-            <div class="editor_em col-lg-7  animated fadeInRight">
-                <div class="operation_conpany">
-                    <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-                    </ul>
-                </div>
-                <form class="conpany_msg">
+            <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i><label>新增消息模板</label></div>
+            <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
+                <form class="conpany_msg" style="margin-left:0px">
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label style="color:#c26555;">所属企业*</label></li>
                             <li id="corp_select">
                                 <span class="corp_select">
-                                    <select id="OWN_CORP" style="display:inline-flex;">
-                                        <option value="-1">请选择所属企业</option>
+                                    <select id="OWN_CORP" style="display:inline-flex;" >
                                     </select>
                                 </span>
                             </li>
                         </ul>
                     </div>
                     <div>
-                         <span><label>模板编号</label><input type="text" id="MOBAN_ID" verify="Code"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板编号为必填项，支持以大写M开头必须是4位数字的组合！"></div></div></span>
+                        <span><label>模板编号</label><input type="text" id="MOBAN_ID" verify="Code"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板编号为必填项，支持以大写M开头必须是4位数字的组合！"></div></div></span>
                     </div>
-                    <div>
+                    <div> 
                         <span><label>模板名称</label><input type="text" id="MOBAN_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="模板名称不能为空！"></div></div></span>
-                    </div>
-                    <!-- <div>
-                        <ul style="display:inline-flex;">
-                            <li><label>模板类型</label></li>
-                            <li id="type_select">
-                                <span class="message_type_select" id="corp_html">
-                                    <select id="MOBAN_TYPE" style="display:inline-flex;">
-                                        <option value="-1">1</option>
-                                    </select>
-                                </span>
-                            </li>
-                        </ul>
-                    </div>  -->
+                    </div> 
                     <div>
                         <div class="text_color">
                             <p>标记说明：</p>
-                           "#store#" 店铺名；"#name#" 会员名；"#birthday#" 会员生日；"#join_time#" 加入时间；"#sex#" 会员性别
+                            "#store#" 店铺名；"#name#" 会员名；"#birthday#" 会员生日；"#join_time#" 加入时间；"#sex#" 会员性别
                         </div>
                         <span style="display: inline-flex;width:100%"><label style="height:100px;">模板内容</label><span class="tempalte_area"><textarea id="MOBAN_CONTENT"></textarea></span></span>
                     </div>
                 </form>
             </div>
-            <div class="editor_detail_em col-lg-4  animated fadeInRight">
-                <div class="operedit_btn">
+            <div class="editor_detail col-lg-4  animated fadeInRight">
+                <div class="operadd_btn">
                     <ul>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
@@ -76,19 +58,9 @@
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>创建人</label><input type="text" id="creator" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
-                    </div>
-                    <div>
-                        <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
-                    </div>
-                    <div>
-                    <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+                    <span><label>可用</label><em class="checkbox_isactive">
+                    <input checked="true" type="checkbox" value="" name="test" class="check" id="is_active">
+                    <label for="is_active"></label></em></span>
                     </div>
                 </form>
             </div>
@@ -100,14 +72,13 @@
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
-    <!-- moni select -->
+     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
-     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+    <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-    <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <script type="text/javascript" src="../js/message/mobile_operate.js"></script>
+    <script type="text/javascript" src="../js/message/template_operate.js"></script>
 </body>
 
 </html>

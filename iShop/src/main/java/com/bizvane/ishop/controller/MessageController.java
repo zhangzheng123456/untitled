@@ -202,7 +202,7 @@ public class MessageController {
             id = jsonObj.getString("id");
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String message_code = jsonObject.getString("id");
+            String message_code = jsonObject.getString("message_code");
             List<Message> messages = messageService.getMessageDetail(message_code);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
