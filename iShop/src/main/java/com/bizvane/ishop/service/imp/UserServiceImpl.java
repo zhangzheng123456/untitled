@@ -675,6 +675,9 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
+    /**
+     * 列表显示数据转换
+     */
     public void conversion(List<User> users){
         for (User user : users) {
             if (user.getIsactive().equals("Y")) {
@@ -691,20 +694,23 @@ public class UserServiceImpl implements UserService {
             }
             String store = user.getStore_code();
             String area = user.getArea_code();
-            if (store != null && store.contains(Common.STORE_HEAD)){
-                String store_code1 = store.replace(Common.STORE_HEAD,"");
-                String code = store_code1.substring(0,store_code1.length()-1);
-                user.setStore_code(code);
-            }
-            if (store == null){
+            String role_code = user.getRole_code();
+            if ((role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) && store != null ){
+                if (store.contains(Common.STORE_HEAD)) {
+                    String store_code1 = store.replace(Common.STORE_HEAD, "");
+                    store = store_code1.substring(0, store_code1.length() - 1);
+                }
+                user.setStore_code(store);
+            }else {
                 user.setStore_code("");
             }
-            if (area != null && area.contains(Common.STORE_HEAD)) {
-                String area_code1 = area.replace(Common.STORE_HEAD, "");
-                String code = area_code1.substring(0,area_code1.length()-1);
-                user.setArea_code(code);
-            }
-            if (area == null){
+            if (role_code.equals(Common.ROLE_AM) && area != null) {
+                if (area.contains(Common.STORE_HEAD)) {
+                    String area_code1 = area.replace(Common.STORE_HEAD, "");
+                    area = area_code1.substring(0, area_code1.length() - 1);
+                }
+                user.setArea_code(area);
+            }else {
                 user.setArea_code("");
             }
         }

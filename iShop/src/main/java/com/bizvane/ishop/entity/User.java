@@ -48,7 +48,10 @@ public class User {
 	private String position;
 
 	private String area_name;
+
 	private String store_name;
+
+	private String role_code;
 
 	private Group group;
 	private String corp_name;
@@ -291,6 +294,14 @@ public class User {
 
 	public void setStore_name(String store_name) {
 		this.store_name = store_name;
+	}
+
+	public String getRole_code() {
+		return role_code;
+	}
+
+	public void setRole_code(String role_code) {
+		this.role_code = role_code;
 	}
 
 	public Corp getCorp() {

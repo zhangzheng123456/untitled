@@ -223,10 +223,10 @@ public class BrandServiceImpl implements BrandService {
      */
     @Transactional
     void updateCauseCodeChange(String corp_code, String new_brand_code, String old_brand_code) {
-        //店铺列表级联修改
+        //商品列表级联修改
         codeUpdateMapper.updateGoods("", corp_code, new_brand_code, old_brand_code);
 
-        //商品列表级联修改
+        //店铺列表级联修改
         codeUpdateMapper.updateStore("", corp_code, new_brand_code, old_brand_code, "", "");
     }
 }
