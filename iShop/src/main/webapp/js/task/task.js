@@ -291,25 +291,6 @@ function jumpBianse(){
             $('.frame').html("不能选择多个");
         }
     })
-    // //双击跳转
-    // $(".table tbody tr").dblclick(function(){
-    //     // sessionStorage.setItem("id",id);
-    //     console.log(id);
-    //     $("#page-wrapper").show();
-    //     $("#content").hide();
-    //     $("#details").hide();
-    //     var param={};
-    //     var id=$(this).attr("id");
-    //     var corp_code=$(this).find(".corp_code").attr("data-code");
-    //     var task_code=$(this).find("td:eq(2)").html();
-    //     param["corp_code"]=corp_code;
-    //     param["task_code"]=task_code;
-    //     param["id"]=id;
-    //     oc.postRequire("post","/task/selectTaskById","0",param,function(data){
-    //         console.log(data);
-    //     })
-    //     // $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
-    // })
     //删除
     $("#remove").click(function(){
         var l=$(window).width();

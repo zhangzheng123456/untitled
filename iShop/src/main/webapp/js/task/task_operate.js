@@ -294,7 +294,6 @@ function getstafflist(){
 }
 //点击弹出框
 var flase=0;
-var corp_code1="";
 $('#test').click(function(e){
 	var event = window.event || arguments[0];
 	if (event.stopPropagation) {
@@ -305,6 +304,15 @@ $('#test').click(function(e){
 	if(flase=="0"){
 		$(".distribution_frame").show();
 		flase=1;
+		var left=($(window).width()-$(".distribution_frame").width())/2;//弹框定位的left值
+		var tp=($(window).height()-$(".distribution_frame").height())/2;//弹框定位的top值
+		$(".distribution_frame").css({"left":+left+"px","top":+tp+"px"});
+		var corp_code = $('#OWN_CORP').val();
+		var corp_code1=$('#OWN_CORP').attr("corp_code");
+		if(corp_code==corp_code1){
+			return;
+		}
+		$('#OWN_CORP').attr("corp_code",corp_code);
 		getarealist();
 	}else if(flase=="1"){
 		$(".distribution_frame").hide();
@@ -344,11 +352,12 @@ $("#staff_code_drop").click(function(e){
 	var phone=$('#staff_input').attr("data-userphone");
 })
 $(document).click(function(e){
-	    if($(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.drop-down span')||$(e.target).is('.checkbox_isactive label')||$(e.target).is('.drop-down ul li')||$(e.target).is('.drop-down ul')){
-	    	return;
-	    }else{
-	    	$("#distribution_frame").hide();
-	    }
+	if($(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.drop-down span')||$(e.target).is('.drop-down h5')||$(e.target).is('.drop-down .checkbox_isactive')||$(e.target).is('.checkbox_isactive label')||$(e.target).is('.drop-down ul li')||$(e.target).is('.drop-down ul')){
+	    return;
+    }else{
+	    $("#distribution_frame").hide();
+	    flase=0;
+	}
 });
 //点击保存
 $("#add_save").click(function(){
