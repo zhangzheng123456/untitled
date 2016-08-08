@@ -304,9 +304,9 @@ function getcorplist(){
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
 			$('.searchable-select-item').click(function(){
-				$("#AREA_ID']").val("");
+				$("#AREA_ID").val("");
 				$("#AREA_NAME").val("");
-				$("input[verify='Code']").attr("data-mark","");
+				$("#AREA_ID").attr("data-mark","");
 				$("#AREA_NAME").attr("data-mark","");
 			})
 		}else if(data.code=="-1"){

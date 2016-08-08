@@ -134,8 +134,6 @@ function getarealist(){
 		}
 	})
 }
-//执行企业的拉取方法
-getcorplist(a,b);
 //获取店铺列表
 function getstorelist(){
 	var corp_code = $('#OWN_CORP').val();
@@ -381,4 +379,22 @@ $("#add_save").click(function(){
 		console.log(data);
 	})
 })
+if($(".pre_title label").text()=="新增任务"){
+	getcorplist(a,b);
+}
+function editAssignment(a){
+	$("#page-wrapper").show();
+ 	$("#content").hide();
+ 	$("#details").hide();
+ 	var param = {};
+ 	var id = $(a).attr("id");
+ 	var corp_code = $(a).find(".corp_code").attr("data-code");
+ 	var task_code = $(a).find("td:eq(2)").html();
+ 	param["corp_code"] = corp_code;
+ 	param["task_code"] = task_code;
+ 	param["id"] = id;
+ 	oc.postRequire("post", "/task/selectTaskById", "0", param, function(data) {
+ 		console.log(data);
+ 	})
+}
 
