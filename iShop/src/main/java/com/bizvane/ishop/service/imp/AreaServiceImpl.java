@@ -40,7 +40,7 @@ public class AreaServiceImpl implements AreaService {
      * 获取某区域信息
      */
     @Override
-    public Area getAreaById(int id) throws SQLException {
+    public Area getAreaById(int id) throws Exception {
         return areaMapper.selectByAreaId(id);
     }
 
@@ -49,7 +49,7 @@ public class AreaServiceImpl implements AreaService {
      * 获取区域信息
      */
     @Override
-    public Area getAreaByCode(String corp_code, String area_code) throws SQLException {
+    public Area getAreaByCode(String corp_code, String area_code) throws Exception {
         return areaMapper.selectCorpArea(corp_code, area_code);
     }
 
@@ -57,7 +57,7 @@ public class AreaServiceImpl implements AreaService {
      * 分页显示区域
      */
     @Override
-    public PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+    public PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception {
         List<Area> areas;
         PageHelper.startPage(page_number, page_size);
         areas = areaMapper.selectAllArea(corp_code, search_value);
@@ -74,7 +74,7 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public List<Area> getAllArea(String corp_code) throws SQLException {
+    public List<Area> getAllArea(String corp_code) throws Exception {
         List<Area> areas;
         areas = areaMapper.selectAreas(corp_code);
         return areas;
@@ -82,13 +82,13 @@ public class AreaServiceImpl implements AreaService {
 
     //获得区域下店铺
     @Override
-    public List<Store> getAreaStore(String corp_code, String area_code) throws SQLException {
+    public List<Store> getAreaStore(String corp_code, String area_code) throws Exception {
         return storeMapper.selectStoreBrandArea(corp_code, "", "%" + area_code + "%");
     }
 
     @Override
     @Transactional
-    public String insert(String message, String user_id) throws SQLException {
+    public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String area_code = jsonObject.get("area_code").toString();
@@ -119,7 +119,7 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     @Transactional
-    public String update(String message, String user_id) throws SQLException {
+    public String update(String message, String user_id) throws Exception {
         String old_area_code = null;
         String new_area_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
@@ -205,42 +205,42 @@ public class AreaServiceImpl implements AreaService {
         return result;
     }
 
-    private void updateAreaCode(String corp_code, String new_area_code, String old_area_code) {
+    private void updateAreaCode(String corp_code, String new_area_code, String old_area_code)  throws Exception{
         codeUpdateMapper.updateUser("", corp_code, "", "", "", "", new_area_code, old_area_code);
         codeUpdateMapper.updateStore("", corp_code, "", "", new_area_code, old_area_code);
     }
 
     @Override
     @Transactional
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return areaMapper.deleteByAreaId(id);
     }
 
     @Override
-    public Area getAreaByName(String corp_code, String area_name) {
+    public Area getAreaByName(String corp_code, String area_name)  throws Exception{
         Area area = this.areaMapper.selectArea_Name(corp_code, area_name);
         return area;
     }
 
     @Override
-    public List<Area> getAreaByCorp(String corp_code) {
+    public List<Area> getAreaByCorp(String corp_code)  throws Exception{
         List<Area> list = this.areaMapper.getAreaByCorp(corp_code);
         return list;
     }
 
     @Override
-    public Area selAreaByCorp(String corp_code, String area_code, String isactive) {
+    public Area selAreaByCorp(String corp_code, String area_code, String isactive)  throws Exception{
         return areaMapper.selAreaByCorp(corp_code, area_code, isactive);
     }
 
     @Override
-    public String insertExecl(Area area) {
+    public String insertExecl(Area area)  throws Exception{
         areaMapper.insertArea(area);
         return "add success";
     }
 
     @Override
-    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) {
+    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map)  throws Exception{
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             areaArray = area_codes.split(",");
@@ -267,7 +267,7 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) {
+    public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value)  throws Exception{
 
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {

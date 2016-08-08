@@ -13,16 +13,17 @@ import java.util.Map;
  */
 public interface AppversionService {
     //查询全部
-    List<Appversion> selectAllAppversion() throws SQLException;
+    List<Appversion> selectAllAppversion() throws Exception;
     //分页查询
-    PageInfo<Appversion> selectAllAppversion(int page_number, int page_size, String search_value) throws SQLException;
-    PageInfo<Appversion> selectAllScreen(int page_number, int page_size, Map<String,String> map);
+    PageInfo<Appversion> selectAllAppversion(int page_number, int page_size, String search_value) throws Exception;
+
+    PageInfo<Appversion> selectAllScreen(int page_number, int page_size, Map<String,String> map) throws Exception;
     //根据ID查询
-    Appversion selAppversionById(int id)throws SQLException;
+    Appversion selAppversionById(int id)throws Exception;
     //根据ID删除
-    int delAppversionById(int id)throws  SQLException;
+    int delAppversionById(int id)throws Exception;
     //修改
-    int updAppversionById(Appversion appversion)throws  SQLException;
+    int updAppversionById(Appversion appversion)throws Exception;
     //增加
-    int addAppversion(Appversion appversion)throws  SQLException;
+    int addAppversion(Appversion appversion)throws Exception;
 }

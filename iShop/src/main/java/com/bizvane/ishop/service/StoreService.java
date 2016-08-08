@@ -24,44 +24,45 @@ public interface StoreService {
      * @param search_value ： 产需条件
      * @return
      */
-    PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value);
+    PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value) throws Exception;
 
-    List<Store> selectAll(String store_code, String corp_code, String isactive);
+    List<Store> selectAll(String store_code, String corp_code, String isactive) throws Exception;
 
-    int deleteStoreUser(String user_id, String store_code);
+    int deleteStoreUser(String user_id, String store_code) throws Exception;
 
-    Store getStoreById(int id) throws SQLException;
+    Store getStoreById(int id) throws Exception;
 
-    Store getById(int id) throws SQLException;
+    Store getById(int id) throws Exception;
 
-    PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    List<Store> getCorpStore(String corp_code) throws SQLException;
+    List<Store> getCorpStore(String corp_code) throws Exception;
 
-    Store getStoreByCode(String corp_code, String store_code, String isactive);
+    Store getStoreByCode(String corp_code, String store_code, String isactive) throws Exception;
 
-    List<User> getStoreUser(String corp_code, String store_code,String area_code,  String role_code);
+    List<User> getStoreUser(String corp_code, String store_code,String area_code,  String role_code) throws Exception;
 
-    String insert(String message, String user_id) throws SQLException;
+    String insert(String message, String user_id) throws Exception;
 
-    String update(String message, String user_id) throws SQLException;
+    String update(String message, String user_id) throws Exception;
 
-    int updateStore(Store store) throws SQLException;
+    int updateStore(Store store) throws Exception;
 
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
-    Store getStoreByName(String corp_code, String store_name) throws SQLException;
+    Store getStoreByName(String corp_code, String store_name) throws Exception;
 
-    int selectAchCount(String corp_code, String store_code) throws SQLException;
+    int selectAchCount(String corp_code, String store_code) throws Exception;
 
-    int selectCount(String created_date);
+    int selectCount(String created_date) throws Exception;
 
-    PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value);
+    PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws Exception;
 
-    List<Store> selByAreaCodeList(String corp_code, String[] area_code, String search_value);
-    List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive);
+    List<Store> selByAreaCodeList(String corp_code, String[] area_code, String search_value) throws Exception;
 
-    String insertExecl(Store store);
+    List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) throws Exception;
 
-    PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map);
+    String insertExecl(Store store) throws Exception;
+
+    PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map) throws Exception;
 }

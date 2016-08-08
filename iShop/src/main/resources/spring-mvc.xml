@@ -87,11 +87,11 @@
         <mvc:exclude-mapping path="/goods/mobile/**"/>
         <mvc:exclude-mapping path="/register"/>
         <mvc:exclude-mapping path="/authcode"/>
+        <mvc:exclude-mapping path="/user/change_passwd"/>
         <mvc:exclude-mapping path="/login.html"/>
         <mvc:exclude-mapping path="/register_account.html"/>
         <mvc:exclude-mapping path="/phone_exist"/>
         <mvc:exclude-mapping path="/userlogin"/>
-        <mvc:exclude-mapping path="/api/getviprelation"/>
         <mvc:exclude-mapping path="/api/**"/>
         <mvc:exclude-mapping path="/corp/Corp_codeExist"/>
         <mvc:exclude-mapping path="/corp/CorpNameExist"/>

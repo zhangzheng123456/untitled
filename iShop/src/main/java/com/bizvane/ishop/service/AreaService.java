@@ -14,31 +14,31 @@ import java.util.Map;
  * Created by ZhouZhou on 2016/6/4.
  */
 public interface AreaService {
-    Area getAreaById(int id) throws SQLException;
+    Area getAreaById(int id) throws Exception;
 
-    Area getAreaByCode(String corp_code, String area_code) throws SQLException;
+    Area getAreaByCode(String corp_code, String area_code) throws Exception;
 
-    PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    List<Area> getAllArea(String corp_code) throws SQLException;
+    List<Area> getAllArea(String corp_code) throws Exception;
 
-    List<Store> getAreaStore(String corp_code, String area_code) throws SQLException;
+    List<Store> getAreaStore(String corp_code, String area_code) throws Exception;
 
-    String insert(String message, String user_id) throws SQLException;
+    String insert(String message, String user_id) throws Exception;
 
-    String update(String message, String user_id) throws SQLException;
+    String update(String message, String user_id) throws Exception;
 
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
-    Area getAreaByName(String corp_code, String area_name);
+    Area getAreaByName(String corp_code, String area_name) throws Exception;
 
-    List<Area> getAreaByCorp(String corp_code);
+    List<Area> getAreaByCorp(String corp_code) throws Exception;
 
-    Area selAreaByCorp(String corp_code, String area_code, String isactive);
+    Area selAreaByCorp(String corp_code, String area_code, String isactive) throws Exception;
 
-    String insertExecl(Area area);
+    String insertExecl(Area area) throws Exception;
 
-    PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map);
+    PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception;
 
-    PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value);
+    PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception;
 }

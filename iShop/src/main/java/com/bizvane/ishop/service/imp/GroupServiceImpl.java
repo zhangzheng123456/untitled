@@ -33,24 +33,24 @@ public class GroupServiceImpl implements GroupService {
     @Autowired
     private PrivilegeMapper privilegeMapper;
 
-    public Group getGroupById(int id) throws SQLException {
+    public Group getGroupById(int id) throws Exception {
         return groupMapper.selectByGroupId(id);
     }
 
-    public List<Group> selectUserGroup(String corp_code, String role_code) throws SQLException {
+    public List<Group> selectUserGroup(String corp_code, String role_code) throws Exception {
         return groupMapper.selectUserGroup(corp_code, role_code);
     }
 
-    public List<Group> selectByRole(String role_code) throws SQLException {
+    public List<Group> selectByRole(String role_code) throws Exception {
         return groupMapper.selectByRole(role_code);
     }
 
-    public Group selectByCode(String corp_code, String group_code, String isactive) throws SQLException {
+    public Group selectByCode(String corp_code, String group_code, String isactive) throws Exception {
         return groupMapper.selectByCode(corp_code, group_code, isactive);
     }
 
     @Override
-    public Group selectByName(String corp_code, String group_name, String isactive) throws SQLException {
+    public Group selectByName(String corp_code, String group_name, String isactive) throws Exception {
         return groupMapper.selectByName(corp_code, group_name,isactive);
     }
 
@@ -70,7 +70,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String, String> map) throws SQLException {
+    public PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         params.put("role_code", role_code);
@@ -89,11 +89,11 @@ public class GroupServiceImpl implements GroupService {
         return page;
     }
 
-    public String selectMaxCode() {
+    public String selectMaxCode()  throws Exception{
         return groupMapper.selectMaxCode();
     }
 
-    public String insertGroup(Group group) throws SQLException {
+    public String insertGroup(Group group) throws Exception {
         String result = "";
         String group_code = group.getGroup_code();
         String corp_code = group.getCorp_code();
@@ -108,7 +108,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Transactional
-    public String updateGroup(Group group) throws SQLException {
+    public String updateGroup(Group group) throws Exception {
         String result = "";
         int id = group.getId();
         String group_code = group.getGroup_code();
@@ -139,7 +139,7 @@ public class GroupServiceImpl implements GroupService {
         return result;
     }
 
-    public int deleteGroup(int id,String group_code,String corp_code) throws SQLException {
+    public int deleteGroup(int id,String group_code,String corp_code) throws Exception {
         privilegeMapper.delete(corp_code+group_code);
         return groupMapper.deleteByGroupId(id);
     }
@@ -149,7 +149,7 @@ public class GroupServiceImpl implements GroupService {
      * 级联更改关联此编号的员工，权限列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code, String new_group_code, String old_group_code) {
+    void updateCauseCodeChange(String corp_code, String new_group_code, String old_group_code) throws Exception{
         //若修改群组编号，对应修改员工信息中关联的群组编号
         codeUpdateMapper.updateUser("", corp_code, new_group_code, old_group_code, "", "", "", "");
 
@@ -158,7 +158,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public String selRoleByGroupCode(String corp_code, String group_code) {
+    public String selRoleByGroupCode(String corp_code, String group_code) throws Exception{
         Group group = groupMapper.selectByCode(corp_code, group_code, "");
         return group.getRole_code();
     }

@@ -16,17 +16,15 @@ import java.util.Map;
  */
 public interface SignService {
     //分页查询
-    PageInfo<Sign> selectSignAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<Sign> selectSignAll(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
+    PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception;
 
-    PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException;
+    PageInfo<Sign> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws Exception;
 
-    PageInfo<Sign> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws SQLException;
+    int delSignById(int id) throws Exception;
 
-    int delSignById(int id);
+    PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) throws Exception;
 
-
-    PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map);
-
-    PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map);
+    PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception;
 }

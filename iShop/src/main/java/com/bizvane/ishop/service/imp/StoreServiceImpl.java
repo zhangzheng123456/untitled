@@ -48,7 +48,7 @@ public class StoreServiceImpl implements StoreService {
      * @return 执行结果
      */
     @Override
-    public int deleteStoreUser(String user_id, String store_code) {
+    public int deleteStoreUser(String user_id, String store_code) throws Exception{
         store_code = Common.STORE_HEAD + store_code + ",";
         return storeMapper.deleteStoreByUserid(user_id, store_code);
     }
@@ -56,7 +56,7 @@ public class StoreServiceImpl implements StoreService {
 
     //根据id获取店铺信息
     @Override
-    public Store getStoreById(int id) throws SQLException {
+    public Store getStoreById(int id) throws Exception {
         Store store = storeMapper.selectByStoreId(id);
         String corp_code = store.getCorp_code();
         String brand_name = "";
@@ -76,19 +76,19 @@ public class StoreServiceImpl implements StoreService {
         return store;
     }
 
-    public Store getById(int id) throws SQLException {
+    public Store getById(int id) throws Exception {
         return storeMapper.selectByStoreId(id);
     }
 
     //list获取企业店铺
-    public List<Store> getCorpStore(String corp_code) throws SQLException {
+    public List<Store> getCorpStore(String corp_code) throws Exception {
         List<Store> stores = storeMapper.selectStores(corp_code);
         return stores;
     }
 
 
     //分页显示所有店铺
-    public PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws Exception{
         List<Store> shops;
 
         PageHelper.startPage(page_number, page_size);
@@ -111,7 +111,7 @@ public class StoreServiceImpl implements StoreService {
      * 获取用户的店仓信息
      */
     @Override
-    public PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value) {
+    public PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value) throws Exception{
         List<Store> shops;
         String[] ids = store_code.split(",");
         for (int i = 0; i < ids.length; i++) {
@@ -140,7 +140,7 @@ public class StoreServiceImpl implements StoreService {
      * 获取页面的所有数据
      */
     @Override
-    public List<Store> selectAll(String store_code, String corp_code, String isactive) {
+    public List<Store> selectAll(String store_code, String corp_code, String isactive) throws Exception{
         List<Store> shops;
         String[] ids = store_code.split(",");
         for (int i = 0; i < ids.length; i++) {
@@ -155,7 +155,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     //店铺下所属用户
-    public List<User> getStoreUser(String corp_code, String store_code,String area_code, String role_code) {
+    public List<User> getStoreUser(String corp_code, String store_code,String area_code, String role_code) throws Exception{
         List<User> user = new ArrayList<User>();
 
         if (!store_code.equals("")) {
@@ -183,7 +183,7 @@ public class StoreServiceImpl implements StoreService {
 
 
     //根据企业，店铺编号,查找店铺
-    public Store getStoreByCode(String corp_code, String store_code, String isactive) {
+    public Store getStoreByCode(String corp_code, String store_code, String isactive) throws Exception{
         Store store = storeMapper.selectByCode(corp_code, store_code, "");
 
         return store;
@@ -191,7 +191,7 @@ public class StoreServiceImpl implements StoreService {
 
     //新增店铺
     @Override
-    public String insert(String message, String user_id) throws SQLException {
+    public String insert(String message, String user_id) throws Exception {
         JSONObject jsonObject = new JSONObject(message);
         String result = Common.DATABEAN_CODE_ERROR;
         String store_code = jsonObject.get("store_code").toString();
@@ -224,13 +224,13 @@ public class StoreServiceImpl implements StoreService {
 
     }
 
-    public String insertExecl(Store store) {
+    public String insertExecl(Store store) throws Exception{
         storeMapper.insertStore(store);
         return "add success";
     }
 
     @Override
-    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map) {
+    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         String[] areas = null;
         String[] stores = null;
@@ -316,7 +316,7 @@ public class StoreServiceImpl implements StoreService {
 
     //修改店铺
     @Override
-    public String update(String message, String user_id) throws SQLException {
+    public String update(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int store_id = Integer.valueOf(jsonObject.get("id").toString());
@@ -380,29 +380,29 @@ public class StoreServiceImpl implements StoreService {
         return result;
     }
 
-    public int updateStore(Store store) throws SQLException {
+    public int updateStore(Store store) throws Exception {
         return storeMapper.updateStore(store);
     }
 
     //删除店铺
     @Override
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return this.storeMapper.deleteByStoreId(id);
     }
 
     @Override
-    public Store getStoreByName(String corp_code, String store_name) throws SQLException {
+    public Store getStoreByName(String corp_code, String store_name) throws Exception {
         Store store = this.storeMapper.selectByStoreName(corp_code, store_name);
         return store;
     }
 
     @Override
-    public int selectAchCount(String corp_code, String store_code) throws SQLException {
+    public int selectAchCount(String corp_code, String store_code) throws Exception {
         return this.storeMapper.selectAchCount(corp_code, store_code);
     }
 
     @Override
-    public List<Store> selByAreaCodeList(String corp_code, String[] area_code, String search_value) {
+    public List<Store> selByAreaCodeList(String corp_code, String[] area_code, String search_value) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
@@ -413,7 +413,7 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) {
+    public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
@@ -432,7 +432,7 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
-    public List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) {
+    public List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
@@ -442,7 +442,7 @@ public class StoreServiceImpl implements StoreService {
         return stores;
     }
 
-    public int selectCount(String created_date) {
+    public int selectCount(String created_date) throws Exception{
         return this.storeMapper.selectCount(created_date);
     }
 
@@ -451,7 +451,7 @@ public class StoreServiceImpl implements StoreService {
      * 级联更改关联此编号的员工，员工业绩目标，店铺业绩目标，签到列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code, String new_store_code, String old_store_code) {
+    void updateCauseCodeChange(String corp_code, String new_store_code, String old_store_code) throws Exception{
 
         //更新签到列表
         codeUpdateMapper.updateSign("", corp_code, new_store_code, old_store_code, "", "");
@@ -461,6 +461,9 @@ public class StoreServiceImpl implements StoreService {
         codeUpdateMapper.updateUserAchvGoal("", corp_code, new_store_code, old_store_code, "", "");
         //更新会员标签关系
         codeUpdateMapper.updateRelVipLabel("", corp_code, new_store_code, old_store_code);
+        String app_user_name = corpMapper.selectByCorpId(0,corp_code).getApp_user_name();
+        if (app_user_name != null && !app_user_name.equals(""))
+            codeUpdateMapper.updateRelVipStore(new_store_code,old_store_code,app_user_name);
         //更新员工
         new_store_code = Common.STORE_HEAD + new_store_code + ",";
         old_store_code = Common.STORE_HEAD + old_store_code + ",";
@@ -468,8 +471,5 @@ public class StoreServiceImpl implements StoreService {
         //更新员工详细信息
         codeUpdateMapper.updateStaffDetailInfo("", corp_code, "", "", new_store_code, old_store_code);
 
-        String app_user_name = corpMapper.selectByCorpId(0,corp_code).getApp_user_name();
-        if (app_user_name != null && !app_user_name.equals(""))
-            codeUpdateMapper.updateRelVipStore(new_store_code,old_store_code,app_user_name);
     }
 }

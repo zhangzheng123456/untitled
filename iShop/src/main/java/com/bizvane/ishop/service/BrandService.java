@@ -12,29 +12,29 @@ import java.util.Map;
  * Created by ZhouZhou on 2016/6/4.
  */
 public interface BrandService {
-    Brand getBrandById(int id) throws SQLException;
+    Brand getBrandById(int id) throws Exception;
 
-    Brand getBrandByCode(String corp_code, String brand_code) throws SQLException;
+    Brand getBrandByCode(String corp_code, String brand_code) throws Exception;
 
-    PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    List<Brand> getAllBrand(String corp_code) throws SQLException;
+    List<Brand> getAllBrand(String corp_code) throws Exception;
 
-    List<Store> getBrandStore(String corp_code, String brand_code) throws SQLException;
+    List<Store> getBrandStore(String corp_code, String brand_code) throws Exception;
 
-    String insert(String message, String user_id) throws SQLException;
+    String insert(String message, String user_id) throws Exception;
 
-    String update(String message, String user_id) throws SQLException;
+    String update(String message, String user_id) throws Exception;
 
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
-    Brand getBrandByName(String corp_code, String brand_name) throws SQLException;
+    Brand getBrandByName(String corp_code, String brand_name) throws Exception;
 
-    String insertExecl(Brand brand) throws SQLException;
+    String insertExecl(Brand brand) throws Exception;
 
-    int getGoodsCount(String corp_code, String brand_code) throws SQLException;
+    int getGoodsCount(String corp_code, String brand_code) throws Exception;
 
-    int getStoresCount(String corp_code, String brand_code) throws SQLException;
+    int getStoresCount(String corp_code, String brand_code) throws Exception;
 
-    PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map);
+    PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 }

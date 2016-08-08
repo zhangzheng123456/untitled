@@ -325,6 +325,12 @@
             <artifactId>httpclient</artifactId>
             <version>4.4</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.mongodb</groupId>
+            <artifactId>mongodb-driver</artifactId>
+            <version>3.3.0</version>
+        </dependency>
     </dependencies>
 
 

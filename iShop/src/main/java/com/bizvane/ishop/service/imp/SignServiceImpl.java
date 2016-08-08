@@ -25,7 +25,7 @@ public class SignServiceImpl implements SignService {
     StoreService storeService;
 
     @Override
-    public PageInfo<Sign> selectSignAll(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+    public PageInfo<Sign> selectSignAll(int page_number, int page_size, String corp_code, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Sign> signs = signMapper.selectSignAll(corp_code, search_value);
         for (Sign sign:signs) {
@@ -47,7 +47,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException {
+    public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
@@ -93,7 +93,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public PageInfo<Sign> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws SQLException {
+    public PageInfo<Sign> selectByUser(int page_number, int page_size, String corp_code, String user_code, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Sign> signs = signMapper.selectByUser(corp_code, user_code, search_value);
         for (Sign sign:signs) {
@@ -114,12 +114,12 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public int delSignById(int id) {
+    public int delSignById(int id) throws Exception{
         return signMapper.delSignById(id);
     }
 
     @Override
-    public PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) {
+    public PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         String[] stores = null;
         if (!store_code.equals("")) {
@@ -166,7 +166,7 @@ public class SignServiceImpl implements SignService {
     }
 
     @Override
-    public PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) {
+    public PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("user_code", user_code);

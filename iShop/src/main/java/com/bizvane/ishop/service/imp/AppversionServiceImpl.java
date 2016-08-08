@@ -27,7 +27,7 @@ public class AppversionServiceImpl implements AppversionService{
     }
 
     @Override
-    public PageInfo<Appversion> selectAllAppversion(int page_number, int page_size, String search_value) throws SQLException {
+    public PageInfo<Appversion> selectAllAppversion(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Appversion> appversions = appversionMapper.selectAllAppversion(search_value);
         for (Appversion appversion:appversions) {
@@ -42,7 +42,7 @@ public class AppversionServiceImpl implements AppversionService{
     }
 
     @Override
-    public PageInfo<Appversion> selectAllScreen(int page_number, int page_size, Map<String, String> map) {
+    public PageInfo<Appversion> selectAllScreen(int page_number, int page_size, Map<String, String> map)  throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
@@ -59,22 +59,22 @@ public class AppversionServiceImpl implements AppversionService{
     }
 
     @Override
-    public Appversion selAppversionById(int id) throws SQLException {
+    public Appversion selAppversionById(int id) throws Exception {
         return appversionMapper.selAppversionById(id);
     }
 
     @Override
-    public int delAppversionById(int id) throws SQLException {
+    public int delAppversionById(int id) throws Exception {
         return appversionMapper.delAppversionById(id);
     }
 
     @Override
-    public int updAppversionById(Appversion appversion) throws SQLException {
+    public int updAppversionById(Appversion appversion) throws Exception {
         return appversionMapper.updAppversionById(appversion);
     }
 
     @Override
-    public int addAppversion(Appversion appversion) throws SQLException {
+    public int addAppversion(Appversion appversion) throws Exception {
         return appversionMapper.addAppversion(appversion);
     }
 }

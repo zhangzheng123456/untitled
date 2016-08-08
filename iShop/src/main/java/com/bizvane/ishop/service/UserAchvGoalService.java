@@ -22,7 +22,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    UserAchvGoal getUserAchvGoalById(int id) throws SQLException;
+    UserAchvGoal getUserAchvGoalById(int id) throws Exception;
 
     /**
      * 更新用户业绩目标ID
@@ -40,7 +40,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    int deleteUserAchvGoalById(String id) throws SQLException;
+    int deleteUserAchvGoalById(String id) throws Exception;
 
     /**
      * 插入用户业绩目标ID
@@ -49,7 +49,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    String insert(UserAchvGoal userAchvGoal) throws SQLException;
+    String insert(UserAchvGoal userAchvGoal) throws Exception;
 
     /**
      * 获取用户业绩目标的分页信息
@@ -61,11 +61,11 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException;
+    PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception;
 
-    int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws  SQLException;
+    int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws Exception;
     /**
      * 显示当前用户业绩目标
      *
@@ -74,7 +74,7 @@ public interface UserAchvGoalService {
      * @return
      * @throws SQLException
      */
-    List<UserAchvGoal> userAchvGoalExist(String corp_code, String user_code) throws SQLException;
+    List<UserAchvGoal> userAchvGoalExist(String corp_code, String user_code) throws Exception;
 
-    PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map);
+    PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) throws Exception;
 }
