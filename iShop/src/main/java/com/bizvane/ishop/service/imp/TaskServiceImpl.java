@@ -152,9 +152,9 @@ public class TaskServiceImpl implements TaskService{
                 datalist.put(data_task_title.key, data_task_title);
                 datalist.put(data_user.key, data_user);
                 datalist.put(data_user_id.key, data_user_id);
-                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
-                String msg = dataBox.data.get("message").value;
-                System.out.println("APP："+msg);
+//                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
+//                String msg = dataBox.data.get("message").value;
+//                System.out.println("APP："+msg);
             }
         }catch (Exception e){
             e.printStackTrace();
@@ -201,14 +201,11 @@ public class TaskServiceImpl implements TaskService{
                     allocation.setCorp_code(task.getCorp_code());
                     allocation.setTask_code(task.getTask_code());
                     allocation.setUser_code(user_codes[i]);
-                    allocation.setTask_status("1");
-                    allocation.setReal_start_time("");
-                    allocation.setReal_end_time("");
                     Date now = new Date();
                     allocation.setModified_date(Common.DATETIME_FORMAT.format(now));
                     allocation.setModifier(user_code);
                     allocation.setId(taskAllocation.getId());
-                  count+=taskMapper.updTaskAllocation(allocation);
+                    count+=taskMapper.updTaskAllocation(allocation);
                 }
             }
             for (int i=0;i<taskAllocations.size();i++){
