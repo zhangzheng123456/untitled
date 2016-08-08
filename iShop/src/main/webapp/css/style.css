@@ -8232,3 +8232,35 @@ li.select_index>a>label>i{
 	background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
     background-size: 30px 30px;
 }
+.nav .person_menu{
+  position: absolute;
+  right: 10px;
+  top: 82px;
+  width: 130px;
+  text-align: center;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.4);
+}
+.nav .person_menu span{
+  display: inline-block;
+  font-size: 40px;
+  vertical-align: middle;
+  width: 40px;
+  margin-left: -10px;
+  height: 40px;
+  color:#888;
+}
+.nav .person_menu div{
+  height: 50px;
+  line-height: 50px;
+  border-radius: 5px;
+  position: relative;
+}
+.nav .person_menu i{
+  position: absolute;
+  border:7px solid transparent;
+  border-bottom-color:#fff;
+  top: -14px;
+  right: 25px;
+}

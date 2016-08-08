@@ -673,7 +673,7 @@ function filtrates(a,b){
 //跳转页面的键盘按下事件
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
-    var inx= this.value.replace(/[^1-9]/g, '');
+    var inx= this.value.replace(/[^0-9]/g, '');
     if (inx > cout) {
             inx = cout
         };

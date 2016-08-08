@@ -202,9 +202,9 @@ function superaddition(data,num){
                         +data[i].corp.corp_name
                         + "</span></td><td>"
                         +data[i].group.group_name
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].store_code+"'>"
                         +data[i].store_code
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].area_code
                         + "</td><td>"
                         +data[i].isactive
@@ -571,6 +571,7 @@ $("#x1").click(function(){
 })
 //上传文件
 function UpladFile() {
+    whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
     console.log(fileObj);
     var FileController = "/user/addByExecl"; //接收上传文件的后台地址
@@ -592,6 +593,7 @@ function UpladFile() {
                 $('#file').val("");
             }
         }
+        whir.loading.remove();//移除加载框
     }
     function doResult(data) {
         var data=JSON.parse(data);
