@@ -122,7 +122,7 @@ var oc = new ObjectControl();
 		console.log(_params);
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
-				$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
+				$(window.parent.document).find('#iframepage').attr("src","/message/template.html");
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -271,10 +271,10 @@ jQuery(document).ready(function(){
 	    }
     });
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
+		$(window.parent.document).find('#iframepage').attr("src","/message/template.html");
 	});
 	$(".operedit_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/mobile.html");
+		$(window.parent.document).find('#iframepage').attr("src","/message/template.html");
 	});
 });
 function getcorplist(a){

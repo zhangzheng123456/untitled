@@ -530,7 +530,6 @@ $("#x1").click(function(){
 })
 //上传文件
 function UpladFile() {
-    whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
     console.log(fileObj);
     var FileController = "/corp/addByExecl"; //接收上传文件的后台地址
@@ -555,7 +554,6 @@ function UpladFile() {
     }
     function doResult(data) {
         var data=JSON.parse(data);
-        whir.loading.remove();
         if(data.code=="0"){
             alert('导入成功');
         }else if(data.code=="-1"){

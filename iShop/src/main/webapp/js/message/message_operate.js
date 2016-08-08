@@ -107,7 +107,7 @@ var oc = new ObjectControl();
 				// 	opt.success();
 				// }
 				// window.location.href="";
-				$(window.parent.document).find('#iframepage').attr("src","/message/iShop.html");
+				$(window.parent.document).find('#iframepage').attr("src","/message/message.html");
 			}else if(data.code=="-1"){
 				// art.dialog({
 				// 	time: 1,
@@ -198,9 +198,9 @@ jQuery(document).ready(function(){
 		getcorplist(a,b);
 	}
     $(".iShopadd_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/iShop.html");
+		$(window.parent.document).find('#iframepage').attr("src","/message/message.html");
 	});
 	$(".iShopedit_oper_btn ul li:nth-of-type(2)").click(function(){
-		$(window.parent.document).find('#iframepage').attr("src","/message/iShop.html");
+		$(window.parent.document).find('#iframepage').attr("src","/message/message.html");
 	});
 });
