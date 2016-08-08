@@ -676,6 +676,7 @@ function filtrates(a,b){
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
     var inx= this.value.replace(/[^0-9]/g, '');
+    var inx=parseInt(inx);
     if (inx > cout) {
             inx = cout
         };

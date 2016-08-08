@@ -725,9 +725,10 @@ function filtrates(a,b){
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
     var inx= this.value.replace(/[^0-9]/g, '');
-    // if (inx > cout) {
-    //     inx = cout
-    // };
+    var inx=parseInt(inx);
+    if (inx > cout) {
+        inx = cout
+    };
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
@@ -735,6 +736,7 @@ $("#input-txt").keydown(function() {
             } else if (value !== "") {
                 POST(inx, pageSize);
             } else if (filtrate !== "") {
+                _param["pageSize"] = pageSize;
                 filtrates(inx, pageSize);
             }
         };
