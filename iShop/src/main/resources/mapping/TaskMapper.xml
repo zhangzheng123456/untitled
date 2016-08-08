@@ -6,6 +6,7 @@
         SELECT * from def_task,DEF_CORP,def_task_type
         where def_task.corp_code = DEF_CORP.corp_code
         and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
+        and DEF_CORP.corp_code = def_task_type.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
