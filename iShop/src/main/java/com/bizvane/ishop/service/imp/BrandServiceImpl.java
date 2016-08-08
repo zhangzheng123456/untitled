@@ -63,7 +63,7 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrand(String corp_code) throws SQLException {
+    public List<Brand> getAllBrand(String corp_code) throws Exception {
         List<Brand> brands;
         brands = brandMapper.selectBrands(corp_code);
         return brands;
@@ -71,13 +71,13 @@ public class BrandServiceImpl implements BrandService {
 
     //获得品牌下店铺
     @Override
-    public List<Store> getBrandStore(String corp_code, String brand_code) throws SQLException {
+    public List<Store> getBrandStore(String corp_code, String brand_code) throws Exception {
         return storeMapper.selectStoreBrandArea(corp_code, "%" + brand_code + "%", "");
     }
 
     @Override
     @Transactional
-    public String insert(String message, String user_id) throws SQLException {
+    public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String brand_code = jsonObject.get("brand_code").toString();
@@ -109,25 +109,25 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    public String insertExecl(Brand brand) {
+    public String insertExecl(Brand brand) throws Exception{
         brandMapper.insertBrand(brand);
         return "add success";
     }
 
     @Override
-    public int getGoodsCount(String corp_code, String brand_code) throws SQLException {
+    public int getGoodsCount(String corp_code, String brand_code) throws Exception {
         return brandMapper.getGoodsCount(corp_code, brand_code);
     }
 
     @Override
-    public int getStoresCount(String corp_code, String brand_code) throws SQLException {
+    public int getStoresCount(String corp_code, String brand_code) throws Exception {
         return brandMapper.getStoresCount(corp_code, brand_code);
     }
 
 
     @Override
     @Transactional
-    public String update(String message, String user_id) throws SQLException {
+    public String update(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int brand_id = Integer.parseInt(jsonObject.get("id").toString());
@@ -186,19 +186,19 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return brandMapper.deleteByBrandId(id);
     }
 
     @Override
-    public Brand getBrandByName(String corp_code, String brand_name) {
+    public Brand getBrandByName(String corp_code, String brand_name) throws Exception{
         Brand brand = brandMapper.selectByBrandName(corp_code, brand_name);
         return brand;
     }
 
 
     @Override
-    public PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+    public PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
         List<Brand> brands;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
@@ -222,7 +222,7 @@ public class BrandServiceImpl implements BrandService {
      * 级联更改关联此编号的店铺，商品列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code, String new_brand_code, String old_brand_code) {
+    void updateCauseCodeChange(String corp_code, String new_brand_code, String old_brand_code) throws Exception{
         //商品列表级联修改
         codeUpdateMapper.updateGoods("", corp_code, new_brand_code, old_brand_code);
 

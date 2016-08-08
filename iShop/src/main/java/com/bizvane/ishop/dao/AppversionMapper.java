@@ -4,6 +4,7 @@ package com.bizvane.ishop.dao;
 import com.bizvane.ishop.entity.Appversion;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,14 +13,15 @@ import java.util.Map;
  */
 public interface AppversionMapper {
 
-    List<Appversion> selectAllAppversion(@Param("search_value") String search_value);
-    List<Appversion> selectAllScreen(Map<String,Object> params);
-    int addAppversion(Appversion appversion);
+    List<Appversion> selectAllAppversion(@Param("search_value") String search_value) throws SQLException;
 
+    List<Appversion> selectAllScreen(Map<String,Object> params) throws SQLException;
 
-    int updAppversionById(Appversion appversion);
+    int addAppversion(Appversion appversion) throws SQLException;
 
-    int delAppversionById(int id);
+    int updAppversionById(Appversion appversion) throws SQLException;
 
-    Appversion selAppversionById(@Param("id") int id);
+    int delAppversionById(int id) throws SQLException;
+
+    Appversion selAppversionById(@Param("id") int id) throws SQLException;
 }

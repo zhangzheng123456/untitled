@@ -34,12 +34,12 @@ public class CorpServiceImpl implements CorpService {
     @Autowired
     private AreaMapper areaMapper;
 
-    public Corp selectByCorpId(int corp_id, String corp_code) throws SQLException {
+    public Corp selectByCorpId(int corp_id, String corp_code) throws Exception {
         return corpMapper.selectByCorpId(corp_id, corp_code);
     }
 
     @Transactional
-    public String insert(String message, String user_id) throws SQLException {
+    public String insert(String message, String user_id) throws Exception {
 
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
@@ -75,7 +75,7 @@ public class CorpServiceImpl implements CorpService {
     }
 
     @Transactional
-    public String update(String message, String user_id) throws SQLException {
+    public String update(String message, String user_id) throws Exception {
         String new_code = null;
         String old_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
@@ -132,7 +132,7 @@ public class CorpServiceImpl implements CorpService {
      * @param new_corp_code
      */
     @Transactional
-    private void updateCorpcode(String old_corp_code, String new_corp_code) {
+    private void updateCorpcode(String old_corp_code, String new_corp_code)  throws Exception{
         if (old_corp_code.equals(new_corp_code)) {
             return;
         }
@@ -159,14 +159,14 @@ public class CorpServiceImpl implements CorpService {
     }
 
     @Transactional
-    public int deleteByCorpId(int id) throws SQLException {
+    public int deleteByCorpId(int id) throws Exception {
         return corpMapper.deleteByCorpId(id);
     }
 
     /**
      * 分页显示所有企业
      */
-    public PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws SQLException {
+    public PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Corp> corps = corpMapper.selectAllCorp(search_value);
         for (Corp corp:corps) {
@@ -181,13 +181,13 @@ public class CorpServiceImpl implements CorpService {
     }
 
     @Override
-    public String insertExecl(Corp corp) {
+    public String insertExecl(Corp corp)  throws Exception{
         corpMapper.insertCorp(corp);
         return "add success";
     }
 
     @Override
-    public PageInfo<Corp> selectAllCorpScreen(int page_number, int page_size, Map<String, String> map) {
+    public PageInfo<Corp> selectAllCorpScreen(int page_number, int page_size, Map<String, String> map)  throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
@@ -206,7 +206,7 @@ public class CorpServiceImpl implements CorpService {
     /**
      * 显示所有企业
      */
-    public List<Corp> selectAllCorp() throws SQLException {
+    public List<Corp> selectAllCorp() throws Exception {
         List<Corp> list = corpMapper.selectCorps("");
         return list;
     }
@@ -216,7 +216,7 @@ public class CorpServiceImpl implements CorpService {
      * 以便新增企业时
      * 自动生成corp_code
      */
-    public String selectMaxCorpCode() throws SQLException {
+    public String selectMaxCorpCode() throws Exception {
         return corpMapper.selectMaxCorpCode();
     }
 
@@ -228,7 +228,7 @@ public class CorpServiceImpl implements CorpService {
      * @throws SQLException
      */
     @Override
-    public String getCorpByCorpName(String corp_name) throws SQLException {
+    public String getCorpByCorpName(String corp_name) throws Exception {
         List<Corp> corps = corpMapper.selectByCorpName(corp_name);
         if (corps == null || corps.size() < 1) {
             return Common.DATABEAN_CODE_SUCCESS;
@@ -237,40 +237,40 @@ public class CorpServiceImpl implements CorpService {
     }
 
     @Override
-    public int getAreaCount(String corp_code) {
+    public int getAreaCount(String corp_code)  throws Exception{
         return this.corpMapper.getAreaCount(corp_code);
     }
 
     @Override
-    public int getBranCount(String corp_code) {
+    public int getBranCount(String corp_code)  throws Exception{
         return this.corpMapper.getBrandCount(corp_code);
     }
 
     @Override
-    public int getGoodCount(String corp_code) {
+    public int getGoodCount(String corp_code)  throws Exception{
         return this.corpMapper.getGoodCount(corp_code);
     }
 
-    public Corp getCorpByAppUserName(String app_user_name) {
+    public Corp getCorpByAppUserName(String app_user_name)  throws Exception{
         return corpMapper.selectByAppUserName(app_user_name);
     }
 
     @Override
-    public int getGroupCount(String corp_code) {
+    public int getGroupCount(String corp_code)  throws Exception{
         return corpMapper.getGroupCount(corp_code);
     }
 
     @Override
-    public int getGoodsCount(String corp_code) {
+    public int getGoodsCount(String corp_code)  throws Exception{
         return corpMapper.getGoodCount(corp_code);
     }
 
     @Override
-    public int getMessagesTypeCount(String corp_code) {
+    public int getMessagesTypeCount(String corp_code)  throws Exception{
         return corpMapper.getMessageTypeCount(corp_code);
     }
 
-    public int selectCount(String create_date) {
+    public int selectCount(String create_date)  throws Exception{
         return corpMapper.selectCount(create_date);
     }
 }

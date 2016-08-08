@@ -36,7 +36,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     private static final Logger logger = Logger.getLogger(UserAchvGoalService.class);
 
 
-    public PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException {
+    public PageInfo<UserAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception {
 
         List<UserAchvGoal> userAchvGoals = null;
 
@@ -70,7 +70,8 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
      * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
-    public PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws SQLException {
+    public PageInfo<UserAchvGoal> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code,
+                                                     String area_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
@@ -122,7 +123,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public UserAchvGoal getUserAchvGoalById(int id) throws SQLException {
+    public UserAchvGoal getUserAchvGoalById(int id) throws Exception {
         return this.userAchvGoalMapper.selectById(id);
     }
 
@@ -153,15 +154,15 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
     }
 
     @Override
-    public int deleteUserAchvGoalById(String id) throws SQLException {
+    public int deleteUserAchvGoalById(String id) throws Exception {
         return this.userAchvGoalMapper.delete(Integer.parseInt(id));
     }
-    public int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws  SQLException{
+    public int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws Exception{
         return  userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
 
     }
     @Override
-    public String insert(UserAchvGoal userAchvGoal) throws SQLException {
+    public String insert(UserAchvGoal userAchvGoal) throws Exception {
         int count = -1;
         count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
         if (count > 0) {
@@ -172,13 +173,13 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         }
     }
 
-    public List<UserAchvGoal> userAchvGoalExist(String corp_code, String user_code) throws SQLException {
+    public List<UserAchvGoal> userAchvGoalExist(String corp_code, String user_code) throws Exception {
         return userAchvGoalMapper.selectUserAchvCount(corp_code, user_code);
     }
 
     @Override
     public PageInfo<UserAchvGoal> getAllUserAchScreen(int page_number, int page_size, String corp_code, String
-            area_code, String store_code, String role_code, Map<String, String> map) {
+            area_code, String store_code, String role_code, Map<String, String> map)  throws Exception{
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");

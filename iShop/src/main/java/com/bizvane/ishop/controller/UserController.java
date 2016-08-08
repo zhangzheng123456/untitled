@@ -1478,7 +1478,7 @@ public class UserController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/myAccount", method = RequestMethod.POST)
+    @RequestMapping(value = "/myAccount", method = RequestMethod.GET)
     @ResponseBody
     public String viewAccount(HttpServletRequest request) {
 
@@ -1486,21 +1486,17 @@ public class UserController {
         String userId = request.getSession().getAttribute("user_id").toString();
         int user_id = Integer.parseInt(userId);
         try {
-
             User user = userService.getUserById(user_id);
             JSONObject result = new JSONObject();
             result.put("user", JSON.toJSONString(user));
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString() + "========ex==========");
         }
-        logger.info("info--------" + dataBean.getJsonStr());
         return dataBean.getJsonStr();
     }
 

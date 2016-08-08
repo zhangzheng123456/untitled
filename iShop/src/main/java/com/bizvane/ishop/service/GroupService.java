@@ -12,27 +12,27 @@ import java.util.Map;
  */
 public interface GroupService {
 
-    Group getGroupById(int id) throws SQLException;
+    Group getGroupById(int id) throws Exception;
 
-    List<Group> selectUserGroup(String corp_code, String role_code) throws SQLException;
+    List<Group> selectUserGroup(String corp_code, String role_code) throws Exception;
 
-    List<Group> selectByRole(String role_code) throws SQLException;
+    List<Group> selectByRole(String role_code) throws Exception;
 
-    Group selectByCode(String corp_code, String group_code, String isactive) throws SQLException;
+    Group selectByCode(String corp_code, String group_code, String isactive) throws Exception;
 
-    Group selectByName(String corp_code, String group_name, String isactive) throws SQLException;
+    Group selectByName(String corp_code, String group_name, String isactive) throws Exception;
 
-    PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException;
+    PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws Exception;
 
-    PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String,String> map) throws SQLException;
-    String selectMaxCode();
+    PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String,String> map) throws Exception;
+    String selectMaxCode() throws Exception;
 
-    String insertGroup(Group group) throws SQLException;
+    String insertGroup(Group group) throws Exception;
 
-    String updateGroup(Group group) throws SQLException;
+    String updateGroup(Group group) throws Exception;
 
-    int deleteGroup(int id,String group_code,String corp_code) throws SQLException;
+    int deleteGroup(int id,String group_code,String corp_code) throws Exception;
 
-    String selRoleByGroupCode(String corp_code,String group_code);
+    String selRoleByGroupCode(String corp_code,String group_code) throws Exception;
 
 }

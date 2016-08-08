@@ -202,7 +202,7 @@ public class UserAchvGoalControl {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("success");
-        } catch (SQLException e) {
+        } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(e.getMessage());

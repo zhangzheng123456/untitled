@@ -384,18 +384,9 @@ $("#add_save").click(function(){
 if($(".pre_title label").text()=="新增任务"){
 	getcorplist(a,b);
 }
-function editAssignment(a){
-	$("#page-wrapper").show();
- 	$("#content").hide();
- 	$("#details").hide();
- 	var param = {};
- 	var id = $(a).attr("id");
- 	var corp_code = $(a).find(".corp_code").attr("data-code");
- 	var task_code = $(a).find("td:eq(2)").html();
- 	param["corp_code"] = corp_code;//公司编号
- 	param["task_code"] = task_code;//任务编号
- 	param["id"] = id;//公司id
- 	oc.postRequire("post", "/task/selectTaskById", "0", param, function(data) {
+var param = {};
+function nssignment(){//加载list的文件
+	oc.postRequire("post", "/task/selectTaskById", "0", param, function(data) {
  		var msg=data.message;
  		var msg=JSON.parse(msg);
  		var list=JSON.parse(msg.list);
@@ -414,7 +405,34 @@ function editAssignment(a){
 		$("#modify_time").val(msg.modified_date);//修改时间
 		$("#modifier").val(msg.modifier);//修改人
  		getcorplist(corp_code,task_code);//
- 	})
+ 	});
+}
+//双击进入编辑界面
+function editAssignment(a){
+	$("#page-wrapper").show();
+ 	$("#content").hide();
+ 	$("#details").hide();
+ 	var id = $(a).attr("id");
+ 	var corp_code = $(a).find(".corp_code").attr("data-code");
+ 	var task_code = $(a).find("td:eq(2)").html();
+ 	param["corp_code"] = corp_code;//公司编号
+ 	param["task_code"] = task_code;//任务编号
+ 	param["id"] = id;//公司id
+ 	nssignment();
+}
+//编辑进入界面
+function editAssignmentb(a){
+    var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
+	if (tr.length>1||tr.length=='0') {
+		return;
+	}
+	var id=$(tr).attr("id");
+	var corp_code=$(tr).find(".corp_code").attr("data-code");
+	var task_code=$(tr).find("td:eq(2)").html();
+	param["corp_code"] = corp_code;//公司编号
+ 	param["task_code"] = task_code;//任务编号
+ 	param["id"] = id;//公司id
+ 	nssignment();
 }
 //编辑关闭
 $("#edit_close").click(function(){

@@ -195,7 +195,6 @@ public class BrandController {
                     logger.info("------------得到brand" + brand.getId());
                     String brand_code = brand.getBrand_code();
                     String corp_code = brand.getCorp_code();
-                    logger.info("-------------获取企业店铺之前---" + corp_code);
                     int count = 0;
                     count = brandService.getGoodsCount(corp_code, brand_code);
                     if (count > 0) {
