@@ -26,12 +26,12 @@ public class RoleServiceImpl implements RoleService {
     @Autowired
     private PrivilegeMapper privilegeMapper;
 
-    public Role selectByRoleId(int role_id) throws SQLException {
+    public Role selectByRoleId(int role_id) throws Exception {
         return roleMapper.selectByRoleId(role_id);
     }
 
     @Override
-    public String insertRole(Role record) throws SQLException {
+    public String insertRole(Role record) throws Exception {
         if (this.roleCodeExist(record.getRole_code()).equals(Common.DATABEAN_CODE_ERROR)) {
             return "角色编号已存在";
         } else if (this.roleNameExist(record.getRole_name()).equals(Common.DATABEAN_CODE_ERROR)) {
@@ -44,7 +44,7 @@ public class RoleServiceImpl implements RoleService {
 
 
     @Override
-    public String roleCodeExist(String role_code) {
+    public String roleCodeExist(String role_code) throws Exception{
         if (roleMapper.countRoleCode(role_code) > 0) {
             return Common.DATABEAN_CODE_ERROR;
         }
@@ -52,7 +52,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public String roleNameExist(String role_name) throws SQLException {
+    public String roleNameExist(String role_name) throws Exception {
         if (roleMapper.countRoleName(role_name) > 0) {
             return Common.DATABEAN_CODE_ERROR;
         }
@@ -60,7 +60,7 @@ public class RoleServiceImpl implements RoleService {
     }
 
 
-    public String updateByRoleId(Role record) throws SQLException {
+    public String updateByRoleId(Role record) throws Exception {
         Role old = this.roleMapper.selectByRoleId(record.getId());
         if ((!old.getRole_code().equals(record.getRole_code()))
                 && (this.roleCodeExist(record.getRole_code()).equals(Common.DATABEAN_CODE_ERROR))) {
@@ -73,25 +73,25 @@ public class RoleServiceImpl implements RoleService {
         return Common.DATABEAN_CODE_ERROR;
     }
 
-    public int deleteByRoleId(int id,String role_code) throws SQLException {
+    public int deleteByRoleId(int id,String role_code) throws Exception {
         privilegeMapper.delete(role_code);
 
         return roleMapper.deleteByRoleId(id);
     }
 
-    public PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws SQLException {
+    public PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Role> roles = roleMapper.selectAllRole(search_value);
         PageInfo<Role> page = new PageInfo<Role>(roles);
         return page;
     }
 
-    public List<Role> selectAll(String search_value) throws SQLException {
+    public List<Role> selectAll(String search_value) throws Exception {
         List<Role> roles = roleMapper.selectAllRole(search_value);
         return roles;
     }
 
-    public List<Role> selectCorpRole(String role_code) throws SQLException {
+    public List<Role> selectCorpRole(String role_code) throws Exception {
         List<Role> roles = roleMapper.selectUserRole(role_code);
         return roles;
     }

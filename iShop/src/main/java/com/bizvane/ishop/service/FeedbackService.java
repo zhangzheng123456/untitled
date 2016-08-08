@@ -13,19 +13,17 @@ import java.util.Map;
  */
 public interface FeedbackService {
     //查询全部
-    List<Feedback> selectAllFeedback() throws SQLException;
+    List<Feedback> selectAllFeedback() throws Exception;
     //分页查询
-    PageInfo<Feedback> selectAllFeedback(int page_number, int page_size, String search_value) throws SQLException;
+    PageInfo<Feedback> selectAllFeedback(int page_number, int page_size, String search_value) throws Exception;
 
-    PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<String,String> map);
+    PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<String,String> map) throws Exception;
     //根据ID查询
-    Feedback selFeedbackById(int id)throws SQLException;
+    Feedback selFeedbackById(int id)throws Exception;
     //根据ID删除
-    int delFeedbackById(int id)throws  SQLException;
+    int delFeedbackById(int id)throws  Exception;
     //修改
-    int updFeedbackById(Feedback feedback)throws  SQLException;
+    int updFeedbackById(Feedback feedback)throws Exception;
     //增加
-    int addFeedback(Feedback feedback)throws  SQLException;
-
-
+    int addFeedback(Feedback feedback)throws Exception;
 }

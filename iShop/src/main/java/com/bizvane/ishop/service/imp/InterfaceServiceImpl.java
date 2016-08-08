@@ -25,7 +25,7 @@ public class InterfaceServiceImpl implements InterfaceService{
     private InterfaceMapper interfaceMapper;
 
     @Override
-    public PageInfo<Interfacers> selectAllScreen(int page_number, int page_size, Map<String, String> map) {
+    public PageInfo<Interfacers> selectAllScreen(int page_number, int page_size, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
@@ -42,12 +42,12 @@ public class InterfaceServiceImpl implements InterfaceService{
     }
 
     @Override
-    public List<Interfacers> selectAllInterface() throws SQLException {
+    public List<Interfacers> selectAllInterface() throws Exception {
         return interfaceMapper.selectAllInterface("");
     }
 
     @Override
-    public PageInfo<Interfacers> selectAllInterface(int page_number, int page_size, String search_value) throws SQLException {
+    public PageInfo<Interfacers> selectAllInterface(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Interfacers> interfacerses = interfaceMapper.selectAllInterface(search_value);
         for (Interfacers interfacers:interfacerses) {
@@ -62,22 +62,22 @@ public class InterfaceServiceImpl implements InterfaceService{
     }
 
     @Override
-    public Interfacers selInterfaceById(int id) throws SQLException {
+    public Interfacers selInterfaceById(int id) throws Exception  {
         return interfaceMapper.selInterfaceById(id);
     }
 
     @Override
-    public int delInterfaceById(int id) throws SQLException {
+    public int delInterfaceById(int id) throws Exception {
         return interfaceMapper.delInterfaceById(id);
     }
 
     @Override
-    public int updInterfaceById(Interfacers interfacers) throws SQLException {
+    public int updInterfaceById(Interfacers interfacers) throws Exception {
         return interfaceMapper.updInterfaceById(interfacers);
     }
 
     @Override
-    public int addInterface(Interfacers interfacers) throws SQLException {
+    public int addInterface(Interfacers interfacers) throws Exception {
         return interfaceMapper.addInterface(interfacers);
     }
 }

@@ -20,9 +20,9 @@ public interface VipRecordTypeService {
      * @return
      * @throws SQLException
      */
-    VipRecordType getVipRecordTypeById(int id) throws SQLException;
+    VipRecordType getVipRecordTypeById(int id) throws Exception;
 
-    VipRecordType getVipRecordTypeByName(String corp_code, String type_name) throws SQLException;
+    VipRecordType getVipRecordTypeByName(String corp_code, String type_name) throws Exception;
 
     /**
      * 插入VIP标签类型信息
@@ -31,7 +31,7 @@ public interface VipRecordTypeService {
      * @return
      * @throws SQLException
      */
-    int insert(VipRecordType VipRecordType) throws SQLException;
+    int insert(VipRecordType VipRecordType) throws Exception;
 
     /**
      * 更新VIP标签类型信息
@@ -40,7 +40,7 @@ public interface VipRecordTypeService {
      * @return
      * @throws SQLException
      */
-    int update(VipRecordType VipRecordType) throws SQLException;
+    int update(VipRecordType VipRecordType) throws Exception;
 
     /**
      * 获取符合查询条件的分页信息
@@ -51,7 +51,7 @@ public interface VipRecordTypeService {
      * @param search_value ： 查询条件
      * @return
      */
-    PageInfo<VipRecordType> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<VipRecordType> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
     /**
      * 判断VIP标签类型编号是否在公司内唯一
@@ -69,7 +69,7 @@ public interface VipRecordTypeService {
      * @param corp_code ： 公司编号
      * @return
      */
-    String VipRecordTypeNameExist(String type_name, String corp_code);
+    String VipRecordTypeNameExist(String type_name, String corp_code) throws Exception;
 
     /**
      * 删除VIPb编号类型，通过ID
@@ -77,7 +77,7 @@ public interface VipRecordTypeService {
      * @param id
      * @return
      */
-    int deleteById(int id);
+    int deleteById(int id) throws Exception;
 
     //List<VipRecordType> getAllVipRecordType(String corp_code, String search_value);
 }

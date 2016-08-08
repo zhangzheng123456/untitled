@@ -14,20 +14,19 @@ import java.util.Map;
  * Created by Administrator on 2016/5/23.
  */
 public interface ValidateCodeService {
-    int insertValidateCode(ValidateCode code);
+    int insertValidateCode(ValidateCode code)throws Exception;
 
-    ValidateCode selectValidateCode(int code_id,String phone,String isactive);
+    ValidateCode selectValidateCode(int code_id,String phone,String isactive)throws Exception;
 
-    int updateValidateCode(ValidateCode code);
+    int updateValidateCode(ValidateCode code)throws Exception;
 
-    int deleteValidateCode(int code_id);
+    int deleteValidateCode(int code_id)throws Exception;
 
-    ValidateCode selValidateCodeById(int id);
+    ValidateCode selValidateCodeById(int id)throws Exception;
 
-    List<ValidateCode> selectAll();
+    List<ValidateCode> selectAll()throws Exception;
 
-    PageInfo<ValidateCode> selectAllValidateCode(int page_number, int page_size, String search_value)throws SQLException;
+    PageInfo<ValidateCode> selectAllValidateCode(int page_number, int page_size, String search_value)throws Exception;
 
-    PageInfo<ValidateCode> selectAllScreen(int page_number, int page_size, Map<String,String> map);
-
+    PageInfo<ValidateCode> selectAllScreen(int page_number, int page_size, Map<String,String> map)throws Exception;
 }

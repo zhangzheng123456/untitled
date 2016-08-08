@@ -34,8 +34,6 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 
     @Override
     public String  update(StoreAchvGoal storeAchvGoal) throws Exception{
-
-
         int count = -1;
         if (storeAchvGoal.getTarget_time().equals(Common.TIME_TYPE_WEEK)) {
             String time = storeAchvGoal.getTarget_time();
@@ -62,7 +60,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 
     @Override
     public PageInfo<StoreAchvGoal> selectBySearch(int page_number, int page_size, String corp_code, String area_code, String store_code, String search_value)
-            throws SQLException {
+            throws Exception {
         String[] area_codes = null;
         String[] store_codes = null;
 
@@ -109,7 +107,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public String storeAchvExist(String corp_code, String store_code) {
+    public String storeAchvExist(String corp_code, String store_code) throws Exception{
         //this.storeAchvGoalMapper.selectById(1);
         try {
             if (null != this.storeAchvGoalMapper.selectByCorpAndUserCode(corp_code, store_code)) {
@@ -122,7 +120,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map) {
+    public PageInfo<StoreAchvGoal> getAllStoreAchvScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, Map<String, String> map) throws Exception{
         String[] area_codes = null;
         String[] store_codes = null;
         if (!area_code.equals("")) {
@@ -182,12 +180,12 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
 //    }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws Exception{
         return this.storeAchvGoalMapper.deleteById(id);
     }
 
     @Override
-    public String insert(StoreAchvGoal storeAchvGoal) {
+    public String insert(StoreAchvGoal storeAchvGoal) throws Exception{
         int count = -1;
 
         count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time());
@@ -200,12 +198,12 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     }
 
     @Override
-    public StoreAchvGoal selectlById(int id) {
+    public StoreAchvGoal selectlById(int id) throws Exception{
         return this.storeAchvGoalMapper.selectById(id);
     }
 
     @Override
-    public List<StoreAchvGoal> selectUsersBySearch(String corp_code, String search_value) {
+    public List<StoreAchvGoal> selectUsersBySearch(String corp_code, String search_value) throws Exception{
         return null;
     }
 }

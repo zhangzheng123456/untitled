@@ -23,7 +23,7 @@ public interface SmsTemplateService {
      * @return
      * @throws SQLException
      */
-    SmsTemplate getSmsTemplateById(int id) throws SQLException;
+    SmsTemplate getSmsTemplateById(int id) throws Exception;
 
     /**
      * 插入短您模板信息
@@ -32,7 +32,7 @@ public interface SmsTemplateService {
      * @return
      * @throws SQLException
      */
-    int insert(SmsTemplate SmsTemplate) throws SQLException;
+    int insert(SmsTemplate SmsTemplate) throws Exception;
 
     /**
      * 删除短信模板信息，通过ID
@@ -41,7 +41,7 @@ public interface SmsTemplateService {
      * @return
      * @throws SQLException
      */
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
     /**
      * 更新短信模板信息，通过ID
@@ -49,7 +49,7 @@ public interface SmsTemplateService {
      * @param SmsTemplate
      * @return
      */
-    String update(SmsTemplate SmsTemplate) throws SQLException;
+    String update(SmsTemplate SmsTemplate) throws Exception;
 
     /**
      * 获取分页信息
@@ -60,7 +60,7 @@ public interface SmsTemplateService {
      * @param search_value ：查询信息
      * @return
      */
-    PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws SQLException;
+    PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
     /**
      * 通过模板编号，判断模板在企业内是否存在
@@ -70,7 +70,7 @@ public interface SmsTemplateService {
      * @return
      * @throws SQLException
      */
-    String SmsTemplateCodeExist(String corp_code, String template_code) throws SQLException;
+    String SmsTemplateCodeExist(String corp_code, String template_code) throws Exception;
 
     /**
      * 通过模板名称，来判断模板名在企业内是否唯一
@@ -80,11 +80,11 @@ public interface SmsTemplateService {
      * @return
      * @throws SQLException
      */
-    String SmsTemplateNameExist(String corp_code, String template_name) throws SQLException;
+    String SmsTemplateNameExist(String corp_code, String template_name) throws Exception;
 
     //PageInfo<SmsTemplate> selectAllSmsTemplate(int page_number, int page_size, Map<String, String> map);
 
-    PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String s, Map<String, String> map);
+    PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String s, Map<String, String> map)throws Exception;
 
 //    List<TemplateType> getTypes();
 

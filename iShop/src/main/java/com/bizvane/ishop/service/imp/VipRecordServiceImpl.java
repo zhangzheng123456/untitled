@@ -27,7 +27,7 @@ public class VipRecordServiceImpl implements VipRecordService {
 
 
     @Override
-    public PageInfo<VipRecord> selectAllVipRecordScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+    public PageInfo<VipRecord> selectAllVipRecordScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         params.put("corp_code",corp_code);
@@ -46,28 +46,28 @@ public class VipRecordServiceImpl implements VipRecordService {
     }
 
     @Override
-    public VipRecord getVipRecord(int id) throws SQLException {
+    public VipRecord getVipRecord(int id) throws Exception {
         return this.VipRecordMapper.selecctById(id);
     }
 
     @Override
-    public int insert(VipRecord VipRecord) throws SQLException {
+    public int insert(VipRecord VipRecord) throws Exception {
         return this.VipRecordMapper.insert(VipRecord);
     }
 
     @Override
-    public int update(VipRecord VipRecord) throws SQLException {
+    public int update(VipRecord VipRecord) throws Exception {
         return this.VipRecordMapper.updateByPrimaryKey(VipRecord);
     }
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return this.VipRecordMapper.deleteByPrimary(id);
     }
 
 
     @Override
-    public PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         PageHelper.startPage(page_number, page_size);
         List<VipRecord> list = this.VipRecordMapper.selectAllVipRecordInfo(corp_code, search_value);
         for (VipRecord vipRecord:list) {

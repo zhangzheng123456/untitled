@@ -12,21 +12,21 @@ import java.util.List;
 
 public interface RoleService {
 
-    Role selectByRoleId(int role_id) throws SQLException;
+    Role selectByRoleId(int role_id) throws Exception;
 
-    String insertRole(Role record) throws SQLException;
+    String insertRole(Role record) throws Exception;
 
-    String updateByRoleId(Role record) throws SQLException;
+    String updateByRoleId(Role record) throws Exception;
 
-    int deleteByRoleId(int id,String role_code) throws SQLException;
+    int deleteByRoleId(int id,String role_code) throws Exception;
 
-    PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws SQLException;
+    PageInfo<Role> selectAllRole(int page_number, int page_size, String search_value) throws Exception;
 
-    List<Role> selectAll(String search_value) throws SQLException;
+    List<Role> selectAll(String search_value) throws Exception;
 
-    List<Role> selectCorpRole(String role_code) throws SQLException;
+    List<Role> selectCorpRole(String role_code) throws Exception;
 
-    String roleCodeExist(String role_code) throws SQLException;
+    String roleCodeExist(String role_code) throws Exception;
 
-    String roleNameExist(String role_name) throws SQLException;
+    String roleNameExist(String role_name) throws Exception;
 }

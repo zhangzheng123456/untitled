@@ -273,7 +273,7 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
-    private List<Store> ComparaBrandName(List<Store> list, String brand_name) {
+    private List<Store> ComparaBrandName(List<Store> list, String brand_name) throws Exception{
         if (brand_name == null || brand_name.isEmpty()) {
             return list;
         }

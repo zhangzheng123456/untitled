@@ -27,22 +27,22 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
 
 
     @Override
-    public SmsTemplate getSmsTemplateById(int id) throws SQLException {
+    public SmsTemplate getSmsTemplateById(int id) throws Exception {
         return this.smsTemplateMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public int insert(SmsTemplate SmsTemplate) throws SQLException {
+    public int insert(SmsTemplate SmsTemplate) throws Exception {
         return this.smsTemplateMapper.insert(SmsTemplate);
     }
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return this.smsTemplateMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public String update(SmsTemplate smsTemplate) throws SQLException {
+    public String update(SmsTemplate smsTemplate) throws Exception {
         SmsTemplate old = this.smsTemplateMapper.selectByPrimaryKey(smsTemplate.getId());
         if (old.getCorp_code().equals(smsTemplate.getCorp_code())) {
             if ((!old.getTemplate_code().equals(smsTemplate.getTemplate_code()))
@@ -79,14 +79,14 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
-    public PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         PageHelper.startPage(page_number, page_size);
         List<SmsTemplate> list = this.smsTemplateMapper.selectBySearch(corp_code, search_value);
         PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>(list);
         return page;
     }
 
-    public String SmsTemplateCodeExist(String corp_code, String tem_code) throws SQLException {
+    public String SmsTemplateCodeExist(String corp_code, String tem_code) throws Exception {
         List<SmsTemplate> list = this.smsTemplateMapper.selectByCode(corp_code, tem_code);
         if (list == null || list.size() < 1) {
             return Common.DATABEAN_CODE_SUCCESS;
@@ -95,7 +95,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
-    public String SmsTemplateNameExist(String corp_code, String tem_name) throws SQLException {
+    public String SmsTemplateNameExist(String corp_code, String tem_name) throws Exception {
         //SmsTemplateNameExist
         List<SmsTemplate> list = this.smsTemplateMapper.selectByName(tem_name, corp_code);
         if (list == null || list.size() < 1) {
@@ -105,7 +105,7 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     }
 
     @Override
-    public PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+    public PageInfo<SmsTemplate> getAllSmsTemplateScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
         List<SmsTemplate> smsTemplates;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();

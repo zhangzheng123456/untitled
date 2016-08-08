@@ -21,7 +21,7 @@ public interface VipLabelService {
      * @return
      * @throws SQLException
      */
-    VipLabel getVipLabelById(int id) throws SQLException;
+    VipLabel getVipLabelById(int id) throws Exception;
 
     /**
      * 插入VIP用户的标签信息
@@ -30,7 +30,7 @@ public interface VipLabelService {
      * @return
      * @throws SQLException
      */
-    String insert(VipLabel vipLabel) throws SQLException;
+    String insert(VipLabel vipLabel) throws Exception;
 
     /**
      * 删除VIP用户的标签信息，通过VIP用户的标签编号
@@ -39,7 +39,7 @@ public interface VipLabelService {
      * @return
      * @throws SQLException
      */
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
     /**
      * 更新VIP标签信息
@@ -47,7 +47,7 @@ public interface VipLabelService {
      * @param
      * @return
      */
-    String update(VipLabel vipLabel) throws SQLException;
+    String update(VipLabel vipLabel) throws Exception;
 
     /**
      * 获取用户分页信息
@@ -58,9 +58,9 @@ public interface VipLabelService {
      * @param search_value ： 搜索字段
      * @return
      */
-    PageInfo<VipLabel> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<VipLabel> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws Exception;
 
-    PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String,String> map);
+    PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String,String> map)throws Exception;
 
     /**
      * 判断VIP标签名称是否公司内唯一
@@ -70,7 +70,5 @@ public interface VipLabelService {
      * @return
      * @throws SQLException
      */
-    String VipLabelNameExist(String corp_code, String tag_name) throws SQLException;
-
-
+    String VipLabelNameExist(String corp_code, String tag_name) throws Exception;
 }

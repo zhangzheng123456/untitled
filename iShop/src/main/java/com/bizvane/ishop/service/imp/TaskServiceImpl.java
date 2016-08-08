@@ -4,7 +4,6 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.TaskMapper;
 import com.bizvane.ishop.dao.TaskTypeMapper;
 import com.bizvane.ishop.dao.UserMapper;
-import com.bizvane.ishop.dao.UserMessageMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.TaskService;
@@ -38,8 +37,6 @@ public class TaskServiceImpl implements TaskService{
     private TaskTypeMapper typeMapper;
     @Autowired
     IceInterfaceService iceInterfaceService;
-    @Autowired
-    private UserMessageMapper userMessageMapper;
     @Autowired
     private UserMapper userMapper;
     @Override

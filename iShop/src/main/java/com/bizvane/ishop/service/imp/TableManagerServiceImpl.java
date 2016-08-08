@@ -17,7 +17,7 @@ public class TableManagerServiceImpl implements TableManagerService {
     @Autowired
     private TableManagerMapper managerMapper;
     @Override
-    public List<TableManager> selAllByCode(String function_code) {
+    public List<TableManager> selAllByCode(String function_code) throws Exception{
         List<TableManager> tableManagers = managerMapper.selAllByCode(function_code);
         for (TableManager manager: tableManagers) {
             System.out.println(manager.getColumn_name()+"---"+manager.getShow_name());
@@ -29,7 +29,7 @@ public class TableManagerServiceImpl implements TableManagerService {
      * 获取页面可筛选的列
      */
     @Override
-    public List<TableManager> selByCode(String function_code) {
+    public List<TableManager> selByCode(String function_code) throws Exception{
         return managerMapper.selByCode(function_code);
     }
 }

@@ -4,26 +4,27 @@ import com.bizvane.ishop.entity.SmsTemplate;
 
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
 public interface SmsTemplateMapper {
 
-    int deleteByPrimaryKey(Integer id);
+    int deleteByPrimaryKey(Integer id) throws SQLException;
 
-    int insert(SmsTemplate smsTemplate);
+    int insert(SmsTemplate smsTemplate) throws SQLException;
 
-    SmsTemplate selectByPrimaryKey(Integer id);
+    SmsTemplate selectByPrimaryKey(Integer id) throws SQLException;
 
-    int updateByPrimaryKey(SmsTemplate smsTemplate);
+    int updateByPrimaryKey(SmsTemplate smsTemplate) throws SQLException;
 
-    List<SmsTemplate> selectBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value);
+    List<SmsTemplate> selectBySearch(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
-    List<SmsTemplate> selectByCode(@Param("corp_code") String corp_code, @Param("template_code") String template_code);
+    List<SmsTemplate> selectByCode(@Param("corp_code") String corp_code, @Param("template_code") String template_code) throws SQLException;
 
-    List<SmsTemplate> selectByName(@Param("template_name") String template_name, @Param("corp_code") String corp_code);
+    List<SmsTemplate> selectByName(@Param("template_name") String template_name, @Param("corp_code") String corp_code) throws SQLException;
 
-    List<SmsTemplate> selectAllSmsTemplateScreen(Map<String, Object> params);
+    List<SmsTemplate> selectAllSmsTemplateScreen(Map<String, Object> params) throws SQLException;
 
     /*List<TemplateType> getTypes();*/
 }

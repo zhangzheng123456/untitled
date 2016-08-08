@@ -27,12 +27,12 @@ public class VipLabelServiceImpl implements VipLabelService {
     private VipLabelMapper vipLabelMapper;
 
     @Override
-    public VipLabel getVipLabelById(int id) throws SQLException {
+    public VipLabel getVipLabelById(int id) throws Exception {
         return this.vipLabelMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public String insert(VipLabel vipLabel) throws SQLException {
+    public String insert(VipLabel vipLabel) throws Exception {
         if (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR)) {
             return "名称已经存在";
         } else if (vipLabelMapper.insert(vipLabel) >= 0) {
@@ -42,12 +42,12 @@ public class VipLabelServiceImpl implements VipLabelService {
     }
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return vipLabelMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public String update(VipLabel vipLabel) throws SQLException {
+    public String update(VipLabel vipLabel) throws Exception {
         VipLabel old = this.vipLabelMapper.selectByPrimaryKey(vipLabel.getId());
         if (old.getCorp_code().equals(vipLabel.getCorp_code())) {
             if (!old.getLabel_name().equals(vipLabel.getLabel_name()) && (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR))) {
@@ -66,7 +66,7 @@ public class VipLabelServiceImpl implements VipLabelService {
     }
 
     @Override
-    public PageInfo<VipLabel> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<VipLabel> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         List<VipLabel> list = null;
         PageHelper.startPage(page_number, page_size);
         list = vipLabelMapper.selectAllVipLabel(corp_code, search_value);
@@ -89,7 +89,7 @@ public class VipLabelServiceImpl implements VipLabelService {
     }
 
     @Override
-    public PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+    public PageInfo<VipLabel> selectAllVipScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         params.put("corp_code", corp_code);
@@ -126,7 +126,7 @@ public class VipLabelServiceImpl implements VipLabelService {
 //    }
 
     @Override
-    public String VipLabelNameExist(String corp_code, String tag_name) throws SQLException {
+    public String VipLabelNameExist(String corp_code, String tag_name) throws Exception {
         VipLabel VipLabel = vipLabelMapper.selectVipLabelName(corp_code, tag_name);
         String result = Common.DATABEAN_CODE_ERROR;
         if (VipLabel == null) {

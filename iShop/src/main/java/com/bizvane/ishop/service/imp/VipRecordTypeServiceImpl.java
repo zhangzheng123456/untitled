@@ -22,27 +22,27 @@ public class VipRecordTypeServiceImpl implements VipRecordTypeService {
     private VipRecordTypeMapper vipRecordTypeMapper;
 
     @Override
-    public VipRecordType getVipRecordTypeById(int id) throws SQLException {
+    public VipRecordType getVipRecordTypeById(int id) throws Exception {
         return vipRecordTypeMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public VipRecordType getVipRecordTypeByName(String corp_code, String type_name) throws SQLException {
+    public VipRecordType getVipRecordTypeByName(String corp_code, String type_name) throws Exception {
         return vipRecordTypeMapper.selectCode(corp_code, type_name);
     }
 
     @Override
-    public int insert(VipRecordType vipRecordType) throws SQLException {
+    public int insert(VipRecordType vipRecordType) throws Exception {
         return vipRecordTypeMapper.insert(vipRecordType);
     }
 
     @Override
-    public int update(VipRecordType vipRecordType) throws SQLException {
+    public int update(VipRecordType vipRecordType) throws Exception {
         return vipRecordTypeMapper.updateByPrimaryKey(vipRecordType);
     }
 
     @Override
-    public PageInfo<VipRecordType> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<VipRecordType> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         PageInfo<VipRecordType> pageInfo = null;
         PageHelper.startPage(page_number, page_size);
         List<VipRecordType> list = this.vipRecordTypeMapper.selectAllVipRecordType(corp_code, search_value);
@@ -63,12 +63,12 @@ public class VipRecordTypeServiceImpl implements VipRecordTypeService {
 //    }
 
     @Override
-    public String VipRecordTypeNameExist(String type_name, String corp_code) {
+    public String VipRecordTypeNameExist(String type_name, String corp_code) throws Exception{
         return null;
     }
 
     @Override
-    public int deleteById(int id) {
+    public int deleteById(int id) throws Exception{
         return this.vipRecordTypeMapper.deleteByPrimaryKey(id);
     }
 

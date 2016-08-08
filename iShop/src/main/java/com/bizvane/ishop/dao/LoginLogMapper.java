@@ -14,5 +14,4 @@ public interface LoginLogMapper {
     LoginLog selectByLogId(@Param("log_id") int log_id, @Param("phone") String phone);
 
     int updateByLogId(LoginLog record);
-
 }

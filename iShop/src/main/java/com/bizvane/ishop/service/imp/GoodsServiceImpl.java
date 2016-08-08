@@ -27,23 +27,21 @@ public class GoodsServiceImpl implements GoodsService {
     private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(GoodsServiceImpl.class);
 
 
-    public GoodsServiceImpl() {
-    }
 
     @Override
-    public Goods getGoodsById(int id) throws SQLException {
+    public Goods getGoodsById(int id) throws Exception {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
         Transter(goods);
         return goods;
     }
 
     @Override
-    public int insert(Goods goods) throws SQLException {
+    public int insert(Goods goods) throws Exception {
         return goodsMapper.insert(goods);
     }
 
     @Override
-    public String update(Goods goods) throws SQLException {
+    public String update(Goods goods) throws Exception {
         Goods old = this.goodsMapper.selectByPrimaryKey(goods.getId());
         if (goods.getCorp_code().equals(old.getCorp_code())) {
             if ((!old.getGoods_code().equals(goods.getGoods_code()))
@@ -67,12 +65,12 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return goodsMapper.deleteByPrimaryKey(id);
     }
 
     @Override
-    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value) {
+    public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
         list = goodsMapper.selectAllGoods(corp_code, search_value);
@@ -91,7 +89,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+    public PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         params.put("corp_code", corp_code);
@@ -117,7 +115,7 @@ public class GoodsServiceImpl implements GoodsService {
      *
      * @param goods ： 商品对象
      */
-    private void Transter(Goods goods) {
+    private void Transter(Goods goods) throws Exception{
         //    try {
         try {
             String jsString = goods.getGoods_image();
@@ -140,14 +138,14 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public Goods getGoodsByCode(String corp_code, String goods_code) {
+    public Goods getGoodsByCode(String corp_code, String goods_code) throws Exception{
         Goods goods = this.goodsMapper.getGoodsByCode(corp_code, goods_code);
         Transter(goods);
         return goods;
     }
 
     @Override
-    public String goodsCodeExist(String corp_code, String goods_code) {
+    public String goodsCodeExist(String corp_code, String goods_code) throws Exception{
         Goods good = goodsMapper.getGoodsByCode(corp_code, goods_code);
         String result = Common.DATABEAN_CODE_ERROR;
         if (good == null) {
@@ -157,7 +155,7 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public String goodsNameExist(String corp_code, String goods_name) {
+    public String goodsNameExist(String corp_code, String goods_name) throws Exception{
         Goods good = goodsMapper.getGoodsByName(corp_code, goods_name);
         String result = Common.DATABEAN_CODE_ERROR;
         if (good == null) {

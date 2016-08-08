@@ -15,15 +15,15 @@ import java.util.List;
  */
 public interface MessageService {
 
-    MessageInfo getMessageById(int id) throws SQLException;
+    MessageInfo getMessageById(int id) throws Exception;
 
-    List<Message> getMessageDetail(String message_code) throws SQLException;
+    List<Message> getMessageDetail(String message_code) throws Exception;
 
-    String insert(String message,String user_code);
+    String insert(String message,String user_code) throws Exception;
 
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
-    PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) throws SQLException;
+    PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) throws Exception;
 
-    List<MessageType> selectAllMessageType() throws SQLException;
+    List<MessageType> selectAllMessageType() throws Exception;
 }

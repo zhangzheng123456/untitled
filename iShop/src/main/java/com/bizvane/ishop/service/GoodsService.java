@@ -16,7 +16,7 @@ public interface GoodsService {
      * @return
      * @throws SQLException
      */
-    Goods getGoodsById(int id) throws SQLException;
+    Goods getGoodsById(int id) throws Exception;
 
     /**
      * 插入企业
@@ -24,7 +24,7 @@ public interface GoodsService {
      * @return
      * @throws SQLException
      */
-    int insert(Goods goods) throws SQLException;
+    int insert(Goods goods) throws Exception;
 
     /**
      * 更新企业信息，通过编号区分
@@ -32,7 +32,7 @@ public interface GoodsService {
      * @return
      * @throws SQLException
      */
-    String update(Goods goods) throws SQLException;
+    String update(Goods goods) throws Exception;
 
     /**
      * 删除企业，通过编号区分
@@ -40,7 +40,7 @@ public interface GoodsService {
      * @return
      * @throws SQLException
      */
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
     /**
      * 获取分页查询信息
@@ -50,9 +50,9 @@ public interface GoodsService {
      * @param search_value ：搜索信息
      * @return
      */
-    PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws Exception;
 
-    PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map);
+    PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map)throws Exception;
 
     /**
      * 通过商品编号，获取商品信息
@@ -60,7 +60,7 @@ public interface GoodsService {
      * @param goods_code
      * @return
      */
-    Goods getGoodsByCode(String corp_code, String goods_code);
+    Goods getGoodsByCode(String corp_code, String goods_code)throws Exception;
 
     /**
      * 判断企业编号信息是否在企业内唯一
@@ -68,7 +68,7 @@ public interface GoodsService {
      * @param goods_code
      * @return
      */
-    String goodsCodeExist(String corp_code, String goods_code);
+    String goodsCodeExist(String corp_code, String goods_code)throws Exception;
 
     /**
      * 判断商品名称是否在企业内唯一
@@ -76,5 +76,5 @@ public interface GoodsService {
      * @param goods_name
      * @return
      */
-    String goodsNameExist(String corp_code, String goods_name);
+    String goodsNameExist(String corp_code, String goods_name)throws Exception;
 }

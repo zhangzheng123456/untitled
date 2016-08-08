@@ -203,7 +203,7 @@ public class RoleController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());
 
-        } catch (SQLException e) {
+        } catch (Exception e) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(e.getMessage());

@@ -34,7 +34,7 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 获取user所有列表功能模块
      */
-    public JSONArray selectAllFunctions(String corp_code,String user_code, String group_code, String role_code) {
+    public JSONArray selectAllFunctions(String corp_code,String user_code, String group_code, String role_code) throws Exception{
         List<Function> func_info;
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
@@ -152,7 +152,7 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 按功能获取user动作权限
      */
-    public JSONArray selectActionByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) {
+    public JSONArray selectActionByFun(String corp_code,String user_code, String group_code, String role_code, String function_code) throws Exception{
         List<Action> act_info;
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
@@ -170,7 +170,7 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 列出登录用户的所有权限
      */
-    public List<Function> selectAllPrivilege(String corp_code, String role_code, String user_code, String group_code, String search_value) {
+    public List<Function> selectAllPrivilege(String corp_code, String role_code, String user_code, String group_code, String search_value) throws Exception{
         user_code = corp_code +"U"+user_code;
         group_code = corp_code +"G"+group_code;
         List<Function> privilege = functionMapper.selectPrivilege(user_code, role_code, group_code, search_value);
@@ -180,7 +180,7 @@ public class FunctionServiceImpl implements FunctionService {
     /**
      * 列出用户所属群组的所有权限
      */
-    public JSONArray selectRAGPrivilege(String role_code, String group_code) {
+    public JSONArray selectRAGPrivilege(String role_code, String group_code) throws Exception{
         JSONArray array = new JSONArray();
         List<Function> info = functionMapper.selectPrivilege("", role_code, group_code, "");
         for (int i = 0; i < info.size(); i++) {
@@ -196,7 +196,7 @@ public class FunctionServiceImpl implements FunctionService {
      * 列出所选角色的权限
      * 返回action id
      */
-    public JSONArray selectRolePrivilege(String role_code) {
+    public JSONArray selectRolePrivilege(String role_code) throws Exception{
         JSONArray array = new JSONArray();
         List<Function> act_info = functionMapper.selectRolePrivilege(role_code);
         for (int i = 0; i < act_info.size(); i++) {
@@ -212,7 +212,7 @@ public class FunctionServiceImpl implements FunctionService {
      * 列出所选群组的权限
      * 返回action id
      */
-    public JSONArray selectGroupPrivilege(String corp_code,String group_code) {
+    public JSONArray selectGroupPrivilege(String corp_code,String group_code) throws Exception{
         JSONArray array = new JSONArray();
         group_code = corp_code +"G"+group_code;
         List<Function> act_info = functionMapper.selectGroupPrivilege(group_code);
@@ -229,7 +229,7 @@ public class FunctionServiceImpl implements FunctionService {
      * 列出所选用户的权限
      * 返回action id
      */
-    public JSONArray selectUserPrivilege(String corp_code,String user_code) {
+    public JSONArray selectUserPrivilege(String corp_code,String user_code) throws Exception{
         JSONArray array = new JSONArray();
         user_code = corp_code +"U"+user_code;
         List<Function> act_info = functionMapper.selectUserPrivilege(user_code);
@@ -246,7 +246,7 @@ public class FunctionServiceImpl implements FunctionService {
      * 更新（用户/群组/角色）的权限
      *
      */
-    public String updatePrivilege(String master_code, String user_id, JSONArray array) {
+    public String updatePrivilege(String master_code, String user_id, JSONArray array) throws Exception{
         try {
             Date now = new Date();
             //先删除权限下所有权限

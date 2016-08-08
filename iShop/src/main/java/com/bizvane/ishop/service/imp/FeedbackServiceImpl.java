@@ -30,7 +30,7 @@ public class FeedbackServiceImpl implements FeedbackService{
      * @throws SQLException
      */
     @Override
-    public PageInfo<Feedback> selectAllFeedback(int page_number, int page_size, String search_value) throws SQLException {
+    public PageInfo<Feedback> selectAllFeedback(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Feedback> feedbacks = feedbackMapper.selectAllFeedback(search_value);
         for (Feedback feedback:feedbacks) {
@@ -54,13 +54,13 @@ public class FeedbackServiceImpl implements FeedbackService{
     }
 //查询全部
     @Override
-    public List<Feedback> selectAllFeedback() throws SQLException {
+    public List<Feedback> selectAllFeedback() throws Exception {
       return feedbackMapper.selectAllFeedback("");
 
     }
 
 @Override
-public PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<String, String> map) {
+public PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<String, String> map) throws Exception{
     Map<String, Object> params = new HashMap<String, Object>();
     params.put("map", map);
     PageHelper.startPage(page_number, page_size);
@@ -86,24 +86,24 @@ public PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<St
 }
     //根据ID查询
 @Override
-    public Feedback selFeedbackById(int id) throws SQLException {
+    public Feedback selFeedbackById(int id) throws Exception {
         return feedbackMapper.selFeedbackById(id);
     }
 //删除
     @Override
-    public int delFeedbackById(int id) throws SQLException {
+    public int delFeedbackById(int id) throws Exception {
         return feedbackMapper.delFeedbackById(id);
     }
     //修改
     @Override
-    public int updFeedbackById(Feedback feedback) throws SQLException {
+    public int updFeedbackById(Feedback feedback) throws Exception {
         return feedbackMapper.updFeedbackById(feedback);
     }
     //增加
     @Override
     //事务注解
     @Transactional
-    public int addFeedback(Feedback feedback) throws SQLException {
+    public int addFeedback(Feedback feedback) throws Exception {
         int i = feedbackMapper.addFeedback(feedback);
         //事务测试代码
 //        int j=5/0;

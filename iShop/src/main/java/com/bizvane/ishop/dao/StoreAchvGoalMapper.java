@@ -4,6 +4,7 @@ import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -19,7 +20,7 @@ public interface StoreAchvGoalMapper {
      *
      * @return
      */
-    StoreAchvGoal selectById(int id);
+    StoreAchvGoal selectById(int id) throws SQLException;
 
     /**
      * 插入店铺业绩目标信息
@@ -27,7 +28,7 @@ public interface StoreAchvGoalMapper {
      * @param storeAchvGoal
      * @return
      */
-    int insert(StoreAchvGoal storeAchvGoal);
+    int insert(StoreAchvGoal storeAchvGoal) throws SQLException;
 
     /**
      * 更改店铺业绩目标信息
@@ -35,7 +36,7 @@ public interface StoreAchvGoalMapper {
      * @param storeAchvGoal
      * @return
      */
-    int update(StoreAchvGoal storeAchvGoal);
+    int update(StoreAchvGoal storeAchvGoal) throws SQLException;
 
     /**
      * 删除店铺业绩目标信息
@@ -43,7 +44,7 @@ public interface StoreAchvGoalMapper {
      * @param id
      * @return
      */
-    int deleteById(@Param("id") int id);
+    int deleteById(@Param("id") int id) throws SQLException;
 
 
     /**
@@ -53,7 +54,7 @@ public interface StoreAchvGoalMapper {
      * @return
      */
 
-    List<StoreAchvGoal> selectBySearch(Map<String, Object> params);
+    List<StoreAchvGoal> selectBySearch(Map<String, Object> params) throws SQLException;
 
 
     /**
@@ -61,11 +62,11 @@ public interface StoreAchvGoalMapper {
      * @param store_code
      * @return
      */
-    StoreAchvGoal selectByCorpAndUserCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code);
+    StoreAchvGoal selectByCorpAndUserCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
 
 
-    List<StoreAchvGoal> selectAllStoreAchvScreen(Map<String, Object> params);
+    List<StoreAchvGoal> selectAllStoreAchvScreen(Map<String, Object> params) throws SQLException;
 
-    int selectStoreAchvCountType(@Param("corp_code")String corp_code,@Param("store_code")String store_code,@Param("time_type")String time_type,@Param("target_time")String target_time);
+    int selectStoreAchvCountType(@Param("corp_code")String corp_code,@Param("store_code")String store_code,@Param("time_type")String time_type,@Param("target_time")String target_time) throws SQLException;
 
 }

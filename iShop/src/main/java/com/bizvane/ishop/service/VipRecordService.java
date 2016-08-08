@@ -20,7 +20,7 @@ public interface VipRecordService {
      * @return
      * @throws SQLException
      */
-    VipRecord getVipRecord(int id) throws SQLException;
+    VipRecord getVipRecord(int id) throws Exception;
 
     /**
      * 插入回访记录
@@ -28,7 +28,7 @@ public interface VipRecordService {
      * @return
      * @throws SQLException
      */
-    int insert(VipRecord VipRecord) throws SQLException;
+    int insert(VipRecord VipRecord) throws Exception;
 
     /**
      * 更改回访记录
@@ -36,7 +36,7 @@ public interface VipRecordService {
      * @return
      * @throws SQLException
      */
-    int update(VipRecord VipRecord) throws SQLException;
+    int update(VipRecord VipRecord) throws Exception;
 
     /**
      * 删除回访记录
@@ -44,7 +44,7 @@ public interface VipRecordService {
      * @return
      * @throws SQLException
      */
-    int delete(int id) throws SQLException;
+    int delete(int id) throws Exception;
 
     /**
      * 获取回访记录的分页信息
@@ -54,9 +54,7 @@ public interface VipRecordService {
      * @param search_value ： 搜索数据
      * @return
      */
-    PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value);
+    PageInfo<VipRecord> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws Exception;
 
-    PageInfo<VipRecord> selectAllVipRecordScreen(int page_number, int page_size, String corp_code, Map<String,String> map);
-
-
+    PageInfo<VipRecord> selectAllVipRecordScreen(int page_number, int page_size, String corp_code, Map<String,String> map) throws Exception;
 }

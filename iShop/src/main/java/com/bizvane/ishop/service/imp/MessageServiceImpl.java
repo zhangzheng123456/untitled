@@ -45,7 +45,7 @@ public class MessageServiceImpl implements MessageService {
      *
      */
     @Override
-    public PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) {
+    public PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) throws Exception{
         PageHelper.startPage(page_number, page_size);
         List<MessageInfo> list = this.messageMapper.selectAllMessageInfo(corp_code, user_code, search_value);
         for (MessageInfo message:list) {
@@ -60,17 +60,17 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public MessageInfo getMessageById(int id) throws SQLException {
+    public MessageInfo getMessageById(int id) throws Exception {
         return messageMapper.selectByPrimaryKey(id);
     }
 
     @Override
-    public List<Message> getMessageDetail(String message_code) throws SQLException {
+    public List<Message> getMessageDetail(String message_code) throws Exception {
         return messageMapper.selectMessageDetail(message_code);
     }
 
     @Override
-    public String insert(String message, String user_code) {
+    public String insert(String message, String user_code) throws Exception {
         String result = "";
         try {
             JSONObject json = new JSONObject(message);
@@ -151,12 +151,12 @@ public class MessageServiceImpl implements MessageService {
 
 
     @Override
-    public int delete(int id) throws SQLException {
+    public int delete(int id) throws Exception {
         return messageMapper.deleteByPrimaryKey(id);
     }
 
 
-    public List<MessageType> selectAllMessageType() throws SQLException {
+    public List<MessageType> selectAllMessageType() throws Exception {
         return messageMapper.selectAllMessageType();
     }
 }
