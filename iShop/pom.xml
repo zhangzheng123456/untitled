@@ -15,6 +15,11 @@
             <name>Bizvane Group</name>
             <url>http://repo.bizvane.com/nexus/content/groups/bizvane</url>
         </repository>
+        <repository>
+            <id>zeroc</id>
+            <name>repo zeroc ice</name>
+            <url>https://repo.zeroc.com/nexus/content/repositories/releases</url>
+        </repository>
     </repositories>
 
     <properties>
@@ -302,6 +307,12 @@
             <groupId>com.bizvane.sun</groupId>
             <artifactId>client_app</artifactId>
             <version>1.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.zeroc</groupId>
+            <artifactId>ice</artifactId>
+            <version>${ice}</version>
         </dependency>
         <!-- http  start-->
         <dependency>

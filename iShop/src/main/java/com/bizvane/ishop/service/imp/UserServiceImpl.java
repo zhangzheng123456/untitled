@@ -66,38 +66,7 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUser(corp_code, search_value);
-        for (User user : users) {
-            if (user.getIsactive().equals("Y")) {
-                user.setIsactive("是");
-            } else {
-                user.setIsactive("否");
-            }
-            if(user.getSex()==null){
-                user.setSex("男");
-            }else if(user.getSex().equals("F")){
-                user.setSex("女");
-            }else{
-                user.setSex("男");
-            }
-            String store = user.getStore_code();
-            String area = user.getArea_code();
-            if (store != null && store.contains(Common.STORE_HEAD)){
-                String store_code1 = store.replace(Common.STORE_HEAD,"");
-                String code = store_code1.substring(0,store_code1.length()-1);
-                user.setStore_code(code);
-            }
-            if (store == null){
-                user.setStore_code("");
-            }
-            if (area != null && area.contains(Common.STORE_HEAD)) {
-                String area_code1 = area.replace(Common.STORE_HEAD, "");
-                String code = area_code1.substring(0,area_code1.length()-1);
-                user.setArea_code(code);
-            }
-            if (area == null){
-                user.setArea_code("");
-            }
-        }
+        conversion(users);
         request.getSession().setAttribute("size", users.size());
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
@@ -139,38 +108,7 @@ public class UserServiceImpl implements UserService {
         params.put("corp_code", corp_code);
         PageHelper.startPage(page_number, page_size);
         List<User>  users = userMapper.selectPartUser(params);
-        for (User user : users) {
-            if (user.getIsactive().equals("Y")) {
-                user.setIsactive("是");
-            } else {
-                user.setIsactive("否");
-            }
-            if(user.getSex()==null){
-                user.setSex("男");
-            }else if(user.getSex().equals("F")){
-                user.setSex("女");
-            }else{
-                user.setSex("男");
-            }
-            String store = user.getStore_code();
-            String area = user.getArea_code();
-            if (store != null && store.contains(Common.STORE_HEAD)){
-                String store_code1 = store.replace(Common.STORE_HEAD,"");
-                String code = store_code1.substring(0,store_code1.length()-1);
-                user.setStore_code(code);
-            }
-            if (store == null){
-                user.setStore_code("");
-            }
-            if (area != null && area.contains(Common.STORE_HEAD)) {
-                String area_code1 = area.replace(Common.STORE_HEAD, "");
-                String code = area_code1.substring(0,area_code1.length()-1);
-                user.setArea_code(code);
-            }
-            if (area == null){
-                user.setArea_code("");
-            }
-        }
+        conversion(users);
         System.out.println("--大小：-----"+users.size());
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
@@ -280,38 +218,7 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code) throws SQLException {
         PageHelper.startPage(page_number, page_size);
         List<User> users = userMapper.selectGroupUser(corp_code, group_code);
-        for (User user : users) {
-            if (user.getIsactive().equals("Y")) {
-                user.setIsactive("是");
-            } else {
-                user.setIsactive("否");
-            }
-            if(user.getSex()==null){
-                user.setSex("男");
-            }else if(user.getSex().equals("F")){
-                user.setSex("女");
-            }else{
-                user.setSex("男");
-            }
-            String store = user.getStore_code();
-            String area = user.getArea_code();
-            if (store != null && store.contains(Common.STORE_HEAD)){
-                String store_code1 = store.replace(Common.STORE_HEAD,"");
-                String code = store_code1.substring(0,store_code1.length()-1);
-                user.setStore_code(code);
-            }
-            if (store == null){
-                user.setStore_code("");
-            }
-            if (area != null && area.contains(Common.STORE_HEAD)) {
-                String area_code1 = area.replace(Common.STORE_HEAD, "");
-                String code = area_code1.substring(0,area_code1.length()-1);
-                user.setArea_code(code);
-            }
-            if (area == null){
-                user.setArea_code("");
-            }
-        }
+        conversion(users);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
@@ -444,7 +351,7 @@ public class UserServiceImpl implements UserService {
 //            user_info.put("status", Common.DATABEAN_CODE_ERROR);
         } else {
             User login_user;
-            if (user1 != null) {
+            if (user1.size() != 0) {
                 login_user = user1.get(0);
             } else {
                 login_user = user2.get(0);
@@ -761,6 +668,26 @@ public class UserServiceImpl implements UserService {
         params.put("corp_code", corp_code);
         PageHelper.startPage(page_number, page_size);
         List<User>  users = userMapper.selectPartScreen(params);
+        conversion(users);
+        System.out.println("--大小：-----"+users.size());
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
+    @Override
+    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
+        List<User> users;
+        PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        users = userMapper.selectAllUserScreen(params);
+        conversion(users);
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
+    }
+
+    public void conversion(List<User> users){
         for (User user : users) {
             if (user.getIsactive().equals("Y")) {
                 user.setIsactive("是");
@@ -778,50 +705,22 @@ public class UserServiceImpl implements UserService {
             String area = user.getArea_code();
             if (store != null && store.contains(Common.STORE_HEAD)){
                 String store_code1 = store.replace(Common.STORE_HEAD,"");
-                user.setStore_code(store_code1);
+                String code = store_code1.substring(0,store_code1.length()-1);
+                user.setStore_code(code);
             }
             if (store == null){
                 user.setStore_code("");
             }
             if (area != null && area.contains(Common.STORE_HEAD)) {
                 String area_code1 = area.replace(Common.STORE_HEAD, "");
-                user.setArea_code(area_code1);
+                String code = area_code1.substring(0,area_code1.length()-1);
+                user.setArea_code(code);
             }
             if (area == null){
                 user.setArea_code("");
             }
         }
-        System.out.println("--大小：-----"+users.size());
-        PageInfo<User> page = new PageInfo<User>(users);
-        return page;
     }
-
-    @Override
-    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) {
-        List<User> users;
-        PageHelper.startPage(page_number, page_size);
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("corp_code", corp_code);
-        params.put("map", map);
-        users = userMapper.selectAllUserScreen(params);
-        for (User user : users) {
-            if (user.getIsactive().equals("Y")) {
-                user.setIsactive("是");
-            } else {
-                user.setIsactive("否");
-            }
-            if(user.getSex()==null){
-                user.setSex("男");
-            }else if(user.getSex().equals("F")){
-                user.setSex("女");
-            }else{
-                user.setSex("男");
-            }
-        }
-        PageInfo<User> page = new PageInfo<User>(users);
-        return page;
-    }
-
 
     /**
      * 更改员工编号时
@@ -847,5 +746,8 @@ public class UserServiceImpl implements UserService {
 
         codeUpdateMapper.updateStaffDetailInfo("", corp_code, new_user_code, old_user_code, "", "");
 
+        String app_user_name = corpMapper.selectByCorpId(0,corp_code).getApp_user_name();
+        if (app_user_name != null && !app_user_name.equals(""))
+            codeUpdateMapper.updateRelVipEmp(new_user_code,old_user_code,app_user_name);
     }
 }

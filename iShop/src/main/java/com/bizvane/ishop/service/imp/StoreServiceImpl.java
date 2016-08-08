@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * Created by nanji on 2016/5/25.
+ * Created by zhou on 2016/5/25.
  */
 @Service
 public class StoreServiceImpl implements StoreService {
@@ -35,6 +35,8 @@ public class StoreServiceImpl implements StoreService {
     private BrandMapper brandMapper;
     @Autowired
     private AreaMapper areaMapper;
+    @Autowired
+    private CorpMapper corpMapper;
     @Autowired
     private CodeUpdateMapper codeUpdateMapper;
 
@@ -466,5 +468,8 @@ public class StoreServiceImpl implements StoreService {
         //更新员工详细信息
         codeUpdateMapper.updateStaffDetailInfo("", corp_code, "", "", new_store_code, old_store_code);
 
+        String app_user_name = corpMapper.selectByCorpId(0,corp_code).getApp_user_name();
+        if (app_user_name != null && !app_user_name.equals(""))
+            codeUpdateMapper.updateRelVipStore(new_store_code,old_store_code,app_user_name);
     }
 }

@@ -1428,7 +1428,7 @@ public class UserController {
 
     /**
      * 员工管理
-     * 筛选
+     * 重置密码
      */
     @RequestMapping(value = "/change_passwd", method = RequestMethod.POST)
     @ResponseBody

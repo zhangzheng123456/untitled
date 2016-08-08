@@ -42,26 +42,31 @@ public class MessageServiceImpl implements MessageService {
 
     /**
      * 消息列表显示
-     * 系统管理员/企业管理员
+     *
      */
     @Override
-    public PageInfo<Message> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) {
+    public PageInfo<MessageInfo> selectBySearch(int page_number, int page_size, String corp_code, String user_code, String search_value) {
         PageHelper.startPage(page_number, page_size);
-        List<Message> list = this.messageMapper.selectAllMessage(corp_code, user_code, search_value);
-        for (Message message:list) {
+        List<MessageInfo> list = this.messageMapper.selectAllMessageInfo(corp_code, user_code, search_value);
+        for (MessageInfo message:list) {
             if(message.getIsactive().equals("Y")){
                 message.setIsactive("是");
             }else{
                 message.setIsactive("否");
             }
         }
-        PageInfo<Message> page = new PageInfo<Message>(list);
+        PageInfo<MessageInfo> page = new PageInfo<MessageInfo>(list);
         return page;
     }
 
     @Override
-    public Message getMessageById(int id) throws SQLException {
+    public MessageInfo getMessageById(int id) throws SQLException {
         return messageMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    public List<Message> getMessageDetail(String message_code) throws SQLException {
+        return messageMapper.selectMessageDetail(message_code);
     }
 
     @Override

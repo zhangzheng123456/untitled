@@ -39,10 +39,8 @@ public class MessageController {
     private static Logger logger = LoggerFactory.getLogger((MessageController.class));
     @Autowired
     private FunctionService functionService;
-
     @Autowired
     private SmsTemplateService smsTemplateService;
-
     @Autowired
     private MessageService messageService;
     @Autowired
@@ -64,14 +62,12 @@ public class MessageController {
             String user_code = request.getSession(false).getAttribute("user_code").toString();
 
             String function_code = request.getParameter("funcCode");
-            logger.info("list : 获取用户相应的信息");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            logger.info("获取动作信息之前");
             JSONArray actions = functionService.selectActionByFun(corp_code,user_code, group_code, role_code, function_code);
             logger.info("获取动作信息" + actions.toString());
             JSONObject result = new JSONObject();
-            PageInfo<Message> list = null;
+            PageInfo<MessageInfo> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = messageService.selectBySearch(page_number, page_size, "", "", "");
             } else if (role_code.equals(Common.ROLE_GM)) {
@@ -172,10 +168,45 @@ public class MessageController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             int message_id = Integer.parseInt(jsonObject.getString("id"));
-            Message message1 = messageService.getMessageById(message_id);
+            MessageInfo message1 = messageService.getMessageById(message_id);
+            String message_code = message1.getMessage_code();
+            List<Message> messages = messageService.getMessageDetail(message_code);
+            JSONObject result = new JSONObject();
+            result.put("info",JSON.toJSONString(message1));
+            result.put("receiver",messages);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setMessage(JSON.toJSONString(message1));
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 发送消息
+     * 查看详细
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/detailInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public String messageDetailInfo(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String message_code = jsonObject.getString("id");
+            List<Message> messages = messageService.getMessageDetail(message_code);
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(JSON.toJSONString(messages));
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -203,7 +234,7 @@ public class MessageController {
             String user_id = jsonObject.get("id").toString();
             String[] ids = user_id.split(",");
             for (int i = 0; i < ids.length; i++) {
-                logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
+                logger.info("-------------delete message--" + Integer.valueOf(ids[i]));
                 messageService.delete(Integer.valueOf(ids[i]));
             }
         } catch (Exception ex) {
@@ -240,7 +271,7 @@ public class MessageController {
             String search_value = jsonObject.get("searchValue").toString();
 
             org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<Message> list;
+            PageInfo<MessageInfo> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = messageService.selectBySearch(page_number, page_size, "", "", search_value);
             } else if (role_code.equals(Common.ROLE_GM)) {

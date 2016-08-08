@@ -90,18 +90,20 @@ public class WebController {
                             if (role_code.equals(Common.ROLE_AM)) {
                                 String area_code = user.getArea_code();
                                 String[] areaCodes = area_code.split(",");
-                                areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
+                                if (areaCodes[0].contains(Common.STORE_HEAD)){
+                                areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());}
                                 String[] ids = new String[]{areaCodes[0]};
                                 List<Store> list = storeService.selectByAreaCode(corp_code, ids, Common.IS_ACTIVE_Y);
                                 array.add(list.get(0).getStore_code());
-                            } else if (role_code.equals(Common.ROLE_GM)) {
+                            } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                                 String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
                                 array.add(store_code);
                             } else {
                                 String store_code = user.getStore_code();
                                 String[] ids = store_code.split(",");
                                 for (int i = 0; i < ids.length; i++) {
-                                    ids[i] = ids[i].substring(1, ids[i].length());
+                                    if (ids[i].startsWith(Common.STORE_HEAD)){
+                                    ids[i] = ids[i].substring(1, ids[i].length());}
                                     array.add(i, ids[i]);
                                 }
                             }
