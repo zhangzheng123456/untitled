@@ -7,6 +7,7 @@ var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
 var list="";
+var cout="";
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取function_code的值
 key_val=JSON.parse(key_val);
@@ -236,15 +237,12 @@ function GET(a,b){
             	$(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
-                var cout=list.pages;
+                cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
                 superaddition(list,a);
                 jurisdiction(actions);
                 jumpBianse();
-                if (a > cout) {
-                    a = cout
-                };
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
                 console.log(data.message);
@@ -379,7 +377,7 @@ function POST(a,b){
 			$(".table tbody").empty();
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
 			if(list.length<=0){
@@ -702,7 +700,7 @@ function filtrates(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            var cout=list.pages;
+            cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -725,9 +723,10 @@ function filtrates(a,b){
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
     var inx= this.value.replace(/[^0-9]/g, '');
-    // if (inx > cout) {
-    //     inx = cout
-    // };
+    var inx=parseInt(inx);
+    if (inx > cout) {
+        inx = cout
+    };
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {

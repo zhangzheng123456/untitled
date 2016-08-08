@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
 	<link rel="stylesheet" href="../table/css/inner.css">
-	<script src="../table/js/jquery.min.js"></script>
+	<!-- <script src="../table/js/jquery.min.js"></script> -->
     <script src="/js/loading.js"></script>
 </head>
 <body>
@@ -251,7 +251,7 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label>任务名称</label><input type="text" id="task_title" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div></span>
+                        <span><label>任务名称</label><input type="text" id="task_title_e" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div></span>
                     </div>
                     <div>
                         <span style="display: inline-flex;width:100%"><label style="height:180px;">任务描述</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="task_describe"></textarea></span></span>
@@ -265,12 +265,12 @@
                         </span>
                     </div>
                     <div>
-                        <span><label>开始时间</label><input type="text" id="target_start_time" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" />
+                        <span><label>开始时间</label><input type="text" id="target_start_time_e" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" />
                         <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
                         </span>
                     </div>
                     <div>
-                        <span><label>截止时间</label><input type="text" id="target_end_time" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" />
+                        <span><label>截止时间</label><input type="text" id="target_end_time_e" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" />
                         <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
                         </span>
                     </div>
@@ -365,6 +365,8 @@
             </div>
     </div>
 </body>
+    <script src="../js/jquery-2.1.1.min.js"></script>
+    <script src="/js/loading.js"></script>
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>

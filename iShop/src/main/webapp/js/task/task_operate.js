@@ -43,6 +43,8 @@ function getcorplist(a,b){
 			var index=0;
 			var corp_html='';
 			var c=null;
+			$("#OWN_CORP").empty();
+			$('#corp_select .searchable-select').remove();
 			for(index in msg.corps){
 				c=msg.corps[index];
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
@@ -52,7 +54,7 @@ function getcorplist(a,b){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}
 			$("#OWN_CORP").searchableSelect();
-			var c=$('#corp_select .selected').attr("data-value");
+			var c=$('#OWN_CORP').val();
 			getasktypelist(c,b);
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
@@ -390,11 +392,38 @@ function editAssignment(a){
  	var id = $(a).attr("id");
  	var corp_code = $(a).find(".corp_code").attr("data-code");
  	var task_code = $(a).find("td:eq(2)").html();
- 	param["corp_code"] = corp_code;
- 	param["task_code"] = task_code;
- 	param["id"] = id;
+ 	param["corp_code"] = corp_code;//公司编号
+ 	param["task_code"] = task_code;//任务编号
+ 	param["id"] = id;//公司id
  	oc.postRequire("post", "/task/selectTaskById", "0", param, function(data) {
- 		console.log(data);
+ 		var msg=data.message;
+ 		var msg=JSON.parse(msg);
+ 		var list=JSON.parse(msg.list);
+ 		var msg=JSON.parse(msg.task);
+ 		console.log(list);
+ 		console.log(msg);
+ 		var corp_code=msg.corp_code;//公司编号
+ 		var task_code=msg.task_code;//任务编号
+ 		console.log(msg.task_title);
+ 		$("#task_title_e").val(msg.task_title);//任务名称
+ 		$("#task_describe").val(msg.task_description);//任务描述
+ 		$("#target_start_time_e").val(msg.target_start_time);//开始时间
+ 		$("#target_end_time_e").val(msg.target_end_time);//截止时间
+ 		$("#created_time").val(msg.created_date);//创建时间
+		$("#creator").val(msg.creater);//创建人
+		$("#modify_time").val(msg.modified_date);//修改时间
+		$("#modifier").val(msg.modifier);//修改人
+ 		getcorplist(corp_code,task_code);//
  	})
 }
+//编辑关闭
+$("#edit_close").click(function(){
+	$("#page-wrapper").hide();
+ 	$("#content").show();
+ 	$("#details").hide();
+})
+//新增关闭
+$("#add_close").click(function(){
+	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+})
 
