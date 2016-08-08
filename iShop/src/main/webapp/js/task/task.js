@@ -297,12 +297,21 @@ function jumpBianse(){
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
+        // sessionStorage.setItem("id",id);
         console.log(id);
         $("#page-wrapper").show();
         $("#content").hide();
         $("#details").hide();
+        var param={};
+        var id=$(this).attr("id");
+        var corp_code=$(this).find(".corp_code").attr("data-code");
+        var task_code=$(this).find("td:eq(2)").html();
+        param["corp_code"]=corp_code;
+        param["task_code"]=task_code;
+        param["id"]=id;
+        oc.postRequire("post","/task/selectTaskById","0",param,function(data){
+            console.log(data);
+        })
         // $(window.parent.document).find('#iframepage').attr("src","/task/task_edit.html");
     })
     //删除

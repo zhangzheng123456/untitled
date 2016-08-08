@@ -362,7 +362,7 @@ $("#add_save").click(function(){
 	var target_end_time=$("#target_end_time").val();//截止时间
 	var target_start_time=$("#target_start_time").val();//开始时间
 	var isactive = "";//是否可用
-	var input = $(".checkbox_isactive").find("input")[0];
+	var input = $("#is_active")[0];
 	if (input.checked == true) {
 		isactive = "Y";
 	} else if (input.checked == false) {
