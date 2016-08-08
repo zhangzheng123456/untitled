@@ -7,7 +7,6 @@ var value="";//收索的关键词
 var param={};//定义的对象
 var _param={};//筛选定义的内容
 var list="";
-var cout="";
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取function_code的值
 key_val=JSON.parse(key_val);
@@ -180,7 +179,7 @@ function superaddition(data,num){
         if(data[i].avatar!==""&&data[i].avatar!==undefined){
             avatar=data[i].avatar;
         }
-            $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
                         + "'/><label for='checkboxTwoInput"
@@ -202,11 +201,11 @@ function superaddition(data,num){
                         +data[i].corp.corp_name
                         + "</span></td><td>"
                         +data[i].group.group_name
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].store_code+"'>"
                         +data[i].store_code
-                        + "</td><td>"
+                        + "</span></td><td><span title='"+data[i].area_code+"'>"
                         +data[i].area_code
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].isactive
                         +"</td></tr>");
     }
@@ -237,12 +236,15 @@ function GET(a,b){
             	$(".table tbody").empty();
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
-                cout=list.pages;
+                var cout=list.pages;
                 var list=list.list;
                 var actions=message.actions;
                 superaddition(list,a);
                 jurisdiction(actions);
                 jumpBianse();
+                if (a > cout) {
+                    a = cout
+                };
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
                 console.log(data.message);
@@ -377,7 +379,7 @@ function POST(a,b){
 			$(".table tbody").empty();
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            cout=list.pages;
+            var cout=list.pages;
             var list=list.list;
             var actions=message.actions;
 			if(list.length<=0){
@@ -698,7 +700,7 @@ function filtrates(a,b){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            cout=list.pages;
+            var cout=list.pages;
             var list=list.list;
             var actions=message.actions;
             $(".table tbody").empty();
@@ -720,10 +722,10 @@ function filtrates(a,b){
 //跳转页面的键盘按下事件
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
-    inx= this.value.replace(/[^0-9]/g, '');
-    if (inx > cout) {
-        inx = cout
-    };
+    var inx= this.value.replace(/[^0-9]/g, '');
+    // if (inx > cout) {
+    //     inx = cout
+    // };
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
