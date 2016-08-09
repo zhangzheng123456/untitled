@@ -160,8 +160,7 @@ public class TaskServiceImpl implements TaskService{
                     allocation.setCorp_code(task.getCorp_code());
                     allocation.setTask_code(task.getTask_code());
                     allocation.setUser_code(user_codes[i]);
-                    List<User> userList = userMapper.selectUserCode(user_codes[i], task.getCorp_code(),"Y");
-
+                    List<User> userList = userMapper.selectUserCode(user_codes[i], task.getCorp_code(),"");
                     User user = userList.get(0);
                     String userPhone = user.getPhone();
                     phone = phone + userPhone+",";
@@ -190,6 +189,7 @@ public class TaskServiceImpl implements TaskService{
             }
             for (int i=0;i<taskAllocations.size();i++){
                 if(!id.contains(taskAllocations.get(i).getId()+"")){
+                  System.out.println(taskAllocations.get(i).getId()+"--"+id);
                   count+=taskMapper.delTaskAllocationById(taskAllocations.get(i).getId()+"");
                 }
             }
