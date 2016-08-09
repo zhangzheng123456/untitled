@@ -551,6 +551,10 @@ function editAssignmentb(a){
  	param["id"] = id;//公司id
  	nssignment();
 }
+//删除名称
+function deleteName(a){
+	$(a).parent("li").remove();
+}
 //编辑关闭
 $("#edit_close").click(function(){
 	$("#page-wrapper").hide();
