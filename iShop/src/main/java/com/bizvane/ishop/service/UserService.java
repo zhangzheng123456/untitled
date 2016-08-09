@@ -41,9 +41,9 @@ public interface UserService {
 
     int selectGroupUser(String corp_code, String group_code) throws Exception;
 
-    String userPhoneExist(String phone) throws Exception;
+    List<User> userPhoneExist(String phone) throws Exception;
 
-    String userEmailExist(String email) throws Exception;
+    List<User> userEmailExist(String email) throws Exception;
 
     List<User> userCodeExist(String user_code, String corp_code,String isactive) throws Exception;
 

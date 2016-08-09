@@ -156,13 +156,15 @@ public class UserServiceImpl implements UserService {
                 String store_code = "";
                 for (int i = 0; i < ids.length; i++) {
                     ids[i] = ids[i].substring(1, ids[i].length());
-                    Store store = storeService.getStoreByCode(corp_code, ids[i], "");
-                    String store_name1 = store.getStore_name();
-                    store_name = store_name + store_name1;
-                    store_code = store_code + ids[i];
-                    if (i != ids.length - 1) {
-                        store_name = store_name + ",";
-                        store_code = store_code + ",";
+                    Store store = storeService.getStoreByCode(corp_code, ids[i], Common.IS_ACTIVE_Y);
+                    if (store != null) {
+                        String store_name1 = store.getStore_name();
+                        store_name = store_name + store_name1;
+                        store_code = store_code + ids[i];
+                        if (i != ids.length - 1) {
+                            store_name = store_name + ",";
+                            store_code = store_code + ",";
+                        }
                     }
                 }
                 user.setStore_name(store_name);
@@ -242,18 +244,18 @@ public class UserServiceImpl implements UserService {
         String user_code = user.getUser_code();
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
-        String phone_exist = userPhoneExist(phone);
+        List<User> phone_exist = userPhoneExist(phone);
         List<User> code_exist = userCodeExist(user_code, corp_code,Common.IS_ACTIVE_Y);
-        String email_exist = userEmailExist(email);
+        List<User> email_exist = userEmailExist(email);
         if (phone.equals("")) {
             result = "手机号不能为空";
         } else if (user_code.equals("")) {
             result = "员工编号不能为空";
-        } else if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+        } else if (phone_exist.size() > 0) {
             result = "手机号已存在";
         } else if (code_exist.size() > 0) {
             result = "员工编号已存在";
-        } else if (!email.equals("") && !email_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+        } else if (!email.equals("") && email_exist.size() > 0) {
             result = "邮箱已存在";
         } else {
             userMapper.insertUser(user);
@@ -267,23 +269,18 @@ public class UserServiceImpl implements UserService {
     public String update(User user) throws Exception {
         String result = "";
         int user_id = user.getId();
-//        String phone = user.getPhone();
-//        String user_code = user.getUser_code();
-//        String corp_code = user.getCorp_code();
-//        String email = user.getEmail();
-//        String store_code = user.getStore_code();
         User old_user = getUserById(user_id);
         String[] store_code1 = old_user.getStore_code().split(",");
-        String phone_exist = userPhoneExist(user.getPhone());
-        //User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
-        String emails = userEmailExist(user.getEmail());
+
+        List<User> phone_exist= userPhoneExist(user.getPhone());
+        List<User> email_exist = userEmailExist(user.getEmail());
         if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
             List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(),Common.IS_ACTIVE_Y);
-            if ((!old_user.getPhone().trim().equals(user.getPhone()) && phone_exist.equals(Common.DATABEAN_CODE_ERROR)) || Integer.parseInt(phone_exist) > 0){
+            if (phone_exist.size()>0 && user_id != phone_exist.get(0).getId()){
                 result = "手机号已存在";
-            } else if ((!old_user.getUser_code().trim().equalsIgnoreCase(user.getUser_code()) && code_exist.size() != 0) || code_exist.size() > 1){
+            } else if (code_exist.size() > 0 && user_id != code_exist.get(0).getId()){
                 result = "员工编号已存在";
-            } else if (!user.getEmail().trim().equalsIgnoreCase("") && old_user.getEmail() != null && (!old_user.getEmail().equalsIgnoreCase(user.getEmail()) && emails.equals(Common.DATABEAN_CODE_ERROR))) {
+            } else if (!user.getEmail().equals("") && email_exist.size()>0 && user_id != email_exist.get(0).getId()) {
                 result = "邮箱已存在";
             } else {
                 if (!old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
@@ -300,16 +297,13 @@ public class UserServiceImpl implements UserService {
             }
         } else {
             List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(),Common.IS_ACTIVE_Y);
-            if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
+            if (phone_exist.size()>0) {
                 result = "手机号已存在";
-            } else if (code_exist.size() != 0) {
+            } else if (code_exist.size() > 0) {
                 result = "员工编号已存在";
-            } else if (!user.getEmail().equalsIgnoreCase("") && old_user.getEmail() != null && emails.equals(Common.DATABEAN_CODE_ERROR)) {
+            } else if (email_exist.size() > 0) {
                 result = "邮箱已存在";
             } else {
-//                if (!old_user.getUser_code().equals(user_code)) {
-//                    updateCauseCodeChange(corp_code, user_code, old_user.getUser_code());
-//                }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
                 for (int i = 0; i < store_code1.length; i++) {
                     if (!user.getStore_code().contains(store_code1[i])) {
@@ -410,31 +404,22 @@ public class UserServiceImpl implements UserService {
      * 验证手机号是否已注册
      */
     @Override
-    public String userPhoneExist(String phone)throws Exception {
+    public List<User> userPhoneExist(String phone)throws Exception {
         List<User> user = this.userMapper.selectByPhone(phone);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (user.size() == 0) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        if (user.size() > 1){
-            result = String.valueOf(user.size());
-        }
-        return result;
+
+        return user;
     }
 
     /**
      * 验证邮箱是否已注册
      */
     @Override
-    public String userEmailExist(String email) throws Exception{
-        String result = Common.DATABEAN_CODE_SUCCESS;
+    public List<User> userEmailExist(String email) throws Exception{
+        List<User> user = null;
         if (!email.equals("")) {
-            List<User> user = this.userMapper.userEmailExist(email);
-            if (user.size() > 0) {
-                result = Common.DATABEAN_CODE_ERROR;
-            }
+            user = this.userMapper.userEmailExist(email);
         }
-        return result;
+        return user;
     }
 
     /**

@@ -50,7 +50,7 @@ public interface StoreService {
 
     int delete(int id) throws Exception;
 
-    Store getStoreByName(String corp_code, String store_name) throws Exception;
+    Store getStoreByName(String corp_code, String store_name,String isactive) throws Exception;
 
     int selectAchCount(String corp_code, String store_code) throws Exception;
 

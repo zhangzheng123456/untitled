@@ -340,14 +340,19 @@
 
     <!--删除店铺下员工-->
     <update id="deleteStoreByUserid">
-        update DEF_USER
-        set STORE_CODE=replace(STORE_CODE,#{store_code},'') where id=#{user_id}
+        UPDATE def_user
+        SET store_code=replace(store_code,#{store_code},'')
+        WHERE id=#{user_id}
     </update>
 
     <!--判断店铺名称是否重复-->
     <select id="selectByStoreName" resultType="com.bizvane.ishop.entity.Store">
-        select * from DEF_STORE
-        WHERE corp_code=#{corp_code} and store_name=#{store_name}
+        SELECT * FROM def_store
+        WHERE corp_code=#{corp_code}
+        AND store_name=#{store_name}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
     </select>
 
     <!--店铺数量  / 店铺新增数量-->
@@ -360,11 +365,10 @@
     </select>
 
     <select id="selectAchCount" resultType="java.lang.Integer">
-        select count(1) from DEF_STORE_ACHV_GOAL
+        SELECT count(1) FROM DEF_STORE_ACHV_GOAL
         WHERE store_code=#{store_code}
         AND corp_code = #{corp_code}
     </select>
-
 
     <select id="selectAllStoreScreen" resultMap="Store">
         select
@@ -414,7 +418,6 @@
         </if>
         group by ds.id DESC
     </select>
-
 
     <select id="selectBrandsStore" resultType="com.bizvane.ishop.entity.Brand">
         select * from DEF_BRAND

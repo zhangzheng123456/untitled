@@ -161,6 +161,7 @@ public class TaskServiceImpl implements TaskService{
                     allocation.setTask_code(task.getTask_code());
                     allocation.setUser_code(user_codes[i]);
                     List<User> userList = userMapper.selectUserCode(user_codes[i], task.getCorp_code(),"Y");
+
                     User user = userList.get(0);
                     String userPhone = user.getPhone();
                     phone = phone + userPhone+",";

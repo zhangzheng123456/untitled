@@ -425,8 +425,8 @@ public class UserController {
                 }
             }
             for (int i = 3; i < column.length; i++) {
-                String existInfo = userService.userPhoneExist(column[i].getContents().toString());
-                if (!existInfo.contains("0")) {
+                List<User> user = userService.userPhoneExist(column[i].getContents().toString());
+                if (user.size()>0) {
                     result = "：第" + (i + 1) + "行的电话号码已存在";
                     int b = 5 / 0;
                     break;
@@ -483,7 +483,7 @@ public class UserController {
                     String stores = column2[i].getContents().toString();
                     String[] splitAreas = stores.split(",");
                     for (int j=0;j<splitAreas.length;j++){
-                        Store store = storeService.getStoreByCode(column3[i].getContents().toString(), splitAreas[j], "");
+                        Store store = storeService.getStoreByCode(column3[i].getContents().toString(), splitAreas[j], Common.IS_ACTIVE_Y);
                         if (store == null) {
                             result = "：第" + (i + 1) + "行,第"+(j+1)+"个店铺编号不存在";
                             int b = 5 / 0;
@@ -1195,8 +1195,8 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String phone = jsonObject.get("phone").toString();
-            String existInfo = userService.userPhoneExist(phone);
-            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+            List<User> user = userService.userPhoneExist(phone);
+            if (user.size()>0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("手机号码已被使用");
@@ -1228,8 +1228,8 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String email = jsonObject.get("email").toString();
-            String existInfo = userService.userEmailExist(email);
-            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+            List<User> user = userService.userEmailExist(email);
+            if (user.size()>0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("email已被使用");
