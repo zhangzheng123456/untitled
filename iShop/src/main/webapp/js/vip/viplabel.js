@@ -201,7 +201,7 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
-  
+
     }
     whir.loading.remove();//移除加载框
 };
