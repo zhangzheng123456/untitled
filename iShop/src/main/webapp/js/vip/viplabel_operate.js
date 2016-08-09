@@ -156,7 +156,7 @@ jQuery(document).ready(function(){
 				var message=JSON.parse(data.message);
 				var action=message.actions;
 				if(action.length<=0){
-					$(".corpedit_oper_btn li:eq(0)").remove();
+					$(".operedit_btn li:eq(0)").remove();
 				}
 			}
 		});

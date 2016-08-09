@@ -153,6 +153,20 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
         }
     }()
 }
+//点击分页的时候调什么接口
+function dian(a,b){
+    if (value==""&&filtrate=="") {
+        GET(a,b);
+    }else if (value!==""){
+        param["pageNumber"] = a;
+        param["pageSize"] = b;
+        POST(a,b);
+    }else if (filtrate!=="") {
+        _param["pageNumber"] = a;
+        _param["pageSize"] = b;
+        filtrates(a,b);
+    }
+}
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
