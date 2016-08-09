@@ -48,7 +48,7 @@ public class WebController {
 
     /**
      *
-    */
+     */
     @RequestMapping(value = "/api/getviprelation", method = RequestMethod.POST)
     @ResponseBody
     public String vipRelation(HttpServletRequest request) {
@@ -79,41 +79,41 @@ public class WebController {
                     JSONObject result = new JSONObject();
                     String emp_id = entity.get(0).getEmp_id();
                     String corp_code = corpService.getCorpByAppUserName(app_user_name).getCorp_code();
-                    List<User> users = userService.userCodeExist(emp_id, corp_code);
+                    List<User> users = userService.userCodeExist(emp_id, corp_code, Common.IS_ACTIVE_Y);
                     if (users.size() != 0) {
                         User user = users.get(0);
-                        if (user.getIsactive().equals(Common.IS_ACTIVE_Y)) {
-                            String group_code = user.getGroup_code();
-                            String role_code = groupService.selectByCode(corp_code, group_code, "").getRole_code();
-                            JSONArray array = new JSONArray();
+                        String group_code = user.getGroup_code();
+                        String role_code = groupService.selectByCode(corp_code, group_code, "").getRole_code();
+                        JSONArray array = new JSONArray();
 
-                            if (role_code.equals(Common.ROLE_AM)) {
-                                String area_code = user.getArea_code();
-                                String[] areaCodes = area_code.split(",");
-                                if (areaCodes[0].contains(Common.STORE_HEAD)){
-                                areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());}
-                                String[] ids = new String[]{areaCodes[0]};
-                                List<Store> list = storeService.selectByAreaCode(corp_code, ids, Common.IS_ACTIVE_Y);
-                                array.add(list.get(0).getStore_code());
-                            } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
-                                String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
-                                array.add(store_code);
-                            } else {
-                                String store_code = user.getStore_code();
-                                String[] ids = store_code.split(",");
-                                for (int i = 0; i < ids.length; i++) {
-                                    if (ids[i].startsWith(Common.STORE_HEAD)){
-                                    ids[i] = ids[i].substring(1, ids[i].length());}
-                                    array.add(i, ids[i]);
-                                }
+                        if (role_code.equals(Common.ROLE_AM)) {
+                            String area_code = user.getArea_code();
+                            String[] areaCodes = area_code.split(",");
+                            if (areaCodes[0].contains(Common.STORE_HEAD)) {
+                                areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
                             }
-                            JSONObject obj = new JSONObject();
-                            obj.put("emp_code", emp_id);
-                            obj.put("store_code", array);
-                            result.put("code", Common.DATABEAN_CODE_SUCCESS);
-                            result.put("message", obj);
-                            return result.toString();
+                            String[] ids = new String[]{areaCodes[0]};
+                            List<Store> list = storeService.selectByAreaCode(corp_code, ids, Common.IS_ACTIVE_Y);
+                            array.add(list.get(0).getStore_code());
+                        } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
+                            String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();
+                            array.add(store_code);
+                        } else {
+                            String store_code = user.getStore_code();
+                            String[] ids = store_code.split(",");
+                            for (int i = 0; i < ids.length; i++) {
+                                if (ids[i].startsWith(Common.STORE_HEAD)) {
+                                    ids[i] = ids[i].substring(1, ids[i].length());
+                                }
+                                array.add(i, ids[i]);
+                            }
                         }
+                        JSONObject obj = new JSONObject();
+                        obj.put("emp_code", emp_id);
+                        obj.put("store_code", array);
+                        result.put("code", Common.DATABEAN_CODE_SUCCESS);
+                        result.put("message", obj);
+                        return result.toString();
                     }
                 }
                 List<VIPStoreRelation> relation = webService.selectStoreVip(app_user_name, open_id);
@@ -158,7 +158,7 @@ public class WebController {
             String corp_code = jsonObject.get("corp_code").toString();
 
             JSONObject result = new JSONObject();
-            PageInfo<Goods> list = goodsService.selectBySearch(1+rowno/20, 20, corp_code, "");
+            PageInfo<Goods> list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, "");
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
                 String goods_image = list.getList().get(i).getGoods_image();
                 if (goods_image != null && !goods_image.isEmpty()) {
@@ -194,7 +194,7 @@ public class WebController {
             String search_value = jsonObject.get("search_value").toString();
 
             JSONObject result = new JSONObject();
-            PageInfo<Goods> list = goodsService.selectBySearch(1+rowno/20, 20, corp_code, search_value);
+            PageInfo<Goods> list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, search_value);
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
                 String goods_image = list.getList().get(i).getGoods_image();
                 if (goods_image != null && !goods_image.isEmpty()) {

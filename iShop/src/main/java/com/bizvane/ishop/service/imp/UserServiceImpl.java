@@ -143,51 +143,65 @@ public class UserServiceImpl implements UserService {
     public User getUserById(int id) throws Exception {
         User user = userMapper.selectUserById(id);
         String corp_code = user.getCorp_code();
-        String role_code = groupMapper.selectByCode(corp_code,user.getGroup_code(),"").getRole_code();
+        String role_code = user.getRole_code();
         if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
-            if (!user.getStore_code().startsWith(Common.STORE_HEAD)) {
+            String code = user.getStore_code();
+            if (code != null && !code.equals("") && !code.startsWith(Common.STORE_HEAD)) {
                 ProcessStoreCode(user);
             }
             String store_name = "";
-            String[] ids = user.getStore_code().split(",");
-            String store_code = "";
-            for (int i = 0; i < ids.length; i++) {
-                ids[i] = ids[i].substring(1, ids[i].length());
-                Store store = storeService.getStoreByCode(corp_code, ids[i], "");
-                String store_name1 = store.getStore_name();
-                store_name = store_name + store_name1;
-                store_code = store_code + ids[i];
-                if (i != ids.length - 1) {
-                    store_name = store_name + ",";
-                    store_code = store_code + ",";
+            String store_code1= user.getStore_code();
+            if (store_code1 != null && !store_code1.equals("")) {
+                String[] ids = store_code1.split(",");
+                String store_code = "";
+                for (int i = 0; i < ids.length; i++) {
+                    ids[i] = ids[i].substring(1, ids[i].length());
+                    Store store = storeService.getStoreByCode(corp_code, ids[i], "");
+                    String store_name1 = store.getStore_name();
+                    store_name = store_name + store_name1;
+                    store_code = store_code + ids[i];
+                    if (i != ids.length - 1) {
+                        store_name = store_name + ",";
+                        store_code = store_code + ",";
+                    }
                 }
+                user.setStore_name(store_name);
+                user.setStore_code(store_code);
+            }else {
+                user.setStore_name("");
+                user.setStore_code("");
             }
-            user.setStore_name(store_name);
-            user.setStore_code(store_code);
         }else {
             user.setStore_name("");
             user.setStore_code("");
         }
         if (role_code.equals(Common.ROLE_AM)) {
-            if (!user.getArea_code().startsWith(Common.STORE_HEAD)) {
+            String area_code = user.getArea_code();
+            if (area_code != null && !area_code.equals("") && !area_code.startsWith(Common.STORE_HEAD)) {
                 ProcessAreaCode(user);
             }
             String area_name = "";
-            String[] areaCodes = user.getArea_code().split(",");
-            String areaCode = "";
-            for (int i = 0; i < areaCodes.length; i++) {
-                areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                Area area = areaMapper.selAreaByCorp(corp_code, areaCodes[i], "");
-                String area_name1 = area.getArea_name();
-                area_name = area_name + area_name1;
-                areaCode = areaCode + areaCodes[i];
-                if (i != areaCodes.length - 1) {
-                    area_name = area_name + ",";
-                    areaCode = areaCode + ",";
+            String area_code1 = user.getArea_code();
+            if (area_code1 != null && !area_code1.equals("")) {
+                String[] areaCodes = area_code1.split(",");
+                String areaCode = "";
+                for (int i = 0; i < areaCodes.length; i++) {
+                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+                    Area area = areaMapper.selAreaByCorp(corp_code, areaCodes[i], "");
+                    String area_name1 = area.getArea_name();
+                    area_name = area_name + area_name1;
+                    areaCode = areaCode + areaCodes[i];
+                    if (i != areaCodes.length - 1) {
+                        area_name = area_name + ",";
+                        areaCode = areaCode + ",";
+                    }
                 }
+                user.setArea_code(areaCode);
+                user.setArea_name(area_name);
+            }else {
+                user.setArea_code("");
+                user.setArea_name("");
             }
-            user.setArea_code(areaCode);
-            user.setArea_name(area_name);
         }else {
             user.setArea_code("");
             user.setArea_name("");
@@ -229,7 +243,7 @@ public class UserServiceImpl implements UserService {
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
         String phone_exist = userPhoneExist(phone);
-        List<User> code_exist = userCodeExist(user_code, corp_code);
+        List<User> code_exist = userCodeExist(user_code, corp_code,Common.IS_ACTIVE_Y);
         String email_exist = userEmailExist(email);
         if (phone.equals("")) {
             result = "手机号不能为空";
@@ -264,7 +278,7 @@ public class UserServiceImpl implements UserService {
         //User code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
         String emails = userEmailExist(user.getEmail());
         if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
-            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
+            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(),Common.IS_ACTIVE_Y);
             if ((!old_user.getPhone().trim().equals(user.getPhone()) && phone_exist.equals(Common.DATABEAN_CODE_ERROR)) || Integer.parseInt(phone_exist) > 0){
                 result = "手机号已存在";
             } else if ((!old_user.getUser_code().trim().equalsIgnoreCase(user.getUser_code()) && code_exist.size() != 0) || code_exist.size() > 1){
@@ -285,7 +299,7 @@ public class UserServiceImpl implements UserService {
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
-            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code());
+            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(),Common.IS_ACTIVE_Y);
             if (!phone_exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 result = "手机号已存在";
             } else if (code_exist.size() != 0) {
@@ -426,8 +440,8 @@ public class UserServiceImpl implements UserService {
     /**
      * 验证企业下用户编号是否已存在
      */
-    public List<User> userCodeExist(String user_code, String corp_code) throws Exception {
-        List<User> user = userMapper.selectUserCode(user_code, corp_code);
+    public List<User> userCodeExist(String user_code, String corp_code,String isactive) throws Exception {
+        List<User> user = userMapper.selectUserCode(user_code, corp_code,isactive);
         return user;
     }
 

@@ -434,7 +434,7 @@ public class UserController {
             }
             Cell[] column1 = rs.getColumn(1);
             for (int i = 3; i < column1.length; i++) {
-                List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
+                List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (user.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户编号已存在";
                     int b = 5 / 0;
@@ -1162,7 +1162,7 @@ public class UserController {
             String corp_code = jsonObject.get("corp_code").toString();
             String current_corp_code = request.getSession(false).getAttribute("corp_code").toString();
             corp_code = (corp_code == null || corp_code.isEmpty()) ? current_corp_code : corp_code;
-            List<User> existInfo = userService.userCodeExist(user_code, corp_code);
+            List<User> existInfo = userService.userCodeExist(user_code, corp_code,"");
             if (existInfo.size() != 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1282,7 +1282,7 @@ public class UserController {
                     JSONObject obj = new JSONObject(result);
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
-                    User user = userService.userCodeExist(user_code, corp_code).get(0);
+                    User user = userService.userCodeExist(user_code, corp_code,"").get(0);
                     user.setQrcode(picture);
                     user.setQrcode_content(qrcode_url);
                     Date now = new Date();
@@ -1348,7 +1348,7 @@ public class UserController {
                         JSONObject obj = new JSONObject(result);
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();
-                        User user = userService.userCodeExist(user_code, corp_code).get(0);
+                        User user = userService.userCodeExist(user_code, corp_code,"").get(0);
                         user.setQrcode(picture);
                         user.setQrcode_content(qrcode_url);
                         Date now = new Date();
