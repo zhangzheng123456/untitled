@@ -184,7 +184,7 @@ public class StoreServiceImpl implements StoreService {
 
     //根据企业，店铺编号,查找店铺
     public Store getStoreByCode(String corp_code, String store_code, String isactive) throws Exception{
-        Store store = storeMapper.selectByCode(corp_code, store_code, "");
+        Store store = storeMapper.selectByCode(corp_code, store_code, isactive);
 
         return store;
     }
@@ -197,8 +197,8 @@ public class StoreServiceImpl implements StoreService {
         String store_code = jsonObject.get("store_code").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String store_name = jsonObject.get("store_name").toString();
-        Store store = getStoreByCode(corp_code, store_code, "");
-        Store store1 = getStoreByName(corp_code, store_name);
+        Store store = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
+        Store store1 = getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
         if (store == null && store1 == null) {
             Store shop = new Store();
             shop.setStore_code(store_code);
@@ -325,11 +325,14 @@ public class StoreServiceImpl implements StoreService {
         String store_name = jsonObject.get("store_name").toString();
 
         Store store = getStoreById(store_id);
-        Store store1 = getStoreByCode(corp_code, store_code, "");
-        Store store2 = getStoreByName(corp_code, store_name);
+        Store store1 = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
+        Store store2 = getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
         if (store.getCorp_code().equalsIgnoreCase(corp_code)) {
-            if ((store.getStore_code().equalsIgnoreCase(store_code) || store1 == null)
-                    && (store.getStore_name().equalsIgnoreCase(store_name) || store2 == null)) {
+            if (store1 != null && store_id != store1.getId()){
+                result = "店铺编号已存在";
+            }else if (store2 != null && store_id != store2.getId()) {
+                result = "店铺名称已存在";
+            }else {
                 if (!store.getStore_code().equalsIgnoreCase(store_code)) {
                     updateCauseCodeChange(corp_code, store_code, store.getStore_code());
                 }
@@ -347,10 +350,6 @@ public class StoreServiceImpl implements StoreService {
                 store.setIsactive(jsonObject.get("isactive").toString());
                 storeMapper.updateStore(store);
                 result = Common.DATABEAN_CODE_SUCCESS;
-            } else if (!store.getStore_code().equals(store_code) && store1 != null) {
-                result = "店铺编号已存在";
-            } else {
-                result = "店铺名称已存在";
             }
         } else {
             if (store1 == null && store2 == null) {
@@ -371,7 +370,7 @@ public class StoreServiceImpl implements StoreService {
                 store.setIsactive(jsonObject.get("isactive").toString());
                 storeMapper.updateStore(store);
                 result = Common.DATABEAN_CODE_SUCCESS;
-            } else if (!store.getStore_code().equals(store_code) && store1 != null) {
+            } else if (store1 != null) {
                 result = "店铺编号已存在";
             } else {
                 result = "店铺名称已存在";
@@ -391,8 +390,8 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public Store getStoreByName(String corp_code, String store_name) throws Exception {
-        Store store = this.storeMapper.selectByStoreName(corp_code, store_name);
+    public Store getStoreByName(String corp_code, String store_name,String isactive) throws Exception {
+        Store store = this.storeMapper.selectByStoreName(corp_code, store_name,isactive);
         return store;
     }
 
