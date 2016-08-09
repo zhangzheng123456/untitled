@@ -141,13 +141,14 @@ function getstorelist(){
 	var corp_code = $('#OWN_CORP').val();
 	var area_code =$('#area_input').attr("data-areacode");
 	var searchValue=$("#store_search").val();
-	if(corp_code==""||area_code==""){
+	if(corp_code==""||area_code==""||area_code==undefined){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
 			content: "请先选择区域"
 		});
+		return;
 	}
 	var pageSize=20;
 	var pageNumber=1;
@@ -218,13 +219,14 @@ function getstafflist(){
 	var searchValue=$("#staff_search").val();
 	var pageSize=20;
 	var pageNumber=1;
-	if(corp_code==""||store_code==""){
+	if(corp_code==""||store_code==""||store_code==undefined){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
 			content: "请先选择店铺"
 		});
+		return;
 	}
 	var _param={};
 	var checknow_data=[];
@@ -350,6 +352,15 @@ $("#staff_code_drop").click(function(e){
 	var user_names=$('#staff_input').val();
 	var user_codes=$('#staff_input').attr("data-usercode");
 	var phone=$('#staff_input').attr("data-userphone");
+	if(user_names==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请选择员工"
+		});
+		return;
+	}
 	user_names=user_names.split(',');
 	user_codes=user_codes.split(',');
 	phone=phone.split(',');
@@ -400,8 +411,6 @@ $("#add_save").click(function(){
              phone+=p;
         }     
     }
-    console.log(user_codes);
-    console.log(phone);
 	var corp_code = $('#OWN_CORP').val();//公司编号
 	var task_type_code = $('#task_type_code').val();//公司类型
 	var task_title=$('#task_title').val();//任务名称
