@@ -250,6 +250,7 @@
         and duag.store_code=#{store_code}
         AND duag.time_type=#{time_type}
         AND  duag.target_time=#{target_time}
+        AND  duag.isactive=#{isactive}
     </select>
 
 </mapper>

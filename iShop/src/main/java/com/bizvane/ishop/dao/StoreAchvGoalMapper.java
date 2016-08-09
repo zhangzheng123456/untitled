@@ -67,6 +67,6 @@ public interface StoreAchvGoalMapper {
 
     List<StoreAchvGoal> selectAllStoreAchvScreen(Map<String, Object> params) throws SQLException;
 
-    int selectStoreAchvCountType(@Param("corp_code")String corp_code,@Param("store_code")String store_code,@Param("time_type")String time_type,@Param("target_time")String target_time) throws SQLException;
+    int selectStoreAchvCountType(@Param("corp_code")String corp_code,@Param("store_code")String store_code,@Param("time_type")String time_type,@Param("target_time")String target_time,@Param("isactive")String isactive) throws SQLException;
 
 }

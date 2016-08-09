@@ -140,11 +140,13 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
                 && oldUserAchvGoal.getUser_code().equalsIgnoreCase(userAchvGoal.getUser_code())
                 && oldUserAchvGoal.getTarget_type().equalsIgnoreCase(userAchvGoal.getTarget_type())
                 && oldUserAchvGoal.getTarget_time().equalsIgnoreCase(userAchvGoal.getTarget_time())
+                && oldUserAchvGoal.getIsactive().equalsIgnoreCase(userAchvGoal.getIsactive())
+
                 ) {
             userAchvGoalMapper.update(userAchvGoal);
             return Common.DATABEAN_CODE_SUCCESS;
         } else {
-            count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
+            count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(),userAchvGoal.getIsactive());
             if (count > 0) {
                 return Common.DATABEAN_CODE_ERROR;
             }
@@ -158,13 +160,13 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         return this.userAchvGoalMapper.delete(Integer.parseInt(id));
     }
     public int checkUserAchvGoal(UserAchvGoal userAchvGoal)throws Exception{
-        return  userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
+        return  userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(),userAchvGoal.getIsactive());
 
     }
     @Override
     public String insert(UserAchvGoal userAchvGoal) throws Exception {
         int count = -1;
-        count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time());
+        count = userAchvGoalMapper.selectUserAchvCountType(userAchvGoal.getCorp_code(), userAchvGoal.getUser_code(), userAchvGoal.getTarget_type(), userAchvGoal.getTarget_time(),userAchvGoal.getIsactive());
         if (count > 0) {
             return "用户业绩重复";
         } else {

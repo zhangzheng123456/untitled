@@ -368,5 +368,8 @@
         and duag.user_code=#{user_code}
         AND duag.target_type=#{target_type}
         AND  duag.target_time=#{target_time}
+        AND  duag.isactive=#{isactive}
+
+
     </select>
 </mapper>

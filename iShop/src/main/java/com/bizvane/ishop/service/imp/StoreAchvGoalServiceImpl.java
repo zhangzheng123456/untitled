@@ -45,11 +45,13 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
                 && oldStoreAchvGoal.getStore_code().equalsIgnoreCase(storeAchvGoal.getStore_code())
                 && oldStoreAchvGoal.getTime_type().equalsIgnoreCase(storeAchvGoal.getTime_type())
                 && oldStoreAchvGoal.getTarget_time().equalsIgnoreCase(storeAchvGoal.getTarget_time())
+                && oldStoreAchvGoal.getTarget_time().equalsIgnoreCase(storeAchvGoal.getTarget_time())
+                && oldStoreAchvGoal.getIsactive().equalsIgnoreCase(storeAchvGoal.getIsactive())
                 ) {
             storeAchvGoalMapper.update(storeAchvGoal);
             return Common.DATABEAN_CODE_SUCCESS;
         } else {
-            count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time());
+            count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time(),storeAchvGoal.getIsactive());
             if (count > 0) {
                 return Common.DATABEAN_CODE_ERROR;
             }
@@ -188,7 +190,7 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
     public String insert(StoreAchvGoal storeAchvGoal) throws Exception{
         int count = -1;
 
-        count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time());
+        count=storeAchvGoalMapper.selectStoreAchvCountType(storeAchvGoal.getCorp_code(),storeAchvGoal.getStore_code(),storeAchvGoal.getTime_type(),storeAchvGoal.getTarget_time(),storeAchvGoal.getIsactive());
         if (count > 0) {
             return "店铺业绩重复";
         } else {

@@ -33,5 +33,5 @@ public interface UserAchvGoalMapper {
 
     List<UserAchvGoal> selectAllUserAchvScreen(Map<String, Object> params) throws SQLException;
 
-    int selectUserAchvCountType(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("target_type") String target_type, @Param("target_time") String target_time) throws SQLException;
+    int selectUserAchvCountType(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("target_type") String target_type, @Param("target_time") String target_time,@Param("isactive")String isactive) throws SQLException;
 }
