@@ -41,24 +41,6 @@ public class TaskServiceImpl implements TaskService{
     private UserMapper userMapper;
     @Override
     public PageInfo<Task> selectAllTask(int page_num, int page_size, String corp_code, String role_ident, String user_code, String search_value) {
-
-//        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-//        Data data_role_ident = new Data("role_ident", role_ident, ValueType.PARAM);
-//        Data data_user_code = new Data("user_code", user_code, ValueType.PARAM);
-//        Data data_search_value = new Data("search_value", search_value, ValueType.PARAM);
-//        Map datalist = new HashMap<String, Data>();
-//        datalist.put(data_corp_code.key, data_corp_code);
-//        datalist.put(data_role_ident.key, data_role_ident);
-//        datalist.put(data_user_code.key, data_user_code);
-//        datalist.put(data_search_value.key, data_search_value);
-//
-//        DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.SendSMS", datalist);
-//        logger.info("SendSMSMethod -->" + dataBox.data.get("message").value);
-//        String msg = dataBox.data.get("message").value;
-//        JSONArray array =new JSONArray(msg);
-//        PageHelper.startPage(page_number, page_size);
-//        List<Task> list = WebUtils.Json2List(array);
-//        PageInfo<Task> page = new PageInfo<Task>(list);
         PageHelper.startPage(page_num, page_size);
         List<Task> tasks = taskMapper.selectAllTask(corp_code, role_ident, user_code, search_value);
         for (Task task:tasks) {
@@ -173,12 +155,12 @@ public class TaskServiceImpl implements TaskService{
             List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(task.getCorp_code(), task.getTask_code());
             for (int i=0;i<user_codes.length;i++) {
                 TaskAllocation taskAllocation = taskMapper.selAllTaskAllocationByUser(task.getCorp_code(),task.getTask_code(),user_codes[i]);
-                id=id+taskAllocation.getId()+",";
+
                 if(taskAllocation==null){
                     allocation.setCorp_code(task.getCorp_code());
                     allocation.setTask_code(task.getTask_code());
                     allocation.setUser_code(user_codes[i]);
-                    List<User> userList = userMapper.selectUserCode(user_codes[i], task.getCorp_code());
+                    List<User> userList = userMapper.selectUserCode(user_codes[i], task.getCorp_code(),"Y");
                     User user = userList.get(0);
                     String userPhone = user.getPhone();
                     phone = phone + userPhone+",";
@@ -194,6 +176,7 @@ public class TaskServiceImpl implements TaskService{
                     count+=taskMapper.addTaskAllocation(allocation);
                     appCount = count;
                 }else{
+                    id=id+taskAllocation.getId()+",";
                     allocation.setCorp_code(task.getCorp_code());
                     allocation.setTask_code(task.getTask_code());
                     allocation.setUser_code(user_codes[i]);

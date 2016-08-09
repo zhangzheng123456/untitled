@@ -75,8 +75,8 @@ public class VipServiceImpl implements VipService {
             } else {
                 vipInfo.setIsactive("否");
             }
-            if(vipInfo.getSex()==null){
-                vipInfo.setSex("男");
+            if(vipInfo.getSex()==null || vipInfo.getSex().equals("")){
+                vipInfo.setSex("未录入");
             }else if(vipInfo.getSex().equals("F")){
                 vipInfo.setSex("女");
             }else{

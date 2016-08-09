@@ -244,9 +244,35 @@
             OR da.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
-        <if test="isactive != null and isactive !=''">
-            and da.isactive = #{isactive}
-        </if>
         ORDER BY da.id DESC
     </select>
+
+
+
+<!--下拉框取值，只取可用数据-->
+    <!--<select id="selectByAreaCodeSearch" resultMap="Area">-->
+        <!--select-->
+        <!--da.*,-->
+        <!--dc.CORP_NAME-->
+        <!--from DEF_AREA da,DEF_CORP dc-->
+        <!--where da.CORP_CODE = dc.CORP_CODE-->
+        <!--<if test="corp_code!=null and corp_code!=''">-->
+            <!--AND da.corp_code=#{corp_code}-->
+        <!--</if>-->
+        <!--<if test="area_codes!=null">-->
+            <!--AND da.area_code in-->
+            <!--<foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">-->
+                <!--#{item}-->
+            <!--</foreach>-->
+        <!--</if>-->
+        <!--<if test="search_value != null and search_value !=''">-->
+            <!--AND-->
+            <!--(da.area_code like concat('%',#{search_value},'%')-->
+            <!--OR da.area_name like concat('%',#{search_value},'%')-->
+            <!--OR dc.CORP_NAME like concat('%',#{search_value},'%')-->
+            <!--)-->
+        <!--</if>-->
+        <!--AND da.ISACTIVE ='Y'-->
+        <!--ORDER BY da.id DESC-->
+    <!--</select>-->
 </mapper>

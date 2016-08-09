@@ -46,14 +46,17 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <when test="entryKey=='task_type_name'">
+                <when test="entryValue!='' and entryKey=='task_type_name'">
                     def_task_type.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryValue!='' ">
                     def_task.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
                 </otherwise>
             </choose>
         </foreach>
