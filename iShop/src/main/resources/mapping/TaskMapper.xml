@@ -92,6 +92,7 @@
          FROM rel_task_allocation,DEF_CORP,def_user
         WHERE  rel_task_allocation.corp_code=DEF_CORP.corp_code
         AND def_user.USER_CODE = rel_task_allocation.user_code
+        AND rel_task_allocation.corp_code = def_user.corp_code
         AND  rel_task_allocation.corp_code =#{corp_code}
         AND rel_task_allocation.task_code=#{task_code}
     </select>
