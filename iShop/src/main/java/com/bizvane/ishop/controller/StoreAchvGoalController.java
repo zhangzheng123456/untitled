@@ -548,7 +548,12 @@ public class StoreAchvGoalController {
                     String target_type = rs.getCell(j++, i).getContents().toString();
                     storeAchvGoal.setTime_type(target_type);
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
-                    storeAchvGoal.setTarget_time(cellTypeForDate);
+                    if (target_type.equals(Common.TIME_TYPE_WEEK)) {
+                        String week = TimeUtils.getWeek(cellTypeForDate);
+                        storeAchvGoal.setTarget_time(week);
+                    } else {
+                        storeAchvGoal.setTarget_time(cellTypeForDate);
+                    }
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         storeAchvGoal.setIsactive("N");
                     } else {

@@ -212,7 +212,7 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     @Transactional
-    public int delete(int id) throws Exception {
+    public int delete(int id) throws Exception  {
         return areaMapper.deleteByAreaId(id);
     }
 

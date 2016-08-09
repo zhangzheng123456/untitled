@@ -244,6 +244,9 @@
             OR da.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
+        <if test="isactive != null and isactive !=''">
+            and da.isactive = #{isactive}
+        </if>
         ORDER BY da.id DESC
     </select>
 </mapper>

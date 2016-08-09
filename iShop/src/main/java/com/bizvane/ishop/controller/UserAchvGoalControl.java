@@ -527,7 +527,7 @@ public class UserAchvGoalControl {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString());
+                List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (user.size() == 0) {
                     result = "：第" + (i + 1) + "行的用户编号不存在";
                     int b = 5 / 0;
@@ -564,7 +564,12 @@ public class UserAchvGoalControl {
                     String target_type = rs.getCell(j++, i).getContents().toString();
                     userAchvGoal.setTarget_type(target_type);
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
-                    userAchvGoal.setTarget_time(cellTypeForDate);
+                    if (target_type.equals(Common.TIME_TYPE_WEEK)) {
+                        String week = TimeUtils.getWeek(cellTypeForDate);
+                        userAchvGoal.setTarget_time(week);
+                    } else {
+                        userAchvGoal.setTarget_time(cellTypeForDate);
+                    }
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");
                     } else {
