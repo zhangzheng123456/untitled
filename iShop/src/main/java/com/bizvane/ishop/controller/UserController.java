@@ -397,7 +397,7 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (corp == null) {
                     result = "：第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
@@ -471,7 +471,7 @@ public class UserController {
                             int b = 5 / 0;
                             break;
                         }
-                        Area area = areaService.getAreaByCode(column3[i].getContents().toString(), splitAreas[j]);
+                        Area area = areaService.getAreaByCode(column3[i].getContents().toString(), splitAreas[j],Common.IS_ACTIVE_Y);
                         if (area == null) {
                             result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号不存在";
                             int b = 5 / 0;
@@ -1019,7 +1019,7 @@ public class UserController {
                 }
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                Corp corp = corpService.selectByCorpId(0, corp_code);
+                Corp corp = corpService.selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
                 String c_code = corp.getCorp_code();
                 String corp_name = corp.getCorp_name();
                 JSONObject obj = new JSONObject();
@@ -1264,7 +1264,7 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String user_code = jsonObject.get("user_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code);
+            Corp corp = corpService.selectByCorpId(0, corp_code,"");
             String is_authorize = corp.getIs_authorize();
             if (corp.getApp_id() != null && corp.getApp_id() != "") {
                 String auth_appid = corp.getApp_id();
@@ -1330,7 +1330,7 @@ public class UserController {
                 JSONObject json = new JSONObject(list.get(i).toString());
                 String corp_code = json.get("corp_code").toString();
                 String user_code = json.get("user_code").toString();
-                Corp corp = corpService.selectByCorpId(0, corp_code);
+                Corp corp = corpService.selectByCorpId(0, corp_code,"");
                 String is_authorize = corp.getIs_authorize();
                 String corp_name = corp.getCorp_name();
                 if (corp.getApp_id() != null && corp.getApp_id() != "") {

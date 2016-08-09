@@ -5,7 +5,6 @@ import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Area;
-import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
 import com.github.pagehelper.PageHelper;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -45,15 +43,6 @@ public class AreaServiceImpl implements AreaService {
     }
 
     /**
-     * 根据区域编号
-     * 获取区域信息
-     */
-    @Override
-    public Area getAreaByCode(String corp_code, String area_code) throws Exception {
-        return areaMapper.selectCorpArea(corp_code, area_code);
-    }
-
-    /**
      * 分页显示区域
      */
     @Override
@@ -61,10 +50,10 @@ public class AreaServiceImpl implements AreaService {
         List<Area> areas;
         PageHelper.startPage(page_number, page_size);
         areas = areaMapper.selectAllArea(corp_code, search_value);
-        for (Area area:areas) {
-            if(area.getIsactive().equals("Y")){
+        for (Area area : areas) {
+            if (area.getIsactive().equals("Y")) {
                 area.setIsactive("是");
-            }else{
+            } else {
                 area.setIsactive("否");
             }
         }
@@ -94,8 +83,8 @@ public class AreaServiceImpl implements AreaService {
         String area_code = jsonObject.get("area_code").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String area_name = jsonObject.get("area_name").toString();
-        Area area = getAreaByCode(corp_code, area_code);
-        Area area1 = getAreaByName(corp_code, area_name);
+        Area area = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
+        Area area1 = getAreaByName(corp_code, area_name, Common.IS_ACTIVE_Y);
         if (area == null && area1 == null) {
             area = new Area();
             Date now = new Date();
@@ -134,10 +123,13 @@ public class AreaServiceImpl implements AreaService {
         Area old_area = getAreaById(area_id);
         old_area_code = old_area.getArea_code();
         if (old_area.getCorp_code().equals(corp_code)) {
-            Area areaByCode = getAreaByCode(corp_code, area_code);
-            Area areaByName = getAreaByName(corp_code, area_code);
-            if ((old_area.getArea_code().equals(area_code) || areaByCode == null)
-                    && (old_area.getArea_name().equals(area_name) || areaByName == null)) {
+            Area areaByCode = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
+            Area areaByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
+            if (areaByCode != null && areaByCode.getId() != area_id) {
+                result = "区域编号已存在";
+            } else if (areaByName != null && areaByName.getId() != area_id){
+                result = "区域名称已存在";
+            } else {
                 old_area = new Area();
                 Date now = new Date();
                 old_area.setId(area_id);
@@ -151,14 +143,10 @@ public class AreaServiceImpl implements AreaService {
                     updateAreaCode(corp_code, new_area_code, old_area_code);
                 }
                 result = Common.DATABEAN_CODE_SUCCESS;
-            } else if (!old_area.getArea_code().equals(area_code) && areaByCode != null) {
-                result = "区域编号已存在";
-            } else {
-                result = "区域名称已存在";
             }
         } else {
-            Area areaByCode = getAreaByCode(corp_code, area_code);
-            Area areaByName = getAreaByName(corp_code, area_code);
+            Area areaByCode = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
+            Area areaByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
             if (areaByCode == null
                     && areaByName == null) {
                 old_area = new Area();
@@ -170,9 +158,6 @@ public class AreaServiceImpl implements AreaService {
                 old_area.setModified_date(Common.DATETIME_FORMAT.format(now));
                 old_area.setModifier(user_id);
                 old_area.setIsactive(jsonObject.get("isactive").toString());
-//                if (areaMapper.updateArea(old_area) > 0 && !new_area_code.equals(old_area_code)) {
-//                    updateAreaCode(corp_code, new_area_code, old_area_code);
-//                }
                 areaMapper.updateArea(old_area);
                 result = Common.DATABEAN_CODE_SUCCESS;
             } else if (areaByCode != null) {
@@ -205,42 +190,51 @@ public class AreaServiceImpl implements AreaService {
         return result;
     }
 
-    private void updateAreaCode(String corp_code, String new_area_code, String old_area_code)  throws Exception{
+    private void updateAreaCode(String corp_code, String new_area_code, String old_area_code) throws Exception {
         codeUpdateMapper.updateUser("", corp_code, "", "", "", "", new_area_code, old_area_code);
         codeUpdateMapper.updateStore("", corp_code, "", "", new_area_code, old_area_code);
     }
 
     @Override
     @Transactional
-    public int delete(int id) throws Exception  {
+    public int delete(int id) throws Exception {
         return areaMapper.deleteByAreaId(id);
     }
 
+    /**
+     * 根据区域编号
+     * 获取区域信息
+     */
     @Override
-    public Area getAreaByName(String corp_code, String area_name)  throws Exception{
-        Area area = this.areaMapper.selectArea_Name(corp_code, area_name);
+    public Area getAreaByCode(String corp_code, String area_code, String isactive) throws Exception {
+        return areaMapper.selectAreaByCode(corp_code, area_code, isactive);
+    }
+
+    @Override
+    public Area getAreaByName(String corp_code, String area_name, String isactive) throws Exception {
+        Area area = this.areaMapper.selectAreaByName(corp_code, area_name, isactive);
         return area;
     }
 
     @Override
-    public List<Area> getAreaByCorp(String corp_code)  throws Exception{
+    public List<Area> getAreaByCorp(String corp_code) throws Exception {
         List<Area> list = this.areaMapper.getAreaByCorp(corp_code);
         return list;
     }
 
     @Override
-    public Area selAreaByCorp(String corp_code, String area_code, String isactive)  throws Exception{
-        return areaMapper.selAreaByCorp(corp_code, area_code, isactive);
+    public Area selAreaByCorp(String corp_code, String area_code, String isactive) throws Exception {
+        return areaMapper.selectAreaByCode(corp_code, area_code, isactive);
     }
 
     @Override
-    public String insertExecl(Area area)  throws Exception{
+    public String insertExecl(Area area) throws Exception {
         areaMapper.insertArea(area);
         return "add success";
     }
 
     @Override
-    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map)  throws Exception{
+    public PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             areaArray = area_codes.split(",");
@@ -255,10 +249,10 @@ public class AreaServiceImpl implements AreaService {
         params.put("corp_code", corp_code);
         params.put("map", map);
         areas = areaMapper.selectAllAreaScreen(params);
-        for (Area area:areas) {
-            if(area.getIsactive().equals("Y")){
+        for (Area area : areas) {
+            if (area.getIsactive().equals("Y")) {
                 area.setIsactive("是");
-            }else{
+            } else {
                 area.setIsactive("否");
             }
         }
@@ -267,7 +261,7 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value)  throws Exception{
+    public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
 
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
@@ -282,10 +276,10 @@ public class AreaServiceImpl implements AreaService {
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selectByAreaCodeSearch(params);
-        for (Area area:areas) {
-            if(area.getIsactive().equals("Y")){
+        for (Area area : areas) {
+            if (area.getIsactive().equals("Y")) {
                 area.setIsactive("是");
-            }else{
+            } else {
                 area.setIsactive("否");
             }
         }

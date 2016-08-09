@@ -205,7 +205,7 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject msg = new JSONObject(message);
             String corp_code = msg.get("corp_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code);
+            Corp corp = corpService.selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
             if (corp == null) {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -677,7 +677,7 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String store_code = jsonObject.get("store_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code);
+            Corp corp = corpService.selectByCorpId(0, corp_code,"");
             String is_authorize = corp.getIs_authorize();
             if (corp.getApp_id() != null && corp.getApp_id() != "") {
                 String auth_appid = corp.getApp_id();
@@ -741,7 +741,7 @@ public class StoreController {
                 JSONObject json = new JSONObject(list.get(i).toString());
                 String corp_code = json.get("corp_code").toString();
                 String store_code = json.get("store_code").toString();
-                Corp corp = corpService.selectByCorpId(0, corp_code);
+                Corp corp = corpService.selectByCorpId(0, corp_code,"");
                 String is_authorize = corp.getIs_authorize();
                 String corp_name = corp.getCorp_name();
                 if (corp.getApp_id() != null && corp.getApp_id() != "") {
@@ -960,7 +960,7 @@ public class StoreController {
                     int b = 5 / 0;
                     break;
                 }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString());
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (corp == null) {
                     result = "：第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
@@ -1021,7 +1021,7 @@ public class StoreController {
                     int b = 5 / 0;
                     break;
                 }
-                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString());
+                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (area == null) {
                     result = "：第" + (i + 1) + "行区域编号不存在";
                     int b = 5 / 0;

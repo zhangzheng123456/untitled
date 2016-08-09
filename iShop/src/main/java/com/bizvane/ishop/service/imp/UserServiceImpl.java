@@ -7,7 +7,6 @@ import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
-import com.bizvane.sun.v1.common.Status;
 import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.System;
-import java.sql.SQLException;
 import java.util.*;
 
 
@@ -189,7 +187,7 @@ public class UserServiceImpl implements UserService {
                 String areaCode = "";
                 for (int i = 0; i < areaCodes.length; i++) {
                     areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                    Area area = areaMapper.selAreaByCorp(corp_code, areaCodes[i], "");
+                    Area area = areaMapper.selectAreaByCode(corp_code, areaCodes[i], "");
                     String area_name1 = area.getArea_name();
                     area_name = area_name + area_name1;
                     areaCode = areaCode + areaCodes[i];
@@ -739,7 +737,7 @@ public class UserServiceImpl implements UserService {
 
         codeUpdateMapper.updateStaffDetailInfo("", corp_code, new_user_code, old_user_code, "", "");
 
-        String app_user_name = corpMapper.selectByCorpId(0,corp_code).getApp_user_name();
+        String app_user_name = corpMapper.selectByCorpId(0,corp_code,"").getApp_user_name();
         if (app_user_name != null && !app_user_name.equals(""))
             codeUpdateMapper.updateRelVipEmp(new_user_code,old_user_code,app_user_name);
     }

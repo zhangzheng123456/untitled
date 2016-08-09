@@ -95,7 +95,7 @@ public class CorpController {
                 info.put("list", JSON.toJSONString(corpInfo));
             } else {
                 //用户画面
-                Corp corp = corpService.selectByCorpId(0, corp_code);
+                Corp corp = corpService.selectByCorpId(0, corp_code,"");
                 info.put("list", JSON.toJSONString(corp));
             }
             info.put("actions", actions);
@@ -202,7 +202,7 @@ public class CorpController {
             String msg = null;
             for (int i = 0; i < ids.length; i++) {
                 corp_id = Integer.valueOf(ids[i]);
-                Corp corp = this.corpService.selectByCorpId(corp_id, "");
+                Corp corp = this.corpService.selectByCorpId(corp_id, "","");
                 if (corp != null) {
                     logger.info("inter---------------" + Integer.valueOf(ids[i]));
                     int count = 0;
@@ -266,7 +266,7 @@ public class CorpController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_id = jsonObject.get("id").toString();
 
-            data = JSON.toJSONString(corpService.selectByCorpId(Integer.parseInt(corp_id), ""));
+            data = JSON.toJSONString(corpService.selectByCorpId(Integer.parseInt(corp_id), "",""));
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
@@ -357,7 +357,7 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_name = jsonObject.get("corp_name").toString();
-            String existInfo = corpService.getCorpByCorpName(corp_name);
+            String existInfo = corpService.getCorpByCorpName(corp_name,Common.IS_ACTIVE_Y);
             if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -389,7 +389,7 @@ public class CorpController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
 
-            Corp corp = corpService.selectByCorpId(0, corp_code);
+            Corp corp = corpService.selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
             if (corp != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -537,7 +537,7 @@ public class CorpController {
                     int b = 5 / 0;
                     break;
                 }
-                Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString());
+                Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (corp != null) {
                     result = "：第" + (i + 1) + "行企业编号已存在";
                     int b = 5 / 0;
@@ -556,7 +556,7 @@ public class CorpController {
             }
             Cell[] column1 = rs.getColumn(1);
             for (int i = 3; i < column1.length; i++) {
-                String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString());
+                String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                     result = "：第" + (i + 1) + "行企业名称已存在";
                     int b = 5 / 0;

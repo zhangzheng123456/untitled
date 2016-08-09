@@ -10,8 +10,6 @@ import java.util.Map;
 public interface AreaMapper {
     Area selectByAreaId(int id) throws SQLException;
 
-    Area selectCorpArea(@Param("corp_code") String corp_code, @Param("area_code") String area_code) throws SQLException;
-
     List<Area> selectAllArea(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
     List<Area> selectAreas(@Param("corp_code") String corp_code) throws SQLException;
@@ -22,13 +20,12 @@ public interface AreaMapper {
 
     int deleteByAreaId(int id) throws SQLException;
 
-    Area selectArea_Name(@Param("corp_code") String corp_code, @Param("area_name") String area_name) throws SQLException;
-
-
     List<Area> getAreaByCorp(@Param("corp_code") String corp_code) throws SQLException;
 
     //根据企业code和用户登录进来时的区域Code查询区域
-    Area selAreaByCorp(@Param("corp_code") String corp_code, @Param("area_code") String area_code, @Param("isactive") String isactive) throws SQLException;
+    Area selectAreaByCode(@Param("corp_code") String corp_code, @Param("area_code") String area_code, @Param("isactive") String isactive) throws SQLException;
+
+    Area selectAreaByName(@Param("corp_code") String corp_code, @Param("area_name") String area_name, @Param("isactive") String isactive) throws SQLException;
 
     List<Area> selectAllAreaScreen(Map<String, Object> params) throws SQLException;
 

@@ -8,7 +8,6 @@
         <result column="address" property="address"/>
         <result column="contact" property="contact"/>
         <result column="contact_phone" property="contact_phone"/>
-
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="created_date" property="created_date"/>
@@ -17,50 +16,56 @@
     </resultMap>
 
     <select id="selectByCorpName" resultMap="CorpInfo">
-        select * from DEF_CORP WHERE
-        corp_name=#{corp_name}
+        SELECT * FROM def_corp
+        WHERE corp_name=#{corp_name}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
     </select>
 
     <select id="selectByCorpId" resultType="com.bizvane.ishop.entity.Corp">
-        select *
-        from DEF_CORP
-        where
+        SELECT *
+        FROM def_corp
+        WHERE 1=1
         <if test="corp_id != 0">
-            ID = #{corp_id}
+            AND id = #{corp_id}
         </if>
         <if test="corp_code != null and corp_code !=''">
-            CORP_CODE = #{corp_code}
+            AND corp_code = #{corp_code}
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
         </if>
     </select>
 
     <select id="selectAllCorp" resultMap="CorpInfo">
-        select *
-        from DEF_CORP
-        where 1 = 1
+        SELECT *
+        FROM def_corp
+        WHERE 1 = 1
         <if test="search_value != null and search_value !=''">
             AND
             (
-            corp_name like concat('%', #{search_value},'%')
-            OR corp_code like concat('%', #{search_value},'%')
-            OR address like concat('%', #{search_value},'%')
-            OR contact like concat('%', #{search_value},'%')
-            OR contact_phone like concat('%', #{search_value},'%')
-            OR MODIFIED_DATE LIKE concat('%',#{search_value},'%')
-            OR MODIFIER like concat('%', #{search_value},'%')
-            OR isactive like concat('%', #{search_value},'%')
+            corp_name LIKE concat('%', #{search_value},'%')
+            OR corp_code LIKE concat('%', #{search_value},'%')
+            OR address LIKE concat('%', #{search_value},'%')
+            OR contact LIKE concat('%', #{search_value},'%')
+            OR contact_phone LIKE concat('%', #{search_value},'%')
+            OR modified_date LIKE concat('%',#{search_value},'%')
+            OR modifier LIKE concat('%', #{search_value},'%')
+            OR isactive LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY id DESC
     </select>
 
     <select id="getAreaCount" resultType="int">
-        select count(*) from DEF_AREA WHERE corp_code=#{corp_code}
+        SELECT count(*) FROM def_area WHERE corp_code=#{corp_code}
     </select>
 
     <select id="selectCorps" resultMap="CorpInfo">
-        select *
-        from DEF_CORP
-        where isactive = 'Y'
+        SELECT *
+        FROM def_corp
+        WHERE isactive = 'Y'
         ORDER BY id DESC
     </select>
 

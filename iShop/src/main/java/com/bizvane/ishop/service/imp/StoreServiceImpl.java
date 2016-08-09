@@ -460,7 +460,7 @@ public class StoreServiceImpl implements StoreService {
         codeUpdateMapper.updateUserAchvGoal("", corp_code, new_store_code, old_store_code, "", "");
         //更新会员标签关系
         codeUpdateMapper.updateRelVipLabel("", corp_code, new_store_code, old_store_code);
-        String app_user_name = corpMapper.selectByCorpId(0,corp_code).getApp_user_name();
+        String app_user_name = corpMapper.selectByCorpId(0,corp_code,"").getApp_user_name();
         if (app_user_name != null && !app_user_name.equals(""))
             codeUpdateMapper.updateRelVipStore(new_store_code,old_store_code,app_user_name);
         //更新员工

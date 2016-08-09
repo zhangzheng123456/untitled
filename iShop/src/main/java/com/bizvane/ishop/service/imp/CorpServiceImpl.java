@@ -34,8 +34,8 @@ public class CorpServiceImpl implements CorpService {
     @Autowired
     private AreaMapper areaMapper;
 
-    public Corp selectByCorpId(int corp_id, String corp_code) throws Exception {
-        return corpMapper.selectByCorpId(corp_id, corp_code);
+    public Corp selectByCorpId(int corp_id, String corp_code,String isactive) throws Exception {
+        return corpMapper.selectByCorpId(corp_id, corp_code,isactive);
     }
 
     @Transactional
@@ -45,8 +45,8 @@ public class CorpServiceImpl implements CorpService {
         JSONObject jsonObject = new JSONObject(message);
         String corp_code = jsonObject.get("corp_code").toString();
         String corp_name = jsonObject.get("corp_name").toString();
-        Corp corp = selectByCorpId(0, corp_code);
-        String exist = getCorpByCorpName(corp_name);
+        Corp corp = selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
+        String exist = getCorpByCorpName(corp_name,Common.IS_ACTIVE_Y);
         if (corp == null && exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             corp = new Corp();
 
@@ -86,10 +86,10 @@ public class CorpServiceImpl implements CorpService {
         new_code = corp_code;
         String corp_name = jsonObject.get("corp_name").toString();
 
-        Corp old_corp = selectByCorpId(corp_id, "");
+        Corp old_corp = selectByCorpId(corp_id, "","");
         old_code = old_corp.getCorp_code();
-        Corp corp1 = selectByCorpId(0, corp_code);
-        String exist = getCorpByCorpName(corp_name);
+        Corp corp1 = selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
+        String exist = getCorpByCorpName(corp_name,Common.IS_ACTIVE_Y);
 
         if ((old_corp.getCorp_code().equals(corp_code) || corp1 == null)
                 && (old_corp.getCorp_name().equals(corp_name) || exist.equals(Common.DATABEAN_CODE_SUCCESS))) {
@@ -228,8 +228,8 @@ public class CorpServiceImpl implements CorpService {
      * @throws SQLException
      */
     @Override
-    public String getCorpByCorpName(String corp_name) throws Exception {
-        List<Corp> corps = corpMapper.selectByCorpName(corp_name);
+    public String getCorpByCorpName(String corp_name,String isactive) throws Exception {
+        List<Corp> corps = corpMapper.selectByCorpName(corp_name,isactive);
         if (corps == null || corps.size() < 1) {
             return Common.DATABEAN_CODE_SUCCESS;
         }

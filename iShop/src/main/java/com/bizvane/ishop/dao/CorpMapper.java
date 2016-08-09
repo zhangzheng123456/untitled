@@ -15,27 +15,19 @@ public interface CorpMapper {
     //isactive为Y的企业
     List<Corp> selectCorps(@Param("search_value") String search_value) throws SQLException;
 
-    Corp selectByCorpId(@Param("corp_id") int corp_id, @Param("corp_code") String corp_code) throws SQLException;
+    Corp selectByCorpId(@Param("corp_id") int corp_id, @Param("corp_code") String corp_code,@Param("isactive") String isactive) throws SQLException;
 
     String selectMaxCorpCode() throws SQLException;
 
     int insertCorp(Corp record) throws SQLException;
 
-//    int insertCorpWechatRelation(CorpWechatRelation record);
-
     int updateByCorpId(Corp record) throws SQLException;
-
-//    int updateCorpWechatRelation(CorpWechatRelation record);
 
     int deleteByCorpId(Integer id) throws SQLException;
 
-    List<Corp> selectByCorpName(@Param("corp_name") String corp_name) throws SQLException;
+    List<Corp> selectByCorpName(@Param("corp_name") String corp_name,@Param("isactive") String isactive) throws SQLException;
 
     Corp selectByAppUserName(@Param("app_user_name") String app_user_name) throws SQLException;
-
-//    CorpWechatRelation selectByAppid(@Param("app_id") String app_id);
-
-//    List<CorpWechatRelation> selectRelationByCode(@Param("corp_code") String corp_code);
 
     int selectCount(@Param("created_date") String created_date) throws SQLException;
 

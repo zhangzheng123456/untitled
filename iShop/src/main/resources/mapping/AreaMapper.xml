@@ -32,13 +32,6 @@
         and  DEF_AREA.ID=#{id}
     </select>
 
-    <select id="selectCorpArea" resultType="com.bizvane.ishop.entity.Area">
-        select *
-        from DEF_AREA
-        where CORP_CODE = #{corp_code}
-        AND area_code = #{area_code}
-    </select>
-
     <select id="selectAllArea" resultMap="Area">
         select
         DEF_AREA.id,
@@ -138,7 +131,7 @@
     </insert>
 
     <update id="updateArea" parameterType="com.bizvane.ishop.entity.Area">
-        UPDATE DEF_AREA
+        UPDATE def_area
         <trim prefix="SET" suffixOverrides=",">
             <if test="area_code!=null and area_code!=''">
                 area_code=#{area_code},
@@ -165,14 +158,16 @@
                 isactive=#{isactive},
             </if>
         </trim>
-        WHERE ID=#{id};
-
-
+        WHERE id=#{id};
     </update>
 
-    <select id="selectArea_Name" resultType="com.bizvane.ishop.entity.Area">
-        select * from DEF_AREA
-        WHERE corp_code=#{corp_code} and area_name=#{area_name}
+    <select id="selectAreaByName" resultType="com.bizvane.ishop.entity.Area">
+        select * from def_area
+        WHERE corp_code=#{corp_code}
+        AND area_name=#{area_name}
+        <if test="isactive!=null and isactive!=''">
+           AND isactive=#{isactive}
+        </if>
     </select>
 
     <select id="getAreaByCorp" resultMap="Area">
@@ -180,10 +175,10 @@
         WHERE corp_code=#{corp_code}
     </select>
     <!--根据企业code和用户登录时得到的区域code查找所属的区域-->
-    <select id="selAreaByCorp" resultType="com.bizvane.ishop.entity.Area">
-        select *
-        from DEF_AREA
-        where CORP_CODE = #{corp_code}
+    <select id="selectAreaByCode" resultType="com.bizvane.ishop.entity.Area">
+        SELECT *
+        FROM def_area
+        WHERE corp_code = #{corp_code}
         AND area_code = #{area_code}
         <if test="isactive != null and isactive !=''">
             AND isactive = #{isactive}
@@ -191,16 +186,16 @@
     </select>
 
     <select id="selectAllAreaScreen" resultMap="Area">
-        select
+        SELECT
         da.*,
         dc.CORP_NAME
-        from DEF_AREA da,DEF_CORP dc
-        where da.CORP_CODE = dc.CORP_CODE
+        FROM DEF_AREA da,DEF_CORP dc
+        WHERE da.CORP_CODE = dc.CORP_CODE
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null">
-            AND da.area_code in
+            AND da.area_code IN
             <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
                 #{item}
             </foreach>
@@ -220,16 +215,16 @@
     </select>
 
     <select id="selectByAreaCodeSearch" resultMap="Area">
-        select
+        SELECT
         da.*,
-        dc.CORP_NAME
-        from DEF_AREA da,DEF_CORP dc
-        where da.CORP_CODE = dc.CORP_CODE
+        dc.corp_name
+        FROM def_area da,def_corp dc
+        WHERE da.corp_code = dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null">
-            AND da.area_code in
+            AND da.area_code IN
             <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
                 #{item}
             </foreach>
@@ -238,10 +233,10 @@
             AND
             (da.area_code like concat('%',#{search_value},'%')
             OR da.area_name like concat('%',#{search_value},'%')
-            OR dc.CORP_NAME like concat('%',#{search_value},'%')
-            OR da.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR da.MODIFIER like concat('%',#{search_value},'%')
-            OR da.ISACTIVE like concat('%',#{search_value},'%')
+            OR dc.corp_name like concat('%',#{search_value},'%')
+            OR da.modified_date like concat('%',#{search_value},'%')
+            OR da.modifier like concat('%',#{search_value},'%')
+            OR da.isactive like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY da.id DESC

@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface CorpService {
 
-    Corp selectByCorpId(int corp_id, String corp_code) throws Exception;
+    Corp selectByCorpId(int corp_id, String corp_code,String isactive) throws Exception;
 
     String insert(String message,String user_id) throws Exception;
 
@@ -28,7 +28,7 @@ public interface CorpService {
 
     String selectMaxCorpCode()throws Exception;
 
-    String getCorpByCorpName(String corp_name) throws Exception;
+    String getCorpByCorpName(String corp_name,String isactive) throws Exception;
 
     int getAreaCount(String corp_code) throws Exception;
 
