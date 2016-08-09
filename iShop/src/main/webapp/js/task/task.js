@@ -185,26 +185,22 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].task_code+"'>"
                         + data[i].task_code
-                        + "</td><td>"
+                        + "</span></td><td><span title='"+data[i].task_title+"'>"
                         + data[i].task_title
-                        + "</td><td>"
+                        + "</span></td><td><span title='"+data[i].task_type_name+"'>"
                         + data[i].task_type_name
-                        + "</td><td><span>"
+                        + "<span></td><td><span title='"+data[i].task_description+"'>"
                         + data[i].task_description
-                        + "</span></td><td class='corp_code' data-code='"+data[i].corp_code+"'><span>"
+                        + "</span></td><td class='corp_code' data-code='"+data[i].corp_code+"'><span title='"+data[i].corp_name+"'>"
                         + data[i].corp_name
                         + "</span></td><td class='details'><a href='javascript:void(0)'>"
                         + "查看"
                         + "</a></td><td>"
                         + data[i].target_start_time
                         + "</td><td>"
-                         + data[i].target_end_time
-                        + "</td><td>"
-                        + data[i].modifier
-                        + "</td><td>"
-                        + data[i].modified_date
+                        + data[i].target_end_time
                         + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");

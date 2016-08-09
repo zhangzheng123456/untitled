@@ -83,7 +83,7 @@ function GET(){
     var param={};
     param["store_code"]=store_code;
     param["corp_code"]=corp_code;
-    oc.postRequire("post","/shop/staff","list",param,function(data){
+    oc.postRequire("post","/shop/staff_list","list",param,function(data){
             console.log(data);
             if(data.code=="0"){
                 $(".table tbody").empty();

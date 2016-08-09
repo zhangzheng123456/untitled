@@ -43,7 +43,7 @@ public interface StoreService {
 
     Store getStoreByCode(String corp_code, String store_code, String isactive) throws Exception;
 
-    List<User> getStoreUser(String corp_code, String store_code,String area_code,  String role_code) throws Exception;
+    List<User> getStoreUser(String corp_code, String store_code,String area_code,  String role_code,String isactive) throws Exception;
 
     String insert(String message, String user_id) throws Exception;
 

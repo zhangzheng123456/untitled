@@ -51,7 +51,7 @@ jQuery(function(){
 		    	console.log(i);
 		    }
 		    document.title=list.goods_name;
-		    jQuery('.detail').html('<p class="product_code">货号:'+list.goods_code+'</p><p class="pice">价格:<span>￥'+list.goods_price+'</span></p><div class="total"><p>年份:'+list.production_year+'</p><p>季度:'+list.quarter+'</p><p>波段:'+list.wave_band+'</p></div>');
+		    jQuery('.detail').html('<p class="product_code">货号:'+list.goods_code+'</p><p class="pice">价格:<span>￥'+list.goods_price+'</span></p><div class="total"><p>年份:'+list.goods_time+'</p><p>季度:'+list.goods_quarter+'</p><p>波段:'+list.goods_wave+'</p></div>');
 		    jQuery('#content').html(list.selling_point);
             for(var i=0;i<list.length;i++){
                jQuery('#match-con ul').append('<a href="goods.html?corp_code='+corp_code+'&goods_price='+list[i].goods_code+'"><li><img src="'+list[i].goods_image+'" alt="暂无图片"><p>'+list[i].goods_code+'</p></li></a>');

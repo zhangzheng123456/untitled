@@ -294,6 +294,7 @@ function getstafflist(){
 		}
 	})
 }
+
 //点击弹出框
 var flase=0;
 $('#test').click(function(e){
@@ -529,7 +530,6 @@ function nssignment(){//加载list的文件
 		$("#modify_time").val(msg.modified_date);//修改时间
 		$("#modifier").val(msg.modifier);//修改人
  		getcorplist(corp_code,task_code);//
-
  	});
 }
 //双击进入编辑界面
