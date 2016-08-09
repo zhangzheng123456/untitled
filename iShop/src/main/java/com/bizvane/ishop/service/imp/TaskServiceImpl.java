@@ -183,7 +183,6 @@ public class TaskServiceImpl implements TaskService{
                     String userPhone = user.getPhone();
                     phone = phone + userPhone+",";
                     users = users + user_codes[i];
-                    System.out.println(phone+"----"+users);
                     allocation.setTask_status("1");
                     allocation.setReal_start_time("");
                     allocation.setReal_end_time("");
