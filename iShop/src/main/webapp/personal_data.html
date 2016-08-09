@@ -10,13 +10,20 @@
     <link rel="stylesheet" href="css/font_style.css">
     <link rel="stylesheet" type="text/css" href="css/tips.css">
     <link rel="stylesheet" type="text/css" href="js/artDialog/skins/default.css">
+    <link rel="stylesheet" href="table/css/inner.css">
     <style>
         body{
             margin-top:81px;
         }
         .head_img img{width: 60px;height: 60px;}
         .conpany_msg input{width:80%;}
-        .sex_down{    border: 1px solid #a9c9e2; background: #e8f5fe;}
+        .sex_down{width:400px;position: absolute;left:130px;border: 1px solid #a9c9e2; background: #e8f5fe;display: none;}
+        .sex_down li span{line-height: 30px;margin-left: 5px;}
+        .sex_down li:hover{color: #FFFFFF;background: #6cc1c8;}
+        .user_sex{background:#FFFFFF url(img/btn_dropmenu.png)no-repeat 100% 50%;background-size:30px; }
+        .conpany_msg .pwd{width: 300px}
+        .conpany_msg .chongzhi_pwd input{width:320px;}
+        .pwd_btn{padding:6px 30px;margin-left:6px;background: #6cc1c8;color:#ffffff;border-radius: 4px}
     </style>
 </head>
 <body>
@@ -46,13 +53,20 @@
                         <label>邮箱</label><input id="USER_EMAIL">
                     </div>
                     <div>
-                        <label>密码</label><input id="PASSWORD">
+                        <label>密码</label><input id="PASSWORD" class="pwd" type="password" readonly />
+                        <span class="pwd_btn" onclick="chongzhi()">重置</span>
+                        <div class="chongzhi_pwd" id="chongzhi_pwd">
+                            <p>修改密码    <input type="password" id="first_pwd"><em class="em_1">密码不能为空</em></p>
+                            <p>确认密码    <input type="password" id="second_pwd"><em class="em_2">密码不一致</em></p>
+                            <span class="quxiao" id="quxiao" onclick="quxiao()">取消</span>
+                            <span class="save" id="baocun">确认</span>
+                        </div>
                     </div>
                     <div>
-                        <label>性别</label><input id="USER_SEX">
-                        <ul class="sex_down">
-                            <li>男</li>
-                            <li>女</li>
+                        <label>性别</label><input id="USER_SEX" class="user_sex" readonly />
+                        <ul class="sex_down" id="sex_down">
+                            <li><span>男</span></li>
+                            <li><span>女</span></li>
                         </ul>
                     </div>
                     <div>
@@ -67,7 +81,7 @@
                 <div class="corpadd_oper_btn">
                     <ul>
                         <li><i class="icon-ishop_6-04"></i>保存</li>
-                        <li><i class="icon-ishop_6-12"></i>关闭</li>
+                        <li id="personal_close"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
             </div>
