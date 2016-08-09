@@ -36,6 +36,7 @@
         SELECT * from def_task,DEF_CORP,def_task_type
         where def_task.corp_code = DEF_CORP.corp_code
         and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
+        and DEF_CORP.corp_code = def_task_type.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
@@ -115,6 +116,7 @@
          from rel_task_allocation,DEF_CORP,def_user
         where  rel_task_allocation.corp_code=DEF_CORP.corp_code
         AND def_user.USER_CODE = rel_task_allocation.user_code
+        AND rel_task_allocation.corp_code = def_user.corp_code
         AND rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
         AND rel_task_allocation.user_code=#{user_code}
     </select>

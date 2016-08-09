@@ -155,7 +155,7 @@ public class TaskServiceImpl implements TaskService{
             List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(task.getCorp_code(), task.getTask_code());
             for (int i=0;i<user_codes.length;i++) {
                 TaskAllocation taskAllocation = taskMapper.selAllTaskAllocationByUser(task.getCorp_code(),task.getTask_code(),user_codes[i]);
-
+                id=id+user_codes[i]+",";
                 if(taskAllocation==null){
                     allocation.setCorp_code(task.getCorp_code());
                     allocation.setTask_code(task.getTask_code());
@@ -176,7 +176,6 @@ public class TaskServiceImpl implements TaskService{
                     count+=taskMapper.addTaskAllocation(allocation);
                     appCount = count;
                 }else{
-                    id=id+taskAllocation.getId()+",";
                     allocation.setCorp_code(task.getCorp_code());
                     allocation.setTask_code(task.getTask_code());
                     allocation.setUser_code(user_codes[i]);
