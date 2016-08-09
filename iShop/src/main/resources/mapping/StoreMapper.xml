@@ -384,13 +384,13 @@
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
-        <if test="area_codes!=null">
+        <if test="area_codes!=null and area_codes!=''">
             AND ds.area_code in
             <foreach collection="area_codes" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
-        <if test="store_codes!=null">
+        <if test="store_codes!=null and store_codes!=''">
             AND ds.store_code in
             <foreach collection="store_codes" index="index" item="item" open="(" separator="," close=")">
                 #{item}
@@ -410,9 +410,15 @@
                     <when test="entryKey=='brand_name'">
                         db.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
-                    <otherwise>
+
+                    <when test="entryValue!=''">
                         ds.${entryKey} LIKE concat('%',#{entryValue},'%')
+
+                    </when>
+                    <otherwise>
+                        1=1
                     </otherwise>
+
                 </choose>
             </foreach>
         </if>
