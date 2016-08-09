@@ -16,6 +16,7 @@
         }
         .head_img img{width: 60px;height: 60px;}
         .conpany_msg input{width:80%;}
+        .sex_down{    border: 1px solid #a9c9e2; background: #e8f5fe;}
     </style>
 </head>
 <body>
@@ -27,16 +28,16 @@
                         <label>头像</label><span class="head_img"><img src="img/head.png" id="IMG"></span>
                     </div>
                     <div>
-                        <label>所属企业</label><input id="OWN_CORP">
+                        <label>所属企业</label><input id="OWN_CORP" readonly />
                     </div>
                     <div>
-                        <label>员工编号</label><input id="USER_ID">
+                        <label>员工编号</label><input id="USER_ID" readonly />
                     </div>
                     <div>
                         <label>姓名</label><input id="USER_NAME">
                     </div>
                     <div>
-                        <label>职务</label><input id="POSITION">
+                        <label>职务</label><input id="POSITION" readonly />
                     </div>
                     <div>
                         <label>手机</label><input id="IPHONE">
@@ -49,12 +50,16 @@
                     </div>
                     <div>
                         <label>性别</label><input id="USER_SEX">
+                        <ul class="sex_down">
+                            <li>男</li>
+                            <li>女</li>
+                        </ul>
                     </div>
                     <div>
-                        <label>所属群组</label><input id="OWN_GROUP">
+                        <label>所属群组</label><input id="OWN_GROUP" readonly />
                     </div>
                     <div>
-                        <label>所属店铺</label><input id="OWN_SHOP">
+                        <label>所属店铺</label><input id="OWN_SHOP" readonly />
                     </div>
                 </form>
             </div>
@@ -68,5 +73,7 @@
             </div>
     </div>
 </body>
-<script src="table/js/personal_data.js"></script>
+<script src="js/jquery-2.1.1.min.js"></script>
+<script src="js/insidePostRequire.js"></script>
+<script src="js/personal_data.js"></script>
 </html>
