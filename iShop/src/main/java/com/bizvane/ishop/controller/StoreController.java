@@ -327,7 +327,7 @@ public class StoreController {
                 if (store != null) {
                     String store_code = store.getStore_code();
                     String corp_code = store.getCorp_code();
-                    List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id);
+                    List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id,"");
                     count = user.size();
                     if (count > 0) {
                         msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除";
@@ -537,13 +537,46 @@ public class StoreController {
                 user.add(user1);
             } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_AM)){
                 //显示导购，店长
-                user = storeService.getStoreUser(corp_code, store_code, "",role_code);
+                user = storeService.getStoreUser(corp_code, store_code, "",role_code,Common.IS_ACTIVE_Y);
             }else {
-                user = storeService.getStoreUser(corp_code, store_code,"", Common.ROLE_AM);
-//                Store store = storeService.getStoreByCode(corp_code,store_code,"");
-//                String area_code = store.getArea_code();
-//                List<User> user1 = storeService.getStoreUser(corp_code, "",area_code, role_code);
-//                user.addAll(user1);
+                user = storeService.getStoreUser(corp_code, store_code,"", Common.ROLE_AM,Common.IS_ACTIVE_Y);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(JSON.toJSONString(user));
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/staff_list", method = RequestMethod.POST)
+    @ResponseBody
+    public String getStaffList(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String store_code = jsonObject.get("store_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            List<User> user = new ArrayList<User>();
+            if (role_code.equals(Common.ROLE_STAFF)) {
+                //列表只显示自己
+                String user_id = request.getSession().getAttribute("user_id").toString();
+                User user1 = userService.getUserById(Integer.parseInt(user_id));
+                user.add(user1);
+            } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_AM)){
+                //显示导购，店长
+                user = storeService.getStoreUser(corp_code, store_code, "",role_code,"");
+            }else {
+                user = storeService.getStoreUser(corp_code, store_code,"", Common.ROLE_AM,"");
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

@@ -155,14 +155,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     //店铺下所属用户
-    public List<User> getStoreUser(String corp_code, String store_code,String area_code, String role_code) throws Exception{
+    public List<User> getStoreUser(String corp_code, String store_code,String area_code, String role_code,String isactive) throws Exception{
         List<User> user = new ArrayList<User>();
 
         if (!store_code.equals("")) {
-            user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", "", role_code);
+            user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", "", role_code,isactive);
         }
         if (!area_code.equals("")){
-            user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD + area_code + ",", role_code);
+            user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD + area_code + ",", role_code,isactive);
         }
         for (User user1:user) {
             if (user1.getIsactive().equals("Y")) {

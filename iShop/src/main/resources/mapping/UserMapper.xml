@@ -267,6 +267,9 @@
             AND def_user.area_code regexp #{area_code}
         </if>
         AND def_group.role_code &lt; #{role_code}
+        <if test="isactive != null and isactive !=''">
+            AND def_user.isactive = #{isactive}
+        </if>
         ORDER BY def_user.id DESC
     </select>
 
