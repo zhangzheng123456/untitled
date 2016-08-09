@@ -244,7 +244,10 @@
                         </ul>
                     </div>
                     <div>
-                        <span><label>任务名称</label><input type="text" id="task_title_e" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div></span>
+                        <span><label>任务名称</label><input type="text" id="task_title_e" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="任务名称不能为空！"></div></div>
+                            <input type="hidden" id="task_id" />
+                            <input type="hidden" id="task_code_e"/>
+                        </span>
                     </div>
                     <div>
                         <span style="display: inline-flex;width:100%"><label style="height:180px;">任务描述</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="task_describe"></textarea></span></span>
@@ -252,6 +255,9 @@
                     <div>
                         <span><label style="margin-right:14px;">分配任务</label></span>
                         <span class="good_imgs" style="display: inline-block;width:420px">
+                            <ul class="xingming">
+                               
+                            </ul>
                             <span class="add_new_touxiang" style="position: relative;"><span id="test">
                                 <div class="webuploader-pick"><i class="icon-ishop_6-01"></i></div>
                             </span></span>

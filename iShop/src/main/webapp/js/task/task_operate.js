@@ -350,6 +350,30 @@ $("#staff_code_drop").click(function(e){
 	var user_names=$('#staff_input').val();
 	var user_codes=$('#staff_input').attr("data-usercode");
 	var phone=$('#staff_input').attr("data-userphone");
+	user_names=user_names.split(',');
+	user_codes=user_codes.split(',');
+	phone=phone.split(',');
+	console.log(user_names);
+	console.log(user_codes);
+	console.log(phone);
+	var ul="";
+	for(var i=0;i<user_names.length;i++){
+		var a=$('.xingming li');
+		for(var j=0;j<a.length;j++){
+			if($(a[j]).attr("data-code")==user_codes[i]){
+				$(a[j]).remove();
+			}
+		}
+		$('.xingming').append("<li data-code='"+user_codes[i]+"' data-phone='"+phone[i]+"'>"+user_names[i]+"<div class='delectxing' onclick='deleteName(this)'></div></li>");	
+	}
+	//删除姓名
+	$(".xingming li").hover(function(){
+	    $(this).find('.delectxing').show();
+	},function(){
+	    $(this).find('.delectxing').hide();
+	})
+	$(".distribution_frame").hide();
+	flase=0;
 })
 $(document).click(function(e){
 	if($(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.drop-down span')||$(e.target).is('.drop-down h5')||$(e.target).is('.drop-down .checkbox_isactive')||$(e.target).is('.checkbox_isactive label')||$(e.target).is('.drop-down ul li')||$(e.target).is('.drop-down ul')){
@@ -362,8 +386,22 @@ $(document).click(function(e){
 //点击保存
 $("#add_save").click(function(){
 	var _param={};
-	var user_codes=$('#staff_input').attr("data-usercode");//员工编号
-	var phone=$('#staff_input').attr("data-userphone");//手机号
+	var a=$('.xingming li');
+	var user_codes="";
+	var phone="";
+	for(var i=0;i<a.length;i++){
+        var u=$(a[i]).attr("data-code");
+        var p=$(a[i]).attr("data-phone");
+        if(i<a.length-1){
+            user_codes+=u+",";
+            phone+=p+",";
+        }else{
+             user_codes+=p;
+             phone+=p;
+        }     
+    }
+    console.log(user_codes);
+    console.log(phone);
 	var corp_code = $('#OWN_CORP').val();//公司编号
 	var task_type_code = $('#task_type_code').val();//公司类型
 	var task_title=$('#task_title').val();//任务名称
@@ -387,6 +425,64 @@ $("#add_save").click(function(){
 	_param["target_start_time"]=target_start_time;
 	_param["isactive"]=isactive;
 	oc.postRequire("post","/task/addTask","", _param, function(data) {
+		if(data.code=="0"){
+			if(data.message=="新增成功"){
+				$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+			}
+		}
+	})
+})
+//编辑点击保存
+$("#edit_save").click(function(){
+	var _param={};
+	var a=$('.xingming li');
+	var user_codes="";
+	var phone="";
+	for(var i=0;i<a.length;i++){
+        var u=$(a[i]).attr("data-code");
+        var p=$(a[i]).attr("data-phone");
+        if(i<a.length-1){
+            user_codes+=u+",";
+            phone+=p+",";
+        }else{
+             user_codes+=p;
+             phone+=p;
+        }     
+    }
+    console.log(user_codes);
+    console.log(phone);
+	var corp_code = $('#OWN_CORP').val();//公司编号
+	var task_type_code = $('#task_type_code').val();//公司类型
+	var task_title=$('#task_title_e').val();//任务名称
+	var task_description=$("#task_describe").val();//任务描述
+	var target_end_time=$("#target_end_time_e").val();//截止时间
+	var target_start_time=$("#target_start_time_e").val();//开始时间
+	var id=$('#task_id').val();//id名称
+	var task_code=$('#task_code_e').val();
+	var isactive = "";//是否可用
+	var input = $("#is_active")[0];
+	if (input.checked == true) {
+		isactive = "Y";
+	} else if (input.checked == false) {
+		isactive = "N";
+	}
+	_param["user_codes"]=user_codes;
+	_param["phone"]=phone;
+	_param["corp_code"]=corp_code;
+	_param["task_type_code"]=task_type_code;
+	_param["task_title"]=task_title;
+	_param["task_description"]=task_description;
+	_param["target_end_time"]=target_end_time;
+	_param["target_start_time"]=target_start_time;
+	_param["task_code"]=task_code;//任务编号
+	_param["id"]=id;//id名称
+	_param["isactive"]=isactive;
+	oc.postRequire("post","/task/edit","", _param, function(data) {
+		if(data.code=="0"){
+			$("#page-wrapper").hide();
+ 			$("#content").show();
+ 			$("#details").hide();
+		}
 		console.log(data);
 	})
 })
@@ -404,9 +500,19 @@ function nssignment(){//加载list的文件
  		console.log(msg);
  		var corp_code=msg.corp_code;//公司编号
  		var task_code=msg.task_code;//任务编号
- 		console.log(msg.task_title);
+ 		var ul="";
+ 		for(var i=0;i<list.length;i++){
+ 			ul+="<li data-code='"+list[i].user_code+"' data-phone='"+list[i].phone+"'>"+list[i].user_name+"<div class='delectxing' onclick='deleteName(this)'></div></li>";	
+ 		}
+ 		$('.xingming').html(ul);
+ 		$(".xingming li").hover(function(){
+	    	$(this).find('.delectxing').show();
+		},function(){
+		    $(this).find('.delectxing').hide();
+		})
  		$("#task_title_e").val(msg.task_title);//任务名称
  		$("#task_describe").val(msg.task_description);//任务描述
+ 		$("#task_code_e").val(msg.task_code);//任务编号
  		$("#target_start_time_e").val(msg.target_start_time);//开始时间
  		$("#target_end_time_e").val(msg.target_end_time);//截止时间
  		$("#created_time").val(msg.created_date);//创建时间
@@ -414,6 +520,7 @@ function nssignment(){//加载list的文件
 		$("#modify_time").val(msg.modified_date);//修改时间
 		$("#modifier").val(msg.modifier);//修改人
  		getcorplist(corp_code,task_code);//
+
  	});
 }
 //双击进入编辑界面
@@ -427,6 +534,7 @@ function editAssignment(a){
  	param["corp_code"] = corp_code;//公司编号
  	param["task_code"] = task_code;//任务编号
  	param["id"] = id;//公司id
+ 	$('#task_id').val(id);
  	nssignment();
 }
 //编辑进入界面
@@ -453,4 +561,3 @@ $("#edit_close").click(function(){
 $("#add_close").click(function(){
 	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
 })
-
