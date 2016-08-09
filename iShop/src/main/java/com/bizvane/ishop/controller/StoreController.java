@@ -599,7 +599,7 @@ public class StoreController {
             String store_code = jsonObject.get("store_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             //         Area area = areaService.getAreaByName(corp_code, store_code);
-            Store store = storeService.getStoreByCode(corp_code, store_code, "");
+            Store store = storeService.getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
 
             if (store != null) {
                 dataBean.setId(id);
@@ -636,7 +636,7 @@ public class StoreController {
             String store_name = jsonObject.get("store_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             //         Area area = areaService.getAreaByName(corp_code, store_code);
-            Store store = storeService.getStoreByName(corp_code, store_name);
+            Store store = storeService.getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
 
             if (store != null) {
                 dataBean.setId(id);
@@ -980,7 +980,7 @@ public class StoreController {
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column[i].getContents().toString(), "");
+                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column[i].getContents().toString(), Common.IS_ACTIVE_Y);
                 if (store != null) {
                     result = "：第" + (i + 1) + "行店铺编号已存在";
                     int b = 5 / 0;
@@ -989,7 +989,7 @@ public class StoreController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                Store store = storeService.getStoreByName(column3[i].getContents().toString(), column1[i].getContents().toString());
+                Store store = storeService.getStoreByName(column3[i].getContents().toString(), column1[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (store != null) {
                     result = "：第" + (i + 1) + "行店铺名称已存在";
                     int b = 5 / 0;
