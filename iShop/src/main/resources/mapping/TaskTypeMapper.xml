@@ -71,6 +71,9 @@
             OR def_task_type.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
+        <if test="isactive != null and isactive !=''">
+            AND def_task_type.ISACTIVE = #{isactive}
+        </if>
         ORDER BY def_task_type.id DESC
     </select>
 

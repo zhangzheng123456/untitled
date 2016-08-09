@@ -19,6 +19,8 @@ public interface StoreMapper {
 
     List<Store> selectByUserId(Map<String, Object> params) throws SQLException;
 
+    List<Store> selStoreByUserCode(Map<String, Object> params) throws SQLException;
+
     List<Store> selectStoreBrandArea(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code, @Param("area_code") String area_code) throws SQLException;
 
     int insertStore(Store store) throws SQLException;
@@ -36,6 +38,9 @@ public interface StoreMapper {
     int selectAchCount(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
 
     List<Store> selectByAreaCode(Map<String, Object> params) throws SQLException;
+
+    List<Store> selStoreByAreaCode(Map<String, Object> params) throws SQLException;
+
 
     List<Store> selectAllStoreScreen(Map<String, Object> params) throws SQLException;
 

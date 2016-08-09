@@ -62,6 +62,11 @@ public class AreaController {
     private CorpService corpService;
     private static final Logger logger = Logger.getLogger(AreaController.class);
 
+    /**
+     * 根据企业拉取区域
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/selAreaByCorpCode", method = RequestMethod.POST)
     @ResponseBody
     public String selAreaByCorpCode(HttpServletRequest request) {
@@ -81,15 +86,16 @@ public class AreaController {
             PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", searchValue);
+                list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
             } else {
-                //String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
-                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", searchValue);
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
                 } else if (role_code.equals(Common.ROLE_AM)) {
-                    // list = areaService.getAllAreaByPage(page_number, page_size, corp
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
-                    list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, searchValue);
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, area_code,"", searchValue);
+                }else{
+                    String store_code = request.getSession(false).getAttribute("store_code").toString();
+                    list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "",store_code, searchValue);
                 }
             }
             JSONObject result = new JSONObject();

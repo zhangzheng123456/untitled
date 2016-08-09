@@ -1035,7 +1035,6 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage() + ex.toString());
-            logger.info(ex.getMessage() + ex.toString());
         }
         return dataBean.getJsonStr();
     }

@@ -565,6 +565,10 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
                     storeAchvGoal.setModifier(user_id);
                     result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal));
+                    if (result.equals("店铺业绩重复")){
+                        result = "：第"+(i+1)+ "条店铺业绩目标已经设定";
+                        int b = 5 / 0;
+                    }
                 }
             }
 

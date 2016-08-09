@@ -35,7 +35,7 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     public PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value) {
         PageHelper.startPage(page_num, page_size);
-        List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value);
+        List<TaskType> task_types = taskTypeMapper.selectAllTaskType(corp_code, search_value,"");
         for (TaskType taskType:task_types) {
             if(taskType.getIsactive().equals("Y")){
                 taskType.setIsactive("是");

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -260,6 +261,8 @@ public class AreaServiceImpl implements AreaService {
         return page;
     }
 
+
+
     @Override
     public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
 
@@ -276,6 +279,40 @@ public class AreaServiceImpl implements AreaService {
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selectByAreaCodeSearch(params);
+        for (Area area : areas) {
+            if (area.getIsactive().equals("Y")) {
+                area.setIsactive("是");
+            } else {
+                area.setIsactive("否");
+            }
+        }
+        PageInfo<Area> page = new PageInfo<Area>(areas);
+        return page;
+    }
+    @Override
+    public PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes,String store_code, String search_value) throws SQLException {
+        String[] areaArray = null;
+        if (null != area_codes && !area_codes.isEmpty()) {
+            areaArray = area_codes.split(",");
+            for (int i = 0; areaArray != null && i < areaArray.length; i++) {
+                areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
+            }
+        }
+
+        String[] storeArray = null;
+        if (null != store_code && !store_code.isEmpty()) {
+            storeArray = store_code.split(",");
+            for (int i = 0; storeArray != null && i < storeArray.length; i++) {
+                storeArray[i] = storeArray[i].substring(1, storeArray[i].length());
+            }
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_codes", areaArray);
+        params.put("store_code", storeArray);
+        params.put("search_value", search_value);
+        PageHelper.startPage(page_number, page_size);
+        List<Area> areas = areaMapper.selAreaByCorpCode(params);
         for (Area area : areas) {
             if (area.getIsactive().equals("Y")) {
                 area.setIsactive("是");

@@ -90,21 +90,20 @@ public class StoreController {
                 //系统管理员
                 String area_code = jsonObject.get("area_code").toString();
                 String[] areaCodes = area_code.split(",");
-                list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
                 // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
                     String area_code = jsonObject.get("area_code").toString();
                     String[] areaCodes = area_code.split(",");
-                    list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
-                   // list = storeService.getAllStore(request, page_number, page_size, corp_code, searchValue);
+                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     String[] areaCodes = area_code.split(",");
-                    list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = storeService.selectByUserId(page_number, page_size, store_code, corp_code, searchValue);
+                    list = storeService.selStoreByUserCode(page_number, page_size, store_code, corp_code, searchValue);
                 }
             }
             JSONObject result = new JSONObject();

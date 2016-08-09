@@ -145,6 +145,74 @@
         ORDER BY DEF_STORE.id DESC
     </select>
 
+<!--下拉框，根据区域拉店铺(区经，企业管理员)-->
+    <select id="selStoreByAreaCode" resultMap="Store">
+        select
+        DEF_STORE.id,
+        store_code,
+        store_name,
+        brand_code,
+        flg_tob,
+        DEF_STORE.AREA_CODE,
+        DEF_STORE.corp_code,
+        DEF_STORE.modified_date,
+        DEF_STORE.modifier,
+        DEF_STORE.isactive,
+        DEF_CORP.CORP_NAME,
+        DEF_AREA.AREA_NAME
+        from DEF_STORE,DEF_CORP,DEF_AREA
+        WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
+        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND DEF_STORE.CORP_CODE = #{corp_code}
+        AND DEF_STORE.AREA_CODE IN
+        <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        <if test="search_value != null and search_value !=''">
+            AND STORE_CODE like concat('%',#{search_value},'%')
+            OR STORE_NAME like concat('%',#{search_value},'%')
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND DEF_STORE.ISACTIVE = #{isactive}
+        </if>
+        ORDER BY DEF_STORE.id DESC
+    </select>
+    <!--下拉框，根据区域拉店铺（店长，导购）-->
+    <select id="selStoreByUserCode" resultMap="Store">
+        select
+        DEF_STORE.id,
+        store_code,
+        store_name,
+        brand_code,
+        flg_tob,
+        DEF_STORE.AREA_CODE,
+        DEF_STORE.corp_code,
+        DEF_STORE.modified_date,
+        DEF_STORE.modifier,
+        DEF_STORE.isactive,
+        DEF_CORP.CORP_NAME,
+        DEF_AREA.AREA_NAME
+        from DEF_STORE,DEF_CORP,DEF_AREA
+        WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
+        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
+        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND DEF_STORE.STORE_CODE IN
+        <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
+            #{item}
+        </foreach>
+        AND DEF_STORE.CORP_CODE = #{corp_code}
+        <if test="search_value != null and search_value !=''">
+            AND STORE_CODE like concat('%',#{search_value},'%')
+            OR STORE_NAME like concat('%',#{search_value},'%')
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND DEF_STORE.ISACTIVE = #{isactive}
+        </if>
+        ORDER BY DEF_STORE.id DESC
+    </select>
+
+
     <select id="selectByUserId" resultMap="Store">
         select
         DEF_STORE.id,
@@ -181,7 +249,7 @@
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
         </if>
-        ORDER BY STORE_CODE
+        ORDER BY DEF_STORE.id DESC
     </select>
 
     <select id="selectStoreBrandArea" resultType="com.bizvane.ishop.entity.Store">

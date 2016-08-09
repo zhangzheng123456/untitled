@@ -258,6 +258,6 @@ public class TaskServiceImpl implements TaskService{
 
     @Override
     public List<TaskType> selectAllTaskType(String corp_code) {
-        return typeMapper.selectAllTaskType(corp_code,"");
+        return typeMapper.selectAllTaskType(corp_code,"","Y");
     }
 }

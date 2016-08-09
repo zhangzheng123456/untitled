@@ -269,16 +269,6 @@ public class TaskController {
             String user_codes = jsonObject.get("user_codes").toString();
             String[] splitUser = user_codes.split(",");
             String phone = jsonObject.get("phone").toString();
-//            String jlist = jsonObject.get("list").toString();
-//            com.alibaba.fastjson.JSONArray array = com.alibaba.fastjson.JSONArray.parseArray(jlist);
-//            Map<String, String> map = new HashMap<String, String>();
-//            for (int i = 0; i < array.size(); i++) {
-//                String info = array.get(i).toString();
-//                JSONObject json = new JSONObject(info);
-//                String screen_key = json.get("user_code").toString();
-//                String screen_value = json.get("phone").toString();
-//                map.put(screen_key, screen_value);
-//            }
             String add = taskService.addTask(task,splitUser,phone,user_codes,user_code);
             count=Integer.parseInt(add);
             if(count>0){
