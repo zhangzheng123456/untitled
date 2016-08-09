@@ -203,8 +203,8 @@
     <select id="selectByPhone" resultMap="BaseMap">
         SELECT *
         FROM def_user
-        WHERE
-            phone = #{phone}
+        WHERE phone = #{phone}
+        AND isactive = 'Y'
     </select>
 
     <select id="selectLogin" resultMap="BaseMap">
@@ -218,15 +218,19 @@
     </select>
 
     <select id="selectUserCode" resultMap="BaseMap">
-    SELECT *
-    FROM def_user
-    WHERE
-    user_code = #{0} AND corp_code = #{1}
-   </select>
+        SELECT *
+        FROM def_user
+        WHERE user_code = #{user_code}
+        AND corp_code = #{corp_code}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
+    </select>
 
     <select id="userEmailExist" resultType="com.bizvane.ishop.entity.User">
         SELECT * FROM def_user
         WHERE email = #{email}
+        AND isactive = 'Y'
     </select>
 
     <!--获取店铺下员工-->
@@ -519,17 +523,7 @@
         </trim>
         WHERE ID = #{id};
     </update>
-    <!--
-        <select id="selectUserName" resultType="com.bizvane.ishop.entity.User">
-            select * from def_user
-            WHERE user_name=#{user_name} and user_code=#{user_code}
-        </select>
 
-        <select id="selectPhone" resultType="com.bizvane.ishop.entity.User">
-            select * from def_user
-            WHERE phone=#{phone} and corp_code=#{corp_code}
-        </select>
-    -->
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT count(1) from def_user
         WHERE 1=1

@@ -82,7 +82,7 @@ public class MessageServiceImpl implements MessageService {
             String isactive = json.get("isactive").toString();
             String message_type = json.get("message_type").toString();
 
-            List<User> users = userMapper.selectUserCode(user_code, corp_code);
+            List<User> users = userMapper.selectUserCode(user_code, corp_code,"");
             User user =users.get(0);
             String avater = user.getAvatar();
             String user_name = user.getUser_name();

@@ -45,7 +45,7 @@ public interface UserService {
 
     String userEmailExist(String email) throws Exception;
 
-    List<User> userCodeExist(String user_code, String corp_code) throws Exception;
+    List<User> userCodeExist(String user_code, String corp_code,String isactive) throws Exception;
 
     String register(String message) throws Exception;
 
