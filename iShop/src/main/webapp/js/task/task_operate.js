@@ -445,7 +445,7 @@ $("#edit_save").click(function(){
             user_codes+=u+",";
             phone+=p+",";
         }else{
-             user_codes+=p;
+             user_codes+=u;
              phone+=p;
         }     
     }
