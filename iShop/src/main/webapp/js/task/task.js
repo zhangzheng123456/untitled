@@ -202,6 +202,8 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td>"
                         + data[i].target_end_time
                         + "</td><td>"
+                        + data[i].modifier
+                        + "</td><td>"
                         +data[i].isactive
                         +"</td></tr>");
     }

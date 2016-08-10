@@ -314,7 +314,7 @@ jQuery(document).ready(function(){
     			}else if(data.code=="-1"){
     				$("#GROUP_NAME").attr("data-mark","N");
 	               	div.addClass("error_tips");
-					div.html("该编号已经存在！");	
+					div.html("该名称已经存在！");	
     			}
     		})
     	}

@@ -458,13 +458,16 @@ public class CorpController {
                 corpInfo = corpService.selectAllCorpScreen(1, 30000, map);
             }
             List<Corp> corps = corpInfo.getList();
+            for (Corp corp:corps) {
+                String contact = corp.getContact();
+                String replaceStr = WebUtils.StringFilter(contact);
+                corp.setContact(replaceStr);
+            }
             if (corps.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            // String column_name1 = "corp_code,corp_name";
-           // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(corps, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {

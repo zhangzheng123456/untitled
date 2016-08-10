@@ -97,71 +97,77 @@
             OR DEF_GROUP.isactive like concat('%',#{search_value},'%')
             )
         </if>
+        AND def_role.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        GROUP BY def_group.group_code
         ORDER BY DEF_GROUP.ID DESC
     </select>
 
 
     <select id="selectAllGroupScreen" resultMap="GroupInfo">
-        select
-        DEF_GROUP.id,
-        DEF_GROUP.group_code,
-        DEF_GROUP.group_name,
-        DEF_GROUP.role_code,
-        DEF_GROUP.corp_code,
-        DEF_ROLE.role_name,
-        DEF_CORP.corp_name,
-        DEF_GROUP.remark,
-        DEF_GROUP.modified_date,
-        DEF_GROUP.modifier,
-        DEF_GROUP.created_date,
-        DEF_GROUP.creater,
-        DEF_GROUP.isactive
-        from DEF_GROUP,DEF_ROLE,DEF_CORP
-        where DEF_GROUP.role_code = DEF_ROLE.role_code
-        AND DEF_GROUP.corp_code = DEF_CORP.corp_code
+        SELECT
+        def_group.id,
+        def_group.group_code,
+        def_group.group_name,
+        def_group.role_code,
+        def_group.corp_code,
+        def_role.role_name,
+        def_corp.corp_name,
+        def_group.remark,
+        def_group.modified_date,
+        def_group.modifier,
+        def_group.created_date,
+        def_group.creater,
+        def_group.isactive
+        FROM def_group,def_role,def_corp
+        WHERE def_group.role_code = def_role.role_code
+        AND def_group.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_GROUP.CORP_CODE = #{corp_code}
+            AND def_group.corp_code = #{corp_code}
         </if>
         <if test="role_code != null and role_code !=''">
-            AND DEF_GROUP.role_code &lt; #{role_code}
+            AND def_group.role_code &lt; #{role_code}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryKey=='corp_name'">
-                    DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <when test="entryKey=='role_name'">
-                    DEF_ROLE.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_role.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <otherwise>
-                    DEF_GROUP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_group.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </otherwise>
             </choose>
         </foreach>
-        ORDER BY DEF_GROUP.ID DESC
+        AND def_role.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        GROUP BY def_group.group_code
+        ORDER BY def_group.id DESC
     </select>
 
     <select id="selectUserGroup" resultType="com.bizvane.ishop.entity.Group">
-        select *
-        from DEF_GROUP
-        where 1 = 1
+        SELECT *
+        FROM def_group
+        WHERE 1 = 1
         <if test="corp_code != null and corp_code !=''">
             AND corp_code = #{corp_code}
         </if>
         <if test="role_code != null and role_code !=''">
             AND role_code &lt; #{role_code}
         </if>
-        AND ISACTIVE = 'Y'
-        ORDER BY ID DESC
+        AND isactive = 'Y'
+        ORDER BY id DESC
     </select>
 
 
     <select id="selectByRole" resultType="com.bizvane.ishop.entity.Group">
-        select *
-        from DEF_GROUP
-        where role_code = #{role_code}
-        ORDER BY ID DESC
+        SELECT *
+        FROM def_group
+        WHERE role_code = #{role_code}
+        ORDER BY id DESC
     </select>
 
     <select id="selectMaxCode" resultType="java.lang.String">
@@ -169,7 +175,7 @@
     </select>
 
     <insert id="insertGroup" parameterType="com.bizvane.ishop.entity.Group">
-        insert into DEF_GROUP
+        INSERT INTO def_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="group_code != null">
                 group_code,
@@ -237,7 +243,7 @@
     </insert>
 
     <update id="updateGroup" parameterType="com.bizvane.ishop.entity.Group">
-        UPDATE DEF_GROUP
+        UPDATE def_group
         <trim prefix="SET" suffixOverrides=",">
             <if test="group_code != null">
                 group_code = #{group_code},
@@ -270,13 +276,13 @@
                 isactive = #{isactive},
             </if>
         </trim>
-        WHERE ID = #{id};
+        WHERE id = #{id};
     </update>
 
     <delete id="deleteByGroupId">
-        delete from
-        DEF_GROUP
-        where ID = #{id}
+        DELETE FROM
+        def_group
+        WHERE id = #{id}
     </delete>
 
 

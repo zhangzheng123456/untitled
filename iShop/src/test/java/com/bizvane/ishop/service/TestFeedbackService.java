@@ -2,6 +2,7 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
 import org.junit.Test;
@@ -45,17 +46,20 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            Task task=new Task();
-            task.setTask_code("T201608051153111446");
-            task.setTask_title("顺哥DiuDiu~");
-            task.setTask_type_code("T0001");
-            task.setTask_description("加班加班Gogogogo");
-            task.setCorp_code("C00001");
-            task.setId(26);
-            String[] user_codes={"9999","008"};
-            String user_code="";
-            String result = taskService.updTask(task, user_codes, user_code);
-            System.out.println("-------"+result);
+            //"[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
+            String   str   ="aaa,bbb,ccc,dddd";
+            System.out.println(WebUtils.StringFilter(str));
+//            Task task=new Task();
+//            task.setTask_code("T201608051153111446");
+//            task.setTask_title("顺哥DiuDiu~");
+//            task.setTask_type_code("T0001");
+//            task.setTask_description("加班加班Gogogogo");
+//            task.setCorp_code("C00001");
+//            task.setId(26);
+//            String[] user_codes={"9999","008"};
+//            String user_code="";
+//            String result = taskService.updTask(task, user_codes, user_code);
+//            System.out.println("-------"+result);
         } catch (Exception x) {
             x.printStackTrace();
         }

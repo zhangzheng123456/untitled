@@ -913,14 +913,8 @@ public class UserController {
             JSONObject groups = new JSONObject();
             List<Group> group;
             if (role_code.equals(Common.ROLE_SYS)) {
-//                if (corp_code.equals("")) {
-//                    //列出系统管理员，role_code=r1000
-//                    group = groupService.selectByRole(Common.ROLE_SYS);
-//                    System.out.println("-------");
-//                } else {
-                //列出企业下所有,corp_code=
+                //列出企业下所有
                 group = groupService.selectUserGroup(corp_code, "");
-                //               }
             } else {
                 //比登陆用户角色级别低的群组
                 String login_corp_code = request.getSession().getAttribute("corp_code").toString();

@@ -257,3 +257,30 @@
 	display: none;
 	cursor: pointer;
 }
+.sendee{
+	overflow: hidden;
+}
+.sendee_r{
+	background-color: #fff;
+	min-height: 30px;
+	line-height: 30px;
+	width: 390px;
+	overflow: hidden;
+}
+.sendee_r p{
+	width: 80px;
+	float: left;
+}
+.sendee li{
+	float: left;
+}
+.add_sendee{
+	width: 30px;
+	height: 30px;
+	text-align: center;
+	line-height: 30px;
+	color: #fff;
+	background-color: #6cc1c8;
+	cursor: pointer;
+	border-radius: 0 5px 5px 0;
+}

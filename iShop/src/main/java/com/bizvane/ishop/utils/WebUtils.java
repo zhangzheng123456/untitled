@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.regex.PatternSyntaxException;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -204,6 +205,22 @@ public class WebUtils {
         return result;
     }
 
+
+    /**
+     * 特殊字符替换(现在主要针对导出)
+     * @param str
+     * @return
+     * @throws PatternSyntaxException
+     */
+    public  static  String StringFilter(String   str)  throws PatternSyntaxException {
+        // 只允许字母和数字
+        // String   regEx  =  "[^a-zA-Z0-9]";
+        // 清除掉所有特殊字符
+        String regEx="[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，？]";
+        Pattern   p   =   Pattern.compile(regEx);
+        Matcher   m   =   p.matcher(str);
+        return   m.replaceAll("、").trim();
+    }
 
 }
 
