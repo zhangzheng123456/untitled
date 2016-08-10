@@ -92,6 +92,9 @@
             OR def_store.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
+        AND def_corp.isactive = 'Y'
+        AND def_area.isactive = 'Y'
+        AND def_brand.isactive = 'Y'
         ORDER BY def_store.id DESC
     </select>
 
@@ -107,6 +110,9 @@
         AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND def_store.corp_code = #{corp_code}
         AND def_store.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        AND def_area.isactive = 'Y'
+        AND def_brand.isactive = 'Y'
         ORDER BY def_store.id DESC
     </select>
 
@@ -148,6 +154,9 @@
         <if test="isactive != null and isactive !=''">
             AND def_store.isactive = #{isactive}
         </if>
+        AND def_corp.isactive = 'Y'
+        AND def_area.isactive = 'Y'
+        AND def_brand.isactive = 'Y'
         ORDER BY def_store.id DESC
     </select>
 
@@ -161,10 +170,12 @@
         DEF_STORE.corp_code,
         DEF_CORP.CORP_NAME,
         DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
+        from DEF_STORE,DEF_CORP,DEF_AREA,def_brand
         WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND def_store.corp_code = def_brand.corp_code
+        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND DEF_STORE.CORP_CODE = #{corp_code}
         AND DEF_STORE.AREA_CODE IN
         <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
@@ -176,6 +187,9 @@
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
         </if>
+        AND def_corp.isactive = 'Y'
+        AND def_area.isactive = 'Y'
+        AND def_brand.isactive = 'Y'
         ORDER BY DEF_STORE.id DESC
     </select>
     <!--下拉框，根据区域拉店铺（店长，导购）-->
@@ -188,10 +202,12 @@
         DEF_STORE.corp_code,
         DEF_CORP.CORP_NAME,
         DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
+        from DEF_STORE,DEF_CORP,DEF_AREA,def_brand
         WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND def_store.corp_code = def_brand.corp_code
+        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND DEF_STORE.STORE_CODE IN
         <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
             #{item}
@@ -203,6 +219,9 @@
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
         </if>
+        AND def_corp.isactive = 'Y'
+        AND def_area.isactive = 'Y'
+        AND def_brand.isactive = 'Y'
         ORDER BY DEF_STORE.id DESC
     </select>
 
@@ -243,6 +262,8 @@
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
         </if>
+        AND def_corp.isactive = 'Y'
+        AND def_area.isactive = 'Y'
         ORDER BY DEF_STORE.id DESC
     </select>
 
@@ -480,6 +501,9 @@
                 </choose>
             </foreach>
         </if>
+        AND def_corp.isactive = 'Y'
+        AND def_area.isactive = 'Y'
+        AND def_brand.isactive = 'Y'
         ORDER BY ds.id DESC
     </select>
 

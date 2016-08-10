@@ -96,6 +96,8 @@
             OR phone LIKE concat('%',#{search_value},'%')
             OR sex LIKE concat('%',#{search_value},'%')
             OR position LIKE concat('%',#{search_value},'%')
+            OR def_user.store_code LIKE concat('%',#{search_value},'%')
+            OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
             OR login_time_recently LIKE concat('%',#{search_value},'%')
@@ -104,6 +106,8 @@
             OR def_user.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         ORDER BY def_user.id DESC
     </select>
 
@@ -116,6 +120,8 @@
         AND def_user.corp_code = def_group.corp_code
         AND def_user.CORP_CODE = #{corp_code}
         AND def_group.role_code &lt; #{role_code}
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
@@ -129,6 +135,8 @@
             OR SEX LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             OR position LIKE concat('%',#{search_value},'%')
+            OR def_user.store_code LIKE concat('%',#{search_value},'%')
+            OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
             OR LOGIN_TIME_RECENTLY LIKE concat('%',#{search_value},'%')
             OR def_user.MODIFIED_DATE LIKE concat('%',#{search_value},'%')
@@ -167,6 +175,8 @@
             AND  USER_NAME LIKE concat('%',#{search_value},'%')
         </if>
         AND def_user.ISACTIVE='Y'
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         ORDER BY def_user.id DESC
     </select>
 
@@ -201,6 +211,8 @@
         AND def_user.corp_code = def_group.corp_code
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.id = #{user_id}
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
     </select>
 
     <select id="selectById" resultType="com.bizvane.ishop.entity.User">
@@ -279,9 +291,12 @@
         <if test="isactive != null and isactive !=''">
             AND def_user.isactive = #{isactive}
         </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         ORDER BY def_user.id DESC
     </select>
 
+    <!--群组管理  查看员工-->
     <select id="selectGroupUser" resultMap="UserInfo">
         SELECT def_user.id,
         user_code,
@@ -314,6 +329,8 @@
         <if test="group_code != null and group_code !=''">
             AND def_user.group_code = #{group_code}
         </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         ORDER BY def_user.ID DESC
     </select>
 
@@ -572,6 +589,8 @@
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_group.corp_code
         AND def_user.corp_code = def_corp.corp_code
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         <if test="corp_code != null and corp_code !=''">
             AND def_user.corp_code = #{corp_code}
         </if>
@@ -605,6 +624,8 @@
         AND def_user.corp_code = def_group.corp_code
         AND def_user.CORP_CODE = #{corp_code}
         AND def_group.role_code &lt; #{role_code}
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
