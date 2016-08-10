@@ -7,7 +7,7 @@ var ynum=1;//员工默认第一页
 //获取企业类型的下拉框
 var start = {
     elem: '#target_start_time',
-    format: 'YYYY/MM/DD',
+    format: 'YYYY-MM-DD',
     min: laydate.now(), //设定最小日期为当前日期
     max: '2099-06-16 23:59:59', //最大日期
     istime: true,
@@ -19,7 +19,7 @@ var start = {
 };
 var end = {
     elem: '#target_end_time',
-    format: 'YYYY/MM/DD',
+    format: 'YYYY-MM-DD',
     min: laydate.now(),
     max: '2099-06-16 23:59:59',
     istime: true,
@@ -68,14 +68,11 @@ function getcorplist(a,b){
 	oc.postRequire("post", corp_command,"", "", function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
-			var index=0;
-			var corp_html='';
-			var c=null;
 			$("#OWN_CORP").empty();
 			$('#corp_select .searchable-select').remove();
-			for(index in msg.corps){
-				c=msg.corps[index];
-				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+			var corp_html="";
+			for(var i=0;i<msg.corps.length;i++){
+				corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
 			if(a!==""){

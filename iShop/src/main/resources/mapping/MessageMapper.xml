@@ -136,8 +136,12 @@
         AND dum.id=#{id}
     </select>
 
-    <delete id="deleteByPrimaryKey">
+    <delete id="deleteMessageInfo">
         DELETE  FROM  def_user_message where id=#{id}
+    </delete>
+
+    <delete id="deleteMessage">
+        DELETE  FROM  rel_user_message where message_code=#{message_code}
     </delete>
 
     <insert id="insertMessageInfo" parameterType="com.bizvane.ishop.entity.MessageInfo">
@@ -277,8 +281,56 @@
     </insert>
 
     <select id="selectAllMessageType" resultType="com.bizvane.ishop.entity.MessageType">>
-        select *
-        from def_message_type
+        SELECT *
+        FROM def_message_type
+        WHERE isactive = 'Y'
         ORDER BY id DESC
+    </select>
+
+    <select id="selectAllMessageInfoScreen" resultMap="MessageInfo">
+        select dum.id,
+        dum.message_code,
+        u.user_name message_sender ,
+        dum.message_title,
+        dum.message_content,
+        c.corp_name corp_name,
+        mt.type_description message_type,
+        dum.modified_date,
+        dum.modifier,
+        dum.isactive
+        from def_user_message dum,def_corp c,def_message_type mt,def_user u
+        where dum.corp_code = c.corp_code
+        AND dum.corp_code = u.corp_code
+        AND dum.message_sender = u.user_code
+        AND dum.message_type = mt.type_code
+        <if test="corp_code!=null and corp_code!=''">
+            and dum.corp_code=#{corp_code}
+        </if>
+        <if test="user_code!=null and user_code!=''">
+            and dum.message_sender=#{user_code}
+        </if>
+        <if test="map!=null">
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+                <choose>
+                    <when test="entryValue!='' and entryKey=='corp_name'">
+                        c.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <when test="entryValue!='' and entryKey=='user_name'">
+                        u.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <when test="entryValue!='' and entryKey=='type_description'">
+                        mt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <when test="entryValue!=''">
+                        dum.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+        ORDER BY dum.id DESC
     </select>
 </mapper>

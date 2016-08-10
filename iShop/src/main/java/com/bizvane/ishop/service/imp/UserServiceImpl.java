@@ -662,10 +662,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
         List<User> users;
-        PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
         users = userMapper.selectAllUserScreen(params);
         conversion(users);
         PageInfo<User> page = new PageInfo<User>(users);

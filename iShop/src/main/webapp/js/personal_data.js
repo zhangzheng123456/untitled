@@ -2,7 +2,6 @@ var oc = new ObjectControl();
 
  jQuery(document).ready(function(){
      if($(".pre_title label").text()=="个人资料"){
-         var id=sessionStorage.getItem("id");
          var _params={"id":id};
          var _command="/user/myAccount";
          oc.postRequire("get", _command, "", _params, function(data) {
@@ -11,6 +10,7 @@ var oc = new ObjectControl();
                  var msg = JSON.parse(data.message);
                      msg=JSON.parse(msg.user);
                  console.log(msg);
+                 $("#id").val(msg.id);
                  $("#IMG").val(msg.user_code);
                  $("#OWN_CORP").val(msg.corp_name);
                  $("#USER_ID").val(msg.user_code);
@@ -24,8 +24,9 @@ var oc = new ObjectControl();
                  }else if(msg.sex=="M"){
                      $("#USER_SEX").val("男");
                  }
+                 $("#OWN_AREA").val(msg.area_name);
                  $("#OWN_GROUP").val(msg.group_name);
-                 $("#OWN_SHOP").val(msg.area_name);
+                 $("#OWN_SHOP").val(msg.store_name);
              }
          })
      }
@@ -89,10 +90,130 @@ $("#baocun").click(function(){
     })
 })
 
-//关闭
+//  关闭
 $("#personal_close").click(function () {
     $(window.parent.document).find('#iframepage').attr("src","http://ishop.dev.bizvane.com/");
 })
+
+//  保存提交
+(function(root,factory){
+    root.personalData = factory();
+}(this,function(){
+    var personalDatajs={};
+    personalDatajs.isEmpty=function(obj){
+        if(obj.trim() == "" || obj.trim() == undefined){
+            return true;
+        }else{
+            return false;
+        }
+    };
+    personalDatajs.checkEmpty = function(obj,hint){
+        if(!this.isEmpty(obj)){
+            this.hiddenHint(hint);
+            return true;
+        }else{
+            this.displayHint(hint);
+            return false;
+        }
+    };
+    personalDatajs.hiddenHint = function(hint){
+        hint.removeClass('error_tips');
+        hint.html("");//关闭，如果有友情提示则显示
+    };
+    personalDatajs.displayHint = function(hint,content){
+        hint.addClass("error_tips");
+        if(!content)hint.html(hint.attr("hintInfo"));//错误提示
+        else hint.html(content);
+    };
+    personalDatajs.firstStep = function(){
+        var inputText = jQuery(".conpany_msg").find(":text");
+        for(var i=0,length=inputText.length;i<length;i++){
+            if(!bindFun(inputText[i]))return false;
+        }
+        return true;
+    };
+    personalDatajs.bindbutton=function(){
+       if(personalDatajs.firstStep()){
+       $("#personal_save").click(function () {
+           var id = $("#id").val();//编辑时候的id
+           var USER_NAME = $("#USER_NAME").val();//姓名
+           var IPHONE = $("#IPHONE").val();//手机号
+           var EMAIL = $("#EMAIL").val();//邮箱
+           var PASSWORD = $("#PASSWORD").val();//密码
+           var USER_SEX = $("USER_SEX").val();//性别
+
+           if (USER_SEX == "男") {
+               USER_SEX = "M"
+           } else if (USER_SEX == "女") {
+               USER_SEX = "F"
+           }
+           var _command = "/user/edit";//接口名
+           var opt = {//返回成功后的操作
+               success: function () {
+               }
+           };
+           var _params = {
+               "id": id,
+               "user_name": USER_NAME,
+               "phone": IPHONE,
+               "email": EMAIL,
+               "password": PASSWORD,
+               "sex": USER_SEX
+           };
+           personalDatajs.ajaxSubmit(_command, _params, opt);
+       })}else{
+               return;
+           }
+       }
+    personalDatajs.ajaxSubmit=function(_command,_params,opt){
+        console.log(_params);
+        oc.postRequire("get", _command,"", _params, function(data){
+            if(data.code=="0"){
+                $(window.parent.document).find('#iframepage').attr("src","http://ishop.dev.bizvane.com/");
+            }else if(data.code=="-1"){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: data.message
+                });
+            }
+        });
+    };
+    var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
+        var _this;
+        if(obj1){
+            _this = jQuery(obj1);
+        }else{
+            _this = jQuery(this);
+        }
+        var command = _this.attr("verify");
+        var obj = _this.val();
+        var hint = _this.nextAll(".hint").children();
+        if(personalDatajs['check' + command]){
+            if(!personalDatajs['check' + command].apply(personalDatajs,[obj,hint])){
+                return false;
+            }
+        }
+        return true;
+    };
+    jQuery(":text").focus(function() {
+        var _this = this;
+        interval = setInterval(function() {
+            bindFun(_this);
+        }, 500);
+    }).blur(function(event) {
+        clearInterval(interval);
+    });
+    var init=function(){
+        personalDatajs.bindbutton();
+    }
+    var obj = {};
+    obj.personalDatajs = personalDatajs;
+    obj.init = init;
+    return obj;
+}));
+window.personalData.init();
 function chongzhi() {
     $("#chongzhi_pwd").css('display','block');
     $("#chongzhi_box").css('display','block');

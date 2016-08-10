@@ -15,6 +15,7 @@ import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -70,7 +71,8 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public String insert(String message, String user_code) throws Exception {
+    @Transactional
+    public String insert(String message, String user_id) throws Exception {
         String result = "";
         JSONObject json = new JSONObject(message);
         String corp_code = json.get("corp_code").toString();
@@ -78,15 +80,22 @@ public class MessageServiceImpl implements MessageService {
         String message_receiver = json.get("message_receiver").toString();
         String message_title = json.get("message_title").toString();
         String message_content = json.get("message_content").toString();
-        String isactive = json.get("isactive").toString();
+//        String isactive = json.get("isactive").toString();
         String message_type = json.get("message_type").toString();
 
+        if (receiver_type.equals("0")){
+
+        }else {
+
+        }
         //调用ice接口，发送消息
-        if (isactive.equals(Common.IS_ACTIVE_Y)) {
-            Data data_user_id = new Data("user_id", message_receiver, ValueType.PARAM);
+//        if (isactive.equals(Common.IS_ACTIVE_Y)) {
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-            Data data_store_code = new Data("store_id", corp_code, ValueType.PARAM);
-            Data data_area_code = new Data("area_code", corp_code, ValueType.PARAM);
+            Data data_store_code = new Data("store_id", "", ValueType.PARAM);
+            Data data_area_code = new Data("area_code", "", ValueType.PARAM);
+            Data data_group_code = new Data("group_code", "", ValueType.PARAM);
+
             Data data_phone = new Data("phone", corp_code, ValueType.PARAM);
             Data data_message_content = new Data("message_content", message_content, ValueType.PARAM);
             Data data_message_title = new Data("message_title", message_title, ValueType.PARAM);
@@ -138,18 +147,41 @@ public class MessageServiceImpl implements MessageService {
             } else {
                 result = "发送失败";
             }
-        }
+//        }
         return result;
     }
 
 
     @Override
+    @Transactional
     public int delete(int id) throws Exception {
-        return messageMapper.deleteByPrimaryKey(id);
+        String message_code = getMessageById(id).getMessage_code();
+        messageMapper.deleteMessage(message_code);
+        return messageMapper.deleteMessageInfo(id);
     }
 
 
     public List<MessageType> selectAllMessageType() throws Exception {
         return messageMapper.selectAllMessageType();
     }
+
+    @Override
+    public PageInfo<MessageInfo> selectByScreen(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception{
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("user_code", user_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<MessageInfo> list = this.messageMapper.selectAllMessageInfoScreen(params);
+        for (MessageInfo message:list) {
+            if(message.getIsactive().equals("Y")){
+                message.setIsactive("是");
+            }else{
+                message.setIsactive("否");
+            }
+        }
+        PageInfo<MessageInfo> page = new PageInfo<MessageInfo>(list);
+        return page;
+    }
+
 }
