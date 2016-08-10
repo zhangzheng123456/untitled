@@ -530,6 +530,16 @@ public class StoreAchvGoalController {
                     break;
                 }
             }
+            Cell[] column1 = rs.getColumn(2);
+            Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
+            for (int i = 3; i < column1.length; i++) {
+                Matcher matcher = pattern2.matcher(column1[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行业绩目标输入有误";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
                 if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {

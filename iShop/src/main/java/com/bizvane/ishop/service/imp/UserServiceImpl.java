@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
                     stores[i] = Common.STORE_HEAD + stores[i];
                 }
                 stores[i] = stores[i].substring(1, stores[i].length());
-                System.out.println("--区域：---" + stores[i]);
+
             }
         }
         if (!area_code.equals("")) {
@@ -107,7 +107,7 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(page_number, page_size);
         List<User>  users = userMapper.selectPartUser(params);
         conversion(users);
-        System.out.println("--大小：-----"+users.size());
+
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
@@ -259,7 +259,7 @@ public class UserServiceImpl implements UserService {
             userMapper.insertUser(user);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
-        System.out.println(result + "-----");
+
         return result;
     }
 
@@ -631,7 +631,7 @@ public class UserServiceImpl implements UserService {
                     stores[i] = Common.STORE_HEAD + stores[i];
                 }
                 stores[i] = stores[i].substring(1, stores[i].length());
-                System.out.println("--区域：---" + stores[i]);
+
             }
         }
         if (!area_code.equals("")) {
@@ -654,7 +654,7 @@ public class UserServiceImpl implements UserService {
         PageHelper.startPage(page_number, page_size);
         List<User>  users = userMapper.selectPartScreen(params);
         conversion(users);
-        System.out.println("--大小：-----"+users.size());
+
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
