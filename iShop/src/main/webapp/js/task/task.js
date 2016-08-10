@@ -313,7 +313,7 @@ function jumpBianse(){
         }
         var param={};
         var corp_code=$(this).parents('tr').find(".corp_code").attr("data-code");
-        var task_code=$(this).parents('tr').find("td:eq(2)").html();
+        var task_code=$(this).parents('tr').find("td:eq(2) span").html();
         param["corp_code"]=corp_code;
         param["task_code"]=task_code;
         whir.loading.add("",0.5);//加载等待框
@@ -428,7 +428,7 @@ $("#delete").click(function(){
     for(var i=0;i<tr.length;i++){
         var id=$(tr[i]).attr("id");
         var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
-        var task_code=$(tr[i]).find("td:eq(2)").html();
+        var task_code=$(tr[i]).find("td:eq(2) span").html();
         var param1={"id":id,"corp_code":corp_code,"task_code":task_code};
         list.push(param1);
     }
