@@ -24,8 +24,9 @@ var oc = new ObjectControl();
                  }else if(msg.sex=="M"){
                      $("#USER_SEX").val("男");
                  }
+                 $("#OWN_AREA").val(msg.area_name);
                  $("#OWN_GROUP").val(msg.group_name);
-                 $("#OWN_SHOP").val(msg.area_name);
+                 $("#OWN_SHOP").val(msg.store_name);
              }
          })
      }
