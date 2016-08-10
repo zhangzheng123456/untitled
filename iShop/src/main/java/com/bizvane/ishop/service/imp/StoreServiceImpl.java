@@ -90,12 +90,13 @@ public class StoreServiceImpl implements StoreService {
     //分页显示所有店铺
     public PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws Exception{
         List<Store> shops;
-
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectAllStore(corp_code, search_value);
         //报表调用
         request.getSession().setAttribute("size", shops.size());
         for (Store store:shops) {
+            Store storeBrandName = getStoreById(store.getId());
+            store.setBrand_name(storeBrandName.getBrand_name());
             if(store.getIsactive().equals("Y")){
                 store.setIsactive("是");
             }else{
@@ -125,6 +126,8 @@ public class StoreServiceImpl implements StoreService {
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectByUserId(params);
         for (Store store:shops) {
+            Store storeBrandName = getStoreById(store.getId());
+            store.setBrand_name(storeBrandName.getBrand_name());
             if(store.getIsactive().equals("Y")){
                 store.setIsactive("是");
             }else{
@@ -279,6 +282,8 @@ public class StoreServiceImpl implements StoreService {
         PageHelper.startPage(page_number, page_size);
         List<Store> list1 = storeMapper.selectAllStoreScreen(params);
         for (Store store:list1) {
+            Store storeBrandName = getStoreById(store.getId());
+            store.setBrand_name(storeBrandName.getBrand_name());
             if(store.getIsactive().equals("Y")){
                 store.setIsactive("是");
             }else{
@@ -439,6 +444,8 @@ public class StoreServiceImpl implements StoreService {
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selectByAreaCode(params);
         for (Store store:stores) {
+            Store storeBrandName = getStoreById(store.getId());
+            store.setBrand_name(storeBrandName.getBrand_name());
             if(store.getIsactive().equals("Y")){
                 store.setIsactive("是");
             }else{

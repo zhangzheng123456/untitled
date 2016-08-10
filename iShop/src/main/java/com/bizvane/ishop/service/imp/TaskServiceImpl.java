@@ -234,6 +234,12 @@ public class TaskServiceImpl implements TaskService{
                 }else{
                     allocation.setIsactive("否");
                 }
+                if(allocation.getReal_start_time()==null){
+                    allocation.setReal_start_time("");
+                }
+                if(allocation.getReal_end_time()==null){
+                    allocation.setReal_end_time("");
+                }
                 if(allocation.getTask_status().equals("1")){
                     allocation.setTask_status("待确认");
                 }else if(allocation.getTask_status().equals("2")){
