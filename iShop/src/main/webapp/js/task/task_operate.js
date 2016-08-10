@@ -311,7 +311,6 @@ function getstafflist(a){
 	$("#staff_input").val("");
 	$("#staff_input").attr("data-usercode","");
 	$("#staff_input").attr("data-userphone","");
-	$("#staff_code ul").empty();
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/user/selectByPart", "", _param, function(data) {
 		if (data.code == "0") {
