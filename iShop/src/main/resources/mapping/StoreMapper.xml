@@ -58,91 +58,97 @@
     </select>
 
     <select id="selectAllStore" resultMap="Store">
-        select
-        DEF_STORE.id,
+        SELECT
+        def_store.id,
         store_code,
         store_name,
-        brand_code,
         flg_tob,
-        DEF_STORE.AREA_CODE,
-        DEF_STORE.corp_code,
-        DEF_STORE.modified_date,
-        DEF_STORE.modifier,
-        DEF_STORE.isactive,
-        DEF_CORP.CORP_NAME,
-        DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
-        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
-        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        def_store.area_code,
+        def_store.brand_code,
+        def_store.corp_code,
+        def_store.modified_date,
+        def_store.modifier,
+        def_store.isactive,
+        def_corp.corp_name,
+        def_area.area_name
+        FROM def_store,def_corp,def_area,def_brand
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = def_area.corp_code
+        AND def_store.area_code = def_area.area_code
+        AND def_store.corp_code = def_brand.corp_code
+        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_STORE.CORP_CODE = #{corp_code}
+            AND def_store.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (STORE_CODE like concat('%',#{search_value},'%')
-            OR DEF_STORE.ID like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
-            OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
+            (store_code LIKE concat('%',#{search_value},'%')
+            OR def_store.id LIKE concat('%',#{search_value},'%')
+            OR store_name LIKE concat('%',#{search_value},'%')
+            OR def_area.area_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR def_store.modified_date LIKE concat('%',#{search_value},'%')
+            OR def_store.modifier LIKE concat('%',#{search_value},'%')
+            OR def_store.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_STORE.id DESC
+        ORDER BY def_store.id DESC
     </select>
 
     <select id="selectStores" resultType="com.bizvane.ishop.entity.Store">
         select
         DEF_STORE.store_code,
         DEF_STORE.store_name
-        from DEF_STORE,DEF_CORP,DEF_AREA
-        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
-        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND DEF_STORE.CORP_CODE = #{corp_code}
-        AND DEF_STORE.isactive = 'Y'
-        ORDER BY DEF_STORE.id DESC
+        FROM def_store,def_corp,def_area,def_brand
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = def_area.corp_code
+        AND def_store.area_code = def_area.area_code
+        AND def_store.corp_code = def_brand.corp_code
+        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
+        AND def_store.corp_code = #{corp_code}
+        AND def_store.isactive = 'Y'
+        ORDER BY def_store.id DESC
     </select>
 
     <select id="selectByAreaCode" resultMap="Store">
         select
-        DEF_STORE.id,
+        def_store.id,
         store_code,
         store_name,
-        brand_code,
+        def_store.brand_code,
         flg_tob,
-        DEF_STORE.AREA_CODE,
-        DEF_STORE.corp_code,
-        DEF_STORE.modified_date,
-        DEF_STORE.modifier,
-        DEF_STORE.isactive,
-        DEF_CORP.CORP_NAME,
-        DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
-        WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
-        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND DEF_STORE.CORP_CODE = #{corp_code}
-        AND DEF_STORE.AREA_CODE IN
+        def_store.area_code,
+        def_store.corp_code,
+        def_store.modified_date,
+        def_store.modifier,
+        def_store.isactive,
+        def_corp.corp_name,
+        def_area.area_name
+        FROM def_store,def_corp,def_area,def_brand
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = def_area.corp_code
+        AND def_store.area_code = def_area.area_code
+        AND def_store.corp_code = def_brand.corp_code
+        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
+        AND def_store.corp_code = #{corp_code}
+        AND def_store.area_code IN
         <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
             #{item}
         </foreach>
         <if test="search_value != null and search_value !=''">
             AND STORE_CODE like concat('%',#{search_value},'%')
-            OR DEF_STORE.ID like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
-            OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
+            OR def_store.ID like concat('%',#{search_value},'%')
+            OR store_name like concat('%',#{search_value},'%')
+            OR def_area.area_name like concat('%',#{search_value},'%')
+            OR def_corp.corp_name like concat('%',#{search_value},'%')
+            OR def_store.modified_date like concat('%',#{search_value},'%')
+            OR def_store.modifier like concat('%',#{search_value},'%')
+            OR def_store.isactive like concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
-            AND DEF_STORE.ISACTIVE = #{isactive}
+            AND def_store.isactive = #{isactive}
         </if>
-        ORDER BY DEF_STORE.id DESC
+        ORDER BY def_store.id DESC
     </select>
 
     <select id="selectByUserId" resultMap="Store">
@@ -371,65 +377,61 @@
     </select>
 
     <select id="selectAllStoreScreen" resultMap="Store">
-        select
+        SELECT
         ds.*,
         dc.CORP_NAME,
         da.AREA_NAME
-        from DEF_STORE ds,DEF_CORP dc ,DEF_AREA da,DEF_BRAND db
-        where ds.CORP_CODE = dc.CORP_CODE
-        AND ds.CORP_CODE = da.CORP_CODE
-        AND ds.CORP_CODE=db.CORP_CODE
-        AND ds.AREA_CODE = da.AREA_CODE
+        FROM def_store ds,def_corp dc ,def_area da,def_brand db
+        WHERE ds.corp_code = dc.corp_code
+        AND ds.corp_code = da.corp_code
+        AND ds.corp_code = db.corp_code
+        AND ds.area_code = da.area_code
         AND ds.brand_code LIKE concat('%',db.brand_code,'%')
         <if test="corp_code!=null and corp_code!=''">
-            AND da.corp_code=#{corp_code}
+            AND ds.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null and area_codes!=''">
-            AND ds.area_code in
+            AND ds.area_code IN
             <foreach collection="area_codes" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
         <if test="store_codes!=null and store_codes!=''">
-            AND ds.store_code in
+            AND ds.store_code IN
             <foreach collection="store_codes" index="index" item="item" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
-
         <if test="map!=null">
             AND
             <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
                 <choose>
-                    <when test="entryKey=='corp_name'">
+                    <when test="entryKey=='corp_name' and entryValue!=''">
                         dc.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
-                    <when test="entryKey=='area_name'">
+                    <when test="entryKey=='area_name' and entryValue!=''">
                         da.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
-                    <when test="entryKey=='brand_name'">
+                    <when test="entryKey=='brand_name' and entryValue!=''">
                         db.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
-
                     <when test="entryValue!=''">
                         ds.${entryKey} LIKE concat('%',#{entryValue},'%')
-
                     </when>
                     <otherwise>
                         1=1
                     </otherwise>
-
                 </choose>
             </foreach>
         </if>
-        group by ds.id DESC
+        ORDER BY ds.id DESC
     </select>
 
     <select id="selectBrandsStore" resultType="com.bizvane.ishop.entity.Brand">
-        select * from DEF_BRAND
-        where
+        SELECT * FROM def_brand
+        WHERE
         corp_code=#{corp_code}
-        and
-        #{brand_code} like brand_code
+        AND
+        #{brand_code} LIKE brand_code
     </select>
 </mapper>
