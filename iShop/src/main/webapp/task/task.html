@@ -262,12 +262,12 @@
                         </span>
                     </div>
                     <div>
-                        <span><label>开始时间</label><input type="text" id="target_start_time_e" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" />
+                        <span><label>开始时间</label><input type="text" id="target_start_time_e" placeholder="请输入日期" class="laydate-icon"/>
                         <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
                         </span>
                     </div>
                     <div>
-                        <span><label>截止时间</label><input type="text" id="target_end_time_e" placeholder="请输入日期" class="laydate-icon" onClick="laydate({istime: true, format: 'YYYY-MM-DD'})" />
+                        <span><label>截止时间</label><input type="text" id="target_end_time_e" placeholder="请输入日期" class="laydate-icon" />
                         <div style="padding-left:125px" class="hint"><div  hintinfo="发布时间不能为空！"></div></div>
                         </span>
                     </div>
@@ -280,14 +280,12 @@
                             <input type="text" placeholder="请输入搜索信息" id="area_search">
                             <i class="icon-ishop_3-05" id="area_search_d"></i>
                         </div>    
-                        <ul>
-                            <!-- <li>
-                                <div class="checkbox_isactive">
-                                    <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>  
-                                </div>
-                                <span class="">员工名称</span>
-                            </li> -->
-                        </ul> 
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="area_more">加载更多</div>
+                        </div>
                         <div id="area_code_drop" class="drop_q">确定</div>
                     </div>
                     <div id="store_code" class="drop-down">
@@ -297,14 +295,12 @@
                             <input type="text" placeholder="请输入搜索信息" id="store_search">
                             <i class="icon-ishop_3-05" id="store_search_d"></i>
                         </div>
-                        <ul>
-                            <!-- <li>
-                                <div class="checkbox_isactive">
-                                    <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>  
-                                </div>
-                                <span class="">员工名称</span>
-                            </li> -->
-                        </ul> 
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="store_more">加载更多</div>
+                        </div>
                         <div id="store_code_drop" class="drop_q">确定</div>   
                     </div>
                     <div id="staff_code" class="drop-down">
@@ -314,14 +310,12 @@
                             <input type="text" placeholder="请输入搜索信息" id="staff_search">
                             <i class="icon-ishop_3-05" id="staff_search_d"></i>
                         </div>
-                        <ul>
-                            <!-- <li>
-                                <div class="checkbox_isactive">
-                                    <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>  
-                                </div>
-                                <span class="">员工名称</span>
-                            </li> -->
-                        </ul> 
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="staff_more">加载更多</div>
+                        </div>
                         <div id="staff_code_drop" class="drop_q">确定</div>  
                     </div>
                 </div>
@@ -376,9 +370,36 @@
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/multiple_choice.js"></script>
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <script type="text/javascript" src="../js/task/task_operate.js"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <script type="text/javascript" src="../js/task/task_operate.js"></script>
     <script src="/js/task/task.js"></script>
     <script src="/js/silide.js"></script>
+    <script>
+        var start = {
+            elem: '#target_start_time_e',
+            format: 'YYYY/MM/DD',
+            min: laydate.now(), //设定最小日期为当前日期
+            max: '2099-06-16 23:59:59', //最大日期
+            istime: true,
+            istoday: false,
+            choose: function(datas) {
+                end.min = datas; //开始日选好后，重置结束日的最小日期
+                end.start = datas //将结束日的初始值设定为开始日
+            }
+        };
+        var end = {
+            elem: '#target_end_time_e',
+            format: 'YYYY/MM/DD',
+            min: laydate.now(),
+            max: '2099-06-16 23:59:59',
+            istime: true,
+            istoday: false,
+            choose: function(datas) {
+                start.max = datas; //结束日选好后，重置开始日的最大日期
+            }
+        };
+        laydate(start);
+        laydate(end);
+    </script>
 </html>
