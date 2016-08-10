@@ -231,8 +231,8 @@ public class GroupController {
                 if (group != null) {
                     String group_code = group.getGroup_code();
                     String corp_code = group.getCorp_code();
-                    List<User> users = userService.selectGroup(corp_code, group_code);
-                    if (users.size() == 0) {
+                    int size = userService.selectGroupUser(corp_code, group_code);
+                    if (size == 0) {
                         groupService.deleteGroup(Integer.valueOf(ids[i]),group_code,corp_code);
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -448,7 +448,8 @@ public class GroupController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String group_code = jsonObject.get("group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            PageInfo<User> users = userService.selectGroupUser(page_number, page_size, corp_code, group_code);
+            String search_value = jsonObject.get("searchValue").toString();
+            PageInfo<User> users = userService.selectGroupUser(page_number, page_size, corp_code, group_code,search_value);
             JSONObject result = new JSONObject();
 
             result.put("list", JSON.toJSONString(users));

@@ -94,21 +94,16 @@
             (user_name LIKE concat('%',#{search_value},'%')
             OR user_code LIKE concat('%',#{search_value},'%')
             OR phone LIKE concat('%',#{search_value},'%')
-            OR sex LIKE concat('%',#{search_value},'%')
-            OR position LIKE concat('%',#{search_value},'%')
             OR def_user.store_code LIKE concat('%',#{search_value},'%')
             OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
-            OR login_time_recently LIKE concat('%',#{search_value},'%')
-            OR def_user.modified_date LIKE concat('%',#{search_value},'%')
-            OR def_user.modifier LIKE concat('%',#{search_value},'%')
             OR def_user.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        GROUP BY def_user.user_code
+        GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
 
@@ -119,7 +114,7 @@
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code
         AND def_user.corp_code = def_group.corp_code
-        AND def_user.CORP_CODE = #{corp_code}
+        AND def_user.corp_code = #{corp_code}
         AND def_group.role_code &lt; #{role_code}
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
@@ -129,22 +124,17 @@
         </foreach>
         <if test="search_value != null and search_value !=''">
             AND
-            (USER_NAME LIKE concat('%',#{search_value},'%')
+            (user_name LIKE concat('%',#{search_value},'%')
             OR user_code LIKE concat('%',#{search_value},'%')
             OR phone LIKE concat('%',#{search_value},'%')
-            OR SEX LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
-            OR position LIKE concat('%',#{search_value},'%')
             OR def_user.store_code LIKE concat('%',#{search_value},'%')
             OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
-            OR LOGIN_TIME_RECENTLY LIKE concat('%',#{search_value},'%')
-            OR def_user.MODIFIED_DATE LIKE concat('%',#{search_value},'%')
-            OR def_user.MODIFIER LIKE concat('%',#{search_value},'%')
-            OR def_user.ISACTIVE LIKE concat('%',#{search_value},'%')
+            OR def_user.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
-        GROUP BY def_user.user_code
+        GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
 
@@ -178,7 +168,7 @@
         AND def_user.ISACTIVE='Y'
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        GROUP BY def_user.user_code
+        GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
 
@@ -295,7 +285,7 @@
         </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        GROUP BY def_user.user_code
+        GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
 
@@ -332,9 +322,17 @@
         <if test="group_code != null and group_code !=''">
             AND def_user.group_code = #{group_code}
         </if>
+        <if test="search_value != null and search_value !=''">
+        AND
+        (  user_name LIKE concat('%',#{search_value},'%')
+           OR user_code LIKE concat('%',#{search_value},'%')
+           OR phone LIKE concat('%',#{search_value},'%')
+           OR SEX LIKE concat('%',#{search_value},'%')
+            )
+        </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        GROUP BY def_user.user_code
+        GROUP BY def_user.id
         ORDER BY def_user.ID DESC
     </select>
 
@@ -617,7 +615,7 @@
                 </choose>
             </foreach>
         </if>
-        GROUP BY def_user.user_code
+        GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
 
@@ -654,7 +652,7 @@
                 </choose>
             </foreach>
         </if>
-        GROUP BY def_user.user_code
+        GROUP BY def_user.id
         ORDER BY def_user.id DESC
     </select>
 

@@ -95,7 +95,7 @@
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
         AND def_brand.isactive = 'Y'
-        GROUP BY def_store.store_code
+        GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
 
@@ -114,7 +114,7 @@
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
         AND def_brand.isactive = 'Y'
-        GROUP BY def_store.store_code
+        GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
 
@@ -159,7 +159,7 @@
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
         AND def_brand.isactive = 'Y'
-        GROUP BY def_store.store_code
+        GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
 
@@ -193,7 +193,7 @@
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
         AND def_brand.isactive = 'Y'
-        GROUP BY def_store.store_code
+        GROUP BY def_store.id
         ORDER BY DEF_STORE.id DESC
     </select>
     <!--下拉框，根据区域拉店铺（店长，导购）-->
@@ -226,7 +226,7 @@
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
         AND def_brand.isactive = 'Y'
-        GROUP BY def_store.store_code
+        GROUP BY def_store.id
         ORDER BY DEF_STORE.id DESC
     </select>
 
@@ -509,7 +509,7 @@
         AND dc.isactive = 'Y'
         AND da.isactive = 'Y'
         AND db.isactive = 'Y'
-        GROUP BY ds.store_code
+        GROUP BY ds.id
         ORDER BY ds.id DESC
     </select>
 

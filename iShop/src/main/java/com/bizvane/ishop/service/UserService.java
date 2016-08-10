@@ -37,7 +37,7 @@ public interface UserService {
 
     PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String role_code) throws Exception;
 
-    PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code) throws Exception;
+    PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code,String search_value) throws Exception;
 
     int selectGroupUser(String corp_code, String group_code) throws Exception;
 
@@ -51,17 +51,13 @@ public interface UserService {
 
     String getAuthCode(String phone, String platform)throws Exception;
 
-    List<User> selectGroup(String corp_code, String group_code) throws Exception;
+    void ProcessStoreCode(User user)throws Exception;
 
-//    String userNameExist(String user_name, String corp_code);
+    List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code) throws Exception;
 
-    void ProcessStoreCode(User user)throws Exception;;
-
-    List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code) throws Exception;;
-
-    int selectCount(String created_date) throws Exception;;
+    int selectCount(String created_date) throws Exception;
 
     PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code, String area_code, String role_code) throws Exception;
 
-    PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code,Map<String,String> map) throws Exception;;
+    PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code,Map<String,String> map) throws Exception;
 }

@@ -217,9 +217,9 @@ public class UserServiceImpl implements UserService {
      * 群组管理
      * 查看用户名单
      */
-    public PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code) throws Exception {
+    public PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code,String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
-        List<User> users = userMapper.selectGroupUser(corp_code, group_code);
+        List<User> users = userMapper.selectGroupUser(corp_code, group_code,search_value);
         conversion(users);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
@@ -230,7 +230,7 @@ public class UserServiceImpl implements UserService {
      * 查看用户名单
      */
     public int selectGroupUser(String corp_code, String group_code) throws Exception {
-        List<User> users = userMapper.selectGroupUser(corp_code, group_code);
+        List<User> users = userMapper.selectGroupUser(corp_code, group_code,"");
         int count = users.size();
         return count;
     }
@@ -579,10 +579,6 @@ public class UserServiceImpl implements UserService {
             return authcode;
         }
         return Common.DATABEAN_CODE_ERROR;
-    }
-
-    public List<User> selectGroup(String corp_code, String group_code) throws Exception {
-        return userMapper.selectGroupUser(corp_code, group_code);
     }
 
     /**
