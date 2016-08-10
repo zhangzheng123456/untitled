@@ -58,7 +58,7 @@
     <select id="selectAllMessageInfo" resultMap="MessageInfo">
         select dum.id,
         dum.message_code,
-        u.user_name message_sender ,
+        dum.message_sender ,
         dum.message_title,
         dum.message_content,
         c.corp_name corp_name,
@@ -66,10 +66,8 @@
         dum.modified_date,
         dum.modifier,
         dum.isactive
-        from def_user_message dum,def_corp c,def_message_type mt,def_user u
+        from def_user_message dum,def_corp c,def_message_type mt
         where dum.corp_code = c.corp_code
-        AND dum.corp_code = u.corp_code
-        AND dum.message_sender = u.user_code
         AND dum.message_type = mt.type_code
         <if test="corp_code!=null and corp_code!=''">
             and dum.corp_code=#{corp_code}
@@ -105,14 +103,6 @@
     AND dum.corp_code = u1.corp_code
     AND c.corp_code = dum.corp_code
     AND rum.message_receiver = u1.user_code
-    <!--<if test="search_value!=null and search_value!=''">-->
-    <!--and-->
-    <!--(-->
-    <!--rum.message_receiver like concat('%',search_value,'%')-->
-    <!--OR rum.status like concat('%',search_value,'%')-->
-    <!--OR c.corp_name like concat('%',search_value,'%')-->
-    <!--)-->
-    <!--</if>-->
     ORDER BY rum.id DESC
     </select>
 
@@ -290,7 +280,7 @@
     <select id="selectAllMessageInfoScreen" resultMap="MessageInfo">
         select dum.id,
         dum.message_code,
-        u.user_name message_sender ,
+        dum.message_sender,
         dum.message_title,
         dum.message_content,
         c.corp_name corp_name,
@@ -298,10 +288,8 @@
         dum.modified_date,
         dum.modifier,
         dum.isactive
-        from def_user_message dum,def_corp c,def_message_type mt,def_user u
+        from def_user_message dum,def_corp c,def_message_type mt
         where dum.corp_code = c.corp_code
-        AND dum.corp_code = u.corp_code
-        AND dum.message_sender = u.user_code
         AND dum.message_type = mt.type_code
         <if test="corp_code!=null and corp_code!=''">
             and dum.corp_code=#{corp_code}
@@ -315,9 +303,6 @@
                 <choose>
                     <when test="entryValue!='' and entryKey=='corp_name'">
                         c.${entryKey} LIKE concat('%',#{entryValue},'%')
-                    </when>
-                    <when test="entryValue!='' and entryKey=='user_name'">
-                        u.${entryKey} LIKE concat('%',#{entryValue},'%')
                     </when>
                     <when test="entryValue!='' and entryKey=='type_description'">
                         mt.${entryKey} LIKE concat('%',#{entryValue},'%')
