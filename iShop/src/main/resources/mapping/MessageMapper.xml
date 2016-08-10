@@ -107,21 +107,11 @@
     </select>
 
     <select id="selectByPrimaryKey" resultMap="MessageInfo">
-        select dum.id,
-        dum.message_code,
-        u.user_name message_sender ,
-        dum.message_title,
-        dum.message_content,
-        dum.message_type,
+        select dum.*,
         c.corp_name corp_name,
-        mt.type_description,
-        dum.modified_date,
-        dum.modifier,
-        dum.isactive
-        from def_user_message dum,def_corp c,def_message_type mt,def_user u
+        mt.type_description
+        from def_user_message dum,def_corp c,def_message_type mt
         where dum.corp_code = c.corp_code
-        AND dum.corp_code = u.corp_code
-        AND dum.message_sender = u.user_code
         AND dum.message_type = mt.type_code
         AND dum.id=#{id}
     </select>

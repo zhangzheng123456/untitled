@@ -23,7 +23,7 @@ public interface UserMapper {
 
     List<User> selectUserCode(@Param("user_code")String user_code, @Param("corp_code")String corp_code, @Param("isactive")String isactive) throws SQLException;
 
-    List<User> selectGroupUser(@Param("corp_code") String corp_code, @Param("group_code") String group_code) throws SQLException;
+    List<User> selectGroupUser(@Param("corp_code") String corp_code, @Param("group_code") String group_code, @Param("search_value") String search_value) throws SQLException;
 
     List<User> selectAllUser(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
