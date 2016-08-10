@@ -561,7 +561,6 @@ public class UserController {
                 dataBean.setMessage(result);
             }
         } catch (Exception e) {
-            System.out.println(result + "--error--");
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
