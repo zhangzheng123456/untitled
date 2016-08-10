@@ -149,6 +149,8 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
     function dian(inx){//
         if(value==""){
             var param={};
+            value=this.value.replace(/\s+/g,"");
+            param["searchValue"]=value;
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
             param["group_code"]=group_code;
@@ -229,6 +231,8 @@ function superaddition(data,num){
 };
 function GET(){
     var param={};
+    value=this.value.replace(/\s+/g,"");
+    param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     param["group_code"]=group_code;
