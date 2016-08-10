@@ -501,9 +501,9 @@
                 </choose>
             </foreach>
         </if>
-        AND def_corp.isactive = 'Y'
-        AND def_area.isactive = 'Y'
-        AND def_brand.isactive = 'Y'
+        AND dc.isactive = 'Y'
+        AND da.isactive = 'Y'
+        AND db.isactive = 'Y'
         ORDER BY ds.id DESC
     </select>
 
