@@ -108,6 +108,7 @@
         </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        GROUP BY def_user.user_code
         ORDER BY def_user.id DESC
     </select>
 
@@ -126,7 +127,6 @@
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
         </foreach>
-
         <if test="search_value != null and search_value !=''">
             AND
             (USER_NAME LIKE concat('%',#{search_value},'%')
@@ -144,6 +144,7 @@
             OR def_user.ISACTIVE LIKE concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY def_user.user_code
         ORDER BY def_user.id DESC
     </select>
 
@@ -177,6 +178,7 @@
         AND def_user.ISACTIVE='Y'
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        GROUP BY def_user.user_code
         ORDER BY def_user.id DESC
     </select>
 
@@ -293,6 +295,7 @@
         </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        GROUP BY def_user.user_code
         ORDER BY def_user.id DESC
     </select>
 
@@ -331,6 +334,7 @@
         </if>
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
+        GROUP BY def_user.user_code
         ORDER BY def_user.ID DESC
     </select>
 
@@ -613,6 +617,7 @@
                 </choose>
             </foreach>
         </if>
+        GROUP BY def_user.user_code
         ORDER BY def_user.id DESC
     </select>
 
@@ -649,6 +654,7 @@
                 </choose>
             </foreach>
         </if>
+        GROUP BY def_user.user_code
         ORDER BY def_user.id DESC
     </select>
 
