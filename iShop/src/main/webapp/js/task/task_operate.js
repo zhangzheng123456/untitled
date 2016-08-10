@@ -803,11 +803,11 @@ function editAssignment(a){
 }
 //编辑进入界面
 function editAssignmentb(a){
-	whir.loading.add("",0.5);//加载等待框
     var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
 	if (tr.length>1||tr.length=='0') {
 		return;
 	}
+	whir.loading.add("",0.5);//加载等待框
 	var id=$(tr).attr("id");
 	var corp_code=$(tr).find(".corp_code").attr("data-code");
 	var task_code=$(tr).find("td:eq(2) span").html();

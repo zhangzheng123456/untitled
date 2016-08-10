@@ -24,6 +24,14 @@
         <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>发送消息<i class="icon-ishop_8-03"></i><label>新增消息</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form style="margin-left:0px" class="conpany_msg">
+                    <div id="drop_down" class="drop_down item_2">
+                        <span><label>发送方式</label><input class="input_select" type="text" id="MESSAGE_TYPE" placeholder="请选择消息类型" readonly/>
+                            <ul>
+                                <li>发送至群组</li>
+                                <li>发送至个人</li>
+                            </ul>
+                        </span>
+                    </div>
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label>所属企业</label></li>
@@ -33,6 +41,13 @@
                                     </select>
                                 </span>
                             </li>
+                        </ul>
+                    </div>
+                    <div id="sendee">
+                        <ul class="sendee">
+                            <li><label>接收人</label></li>
+                            <li class="sendee_r"></li>
+                            <li class="add_sendee" id="add_sendee"><div><i class="icon-ishop_6-01"></i></div></li>
                         </ul>
                     </div>
                     <div id="drop_down" class="drop_down item_1">
@@ -47,24 +62,64 @@
                         <span><label>消息标题</label><input type="text" id="CONTENT_TITEL" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="内容标题不能为空！"></div></div></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:260px;">模板内容</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="MOBAN_CONTENT"></textarea></span></span>
+                    <span style="display: inline-flex;width:100%"><label style="height:260px;">消息内容</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="MOBAN_CONTENT"></textarea></span></span>
                     </div>
                 </form>
+                <div class="distribution_frame" id="distribution_frame" style="display: block;">
+                    <div id="area_code" class="drop-down">
+                        <h5>所属区域</h5>
+                        <input type="text" class="input" readonly="true" id="area_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="area_search">
+                            <i class="icon-ishop_3-05" id="area_search_d"></i>
+                        </div>    
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="area_more">加载更多</div>
+                        </div>
+                        <div id="area_code_drop" class="drop_q">确定</div>
+                    </div>
+                    <div id="store_code" class="drop-down">
+                        <h5>所属店铺</h5>
+                        <input type="text" class="input" readonly="true" id="store_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="store_search">
+                            <i class="icon-ishop_3-05" id="store_search_d"></i>
+                        </div>
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="store_more">加载更多</div>
+                        </div>
+                        <div id="store_code_drop" class="drop_q">确定</div>   
+                    </div>
+                    <div id="staff_code" class="drop-down">
+                        <h5>员工名称</h5>
+                        <input type="text" class="input" readonly="true" id="staff_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="staff_search">
+                            <i class="icon-ishop_3-05" id="staff_search_d"></i>
+                        </div>
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="staff_more">加载更多</div>
+                        </div>
+                        <div id="staff_code_drop" class="drop_q">确定</div>  
+                    </div>
+                </div>
             </div>
             <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="oper_btn">
                     <ul>
-                        <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
-                        <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
+                        <li id="send"><i class="icon-ishop_6-04"></i>发送</li>
+                        <li id="send_close"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
-                 <form class="msg_detail">
-                    <div>
-                    <span><label>可用</label><em class="checkbox_isactive">
-                    <input type="checkbox" value="" name="test" class="check" id="is_active">
-                    <label for="is_active"></label></em></span>
-                    </div>
-                </form>
             </div>
     </div>
     <!-- Mainly scripts -->
@@ -74,22 +129,12 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉菜单 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
-    <script type="text/javascript" src="../js/bootstrap-select.js"></script>
-    <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
-    <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- Custom and plugin javascript -->
-    <script src="../js/hplus.js?v=2.2.0"></script>
      <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
-    <!-- <script type="text/javascript" src="../js/message/message_operate.js"></script> -->
-    <script>
-        $(window).on('load', function () {
-            $('#RESERVEL').selectpicker();
-        });
-    </script>
+    <script type="text/javascript" src="../js/message/message_operate.js"></script>
 </body>
 
 </html>
