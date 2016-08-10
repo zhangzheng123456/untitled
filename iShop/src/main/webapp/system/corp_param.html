@@ -2,9 +2,257 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>系统管理之企业参数</title>
+    <link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" href="../table/css/style.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js"></script>
 </head>
 <body>
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>系统管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>企业参数</span>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul>
+                    <li>
+                        <span class="icon-ishop_6-01"></span>
+                        新增
+                    </li>
+                    <li class="bg" id="remove">
+                        <span class="icon-ishop_6-02"></span>
+                        删除
+                    </li>
+                    <li>
+                        <a href="#">
+                            <span class="icon-ishop_6-03"></span>
+                            编辑
+                        </a>
+                    </li>
+                    <li class="bg">
+                        <span class="icon-ishop_6-04"></span>
+                        保存
+                    </li>
+                    <li class="li">
+                        <input type="text" class="input">
+                        <i class="icon-ishop_3-05"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="action_r">
+                <ul>
+                    <li id="filtrate">
+                        <span class="icon-ishop_6-05"></span>
+                        筛选
+                    </li>
+                    <li class="bg">
+                        <span class="icon-ishop_6-06"></span>
+                        配置
+                    </li>
+                    <li>
+                        <span class="icon-ishop_6-07"></span>
+                        刷新
+                    </li>
+                    <li class="bg">
+                        <span class="icon-ishop_6-08"></span>
+                        更多
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="sxk" id="sxk">
+            <div class="sbtn">
+                <div class="empty" id="empty">
+                    <i class="icon-ishop_6-16"></i>清空筛选
+                </div>
+                <div class="r_btn">
+                    <div class="pack_up" id="pack_up">
+                        <i class="icon-ishop_6-18"></i>
+                        收起
+                    </div>
+                    <div class="find" id="find">
+                        <i class="icon-ishop_6-19"></i>
+                        查找
+                    </div>
+                </div>
+            </div>
+            <div class="inputs">
+                <li>
+                    <label>公司名称</label>
+                    <input type="text" id="p1">
+                </li>
+                <li>
+                    <label>联系人</label>
+                    <input type="text" id="p2">
+                </li>
+                <li>
+                    <label>修改人</label>
+                    <input type="text" id="p3">
+                </li>
+                <li>
+                    <label>联系电话</label>
+                    <input type="text" id="p4">
+                </li>
+            </div>
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th style="text-align: left;">编号</th>
+                    <th>企业编号</th>
+                    <th>企业名称</th>
+                    <th>企业参数</th>
+                    <th>备注</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td width="50px" style="text-align: left;">
+                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    </td>
+                    <td style="text-align: left;">1</td>
+                    <td>parem_key</td>
+                    <td>param_name</td>
+                    <td>param_value</td>
+                    <td>djidisijdijiji</td>
+                </tr>
+                <tr>
+                    <td width="50px" style="text-align: left;">
+                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    </td>
+                    <td style="text-align: left;">1</td>
+                    <td>parem_key</td>
+                    <td>param_name</td>
+                    <td>param_value</td>
+                    <td>djidisijdijiji</td>
+                </tr>
+                <tr>
+                    <td width="50px" style="text-align: left;">
+                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    </td>
+                    <td style="text-align: left;">1</td>
+                    <td>parem_key</td>
+                    <td>param_name</td>
+                    <td>param_value</td>
+                    <td>djidisijdijiji</td>
+                </tr>
+                <tr>
+                    <td width="50px" style="text-align: left;">
+                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    </td>
+                    <td style="text-align: left;">1</td>
+                    <td>parem_key</td>
+                    <td>param_name</td>
+                    <td>param_value</td>
+                    <td>djidisijdijiji</td>
+                </tr>
+                <tr>
+                    <td width="50px" style="text-align: left;">
+                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    </td>
+                    <td style="text-align: left;">1</td>
+                    <td>parem_key</td>
+                    <td>param_name</td>
+                    <td>param_value</td>
+                    <td>djidisijdijiji</td>
+                </tr>
+                <tr>
+                    <td width="50px" style="text-align: left;">
+                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    </td>
+                    <td style="text-align: left;">1</td>
+                    <td>parem_key</td>
+                    <td>param_name</td>
+                    <td>param_value</td>
+                    <td>djidisijdijiji</td>
+                </tr>
+                <tr>
+                    <td width="50px" style="text-align: left;">
+                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
+                    </td>
+                    <td style="text-align: left;">1</td>
+                    <td>parem_key</td>
+                    <td>param_name</td>
+                    <td>param_value</td>
+                    <td>djidisijdijiji</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="36" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num" >
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
 
+                        </li>
+                        <li>
+                            <span class="p-bg">1</span>
+                        </li>
+                        <li>
+                            <span>2</span>
+                        </li>
+                        <li>
+                            <span>3</span>
+                        </li>
+                        <li>
+                            <span>4</span>
+                        </li>
+                        <li>
+                            <span>5</span>
+                        </li>
+                        <li class="icon-ishop_4-02">
+
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <span class="zy">共 75 页</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="p" id="p"></div>
+<div class="tk" id="tk">
+    <span class="icon-ishop_6-12" id="X"></span>
+    <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel">取消</em>
+        <em class="delete" id="delete">删除</em>
+    </div>
+</div>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<!-- <script src="../table/js/inner.js"></script> -->
+<script type="text/javascript">
+    $(function(){
+        $('#sidebar ul>li:eq(6)').find('h1').addClass('h1');
+        $('#sidebar ul>li:eq(6)').find('h1 span').addClass('icon-ishop_8-02');
+        $('#sidebar ul>li:eq(6)').find('dl').show();
+        $('#sidebar ul>li:eq(6)').find('dl>dd:eq(2) a').css({color:"#6cc1c8"});
+        $('#sidebar ul>li:eq(6)').find('dl>dd:eq(2) span').addClass('icon-ishop_8-01');
+    })
+</script>
 </body>
 </html>
