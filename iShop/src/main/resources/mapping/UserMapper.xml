@@ -140,7 +140,18 @@
     </select>
 
     <select id="selUserByStoreCode" resultMap="UserInfo">
-        SELECT *
+        SELECT
+        def_user.id,
+        user_code,
+        user_name,
+        phone,
+        store_code,
+        def_user.area_code,
+        def_user.group_code,
+        def_user.corp_code,
+        def_group.group_name,
+        def_group.role_code,
+        def_corp.corp_name
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code
