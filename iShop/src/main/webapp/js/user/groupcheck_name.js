@@ -125,14 +125,14 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
             }
             inx--;
             dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            setPage(container, count, inx,pageSize,group_code,corp_code,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
             inx = parseInt(this.innerHTML);
                 dian(inx);
-                setPage(container, count, inx,pageSize,funcCode,value);
+                setPage(container, count, inx,pageSize,group_code,corp_code,value);
                 return false;
             }
         }
@@ -142,40 +142,48 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
             }
             inx++;
             dian(inx);
-            setPage(container, count, inx,pageSize,funcCode,value);
+            setPage(container, count, inx,pageSize,group_code,corp_code,value);
             return false;
         }
     }()
     function dian(inx){//
         if(value==""){
-            oc.postRequire("get","/corp/list?pageNumber="+inx+"&pageSize="+pageSize
-                +"&funcCode="+funcCode+"","","",function(data){
-                    console.log(data);
+            var param={};
+            param["pageNumber"]=inx;
+            param["pageSize"]=pageSize;
+            param["group_code"]=group_code;
+            param["corp_code"]=corp_code;
+            oc.postRequire("post","/user/group/check_name","0",param,function(data){
+                console.log(data);
                     if(data.code=="0"){
                         $(".table tbody").empty();
                         var message=JSON.parse(data.message);
                         var list=JSON.parse(message.list);
                         var cout=list.pages;
                         var list=list.list;
+                        console.log(list);
+                        var actions=message.actions;
                         superaddition(list,inx);
+                        // jurisdiction(actions);
                         jumpBianse();
                     }else if(data.code=="-1"){
-                        // alert(data.message);
+                        alert(data.message);
                     }
-            });           
+            });
         }else if(value!==""){
             param["pageNumber"]=inx;
             param["pageSize"]=pageSize;
-            oc.postRequire("post","/corp/search","0",param,function(data){
+            oc.postRequire("post","/user/group/check_name","0",param,function(data){
                 if(data.code=="0"){
                     var message=JSON.parse(data.message);
                     var list=JSON.parse(message.list);
                     var cout=list.pages;
                     var list=list.list;
+                    var actions=message.actions;
                     $(".table tbody").empty();
                     if(list.length<=0){
                         $(".table p").remove();
-                        $(".table").append("<p>没有找到与"+value+"相关的信息请重新搜索</p>")
+                        $(".table").append("<p>没有找到与"+value+"相关的信息，请重新搜索</p>")
                     }else if(list.length>0){
                         $(".table p").remove();
                         superaddition(list,inx);
@@ -184,7 +192,7 @@ function setPage(container, count, pageindex,pageSize,group_code,corp_code,value
                 }else if(data.code=="-1"){
                     alert(data.message);
                 }
-            })        
+            })      
         }
     }
 }
@@ -219,27 +227,6 @@ function superaddition(data,num){
                         +"</td></tr>");
     }
 };
-// //权限配置
-// function jurisdiction(actions){
-//     $('#jurisdiction').empty();
-//     for(var i=0;i<actions.length;i++){
-//         if(actions[i].act_name=="add"){
-//             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
-//         }else if(actions[i].act_name=="delete"){
-//             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
-//         }else if(actions[i].act_name=="edit"){
-//             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
-//             //双击跳转
-//             $(".table tbody tr").dblclick(function(){
-//                 var id=$(this).attr("id");
-//                 sessionStorage.setItem("id",id);
-//                 console.log(id);
-//                 $(window.parent.document).find('#iframepage').attr("src","/corp/crop_edit.html");
-//             })
-//         }
-//     }s
-// }
-//页面加载时list请求
 function GET(){
     var param={};
     param["pageNumber"]=inx;
@@ -332,14 +319,15 @@ $("#search").keydown(function() {
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    param["group_code"]=group_code;
+    param["corp_code"]=corp_code;
     if(event.keyCode == 13){
         POST();
     }
 });
 //搜索的请求函数
 function POST(){
-    oc.postRequire("post","/corp/search","0",param,function(data){
+    oc.postRequire("post","/user/group/check_name","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -355,7 +343,7 @@ function POST(){
                 superaddition(list,inx);
                 jumpBianse();
             }
-            setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
+            setPage($("#foot-num")[0],cout,inx,pageSize,group_code,corp_code,value);
         }else if(data.code=="-1"){
             alert(data.message);
         }

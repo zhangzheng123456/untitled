@@ -21,17 +21,9 @@
 </head>
 <body>
     <div id="page-wrapper" class="gray-bg dashbard-1">
-        <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>发送消息<i class="icon-ishop_8-03"></i><label>新增消息</label></div>
+        <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i>发送消息<i class="icon-ishop_8-03"></i><label>发送消息</label></div>
             <div class="editor_em col-lg-6 editor_line  animated fadeInRight">
                 <form style="margin-left:0px" class="conpany_msg">
-                    <div id="drop_down" class="drop_down item_2">
-                        <span><label>发送方式</label><input class="input_select" type="text" id="MESSAGE_TYPE" placeholder="请选择消息类型" readonly/>
-                            <ul>
-                                <li>发送至群组</li>
-                                <li>发送至个人</li>
-                            </ul>
-                        </span>
-                    </div>
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label>所属企业</label></li>
@@ -43,10 +35,18 @@
                             </li>
                         </ul>
                     </div>
+                    <div id="drop_down" class="drop_down item_2">
+                        <span><label>发送方式</label><input class="input_select" type="text" id="send_mode" placeholder="请选择消息类型" readonly/>
+                            <ul>
+                                <li>发送至群组</li>
+                                <li>发送至个人</li>
+                            </ul>
+                        </span>
+                    </div>
                     <div id="sendee">
                         <ul class="sendee">
                             <li><label>接收人</label></li>
-                            <li class="sendee_r"></li>
+                            <li class="sendee_r" id="sendee_r"></li>
                             <li class="add_sendee" id="add_sendee"><div><i class="icon-ishop_6-01"></i></div></li>
                         </ul>
                     </div>
@@ -65,7 +65,7 @@
                     <span style="display: inline-flex;width:100%"><label style="height:260px;">消息内容</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="MOBAN_CONTENT"></textarea></span></span>
                     </div>
                 </form>
-                <div class="distribution_frame" id="distribution_frame" style="display: block;">
+                <div class="distribution_frame" id="distribution_frame">
                     <div id="area_code" class="drop-down">
                         <h5>所属区域</h5>
                         <input type="text" class="input" readonly="true" id="area_input">
@@ -110,6 +110,22 @@
                             <div class="area_more" id="staff_more">加载更多</div>
                         </div>
                         <div id="staff_code_drop" class="drop_q">确定</div>  
+                    </div>
+                </div>
+                <div class="group_frame" id="group_frame">
+                    <div id="group_code" class="drop-down">
+                        <h5>所属群组</h5>
+                        <input type="text" class="input" readonly="true" id="group_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="group_search">
+                            <i class="icon-ishop_3-05" id="group_search_d"></i>
+                        </div>    
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                        </div>
+                        <div id="area_code_drop" class="drop_q">确定</div>
                     </div>
                 </div>
             </div>
