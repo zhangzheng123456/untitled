@@ -165,6 +165,7 @@
         WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND DEF_STORE.CORP_CODE = #{corp_code}
         AND DEF_STORE.AREA_CODE IN
         <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
@@ -192,6 +193,7 @@
         WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
+        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND DEF_STORE.STORE_CODE IN
         <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
             #{item}
