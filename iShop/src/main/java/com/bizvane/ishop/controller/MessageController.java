@@ -685,7 +685,7 @@ public class MessageController {
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
 
         DataBean dataBean = new DataBean();
-        String errormessage = "：数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -717,8 +717,6 @@ public class MessageController {
                 int i = 9 / 0;
             }
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            // String column_name1 = "corp_code,corp_name";
-            // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(smsTemplates, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
@@ -730,6 +728,7 @@ public class MessageController {
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
         } catch (Exception e) {
+            e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("-1");
             dataBean.setMessage(errormessage);

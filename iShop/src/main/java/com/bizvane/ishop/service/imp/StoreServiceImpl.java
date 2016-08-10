@@ -136,6 +136,32 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
+    @Override
+    public PageInfo<Store> selStoreByUserCode(int page_number, int page_size, String store_code, String corp_code, String search_value) throws Exception {
+        List<Store> shops;
+        String[] ids = store_code.split(",");
+        for (int i = 0; i < ids.length; i++) {
+            ids[i] = ids[i].substring(1, ids[i].length());
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("store_codes", ids);
+        params.put("corp_code", corp_code);
+        params.put("search_value", search_value);
+        params.put("isactive", "Y");
+        PageHelper.startPage(page_number, page_size);
+        shops = storeMapper.selStoreByUserCode(params);
+        for (Store store:shops) {
+            if(store.getIsactive().equals("Y")){
+                store.setIsactive("是");
+            }else{
+                store.setIsactive("否");
+            }
+        }
+        PageInfo<Store> page = new PageInfo<Store>(shops);
+
+        return page;
+    }
+
     /***
      * 获取页面的所有数据
      */
@@ -417,9 +443,29 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
         params.put("search_value", search_value);
-        params.put("isactive", "Y");
+        params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selectByAreaCode(params);
+        for (Store store:stores) {
+            if(store.getIsactive().equals("Y")){
+                store.setIsactive("是");
+            }else{
+                store.setIsactive("否");
+            }
+        }
+        PageInfo<Store> page = new PageInfo<Store>(stores);
+        return page;
+    }
+
+    @Override
+    public PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_code", area_code);
+        params.put("search_value", search_value);
+        params.put("isactive", "Y");
+        PageHelper.startPage(page_number, page_size);
+        List<Store> stores = storeMapper.selStoreByAreaCode(params);
         for (Store store:stores) {
             if(store.getIsactive().equals("Y")){
                 store.setIsactive("是");

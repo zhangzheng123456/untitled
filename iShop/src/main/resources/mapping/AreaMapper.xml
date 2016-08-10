@@ -245,29 +245,38 @@
 
 
 <!--下拉框取值，只取可用数据-->
-    <!--<select id="selectByAreaCodeSearch" resultMap="Area">-->
-        <!--select-->
-        <!--da.*,-->
-        <!--dc.CORP_NAME-->
-        <!--from DEF_AREA da,DEF_CORP dc-->
-        <!--where da.CORP_CODE = dc.CORP_CODE-->
-        <!--<if test="corp_code!=null and corp_code!=''">-->
-            <!--AND da.corp_code=#{corp_code}-->
-        <!--</if>-->
-        <!--<if test="area_codes!=null">-->
-            <!--AND da.area_code in-->
-            <!--<foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">-->
-                <!--#{item}-->
-            <!--</foreach>-->
-        <!--</if>-->
-        <!--<if test="search_value != null and search_value !=''">-->
-            <!--AND-->
-            <!--(da.area_code like concat('%',#{search_value},'%')-->
-            <!--OR da.area_name like concat('%',#{search_value},'%')-->
-            <!--OR dc.CORP_NAME like concat('%',#{search_value},'%')-->
-            <!--)-->
-        <!--</if>-->
-        <!--AND da.ISACTIVE ='Y'-->
-        <!--ORDER BY da.id DESC-->
-    <!--</select>-->
+    <select id="selAreaByCorpCode" resultMap="Area">
+        select
+        da.*,
+        dc.CORP_NAME
+        from DEF_AREA da,DEF_CORP dc
+        where da.CORP_CODE = dc.CORP_CODE
+        <if test="corp_code!=null and corp_code!=''">
+            AND da.corp_code=#{corp_code}
+        </if>
+        <if test="area_codes!=null and area_codes != ''">
+            AND da.area_code in
+            <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="store_code != null and store_code !=''">
+            and da.area_code in
+            (SELECT area_code from def_store
+            where corp_code = #{corp_code} AND
+            STORE_CODE in
+            <foreach collection="store_code" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+            and isactive ='Y')
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (da.area_code like concat('%',#{search_value},'%')
+            OR da.area_name like concat('%',#{search_value},'%')
+            )
+        </if>
+        AND da.ISACTIVE ='Y'
+        ORDER BY da.id DESC
+    </select>
 </mapper>

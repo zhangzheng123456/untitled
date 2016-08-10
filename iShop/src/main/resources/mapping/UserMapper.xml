@@ -158,6 +158,7 @@
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
+        AND def_user.ISACTIVE='Y'
         ORDER BY def_user.id DESC
     </select>
 

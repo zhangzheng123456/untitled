@@ -17,7 +17,7 @@ public interface TaskTypeMapper {
 
     List<TaskType> selectByName(@Param("corp_code") String corp_code,@Param("task_type_name") String task_type_name);
 
-    List<TaskType> selectAllTaskType(@Param("corp_code") String corp_code,@Param("search_value") String search_value);
+    List<TaskType> selectAllTaskType(@Param("corp_code") String corp_code,@Param("search_value") String search_value,@Param("isactive")String isactive);
 
     int insertTaskType(TaskType type);
 

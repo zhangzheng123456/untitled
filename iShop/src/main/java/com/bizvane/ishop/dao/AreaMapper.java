@@ -30,4 +30,6 @@ public interface AreaMapper {
     List<Area> selectAllAreaScreen(Map<String, Object> params) throws SQLException;
 
     List<Area> selectByAreaCodeSearch(Map<String, Object> params) throws SQLException;
+
+    List<Area> selAreaByCorpCode(Map<String, Object> params) throws SQLException;
 }
