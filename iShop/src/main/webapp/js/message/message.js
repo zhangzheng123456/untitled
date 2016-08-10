@@ -238,6 +238,7 @@ function jumpBianse() {
     $(document).ready(function () {//隔行变色
         $(".table tbody tr:odd").css("backgroundColor", "#e8e8e8");
         $(".table tbody tr:even").css("backgroundColor", "#f4f4f4");
+        $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function () {
@@ -260,26 +261,11 @@ function jumpBianse() {
     $('#add').click(function () {
         $(window.parent.document).find('#iframepage').attr("src", "/message/message_add.html");
     })
-    //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/message/message_edit.html");
-    })
-    // //点击编辑时页面进行的跳转
-    // $('#compile').click(function(){
-    //     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    //     if(tr.length==1){
-    //         var id=$(tr).attr("id");
-    //         sessionStorage.setItem("id",id);
-    //         $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
-    //     }else if(tr.length==0){
-    //         frame();
-    //         $('.frame').html("请先选择");
-    //     }else if(tr.length>1){
-    //         frame();
-    //         $('.frame').html("不能选择多个");
-    //     }
+    // //双击跳转
+    // $(".table tbody tr").dblclick(function(){
+    //     var id=$(this).attr("id");
+    //     sessionStorage.setItem("id",id);
+    //     $(window.parent.document).find('#iframepage').attr("src","/message/message_edit.html");
     // })
     //删除
     $("#remove").click(function () {
@@ -319,6 +305,12 @@ function jumpBianse() {
                 $(".table #table_r tbody").empty();
                 for(var i=0;i<list.length;i++){
                     var a=i+1;
+                    var status="";
+                    if(list[i].status=="Y"){
+                        status="已读"
+                    }else if(list[i].status=="N"){
+                        status="未读"
+                    }
                     $(".table #table_r tbody").append("<tr><td width='50px;' style='text-align: center;'>"
                         + a
                         + "</td><td>"
@@ -326,7 +318,7 @@ function jumpBianse() {
                         + "</td><td>"
                         + list[i].receiver_type
                         + "</td><td>"
-                        + list[i].status
+                        + status
                         + "</td></tr>");
                 }
             }
