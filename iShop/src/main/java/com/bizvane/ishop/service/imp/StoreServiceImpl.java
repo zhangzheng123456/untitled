@@ -150,15 +150,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("isactive", "Y");
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selStoreByUserCode(params);
-        for (Store store:shops) {
-            if(store.getIsactive().equals("Y")){
-                store.setIsactive("是");
-            }else{
-                store.setIsactive("否");
-            }
-        }
         PageInfo<Store> page = new PageInfo<Store>(shops);
-
         return page;
     }
 
@@ -466,13 +458,6 @@ public class StoreServiceImpl implements StoreService {
         params.put("isactive", "Y");
         PageHelper.startPage(page_number, page_size);
         List<Store> stores = storeMapper.selStoreByAreaCode(params);
-        for (Store store:stores) {
-            if(store.getIsactive().equals("Y")){
-                store.setIsactive("是");
-            }else{
-                store.setIsactive("否");
-            }
-        }
         PageInfo<Store> page = new PageInfo<Store>(stores);
         return page;
     }
