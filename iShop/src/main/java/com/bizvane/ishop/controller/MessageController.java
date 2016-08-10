@@ -128,9 +128,9 @@ public class MessageController {
             JSONObject jsonObject = new JSONObject(jsString);
             id = jsonObject.get("id").toString();
             String message = jsonObject.get("message").toString();
-            String user_code = request.getSession(false).getAttribute("user_code").toString();
+            String user_id = request.getSession(false).getAttribute("user_id").toString();
 
-            String result = messageService.insert(message, user_code);
+            String result = messageService.insert(message, user_id);
             logger.info("after insert result" + result);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -254,7 +254,7 @@ public class MessageController {
      */
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     @ResponseBody
-    public String findIshop(HttpServletRequest request) {
+    public String messageSearch(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
@@ -292,6 +292,51 @@ public class MessageController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 发送消息
+     * 筛选
+     */
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String messageScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+
+            JSONObject result = new JSONObject();
+            PageInfo<MessageInfo> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = messageService.selectByScreen(page_number, page_size, "", "", map);
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                //企业管理员
+                list = messageService.selectByScreen(page_number, page_size, corp_code, "", map);
+            } else {
+                list = messageService.selectByScreen(page_number, page_size, corp_code, user_code, map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 消息模板

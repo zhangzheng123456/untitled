@@ -13,7 +13,9 @@ public interface MessageMapper {
 
     MessageInfo selectByPrimaryKey(@Param("id") Integer id) throws SQLException;
 
-    int deleteByPrimaryKey(Integer id) throws SQLException;
+    int deleteMessageInfo(@Param("id") Integer id) throws SQLException;
+
+    int deleteMessage(@Param("message_code") String message_code) throws SQLException;
 
     int insertMessageInfo(MessageInfo record) throws SQLException;
 
@@ -24,4 +26,6 @@ public interface MessageMapper {
     List<Message> selectMessageDetail(@Param("message_code") String message_code) throws SQLException;
 
     List<MessageType> selectAllMessageType() throws SQLException;
+
+    List<MessageInfo> selectAllMessageInfoScreen(Map<String, Object> params) throws SQLException;
 }
