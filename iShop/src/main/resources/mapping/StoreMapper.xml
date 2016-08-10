@@ -171,8 +171,7 @@
             #{item}
         </foreach>
         <if test="search_value != null and search_value !=''">
-            AND STORE_CODE like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
+            and DEF_STORE.STORE_NAME like concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
@@ -199,8 +198,7 @@
         </foreach>
         AND DEF_STORE.CORP_CODE = #{corp_code}
         <if test="search_value != null and search_value !=''">
-            AND STORE_CODE like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
+            and DEF_STORE.STORE_NAME like concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
             AND DEF_STORE.ISACTIVE = #{isactive}
