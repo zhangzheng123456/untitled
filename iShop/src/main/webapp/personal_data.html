@@ -32,6 +32,9 @@
         <div class="editor_1 col-lg-6 editor_line  animated fadeInRight">
                 <form class="conpany_msg">
                     <div>
+                        <input id="id" type="hidden"/>
+                    </div>
+                    <div>
                         <label>头像</label><span class="head_img"><img src="img/head.png" id="IMG"></span>
                     </div>
                     <div>
@@ -41,16 +44,19 @@
                         <label>员工编号</label><input id="USER_ID" readonly />
                     </div>
                     <div>
-                        <label>姓名</label><input id="USER_NAME">
+                        <label>姓名</label><input id="USER_NAME" verify="Empty"/>
+                        <div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>
                     </div>
                     <div>
                         <label>职务</label><input id="POSITION" readonly />
                     </div>
                     <div>
-                        <label>手机</label><input id="IPHONE">
+                        <label>手机</label><input id="IPHONE"  verify="Empty"/>
+                        <div style="padding-left:125px" class="hint"><div  hintinfo="手机号为必填项,不能为空!"></div></div>
                     </div>
                     <div>
-                        <label>邮箱</label><input id="USER_EMAIL">
+                        <label>邮箱</label><input id="USER_EMAIL"  verify="Empty"/>
+                        <div style="padding-left:125px" class="hint"><div  hintinfo="邮箱为必填项,不能为空!"></div></div>
                     </div>
                     <div>
                         <label>密码</label><input id="PASSWORD" class="pwd" type="password" readonly />
@@ -80,7 +86,7 @@
         <div class="editor_detail col-lg-4  animated fadeInRight">
                 <div class="corpadd_oper_btn">
                     <ul>
-                        <li><i class="icon-ishop_6-04"></i>保存</li>
+                        <li id="personal_save"><i class="icon-ishop_6-04"></i>保存</li>
                         <li id="personal_close"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
