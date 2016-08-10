@@ -29,5 +29,5 @@ public interface GroupMapper {
 
     int deleteByGroupId(Integer id) throws SQLException;
 
-    Group selectByName(String corp_code, String group_name,String isactive) throws SQLException;
+    Group selectByName(@Param("corp_code")String corp_code,@Param("group_name") String group_name,@Param("isactive")String isactive) throws SQLException;
 }
