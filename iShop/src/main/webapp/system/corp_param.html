@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>系统管理之企业参数</title>
-    <link rel="stylesheet" href="../table/css/inner.css">
-    <link rel="stylesheet" href="../table/css/style.css">
-    <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js"></script>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" href="../css/font_style.css">
 </head>
 <body>
 <div class="content">
@@ -19,7 +21,7 @@
         <div class="action">
             <div class="action_l">
                 <ul>
-                    <li>
+                    <li id="add">
                         <span class="icon-ishop_6-01"></span>
                         新增
                     </li>
@@ -27,7 +29,7 @@
                         <span class="icon-ishop_6-02"></span>
                         删除
                     </li>
-                    <li>
+                    <li id="compile">
                         <a href="#">
                             <span class="icon-ishop_6-03"></span>
                             编辑
@@ -38,8 +40,8 @@
                         保存
                     </li>
                     <li class="li">
-                        <input type="text" class="input">
-                        <i class="icon-ishop_3-05"></i>
+                        <input type="text" class="input" id="search">
+                        <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
             </div>
@@ -109,39 +111,12 @@
                     <th>企业名称</th>
                     <th>企业参数</th>
                     <th>备注</th>
+                    <th>修改时间</th>
+                    <th>修改人</th>
+                    <th>是否可用</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td width="50px" style="text-align: left;">
-                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
-                    </td>
-                    <td style="text-align: left;">1</td>
-                    <td>parem_key</td>
-                    <td>param_name</td>
-                    <td>param_value</td>
-                    <td>djidisijdijiji</td>
-                </tr>
-                <tr>
-                    <td width="50px" style="text-align: left;">
-                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
-                    </td>
-                    <td style="text-align: left;">1</td>
-                    <td>parem_key</td>
-                    <td>param_name</td>
-                    <td>param_value</td>
-                    <td>djidisijdijiji</td>
-                </tr>
-                <tr>
-                    <td width="50px" style="text-align: left;">
-                        <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
-                    </td>
-                    <td style="text-align: left;">1</td>
-                    <td>parem_key</td>
-                    <td>param_name</td>
-                    <td>param_value</td>
-                    <td>djidisijdijiji</td>
-                </tr>
                 <tr>
                     <td width="50px" style="text-align: left;">
                         <div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
@@ -243,8 +218,14 @@
         <em class="delete" id="delete">删除</em>
     </div>
 </div>
-<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-<!-- <script src="../table/js/inner.js"></script> -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script type="text/javascript" src="../js/moni_select.js"></script>
+<script src="../js/insidePostRequire.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js"></script>
+<script src="../js/loading.js"></script>
+<script src="../js/artDialog/plugins/iframeTools.js"></script>
+<script src="../js/system/corp_param.js"></script>
 <script type="text/javascript">
     $(function(){
         $('#sidebar ul>li:eq(6)').find('h1').addClass('h1');
