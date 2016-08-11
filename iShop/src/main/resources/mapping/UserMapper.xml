@@ -161,7 +161,6 @@
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
         </foreach>
-
         <if test="search_value != null and search_value !=''">
             AND  USER_NAME LIKE concat('%',#{search_value},'%')
         </if>

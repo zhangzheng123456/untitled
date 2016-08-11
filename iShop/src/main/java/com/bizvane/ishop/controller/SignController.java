@@ -64,10 +64,10 @@ public class SignController {
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = signService.selectSignAll(page_number, page_size, "", "");
+                list = signService.selectSignByInp(page_number, page_size, "", "","", "", role_code);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 //系统管理员
-                list = signService.selectSignAll(page_number, page_size, corp_code, "");
+                list = signService.selectSignByInp(page_number, page_size, corp_code, "","", "", role_code);
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
@@ -115,12 +115,12 @@ public class SignController {
             PageInfo<Sign> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = signService.selectSignAll(page_number, page_size, "", search_value);
+                list =signService.selectSignByInp(page_number, page_size, "", search_value, "", "", role_code);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
                     //企业管理员
-                    list = signService.selectSignAll(page_number, page_size, corp_code, search_value);
+                    list = signService.selectSignByInp(page_number, page_size, corp_code, search_value, "", "", role_code);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
@@ -229,10 +229,10 @@ public class SignController {
             if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
-                    list = signService.selectSignAll(1, 30000, "", search_value);
+                    list = signService.selectSignByInp(1, 30000, "", search_value, "", "", role_code);
                 } else if (role_code.equals(Common.ROLE_GM)) {
                     //系统管理员
-                    list = signService.selectSignAll(1, 30000, corp_code, search_value);
+                    list = signService.selectSignByInp(1, 30000, corp_code, search_value, "", "", role_code);
                 } else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();

@@ -13,8 +13,6 @@ import java.util.Map;
  * Created by yin on 2016/6/23.
  */
 public interface SignMapper {
-        List<Sign> selectSignAll(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
-
         List<Sign> selectSignByInp(Map<String, Object> params) throws SQLException;
 
         int delSignById(@Param("id")int id) throws SQLException;

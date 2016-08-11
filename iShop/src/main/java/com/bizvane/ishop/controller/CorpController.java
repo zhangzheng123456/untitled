@@ -591,7 +591,6 @@ public class CorpController {
             dataBean.setId(id);
             dataBean.setMessage(result);
         } catch (Exception e) {
-            System.out.println(result + "--错错错--");
             e.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -600,6 +599,7 @@ public class CorpController {
             if(rwb!=null){
                 rwb.close();
             }
+            System.gc();
         }
         return dataBean.getJsonStr();
     }

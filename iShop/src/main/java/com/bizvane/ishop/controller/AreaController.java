@@ -497,14 +497,20 @@ public class AreaController {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = areaService.getAllAreaByPage(1, 30000, "", search_value);
-                } else {
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.selectByAreaCode(1, 30000, corp_code, area_code, search_value);
+                }else {
                     list = areaService.getAllAreaByPage(1, 30000, corp_code, search_value);
                 }
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     list = areaService.getAllAreaScreen(1, 30000, "", "", map);
-                } else {
+                }else if(role_code.equals(Common.ROLE_AM)) {
+                    String area_codes = request.getSession(false).getAttribute("area_code").toString();
+                    list = areaService.getAllAreaScreen(1, 30000, corp_code, area_codes, map);
+                }else {
                     list = areaService.getAllAreaScreen(1, 30000, corp_code, "", map);
                 }
             }
@@ -667,6 +673,7 @@ public class AreaController {
             if (rwb != null) {
                 rwb.close();
             }
+            System.gc();
         }
         return dataBean.getJsonStr();
     }

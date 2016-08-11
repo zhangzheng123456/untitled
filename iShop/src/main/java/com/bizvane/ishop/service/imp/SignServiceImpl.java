@@ -24,48 +24,28 @@ public class SignServiceImpl implements SignService {
     @Autowired
     StoreService storeService;
 
-    @Override
-    public PageInfo<Sign> selectSignAll(int page_number, int page_size, String corp_code, String search_value) throws Exception {
-        PageHelper.startPage(page_number, page_size);
-        List<Sign> signs = signMapper.selectSignAll(corp_code, search_value);
-        for (Sign sign:signs) {
-            if(sign.getIsactive().equals("Y")){
-                sign.setIsactive("是");
-            }else{
-                sign.setIsactive("否");
-            }
-            //0是签到，-1是签退
-            if(sign.getStatus().equals("0")){
-                sign.setStatus("签到");
-            }else{
-                sign.setStatus("签退");
-            }
-        }
 
-        PageInfo<Sign> page = new PageInfo<Sign>(signs);
-        return page;
-    }
 
     @Override
     public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
+            for (int i = 0; null != stores && i < stores.length; i++) {
                 stores[i] = stores[i].substring(1, stores[i].length());
             }
         }
         if (!area_code.equals("")) {
             String[] areas = area_code.split(",");
-            for (int i = 0; i < areas.length; i++) {
+            for (int i = 0; null != stores && i < stores.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
-            String a = "";
-            for (int i = 0; i < store.size(); i++) {
-                a = a + store.get(i).getStore_code() + ",";
+            List<Store> stores1 = storeService.selectByAreaCode(corp_code, areas, "");
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < stores1.size(); i++) {
+                sb.append(stores1.get(i).getStore_code()).append(",");
             }
-            stores = a.split(",");
+            stores = sb.toString().split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);

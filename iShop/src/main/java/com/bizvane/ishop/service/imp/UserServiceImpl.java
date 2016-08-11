@@ -679,7 +679,7 @@ public class UserServiceImpl implements UserService {
                 user.setIsactive("否");
             }
             if(user.getSex()==null || user.getSex().equals("")){
-                user.setSex("未录入");
+                user.setSex("未知");
             }else if(user.getSex().equals("F")){
                 user.setSex("女");
             }else{

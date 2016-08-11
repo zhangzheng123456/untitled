@@ -865,6 +865,7 @@ public class GroupController {
             if(rwb!=null){
                 rwb.close();
             }
+            System.gc();
         }
         return dataBean.getJsonStr();
     }
