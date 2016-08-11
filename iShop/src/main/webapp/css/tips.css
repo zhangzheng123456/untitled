@@ -289,3 +289,28 @@
 	cursor: pointer;
 	border-radius: 0 5px 5px 0;
 }
+.store_list_kuang{
+	position: absolute;
+	margin-top:2px;
+	height: 300px;
+	width: 310px;
+	background-color: #e8f5fe;
+	border:1px solid #a9c9e2;
+	z-index:103;
+	display: none;
+}
+.store_list_kuang ul{
+	width: 308px !important;
+	height: 262px !important;
+	overflow-y: auto;
+	border:none !important;
+	display: block !important;
+}
+.store_list_kuang .search{
+	border: 1px solid #ccc;
+	width: 300px !important;
+	border-radius: 5px !important;
+	margin-left:4px; !important;
+	margin-top:4px; !important;
+
+}
