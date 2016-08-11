@@ -498,8 +498,7 @@ public class StoreController {
                 String area_code = request.getSession(false).getAttribute("area_code").toString();
                 list = areaService.selAreaByCorpCode(corp_code, area_code,"");
             }else{
-                String store_code = request.getSession(false).getAttribute("store_code").toString();
-                list = areaService.selAreaByCorpCode(corp_code, "",store_code);
+                list = new ArrayList<Area>();
             }
             JSONArray array = new JSONArray();
             JSONObject areas = new JSONObject();

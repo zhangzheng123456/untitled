@@ -33,17 +33,27 @@
     </select>
 
     <select id="selectBySearch" resultMap="storeAchvGoals">
-        select
-        sa.id,sa.store_code,st.store_name,sa.corp_code,
-        sa.target_amount,sa.time_type,
-        sa.target_time,sa.modified_date,sa.modifier,sa.created_date,
-        sa.creater,sa.isactive,c.corp_name
-        from
+        SELECT
+        sa.id,
+        sa.store_code,
+        st.store_name,
+        sa.corp_code,
+        sa.target_amount,
+        sa.time_type,
+        sa.target_time,
+        sa.modified_date,
+        sa.modifier,
+        sa.created_date,
+        sa.creater,
+        sa.isactive,
+        c.corp_name
+        FROM
         DEF_STORE_ACHV_GOAL sa,
         DEF_CORP c,
         DEF_STORE st
         WHERE sa.corp_code=c.corp_code
-        AND st.STORE_CODE =sa.STORE_CODE
+        AND sa.corp_code = st.corp_code
+        AND st.store_code =sa.store_code
         <if test="corp_code!=null and corp_code!=''">
             AND c.corp_code=#{corp_code}
         </if>
@@ -54,13 +64,13 @@
             </foreach>
         </if>
         <if test="store_codes !=null and store_codes !=''">
-            AND sa.STORE_CODE IN
+            AND sa.store_code IN
             <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
                 #{item}
             </foreach>
         </if>
         <if test="search_value!=null and search_value!=''">
-            and
+            AND
             ( sa.STORE_CODE like concat('%',#{search_value},'%')
             OR sa.STORE_NAME LIKE concat('%',#{search_value},'%')
             OR c.corp_name LIKE concat('%',#{search_value},'%')

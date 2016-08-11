@@ -74,16 +74,15 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
                                                      String area_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
+            if (store_code.contains(Common.STORE_HEAD))
+                store_code = store_code.replace(Common.STORE_HEAD,"");
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
-                stores[i] = stores[i].substring(1, stores[i].length());
-            }
         }
         if (!area_code.equals("")) {
+            if (area_code.contains(Common.STORE_HEAD))
+                area_code = area_code.replace(Common.STORE_HEAD,"");
+
             String[] areas = area_code.split(",");
-            for (int i = 0; i < areas.length; i++) {
-                areas[i] = areas[i].substring(1, areas[i].length());
-            }
             List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
@@ -97,9 +96,8 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
 
-        List<UserAchvGoal> users;
         PageHelper.startPage(page_number, page_size);
-        users = userAchvGoalMapper.selectPartUserAchvGoalBySearch(params);
+        List<UserAchvGoal> users = userAchvGoalMapper.selectPartUserAchvGoalBySearch(params);
         for (UserAchvGoal userAchvGoal:users) {
             if(userAchvGoal.getIsactive().equalsIgnoreCase("Y")){
                 userAchvGoal.setIsactive("是");
