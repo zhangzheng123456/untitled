@@ -415,16 +415,14 @@ public class StoreController {
             PageInfo<Store> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-
                 list = storeService.getAllStore(request, page_number, page_size, "", search_value);
             } else if (role_code.equals(Common.ROLE_GM)) {
                 list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
+                if (area_code.contains(Common.STORE_HEAD))
+                    area_code = area_code.replace(Common.STORE_HEAD,"");
                 String[] areaCodes = area_code.split(",");
-                for (int i = 0; i < areaCodes.length; i++) {
-                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                }
                 list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, search_value);
             } else {
                 String store_code = request.getSession().getAttribute("store_code").toString();
