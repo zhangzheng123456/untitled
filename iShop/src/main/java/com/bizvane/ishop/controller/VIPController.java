@@ -28,6 +28,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.lang.System;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.LinkedHashMap;
@@ -511,6 +512,7 @@ public class VIPController {
             if(rwb!=null){
                 rwb.close();
             }
+            System.gc();
         }
         return dataBean.getJsonStr();
     }

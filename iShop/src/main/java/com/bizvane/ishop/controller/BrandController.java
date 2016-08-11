@@ -585,6 +585,7 @@ public class BrandController {
             if(rwb!=null){
                 rwb.close();
             }
+            System.gc();
         }
         return dataBean.getJsonStr();
     }

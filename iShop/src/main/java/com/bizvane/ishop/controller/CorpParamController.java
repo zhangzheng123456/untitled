@@ -5,13 +5,13 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.CorpParam;
-import com.bizvane.ishop.entity.ParamConfigure;
 import com.bizvane.ishop.service.CorpParamService;
+import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.ParamConfigureService;
-
+import com.bizvane.ishop.service.TableManagerService;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
+import org.apache.xmlbeans.impl.xb.xsdschema.ListDocument;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,34 +20,32 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Created by yan on 2016/8/10.
+ * Created by nanji on 2016/8/11.
  */
-
-
 @Controller
-@RequestMapping("/param")
-
-public class ParamConfigureController {
-
+@RequestMapping("/corpParam")
+public class CorpParamController {
     String id;
     @Autowired
     private CorpParamService corpParamService;
-
-    @Autowired
-    ParamConfigureService paramConfigureService;
     @Autowired
     private FunctionService functionService;
-    private static final Logger logger = Logger.getLogger(ParamConfigureController.class);
+    @Autowired
+    private CorpService corpService;
+    private static final Logger logger = Logger.getLogger(CorpParamController.class);
 
-
+    /**
+     * 企业参数配置列表
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public String paramManage(HttpServletRequest request) {
-
+    public String corpParamManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
@@ -60,8 +58,8 @@ public class ParamConfigureController {
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
-            PageInfo<ParamConfigure> list = null;
-            list = paramConfigureService.getAllParamByPage(page_number, page_size, "");
+            PageInfo<CorpParam> list = null;
+            list=corpParamService.selectAllParam(page_number, page_size, corp_code, "");
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -74,29 +72,70 @@ public class ParamConfigureController {
         }
         return dataBean.getJsonStr();
     }
-
     /**
-     * 添加参数配置
+     * 根据企业编号拉取企业参数
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/selParamByCorpCode", method = RequestMethod.POST)
+    @ResponseBody
+    public String selAreaByCorpCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String param_id = jsonObject.get("param_id").toString();
+         List<CorpParam> list=corpParamService.selectByCorpParam(corp_code,param_id);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+
+        return dataBean.getJsonStr();
+
+    }
+    /**
+     * 添加企业参数配置
      * @param request
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public String addParam(HttpServletRequest request) {
+    public String addCorpParam(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
-            logger.info("json--area add-------------" + jsString);
+            logger.info("json--corpParam add-------------" + jsString);
             System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-
-            String result = paramConfigureService.insert(message);
+            Date now = new Date();
+            CorpParam corpParam=new CorpParam();
+            corpParam.setModifier(user_code);
+            corpParam.setModified_date(Common.DATETIME_FORMAT.format(now));
+            corpParam.setCreater(user_code);
+            corpParam.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            corpParam.setIsactive(jsonObj.get("isactive").toString());
+            String result=corpParamService.insert(message,user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage("add corpParam success");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -112,26 +151,27 @@ public class ParamConfigureController {
     }
 
     /**
-     * 编辑参数
+     * 编辑企业参数配置
      * @param request
      * @return
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
-    public String editParam(HttpServletRequest request) {
+    public String editCorpParam(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
-            logger.info("json--param ---- edit-------------" + jsString);
+            logger.info("json--corpParam edit-------------" + jsString);
             System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = paramConfigureService.update(message);
+            String result=corpParamService.update(message,user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("param edit success");
+                dataBean.setMessage("corpParam edit success");
             } else {
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
@@ -147,91 +187,80 @@ public class ParamConfigureController {
     }
 
     /**
-     * 删除参数
+     * 删除企业参数配置
      * @param request
      * @return
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public String delete(HttpServletRequest request)throws SQLException {
+    public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
 
         try {
             String jsString = request.getParameter("param");
-            logger.info("json--delete-------------" + jsString);
+            logger.info("json-corpParam-delete-------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-                logger.info("-------------delete--" + id);
-            String[] ids = id.split(",");
+            String corpParam_id = jsonObject.get("id").toString();
+            String[] ids = corpParam_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-               CorpParam corpParam= corpParamService.selectById(Integer.valueOf(ids[i]));
-                ParamConfigure paramConfigure = paramConfigureService.getParamById(Integer.valueOf(ids[i]));
-                if (paramConfigure != null) {
-                 if(corpParam==null){
-                     paramConfigureService.delete(Integer.valueOf(ids[i]));
-                 }else{
-                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                     dataBean.setId(id);
-                     dataBean.setMessage("删除参数前请先删除该企业的企业参数配置");
-                     return dataBean.getJsonStr();
-                       }
-                }else{
+                CorpParam corpParam=corpParamService.selectById(Integer.valueOf(ids[i]));
+                if (corpParam != null) {
+                    corpParamService.delete(Integer.valueOf(ids[i]));
+                }   else{
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage(message);
                     return dataBean.getJsonStr();
-                     }
                 }
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
-
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             return dataBean.getJsonStr();
         }
-
         return dataBean.getJsonStr();
     }
 
     /**
-     * 选择参数
+     * 选择企业参数
      * @param request
      * @return
      */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
-    public String findParamById(HttpServletRequest request) {
+    public String findById(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String data = null;
         try {
             String jsString = request.getParameter("param");
-
-            logger.info("json-select-------------" + jsString);
+            logger.info("json-corpParanm select-------------" + jsString);
             System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String user_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(paramConfigureService.getParamById(Integer.parseInt(user_id)));
+            String corpParam_id = jsonObject.get("id").toString();
+            data = JSON.toJSONString(corpParamService.selectById(Integer.parseInt(corpParam_id)));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(data);
         } catch (Exception e) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
-            dataBean.setMessage("参数信息异常");
+            dataBean.setMessage("企业参数配置信息异常");
         }
-
         return dataBean.getJsonStr();
     }
 
     /**
-     * 搜索参数
+     * 搜索企业参数
      * @param request
      * @return
      */
@@ -239,7 +268,6 @@ public class ParamConfigureController {
     @ResponseBody
     public String search(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
@@ -251,10 +279,10 @@ public class ParamConfigureController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
 
-            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<ParamConfigure> list = null;
-            list = paramConfigureService.selectByParamSearch(page_number, page_size, "", search_value);
+            PageInfo<CorpParam> list = null;
+            list = corpParamService.selectAllParam(page_number, page_size, corp_code, search_value);
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -266,41 +294,19 @@ public class ParamConfigureController {
         }
 
         return dataBean.getJsonStr();
-
     }
 
     /**
-     * 根据用户获取
-     * 参数列表
+     * 筛选企业参数
      * @param request
      * @return
      */
-    @RequestMapping(value = "/getParamByUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/screen", method = RequestMethod.GET)
     @ResponseBody
-    public String getParamByUser(HttpServletRequest request) {
+    public String Screen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        try {
-            JSONObject params = new JSONObject();
-            JSONArray array = new JSONArray();
-                List<ParamConfigure> list = paramConfigureService.getAllParams();
-                for (int i = 0; i < list.size(); i++) {
-                    ParamConfigure paramConfigure = list.get(i);
-                    String param_key = paramConfigure.getParam_key();
-                    JSONObject obj = new JSONObject();
-                    obj.put("param_key", param_key);
-                    array.add(obj);
-                }
-            params.put("params", array);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(params.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-        }
-
         return dataBean.getJsonStr();
-}
+    }
+
 
 }

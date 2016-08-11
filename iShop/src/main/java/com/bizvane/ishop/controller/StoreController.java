@@ -921,9 +921,12 @@ public class StoreController {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
+            for (Store store:stores) {
+                String brand_name = store.getBrand_name();
+                String replaceStr = WebUtils.StringFilter(brand_name);
+                store.setBrand_name(replaceStr);
+            }
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            // String column_name1 = "corp_code,corp_name";
-            // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(stores, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
@@ -1112,6 +1115,7 @@ public class StoreController {
             if (rwb != null) {
                 rwb.close();
             }
+            System.gc();
         }
         return dataBean.getJsonStr();
     }

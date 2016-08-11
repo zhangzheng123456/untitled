@@ -207,9 +207,15 @@ public class UserController {
                 errormessage="导出数据过大";
                 int i=9/0;
             }
+            for (User user:users) {
+                String areaCode = user.getArea_code();
+                String replaceStr = WebUtils.StringFilter(areaCode);
+                user.setArea_code(replaceStr);
+                String store_code = user.getStore_code();
+                String replaceStore = WebUtils.StringFilter(store_code);
+                user.setStore_code(replaceStore);
+            }
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            // String column_name1 = "corp_code,corp_name";
-            // String[] cols = column_name.split(",");//前台传过来的字段
             String pathname = OutExeclHelper.OutExecl(users, map, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
@@ -572,6 +578,7 @@ public class UserController {
             if(rwb!=null){
                 rwb.close();
             }
+            System.gc();
         }
         return dataBean.getJsonStr();
     }

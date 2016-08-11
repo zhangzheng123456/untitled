@@ -1,31 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.SignMapper">
-    <select id="selectSignAll" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT *
-        from acc_sign,DEF_CORP
-        WHERE acc_sign.STATUS !='1'
-        and acc_sign.corp_code=DEF_CORP.corp_code
-        <if test="corp_code != null and corp_code !=''">
-            AND acc_sign.CORP_CODE = #{corp_code}
-        </if>
-        <if test="search_value != null and search_value !=''">
-            AND
-            (
-            acc_sign.user_code LIKE concat('%', #{search_value},'%')
-            OR acc_sign.USER_NAME LIKE concat('%', #{search_value},'%')
-            OR DEF_CORP.CORP_NAME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
-            )
-        </if>
-        ORDER BY acc_sign.ID DESC
-    </select>
     <select id="selectSignByInp" resultType="com.bizvane.ishop.entity.Sign">
-        SELECT *
+        SELECT acc_sign.*,
+        DEF_CORP.CORP_NAME
         from acc_sign,DEF_CORP
-        where acc_sign.STATUS !='1'
-        and acc_sign.corp_code=DEF_CORP.corp_code
+        where acc_sign.corp_code=DEF_CORP.corp_code
+        AND acc_sign.STATUS !='1'
         AND acc_sign.user_code IN
         (
         SELECT DEF_USER.user_code
@@ -33,12 +14,18 @@
         where DEF_USER.group_code = DEF_GROUP.group_code
         AND DEF_USER.corp_code = DEF_CORP.corp_code
         AND DEF_USER.corp_code = DEF_GROUP.corp_code
-        AND DEF_USER.CORP_CODE = #{corp_code}
-        AND DEF_GROUP.role_code &lt; #{role_code}
-        AND
-        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            store_code regexp #{item}
-        </foreach>
+        <if test="corp_code!=null and corp_code!=''">
+            AND DEF_USER.CORP_CODE = #{corp_code}
+        </if>
+        <if test="role_code!=null and corp_code!=''">
+            AND DEF_GROUP.role_code &lt; #{role_code}
+        </if>
+        <if test="array!=null">
+            AND
+            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                store_code regexp #{item}
+            </foreach>
+        </if>
         )
         <if test="search_value != null and search_value !=''">
             AND
@@ -55,9 +42,10 @@
 
     <select id="selectByUser" resultType="com.bizvane.ishop.entity.Sign">
         select * from acc_sign,DEF_CORP
-        WHERE acc_sign.STATUS !='1'
-        and acc_sign.corp_code=DEF_CORP.corp_code
-        acc_sign.corp_code=#{corp_code} and acc_sign.user_code=#{user_code}
+        where acc_sign.corp_code=DEF_CORP.corp_code
+        AND acc_sign.STATUS !='1'
+        AND
+        acc_sign.user_code=#{user_code} AND  acc_sign.corp_code=#{corp_code}
         <if test="search_value != null and search_value !=''">
             AND
             (
@@ -81,6 +69,7 @@
         DEF_CORP.CORP_NAME
         from acc_sign,DEF_CORP
         where acc_sign.corp_code=DEF_CORP.corp_code
+        AND acc_sign.STATUS !='1'
         AND acc_sign.user_code IN
         (
         SELECT DEF_USER.user_code
@@ -104,11 +93,14 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryValue!=''">
                     acc_sign.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
                 </otherwise>
             </choose>
         </foreach>
@@ -118,16 +110,20 @@
     <select id="selectSignAllScreenUser" resultType="com.bizvane.ishop.entity.Sign">
         select * from acc_sign,DEF_CORP
         where acc_sign.corp_code=DEF_CORP.corp_code
+        AND acc_sign.STATUS !='1'
         AND
-        acc_sign.user_code=#{user_code}
+        acc_sign.user_code=#{user_code} AND  acc_sign.corp_code=#{corp_code}
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryValue!=''">
                     acc_sign.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
                 </otherwise>
             </choose>
         </foreach>
