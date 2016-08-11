@@ -369,11 +369,11 @@ function selectownshop(obj){//加载店铺列表的时候
     }else{
         div.hide();
     };
-    $(input).blur(function(){  
-        setTimeout(function(){
-        	ul.hide();
-        },200);  
-    });
+    // $(input).blur(function(){  
+    //     setTimeout(function(){
+    //     	div.hide();
+    //     },200);  
+    // });
     var c_code=$('#OWN_CORP').val();
 	var corp_code1=$(input).attr("corp_code");
 	if(c_code==corp_code1){
@@ -392,11 +392,11 @@ function selectownarea(obj){//加载区域列表的时候
     }else{
         div.hide();
     };
-    $(input).blur(function(){  
-        setTimeout(function(){
-        	ul.hide();
-        },200);
-    });
+    // $(input).blur(function(){  
+    //     setTimeout(function(){
+    //     	div.hide();
+    //     },200);
+    // });
     var c_code=$('#OWN_CORP').val();
 	var corp_code1=$(input).attr("corp_code");
 	if(c_code==corp_code1){
