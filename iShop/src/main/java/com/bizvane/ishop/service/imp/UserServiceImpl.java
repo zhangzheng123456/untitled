@@ -268,9 +268,7 @@ public class UserServiceImpl implements UserService {
         String result = "";
         int user_id = user.getId();
         User old_user = getUserById(user_id);
-        String[] store_code1 = old_user.getStore_code().split(",");
-
-        List<User> phone_exist= userPhoneExist(user.getPhone());
+        String[] store_code1 = old_user.getStore_code().split(",");List<User> phone_exist= userPhoneExist(user.getPhone());
         List<User> email_exist = userEmailExist(user.getEmail());
         if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
             List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(),Common.IS_ACTIVE_Y);
@@ -281,7 +279,7 @@ public class UserServiceImpl implements UserService {
             } else if (!user.getEmail().equals("") && email_exist.size()>0 && user_id != email_exist.get(0).getId()) {
                 result = "邮箱已存在";
             } else {
-                if (!old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
+                if (old_user.getUser_code() !=null && !old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
                     updateCauseCodeChange(user.getCorp_code(), user.getUser_code(), old_user.getUser_code());
                 }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
@@ -673,13 +671,13 @@ public class UserServiceImpl implements UserService {
      */
     public void conversion(List<User> users) throws Exception{
         for (User user : users) {
-            if (user.getIsactive().equals("Y")) {
+            if (user.getIsactive() != null && user.getIsactive().equals("Y")) {
                 user.setIsactive("是");
             } else {
                 user.setIsactive("否");
             }
             if(user.getSex()==null || user.getSex().equals("")){
-                user.setSex("未录入");
+                user.setSex("未知");
             }else if(user.getSex().equals("F")){
                 user.setSex("女");
             }else{
@@ -688,7 +686,7 @@ public class UserServiceImpl implements UserService {
             String store = user.getStore_code();
             String area = user.getArea_code();
             String role_code = user.getRole_code();
-            if ((role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) && store != null ){
+            if (role_code != null && (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) && store != null ){
                 if (store.contains(Common.STORE_HEAD)) {
                     String store_code1 = store.replace(Common.STORE_HEAD, "");
                     store = store_code1.substring(0, store_code1.length() - 1);
@@ -697,7 +695,7 @@ public class UserServiceImpl implements UserService {
             }else {
                 user.setStore_code("");
             }
-            if (role_code.equals(Common.ROLE_AM) && area != null) {
+            if (role_code != null && role_code.equals(Common.ROLE_AM) && area != null) {
                 if (area.contains(Common.STORE_HEAD)) {
                     String area_code1 = area.replace(Common.STORE_HEAD, "");
                     area = area_code1.substring(0, area_code1.length() - 1);
