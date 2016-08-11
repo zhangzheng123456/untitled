@@ -37,11 +37,10 @@ var oc=new ObjectControl();
         return true;
     };
     paramjs.bindbutton=function(){
-        $(".operadd_btn ul li:nth-of-type(1)").click(function(){
+        $(".oper_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
-                var PARAM=$("#PARAM").val();
+                var OWN_CORP=$("#OWN_CORP option").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
-                var PARAM_VALUE=$("#PARAM_VALUE").val();
                 var REMARK=$("#REMARK").val();
                 var _command="/corpParam/add";//接口名
                 var opt = {//返回成功后的操作
@@ -145,9 +144,13 @@ jQuery(document).ready(function(){
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
                 console.log(msg);
-                $("#PARAM_NAME").val(msg.param_name);
-                $("#PARAM_VALUE").val(msg.param_value);
+                $("#OWN_CORP option").val(msg.corp_code);
+                $("#OWN_CORP option").text(msg.corp_name);
+                $("#PARAM").val(msg.param);
+                $("#PARAM").attr("data-name",msg.param);
+                $("#REMARK").attr("data-name",msg.remark);
                 $("#REMARK").val(msg.remark);
+                getcorplist();
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
@@ -157,6 +160,8 @@ jQuery(document).ready(function(){
                 });
             }
         });
+    }else{
+        getcorplist();
     }
 
 
@@ -186,10 +191,10 @@ function getcorplist(){
             $("#OWN_CORP").append(corp_html);
             $('.corp_select select').searchableSelect();
             $('.searchable-select-item').click(function(){
-                $("#AREA_ID").val("");
-                $("#AREA_NAME").val("");
-                $("#AREA_ID").attr("data-mark","");
-                $("#AREA_NAME").attr("data-mark","");
+                $("#PARAM").val("");
+                $("#REMARK").val("");
+                $("#PARAM").attr("data-mark","");
+                $("#REMARK").attr("data-mark","");
             })
         }else if(data.code=="-1"){
             art.dialog({
