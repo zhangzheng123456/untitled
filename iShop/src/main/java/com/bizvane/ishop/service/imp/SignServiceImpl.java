@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.SignMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.SignService;
@@ -29,21 +30,25 @@ public class SignServiceImpl implements SignService {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
-            for (int i = 0; null != stores && i < stores.length; i++) {
+            for (int i = 0; i < stores.length; i++) {
+                if (!stores[i].startsWith(Common.STORE_HEAD)) {
+                    stores[i] = Common.STORE_HEAD + stores[i];
+                }
                 stores[i] = stores[i].substring(1, stores[i].length());
+
             }
         }
         if (!area_code.equals("")) {
             String[] areas = area_code.split(",");
-            for (int i = 0; null != stores && i < stores.length; i++) {
+            for (int i = 0; i < areas.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> stores1 = storeService.selectByAreaCode(corp_code, areas, "");
-            StringBuffer sb = new StringBuffer();
-            for (int i = 0; i < stores1.size(); i++) {
-                sb.append(stores1.get(i).getStore_code()).append(",");
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
+            String a = "";
+            for (int i = 0; i < store.size(); i++) {
+                a = a + store.get(i).getStore_code() + ",";
             }
-            stores = sb.toString().split(",");
+            stores = a.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);
