@@ -164,7 +164,8 @@ public class ParamConfigureController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
                 logger.info("-------------delete--" + id);
-            String[] ids = id.split(",");
+            String param_id = jsonObject.get("id").toString();
+            String[] ids = param_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                CorpParam corpParam= corpParamService.selectById(Integer.valueOf(ids[i]));
