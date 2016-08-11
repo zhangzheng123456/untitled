@@ -8,7 +8,7 @@
         dc.corp_name
         FROM rel_corp_cfg rcc,def_corp dc
         WHERE rcc.corp_code = dc.corp_code
-        AND  rel_corp_cfg.id=#{id}
+        AND  rcc.id=#{id}
     </select>
 
     <select id="selectAllParam" resultType="com.bizvane.ishop.entity.CorpParam">
@@ -27,6 +27,14 @@
             )
         </if>
         ORDER BY rcc.id DESC
+    </select>
+
+    <select id="selectByCorpParam" resultType="com.bizvane.ishop.entity.CorpParam">
+        SELECT *
+        FROM rel_corp_cfg
+        WHERE corp_code = #{corp_code}
+        AND  param_id=#{param_id}
+        AND isactive = 'Y'
     </select>
 
     <delete id="deleteById">

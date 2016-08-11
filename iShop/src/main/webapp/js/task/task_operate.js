@@ -331,7 +331,7 @@ function getstafflist(a){
                         + "'/><label for='checkboxThreeInput"
                         + i
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
+                        + "'></label></div><span class='p16'>"+list[i].user_name+"("+list[i].group_name+")</span></li>"
 				}
 				if(pageNumber==1){
 					$("#staff_code ul").html(staff_html);
@@ -365,8 +365,8 @@ function getstafflist(a){
 						}
 					}
 				}
-				whir.loading.remove();//移除加载框
 			}
+			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
 				time: 1,

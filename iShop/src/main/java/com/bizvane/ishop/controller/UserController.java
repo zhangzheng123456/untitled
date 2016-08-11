@@ -283,6 +283,9 @@ public class UserController {
                 }else {
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
                 }
+            }else {
+                List<User> list1 = new ArrayList<User>();
+                list.setList(list1);
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);

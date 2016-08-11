@@ -36,10 +36,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -113,7 +110,7 @@ public class AreaController {
     }
 
     /**
-     * 品牌列表
+     * 区域列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -130,18 +127,19 @@ public class AreaController {
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
-            PageInfo<Area> list = null;
+            PageInfo<Area> list = new PageInfo<Area>();
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = areaService.getAllAreaByPage(page_number, page_size, "", "");
             } else {
-                //String corp_code = request.getSession(false).getAttribute("corp_code").toString();
                 if (role_code.equals(Common.ROLE_GM)) {
                     list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
-                    // list = areaService.getAllAreaByPage(page_number, page_size, corp
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, "");
+                }else {
+                    List<Area> list1 = new ArrayList<Area>();
+                    list.setList(list1);
                 }
             }
             result.put("list", JSON.toJSONString(list));
