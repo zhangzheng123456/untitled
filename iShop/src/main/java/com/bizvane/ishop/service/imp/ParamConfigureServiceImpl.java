@@ -68,7 +68,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     @Override
     public List<ParamConfigure> getAllParams() throws Exception {
         List<ParamConfigure> paramConfigures;
-        paramConfigures = paramConfigureMapper.selectParams();
+        paramConfigures = paramConfigureMapper.selectParams("");
         return paramConfigures;
     }
 
@@ -118,30 +118,33 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         String param_name = jsonObject.get("param_name").toString();
         String param_value = jsonObject.get("param_value").toString();
         String remark = jsonObject.get("remark").toString();
+
         ParamConfigure old_param = getParamById(param_id);
         old_param_key = old_param.getParam_key();
 
-            ParamConfigure paramByKey = getParamByKey(param_key);
-            ParamConfigure paramByName = getParamByName(param_name);
-            if (paramByKey == null
-                    && paramByName == null) {
-                old_param = new ParamConfigure();
-                Date now = new Date();
-                old_param.setId(param_id);
-                old_param.setParam_key(param_key);
-                old_param.setParam_name(param_name);
-                old_param.setParam_value(param_value);
-                old_param.setRemark(remark);
+        ParamConfigure paramByKey = getParamByKey(param_key);
+        ParamConfigure paramByName = getParamByName(param_name);
+
+        if (paramByKey != null && paramByKey.getId() != param_id) {
+            result = "参数已存在";
+        } else if (paramByName != null && paramByName.getId() != param_id) {
+            result = "参数名称已存在";
+        } else {
+            old_param = new ParamConfigure();
+            old_param.setId(param_id);
+            old_param.setParam_key(param_key);
+            old_param.setParam_name(param_name);
+            old_param.setParam_value(param_value);
+            old_param.setRemark(remark);
+            if (paramConfigureMapper.updateParam(old_param) > 0 && !new_param_key.equals(new_param_key)) {
                 paramConfigureMapper.updateParam(old_param);
-                result = Common.DATABEAN_CODE_SUCCESS;
-            } else if (paramByKey != null) {
-                result = "参数key已存在";
-            } else {
-                result = "参数名称已存在";
             }
 
+            result = Common.DATABEAN_CODE_SUCCESS;
 
+        }
         return result;
+
     }
 
     @Override

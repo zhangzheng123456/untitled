@@ -12,7 +12,7 @@ public interface ParamConfigureMapper {
     ParamConfigure selectById(int id) throws SQLException;
     List<ParamConfigure> selectAllParam( @Param("search_value") String search_value) throws SQLException;
 
-    List<ParamConfigure> selectParams() throws SQLException;
+    List<ParamConfigure> selectParams(@Param("search_value")String  search_value) throws SQLException;
     int insertParam(ParamConfigure paramConfigure) throws SQLException;
 
     int updateParam(ParamConfigure paramConfigure) throws SQLException;

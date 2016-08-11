@@ -4,8 +4,9 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-
+import com.bizvane.ishop.entity.CorpParam;
 import com.bizvane.ishop.entity.ParamConfigure;
+import com.bizvane.ishop.service.CorpParamService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.ParamConfigureService;
 
@@ -33,6 +34,9 @@ import java.util.List;
 public class ParamConfigureController {
 
     String id;
+    @Autowired
+    private CorpParamService corpParamService;
+
     @Autowired
     ParamConfigureService paramConfigureService;
     @Autowired
@@ -160,8 +164,25 @@ public class ParamConfigureController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
                 logger.info("-------------delete--" + id);
-            paramConfigureService.getParamById(Integer.valueOf(id));
-
+            String[] ids = id.split(",");
+            for (int i = 0; i < ids.length; i++) {
+                logger.info("-------------delete--" + Integer.valueOf(ids[i]));
+               CorpParam corpParam= corpParamService.selectById(Integer.valueOf(ids[i]));
+                ParamConfigure paramConfigure = paramConfigureService.getParamById(Integer.valueOf(ids[i]));
+                if (paramConfigure != null) {
+                 if(corpParam==null){
+                     paramConfigureService.delete(Integer.valueOf(ids[i]));
+                 }else{
+                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                     dataBean.setId(id);
+                     dataBean.setMessage("删除参数前请先删除该企业的企业参数配置");
+                     return dataBean.getJsonStr();
+                       }
+                }else{
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    return dataBean.getJsonStr();
+                     }
+                }
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
@@ -247,4 +268,39 @@ public class ParamConfigureController {
         return dataBean.getJsonStr();
 
     }
+
+    /**
+     * 根据用户获取
+     * 参数列表
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getParamByUser", method = RequestMethod.POST)
+    @ResponseBody
+    public String getParamByUser(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject params = new JSONObject();
+            JSONArray array = new JSONArray();
+                List<ParamConfigure> list = paramConfigureService.getAllParams();
+                for (int i = 0; i < list.size(); i++) {
+                    ParamConfigure paramConfigure = list.get(i);
+                    String param_key = paramConfigure.getParam_key();
+                    JSONObject obj = new JSONObject();
+                    obj.put("param_key", param_key);
+                    array.add(obj);
+                }
+            params.put("params", array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(params.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+
+        return dataBean.getJsonStr();
+}
+
 }
