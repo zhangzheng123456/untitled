@@ -1,4 +1,4 @@
-var oc = new ObjectControl();
+// var oc = new ObjectControl();
 var a="";
 var num=1;//区域默认第一页
 var dnum=1;//店铺默认第一页
@@ -251,7 +251,6 @@ function getstafflist(a){
 	$("#staff_input").val("");
 	$("#staff_input").attr("data-usercode","");
 	$("#staff_input").attr("data-userphone","");
-	$("#staff_code ul").empty();
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/user/selectByPart", "", _param, function(data) {
 		if (data.code == "0") {
@@ -305,9 +304,9 @@ function getstafflist(a){
 							num=1
 						}
 					}
-				}
-				whir.loading.remove();//移除加载框
+				}	
 			}
+			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
 				time: 1,
@@ -317,6 +316,13 @@ function getstafflist(a){
 			});
 		}
 	})
+}
+//获取群组的列表
+function getgrouplist(a){
+	var param={};
+	var corp_code = $('#OWN_CORP').val();//公司编号
+	param["corp_code"]=corp_code;//把corp_code放进对象里面
+	
 }
 //点击弹出框
 var flase=0;
@@ -345,13 +351,15 @@ $('#add_sendee').click(function(e){
 			getarealist(num);
 		}
 		if(send_mode=="发送至群组"){
-			var left=($(window).width()-$(".distribution_frame").width())/2;//弹框定位的left值
-			var tp=($(window).height()-$(".distribution_frame").height())/2;//弹框定位的top值
+			var left=($(window).width()-$("#group_frame").width())/2-220;//弹框定位的left值
+			console.log($("#group_frame").width());
+			var tp=($(window).height()-$("#group_frame").height())/2;//弹框定位的top值
 			$("#group_frame").css({"left":+left+"px","top":+tp+"px"});
 			$("#group_frame").show();	
 		}
 	}else if(flase=="1"){
 		$(".distribution_frame").hide();
+		$("#group_frame").hide();	
 		flase=0;
 	}	
 })
@@ -427,6 +435,7 @@ $(document).click(function(e){
 	    return;
     }else{
 	    $("#distribution_frame").hide();
+	    $("#group_frame").hide();
 	    flase=0;
 	}
 });

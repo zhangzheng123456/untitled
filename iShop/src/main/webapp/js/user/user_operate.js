@@ -361,12 +361,8 @@ var oc = new ObjectControl();
 	return obj;
 }));
 function selectownshop(obj){//加载店铺列表的时候
-	$(".shop_list ul").html('');
 	console.log(obj);
-	var input=$(obj).find("input");
-	console.log(input);
-	store_li_list(obj.id);
-	$(obj).find()
+	var input=$(obj).find(".input_select");
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -377,13 +373,19 @@ function selectownshop(obj){//加载店铺列表的时候
         setTimeout(function(){
         	ul.hide();
         },200);  
-    });     
+    });
+    var c_code=$('#OWN_CORP').val();
+	var corp_code1=$(input).attr("corp_code");
+	if(c_code==corp_code1){
+		return;
+	}
+	$(input).attr("corp_code",c_code);
+
+    store_li_list(obj.id);     
 }
 function selectownarea(obj){//加载区域列表的时候
-	$(".shop_list ul").html('');
 	console.log(obj);
-	var input=$(obj).find("input");
-	area_li_list(obj.id);
+	var input=$(obj).find(".input_select");
 	var ul=$(obj).children('ul');
     if(ul.css("display")=="none"){
         ul.show();
@@ -393,15 +395,21 @@ function selectownarea(obj){//加载区域列表的时候
     $(input).blur(function(){  
         setTimeout(function(){
         	ul.hide();
-        },200);  
-    });     
+        },200);
+    });
+    var c_code=$('#OWN_CORP').val();
+	var corp_code1=$(input).attr("corp_code");
+	if(c_code==corp_code1){
+		return;
+	}
+	$(input).attr("corp_code",c_code);
+	area_li_list(obj.id);    
 }
 function selectownrole(obj){//加载群组列表的时候
 	$("#role_list").html('');
 	role_li_list();
 	var input=$(obj).find("input");
 	var ul=$(obj).children('ul');
-
     if(ul.css("display")=="none"){
         ul.show();
     }else{
@@ -458,6 +466,7 @@ function role_data(c){//
             	$('#sidename label').html("所属店铺");
             	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
             	$('#OWN_STORE').attr("data-myscode","");
+            	$("#OWN_STORE").attr("corp_code","");
             	$('#OWN_STORE').val("");
             	$('#sidedown').attr("onclick","selectownshop(this)");
             	$('#add_per_icon').attr("onclick","");
@@ -469,6 +478,7 @@ function role_data(c){//
             	$('#sidename label').html("所属店铺");
             	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
             	$('#OWN_STORE').attr("data-myscode","");
+            	$("#OWN_STORE").attr("corp_code","");
             	$('#OWN_STORE').val("");
             	$('#sidedown').attr("onclick","selectownshop(this)");
             	$('#add_per_icon').attr("onclick","addshopselect()");
@@ -486,6 +496,7 @@ function role_data(c){//
             	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
             	$('#add_per_icon').css({"backgroundColor":"#6cc1c8"});
             	$("#ownshop_list").show();
+            	$("#OWN_STORE").attr("corp_code","");
             	$("#ownshop_list .per_type").nextAll().remove();
             }
             else if(j_code=="R5000"){
@@ -498,10 +509,20 @@ function role_data(c){//
 }
 function store_li_list(p){//店铺
 	var c_code=$('#OWN_CORP').val();
+	// var corp_code1=$('#OWN_CORP').attr("corp_code");
+	// if(c_code==corp_code1){
+	// 		return;
+	// }
+	$('#OWN_CORP').attr("corp_code",c_code);
 	store_data(p,c_code);
 }
 function area_li_list(p) {//区域
 	var c_code=$('#OWN_CORP').val();
+	// var corp_code1=$('#OWN_CORP').attr("corp_code");
+	// if(c_code==corp_code1){
+	// 		return;
+	// }
+	$('#OWN_CORP').attr("corp_code",c_code);
 	area_data(p,c_code);
 }
 function store_data(p,c){//店铺
@@ -510,7 +531,6 @@ function store_data(p,c){//店铺
 	console.log(_params);
 	var _command="/user/store";
 	oc.postRequire("post", _command,"", _params, function(data){
-		console.log(data);
 		var msg=JSON.parse(data.message);
 		console.log(msg.stores);
 		var msg_stores=JSON.parse(msg.stores);
@@ -530,6 +550,12 @@ function store_data(p,c){//店铺
 		}
 		$("#"+p+" ul").html(html);
 		$("#"+p+" ul li").click(function(){
+			var event=window.event||arguments[0];
+        	if(event.stopPropagation){
+            	event.stopPropagation();
+        	}else{
+            	event.cancelBubble=true;
+        	}
             var this_=this;
             var txt = $(this_).text();
             var s_code=$(this_).data("storecode");
@@ -563,7 +589,12 @@ function area_data(p,c){//区域
 		}
 		$("#"+p+" ul").html(html);
 		$("#"+p+" ul li").click(function(){
-			var group_code=$('')
+			var event=window.event||arguments[0];
+        	if(event.stopPropagation){
+            	event.stopPropagation();
+        	}else{
+            	event.cancelBubble=true;
+        	}
             var this_=this;
             var txt = $(this_).text();
             var s_code=$(this_).data("storecode");
@@ -574,18 +605,22 @@ function area_data(p,c){//区域
 	});//追加店铺
 }
 function addshopselect(){//店铺
-		var k=$("#select_ownshop #shop_list div").length;
+		var k=$("#select_ownshop .shop_list div").length;
+		console.log(k);
 		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownshop(this)">'
                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode=""/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+                +'<div>'
+                +'<input class="search" type="text" placeholder="请输入搜索内容">'
                 +'<ul style="margin-left:0px" id="store_list">'
                 +'</ul>'
+                +'</div>'
             +'</span>'
             +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
         +'</div>');
 }
 function addareaselect(){//区域
-		var k=$("#select_ownshop #shop_list div").length;
+		var k=$("#select_ownshop .shop_list div").length;
 		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownarea(this)">'
                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属区域" readonly data-myscode=""/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
