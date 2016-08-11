@@ -194,8 +194,6 @@ function superaddition(data,num){
             + "</td><td>"
             + data[i].param_name
             + "</td><td>"
-            + data[i].param_value
-            +"</td><td>"
             +data[i].remark
             +"</td></tr>");
     }
