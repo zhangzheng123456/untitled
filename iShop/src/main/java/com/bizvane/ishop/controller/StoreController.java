@@ -1058,15 +1058,15 @@ public class StoreController {
                     break;
                 }
             }
-            Pattern pattern7 = Pattern.compile("A\\d{4}");
+          //  Pattern pattern7 = Pattern.compile("A\\d{4}");
             Cell[] column7 = rs.getColumn(3);
             for (int i = 3; i < column7.length; i++) {
-                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行区域编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
+//                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
+//                if (matcher.matches() == false) {
+//                    result = "：第" + (i + 1) + "行区域编号格式有误";
+//                    int b = 5 / 0;
+//                    break;
+//                }
                 Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (area == null) {
                     result = "：第" + (i + 1) + "行区域编号不存在";

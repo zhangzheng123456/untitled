@@ -452,7 +452,7 @@ public class UserController {
             }
             Cell[] column6 = rs.getColumn(6);
             Pattern pattern = Pattern.compile("G\\d{4}");
-            Pattern pattern7 = Pattern.compile("A\\d{4}");
+            //Pattern pattern7 = Pattern.compile("A\\d{4}");
             Cell[] column7 = rs.getColumn(7);
             Cell[] column2 = rs.getColumn(8);
             for (int i = 3; i < column6.length; i++) {
@@ -474,12 +474,12 @@ public class UserController {
                     String areas = column7[i].getContents().toString();
                     String[] splitAreas = areas.split(",");
                     for (int j=0;j<splitAreas.length;j++){
-                        Matcher matcher7 = pattern7.matcher(splitAreas[j]);
-                        if (matcher7.matches() == false) {
-                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号格式有误";
-                            int b = 5 / 0;
-                            break;
-                        }
+//                        Matcher matcher7 = pattern7.matcher(splitAreas[j]);
+//                        if (matcher7.matches() == false) {
+//                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号格式有误";
+//                            int b = 5 / 0;
+//                            break;
+//                        }
                         Area area = areaService.getAreaByCode(column3[i].getContents().toString(), splitAreas[j],Common.IS_ACTIVE_Y);
                         if (area == null) {
                             result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号不存在";
