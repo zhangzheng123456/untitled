@@ -67,16 +67,14 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         String[] store_codes = null;
 
         if (!area_code.equals("")) {
+            if (area_code.contains(Common.STORE_HEAD))
+                area_code = area_code.replace(Common.STORE_HEAD,"");
             area_codes = area_code.split(",");
-            for (int i = 0; i < area_codes.length; i++) {
-                area_codes[i] = area_codes[i].substring(1, area_codes[i].length());
-            }
         }
         if (!store_code.equals("")) {
+            if (store_code.contains(Common.STORE_HEAD))
+                store_code = store_code.replace(Common.STORE_HEAD,"");
             store_codes = store_code.split(",");
-            for (int i = 0; i < store_codes.length; i++) {
-                store_codes[i] = store_codes[i].substring(1, store_codes[i].length());
-            }
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);

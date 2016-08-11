@@ -164,7 +164,8 @@ public class ParamConfigureController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
                 logger.info("-------------delete--" + id);
-            String[] ids = id.split(",");
+            String param_id = jsonObject.get("id").toString();
+            String[] ids = param_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                CorpParam corpParam= corpParamService.selectById(Integer.valueOf(ids[i]));
@@ -172,20 +173,23 @@ public class ParamConfigureController {
                 if (paramConfigure != null) {
                  if(corpParam==null){
                      paramConfigureService.delete(Integer.valueOf(ids[i]));
+                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                     dataBean.setId(id);
+                     dataBean.setMessage("success");
+
                  }else{
                      dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                      dataBean.setId(id);
-                     dataBean.setMessage("删除参数前请先删除该企业的企业参数配置");
+                     dataBean.setMessage("请先删除该企业的企业参数配置");
                      return dataBean.getJsonStr();
                        }
                 }else{
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    return dataBean.getJsonStr();
+                    paramConfigureService.delete(Integer.valueOf(ids[i]));
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
                      }
                 }
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

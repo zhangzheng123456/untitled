@@ -287,6 +287,7 @@ function getstorelist(a){
 function getstafflist(a){
 	var corp_code = $('#OWN_CORP').val();
 	var store_code =$('#store_input').attr("data-storecode");
+	var area_code =$('#area_input').attr("data-areacode");
 	var searchValue=$("#staff_search").val();
 	var pageSize=100;
 	var pageNumber=a;
@@ -305,6 +306,7 @@ function getstafflist(a){
     var checknow_phone=[];
 	_param['corp_code']=corp_code;
 	_param['store_code']=store_code;
+	_param['area_code']=area_code;
 	_param['searchValue']=searchValue;
 	_param['pageNumber']=pageNumber;
 	_param['pageSize']=pageSize;

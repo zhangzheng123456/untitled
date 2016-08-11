@@ -286,8 +286,7 @@ public class UserController {
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
                 }
             }else {
-                List<User> list1 = new ArrayList<User>();
-                list.setList(list1);
+                list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD+ Common.STORE_HEAD+"###", "");
             }
             result.put("list", JSON.toJSONString(list));
             result.put("actions", actions);
@@ -889,8 +888,7 @@ public class UserController {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, "", area_code, role_code);
                 }else {
-                    List<User> list1 = new ArrayList<User>();
-                    list.setList(list1);
+                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD+ Common.STORE_HEAD+"###", "");
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -1426,8 +1424,7 @@ public class UserController {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.getScreenPart(page_number, page_size, corp_code, map, "", area_code, role_code);
                 }else {
-                    List<User> list1 = new ArrayList<User>();
-                    list.setList(list1);
+                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD+ Common.STORE_HEAD+"###", "");
                 }
             }
             result.put("list", JSON.toJSONString(list));
