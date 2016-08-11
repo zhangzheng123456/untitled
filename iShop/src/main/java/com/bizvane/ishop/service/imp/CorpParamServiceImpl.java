@@ -63,6 +63,7 @@ public class CorpParamServiceImpl implements CorpParamService {
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String param_id = jsonObject.get("param_id").toString();
+        String param_value = jsonObject.get("param_value").toString();
         List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
         if (corpParams.size() >0) {
             result = "该企业参数配置已存在";
@@ -71,6 +72,7 @@ public class CorpParamServiceImpl implements CorpParamService {
             Date now = new Date();
             corpParam.setRemark(remark);
             corpParam.setParam_id(param_id);
+            corpParam.setParam_value(param_value);
             corpParam.setCorp_code(corp_code);
             corpParam.setCreated_date(Common.DATETIME_FORMAT.format(now));
             corpParam.setCreater(user_code);
@@ -92,6 +94,7 @@ public class CorpParamServiceImpl implements CorpParamService {
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String param_id = jsonObject.get("param_id").toString();
+        String param_value = jsonObject.get("param_value").toString();
         List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
 
         if (corpParams.size() == 0 || corpParams.get(0).getId() == id) {
@@ -100,6 +103,7 @@ public class CorpParamServiceImpl implements CorpParamService {
             corpParam.setId(id);
             corpParam.setRemark(remark);
             corpParam.setParam_id(param_id);
+            corpParam.setParam_value(param_value);
             corpParam.setCorp_code(corp_code);
             corpParam.setModified_date(Common.DATETIME_FORMAT.format(now));
             corpParam.setModifier(user_code);
