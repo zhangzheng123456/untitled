@@ -9,8 +9,7 @@ public class ParamConfigure {
     private String param_key;
     //参数对应名称
     private String param_name;
-    //参数对应值
-    private String param_value;
+
     //备注
     private String remark;
     private Corp corp;
@@ -41,13 +40,6 @@ public class ParamConfigure {
         this.param_name = param_name;
     }
 
-    public String getParam_value() {
-        return param_value;
-    }
-
-    public void setParam_value(String param_value) {
-        this.param_value = param_value;
-    }
 
     public String getRemark() {
         return remark;

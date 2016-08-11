@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
-    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         body{
             margin-top:81px;
@@ -36,7 +35,19 @@
                 </ul>
             </div>
             <div>
-                <span><label>企业参数</label><input type="text"/></span>
+                <ul style="display:inline-flex;">
+                    <li><label>企业参数</label></li>
+                    <li id="param_select">
+                                <span class="corp_select">
+                                    <select id="PARAM_NAME" style="display:inline-flex">
+                                    </select>
+                                </span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <label>参数值</label><input type="text" id="PARAM_VALUE" verify="Empty" />
+                <div style="padding-left:125px" class="hint"><div  hintinfo="参数为必填项,不能为空!"></div></div>
             </div>
             <div>
                 <span><label>备注</label><input type="text" id="REMARK"/></span>
@@ -44,12 +55,29 @@
         </form>
     </div>
     <div class="editor_detail_em col-lg-4  animated fadeInRight">
-        <div class="oper_btn">
+        <div class="operedit_btn">
             <ul>
                 <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                 <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
+        <form class="msg_detail">
+            <div>
+                <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+            </div>
+            <div>
+                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
+            </div>
+        </form>
     </div>
 </div>
 <!-- Mainly scripts -->

@@ -333,7 +333,7 @@ function getstafflist(a){
                         + "'/><label for='checkboxThreeInput"
                         + i
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"("+list[i].phone+")</span></li>"
+                        + "'></label></div><span class='p16'>"+list[i].user_name+"("+list[i].group_name+")</span></li>"
 				}
 				if(pageNumber==1){
 					$("#staff_code ul").html(staff_html);

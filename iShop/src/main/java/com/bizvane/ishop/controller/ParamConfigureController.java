@@ -290,8 +290,10 @@ public class ParamConfigureController {
                 for (int i = 0; i < list.size(); i++) {
                     ParamConfigure paramConfigure = list.get(i);
                     String param_key = paramConfigure.getParam_key();
+                    int getParam_id=paramConfigure.getId();
                     JSONObject obj = new JSONObject();
                     obj.put("param_key", param_key);
+                    obj.put("param_id", getParam_id);
                     array.add(obj);
                 }
             params.put("params", array);

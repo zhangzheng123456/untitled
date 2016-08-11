@@ -82,7 +82,6 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 
         String param_key = jsonObject.get("param_key").toString();
         String param_name = jsonObject.get("param_name").toString();
-        String param_value = jsonObject.get("param_value").toString();
         String remark = jsonObject.get("remark").toString();
 
         ParamConfigure paramConfigure = getParamByKey(param_key);
@@ -93,7 +92,6 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
             Date now = new Date();
             paramConfigure.setParam_key(param_key);
             paramConfigure.setParam_name(param_name);
-            paramConfigure.setParam_value(param_value);
             paramConfigure.setRemark(remark);
             paramConfigureMapper.insertParam(paramConfigure);
             result = Common.DATABEAN_CODE_SUCCESS;
@@ -113,7 +111,6 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 
         String param_key = jsonObject.get("param_key").toString();
         String param_name = jsonObject.get("param_name").toString();
-        String param_value = jsonObject.get("param_value").toString();
         String remark = jsonObject.get("remark").toString();
 
         ParamConfigure paramByKey = getParamByKey(param_key);
@@ -128,7 +125,6 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
             old_param.setId(param_id);
             old_param.setParam_key(param_key);
             old_param.setParam_name(param_name);
-            old_param.setParam_value(param_value);
             old_param.setRemark(remark);
             paramConfigureMapper.updateParam(old_param);
             result = Common.DATABEAN_CODE_SUCCESS;

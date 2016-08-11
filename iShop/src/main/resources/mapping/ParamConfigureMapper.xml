@@ -6,7 +6,7 @@
         <id column="id" property="id"/>
         <result column="param_key" property="param_key"/>
         <result column="param_name" property="param_name"/>
-        <result column="param_value" property="param_value"/>
+
         <result column="remark" property="remark"/>
    </resultMap>
 
@@ -23,7 +23,6 @@
             WHERE
             (param_key like concat('%',#{search_value},'%')
             OR param_name like concat('%',#{search_value},'%')
-            OR DEF_CORP_CFG.param_value like concat('%',#{search_value},'%')
             OR DEF_CORP_CFG.remark like concat('%',#{search_value},'%')
            )
         </if>
@@ -52,9 +51,6 @@
             <if test="param_name!=null">
                 param_name,
             </if>
-            <if test="param_value!=null">
-                param_value,
-            </if>
             <if test="remark!=null">
                 remark,
             </if>
@@ -66,9 +62,6 @@
             </if>
             <if test="param_name!=null">
                 #{param_name},
-            </if>
-            <if test="param_value!=null">
-                #{param_value},
             </if>
             <if test="remark!=null">
                 #{remark},
@@ -84,9 +77,6 @@
             </if>
             <if test="param_name!=null and param_name!=''">
                 param_name=#{param_name},
-            </if>
-            <if test="param_value!=null and param_value!=''">
-                param_value=#{param_value},
             </if>
             <if test="remark!=null and remark!=''">
                 remark=#{remark},
@@ -115,7 +105,6 @@
         <if test="search_value != null and search_value !=''">
             WHERE (dcc.param_key like concat('%',#{search_value},'%')
             OR dcc.param_name like concat('%',#{search_value},'%')
-            OR dcc.param_value like concat('%',#{search_value},'%')
             OR dcc.remark like concat('%',#{search_value},'%')
             )
         </if>
