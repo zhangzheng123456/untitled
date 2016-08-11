@@ -43,7 +43,7 @@ var oc=new ObjectControl();
                 var PARAM_NAME=$("#PARAM_NAME").val();
                 var PARAM_VALUE=$("#PARAM_VALUE").val();
                 var REMARK=$("#REMARK").val();
-                var _command="/param/add";//接口名
+                var _command="/corpParam/add";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
                     }
@@ -63,7 +63,7 @@ var oc=new ObjectControl();
                 var PARAM_NAME=$("#PARAM_NAME").val();
                 var PARAM_VALUE=$("#PARAM_VALUE").val();
                 var REMARK=$("#REMARK").val();
-                var _command="/param/edit";//接口名
+                var _command="/corpParam/edit";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
                     }
@@ -87,7 +87,7 @@ var oc=new ObjectControl();
                 // 	cancel: false,
                 // 	content: data.message
                 // });
-                $(window.parent.document).find('#iframepage').attr("src","/system/param.html");
+                $(window.parent.document).find('#iframepage').attr("src","/system/corp_param.html");
                 whir.loading.remove();
             }else if(data.code=="-1"){
                 // alert(data.message);
@@ -136,16 +136,15 @@ var oc=new ObjectControl();
 
 jQuery(document).ready(function(){
     window.param.init();
-    if($(".pre_title label").text()=="编辑参数配置"){
+    if($(".pre_title label").text()=="编辑企业参数"){
         var id=sessionStorage.getItem("id");
         var _params={"id":id};
-        var _command="/param/select";
+        var _command="/corpParam/select";
         oc.postRequire("post", _command,"", _params, function(data){
             console.log(data);
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
                 console.log(msg);
-                $("#PARAM").val(msg.param_key);
                 $("#PARAM_NAME").val(msg.param_name);
                 $("#PARAM_VALUE").val(msg.param_value);
                 $("#REMARK").val(msg.remark);
@@ -159,12 +158,80 @@ jQuery(document).ready(function(){
             }
         });
     }
-    
 
-    $(".operadd_btn ul li:nth-of-type(2)").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/system/param.html");
+
+    $(".oper_btn ul li:nth-of-type(2)").click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/system/corp_param.html");
     });
-    $(".operedit_btn ul li:nth-of-type(2)").click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/system/param.html");
+    $(".oper_btn ul li:nth-of-type(2)").click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/system/corp_param.html");
     });
 });
+
+function getcorplist(){
+    //获取所属企业列表
+    var corp_command="/user/getCorpByUser";
+    oc.postRequire("post", corp_command,"", "", function(data){
+        console.log(data);
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            console.log(msg);
+            var index=0;
+            var corp_html='';
+            var c=null;
+            for(index in msg.corps){
+                c=msg.corps[index];
+                corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+            }
+            $("#OWN_CORP").append(corp_html);
+            $('.corp_select select').searchableSelect();
+            $('.searchable-select-item').click(function(){
+                $("#AREA_ID").val("");
+                $("#AREA_NAME").val("");
+                $("#AREA_ID").attr("data-mark","");
+                $("#AREA_NAME").attr("data-mark","");
+            })
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock:true,
+                cancel: false,
+                content: data.message
+            });
+        }
+    });
+}
+
+function getparamlist(){
+    //获取参数列表
+    var param_command="/param/getParamByUser";
+    oc.postRequire("post", param_command,"", "", function(data){
+        console.log(data);
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            console.log(msg);
+            var index=0;
+            var corp_html='';
+            var c=null;
+            for(index in msg.corps){
+                c=msg.corps[index];
+                corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+            }
+            $("#OWN_CORP").append(corp_html);
+            $('.corp_select select').searchableSelect();
+            $('.searchable-select-item').click(function(){
+                $("#AREA_ID").val("");
+                $("#AREA_NAME").val("");
+                $("#AREA_ID").attr("data-mark","");
+                $("#AREA_NAME").attr("data-mark","");
+            })
+        }else if(data.code=="-1"){
+            art.dialog({
+                time: 1,
+                lock:true,
+                cancel: false,
+                content: data.message
+            });
+        }
+    });
+}
