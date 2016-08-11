@@ -268,10 +268,9 @@ public class AreaServiceImpl implements AreaService {
 
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
+            if (area_codes.contains(Common.STORE_HEAD))
+                area_codes = area_codes.replace(Common.STORE_HEAD,"");
             areaArray = area_codes.split(",");
-            for (int i = 0; areaArray != null && i < areaArray.length; i++) {
-                areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
-            }
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
@@ -322,5 +321,32 @@ public class AreaServiceImpl implements AreaService {
         }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
+    }
+
+    @Override
+    public List<Area> selAreaByCorpCode(String corp_code, String area_codes,String store_code) throws Exception {
+        String[] areaArray = null;
+        if (null != area_codes && !area_codes.isEmpty()) {
+            areaArray = area_codes.split(",");
+            for (int i = 0; areaArray != null && i < areaArray.length; i++) {
+                areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
+            }
+        }
+
+        String[] storeArray = null;
+        if (null != store_code && !store_code.isEmpty()) {
+            storeArray = store_code.split(",");
+            for (int i = 0; storeArray != null && i < storeArray.length; i++) {
+                storeArray[i] = storeArray[i].substring(1, storeArray[i].length());
+            }
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_codes", areaArray);
+        params.put("store_code", storeArray);
+        params.put("search_value", "");
+        List<Area> areas = areaMapper.selAreaByCorpCode(params);
+
+        return areas;
     }
 }

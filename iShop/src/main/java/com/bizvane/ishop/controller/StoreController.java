@@ -490,11 +490,23 @@ public class StoreController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
-            List<Area> area = areaService.getAllArea(corp_code);
+            String user_id = request.getSession().getAttribute("user_id").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            List<Area> list = null;
+            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
+                //系统管理员
+                list = areaService.selAreaByCorpCode(corp_code,"","");
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                String area_code = request.getSession(false).getAttribute("area_code").toString();
+                list = areaService.selAreaByCorpCode(corp_code, area_code,"");
+            }else{
+                String store_code = request.getSession(false).getAttribute("store_code").toString();
+                list = areaService.selAreaByCorpCode(corp_code, "",store_code);
+            }
             JSONArray array = new JSONArray();
             JSONObject areas = new JSONObject();
-            for (int i = 0; i < area.size(); i++) {
-                Area area1 = area.get(i);
+            for (int i = 0; i < list.size(); i++) {
+                Area area1 = list.get(i);
                 String area_code = area1.getArea_code();
                 String area_name = area1.getArea_name();
                 JSONObject obj = new JSONObject();

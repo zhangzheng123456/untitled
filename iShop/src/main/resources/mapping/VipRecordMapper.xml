@@ -44,10 +44,9 @@
          DEF_CORP dc
         WHERE
         dvc.corp_code=du.corp_code AND
-        dcv.corp_code=dc.corp_code  AND
+        dvc.corp_code=dc.corp_code  AND
         dvc.user_code=du.user_code and
-        dvc.action=dvrt.type_code and
-        dvc.corp_code=dc.corp_code
+        dvc.action=dvrt.type_code
                 and dvc.id=#{id}
      </select>
 

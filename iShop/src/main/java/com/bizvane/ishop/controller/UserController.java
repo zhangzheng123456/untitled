@@ -879,6 +879,9 @@ public class UserController {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, "", area_code, role_code);
+                }else {
+                    List<User> list1 = new ArrayList<User>();
+                    list.setList(list1);
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -1413,6 +1416,9 @@ public class UserController {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.getScreenPart(page_number, page_size, corp_code, map, "", area_code, role_code);
+                }else {
+                    List<User> list1 = new ArrayList<User>();
+                    list.setList(list1);
                 }
             }
             result.put("list", JSON.toJSONString(list));

@@ -335,6 +335,9 @@ public class AreaController {
                     // list = areaService.getAllAreaByPage(page_number, page_size, corp
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.selectByAreaCode(page_number, page_size, corp_code, area_code, search_value);
+                }else {
+                    List<Area> list1 = new ArrayList<Area>();
+                    list.setList(list1);
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -702,6 +705,9 @@ public class AreaController {
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_codes = request.getSession(false).getAttribute("area_code").toString();
                     list = areaService.getAllAreaScreen(page_number, page_size, corp_code, area_codes, map);
+                }else {
+                    List<Area> list1 = new ArrayList<Area>();
+                    list.setList(list1);
                 }
             }
             result.put("list", JSON.toJSONString(list));

@@ -37,7 +37,7 @@ public class SignServiceImpl implements SignService {
             //0是签到，-1是签退
             if(sign.getStatus().equals("0")){
                 sign.setStatus("签到");
-            }else{
+            }else if(sign.getStatus().equals("-1")){
                 sign.setStatus("签退");
             }
         }
