@@ -107,20 +107,14 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 
     @Override
     public String update(String message) throws Exception {
-        String old_param_key = null;
-        String new_param_key = null;
-        String result = Common.DATABEAN_CODE_ERROR;
+        String result = "";
         JSONObject jsonObject = new JSONObject(message);
         int param_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String param_key = jsonObject.get("param_key").toString();
-        new_param_key = param_key;
         String param_name = jsonObject.get("param_name").toString();
         String param_value = jsonObject.get("param_value").toString();
         String remark = jsonObject.get("remark").toString();
-
-        ParamConfigure old_param = getParamById(param_id);
-        old_param_key = old_param.getParam_key();
 
         ParamConfigure paramByKey = getParamByKey(param_key);
         ParamConfigure paramByName = getParamByName(param_name);
@@ -130,16 +124,13 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         } else if (paramByName != null && paramByName.getId() != param_id) {
             result = "参数名称已存在";
         } else {
-            old_param = new ParamConfigure();
+            ParamConfigure old_param = new ParamConfigure();
             old_param.setId(param_id);
             old_param.setParam_key(param_key);
             old_param.setParam_name(param_name);
             old_param.setParam_value(param_value);
             old_param.setRemark(remark);
-            if (paramConfigureMapper.updateParam(old_param) > 0 && !new_param_key.equals(new_param_key)) {
-                paramConfigureMapper.updateParam(old_param);
-            }
-
+            paramConfigureMapper.updateParam(old_param);
             result = Common.DATABEAN_CODE_SUCCESS;
 
         }
