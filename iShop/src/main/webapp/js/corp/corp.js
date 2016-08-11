@@ -56,15 +56,6 @@ $("#filtrate").click(function(){//点击筛选框弹出下拉框
 $("#pack_up").click(function(){//点击收回 取消下拉框
     $(".sxk").slideUp();
 })
-$.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
-    return function( elem ) {
-      return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-    };
-});
-$("#search").on('keyup', function(event){
-    var text=$(this).val();
-    $('#table').find('td:searchableSelectContains('+text+')').addClass('searchable-select-hide');
-})
 //点击清空  清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");
