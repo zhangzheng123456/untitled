@@ -618,15 +618,15 @@ public class AreaController {
                 result = "：Execl中区域名称存在重复值";
                 int b = 5 / 0;
             }
-            Pattern pattern = Pattern.compile("A\\d{4}");
+          //  Pattern pattern = Pattern.compile("A\\d{4}");
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                Matcher matcher = pattern.matcher(column[i].getContents().toString());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行区域编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
+//                Matcher matcher = pattern.matcher(column[i].getContents().toString());
+//                if (matcher.matches() == false) {
+//                    result = "：第" + (i + 1) + "行区域编号格式有误";
+//                    int b = 5 / 0;
+//                    break;
+//                }
                 Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (area != null) {
                     result = "：第" + (i + 1) + "行区域编号已存在";

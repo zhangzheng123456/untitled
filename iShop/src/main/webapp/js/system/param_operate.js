@@ -111,7 +111,7 @@ var oc=new ObjectControl();
         var obj = _this.val();
         var hint = _this.nextAll(".hint").children();
         if(paramjs['check' + command]){
-            if(!paramjs['check' + command].apply(feedbackjs,[obj,hint])){
+            if(!paramjs['check' + command].apply(paramjs,[obj,hint])){
                 return false;
             }
         }

@@ -172,20 +172,23 @@ public class ParamConfigureController {
                 if (paramConfigure != null) {
                  if(corpParam==null){
                      paramConfigureService.delete(Integer.valueOf(ids[i]));
+                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                     dataBean.setId(id);
+                     dataBean.setMessage("success");
+
                  }else{
                      dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                      dataBean.setId(id);
-                     dataBean.setMessage("删除参数前请先删除该企业的企业参数配置");
+                     dataBean.setMessage("请先删除该企业的企业参数配置");
                      return dataBean.getJsonStr();
                        }
                 }else{
-                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                    return dataBean.getJsonStr();
+                    paramConfigureService.delete(Integer.valueOf(ids[i]));
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
                      }
                 }
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

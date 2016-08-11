@@ -6,11 +6,13 @@
     <title>编辑企业参数</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
-    <link href="../css/animate.css" rel="stylesheet">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <style>
         body{
             margin-top:81px;
@@ -23,13 +25,21 @@
     <div class="editor_em col-lg-7  animated fadeInRight">
         <form class="conpany_msg">
             <div>
-                <span><label>企业名称</label><input type="text" /></span>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业</label></li>
+                    <li>
+                        <span class="corp_select">
+                          <select id="OWN_CORP" style="display:inline-flex">
+                          </select>
+                        </span>
+                    </li>
+                </ul>
             </div>
             <div>
-                <span><label>企业参数</label><input type="text" /></span>
+                <span><label>企业参数</label><input type="text"/></span>
             </div>
             <div>
-                <span><label>备注</label><input type="text" /></span>
+                <span><label>备注</label><input type="text" id="REMARK"/></span>
             </div>
         </form>
     </div>
@@ -45,9 +55,14 @@
 <!-- Mainly scripts -->
 <script src="../js/jquery-2.1.1.min.js"></script>
 <script src="../js/bootstrap.min.js?v=3.4.0"></script>
-<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
 <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-<script src="../js/hplus.js?v=2.2.0"></script>
+<script src="../js/insidePostRequire.js"></script>
+<script src="../js/artDialog/jquery.artDialog.js"></script>
+<script src="../js/loading.js"></script>
+<script src="../js/artDialog/plugins/iframeTools.js"></script>
+<script src="../js/system/corp_param_operate.js"></script>
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
 <script type="text/javascript" src="../js/moni_select.js"></script>
 </body>
 
