@@ -116,7 +116,7 @@ public class UserServiceImpl implements UserService {
      *根据店铺拉取员工
      */
     @Override
-    public PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String role_code) throws Exception {
+    public PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area,String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
@@ -132,6 +132,7 @@ public class UserServiceImpl implements UserService {
         params.put("search_value", search_value);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
+        params.put("areas",area);
         PageHelper.startPage(page_number, page_size);
         List<User>  users = userMapper.selUserByStoreCode(params);
         PageInfo<User> page = new PageInfo<User>(users);

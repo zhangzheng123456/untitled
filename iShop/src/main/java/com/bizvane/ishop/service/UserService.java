@@ -35,7 +35,7 @@ public interface UserService {
 
     PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception;
 
-    PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String role_code) throws Exception;
+    PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area,String role_code) throws Exception;
 
     PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code,String search_value) throws Exception;
 
