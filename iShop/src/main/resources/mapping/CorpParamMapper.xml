@@ -86,7 +86,7 @@
                 #{param_id},
             </if>
             <if test="param_value!=null">
-                param_value,
+                #{param_value},
             </if>
 
             <if test="remark!=null">
