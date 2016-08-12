@@ -96,8 +96,12 @@ public class StoreServiceImpl implements StoreService {
         request.getSession().setAttribute("size", shops.size());
         for (Store store:shops) {
             Store storeBrandName = getStoreById(store.getId());
-            store.setBrand_name(storeBrandName.getBrand_name());
-            if(store.getIsactive().equals("Y")){
+            if (storeBrandName.getBrand_name()!=null) {
+                store.setBrand_name(storeBrandName.getBrand_name());
+            }else {
+                store.setBrand_name("未知");
+            }
+            if(store.getIsactive()!=null && store.getIsactive().equals("Y")){
                 store.setIsactive("是");
             }else{
                 store.setIsactive("否");

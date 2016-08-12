@@ -90,8 +90,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         if (paramConfigure == null && paramConfigure1 == null) {
             paramConfigure = new ParamConfigure();
             Date now = new Date();
-            paramConfigure.setParam_key(param_key);
-            paramConfigure.setParam_name(param_name);
+            paramConfigure.setParam_name(param_key);
+            paramConfigure.setParam_desc(param_name);
             paramConfigure.setRemark(remark);
             paramConfigureMapper.insertParam(paramConfigure);
             result = Common.DATABEAN_CODE_SUCCESS;
@@ -123,8 +123,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         } else {
             ParamConfigure old_param = new ParamConfigure();
             old_param.setId(param_id);
-            old_param.setParam_key(param_key);
-            old_param.setParam_name(param_name);
+            old_param.setParam_name(param_key);
+            old_param.setParam_desc(param_name);
             old_param.setRemark(remark);
             paramConfigureMapper.updateParam(old_param);
             result = Common.DATABEAN_CODE_SUCCESS;
