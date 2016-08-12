@@ -70,72 +70,28 @@ var oc = new ObjectControl();
     useroperatejs.bindbutton=function(){
         $("#personal_save").click(function(){
             if(useroperatejs.firstStep()){
-                var ID=sessionStorage.getItem("id");
-                var USERID=$("#USERID").val();
+                var ID=$("#id").val();
+                var HEADIMG=$("#IMG").val();
+                var USERID=$("#USER_ID").val();
+                var CORP_CODE=$("#corp_code").val();//空字段
+                var GROUP_CODE=$("#group_code").val();//空字段
+                var role_code=$("#role_code").val();//空字段
+                var area_code=$("#area_code").val();//空字段
+                var store_code=$("#store_code").val();//空字段
+                var isactive=$("#isactive").val();//空字段
+                var can_login=$("#can_login").val();//空字段
                 var USER_NAME=$("#USER_NAME").val();
-                var HEADPORTRAIT=$("#preview img").attr("src");
-                var USER_PHONE=$("#USER_PHONE").val();
+                var POSITION=$("#POSITION").val();
+                var USER_PHONE=$("#IPHONE").val();
                 var USER_EMAIL=$("#USER_EMAIL").val();
                 var USER_SEX=$("#USER_SEX").val();
-                var position=$("#position").val();//职务
                 var SEX="";
                 if(USER_SEX=="男"){
                     SEX="M";
                 }else if(USER_SEX=="女"){
                     SEX="F";
                 }
-                var OWN_CORP=$("#OWN_CORP").val();//公司编号
-                var OWN_RIGHT=$("#OWN_RIGHT").attr("data-myrcode");//群组编号
-                var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
-                if(OWN_RIGHT==""){//群组
-                    art.dialog({
-                        time: 1,
-                        lock:true,
-                        cancel: false,
-                        content:"所属群组不能为空！"
-                    });
-                    return;
-                }
-                var can_login="";//可登录状态
-                var input1=$("#invisible")[0];
-                if(input1.checked==true){
-                    can_login="Y";
-                }else if(input1.checked==false){
-                    can_login="N";
-                }
 
-                var STORE_CODE="";
-                var storelist_length=$(".shop_list input");;
-                for(var i=0;i<storelist_length.length;i++){
-                    var r=$(storelist_length[i]).attr("data-myscode");
-                    if(i<storelist_length.length-1){
-                        STORE_CODE +=r+",";
-                    }else{
-                        STORE_CODE +=r;
-                    }
-                }
-                // var PSW=$("#init_password").val();
-                //如果角色是导购，店长，区经的时候
-                if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
-                    if(STORE_CODE==""){
-                        art.dialog({
-                            time: 1,
-                            lock:true,
-                            cancel: false,
-                            content:"所属店铺或所属区域不能为空！"
-                        });
-                        return;
-                    }
-                }
-                // if(PSW==""){
-                //  art.dialog({
-                //      time: 1,
-                //      lock:true,
-                //      cancel: false,
-                //      content:"密码不能为空！"
-                //  });
-                //  return;
-                // }
                 var _command="/user/edit";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
@@ -143,37 +99,21 @@ var oc = new ObjectControl();
                     }
                 };
                 var _params={};
+                _params["id"]=ID;//ID
                 _params["user_code"]=USERID;//员工编号
                 _params["username"]=USER_NAME;//员工名称
-                _params["avater"]=HEADPORTRAIT;//头像
-                _params["position"]=position;//职务
+                _params["avater"]=HEADIMG;//头像
+                _params["position"]=POSITION;//职务
                 _params["phone"]=USER_PHONE;//手机
                 _params["email"]=USER_EMAIL//邮箱
-                _params["sex"]=SEX//性别
-                _params["group_code"]=OWN_RIGHT;//群组编号
-                _params["role_code"]=r_code;//角色编号
-                _params["isactive"]=ISACTIVE;//是否可用
-                _params["corp_code"]=OWN_CORP;//公司编号
-                _params["can_login"]=can_login;//是否登录
-                // _params["password"]=PSW;//密码
-                _params["id"]=ID;//ID
-                if(r_code=="R2000"){
-                    _params["store_code"]=STORE_CODE;//店铺编号
-                    _params["area_code"]="";//区域编号
-                }else if(r_code=="R3000"){
-                    _params["store_code"]=STORE_CODE;//店铺编号
-                    _params["area_code"]="";//区域编号
-                }else if(r_code=="R4000"){
-                    _params["store_code"]=""//店铺编号
-                    _params["area_code"]=STORE_CODE;//区域编号
-                }
-                else if(r_code=="R5000"){
-                    _params["store_code"]=""//店铺编号
-                    _params["area_code"]=""//区域编号
-                }else if(r_code=="R6000"){
-                    _params["store_code"]=""//店铺编号
-                    _params["area_code"]=""//区域编号
-                }
+                _params["sex"]=SEX//性别s
+                _params["corp_code"]=CORP_CODE;//
+                _params["group_code"]=GROUP_CODE;//
+                _params["role_code"]=role_code;//
+                _params["area_code"]=area_code;//
+                _params["store_code"]=store_code;//
+                _params["isactive"]=isactive;//
+                _params["can_login"]=can_login;//
                 useroperatejs.ajaxSubmit(_command,_params,opt);
             }else{
                 return;
@@ -240,7 +180,7 @@ jQuery(document).ready(function(){
                      msg=JSON.parse(msg.user);
                  console.log(msg);
                  $("#id").val(msg.id);
-                 $("#IMG").val(msg.user_code);
+                 $("#IMG").val(msg.avater);
                  $("#OWN_CORP").val(msg.corp_name);
                  $("#USER_ID").val(msg.user_code);
                  $("#USER_NAME").val(msg.user_name);
@@ -248,10 +188,6 @@ jQuery(document).ready(function(){
                  $("#IPHONE").val(msg.phone);
                  $("#USER_EMAIL").val(msg.email);
                  $("#PASSWORD").val(msg.password);
-                 if($("#OWN_GROUP").val()=="区经"){
-                     console.log($("#OWN_GROUP").val());
-                     $("#OWN_SHOP").css("display","none");
-                 }
                  if(msg.sex=="F"){
                      $("#USER_SEX").val("女");
                  }else if(msg.sex=="M"){
@@ -260,6 +196,18 @@ jQuery(document).ready(function(){
                  $("#OWN_AREA").val(msg.area_name);
                  $("#OWN_GROUP").val(msg.group_name);
                  $("#OWN_SHOP").val(msg.store_name);
+                 $("#corp_code").val(msg.corp_code);//空字段
+                 $("#group_code").val(msg.group_code);//空字段
+                 $("#role_code").val(msg.role_code);//空字段
+                 $("#area_code").val(msg.area_code);//空字段
+                 $("#store_code").val(msg.store_code);//空字段
+                 $("#isactive").val(msg.isactive);//空字段
+                 $("#can_login").val(msg.can_login);//空字段
+                 if($("#OWN_GROUP").val()=="区经"){
+                     console.log($("#OWN_GROUP").val());
+                     $("#OWN_SHOP").css("display","none");
+                     $("#OWN_SHOP").prev().css("display","none");
+                 }
              }
          })
      }

@@ -166,6 +166,10 @@ jQuery(document).ready(function(){
                 $("#REMARK").val(msg.remark);
                 $("#PARAM_VALUE").val(msg.param_value);
                 $("#PARAM_VALUE").attr("data-name",msg.param_value);
+                $("#created_time").val(msg.created_date);
+                $("#creator").val(msg.creater);
+                $("#modify_time").val(msg.modified_date);
+                $("#modifier").val(msg.modifier);
                 getcorplist();
             }else if(data.code=="-1"){
                 art.dialog({
