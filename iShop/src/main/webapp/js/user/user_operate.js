@@ -383,6 +383,8 @@ function selectownshop(obj){//加载店铺列表的时候
     }else{
         div.hide();
     };
+    // $(this).find("h1").parents().siblings("li").find("dl").slideUp(300);
+    $(div).parent().parent().siblings('div').find(".store_list_kuang").hide();
     $(inputs).on('keyup', function(event){
 	    var text=$(this).val();
 	    console.log(text);
@@ -414,6 +416,7 @@ function selectownarea(obj){//加载区域列表的时候
     }else{
         div.hide();
     };
+    $(div).parent().parent().siblings('div').find(".store_list_kuang").hide();
     $(inputs).on('keyup', function(event){
 	    var text=$(this).val();
 	    console.log(text);
@@ -492,9 +495,9 @@ function role_data(c){//
             	$("#OWN_STORE").attr("corp_code","");
             	$('#OWN_STORE').val("");
             	$('#OWN_STORE').attr("onclick","selectownshop(this)");
-            	$('#add_per_icon').attr("onclick","");
+            	$('#add_per_icon').attr("onclick","addshopselect()");
             	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
-            	$('#add_per_icon').css({"backgroundColor":"#ddd"});
+            	// $('#add_per_icon').css({"backgroundColor":"#ddd"});
             	$("#ownshop_list").show();
             	$("#ownshop_list .per_type").nextAll().remove();
             }else if(j_code=="R3000"){
@@ -635,8 +638,8 @@ function addshopselect(){//店铺
 		var k=$("#select_ownshop .shop_list div").length;
 		console.log(k);
 		$(".shop_list").append('<div id="per_type">'
-            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownshop(this)">'
-                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode=""/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
+                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode="" onclick="selectownshop(this)"/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<div class="store_list_kuang">'
                 +'<input class="search" type="text" placeholder="请输入搜索内容">'
                 +'<ul style="margin-left:0px" id="store_list">'
@@ -649,8 +652,8 @@ function addshopselect(){//店铺
 function addareaselect(){//区域
 		var k=$("#select_ownshop .shop_list div").length;
 		$(".shop_list").append('<div id="per_type">'
-            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'" onclick="selectownarea(this)">'
-                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属区域" readonly data-myscode=""/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+            +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
+                +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属区域" readonly data-myscode="" onclick="selectownarea(this)"/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
                 +'<div class="store_list_kuang">'
                 +'<input class="search" type="text" placeholder="请输入搜索内容">'
                 +'<ul style="margin-left:0px" id="store_list">'
@@ -715,9 +718,9 @@ jQuery(document).ready(function(){
 	            	$('#sidename label').html("所属店铺");
 	            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
 	            	$('#sidedown').attr("onclick","selectownshop(this)");
-	            	$('#add_per_icon').attr("onclick","");
+	            	$('#add_per_icon').attr("onclick","addshopselect()");
 	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
-	            	$('#add_per_icon').css({"backgroundColor":"#ddd"});
+	            	// $('#add_per_icon').css({"backgroundColor":"#ddd"});
 	            	$("#ownshop_list").show();
 		            var store_lists=msg.store_name.split(",");
 					var storecode_list=msg.store_code.split(",");
