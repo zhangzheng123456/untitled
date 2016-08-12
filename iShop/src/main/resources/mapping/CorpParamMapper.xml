@@ -27,6 +27,7 @@
             OR rcc.MODIFIED_DATE like concat('%',#{search_value},'%')
             OR rcc.param_value like concat('%',#{search_value},'%')
             OR rcc.MODIFIER like concat('%',#{search_value},'%')
+            OR rcc.remark like concat('%',#{search_value},'%')
             OR rcc.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>

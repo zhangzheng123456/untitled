@@ -194,9 +194,9 @@ function superaddition(data,num){//页面加载循环
                         +"查看"
                         + "</a></td><td>"
                         + data[i].area.area_name
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].brand_name+"'>"
                         +data[i].brand_name
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].corp.corp_name
                         + "</td><td>"
                         +data[i].modifier
@@ -507,18 +507,21 @@ $("#leading_out").click(function(){
     $(".into_frame").hide();
     var param={};
     param["function_code"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/shop/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
             console.log(message);
             $("#file_list ul").empty();
-            for(var i=0;i<=message.length;i++){
+            for(var i=0;i<message.length;i++){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
     })
 })
@@ -532,6 +535,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();//反序
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -539,6 +543,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/shop/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -552,8 +557,10 @@ $("#file_submit").click(function(){
             $('#file_close').click(function(){
                 $('.file').hide();
             })
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
     })
 })
@@ -600,6 +607,7 @@ function UpladFile() {
             } else {
                 console.log('服务器返回了错误的响应状态码');
                 $('#file').val("");
+                whir.loading.remove();
             }
         }
     }
