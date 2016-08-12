@@ -94,8 +94,6 @@ public class StoreServiceImpl implements StoreService {
         List<Store> shops;
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectAllStore(corp_code, search_value);
-        //报表调用
-        request.getSession().setAttribute("size", shops.size());
         for (Store store:shops) {
             Store storeBrandName = getStoreById(store.getId());
             if (storeBrandName.getBrand_name()!=null) {
@@ -110,7 +108,6 @@ public class StoreServiceImpl implements StoreService {
             }
         }
         PageInfo<Store> page = new PageInfo<Store>(shops);
-
         return page;
     }
 
