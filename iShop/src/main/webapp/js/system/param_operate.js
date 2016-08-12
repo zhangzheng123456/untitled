@@ -39,7 +39,7 @@ var oc=new ObjectControl();
     paramjs.bindbutton=function(){
         $(".operadd_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
-                var PARAM=$("#PARAM").val();
+                var PARAM_DESC=$("#PARAM_DESC").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
                 var REMARK=$("#REMARK").val();
                 var _command="/param/add";//接口名
@@ -47,7 +47,7 @@ var oc=new ObjectControl();
                     success:function(){
                     }
                 };
-                var _params={"param_key":PARAM,"param_name":PARAM_NAME,"remark":REMARK};
+                var _params={"param_name":PARAM_NAME,"param_desc":PARAM_DESC,"remark":REMARK};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -57,7 +57,7 @@ var oc=new ObjectControl();
         $(".operedit_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
                 var id=sessionStorage.getItem("id");
-                var PARAM=$("#PARAM").val();
+                var PARAM_DESC=$("#PARAM_DESC").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
                 var REMARK=$("#REMARK").val();
                 var _command="/param/edit";//接口名
@@ -65,7 +65,7 @@ var oc=new ObjectControl();
                     success:function(){
                     }
                 };
-                var _params={"id":id,"param_key":PARAM,"param_name":PARAM_NAME,"remark":REMARK};
+                var _params={"id":id,"param_name":PARAM_NAME,"param_desc":PARAM_DESC,"remark":REMARK};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -140,8 +140,8 @@ jQuery(document).ready(function(){
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
                 console.log(msg);
-                $("#PARAM").val(msg.param_key);
                 $("#PARAM_NAME").val(msg.param_name);
+                $("#PARAM_DESC").val(msg.param_desc);
                 $("#REMARK").val(msg.remark);
             }else if(data.code=="-1"){
                 art.dialog({

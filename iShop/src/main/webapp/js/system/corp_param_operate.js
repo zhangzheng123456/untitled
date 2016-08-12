@@ -41,6 +41,7 @@ var oc=new ObjectControl();
             if(paramjs.firstStep()){
                 var OWN_CORP=$("#OWN_CORP option").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
+                var PARAM_ID=$("#PARAM_NAME").val();
                 var REMARK=$("#REMARK").val();
                 var PARAM_VALUE=$("#PARAM_VALUE").val();
                 var ISACTIVE="";
@@ -55,7 +56,7 @@ var oc=new ObjectControl();
                     success:function(){
                     }
                 };
-                var _params={"corp_code":OWN_CORP,"param_name":PARAM_NAME,"remark":REMARK,"param_value":PARAM_VALUE,"isactive":ISACTIVE};
+                var _params={"corp_code":OWN_CORP,"param_id":PARAM_ID,"remark":REMARK,"param_value":PARAM_VALUE,"isactive":ISACTIVE};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -65,6 +66,7 @@ var oc=new ObjectControl();
         $(".operedit_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
                 var id=sessionStorage.getItem("id");
+                var PARAM_ID=$("#PARAM_NAME").val();
                 var OWN_CORP=$("#OWN_CORP").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
                 var PARAM_VALUE=$("#PARAM_VALUE").val();
@@ -81,7 +83,7 @@ var oc=new ObjectControl();
                     success:function(){
                     }
                 };
-                var _params={"id":id,"corp_code":OWN_CORP,"param_name":PARAM_NAME,"remark":REMARK,"param_value":PARAM_VALUE,"isactive":ISACTIVE};
+                var _params={"id":id,"corp_code":OWN_CORP,"param_id":PARAM_ID,"remark":REMARK,"param_value":PARAM_VALUE,"isactive":ISACTIVE};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -122,7 +124,7 @@ var oc=new ObjectControl();
         var obj = _this.val();
         var hint = _this.nextAll(".hint").children();
         if(paramjs['check' + command]){
-            if(!paramjs['check' + command].apply(feedbackjs,[obj,hint])){
+            if(!paramjs['check' + command].apply(paramjs,[obj,hint])){
                 return false;
             }
         }
@@ -236,7 +238,7 @@ function param_data(c,b){
             $('#param_select .searchable-select').remove();
             if(msg_paramName.length>0){
                 for(var i=0;i<msg_paramName.length;i++){
-                    $('#PARAM_NAME').append("<option value='"+msg_paramName[i].param_key+"'>"+msg_paramName[i].param_key+"</option>");
+                    $('#PARAM_NAME').append("<option value='"+msg_paramName[i].param_id+"'>"+msg_paramName[i].param_key+"</option>");
                 }
             }else if(msg_paramName.length<=0){
                 art.dialog({
