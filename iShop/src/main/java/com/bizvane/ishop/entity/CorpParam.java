@@ -9,8 +9,10 @@ public class CorpParam {
     private String corp_code;
     //企业名称
     private String corp_name;
-    //参数
+    //参数id
     private String param_id;
+    //参数名
+    private String param_name;
     //参数对应值
     private String param_value;
     //备注
@@ -57,6 +59,15 @@ public class CorpParam {
     public void setParam_id(String param_id) {
         this.param_id = param_id;
     }
+
+    public String getParam_name() {
+        return param_name;
+    }
+
+    public void setParam_name(String param_name) {
+        this.param_name = param_name;
+    }
+
     public String getParam_value() {
         return param_value;
     }

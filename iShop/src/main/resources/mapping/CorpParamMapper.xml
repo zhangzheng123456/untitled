@@ -41,6 +41,13 @@
         AND isactive = 'Y'
     </select>
 
+    <select id="selectByParamId" resultType="com.bizvane.ishop.entity.CorpParam">
+        SELECT *
+        FROM rel_corp_cfg
+        WHERE param_id=#{param_id}
+        AND isactive = 'Y'
+    </select>
+
     <delete id="deleteById">
         delete from
         rel_corp_cfg

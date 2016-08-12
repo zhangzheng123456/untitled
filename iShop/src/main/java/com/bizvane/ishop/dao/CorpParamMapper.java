@@ -11,6 +11,8 @@ import java.util.Map;
 public interface CorpParamMapper {
     CorpParam selectById(int id) throws SQLException;
 
+    List<CorpParam> selectByParamId(@Param("param_id") String param_id) throws SQLException;
+
     List<CorpParam> selectAllParam(@Param("search_value") String search_value) throws SQLException;
 
     List<CorpParam> selectByCorpParam(@Param("corp_code") String corp_code,@Param("param_id") String param_id) throws SQLException;

@@ -168,15 +168,14 @@ public class ParamConfigureController {
             String[] ids = param_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-               CorpParam corpParam= corpParamService.selectById(Integer.valueOf(ids[i]));
                 ParamConfigure paramConfigure = paramConfigureService.getParamById(Integer.valueOf(ids[i]));
                 if (paramConfigure != null) {
-                 if(corpParam==null){
+                    List<CorpParam> corpParam= corpParamService.selectByParamId(ids[i]);
+                    if(corpParam.size() == 0){
                      paramConfigureService.delete(Integer.valueOf(ids[i]));
                      dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                      dataBean.setId(id);
                      dataBean.setMessage("success");
-
                  }else{
                      dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                      dataBean.setId(id);
