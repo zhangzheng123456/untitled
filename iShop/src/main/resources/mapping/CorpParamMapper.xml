@@ -17,8 +17,8 @@
         dcc.param_name,
         dc.corp_name
         FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
-        WHERE rcc.corp_code = dc.corp_code,
-        rcc.param_id=dcc.id
+        WHERE rcc.corp_code = dc.corp_code
+          AND  rcc.param_id=dcc.id
         <if test="search_value != null and search_value !=''">
             AND
             (rcc.corp_code like concat('%',#{search_value},'%')
