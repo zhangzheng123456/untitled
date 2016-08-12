@@ -57,7 +57,7 @@
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
-
+<!--列表上去掉了email, birthday,can_login, position,login_time_recently,  def_user.created_date, def_user.creater,-->
     <select id="selectAllUser" resultMap="UserInfo">
         SELECT def_user.id,
         user_code,
@@ -65,19 +65,12 @@
         sex,
         avatar,
         phone,
-        email,
-        birthday,
         store_code,
-        can_login,
-        position,
         def_user.area_code,
         def_user.group_code,
         def_user.corp_code,
-        login_time_recently,
         def_user.modified_date,
         def_user.modifier,
-        def_user.created_date,
-        def_user.creater,
         def_user.isactive,
         def_group.group_name,
         def_group.role_code,
@@ -108,6 +101,7 @@
     </select>
 
     <!--获取店长区经下员工-->
+    <!--列表上去掉了email, birthday,can_login, position,login_time_recently,  def_user.created_date, def_user.creater,-->
     <select id="selectPartUser" resultMap="UserInfo">
         SELECT
         def_user.id,
@@ -116,19 +110,12 @@
         sex,
         avatar,
         phone,
-        email,
-        birthday,
         store_code,
-        can_login,
-        position,
         def_user.area_code,
         def_user.group_code,
         def_user.corp_code,
-        login_time_recently,
         def_user.modified_date,
         def_user.modifier,
-        def_user.created_date,
-        def_user.creater,
         def_user.isactive,
         def_group.group_name,
         def_group.role_code,
@@ -280,12 +267,10 @@
         user_name,
         sex,
         avatar,
-        position,
         phone,
         email,
         birthday,
         password,
-        login_time_recently,
         def_user.group_code,
         def_user.modified_date,
         def_user.modifier,
@@ -590,25 +575,19 @@
     </select>
 
     <select id="selectAllUserScreen" resultMap="UserInfo">
-        SELECT def_user.id,
+        SELECT
+        def_user.id,
         user_code,
         user_name,
         sex,
         avatar,
         phone,
-        email,
-        birthday,
         store_code,
-        can_login,
-        position,
         def_user.area_code,
         def_user.group_code,
         def_user.corp_code,
-        login_time_recently,
         def_user.modified_date,
         def_user.modifier,
-        def_user.created_date,
-        def_user.creater,
         def_user.isactive,
         def_group.group_name,
         def_group.role_code,
@@ -646,25 +625,19 @@
     </select>
 
     <select id="selectPartScreen" resultMap="UserInfo">
-        SELECT def_user.id,
+        SELECT
+        def_user.id,
         user_code,
         user_name,
         sex,
         avatar,
         phone,
-        email,
-        birthday,
         store_code,
-        can_login,
-        position,
         def_user.area_code,
         def_user.group_code,
         def_user.corp_code,
-        login_time_recently,
         def_user.modified_date,
         def_user.modifier,
-        def_user.created_date,
-        def_user.creater,
         def_user.isactive,
         def_group.group_name,
         def_group.role_code,

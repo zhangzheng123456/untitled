@@ -66,9 +66,6 @@ public class TaskController {
             } else {
                 tasks = taskService.selectAllTask(page_num, page_size, corp_code, "ident", user_code, "");
             }
-            for (Task task : tasks.getList()) {
-                System.out.println(task.getCorp_name());
-            }
             result.put("actions", actions);
             result.put("list", JSON.toJSONString(tasks));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

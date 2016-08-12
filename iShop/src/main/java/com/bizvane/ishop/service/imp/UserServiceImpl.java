@@ -189,12 +189,14 @@ public class UserServiceImpl implements UserService {
                 for (int i = 0; i < areaCodes.length; i++) {
                     areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
                     Area area = areaMapper.selectAreaByCode(corp_code, areaCodes[i], "");
-                    String area_name1 = area.getArea_name();
-                    area_name = area_name + area_name1;
-                    areaCode = areaCode + areaCodes[i];
-                    if (i != areaCodes.length - 1) {
-                        area_name = area_name + ",";
-                        areaCode = areaCode + ",";
+                    if (area!=null) {
+                        String area_name1 = area.getArea_name();
+                        area_name = area_name + area_name1;
+                        areaCode = areaCode + areaCodes[i];
+                        if (i != areaCodes.length - 1) {
+                            area_name = area_name + ",";
+                            areaCode = areaCode + ",";
+                        }
                     }
                 }
                 user.setArea_code(areaCode);

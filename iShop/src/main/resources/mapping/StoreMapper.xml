@@ -498,6 +498,7 @@
                     </when>
                     <when test="entryKey=='brand_name' and entryValue!=''">
                         db.${entryKey} LIKE concat('%',#{entryValue},'%')
+                        AND ds.brand_code LIKE concat('%',db.brand_code,'%')
                     </when>
                     <when test="entryValue!=''">
                         ds.${entryKey} LIKE concat('%',#{entryValue},'%')
