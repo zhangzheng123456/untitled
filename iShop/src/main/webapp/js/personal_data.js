@@ -248,6 +248,10 @@ jQuery(document).ready(function(){
                  $("#IPHONE").val(msg.phone);
                  $("#USER_EMAIL").val(msg.email);
                  $("#PASSWORD").val(msg.password);
+                 if($("#OWN_GROUP").val()=="区经"){
+                     console.log($("#OWN_GROUP").val());
+                     $("#OWN_SHOP").css("display","none");
+                 }
                  if(msg.sex=="F"){
                      $("#USER_SEX").val("女");
                  }else if(msg.sex=="M"){
