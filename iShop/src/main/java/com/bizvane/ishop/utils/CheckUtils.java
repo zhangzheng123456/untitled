@@ -43,4 +43,22 @@ public class CheckUtils {
         jsonArray.add(jss);
         return jsonArray.toString();
     }
+
+
+    /**
+     * 是否可用处理null，Y,N
+     */
+    public static String CheckIsactive(String isactive){
+        String result="";
+        if(isactive==null){
+            result="";
+        }else if(isactive.equals("Y")){
+            result="是";
+        }else if(isactive.equals("N")){
+            result="否";
+        }else{
+            result="";
+        }
+        return result;
+    }
 }

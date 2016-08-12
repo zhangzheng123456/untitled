@@ -150,9 +150,5 @@ public class TestFeedbackService {
         }
 
     }
-    @Test
-    public void testSelect() throws SQLException {
-          ParamConfigure paramConfigure=paramConfigureService.getParamById(20);
-        System.out.println(paramConfigure.getParam_key()+"====");
-    }
+
 }

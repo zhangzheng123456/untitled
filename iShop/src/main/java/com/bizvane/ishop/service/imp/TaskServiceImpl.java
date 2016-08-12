@@ -7,6 +7,7 @@ import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.TaskService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -44,11 +45,7 @@ public class TaskServiceImpl implements TaskService{
         PageHelper.startPage(page_num, page_size);
         List<Task> tasks = taskMapper.selectAllTask(corp_code, role_ident, user_code, search_value);
         for (Task task:tasks) {
-            if(task.getIsactive().equals("Y")){
-                task.setIsactive("是");
-            }else{
-                task.setIsactive("否");
-            }
+            task.setIsactive(CheckUtils.CheckIsactive(task.getIsactive()));
         }
         PageInfo<Task> page= new PageInfo<Task>(tasks);
         return page;
@@ -69,11 +66,7 @@ public class TaskServiceImpl implements TaskService{
         PageHelper.startPage(page_num, page_size);
         List<Task> tasks = taskMapper.selectAllTaskScreen(params);
         for (Task task:tasks) {
-            if(task.getIsactive().equals("Y")){
-                task.setIsactive("是");
-            }else{
-                task.setIsactive("否");
-            }
+            task.setIsactive(CheckUtils.CheckIsactive(task.getIsactive()));
         }
         PageInfo<Task> page= new PageInfo<Task>(tasks);
         return page;
@@ -229,11 +222,7 @@ public class TaskServiceImpl implements TaskService{
     public List<TaskAllocation> selTaskAllocation(String corp_code, String task_code) {
         List<TaskAllocation> taskAllocations = taskMapper.selAllTaskAllocation(corp_code, task_code);
             for (TaskAllocation allocation:taskAllocations) {
-                if(allocation.getIsactive().equals("Y")){
-                    allocation.setIsactive("是");
-                }else{
-                    allocation.setIsactive("否");
-                }
+                allocation.setIsactive(CheckUtils.CheckIsactive(allocation.getIsactive()));
                 if(allocation.getReal_start_time()==null){
                     allocation.setReal_start_time("");
                 }

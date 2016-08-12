@@ -7,6 +7,7 @@ import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.StoreService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -101,11 +102,7 @@ public class StoreServiceImpl implements StoreService {
             }else {
                 store.setBrand_name("未知");
             }
-            if(store.getIsactive()!=null && store.getIsactive().equals("Y")){
-                store.setIsactive("是");
-            }else{
-                store.setIsactive("否");
-            }
+            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
         }
         PageInfo<Store> page = new PageInfo<Store>(shops);
         return page;
@@ -131,11 +128,7 @@ public class StoreServiceImpl implements StoreService {
         for (Store store:shops) {
             Store storeBrandName = getStoreById(store.getId());
             store.setBrand_name(storeBrandName.getBrand_name());
-            if(store.getIsactive().equals("Y")){
-                store.setIsactive("是");
-            }else{
-                store.setIsactive("否");
-            }
+            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
         }
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
@@ -189,11 +182,7 @@ public class StoreServiceImpl implements StoreService {
             user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD + area_code + ",", role_code,isactive);
         }
         for (User user1:user) {
-            if (user1.getIsactive() != null && user1.getIsactive().equals("Y")) {
-                user1.setIsactive("是");
-            } else {
-                user1.setIsactive("否");
-            }
+            user1.setIsactive(CheckUtils.CheckIsactive(user1.getIsactive()));
             if(user1.getSex()==null || user1.getSex().equals("")){
                 user1.setSex("未知");
             }else if(user1.getSex().equals("F")){
@@ -280,11 +269,7 @@ public class StoreServiceImpl implements StoreService {
         for (Store store:list1) {
             Store storeBrandName = getStoreById(store.getId());
             store.setBrand_name(storeBrandName.getBrand_name());
-            if(store.getIsactive().equals("Y")){
-                store.setIsactive("是");
-            }else{
-                store.setIsactive("否");
-            }
+            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
         }
         PageInfo<Store> page = new PageInfo<Store>(list1);
         return page;
@@ -427,11 +412,7 @@ public class StoreServiceImpl implements StoreService {
         for (Store store:stores) {
             Store storeBrandName = getStoreById(store.getId());
             store.setBrand_name(storeBrandName.getBrand_name());
-            if(store.getIsactive().equals("Y")){
-                store.setIsactive("是");
-            }else{
-                store.setIsactive("否");
-            }
+            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
         }
         PageInfo<Store> page = new PageInfo<Store>(stores);
         return page;

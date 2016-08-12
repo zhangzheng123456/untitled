@@ -5,6 +5,7 @@ import com.bizvane.ishop.dao.StoreAchvGoalMapper;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.StoreAchvGoalService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.TimeUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -85,12 +86,8 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         PageHelper.startPage(page_number, page_size);
         storeAchvGoals = storeAchvGoalMapper.selectBySearch(params);
         for (StoreAchvGoal storeAchvGoal:storeAchvGoals) {
-            if(storeAchvGoal.getIsactive().equals("Y")){
-                storeAchvGoal.setIsactive("是");
-            }else{
-                storeAchvGoal.setIsactive("否");
-            }
-            if(storeAchvGoal.getTime_type()==null) {
+            storeAchvGoal.setIsactive(CheckUtils.CheckIsactive(storeAchvGoal.getIsactive()));
+            if(storeAchvGoal.getTime_type()==null||storeAchvGoal.getTime_type().equals("")) {
                 storeAchvGoal.setTime_type("未设定");
             }else if(storeAchvGoal.getTime_type().equals("D")){
                 storeAchvGoal.setTime_type("日");
@@ -144,12 +141,8 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         PageHelper.startPage(page_number, page_size);
         storeAchvGoals = storeAchvGoalMapper.selectAllStoreAchvScreen(params);
         for (StoreAchvGoal storeAchvGoal:storeAchvGoals) {
-            if(storeAchvGoal.getIsactive().equals("Y")){
-                storeAchvGoal.setIsactive("是");
-            }else{
-                storeAchvGoal.setIsactive("否");
-            }
-            if(storeAchvGoal.getTime_type()==null) {
+            storeAchvGoal.setIsactive(CheckUtils.CheckIsactive(storeAchvGoal.getIsactive()));
+            if(storeAchvGoal.getTime_type()==null||storeAchvGoal.getTime_type().equals("")) {
                 storeAchvGoal.setTime_type("未设定");
             }else if(storeAchvGoal.getTime_type().equals("D")){
                 storeAchvGoal.setTime_type("日");

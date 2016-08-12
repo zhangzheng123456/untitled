@@ -4,6 +4,7 @@ import com.bizvane.ishop.dao.AppversionMapper;
 import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.service.AppversionService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,7 @@ public class AppversionServiceImpl implements AppversionService{
         PageHelper.startPage(page_number, page_size);
         List<Appversion> appversions = appversionMapper.selectAllAppversion(search_value);
         for (Appversion appversion:appversions) {
-            if(appversion.getIsactive().equals("Y")){
-                appversion.setIsactive("是");
-            }else{
-                appversion.setIsactive("否");
-            }
+             appversion.setIsactive(CheckUtils.CheckIsactive(appversion.getIsactive()));
         }
         PageInfo<Appversion> page = new PageInfo<Appversion>(appversions);
         return page;
@@ -48,11 +45,7 @@ public class AppversionServiceImpl implements AppversionService{
         PageHelper.startPage(page_number, page_size);
         List<Appversion> list = appversionMapper.selectAllScreen(params);
         for (Appversion appversion:list) {
-            if(appversion.getIsactive().equals("Y")){
-                appversion.setIsactive("是");
-            }else{
-                appversion.setIsactive("否");
-            }
+            appversion.setIsactive(CheckUtils.CheckIsactive(appversion.getIsactive()));
         }
         PageInfo<Appversion> page = new PageInfo<Appversion>(list);
         return page;
