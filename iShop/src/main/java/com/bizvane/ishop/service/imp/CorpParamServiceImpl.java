@@ -44,6 +44,11 @@ public class CorpParamServiceImpl implements CorpParamService {
     public List<CorpParam> selectByCorpParam(String corp_code, String param_id) throws Exception {
         return corpParamMapper.selectByCorpParam(corp_code,param_id);
     }
+
+    public List<CorpParam> selectByParamId(String param_id) throws Exception {
+        return corpParamMapper.selectByParamId(param_id);
+    }
+
     /**
      * 分页显示区域
      */

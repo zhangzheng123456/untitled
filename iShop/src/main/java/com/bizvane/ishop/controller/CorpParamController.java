@@ -124,15 +124,6 @@ public class CorpParamController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            Date now = new Date();
-            CorpParam corpParam=new CorpParam();
-            corpParam.setParam_value(jsonObj.get("param_value").toString());
-            corpParam.setRemark(jsonObj.get("remark").toString());
-            corpParam.setModifier(user_code);
-            corpParam.setModified_date(Common.DATETIME_FORMAT.format(now));
-            corpParam.setCreater(user_code);
-            corpParam.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            corpParam.setIsactive(jsonObj.get("isactive").toString());
             String result=corpParamService.insert(message,user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

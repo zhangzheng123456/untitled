@@ -25,11 +25,14 @@ $(function(){
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
+                    inx=1;
                     GET(inx,pageSize);
                 }else if(value!==""){
+                    inx=1;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
+                    inx=1;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
@@ -474,6 +477,7 @@ $("#leading_out").click(function(){
     $(".into_frame").hide();
     var param={};
     param["function_code"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/message/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -487,6 +491,7 @@ $("#leading_out").click(function(){
         }else if(data.code=="-1"){
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 })
 //导出提交的
@@ -502,6 +507,7 @@ $("#file_submit").click(function(){
              column_name+=r;
         }     
     }
+    tablemanager.reverse();
     param["column_name"]=column_name;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -509,6 +515,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/message/mobile/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -525,6 +532,7 @@ $("#file_submit").click(function(){
         }else if(data.code=="-1"){
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 })
 //导出关闭按钮

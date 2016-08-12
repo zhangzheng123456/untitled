@@ -194,7 +194,7 @@ function superaddition(data,num){
             + "</td><td>"
             + data[i].corp_name
             + "</td><td>"
-            + data[i].param_id
+            + data[i].param_name
             +"</td><td><span title='"+data[i].param_value+"'>"
             +data[i].param_value
             +"</span></td><td>"
@@ -287,7 +287,7 @@ function jumpBianse(){
         if(tr.length==1){
             id=$(tr).attr("id");
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/system/param_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/system/corp_param_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");

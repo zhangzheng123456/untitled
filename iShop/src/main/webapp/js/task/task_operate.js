@@ -219,7 +219,6 @@ function getstorelist(a){
 	$("#staff_input").val("");
 	$("#staff_input").attr("data-usercode","");
 	$("#staff_input").attr("data-userphone","");
-	$("#store_code ul").empty();
 	$("#staff_code ul").empty();
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/shop/selectByAreaCode", "", _param, function(data) {
@@ -363,7 +362,6 @@ function getstafflist(a){
 							$('#staff_input').val(checknow_namedata.toString());
 							$('#staff_input').attr('data-usercode', checknow_data.toString());
 							$('#staff_input').attr('data-userphone', checknow_phone.toString());
-							num=1
 						}
 					}
 				}

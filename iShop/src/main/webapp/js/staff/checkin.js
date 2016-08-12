@@ -24,11 +24,14 @@ $(function(){
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
+                    inx=1;
                     GET(inx,pageSize);
                 }else if(value!==""){
+                    inx=1;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
+                    inx=1;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
@@ -435,6 +438,7 @@ $("#leading_out").click(function(){
     $(".into_frame").hide();
     var param={};
     param["function_code"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/sign/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -445,8 +449,10 @@ $("#leading_out").click(function(){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
     })
 })
@@ -461,6 +467,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -468,6 +475,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/sign/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -484,6 +492,7 @@ $("#file_submit").click(function(){
         }else if(data.code=="-1"){
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 })
 //导出关闭按钮

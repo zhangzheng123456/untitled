@@ -173,16 +173,6 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        // var time_type="";
-        // if(data[i].target_type=="D"){
-        //     time_type="日";
-        // }else if(data[i].target_type=="Y"){
-        //     time_type="年";
-        // }else if(data[i].target_type=="W"){
-        //     time_type="周";
-        // }else if(data[i].target_type=="M"){
-        //     time_type="月";
-        // }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -467,18 +457,21 @@ $("#leading_out").click(function(){
     $(".into_frame").hide();
     var param={};
     param["function_code"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/userAchvGoal/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
             console.log(message);
             $("#file_list ul").empty();
-            for(var i=0;i<=message.length;i++){
+            for(var i=0;i<message.length;i++){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
     })
 })
@@ -493,6 +486,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -500,6 +494,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/userAchvGoal/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -516,6 +511,7 @@ $("#file_submit").click(function(){
         }else if(data.code=="-1"){
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 })
 //导出关闭按钮
@@ -561,6 +557,7 @@ function UpladFile() {
             } else {
                 console.log('服务器返回了错误的响应状态码');
                 $('#file').val("");
+                whir.loading.remove();//移除加载框
             }
         }
     }

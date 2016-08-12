@@ -27,6 +27,7 @@
             OR rcc.MODIFIED_DATE like concat('%',#{search_value},'%')
             OR rcc.param_value like concat('%',#{search_value},'%')
             OR rcc.MODIFIER like concat('%',#{search_value},'%')
+            OR rcc.remark like concat('%',#{search_value},'%')
             OR rcc.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
@@ -38,6 +39,13 @@
         FROM rel_corp_cfg
         WHERE corp_code = #{corp_code}
         AND  param_id=#{param_id}
+        AND isactive = 'Y'
+    </select>
+
+    <select id="selectByParamId" resultType="com.bizvane.ishop.entity.CorpParam">
+        SELECT *
+        FROM rel_corp_cfg
+        WHERE param_id=#{param_id}
         AND isactive = 'Y'
     </select>
 

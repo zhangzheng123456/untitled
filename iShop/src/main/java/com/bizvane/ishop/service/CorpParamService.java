@@ -14,6 +14,8 @@ import java.util.Map;
 public interface CorpParamService {
     CorpParam selectById(int id) throws Exception;
 
+    List<CorpParam> selectByParamId(String param_id) throws Exception;
+
     List<CorpParam> selectByCorpParam(String corp_code, String param_id) throws Exception;
 
     PageInfo<CorpParam> selectAllParam(int page_number, int page_size, String corp_code, String search_value) throws Exception;

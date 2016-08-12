@@ -25,11 +25,14 @@ $(function(){
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
+                    inx=1;
                     GET(inx,pageSize);
                 }else if(value!==""){
+                    inx=1;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
+                    inx=1;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
@@ -463,14 +466,15 @@ $("#leading_out").click(function(){
             var message=JSON.parse(message.tableManagers);
             console.log(message);
             $("#file_list ul").empty();
-            for(var i=0;i<=message.length;i++){
+            for(var i=0;i<message.length;i++){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
-        whir.loading.remove();//移除加载框
     })
 })
 //导出提交的
@@ -492,6 +496,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/corp/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -508,6 +513,7 @@ $("#file_submit").click(function(){
         }else if(data.code=="-1"){
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 })
 //导出关闭按钮
