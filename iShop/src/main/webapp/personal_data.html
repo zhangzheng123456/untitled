@@ -38,13 +38,13 @@
                         <label>头像</label><span class="head_img"><img src="img/head.png" id="IMG"></span>
                     </div>
                     <div>
-                        <label>所属企业</label><input id="OWN_CORP" readonly />
+                        <label>所属企业</label><input id="OWN_CORP" disabled="disabled" />
                     </div>
                     <div>
-                        <label>员工编号</label><input id="USER_ID" readonly />
+                        <label>员工编号</label><input id="USER_ID" disabled="disabled" />
                     </div>
                     <div>
-                        <label>职务</label><input id="POSITION" readonly />
+                        <label>职务</label><input id="POSITION" disabled="disabled" />
                     </div>
                     <div>
                         <label>手机</label><input id="IPHONE"  verify="Empty"/>
@@ -55,8 +55,7 @@
                         <div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>
                     </div>
                     <div>
-                        <label>邮箱</label><input id="USER_EMAIL"  verify="Empty"/>
-                        <div style="padding-left:125px" class="hint"><div  hintinfo="邮箱为必填项,不能为空!"></div></div>
+                        <label>邮箱</label><input id="USER_EMAIL"/>
                     </div>
                     <div>
                         <label>密码</label><input id="PASSWORD" class="pwd" type="password" readonly />
@@ -76,13 +75,13 @@
                         </ul>
                     </div>
                     <div>
-                        <label>所属区域</label><input id="OWN_AREA" readonly />
+                        <label>所属区域</label><input id="OWN_AREA" disabled="disabled" />
                     </div>
                     <div>
-                        <label>所属群组</label><input id="OWN_GROUP" readonly />
+                        <label>所属群组</label><input id="OWN_GROUP" disabled="disabled" />
                     </div>
                     <div>
-                        <label>所属店铺</label><input id="OWN_SHOP" readonly />
+                        <label>所属店铺</label><input id="OWN_SHOP" disabled="disabled" />
                     </div>
                 </form>
             </div>
@@ -98,5 +97,9 @@
 </body>
 <script src="js/jquery-2.1.1.min.js"></script>
 <script src="js/insidePostRequire.js"></script>
+<script src="js/bootstrap.min.js?v=3.4.0"></script>
+<script type="text/javascript" src="js/moni_select.js"></script>
+<script src="js/artDialog/jquery.artDialog.js"></script>
+<script src="js/artDialog/plugins/iframeTools.js"></script>
 <script src="js/personal_data.js"></script>
 </html>
