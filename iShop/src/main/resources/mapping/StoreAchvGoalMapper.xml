@@ -244,9 +244,13 @@
                 <when test="entryKey=='store_name'">
                     ds.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryValue!=''">
                     sa.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
                 </otherwise>
+
             </choose>
         </foreach>
         ORDER BY sa.ID DESC
