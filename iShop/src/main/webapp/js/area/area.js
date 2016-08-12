@@ -449,11 +449,11 @@ $("#leading_out").click(function(){
     $(".into_frame").hide();
     var param={};
     param["function_code"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/area/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list ul").empty();
             for(var i=0;i<=message.length;i++){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -462,6 +462,7 @@ $("#leading_out").click(function(){
         }else if(data.code=="-1"){
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 })
 //导出提交的
@@ -483,6 +484,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/area/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
@@ -499,6 +501,7 @@ $("#file_submit").click(function(){
         }else if(data.code=="-1"){
             alert(data.message);
         }
+        whir.loading.remove();//移除加载框
     })
 })
 //导出关闭按钮
@@ -544,18 +547,19 @@ function UpladFile() {
             } else {
                 console.log('服务器返回了错误的响应状态码');
                 $('#file').val("");
+                whir.loading.remove();//移除加载框
             }
         }
     }
     function doResult(data) {
         var data=JSON.parse(data);
-        whir.loading.remove();//移除加载框
         if(data.code=="0"){
             alert('导入成功');
         }else if(data.code=="-1"){
              alert("导入失败"+data.message);
         }
         $('#file').val("");
+        whir.loading.remove();//移除加载框
     }
     xhr.open("post", FileController, true);
     xhr.onload = function() {

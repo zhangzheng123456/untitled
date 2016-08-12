@@ -37,14 +37,14 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-    public ParamConfigure getParamByKey(String param_key) throws Exception {
-        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByKey(param_key);
+    public ParamConfigure getParamByKey(String param_name) throws Exception {
+        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByKey(param_name);
         return  paramConfigure;
     }
 
     @Override
-    public ParamConfigure getParamByName(String param_name) throws Exception {
-        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByName(param_name);
+    public ParamConfigure getParamByName(String param_desc) throws Exception {
+        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByName(param_desc);
         return  paramConfigure;
     }
 
@@ -80,27 +80,23 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 //        String corp_code = jsonObject.get("corp_code").toString();
 //        String area_name = jsonObject.get("area_name").toString();
 
-        String param_key = jsonObject.get("param_key").toString();
         String param_name = jsonObject.get("param_name").toString();
-        String param_value = jsonObject.get("param_value").toString();
+        String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
 
-        ParamConfigure paramConfigure = getParamByKey(param_key);
-        ParamConfigure paramConfigure1 = getParamByName(param_name);
+        ParamConfigure paramConfigure = getParamByKey(param_name);
+//        ParamConfigure paramConfigure1 = getParamByName(param_desc);
 
-        if (paramConfigure == null && paramConfigure1 == null) {
+        if (paramConfigure == null ) {
             paramConfigure = new ParamConfigure();
             Date now = new Date();
-            paramConfigure.setParam_key(param_key);
             paramConfigure.setParam_name(param_name);
-            paramConfigure.setParam_value(param_value);
+            paramConfigure.setParam_desc(param_desc);
             paramConfigure.setRemark(remark);
             paramConfigureMapper.insertParam(paramConfigure);
             result = Common.DATABEAN_CODE_SUCCESS;
-        } else if (paramConfigure != null) {
-            result = "参数key已存在";
         } else {
-            result = "参数名称已存在";
+            result = "参数名已存在";
         }
         return result;
     }
@@ -111,28 +107,25 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         JSONObject jsonObject = new JSONObject(message);
         int param_id = Integer.parseInt(jsonObject.get("id").toString());
 
-        String param_key = jsonObject.get("param_key").toString();
         String param_name = jsonObject.get("param_name").toString();
-        String param_value = jsonObject.get("param_value").toString();
+        String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
 
-        ParamConfigure paramByKey = getParamByKey(param_key);
-        ParamConfigure paramByName = getParamByName(param_name);
+        ParamConfigure paramByKey = getParamByKey(param_name);
+//        ParamConfigure paramByName = getParamByName(param_desc);
 
         if (paramByKey != null && paramByKey.getId() != param_id) {
             result = "参数已存在";
-        } else if (paramByName != null && paramByName.getId() != param_id) {
-            result = "参数名称已存在";
+//        } else if (paramByName != null && paramByName.getId() != param_id) {
+//            result = "参数名称已存在";
         } else {
             ParamConfigure old_param = new ParamConfigure();
             old_param.setId(param_id);
-            old_param.setParam_key(param_key);
             old_param.setParam_name(param_name);
-            old_param.setParam_value(param_value);
+            old_param.setParam_desc(param_desc);
             old_param.setRemark(remark);
             paramConfigureMapper.updateParam(old_param);
             result = Common.DATABEAN_CODE_SUCCESS;
-
         }
         return result;
 

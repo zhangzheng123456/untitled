@@ -11,6 +11,8 @@ public class CorpParam {
     private String corp_name;
     //参数
     private String param_id;
+    //参数对应值
+    private String param_value;
     //备注
     private String remark;
     //修改时间
@@ -54,6 +56,13 @@ public class CorpParam {
 
     public void setParam_id(String param_id) {
         this.param_id = param_id;
+    }
+    public String getParam_value() {
+        return param_value;
+    }
+
+    public void setParam_value(String param_value) {
+        this.param_value = param_value;
     }
 
     public String getRemark() {

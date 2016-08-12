@@ -37,18 +37,26 @@ var oc=new ObjectControl();
         return true;
     };
     paramjs.bindbutton=function(){
-        $(".oper_btn ul li:nth-of-type(1)").click(function(){
+        $(".operadd_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
                 var OWN_CORP=$("#OWN_CORP option").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
+                var PARAM_ID=$("#PARAM_NAME").val();
                 var REMARK=$("#REMARK").val();
+                var PARAM_VALUE=$("#PARAM_VALUE").val();
+                var ISACTIVE="";
+                var input=$(".checkbox_isactive").find("input")[0];
+                if(input.checked==true){
+                    ISACTIVE="Y";
+                }else if(input.checked==false){
+                    ISACTIVE="N";
+                }
                 var _command="/corpParam/add";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
                     }
                 };
-                var _params={"param_key":PARAM,"param_name":PARAM_NAME,"param_value":PARAM_VALUE,
-                    "remark":REMARK};
+                var _params={"corp_code":OWN_CORP,"param_id":PARAM_ID,"remark":REMARK,"param_value":PARAM_VALUE,"isactive":ISACTIVE};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -58,17 +66,24 @@ var oc=new ObjectControl();
         $(".operedit_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
                 var id=sessionStorage.getItem("id");
-                var PARAM=$("#PARAM").val();
+                var PARAM_ID=$("#PARAM_NAME").val();
+                var OWN_CORP=$("#OWN_CORP").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
                 var PARAM_VALUE=$("#PARAM_VALUE").val();
                 var REMARK=$("#REMARK").val();
+                var ISACTIVE="";
+                var input=$(".checkbox_isactive").find("input")[0];
+                if(input.checked==true){
+                    ISACTIVE="Y";
+                }else if(input.checked==false){
+                    ISACTIVE="N";
+                }
                 var _command="/corpParam/edit";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
                     }
                 };
-                var _params={"id":id,"param_key":PARAM,"param_name":PARAM_NAME,"param_value":PARAM_VALUE,
-                    "remark":REMARK};
+                var _params={"id":id,"corp_code":OWN_CORP,"param_id":PARAM_ID,"remark":REMARK,"param_value":PARAM_VALUE,"isactive":ISACTIVE};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -87,16 +102,15 @@ var oc=new ObjectControl();
                 // 	content: data.message
                 // });
                 $(window.parent.document).find('#iframepage').attr("src","/system/corp_param.html");
-                whir.loading.remove();
             }else if(data.code=="-1"){
-                // alert(data.message);
-                // art.dialog({
-                // 	time: 1,
-                // 	lock:true,
-                // 	cancel: false,
-                // 	content: data.message
-                // });
+                art.dialog({
+                	time: 1,
+                	lock:true,
+                	cancel: false,
+                	content: data.message
+                });
             }
+            whir.loading.remove();
         });
     };
     var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
@@ -110,7 +124,7 @@ var oc=new ObjectControl();
         var obj = _this.val();
         var hint = _this.nextAll(".hint").children();
         if(paramjs['check' + command]){
-            if(!paramjs['check' + command].apply(feedbackjs,[obj,hint])){
+            if(!paramjs['check' + command].apply(paramjs,[obj,hint])){
                 return false;
             }
         }
@@ -150,6 +164,8 @@ jQuery(document).ready(function(){
                 $("#PARAM").attr("data-name",msg.param);
                 $("#REMARK").attr("data-name",msg.remark);
                 $("#REMARK").val(msg.remark);
+                $("#PARAM_VALUE").val(msg.param_value);
+                $("#PARAM_VALUE").attr("data-name",msg.param_value);
                 getcorplist();
             }else if(data.code=="-1"){
                 art.dialog({
@@ -165,15 +181,15 @@ jQuery(document).ready(function(){
     }
 
 
-    $(".oper_btn ul li:nth-of-type(2)").click(function(){
+    $(".operadd_btn ul li:nth-of-type(2)").click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/system/corp_param.html");
     });
-    $(".oper_btn ul li:nth-of-type(2)").click(function(){
+    $(".operedit_btn ul li:nth-of-type(2)").click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/system/corp_param.html");
     });
 });
 
-function getcorplist(){
+function getcorplist(a,b){
     //获取所属企业列表
     var corp_command="/user/getCorpByUser";
     oc.postRequire("post", corp_command,"", "", function(data){
@@ -189,12 +205,15 @@ function getcorplist(){
                 corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
             }
             $("#OWN_CORP").append(corp_html);
-            $('.corp_select select').searchableSelect();
-            $('.searchable-select-item').click(function(){
-                $("#PARAM").val("");
-                $("#REMARK").val("");
-                $("#PARAM").attr("data-mark","");
-                $("#REMARK").attr("data-mark","");
+            if(a!==""){
+                $("#OWN_CORP option[value='"+a+"']").attr("selected","true");
+            }
+            $("#OWN_CORP").searchableSelect();
+            var c=$('#corp_select .selected').attr("data-value");
+            param_data(c,b);
+            $("#corp_select .searchable-select-item").click(function(){
+                var c=$(this).attr("data-value");
+                param_data(c,b);
             })
         }else if(data.code=="-1"){
             art.dialog({
@@ -206,30 +225,33 @@ function getcorplist(){
         }
     });
 }
-
-function getparamlist(){
-    //获取参数列表
-    var param_command="/param/getParamByUser";
-    oc.postRequire("post", param_command,"", "", function(data){
-        console.log(data);
+function param_data(c,b){
+    var _params={};
+    _params["corp_code"]=c;//企业编号
+    var _command="/param/getParamByUser";//调取参数
+    oc.postRequire("post", _command,"", _params, function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             console.log(msg);
-            var index=0;
-            var corp_html='';
-            var c=null;
-            for(index in msg.corps){
-                c=msg.corps[index];
-                corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+            var msg_paramName=msg.params;
+            $('#PARAM_NAME').empty();
+            $('#param_select .searchable-select').remove();
+            if(msg_paramName.length>0){
+                for(var i=0;i<msg_paramName.length;i++){
+                    $('#PARAM_NAME').append("<option value='"+msg_paramName[i].param_id+"'>"+msg_paramName[i].param_key+"</option>");
+                }
+            }else if(msg_paramName.length<=0){
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: "该企业没有参数"
+                });
             }
-            $("#OWN_CORP").append(corp_html);
-            $('.corp_select select').searchableSelect();
-            $('.searchable-select-item').click(function(){
-                $("#AREA_ID").val("");
-                $("#AREA_NAME").val("");
-                $("#AREA_ID").attr("data-mark","");
-                $("#AREA_NAME").attr("data-mark","");
-            })
+            if(b!==""){
+                $("#PARAM_NAME option[value='"+b+"']").attr("selected","true")
+            }
+            $("#PARAM_NAME").searchableSelect();
         }else if(data.code=="-1"){
             art.dialog({
                 time: 1,
@@ -238,5 +260,5 @@ function getparamlist(){
                 content: data.message
             });
         }
-    });
+    })
 }

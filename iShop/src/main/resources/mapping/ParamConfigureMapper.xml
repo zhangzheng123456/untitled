@@ -4,9 +4,9 @@
 
     <resultMap type="com.bizvane.ishop.entity.ParamConfigure" id="ParamConfigure">
         <id column="id" property="id"/>
-        <result column="param_key" property="param_key"/>
         <result column="param_name" property="param_name"/>
-        <result column="param_value" property="param_value"/>
+        <result column="param_desc" property="param_desc"/>
+
         <result column="remark" property="remark"/>
    </resultMap>
 
@@ -21,9 +21,8 @@
         from DEF_CORP_CFG
         <if test="search_value != null and search_value !=''">
             WHERE
-            (param_key like concat('%',#{search_value},'%')
-            OR param_name like concat('%',#{search_value},'%')
-            OR DEF_CORP_CFG.param_value like concat('%',#{search_value},'%')
+            (param_name like concat('%',#{search_value},'%')
+            OR param_desc like concat('%',#{search_value},'%')
             OR DEF_CORP_CFG.remark like concat('%',#{search_value},'%')
            )
         </if>
@@ -46,14 +45,11 @@
     <insert id="insertParam" parameterType="com.bizvane.ishop.entity.ParamConfigure">
         insert into DEF_CORP_CFG
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="param_key!=null">
-                param_key,
-            </if>
             <if test="param_name!=null">
                 param_name,
             </if>
-            <if test="param_value!=null">
-                param_value,
+            <if test="param_desc!=null">
+                param_desc,
             </if>
             <if test="remark!=null">
                 remark,
@@ -61,14 +57,11 @@
 
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="param_key!=null">
-                #{param_key},
-            </if>
             <if test="param_name!=null">
                 #{param_name},
             </if>
-            <if test="param_value!=null">
-                #{param_value},
+            <if test="param_desc!=null">
+                #{param_desc},
             </if>
             <if test="remark!=null">
                 #{remark},
@@ -79,14 +72,11 @@
     <update id="updateParam" parameterType="com.bizvane.ishop.entity.ParamConfigure">
         UPDATE DEF_CORP_CFG
         <trim prefix="SET" suffixOverrides=",">
-            <if test="param_key!=null and param_key!=''">
-                param_key=#{param_key},
-            </if>
             <if test="param_name!=null and param_name!=''">
                 param_name=#{param_name},
             </if>
-            <if test="param_value!=null and param_value!=''">
-                param_value=#{param_value},
+            <if test="param_desc!=null and param_desc!=''">
+                param_desc=#{param_desc},
             </if>
             <if test="remark!=null and remark!=''">
                 remark=#{remark},
@@ -97,12 +87,12 @@
 
     <select id="selectParamByKey" resultType="com.bizvane.ishop.entity.ParamConfigure">
         select * from DEF_CORP_CFG
-        WHERE param_key=#{param_key}
+        WHERE param_name=#{param_name}
 
     </select>
     <select id="selectParamByName" resultType="com.bizvane.ishop.entity.ParamConfigure">
         select * from DEF_CORP_CFG
-        WHERE param_name=#{param_name}
+        WHERE param_desc=#{param_desc}
 
     </select>
 
@@ -113,9 +103,8 @@
         FROM DEF_CORP_CFG dcc
 
         <if test="search_value != null and search_value !=''">
-            WHERE (dcc.param_key like concat('%',#{search_value},'%')
-            OR dcc.param_name like concat('%',#{search_value},'%')
-            OR dcc.param_value like concat('%',#{search_value},'%')
+            WHERE (dcc.param_name like concat('%',#{search_value},'%')
+            OR dcc.param_desc like concat('%',#{search_value},'%')
             OR dcc.remark like concat('%',#{search_value},'%')
             )
         </if>

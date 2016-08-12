@@ -126,6 +126,8 @@ public class CorpParamController {
             String message = jsonObj.get("message").toString();
             Date now = new Date();
             CorpParam corpParam=new CorpParam();
+            corpParam.setParam_value(jsonObj.get("param_value").toString());
+            corpParam.setRemark(jsonObj.get("remark").toString());
             corpParam.setModifier(user_code);
             corpParam.setModified_date(Common.DATETIME_FORMAT.format(now));
             corpParam.setCreater(user_code);

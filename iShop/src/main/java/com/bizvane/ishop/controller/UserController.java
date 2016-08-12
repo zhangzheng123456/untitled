@@ -626,10 +626,17 @@ public class UserController {
                 String area_code = jsonObject.get("area_code").toString();
                 if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
-                    area_code = "";
-                    for (int i = 0; i < areas.length; i++) {
-                        areas[i] = Common.STORE_HEAD + areas[i] + ",";
-                        area_code = area_code + areas[i];
+                    if (WebUtils.checkRepeat(areas)) {
+                        area_code = "";
+                        for (int i = 0; i < areas.length; i++) {
+                            areas[i] = Common.STORE_HEAD + areas[i] + ",";
+                            area_code = area_code + areas[i];
+                        }
+                    }else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("选择重复区域");
+                        return dataBean.getJsonStr();
                     }
                 }
                 user.setArea_code(area_code);
@@ -639,10 +646,17 @@ public class UserController {
                 String store_code = jsonObject.get("store_code").toString();
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
-                    store_code = "";
-                    for (int i = 0; i < codes.length; i++) {
-                        codes[i] = Common.STORE_HEAD + codes[i] + ",";
-                        store_code = store_code + codes[i];
+                    if (WebUtils.checkRepeat(codes)) {
+                        store_code = "";
+                        for (int i = 0; i < codes.length; i++) {
+                            codes[i] = Common.STORE_HEAD + codes[i] + ",";
+                            store_code = store_code + codes[i];
+                        }
+                    }else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("选择重复店铺");
+                        return dataBean.getJsonStr();
                     }
                 }
                 user.setStore_code(store_code);
@@ -715,10 +729,17 @@ public class UserController {
             if (role_code.equals(Common.ROLE_AM)) {
                 if (!area_code.equals("all") && !area_code.equals("")) {
                     String[] areas = area_code.split(",");
-                    area_code = "";
-                    for (int i = 0; i < areas.length; i++) {
-                        areas[i] = Common.STORE_HEAD + areas[i] + ",";
-                        area_code = area_code + areas[i];
+                    if (WebUtils.checkRepeat(areas)) {
+                        area_code = "";
+                        for (int i = 0; i < areas.length; i++) {
+                            areas[i] = Common.STORE_HEAD + areas[i] + ",";
+                            area_code = area_code + areas[i];
+                        }
+                    }else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("选择重复区域");
+                        return dataBean.getJsonStr();
                     }
                 }
                 user.setArea_code(area_code);
@@ -726,11 +747,18 @@ public class UserController {
             if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 if (!store_code.equals("all") && !store_code.equals("")) {
                     String[] codes = store_code.split(",");
-                    store_code = "";
-                    for (int i = 0; i < codes.length; i++) {
-                        codes[i] = Common.STORE_HEAD + codes[i] + ",";
-                        store_code = store_code + codes[i];
-                    }
+                    if (WebUtils.checkRepeat(codes)) {
+                        store_code = "";
+                        for (int i = 0; i < codes.length; i++) {
+                            codes[i] = Common.STORE_HEAD + codes[i] + ",";
+                            store_code = store_code + codes[i];
+                        }
+                    }else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("选择重复店铺");
+                        return dataBean.getJsonStr();
+                     }
                 }
                 user.setStore_code(store_code);
             }

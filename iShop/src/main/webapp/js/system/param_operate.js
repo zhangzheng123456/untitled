@@ -39,17 +39,15 @@ var oc=new ObjectControl();
     paramjs.bindbutton=function(){
         $(".operadd_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
-                var PARAM=$("#PARAM").val();
+                var PARAM_DESC=$("#PARAM_DESC").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
-                var PARAM_VALUE=$("#PARAM_VALUE").val();
                 var REMARK=$("#REMARK").val();
                 var _command="/param/add";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
                     }
                 };
-                var _params={"param_key":PARAM,"param_name":PARAM_NAME,"param_value":PARAM_VALUE,
-                    "remark":REMARK};
+                var _params={"param_name":PARAM_NAME,"param_desc":PARAM_DESC,"remark":REMARK};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -59,17 +57,15 @@ var oc=new ObjectControl();
         $(".operedit_btn ul li:nth-of-type(1)").click(function(){
             if(paramjs.firstStep()){
                 var id=sessionStorage.getItem("id");
-                var PARAM=$("#PARAM").val();
+                var PARAM_DESC=$("#PARAM_DESC").val();
                 var PARAM_NAME=$("#PARAM_NAME").val();
-                var PARAM_VALUE=$("#PARAM_VALUE").val();
                 var REMARK=$("#REMARK").val();
                 var _command="/param/edit";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
                     }
                 };
-                var _params={"id":id,"param_key":PARAM,"param_name":PARAM_NAME,"param_value":PARAM_VALUE,
-                    "remark":REMARK};
+                var _params={"id":id,"param_name":PARAM_NAME,"param_desc":PARAM_DESC,"remark":REMARK};
                 whir.loading.add("",0.5);
                 paramjs.ajaxSubmit(_command,_params,opt);
             }else{
@@ -88,16 +84,15 @@ var oc=new ObjectControl();
                 // 	content: data.message
                 // });
                 $(window.parent.document).find('#iframepage').attr("src","/system/param.html");
-                whir.loading.remove();
             }else if(data.code=="-1"){
-                // alert(data.message);
-                // art.dialog({
-                // 	time: 1,
-                // 	lock:true,
-                // 	cancel: false,
-                // 	content: data.message
-                // });
+                art.dialog({
+                	time: 1,
+                	lock:true,
+                	cancel: false,
+                	content: data.message
+                });
             }
+            whir.loading.remove();
         });
     };
     var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
@@ -145,9 +140,8 @@ jQuery(document).ready(function(){
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
                 console.log(msg);
-                $("#PARAM").val(msg.param_key);
                 $("#PARAM_NAME").val(msg.param_name);
-                $("#PARAM_VALUE").val(msg.param_value);
+                $("#PARAM_DESC").val(msg.param_desc);
                 $("#REMARK").val(msg.remark);
             }else if(data.code=="-1"){
                 art.dialog({

@@ -75,14 +75,13 @@
         AND def_store.corp_code = def_area.corp_code
         AND def_store.area_code = def_area.area_code
         AND def_store.corp_code = def_brand.corp_code
-        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
+--         AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         <if test="corp_code != null and corp_code !=''">
             AND def_store.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
             (store_code LIKE concat('%',#{search_value},'%')
-            OR def_store.id LIKE concat('%',#{search_value},'%')
             OR store_name LIKE concat('%',#{search_value},'%')
             OR def_area.area_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
@@ -471,7 +470,7 @@
         AND ds.corp_code = da.corp_code
         AND ds.corp_code = db.corp_code
         AND ds.area_code = da.area_code
-        AND ds.brand_code LIKE concat('%',db.brand_code,'%')
+--         AND ds.brand_code LIKE concat('%',db.brand_code,'%')
         <if test="corp_code!=null and corp_code!=''">
             AND ds.corp_code=#{corp_code}
         </if>
@@ -499,6 +498,7 @@
                     </when>
                     <when test="entryKey=='brand_name' and entryValue!=''">
                         db.${entryKey} LIKE concat('%',#{entryValue},'%')
+                        AND ds.brand_code LIKE concat('%',db.brand_code,'%')
                     </when>
                     <when test="entryValue!=''">
                         ds.${entryKey} LIKE concat('%',#{entryValue},'%')

@@ -195,7 +195,9 @@ function superaddition(data,num){
             + data[i].corp_name
             + "</td><td>"
             + data[i].param_id
-            +"</td><td>"
+            +"</td><td><span title='"+data[i].param_value+"'>"
+            +data[i].param_value
+            +"</span></td><td>"
             +data[i].remark
             +"</td><td>"
             +data[i].modified_date

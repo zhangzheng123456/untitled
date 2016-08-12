@@ -190,12 +190,10 @@ function superaddition(data,num){
             + "</td><td style='text-align:left;'>"
             + a
             +"</td><td>"
-            + data[i].param_key
-            + "</td><td>"
             + data[i].param_name
             + "</td><td>"
-            + data[i].param_value
-            +"</td><td>"
+            + data[i].param_desc
+            + "</td><td>"
             +data[i].remark
             +"</td></tr>");
     }

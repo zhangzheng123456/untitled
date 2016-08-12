@@ -87,13 +87,6 @@ var oc = new ObjectControl();
                 var OWN_CORP=$("#OWN_CORP").val();//公司编号
                 var OWN_RIGHT=$("#OWN_RIGHT").attr("data-myrcode");//群组编号
                 var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
-                var ISACTIVE="";
-                var input=$("#is_active")[0];
-                if(input.checked==true){
-                    ISACTIVE="Y";
-                }else if(input.checked==false){
-                    ISACTIVE="N";
-                }
                 if(OWN_RIGHT==""){//群组
                     art.dialog({
                         time: 1,
@@ -298,7 +291,7 @@ $("#baocun").click(function(){
         return;
     }
     var pwd_creat="/user/change_passwd";
-    var user_id=sessionStorage.getItem("id");
+    var user_id=$("#id").val();
     var password=$('#first_pwd').val();
     var _params={};
     _params["password"]=password;

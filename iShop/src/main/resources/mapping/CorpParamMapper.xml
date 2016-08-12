@@ -14,14 +14,18 @@
     <select id="selectAllParam" resultType="com.bizvane.ishop.entity.CorpParam">
         SELECT
         rcc.*,
+        dcc.param_name,
         dc.corp_name
-        FROM rel_corp_cfg rcc,def_corp dc
+        FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
         WHERE rcc.corp_code = dc.corp_code
+          AND  rcc.param_id=dcc.id
         <if test="search_value != null and search_value !=''">
             AND
             (rcc.corp_code like concat('%',#{search_value},'%')
             OR dc.corp_name like concat('%',#{search_value},'%')
+            OR dcc.param_name like concat('%',#{search_value},'%')
             OR rcc.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR rcc.param_value like concat('%',#{search_value},'%')
             OR rcc.MODIFIER like concat('%',#{search_value},'%')
             OR rcc.ISACTIVE like concat('%',#{search_value},'%')
             )
@@ -52,6 +56,9 @@
             <if test="param_id!=null">
                 param_id,
             </if>
+            <if test="param_value!=null">
+                param_value,
+            </if>
             <if test="remark!=null">
                 remark,
             </if>
@@ -78,6 +85,10 @@
             <if test="param_id!=null">
                 #{param_id},
             </if>
+            <if test="param_value!=null">
+                #{param_value},
+            </if>
+
             <if test="remark!=null">
                 #{remark},
             </if>
@@ -108,6 +119,10 @@
             <if test="param_id!=null and param_id!=''">
                 param_id=#{param_id},
             </if>
+            <if test="param_value!=null and param_value!=''">
+                param_value=#{param_value},
+            </if>
+
             <if test="remark!=null and remark!=''">
                 remark=#{remark},
             </if>
