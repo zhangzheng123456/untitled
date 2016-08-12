@@ -65,10 +65,12 @@ public class StoreServiceImpl implements StoreService {
             String[] ids = store.getBrand_code().split(",");
             for (int i = 0; i < ids.length; i++) {
                 Brand brand = brandMapper.selectCorpBrand(corp_code, ids[i]);
-                String brand_name1 = brand.getBrand_name();
-                brand_name = brand_name + brand_name1;
-                if (i != ids.length - 1) {
-                    brand_name = brand_name + ",";
+                if (brand != null) {
+                    String brand_name1 = brand.getBrand_name();
+                    brand_name = brand_name + brand_name1;
+                    if (i != ids.length - 1) {
+                        brand_name = brand_name + ",";
+                    }
                 }
             }
             store.setBrand_name(brand_name);
@@ -190,13 +192,13 @@ public class StoreServiceImpl implements StoreService {
             user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD + area_code + ",", role_code,isactive);
         }
         for (User user1:user) {
-            if (user1.getIsactive().equals("Y")) {
+            if (user1.getIsactive() != null && user1.getIsactive().equals("Y")) {
                 user1.setIsactive("是");
             } else {
                 user1.setIsactive("否");
             }
-            if(user1.getSex()==null){
-                user1.setSex("男");
+            if(user1.getSex()==null || user1.getSex().equals("")){
+                user1.setSex("未知");
             }else if(user1.getSex().equals("F")){
                 user1.setSex("女");
             }else{
@@ -275,13 +277,6 @@ public class StoreServiceImpl implements StoreService {
         params.put("area_codes", areas);
         params.put("store_codes", stores);
         params.put("map", map);
-//        String brand_name = map.get("brand_name");
-//        map.remove("brand_name");
-//        if (map.size() == 0) {
-//            params.put("map", null);
-//        } else {
-//            params.put("map", map);
-//        }
 
         PageHelper.startPage(page_number, page_size);
         List<Store> list1 = storeMapper.selectAllStoreScreen(params);
@@ -294,51 +289,36 @@ public class StoreServiceImpl implements StoreService {
                 store.setIsactive("否");
             }
         }
-        //  list1 = ComparaBrandName(list1, brand_name);
         PageInfo<Store> page = new PageInfo<Store>(list1);
-        //page.setList(list1);
         return page;
     }
 
-    private List<Store> ComparaBrandName(List<Store> list, String brand_name) throws Exception{
-        if (brand_name == null || brand_name.isEmpty()) {
-            return list;
-        }
-        List<Store> newList = new ArrayList<Store>();
-        for (int i = 0; list != null && i < list.size(); i++) {
-            Store store = list.get(i);
-            //获取店铺的所有品牌实体
-            List<Brand> brands = storeMapper.selectBrandsStore(store.getCorp_code(), store.getBrand_code());
-            boolean isContain = false;
-            //检查品牌实体中是否包含店铺
-            for (int j = 0; brands != null && j < brands.size(); j++) {
-                if (brands.get(j).getBrand_name().contains(brand_name)) {
-                    isContain = true;
-                }
-            }
-            if (isContain) {
-                newList.add(store);
-            }
-            if (newList.size() >= 10) {
-                return newList;
-            }
-        }
-        return newList;
-    }
+//    private List<Store> ComparaBrandName(List<Store> list, String brand_name) throws Exception{
+//        if (brand_name == null || brand_name.isEmpty()) {
+//            return list;
+//        }
+//        List<Store> newList = new ArrayList<Store>();
+//        for (int i = 0; list != null && i < list.size(); i++) {
+//            Store store = list.get(i);
+//            //获取店铺的所有品牌实体
+//            List<Brand> brands = storeMapper.selectBrandsStore(store.getCorp_code(), store.getBrand_code());
+//            boolean isContain = false;
+//            //检查品牌实体中是否包含店铺
+//            for (int j = 0; brands != null && j < brands.size(); j++) {
+//                if (brands.get(j).getBrand_name().contains(brand_name)) {
+//                    isContain = true;
+//                }
+//            }
+//            if (isContain) {
+//                newList.add(store);
+//            }
+//            if (newList.size() >= 10) {
+//                return newList;
+//            }
+//        }
+//        return newList;
+//    }
 
-
-//
-//    @Override
-//    public PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String[] area_codes, Map<String, String> map) {
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("corp_code", corp_code);
-//        params.put("area_codes", area_codes);
-//        params.put("map", map);
-//        PageHelper.startPage(page_number, page_size);
-//        List<Store> list = storeMapper.selectAllStoreScreen(params);
-//        PageInfo<Store> page = new PageInfo<Store>(list);
-//        return page;
-    //}
 
 
     //修改店铺
