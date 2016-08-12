@@ -222,5 +222,24 @@ public class WebUtils {
         return   m.replaceAll("、").trim();
     }
 
+    /**
+     * 检查某个数组中是否有重复值
+     * @param array
+     * @return Boolean
+     * @throws Exception
+     */
+    public static Boolean checkRepeat(String[] array) throws Exception{
+        String[] array1=new String[array.length];
+        for (int i = 0; i < array.length; i++) {
+            String a = array[i];
+
+            if (Arrays.asList(array1).contains(a)){
+                return false;
+            }else {
+                array1[i] = a;
+            }
+        }
+        return true;
+    }
 }
 
