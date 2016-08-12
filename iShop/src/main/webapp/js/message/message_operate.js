@@ -1,4 +1,4 @@
-// var oc = new ObjectControl();
+var oc = new ObjectControl();
 var a="";
 var num=1;//区域默认第一页
 var dnum=1;//店铺默认第一页
@@ -159,7 +159,6 @@ function getstorelist(a){
 	$("#staff_input").val("");
 	$("#staff_input").attr("data-usercode","");
 	$("#staff_input").attr("data-userphone","");
-	$("#store_code ul").empty();
 	$("#staff_code ul").empty();
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/shop/selectByAreaCode", "", _param, function(data) {
@@ -227,6 +226,7 @@ function getstorelist(a){
 function getstafflist(a){
 	var corp_code = $('#OWN_CORP').val();
 	var store_code =$('#store_input').attr("data-storecode");
+	var area_code =$('#area_input').attr("data-areacode");
 	var searchValue=$("#staff_search").val();
 	var pageSize=100;
 	var pageNumber=a;
@@ -245,6 +245,7 @@ function getstafflist(a){
     var checknow_phone=[];
 	_param['corp_code']=corp_code;
 	_param['store_code']=store_code;
+	_param['area_code']=area_code;
 	_param['searchValue']=searchValue;
 	_param['pageNumber']=pageNumber;
 	_param['pageSize']=pageSize;
@@ -271,7 +272,7 @@ function getstafflist(a){
                         + "'/><label for='checkboxThreeInput"
                         + i
                         + 1
-                        + "'></label></div><span class='p16'>"+list[i].user_name+"</span></li>"
+                        + "'></label></div><span class='p16'>"+list[i].user_name+"("+list[i].phone+")</span></li>"
 				}
 				if(pageNumber==1){
 					$("#staff_code ul").html(staff_html);
@@ -301,10 +302,9 @@ function getstafflist(a){
 							$('#staff_input').val(checknow_namedata.toString());
 							$('#staff_input').attr('data-usercode', checknow_data.toString());
 							$('#staff_input').attr('data-userphone', checknow_phone.toString());
-							num=1
 						}
 					}
-				}	
+				}
 			}
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
@@ -318,11 +318,69 @@ function getstafflist(a){
 	})
 }
 //获取群组的列表
-function getgrouplist(a){
-	var param={};
-	var corp_code = $('#OWN_CORP').val();//公司编号
-	param["corp_code"]=corp_code;//把corp_code放进对象里面
-	
+function getgrouplist(){
+	var corp_code = $('#OWN_CORP').val();
+	if(corp_code==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请先选择企业"
+		});
+		return;
+	}
+	var _param={};
+	var checknow_data=[];
+    var checknow_namedata=[];
+	_param['corp_code']=corp_code;
+	whir.loading.add("",0.5);//加载等待框
+	oc.postRequire("post","/user/role", "", _param, function(data) {
+		if (data.code == "0") {
+			console.log(data);
+			var list=JSON.parse(data.message);
+			var list=JSON.parse(list.group);
+			console.log(list);
+			var group_html = '';
+			if (list.length == 0) {
+				$("#group_code ul").html("<li class='search_c'>没有内容</li>");
+			} else {
+				for (var i = 0; i < list.length; i++) {
+				    group_html+="<li><div class='checkbox_isactive'><input  type='checkbox' value='"+list[i].group_code+"' data-groupname='"+list[i].group_name+"' class='check'  id='checkboxFourInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxFourInput"
+                        + i
+                        + 1
+                        + "'></label></div><span class='p16'>"+list[i].group_name+"</span></li>"
+				}
+				$("#group_code ul").html(group_html);
+				var check_input = $('#group_code ul input');
+				for (var c = 0; c < check_input.length; c++) {
+					check_input[c].onclick = function() {
+						if (this.checked == true) {
+							checknow_data.push($(this).val());
+							checknow_namedata.push($(this).attr("data-groupname"));
+							$('#group_input').val(checknow_namedata.toString());
+							$('#group_input').attr('data-groupcode', checknow_data.toString());
+						} else if (this.checked == false) {
+							checknow_namedata.remove($(this).attr("data-groupname"));
+							checknow_data.remove($(this).val());
+							$('#group_input').val(checknow_namedata.toString());
+							$('#group_input').attr('data-groupcode', checknow_data.toString());
+						}
+					}
+				}	
+			}
+			whir.loading.remove();//移除加载框
+		} else if (data.code == "-1") {
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	})	
 }
 //点击弹出框
 var flase=0;
@@ -347,7 +405,6 @@ $('#add_sendee').click(function(e){
 				return;
 			}
 			$('#OWN_CORP').attr("corp_code",corp_code);
-			num=1;
 			getarealist(num);
 		}
 		if(send_mode=="发送至群组"){
@@ -355,7 +412,8 @@ $('#add_sendee').click(function(e){
 			console.log($("#group_frame").width());
 			var tp=($(window).height()-$("#group_frame").height())/2;//弹框定位的top值
 			$("#group_frame").css({"left":+left+"px","top":+tp+"px"});
-			$("#group_frame").show();	
+			$("#group_frame").show();
+			getgrouplist();
 		}
 	}else if(flase=="1"){
 		$(".distribution_frame").hide();
@@ -430,8 +488,39 @@ $("#staff_code_drop").click(function(e){
 	$(".distribution_frame").hide();
 	flase=0;
 })
+//点击群组确定
+$("#group_code_drop").click(function(e){
+	var event = window.event || arguments[0];
+	if (event.stopPropagation) {
+		event.stopPropagation();
+	} else {
+		event.cancelBubble = true;
+	}
+	var group_name=$("#group_input").val();
+	var group_code=$("#group_input").attr("data-groupcode");
+	if(group_name==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content: "请选择群组"
+		});
+		return;
+	}
+	group_name=group_name.split(',');
+	group_code=group_code.split(',');
+	for(var i=0;i<group_name.length;i++){
+		var a=$('#sendee_r p');
+		for(var j=0;j<a.length;j++){
+			if($(a[j]).attr("data-code")==group_code[i]){
+				$(a[j]).remove();
+			}
+		}
+		$('#sendee_r').append("<p data-code='"+group_code[i]+"'>"+group_name[i]+"</p>");	
+	}
+})
 $(document).click(function(e){
-	if($(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.drop-down .area_more')||$(e.target).is('.drop-down .drop_down_ul')||$(e.target).is('.drop-down span')||$(e.target).is('.drop-down .search i')||$(e.target).is('.drop-down h5')||$(e.target).is('.drop-down .checkbox_isactive')||$(e.target).is('.checkbox_isactive label')||$(e.target).is('.drop-down ul li')||$(e.target).is('.drop-down ul')){
+	if($(e.target).is('.drop_q')||$(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.drop-down .area_more')||$(e.target).is('.drop-down .drop_down_ul')||$(e.target).is('.drop-down span')||$(e.target).is('.drop-down .search i')||$(e.target).is('.drop-down h5')||$(e.target).is('.drop-down .checkbox_isactive')||$(e.target).is('.checkbox_isactive label')||$(e.target).is('.drop-down ul li')||$(e.target).is('.drop-down ul')){
 	    return;
     }else{
 	    $("#distribution_frame").hide();
@@ -494,105 +583,75 @@ $("#staff_more").click(function(){
 	getstafflist(ynum);
 })
 //点击保存
-$("#add_save").click(function(){
+$("#send").click(function(){
 	var _param={};
-	var a=$('.xingming li');
-	var user_codes="";
-	var phone="";
+	var a=$('#sendee_r p');
+	var group_code="";
 	for(var i=0;i<a.length;i++){
         var u=$(a[i]).attr("data-code");
         var p=$(a[i]).attr("data-phone");
         if(i<a.length-1){
-            user_codes+=u+",";
-            phone+=p+",";
+            group_code+=u+",";
         }else{
-             user_codes+=u;
-             phone+=p;
+            group_code+=u;
         }     
     }
-	var corp_code = $('#OWN_CORP').val();//公司编号
-	var task_type_code = $('#task_type_code').val();//公司类型
-	var task_title=$('#task_title').val();//任务名称
-	var task_description=$("#task_describe").val();//任务描述
-	var target_end_time=$("#target_end_time").val();//截止时间
-	var target_start_time=$("#target_start_time").val();//开始时间
-	var isactive = "";//是否可用
-	var input = $("#is_active")[0];
-	if(task_type_code==""){
+	var corp_code = $('#OWN_CORP').val();//公司编号;
+	var message_title = $('#message_title').val();//消息标题;
+	var message_content=$('#message_content').val();//消息内容;
+	var receiver_type="group";//接受人类型;
+	var message_receiver=group_code;//接受人;
+	var message_type=message_type//接受人类型
+	if(corp_code==""){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
-			content:"任务类型不能为空"
+			content:"企业不能为空"
 		});
 		return;
 	}
-	if(task_title==""){
+	if(message_title ==""){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
-			content:"任务名称不能为空"
+			content:"消息标题不能为空"
 		});
 		return;
 	}
-	if(task_description==""){
+	if(receiver_type==""){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
-			content:"任务描述不能为空"
+			content:"接收人类型不能为空"
 		});
 		return;
 	}
-	if(user_codes==""){
+	if(message_receiver==""){
 		art.dialog({
 			time: 1,
 			lock: true,
 			cancel: false,
-			content:"员工不能为空"
+			content:"接受人不能为空"
 		});
 		return;
 	}
-	if(target_end_time==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"截止时间不能为空"
-		});
-		return;
-	}
-	if(target_start_time==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"开始时间不能为空"
-		});
-		return;
-	}
-	if (input.checked == true) {
-		isactive = "Y";
-	} else if (input.checked == false) {
-		isactive = "N";
-	}
-	_param["user_codes"]=user_codes;
-	_param["phone"]=phone;
 	_param["corp_code"]=corp_code;
-	_param["task_type_code"]=task_type_code;
-	_param["task_title"]=task_title;
-	_param["task_description"]=task_description;
-	_param["target_end_time"]=target_end_time;
-	_param["target_start_time"]=target_start_time;
-	_param["isactive"]=isactive;
+	_param["message_title"]=message_title;
+	_param["message_content"]=message_content;
+	_param["receiver_type"]=receiver_type;
+	_param["message_receiver"]=message_receiver;
+	_param["message_type"]=message_type;
 	whir.loading.add("",0.5);//加载等待框
-	oc.postRequire("post","/task/addTask","", _param, function(data) {
+	oc.postRequire("post","/message/add","", _param, function(data) {
+		console.log(data);
 		if(data.code=="0"){
-			if(data.message=="新增成功"){
-				$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
-				whir.loading.remove();//移除加载框
-			}
+			// if(data.message=="新增成功"){
+			// 	$(window.parent.document).find('#iframepage').attr("src","/task/task.html");
+			// 	whir.loading.remove();//移除加载框
+			// }
 		}
 	})
 })
