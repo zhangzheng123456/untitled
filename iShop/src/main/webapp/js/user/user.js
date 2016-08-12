@@ -25,11 +25,14 @@ $(function(){
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
+                    inx=1;
                     GET(inx,pageSize);
                 }else if(value!==""){
                     param["pageSize"]=pageSize;
+                    inx=1;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
+                    inx=1;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
