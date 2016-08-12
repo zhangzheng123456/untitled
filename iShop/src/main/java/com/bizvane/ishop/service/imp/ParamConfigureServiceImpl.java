@@ -37,14 +37,14 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-    public ParamConfigure getParamByKey(String param_key) throws Exception {
-        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByKey(param_key);
+    public ParamConfigure getParamByKey(String param_name) throws Exception {
+        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByKey(param_name);
         return  paramConfigure;
     }
 
     @Override
-    public ParamConfigure getParamByName(String param_name) throws Exception {
-        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByName(param_name);
+    public ParamConfigure getParamByName(String param_desc) throws Exception {
+        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByName(param_desc);
         return  paramConfigure;
     }
 
