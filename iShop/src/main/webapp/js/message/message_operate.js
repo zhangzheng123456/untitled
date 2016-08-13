@@ -23,8 +23,7 @@ function getcorplist(a){
 			$("#OWN_CORP").searchableSelect();
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
-				getasktypelist(c,b);
-				$(".xingming").empty();
+				$("#sendee_r").empty();
 				$("#area_input").val("");
 				$("#area_input").attr("data-areacode","");
 				$("#store_input").val("");
@@ -32,6 +31,8 @@ function getcorplist(a){
 				$("#staff_input").val("");
 				$("#staff_input").attr("data-usercode","");
 				$("#staff_input").attr("data-userphone","");
+				$("#group_input").val("");
+				$("#group_input").attr("data-groupcode","");
 				$("#store_code ul").empty();
 				$("#staff_code ul").empty();
 			})
@@ -391,8 +392,17 @@ $('#add_sendee').click(function(e){
 	} else {
 		event.cancelBubble = true;
 	}
+	var send_mode=$('#send_mode').val();
+	if(send_mode==""){
+		art.dialog({
+			time: 1,
+			lock: true,
+			cancel: false,
+			content:"请选择发送方式"
+		});
+		return;
+	}
 	if(flase=="0"){
-		var send_mode=$('#send_mode').val();
 		flase=1;
 		if(send_mode=="发送至个人"){
 			$(".distribution_frame").show();
@@ -413,6 +423,12 @@ $('#add_sendee').click(function(e){
 			var tp=($(window).height()-$("#group_frame").height())/2;//弹框定位的top值
 			$("#group_frame").css({"left":+left+"px","top":+tp+"px"});
 			$("#group_frame").show();
+			var corp_code = $('#OWN_CORP').val();
+			var corp_code2=$('#OWN_CORP').attr("corp_codeq");
+			if(corp_code==corp_code2){
+				return;
+			}
+			$('#OWN_CORP').attr("corp_codeq",corp_code);
 			getgrouplist();
 		}
 	}else if(flase=="1"){
@@ -463,6 +479,12 @@ $("#staff_code_drop").click(function(e){
 		});
 		return;
 	}
+	var send_mode=$("#send_mode").val();//发送方式
+	var send_mode_code=$("#send_mode").attr("data-code");
+	if(send_mode_code!=send_mode){
+		$('#sendee_r').empty();
+	}
+	$('#send_mode').attr("data-code","发送至个人");
 	user_names=user_names.split(',');
 	user_codes=user_codes.split(',');
 	phone=phone.split(',');
@@ -471,13 +493,13 @@ $("#staff_code_drop").click(function(e){
 	console.log(phone);
 	var ul="";
 	for(var i=0;i<user_names.length;i++){
-		var a=$('.xingming li');
+		var a=$('#sendee_r p');
 		for(var j=0;j<a.length;j++){
 			if($(a[j]).attr("data-code")==user_codes[i]){
 				$(a[j]).remove();
 			}
 		}
-		$('.xingming').append("<li data-code='"+user_codes[i]+"' data-phone='"+phone[i]+"'>"+user_names[i]+"<div class='delectxing' onclick='deleteName(this)'></div></li>");	
+		$('#sendee_r').append("<p data-code='"+user_codes[i]+"' data-phone='"+phone[i]+"'>"+user_names[i]+"</li>");	
 	}
 	//删除姓名
 	$(".xingming li").hover(function(){
@@ -507,6 +529,12 @@ $("#group_code_drop").click(function(e){
 		});
 		return;
 	}
+	var send_mode_code=$("#send_mode").attr("data-code");
+	var send_mode=$("#send_mode").val();//发送方式
+	if(send_mode_code!=send_mode){
+		$('#sendee_r').empty();
+	}
+	$('#send_mode').attr("data-code","发送至群组");
 	group_name=group_name.split(',');
 	group_code=group_code.split(',');
 	for(var i=0;i<group_name.length;i++){
@@ -518,6 +546,8 @@ $("#group_code_drop").click(function(e){
 		}
 		$('#sendee_r').append("<p data-code='"+group_code[i]+"'>"+group_name[i]+"</p>");	
 	}
+	$("#group_frame").hide();
+	flase=0;
 })
 $(document).click(function(e){
 	if($(e.target).is('.drop_q')||$(e.target).is('.drop-down')||$(e.target).is('.drop-down input')||$(e.target).is('.drop-down .area_more')||$(e.target).is('.drop-down .drop_down_ul')||$(e.target).is('.drop-down span')||$(e.target).is('.drop-down .search i')||$(e.target).is('.drop-down h5')||$(e.target).is('.drop-down .checkbox_isactive')||$(e.target).is('.checkbox_isactive label')||$(e.target).is('.drop-down ul li')||$(e.target).is('.drop-down ul')){
@@ -584,24 +614,47 @@ $("#staff_more").click(function(){
 })
 //点击保存
 $("#send").click(function(){
-	var _param={};
 	var a=$('#sendee_r p');
 	var group_code="";
-	for(var i=0;i<a.length;i++){
-        var u=$(a[i]).attr("data-code");
-        var p=$(a[i]).attr("data-phone");
-        if(i<a.length-1){
-            group_code+=u+",";
-        }else{
-            group_code+=u;
-        }     
+	var user_code="";
+	var phone="";
+    var message_type="";//消息类型
+    if($("#MESSAGE_TYPE").val()=="短信"){
+    	message_type="0";
+    }else if($("#MESSAGE_TYPE").val()=="通知"){
+    	message_type="1";
     }
+    var receiver_type="";//接受人类型;
+    if($("#send_mode").val()=="发送至群组"){
+    	receiver_type="group";
+    	for(var i=0;i<a.length;i++){
+	        var u=$(a[i]).attr("data-code");
+	        var p=$(a[i]).attr("data-phone");
+	        if(i<a.length-1){
+	            group_code+=u+",";
+	        }else{
+	            group_code+=u;
+	        }     
+    	}
+    }else if($("#send_mode").val()=="发送至个人"){
+    	receiver_type="user";
+    	for(var i=0;i<a.length;i++){
+	        var u=$(a[i]).attr("data-code");
+	        var p=$(a[i]).attr("data-phone");
+	        if(i<a.length-1){
+	            user_code+=u+",";
+	            phone+=p",";
+	        }else{
+	            user_code+=u;
+	            phone+=p;
+	        }     
+    	}
+    }
+    $("#send_mode").val();
 	var corp_code = $('#OWN_CORP').val();//公司编号;
 	var message_title = $('#message_title').val();//消息标题;
 	var message_content=$('#message_content').val();//消息内容;
-	var receiver_type="group";//接受人类型;
 	var message_receiver=group_code;//接受人;
-	var message_type=message_type//接受人类型
 	if(corp_code==""){
 		art.dialog({
 			time: 1,
@@ -638,12 +691,25 @@ $("#send").click(function(){
 		});
 		return;
 	}
-	_param["corp_code"]=corp_code;
-	_param["message_title"]=message_title;
-	_param["message_content"]=message_content;
-	_param["receiver_type"]=receiver_type;
-	_param["message_receiver"]=message_receiver;
-	_param["message_type"]=message_type;
+	if(receiver_type=="group"){
+		var _param={};
+		_param["corp_code"]=corp_code;
+		_param["message_title"]=message_title;
+		_param["message_content"]=message_content;
+		_param["receiver_type"]=receiver_type;
+		_param["message_receiver"]=message_receiver;
+		_param["message_type"]=message_type;
+	}else if(receiver_type=="user"){
+		var _param={};
+		_param["corp_code"]=corp_code;
+		_param["message_title"]=message_title;
+		_param["message_content"]=message_content;
+		_param["receiver_type"]=receiver_type;
+		_param["message_receiver"]=message_receiver;
+		_param["message_type"]=message_type;
+		_param["user_code"]=user_code;
+		_param["phone"]=phone;
+	}
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/message/add","", _param, function(data) {
 		console.log(data);
@@ -767,40 +833,6 @@ $("#edit_save").click(function(){
 	})
 })
 getcorplist(a);
-var param = {};
-function nssignment(){//加载list的文件
-	oc.postRequire("post", "/task/selectTaskById", "0", param, function(data) {
- 		var msg=data.message;
- 		var msg=JSON.parse(msg);
- 		var list=JSON.parse(msg.list);
- 		var msg=JSON.parse(msg.task);
- 		console.log(list);
- 		console.log(msg);
- 		var corp_code=msg.corp_code;//公司编号
- 		var task_code=msg.task_code;//任务编号
- 		var ul="";
- 		for(var i=0;i<list.length;i++){
- 			ul+="<li data-code='"+list[i].user_code+"' data-phone='"+list[i].phone+"'>"+list[i].user_name+"<div class='delectxing' onclick='deleteName(this)'></div></li>";	
- 		}
- 		$('.xingming').html(ul);
- 		$(".xingming li").hover(function(){
-	    	$(this).find('.delectxing').show();
-		},function(){
-		    $(this).find('.delectxing').hide();
-		})
- 		$("#task_title_e").val(msg.task_title);//任务名称
- 		$("#task_describe").val(msg.task_description);//任务描述
- 		$("#task_code_e").val(msg.task_code);//任务编号
- 		$("#target_start_time_e").val(msg.target_start_time);//开始时间
- 		$("#target_end_time_e").val(msg.target_end_time);//截止时间
- 		$("#created_time").val(msg.created_date);//创建时间
-		$("#creator").val(msg.creater);//创建人
-		$("#modify_time").val(msg.modified_date);//修改时间
-		$("#modifier").val(msg.modifier);//修改人
- 		getcorplist(corp_code,task_code);//
- 		whir.loading.remove();//移除加载框
- 	});
-}
 //删除名称
 function deleteName(a){
 	$(a).parent("li").remove();
