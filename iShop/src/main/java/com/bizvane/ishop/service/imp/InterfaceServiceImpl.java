@@ -6,6 +6,7 @@ import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.service.InterfaceService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +32,7 @@ public class InterfaceServiceImpl implements InterfaceService{
         PageHelper.startPage(page_number, page_size);
         List<Interfacers> list = interfaceMapper.selectAllScreen(params);
         for (Interfacers interfacers:list) {
-            if(interfacers.getIsactive().equals("Y")){
-                interfacers.setIsactive("是");
-            }else{
-                interfacers.setIsactive("否");
-            }
+            interfacers.setIsactive(CheckUtils.CheckIsactive(interfacers.getIsactive()));
         }
         PageInfo<Interfacers> page = new PageInfo<Interfacers>(list);
         return page;
@@ -51,11 +48,7 @@ public class InterfaceServiceImpl implements InterfaceService{
         PageHelper.startPage(page_number, page_size);
         List<Interfacers> interfacerses = interfaceMapper.selectAllInterface(search_value);
         for (Interfacers interfacers:interfacerses) {
-            if(interfacers.getIsactive().equals("Y")){
-                interfacers.setIsactive("是");
-            }else{
-                interfacers.setIsactive("否");
-            }
+            interfacers.setIsactive(CheckUtils.CheckIsactive(interfacers.getIsactive()));
         }
         PageInfo<Interfacers> page = new PageInfo<Interfacers>(interfacerses);
         return page;

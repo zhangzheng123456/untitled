@@ -5,6 +5,7 @@ import com.bizvane.ishop.dao.SignMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.SignService;
 import com.bizvane.ishop.service.StoreService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,13 +60,11 @@ public class SignServiceImpl implements SignService {
         PageHelper.startPage(page_number, page_size);
         signs = signMapper.selectSignByInp(params);
         for (Sign sign:signs) {
-            if(sign.getIsactive().equals("Y")){
-                sign.setIsactive("是");
-            }else{
-                sign.setIsactive("否");
-            }
+            sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
-            if(sign.getStatus().equals("0")){
+            if(sign.getStatus()==null||sign.getStatus().equals("")){
+                sign.setStatus("");
+            }else if(sign.getStatus().equals("0")){
                 sign.setStatus("签到");
             }else{
                 sign.setStatus("签退");
@@ -80,13 +79,11 @@ public class SignServiceImpl implements SignService {
         PageHelper.startPage(page_number, page_size);
         List<Sign> signs = signMapper.selectByUser(corp_code, user_code, search_value);
         for (Sign sign:signs) {
-            if(sign.getIsactive().equals("Y")){
-                sign.setIsactive("是");
-            }else{
-                sign.setIsactive("否");
-            }
+            sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
-            if(sign.getStatus().equals("0")){
+            if(sign.getStatus()==null||sign.getStatus().equals("")){
+                sign.setStatus("");
+            }else  if(sign.getStatus().equals("0")){
                 sign.setStatus("签到");
             }else{
                 sign.setStatus("签退");
@@ -132,13 +129,11 @@ public class SignServiceImpl implements SignService {
         PageHelper.startPage(page_number, page_size);
         signs = signMapper.selectSignAllScreen(params);
         for (Sign sign:signs) {
-            if(sign.getIsactive().equals("Y")){
-                sign.setIsactive("是");
-            }else{
-                sign.setIsactive("否");
-            }
+            sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
-            if(sign.getStatus().equals("0")){
+            if(sign.getStatus()==null||sign.getStatus().equals("")){
+                sign.setStatus("");
+            }else   if(sign.getStatus().equals("0")){
                 sign.setStatus("签到");
             }else{
                 sign.setStatus("签退");
@@ -157,13 +152,11 @@ public class SignServiceImpl implements SignService {
         PageHelper.startPage(page_number, page_size);
         List<Sign> list = signMapper.selectSignAllScreenUser(params);
         for (Sign sign:list) {
-            if(sign.getIsactive().equals("Y")){
-                sign.setIsactive("是");
-            }else{
-                sign.setIsactive("否");
-            }
+            sign.setIsactive(CheckUtils.CheckIsactive(sign.getIsactive()));
             //0是签到，-1是签退
-            if(sign.getStatus().equals("0")){
+            if(sign.getStatus()==null||sign.getStatus().equals("")){
+                sign.setStatus("");
+            }else   if(sign.getStatus().equals("0")){
                 sign.setStatus("签到");
             }else{
                 sign.setStatus("签退");

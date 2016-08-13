@@ -5,6 +5,7 @@ import com.bizvane.ishop.dao.VipLabelMapper;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.VipLabelService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,12 +72,10 @@ public class VipLabelServiceImpl implements VipLabelService {
         PageHelper.startPage(page_number, page_size);
         list = vipLabelMapper.selectAllVipLabel(corp_code, search_value);
         for (VipLabel vipLabel:list) {
-            if (vipLabel.getIsactive().equals("Y")) {
-                vipLabel.setIsactive("是");
-            } else {
-                vipLabel.setIsactive("否");
-            }
-            if(vipLabel.getLabel_type().equals("user")){
+            vipLabel.setIsactive(CheckUtils.CheckIsactive(vipLabel.getIsactive()));
+            if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
+                vipLabel.setLabel_type("");
+            }else if(vipLabel.getLabel_type().equals("user")){
                 vipLabel.setLabel_type("用户");
             }else if(vipLabel.getLabel_type().equals("sys")){
                 vipLabel.setLabel_type("系统");
@@ -97,12 +96,10 @@ public class VipLabelServiceImpl implements VipLabelService {
         PageHelper.startPage(page_number, page_size);
         labels = vipLabelMapper.selectAllViplabelScreen(params);
         for (VipLabel vipLabel:labels) {
-            if (vipLabel.getIsactive().equals("Y")) {
-                vipLabel.setIsactive("是");
-            } else {
-                vipLabel.setIsactive("否");
-            }
-            if(vipLabel.getLabel_type().equals("user")){
+            vipLabel.setIsactive(CheckUtils.CheckIsactive(vipLabel.getIsactive()));
+            if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
+                vipLabel.setLabel_type("");
+            }else if(vipLabel.getLabel_type().equals("user")){
                 vipLabel.setLabel_type("用户");
             }else if(vipLabel.getLabel_type().equals("sys")){
                 vipLabel.setLabel_type("系统");

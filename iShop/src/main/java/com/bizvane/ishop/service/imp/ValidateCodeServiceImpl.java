@@ -6,6 +6,7 @@ import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.service.ValidateCodeService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
@@ -37,11 +38,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         PageHelper.startPage(page_number, page_size);
         List<ValidateCode> list = validataCodeMapper.selectAllScreen(params);
         for (ValidateCode validateCode:list) {
-            if (validateCode.getIsactive().equals("Y")) {
-                validateCode.setIsactive("是");
-            } else {
-                validateCode.setIsactive("否");
-            }
+            validateCode.setIsactive(CheckUtils.CheckIsactive(validateCode.getIsactive()));
         }
         PageInfo<ValidateCode> page = new PageInfo<ValidateCode>(list);
         return page;
@@ -74,11 +71,7 @@ public class ValidateCodeServiceImpl implements ValidateCodeService {
         PageHelper.startPage(page_number, page_size);
         List<ValidateCode> validateCodes = validataCodeMapper.selectAllValidateCode(search_value);
         for (ValidateCode validateCode:validateCodes) {
-            if (validateCode.getIsactive().equals("Y")) {
-                validateCode.setIsactive("是");
-            } else {
-                validateCode.setIsactive("否");
-            }
+            validateCode.setIsactive(CheckUtils.CheckIsactive(validateCode.getIsactive()));
         }
         PageInfo<ValidateCode> page=new PageInfo<ValidateCode>(validateCodes);
         return page;

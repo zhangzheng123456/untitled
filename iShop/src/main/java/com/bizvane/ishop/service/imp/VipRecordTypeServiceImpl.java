@@ -4,6 +4,7 @@ import com.bizvane.ishop.dao.VipRecordTypeMapper;
 import com.bizvane.ishop.entity.VipRecord;
 import com.bizvane.ishop.entity.VipRecordType;
 import com.bizvane.ishop.service.VipRecordTypeService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,11 +48,7 @@ public class VipRecordTypeServiceImpl implements VipRecordTypeService {
         PageHelper.startPage(page_number, page_size);
         List<VipRecordType> list = this.vipRecordTypeMapper.selectAllVipRecordType(corp_code, search_value);
         for (VipRecordType vipRecordType:list) {
-            if (vipRecordType.getIsactive().equals("Y")) {
-                vipRecordType.setIsactive("是");
-            } else {
-                vipRecordType.setIsactive("否");
-            }
+            vipRecordType.setIsactive(CheckUtils.CheckIsactive(vipRecordType.getIsactive()));
         }
         pageInfo = new PageInfo<VipRecordType>(list);
         return pageInfo;

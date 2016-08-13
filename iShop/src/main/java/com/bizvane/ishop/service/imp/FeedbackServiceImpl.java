@@ -5,6 +5,7 @@ import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.service.FeedbackService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,13 +35,9 @@ public class FeedbackServiceImpl implements FeedbackService{
         PageHelper.startPage(page_number, page_size);
         List<Feedback> feedbacks = feedbackMapper.selectAllFeedback(search_value);
         for (Feedback feedback:feedbacks) {
-            if(feedback.getIsactive().equals("Y")){
-                feedback.setIsactive("是");
-            }else{
-                feedback.setIsactive("否");
-            }
+            feedback.setIsactive(CheckUtils.CheckIsactive(feedback.getIsactive()));
             if(feedback.getProcess_state()==null || feedback.getProcess_state().equals("")){
-                feedback.setProcess_state("未处理");
+                feedback.setProcess_state("");
             }else if(feedback.getProcess_state().equals("0")){
                 feedback.setProcess_state("未处理");
             }else if(feedback.getProcess_state().equals("1")){
@@ -66,13 +63,9 @@ public PageInfo<Feedback> selectAllScreen(int page_number, int page_size, Map<St
     PageHelper.startPage(page_number, page_size);
     List<Feedback> list = feedbackMapper.selectAllScreen(params);
     for (Feedback feedback:list) {
-        if(feedback.getIsactive().equals("Y")){
-            feedback.setIsactive("是");
-        }else{
-            feedback.setIsactive("否");
-        }
+        feedback.setIsactive(CheckUtils.CheckIsactive(feedback.getIsactive()));
         if(feedback.getProcess_state()==null || feedback.getProcess_state().equals("")){
-            feedback.setProcess_state("未处理");
+            feedback.setProcess_state("");
         }else if(feedback.getProcess_state().equals("0")){
             feedback.setProcess_state("未处理");
         }else if(feedback.getProcess_state().equals("1")){

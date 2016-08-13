@@ -4,6 +4,7 @@ import com.bizvane.ishop.dao.VipRecordMapper;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.entity.VipRecord;
 import com.bizvane.ishop.service.VipRecordService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +36,7 @@ public class VipRecordServiceImpl implements VipRecordService {
         PageHelper.startPage(page_number, page_size);
         records = this.VipRecordMapper.selectAllVipRecordScreen(params);
         for (VipRecord vipRecord:records) {
-            if (vipRecord.getIsactive().equals("Y")) {
-                vipRecord.setIsactive("是");
-            } else {
-                vipRecord.setIsactive("否");
-            }
+            vipRecord.setIsactive(CheckUtils.CheckIsactive(vipRecord.getIsactive()));
         }
         PageInfo<VipRecord> page = new PageInfo<VipRecord>(records);
         return page;
@@ -71,11 +68,7 @@ public class VipRecordServiceImpl implements VipRecordService {
         PageHelper.startPage(page_number, page_size);
         List<VipRecord> list = this.VipRecordMapper.selectAllVipRecordInfo(corp_code, search_value);
         for (VipRecord vipRecord:list) {
-            if (vipRecord.getIsactive().equals("Y")) {
-                vipRecord.setIsactive("是");
-            } else {
-                vipRecord.setIsactive("否");
-            }
+            vipRecord.setIsactive(CheckUtils.CheckIsactive(vipRecord.getIsactive()));
         }
         PageInfo<VipRecord> page = new PageInfo<VipRecord>(list);
         return page;
