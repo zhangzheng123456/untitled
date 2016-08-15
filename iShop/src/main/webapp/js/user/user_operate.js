@@ -671,7 +671,7 @@ function minusshopselect(obj){//店铺  删除
 	$(obj).parent().remove();
 }
 $(document).click(function(e){
-	if($(e.target).is('.store_list_kuang')||$(e.target).is('.store_list_kuang .search')||$(e.target).is('.store_list_kuang ul')||$(e.target).is('.store_list_kuang li')){
+	if($(e.target).is('.shop_list .input_select')||$(e.target).is('.store_list_kuang')||$(e.target).is('.store_list_kuang .search')||$(e.target).is('.store_list_kuang ul')||$(e.target).is('.store_list_kuang li')){
 	    return;
 	}else{
 	    $(".store_list_kuang").hide();

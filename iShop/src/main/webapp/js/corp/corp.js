@@ -30,10 +30,12 @@ $(function(){
                 }else if(value!==""){
                     inx=1;
                     param["pageSize"]=pageSize;
+                    param["pageNumber"]=1;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
                     inx=1;
                     _param["pageSize"]=pageSize;
+                    _param["pageNumber"]=1;
                     filtrates(inx,pageSize); 
                 }
                 $("#page_row").val($(this).html());  
