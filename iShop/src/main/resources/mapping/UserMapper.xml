@@ -155,7 +155,9 @@
         def_user.id,
         user_code,
         user_name,
-        phone
+        phone,
+        def_user.ISACTIVE,
+        def_group.isactive
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code
@@ -175,13 +177,14 @@
             </foreach>
             )
         </if>
-        AND def_user.ISACTIVE='Y'
-        AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
         GROUP BY def_user.user_code
+        HAVING 1=1
         <if test="search_value != null and search_value !=''">
-            HAVING  USER_NAME LIKE concat('%',#{search_value},'%')
+            AND  USER_NAME LIKE concat('%',#{search_value},'%')
         </if>
+        AND def_user.ISACTIVE='Y'
+        AND def_group.isactive = 'Y'
         ORDER BY def_user.id DESC
     </select>
 
