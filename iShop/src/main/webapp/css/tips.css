@@ -319,3 +319,8 @@
 .store_list_kuang_hide{
 	display:none !important;
 }
+.shop_list .input_select{
+	width: 310px!important;
+	background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
+	background-size: 30px;
+}
