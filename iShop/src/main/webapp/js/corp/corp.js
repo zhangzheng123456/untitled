@@ -10,7 +10,7 @@ var list="";
 var cout="";
 var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
-key_val=JSON.parse(key_val);
+key_val=JSON.parse(key_val);//取
 var funcCode=key_val.func_code;
 //模仿select
 $(function(){  
@@ -30,10 +30,12 @@ $(function(){
                 }else if(value!==""){
                     inx=1;
                     param["pageSize"]=pageSize;
+                    param["pageNumber"]=1;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
                     inx=1;
                     _param["pageSize"]=pageSize;
+                    _param["pageNumber"]=1;
                     filtrates(inx,pageSize); 
                 }
                 $("#page_row").val($(this).html());  
@@ -126,7 +128,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
     container.innerHTML = a.join("");
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
-        var inx = pageindex; //初始的页码
+        inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
         $(".foot-sum .zy").html("共 "+count+"页");
         oAlink[0].onclick = function() { //点击上一页

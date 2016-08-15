@@ -9,6 +9,7 @@ import com.bizvane.ishop.service.CorpParamService;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.apache.xmlbeans.impl.xb.xsdschema.ListDocument;
@@ -20,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nanji on 2016/8/11.
@@ -298,6 +301,34 @@ public class CorpParamController {
     @ResponseBody
     public String Screen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String id="";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-------corpParam--------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<CorpParam> list = null;
+            String corpParams = request.getSession(false).getAttribute("corpParams").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String param_name = request.getSession(false).getAttribute("param_name").toString();
+            list = corpParamService.selectAllParamScreen(page_number, page_size, corp_code,param_name, map);
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+
         return dataBean.getJsonStr();
     }
 

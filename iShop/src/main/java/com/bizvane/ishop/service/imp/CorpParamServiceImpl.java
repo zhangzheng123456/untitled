@@ -10,6 +10,7 @@ import com.bizvane.ishop.entity.CorpParam;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
 import com.bizvane.ishop.service.CorpParamService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -126,25 +127,21 @@ public class CorpParamServiceImpl implements CorpParamService {
     public int delete(int id) throws Exception {
         return corpParamMapper.deleteById(id);
     }
-
-//    @Override
-//    public PageInfo<CorpParam> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception {
-//        String[] areaArray = null;
-//        if (null != area_codes && !area_codes.isEmpty()) {
-//            areaArray = area_codes.split(",");
-//            for (int i = 0; areaArray != null && i < areaArray.length; i++) {
-//                areaArray[i] = areaArray[i].substring(1, areaArray[i].length());
-//            }
-//        }
-//        List<CorpParam> areas;
-//        PageHelper.startPage(page_number, page_size);
-//        Map<String, Object> params = new HashMap<String, Object>();
-//        params.put("area_codes", areaArray);
-//        params.put("corp_code", corp_code);
-//        params.put("map", map);
-//        areas = areaMapper.selectAllAreaScreen(params);
-//
-//        PageInfo<CorpParam> page = new PageInfo<CorpParam>(areas);
-//        return page;
-//    }
+    @Override
+     public PageInfo<CorpParam> selectAllParamScreen(int page_number, int page_size, String corp_code,String param_name, Map<String, String> map) throws Exception {
+        String[] corpParamArray = null;
+        List<CorpParam> corp_params;
+        PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corpParams", corpParamArray);
+        params.put("corp_code", corp_code);
+        params.put("param_name", param_name);
+        params.put("map", map);
+        corp_params = corpParamMapper.selectAllParamScreen(params);
+        for (CorpParam corp_param : corp_params) {
+            corp_param.setIsactive(CheckUtils.CheckIsactive(corp_param.getIsactive()));
+        }
+        PageInfo<CorpParam> page = new PageInfo<CorpParam>(corp_params);
+        return page;
+    }
 }

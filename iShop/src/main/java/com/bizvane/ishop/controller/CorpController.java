@@ -7,6 +7,7 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Corp;
 //import com.bizvane.ishop.entity.CorpWechatRelation;
+import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.CorpService;
@@ -265,8 +266,14 @@ public class CorpController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_id = jsonObject.get("id").toString();
-
-            data = JSON.toJSONString(corpService.selectByCorpId(Integer.parseInt(corp_id), "",""));
+            Corp corp = corpService.selectByCorpId(Integer.parseInt(corp_id), "","");
+            List<CorpWechat> corpWechat = corpService.getWByCorp(corp.getCorp_code());
+            if (corpWechat.size()==0){
+                corp.setApp_id("");
+            }else {
+                corp.setApp_id(corpWechat.get(0).getApp_id());
+            }
+            data = JSON.toJSONString(corp);
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
