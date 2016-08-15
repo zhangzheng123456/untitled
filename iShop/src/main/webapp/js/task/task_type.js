@@ -492,7 +492,7 @@ $("#file_submit").click(function(){
     }else if(filtrate!==""){
         param["list"]=list;
     }
-    oc.postRequire("post","/corp/exportExecl","0",param,function(data){
+    oc.postRequire("post","/task_type/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var path=message.path;

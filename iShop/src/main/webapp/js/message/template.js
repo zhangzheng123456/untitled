@@ -488,10 +488,11 @@ $("#leading_out").click(function(){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
+            whir.loading.remove();//移除加载框
         }
-        whir.loading.remove();//移除加载框
     })
 })
 //导出提交的
