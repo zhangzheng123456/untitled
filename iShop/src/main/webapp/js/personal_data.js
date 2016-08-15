@@ -71,7 +71,7 @@ var oc = new ObjectControl();
         $("#personal_save").click(function(){
             if(useroperatejs.firstStep()){
                 var ID=$("#id").val();
-                var HEADIMG=$("#IMG").val();
+                var HEADIMG=$("#IMG").attr("src");
                 var USERID=$("#USER_ID").val();
                 var CORP_CODE=$("#corp_code").val();//空字段
                 var GROUP_CODE=$("#group_code").val();//空字段
@@ -102,7 +102,7 @@ var oc = new ObjectControl();
                 _params["id"]=ID;//ID
                 _params["user_code"]=USERID;//员工编号
                 _params["username"]=USER_NAME;//员工名称
-                _params["avater"]=HEADIMG;//头像
+                _params["avatar"]=HEADIMG;//头像
                 _params["position"]=POSITION;//职务
                 _params["phone"]=USER_PHONE;//手机
                 _params["email"]=USER_EMAIL//邮箱
@@ -180,7 +180,7 @@ jQuery(document).ready(function(){
                      msg=JSON.parse(msg.user);
                  console.log(msg);
                  $("#id").val(msg.id);
-                 $("#IMG").val(msg.avater);
+                 $("#IMG").attr("src",msg.avatar);
                  $("#OWN_CORP").val(msg.corp_name);
                  $("#USER_ID").val(msg.user_code);
                  $("#USER_NAME").val(msg.user_name);
