@@ -4,6 +4,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.ParamConfigureMapper;
 import com.bizvane.ishop.entity.ParamConfigure;
 import com.bizvane.ishop.service.ParamConfigureService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -154,4 +155,28 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         PageInfo<ParamConfigure> page = new PageInfo<ParamConfigure>(paramConfigures);
         return page;
     }
+
+    @Override
+   public  PageInfo<ParamConfigure> selectParamScreen(int page_number, int page_size, String param_names , Map<String, String> map) throws Exception{
+        String[] paramArray = null;
+        if (null != param_names && !param_names.isEmpty()) {
+            paramArray = param_names.split(",");
+            for (int i = 0; paramArray != null && i < paramArray.length; i++) {
+                paramArray[i] = paramArray[i].substring(1, paramArray[i].length());
+            }
+        }
+
+        List<ParamConfigure> names;
+        PageHelper.startPage(page_number, page_size);
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("param_names", paramArray);
+        params.put("map", map);
+        names = paramConfigureMapper.selectParamScreen(params);
+        PageInfo<ParamConfigure> page = new PageInfo<ParamConfigure>(names);
+        return page;
+
+    }
+
+
+
 }

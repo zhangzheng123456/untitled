@@ -156,16 +156,28 @@
     <select id="selectAllParamScreen" resultType="com.bizvane.ishop.entity.CorpParam">
         SELECT
         rcc.*,
-        dc.corp_name
-        FROM rel_corp_cfg rcc,def_corp dc
+        dc.corp_name,
+        dcc.param_name
+        FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
         WHERE rcc.corp_code = dc.corp_code
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+        AND rcc.param_id=dcc.id
+        <if test="corp_code!=null and corp_code!=''">
+            AND rcc.corp_code=#{corp_code}
+        </if>
+        AND<foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryKey=='corp_name'">
                     dc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryKey=='param_name'">
+                    dcc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+
+                <when test="entryValue!=''">
                     rcc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
                 </otherwise>
             </choose>
         </foreach>

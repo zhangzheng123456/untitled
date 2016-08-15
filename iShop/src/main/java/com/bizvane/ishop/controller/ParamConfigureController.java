@@ -10,6 +10,7 @@ import com.bizvane.ishop.service.CorpParamService;
 import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.ParamConfigureService;
 
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -21,7 +22,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by yan on 2016/8/10.
@@ -308,4 +311,40 @@ public class ParamConfigureController {
         return dataBean.getJsonStr();
 }
 
-}
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
+    @ResponseBody
+    public String Screen(HttpServletRequest request) {
+
+        DataBean dataBean = new DataBean();
+        String id = "";
+
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-------screen--------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            JSONObject result = new JSONObject();
+            PageInfo<ParamConfigure> list = null;
+            String param_names = request.getSession(false).getAttribute("param_names").toString();
+            list=paramConfigureService.selectParamScreen(page_number,page_size,param_names,map);
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+
+
+
+
+        return dataBean.getJsonStr();
+    }
+    }

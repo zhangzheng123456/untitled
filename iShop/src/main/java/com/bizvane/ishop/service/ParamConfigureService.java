@@ -28,4 +28,7 @@ public interface ParamConfigureService {
     int delete(int id) throws Exception;
 
     PageInfo<ParamConfigure> selectByParamSearch(int page_number, int page_size, String param_keys, String search_value) throws Exception;
+
+    PageInfo<ParamConfigure> selectParamScreen(int page_number, int page_size, String param_names , Map<String, String> map) throws Exception;
+
 }

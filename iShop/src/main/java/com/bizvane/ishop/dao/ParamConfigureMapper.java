@@ -23,4 +23,6 @@ public interface ParamConfigureMapper {
 
     List<ParamConfigure> selectByParamSearch(Map<String, Object> params) throws SQLException;
 
+    List<ParamConfigure> selectParamScreen(Map<String, Object> params) throws SQLException;
+
 }
