@@ -30,9 +30,11 @@ $(function(){
                 }else if(value!==""){
                     inx=1;
                     param["pageSize"]=pageSize;
+                    param["pageNumber"]=1;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
                     inx=1;
+                    _param["pageNumber"]=1;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
