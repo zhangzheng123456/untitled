@@ -484,7 +484,7 @@ $("#leading_out").click(function(){
             var message=JSON.parse(message.tableManagers);
             console.log(message);
             $("#file_list ul").empty();
-            for(var i=0;i<=message.length;i++){
+            for(var i=0;i<message.length;i++){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
@@ -498,18 +498,21 @@ $("#leading_out").click(function(){
 $("#file_submit").click(function(){
     var li=$("#file_list input[type='checkbox']:checked").parents("li");
     var param={};
-    console.log(li.length);
-    for(var i=0,column_name="";i<li.length;i++){
+    var tablemanager=[];
+    for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
-        if(i<li.length-1){
-            column_name+=r+",";
-        }else{
-             column_name+=r;
-        }     
+        var z=$(li[i]).children("span").html();
+        var param1={"column_name":r,"show_name":z};
+        tablemanager.push(param1);
     }
     tablemanager.reverse();
-    param["column_name"]=column_name;
+    param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
+    if(filtrate==""){
+        param["list"]="";
+    }else if(filtrate!==""){
+        param["list"]=list;
+    }
     if(filtrate==""){
         param["list"]="";
     }else if(filtrate!==""){

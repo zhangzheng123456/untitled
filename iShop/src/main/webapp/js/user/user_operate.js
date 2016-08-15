@@ -136,7 +136,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 	can_login="N";
                 }
 				var STORE_CODE="";
-				var storelist_length=$(".shop_list input");;
+				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
 					var r=$(storelist_length[i]).attr("data-myscode");
 					if(i<storelist_length.length-1){
@@ -243,7 +243,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }
 
 				var STORE_CODE="";
-				var storelist_length=$(".shop_list input");;
+				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
 					var r=$(storelist_length[i]).attr("data-myscode");
 					if(i<storelist_length.length-1){

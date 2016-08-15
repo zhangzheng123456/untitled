@@ -2,6 +2,7 @@ var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
+var pageNumber=1;//删除的默认的第一页;
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
@@ -29,10 +30,12 @@ $(function(){
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
+                    param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
                     inx=1;
+                    _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
@@ -124,7 +127,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
     container.innerHTML = a.join("");
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
-        var inx = pageindex; //初始的页码
+        inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
         $(".foot-sum .zy").html("共 "+count+"页");
         oAlink[0].onclick = function() { //点击上一页
@@ -170,6 +173,9 @@ function dian(a,b){//点击分页的时候调什么接口
 }
 function superaddition(data,num){//页面加载循环
     console.log(data);
+    if(data.length==1&&num>1){
+        pageNumber=num-1;
+    }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -312,6 +318,7 @@ function jumpBianse(){
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
+    inx=1;
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
@@ -323,6 +330,7 @@ $("#search").keydown(function() {
 //点击放大镜触发搜索
 $("#d_search").click(function(){
     value=$("#search").val().replace(/\s+/g,"");
+    inx=1;
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
@@ -398,10 +406,12 @@ $("#delete").click(function(){
             } else if (value !== "") {
                 frame();
                 $('.frame').html('删除成功');
+                param["pageNumber"]=inx;
                 POST(inx, pageSize);
             } else if (filtrate !== "") {
                 frame();
                 $('.frame').html('删除成功');
+                _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
         var thinput=$("thead input")[0];
@@ -465,7 +475,7 @@ $("#leading_out").click(function(){
             var message=JSON.parse(message.tableManagers);
             console.log(message);
             $("#file_list ul").empty();
-            for(var i=0;i<=message.length;i++){
+            for(var i=0;i<message.length;i++){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
@@ -625,6 +635,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
