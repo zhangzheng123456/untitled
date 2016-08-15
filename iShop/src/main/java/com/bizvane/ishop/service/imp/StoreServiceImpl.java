@@ -2,10 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
-import com.bizvane.ishop.entity.Brand;
-import com.bizvane.ishop.entity.Interfacers;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
@@ -460,9 +457,14 @@ public class StoreServiceImpl implements StoreService {
         codeUpdateMapper.updateUserAchvGoal("", corp_code, new_store_code, old_store_code, "", "");
         //更新会员标签关系
         codeUpdateMapper.updateRelVipLabel("", corp_code, new_store_code, old_store_code);
-        String app_user_name = corpMapper.selectByCorpId(0,corp_code,"").getApp_user_name();
-        if (app_user_name != null && !app_user_name.equals(""))
-            codeUpdateMapper.updateRelVipStore(new_store_code,old_store_code,app_user_name);
+        //更新店铺open_id关系
+        List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
+        for (int i = 0; i < corpWechats.size(); i++) {
+            String app_user_name = corpWechats.get(i).getApp_user_name();
+            if (app_user_name != null && !app_user_name.equals(""))
+                codeUpdateMapper.updateRelVipStore(new_store_code,old_store_code,app_user_name);
+        }
+
         //更新员工
         new_store_code = Common.STORE_HEAD + new_store_code + ",";
         old_store_code = Common.STORE_HEAD + old_store_code + ",";

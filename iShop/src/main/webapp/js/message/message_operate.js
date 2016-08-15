@@ -643,7 +643,7 @@ $("#send").click(function(){
 	        var p=$(a[i]).attr("data-phone");
 	        if(i<a.length-1){
 	            user_code+=u+",";
-	            phone+=p",";
+	            phone+=p+",";
 	        }else{
 	            user_code+=u;
 	            phone+=p;
@@ -654,7 +654,6 @@ $("#send").click(function(){
 	var corp_code = $('#OWN_CORP').val();//公司编号;
 	var message_title = $('#message_title').val();//消息标题;
 	var message_content=$('#message_content').val();//消息内容;
-	var message_receiver=group_code;//接受人;
 	if(corp_code==""){
 		art.dialog({
 			time: 1,
@@ -682,32 +681,22 @@ $("#send").click(function(){
 		});
 		return;
 	}
-	if(message_receiver==""){
-		art.dialog({
-			time: 1,
-			lock: true,
-			cancel: false,
-			content:"接受人不能为空"
-		});
-		return;
-	}
 	if(receiver_type=="group"){
 		var _param={};
-		_param["corp_code"]=corp_code;
-		_param["message_title"]=message_title;
-		_param["message_content"]=message_content;
-		_param["receiver_type"]=receiver_type;
-		_param["message_receiver"]=message_receiver;
-		_param["message_type"]=message_type;
+		_param["corp_code"]=corp_code;//企业编号
+		_param["message_title"]=message_title;//消息标题
+		_param["message_content"]=message_content;//消息内容
+		_param["receiver_type"]=receiver_type;//接受人类型
+		_param["message_receiver"]=group_code;//接受人
+		_param["message_type"]=message_type;//消息类型
 	}else if(receiver_type=="user"){
 		var _param={};
 		_param["corp_code"]=corp_code;
 		_param["message_title"]=message_title;
 		_param["message_content"]=message_content;
 		_param["receiver_type"]=receiver_type;
-		_param["message_receiver"]=message_receiver;
+		_param["message_receiver"]=user_code;
 		_param["message_type"]=message_type;
-		_param["user_code"]=user_code;
 		_param["phone"]=phone;
 	}
 	whir.loading.add("",0.5);//加载等待框

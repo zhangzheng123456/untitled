@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
 
@@ -36,8 +37,6 @@ public interface CorpService {
 
     int getGoodCount(String corp_code)  throws Exception;
 
-    Corp getCorpByAppUserName(String app_user_name)  throws Exception;
-
     int getGroupCount(String corp_code)  throws Exception;
 
     int getGoodsCount(String corp_code)  throws Exception;
@@ -49,4 +48,8 @@ public interface CorpService {
     String insertExecl(Corp corp)  throws Exception;
 
     PageInfo<Corp> selectAllCorpScreen(int page_number, int page_size, Map<String, String> map)  throws Exception;
+
+    CorpWechat getCorpByAppUserName(String app_user_name)  throws Exception;
+
+    List<CorpWechat> getWByCorp(String corp_code) throws Exception;
 }

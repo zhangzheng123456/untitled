@@ -1,22 +1,20 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
-
 /**
  * Created by Administrator on 2016/5/19.
  */
-public class Corp {
+public class CorpWechat {
     private int id;
     //企业编号
     private String corp_code;
-    //企业名称
-    private String corp_name;
-    //地址
-    private String address;
-    //联系人
-    private String contact;
-    //联系电话
-    private String contact_phone;
+    //微信公众号app_id
+    private String app_id;
+    //微信公众号app_name
+    private String app_name;
+    //微信公众号app_user_name
+    private String app_user_name;
+    //是否已授权
+    private String is_authorize;
     //修改时间
     private String modified_date;
     //修改人
@@ -27,24 +25,11 @@ public class Corp {
     private String creater;
     //是否可用
     private String isactive;
-    //图片路径
-    private String avater;
 
-    private String app_id;
-
-
-    public String getAvater() {
-        return avater;
+    public CorpWechat() {
     }
 
-    public void setAvater(String avater) {
-        this.avater = avater;
-    }
-
-    public Corp() {
-    }
-
-    public Corp(int id) {
+    public CorpWechat(int id) {
         this.id = id;
     }
 
@@ -64,36 +49,28 @@ public class Corp {
         this.corp_code = corp_code;
     }
 
-    public String getCorp_name() {
-        return corp_name;
+    public String getApp_id() {
+        return app_id;
     }
 
-    public void setCorp_name(String corp_name) {
-        this.corp_name = corp_name;
+    public void setApp_id(String app_id) {
+        this.app_id = app_id;
     }
 
-    public String getAddress() {
-        return address;
+    public String getApp_name() {
+        return app_name;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setApp_name(String app_name) {
+        this.app_name = app_name;
     }
 
-    public String getContact() {
-        return contact;
+    public String getApp_user_name() {
+        return app_user_name;
     }
 
-    public void setContact(String contact) {
-        this.contact = contact;
-    }
-
-    public String getContact_phone() {
-        return contact_phone;
-    }
-
-    public void setContact_phone(String contact_phone) {
-        this.contact_phone = contact_phone;
+    public void setApp_user_name(String app_user_name) {
+        this.app_user_name = app_user_name;
     }
 
     public String getModified_date() {
@@ -136,11 +113,11 @@ public class Corp {
         this.isactive = isactive;
     }
 
-    public String getApp_id() {
-        return app_id;
+    public String getIs_authorize() {
+        return is_authorize;
     }
 
-    public void setApp_id(String app_id) {
-        this.app_id = app_id;
+    public void setIs_authorize(String is_authorize) {
+        this.is_authorize = is_authorize;
     }
 }

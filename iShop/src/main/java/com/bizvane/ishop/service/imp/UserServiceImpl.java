@@ -730,8 +730,12 @@ public class UserServiceImpl implements UserService {
 
         codeUpdateMapper.updateStaffDetailInfo("", corp_code, new_user_code, old_user_code, "", "");
 
-        String app_user_name = corpMapper.selectByCorpId(0,corp_code,"").getApp_user_name();
-        if (app_user_name != null && !app_user_name.equals(""))
-            codeUpdateMapper.updateRelVipEmp(new_user_code,old_user_code,app_user_name);
+        //更新员工open_id关系
+        List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
+        for (int i = 0; i < corpWechats.size(); i++) {
+            String app_user_name = corpWechats.get(i).getApp_user_name();
+            if (app_user_name != null && !app_user_name.equals(""))
+                codeUpdateMapper.updateRelVipEmp(new_user_code,old_user_code,app_user_name);
+        }
     }
 }
