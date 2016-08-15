@@ -4,13 +4,11 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.TableManager;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.GoodsService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -55,6 +53,8 @@ public class GoodsController {
     private TableManagerService managerService;
     @Autowired
     private CorpService corpService;
+    @Autowired
+    private BrandService brandService;
     String id;
 
     /**
@@ -398,6 +398,46 @@ public class GoodsController {
                     break;
                 }
             }
+            Cell[] column4 = rs.getColumn(3);
+            Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
+            for (int i = 3; i < column4.length; i++) {
+                Matcher matcher = pattern2.matcher(column4[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行商品价格输入有误";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
+            Cell[] column5 = rs.getColumn(4);
+            Pattern pattern5 = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
+            for (int i = 3; i < column5.length; i++) {
+                String images = column5[i].getContents().toString();
+                String[] splitImages = images.split(",");
+                for (int j=0;j<splitImages.length;j++){
+                    Matcher matcher = pattern5.matcher(splitImages[j]);
+                    if(matcher.matches()==false){
+                        result = "：第" + (i + 1) + "行,第"+(j+1)+"个图片地址输入有误";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
+            Pattern pattern = Pattern.compile("B\\d{4}");
+            Cell[] column7 = rs.getColumn(7);
+            for (int i = 3; i < column7.length; i++) {
+                Matcher matcher = pattern.matcher(column7[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行品牌编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column7[i].getContents().toString());
+                if (brand == null) {
+                    result = "：第" + (i + 1) + "行品牌编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
@@ -408,15 +448,17 @@ public class GoodsController {
                     goods.setGoods_image(rs.getCell(j++, i).getContents());
                     goods.setGoods_quarter(rs.getCell(j++, i).getContents());
                     goods.setGoods_wave(rs.getCell(j++, i).getContents());
-                    goods.setGoods_time(rs.getCell(j++, i).getContents());
+                    goods.setBrand_code(rs.getCell(j++, i).getContents());
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
+                    goods.setGoods_time(cellTypeForDate);
                     goods.setGoods_description(rs.getCell(j++, i).getContents());
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         goods.setIsactive("N");
                     } else {
                         goods.setIsactive("Y");
                     }
-                    goods.setCreater(user_id);
                     Date now = new Date();
+                    goods.setCreater(user_id);
                     goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     goods.setModified_date(Common.DATETIME_FORMAT.format(now));
                     goods.setModifier(user_id);

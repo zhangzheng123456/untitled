@@ -53,8 +53,8 @@ public class TestFeedbackService {
     public void testselectAllFeedback() {
         try {
             //"[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
-            String str = "aaa,bbb,ccc,dddd";
-            //  System.out.println(WebUtils.StringFilter(str));
+       //     String str = "aaa,bbb,ccc,dddd";
+         //    System.out.println(WebUtils.StringFilter(str));
 //            Task task=new Task();
 //            task.setTask_code("T201608051153111446");
 //            task.setTask_title("顺哥DiuDiu~");
@@ -66,6 +66,14 @@ public class TestFeedbackService {
 //            String user_code="";
 //            String result = taskService.updTask(task, user_codes, user_code);
 //            System.out.println("-------"+result);
+            Pattern pattern = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
+            String path="http://products-image.oss-cn-hangzhou.aliyuncs.com/yigu.jpg";
+            Matcher matcher = pattern.matcher(path);
+            if(matcher.matches()==false){
+                System.out.println("输入有误");
+            }else {
+                System.out.println("正确");
+            }
         } catch (Exception x) {
             x.printStackTrace();
         }

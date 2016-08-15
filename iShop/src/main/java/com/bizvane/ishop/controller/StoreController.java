@@ -1044,17 +1044,21 @@ public class StoreController {
             Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column4 = rs.getColumn(4);
             for (int i = 3; i < column4.length; i++) {
-                Matcher matcher = pattern.matcher(column4[i].getContents().toString());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行品牌编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
-                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column4[i].getContents().toString());
-                if (brand == null) {
-                    result = "：第" + (i + 1) + "行品牌编号不存在";
-                    int b = 5 / 0;
-                    break;
+                String brands = column4[i].getContents().toString();
+                String[] splitBrands = brands.split(",");
+                for (int j=0;j<splitBrands.length;j++) {
+                    Matcher matcher = pattern.matcher(splitBrands[j]);
+                    if (matcher.matches() == false) {
+                        result = "：第" + (i + 1) + "行,第"+(j+1)+"个品牌编号格式有误";
+                        int b = 5 / 0;
+                        break;
+                    }
+                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column4[i].getContents().toString());
+                    if (brand == null) {
+                        result = "：第" + (i + 1) + "行,第"+(j+1)+"个品牌编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
                 }
             }
           //  Pattern pattern7 = Pattern.compile("A\\d{4}");

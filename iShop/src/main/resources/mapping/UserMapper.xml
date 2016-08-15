@@ -175,13 +175,13 @@
             </foreach>
             )
         </if>
-        <if test="search_value != null and search_value !=''">
-            AND  USER_NAME LIKE concat('%',#{search_value},'%')
-        </if>
         AND def_user.ISACTIVE='Y'
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
         GROUP BY def_user.user_code
+        <if test="search_value != null and search_value !=''">
+            HAVING  USER_NAME LIKE concat('%',#{search_value},'%')
+        </if>
         ORDER BY def_user.id DESC
     </select>
 
