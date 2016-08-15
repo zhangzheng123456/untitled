@@ -6,6 +6,7 @@ import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.CorpMapper;
 import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.service.CorpService;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -40,7 +41,6 @@ public class CorpServiceImpl implements CorpService {
 
     @Transactional
     public String insert(String message, String user_id) throws Exception {
-
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String corp_code = jsonObject.get("corp_code").toString();
@@ -55,8 +55,19 @@ public class CorpServiceImpl implements CorpService {
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
-            corp.setApp_id(jsonObject.get("app_id").toString());
-            corp.setIs_authorize("N");
+            if (!jsonObject.get("app_id").toString().equals("")){
+                CorpWechat corpWechat = new CorpWechat();
+                corpWechat.setApp_id(jsonObject.get("app_id").toString());
+                corpWechat.setCorp_code(corp_code);
+                corpWechat.setIs_authorize("N");
+                Date now = new Date();
+                corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                corpWechat.setCreater(user_id);
+                corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                corpWechat.setModifier(user_id);
+                corpWechat.setIsactive(Common.IS_ACTIVE_Y);
+                corpMapper.insertCorpWechat(corpWechat);
+            }
             Date now = new Date();
             corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
             corp.setCreater(user_id);
@@ -65,7 +76,6 @@ public class CorpServiceImpl implements CorpService {
             corp.setIsactive(jsonObject.get("isactive").toString());
             corpMapper.insertCorp(corp);
             result = Common.DATABEAN_CODE_SUCCESS;
-
         } else if (corp != null) {
             result = "企业编号已存在";
         } else {
@@ -101,9 +111,33 @@ public class CorpServiceImpl implements CorpService {
             old_corp.setContact(jsonObject.get("contact").toString());
             old_corp.setContact_phone(jsonObject.get("phone").toString());
             old_corp.setAvater(jsonObject.get("avater").toString());
-            old_corp.setApp_id(jsonObject.get("app_id").toString());
-            old_corp.setIsactive(jsonObject.get("isactive").toString());
             Date now = new Date();
+//            old_corp.setApp_id(jsonObject.get("app_id").toString());
+            if (!jsonObject.get("app_id").toString().equals("")){
+                String app_id = jsonObject.get("app_id").toString();
+                CorpWechat corpWechat = corpMapper.selectWByAppId(app_id);
+                List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
+                if (corpWechat == null && corpWechats.size() == 0){
+                    corpWechat = new CorpWechat();
+                    corpWechat.setApp_id(app_id);
+                    corpWechat.setCorp_code(corp_code);
+                    corpWechat.setIs_authorize("N");
+                    corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    corpWechat.setCreater(user_id);
+                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    corpWechat.setModifier(user_id);
+                    corpWechat.setIsactive(Common.IS_ACTIVE_Y);
+                    corpMapper.insertCorpWechat(corpWechat);
+                }else if (corpWechats.size() > 0){
+                    corpWechat = corpWechats.get(0);
+                    corpWechat.setApp_id(app_id);
+                    corpWechat.setIs_authorize("N");
+                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    corpWechat.setModifier(user_id);
+                    corpMapper.updateCorpWechat(corpWechat);
+                }
+            }
+            old_corp.setIsactive(jsonObject.get("isactive").toString());
             old_corp.setModified_date(Common.DATETIME_FORMAT.format(now));
             old_corp.setModifier(user_id);
 
@@ -170,7 +204,7 @@ public class CorpServiceImpl implements CorpService {
         PageHelper.startPage(page_number, page_size);
         List<Corp> corps = corpMapper.selectAllCorp(search_value);
         for (Corp corp:corps) {
-            if(corp.getIsactive().equals("Y")){
+            if(corp.getIsactive()!= null && corp.getIsactive().equals("Y")){
                 corp.setIsactive("是");
             }else{
                 corp.setIsactive("否");
@@ -251,10 +285,6 @@ public class CorpServiceImpl implements CorpService {
         return this.corpMapper.getGoodCount(corp_code);
     }
 
-    public Corp getCorpByAppUserName(String app_user_name)  throws Exception{
-        return corpMapper.selectByAppUserName(app_user_name);
-    }
-
     @Override
     public int getGroupCount(String corp_code)  throws Exception{
         return corpMapper.getGroupCount(corp_code);
@@ -272,5 +302,13 @@ public class CorpServiceImpl implements CorpService {
 
     public int selectCount(String create_date)  throws Exception{
         return corpMapper.selectCount(create_date);
+    }
+
+    public CorpWechat getCorpByAppUserName(String app_user_name)  throws Exception{
+        return corpMapper.selectWByAppUserName(app_user_name);
+    }
+
+    public List<CorpWechat> getWByCorp(String corp_code) throws Exception{
+        return corpMapper.selectWByCorp(corp_code);
     }
 }

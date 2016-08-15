@@ -1,6 +1,7 @@
 package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.CorpWechat;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
@@ -27,8 +28,6 @@ public interface CorpMapper {
 
     List<Corp> selectByCorpName(@Param("corp_name") String corp_name,@Param("isactive") String isactive) throws SQLException;
 
-    Corp selectByAppUserName(@Param("app_user_name") String app_user_name) throws SQLException;
-
     int selectCount(@Param("created_date") String created_date) throws SQLException;
 
     int getAreaCount(@Param("corp_code") String corp_code) throws SQLException;
@@ -42,4 +41,14 @@ public interface CorpMapper {
     int getMessageTypeCount(@Param("corp_code") String corp_code) throws SQLException;
 
     List<Corp> selectAllCorpScreen(Map<String, Object> params) throws SQLException;
+
+    CorpWechat selectWByAppUserName(@Param("app_user_name") String app_user_name) throws SQLException;
+
+    CorpWechat selectWByAppId(@Param("app_id") String app_id) throws SQLException;
+
+    List<CorpWechat> selectWByCorp(@Param("corp_code") String corp_code) throws SQLException;
+
+    int insertCorpWechat(CorpWechat record) throws SQLException;
+
+    int updateCorpWechat(CorpWechat record) throws SQLException;
 }

@@ -74,7 +74,6 @@
     </select>
 
     <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.Corp">
-
         insert into DEF_CORP
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
@@ -91,12 +90,6 @@
             </if>
             <if test="contact_phone != null">
                 CONTACT_PHONE,
-            </if>
-            <if test="app_id != null">
-                app_id,
-            </if>
-            <if test="is_authorize != null">
-                is_authorize,
             </if>
             <if test="modified_date != null">
                 MODIFIED_DATE,
@@ -132,12 +125,6 @@
             </if>
             <if test="contact_phone != null">
                 #{contact_phone},
-            </if>
-            <if test="app_id != null">
-                #{app_id},
-            </if>
-            <if test="is_authorize != null">
-                #{is_authorize},
             </if>
             <if test="modified_date != null">
                 #{modified_date},
@@ -179,12 +166,6 @@
             <if test="contact_phone != null">
                 contact_phone = #{contact_phone},
             </if>
-            <if test="app_id != null">
-                app_id = #{app_id},
-            </if>
-            <if test="is_authorize != null">
-                is_authorize = #{is_authorize},
-            </if>
             <if test="modified_date != null">
                 modified_date = #{modified_date},
             </if>
@@ -213,7 +194,6 @@
         where ID = #{id}
     </delete>
 
-
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT COUNT(1) FROM DEF_CORP
         WHERE 1=1
@@ -235,11 +215,6 @@
         select count(*) from DEF_GROUP WHERE corp_code=#{corp_code}
     </select>
 
-    <select id="selectByAppUserName" resultType="com.bizvane.ishop.entity.Corp">
-       SELECT * FROM DEF_CORP
-        WHERE APP_USER_NAME = #{app_user_name}
-    </select>
-
     <select id="selectAllCorpScreen" resultMap="CorpInfo">
         select *
         from DEF_CORP
@@ -255,4 +230,115 @@
         select count(*) from def_message_type where corp_code=#{corp_code}
     </select>
 
+    <select id="selectWByAppUserName" resultType="com.bizvane.ishop.entity.CorpWechat">
+        SELECT * FROM rel_corp_wechat
+        WHERE app_user_name = #{app_user_name}
+    </select>
+
+    <select id="selectWByAppId" resultType="com.bizvane.ishop.entity.CorpWechat">
+        SELECT * FROM rel_corp_wechat
+        WHERE app_id = #{app_id}
+    </select>
+
+    <select id="selectWByCorp" resultType="com.bizvane.ishop.entity.CorpWechat">
+        SELECT * FROM rel_corp_wechat
+        WHERE corp_code = #{corp_code}
+    </select>
+
+    <insert id="insertCorpWechat" parameterType="com.bizvane.ishop.entity.CorpWechat">
+        INSERT INTO rel_corp_wechat
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="app_id != null">
+                app_id,
+            </if>
+            <if test="app_name != null">
+                app_name,
+            </if>
+            <if test="is_authorize != null">
+                is_authorize,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="app_id != null">
+                #{app_id},
+            </if>
+            <if test="app_name != null">
+                #{app_name},
+            </if>
+            <if test="is_authorize != null">
+                #{is_authorize},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+
+    </insert>
+
+    <update id="updateCorpWechat" parameterType="com.bizvane.ishop.entity.CorpWechat">
+        UPDATE rel_corp_wechat
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="corp_code != null">
+                corp_code = #{corp_code},
+            </if>
+            <if test="app_id != null">
+                app_id = #{app_id},
+            </if>
+            <if test="app_name != null">
+                app_name = #{app_name},
+            </if>
+            <if test="is_authorize != null">
+                is_authorize = #{is_authorize},
+            </if>
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date != null">
+                created_date = #{created_date},
+            </if>
+            <if test="creater != null">
+                creater = #{creater},
+            </if>
+            <if test="isactive != null">
+                isactive = #{isactive},
+            </if>
+        </trim>
+        WHERE id = #{id};
+    </update>
 </mapper>

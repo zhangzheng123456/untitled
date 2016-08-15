@@ -1297,10 +1297,12 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String user_code = jsonObject.get("user_code").toString();
-            Corp corp = corpService.selectByCorpId(0, corp_code,"");
-            String is_authorize = corp.getIs_authorize();
-            if (corp.getApp_id() != null && corp.getApp_id() != "") {
-                String auth_appid = corp.getApp_id();
+//            String app_user_name = jsonObject.get("app_user_name").toString();
+//            CorpWechat corpWechat = corpService.getCorpByAppUserName(app_user_name);
+            CorpWechat corpWechat = corpService.getWByCorp(corp_code).get(0);
+            if (corpWechat != null && corpWechat.getApp_id() != null && corpWechat.getApp_id() != "") {
+                String auth_appid = corpWechat.getApp_id();
+                String is_authorize = corpWechat.getIs_authorize();
                 if (is_authorize.equals("Y")) {
                     String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
                     String result = IshowHttpClient.get(url);
@@ -1363,11 +1365,11 @@ public class UserController {
                 JSONObject json = new JSONObject(list.get(i).toString());
                 String corp_code = json.get("corp_code").toString();
                 String user_code = json.get("user_code").toString();
-                Corp corp = corpService.selectByCorpId(0, corp_code,"");
-                String is_authorize = corp.getIs_authorize();
-                String corp_name = corp.getCorp_name();
-                if (corp.getApp_id() != null && corp.getApp_id() != "") {
-                    String auth_appid = corp.getApp_id();
+                List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
+                if (corpWechats.size() > 0) {
+                    CorpWechat corpWechat = corpWechats.get(0);
+                    String auth_appid = corpWechat.getApp_id();
+                    String is_authorize = corpWechat.getIs_authorize();
                     if (is_authorize.equals("Y")) {
                         String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
                         String result = IshowHttpClient.get(url);
@@ -1391,13 +1393,13 @@ public class UserController {
                         userService.updateUser(user);
                     }else {
                         dataBean.setId(id);
-                        dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                        dataBean.setMessage(corp_code + "企业未授权,生成二维码中断");
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
                     }
                 }else {
                     dataBean.setId(id);
-                    dataBean.setMessage(corp_name + "企业未授权,生成二维码中断");
+                    dataBean.setMessage(corp_code + "企业未授权,生成二维码中断");
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     return dataBean.getJsonStr();
                 }
