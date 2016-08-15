@@ -78,14 +78,11 @@
         <if test="search_value!=null and search_value!=''">
             and
             (
-            dum.message_sender like concat('%',search_value,'%')
-            OR dum.message_title like concat('%',search_value,'%')
-            OR dum.message_content like concat('%',search_value,'%')
-            OR c.corp_name like concat('%',search_value,'%')
-            OR mt.type_description like concat('%',search_value,'%')
-            OR dum.modified_date like concat('%',search_value,'%')
-            OR dum.modifier like concat('%',search_value,'%')
-            OR dum.isactive like concat('%',search_value,'%')
+            dum.message_sender like concat('%',#{search_value},'%')
+            OR dum.message_title like concat('%',#{search_value},'%')
+            OR dum.message_content like concat('%',#{search_value},'%')
+            OR c.corp_name like concat('%',#{search_value},'%')
+            OR mt.type_description like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY dum.id DESC

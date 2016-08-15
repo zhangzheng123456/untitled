@@ -252,7 +252,7 @@ public class MessageController {
      * 发送消息
      * 查找
      */
-    @RequestMapping(value = "/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String messageSearch(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -280,9 +280,10 @@ public class MessageController {
             } else {
                 list = messageService.selectBySearch(page_number, page_size, corp_code, user_code, search_value);
             }
+            result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(JSON.toJSONString(list));
+            dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

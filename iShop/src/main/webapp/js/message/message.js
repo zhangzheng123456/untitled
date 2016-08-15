@@ -358,7 +358,7 @@ $("#d_search").click(function () {
     POST();
 })
 //搜索的请求函数
-function POST() {
+function POST(a,b) {
     whir.loading.add("", 0.5);//加载等待框
     oc.postRequire("post", "/message/search", "0", param, function (data) {
         if (data.code == "0") {
