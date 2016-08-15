@@ -318,7 +318,7 @@ public class CorpParamController {
             String corpParams = request.getSession(false).getAttribute("corpParams").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String param_name = request.getSession(false).getAttribute("param_name").toString();
-            list = corpParamService.selectAllParamScreen(page_number, page_size, corp_code,param_name, corpParams, map);
+            list = corpParamService.selectAllParamScreen(page_number, page_size, corp_code,param_name, map);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
