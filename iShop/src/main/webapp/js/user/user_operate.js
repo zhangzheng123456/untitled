@@ -736,9 +736,12 @@ jQuery(document).ready(function(){
 						for(var i=1;i<store_lists.length;i++){
 							html +='<div id="per_type">'
 						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'">'
-						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" onclick="selectownshop(this)" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
-						        +'<ul style="margin-left:0px">'
-						        +'</ul>'
+							        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" onclick="selectownshop(this)" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
+							        +'<div class="store_list_kuang">'
+	                				+'<input class="search" type="text" placeholder="请输入搜索内容">'
+	                				+'<ul style="margin-left:0px" id="store_list">'
+	                				+'</ul>'
+	                				+'</div>'
 						        +'</span>'
 						        +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
 						        +'</div>';
@@ -767,8 +770,11 @@ jQuery(document).ready(function(){
 							html +='<div id="per_type">'
 						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'">'
 						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" onclick="selectownshop(this)" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
-						        +'<ul style="margin-left:0px">'
-						        +'</ul>'
+						        +'<div class="store_list_kuang">'
+	                				+'<input class="search" type="text" placeholder="请输入搜索内容">'
+	                				+'<ul style="margin-left:0px" id="store_list">'
+	                				+'</ul>'
+	                			+'</div>'
 						        +'</span>'
 						        +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
 						        +'</div>';
@@ -778,7 +784,7 @@ jQuery(document).ready(function(){
             	}else if(j_code=="R4000"){
 	            	$('#sidename label').html("所属区域");
 	            	$('#OWN_STORE').attr("placeholder","请选择所属区域");
-	            	$('#sidedown').attr("onclick","selectownarea(this)");
+	            	$('#OWN_STORE').attr("onclick","selectownarea(this)");
 	            	$('#add_per_icon').attr("onclick","addareaselect()");
 	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
 	            	$("#ownshop_list").show();
@@ -797,8 +803,11 @@ jQuery(document).ready(function(){
 							html +='<div id="per_type">'
 						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'">'
 						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+areacode_list[i]+'"  value="'+area_lists[i]+'" placeholder="请选择所属店铺" onclick="selectownarea(this)" readonly/><span class="down_icon "><i class="icon-ishop_8-02"></i></span>'
-						        +'<ul style="margin-left:0px">'
-						        +'</ul>'
+						        +'<div class="store_list_kuang">'
+	                				+'<input class="search" type="text" placeholder="请输入搜索内容">'
+	                				+'<ul style="margin-left:0px" id="store_list">'
+	                				+'</ul>'
+	                				+'</div>'
 						        +'</span>'
 						        +' <span class="minus_per_icon" onclick="minusareaselect(this)"><i class="icon-ishop_6-12"></i>删除区域</span>'
 						        +'</div>';

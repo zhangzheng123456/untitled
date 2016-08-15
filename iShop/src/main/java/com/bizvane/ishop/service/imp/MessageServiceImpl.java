@@ -6,6 +6,7 @@ import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.IceInterfaceService;
 import com.bizvane.ishop.service.MessageService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
@@ -50,11 +51,7 @@ public class MessageServiceImpl implements MessageService {
         PageHelper.startPage(page_number, page_size);
         List<MessageInfo> list = this.messageMapper.selectAllMessageInfo(corp_code, user_code, search_value);
         for (MessageInfo message:list) {
-            if(message.getIsactive().equals("Y")){
-                message.setIsactive("是");
-            }else{
-                message.setIsactive("否");
-            }
+            message.setIsactive(CheckUtils.CheckIsactive(message.getIsactive()));
         }
         PageInfo<MessageInfo> page = new PageInfo<MessageInfo>(list);
         return page;
@@ -174,11 +171,7 @@ public class MessageServiceImpl implements MessageService {
         PageHelper.startPage(page_number, page_size);
         List<MessageInfo> list = this.messageMapper.selectAllMessageInfoScreen(params);
         for (MessageInfo message:list) {
-            if(message.getIsactive().equals("Y")){
-                message.setIsactive("是");
-            }else{
-                message.setIsactive("否");
-            }
+            message.setIsactive(CheckUtils.CheckIsactive(message.getIsactive()));
         }
         PageInfo<MessageInfo> page = new PageInfo<MessageInfo>(list);
         return page;

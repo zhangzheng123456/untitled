@@ -674,11 +674,7 @@ public class UserServiceImpl implements UserService {
      */
     public void conversion(List<User> users) throws Exception{
         for (User user : users) {
-            if (user.getIsactive() != null && user.getIsactive().equals("Y")) {
-                user.setIsactive("是");
-            } else {
-                user.setIsactive("否");
-            }
+            user.setIsactive(CheckUtils.CheckIsactive(user.getIsactive()));
             if(user.getSex()==null || user.getSex().equals("")){
                 user.setSex("未知");
             }else if(user.getSex().equals("F")){

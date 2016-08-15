@@ -27,7 +27,7 @@
                     <div>
                         <ul style="display:inline-flex;">
                             <li><label>所属企业</label></li>
-                            <li>
+                            <li id="corp_select">
                                 <span class="corp_select">
                                     <select id="OWN_CORP" style="display:inline-flex" >
                                     </select>
@@ -36,7 +36,7 @@
                         </ul>
                     </div>
                     <div id="drop_down" class="drop_down item_2">
-                        <span><label>发送方式</label><input class="input_select" type="text" id="send_mode" placeholder="请选择消息类型" readonly/>
+                        <span><label>发送方式</label><input class="input_select" type="text" id="send_mode" placeholder="请选择消息发送方式" readonly/>
                             <ul>
                                 <li>发送至群组</li>
                                 <li>发送至个人</li>
@@ -59,10 +59,10 @@
                         </span>
                     </div>
                     <div>
-                        <span><label>消息标题</label><input type="text" id="CONTENT_TITEL" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="内容标题不能为空！"></div></div></span>
+                        <span><label>消息标题</label><input type="text" id="message_title" verify="Empty"/><div style="padding-left:122px" class="hint"><div  hintinfo="内容标题不能为空！"></div></div></span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:260px;">消息内容</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="MOBAN_CONTENT"></textarea></span></span>
+                    <span style="display: inline-flex;width:100%"><label style="height:260px;">消息内容</label><span class="tempalte_area" style="height: 260px"><textarea style="height: 240px" id="message_content"></textarea></span></span>
                     </div>
                 </form>
                 <div class="distribution_frame" id="distribution_frame">
@@ -125,7 +125,7 @@
                                 
                             </ul>
                         </div>
-                        <div id="area_code_drop" class="drop_q">确定</div>
+                        <div id="group_code_drop" class="drop_q">确定</div>
                     </div>
                 </div>
             </div>
@@ -142,15 +142,18 @@
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
       <!-- Dialog -->
+    <script src="/js/loading.js"></script>
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉菜单 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js"></script>
      <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <script type="text/javascript" src="../js/message/message_operate.js"></script>
+
 </body>
 
 </html>

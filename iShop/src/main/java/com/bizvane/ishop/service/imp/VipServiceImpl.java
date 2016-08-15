@@ -5,6 +5,7 @@ import com.bizvane.ishop.dao.VIPMapper;
 import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipRecordType;
 import com.bizvane.ishop.service.VipService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,11 +71,7 @@ public class VipServiceImpl implements VipService {
         PageHelper.startPage(page_number, page_size);
         vipInfos = vipMapper.selectAllVipInfo(corp_code, search_value);
         for (VIPInfo vipInfo:vipInfos) {
-            if (vipInfo.getIsactive().equals("Y")) {
-                vipInfo.setIsactive("是");
-            } else {
-                vipInfo.setIsactive("否");
-            }
+            vipInfo.setIsactive(CheckUtils.CheckIsactive(vipInfo.getIsactive()));
             if(vipInfo.getSex()==null || vipInfo.getSex().equals("")){
                 vipInfo.setSex("未知");
             }else if(vipInfo.getSex().equals("F")){

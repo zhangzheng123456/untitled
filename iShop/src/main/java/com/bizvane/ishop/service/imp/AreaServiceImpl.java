@@ -7,6 +7,7 @@ import com.bizvane.ishop.dao.StoreMapper;
 import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.AreaService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -52,11 +53,7 @@ public class AreaServiceImpl implements AreaService {
         PageHelper.startPage(page_number, page_size);
         areas = areaMapper.selectAllArea(corp_code, search_value);
         for (Area area : areas) {
-            if (area.getIsactive().equals("Y")) {
-                area.setIsactive("是");
-            } else {
-                area.setIsactive("否");
-            }
+            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
         }
         PageInfo<Area> page = new PageInfo<Area>(areas);
 
@@ -251,11 +248,7 @@ public class AreaServiceImpl implements AreaService {
         params.put("map", map);
         areas = areaMapper.selectAllAreaScreen(params);
         for (Area area : areas) {
-            if (area.getIsactive().equals("Y")) {
-                area.setIsactive("是");
-            } else {
-                area.setIsactive("否");
-            }
+            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
         }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
@@ -279,11 +272,7 @@ public class AreaServiceImpl implements AreaService {
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selectByAreaCodeSearch(params);
         for (Area area : areas) {
-            if (area.getIsactive().equals("Y")) {
-                area.setIsactive("是");
-            } else {
-                area.setIsactive("否");
-            }
+            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
         }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
@@ -313,11 +302,7 @@ public class AreaServiceImpl implements AreaService {
         PageHelper.startPage(page_number, page_size);
         List<Area> areas = areaMapper.selAreaByCorpCode(params);
         for (Area area : areas) {
-            if (area.getIsactive().equals("Y")) {
-                area.setIsactive("是");
-            } else {
-                area.setIsactive("否");
-            }
+            area.setIsactive(CheckUtils.CheckIsactive(area.getIsactive()));
         }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;

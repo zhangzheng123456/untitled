@@ -7,6 +7,7 @@ import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.UserAchvGoalService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.TimeUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -43,13 +44,8 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = this.userAchvGoalMapper.selectUserAchvGoalBySearch(corp_code, search_value);
         for (UserAchvGoal userAchvGoal:userAchvGoals) {
-            if(userAchvGoal.getIsactive().equalsIgnoreCase("Y")){
-                userAchvGoal.setIsactive("是");
-            }else{
-                userAchvGoal.setIsactive("否");
-            }
-
-            if(userAchvGoal.getTarget_type()==null){
+            userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
+            if(userAchvGoal.getTarget_type()==null||userAchvGoal.getTarget_type().equals("")){
                 userAchvGoal.setTarget_type("未设定");
             }else if(userAchvGoal.getTarget_type().equals("D")){
                 userAchvGoal.setTarget_type("日");
@@ -99,12 +95,8 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         PageHelper.startPage(page_number, page_size);
         List<UserAchvGoal> users = userAchvGoalMapper.selectPartUserAchvGoalBySearch(params);
         for (UserAchvGoal userAchvGoal:users) {
-            if(userAchvGoal.getIsactive().equalsIgnoreCase("Y")){
-                userAchvGoal.setIsactive("是");
-            }else{
-                userAchvGoal.setIsactive("否");
-            }
-            if(userAchvGoal.getTarget_type()==null){
+            userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
+            if(userAchvGoal.getTarget_type()==null||userAchvGoal.getTarget_type().equals("")){
                 userAchvGoal.setTarget_type("未设定");
             }else if(userAchvGoal.getTarget_type().equals("D")){
                 userAchvGoal.setTarget_type("日");
@@ -209,12 +201,8 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
         PageHelper.startPage(page_number, page_size);
         userAchvGoals = userAchvGoalMapper.selectAllUserAchvScreen(params);
         for (UserAchvGoal userAchvGoal:userAchvGoals) {
-            if(userAchvGoal.getIsactive().equals("Y")){
-                userAchvGoal.setIsactive("是");
-            }else{
-                userAchvGoal.setIsactive("否");
-            }
-            if(userAchvGoal.getTarget_type()==null){
+            userAchvGoal.setIsactive(CheckUtils.CheckIsactive(userAchvGoal.getIsactive()));
+            if(userAchvGoal.getTarget_type()==null||userAchvGoal.getTarget_type().equals("")){
                 userAchvGoal.setTarget_type("未设定");
             }else if(userAchvGoal.getTarget_type().equals("D")){
                 userAchvGoal.setTarget_type("日");

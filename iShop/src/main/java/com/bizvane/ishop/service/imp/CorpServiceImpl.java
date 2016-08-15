@@ -8,6 +8,7 @@ import com.bizvane.ishop.entity.Appversion;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.service.CorpService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -204,11 +205,7 @@ public class CorpServiceImpl implements CorpService {
         PageHelper.startPage(page_number, page_size);
         List<Corp> corps = corpMapper.selectAllCorp(search_value);
         for (Corp corp:corps) {
-            if(corp.getIsactive()!= null && corp.getIsactive().equals("Y")){
-                corp.setIsactive("是");
-            }else{
-                corp.setIsactive("否");
-            }
+            corp.setIsactive(CheckUtils.CheckIsactive(corp.getIsactive()));
         }
         PageInfo<Corp> page = new PageInfo<Corp>(corps);
         return page;
@@ -227,11 +224,7 @@ public class CorpServiceImpl implements CorpService {
         PageHelper.startPage(page_number, page_size);
         List<Corp> list = corpMapper.selectAllCorpScreen(params);
         for (Corp corp:list) {
-            if(corp.getIsactive().equals("Y")){
-                corp.setIsactive("是");
-            }else{
-                corp.setIsactive("否");
-            }
+            corp.setIsactive(CheckUtils.CheckIsactive(corp.getIsactive()));
         }
         PageInfo<Corp> page = new PageInfo<Corp>(list);
         return page;
