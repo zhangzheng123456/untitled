@@ -635,7 +635,7 @@ public class UserController {
                     }else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("选择重复区域");
+                        dataBean.setMessage("请勿选择重复的区域");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -655,7 +655,7 @@ public class UserController {
                     }else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("选择重复店铺");
+                        dataBean.setMessage("请勿选择重复的店铺");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -738,7 +738,7 @@ public class UserController {
                     }else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("选择重复区域");
+                        dataBean.setMessage("请勿选择重复的区域");
                         return dataBean.getJsonStr();
                     }
                 }
@@ -756,7 +756,7 @@ public class UserController {
                     }else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("选择重复店铺");
+                        dataBean.setMessage("请勿选择重复的店铺");
                         return dataBean.getJsonStr();
                      }
                 }
