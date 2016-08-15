@@ -297,11 +297,12 @@ public class CorpParamController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/screen", method = RequestMethod.GET)
+    @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String Screen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id="";
+
         try {
             String jsString = request.getParameter("param");
             logger.info("json-------corpParam--------" + jsString);
@@ -312,13 +313,10 @@ public class CorpParamController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
-            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<CorpParam> list = null;
-            String corpParams = request.getSession(false).getAttribute("corpParams").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String param_name = request.getSession(false).getAttribute("param_name").toString();
-            list = corpParamService.selectAllParamScreen(page_number, page_size, corp_code,param_name, map);
+            list = corpParamService.selectAllParamScreen(page_number, page_size, corp_code, map);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

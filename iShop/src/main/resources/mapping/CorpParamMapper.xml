@@ -164,7 +164,7 @@
         <if test="corp_code!=null and corp_code!=''">
             AND rcc.corp_code=#{corp_code}
         </if>
-        AND<foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryKey=='corp_name'">
                     dc.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -172,10 +172,10 @@
                 <when test="entryKey=='param_name'">
                     dcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-
                 <when test="entryValue!=''">
                     rcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
+
                 <otherwise>
                     1=1
                 </otherwise>

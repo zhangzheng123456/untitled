@@ -317,7 +317,6 @@ public class ParamConfigureController {
 
         DataBean dataBean = new DataBean();
         String id = "";
-
         try {
             String jsString = request.getParameter("param");
             logger.info("json-------screen--------" + jsString);
@@ -330,8 +329,7 @@ public class ParamConfigureController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             JSONObject result = new JSONObject();
             PageInfo<ParamConfigure> list = null;
-            String param_names = request.getSession(false).getAttribute("param_names").toString();
-            list=paramConfigureService.selectParamScreen(page_number,page_size,param_names,map);
+            list=paramConfigureService.selectParamScreen(page_number,page_size,map);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

@@ -157,15 +157,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-   public  PageInfo<ParamConfigure> selectParamScreen(int page_number, int page_size, String param_names , Map<String, String> map) throws Exception{
+   public  PageInfo<ParamConfigure> selectParamScreen(int page_number, int page_size, Map<String, String> map) throws Exception{
         String[] paramArray = null;
-        if (null != param_names && !param_names.isEmpty()) {
-            paramArray = param_names.split(",");
-            for (int i = 0; paramArray != null && i < paramArray.length; i++) {
-                paramArray[i] = paramArray[i].substring(1, paramArray[i].length());
-            }
-        }
-
         List<ParamConfigure> names;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
