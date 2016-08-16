@@ -170,10 +170,10 @@
                 <when test="entryKey=='corp_name'">
                     dc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <when test="entryKey=='param_name'">
+                <when test="entryValue!='' and entryKey=='param_name'">
                     dcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <when test="entryValue!=''">
+                <when test="entryValue!='' and entryValue!=''">
                     rcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <otherwise>
