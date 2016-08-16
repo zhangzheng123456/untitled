@@ -315,8 +315,8 @@ public class CorpParamController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             JSONObject result = new JSONObject();
             PageInfo<CorpParam> list = null;
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            list = corpParamService.selectAllParamScreen(page_number, page_size, corp_code, map);
+           // String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            list = corpParamService.selectAllParamScreen(page_number, page_size, "", map);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

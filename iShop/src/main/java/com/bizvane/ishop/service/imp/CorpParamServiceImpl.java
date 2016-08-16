@@ -129,8 +129,6 @@ public class CorpParamServiceImpl implements CorpParamService {
     }
     @Override
      public PageInfo<CorpParam> selectAllParamScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
-        String[] corpParamArray = null;
-
         List<CorpParam> corp_params;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();

@@ -160,10 +160,11 @@
         dcc.param_name
         FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
         WHERE rcc.corp_code = dc.corp_code
-        AND rcc.param_id=dcc.id
+        AND dcc.id=rcc.param_id
         <if test="corp_code!=null and corp_code!=''">
-            AND rcc.corp_code=#{corp_code}
+            AND dc.corp_code=#{corp_code}
         </if>
+        AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryKey=='corp_name'">
@@ -175,12 +176,13 @@
                 <when test="entryValue!=''">
                     rcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-
                 <otherwise>
                     1=1
                 </otherwise>
+
             </choose>
         </foreach>
+
         ORDER BY rcc.id DESC
     </select>
 </mapper>

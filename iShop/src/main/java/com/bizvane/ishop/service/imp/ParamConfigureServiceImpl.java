@@ -162,7 +162,6 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         List<ParamConfigure> names;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
-        params.put("param_names", paramArray);
         params.put("map", map);
         names = paramConfigureMapper.selectParamScreen(params);
         PageInfo<ParamConfigure> page = new PageInfo<ParamConfigure>(names);
