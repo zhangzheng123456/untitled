@@ -611,33 +611,33 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
-//    @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String isAuthorize(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            JSONObject jsonObj = JSONObject.parseObject(jsString);
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = JSONObject.parseObject(message);
-//            String app_id = jsonObject.get("app_id").toString();
-//            CorpWechatRelation corp = corpService.getCorpByAppUserId(app_id);
-//            String is_authorize = corp.getIs_authorize();
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            if (is_authorize.equals(Common.IS_AUTHORIZE_Y)) {
-//                dataBean.setMessage("已授权");
-//            } else {
-//                dataBean.setMessage("未授权");
-//            }
-//        } catch (Exception ex) {
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage());
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    @RequestMapping(value = "/is_authorize", method = RequestMethod.POST)
+    @ResponseBody
+    public String isAuthorize(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String app_id = jsonObject.get("app_id").toString();
+            CorpWechat corp = corpService.getCorpByByAppId(app_id);
+            String is_authorize = corp.getIs_authorize();
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            if (is_authorize.equals(Common.IS_AUTHORIZE_Y)) {
+                dataBean.setMessage("已授权");
+            } else {
+                dataBean.setMessage("未授权");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 企业管理
