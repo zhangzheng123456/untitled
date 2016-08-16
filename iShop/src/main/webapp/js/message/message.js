@@ -2,6 +2,7 @@ var oc = new ObjectControl();
 var left = ($(window).width() - $("#tk").width()) / 2;//弹框定位的left值
 var tp = ($(window).height() - $("#tk").height()) / 2;//弹框定位的top值
 var inx = 1;//默认是第一页
+var pageNumber=1;//删除默认第一页
 var pageSize = 10;//默认传的每页多少行
 var value = "";//收索的关键词
 var param = {};//定义的对象
@@ -12,6 +13,7 @@ var filtrate = "";//筛选的定义的值
 var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
+//模仿select
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -29,10 +31,12 @@ $(function(){
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
+                    param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
                     inx=1;
+                    _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
@@ -44,7 +48,7 @@ $(function(){
             setTimeout(hideLi,200);  
         });          
     }      
-);
+); 
 function showLi() {
     $("#liebiao").show();
 }
@@ -125,7 +129,7 @@ function setPage(container, count, pageindex, pageSize, funcCode) {
     container.innerHTML = a.join("");
     var pageClick = function () {
         var oAlink = container.getElementsByTagName("span");
-        var inx = pageindex; //初始的页码
+        inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
         $(".foot-sum .zy").html("共 " + count + "页");
         oAlink[0].onclick = function () { //点击上一页
@@ -170,7 +174,11 @@ function dian(a, b) {//点击分页的时候调什么接口
     }
 }
 function superaddition(data, num) {//页面加载循环
-    console.log(data);
+    if(data.length==1&&num>1){
+        pageNumber=num-1;
+    }else{
+        pageNumber=num;
+    }
     for (var i = 0; i < data.length; i++) {
         if (num >= 2) {
             var a = i + 1 + (num - 1) * pageSize;
@@ -221,6 +229,18 @@ function jurisdiction(actions) {
         }
     }
 }
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
+    })
+}
+qjia();
 //页面加载时list请求
 function GET(a, b) {
     whir.loading.add("", 0.5);//加载等待框
@@ -232,9 +252,7 @@ function GET(a, b) {
             var list = JSON.parse(message.list);
             cout = list.pages;
             var list = list.list;
-            var actions = message.actions;
             superaddition(list, a);
-            jurisdiction(actions);
             jumpBianse();
             setPage($("#foot-num")[0], cout, a, b, funcCode);
         } else if (data.code == "-1") {
@@ -350,6 +368,7 @@ function jumpBianse() {
 $("#search").keydown(function () {
     var event = window.event || arguments[0];
     value = this.value.replace(/\s+/g, "");
+    inx=1;
     param["searchValue"] = value;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
@@ -361,6 +380,7 @@ $("#search").keydown(function () {
 //点击放大镜触发搜索
 $("#d_search").click(function () {
     value = $("#search").val().replace(/\s+/g, "");
+    inx=1;
     param["searchValue"] = value;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
@@ -424,23 +444,24 @@ $("#cancel").click(function () {
                 ID += r;
             }
         }
-        var param = {};
-        param["id"] = ID;
-        console.log(param);
-        oc.postRequire("post", "/shop/delete", "0", param, function(data) {
+        var params= {};
+        params["id"] = ID;
+        oc.postRequire("post", "/shop/delete", "0", params, function(data) {
             if (data.code == "0") {
                 if (value == "" && filtrate == "") {
                     frame();
                     $('.frame').html('删除成功');
-                    GET(inx, pageSize);
+                    GET(pageNumber, pageSize);
                 } else if (value !== "") {
                     frame();
                     $('.frame').html('删除成功');
-                    POST(inx, pageSize);
+                    param["pageNumber"]=pageNumber
+                    POST(pageNumber, pageSize);
                 } else if (filtrate !== "") {
                     frame();
                     $('.frame').html('删除成功');
-                    filtrates(inx, pageSize);
+                    param["pageNumber"]=pageNumber;
+                    filtrates(pageNumber, pageSize);
                 }
                 var thinput = $("thead input")[0];
                 thinput.checked = false;
