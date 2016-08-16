@@ -156,8 +156,7 @@
         user_code,
         user_name,
         phone,
-        def_user.ISACTIVE,
-        def_group.isactive
+        def_user.ISACTIVE
         FROM def_user,def_group,def_corp
         WHERE def_user.group_code = def_group.group_code
         AND def_user.corp_code = def_corp.corp_code

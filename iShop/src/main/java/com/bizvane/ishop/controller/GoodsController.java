@@ -334,36 +334,23 @@ public class GoodsController {
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)){
-                for (int i=3;i<column3.length;i++){
-                    if(!column3[i].getContents().toString().equals(corp_code)){
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
+            if(role_code.equals(Common.ROLE_SYS)){
+                for (int i = 3; i < column3.length; i++) {
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    if (corp == null) {
+                        result = "：第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
                 }
             }
-            for (int i = 3; i < column3.length; i++) {
-                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
-                if (corp == null) {
-                    result = "：第" + (i + 1) + "行企业编号不存在";
-                    int b = 5 / 0;
-                    break;
-                }
 
-            }
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
             if(onlyCell1.equals("存在重复值")){
                 result = "：Execl中商品编号存在重复值";
@@ -435,7 +422,12 @@ public class GoodsController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
-                    goods.setCorp_code(rs.getCell(j++, i).getContents());
+                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    if(!role_code.equals(Common.ROLE_SYS)){
+                        goods.setCorp_code(corp_code);
+                    }else{
+                        goods.setCorp_code(cellCorp);
+                    }
                     goods.setGoods_code(rs.getCell(j++, i).getContents());
                     goods.setGoods_name(rs.getCell(j++, i).getContents());
                     goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString()));
@@ -446,7 +438,12 @@ public class GoodsController {
                     }else{
                         goods.setGoods_quarter(quarter);
                     }
-                    goods.setGoods_wave(rs.getCell(j++, i).getContents()+"");
+                    String wave = rs.getCell(j++, i).getContents().toString();
+                    if(wave==null||wave.equals("")){
+                        goods.setGoods_wave("");
+                    }else{
+                        goods.setGoods_wave(wave);
+                    }
                     goods.setBrand_code(rs.getCell(j++, i).getContents()+"");
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
                     goods.setGoods_time(cellTypeForDate);
