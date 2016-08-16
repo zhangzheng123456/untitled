@@ -14,7 +14,7 @@ var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
-return_jump=JSON.parse(return_jump);
+return_jump=JSON.parse(return_jump);//
 if(return_jump!==null){
     console.log(return_jump);
     inx=return_jump.inx;
@@ -30,36 +30,24 @@ if(return_jump==null){
         GET(inx,pageSize);
     }
 }else if(return_jump!==null){
+    if(pageSize==10){
+        $("#page_row").val("10行/页");  
+    }
+    if(pageSize==30){
+        $("#page_row").val("30行/页");  
+    }
+    if(pageSize==50){
+        $("#page_row").val("50行/页");
+    }
+    if(pageSize==100){
+        $("#page_row").val("100行/页");
+    }
     if(value==""&&filtrate==""){
         GET(inx,pageSize);
     }else if(value!==""){
         $("#search").val(value);
-        if(pageSize==10){
-            $("#page_row").val("10行/页");  
-        }
-        if(pageSize==30){
-            $("#page_row").val("30行/页");  
-        }
-        if(pageSize==50){
-            $("#page_row").val("50行/页");
-        }
-        if(pageSize==100){
-            $("#page_row").val("100行/页");
-        }
         POST(inx,pageSize); 
     }else if(filtrate!==""){
-        if(pageSize==10){
-            $("#page_row").val("10行/页");  
-        }
-        if(pageSize==30){
-            $("#page_row").val("30行/页");  
-        }
-        if(pageSize==50){
-            $("#page_row").val("50行/页");
-        }
-        if(pageSize==100){
-            $("#page_row").val("100行/页");
-        }
         filtrates(inx,pageSize); 
     }
 }
@@ -271,6 +259,18 @@ function jurisdiction(actions){
         }
     }
 }
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
+    })
+}
+qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
@@ -282,9 +282,7 @@ function GET(a,b){
                 var list=JSON.parse(message.list);
                 cout=list.pages;
                 var list=list.list;
-                var actions=message.actions;
                 superaddition(list,a);
-                jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){

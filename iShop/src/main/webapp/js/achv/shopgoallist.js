@@ -2,6 +2,7 @@ var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
+var pageNumber=1;//删除默认第一页
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
@@ -12,6 +13,44 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
+var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
+return_jump=JSON.parse(return_jump);
+if(return_jump!==null){
+    console.log(return_jump);
+    inx=return_jump.inx;
+    pageSize=return_jump.pageSize;
+    value=return_jump.value;
+    filtrate=return_jump.filtrate;
+    list=return_jump.list;
+    param=JSON.parse(return_jump.param);
+    _param=JSON.parse(return_jump._param);
+}
+if(return_jump==null){
+    if(value==""&&filtrate==""){
+        GET(inx,pageSize);
+    }
+}else if(return_jump!==null){
+    if(pageSize==10){
+        $("#page_row").val("10行/页");  
+    }
+    if(pageSize==30){
+        $("#page_row").val("30行/页");  
+    }
+    if(pageSize==50){
+        $("#page_row").val("50行/页");
+    }
+    if(pageSize==100){
+        $("#page_row").val("100行/页");
+    }
+    if(value==""&&filtrate==""){
+        GET(inx,pageSize);
+    }else if(value!==""){
+        $("#search").val(value);
+        POST(inx,pageSize); 
+    }else if(filtrate!==""){
+        filtrates(inx,pageSize); 
+    }
+}
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -25,11 +64,16 @@ $(function(){
             $(this).click(function(){
                 pageSize=$(this).attr('id');  
                 if(value==""&&filtrate==""){
+                    inx=1;
                     GET(inx,pageSize);
                 }else if(value!==""){
+                    inx=1;
+                    param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
+                    inx=1;
+                    _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
