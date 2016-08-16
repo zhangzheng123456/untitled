@@ -178,13 +178,13 @@
             )
         </if>
         AND def_corp.isactive = 'Y'
+        AND def_group.isactive = 'Y'
         GROUP BY def_user.user_code
         HAVING 1=1
         <if test="search_value != null and search_value !=''">
             AND  USER_NAME LIKE concat('%',#{search_value},'%')
         </if>
         AND def_user.ISACTIVE='Y'
-        AND def_group.isactive = 'Y'
         ORDER BY def_user.id DESC
     </select>
 

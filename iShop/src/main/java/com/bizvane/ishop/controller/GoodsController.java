@@ -446,9 +446,9 @@ public class GoodsController {
                     goods.setGoods_name(rs.getCell(j++, i).getContents());
                     goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString()));
                     goods.setGoods_image(rs.getCell(j++, i).getContents());
-                    goods.setGoods_quarter(rs.getCell(j++, i).getContents());
-                    goods.setGoods_wave(rs.getCell(j++, i).getContents());
-                    goods.setBrand_code(rs.getCell(j++, i).getContents());
+                    goods.setGoods_quarter(rs.getCell(j++, i).getContents()+"");
+                    goods.setGoods_wave(rs.getCell(j++, i).getContents()+"");
+                    goods.setBrand_code(rs.getCell(j++, i).getContents()+"");
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
                     goods.setGoods_time(cellTypeForDate);
                     goods.setGoods_description(rs.getCell(j++, i).getContents());
