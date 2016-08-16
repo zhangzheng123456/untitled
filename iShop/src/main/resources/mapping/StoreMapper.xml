@@ -70,11 +70,11 @@
         def_store.isactive,
         def_corp.corp_name,
         def_area.area_name
-        FROM def_store,def_corp,def_area,def_brand
+        FROM def_store,def_corp,def_area
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = def_area.corp_code
         AND def_store.area_code = def_area.area_code
-        AND def_store.corp_code = def_brand.corp_code
+--         AND def_store.corp_code = def_brand.corp_code
 --         AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         <if test="corp_code != null and corp_code !=''">
             AND def_store.corp_code = #{corp_code}
@@ -92,7 +92,7 @@
         </if>
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
-        AND def_brand.isactive = 'Y'
+--         AND def_brand.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
@@ -101,17 +101,14 @@
         select
         DEF_STORE.store_code,
         DEF_STORE.store_name
-        FROM def_store,def_corp,def_area,def_brand
+        FROM def_store,def_corp,def_area
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = def_area.corp_code
         AND def_store.area_code = def_area.area_code
-        AND def_store.corp_code = def_brand.corp_code
-        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND def_store.corp_code = #{corp_code}
         AND def_store.isactive = 'Y'
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
-        AND def_brand.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
@@ -130,12 +127,10 @@
         def_store.isactive,
         def_corp.corp_name,
         def_area.area_name
-        FROM def_store,def_corp,def_area,def_brand
+        FROM def_store,def_corp,def_area
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = def_area.corp_code
         AND def_store.area_code = def_area.area_code
-        AND def_store.corp_code = def_brand.corp_code
-        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND def_store.corp_code = #{corp_code}
         AND def_store.area_code IN
         <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
@@ -158,7 +153,6 @@
         </if>
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
-        AND def_brand.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
@@ -173,12 +167,10 @@
         DEF_STORE.corp_code,
         DEF_CORP.CORP_NAME,
         DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA,def_brand
+        from DEF_STORE,DEF_CORP,DEF_AREA
         WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND def_store.corp_code = def_brand.corp_code
-        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND DEF_STORE.CORP_CODE = #{corp_code}
         AND DEF_STORE.AREA_CODE IN
         <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
@@ -192,7 +184,6 @@
         </if>
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
-        AND def_brand.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY DEF_STORE.id DESC
     </select>
@@ -206,12 +197,10 @@
         DEF_STORE.corp_code,
         DEF_CORP.CORP_NAME,
         DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA,def_brand
+        from DEF_STORE,DEF_CORP,DEF_AREA
         WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
         AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
         AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND def_store.corp_code = def_brand.corp_code
-        AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         AND DEF_STORE.STORE_CODE IN
         <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
             #{item}
@@ -225,7 +214,6 @@
         </if>
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
-        AND def_brand.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY DEF_STORE.id DESC
     </select>
