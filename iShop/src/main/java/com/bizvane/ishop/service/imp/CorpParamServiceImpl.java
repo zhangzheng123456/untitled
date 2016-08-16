@@ -54,7 +54,7 @@ public class CorpParamServiceImpl implements CorpParamService {
      * 分页显示区域
      */
     @Override
-    public PageInfo<CorpParam> selectAllParam(int page_number, int page_size, String corp_code, String search_value) throws Exception {
+    public PageInfo<CorpParam> selectAllParam(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<CorpParam> areas = corpParamMapper.selectAllParam(search_value);
         PageInfo<CorpParam> page = new PageInfo<CorpParam>(areas);

@@ -78,14 +78,8 @@ public class CorpController {
     public String cropManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
-            String group_code = request.getSession().getAttribute("group_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
-
-            String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject info = new org.json.JSONObject();
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -99,7 +93,6 @@ public class CorpController {
                 Corp corp = corpService.selectByCorpId(0, corp_code,"");
                 info.put("list", JSON.toJSONString(corp));
             }
-            info.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(info.toString());

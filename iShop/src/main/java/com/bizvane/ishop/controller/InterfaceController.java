@@ -54,25 +54,13 @@ public class InterfaceController {
     public String selectAll(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
-            String user_code = request.getSession(false).getAttribute("user_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-
-
-            //-------------------------------------------------------
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            String function_code = request.getParameter("funcCode");
 
-            //   String search_value = jsonObject.get("searchValue").toString();
             JSONObject result = new JSONObject();
             PageInfo<Interfacers> list = interfaceService.selectAllInterface(page_number, page_size, "");
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

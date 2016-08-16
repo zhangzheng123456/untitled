@@ -315,6 +315,40 @@ public class LoginController {
     }
 
     /**
+     * 获取列表画面权限
+     */
+    @RequestMapping(value = "/list/action", method = RequestMethod.POST)
+    @ResponseBody
+    public String listAction(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject menus = new JSONObject();
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String group_code = request.getSession().getAttribute("group_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String param = request.getParameter("param");
+            log.info("json---------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String function_code = jsonObject.get("funcCode").toString();
+            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
+            menus.put("actions", actions);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(menus.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
      * 获取详细画面权限
      */
     @RequestMapping(value = "/detail", method = RequestMethod.GET)
