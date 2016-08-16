@@ -99,8 +99,8 @@
         </if>
         AND def_role.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        GROUP BY def_group.group_code
-        ORDER BY DEF_GROUP.ID DESC
+        GROUP BY def_group.id
+        ORDER BY def_group.id DESC
     </select>
 
 
@@ -144,7 +144,7 @@
         </foreach>
         AND def_role.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        GROUP BY def_group.group_code
+        GROUP BY def_group.id
         ORDER BY def_group.id DESC
     </select>
 

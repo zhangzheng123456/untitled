@@ -57,15 +57,11 @@ public class MessageController {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String user_code = request.getSession(false).getAttribute("user_code").toString();
 
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code,user_code, group_code, role_code, function_code);
-            logger.info("获取动作信息" + actions.toString());
             JSONObject result = new JSONObject();
             PageInfo<MessageInfo> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -77,7 +73,6 @@ public class MessageController {
                 list = messageService.selectBySearch(page_number, page_size, corp_code, user_code, "");
             }
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -353,13 +348,9 @@ public class MessageController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
-            String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<SmsTemplate> list = null;
             if (role_code.contains(Common.ROLE_SYS)) {
@@ -367,7 +358,6 @@ public class MessageController {
             } else {
                 list = this.smsTemplateService.selectBySearch(page_number, page_size, corp_code, "");
             }
-            result.put("actions", actions);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

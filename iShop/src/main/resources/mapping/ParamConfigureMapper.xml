@@ -113,23 +113,20 @@
 
     <select id="selectParamScreen" resultMap="ParamConfigure">
         SELECT
-        dcc.*,
+        dcc.param_name,
+        dcc.param_desc,
+        dcc.remark
         FROM DEF_CORP_CFG dcc
-        <if test="param_names!=null">
-            AND dcc.param_name IN
-            <foreach collection="param_names" index="index" item="item" separator="," open="(" close=")">
-                #{item}
-            </foreach>
-        </if>
-        AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+
+       WHERE <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryKey=='param_names'">
+                <when test="entryValue!=''">
                     dcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <otherwise>
-                  1=1
+                    1=1
                 </otherwise>
+
             </choose>
         </foreach>
         ORDER BY dcc.id DESC

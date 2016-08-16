@@ -301,6 +301,10 @@ public class CorpServiceImpl implements CorpService {
         return corpMapper.selectWByAppUserName(app_user_name);
     }
 
+    public CorpWechat getCorpByByAppId(String app_id)  throws Exception{
+        return corpMapper.selectWByAppId(app_id);
+    }
+
     public List<CorpWechat> getWByCorp(String corp_code) throws Exception{
         return corpMapper.selectWByCorp(corp_code);
     }

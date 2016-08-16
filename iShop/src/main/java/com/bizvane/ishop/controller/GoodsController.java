@@ -67,20 +67,15 @@ public class GoodsController {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
-            String user_code = request.getSession(false).getAttribute("user_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            com.alibaba.fastjson.JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<Goods> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 list = this.goodsService.selectBySearch(page_number, page_size, "", "");
             } else {
-                //   String corp_code = request.getParameter("corp_code");
                 list = goodsService.selectBySearch(page_number, page_size, corp_code, "");
             }
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
@@ -90,7 +85,6 @@ public class GoodsController {
                 }
             }
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

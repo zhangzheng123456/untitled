@@ -53,20 +53,12 @@ public class ParamConfigureController {
 
         DataBean dataBean = new DataBean();
         try {
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
-
-            String group_code = request.getSession().getAttribute("group_code").toString();
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<ParamConfigure> list = null;
             list = paramConfigureService.getAllParamByPage(page_number, page_size, "");
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -317,7 +309,6 @@ public class ParamConfigureController {
 
         DataBean dataBean = new DataBean();
         String id = "";
-
         try {
             String jsString = request.getParameter("param");
             logger.info("json-------screen--------" + jsString);
@@ -330,8 +321,7 @@ public class ParamConfigureController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             JSONObject result = new JSONObject();
             PageInfo<ParamConfigure> list = null;
-            String param_names = request.getSession(false).getAttribute("param_names").toString();
-            list=paramConfigureService.selectParamScreen(page_number,page_size,param_names,map);
+            list=paramConfigureService.selectParamScreen(page_number,page_size,map);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

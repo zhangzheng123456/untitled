@@ -51,22 +51,12 @@ public class AppversionController {
     public String selectAll(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
-            String user_code = request.getSession(false).getAttribute("user_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-
-            //-------------------------------------------------------
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-           // String search_value = jsonObject.get("searchValue").toString();
             JSONObject result = new JSONObject();
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             PageInfo<Appversion> list = appversionService.selectAllAppversion(page_number, page_size, "");
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

@@ -4,6 +4,8 @@ jQuery(function(){
 	        var str = url.substr(1);   
 	        strs = str.split("=")[1];
 		}
+	var counts="";
+	var pageNum="";
 	var corp_code=strs;
 	console.log(corp_code);
 	var oc = new ObjectControl();
@@ -19,36 +21,39 @@ jQuery(function(){
 			console.log(data);
 			var list=JSON.parse(data.message);
 			var list=JSON.parse(list.list);
+			counts=list.pages;
+			pageNum=list.pageNum;
 			var list=list.list;
 			console.log(list);
 			for(var i=0;i<list.length;i++){
 				jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='+corp_code+'&id='+list[i].id+'"><div class="img"><img src="'+list[i].goods_image+'"></div><div class="shop-t"><h1>'+list[i].goods_name+'</h1><p>货号:'+list[i].goods_code+'</p><p class="pice">价格:<span>￥'+list[i].goods_price+'</span></p></div></a></div>');
 			}
-		});
-			jQuery(window).scroll(function(){
-				 var totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop())+150;
-
-				// if((jQuery(document).scrollTop())==(jQuery(document).height()-jQuery(window).height())){
-				if($(document).height() <= totalheight){
-					var rowno=jQuery('.allShops .shop').length+1;
-					query={
-						"rowno":rowno,
-						"corp_code":corp_code,
-						"key":key
+			morehide();
+			if(pageNum<counts){
+				$(".more").show();
+				$(".more").click(function() {
+					var rowno = jQuery('.allShops .shop').length+1;
+					query = {
+						"rowno": rowno,
+						"corp_code": corp_code,
+						"key": key
 					}
 					console.log(rowno);
 					console.log(key);
-					oc.postRequire("post","/api/fab","0",query,function(data){
+					oc.postRequire("post", "/api/fab", "", query, function (data) {
 						console.log(data);
-						var list=JSON.parse(data.message);
-						var list=JSON.parse(list.list);
-						var list=list.list;
-		                for(var i=0;i<list.length;i++){
-				          jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='+corp_code+'&goods_price='+list[i].goods_code+'"><div class="img"><img src="'+list[i].goods_image+'"></div><div class="shop-t"><h1>'+list[i].goods_name+'</h1><p>货号:'+list[i].goods_code+'</p><p class="pice">价格:<span>￥'+list[i].goods_price+'</span></p></div></a></div>');
+						var list = JSON.parse(data.message);
+						var list = JSON.parse(list.list);
+						var list = list.list;
+						for (var i = 0; i < list.length; i++) {
+							jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code=' + corp_code + '&goods_price=' + list[i].goods_code + '"><div class="img"><img src="' + list[i].goods_image + '"></div><div class="shop-t"><h1>' + list[i].goods_name + '</h1><p>货号:' + list[i].goods_code + '</p><p class="pice">价格:<span>￥' + list[i].goods_price + '</span></p></div></a></div>');
+						}
+					})
+				})
+
 			}
-		        	})
-				}
-			});
+		});
+
 		function searCh(){
 	        query = {
 		        "rowno":rowno,
@@ -91,4 +96,12 @@ jQuery(function(){
 				searCh();
 	    });
     }
+
+	function morehide() {
+		var shop_len=$(".shop").length;
+		if(counts==pageNum&&(shop_len%20!==0)){
+			$(".more").hide();
+		}
+	}
 });
+

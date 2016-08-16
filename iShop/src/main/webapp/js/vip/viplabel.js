@@ -13,6 +13,56 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
+var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
+return_jump=JSON.parse(return_jump);
+if(return_jump!==null){
+    console.log(return_jump);
+    inx=return_jump.inx;
+    pageSize=return_jump.pageSize;
+    value=return_jump.value;
+    filtrate=return_jump.filtrate;
+    list=return_jump.list;
+    param=JSON.parse(return_jump.param);
+    _param=JSON.parse(return_jump._param);
+}
+if(return_jump==null){
+    if(value==""&&filtrate==""){
+        GET(inx,pageSize);
+    }
+}else if(return_jump!==null){
+    if(value==""&&filtrate==""){
+        GET(inx,pageSize);
+    }else if(value!==""){
+        $("#search").val(value);
+        if(pageSize==10){
+            $("#page_row").val("10行/页");  
+        }
+        if(pageSize==30){
+            $("#page_row").val("30行/页");  
+        }
+        if(pageSize==50){
+            $("#page_row").val("50行/页");
+        }
+        if(pageSize==100){
+            $("#page_row").val("100行/页");
+        }
+        POST(inx,pageSize); 
+    }else if(filtrate!==""){
+        if(pageSize==10){
+            $("#page_row").val("10行/页");  
+        }
+        if(pageSize==30){
+            $("#page_row").val("30行/页");  
+        }
+        if(pageSize==50){
+            $("#page_row").val("50行/页");
+        }
+        if(pageSize==100){
+            $("#page_row").val("100行/页");
+        }
+        filtrates(inx,pageSize); 
+    }
+}
 //模仿select
 $(function(){  
         $("#page_row").click(function(){
@@ -172,9 +222,10 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    console.log(data);
     if(data.length==1&&num>1){
         pageNumber=num-1;
+    }else{
+        pageNumber=num;
     }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
@@ -182,14 +233,6 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        // var label_type="";
-        // if(data[i].label_type=="sys"){
-        //     label_type="系统";
-        // }else if(data[i].label_type=="org"){
-        //     label_type="企业";
-        // }else if(data[i].label_type=="user"){
-        //     label_type="用户";
-        // }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -213,6 +256,7 @@ function superaddition(data,num){//页面加载循环
 
     }
     whir.loading.remove();//移除加载框
+    sessionStorage.removeItem("return_jump");
 };
 //权限配置
 function jurisdiction(actions){
@@ -223,7 +267,7 @@ function jurisdiction(actions){
         }else if(actions[i].act_name=="delete"){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
-            $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
 }
@@ -248,19 +292,18 @@ function GET(a,b){
             }
     });
 }
-GET(inx,pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
          $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
          $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+         $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");  
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -279,6 +322,15 @@ function jumpBianse(){
     //双击跳转
     $(".table tbody tr").dblclick(function(){
         var id=$(this).attr("id");
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["filtrate"]=filtrate;//筛选的值
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
         $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
     })
@@ -287,7 +339,16 @@ function jumpBianse(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
             id=$(tr).attr("id");
-            sessionStorage.setItem("id",id);
+            var return_jump={};//定义一个对象
+            return_jump["inx"]=inx;//跳转到第几页
+            return_jump["value"]=value;//搜索的值;
+            return_jump["filtrate"]=filtrate;//筛选的值
+            return_jump["param"]=param;//搜索定义的值
+            return_jump["_param"]=_param//筛选定义的值
+            return_jump["list"]=list;//筛选的请求的list;
+            return_jump["pageSize"]=pageSize;//每页多少行
+            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));//保存一个
+            sessionStorage.setItem("id",id);//保存id
             $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_edit.html");
         }else if(tr.length==0){
             frame();
@@ -309,7 +370,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -370,7 +430,6 @@ function POST(a,b){
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -394,25 +453,24 @@ $("#delete").click(function(){
              ID+=r;
         }     
     }
-    var param={};
-    param["id"]=ID;
-    console.log(param);
-    oc.postRequire("post","/VIP/label/delete","0",param,function(data){
+    var params={};
+    params["id"]=ID;
+    oc.postRequire("post","/VIP/label/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
-                GET(inx, pageSize);
+                    GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
                 $('.frame').html('删除成功');
-                param["pageNumber"]=inx;
-                POST(inx, pageSize);
+                param["pageNumber"]=pageNumber;
+                POST(pageNumber, pageSize);
             } else if (filtrate !== "") {
                 frame();
                 $('.frame').html('删除成功');
-                _param["pageNumber"]=inx;
-                filtrates(inx, pageSize);
+                _param["pageNumber"]=pageNumber;
+                filtrates(pageNumber, pageSize);
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;
@@ -473,7 +531,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list ul").empty();
             for(var i=0;i<message.length;i++){
                  $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -495,6 +552,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -545,7 +603,6 @@ $("#x1").click(function(){
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/VIP/label/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -594,7 +651,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"

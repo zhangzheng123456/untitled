@@ -48,15 +48,11 @@ public class TaskTypeController {
     public String taskTypeList(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String user_code = request.getSession().getAttribute("user_code").toString();
-            String group_code = request.getSession().getAttribute("group_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
 
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             int page_num = Integer.parseInt(request.getParameter("pageNumber"));
-            String function_code = request.getParameter("funcCode");
-            JSONArray actions = functionService.selectActionByFun(corp_code,user_code, group_code, role_code, function_code);
 
             JSONObject result = new JSONObject();
             PageInfo<TaskType> tasktype;
@@ -65,7 +61,6 @@ public class TaskTypeController {
             } else {
                 tasktype = taskTypeService.selectAllTaskType(page_num, page_size, corp_code, "");
             }
-            result.put("actions", actions);
             result.put("list", JSON.toJSONString(tasktype));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

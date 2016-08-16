@@ -79,15 +79,10 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
-
             JSONObject result = new JSONObject();
             PageInfo<VIPInfo> list;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -96,7 +91,6 @@ public class VIPController {
                 list = vipService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", list);
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -277,16 +271,11 @@ public class VIPController {
     public String VIPLabelManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
 
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VipLabel> list;
@@ -296,7 +285,6 @@ public class VIPController {
                 list = vipLabelService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -1171,16 +1159,11 @@ public class VIPController {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession(false).getAttribute("group_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
 
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VipRecord> list;
@@ -1191,7 +1174,6 @@ public class VIPController {
                 list = vipRecordService.selectBySearch(page_number, page_size, corp_code, "");
             }
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());

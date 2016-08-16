@@ -246,15 +246,10 @@ public class UserController {
     public String userManage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
-            String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
-            String function_code = request.getParameter("funcCode");
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
             JSONObject result = new JSONObject();
             PageInfo<User> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -289,7 +284,6 @@ public class UserController {
                 list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD+ Common.STORE_HEAD+"###", "");
             }
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());

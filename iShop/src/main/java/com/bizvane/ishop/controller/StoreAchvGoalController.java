@@ -79,15 +79,10 @@ public class StoreAchvGoalController {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String group_code = request.getSession().getAttribute("group_code").toString();
-            String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
 
-            String function_code = request.getParameter("funcCode");
-            int user_id = Integer.parseInt(request.getSession(false).getAttribute("user_id").toString());
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONArray actions = functionService.selectActionByFun(corp_code, user_code, group_code, role_code, function_code);
 
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<StoreAchvGoal> list = null;
@@ -103,7 +98,6 @@ public class StoreAchvGoalController {
                 list = storeAchvGoalService.selectBySearch(page_number, page_size, corp_code, "", store_code, "");
             }
             result.put("list", JSON.toJSONString(list));
-            result.put("actions", actions);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());

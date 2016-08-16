@@ -72,6 +72,9 @@ public class StoreServiceImpl implements StoreService {
                 }
             }
             store.setBrand_name(brand_name);
+        }else {
+            store.setBrand_name("");
+            store.setBrand_code("");
         }
         return store;
     }
@@ -97,7 +100,7 @@ public class StoreServiceImpl implements StoreService {
             if (storeBrandName.getBrand_name()!=null) {
                 store.setBrand_name(storeBrandName.getBrand_name());
             }else {
-                store.setBrand_name("未知");
+                store.setBrand_name("");
             }
             store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
         }
