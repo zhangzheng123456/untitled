@@ -157,11 +157,13 @@ jQuery(document).ready(function(){
             console.log(data);
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
+                var corp_code=msg.corp_code;
+                var param_id=msg.param_id;
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);
                 $("#OWN_CORP option").text(msg.corp_name);
-                $("#PARAM").val(msg.param);
-                $("#PARAM").attr("data-name",msg.param);
+                $("#PARAM_NAME").val(msg.param);
+                $("#PARAM_NAME").attr("data-name",msg.param);
                 $("#REMARK").attr("data-name",msg.remark);
                 $("#REMARK").val(msg.remark);
                 $("#PARAM_VALUE").val(msg.param_value);
@@ -170,7 +172,7 @@ jQuery(document).ready(function(){
                 $("#creator").val(msg.creater);
                 $("#modify_time").val(msg.modified_date);
                 $("#modifier").val(msg.modifier);
-                getcorplist();
+                getcorplist(corp_code,param_id);
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
