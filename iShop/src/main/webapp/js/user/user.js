@@ -628,6 +628,12 @@ $("#file_submit").click(function(){
             $('#file_close').click(function(){
                 $('.file').hide();
             })
+            $('#download').click(function(){
+                $("#p").hide();
+                $('.file').hide();
+                $('#file_submit').show();
+                $('#download').hide();
+            })
             whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
@@ -751,6 +757,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;

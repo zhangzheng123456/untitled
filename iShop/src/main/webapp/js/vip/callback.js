@@ -2,6 +2,7 @@ var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
 var inx=1;//默认是第一页
+var pageNumber=1;//删除默认的第一行
 var pageSize=10;//默认传的每页多少行
 var value="";//收索的关键词
 var param={};//定义的对象
@@ -301,6 +302,7 @@ function jumpBianse(){
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
+    inx=1;
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
@@ -312,6 +314,7 @@ $("#search").keydown(function() {
 //点击放大镜触发搜索
 $("#d_search").click(function(){
     value=$("#search").val().replace(/\s+/g,"");
+    inx=1;
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
@@ -383,15 +386,17 @@ $("#delete").click(function(){
             if (value == "" && filtrate == "") {
                 frame();
                 $('.frame').html('删除成功');
-                GET(inx, pageSize);
+                GET(pageNumber, pageSize);
             } else if (value !== "") {
                 frame();
                 $('.frame').html('删除成功');
-                POST(inx, pageSize);
+                param["pageNumber"]=pageNumber;
+                POST(pageNumber, pageSize);
             } else if (filtrate !== "") {
                 frame();
                 $('.frame').html('删除成功');
-                filtrates(inx, pageSize);
+                _param["pageNumber"]=pageNumber
+                filtrates(pageNumber, pageSize);
             }
         var thinput=$("thead input")[0];
         thinput.checked =false;
@@ -495,6 +500,12 @@ $("#file_submit").click(function(){
             //导出关闭按钮
             $('#file_close').click(function(){
                 $('.file').hide();
+            })
+            $('#download').click(function(){
+                $("#p").hide();
+                $('.file').hide();
+                $('#file_submit').show();
+                $('#download').hide();
             })
         }else if(data.code=="-1"){
             alert(data.message);

@@ -690,13 +690,13 @@ input::-webkit-input-placeholder{
     color: #ffffff;
 }
 .file{
-	width:500px;
+	width:450px;
 	background: #f4f4f4; 
 	overflow: hidden;
 	display:none;
 	position: absolute;
-	top:126px;
-	left:435px;
+	top:204px;
+	left:500px;
 	z-index: 789;
 }
 .file li{
@@ -743,7 +743,7 @@ input::-webkit-input-placeholder{
 	width: 150px;
 	height: 30px;
 	position: absolute;
-	left:165px;
+	left:140px;
 	bottom:10px;
 	line-height: 30px;
 	letter-spacing: 2px;
@@ -762,9 +762,9 @@ input::-webkit-input-placeholder{
 	position: absolute;
 	top: 204px;
     left: 626px;
-	background-color: #ccc;
+	background-color: #f4f4f4; ;
 	height: 200px;
-	border-radius: 10px;
+	/*border-radius: 10px;*/
 	z-index: 788;
 }
 .into_text{

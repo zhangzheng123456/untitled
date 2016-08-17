@@ -393,6 +393,15 @@ function jumpBianse(){
             event.cancelBubble=true;
         }
         var id=$(this).parents('tr').attr('id');
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["filtrate"]=filtrate;//筛选的值
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
         sessionStorage.setItem("key_val",JSON.stringify(key_val));//保存到本地
         var corp_code=$(this).parents('tr').attr("data-code");
@@ -608,6 +617,12 @@ $("#file_submit").click(function(){
             $('#file_close').click(function(){
                 $('.file').hide();
             })
+            $('#download').click(function(){
+                $("#p").hide();
+                $('.file').hide();
+                $('#file_submit').show();
+                $('#download').hide();
+            })
         }else if(data.code=="-1"){
             alert(data.message);
         }
@@ -729,6 +744,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;

@@ -392,6 +392,15 @@ function jumpBianse(){
         }else{
             event.cancelBubble=true;
         }
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["filtrate"]=filtrate;//筛选的值
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         var store_code=$(this).parents('tr').find("td:eq(2)").html();
         var corp_code=$(this).attr("data-code");
         var store_corp={"store_code":store_code,"corp_code":corp_code};
@@ -533,7 +542,7 @@ function frame(){
                 } else if (filtrate !== "") {
                     frame();
                     $('.frame').html('删除成功');
-                    param["pageNumber"]=pageNumber;
+                    _param["pageNumber"]=pageNumber;
                     filtrates(pageNumber, pageSize);
                 }
                 var thinput = $("thead input")[0];
@@ -631,6 +640,12 @@ $("#file_submit").click(function(){
             //导出关闭按钮
             $('#file_close').click(function(){
                 $('.file').hide();
+            })
+            $('#download').click(function(){
+                $("#p").hide();
+                $('.file').hide();
+                $('#file_submit').show();
+                $('#download').hide();
             })
             whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
@@ -755,6 +770,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
