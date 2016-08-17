@@ -628,6 +628,12 @@ $("#file_submit").click(function(){
             $('#file_close').click(function(){
                 $('.file').hide();
             })
+            $('#download').click(function(){
+                $("#p").hide();
+                $('.file').hide();
+                $('#file_submit').show();
+                $('#download').hide();
+            })
             whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
