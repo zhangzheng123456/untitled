@@ -483,35 +483,35 @@ public class BrandController {
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
 
-            if(!role_code.equals(Common.ROLE_SYS)){
-                for (int i=3;i<column3.length;i++){
-                    if(!column3[i].getContents().toString().equals(corp_code)){
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
+            if(role_code.equals(Common.ROLE_SYS)){
+//                for (int i=3;i<column3.length;i++){
+//                    if(!column3[i].getContents().toString().equals(corp_code)){
+//                        result = "：第" + (i + 1) + "行企业编号不存在";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+//                    if (matcher.matches() == false) {
+//                        result = "：第" + (i + 1) + "行企业编号格式有误";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                }
+                for (int i = 3; i < column3.length; i++) {
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                }
-            }
-            for (int i = 3; i < column3.length; i++) {
-                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
-                if (corp == null) {
-                    result = "：第" + (i + 1) + "行企业编号不存在";
-                    int b = 5 / 0;
-                    break;
-                }
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    if (corp == null) {
+                        result = "：第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
 
+                }
             }
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
             if(onlyCell1.equals("存在重复值")){
@@ -551,7 +551,12 @@ public class BrandController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Brand brand = new Brand();
-                    brand.setCorp_code(rs.getCell(j++, i).getContents());
+                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    if(!role_code.equals(Common.ROLE_SYS)){
+                        brand.setCorp_code(corp_code);
+                    }else{
+                        brand.setCorp_code(cellCorp);
+                    }
                     brand.setBrand_code(rs.getCell(j++, i).getContents());
                     brand.setBrand_name(rs.getCell(j++, i).getContents());
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {

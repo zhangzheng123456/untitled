@@ -29,10 +29,12 @@ $(function(){
                     GET(inx,pageSize);
                 }else if(value!==""){
                     inx=1;
+                    param["pageNumber"]=inx;
                     param["pageSize"]=pageSize;
                     POST(inx,pageSize); 
                 }else if(filtrate!==""){
                     inx=1;
+                    _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
                     filtrates(inx,pageSize); 
                 }
@@ -124,7 +126,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
     container.innerHTML = a.join("");
     var pageClick = function() {
         var oAlink = container.getElementsByTagName("span");
-        var inx = pageindex; //初始的页码
+        inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
         $(".foot-sum .zy").html("共 "+count+"页");
         oAlink[0].onclick = function() { //点击上一页
@@ -169,7 +171,11 @@ function dian(a,b){//点击分页的时候调什么接口
     }
 }
 function superaddition(data,num){//页面加载循环
-    console.log(data);
+    if(data.length==1&&num>1){
+        pageNumber=num-1;
+    }else{
+        pageNumber=num;
+    }
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
@@ -215,6 +221,18 @@ function jurisdiction(actions){
         }
     }
 }
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
+    })
+}
+qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
@@ -226,9 +244,7 @@ function GET(a,b){
                 var list=JSON.parse(message.list);
                 cout=list.pages;
                 var list=list.list;
-                var actions=message.actions;
                 superaddition(list,a);
-                jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
@@ -459,6 +475,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){

@@ -379,35 +379,37 @@ public class UserController {
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)){
-                for (int i=3;i<column3.length;i++){
-                    if(!column3[i].getContents().toString().equals(corp_code)){
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
+            if(role_code.equals(Common.ROLE_SYS)){
+//                for (int i=3;i<column3.length;i++){
+//                    if(!column3[i].getContents().toString().equals(corp_code)){
+//                        result = "：第" + (i + 1) + "行企业编号不存在";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+//                    if (matcher.matches() == false) {
+//                        result = "：第" + (i + 1) + "行企业编号格式有误";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                }
+                for (int i = 3; i < column3.length; i++) {
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    if (corp == null) {
+                        result = "：第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+
                 }
             }
-            for (int i = 3; i < column3.length; i++) {
-                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
-                if (corp == null) {
-                    result = "：第" + (i + 1) + "行企业编号不存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
+
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(3));
             if(onlyCell1.equals("存在重复值")){
                 result = "：Execl中手机号码存在重复值";
@@ -500,7 +502,12 @@ public class UserController {
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column6[i].getContents().toString());
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
-                    user.setCorp_code(rs.getCell(j++, i).getContents());
+                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    if(!role_code.equals(Common.ROLE_SYS)){
+                        user.setCorp_code(corp_code);
+                    }else{
+                        user.setCorp_code(cellCorp);
+                    }
                     user.setUser_code(rs.getCell(j++, i).getContents());
                     user.setUser_name(rs.getCell(j++, i).getContents());
                     user.setAvatar("../img/head.png");//头像

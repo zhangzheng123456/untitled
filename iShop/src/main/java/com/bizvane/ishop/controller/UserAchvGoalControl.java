@@ -480,36 +480,37 @@ public class UserAchvGoalControl {
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if (!role_code.equalsIgnoreCase(Common.ROLE_SYS)) {
+            if(role_code.equals(Common.ROLE_SYS)){
+//                for (int i=3;i<column3.length;i++){
+//                    if(!column3[i].getContents().toString().equals(corp_code)){
+//                        result = "：第" + (i + 1) + "行企业编号不存在";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+//                    if (matcher.matches() == false) {
+//                        result = "：第" + (i + 1) + "行企业编号格式有误";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                }
                 for (int i = 3; i < column3.length; i++) {
-                    if (!column3[i].getContents().toString().equalsIgnoreCase(corp_code)) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                }
-            }
-            for (int i = 3; i < column3.length; i++) {
-                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行企业编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
-                if (corp == null) {
-                    result = "：第" + (i + 1) + "行企业编号不存在";
-                    int b = 5 / 0;
-                    break;
-                }
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    if (corp == null) {
+                        result = "：第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
 
+                }
             }
+
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
@@ -563,7 +564,12 @@ public class UserAchvGoalControl {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
-                    userAchvGoal.setCorp_code(rs.getCell(j++, i).getContents());
+                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    if(!role_code.equals(Common.ROLE_SYS)){
+                        userAchvGoal.setCorp_code(corp_code);
+                    }else{
+                        userAchvGoal.setCorp_code(cellCorp);
+                    }
                     userAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_code(rs.getCell(j++, i).getContents());
                     userAchvGoal.setUser_target(rs.getCell(j++, i).getContents());
