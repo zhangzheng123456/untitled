@@ -443,7 +443,7 @@ public class GoodsController {
                     goods.setGoods_code(rs.getCell(j++, i).getContents());
                     goods.setGoods_name(rs.getCell(j++, i).getContents());
                     goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString()));
-                    goods.setGoods_image(rs.getCell(j++, i).getContents());
+                    goods.setGoods_image(rs.getCell(j++, i).getContents().toString()+"  ");
                     String quarter = rs.getCell(j++, i).getContents().toString();
                     if(quarter==null||quarter.equals("")) {
                         goods.setGoods_quarter("第一季度");
