@@ -10,6 +10,8 @@ import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -357,6 +359,9 @@ public class VIPController {
                 }
             }
             List<VipLabel> vipLabels = list.getList();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(vipLabels);
             if (vipLabels.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
@@ -364,7 +369,7 @@ public class VIPController {
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(vipLabels, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,vipLabels, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -1131,6 +1136,9 @@ public class VIPController {
                 }
             }
             List<VipRecord> vipRecords = list.getList();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(vipRecords);
             if (vipRecords.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
@@ -1138,7 +1146,7 @@ public class VIPController {
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(vipRecords, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,vipRecords, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

@@ -3,6 +3,10 @@ package com.bizvane.ishop.entity;
 /**
  * Created by Administrator on 2016/5/19.
  */
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+
+@JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class Area {
     private int id;
     //地区编号

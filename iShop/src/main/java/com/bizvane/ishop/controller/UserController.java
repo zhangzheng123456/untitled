@@ -7,6 +7,8 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.*;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -217,8 +219,11 @@ public class UserController {
                 String replaceStore = WebUtils.StringFilter(store_code);
                 user.setStore_code(replaceStore);
             }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(users);
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(users, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,users, map, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
                 errormessage="数据异常，导出失败";

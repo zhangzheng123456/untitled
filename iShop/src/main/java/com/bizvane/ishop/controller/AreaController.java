@@ -15,6 +15,8 @@ import com.bizvane.ishop.service.TableManagerService;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -511,18 +513,18 @@ public class AreaController {
                 }
             }
             List<Area> areas = list.getList();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+            String json = mapper.writeValueAsString(areas);
             if (areas.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
 
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            for (String str:map.keySet()) {
-                System.out.println("key= "+ str + " and value= " + map.get(str));
-            }
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(areas, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,areas, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

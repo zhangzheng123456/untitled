@@ -10,6 +10,8 @@ import com.bizvane.ishop.service.FunctionService;
 import com.bizvane.ishop.service.TaskTypeService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -391,8 +393,11 @@ public class TaskTypeController {
                 errormessage = "：导出数据过大";
                 int i = 9 / 0;
             }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(list);
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(list, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,list, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "：数据异常，导出失败";

@@ -13,6 +13,8 @@ import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -417,6 +419,9 @@ public class BrandController {
                 }
             }
             List<Brand> brands = list.getList();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(brands);
             if(brands.size()>=29999){
                 errormessage="导出数据过大";
                 int i=9/0;
@@ -424,7 +429,7 @@ public class BrandController {
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(brands, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,brands, map, response, request);
             JSONObject result = new JSONObject();
             if(pathname==null||pathname.equals("")){
                 errormessage="数据异常，导出失败";

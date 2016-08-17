@@ -1,7 +1,10 @@
 package com.bizvane.ishop.utils;
 
 
+import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.entity.ValidateCode;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jxl.Workbook;
 import jxl.format.Alignment;
 import jxl.format.Colour;
@@ -10,6 +13,7 @@ import jxl.format.VerticalAlignment;
 import jxl.write.*;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.poi.ss.formula.functions.T;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,22 +27,27 @@ import java.util.*;
  * Created by yin on 2016/6/30.
  */
 public class OutExeclHelper {
-    public static String OutExecl(List olist, LinkedHashMap<String,String> cols, HttpServletResponse response, HttpServletRequest request){
+    public static String OutExecl(String json,List olist, LinkedHashMap<String,String> cols, HttpServletResponse response, HttpServletRequest request){
         String result="";
         WritableWorkbook book=null;
         Set<String> keys = cols.keySet();
         try {
-            response.setCharacterEncoding("UTF-8");
-            JSONObject jsonObject = new JSONObject();
-            jsonObject.put("list", olist);
-            org.json.JSONArray array = jsonObject.getJSONArray("list");
+//            ObjectMapper mapper = new ObjectMapper();
+//            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+//            String json = mapper.writeValueAsString(olist);
+//            System.out.println("---:"+json);
+//            JSONObject jsonObject = new JSONObject(json);
+//            jsonObject.put("list", olist);
+            com.alibaba.fastjson.JSONArray array = JSON.parseArray(json);
+            //org.json.JSONArray array = jsonObject.getJSONArray("list");
             List<List<String>> lists = new ArrayList<List<String>>();
             for (int i = 0; i < olist.size(); i++) {
                 List<String> temp = new ArrayList<String>();
                     for (String key : cols.keySet()) {
                        // System.out.println("key= "+ key + " and value= " + cols.get(key));
-                        String aa = array.getJSONObject(i).get(key).toString();
-                        temp.add(aa);
+                        String aa=String.valueOf(array.getJSONObject(i).get(key)+"");
+                        String bb = aa.replaceAll("null", "");
+                        temp.add(bb);
                     }
                 lists.add(temp);
             }

@@ -10,6 +10,8 @@ import com.bizvane.ishop.utils.IshowHttpClient;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
@@ -922,8 +924,11 @@ public class StoreController {
                 String replaceStr = WebUtils.StringFilter(brand_name);
                 store.setBrand_name(replaceStr);
             }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            String json = mapper.writeValueAsString(stores);
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(stores, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json,stores, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";

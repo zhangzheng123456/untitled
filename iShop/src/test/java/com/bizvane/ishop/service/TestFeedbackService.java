@@ -66,14 +66,16 @@ public class TestFeedbackService {
 //            String user_code="";
 //            String result = taskService.updTask(task, user_codes, user_code);
 //            System.out.println("-------"+result);
-            Pattern pattern = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
-            String path="http://products-image.oss-cn-hangzhou.aliyuncs.com/yigu.jpg";
-            Matcher matcher = pattern.matcher(path);
-            if(matcher.matches()==false){
-                System.out.println("输入有误");
-            }else {
-                System.out.println("正确");
-            }
+//            Pattern pattern = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
+//            String path="http://products-image.oss-cn-hangzhou.aliyuncs.com/yigu.jpg";
+//            Matcher matcher = pattern.matcher(path);
+//            if(matcher.matches()==false){
+//                System.out.println("输入有误");
+//            }else {
+//                System.out.println("正确");
+//            }
+            String aa=String.valueOf(null+"");
+            System.out.println(aa.length()+"--"+aa);
         } catch (Exception x) {
             x.printStackTrace();
         }
