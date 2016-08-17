@@ -338,6 +338,7 @@
                         url: "http://wthrcdn.etouch.cn/weather_mini?city="+remote_ip_info.city,
                         data: "",
                         success: function(msg){
+                            console.log(msg);
                             var w_type=JSON.parse(msg)["data"]["forecast"];
                             var w_date=["今天","明天","后天"];
                             for(var i=0;i<w_type.length-2;i++){

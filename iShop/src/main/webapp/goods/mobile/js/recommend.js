@@ -53,7 +53,7 @@ jQuery(function(){
 		    		jQuery('.allShops').empty();
 		    		for(var i=0;i<list.length;i++){
 				    		jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='+corp_code+'&id='+list[i].id+'"><div class="img"><img src="'+list[i].goods_image+'"></div><div class="shop-t"><h1>'+list[i].goods_name+'</h1><p>货号:'+list[i].goods_code+'</p><p class="pice">价格:<span>￥'+list[i].goods_price+'</span></p></div></a></div>');
-			}
+			        }
 					morehide();
 					if(hasNextPage==true){
 						$(".more").show();

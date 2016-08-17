@@ -475,6 +475,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
