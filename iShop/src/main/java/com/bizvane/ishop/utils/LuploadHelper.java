@@ -90,7 +90,7 @@ public class LuploadHelper {
         for (int i = 1; i < rsRows; i++) { //统计行中为空的单元格数
             nullCellNum = 0;
             for (int j = 0; j < rsCols; j++) {
-                String val = sheet.getCell(1, i).getContents();
+                String val = sheet.getCell(0, i).getContents();
                 val = StringUtils.trimToEmpty(val);
                 if (StringUtils.isBlank(val))
                     nullCellNum++;
