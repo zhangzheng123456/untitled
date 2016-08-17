@@ -765,14 +765,36 @@ public class GoodsController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 秀搭管理
-//     */
-//    @RequestMapping(value = "/xiuda/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String showMatchManage(HttpServletRequest request) {
-//
-//        return "xiuda";
-//    }
+
+    /**
+     * 获取企业商品（用于商品搭配）
+     */
+    @RequestMapping(value = "/corp_fab", method = RequestMethod.POST)
+    @ResponseBody
+    public String corpFab(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = jsonObject.get("searchValue").toString();
+            int page_number = Integer.parseInt(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.parseInt(jsonObject.get("pageSize").toString());
+            PageInfo<Goods> list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 
 }
