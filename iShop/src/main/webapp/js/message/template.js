@@ -653,6 +653,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;

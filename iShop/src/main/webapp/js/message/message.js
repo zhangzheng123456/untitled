@@ -14,7 +14,6 @@ var key_val = sessionStorage.getItem("key_val");//取页面的function_code
 key_val = JSON.parse(key_val);
 var funcCode = key_val.func_code;
 //模仿select
-//模仿select
 $(function(){  
         $("#page_row").click(function(){
             if("block" == $("#liebiao").css("display")){  
@@ -460,7 +459,7 @@ $("#cancel").click(function () {
                 } else if (filtrate !== "") {
                     frame();
                     $('.frame').html('删除成功');
-                    param["pageNumber"]=pageNumber;
+                    _param["pageNumber"]=pageNumber;
                     filtrates(pageNumber, pageSize);
                 }
                 var thinput = $("thead input")[0];
@@ -642,6 +641,7 @@ oc.postRequire("get", "/list/filter_column?funcCode=" + funcCode + "", "0", "", 
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
@@ -717,6 +717,5 @@ $("#input-txt").keydown(function () {
                 filtrates(inx, pageSize);
             }
         }
-        ;
     }
 })

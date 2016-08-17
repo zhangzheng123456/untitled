@@ -560,6 +560,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -698,6 +699,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;

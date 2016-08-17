@@ -471,7 +471,7 @@ $("#delete").click(function(){
             }else if(filtrate!==""){
                 frame();
                 $('.frame').html('删除成功');
-                param["pageNumber"]=pageNumber
+                _param["pageNumber"]=pageNumber
                 filtrates(pageNumber,pageSize); 
             }
         var thinput=$("thead input")[0];
@@ -703,6 +703,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;

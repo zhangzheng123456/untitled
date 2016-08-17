@@ -463,10 +463,10 @@ $("#delete").click(function(){
              ID+=r;
         }     
     }
-    var param={};
-    param["id"]=ID;
+    var params={};
+    params["id"]=ID;
     console.log(param);
-    oc.postRequire("post","/userAchvGoal/delete","0",param,function(data){
+    oc.postRequire("post","/userAchvGoal/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame();
@@ -711,6 +711,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
    var input=$('#sxk .inputs input');
+   inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
