@@ -334,23 +334,35 @@ public class GoodsController {
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(role_code.equals(Common.ROLE_SYS)){
+            if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i = 3; i < column3.length; i++) {
+                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                        result = "：第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
-                    if (corp == null) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
                 }
             }
-
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                if (corp == null) {
+                    result = "：第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+            }
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
             if(onlyCell1.equals("存在重复值")){
                 result = "：Execl中商品编号存在重复值";
@@ -753,14 +765,36 @@ public class GoodsController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 秀搭管理
-//     */
-//    @RequestMapping(value = "/xiuda/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String showMatchManage(HttpServletRequest request) {
-//
-//        return "xiuda";
-//    }
+
+    /**
+     * 获取企业商品（用于商品搭配）
+     */
+    @RequestMapping(value = "/corp_fab", method = RequestMethod.POST)
+    @ResponseBody
+    public String corpFab(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String search_value = jsonObject.get("searchValue").toString();
+            int page_number = Integer.parseInt(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.parseInt(jsonObject.get("pageSize").toString());
+            PageInfo<Goods> list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 
 }

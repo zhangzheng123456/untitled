@@ -379,20 +379,21 @@ public class UserController {
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(role_code.equals(Common.ROLE_SYS)){
-//                for (int i=3;i<column3.length;i++){
-//                    if(!column3[i].getContents().toString().equals(corp_code)){
-//                        result = "：第" + (i + 1) + "行企业编号不存在";
-//                        int b = 5 / 0;
-//                        break;
-//                    }
-//                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
-//                    if (matcher.matches() == false) {
-//                        result = "：第" + (i + 1) + "行企业编号格式有误";
-//                        int b = 5 / 0;
-//                        break;
-//                    }
-//                }
+            if(!role_code.equals(Common.ROLE_SYS)) {
+                for (int i = 3; i < column3.length; i++) {
+                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                        result = "：第" + (i + 1) + "行企业编号不存在";
+                        int b = 5 / 0;
+                        break;
+                    }
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    if (matcher.matches() == false) {
+                        result = "：第" + (i + 1) + "行企业编号格式有误";
+                        int b = 5 / 0;
+                        break;
+                    }
+                }
+            }
                 for (int i = 3; i < column3.length; i++) {
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
                     if (matcher.matches() == false) {
@@ -408,7 +409,7 @@ public class UserController {
                     }
 
                 }
-            }
+
 
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(3));
             if(onlyCell1.equals("存在重复值")){

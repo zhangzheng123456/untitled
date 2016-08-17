@@ -429,4 +429,33 @@ public class LoginController {
         }
         return dataBean.getJsonStr();
     }
+    /**
+     * 导入获取Corp_code
+     */
+    @RequestMapping(value = "/list/input_code", method = RequestMethod.GET)
+    @ResponseBody
+    public String inputCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String result="";
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            if(role_code.equals(Common.ROLE_SYS)){
+                result="";
+            }else{
+                result="企业编号："+corp_code;
+            }
+            JSONObject filter = new JSONObject();
+            filter.put("corp_code",result);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(filter.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }
