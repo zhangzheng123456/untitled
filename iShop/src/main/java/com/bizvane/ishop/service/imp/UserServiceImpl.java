@@ -70,6 +70,12 @@ public class UserServiceImpl implements UserService {
         return page;
     }
 
+    public List<User> selectBySearch(String corp_code) throws Exception {
+
+        List<User> users;
+        users = userMapper.selectAllUser(corp_code, "");
+        return users;
+    }
     /**
      * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）

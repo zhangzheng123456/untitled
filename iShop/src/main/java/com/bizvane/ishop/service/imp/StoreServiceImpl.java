@@ -176,10 +176,10 @@ public class StoreServiceImpl implements StoreService {
         List<User> user = new ArrayList<User>();
 
         if (!store_code.equals("")) {
-            user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD + store_code + ",", "", role_code,isactive);
+            user = userMapper.selectStoreUser(corp_code, store_code + ",", "", role_code,isactive);
         }
         if (!area_code.equals("")){
-            user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD + area_code + ",", role_code,isactive);
+            user = userMapper.selectStoreUser(corp_code, "", area_code + ",", role_code,isactive);
         }
         for (User user1:user) {
             user1.setIsactive(CheckUtils.CheckIsactive(user1.getIsactive()));
