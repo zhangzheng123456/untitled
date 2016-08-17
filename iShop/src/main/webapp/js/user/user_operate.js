@@ -319,7 +319,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 		});
 	};
 	useroperatejs.ajaxSubmit=function(_command,_params,opt){
-		// console.log(JSON.stringify(_params));
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			if(data.code=="0"){
 				$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
@@ -331,6 +331,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 					content: data.message
 				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	};
 	var bindFun = function(obj1){//绑定函数，根据校验规则调用相应的校验函数
@@ -457,6 +458,7 @@ function role_data(c){//
 	// var _params={"group_code":r,"corp_code":c};
 	var _params={"corp_code":c};
 	var _command="/user/role";
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
 		var msg=JSON.parse(data.message);
@@ -478,6 +480,7 @@ function role_data(c){//
 				content:"该企业目前没有群组，请先定义群组！"
 			});
 		}
+		whir.loading.remove();//移除加载框
 		$("#role_list").append(html);
 		$("#role_list li").click(function(){
             var this_=this;
@@ -556,6 +559,7 @@ function store_data(p,c){//店铺
 	var _params={"corp_code":c};	
 	console.log(_params);
 	var _command="/user/store";
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", _command,"", _params, function(data){
 		var msg=JSON.parse(data.message);
 		console.log(msg.stores);
@@ -574,6 +578,7 @@ function store_data(p,c){//店铺
 				content:"该企业目前没有店铺，请先定义店铺！"
 			});
 		}
+		whir.loading.remove();//移除加载框
 		$(p).siblings('.store_list_kuang').find("ul").html(html);
 		$(p).siblings('.store_list_kuang').find("li").click(function(){
 			var event=window.event||arguments[0];
@@ -597,6 +602,7 @@ function area_data(p,c){//区域
 	var _params={"corp_code":c};	
 	console.log(_params);
 	var _command="/shop/area";
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", _command,"", _params, function(data){
 		console.log(data);
 		var msg=JSON.parse(data.message);
@@ -615,6 +621,7 @@ function area_data(p,c){//区域
 				content:"该企业目前没有区域，请先定义区域！"
 			});
 		}
+		whir.loading.remove();//移除加载框
 		$(p).siblings('.store_list_kuang').find("ul").html(html);
 		$(p).siblings('.store_list_kuang').find("li").click(function(){
 			var event=window.event||arguments[0];
@@ -684,6 +691,7 @@ jQuery(document).ready(function(){
     	var id=sessionStorage.getItem("id");
 		var _params={"id":id};
 		var _command="/user/select";
+		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -848,6 +856,7 @@ jQuery(document).ready(function(){
 					content: data.message
 				});
 			}
+			whir.loading.remove();//移除加载框
 		});
     }else{
     	getcorplist();
