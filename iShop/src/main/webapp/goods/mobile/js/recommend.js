@@ -4,8 +4,7 @@ jQuery(function(){
 	        var str = url.substr(1);   
 	        strs = str.split("=")[1];
 		}
-	var counts="";
-	var pageNum="";
+
 	var hasNextPage="";
 	var is
 	var corp_code=strs;
@@ -45,7 +44,6 @@ jQuery(function(){
 		    	console.log(data);
 				var list=JSON.parse(data.message);
 				var list=JSON.parse(list.list);
-				counts=list.pages;
 				hasNextPage=list.hasNextPage;
 				var list=list.list;
 		    	console.log(list);
@@ -56,21 +54,18 @@ jQuery(function(){
 			        }
 					morehide();
 					if(hasNextPage==true){
-						$(".more").show();
-						$(".more").click(function() {
+							$(".more").show();
+						    $(".more").click(function() {
 							var rowno = jQuery('.allShops .shop').length+1;
-							query = {
+							param = {
 								"rowno": rowno,
 								"corp_code": corp_code,
-								"key": key
+								"search_value": key
 							}
-							console.log(rowno);
-							console.log(key);
-							oc.postRequire("post", "/api/fab/search", "", query, function (data) {
+							oc.postRequire("post", "/api/fab/search", "0", param, function (data) {
 								console.log(data);
 								var list = JSON.parse(data.message);
 								var list = JSON.parse(list.list);
-								counts=list.pages;
 								hasNextPage=list.hasNextPage;
 								var list = list.list;
 								for (var i = 0; i < list.length; i++) {
@@ -102,11 +97,16 @@ jQuery(function(){
 	            if(key!=""){
 				searCh();}}
 		})
-		$('#input').bind('input propertychange', function() {
+        // $('#input').bind('input propertychange', function() {
+			// key=$('#input').val().replace(/\s+/g,"");
+			// console.log(key);
+			// 	searCh();
+	    // });
+
+		$("#d_search").click(function () {
 			key=$('#input').val().replace(/\s+/g,"");
-			console.log(key);
-				searCh();
-	    });
+			searCh();
+		})
 
 		function morehide() {
 			var shop_len=$(".shop").length;

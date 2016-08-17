@@ -440,7 +440,7 @@ public class GoodsController {
                     }
                     String wave = rs.getCell(j++, i).getContents().toString();
                     if(wave==null||wave.equals("")){
-                        goods.setGoods_wave("");
+                        goods.setGoods_wave("   ");
                     }else{
                         goods.setGoods_wave(wave);
                     }
