@@ -226,6 +226,18 @@ function jurisdiction(actions){
         }
     }
 }
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
+    })
+}
+qjia();
 //页面加载时list请求
 function GET(){
     oc.postRequire("get","/feedback/list?pageNumber="+inx+"&pageSize="+pageSize
@@ -237,9 +249,7 @@ function GET(){
                 var list=JSON.parse(message.list);
                 var cout=list.pages;
                 var list=list.list;
-                var actions=message.actions;
                 superaddition(list,inx);
-                jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,inx,pageSize,funcCode,value);
             }else if(data.code=="-1"){

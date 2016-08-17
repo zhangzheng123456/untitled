@@ -201,6 +201,18 @@ function jurisdiction(actions){
         }
     }
 }
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        jurisdiction(actions);
+        jumpBianse();
+    })
+}
+qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
@@ -213,9 +225,7 @@ function GET(a,b){
                 var list=JSON.parse(message.list);
                 cout=list.pages;
                 var list=list.list;
-                var actions=message.actions;
                 superaddition(list,a);
-                jurisdiction(actions);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
