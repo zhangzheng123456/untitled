@@ -419,7 +419,7 @@ public class GoodsController {
             Cell[] column7 = rs.getColumn(7);
             for (int i = 3; i < column7.length; i++) {
                 Matcher matcher = pattern.matcher(column7[i].getContents().toString());
-                if (matcher.matches() == false) {
+                if (column7[i].getContents().toString()==null || matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行品牌编号格式有误";
                     int b = 5 / 0;
                     break;
@@ -456,7 +456,14 @@ public class GoodsController {
                     }else{
                         goods.setGoods_wave(wave);
                     }
-                    goods.setBrand_code(rs.getCell(j++, i).getContents()+"");
+                    String brand_code = rs.getCell(j++, i).getContents().toString();
+                    if(brand_code==null || brand_code.equals("")){
+                        result = "：第" + (i + 1) + "行品牌编号格式有误";
+                        int b = 5 / 0;
+                        break;
+                    }else{
+                        goods.setBrand_code(brand_code);
+                    }
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
                     goods.setGoods_time(cellTypeForDate);
                     goods.setGoods_description(rs.getCell(j++, i).getContents());
