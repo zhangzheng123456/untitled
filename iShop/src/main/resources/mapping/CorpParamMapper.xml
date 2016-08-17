@@ -167,13 +167,13 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     dc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <when test="entryValue!='' and entryKey=='param_name'">
                     dcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <when test="entryValue!='' and entryValue!=''">
+                <when test="entryValue!=''">
                     rcc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <otherwise>
