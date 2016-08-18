@@ -814,6 +814,7 @@ input::-webkit-input-placeholder{
 	width: 160px;
 	height: 30px;
     color: #fff;
+	cursor:pointer;
     text-decoration: none;
     text-align: center;
     line-height: 30px;

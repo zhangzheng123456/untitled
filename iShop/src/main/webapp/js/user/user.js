@@ -693,6 +693,7 @@ function UpladFile() {
         whir.loading.remove();//移除加载框
         if(data.code=="0"){
             alert('导入成功');
+            window.location.reload();
         }else if(data.code=="-1"){
              alert("导入失败"+data.message);
         }
@@ -703,6 +704,8 @@ function UpladFile() {
         // alert("上传完成!");
     };
     xhr.send(form);
+    $("#p").hide();
+    $(".into_frame").hide();
 }
 //筛选按钮
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
