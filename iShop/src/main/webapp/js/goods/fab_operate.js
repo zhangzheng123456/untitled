@@ -480,3 +480,15 @@ function getvarbrandlist(c,d){
 		}
 	})
 }
+
+//点击添加匹配商品弹窗
+$("#add").click(function () {
+	$("#goods_box").show();
+	$("#search_match_goods").show();
+})
+
+//关闭搜索匹配商品弹窗
+$("#close_match_goods").click(function () {
+	$("#goods_box").hide();
+	$("#search_match_goods").hide();
+})
