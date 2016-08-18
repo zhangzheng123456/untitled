@@ -665,6 +665,17 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
 
         }
         $("#sxk .inputs ul").html(li);
+        if(filtrate!==""){
+            $(".sxk").slideDown();
+            for(var i=0;i<list.length;i++){
+                if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
+                    $("#"+list[i].screen_key).val(list[i].screen_value);
+                }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
+                    var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
+                    $("#"+list[i].screen_key).val(svalue);
+                }
+            }
+        }
         filtrateDown();
     }
 });
