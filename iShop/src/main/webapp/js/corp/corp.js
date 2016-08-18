@@ -651,6 +651,7 @@ function UpladFile() {
         whir.loading.remove();
         if(data.code=="0"){
             alert('导入成功');
+            window.location.reload();
         }else if(data.code=="-1"){
              alert("导入失败"+data.message);
         }
