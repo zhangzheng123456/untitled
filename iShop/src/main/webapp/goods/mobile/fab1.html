@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>测试</title>
+	<style>
+		.click{
+			width:50px;
+			height:30px;
+		}
+	</style>
+</head>
+<body>
+	<button onclick="returnData()" class="click">测试</button>	
+</body>
+<script>
+function returnData(){
+	var u = navigator.userAgent;
+	var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端 
+	var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+	if(isiOS){
+		var data=NSBuyerreturnData();
+	}
+	if(isAndroid){
+		var data=Android.returnData();
+	}
+	alert(data);
+    return data;
+}
+</script>
+</html>

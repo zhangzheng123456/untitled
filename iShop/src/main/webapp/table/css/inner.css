@@ -755,8 +755,12 @@ input::-webkit-input-placeholder{
     float: left;
     margin-left: 10px;
 }
+#download a{
+	display: block;
+}
 .down_load a{
 	color: #FFFFFF;
+	display: block;
 }
 .into_frame{
 	display:none;
@@ -822,8 +826,8 @@ input::-webkit-input-placeholder{
 }
 .down_load_file input{
     position: absolute;
-    right:0;
-    top:0;
+    right:-105px;
+    top:5px;
     opacity:0;
 }
 .start_file{
