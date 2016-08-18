@@ -703,6 +703,8 @@ function UpladFile() {
         // alert("上传完成!");
     };
     xhr.send(form);
+    $("#p").hide();
+    $(".into_frame").hide();
 }
 //筛选按钮
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
