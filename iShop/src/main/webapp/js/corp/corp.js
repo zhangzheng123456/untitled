@@ -13,7 +13,6 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);//取key_val的值
 var funcCode=key_val.func_code;
-
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
@@ -112,8 +111,10 @@ $("#empty").click(function(){
     filtrate="";
     $('#search').val("");
     $(".table p").remove();
+    inx=1;
     GET(inx,pageSize);
 })
+
 function setPage(container, count, pageindex,pageSize,funcCode) {
     var container = container;
     var count = count;
@@ -531,6 +532,9 @@ function clearAll(name){
 $("#leading_out").click(function(){
     var l=$(window).width();
     var h=$(document.body).height();
+    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
+    $(".file").css({"left":+left+"px","top":+tp+"px"});
     $("#p").show();
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $('.file').show();
@@ -611,6 +615,9 @@ $('#file_close').click(function(){
 $("#guide_into").click(function(){
     var l=$(window).width();
     var h=$(document.body).height();
+    var left=($(window).width()-$(".into_frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$(".into_frame").height())/2;//弹框定位的top值
+    $(".into_frame").css({"left":+left+"px","top":+tp+"px"});
     $("#p").show();
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $('.file').hide();
@@ -700,6 +707,13 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
             }
         }
         filtrateDown();
+        //筛选的keydow事件
+        $('#sxk .inputs input').keydown(function(){
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                getInputValue();
+            }
+        })
     }
 });
 function filtrateDown(){
@@ -728,7 +742,10 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
-   var input=$('#sxk .inputs input');
+    getInputValue();
+})
+function getInputValue(){
+    var input=$('#sxk .inputs input');
    inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
@@ -759,7 +776,7 @@ $("#find").click(function(){
     }else if(num<=0){
         filtrate="";
     }
-})
+}
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框

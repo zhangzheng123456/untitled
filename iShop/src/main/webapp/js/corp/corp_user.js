@@ -25,10 +25,7 @@ function GET(){
                 $('#created_date').html(list.created_date);
                 $('#creater').html(list.creater);
                 $('#modified_date').html(list.modified_date);
-                if(actions[0].act_name=="edit"){
-                    $("#compile").html("<a href='crop_edit.html'><div class='shop_editor'>编辑</div></a>")
-                    sessionStorage.setItem("id",id);
-                }
+                sessionStorage.setItem("id",id);
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
@@ -40,3 +37,16 @@ function GET(){
     });
 }
 GET();
+//页面加载调权限接口
+function qjia(){
+    var param={};
+    param["funcCode"]=funcCode;
+    oc.postRequire("post","/list/action","0",param,function(data){
+        var message=JSON.parse(data.message);
+        var actions=message.actions;
+        if(actions[0].act_name=="edit"){
+            $("#compile").html("<a href='crop_edit.html'><div class='shop_editor'>编辑</div></a>")
+        }
+    })
+}
+qjia(); 
