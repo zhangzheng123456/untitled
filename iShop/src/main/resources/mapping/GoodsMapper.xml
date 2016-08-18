@@ -11,6 +11,7 @@
         <result column="goods_time" property="goods_time"/>
         <result column="goods_quarter" property="goods_quarter"/>
         <result column="goods_wave" property="goods_wave"/>
+        <result column="match_goods" property="match_goods"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -35,6 +36,7 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
+        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
@@ -77,6 +79,7 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
+        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
@@ -118,6 +121,7 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
+        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
@@ -129,7 +133,9 @@
         ,g.brand_code
         ,db.brand_name
         FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
-        WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
+        WHERE g.corp_code=cp.corp_code
+        AND g.corp_code=db.corp_code
+        AND g.brand_code=db.brand_code
         and g.id=#{id}
     </select>
 
@@ -156,6 +162,9 @@
             </if>
             <if test="goods_wave!=null  and goods_wave!=''">
                 goods_wave,
+            </if>
+            <if test="match_goods!=null  and match_goods!=''">
+                match_goods,
             </if>
             <if test="modified_date!=null">
                 modified_date,
@@ -203,6 +212,9 @@
             </if>
             <if test="goods_wave!=null  and goods_wave!=''">
                 #{goods_wave},
+            </if>
+            <if test="match_goods!=null  and match_goods!=''">
+                #{match_goods},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -255,6 +267,9 @@
             <if test="goods_wave!=null and goods_wave!=''">
                 goods_wave=#{goods_wave},
             </if>
+            <if test="match_goods!=null and match_goods!=''">
+                match_goods=#{match_goods},
+            </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
@@ -290,12 +305,59 @@
     </delete>
 
     <select id="getGoodsByCode" resultType="com.bizvane.ishop.entity.Goods">
-        select * from DEF_GOODS WHERE corp_code=#{corp_code} and goods_code=#{goods_code}
+        select
+        g.id
+        ,g.goods_code
+        ,g.goods_name
+        ,g.goods_image
+        ,g.goods_price
+        ,g.goods_time
+        ,g.goods_quarter
+        ,g.goods_wave
+        ,g.match_goods
+        ,g.modified_date
+        ,g.modifier
+        ,g.isactive
+        ,g.created_date
+        ,g.creater
+        ,g.goods_description
+        ,g.corp_code
+        ,cp.corp_name
+        ,g.brand_code
+        ,db.brand_name
+        FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
+        WHERE g.corp_code=cp.corp_code
+        AND g.corp_code=db.corp_code
+        AND g.brand_code=db.brand_code
+         AND g.corp_code=#{corp_code}
+         AND goods_code=#{goods_code}
     </select>
 
     <select id="getGoodsByName" resultType="com.bizvane.ishop.entity.Goods">
-        select * from DEF_GOODS WHERE corp_code=#{corp_code} and goods_name=#{goods_name}
+         SELECT g.id
+        ,g.goods_code
+        ,g.goods_name
+        ,g.goods_image
+        ,g.goods_price
+        ,g.goods_time
+        ,g.goods_quarter
+        ,g.goods_wave
+        ,g.match_goods
+        ,g.modified_date
+        ,g.modifier
+        ,g.isactive
+        ,g.created_date
+        ,g.creater
+        ,g.goods_description
+        ,g.corp_code
+        ,cp.corp_name
+        ,g.brand_code
+        ,db.brand_name
+        FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
+        WHERE g.corp_code=cp.corp_code
+        AND g.corp_code=db.corp_code
+        AND g.brand_code=db.brand_code
+        AND g.corp_code=#{corp_code}
+        AND goods_name=#{goods_name}
     </select>
-
-
 </mapper>

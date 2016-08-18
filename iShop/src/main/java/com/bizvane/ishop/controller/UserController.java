@@ -95,30 +95,30 @@ public class UserController {
             String area = jsonObject.get("area_code").toString();
             String[] areas = area.split(",");
             PageInfo<User> list = null;
-            if(role_code.equals(Common.ROLE_SYS)) {
+            if (role_code.equals(Common.ROLE_SYS)) {
                 String store_code = jsonObject.get("store_code").toString();
-                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code,areas, Common.ROLE_STAFF);
-            }else if (role_code.equals(Common.ROLE_GM)){
+                list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
+            } else if (role_code.equals(Common.ROLE_GM)) {
                 String store_code = jsonObject.get("store_code").toString();
-                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code,areas,Common.ROLE_STAFF);
+                list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
-            }else if(role_code.equals(Common.ROLE_STAFF)){
+            } else if (role_code.equals(Common.ROLE_STAFF)) {
                 User user = userService.getUserById(user_id);
                 List<User> users = new ArrayList<User>();
                 users.add(user);
                 list = new PageInfo<User>();
                 list.setList(users);
-            }else if(role_code.equals(Common.ROLE_SM)){
+            } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code,null,Common.ROLE_STAFF);
+                list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
-            }else if(role_code.equals(Common.ROLE_AM)){
+            } else if (role_code.equals(Common.ROLE_AM)) {
                 String store_code = jsonObject.get("store_code").toString();
-                list= userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code,null,Common.ROLE_STAFF);
+                list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
@@ -128,7 +128,7 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
-        }catch (Exception ex){
+        } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage() + ex.toString());
@@ -136,6 +136,7 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -143,7 +144,7 @@ public class UserController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage="：数据异常，导出失败";
+        String errormessage = "：数据异常，导出失败";
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();
@@ -156,7 +157,7 @@ public class UserController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             PageInfo<User> list = null;
-            if(screen.equals("")) {
+            if (screen.equals("")) {
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
                     list = userService.selectBySearch(request, 1, 30000, "", search_value);
@@ -185,7 +186,7 @@ public class UserController {
                     User self = userService.getUserById(user_id);
                     users.add(self);
                 }
-            }else{
+            } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
                     //系统管理员
@@ -207,11 +208,11 @@ public class UserController {
 
             }
             List<User> users = list.getList();
-            if(users.size()>=29999){
-                errormessage="导出数据过大";
-                int i=9/0;
+            if (users.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
             }
-            for (User user:users) {
+            for (User user : users) {
                 String areaCode = user.getArea_code();
                 String replaceStr = WebUtils.StringFilter(areaCode);
                 user.setArea_code(replaceStr);
@@ -222,14 +223,14 @@ public class UserController {
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
             String json = mapper.writeValueAsString(users);
-            LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
-            String pathname = OutExeclHelper.OutExecl(json,users, map, response, request);
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
+            String pathname = OutExeclHelper.OutExecl(json, users, map, response, request);
             JSONObject result = new JSONObject();
-            if(pathname==null||pathname.equals("")){
-                errormessage="数据异常，导出失败";
-                int a=8/0;
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
             }
-            result.put("path",JSON.toJSONString("lupload/"+pathname));
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());
@@ -266,27 +267,27 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 //店长
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                if (store_code == null || store_code.equals("")){
+                if (store_code == null || store_code.equals("")) {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId("1");
                     dataBean.setMessage("您还没有所属店铺");
                     return dataBean.getJsonStr();
-                }else {
+                } else {
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
                 }
             } else if (role_code.equals(Common.ROLE_AM)) {
                 //区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                if (area_code == null || area_code.equals("")){
+                if (area_code == null || area_code.equals("")) {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId("1");
                     dataBean.setMessage("您还没有所属区域");
                     return dataBean.getJsonStr();
-                }else {
+                } else {
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
                 }
-            }else {
-                list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD+ Common.STORE_HEAD+"###", "");
+            } else {
+                list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD + Common.STORE_HEAD + "###", "");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -349,7 +350,7 @@ public class UserController {
     /***
      * Execl增加用户
      */
-    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
+    @RequestMapping(value = "/addByExecl", method = RequestMethod.POST, produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
     public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
@@ -359,32 +360,32 @@ public class UserController {
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();
         String result = "";
-        Workbook rwb=null;
+        Workbook rwb = null;
         try {
-            rwb= Workbook.getWorkbook(targetFile);
+            rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             int actualRows = LuploadHelper.getRightRows(rs);
-            if(actualRows != rows){
-                if(rows-actualRows==1){
-                    result = "：第"+rows+"行存在空白行,请删除";
-                }else{
-                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+            if (actualRows != rows) {
+                if (rows - actualRows == 1) {
+                    result = "：第" + rows + "行存在空白行,请删除";
+                } else {
+                    result = "：第" + (actualRows + 1) + "行至第" + rows + "存在空白行,请删除";
                 }
                 int i = 5 / 0;
             }
-            if(rows<4){
-                result="：请从模板第4行开始插入正确数据";
-                int i=5/0;
+            if (rows < 4) {
+                result = "：请从模板第4行开始插入正确数据";
+                int i = 5 / 0;
             }
-            if(rows>9999){
-                result="：数据量过大，导入失败";
-                int i=5 /0;
+            if (rows > 9999) {
+                result = "：数据量过大，导入失败";
+                int i = 5 / 0;
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)) {
+            if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
                     if (!column3[i].getContents().toString().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
@@ -399,30 +400,30 @@ public class UserController {
                     }
                 }
             }
-                for (int i = 3; i < column3.length; i++) {
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
-                    if (corp == null) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
-
+            for (int i = 3; i < column3.length; i++) {
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
+                    int b = 5 / 0;
+                    break;
                 }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(), Common.IS_ACTIVE_Y);
+                if (corp == null) {
+                    result = "：第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
+            }
 
 
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(3));
-            if(onlyCell1.equals("存在重复值")){
+            if (onlyCell1.equals("存在重复值")) {
                 result = "：Execl中手机号码存在重复值";
                 int b = 5 / 0;
             }
             String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(1));
-            if(onlyCell2.equals("存在重复值")){
+            if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中用户编号存在重复值";
                 int b = 5 / 0;
             }
@@ -438,7 +439,7 @@ public class UserController {
             }
             for (int i = 3; i < column.length; i++) {
                 List<User> user = userService.userPhoneExist(column[i].getContents().toString());
-                if (user.size()>0) {
+                if (user.size() > 0) {
                     result = "：第" + (i + 1) + "行的电话号码已存在";
                     int b = 5 / 0;
                     break;
@@ -446,7 +447,7 @@ public class UserController {
             }
             Cell[] column1 = rs.getColumn(1);
             for (int i = 3; i < column1.length; i++) {
-                List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString(), Common.IS_ACTIVE_Y);
                 if (user.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户编号已存在";
                     int b = 5 / 0;
@@ -473,31 +474,31 @@ public class UserController {
                 }
 
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column6[i].getContents().toString());
-                if(role.equals(Common.ROLE_AM) || role.equals(Common.ROLE_SM)||role.equals(Common.ROLE_STAFF)){
+                if (role.equals(Common.ROLE_AM) || role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
                     String areas = column7[i].getContents().toString();
                     String[] splitAreas = areas.split(",");
-                    for (int j=0;j<splitAreas.length;j++){
+                    for (int j = 0; j < splitAreas.length; j++) {
 //                        Matcher matcher7 = pattern7.matcher(splitAreas[j]);
 //                        if (matcher7.matches() == false) {
 //                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号格式有误";
 //                            int b = 5 / 0;
 //                            break;
 //                        }
-                        Area area = areaService.getAreaByCode(column3[i].getContents().toString(), splitAreas[j],Common.IS_ACTIVE_Y);
+                        Area area = areaService.getAreaByCode(column3[i].getContents().toString(), splitAreas[j], Common.IS_ACTIVE_Y);
                         if (area == null) {
-                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号不存在";
+                            result = "：第" + (i + 1) + "行,第" + (j + 1) + "个区域编号不存在";
                             int b = 5 / 0;
                             break;
                         }
                     }
                 }
-                if(role.equals(Common.ROLE_SM)||role.equals(Common.ROLE_STAFF)){
+                if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
                     String stores = column2[i].getContents().toString();
                     String[] splitAreas = stores.split(",");
-                    for (int j=0;j<splitAreas.length;j++){
+                    for (int j = 0; j < splitAreas.length; j++) {
                         Store store = storeService.getStoreByCode(column3[i].getContents().toString(), splitAreas[j], Common.IS_ACTIVE_Y);
                         if (store == null) {
-                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个店铺编号不存在";
+                            result = "：第" + (i + 1) + "行,第" + (j + 1) + "个店铺编号不存在";
                             int b = 5 / 0;
                             break;
                         }
@@ -509,9 +510,9 @@ public class UserController {
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
                     String cellCorp = rs.getCell(j++, i).getContents().toString();
-                    if(!role_code.equals(Common.ROLE_SYS)){
+                    if (!role_code.equals(Common.ROLE_SYS)) {
                         user.setCorp_code(corp_code);
-                    }else{
+                    } else {
                         user.setCorp_code(cellCorp);
                     }
                     user.setUser_code(rs.getCell(j++, i).getContents());
@@ -534,9 +535,9 @@ public class UserController {
                             area_code = area_code + areas[i2];
                         }
                     }
-                    if(!role.equals(Common.ROLE_AM)){
+                    if (!role.equals(Common.ROLE_AM)) {
                         user.setArea_code("");
-                    }else {
+                    } else {
                         user.setArea_code(area_code);
                     }
                     String store_code = rs.getCell(j++, i).getContents().toString();
@@ -548,9 +549,9 @@ public class UserController {
                             store_code = store_code + codes[i2];
                         }
                     }
-                    if(role.equals(Common.ROLE_SM)||role.equals(Common.ROLE_STAFF)){
+                    if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
                         user.setStore_code(store_code);
-                    }else{
+                    } else {
                         user.setStore_code("");
                     }
                     user.setPosition(rs.getCell(j++, i).getContents());
@@ -582,8 +583,8 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(result);
-        }finally {
-            if(rwb!=null){
+        } finally {
+            if (rwb != null) {
                 rwb.close();
             }
             System.gc();
@@ -639,7 +640,7 @@ public class UserController {
                             areas[i] = Common.STORE_HEAD + areas[i] + ",";
                             area_code = area_code + areas[i];
                         }
-                    }else {
+                    } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
                         dataBean.setMessage("请勿选择重复的区域");
@@ -659,7 +660,7 @@ public class UserController {
                             codes[i] = Common.STORE_HEAD + codes[i] + ",";
                             store_code = store_code + codes[i];
                         }
-                    }else {
+                    } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
                         dataBean.setMessage("请勿选择重复的店铺");
@@ -742,7 +743,7 @@ public class UserController {
                             areas[i] = Common.STORE_HEAD + areas[i] + ",";
                             area_code = area_code + areas[i];
                         }
-                    }else {
+                    } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
                         dataBean.setMessage("请勿选择重复的区域");
@@ -760,12 +761,12 @@ public class UserController {
                             codes[i] = Common.STORE_HEAD + codes[i] + ",";
                             store_code = store_code + codes[i];
                         }
-                    }else {
+                    } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
                         dataBean.setMessage("请勿选择重复的店铺");
                         return dataBean.getJsonStr();
-                     }
+                    }
                 }
                 user.setStore_code(store_code);
             }
@@ -819,8 +820,8 @@ public class UserController {
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
                 User user = userService.getById(Integer.parseInt(ids[i]));
-                String user_code="";
-                String corp_code="";
+                String user_code = "";
+                String corp_code = "";
                 if (user != null) {
                     user_code = user.getUser_code();
                     corp_code = user.getCorp_code();
@@ -831,7 +832,7 @@ public class UserController {
                         break;
                     }
                 }
-                userService.delete(Integer.valueOf(ids[i]),user_code,corp_code);
+                userService.delete(Integer.valueOf(ids[i]), user_code, corp_code);
             }
             if (count > 0) {
                 dataBean.setId(id);
@@ -922,8 +923,8 @@ public class UserController {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, "", area_code, role_code);
-                }else {
-                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD+ Common.STORE_HEAD+"###", "");
+                } else {
+                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD + Common.STORE_HEAD + "###", "");
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -1060,7 +1061,7 @@ public class UserController {
                 }
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
-                Corp corp = corpService.selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
+                Corp corp = corpService.selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
                 String c_code = corp.getCorp_code();
                 String corp_name = corp.getCorp_name();
                 JSONObject obj = new JSONObject();
@@ -1105,7 +1106,7 @@ public class UserController {
                 search_value = jsonObject.get("searchValue").toString();
             }
             //获取登录用户的所有权限
-            List<Function> funcs = functionService.selectAllPrivilege(login_corp_code,login_role_code, login_user_code, login_group_code, search_value);
+            List<Function> funcs = functionService.selectAllPrivilege(login_corp_code, login_role_code, login_user_code, login_group_code, search_value);
 
             String group_code = jsonObject.get("group_code").toString();
             String user_id = jsonObject.get("user_id").toString();
@@ -1114,7 +1115,7 @@ public class UserController {
             String user_code = userService.getUserById(Integer.parseInt(user_id)).getUser_code();
 
             //获取群组自定义的权限
-            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, corp_code+"G"+group_code);
+            JSONArray group_privilege = functionService.selectRAGPrivilege(role_code, corp_code + "G" + group_code);
 
             //获取用户自定义的权限
             JSONArray user_privilege = functionService.selectUserPrivilege(corp_code, user_code);
@@ -1162,7 +1163,7 @@ public class UserController {
             String master_code;
             if (jsonObject.has("corp_code")) {
                 String corp_code = jsonObject.get("corp_code").toString();
-                master_code = corp_code +"U"+ user_code;
+                master_code = corp_code + "U" + user_code;
             } else {
                 master_code = user_code;
             }
@@ -1202,7 +1203,7 @@ public class UserController {
             String corp_code = jsonObject.get("corp_code").toString();
             String current_corp_code = request.getSession(false).getAttribute("corp_code").toString();
             corp_code = (corp_code == null || corp_code.isEmpty()) ? current_corp_code : corp_code;
-            List<User> existInfo = userService.userCodeExist(user_code, corp_code,"");
+            List<User> existInfo = userService.userCodeExist(user_code, corp_code, "");
             if (existInfo.size() != 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1236,7 +1237,7 @@ public class UserController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String phone = jsonObject.get("phone").toString();
             List<User> user = userService.userPhoneExist(phone);
-            if (user.size()>0) {
+            if (user.size() > 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("手机号码已被使用");
@@ -1269,7 +1270,7 @@ public class UserController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String email = jsonObject.get("email").toString();
             List<User> user = userService.userEmailExist(email);
-            if (user.size()>0) {
+            if (user.size() > 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("email已被使用");
@@ -1312,62 +1313,29 @@ public class UserController {
                 String is_authorize = corpWechat.getIs_authorize();
                 if (is_authorize.equals("Y")) {
                     String user_code1 = user_code;
-                    if(user_code1.equals("zhouzhoutest")){
-                        List<User> useres = userService.selectBySearch("C10055");
-                        for (int i = 0; i < useres.size(); i++) {
-                            String user_code2 = useres.get(i).getUser_code();
-                            if (is_authorize.equals("Y")) {
-                                String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code2;
-                                String result = IshowHttpClient.get(url);
-                                logger.info("------------creatQrcode  result" + result);
-                                if (!result.startsWith("{")) {
-                                    dataBean.setId(id);
-                                    dataBean.setMessage("生成二维码失败");
-                                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                                    return dataBean.getJsonStr();
-                                }
-                                JSONObject obj = new JSONObject(result);
-                                String picture = obj.get("picture").toString();
-                                String qrcode_url = obj.get("url").toString();
-                                User user = useres.get(i);
-                                user.setQrcode(picture);
-                                user.setQrcode_content(qrcode_url);
-                                Date now = new Date();
-                                user.setModified_date(Common.DATETIME_FORMAT.format(now));
-                                user.setModifier(user_id);
-                                logger.info("------------creatQrcode  update user");
-
-                                userService.updateUser(user);
-                                dataBean.setId(id);
-                                dataBean.setMessage(picture);
-                                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                            }
-                        }
-                    }else {
-                        String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
-                        String result = IshowHttpClient.get(url);
-                        logger.info("------------creatQrcode  result" + result);
-                        if (!result.startsWith("{")) {
-                            dataBean.setId(id);
-                            dataBean.setMessage("生成二维码失败");
-                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                            return dataBean.getJsonStr();
-                        }
-                        JSONObject obj = new JSONObject(result);
-                        String picture = obj.get("picture").toString();
-                        String qrcode_url = obj.get("url").toString();
-                        User user = userService.userCodeExist(user_code, corp_code, "").get(0);
-                        user.setQrcode(picture);
-                        user.setQrcode_content(qrcode_url);
-                        Date now = new Date();
-                        user.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        user.setModifier(user_id);
-                        logger.info("------------creatQrcode  update user");
-                        userService.updateUser(user);
+                    String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
+                    String result = IshowHttpClient.get(url);
+                    logger.info("------------creatQrcode  result" + result);
+                    if (!result.startsWith("{")) {
                         dataBean.setId(id);
-                        dataBean.setMessage(picture);
-                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setMessage("生成二维码失败");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
                     }
+                    JSONObject obj = new JSONObject(result);
+                    String picture = obj.get("picture").toString();
+                    String qrcode_url = obj.get("url").toString();
+                    User user = userService.userCodeExist(user_code, corp_code, "").get(0);
+                    user.setQrcode(picture);
+                    user.setQrcode_content(qrcode_url);
+                    Date now = new Date();
+                    user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    user.setModifier(user_id);
+                    logger.info("------------creatQrcode  update user");
+                    userService.updateUser(user);
+                    dataBean.setId(id);
+                    dataBean.setMessage(picture);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     return dataBean.getJsonStr();
                 }
             }
@@ -1413,7 +1381,7 @@ public class UserController {
                         String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
                         String result = IshowHttpClient.get(url);
                         logger.info("------------creatQrcode  result" + result);
-                        if (!result.startsWith("{")){
+                        if (!result.startsWith("{")) {
                             dataBean.setId(id);
                             dataBean.setMessage("生成二维码失败");
                             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1422,7 +1390,7 @@ public class UserController {
                         JSONObject obj = new JSONObject(result);
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();
-                        User user = userService.userCodeExist(user_code, corp_code,"").get(0);
+                        User user = userService.userCodeExist(user_code, corp_code, "").get(0);
                         user.setQrcode(picture);
                         user.setQrcode_content(qrcode_url);
                         Date now = new Date();
@@ -1430,13 +1398,13 @@ public class UserController {
                         user.setModifier(user_id);
                         logger.info("------------creatQrcode  update user");
                         userService.updateUser(user);
-                    }else {
+                    } else {
                         dataBean.setId(id);
                         dataBean.setMessage(corp_code + "企业未授权,生成二维码中断");
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
                     }
-                }else {
+                } else {
                     dataBean.setId(id);
                     dataBean.setMessage(corp_code + "企业未授权,生成二维码中断");
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1493,8 +1461,8 @@ public class UserController {
                     //区经
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.getScreenPart(page_number, page_size, corp_code, map, "", area_code, role_code);
-                }else {
-                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD+ Common.STORE_HEAD+"###", "");
+                } else {
+                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD + Common.STORE_HEAD + "###", "");
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -1552,6 +1520,7 @@ public class UserController {
 
     /**
      * 查看我的账户
+     *
      * @param request
      * @return
      */

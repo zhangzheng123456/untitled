@@ -146,25 +146,25 @@ public class HomeController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String time = jsonObject.get("time").toString();
-            String area_name = jsonObject.get("area_name").toString();
+            String store_name = jsonObject.get("store_name").toString();
             String area_code = "";
             if (jsonObject.has("area_code")) {
                 area_code = jsonObject.get("area_code").toString();
             }
 
-            String time_id = time;
+            String time_id = time.replace("-","");
 
             Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
-            Data data_area_name = new Data("area_name", area_name, ValueType.PARAM);
+            Data data_store_name = new Data("store_name", store_name, ValueType.PARAM);
             Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
 
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_time_id.key, data_time_id);
-            datalist.put(data_area_name.key, data_area_name);
+            datalist.put(data_store_name.key, data_store_name);
             datalist.put(data_area_code.key, data_area_code);
 
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStoreRanking",datalist);
