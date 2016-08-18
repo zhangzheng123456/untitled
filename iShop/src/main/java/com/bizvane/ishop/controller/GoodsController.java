@@ -411,6 +411,11 @@ public class GoodsController {
             for (int i = 3; i < column5.length; i++) {
                 String images = column5[i].getContents().toString();
                 String[] splitImages = images.split(",");
+                if(splitImages.length>5){
+                    result = "：第"+(i+1)+"行上传图片数量过多,上限5张";
+                    int b = 5 / 0;
+                    break;
+                }
                 for (int j=0;j<splitImages.length;j++){
                     Matcher matcher = pattern5.matcher(splitImages[j]);
                     if(matcher.matches()==false){
