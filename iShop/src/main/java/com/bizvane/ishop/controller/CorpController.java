@@ -265,8 +265,10 @@ public class CorpController {
             List<CorpWechat> corpWechat = corpService.getWByCorp(corp.getCorp_code());
             if (corpWechat.size()==0){
                 corp.setApp_id("");
+                corp.setIs_authorize(Common.IS_AUTHORIZE_N);
             }else {
                 corp.setApp_id(corpWechat.get(0).getApp_id());
+                corp.setIs_authorize(corpWechat.get(0).getIs_authorize());
             }
             data = JSON.toJSONString(corp);
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -619,9 +621,9 @@ public class CorpController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String app_id = jsonObject.get("app_id").toString();
-            CorpWechat corp = corpService.getCorpByByAppId(app_id);
-            String is_authorize = corp.getIs_authorize();
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
+            String is_authorize = corpWechats.get(0).getIs_authorize();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             if (is_authorize.equals(Common.IS_AUTHORIZE_Y)) {
