@@ -1,5 +1,6 @@
 package com.bizvane.ishop.entity;
 
+import java.lang.*;
 import java.util.Date;
 
 /**
@@ -32,6 +33,7 @@ public class Corp {
 
     private String app_id;
 
+    private String is_authorize;
 
     public String getAvater() {
         return avater;
@@ -142,5 +144,13 @@ public class Corp {
 
     public void setApp_id(String app_id) {
         this.app_id = app_id;
+    }
+
+    public String getIs_authorize() {
+        return is_authorize;
+    }
+
+    public void setIs_authorize(String is_authorize) {
+        this.is_authorize = is_authorize;
     }
 }

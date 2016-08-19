@@ -60,7 +60,7 @@ public class CorpServiceImpl implements CorpService {
                 CorpWechat corpWechat = new CorpWechat();
                 corpWechat.setApp_id(jsonObject.get("app_id").toString());
                 corpWechat.setCorp_code(corp_code);
-                corpWechat.setIs_authorize("N");
+                corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
                 Date now = new Date();
                 corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 corpWechat.setCreater(user_id);
@@ -122,7 +122,7 @@ public class CorpServiceImpl implements CorpService {
                     corpWechat = new CorpWechat();
                     corpWechat.setApp_id(app_id);
                     corpWechat.setCorp_code(corp_code);
-                    corpWechat.setIs_authorize("N");
+                    corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
                     corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     corpWechat.setCreater(user_id);
                     corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -132,7 +132,7 @@ public class CorpServiceImpl implements CorpService {
                 }else if (corpWechats.size() > 0){
                     corpWechat = corpWechats.get(0);
                     corpWechat.setApp_id(app_id);
-                    corpWechat.setIs_authorize("N");
+                    corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
                     corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
                     corpWechat.setModifier(user_id);
                     corpMapper.updateCorpWechat(corpWechat);
