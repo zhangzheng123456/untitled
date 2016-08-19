@@ -183,6 +183,15 @@ var oc = new ObjectControl();
 						content:"商品图片最多可以上传5张!"
 					});
 				}
+				var li=$(".match_goods ul").find("li");
+				for(var i=0,matchgoods="";i<li.length;i++){
+					var r=$(li[i]).attr("id");
+					if(i<li.length-1){
+						matchgoods+=r+",";
+					}else{
+						matchgoods+=r;
+					}
+				}
 				var _command="/goods/fab/edit";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -201,7 +210,8 @@ var oc = new ObjectControl();
 					"goods_wave": GOODS_BAND,
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
-					"isactive": ISACTIVE
+					"isactive": ISACTIVE,
+					"match_goods":matchgoods
 				};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -322,6 +332,7 @@ jQuery(document).ready(function(){
 				$("#GOODS_BAND").val(msg.goods_wave);
 				$("#GOODS_RELEASETIME").val(msg.goods_time);
 				$("#GOODS_BUYPOINT").val(msg.goods_description);
+				$(".match_goods ul").val(msg.matchgoods);
 
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
@@ -429,6 +440,9 @@ function getcorplist(a,b){
 				$("#BRAND_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
 				$("#BRAND_NAME").attr("data-mark","");
+				$("#search_match_goods ul").empty();
+				$("#search").empty();
+				$(".match_goods ul").empty();
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
@@ -480,11 +494,88 @@ function getvarbrandlist(c,d){
 		}
 	})
 }
+function goodsAddHide() {
+//加号添加商品
+	$(".goods_add").click(function () {
+		$(this).hide();
+		$(this).next().show();
+		$(this).parent("#search_match_goods ul li").css("background","#cde6e8");
+		var li=$(this).parent("li").html();
+		var goods_code=$(this).parent().find(".goods_code").html();
+		if(goods_code==$("#"+goods_code).attr("id")){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "请勿重复添加"
+			});
+		}else {
+			$(".match_goods ul").append('<li id="'+goods_code+'">'+li+'</li>');
+		}
+
+		$(".match_goods ul li i").click(function () {
+			$(this).parent("li").remove();
+		})
+	})
+//叉号取消添加商品
+	$("#search_match_goods ul li i").click(function () {
+		$(this).prev().show();
+		$(this).hide();
+		$(this).parent("#search_match_goods ul li").css("background","");
+		var goods_code=$(this).parent().find(".goods_code").html();
+		$("#"+goods_code).remove();
+	})
+}
+function getmatchgoodsList() {
+	//获取相关商品搭配列表
+	var param={};
+	var corp_code=$("#OWN_CORP").val();
+	var searchValue=$("#search").val();
+	param["corp_code"]=corp_code;
+	param["searchValue"]=searchValue;
+	oc.postRequire("post", "/goods/corp_fab", "",param, function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			var list=JSON.parse(msg.list);
+			console.log(msg);
+			if(list.length<1){
+				jQuery('#search_match_goods ul').append("<p>找不到相关宝贝</p>")
+			}else{
+				for(var i=0;i<list.length;i++){
+					jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
+						+ list[i].goods_image
+						+ '"><span class="goods_code">'
+						+ list[i].goods_code + '</span><span>'
+						+ list[i].goods_name + '</span><span class="goods_add">'
+						+'+</span><i class="icon-ishop_6-12"></i></li>');
+				}
+			}
+
+
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+		goodsAddHide();
+	});
+}
 
 //点击添加匹配商品弹窗
 $("#add").click(function () {
 	$("#goods_box").show();
 	$("#search_match_goods").show();
+	var corp_code = $('#OWN_CORP').val();
+	var corp_code1=$('#OWN_CORP').attr("corp_code");
+	if(corp_code==corp_code1){
+		return;
+	}
+	$('#OWN_CORP').attr("corp_code",corp_code);
+	getmatchgoodsList();
 })
 
 //关闭搜索匹配商品弹窗
@@ -492,3 +583,17 @@ $("#close_match_goods").click(function () {
 	$("#goods_box").hide();
 	$("#search_match_goods").hide();
 })
+
+//搜索相关商品
+$("#d_search").click(function () {
+	jQuery('#search_match_goods ul').empty();
+	getmatchgoodsList();
+})
+$("#search_match_goods").keydown(function () {
+	var event=window.event||arguments[0];
+	if(event.keyCode == 13){
+		jQuery('#search_match_goods ul').empty();
+		getmatchgoodsList();
+	}
+})
+
