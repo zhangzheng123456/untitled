@@ -10,6 +10,7 @@
         <result column="area_code" property="area_code"/>
         <result column="flg_tob" property="flg_tob"/>
         <result column="corp_code" property="corp_code"/>
+        <result column="app_id" property="app_id"/>
         <result column="qrcode" property="qrcode"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
@@ -23,27 +24,28 @@
     </resultMap>
 
     <select id="selectByStoreId" resultMap="Store">
-        select
-        DEF_STORE.id,
+        SELECT
+        def_store.id,
         store_code,
         store_name,
         brand_code,
         flg_tob,
+        def_store.app_id,
         qrcode,
-        DEF_STORE.AREA_CODE,
-        DEF_STORE.corp_code,
-        DEF_STORE.modified_date,
-        DEF_STORE.modifier,
-        DEF_STORE.created_date,
-        DEF_STORE.creater,
-        DEF_STORE.isactive,
+        def_store.area_code,
+        def_store.corp_code,
+        def_store.modified_date,
+        def_store.modifier,
+        def_store.created_date,
+        def_store.creater,
+        def_store.isactive,
         DEF_CORP.CORP_NAME,
         DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
-        where DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
-        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND DEF_STORE.ID=#{id}
+        FROM def_store,def_corp,def_area
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = def_area.corp_code
+        AND def_store.area_code = def_area.area_code
+        AND def_store.id=#{id}
     </select>
 
     <select id="selectByCode" resultType="com.bizvane.ishop.entity.Store">
@@ -381,6 +383,9 @@
             </if>
             <if test="flg_tob!=null and flg_tob!=''">
                 flg_tob = #{flg_tob},
+            </if>
+            <if test="app_id!=null and app_id!='' ">
+                app_id = #{app_id},
             </if>
             <if test="qrcode!=null and qrcode!=''">
                 qrcode = #{qrcode},

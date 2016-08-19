@@ -24,6 +24,8 @@ public class User {
 	private String store_code;
 	//群组编号
 	private String group_code;
+	//app_id
+	private String app_id;
 	//二维码图片地址
 	private String qrcode;
 	//二维码图片地址
@@ -198,6 +200,14 @@ public class User {
 
 	public void setGroup_code(String group_code) {
 		this.group_code = group_code;
+	}
+
+	public String getApp_id() {
+		return app_id;
+	}
+
+	public void setApp_id(String app_id) {
+		this.app_id = app_id;
 	}
 
 	public String getQrcode() {

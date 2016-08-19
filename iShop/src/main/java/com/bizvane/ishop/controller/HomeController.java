@@ -200,7 +200,7 @@ public class HomeController {
     //店长/导购主页面（员工排序）
     @RequestMapping(value = "/staffRanking", method = RequestMethod.POST)
     @ResponseBody
-    public String smPage(HttpServletRequest request) {
+    public String staffRanking(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String time_id;

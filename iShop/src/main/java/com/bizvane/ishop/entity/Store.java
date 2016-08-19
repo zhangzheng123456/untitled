@@ -17,6 +17,8 @@ public class Store {
     private String flg_tob;
     //公司编号
     private String corp_code;
+    //app_id
+    private String app_id;
     //二维码图片地址
     private String qrcode;
     //二维码图片地址
@@ -111,6 +113,14 @@ public class Store {
 
     public void setCorp_code(String corp_code) {
         this.corp_code = corp_code;
+    }
+
+    public String getApp_id() {
+        return app_id;
+    }
+
+    public void setApp_id(String app_id) {
+        this.app_id = app_id;
     }
 
     public String getQrcode() {

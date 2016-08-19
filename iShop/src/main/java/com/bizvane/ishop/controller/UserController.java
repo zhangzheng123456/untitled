@@ -1326,6 +1326,7 @@ public class UserController {
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
                     User user = userService.userCodeExist(user_code, corp_code, "").get(0);
+                    user.setApp_id(auth_appid);
                     user.setQrcode(picture);
                     user.setQrcode_content(qrcode_url);
                     Date now = new Date();
@@ -1391,6 +1392,7 @@ public class UserController {
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();
                         User user = userService.userCodeExist(user_code, corp_code, "").get(0);
+                        user.setApp_id(auth_appid);
                         user.setQrcode(picture);
                         user.setQrcode_content(qrcode_url);
                         Date now = new Date();
