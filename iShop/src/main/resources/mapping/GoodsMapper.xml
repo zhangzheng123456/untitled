@@ -48,7 +48,7 @@
         ,cp.corp_name
         ,db.brand_name
         FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
-        WHERE g.corp_code=cp.corp_code and g.corp_code=db.corp_code and g.brand_code=db.brand_code
+        WHERE g.corp_code=cp.corp_code AND g.corp_code=db.corp_code AND g.brand_code=db.brand_code
         <if test="corp_code!=null and corp_code!=''">
             AND g.corp_code=#{corp_code}
         </if>
@@ -68,8 +68,12 @@
             OR db.brand_name like concat('%',#{search_value},'%')
             )
         </if>
+        <if test="isactive!=null and isactive!=''">
+            AND g.isactive=#{isactive}
+        </if>
         ORDER BY g.id DESC
     </select>
+
     <select id="selectAllGoodsScreen" resultMap="GoodsInfo">
         SELECT g.id
         ,g.goods_code
@@ -111,6 +115,7 @@
         </foreach>
         ORDER BY g.id DESC
     </select>
+
     <select id="selectByPrimaryKey" resultMap="GoodsInfo">
         select
         g.id

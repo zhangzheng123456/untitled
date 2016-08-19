@@ -798,9 +798,7 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String search_value = jsonObject.get("searchValue").toString();
-            int page_number = Integer.parseInt(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.parseInt(jsonObject.get("pageSize").toString());
-            PageInfo<Goods> list = goodsService.selectBySearch(page_number, page_size, corp_code, search_value);
+            List<Goods> list = goodsService.selectBySearch(corp_code, search_value);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);

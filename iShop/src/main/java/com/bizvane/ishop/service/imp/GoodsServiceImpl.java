@@ -78,7 +78,7 @@ public class GoodsServiceImpl implements GoodsService {
     public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
-        list = goodsMapper.selectAllGoods(corp_code, search_value);
+        list = goodsMapper.selectAllGoods(corp_code, search_value,"");
         for (Goods goods:list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
         }
@@ -87,6 +87,15 @@ public class GoodsServiceImpl implements GoodsService {
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
+    }
+
+    @Override
+    public List<Goods> selectBySearch(String corp_code, String search_value) throws Exception{
+        List<Goods> list = goodsMapper.selectAllGoods(corp_code, search_value,Common.IS_ACTIVE_Y);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            transter(list.get(i));
+        }
+        return list;
     }
 
     @Override
