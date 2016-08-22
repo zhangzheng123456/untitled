@@ -597,7 +597,7 @@ $(function(){
         }
         else{
             for(var i=li.length;i>=0;i--){
-               $(li[i]).appendTo('#file_list_r ul'); 
+               $(li[i]).appendTo('#file_list_l ul'); 
             }    
         }
     });
@@ -614,7 +614,7 @@ $(function(){
     $('#right_shift_all').click(function(){
         var li=$("#file_list_r input[type='checkbox']").parents("li");
         for(var i=li.length;i>=0;i--){
-            $(li[i]).appendTo('#file_list_r ul'); 
+            $(li[i]).appendTo('#file_list_l ul'); 
         }  
     });
 });

@@ -746,18 +746,21 @@ input::-webkit-input-placeholder{
 	padding-right: 20px;
 }
 #file_list_l{
-	width: 38.5%;
+	width: 42%;
 	min-height:30px;
 	float: left;
 }
 #file_list_r{
-	width: 38.5%;
+	width: 42%;
 	float: left;
 }
 #file_list_z{
 	width: 15.7%;
 	min-height:30px;
 	float: left;
+}
+.c_shift{
+	margin-top:10%;
 }
 .shift{
 	width: 30px;
@@ -768,6 +771,7 @@ input::-webkit-input-placeholder{
 	color: #fff;
 	font-size: 14px;
 	background-color: #cecece;
+	margin: 0 auto;
 	margin-top: 10px;
 	cursor: pointer;
 }
