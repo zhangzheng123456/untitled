@@ -332,7 +332,16 @@ jQuery(document).ready(function(){
 				$("#GOODS_BAND").val(msg.goods_wave);
 				$("#GOODS_RELEASETIME").val(msg.goods_time);
 				$("#GOODS_BUYPOINT").val(msg.goods_description);
-				$(".match_goods ul").val(msg.matchgoods);
+				var list=msg.match_goods;
+				console.log(msg.goods_name);
+				for(var i=0;i<list.length;i++){
+					jQuery('.match_goods ul').append('<li id="'+list[i].goods_code+'"><img class="goodsImg" src="'
+						+ list[i].goods_image
+						+ '"><span class="goods_code">'
+						+ list[i].goods_code + '</span><span>'
+						+ list[i].goods_name
+						+'</span><i class="icon-ishop_6-12"></i></li>');
+				}
 
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
@@ -502,7 +511,8 @@ function goodsAddHide() {
 		$(this).parent("#search_match_goods ul li").css("background","#cde6e8");
 		var li=$(this).parent("li").html();
 		var goods_code=$(this).parent().find(".goods_code").html();
-		if(goods_code==$("#"+goods_code).attr("id")){
+		var goods_code2=$("#GOODS_CODE").val();
+		if(goods_code==$("#"+goods_code).attr("id")|| goods_code==goods_code2){
 			art.dialog({
 				time: 1,
 				lock: true,
