@@ -623,7 +623,7 @@ input::-webkit-input-placeholder{
 	min-height: 50px;
 	background:rgba(0,0,0,0.5);
 	position: absolute;
-	z-index: 5;
+	z-index: 8999;
 	border-radius: 5px;
 	color:#fff;
 	text-align: center;
@@ -746,14 +746,18 @@ input::-webkit-input-placeholder{
 	padding-right: 20px;
 }
 #file_list_l{
+	width: 38.5%;
+	min-height:30px;
 	float: left;
 }
 #file_list_r{
-	float: right;
+	width: 38.5%;
+	float: left;
 }
 #file_list_z{
+	width: 15.7%;
+	min-height:30px;
 	float: left;
-	width: 90px;
 }
 .shift{
 	width: 30px;
