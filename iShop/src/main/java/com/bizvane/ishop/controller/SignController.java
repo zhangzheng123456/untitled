@@ -212,7 +212,7 @@ public class SignController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage = "：数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();

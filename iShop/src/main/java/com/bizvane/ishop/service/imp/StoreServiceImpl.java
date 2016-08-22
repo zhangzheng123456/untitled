@@ -57,7 +57,7 @@ public class StoreServiceImpl implements StoreService {
     public Store getStoreById(int id) throws Exception {
         Store store = storeMapper.selectByStoreId(id);
         String corp_code = store.getCorp_code();
-        String brand_name = "";
+        StringBuilder brand_name = new StringBuilder("");
         String brand_code = store.getBrand_code();
         if (brand_code != null && !brand_code.equals("")) {
             String[] ids = store.getBrand_code().split(",");
@@ -65,13 +65,13 @@ public class StoreServiceImpl implements StoreService {
                 Brand brand = brandMapper.selectCorpBrand(corp_code, ids[i]);
                 if (brand != null) {
                     String brand_name1 = brand.getBrand_name();
-                    brand_name = brand_name + brand_name1;
+                    brand_name.append(brand_name1);
                     if (i != ids.length - 1) {
-                        brand_name = brand_name + ",";
+                        brand_name.append(",");
                     }
                 }
             }
-            store.setBrand_name(brand_name);
+            store.setBrand_name(brand_name.toString());
         }else {
             store.setBrand_name("");
             store.setBrand_code("");

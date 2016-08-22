@@ -144,7 +144,7 @@ public class UserController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage = "：数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
             String role_code = request.getSession().getAttribute("role_code").toString();

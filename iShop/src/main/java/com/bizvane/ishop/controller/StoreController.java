@@ -872,7 +872,7 @@ public class StoreController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage = "：数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);

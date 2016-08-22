@@ -384,7 +384,7 @@ public class UserAchvGoalControl {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage = "：数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();

@@ -362,7 +362,7 @@ public class TaskTypeController {
     @ResponseBody
     public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
         DataBean dataBean = new DataBean();
-        String errormessage = "：数据异常，导出失败";
+        String errormessage = "数据异常，导出失败";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -390,7 +390,7 @@ public class TaskTypeController {
             }
             List<TaskType> list = taskTypes.getList();
             if (list.size() >= 29999) {
-                errormessage = "：导出数据过大";
+                errormessage = "导出数据过大";
                 int i = 9 / 0;
             }
             ObjectMapper mapper = new ObjectMapper();
@@ -400,7 +400,7 @@ public class TaskTypeController {
             String pathname = OutExeclHelper.OutExecl(json,list, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
-                errormessage = "：数据异常，导出失败";
+                errormessage = "数据异常，导出失败";
                 int a = 8 / 0;
             }
             result.put("path", JSON.toJSONString("lupload/" + pathname));
