@@ -9,23 +9,9 @@
 			height:30px;
 		}
 	</style>
+	<script src="return.js"></script>
 </head>
 <body>
 	<button onclick="returnData()" class="click">测试</button>	
 </body>
-<script>
-	function returnData(){
-		var u = navigator.userAgent;
-		var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Adr') > -1; //android终端 
-		var isiOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
-		if(isiOS){
-			var data=NSBuyerreturnData();
-		}
-		if(isAndroid){
-			var data=Android.returnData();
-		}
-		alert(data);
-	    return data;
-	}
-</script>
 </html>

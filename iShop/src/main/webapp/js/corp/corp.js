@@ -547,9 +547,9 @@ $("#leading_out").click(function(){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
             console.log(message);
-            $("#file_list ul").empty();
+            $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
-                 $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
             whir.loading.remove();//移除加载框
@@ -558,6 +558,10 @@ $("#leading_out").click(function(){
             whir.loading.remove();//移除加载框
         }
     })
+})
+//点击左移
+$("#left_shift").click(function(){
+    var input=$("#file_list_l input[type='checkbox']:checked").parents("li");
 })
 //导出提交的
 $("#file_submit").click(function(){
@@ -746,13 +750,13 @@ $("#find").click(function(){
 })
 function getInputValue(){
     var input=$('#sxk .inputs input');
-   inx=1;
-   _param["pageNumber"]=inx;
-   _param["pageSize"]=pageSize;
-   _param["funcCode"]=funcCode;
-   var num=0;
-   list=[];//定义一个list
-   for(var i=0;i<input.length;i++){
+    inx=1;
+    _param["pageNumber"]=inx;
+    _param["pageSize"]=pageSize;
+    _param["funcCode"]=funcCode;
+    var num=0;
+    list=[];//定义一个list
+    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
         var screen_value=$(input[i]).val().trim();
         var screen_value="";

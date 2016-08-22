@@ -107,6 +107,7 @@ $("#empty").click(function(){
     }
     value="";
     filtrate="";
+    inx=1;
     $('#search').val("");
     $(".table p").remove();
     GET(inx,pageSize);
@@ -267,7 +268,7 @@ function jurisdiction(actions){
 //页面加载调权限接口
 function qjia(){
     var param={};
-    param["funcCode"]=funcCode;
+    param["funcCode"]="F0018";
     oc.postRequire("post","/list/action","0",param,function(data){
         var message=JSON.parse(data.message);
         var actions=message.actions;

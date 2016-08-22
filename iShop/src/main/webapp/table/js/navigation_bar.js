@@ -59,6 +59,7 @@ $(function(){
         	var func_code=$(this).attr("data-code");
         	console.log(func_code);
         	$('#iframepage').attr("src",src);
+            sessionStorage.removeItem("return_jump");
             var key_val={"url":src,"func_code":func_code};
             sessionStorage.setItem("key_val",JSON.stringify(key_val));
             $(this).find("span").addClass("icon-ishop_8-01");
@@ -73,6 +74,7 @@ $(function(){
             var func_code=$(this).find("h1").attr("data-code");
             if(src!=="undefined"){
             	$('#iframepage').attr("src",src);
+                sessionStorage.removeItem("return_jump");
                 $(this).find("h1").parents().siblings("li").find("dl").slideUp(300);
                 $(this).find("h1 span").parents().siblings("li").find("h1 span").removeClass("icon-ishop_8-02");
             }
@@ -90,6 +92,7 @@ $(function(){
         var val=sessionStorage.getItem("key");//取登录里面的key
         val=JSON.parse(val);//
         var message=JSON.parse(val.message);//
+        sessionStorage.removeItem("return_jump");
         var user_type=message.user_type;//用户类型
             if (user_type == "admin") {
                 window.location.href = "home/index_admin.html";
