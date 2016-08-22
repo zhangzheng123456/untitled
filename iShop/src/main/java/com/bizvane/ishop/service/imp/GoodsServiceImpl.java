@@ -35,6 +35,8 @@ public class GoodsServiceImpl implements GoodsService {
                 matchgoods.add(match);
             }
             goods.setMatchgoods(matchgoods);
+        }else{
+            goods.setMatchgoods(matchgoods);
         }
         transter(goods);
         return goods;
