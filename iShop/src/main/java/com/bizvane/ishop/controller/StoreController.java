@@ -915,6 +915,7 @@ public class StoreController {
                 }
             }
             List<Store> stores = list.getList();
+            System.out.println("TimeOut测试："+stores.size());
             if (stores.size() >= 29999) {
                 errormessage = "导出数据过大";
                 int i = 9 / 0;
