@@ -737,6 +737,7 @@ public class StoreController {
                     String picture = obj.get("picture").toString();
                     String qrcode_url = obj.get("url").toString();
                     Store store = storeService.getStoreByCode(corp_code, store_code, "");
+                    store.setApp_id(auth_appid);
                     store.setQrcode(picture);
                     store.setQrcode_content(qrcode_url);
                     Date now = new Date();
@@ -803,6 +804,7 @@ public class StoreController {
                         String picture = obj.get("picture").toString();
                         String qrcode_url = obj.get("url").toString();
                         Store store = storeService.getStoreByCode(corp_code, store_code, "");
+                        store.setApp_id(auth_appid);
                         store.setQrcode(picture);
                         store.setQrcode_content(qrcode_url);
                         Date now = new Date();

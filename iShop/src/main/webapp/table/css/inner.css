@@ -690,7 +690,7 @@ input::-webkit-input-placeholder{
     color: #ffffff;
 }
 .file{
-	width:450px;
+	width:570px;
 	background: #f4f4f4; 
 	overflow: hidden;
 	display:none;
@@ -698,10 +698,13 @@ input::-webkit-input-placeholder{
 	top:204px;
 	left:500px;
 	z-index: 789;
+	box-shadow: 0 0 10px rgba(0,0,0,0.35);
+	border-radius: 5px;
 }
 .file li{
-	height: 30px;
-	line-height:30px;
+	width: 220px;
+	height: 40px;
+	line-height:40px;
 }
 .file .p15{
 	margin-left: 15px;
@@ -731,19 +734,51 @@ input::-webkit-input-placeholder{
 	color:#483737;
 	text-align: center;
 	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	background-color: #999999;
     float: right;
-    margin-right: 10px;
+}
+#file_list{
+	overflow: hidden;
+	padding-left: 20px;
+	padding-right: 20px;
+}
+#file_list_l{
+	float: left;
+}
+#file_list_r{
+	float: right;
+}
+#file_list_z{
+	float: left;
+	width: 90px;
+}
+.shift{
+	width: 30px;
+	height: 30px;
+	border-radius: 5px;
+	text-align: center;
+	line-height: 30px;
+	color: #fff;
+	font-size: 14px;
+	background-color: #cecece;
+	margin-top: 10px;
+	cursor: pointer;
+}
+.shift:active{
+	background-color: #6dc1c8;
 }
 .file_content{
-	margin-top: 10px;
 	width: 100%;
-	height: 30px;
+	height: 40px;
 }
 .download{
 	width: 150px;
 	height: 30px;
 	position: absolute;
-	left:140px;
+	left:194px;
 	bottom:10px;
 	line-height: 30px;
 	letter-spacing: 2px;
@@ -755,8 +790,12 @@ input::-webkit-input-placeholder{
     float: left;
     margin-left: 10px;
 }
+#download a{
+	display: block;
+}
 .down_load a{
 	color: #FFFFFF;
+	display: block;
 }
 .into_frame{
 	display:none;
@@ -822,8 +861,8 @@ input::-webkit-input-placeholder{
 }
 .down_load_file input{
     position: absolute;
-    right:0;
-    top:0;
+    right:-105px;
+    top:5px;
     opacity:0;
 }
 .start_file{

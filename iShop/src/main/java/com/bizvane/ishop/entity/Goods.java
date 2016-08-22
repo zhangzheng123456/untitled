@@ -1,6 +1,7 @@
 package com.bizvane.ishop.entity;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/5/19.
@@ -36,16 +37,16 @@ public class Goods {
     private String goods_description;
     //商品品牌
     private String brand_code;
+    //企业编号
+    private String corp_code;
+    //商品搭配
+    private String match_goods;
 
     private Brand brand;
-
-    //商品编号
-    private String corp_code;
-
-
     private Corp corp;
     private String corp_name;
     private String brand_name;
+    private List<Goods> matchgoods;
 
     public String getCorp_name() {
         return corp_name;
@@ -186,6 +187,14 @@ public class Goods {
         this.brand_code = brand_code;
     }
 
+    public String getMatch_goods() {
+        return match_goods;
+    }
+
+    public void setMatch_goods(String match_goods) {
+        this.match_goods = match_goods;
+    }
+
     public Brand getBrand() {
         return brand;
     }
@@ -208,5 +217,13 @@ public class Goods {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public List<Goods> getMatchgoods() {
+        return matchgoods;
+    }
+
+    public void setMatchgoods(List<Goods> matchgoods) {
+        this.matchgoods = matchgoods;
     }
 }

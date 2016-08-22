@@ -1,20 +1,15 @@
 package com.bizvane.ishop.service.imp;
 
-import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GoodsMapper;
-import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.Goods;
-import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.GoodsService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.google.gson.GsonBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -32,7 +27,18 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Goods getGoodsById(int id) throws Exception {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
-        Transter(goods);
+        List<Goods> matchgoods = new ArrayList<Goods>();
+        if (goods.getMatch_goods() != null && !goods.getMatch_goods().equals("")){
+            String[] match_goods = goods.getMatch_goods().split(",");
+            for (int i = 0; i < match_goods.length; i++) {
+                Goods match = getGoodsByCode(goods.getCorp_code(),match_goods[i]);
+                matchgoods.add(match);
+            }
+            goods.setMatchgoods(matchgoods);
+        }else{
+            goods.setMatchgoods(matchgoods);
+        }
+        transter(goods);
         return goods;
     }
 
@@ -74,15 +80,24 @@ public class GoodsServiceImpl implements GoodsService {
     public PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
-        list = goodsMapper.selectAllGoods(corp_code, search_value);
+        list = goodsMapper.selectAllGoods(corp_code, search_value,"");
         for (Goods goods:list) {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
         }
         for (int i = 0; list != null && i < list.size(); i++) {
-            Transter(list.get(i));
+            transter(list.get(i));
         }
         PageInfo<Goods> page = new PageInfo<Goods>(list);
         return page;
+    }
+
+    @Override
+    public List<Goods> selectBySearch(String corp_code, String search_value) throws Exception{
+        List<Goods> list = goodsMapper.selectAllGoods(corp_code, search_value,Common.IS_ACTIVE_Y);
+        for (int i = 0; list != null && i < list.size(); i++) {
+            transter(list.get(i));
+        }
+        return list;
     }
 
     @Override
@@ -97,7 +112,7 @@ public class GoodsServiceImpl implements GoodsService {
             goods.setIsactive(CheckUtils.CheckIsactive(goods.getIsactive()));
         }
         for (int i = 0; labels != null && i < labels.size(); i++) {
-            Transter(labels.get(i));
+            transter(labels.get(i));
         }
         PageInfo<Goods> page = new PageInfo<Goods>(labels);
         return page;
@@ -108,8 +123,7 @@ public class GoodsServiceImpl implements GoodsService {
      *
      * @param goods ： 商品对象
      */
-    private void Transter(Goods goods) throws Exception{
-        //    try {
+    private void transter(Goods goods) throws Exception{
         try {
             String jsString = goods.getGoods_image();
             org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
@@ -133,7 +147,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public Goods getGoodsByCode(String corp_code, String goods_code) throws Exception{
         Goods goods = this.goodsMapper.getGoodsByCode(corp_code, goods_code);
-        Transter(goods);
+        transter(goods);
         return goods;
     }
 

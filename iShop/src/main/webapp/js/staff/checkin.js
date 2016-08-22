@@ -107,6 +107,7 @@ $("#empty").click(function(){
     }
     value="";
     filtrate="";
+    inx=1;
     $('#search').val("");
     $(".table p").remove();
     GET(inx,pageSize);
@@ -595,6 +596,13 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
             }
         }
         filtrateDown();
+        //筛选的keydow事件
+        $('#sxk .inputs input').keydown(function(){
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                getInputValue();
+            }
+        })
     }
 });
 function filtrateDown(){
@@ -623,29 +631,32 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
-   var input=$('#sxk .inputs input');
+    getInputValue();
+})
+function getInputValue(){
+    var input=$('#sxk .inputs input');
    inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
    _param["funcCode"]=funcCode;
    var num=0;
    list=[];//定义一个list
-    for(var i=0;i<input.length;i++){
+   for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
         var screen_value=$(input[i]).val().trim();
         var screen_value="";
-        if($(input[i]).parent("li").attr("class")=="isActive_select"){
-            screen_value=$(input[i]).attr("data-code");
-        }else{
-            screen_value=$(input[i]).val().trim();
-        }
+       if($(input[i]).parent("li").attr("class")=="isActive_select"){
+           screen_value=$(input[i]).attr("data-code");
+       }else{
+           screen_value=$(input[i]).val().trim();
+       }
         if(screen_value!=""){
             num++;
         }
-        var param1={"screen_key":screen_key,"screen_value":screen_value};
-        list.push(param1);
-    }
-    _param["list"]=list;
+       var param1={"screen_key":screen_key,"screen_value":screen_value};
+       list.push(param1);
+   }
+   _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
     filtrates(inx,pageSize)
@@ -654,7 +665,7 @@ $("#find").click(function(){
     }else if(num<=0){
         filtrate="";
     }
-})
+}
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框

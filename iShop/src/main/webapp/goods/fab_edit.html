@@ -13,10 +13,45 @@
     <link rel="stylesheet" type="text/css" href="../css/diyUpload.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <!--富文本编辑-->
+    <link href="font_editor/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="font_editor/css/froala_editor.min.css" rel="stylesheet" type="text/css">
     <style>
         body{
             margin-top:81px;
         }
+        #edit div{margin-bottom: 0px;}
+        #edit{ margin-left: 120px;width: 420px; margin-top: -20px;}
+        #add{margin-top: -35px;
+            margin-left: 120px;
+            margin-bottom: 0;
+            text-align: center;
+            width: 420px;
+            background: #f1f1f1;
+            line-height: 50px;
+            border-radius: 5px;
+            color: #6cc1c8;
+            font-size: 15px;
+        }
+        .add span{font-size: 20px;margin-left: 5px;}
+        .match_goods ul{width:420px;height:250px;margin-left:120px;margin-top: 5px;overflow-y: auto;overflow-x: hidden;}
+        .match_goods ul li{width:410px;height:50px;margin:auto;padding-top:5px;border-bottom: 1px solid rgba(255,255,255,0.4);}
+        .match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+        .match_goods .icon-ishop_6-12{float:right;margin:10px;font-size: 20px;color: #c26555;}
+        .goodsImg{width:40px;height:40px;margin:0 10px;border-radius:5px;border: 1px solid #dbdbdb; }
+        #search_match_goods .icon-ishop_6-12{float: right;font-size: 20px;padding: 5px;}
+        #search_match_goods{width:450px;height:460px;font-size: 14px;color:#888888;background: #FFFFFF;box-shadow:0 0 10px rgba(0,0,0,0.35);border-radius: 10px;position: absolute;top:750px;left:530px;z-index: 1000;display: none;}
+        #search{width:400px;height:30px;border-radius:30px;border: 1px solid #EAE2E2;margin: 30px 20px;}
+        #d_search{float: right;position: relative;  top: -57px;  left: -37px;  font-size: 25px;}
+        #goods_box{width:100%;height:1200px;position:absolute;left: 20%;z-index: 100;display: none;}
+        #search_match_goods .li{margin-bottom: 0;height:100px;}
+        #search_match_goods ul{ width:425px;height:350px;overflow-y:auto;overflow-x: hidden;margin-left:20px;}
+        #search_match_goods ul li{width:400px;height:50px;background:#ededed;padding-top:5px;display: inline-block; }
+        #search_match_goods ul li:nth-child(even){background: #FFFFFF;}
+        #search_match_goods ul li span:nth-child(3){margin-left: 20px;width:150px;display:inline-flex;overflow:hidden;text-overflow:ellipsis;white-space:nowrap; }
+        #search_match_goods ul li i{position:relative;right:5px;top:8px;color: #c26555;display: none;cursor: pointer;}
+        .goods_add{width: 40px;height:50px;float:right;font-size: 30px;  margin-top: -5px; text-align: center;  line-height: 50px;color:#c3c3c3; }
+        .goods_add:hover{color:#6dc1c8;cursor: pointer;}
     </style>
 </head>
 <body>
@@ -89,8 +124,35 @@
                         </span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:180px;">商品卖点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOODS_BUYPOINT"></textarea></span></span>
+                        <label>商品卖点</label>
+                        <section id="editor">
+                            <div id='edit'>
+                            </div>
+                        </section>
                     </div>
+                    <div>
+                        <span class="match_goods">
+                        <label>相关搭配</label>
+                        <div id="add">添加搭配<span>+</span></div>
+                         <ul>
+                             <!--<li><img class="goodsImg" src="../img/head.png"><span>001</span><span>名称</span><i class="icon-ishop_6-12"></i></li>-->
+                         </ul>
+                            <!--<div id="more">加载更多<i class="icon-ishop_6-18"></i></div>-->
+                        </span>
+                    </div>
+                    <div id="search_match_goods">
+                        <i class="icon-ishop_6-12" id="close_match_goods"></i>
+                        <div class="li">
+                            <input type="text" class="input" id="search" placeholder="名称">
+                            <i class="icon-ishop_3-05" id="d_search"></i>
+                        </div>
+                        <ul>
+                            <!--<li><img class="goodsImg" src="../img/head.png"><span>001</span><span>名称</span><span class="goods_add">+</span><i class="icon-ishop_6-12"></i></li>-->
+                        </ul>
+                    </div>
+                    <!--<div>-->
+                    <!--<span style="display: inline-flex;width:100%"><label style="height:180px;">商品卖点</label><span class="tempalte_area" style="height:180px"><textarea style="height:160px" id="GOODS_BUYPOINT"></textarea></span></span>-->
+                    <!--</div>-->
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
@@ -119,6 +181,7 @@
                 </form>
             </div>
         </div>
+        <div id="goods_box"></div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
@@ -152,6 +215,21 @@
     <script type="text/javascript" src="../js/goods/fab_operate.js"></script>
     <!-- 日期选择器 -->
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
+    <!--富文本编辑器-->
+    <script src="font_editor/js/froala_editor.min.js"></script>
+    <!--[if lt IE 9]>
+    <script src="font_editor/js/froala_editor_ie8.min.js"></script>
+    <![endif]-->
+    <script src="font_editor/js/plugins/colors.min.js"></script>
+    <script src="font_editor/js/plugins/media_manager.min.js"></script>
+    <script src="font_editor/js/plugins/font_family.min.js"></script>
+    <script src="font_editor/js/plugins/font_size.min.js"></script>
+    <script src="font_editor/js/plugins/block_styles.min.js"></script>
+    <script>
+        $(function(){
+            $('#edit').editable({inlineMode: false, alwaysBlank: true})
+        });
+    </script>
 </body>
 
 </html>

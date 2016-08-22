@@ -71,6 +71,7 @@ $("#empty").click(function(){
     }
     value="";
     filtrate="";
+    inx=1;
     $('#search').val("");
     $(".table p").remove();
     GET(inx,pageSize);
@@ -557,6 +558,7 @@ $("#file_submit").click(function(){
         var param1={"column_name":r,"show_name":z};
         tablemanager.push(param1);
     }
+    tablemanager.reverse();
     param["tablemanager"]=tablemanager;
     param["searchValue"]=value;
     if(filtrate==""){
@@ -673,18 +675,14 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
 
         }
         $("#sxk .inputs ul").html(li);
-        if(filtrate!==""){
-            $(".sxk").slideDown();
-            for(var i=0;i<list.length;i++){
-                if($("#"+list[i].screen_key).parent("li").attr("class")!=="isActive_select"){
-                    $("#"+list[i].screen_key).val(list[i].screen_value);
-                }else if($("#"+list[i].screen_key).parent("li").attr("class")=="isActive_select"){
-                    var svalue=$("#"+list[i].screen_key).next(".isActive_select_down").find("li[data-code='"+list[i].screen_value+"']").html();
-                    $("#"+list[i].screen_key).val(svalue);
-                }
-            }
-        }
         filtrateDown();
+        //筛选的keydow事件
+        $('#sxk .inputs input').keydown(function(){
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                getInputValue();
+            }
+        })
     }
 });
 function filtrateDown(){
@@ -713,7 +711,10 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
-   var input=$('#sxk .inputs input');
+    getInputValue();
+})
+function getInputValue(){
+    var input=$('#sxk .inputs input');
    inx=1;
    _param["pageNumber"]=inx;
    _param["pageSize"]=pageSize;
@@ -724,27 +725,27 @@ $("#find").click(function(){
         var screen_key=$(input[i]).attr("id");
         var screen_value=$(input[i]).val().trim();
         var screen_value="";
-        if($(input[i]).parent("li").attr("class")=="isActive_select"){
-            screen_value=$(input[i]).attr("data-code");
-        }else{
-            screen_value=$(input[i]).val().trim();
-        }
+       if($(input[i]).parent("li").attr("class")=="isActive_select"){
+           screen_value=$(input[i]).attr("data-code");
+       }else{
+           screen_value=$(input[i]).val().trim();
+       }
         if(screen_value!=""){
             num++;
         }
-        var param1={"screen_key":screen_key,"screen_value":screen_value};
-        list.push(param1);
-    }
-    _param["list"]=list;
+       var param1={"screen_key":screen_key,"screen_value":screen_value};
+       list.push(param1);
+   }
+   _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize);
+    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){
         filtrate="";
     }
-})
+}
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
@@ -791,4 +792,127 @@ $("#input-txt").keydown(function() {
             }
         };
     }
+})
+
+//编辑点击保存
+$("#edit_save").click(function(){
+    var _param={};
+    var a=$('.xingming li');
+    var user_codes="";
+    var phone="";
+    for(var i=0;i<a.length;i++){
+        var u=$(a[i]).attr("data-code");
+        var p=$(a[i]).attr("data-phone");
+        if(i<a.length-1){
+            user_codes+=u+",";
+            phone+=p+",";
+        }else{
+             user_codes+=u;
+             phone+=p;
+        }     
+    }
+    console.log(user_codes);
+    console.log(phone);
+    var corp_code = $('#OWN_CORP').val();//公司编号
+    var task_type_code = $('#task_type_code').val();//公司类型
+    var task_title=$('#task_title_e').val();//任务名称
+    var task_description=$("#task_describe").val();//任务描述
+    var target_end_time=$("#target_end_time_e").val();//截止时间
+    var target_start_time=$("#target_start_time_e").val();//开始时间
+    var id=$('#task_id').val();//id名称
+    if(task_type_code==""){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"任务类型不能为空"
+        });
+        return;
+    }
+    if(task_title==""){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"任务名称不能为空"
+        });
+        return;
+    }
+    if(task_description==""){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"任务描述不能为空"
+        });
+        return;
+    }
+    if(user_codes==""){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"员工不能为空"
+        });
+        return;
+    }
+    if(target_end_time==""){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"截止时间不能为空"
+        });
+        return;
+    }
+    if(target_start_time==""){
+        art.dialog({
+            time: 1,
+            lock: true,
+            cancel: false,
+            content:"开始时间不能为空"
+        });
+        return;
+    }
+    var task_code=$('#task_code_e').val();
+    var isactive = "";//是否可用
+    var input = $("#is_active")[0];
+    if (input.checked == true) {
+        isactive = "Y";
+    } else if (input.checked == false) {
+        isactive = "N";
+    }
+    _param["user_codes"]=user_codes;
+    _param["phone"]=phone;
+    _param["corp_code"]=corp_code;
+    _param["task_type_code"]=task_type_code;
+    _param["task_title"]=task_title;
+    _param["task_description"]=task_description;
+    _param["target_end_time"]=target_end_time;
+    _param["target_start_time"]=target_start_time;
+    _param["task_code"]=task_code;//任务编号
+    _param["id"]=id;//id名称
+    _param["isactive"]=isactive;
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/task/edit","", _param, function(data) {
+        if(data.code=="0"){
+            $("#page-wrapper").hide();
+            $("#content").show();
+            $("#details").hide();
+            whir.loading.remove();//移除加载框
+            if(value==""&&filtrate==""){
+                GET(inx,pageSize);
+            }else if(value!==""){
+                POST(inx,pageSize); 
+            }else if(filtrate!==""){
+                filtrates(inx,pageSize); 
+            }
+        }
+    })
+})
+//编辑点击关闭
+$("#edit_close").click(function(){
+    $("#page-wrapper").hide();
+    $("#content").show();
+    $("#details").hide();
 })
