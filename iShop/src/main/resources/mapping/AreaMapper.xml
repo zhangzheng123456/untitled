@@ -52,9 +52,6 @@
             (area_code like concat('%',#{search_value},'%')
             OR area_name like concat('%',#{search_value},'%')
             OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_AREA.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_AREA.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_AREA.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY DEF_AREA.id DESC
@@ -133,28 +130,28 @@
     <update id="updateArea" parameterType="com.bizvane.ishop.entity.Area">
         UPDATE def_area
         <trim prefix="SET" suffixOverrides=",">
-            <if test="area_code!=null and area_code!=''">
+            <if test="area_code!=null">
                 area_code=#{area_code},
             </if>
-            <if test="area_name!=null and area_name!=''">
+            <if test="area_name!=null">
                 area_name=#{area_name},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null">
                 modifier=#{modifier},
             </if>
             <if test="created_date!=null">
                 created_date=#{created_date},
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null">
                 creater=#{creater},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null">
                 isactive=#{isactive},
             </if>
         </trim>

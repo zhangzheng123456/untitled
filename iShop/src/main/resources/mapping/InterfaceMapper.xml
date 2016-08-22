@@ -10,9 +10,6 @@
             (
             VERSION LIKE concat('%', #{search_value},'%')
             OR CROP_CODE LIKE concat('%', #{search_value},'%')
-            OR MODIFIED_DATE LIKE concat('%', #{search_value},'%')
-            OR MODIFIER LIKE concat('%',#{search_value},'%')
-            OR ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY ID DESC

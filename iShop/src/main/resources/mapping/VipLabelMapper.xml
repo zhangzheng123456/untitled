@@ -42,55 +42,55 @@
         INSERT INTO def_viplabel
         <trim prefix="(" suffixOverrides="," suffix=")">
 
-            <if test="label_name!=null and label_name!=''">
+            <if test="label_name!=null ">
                 label_name ,
             </if>
-            <if test="label_type!=null and label_type!=''">
+            <if test="label_type!=null ">
                 label_type,
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code ,
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date ,
             </if>
-            <if test="modifier!=null and  modifier!=''">
+            <if test="modifier!=null ">
                 modifier,
             </if>
             <if test="created_date!=null">
                 created_date ,
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 creater,
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
 
-            <if test="label_name!=null and label_name!=''">
+            <if test="label_name!=null ">
                 #{label_name} ,
             </if>
-            <if test="label_type!=null and label_type!=''">
+            <if test="label_type!=null ">
                 #{label_type},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 #{corp_code},
             </if>
             <if test="modified_date!=null">
                 #{modified_date} ,
             </if>
-            <if test="modifier!=null and  modifier!=''">
+            <if test="modifier!=null ">
                 #{modifier},
             </if>
             <if test="created_date!=null">
                 #{created_date},
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 #{creater},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 #{isactive},
             </if>
         </trim>
@@ -102,28 +102,28 @@
         update def_viplabel
         <trim prefix="set " suffixOverrides=",">
 
-            <if test="label_name!=null and label_name!=''">
+            <if test="label_name!=null ">
                 label_name=#{label_name} ,
             </if>
-            <if test="label_type!=null and label_type!=''">
+            <if test="label_type!=null ">
                 label_type=#{label_type},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code=#{corp_code},
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date=#{modified_date} ,
             </if>
-            <if test="modifier!=null and  modifier!=''">
+            <if test="modifier!=null ">
                 modifier=#{modifier},
             </if>
-            <if test="created_date!=null and created_date!=''">
+            <if test="created_date!=null ">
                 created_date=#{created_date},
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 creater=#{creater},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive=#{isactive},
             </if>
         </trim>
@@ -163,8 +163,6 @@
             or vt.label_name like concat('%',#{search_value},'%')
             or vt.label_type like concat('%',#{search_value},'%')
             or cc.corp_name like concat('%',#{search_value},'%')
-            or vt.modified_date like concat('%',#{search_value},'%')
-            or vt.isactive like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY vt.id DESC

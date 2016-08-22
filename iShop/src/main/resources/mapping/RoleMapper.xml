@@ -3,44 +3,41 @@
 <mapper namespace="com.bizvane.ishop.dao.RoleMapper">
 
     <select id="selectByRoleId" resultType="com.bizvane.ishop.entity.Role">
-        select *
-        from DEF_ROLE
-        where
+        SELECT *
+        FROM def_role
+        WHERE
         <if test="role_id != 0">
-            ID = #{role_id}
+            id = #{role_id}
         </if>
     </select>
 
     <select id="selectAllRole" resultType="com.bizvane.ishop.entity.Role">
-        select *
-        from DEF_ROLE
-        where 1 = 1
+        SELECT *
+        FROM def_role
+        WHERE 1 = 1
         <if test="search_value != null and search_value !=''">
             AND
             (role_code like concat('%',#{search_value},'%')
             OR role_name like concat('%',#{search_value},'%')
             OR remark like concat('%',#{search_value},'%')
-            OR modified_date like concat('%',#{search_value},'%')
-            OR MODIFIER like concat('%',#{search_value},'%')
-            OR isactive like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY id DESC
     </select>
 
     <select id="selectUserRole" resultType="com.bizvane.ishop.entity.Role">
-        select *
-        from DEF_ROLE
-        where 1 = 1
+        SELECT *
+        FROM def_role
+        WHERE 1 = 1
         <if test="role_code != null and role_code !=''">
             AND role_code &lt; #{role_code}
         </if>
-        AND ISACTIVE = 'Y'
-        ORDER BY ID DESC
+        AND isactive = 'Y'
+        ORDER BY id DESC
     </select>
 
     <insert id="insertRole" parameterType="com.bizvane.ishop.entity.Role">
-        insert into DEF_ROLE
+        INSERT INTO def_role
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="role_name != null">
                 role_name,
@@ -96,7 +93,7 @@
     </insert>
 
     <update id="updateByRoleId" parameterType="com.bizvane.ishop.entity.Role">
-        UPDATE DEF_ROLE
+        UPDATE def_role
         <trim prefix="SET" suffixOverrides=",">
             <if test="role_code != null">
                 role_code = #{role_code},
@@ -123,19 +120,19 @@
                 isactive = #{isactive},
             </if>
         </trim>
-        WHERE ID = #{id};
+        WHERE id = #{id};
     </update>
 
     <delete id="deleteByRoleId">
-        delete from
-        DEF_ROLE
-        where ID = #{id}
+        DELETE FROM
+        def_role
+        WHERE id = #{id}
     </delete>
     <select id="countRoleCode" resultType="java.lang.Integer">
-        select count(*) from def_role where role_code=#{role_code}
+        SELECT count(*) FROM def_role WHERE role_code=#{role_code}
     </select>
 
     <select id="countRoleName" resultType="java.lang.Integer">
-        select count(*) from def_role where role_name=#{role_name}
+        SELECT count(*) FROM def_role WHERE role_name=#{role_name}
     </select>
 </mapper>

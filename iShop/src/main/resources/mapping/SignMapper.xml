@@ -39,7 +39,6 @@
             OR acc_sign.USER_NAME LIKE concat('%', #{search_value},'%')
             OR acc_sign.SIGN_TIME LIKE concat('%', #{search_value},'%')
             OR DEF_CORP.CORP_NAME LIKE concat('%', #{search_value},'%')
-            OR acc_sign.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY acc_sign.ID DESC

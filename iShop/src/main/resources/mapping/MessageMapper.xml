@@ -124,72 +124,72 @@
     <insert id="insertMessageInfo" parameterType="com.bizvane.ishop.entity.MessageInfo">
         insert into def_user_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="message_code!=null and message_code!=''">
+            <if test="message_code!=null">
                 message_code,
             </if>
-            <if test="message_sender!=null and message_sender!=''">
+            <if test="message_sender!=null ">
                 message_sender,
             </if>
-            <if test="message_title!=null and message_title!=''">
+            <if test="message_title!=null ">
                 message_title,
             </if>
-            <if test="message_content!=null and message_content!=''">
+            <if test="message_content!=null ">
                 message_content,
             </if>
-            <if test="message_type!=null and message_type!=''">
+            <if test="message_type!=null ">
                 message_type,
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code,
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 modifier,
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date,
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 creater,
             </if>
-            <if test="created_date!=null and created_date!=''">
+            <if test="created_date!=null ">
                 created_date,
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="message_code!=null and message_code!=''">
+            <if test="message_code!=null ">
                 #{message_code},
             </if>
-            <if test="message_sender!=null and message_sender!=''">
+            <if test="message_sender!=null ">
                 #{message_sender},
             </if>
-            <if test="message_title!=null and message_title!='' ">
+            <if test="message_title!=null ">
                 #{message_title},
             </if>
-            <if test="message_content!=null and message_content!=''">
+            <if test="message_content!=null ">
                 #{message_content},
             </if>
-            <if test="message_type!=null and message_type!=''">
+            <if test="message_type!=null ">
                 #{message_type},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 #{corp_code},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 #{modifier},
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 #{modified_date},
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 #{creater},
             </if>
-            <if test="created_date!=null and created_date!=''">
+            <if test="created_date!=null ">
                 #{created_date},
             </if>
-            <if test="isactive!=null and  isactive!=''">
+            <if test="isactive!=null ">
                 #{isactive},
             </if>
         </trim>
@@ -198,60 +198,60 @@
     <insert id="insertMessage" parameterType="com.bizvane.ishop.entity.Message">
         insert into rel_user_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="message_receiver!=null and message_receiver!=''">
+            <if test="message_receiver!=null ">
                 message_receiver,
             </if>
-            <if test="receiver_type!=null and receiver_type!=''">
+            <if test="receiver_type!=null ">
                 receiver_type,
             </if>
-            <if test="status!=null and status!=''">
+            <if test="status!=null ">
                 status,
             </if>
-            <if test="message_code !=null and message_code!=''">
+            <if test="message_code !=null ">
                 message_code,
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 modifier,
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date,
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 creater,
             </if>
-            <if test="created_date!=null and created_date!=''">
+            <if test="created_date!=null ">
                 created_date,
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="message_receiver!=null and message_receiver!=''">
+            <if test="message_receiver!=null ">
                 #{message_receiver},
             </if>
-            <if test="receiver_type!=null and receiver_type!=''">
+            <if test="receiver_type!=null ">
                 #{receiver_type},
             </if>
-            <if test="status!=null and status!=''">
+            <if test="status!=null ">
                 #{status},
             </if>
-            <if test="message_code!=null and message_code!=''">
+            <if test="message_code!=null ">
                 #{message_code},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 #{modifier},
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 #{modified_date},
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 #{creater},
             </if>
-            <if test="created_date!=null and created_date!=''">
+            <if test="created_date!=null ">
                 #{created_date},
             </if>
-            <if test="isactive!=null and  isactive!=''">
+            <if test="isactive!=null ">
                 #{isactive},
             </if>
         </trim>

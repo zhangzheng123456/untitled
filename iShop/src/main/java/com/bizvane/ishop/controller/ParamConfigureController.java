@@ -249,7 +249,6 @@ public class ParamConfigureController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
 
-            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<ParamConfigure> list = null;
             list = paramConfigureService.selectByParamSearch(page_number, page_size, "", search_value);

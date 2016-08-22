@@ -92,9 +92,6 @@
             OR DEF_GROUP.group_name like concat('%',#{search_value},'%')
             OR DEF_ROLE.role_name like concat('%',#{search_value},'%')
             OR DEF_CORP.corp_name like concat('%',#{search_value},'%')
-            OR DEF_GROUP.modified_date like concat('%',#{search_value},'%')
-            OR DEF_GROUP.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_GROUP.isactive like concat('%',#{search_value},'%')
             )
         </if>
         AND def_role.isactive = 'Y'
