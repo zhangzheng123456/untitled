@@ -251,7 +251,7 @@ public class ParamConfigureController {
 
             JSONObject result = new JSONObject();
             PageInfo<ParamConfigure> list = null;
-            list = paramConfigureService.selectByParamSearch(page_number, page_size, "", search_value);
+            list = paramConfigureService.selectByParamSearch(page_number, page_size, search_value);
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
