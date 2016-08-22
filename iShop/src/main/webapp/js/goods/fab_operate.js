@@ -104,6 +104,15 @@ var oc = new ObjectControl();
 						content:"商品图片最多可以上传5张!"
 					});
 				}
+				var li=$(".match_goods ul").find("li");
+				for(var i=0,matchgoods="";i<li.length;i++){
+					var r=$(li[i]).attr("id");
+					if(i<li.length-1){
+						matchgoods+=r+",";
+					}else{
+						matchgoods+=r;
+					}
+				}
 				var _command="/goods/fab/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -121,7 +130,8 @@ var oc = new ObjectControl();
 					"goods_wave": GOODS_BAND,
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
-					"isactive": ISACTIVE
+					"isactive": ISACTIVE,
+					"match_goods":matchgoods
 				};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -332,8 +342,8 @@ jQuery(document).ready(function(){
 				$("#GOODS_BAND").val(msg.goods_wave);
 				$("#GOODS_RELEASETIME").val(msg.goods_time);
 				$("#GOODS_BUYPOINT").val(msg.goods_description);
-				var list=msg.match_goods;
-				console.log(msg.goods_name);
+				var list=msg.matchgoods;
+				console.log(list);
 				for(var i=0;i<list.length;i++){
 					jQuery('.match_goods ul').append('<li id="'+list[i].goods_code+'"><img class="goodsImg" src="'
 						+ list[i].goods_image
@@ -342,7 +352,9 @@ jQuery(document).ready(function(){
 						+ list[i].goods_name
 						+'</span><i class="icon-ishop_6-12"></i></li>');
 				}
-
+				$("#match_goods ul li i").click(function (){
+					$(this).parent("li").remove();
+				});
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -606,4 +618,5 @@ $("#search_match_goods").keydown(function () {
 		getmatchgoodsList();
 	}
 })
+
 

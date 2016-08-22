@@ -147,102 +147,102 @@
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Goods">
         insert into DEF_GOODS
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="goods_code!=null  and goods_code!=''">
+            <if test="goods_code!=null ">
                 goods_code,
             </if>
-            <if test="goods_name!=null  and goods_name!=''">
+            <if test="goods_name!=null ">
                 goods_name,
             </if>
-            <if test="goods_image!=null   and goods_image!=''">
+            <if test="goods_image!=null ">
                 goods_image,
             </if>
-            <if test="goods_price!=null  and goods_price!=''">
+            <if test="goods_price!=null">
                 goods_price,
             </if>
             <if test="goods_time!=null  ">
                 goods_time,
             </if>
-            <if test="goods_quarter!=null  and goods_quarter!=''">
+            <if test="goods_quarter!=null ">
                 goods_quarter,
             </if>
-            <if test="goods_wave!=null  and goods_wave!=''">
+            <if test="goods_wave!=null ">
                 goods_wave,
             </if>
-            <if test="match_goods!=null  and match_goods!=''">
+            <if test="match_goods!=null">
                 match_goods,
             </if>
             <if test="modified_date!=null">
                 modified_date,
             </if>
-            <if test="modifier!=null  and modifier!=''">
+            <if test="modifier!=null">
                 modifier,
             </if>
-            <if test="isactive!=null  and isactive!=''">
+            <if test="isactive!=null ">
                 isactive,
             </if>
             <if test="created_date!=null">
                 created_date,
             </if>
-            <if test="creater!=null  and creater!=''">
+            <if test="creater!=null ">
                 creater,
             </if>
-            <if test="goods_description!=null and goods_description!=''">
+            <if test="goods_description!=null">
                 goods_description,
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null">
                 corp_code,
             </if>
-            <if test="brand_code!=null and brand_code!=''">
+            <if test="brand_code!=null ">
                 brand_code,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="goods_code!=null  and goods_code!=''">
+            <if test="goods_code!=null">
                 #{goods_code},
             </if>
-            <if test="goods_name!=null  and goods_name!=''">
+            <if test="goods_name!=null ">
                 #{goods_name},
             </if>
-            <if test="goods_image!=null   and goods_image!=''">
+            <if test="goods_image!=null ">
                 #{goods_image},
             </if>
-            <if test="goods_price!=null and goods_price!=''">
+            <if test="goods_price!=null ">
                 #{goods_price},
             </if>
-            <if test="goods_time">
+            <if test="goods_time!=null ">
                 #{goods_time},
             </if>
-            <if test="goods_quarter!=null  and goods_quarter!=''">
+            <if test="goods_quarter!=null ">
                 #{goods_quarter},
             </if>
-            <if test="goods_wave!=null  and goods_wave!=''">
+            <if test="goods_wave!=null ">
                 #{goods_wave},
             </if>
-            <if test="match_goods!=null  and match_goods!=''">
+            <if test="match_goods!=null ">
                 #{match_goods},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
             </if>
-            <if test="modifier!=null  and modifier!=''">
+            <if test="modifier!=null ">
                 #{modifier},
             </if>
-            <if test="isactive!=null  and isactive!=''">
+            <if test="isactive!=null">
                 #{isactive},
             </if>
             <if test="created_date!=null">
                 #{created_date},
             </if>
-            <if test="creater!=null  and creater!=''">
+            <if test="creater!=null">
                 #{creater},
             </if>
-            <if test="goods_description!=null and goods_description!=''">
+            <if test="goods_description!=null">
                 #{goods_description},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null">
                 #{corp_code},
             </if>
-            <if test="brand_code!=null and brand_code!=''">
+            <if test="brand_code!=null">
                 #{brand_code},
             </if>
         </trim>
@@ -251,52 +251,52 @@
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.Goods">
         update DEF_GOODS
         <trim prefix="set" suffixOverrides=",">
-            <if test="goods_code!=null and goods_code!=''">
+            <if test="goods_code!=null">
                 goods_code=#{goods_code},
             </if>
-            <if test="goods_name!=null and goods_name!=''">
+            <if test="goods_name!=null">
                 goods_name=#{goods_name},
             </if>
-            <if test="goods_image!=null and goods_image!=''">
+            <if test="goods_image!=null">
                 goods_image=#{goods_image},
             </if>
-            <if test="goods_price!=null and goods_price!=''">
+            <if test="goods_price!=null">
                 goods_price=#{goods_price},
             </if>
-            <if test="goods_time and goods_time!=''">
+            <if test="goods_time!=null">
                 goods_time=#{goods_time},
             </if>
-            <if test="goods_quarter!=null and goods_quarter!=''">
+            <if test="goods_quarter!=null">
                 goods_quarter=#{goods_quarter},
             </if>
-            <if test="goods_wave!=null and goods_wave!=''">
+            <if test="goods_wave!=null">
                 goods_wave=#{goods_wave},
             </if>
-            <if test="match_goods!=null and match_goods!=''">
+            <if test="match_goods!=null">
                 match_goods=#{match_goods},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null">
                 modifier=#{modifier},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null">
                 isactive=#{isactive},
             </if>
             <if test="created_date!=null">
                 created_date=#{created_date},
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null">
                 creater=#{creater},
             </if>
-            <if test="goods_description!=null and goods_description!=''">
+            <if test="goods_description!=null">
                 goods_description=#{goods_description},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
-            <if test="brand_code!=null and brand_code!=''">
+            <if test="brand_code!=null">
                 brand_code=#{brand_code},
             </if>
         </trim>

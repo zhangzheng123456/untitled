@@ -30,20 +30,22 @@ public class SignServiceImpl implements SignService {
     public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
+            store_code = store_code.replace(Common.STORE_HEAD,"");
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
-                if (!stores[i].startsWith(Common.STORE_HEAD)) {
-                    stores[i] = Common.STORE_HEAD + stores[i];
-                }
-                stores[i] = stores[i].substring(1, stores[i].length());
-
-            }
+//            for (int i = 0; i < stores.length; i++) {
+//                if (!stores[i].startsWith(Common.STORE_HEAD)) {
+//                    stores[i] = Common.STORE_HEAD + stores[i];
+//                }
+//                stores[i] = stores[i].substring(1, stores[i].length());
+//
+//            }
         }
         if (!area_code.equals("")) {
+            area_code = area_code.replace(Common.STORE_HEAD,"");
             String[] areas = area_code.split(",");
-            for (int i = 0; i < areas.length; i++) {
-                areas[i] = areas[i].substring(1, areas[i].length());
-            }
+//            for (int i = 0; i < areas.length; i++) {
+//                areas[i] = areas[i].substring(1, areas[i].length());
+//            }
             List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {

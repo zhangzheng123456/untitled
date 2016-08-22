@@ -499,6 +499,9 @@ $("#delete").click(function(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+        $(".frame").hide(); 
+    },2000);
 } 
 //全选
 function checkAll(name){
@@ -562,6 +565,11 @@ $("#leading_out").click(function(){
 //点击左移
 $("#left_shift").click(function(){
     var input=$("#file_list_l input[type='checkbox']:checked").parents("li");
+    for(var i=0;i<input.length;i++){
+        var r=$(li[i]).attr("data-name");
+        var z=$(li[i]).children("span").html();
+
+    }
 })
 //导出提交的
 $("#file_submit").click(function(){
