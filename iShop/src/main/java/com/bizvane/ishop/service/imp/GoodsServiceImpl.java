@@ -32,6 +32,10 @@ public class GoodsServiceImpl implements GoodsService {
             String[] match_goods = goods.getMatch_goods().split(",");
             for (int i = 0; i < match_goods.length; i++) {
                 Goods match = getGoodsByCode(goods.getCorp_code(),match_goods[i]);
+                String goods_image = match.getGoods_image();
+                    if (goods_image != null && !goods_image.isEmpty()) {
+                        match.setGoods_image(goods_image.split(",")[0]);
+                    }
                 matchgoods.add(match);
             }
             goods.setMatchgoods(matchgoods);
@@ -96,6 +100,10 @@ public class GoodsServiceImpl implements GoodsService {
         List<Goods> list = goodsMapper.selectMatchGoods(corp_code, search_value,Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
             transter(list.get(i));
+            String goods_image = list.get(i).getGoods_image();
+            if (goods_image != null && !goods_image.isEmpty()) {
+                list.get(i).setGoods_image(goods_image.split(",")[0]);
+            }
         }
         return list;
     }
