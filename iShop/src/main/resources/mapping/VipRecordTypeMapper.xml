@@ -83,34 +83,34 @@
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipRecordType">
         update def_vip_record_type
         <trim prefix="set" suffixOverrides=",">
-            <if test="type_code!=null and type_code!=''">
+            <if test="type_code!=null">
                 type_code=#{type_code},
             </if>
-            <if test="type_name!=null  and type_name!=''">
+            <if test="type_name!=null ">
                 type_name=#{type_name},
             </if>
 
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date=#{modified_date} ,
             </if>
 
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 modifier=#{modifier} ,
             </if>
 
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 creater=#{creater},
             </if>
 
-            <if test="created_date!=null and created_date!=''">
+            <if test="created_date!=null ">
                 created_date=#{created_date} ,
             </if>
 
-            <if test="isactive!=null and  isactive!=''">
+            <if test="isactive!=null ">
                 isactive=#{isactive} ,
             </if>
 
-            <if test="corp_code!=null and  corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code=#{corp_code} ,
             </if>
         </trim>
@@ -140,11 +140,6 @@
         </if>
         <if test="search_value!=null and search_value!=''">
             and vtt.type_name like concat('%',#{search_value},'%')
-            or vtt.modified_date like concat('%',#{search_value},'%')
-            or vtt.modifier like concat('%',#{search_value},'%')
-            or vtt.creater like concat('%',#{search_value},'%')
-            or vtt.created_date like concat('%',#{search_value},'%')
-            or vtt.isactive like concat('%',#{search_value},'%')
         </if>
         ORDER BY vtt.id DESC
     </select>

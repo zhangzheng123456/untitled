@@ -24,11 +24,8 @@
             (rcc.corp_code like concat('%',#{search_value},'%')
             OR dc.corp_name like concat('%',#{search_value},'%')
             OR dcc.param_name like concat('%',#{search_value},'%')
-            OR rcc.MODIFIED_DATE like concat('%',#{search_value},'%')
             OR rcc.param_value like concat('%',#{search_value},'%')
-            OR rcc.MODIFIER like concat('%',#{search_value},'%')
             OR rcc.remark like concat('%',#{search_value},'%')
-            OR rcc.ISACTIVE like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY rcc.id DESC
@@ -121,32 +118,32 @@
     <update id="update" parameterType="com.bizvane.ishop.entity.CorpParam">
         UPDATE rel_corp_cfg
         <trim prefix="SET" suffixOverrides=",">
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code=#{corp_code},
             </if>
-            <if test="param_id!=null and param_id!=''">
+            <if test="param_id!=null ">
                 param_id=#{param_id},
             </if>
-            <if test="param_value!=null and param_value!=''">
+            <if test="param_value!=null ">
                 param_value=#{param_value},
             </if>
 
-            <if test="remark!=null and remark!=''">
+            <if test="remark!=null ">
                 remark=#{remark},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 modifier=#{modifier},
             </if>
             <if test="created_date!=null">
                 created_date=#{created_date},
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 creater=#{creater},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive=#{isactive},
             </if>
         </trim>

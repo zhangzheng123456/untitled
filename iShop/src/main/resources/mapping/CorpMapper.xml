@@ -50,9 +50,6 @@
             OR address LIKE concat('%', #{search_value},'%')
             OR contact LIKE concat('%', #{search_value},'%')
             OR contact_phone LIKE concat('%', #{search_value},'%')
-            OR modified_date LIKE concat('%',#{search_value},'%')
-            OR modifier LIKE concat('%', #{search_value},'%')
-            OR isactive LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY id DESC
@@ -106,7 +103,7 @@
             <if test="isactive != null">
                 isactive,
             </if>
-            <if test="avater!=null and avater!=''">
+            <if test="avater!=null ">
                 avater,
             </if>
         </trim>
@@ -141,7 +138,7 @@
             <if test="isactive != null">
                 #{isactive},
             </if>
-            <if test="avater!=null and avater!=''">
+            <if test="avater!=null ">
                 #{avater},
             </if>
         </trim>
@@ -181,7 +178,7 @@
             <if test="isactive != null">
                 isactive = #{isactive},
             </if>
-            <if test="avater!=null and avater!=''">
+            <if test="avater!=null">
                 avater=#{avater},
             </if>
         </trim>

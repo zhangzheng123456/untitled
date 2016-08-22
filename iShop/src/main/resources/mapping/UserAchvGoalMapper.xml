@@ -53,37 +53,37 @@
     <update id="update" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
         update DEF_USER_ACHV_GOAL
         <trim prefix="set" suffixOverrides=",">
-            <if test="user_code!=null  and user_code!=''">
+            <if test="user_code!=null ">
                 user_code =#{user_code},
             </if>
-            <if test="store_code!=null and store_code!=''">
+            <if test="store_code!=null ">
                 store_code =#{store_code},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code=#{corp_code},
             </if>
-            <if test="user_target!=null and user_target!=''">
+            <if test="user_target!=null ">
                 user_target=#{user_target},
             </if>
-            <if test="target_type!=null and target_type!=''">
+            <if test="target_type!=null ">
                 target_type=#{target_type},
             </if>
-            <if test="target_time!=null and target_time!=''">
+            <if test="target_time!=null ">
                 target_time=#{target_time},
             </if>
-            <if test="modified_date!=null  and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date=#{modified_date},
             </if>
-            <if test="modifier!=null and  modifier!=''">
+            <if test="modifier!=null ">
                 modifier=#{modifier},
             </if>
-            <if test="created_date!=null and created_date!=''">
+            <if test="created_date!=null ">
                 created_date=#{created_date},
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 creater=#{creater},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive=#{isactive},
             </if>
         </trim>
@@ -93,19 +93,19 @@
     <insert id="insert" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
         insert into DEF_USER_ACHV_GOAL
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="user_code!=null and user_code!=''">
+            <if test="user_code!=null ">
                 user_code,
             </if>
-            <if test="store_code!=null and  store_code!=''">
+            <if test="store_code!=null ">
                 store_code,
             </if>
-            <if test="corp_code!=null and  corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code ,
             </if>
-            <if test="user_target!=null and user_target!=''">
+            <if test="user_target!=null ">
                 user_target ,
             </if>
-            <if test="target_type!=null and  target_type!=''">
+            <if test="target_type!=null ">
                 target_type ,
             </if>
             <if test="target_time!=null">
@@ -114,34 +114,34 @@
             <if test="modified_date!=null">
                 modified_date ,
             </if>
-            <if test="modifier!=null and  modifier!=''">
+            <if test="modifier!=null ">
                 modifier ,
             </if>
             <if test="created_date!=null">
                 created_date,
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 creater ,
             </if>
-            <if test="isactive!=null and  isactive!=''">
+            <if test="isactive!=null ">
                 isactive ,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="user_code!=null and user_code!=''">
+            <if test="user_code!=null ">
                 #{user_code},
             </if>
-            <if test="store_code!=null and  store_code!=''">
+            <if test="store_code!=null ">
                 #{store_code},
             </if>
-            <if test="corp_code!=null and  corp_code!=''">
+            <if test="corp_code!=null ">
                 #{corp_code} ,
             </if>
 
-            <if test="user_target!=null and user_target!=''">
+            <if test="user_target!=null ">
                 #{user_target} ,
             </if>
-            <if test="target_type!=null and  target_type!=''">
+            <if test="target_type!=null ">
                 #{target_type},
             </if>
             <if test="target_time!=null ">
@@ -150,16 +150,16 @@
             <if test="modified_date!=null">
                 #{modified_date},
             </if>
-            <if test="modifier!=null and  modifier!=''">
+            <if test="modifier!=null ">
                 #{modifier},
             </if>
             <if test="created_date!=null">
                 #{created_date},
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 #{creater},
             </if>
-            <if test="isactive!=null and  isactive!=''">
+            <if test="isactive!=null ">
                 #{isactive},
             </if>
         </trim>
@@ -171,7 +171,7 @@
     </delete>
 
     <select id="selectUserAchvGoalBySearch" resultMap="userAchvGoals">
-        select ua.id,
+        SELECT ua.id,
         u.user_code,
         u.user_name,
         ua.store_code,
@@ -186,7 +186,7 @@
         ua.isactive,
         s.store_name,
         c.corp_name
-        from
+        FROM
         DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c,DEF_USER u
         WHERE ua.store_code=s.store_code
         AND ua.corp_code = u.corp_code
@@ -205,15 +205,13 @@
             OR ua.user_target like concat('%',#{search_value},'%')
             OR ua.target_type like concat('%',#{search_value},'%')
             OR ua.target_time like concat('%',#{search_value},'%')
-            OR ua.MODIFIER like concat('%',#{search_value},'%')
-            OR ua.modified_date like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY ua.id DESC
     </select>
 
     <select id="selectPartUserAchvGoalBySearch" resultMap="userAchvGoals">
-        select ua.id,
+        SELECT ua.id,
         u.user_code,
         u.user_name,
         ua.store_code,
@@ -228,7 +226,7 @@
         ua.isactive,
         s.store_name,
         c.corp_name
-        from
+        FROM
         DEF_USER_ACHV_GOAL ua,
         DEF_STORE s,
         DEF_CORP c,
@@ -258,8 +256,6 @@
             OR ua.user_target like concat('%',#{search_value},'%')
             OR ua.target_type like concat('%',#{search_value},'%')
             OR ua.target_time like concat('%',#{search_value},'%')
-            OR ua.MODIFIER like concat('%',#{search_value},'%')
-            OR ua.modified_date like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY ua.id DESC
@@ -373,7 +369,5 @@
         AND duag.target_type=#{target_type}
         AND  duag.target_time=#{target_time}
         AND  duag.isactive=#{isactive}
-
-
     </select>
 </mapper>

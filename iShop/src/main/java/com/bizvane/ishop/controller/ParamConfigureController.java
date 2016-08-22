@@ -249,10 +249,9 @@ public class ParamConfigureController {
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
 
-            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
             PageInfo<ParamConfigure> list = null;
-            list = paramConfigureService.selectByParamSearch(page_number, page_size, "", search_value);
+            list = paramConfigureService.selectByParamSearch(page_number, page_size, search_value);
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

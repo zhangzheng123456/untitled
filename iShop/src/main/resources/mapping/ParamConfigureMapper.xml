@@ -6,7 +6,6 @@
         <id column="id" property="id"/>
         <result column="param_name" property="param_name"/>
         <result column="param_desc" property="param_desc"/>
-
         <result column="remark" property="remark"/>
    </resultMap>
 
@@ -72,13 +71,13 @@
     <update id="updateParam" parameterType="com.bizvane.ishop.entity.ParamConfigure">
         UPDATE DEF_CORP_CFG
         <trim prefix="SET" suffixOverrides=",">
-            <if test="param_name!=null and param_name!=''">
+            <if test="param_name!=null">
                 param_name=#{param_name},
             </if>
-            <if test="param_desc!=null and param_desc!=''">
+            <if test="param_desc!=null ">
                 param_desc=#{param_desc},
             </if>
-            <if test="remark!=null and remark!=''">
+            <if test="remark!=null">
                 remark=#{remark},
             </if>
         </trim>
@@ -90,25 +89,11 @@
         WHERE param_name=#{param_name}
 
     </select>
+
     <select id="selectParamByName" resultType="com.bizvane.ishop.entity.ParamConfigure">
         select * from DEF_CORP_CFG
         WHERE param_desc=#{param_desc}
 
-    </select>
-
-
-
-    <select id="selectByParamSearch" resultMap="ParamConfigure">
-        SELECT dcc.*
-        FROM DEF_CORP_CFG dcc
-
-        <if test="search_value != null and search_value !=''">
-            WHERE (dcc.param_name like concat('%',#{search_value},'%')
-            OR dcc.param_desc like concat('%',#{search_value},'%')
-            OR dcc.remark like concat('%',#{search_value},'%')
-            )
-        </if>
-        ORDER BY dcc.id DESC
     </select>
 
     <select id="selectParamScreen" resultMap="ParamConfigure">

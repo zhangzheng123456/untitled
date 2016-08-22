@@ -3,10 +3,10 @@
 <mapper namespace="com.bizvane.ishop.dao.TaskMapper">
     <!--据角色企业查询任务列表 role_ident为角色标识，GM和SYS分企业，其他的只查和自己相关的任务-->
     <select id="selectAllTask" resultType="com.bizvane.ishop.entity.Task">
-        SELECT * from def_task,DEF_CORP,def_task_type
-        where def_task.corp_code = DEF_CORP.corp_code
-        and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
-        and DEF_CORP.corp_code = def_task_type.corp_code
+        SELECT * FROM def_task,DEF_CORP,def_task_type
+        WHERE def_task.corp_code = DEF_CORP.corp_code
+        AND def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
+        AND DEF_CORP.corp_code = def_task_type.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>

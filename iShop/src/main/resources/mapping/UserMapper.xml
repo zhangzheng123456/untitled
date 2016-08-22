@@ -93,7 +93,6 @@
             OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
-            OR def_user.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND def_group.isactive = 'Y'
@@ -145,7 +144,6 @@
             OR def_user.store_code LIKE concat('%',#{search_value},'%')
             OR def_user.area_code LIKE concat('%',#{search_value},'%')
             OR def_group.group_name LIKE concat('%',#{search_value},'%')
-            OR def_user.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
         GROUP BY def_user.id
@@ -515,73 +513,73 @@
     <update id="updateByUserId" parameterType="com.bizvane.ishop.entity.User">
         UPDATE def_user
         <trim prefix="SET" suffixOverrides=",">
-            <if test="user_code!=null and user_code!='' ">
+            <if test="user_code!=null ">
                 user_code = #{user_code},
             </if>
-            <if test="avatar!=null and avatar!='' ">
+            <if test="avatar!=null ">
                 avatar = #{avatar},
             </if>
-            <if test="user_name!=null and user_name!='' ">
+            <if test="user_name!=null ">
                 user_name = #{user_name},
             </if>
-            <if test="sex!=null and sex!='' ">
+            <if test="sex!=null ">
                 sex = #{sex},
             </if>
-            <if test="phone!=null and phone!='' ">
+            <if test="phone!=null ">
                 phone = #{phone},
             </if>
-            <if test="email!=null and email!='' ">
+            <if test="email!=null ">
                 email = #{email},
             </if>
-            <if test="birthday!=null and birthday!='' ">
+            <if test="birthday!=null ">
                 birthday = #{birthday},
             </if>
-            <if test="position!=null and position!='' ">
+            <if test="position!=null ">
                 position = #{position},
             </if>
-            <if test="corp_code!=null and corp_code!='' ">
+            <if test="corp_code!=null ">
                 corp_code = #{corp_code},
             </if>
-            <if test="store_code!=null and store_code!='' ">
+            <if test="store_code!=null ">
                 store_code = #{store_code},
             </if>
-            <if test="group_code!=null and group_code!='' ">
+            <if test="group_code!=null ">
                 group_code = #{group_code},
             </if>
-            <if test="app_id!=null and app_id!='' ">
+            <if test="app_id!=null ">
                 app_id = #{app_id},
             </if>
-            <if test="qrcode!=null and qrcode!='' ">
+            <if test="qrcode!=null ">
                 qrcode = #{qrcode},
             </if>
-            <if test="qrcode_content!=null and qrcode_content!='' ">
+            <if test="qrcode_content!=null ">
                 qrcode_content = #{qrcode_content},
             </if>
-            <if test="password!=null and password!='' ">
+            <if test="password!=null ">
                 PASSWORD = #{password},
             </if>
-            <if test="login_time_recently!=null and login_time_recently!='' ">
+            <if test="login_time_recently!=null  ">
                 LOGIN_TIME_RECENTLY = #{login_time_recently},
             </if>
-            <if test="modified_date!=null and modified_date!='' ">
+            <if test="modified_date!=null ">
                 MODIFIED_DATE = #{modified_date},
             </if>
-            <if test="modifier!=null and modifier!='' ">
+            <if test="modifier!=null ">
                 MODIFIER = #{modifier},
             </if>
-            <if test="created_date!=null and created_date!='' ">
+            <if test="created_date!=null ">
                 CREATED_DATE = #{created_date},
             </if>
-            <if test="creater!=null and creater!='' ">
+            <if test="creater!=null ">
                 CREATER = #{creater},
             </if>
-            <if test="isactive!=null and isactive!='' ">
+            <if test="isactive!=null ">
                 ISACTIVE = #{isactive},
             </if>
-            <if test="can_login!=null and can_login!='' ">
+            <if test="can_login!=null ">
                 can_login = #{can_login},
             </if>
-            <if test="area_code!=null and area_code!='' ">
+            <if test="area_code!=null ">
                 area_code = #{area_code},
             </if>
         </trim>

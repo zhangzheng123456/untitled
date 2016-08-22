@@ -138,20 +138,12 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-    public PageInfo<ParamConfigure> selectByParamSearch(int page_number, int page_size, String param_keys, String search_value) throws Exception {
-        String[] paramArray = null;
-        if (null != param_keys && !param_keys.isEmpty()) {
-            paramArray = param_keys.split(",");
-            for (int i = 0; paramArray != null && i < paramArray.length; i++) {
-                paramArray[i] = paramArray[i].substring(1, paramArray[i].length());
-            }
-        }
-        Map<String, Object> params = new HashMap<String, Object>();
+    public PageInfo<ParamConfigure> selectByParamSearch(int page_number, int page_size ,String search_value) throws Exception {
 
-        params.put("param_keys", paramArray);
+        Map<String, Object> params = new HashMap<String, Object>();
         params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
-        List<ParamConfigure> paramConfigures = paramConfigureMapper.selectByParamSearch(params);
+        List<ParamConfigure> paramConfigures = paramConfigureMapper.selectAllParam(search_value);
         PageInfo<ParamConfigure> page = new PageInfo<ParamConfigure>(paramConfigures);
         return page;
     }

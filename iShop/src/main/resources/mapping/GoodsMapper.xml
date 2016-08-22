@@ -60,9 +60,6 @@
             OR g.goods_time LIKE concat('%',#{search_value},'%')
             OR g.goods_quarter LIKE concat('%',#{search_value},'%')
             OR g.goods_wave LIKE concat('%',#{search_value},'%')
-            OR g.modified_date LIKE concat('%',#{search_value},'%')
-            OR g.modifier LIKE concat('%',#{search_value},'%')
-            OR g.isactive LIKE concat('%',#{search_value},'%')
             OR g.goods_description LIKE concat('%',#{search_value},'%')
             OR cp.corp_name LIKE concat('%',#{search_value},'%')
             OR db.brand_name like concat('%',#{search_value},'%')
@@ -71,6 +68,31 @@
         <if test="isactive!=null and isactive!=''">
             AND g.isactive=#{isactive}
         </if>
+        ORDER BY g.id DESC
+    </select>
+
+    <select id="selectMatchGoods" resultMap="GoodsInfo">
+        SELECT g.id
+        ,g.goods_code
+        ,g.goods_name
+        ,g.goods_image
+        ,g.goods_quarter
+        ,g.goods_wave
+        ,g.match_goods
+        ,g.goods_description
+        ,g.corp_code
+        ,cp.corp_name
+        ,db.brand_name
+        FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
+        WHERE g.corp_code=cp.corp_code AND g.corp_code=db.corp_code AND g.brand_code=db.brand_code
+            AND g.corp_code=#{corp_code}
+        <if test="search_value!=null and search_value!=''">
+            AND
+            (g.goods_code LIKE concat('%',#{search_value},'%')
+            OR g.goods_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+            AND g.isactive=#{isactive}
         ORDER BY g.id DESC
     </select>
 

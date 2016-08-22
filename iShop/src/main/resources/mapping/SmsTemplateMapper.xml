@@ -35,7 +35,7 @@
     </resultMap>
     -->
     <select id="selectBySearch" resultMap="MessageTemplates">
-        select
+        SELECT
         dmt.id,
         dmt.template_code,
         dmt.template_name,
@@ -47,29 +47,26 @@
         dmt.created_date,
         dmt.creater,
         dc.corp_name
-        from def_sms_template dmt,DEF_CORP dc
+        FROM def_sms_template dmt,DEF_CORP dc
         WHERE dmt.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            and dmt.corp_code=#{corp_code}
+            AND dmt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
             (
-            dmt.template_code like concat('%',#{search_value},'%')
-            or dmt.template_name like concat('%',#{search_value},'%')
-            or dmt.template_content like concat('%',#{search_value},'%')
-            or dc.corp_name like concat('%',#{search_value},'%')
-            or dmt.modifier like concat('%',#{search_value},'%')
-            or dmt.modified_date like concat('%',#{search_value},'%')
-            or dmt.isactive like concat('%',#{search_value},'%')
+            dmt.template_code LIKE concat('%',#{search_value},'%')
+            OR dmt.template_name LIKE concat('%',#{search_value},'%')
+            OR dmt.template_content LIKE concat('%',#{search_value},'%')
+            OR dc.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER by dmt.id DESC
+        ORDER BY dmt.id DESC
 
     </select>
 
     <select id="selectByPrimaryKey" resultMap="MessageTemplates">
-        select
+        SELECT
         dmt.id,
         dmt.template_code,
         dmt.template_name,
@@ -81,100 +78,101 @@
         dmt.created_date,
         dmt.creater,
         dc.corp_name
-        from def_sms_template dmt,DEF_CORP dc
-        WHERE dmt.corp_code=dc.corp_code  and dmt.id=#{id}
-           </select>
+        FROM def_sms_template dmt,DEF_CORP dc
+        WHERE dmt.corp_code=dc.corp_code
+        AND dmt.id=#{id}
+     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.SmsTemplate">
-        insert into def_sms_template
+        INSERT INTO def_sms_template
         <trim prefix="(" suffixOverrides="," suffix=")">
-            <if test="template_code!=null and template_code!=''">
+            <if test="template_code!=null">
                 template_code,
             </if>
-            <if test="template_name!=null  and template_name!=''">
+            <if test="template_name!=null">
                 template_name ,
             </if>
-            <if test="template_content!=null and template_content!=''">
+            <if test="template_content!=null ">
                 template_content ,
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive ,
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code ,
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date,
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 modifier ,
             </if>
-            <if test="created_date!=null and  created_date!=''">
+            <if test="created_date!=null ">
                 created_date ,
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 creater ,
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="template_code!=null and template_code!=''">
+            <if test="template_code!=null ">
                 #{template_code},
             </if>
-            <if test="template_name!=null  and template_name!=''">
+            <if test="template_name!=null ">
                 #{template_name },
             </if>
-            <if test="template_content!=null and template_content!=''">
+            <if test="template_content!=null ">
                 #{template_content},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 #{isactive} ,
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 #{corp_code} ,
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 #{modified_date},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 #{modifier} ,
             </if>
-            <if test="created_date!=null and  created_date!=''">
+            <if test="created_date!=null ">
                 #{created_date} ,
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 #{creater} ,
             </if>
         </trim>
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.SmsTemplate">
-        update def_sms_template
+        UPDATE def_sms_template
         <trim prefix="set" suffixOverrides=",">
-            <if test="template_code!=null and template_code!=''">
+            <if test="template_code!=null ">
                 template_code=#{template_code},
             </if>
-            <if test="template_name!=null  and template_name!=''">
+            <if test="template_name!=null ">
                 template_name=#{template_name},
             </if>
-            <if test="template_content!=null and template_content!=''">
+            <if test="template_content!=null ">
                 template_content=#{template_content},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive=#{isactive} ,
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code=#{corp_code} ,
             </if>
-            <if test="modified_date!=null and modified_date!=''">
+            <if test="modified_date!=null ">
                 modified_date=#{modified_date},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 modifier=#{modifier} ,
             </if>
-            <if test="created_date!=null and  created_date!=''">
+            <if test="created_date!=null ">
                 created_date=#{created_date} ,
             </if>
-            <if test="creater!=null and  creater!=''">
+            <if test="creater!=null ">
                 creater=#{creater} ,
             </if>
         </trim>
@@ -182,7 +180,7 @@
     </update>
 
     <delete id="deleteByPrimaryKey">
-        delete FROM  def_sms_template WHERE id=#{id}
+        DELETE FROM  def_sms_template WHERE id=#{id}
     </delete>
 
     <select id="selectByName" resultType="com.bizvane.ishop.entity.SmsTemplate">
@@ -224,7 +222,7 @@
                 </when>
                 <when test="entryValue!='' and entryValue!=''">
                     dmt.${entryKey} LIKE concat('%',#{entryValue},'%')
-               </when>
+                </when>
                 <otherwise>
                     1=1
                 </otherwise>

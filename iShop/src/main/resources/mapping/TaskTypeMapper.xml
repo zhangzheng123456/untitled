@@ -16,7 +16,7 @@
     <!--</resultMap>-->
 
     <select id="selectById" resultType="com.bizvane.ishop.entity.TaskType">
-        select
+        SELECT
         def_task_type.id,
         task_type_code,
         task_type_name,
@@ -27,27 +27,27 @@
         def_task_type.creater,
         def_task_type.isactive,
         DEF_CORP.CORP_NAME
-        from def_task_type,DEF_CORP
-        where def_task_type.CORP_CODE = DEF_CORP.CORP_CODE
-        and  def_task_type.ID=#{id}
+        FROM def_task_type,DEF_CORP
+        WHERE def_task_type.CORP_CODE = DEF_CORP.CORP_CODE
+        AND  def_task_type.ID=#{id}
     </select>
 
     <select id="selectByCode" resultType="com.bizvane.ishop.entity.TaskType">
-        select *
-        from def_task_type
-        where CORP_CODE = #{corp_code}
+        SELECT *
+        FROM def_task_type
+        WHERE CORP_CODE = #{corp_code}
         AND task_type_code = #{task_type_code}
     </select>
 
     <select id="selectByName" resultType="com.bizvane.ishop.entity.TaskType">
-        select *
-        from def_task_type
-        where CORP_CODE = #{corp_code}
+        SELECT *
+        FROM def_task_type
+        WHERE CORP_CODE = #{corp_code}
         AND task_type_name = #{task_type_name}
     </select>
 
     <select id="selectAllTaskType" resultType="com.bizvane.ishop.entity.TaskType">
-        select
+        SELECT
         def_task_type.id,
         task_type_code,
         task_type_name,
@@ -55,36 +55,33 @@
         def_task_type.modified_date,
         def_task_type.modifier,
         def_task_type.isactive,
-        DEF_CORP.CORP_NAME
-        from def_task_type,DEF_CORP
-        where def_task_type.CORP_CODE = DEF_CORP.CORP_CODE
+        def_corp.corp_name
+        FROM def_task_type,def_corp
+        WHERE def_task_type.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND def_task_type.CORP_CODE = #{corp_code}
+            AND def_task_type.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (task_type_code like concat('%',#{search_value},'%')
-            OR task_type_name like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR def_task_type.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR def_task_type.MODIFIER like concat('%',#{search_value},'%')
-            OR def_task_type.ISACTIVE like concat('%',#{search_value},'%')
+            (task_type_code LIKE concat('%',#{search_value},'%')
+            OR task_type_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         <if test="isactive != null and isactive !=''">
-            AND def_task_type.ISACTIVE = #{isactive}
+            AND def_task_type.isactive = #{isactive}
         </if>
         ORDER BY def_task_type.id DESC
     </select>
 
     <delete id="deleteById">
-        delete from
+        DELETE FROM
         def_task_type
-        where ID=#{id}
+        WHERE ID=#{id}
     </delete>
 
     <insert id="insertTaskType" parameterType="com.bizvane.ishop.entity.TaskType">
-        insert into def_task_type
+        INSERT INTO def_task_type
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="task_type_code!=null">
                 task_type_code,
@@ -142,28 +139,28 @@
     <update id="updateTaskType" parameterType="com.bizvane.ishop.entity.TaskType">
         UPDATE def_task_type
         <trim prefix="SET" suffixOverrides=",">
-            <if test="task_type_code!=null and task_type_code!=''">
+            <if test="task_type_code!=null ">
                 task_type_code=#{task_type_code},
             </if>
-            <if test="task_type_name!=null and task_type_name!=''">
+            <if test="task_type_name!=null ">
                 task_type_name=#{task_type_name},
             </if>
-            <if test="corp_code!=null and corp_code!=''">
+            <if test="corp_code!=null ">
                 corp_code=#{corp_code},
             </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
-            <if test="modifier!=null and modifier!=''">
+            <if test="modifier!=null ">
                 modifier=#{modifier},
             </if>
             <if test="created_date!=null">
                 created_date=#{created_date},
             </if>
-            <if test="creater!=null and creater!=''">
+            <if test="creater!=null ">
                 creater=#{creater},
             </if>
-            <if test="isactive!=null and isactive!=''">
+            <if test="isactive!=null ">
                 isactive=#{isactive},
             </if>
         </trim>
@@ -171,11 +168,11 @@
     </update>
 
     <select id="selectAllTaskTypeScreen" resultType="com.bizvane.ishop.entity.TaskType">
-        select
+        SELECT
         dt.*,
         dc.CORP_NAME
-        from def_task_type dt,DEF_CORP dc
-        where dt.CORP_CODE = dc.CORP_CODE
+        FROM def_task_type dt,DEF_CORP dc
+        WHERE dt.CORP_CODE = dc.CORP_CODE
         <if test="corp_code != null and corp_code !=''">
             AND dt.CORP_CODE = #{corp_code}
         </if>
