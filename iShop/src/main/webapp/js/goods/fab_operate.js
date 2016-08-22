@@ -54,7 +54,7 @@ var oc = new ObjectControl();
 		$(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
 			if(fabjs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
-				var GOODS_CODE=$("#GOODS_CODE").val();//商品编号
+				var GOODS_CODE=$("#GOODS_CODE").val().trim();//商品编号
 				var GOODS_NAME=$("#GOODS_NAME").val();//商品名称
 				var GOODS_PRICE=$("#GOODS_PRICE").val();//商品价格
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();//季度
@@ -142,13 +142,13 @@ var oc = new ObjectControl();
 			if(fabjs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
-				var GOODS_CODE=$("#GOODS_CODE").val();
+				var GOODS_CODE=$("#GOODS_CODE").val().trim();
 				var GOODS_NAME=$("#GOODS_NAME").val();
 				var GOODS_PRICE=$("#GOODS_PRICE").val();
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
-				var GOODS_BUYPOINT=$("#GOODS_BUYPOINT").val();
+				var GOODS_BUYPOINT=$("#edit div p").html();
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -341,7 +341,7 @@ jQuery(document).ready(function(){
 				$("#GOODS_QUARTER").val(msg.goods_quarter);
 				$("#GOODS_BAND").val(msg.goods_wave);
 				$("#GOODS_RELEASETIME").val(msg.goods_time);
-				$("#GOODS_BUYPOINT").val(msg.goods_description);
+				$("#edit div p").html(msg.goods_description);
 				var list=msg.matchgoods;
 				console.log(list);
 				for(var i=0;i<list.length;i++){
