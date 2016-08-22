@@ -57,7 +57,14 @@
             AND isactive = #{isactive}
         </if>
     </select>
-
+    <select id="selStoreByStroeId" resultType="com.bizvane.ishop.entity.Store">
+        SELECT * FROM DEF_STORE
+        where CORP_CODE = #{corp_code}
+        AND STORE_ID = #{store_id}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
+    </select>
     <select id="selectAllStore" resultMap="Store">
         SELECT
         def_store.id,
@@ -319,6 +326,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="store_id!=null">
+                store_id,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="store_code!=null">
@@ -359,6 +369,9 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="store_id!=null">
+                #{store_id},
             </if>
         </trim>
     </insert>

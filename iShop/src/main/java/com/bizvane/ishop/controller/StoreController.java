@@ -1031,6 +1031,11 @@ public class StoreController {
                 result = "：Execl中店铺名称存在重复值";
                 int b = 5 / 0;
             }
+            String onlyCell8 = LuploadHelper.CheckOnly(rs.getColumn(7));
+            if(onlyCell8.equals("存在重复值")){
+                result = "：Execl中店铺ID存在重复值";
+                int b = 5 / 0;
+            }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column[i].getContents().toString(), Common.IS_ACTIVE_Y);
@@ -1071,6 +1076,7 @@ public class StoreController {
             }
           //  Pattern pattern7 = Pattern.compile("A\\d{4}");
             Cell[] column7 = rs.getColumn(3);
+            Cell[] column8 = rs.getColumn(7);
             for (int i = 3; i < column7.length; i++) {
 //                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
 //                if (matcher.matches() == false) {
@@ -1081,6 +1087,12 @@ public class StoreController {
                 Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (area == null) {
                     result = "：第" + (i + 1) + "行区域编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+                Store store=storeService.selStoreByStroeId(column3[i].getContents().toString(),column8[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                if(store!=null){
+                    result = "：第" + (i + 1) + "行店铺ID已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -1108,6 +1120,7 @@ public class StoreController {
                     } else {
                         store.setIsactive("Y");
                     }
+                    store.setStore_id(rs.getCell(j++, i).getContents());
                     Date now = new Date();
                     store.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     store.setCreater(user_id);

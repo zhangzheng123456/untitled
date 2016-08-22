@@ -202,6 +202,11 @@ public class StoreServiceImpl implements StoreService {
         return store;
     }
 
+    @Override
+    public Store selStoreByStroeId(String corp_code, String store_id, String isactive) throws Exception {
+        return storeMapper.selStoreByStroeId(corp_code,store_id,isactive);
+    }
+
     //新增店铺
     @Override
     public String insert(String message, String user_id) throws Exception {

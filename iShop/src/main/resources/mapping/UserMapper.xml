@@ -257,7 +257,15 @@
             AND isactive = #{isactive}
         </if>
     </select>
-
+    <select id="selUserByUserId" resultType="com.bizvane.ishop.entity.User">
+        SELECT *
+        FROM def_user
+        WHERE user_id = #{user_id}
+        AND corp_code = #{corp_code}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
+    </select>
     <select id="userEmailExist" resultType="com.bizvane.ishop.entity.User">
         SELECT * FROM def_user
         WHERE email = #{email}
@@ -427,6 +435,9 @@
             <if test="area_code != null">
                 area_code,
             </if>
+            <if test="user_id != null">
+                user_id,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="user_code!=null">
@@ -494,6 +505,9 @@
             </if>
             <if test="area_code != null">
                 #{area_code},
+            </if>
+            <if test="user_id != null">
+                #{user_id},
             </if>
         </trim>
     </insert>

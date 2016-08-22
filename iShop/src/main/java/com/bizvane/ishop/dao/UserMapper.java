@@ -17,11 +17,15 @@ public interface UserMapper {
 
     List<User> selectByPhone(String phone) throws SQLException;
 
+
+
     List<User> selectLogin(String phone, String password) throws SQLException;
 
     List<User> userEmailExist(@Param("email") String email) throws SQLException;
 
     List<User> selectUserCode(@Param("user_code")String user_code, @Param("corp_code")String corp_code, @Param("isactive")String isactive) throws SQLException;
+
+    List<User> selUserByUserId(@Param("user_id")String user_id, @Param("corp_code")String corp_code, @Param("isactive")String isactive) throws SQLException;
 
     List<User> selectGroupUser(@Param("corp_code") String corp_code, @Param("group_code") String group_code, @Param("search_value") String search_value) throws SQLException;
 

@@ -49,6 +49,7 @@ public interface UserService {
 
     List<User> userCodeExist(String user_code, String corp_code,String isactive) throws Exception;
 
+    List<User> selUserByUserId(String user_id, String corp_code,String isactive) throws Exception;
     String register(String message) throws Exception;
 
     String getAuthCode(String phone, String platform)throws Exception;
