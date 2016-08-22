@@ -21,8 +21,6 @@ public interface ParamConfigureMapper {
     ParamConfigure selectParamByKey(@Param("param_name") String param_name) throws SQLException;
     ParamConfigure selectParamByName(@Param("param_desc") String param_desc) throws SQLException;
 
-    List<ParamConfigure> selectByParamSearch(Map<String, Object> params) throws SQLException;
-
     List<ParamConfigure> selectParamScreen(Map<String, Object> params) throws SQLException;
 
 }

@@ -96,21 +96,6 @@
 
     </select>
 
-
-
-    <select id="selectByParamSearch" resultMap="ParamConfigure">
-        SELECT dcc.*
-        FROM DEF_CORP_CFG dcc
-
-        <if test="search_value != null and search_value !=''">
-            WHERE (dcc.param_name like concat('%',#{search_value},'%')
-            OR dcc.param_desc like concat('%',#{search_value},'%')
-            OR dcc.remark like concat('%',#{search_value},'%')
-            )
-        </if>
-        ORDER BY dcc.id DESC
-    </select>
-
     <select id="selectParamScreen" resultMap="ParamConfigure">
         SELECT
         dcc.param_name,
