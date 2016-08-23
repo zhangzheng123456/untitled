@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.github.pagehelper.PageInfo;
@@ -71,4 +72,10 @@ public interface StoreService {
     String insertExecl(Store store) throws Exception;
 
     PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map) throws Exception;
+
+     List<Store> selectAllStores(String corp_code, String search_value) throws Exception;
+
+     JSONArray selectStoresByAreaCode(String corp_code,String search_value) throws Exception;
+
+
 }

@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -334,4 +335,18 @@ public class AreaServiceImpl implements AreaService {
 
         return areas;
     }
+
+    @Override
+    public  PageInfo<Store> getAllStoresByCorpCode( int page_number, int page_size, String corp_code, String search_value) throws Exception{
+
+        List<Store> stores;
+        PageHelper.startPage(page_number, page_size);
+      stores = storeMapper.selectAllStoresByCorpCode(corp_code, search_value);
+        PageInfo<Store> page = new PageInfo<Store>(stores);
+        return page;
+
+
+    }
+
+
 }

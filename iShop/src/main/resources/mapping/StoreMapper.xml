@@ -513,4 +513,31 @@
         AND
         #{brand_code} LIKE brand_code
     </select>
+    <select id="selectAllStoresByCorpCode" resultMap="Store">
+        SELECT
+        def_store.id,
+        store_code,
+        store_name,
+        flg_tob,
+        def_store.area_code,
+        def_store.brand_code,
+        def_store.corp_code,
+        def_store.modified_date,
+        def_store.modifier,
+        def_store.isactive,
+        def_corp.corp_name
+        FROM def_store,def_corp
+        WHERE def_store.corp_code = def_corp.corp_code
+            AND def_store.corp_code = #{corp_code}
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_store.store_code LIKE concat('%',#{search_value},'%')
+            OR def_store.store_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            OR def_store.area_code LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        AND def_corp.isactive = 'Y'
+        ORDER BY def_store.id DESC
+    </select>
 </mapper>
