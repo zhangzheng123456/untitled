@@ -563,7 +563,9 @@ function getmatchgoodsList() {
 	var param={};
 	var corp_code=$("#OWN_CORP").val();
 	var searchValue=$("#search").val();
+	var goods_code=$("#GOODS_CODE").val();
 	param["corp_code"]=corp_code;
+	param["goods_code"]=goods_code;
 	param["searchValue"]=searchValue;
 	oc.postRequire("post", "/goods/corp_fab", "",param, function(data){
 		console.log(data);

@@ -1,55 +1,18 @@
 var oc = new ObjectControl();
 var inx = 1;//默认是第一页
 var pageSize = "10";
+var cout = "";
 var value = "";//收索的关键词
 var param = {};//定义的对象
-var user_id = sessionStorage.getItem("id");//用户id
 var area_code = "";//区域编号
 var area_name = "";//区域名称
 var corp_code = ""//企业编号
-var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
-return_jump=JSON.parse(return_jump);
-if(return_jump!==null){
-    console.log(return_jump);
-    inx=return_jump.inx;
-    pageSize=return_jump.pageSize;
-    value=return_jump.value;
-    filtrate=return_jump.filtrate;
-    list=return_jump.list;
-    param=JSON.parse(return_jump.param);
-    _param=JSON.parse(return_jump._param);
-}
-if(return_jump==null){
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }
-}else if(return_jump!==null){
-    if(pageSize==10){
-        $("#page_row").val("10行/页");
-    }
-    if(pageSize==30){
-        $("#page_row").val("30行/页");
-    }
-    if(pageSize==50){
-        $("#page_row").val("50行/页");
-    }
-    if(pageSize==100){
-        $("#page_row").val("100行/页");
-    }
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }else if(value!==""){
-        $("#search").val(value);
-        POST(inx,pageSize);
-    }else if(filtrate!==""){
-        filtrates(inx,pageSize);
-    }
-}
-function setPage(container, count, pageindex,pageSize,funcCode){
+
+function setPage(container, count, pageindex, pageSize) {
     var container = container;
     var count = count;
     var pageindex = pageindex;
-    var pageSize=pageSize;
+    var pageSize = pageSize;
     var a = [];
     //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
@@ -64,6 +27,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
             a[a.length] = "<li><span>" + i + "</span></li>";
         }
     }
+
     //总页数小于10
     if (count <= 10) {
         for (var i = 1; i <= count; i++) {
@@ -77,7 +41,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
                 setPageList();
             }
             a[a.length] = "...<li><span>" + count + "</span></li>";
-        }else if (pageindex >= count - 3) {
+        } else if (pageindex >= count - 3) {
             a[a.length] = "<li><span>1</span></li>...";
             for (var i = count - 4; i <= count; i++) {
                 setPageList();
@@ -93,95 +57,105 @@ function setPage(container, count, pageindex,pageSize,funcCode){
     }
     if (pageindex == count) {
         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
-    }else{
+    } else {
         a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
     }
     container.innerHTML = a.join("");
-    var pageClick = function() {
+    var pageClick = function () {
         var oAlink = container.getElementsByTagName("span");
         inx = pageindex; //初始的页码
         $("#input-txt").val(inx);
-        $(".foot-sum .zy").html("共 "+count+"页");
-        oAlink[0].onclick = function() { //点击上一页
+        $(".foot-sum .zy").html("共 " + count + "页");
+        oAlink[0].onclick = function () { //点击上一页
             if (inx == 1) {
                 return false;
             }
             inx--;
-            dian(inx,pageSize);
+            dian(inx, pageSize);
             // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
-            oAlink[i].onclick = function() {
+            oAlink[i].onclick = function () {
                 inx = parseInt(this.innerHTML);
-                dian(inx,pageSize);
+                dian(inx, pageSize);
                 // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
         }
-        oAlink[oAlink.length - 1].onclick = function() { //点击下一页
+        oAlink[oAlink.length - 1].onclick = function () { //点击下一页
             if (inx == count) {
                 return false;
             }
             inx++;
-            dian(inx,pageSize);
+            dian(inx, pageSize);
             // setPage(container, count, inx,pageSize,funcCode,value);
             return false;
         }
     }()
 }
-function dian(a,b){//点击分页的时候调什么接口
-    if (value==""&&filtrate=="") {
-        GET(a,b);
-    }else if (value!==""){
+function dian(a, b) {//点击分页的时候调什么接口
+    if (value == "") {
+        GET(a, b);
+    } else if (value !== "") {
         param["pageNumber"] = a;
         param["pageSize"] = b;
-        POST(a,b);
-    }else if (filtrate!=="") {
-        _param["pageNumber"] = a;
-        _param["pageSize"] = b;
-        filtrates(a,b);
+        POST(a, b);
     }
 }
 //模仿select
-$(function(){
-        $("#page_row").click(function(){
-            if("block" == $("#liebiao").css("display")){
+$(function () {
+        $("#page_row").click(function () {
+            if ("block" == $("#liebiao").css("display")) {
                 hideLi();
-            }else{
+            } else {
                 showLi();
             }
         });
-        $("#liebiao li").each(function(i,v){
-            $(this).click(function(){
-                pageSize=$(this).attr('id');
-                if(value==""&&filtrate==""){
-                    inx=1;
-                    GET(inx,pageSize);
-                }else if(value!==""){
-                    inx=1;
-                    param["pageSize"]=pageSize;
-                    param["pageNumber"]=inx;
-                    POST(inx,pageSize);
-                }else if(filtrate!==""){
-                    inx=1;
-                    _param["pageNumber"]=inx;
-                    _param["pageSize"]=pageSize;
-                    filtrates(inx,pageSize);
+        $("#liebiao li").each(function (i, v) {
+            $(this).click(function () {
+                pageSize = $(this).attr('id');
+                if (value == "") {
+                    inx = 1;
+                    GET(inx, pageSize);
+                } else if (value !== "") {
+                    inx = 1;
+                    param["pageSize"] = pageSize;
+                    param["pageNumber"] = inx;
+                    POST(inx, pageSize);
                 }
                 $("#page_row").val($(this).html());
                 hideLi();
             });
         });
-        $("#page_row").blur(function(){
-            setTimeout(hideLi,200);
+        $("#page_row").blur(function () {
+            setTimeout(hideLi, 200);
         });
     }
 );
-function showLi(){
+//跳转页面的键盘按下事件
+$("#input-txt").keydown(function() {
+    var event=window.event||arguments[0];
+    var inx= this.value.replace(/[^0-9]/g, '');
+    var inx=parseInt(inx);
+    if (inx > cout) {
+        inx = cout
+    };
+    if (inx > 0) {
+        if (event.keyCode == 13) {
+            if (value == "") {
+                GET(inx, pageSize);
+            } else if (value !== "") {
+                param["pageSize"] = pageSize;
+                POST(inx, pageSize);
+            }
+        };
+    }
+})
+function showLi() {
     $("#liebiao").show();
 }
-function hideLi(){
+function hideLi() {
     $("#liebiao").hide();
 }
 $("#edit_shop_icon").click(function () {
@@ -191,26 +165,20 @@ $("#edit_shop_icon").click(function () {
     $('#areaName').val(area_name);
     $("#page-wrapper").hide();
     $(".content").show();
-    GET();
+    GET(inx,pageSize);
 })
 $('#turnoff').click(function () {
     $("#page-wrapper").show();
     $(".content").hide();
 })
-$("#filtrate").click(function () {//点击筛选框弹出下拉框
-    $(".sxk").slideToggle();
-})
-$("#pack_up").click(function () {//点击收回 取消下拉框
-    $(".sxk").slideUp();
-})
-//点击清空  清空input的value值
-$("#empty").click(function () {
-    var input = $(".inputs input");
-    for (var i = 0; i < input.length; i++) {
-        input[i].value = "";
-    }
-})
-function superaddition(data, num, die, live) {
+//加载完成以后页面进行的操作
+function jumpBianse() {
+    $(document).ready(function () {//隔行变色
+        $(".table tbody tr:odd").css("backgroundColor", "#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor", "#f4f4f4");
+    })
+}
+function superaddition(data, num) {
     for (var i = 0; i < data.length; i++) {
         if (num >= 2) {
             var a = i + num * pageSize;
@@ -234,20 +202,20 @@ function superaddition(data, num, die, live) {
             + 1
             + "'></label></div></td></tr>");
     }
-    for (var j = 0; j < die.length; j++) {
-        if ($("#" + die[j].id).find("input").length > 0) {
-            $("#" + die[j].id).find("input").parent("div").attr("class", "checkbox2");
-            $("#" + die[j].id).find("input")[0].checked = true;
-            $("#" + die[j].id).find("input").attr("disabled", "true");
-            $("#" + die[j].id).find("input").attr("name", "die");
+    for (var j = 0; j < data.length; j++) {
+        if ($("#" + data[j].is_this_area) == "Y") {
+            $("#" + data[j].is_this_area).find("input").parent("div").attr("class", "checkbox2");
+            $("#" + data[j].is_this_area).find("input")[0].checked = true;
+            $("#" + data[j].is_this_area).find("input").attr("disabled", "true");
+            $("#" + data[j].is_this_area).find("input").attr("name", "die");
         }
     }
 };
 //页面加载时list请求
-function GET() {
-    corp_code=$("#OWN_CORP").val();
-    param["pageNumber"] = inx;
-    param["pageSize"] = pageSize;
+function GET(a, b) {
+    corp_code = $("#OWN_CORP").val();
+    param["pageNumber"] = a;
+    param["pageSize"] = b;
     param["area_code"] = area_code;
     param["corp_code"] = corp_code;
     param["searchValue"] = value;
@@ -256,37 +224,28 @@ function GET() {
         if (data.code == "0") {
             $(".table tbody").empty();
             var message = JSON.parse(data.message);
-            var die = message.die;
-            var live = message.live;
             var list = JSON.parse(message.list);
-                list=list.list;
+            cout = list.pages;
+            var is_this_area = list.is_this_area;
+            list = list.list;
             console.log(list);
-            console.log(die)
             var actions = message.actions;
-            superaddition(list, inx, die, live);
+            superaddition(list, inx);
             // jurisdiction(actions);
             jumpBianse();
+            setPage($("#foot-num")[0], cout, a, b);
         } else if (data.code == "-1") {
             alert(data.message);
         }
     });
-}
-//加载完成以后页面进行的操作
-function jumpBianse() {
-    $(document).ready(function () {//隔行变色
-        $(".table tbody tr:odd").css("backgroundColor", "#e8e8e8");
-        $(".table tbody tr:even").css("backgroundColor", "#f4f4f4");
-    })
 }
 //鼠标按下时触发的收索
 $("#search").keydown(function () {
     var event = window.event || arguments[0];
     value = this.value.replace(/\s+/g, "");
     param["searchValue"] = value;
-    param["group_code"] = group_code;
-    param["user_id"] = user_id;
     if (event.keyCode == 13) {
-        POST();
+        POST(inx,pageSize);
     }
 });
 //点击放大镜触发搜索
@@ -295,19 +254,23 @@ $("#d_search").click(function () {
     param["searchValue"] = value;
     param["pageNumber"] = inx;
     param["pageSize"] = pageSize;
-    param["funcCode"] = funcCode;
-    POST();
+    POST(inx,pageSize);
 })
 //搜索的请求函数
-function POST() {
-    oc.postRequire("post", "/user/check_power", "0", param, function (data) {
+function POST(a,b) {
+    corp_code = $("#OWN_CORP").val();
+    param["pageNumber"] = a;
+    param["pageSize"] = b;
+    param["area_code"] = area_code;
+    param["corp_code"] = corp_code;
+    param["searchValue"] = value;
+    oc.postRequire("post", "/area/stores/check", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
-            var die = message.die;
-            var live = message.live;
             var list = JSON.parse(message.list);
+            cout = list.pages;
+            list = list.list;
             console.log(list);
-            console.log(die)
             var actions = message.actions;
             $(".table tbody").empty();
             if (list.length <= 0) {
@@ -315,8 +278,9 @@ function POST() {
                 $(".table").append("<p>没有找到与<span class='color'>“" + value + "”</span>相关的信息，请重新搜索</p>");
             } else if (list.length > 0) {
                 $(".table p").remove();
-                superaddition(list, inx, die, live);
+                superaddition(list, inx);
                 jumpBianse();
+                setPage($("#foot-num")[0], cout, a, b);
             }
         } else if (data.code == "-1") {
             alert(data.message);
@@ -360,18 +324,18 @@ function clearAll(name) {
 //保存调的接口
 $('#save').click(function () {
     var param = {};
-    param["group_code"] = user_code;
-    param["corp_code"] = corp_code;
-    var tr = $("tbody input[name='test'][type='checkbox']:checked").parents('tr');
-    var list = [];
-    for (var i = 0; i < tr.length; i++) {
-        var action_code = $(tr[i]).attr("data-action");
-        var function_code = $(tr[i]).attr("data-function");
-        var param1 = {"function_code": function_code, "action_code": action_code};
-        list.push(param1);
+    var tr = $("tbody input[name='test'][type='checkbox']:checked").parent('div');
+    for(var i=0,ID="";i<tr.length;i++){
+        var r=$(tr[i]).attr("id");
+        if(i<tr.length-1){
+            ID+=r+",";
+        }else{
+            ID+=r;
+        }
     }
-    param["list"] = list;
-    oc.postRequire("post", "/user/check_power/save", "0", param, function (data) {
+    param["id"] =ID;
+    param["area_code"] = area_code;
+    oc.postRequire("post", "/area/stores/save", "0", param, function (data) {
         console.log(data);
         if (data.code == "0") {
             $("#page-wrapper").show();
