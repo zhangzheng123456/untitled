@@ -765,11 +765,9 @@ public class AreaController {
             String area_code = jsonObject.get("area_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             PageInfo<Store> list;
-            list=areaService.getAllStoresByCorpCode( page_number, page_size, corp_code, search_value);
-            JSONArray storeList=storeService.selectStoresByAreaCode(corp_code, area_code);
+            list=areaService.getAllStoresByCorpCode( page_number, page_size, corp_code, search_value,area_code);
             JSONObject result = new JSONObject();
-            result.put("list", list);
-            result.put("die",storeList );
+            result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

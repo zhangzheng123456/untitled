@@ -96,8 +96,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods> selectBySearch(String corp_code, String search_value) throws Exception{
-        List<Goods> list = goodsMapper.selectMatchGoods(corp_code, search_value,Common.IS_ACTIVE_Y);
+    public List<Goods> selectBySearch(String corp_code, String search_value,String goods_code) throws Exception{
+        List<Goods> list = goodsMapper.selectMatchGoods(corp_code, search_value,goods_code,Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
             transter(list.get(i));
             String goods_image = list.get(i).getGoods_image();
