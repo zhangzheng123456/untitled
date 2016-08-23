@@ -750,7 +750,6 @@ public class AreaController {
     public String checkStores(HttpServletRequest request)throws Exception {
         DataBean dataBean = new DataBean();
         try {
-            String user_id = request.getSession().getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
             logger.info("json-----stores/check----------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
@@ -763,7 +762,7 @@ public class AreaController {
             if (jsonObject.has("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
-            String area_code = jsonObject.get("corp_code").toString();
+            String area_code = jsonObject.get("area_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             PageInfo<Store> list;
             list=areaService.getAllStoresByCorpCode( page_number, page_size, corp_code, search_value);
