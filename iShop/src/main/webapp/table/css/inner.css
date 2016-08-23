@@ -691,7 +691,7 @@ input::-webkit-input-placeholder{
 }
 .file{
 	width:570px;
-	background: #f4f4f4; 
+	background: #fff; 
 	overflow: hidden;
 	display:none;
 	position: absolute;

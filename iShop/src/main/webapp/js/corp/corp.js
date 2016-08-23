@@ -555,6 +555,8 @@ $("#leading_out").click(function(){
                  $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            bianse();
+            $("#file_list_r ul").empty();
             whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
@@ -584,7 +586,8 @@ $(function(){
         else{
             for(var i=li.length;i>=0;i--){
                $(li[i]).appendTo('#file_list_r ul'); 
-            }    
+            }
+            bianse();
         }   
     });
     //移到左边
@@ -598,26 +601,34 @@ $(function(){
         else{
             for(var i=li.length;i>=0;i--){
                $(li[i]).appendTo('#file_list_l ul'); 
-            }    
+            }
+            bianse();
         }
     });
-    
     //全部移到右边
     $('#left_shift_all').click(function(){
         //获取全部的选项,删除并追加给对方
         var li=$("#file_list_l input[type='checkbox']").parents("li");
         for(var i=li.length;i>=0;i--){
             $(li[i]).appendTo('#file_list_r ul'); 
-        }    
+        }
+        bianse();
     });
     //全部移到左边
     $('#right_shift_all').click(function(){
         var li=$("#file_list_r input[type='checkbox']").parents("li");
         for(var i=li.length;i>=0;i--){
             $(li[i]).appendTo('#file_list_l ul'); 
-        }  
+        }
+        bianse();
     });
 });
+function bianse(){
+    $("#file_list_l li:odd").css("backgroundColor","#fff");
+    $("#file_list_l li:even").css("backgroundColor","#ededed");
+    $("#file_list_r li:odd").css("backgroundColor","#fff");
+    $("#file_list_r li:even").css("backgroundColor","#ededed");
+}
 //导出提交的
 $("#file_submit").click(function(){
     var li=$("#file_list input[type='checkbox']:checked").parents("li");
@@ -751,7 +762,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 ul+="</ul>";
                 li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
             }
-
         }
         $("#sxk .inputs ul").html(li);
         if(filtrate!==""){
