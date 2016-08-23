@@ -383,7 +383,13 @@ public class UserController {
                 result = "：数据量过大，导入失败";
                 int i = 5 / 0;
             }
-            Cell[] column3 = rs.getColumn(0);
+            Cell[] column3 = rs.getColumn(0);//企业编号
+            Cell[] column4 = rs.getColumn(4);//电话
+            Cell[] column1 = rs.getColumn(1);//员工编号
+            Cell[] column2 = rs.getColumn(2);//员工ID
+            Cell[] column7 = rs.getColumn(7);//群组编号
+            Cell[] column8 = rs.getColumn(8);//区域编号
+            Cell[] column9 = rs.getColumn(9);//店铺编号
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
@@ -415,43 +421,40 @@ public class UserController {
                 }
 
             }
-
-
-            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(3));
+            String onlyCell1 = LuploadHelper.CheckOnly(column4);
             if (onlyCell1.equals("存在重复值")) {
                 result = "：Execl中手机号码存在重复值";
                 int b = 5 / 0;
             }
-            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            String onlyCell2 = LuploadHelper.CheckOnly(column1);
             if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中用户编号存在重复值";
                 int b = 5 / 0;
             }
-            String onlyCel11 = LuploadHelper.CheckOnly(rs.getColumn(10));
+            String onlyCel11 = LuploadHelper.CheckOnly(column2);
             if (onlyCel11.equals("存在重复值")) {
                 result = "：Execl中用户ID存在重复值";
                 int b = 5 / 0;
             }
-            Cell[] column = rs.getColumn(3);
+
             Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
-            for (int i = 3; i < column.length; i++) {
-                Matcher matcher = pattern4.matcher(column[i].getContents().toString());
+            for (int i = 3; i < column4.length; i++) {
+                Matcher matcher = pattern4.matcher(column4[i].getContents().toString());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行手机号码格式有误";
                     int b = 5 / 0;
                     break;
                 }
             }
-            for (int i = 3; i < column.length; i++) {
-                List<User> user = userService.userPhoneExist(column[i].getContents().toString());
+            for (int i = 3; i < column4.length; i++) {
+                List<User> user = userService.userPhoneExist(column4[i].getContents().toString());
                 if (user.size() > 0) {
                     result = "：第" + (i + 1) + "行的电话号码已存在";
                     int b = 5 / 0;
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(1);
-            Cell[] column11 = rs.getColumn(10);
+
             for (int i = 3; i < column1.length; i++) {
                 List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString(), Common.IS_ACTIVE_Y);
                 if (user.size() != 0) {
@@ -459,35 +462,34 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
-                List<User> user11 = userService.selUserByUserId(column11[i].getContents().toString(), column3[i].getContents().toString(), Common.IS_ACTIVE_Y);
+                List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString(), column3[i].getContents().toString(), Common.IS_ACTIVE_Y);
                 if (user11.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户ID已存在";
                     int b = 5 / 0;
                     break;
                 }
             }
-            Cell[] column6 = rs.getColumn(6);
+
             Pattern pattern = Pattern.compile("G\\d{4}");
             //Pattern pattern7 = Pattern.compile("A\\d{4}");
-            Cell[] column7 = rs.getColumn(7);
-            Cell[] column2 = rs.getColumn(8);
-            for (int i = 3; i < column6.length; i++) {
-                Matcher matcher = pattern.matcher(column6[i].getContents().toString());
+
+            for (int i = 3; i < column7.length; i++) {
+                Matcher matcher = pattern.matcher(column7[i].getContents().toString());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行群组编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
-                Group group = groupService.selectByCode(column3[i].getContents().toString(), column6[i].getContents().toString(), "");
+                Group group = groupService.selectByCode(column3[i].getContents().toString(), column7[i].getContents().toString(), "");
                 if (group == null) {
                     result = "：第" + (i + 1) + "行群组编号不存在";
                     int b = 5 / 0;
                     break;
                 }
 
-                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column6[i].getContents().toString());
+                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column7[i].getContents().toString());
                 if (role.equals(Common.ROLE_AM) || role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
-                    String areas = column7[i].getContents().toString();
+                    String areas = column8[i].getContents().toString();
                     String[] splitAreas = areas.split(",");
                     for (int j = 0; j < splitAreas.length; j++) {
 //                        Matcher matcher7 = pattern7.matcher(splitAreas[j]);
@@ -505,7 +507,7 @@ public class UserController {
                     }
                 }
                 if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
-                    String stores = column2[i].getContents().toString();
+                    String stores = column9[i].getContents().toString();
                     String[] splitAreas = stores.split(",");
                     for (int j = 0; j < splitAreas.length; j++) {
                         Store store = storeService.getStoreByCode(column3[i].getContents().toString(), splitAreas[j], Common.IS_ACTIVE_Y);
@@ -518,7 +520,7 @@ public class UserController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column6[i].getContents().toString());
+                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString(), column7[i].getContents().toString());
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
                     String cellCorp = rs.getCell(j++, i).getContents().toString();
@@ -528,6 +530,7 @@ public class UserController {
                         user.setCorp_code(cellCorp);
                     }
                     user.setUser_code(rs.getCell(j++, i).getContents());
+                    user.setUser_id(rs.getCell(j++,i).getContents());
                     user.setUser_name(rs.getCell(j++, i).getContents());
                     user.setAvatar("../img/head.png");//头像
                     user.setPhone(rs.getCell(j++, i).getContents());
@@ -567,7 +570,6 @@ public class UserController {
                         user.setStore_code("");
                     }
                     user.setPosition(rs.getCell(j++, i).getContents());
-                    user.setUser_id(rs.getCell(j++,i).getContents());
                     user.setQrcode("");
                     user.setPassword(user.getPhone());
                     Date now = new Date();

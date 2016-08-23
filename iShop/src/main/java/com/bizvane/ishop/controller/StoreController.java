@@ -987,7 +987,13 @@ public class StoreController {
                 result = "：数据量过大，导入失败";
                 int i = 5 / 0;
             }
-            Cell[] column3 = rs.getColumn(0);
+            Cell[] column3 = rs.getColumn(0);//企业编号
+            Cell[] column = rs.getColumn(1);//店铺编号
+            Cell[] column2 = rs.getColumn(2);//店铺ID
+            Cell[] column1 = rs.getColumn(3);//店铺名称
+            Cell[] column4 = rs.getColumn(4);//区域编号
+            Cell[] column5 = rs.getColumn(5);//品牌编号
+
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
@@ -1019,24 +1025,21 @@ public class StoreController {
                     }
 
                 }
-
-
-            String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
+            String onlyCell1 = LuploadHelper.CheckOnly(column);
             if(onlyCell1.equals("存在重复值")){
                 result = "：Execl中店铺编号存在重复值";
                 int b = 5 / 0;
             }
-            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
+            String onlyCell2 = LuploadHelper.CheckOnly(column1);
             if(onlyCell2.equals("存在重复值")){
                 result = "：Execl中店铺名称存在重复值";
                 int b = 5 / 0;
             }
-            String onlyCell8 = LuploadHelper.CheckOnly(rs.getColumn(7));
+            String onlyCell8 = LuploadHelper.CheckOnly(column2);
             if(onlyCell8.equals("存在重复值")){
                 result = "：Execl中店铺ID存在重复值";
                 int b = 5 / 0;
             }
-            Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column[i].getContents().toString(), Common.IS_ACTIVE_Y);
                 if (store != null) {
@@ -1045,7 +1048,7 @@ public class StoreController {
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(2);
+
             for (int i = 3; i < column1.length; i++) {
                 Store store = storeService.getStoreByName(column3[i].getContents().toString(), column1[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (store != null) {
@@ -1055,9 +1058,8 @@ public class StoreController {
                 }
             }
             Pattern pattern = Pattern.compile("B\\d{4}");
-            Cell[] column4 = rs.getColumn(4);
-            for (int i = 3; i < column4.length; i++) {
-                String brands = column4[i].getContents().toString();
+            for (int i = 3; i < column5.length; i++) {
+                String brands = column5[i].getContents().toString();
                 String[] splitBrands = brands.split(",");
                 for (int j=0;j<splitBrands.length;j++) {
                     Matcher matcher = pattern.matcher(splitBrands[j]);
@@ -1066,7 +1068,7 @@ public class StoreController {
                         int b = 5 / 0;
                         break;
                     }
-                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column4[i].getContents().toString());
+                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column5[i].getContents().toString());
                     if (brand == null) {
                         result = "：第" + (i + 1) + "行,第"+(j+1)+"个品牌编号不存在";
                         int b = 5 / 0;
@@ -1075,22 +1077,21 @@ public class StoreController {
                 }
             }
           //  Pattern pattern7 = Pattern.compile("A\\d{4}");
-            Cell[] column7 = rs.getColumn(3);
-            Cell[] column8 = rs.getColumn(7);
-            for (int i = 3; i < column7.length; i++) {
+
+            for (int i = 3; i < column4.length; i++) {
 //                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
 //                if (matcher.matches() == false) {
 //                    result = "：第" + (i + 1) + "行区域编号格式有误";
 //                    int b = 5 / 0;
 //                    break;
 //                }
-                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column7[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column4[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if (area == null) {
                     result = "：第" + (i + 1) + "行区域编号不存在";
                     int b = 5 / 0;
                     break;
                 }
-                Store store=storeService.selStoreByStroeId(column3[i].getContents().toString(),column8[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Store store=storeService.selStoreByStroeId(column3[i].getContents().toString(),column2[i].getContents().toString(),Common.IS_ACTIVE_Y);
                 if(store!=null){
                     result = "：第" + (i + 1) + "行店铺ID已存在";
                     int b = 5 / 0;
@@ -1107,6 +1108,7 @@ public class StoreController {
                         store.setCorp_code(cellCorp);
                     }
                     store.setStore_code(rs.getCell(j++, i).getContents());
+                    store.setStore_id(rs.getCell(j++, i).getContents());
                     store.setStore_name(rs.getCell(j++, i).getContents());
                     store.setArea_code(rs.getCell(j++, i).getContents());
                     store.setBrand_code(rs.getCell(j++, i).getContents());
@@ -1120,7 +1122,6 @@ public class StoreController {
                     } else {
                         store.setIsactive("Y");
                     }
-                    store.setStore_id(rs.getCell(j++, i).getContents());
                     Date now = new Date();
                     store.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     store.setCreater(user_id);
@@ -1129,7 +1130,6 @@ public class StoreController {
                     result = storeService.insertExecl(store);
                 }
             }
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
