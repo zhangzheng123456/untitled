@@ -47,6 +47,27 @@
         AND def_store.area_code = def_area.area_code
         AND def_store.id=#{id}
     </select>
+    <select id="selectStoreById" resultMap="Store">
+        SELECT
+        def_store.id,
+        store_code,
+        store_name,
+        brand_code,
+        flg_tob,
+        def_store.app_id,
+        qrcode,
+        def_store.area_code,
+        def_store.corp_code,
+        def_store.modified_date,
+        def_store.modifier,
+        def_store.created_date,
+        def_store.creater,
+        def_store.isactive,
+        DEF_CORP.CORP_NAME
+        FROM def_store,def_corp
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.id=#{id}
+    </select>
 
     <select id="selectByCode" resultType="com.bizvane.ishop.entity.Store">
         select *

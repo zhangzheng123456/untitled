@@ -803,7 +803,7 @@ public class AreaController {
             String[] ids = store_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("--------check-------" + Integer.valueOf(ids[i]));
-                Store store=storeService.getById(Integer.valueOf(ids[i]));
+                Store store=storeService.getStoresById(Integer.valueOf(ids[i]));
                 if(store!=null){
                     store.setArea_code(area_code);
                     store.setModified_date(Common.DATETIME_FORMAT.format(now));

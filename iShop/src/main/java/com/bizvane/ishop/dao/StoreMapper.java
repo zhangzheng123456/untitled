@@ -11,6 +11,7 @@ import java.util.Map;
 public interface StoreMapper {
     Store selectByStoreId(int id) throws SQLException;
 
+    Store selectStoreById(int id) throws SQLException;
     Store selectByCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("isactive") String isactive) throws SQLException;
 
     Store selStoreByStroeId(@Param("corp_code") String corp_code, @Param("store_id") String store_id, @Param("isactive") String isactive) throws SQLException;

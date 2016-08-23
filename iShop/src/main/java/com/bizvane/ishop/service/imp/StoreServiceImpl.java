@@ -83,7 +83,9 @@ public class StoreServiceImpl implements StoreService {
     public Store getById(int id) throws Exception {
         return storeMapper.selectByStoreId(id);
     }
-
+    public Store getStoresById(int id) throws Exception {
+        return storeMapper.selectStoreById(id);
+    }
     //list获取企业店铺
     public List<Store> getCorpStore(String corp_code) throws Exception {
         List<Store> stores = storeMapper.selectStores(corp_code);
