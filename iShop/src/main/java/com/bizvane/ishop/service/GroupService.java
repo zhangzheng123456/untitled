@@ -24,6 +24,8 @@ public interface GroupService {
 
     PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws Exception;
 
+    List<Group> getGroupAll(String corp_code, String role_code) throws SQLException;
+
     PageInfo<Group> getAllGroupScreen(int page_number, int page_size, String corp_code, String role_code, Map<String,String> map) throws Exception;
     String selectMaxCode() throws Exception;
 

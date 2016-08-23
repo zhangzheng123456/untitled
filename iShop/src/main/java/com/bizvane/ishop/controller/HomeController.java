@@ -47,7 +47,7 @@ public class HomeController {
     String id;
 
     //系统管理员主页面
-    @RequestMapping(value = "/sys", method = RequestMethod.POST)
+    @RequestMapping(value = "/sys_home", method = RequestMethod.POST)
     @ResponseBody
     public String sysPage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
