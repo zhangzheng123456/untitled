@@ -808,16 +808,12 @@ public class AreaController {
                     store.setArea_code(area_code);
                     store.setModified_date(Common.DATETIME_FORMAT.format(now));
                     store.setModifier(user_id);
-                    store.setIsactive(Common.IS_ACTIVE_Y);
                     storeService.updateStore(store);
-                }else{
-                    dataBean.setMessage("请选择要分配的店铺");
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
                 }
             }
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setId(id);
-                dataBean.setMessage("success");
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
