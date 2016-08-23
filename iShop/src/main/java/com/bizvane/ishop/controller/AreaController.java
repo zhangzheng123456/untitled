@@ -745,7 +745,7 @@ public class AreaController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/stores/check", method = RequestMethod.GET)
+    @RequestMapping(value = "/stores/check", method = RequestMethod.POST)
     @ResponseBody
     public String checkStores(HttpServletRequest request)throws Exception {
         DataBean dataBean = new DataBean();
@@ -757,13 +757,12 @@ public class AreaController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = "";
             if (jsonObject.has("searchValue")) {
                 search_value = jsonObject.get("searchValue").toString();
             }
-
             String area_code = jsonObject.get("corp_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             PageInfo<Store> list;
@@ -797,11 +796,9 @@ public class AreaController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String list = jsonObject.get("list").toString();
             String store_id=jsonObject.get("id").toString();
             String area_code=jsonObject.get("area_code").toString();
             String[] ids = store_id.split(",");
-
             for (int i = 0; i < ids.length; i++) {
                 logger.info("--------check-------" + Integer.valueOf(ids[i]));
                 Store store=storeService.getById(Integer.valueOf(ids[i]));
@@ -809,8 +806,6 @@ public class AreaController {
                     store.setArea_code(area_code);
                     store.setModified_date(Common.DATETIME_FORMAT.format(now));
                     store.setModifier(user_id);
-                    store.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    store.setCreater(user_id);
                     store.setIsactive(Common.IS_ACTIVE_Y);
                     storeService.updateStore(store);
                 }else{
