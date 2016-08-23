@@ -99,4 +99,8 @@ public interface CodeUpdateMapper {
     //open_id店铺关系
     int updateRelVipStore(@Param("new_store_id") String new_store_id,@Param("old_store_id") String old_store_id,
                           @Param("app_user_name") String app_user_name) throws SQLException;
+
+    //app_id企业关系
+    int updateRelCorpWechat(@Param("new_corp_code") String new_corp_code, @Param("old_corp_code") String old_corp_code) throws SQLException;
+
 }

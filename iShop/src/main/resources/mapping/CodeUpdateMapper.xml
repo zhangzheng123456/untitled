@@ -427,4 +427,17 @@
             AND store_id = #{old_store_id}
         </if>
     </update>
+
+    <update id="updateRelCorpWechat">
+        UPDATE rel_corp_wechat
+        <trim prefix="set" suffixOverrides=",">
+            <if test="new_corp_code!=null and new_corp_code!=''">
+                corp_code=#{new_corp_code},
+            </if>
+        </trim>
+        WHERE 1=1
+        <if test="old_corp_code!=null and old_corp_code!='' ">
+            AND corp_code = #{old_corp_code}
+        </if>
+    </update>
 </mapper>
