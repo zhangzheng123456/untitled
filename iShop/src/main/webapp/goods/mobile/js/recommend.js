@@ -43,6 +43,7 @@ jQuery(function(){
             if(hasNextPage==false){
             	$(".more").hide();
             }
+			$("#input").val("");
 		})
 	}
 	//input输入框里面

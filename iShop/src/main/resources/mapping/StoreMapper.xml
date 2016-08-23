@@ -526,18 +526,14 @@
         AND
         #{brand_code} LIKE brand_code
     </select>
-    <select id="selectAllStoresByCorpCode" resultMap="Store">
+
+    <select id="selectAllStoresByCorpCode" resultType="com.bizvane.ishop.entity.Store">
         SELECT
         def_store.id,
         store_code,
         store_name,
-        flg_tob,
         def_store.area_code,
-        def_store.brand_code,
         def_store.corp_code,
-        def_store.modified_date,
-        def_store.modifier,
-        def_store.isactive,
         def_corp.corp_name
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
@@ -551,6 +547,7 @@
             )
         </if>
         AND def_corp.isactive = 'Y'
+        AND def_store.isactive = 'Y'
         ORDER BY def_store.id DESC
     </select>
 </mapper>
