@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -125,7 +126,7 @@ public class AreaServiceImpl implements AreaService {
             Area areaByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
             if (areaByCode != null && areaByCode.getId() != area_id) {
                 result = "区域编号已存在";
-            } else if (areaByName != null && areaByName.getId() != area_id){
+            } else if (areaByName != null && areaByName.getId() != area_id) {
                 result = "区域名称已存在";
             } else {
                 old_area = new Area();
@@ -255,14 +256,13 @@ public class AreaServiceImpl implements AreaService {
     }
 
 
-
     @Override
     public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
 
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             if (area_codes.contains(Common.STORE_HEAD))
-                area_codes = area_codes.replace(Common.STORE_HEAD,"");
+                area_codes = area_codes.replace(Common.STORE_HEAD, "");
             areaArray = area_codes.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
@@ -277,8 +277,9 @@ public class AreaServiceImpl implements AreaService {
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
     }
+
     @Override
-    public PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes,String store_code, String search_value) throws SQLException {
+    public PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes, String store_code, String search_value) throws SQLException {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             areaArray = area_codes.split(",");
@@ -309,7 +310,7 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public List<Area> selAreaByCorpCode(String corp_code, String area_codes,String store_code) throws Exception {
+    public List<Area> selAreaByCorpCode(String corp_code, String area_codes, String store_code) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             areaArray = area_codes.split(",");
@@ -334,4 +335,30 @@ public class AreaServiceImpl implements AreaService {
 
         return areas;
     }
+
+    @Override
+    public PageInfo<Store> getAllStoresByCorpCode(int page_number, int page_size, String corp_code, String search_value, String area_code) throws Exception {
+
+        PageHelper.startPage(page_number, page_size);
+        List<Store> stores = storeMapper.selectAllStoresByCorpCode(corp_code, search_value);
+        PageInfo<Store> page = new PageInfo<Store>(stores);
+        List<Store> stores1 = page.getList();
+        for (int i = 0; i < stores1.size(); i++) {
+            Store store = stores1.get(i);
+            if (store.getArea_code() != null && store.getArea_code().equals(area_code)) {
+                store.setIs_this_area("Y");
+            } else {
+                if (store.getArea_code() == null) {
+                    store.setArea_code("");
+                }
+                store.setIs_this_area("N");
+            }
+        }
+        page.setList(stores1);
+        return page;
+
+
+    }
+
+
 }

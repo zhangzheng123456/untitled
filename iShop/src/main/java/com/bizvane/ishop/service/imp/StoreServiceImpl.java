@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
@@ -480,5 +481,20 @@ public class StoreServiceImpl implements StoreService {
         //更新员工详细信息
         codeUpdateMapper.updateStaffDetailInfo("", corp_code, "", "", new_store_code, old_store_code);
 
+    }
+    public List<Store> selectAllStores(String corp_code, String search_value) throws Exception{
+        List<Store> stores = storeMapper.selectAllStore(corp_code, "");
+        return stores;
+    }
+    public JSONArray selectStoresByAreaCode(String corp_code,String search_value) throws Exception{
+        JSONArray array = new JSONArray();
+        List<Store> stores = storeMapper.selectAllStore(corp_code, "");
+        for (int i = 0; i < stores.size(); i++) {
+            int id = stores.get(i).getId();
+            JSONObject corps = new JSONObject();
+            corps.put("id", id);
+            array.add(corps);
+        }
+        return array;
     }
 }

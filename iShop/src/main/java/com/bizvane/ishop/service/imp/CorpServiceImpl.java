@@ -129,7 +129,7 @@ public class CorpServiceImpl implements CorpService {
                     corpWechat.setModifier(user_id);
                     corpWechat.setIsactive(Common.IS_ACTIVE_Y);
                     corpMapper.insertCorpWechat(corpWechat);
-                }else if (corpWechats.size() > 0){
+                }else if (corpWechats.size() > 0 && !app_id.equals(corpWechats.get(0).getApp_id())){
                     corpWechat = corpWechats.get(0);
                     corpWechat.setApp_id(app_id);
                     corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
@@ -171,6 +171,8 @@ public class CorpServiceImpl implements CorpService {
         if (old_corp_code.equals(new_corp_code)) {
             return;
         }
+        codeUpdateMapper.updateRelCorpWechat(new_corp_code, old_corp_code);
+
         codeUpdateMapper.updateAppVersion(new_corp_code, old_corp_code);
         //   codeUpdateMapper.updateCache(new_corp_code, old_corp_code);
         codeUpdateMapper.updateGoods(new_corp_code, old_corp_code, "", "");

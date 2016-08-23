@@ -18,7 +18,8 @@ public interface GoodsMapper {
 
     List<Goods> selectAllGoods(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("isactive") String isactive) throws SQLException;
 
-    List<Goods> selectMatchGoods(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("isactive") String isactive) throws SQLException;
+    List<Goods> selectMatchGoods(@Param("corp_code") String corp_code, @Param("search_value") String search_value,
+                                 @Param("goods_code") String goods_code, @Param("isactive") String isactive) throws SQLException;
 
     List<Goods> selectAllGoodsScreen(Map<String,Object> map) throws SQLException;
 

@@ -8264,3 +8264,21 @@ li.select_index>a>label>i{
   top: -14px;
   right: 25px;
 }
+.conpany_msg .area_shop{
+  width:310px;
+}
+.edit_shop_icon{
+  width: 100px;
+  height: 30px;
+  background: #6cc1c8;
+  display: inline-block;
+  border-radius: 0 5px 5px 0;
+  line-height: 30px;
+  margin-left: 5px;
+  padding-left: 10px;
+  color: #ffffff;
+}
+.edit_shop_icon i{
+  padding-left: 5px;
+  color: #FFFFFF;
+}

@@ -83,9 +83,12 @@
         ,g.corp_code
         ,cp.corp_name
         ,db.brand_name
-        FROM DEF_GOODS g,DEF_CORP cp,DEF_BRAND db
-        WHERE g.corp_code=cp.corp_code AND g.corp_code=db.corp_code AND g.brand_code=db.brand_code
-            AND g.corp_code=#{corp_code}
+        FROM def_goods g,def_corp cp,def_brand db
+        WHERE g.corp_code=cp.corp_code
+        AND g.corp_code=db.corp_code
+        AND g.brand_code=db.brand_code
+        AND g.corp_code=#{corp_code}
+        AND g.goods_code != #{goods_code}
         <if test="search_value!=null and search_value!=''">
             AND
             (g.goods_code LIKE concat('%',#{search_value},'%')

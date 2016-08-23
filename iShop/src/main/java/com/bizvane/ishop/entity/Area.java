@@ -27,7 +27,8 @@ public class Area {
     private String isactive;
     private String corp_name;
     private Corp corp;
-
+    //区域下店铺数量
+    private String store_count;
     public String getCorp_name() {
         return corp_name;
     }
@@ -121,5 +122,13 @@ public class Area {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public String getStore_count() {
+        return store_count;
+    }
+
+    public void setStore_count(String store_count) {
+        this.store_count = store_count;
     }
 }

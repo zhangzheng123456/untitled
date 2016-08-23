@@ -3,6 +3,7 @@ package com.bizvane.ishop.controller;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.Group;
 import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.entity.User;
@@ -27,6 +28,8 @@ public class LoginController {
     UserService userService;
     @Autowired
     CorpService corpService;
+    @Autowired
+    GroupService groupService;
     @Autowired
     StoreService storeService;
     @Autowired
@@ -394,6 +397,8 @@ public class LoginController {
     public String listFilterColumn(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
             JSONArray cols = new JSONArray();
             String function_code = request.getParameter("funcCode");
             List<TableManager> col = tableManagerService.selByCode(function_code);
@@ -408,8 +413,33 @@ public class LoginController {
                 obj.put("show_name",show_name);
                 obj.put("type",type);
                 if (type.equals("select")){
-                    String value = table.getFilter_value();
-                    JSONArray values = JSONArray.parseArray(value);
+                    JSONArray values = new JSONArray();
+                    if (col_name.equals("group_name")){
+                        List<Group> groups = new ArrayList<Group>();
+                        if (role_code.equals(Common.ROLE_GM)){
+                            groups = groupService.getGroupAll(corp_code,"");
+                        }else if (role_code.equals(Common.ROLE_SYS)){
+                            obj.put("value","");
+                            obj.put("type","text");
+                            cols.add(obj);
+                            continue;
+                        }else {
+                            groups = groupService.getGroupAll(corp_code,role_code);
+                        }
+                        for (int j = 0; j < groups.size(); j++) {
+                            JSONObject object = new JSONObject();
+                            object.put("key",groups.get(j).getGroup_name());
+                            object.put("value",groups.get(j).getGroup_name());
+                            values.add(object);
+                        }
+                        JSONObject object = new JSONObject();
+                        object.put("key","全部");
+                        object.put("value","");
+                        values.add(object);
+                    }else {
+                        String value = table.getFilter_value();
+                        values = JSONArray.parseArray(value);
+                    }
                     obj.put("value",values);
                 }else{
                     obj.put("value","");

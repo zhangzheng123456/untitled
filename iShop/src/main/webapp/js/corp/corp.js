@@ -555,6 +555,8 @@ $("#leading_out").click(function(){
                  $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            bianse();
+            $("#file_list_r ul").empty();
             whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
@@ -562,67 +564,22 @@ $("#leading_out").click(function(){
         }
     })
 })
-// //点击左移
-// $("#left_shift").click(function(){
-//     var input=$("#file_list_l input[type='checkbox']:checked").parents("li");
-//     for(var i=0;i<input.length;i++){
-//         var r=$(li[i]).attr("data-name");
-//         var z=$(li[i]).children("span").html();
-
-//     }
-// })
-$(function(){   
-    //移到右边
-    $('#left_shift').click(function(){
-        //先判断是否有选中
-        var li=$("#file_list_l input[type='checkbox']:checked").parents("li");
-        if(li.length=="0"){          
-            frame();
-            $('.frame').html('请先选择'); 
-        }
-        //获取选中的选项，删除并追加给对方
-        else{
-            for(var i=li.length;i>=0;i--){
-               $(li[i]).appendTo('#file_list_r ul'); 
-            }    
-        }   
-    });
-    //移到左边
-    $('#right_shift').click(function(){
-        var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
-        //先判断是否有选中
-        if(li.length=="0"){          
-            frame();
-            $('.frame').html('请先选择'); 
-        }
-        else{
-            for(var i=li.length;i>=0;i--){
-               $(li[i]).appendTo('#file_list_r ul'); 
-            }    
-        }
-    });
-    
-    //全部移到右边
-    $('#left_shift_all').click(function(){
-        //获取全部的选项,删除并追加给对方
-        var li=$("#file_list_l input[type='checkbox']").parents("li");
-        for(var i=li.length;i>=0;i--){
-            $(li[i]).appendTo('#file_list_r ul'); 
-        }    
-    });
-    //全部移到左边
-    $('#right_shift_all').click(function(){
-        var li=$("#file_list_r input[type='checkbox']").parents("li");
-        for(var i=li.length;i>=0;i--){
-            $(li[i]).appendTo('#file_list_r ul'); 
-        }  
-    });
-});
+function bianse(){
+    $("#file_list_l li:odd").css("backgroundColor","#fff");
+    $("#file_list_l li:even").css("backgroundColor","#ededed");
+    $("#file_list_r li:odd").css("backgroundColor","#fff");
+    $("#file_list_r li:even").css("backgroundColor","#ededed");
+}
 //导出提交的
 $("#file_submit").click(function(){
-    var li=$("#file_list input[type='checkbox']:checked").parents("li");
+    var li=$("#file_list_r input[type='checkbox']").parents("li");
     var param={};
     var tablemanager=[];
+    if(li.length=="0"){
+        frame();
+        $('.frame').html('请把要导出的列移到右边');
+        return;
+    }
     for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
         var z=$(li[i]).children("span").html();
@@ -751,7 +708,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 ul+="</ul>";
                 li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
             }
-
         }
         $("#sxk .inputs ul").html(li);
         if(filtrate!==""){

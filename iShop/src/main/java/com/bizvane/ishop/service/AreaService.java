@@ -6,6 +6,7 @@ import com.bizvane.ishop.entity.Store;
 import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
@@ -45,4 +46,7 @@ public interface AreaService {
     PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes,String store_code, String search_value)throws Exception;
 
     List<Area> selAreaByCorpCode(String corp_code, String area_codes,String store_code) throws Exception;
+
+    PageInfo<Store> getAllStoresByCorpCode( int page_number, int page_size, String corp_code, String search_value,String area_code) throws Exception;
+
 }

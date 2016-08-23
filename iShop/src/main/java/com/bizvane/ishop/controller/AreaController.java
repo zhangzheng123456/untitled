@@ -1,5 +1,6 @@
 package com.bizvane.ishop.controller;
 
+import IceInternal.Ex;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
@@ -8,10 +9,7 @@ import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.TableManager;
-import com.bizvane.ishop.service.AreaService;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -53,6 +51,9 @@ public class AreaController {
 
     @Autowired
     private AreaService areaService;
+    @Autowired
+    private StoreService storeService;
+
     @Autowired
     private FunctionService functionService;
     @Autowired
@@ -286,8 +287,13 @@ public class AreaController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String user_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(areaService.getAreaById(Integer.parseInt(user_id)));
+            String area_id = jsonObject.get("id").toString();
+            Area area = areaService.getAreaById(Integer.parseInt(area_id));
+            String[] area_code = new String[]{area.getArea_code()};
+            int count = storeService.selectByAreaCode(area.getCorp_code(),area_code,Common.IS_ACTIVE_Y).size();
+            area.setStore_count(String.valueOf(count));
+            data = JSON.toJSONString(area);
+
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
@@ -739,4 +745,80 @@ public class AreaController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 区域分配多个店铺
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/stores/check", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkStores(HttpServletRequest request)throws Exception {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-----stores/check----------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = "";
+            if (jsonObject.has("searchValue")) {
+                search_value = jsonObject.get("searchValue").toString();
+            }
+            String area_code = jsonObject.get("area_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            PageInfo<Store> list;
+            list=areaService.getAllStoresByCorpCode( page_number, page_size, corp_code, search_value,area_code);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+
+        return dataBean.getJsonStr();
+    }
+    @RequestMapping(value = "/stores/save", method = RequestMethod.POST)
+    @ResponseBody
+    public String saveStores(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        Date now = new Date();
+        try {
+            String user_id = request.getSession().getAttribute("user_code").toString();
+
+            String jsString = request.getParameter("param");
+            logger.info("json-------stores/save--------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String store_id=jsonObject.get("id").toString();
+            String area_code=jsonObject.get("area_code").toString();
+            String[] ids = store_id.split(",");
+            for (int i = 0; i < ids.length; i++) {
+                logger.info("--------check-------" + Integer.valueOf(ids[i]));
+                Store store=storeService.getById(Integer.valueOf(ids[i]));
+                if(store!=null){
+                    store.setArea_code(area_code);
+                    store.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    store.setModifier(user_id);
+                    storeService.updateStore(store);
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage("success");
+                }
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }
