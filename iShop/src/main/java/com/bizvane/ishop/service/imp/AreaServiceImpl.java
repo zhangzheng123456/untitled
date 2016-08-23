@@ -337,12 +337,21 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public  PageInfo<Store> getAllStoresByCorpCode( int page_number, int page_size, String corp_code, String search_value) throws Exception{
+    public  PageInfo<Store> getAllStoresByCorpCode( int page_number, int page_size, String corp_code, String search_value,String area_code) throws Exception{
 
-        List<Store> stores;
         PageHelper.startPage(page_number, page_size);
-      stores = storeMapper.selectAllStoresByCorpCode(corp_code, search_value);
+        List<Store> stores = storeMapper.selectAllStoresByCorpCode(corp_code, search_value);
         PageInfo<Store> page = new PageInfo<Store>(stores);
+        List<Store> stores1 = page.getList();
+        for (int i = 0; i < stores1.size(); i++) {
+            Store store = stores1.get(i);
+            if (store.getArea_code().equals(area_code)){
+                store.setIs_this_area("Y");
+            }else {
+                store.setIs_this_area("N");
+            }
+        }
+        page.setList(stores1);
         return page;
 
 

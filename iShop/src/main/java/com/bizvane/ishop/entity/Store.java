@@ -37,14 +37,8 @@ public class Store {
 
     private String brand_name;
     private String corp_name;
-
-    public String getCorp_name() {
-        return corp_name;
-    }
-
-    public void setCorp_name(String corp_name) {
-        this.corp_name = corp_name;
-    }
+    //是否为该区域店铺
+    private String is_this_area;
 
     private String area_name;
 
@@ -224,5 +218,21 @@ public class Store {
 
     public void setArea(Area area) {
         this.area = area;
+    }
+
+    public String getCorp_name() {
+        return corp_name;
+    }
+
+    public void setCorp_name(String corp_name) {
+        this.corp_name = corp_name;
+    }
+
+    public String getIs_this_area() {
+        return is_this_area;
+    }
+
+    public void setIs_this_area(String is_this_area) {
+        this.is_this_area = is_this_area;
     }
 }

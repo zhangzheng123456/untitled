@@ -47,6 +47,6 @@ public interface AreaService {
 
     List<Area> selAreaByCorpCode(String corp_code, String area_codes,String store_code) throws Exception;
 
-    PageInfo<Store> getAllStoresByCorpCode( int page_number, int page_size, String corp_code, String search_value) throws Exception;
+    PageInfo<Store> getAllStoresByCorpCode( int page_number, int page_size, String corp_code, String search_value,String area_code) throws Exception;
 
 }
