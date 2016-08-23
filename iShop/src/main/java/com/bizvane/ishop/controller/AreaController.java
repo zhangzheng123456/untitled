@@ -287,8 +287,13 @@ public class AreaController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String user_id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(areaService.getAreaById(Integer.parseInt(user_id)));
+            String area_id = jsonObject.get("id").toString();
+            Area area = areaService.getAreaById(Integer.parseInt(area_id));
+            String[] area_code = new String[]{area.getArea_code()};
+            int count = storeService.selectByAreaCode(area.getCorp_code(),area_code,Common.IS_ACTIVE_Y).size();
+            area.setStore_count(String.valueOf(count));
+            data = JSON.toJSONString(area);
+
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
             bean.setMessage(data);
