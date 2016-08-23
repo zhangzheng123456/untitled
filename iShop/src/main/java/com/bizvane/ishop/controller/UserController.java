@@ -427,6 +427,11 @@ public class UserController {
                 result = "：Execl中用户编号存在重复值";
                 int b = 5 / 0;
             }
+            String onlyCel11 = LuploadHelper.CheckOnly(rs.getColumn(10));
+            if (onlyCel11.equals("存在重复值")) {
+                result = "：Execl中用户ID存在重复值";
+                int b = 5 / 0;
+            }
             Cell[] column = rs.getColumn(3);
             Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
             for (int i = 3; i < column.length; i++) {
@@ -446,10 +451,17 @@ public class UserController {
                 }
             }
             Cell[] column1 = rs.getColumn(1);
+            Cell[] column11 = rs.getColumn(10);
             for (int i = 3; i < column1.length; i++) {
                 List<User> user = userService.userCodeExist(column1[i].getContents().toString(), column3[i].getContents().toString(), Common.IS_ACTIVE_Y);
                 if (user.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户编号已存在";
+                    int b = 5 / 0;
+                    break;
+                }
+                List<User> user11 = userService.selUserByUserId(column11[i].getContents().toString(), column3[i].getContents().toString(), Common.IS_ACTIVE_Y);
+                if (user11.size() != 0) {
+                    result = "：第" + (i + 1) + "行的用户ID已存在";
                     int b = 5 / 0;
                     break;
                 }
@@ -555,6 +567,7 @@ public class UserController {
                         user.setStore_code("");
                     }
                     user.setPosition(rs.getCell(j++, i).getContents());
+                    user.setUser_id(rs.getCell(j++,i).getContents());
                     user.setQrcode("");
                     user.setPassword(user.getPhone());
                     Date now = new Date();

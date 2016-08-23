@@ -47,13 +47,25 @@ public class HomeController {
     String id;
 
     //系统管理员主页面
-    @RequestMapping(value = "/sys", method = RequestMethod.GET)
+    @RequestMapping(value = "/sys", method = RequestMethod.POST)
     @ResponseBody
     public String sysPage(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             JSONObject dashboard = new JSONObject();
 
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String time;
+            if (jsonObject.has("time_type")) {
+                time = jsonObject.get("time_type").toString();
+            }else {
+                time = "week";
+            }
             int corp_count = corpService.selectCount("");
             int store_count = storeService.selectCount("");
             int user_count = userService.selectCount("");
@@ -63,6 +75,21 @@ public class HomeController {
             int user_new_count = userService.selectCount(yesterday);
 
             PageInfo<Feedback> feedback = feedbackService.selectAllFeedback(1, 6, "");
+            int day_length = 0;
+            if (time.equals("week")){
+                day_length = 7;
+            }else {
+                day_length = 30;
+            }
+            JSONArray user_increase = new JSONArray();
+            for (int i = 0; i < day_length; i++) {
+                JSONObject object = new JSONObject();
+                String day = TimeUtils.beforDays(i+1);
+                int count = userService.selectCount(day);
+                object.put("date",day.substring(5,day.length()));
+                object.put("count",String.valueOf(count));
+                user_increase.add(object);
+            }
             dashboard.put("corp_count", corp_count);
             dashboard.put("store_count", store_count);
             dashboard.put("user_count", user_count);
@@ -70,10 +97,11 @@ public class HomeController {
             dashboard.put("store_new_count", store_new_count);
             dashboard.put("user_new_count", user_new_count);
             dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
+            dashboard.put("user_increase", user_increase);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage(dashboard.toString());
             return dataBean.getJsonStr();
 
         } catch (Exception ex) {
@@ -93,6 +121,7 @@ public class HomeController {
     public String areaRanking(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
+            String time_id;
             String user_id = request.getSession().getAttribute("user_id").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String param = request.getParameter("param");
@@ -101,9 +130,13 @@ public class HomeController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String time = jsonObject.get("time").toString();
+
+            if (jsonObject.has("time")) {
+                time_id = jsonObject.get("time").toString().replace("-","");
+            }else {
+                time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
+            }
             String area_name = jsonObject.get("area_name").toString();
-            String time_id = time;
 
             Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);

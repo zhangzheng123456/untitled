@@ -435,6 +435,10 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public List<User> selUserByUserId(String user_id, String corp_code, String isactive) throws Exception {
+        return userMapper.selUserByUserId(user_id,corp_code,isactive);
+    }
 
     /**
      * 注册

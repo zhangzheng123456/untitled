@@ -60,6 +60,16 @@ public class User {
 	private String group_name;
 	private Corp corp;
 	private Sign sign;
+	private String user_id;
+
+	public String getUser_id() {
+		return user_id;
+	}
+
+	public void setUser_id(String user_id) {
+		this.user_id = user_id;
+	}
+
 	public User(){}
 
 	public String getCorp_name() {

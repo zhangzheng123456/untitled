@@ -623,7 +623,7 @@ input::-webkit-input-placeholder{
 	min-height: 50px;
 	background:rgba(0,0,0,0.5);
 	position: absolute;
-	z-index: 5;
+	z-index: 8999;
 	border-radius: 5px;
 	color:#fff;
 	text-align: center;
@@ -691,7 +691,7 @@ input::-webkit-input-placeholder{
 }
 .file{
 	width:570px;
-	background: #f4f4f4; 
+	background: #fff; 
 	overflow: hidden;
 	display:none;
 	position: absolute;
@@ -746,14 +746,21 @@ input::-webkit-input-placeholder{
 	padding-right: 20px;
 }
 #file_list_l{
+	width: 42%;
+	min-height:30px;
 	float: left;
 }
 #file_list_r{
-	float: right;
+	width: 42%;
+	float: left;
 }
 #file_list_z{
+	width: 15.7%;
+	min-height:30px;
 	float: left;
-	width: 90px;
+}
+.c_shift{
+	margin-top:10%;
 }
 .shift{
 	width: 30px;
@@ -764,6 +771,7 @@ input::-webkit-input-placeholder{
 	color: #fff;
 	font-size: 14px;
 	background-color: #cecece;
+	margin: 0 auto;
 	margin-top: 10px;
 	cursor: pointer;
 }

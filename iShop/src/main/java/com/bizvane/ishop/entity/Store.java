@@ -5,6 +5,7 @@ package com.bizvane.ishop.entity;
  */
 public class Store {
     private int id;
+    private String store_id;
     //店铺编号
     private String store_code;
     //店铺名称
@@ -58,7 +59,13 @@ public class Store {
     public Store(int id){
         this.id = id;
     }
+    public String getStore_id() {
+        return store_id;
+    }
 
+    public void setStore_id(String store_id) {
+        this.store_id = store_id;
+    }
     public int getId() {
         return id;
     }

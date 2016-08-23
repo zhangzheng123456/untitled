@@ -148,7 +148,7 @@ var oc = new ObjectControl();
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
-				var GOODS_BUYPOINT=$("#edit div p").html();
+				var GOODS_BUYPOINT=$("#edit:nth-of-type(2)").html();
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -341,7 +341,7 @@ jQuery(document).ready(function(){
 				$("#GOODS_QUARTER").val(msg.goods_quarter);
 				$("#GOODS_BAND").val(msg.goods_wave);
 				$("#GOODS_RELEASETIME").val(msg.goods_time);
-				$("#edit div p").html(msg.goods_description);
+				$("#edit:nth-of-type(2)").html(msg.goods_description);
 				var list=msg.matchgoods;
 				console.log(list);
 				for(var i=0;i<list.length;i++){
@@ -524,6 +524,7 @@ function goodsAddHide() {
 		var li=$(this).parent("li").html();
 		var goods_code=$(this).parent().find(".goods_code").html();
 		var goods_code2=$("#GOODS_CODE").val();
+		var len=$(".match_goods ul li").length;
 		if(goods_code==$("#"+goods_code).attr("id")|| goods_code==goods_code2){
 			art.dialog({
 				time: 1,
@@ -531,7 +532,15 @@ function goodsAddHide() {
 				cancel: false,
 				content: "请勿重复添加"
 			});
-		}else {
+		}else if(len>9){
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: "最多添加十个"
+			});
+		}
+		else  {
 			$(".match_goods ul").append('<li id="'+goods_code+'">'+li+'</li>');
 		}
 
