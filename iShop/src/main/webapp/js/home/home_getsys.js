@@ -1,9 +1,14 @@
 var oc = new ObjectControl();
 $(function(){
+    homeGetSys('week');
+});
+
+function homeGetSys(timeType){
     var _command1="/home/sys_home";
     var _param={
-        time_type:'week'
+        time_type:timeType
     };
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post", _command1,"", _param, function(data){
         var sysMessage=JSON.parse(data.message);
         var feedbackContent=JSON.parse(sysMessage.feedback);
@@ -23,7 +28,26 @@ $(function(){
                 +'</li>';
             $("#feed_back").html(feedbackHtml);
         }
-        console.log(JSON.stringify(sysMessage.user_increase))
-
-    })
+        whir.loading.remove();//移除加载框
+        //console.log(JSON.stringify(sysMessage.user_increase))
+    });
+}
+$("#set_time").click(function(){
+    $("#set_Time_ul").toggle();
 });
+$("#set_Time_ul li").click(function(){
+    $("#set_time b").text($(this).text());
+    $("#set_Time_ul").hide();
+   if($(this).text()=='最近一周'){
+       homeGetSys('week');
+   }else{
+       homeGetSys('month');
+   }
+});
+$(document).click(function (e) {
+    if($(e.target).is("#set_time")||$(e.target).is("#set_time b")|| $(e.target).is("#set_time i")){
+        return;
+    }else{
+        $("#set_Time_ul").hide();
+    }
+})
