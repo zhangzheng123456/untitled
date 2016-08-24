@@ -181,7 +181,7 @@ function jumpBianse() {
 function superaddition(data, num) {
     for (var i = 0; i < data.length; i++) {
         if (num >= 2) {
-            var a = i + num * pageSize;
+            var a = i + (num-1) * pageSize;
         } else {
             var a = i + 1;
         }
@@ -340,6 +340,7 @@ $('#save').click(function () {
         if (data.code == "0") {
             $("#page-wrapper").show();
             $(".content").hide();
+            window.location.reload();
         } else if (data.code == "-1") {
             alert(data.message);
         }
