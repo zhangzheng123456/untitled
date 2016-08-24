@@ -1041,5 +1041,38 @@ function getcorplist(){
 		}
 	});
 }
+function getAppName(){
+	var corp_code=$("#OWN_CORP").val();
+	var param={};
+	    param["corp_code"]=corp_code;
+	var _command="/corp/selectWx";
+	oc.postRequire("post", _command,"param", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+}
+
+//生成二维码下拉框
+$(".er_code").click(function () {
+	if($(".er_code ul").css("display")=="none"){
+		$(".er_code ul").show();
+	}else {
+		$(".er_code ul").hide();
+	}
+})
+$(".er_code ul li").click(function () {
+	var value=$(this).html();
+	$(".er_code input").val(value);
+})
 
 
