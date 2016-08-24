@@ -1,6 +1,5 @@
 package com.bizvane.ishop.entity;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -39,8 +38,6 @@ public class Goods {
     private String brand_code;
     //企业编号
     private String corp_code;
-    //商品搭配
-    private String match_goods;
 
     private Brand brand;
     private Corp corp;
@@ -185,14 +182,6 @@ public class Goods {
 
     public void setBrand_code(String brand_code) {
         this.brand_code = brand_code;
-    }
-
-    public String getMatch_goods() {
-        return match_goods;
-    }
-
-    public void setMatch_goods(String match_goods) {
-        this.match_goods = match_goods;
     }
 
     public Brand getBrand() {

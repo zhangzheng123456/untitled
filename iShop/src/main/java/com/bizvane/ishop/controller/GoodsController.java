@@ -525,7 +525,7 @@ public class GoodsController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             // String user_code = jsonObject.get("user_code").toString();
-            //   String temp = jsonObject.get("goods_image").toString();
+            String match_goods = jsonObject.get("match_goods").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
@@ -545,7 +545,7 @@ public class GoodsController {
             } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setMessage("商品名称已存在");
             } else {
-                this.goodsService.insert(goods);
+                this.goodsService.insertGoods(goods,match_goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("success");
             }
@@ -608,11 +608,12 @@ public class GoodsController {
             dataBean.setId(id);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String match_goods = jsonObject.get("match_goods").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
-            String result = goodsService.update(goods);
+            String result = goodsService.update(goods,match_goods);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("商品更改成功");

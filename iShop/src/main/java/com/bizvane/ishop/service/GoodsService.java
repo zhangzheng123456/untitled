@@ -27,13 +27,14 @@ public interface GoodsService {
      */
     int insert(Goods goods) throws Exception;
 
+    int insertGoods(Goods goods,String match_goods) throws Exception;
     /**
      * 更新企业信息，通过编号区分
      * @param goods
      * @return
      * @throws SQLException
      */
-    String update(Goods goods) throws Exception;
+    String update(Goods goods,String match_goods) throws Exception;
 
     /**
      * 删除企业，通过编号区分

@@ -3,10 +3,12 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GoodsMapper;
 import com.bizvane.ishop.entity.Goods;
+import com.bizvane.ishop.entity.GoodsMatch;
 import com.bizvane.ishop.service.GoodsService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +22,7 @@ public class GoodsServiceImpl implements GoodsService {
     @Autowired
     private GoodsMapper goodsMapper;
 
-    private static final org.apache.log4j.Logger log = org.apache.log4j.Logger.getLogger(GoodsServiceImpl.class);
+    private static final Logger log = Logger.getLogger (GoodsServiceImpl.class);
 
 
 
@@ -28,20 +30,45 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods getGoodsById(int id) throws Exception {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
         List<Goods> matchgoods = new ArrayList<Goods>();
-        if (goods.getMatch_goods() != null && !goods.getMatch_goods().equals("")){
-            String[] match_goods = goods.getMatch_goods().split(",");
-            for (int i = 0; i < match_goods.length; i++) {
-                Goods match = getGoodsByCode(goods.getCorp_code(),match_goods[i]);
-                String goods_image = match.getGoods_image();
-                    if (goods_image != null && !goods_image.isEmpty()) {
-                        match.setGoods_image(goods_image.split(",")[0]);
-                    }
-                matchgoods.add(match);
+//        if (goods.getMatch_goods() != null && !goods.getMatch_goods().equals("")){
+//            String[] match_goods = goods.getMatch_goods().split(",");
+//            for (int i = 0; i < match_goods.length; i++) {
+//                Goods match = getGoodsByCode(goods.getCorp_code(),match_goods[i]);
+//                String goods_image = match.getGoods_image();
+//                    if (goods_image != null && !goods_image.isEmpty()) {
+//                        match.setGoods_image(goods_image.split(",")[0]);
+//                    }
+//                matchgoods.add(match);
+//            }
+//            goods.setMatchgoods(matchgoods);
+//        }else{
+//            goods.setMatchgoods(matchgoods);
+//        }
+        String corp_code = goods.getCorp_code();
+        String goods_code = goods.getGoods_code();
+        List<GoodsMatch> matches1 = goodsMapper.selectMatchGoods1(corp_code,goods_code);
+        List<GoodsMatch> matches2 = goodsMapper.selectMatchGoods2(corp_code,goods_code);
+
+        for (int i = 0; i < matches1.size(); i++) {
+            String goods_code_match = matches1.get(i).getGoods_code_match();
+            Goods match = getGoodsByCode(corp_code,goods_code_match);
+            String goods_image = match.getGoods_image();
+            if (goods_image != null && !goods_image.isEmpty()) {
+                match.setGoods_image(goods_image.split(",")[0]);
             }
-            goods.setMatchgoods(matchgoods);
-        }else{
-            goods.setMatchgoods(matchgoods);
+            matchgoods.add(match);
         }
+        for (int i = 0; i < matches2.size(); i++) {
+            String good_code = matches2.get(i).getGoods_code();
+            Goods match = getGoodsByCode(corp_code,good_code);
+            String goods_image = match.getGoods_image();
+            if (goods_image != null && !goods_image.isEmpty()) {
+                match.setGoods_image(goods_image.split(",")[0]);
+            }
+            matchgoods.add(match);
+        }
+        goods.setMatchgoods(matchgoods);
+
         transter(goods);
         return goods;
     }
@@ -52,7 +79,27 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public String update(Goods goods) throws Exception {
+    public int insertGoods(Goods goods,String match_goods) throws Exception {
+        Date now = new Date();
+        String[] matches = match_goods.split(",");
+        for (int i = 0; i < matches.length; i++) {
+            String goods_code_match = matches[i];
+            GoodsMatch match = new GoodsMatch();
+            match.setCorp_code(goods.getCorp_code());
+            match.setGoods_code(goods.getGoods_code());
+            match.setGoods_code_match(goods_code_match);
+            match.setModified_date(Common.DATETIME_FORMAT.format(now));
+            match.setModifier(goods.getCreater());
+            match.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            match.setCreater(goods.getCreater());
+            goodsMapper.insertMatch(match);
+        }
+
+        return goodsMapper.insert(goods);
+    }
+
+    @Override
+    public String update(Goods goods,String match_goods) throws Exception {
         Goods old = this.goodsMapper.selectByPrimaryKey(goods.getId());
         if (goods.getCorp_code().equals(old.getCorp_code())) {
             if ((!old.getGoods_code().equals(goods.getGoods_code()))
@@ -61,6 +108,22 @@ public class GoodsServiceImpl implements GoodsService {
             } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
                 return "名称已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
+                goodsMapper.deleteMatch(goods.getCorp_code(),goods.getGoods_code());
+                Date now = new Date();
+                String[] matches = match_goods.split(",");
+                for (int i = 0; i < matches.length; i++) {
+                    String goods_code_match = matches[i];
+                    GoodsMatch match = new GoodsMatch();
+                    match.setCorp_code(goods.getCorp_code());
+                    match.setGoods_code(goods.getGoods_code());
+                    match.setGoods_code_match(goods_code_match);
+                    match.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    match.setModifier(goods.getModifier());
+                    match.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    match.setCreater(goods.getModifier());
+                    match.setIsactive(Common.IS_ACTIVE_Y);
+                    goodsMapper.insertMatch(match);
+                }
                 return Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
@@ -97,7 +160,7 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public List<Goods> selectBySearch(String corp_code, String search_value,String goods_code) throws Exception{
-        List<Goods> list = goodsMapper.selectMatchGoods(corp_code, search_value,goods_code,Common.IS_ACTIVE_Y);
+        List<Goods> list = goodsMapper.matchGoodsList(corp_code, search_value,goods_code,Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
             transter(list.get(i));
             String goods_image = list.get(i).getGoods_image();

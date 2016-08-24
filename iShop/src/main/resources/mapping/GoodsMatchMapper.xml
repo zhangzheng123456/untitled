@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.GoodsMapper">
+
+    <select id="selectMatchGoods1" resultType="com.bizvane.ishop.entity.GoodsMatch">
+        SELECT rgm.id,
+        rgm.goods_code_match,
+        rgm.corp_code,
+        dc.corp_name
+        FROM def_goods dg,def_corp dc,rel_goods_match rgm
+        WHERE dg.corp_code=dc.corp_code
+        AND dg.corp_code=rgm.corp_code
+        AND rgm.corp_code=#{corp_code}
+        AND dg.goods_code = rgm.goods_code
+        AND rgm.goods_code = #{goods_code}
+        AND dg.isactive='Y'
+        ORDER BY rgm.id DESC
+    </select>
+
+    <select id="selectMatchGoods2" resultType="com.bizvane.ishop.entity.GoodsMatch">
+        SELECT rgm.id,
+        rgm.goods_code,
+        rgm.corp_code,
+        dc.corp_name
+        FROM def_goods dg,def_corp dc,rel_goods_match rgm
+        WHERE dg.corp_code=dc.corp_code
+        AND dg.corp_code=rgm.corp_code
+        AND rgm.corp_code=#{corp_code}
+        AND dg.goods_code = rgm.goods_code_match
+        AND rgm.goods_code_match = #{goods_code}
+        AND dg.isactive='Y'
+        ORDER BY rgm.id DESC
+    </select>
+
+    <insert id="insertMatch" parameterType="com.bizvane.ishop.entity.GoodsMatch">
+        INSERT INTO rel_goods_match
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="goods_code!=null ">
+                goods_code,
+            </if>
+            <if test="goods_code_match!=null ">
+                goods_code_match,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="isactive!=null ">
+                isactive,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null ">
+                creater,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="goods_code!=null">
+                #{goods_code},
+            </if>
+            <if test="goods_code_match!=null ">
+                #{goods_code_match},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null ">
+                #{modifier},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateMatch" parameterType="com.bizvane.ishop.entity.GoodsMatch">
+        update DEF_GOODS
+        <trim prefix="set" suffixOverrides=",">
+            <if test="goods_code!=null">
+                goods_code=#{goods_code},
+            </if>
+            <if test="goods_name!=null">
+                goods_name=#{goods_name},
+            </if>
+            <if test="goods_image!=null">
+                goods_image=#{goods_image},
+            </if>
+            <if test="goods_price!=null">
+                goods_price=#{goods_price},
+            </if>
+            <if test="goods_time!=null">
+                goods_time=#{goods_time},
+            </if>
+            <if test="goods_quarter!=null">
+                goods_quarter=#{goods_quarter},
+            </if>
+            <if test="goods_wave!=null">
+                goods_wave=#{goods_wave},
+            </if>
+            <if test="match_goods!=null">
+                match_goods=#{match_goods},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="goods_description!=null">
+                goods_description=#{goods_description},
+            </if>
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="brand_code!=null">
+                brand_code=#{brand_code},
+            </if>
+        </trim>
+        where id=#{id}
+    </update>
+
+    <delete id="deleteMatch">
+        DELETE FROM
+        rel_goods_match
+        WHERE corp_code = #{corp_code}
+        AND (goods_code = #{goods_code}
+          OR goods_code_match = #{goods_code}
+        )
+    </delete>
+
+</mapper>
