@@ -290,7 +290,14 @@ jQuery(document).ready(function () {
                 $("#modify_time").val(msg.modified_date);
                 $("#modifier").val(msg.modifier);
                 $("#CORPNAME").attr("data-name", msg.corp_name);
-                
+                var wechat=msg.wechat;
+                for(var i=1;i<wechat.length;i++){
+                    $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'
+                        +'<input type="text" class="WXID" value='+wechat[i].app_id+'/>'
+                        +'<label style="width: 70px;;margin:15px 10px">公众号名称</label><input type="text" class="AppName" value='+wechat[i].app_name+'/>'
+                        +'<input type="text" disabled="true" value="未授权" style="width: 100px; margin-left: -8px;" id=""><span class="remove_input" onclick="removeselect(this)">删除</span>'
+                        +'</span>')
+                }
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (msg.isactive == "Y") {
                     input.checked = true;
