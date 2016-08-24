@@ -66,8 +66,9 @@ public class LuploadHelper {
      */
     public  static String getCellTypeForDate(Cell cellObject,String target_type) {
         String dateStr="";
-        DateCell cellValue   =   (DateCell)cellObject;
+
         if(cellObject.getType()== CellType.DATE){
+            DateCell cellValue   =   (DateCell)cellObject;
             Date dt   =   cellValue.getDate();
             SimpleDateFormat formatter   =null;
             if(target_type.equals("Y")){
@@ -78,11 +79,9 @@ public class LuploadHelper {
                 formatter =  new   SimpleDateFormat("yyyy-MM-dd");
             }
             dateStr  =  formatter.format(dt);
-        }else if(cellObject.getType()==CellType.NUMBER && cellValue.getDate().getYear() < 2099 && cellValue.getDate().getYear()>=2016){
+        }else if(cellObject.getType()==CellType.NUMBER && Integer.parseInt(cellObject.getContents().toString().trim()) < 2099 &&  Integer.parseInt(cellObject.getContents().toString().trim())>=2016){
           //  DateCell cellValue   =   (DateCell)cellObject;
-            Date dt   =   cellValue.getDate();
-            SimpleDateFormat formatter   = new   SimpleDateFormat("yyyy");
-            dateStr=formatter.format(dt);
+            dateStr=cellObject.getContents().toString().trim();
         }
         return dateStr;
     }
