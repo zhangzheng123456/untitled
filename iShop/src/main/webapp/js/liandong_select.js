@@ -149,6 +149,7 @@ function CDT(obj)//选择删选条件（按日、按周、按月、按年）
 		$(obj).children('.Week').hide();
 	}
 	$(obj).children('span').on('click',function(){
+		
 		var _index=$(this).children('div').html();
 		var li_index=$(this).children('ul').children('li');
 		for(var i=0;i<li_index.length;i++){
