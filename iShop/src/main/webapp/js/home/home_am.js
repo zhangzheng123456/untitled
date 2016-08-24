@@ -3,8 +3,8 @@ var myDate = new Date();
 var year=myDate.getFullYear();
 var month=myDate.getMonth()+1;
 var data=myDate.getDate();
-// var today=year+month+data;
-var today=20160824;
+var today=year+"-"+month+"-"+data;
+console.log(today);
 function storeRanking(a){//店铺排行
 	var param={};
 	param["time"]=a;
