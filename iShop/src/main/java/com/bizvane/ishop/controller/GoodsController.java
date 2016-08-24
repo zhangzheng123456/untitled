@@ -397,6 +397,7 @@ public class GoodsController {
                 }
             }
             Cell[] column4 = rs.getColumn(3);
+            Cell[] column6 = rs.getColumn(5);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
             for (int i = 3; i < column4.length; i++) {
                 Matcher matcher = pattern2.matcher(column4[i].getContents().toString().trim());
@@ -405,8 +406,14 @@ public class GoodsController {
                     int b = 5 / 0;
                     break;
                 }
+                if(!column6[i].getContents().toString().trim().equals("第一季度") && !column6[i].getContents().toString().trim().equals("第二季度")&&!column6[i].getContents().toString().trim().equals("第三季度")&&!column6[i].getContents().toString().trim().equals("第四季度")){
+                    result = "：第" + (i + 1) + "行商品季度输入有误";
+                    int b = 5 / 0;
+                    break;
+                }
             }
             Cell[] column5 = rs.getColumn(4);
+
             Pattern pattern5 = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
             for (int i = 3; i < column5.length; i++) {
                 String images = column5[i].getContents().toString().trim();
@@ -425,6 +432,8 @@ public class GoodsController {
                     }
                 }
             }
+
+
             Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column7 = rs.getColumn(7);
             for (int i = 3; i < column7.length; i++) {
