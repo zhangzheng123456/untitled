@@ -171,7 +171,7 @@ public class HomeController {
         DataBean dataBean = new DataBean();
         Map datalist = new HashMap<String, Data>();
         try {
-            String time_id;
+            String time_id = "";
             String area_code = "";
             String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -186,7 +186,7 @@ public class HomeController {
             String store_name = jsonObject.get("store_name").toString();
 
             if (jsonObject.has("time")) {
-                time_id = jsonObject.get("time").toString().replace("-","");
+                time_id = jsonObject.get("time").toString();
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
             }
