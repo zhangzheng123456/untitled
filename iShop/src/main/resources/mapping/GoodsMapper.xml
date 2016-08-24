@@ -11,7 +11,6 @@
         <result column="goods_time" property="goods_time"/>
         <result column="goods_quarter" property="goods_quarter"/>
         <result column="goods_wave" property="goods_wave"/>
-        <result column="match_goods" property="match_goods"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -36,7 +35,6 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
-        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
@@ -71,14 +69,13 @@
         ORDER BY g.id DESC
     </select>
 
-    <select id="selectMatchGoods" resultMap="GoodsInfo">
+    <select id="matchGoodsList" resultMap="GoodsInfo">
         SELECT g.id
         ,g.goods_code
         ,g.goods_name
         ,g.goods_image
         ,g.goods_quarter
         ,g.goods_wave
-        ,g.match_goods
         ,g.goods_description
         ,g.corp_code
         ,cp.corp_name
@@ -108,7 +105,6 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
-        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
@@ -151,7 +147,6 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
-        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
@@ -192,9 +187,6 @@
             </if>
             <if test="goods_wave!=null ">
                 goods_wave,
-            </if>
-            <if test="match_goods!=null">
-                match_goods,
             </if>
             <if test="modified_date!=null">
                 modified_date,
@@ -242,9 +234,6 @@
             </if>
             <if test="goods_wave!=null ">
                 #{goods_wave},
-            </if>
-            <if test="match_goods!=null ">
-                #{match_goods},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -297,9 +286,6 @@
             <if test="goods_wave!=null">
                 goods_wave=#{goods_wave},
             </if>
-            <if test="match_goods!=null">
-                match_goods=#{match_goods},
-            </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
@@ -344,7 +330,6 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
-        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
@@ -372,7 +357,6 @@
         ,g.goods_time
         ,g.goods_quarter
         ,g.goods_wave
-        ,g.match_goods
         ,g.modified_date
         ,g.modifier
         ,g.isactive
