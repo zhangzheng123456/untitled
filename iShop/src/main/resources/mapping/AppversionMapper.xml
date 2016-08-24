@@ -25,6 +25,7 @@
     SELECT *
     FROM def_app_version
     WHERE 1 = 1
+        AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
             ${entryKey}  LIKE concat('%', #{entryValue},'%')
         </foreach>
