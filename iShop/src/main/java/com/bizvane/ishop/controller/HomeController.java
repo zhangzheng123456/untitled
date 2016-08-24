@@ -122,7 +122,7 @@ public class HomeController {
         DataBean dataBean = new DataBean();
         try {
             String time_id;
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            String user_id = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -169,10 +169,11 @@ public class HomeController {
     @ResponseBody
     public String storeRanking(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        Map datalist = new HashMap<String, Data>();
         try {
             String time_id;
             String area_code = "";
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
 
@@ -189,9 +190,7 @@ public class HomeController {
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
             }
-            if (role_code.equals(Common.ROLE_GM)){
-                area_code = "";
-            }else if(role_code.equals(Common.ROLE_AM)){
+            if(role_code.equals(Common.ROLE_AM)){
                 if (jsonObject.has("area_code")) {
                     area_code = jsonObject.get("area_code").toString();
                 }else {
@@ -199,20 +198,19 @@ public class HomeController {
                     String[] area_codes = code.replace(Common.STORE_HEAD,"").split(",");
                     area_code = area_codes[0];
                 }
+                Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+                datalist.put(data_area_code.key, data_area_code);
             }
 
-            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
             Data data_store_name = new Data("store_name", store_name, ValueType.PARAM);
-            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
 
-            Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_time_id.key, data_time_id);
             datalist.put(data_store_name.key, data_store_name);
-            datalist.put(data_area_code.key, data_area_code);
 
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStoreRanking",datalist);
             logger.info("======"+dataBox.data.get("message").value);
@@ -238,7 +236,7 @@ public class HomeController {
         try {
             String time_id;
             String store_id;
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            String user_id = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -284,35 +282,74 @@ public class HomeController {
         return dataBean.getJsonStr();
     }
 
-    //导购主页面
-    @RequestMapping(value = "/staff", method = RequestMethod.GET)
+    //home2画面(折线图)
+    @RequestMapping(value = "/achInfo", method = RequestMethod.POST)
     @ResponseBody
-    public String staffPage(HttpServletRequest request) {
+    public String achInfo(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String user_id = request.getSession().getAttribute("user_id").toString();
+            String time_id;
+            String area_code = "";
+            String store_code = "";
+            String user_id = request.getSession().getAttribute("user_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
-            String store_code = request.getSession().getAttribute("store_code").toString();
-            store_code = store_code.substring(1,store_code.length()-1);
-            String time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            if (jsonObject.has("time")) {
+                time_id = jsonObject.get("time").toString();
+            }else {
+                time_id = Common.DATETIME_FORMAT_DAY.format(new Data());
+            }
+            if (jsonObject.has("store_code")){
+                store_code = jsonObject.get("store_code").toString();
+            }else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)){
+                store_code = request.getSession().getAttribute("store_code").toString();
+                String[] store_ids = store_code.replace(Common.STORE_HEAD,"").split(",");
+                store_code = store_ids[0];
+            }
+            if (jsonObject.has("area_code")){
+                area_code = jsonObject.get("area_code").toString();
+            }else if (role_code.equals(Common.ROLE_AM)){
+                area_code = request.getSession().getAttribute("area_code").toString();
+                String[] area_ids = area_code.replace(Common.STORE_HEAD,"").split(",");
+                area_code = area_ids[0];
+            }
 
             Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_store_code = new Data("store_code", store_code, ValueType.PARAM);
-            Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
+            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+            Data data_role_code = new Data("user_role", role_code, ValueType.PARAM);
+            Data data_time_id = new Data("date", time_id, ValueType.PARAM);
+
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_area_code.key, data_store_code);
+            datalist.put(data_role_code.key, data_store_code);
             datalist.put(data_time_id.key, data_time_id);
 
-            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.StaffACHVDashboard",datalist);
-            logger.info(dataBox.data.get("message").value);
-            String message = dataBox.data.get("message").value;
+            String[] date_types = new String[]{Common.TIME_TYPE_WEEK,Common.TIME_TYPE_MONTH,Common.TIME_TYPE_YEAR};
+            JSONObject object = new JSONObject();
+            for (int i = 0; i < date_types.length; i++) {
+                String date_type = date_types[i];
+                Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
+                datalist.put(data_date_type.key, data_date_type);
+                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysisInfo",datalist);
+                logger.info(dataBox.data.get("message").value);
+                String result = dataBox.data.get("message").value;
+                object.put(date_type,result);
+            }
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(message);
+            dataBean.setMessage(object.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -320,4 +357,80 @@ public class HomeController {
         }
         return dataBean.getJsonStr();
     }
+
+    //home1画面(业绩详细分析)
+    @RequestMapping(value = "/achAnalysis", method = RequestMethod.POST)
+    @ResponseBody
+    public String achAnalysis(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String time_id;
+            String area_code = "";
+            String store_code = "";
+            String user_id = request.getSession().getAttribute("user_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            if (jsonObject.has("time")) {
+                time_id = jsonObject.get("time").toString();
+            }else {
+                time_id = Common.DATETIME_FORMAT_DAY.format(new Data());
+            }
+            if (jsonObject.has("store_code")){
+                store_code = jsonObject.get("store_code").toString();
+            }else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)){
+                store_code = request.getSession().getAttribute("store_code").toString();
+                String[] store_ids = store_code.replace(Common.STORE_HEAD,"").split(",");
+                store_code = store_ids[0];
+            }
+            if (jsonObject.has("area_code")){
+                area_code = jsonObject.get("area_code").toString();
+            }else if (role_code.equals(Common.ROLE_AM)){
+                area_code = request.getSession().getAttribute("area_code").toString();
+                String[] area_ids = area_code.replace(Common.STORE_HEAD,"").split(",");
+                area_code = area_ids[0];
+            }
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_store_code = new Data("store_code", store_code, ValueType.PARAM);
+            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+            Data data_role_code = new Data("user_role", role_code, ValueType.PARAM);
+            Data data_time_id = new Data("date", time_id, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_area_code.key, data_store_code);
+            datalist.put(data_role_code.key, data_store_code);
+            datalist.put(data_time_id.key, data_time_id);
+
+            String[] date_types = new String[]{Common.TIME_TYPE_DAY,Common.TIME_TYPE_WEEK,Common.TIME_TYPE_MONTH,Common.TIME_TYPE_YEAR};
+            JSONObject object = new JSONObject();
+            for (int i = 0; i < date_types.length; i++) {
+                String date_type = date_types[i];
+                Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
+                datalist.put(data_date_type.key, data_date_type);
+                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysis",datalist);
+                logger.info("home1画面(业绩详细分析)"+dataBox.data.get("message").value);
+                String result = dataBox.data.get("message").value;
+                object.put(date_type,result);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(object.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 }
