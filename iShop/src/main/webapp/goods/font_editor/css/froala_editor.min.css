@@ -115,6 +115,7 @@ button {
 
 .froala-element {
     min-height: 180px;
+    max-height:250px;
     overflow-y: auto;
     overflow-x: hidden;
     position: relative;
