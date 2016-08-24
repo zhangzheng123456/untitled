@@ -2,7 +2,6 @@ var oc = new ObjectControl();
 $(function(){
     var _command="/menu";
     oc.postRequire("get", _command,"", "", function(data){
-        console.log(data);
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var index=0;
@@ -14,7 +13,6 @@ $(function(){
             for(index in message.menu){
                 var index_li=0;
                 p=message.menu[index];
-                console.log(p.functions);
                 if(p.functions!==''){
                     html +='<li>'
                     +'<a>'
