@@ -59,11 +59,10 @@ $(function(){
         });
     });
 });
-//退出按钮
-function login_out(){
-    var _command="/login_out";
-    oc.postRequire("get", _command,"", "", function(data){
-        console.log(data);
-        // window.location="/login.html";
-    });
-}
+//退出登录
+// $("#return").click(function(){
+//     var _command="/login_out";
+//     oc.postRequire("get", _command,"", "", function(data){
+//         // window.location="/login.html";
+//     });
+// })

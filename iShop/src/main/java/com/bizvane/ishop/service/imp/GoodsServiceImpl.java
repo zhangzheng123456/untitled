@@ -81,18 +81,20 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public int insertGoods(Goods goods,String match_goods) throws Exception {
         Date now = new Date();
-        String[] matches = match_goods.split(",");
-        for (int i = 0; i < matches.length; i++) {
-            String goods_code_match = matches[i];
-            GoodsMatch match = new GoodsMatch();
-            match.setCorp_code(goods.getCorp_code());
-            match.setGoods_code(goods.getGoods_code());
-            match.setGoods_code_match(goods_code_match);
-            match.setModified_date(Common.DATETIME_FORMAT.format(now));
-            match.setModifier(goods.getCreater());
-            match.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            match.setCreater(goods.getCreater());
-            goodsMapper.insertMatch(match);
+        if (!match_goods.equals("")) {
+            String[] matches = match_goods.split(",");
+            for (int i = 0; i < matches.length; i++) {
+                String goods_code_match = matches[i];
+                GoodsMatch match = new GoodsMatch();
+                match.setCorp_code(goods.getCorp_code());
+                match.setGoods_code(goods.getGoods_code());
+                match.setGoods_code_match(goods_code_match);
+                match.setModified_date(Common.DATETIME_FORMAT.format(now));
+                match.setModifier(goods.getCreater());
+                match.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                match.setCreater(goods.getCreater());
+                goodsMapper.insertMatch(match);
+            }
         }
 
         return goodsMapper.insert(goods);
@@ -110,19 +112,21 @@ public class GoodsServiceImpl implements GoodsService {
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
                 goodsMapper.deleteMatch(goods.getCorp_code(),goods.getGoods_code());
                 Date now = new Date();
-                String[] matches = match_goods.split(",");
-                for (int i = 0; i < matches.length; i++) {
-                    String goods_code_match = matches[i];
-                    GoodsMatch match = new GoodsMatch();
-                    match.setCorp_code(goods.getCorp_code());
-                    match.setGoods_code(goods.getGoods_code());
-                    match.setGoods_code_match(goods_code_match);
-                    match.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    match.setModifier(goods.getModifier());
-                    match.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    match.setCreater(goods.getModifier());
-                    match.setIsactive(Common.IS_ACTIVE_Y);
-                    goodsMapper.insertMatch(match);
+                if (!match_goods.equals("")) {
+                    String[] matches = match_goods.split(",");
+                    for (int i = 0; i < matches.length; i++) {
+                        String goods_code_match = matches[i];
+                        GoodsMatch match = new GoodsMatch();
+                        match.setCorp_code(goods.getCorp_code());
+                        match.setGoods_code(goods.getGoods_code());
+                        match.setGoods_code_match(goods_code_match);
+                        match.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        match.setModifier(goods.getModifier());
+                        match.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                        match.setCreater(goods.getModifier());
+                        match.setIsactive(Common.IS_ACTIVE_Y);
+                        goodsMapper.insertMatch(match);
+                    }
                 }
                 return Common.DATABEAN_CODE_SUCCESS;
             }
@@ -140,6 +144,10 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public int delete(int id) throws Exception {
+        Goods goods = getGoodsById(id);
+        if (goods != null){
+            goodsMapper.deleteMatch(goods.getCorp_code(),goods.getGoods_code());
+        }
         return goodsMapper.deleteByPrimaryKey(id);
     }
 
@@ -241,4 +249,5 @@ public class GoodsServiceImpl implements GoodsService {
         }
         return result;
     }
+
 }

@@ -79,11 +79,9 @@ public class LuploadHelper {
                 formatter =  new   SimpleDateFormat("yyyy-MM-dd");
             }
             dateStr  =  formatter.format(dt);
-        }else if(cellObject.getType()==CellType.NUMBER && Integer.parseInt(cellObject.getContents().toString()) < 2099 &&  Integer.parseInt(cellObject.getContents().toString())>=2016){
+        }else if(cellObject.getType()==CellType.NUMBER && Integer.parseInt(cellObject.getContents().toString().trim()) < 2099 &&  Integer.parseInt(cellObject.getContents().toString().trim())>=2016){
           //  DateCell cellValue   =   (DateCell)cellObject;
-            Date dt   =   new Date(cellObject.getContents().toString()+"/01/01");
-            SimpleDateFormat formatter   = new   SimpleDateFormat("yyyy");
-            dateStr=formatter.format(dt);
+            dateStr=cellObject.getContents().toString().trim();
         }
         return dateStr;
     }

@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.UserMapper">
+
+    <select id="selectByUserCode" resultType="com.bizvane.ishop.entity.UserQrcode">
+        SELECT
+        ruq.id,
+        qrcode,
+        qrcode,
+        rcw.app_name
+        FROM rel_user_qrcode ruq ,def_user du,rel_corp_wechat rcw
+        WHERE ruq.corp_code = du.corp_code
+        AND du.corp_code = rcw.corp_code
+        AND ruq.user_code = du.user_code
+        AND ruq.user_code=#{user_code}
+        AND ruq.corp_code=#{corp_code}
+        AND du.isactive = 'Y'
+    </select>
+
+    <select id="selectByUserApp" resultType="com.bizvane.ishop.entity.UserQrcode">
+        SELECT
+        ruq.id,
+        qrcode,
+        qrcode,
+        rcw.app_name
+        FROM rel_user_qrcode ruq ,def_user du,rel_corp_wechat rcw
+        WHERE ruq.corp_code = du.corp_code
+        AND du.corp_code = rcw.corp_code
+        AND ruq.user_code = du.user_code
+        AND ruq.user_code=#{user_code}
+        AND ruq.corp_code=#{corp_code}
+        AND rcw.app_id=#{app_id}
+        AND du.isactive = 'Y'
+    </select>
+
+    <delete id="deleteUserQrcode">
+        DELETE FROM
+        rel_user_qrcode
+        WHERE corp_code = #{corp_code}
+        AND user_code = #{user_code}
+    </delete>
+
+    <insert id="insertUserQrcode" parameterType="com.bizvane.ishop.entity.UserQrcode">
+        INSERT INTO rel_user_qrcode
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user_code!=null">
+                user_code,
+            </if>
+            <if test="app_id!=null">
+                app_id,
+            </if>
+            <if test="app_name!=null">
+                app_name,
+            </if>
+            <if test="qrcode!=null">
+                qrcode,
+            </if>
+            <if test="qrcode_content!=null">
+                qrcode_content,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="user_code!=null">
+                #{user_code},
+            </if>
+            <if test="app_id!=null">
+                #{app_id},
+            </if>
+            <if test="app_name!=null">
+                #{app_name},
+            </if>
+            <if test="qrcode!=null">
+                #{qrcode},
+            </if>
+            <if test="qrcode_content!=null">
+                #{qrcode_content},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateUserQrcode" parameterType="com.bizvane.ishop.entity.UserQrcode">
+        UPDATE rel_user_qrcode
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="user_code!=null">
+                user_code=#{user_code},
+            </if>
+            <if test="app_id!=null">
+                app_id=#{app_id},
+            </if>
+            <if test="app_name!=null">
+                app_name=#{app_name},
+            </if>
+            <if test="qrcode!=null">
+                qrcode=#{qrcode},
+            </if>
+            <if test="qrcode_content!=null">
+                qrcode_content=#{qrcode_content},
+            </if>
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+</mapper>

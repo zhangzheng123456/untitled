@@ -263,13 +263,7 @@ public class CorpController {
             String corp_id = jsonObject.get("id").toString();
             Corp corp = corpService.selectByCorpId(Integer.parseInt(corp_id), "","");
             List<CorpWechat> corpWechat = corpService.getWByCorp(corp.getCorp_code());
-            if (corpWechat.size()==0){
-                corp.setApp_id("");
-                corp.setIs_authorize(Common.IS_AUTHORIZE_N);
-            }else {
-                corp.setApp_id(corpWechat.get(0).getApp_id());
-                corp.setIs_authorize(corpWechat.get(0).getIs_authorize());
-            }
+            corp.setWechats(corpWechat);
             data = JSON.toJSONString(corp);
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
