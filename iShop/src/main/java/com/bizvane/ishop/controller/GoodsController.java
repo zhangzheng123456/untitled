@@ -406,11 +406,6 @@ public class GoodsController {
                     int b = 5 / 0;
                     break;
                 }
-                if(!column6[i].getContents().toString().trim().equals("第一季度") && !column6[i].getContents().toString().trim().equals("第二季度")&&!column6[i].getContents().toString().trim().equals("第三季度")&&!column6[i].getContents().toString().trim().equals("第四季度")){
-                    result = "：第" + (i + 1) + "行商品季度输入有误";
-                    int b = 5 / 0;
-                    break;
-                }
             }
             Cell[] column5 = rs.getColumn(4);
 
@@ -466,9 +461,14 @@ public class GoodsController {
                     String quarter = rs.getCell(j++, i).getContents().toString().trim();
                     if(quarter==null||quarter.equals("")) {
                         goods.setGoods_quarter("第一季度");
+                    }else if(!quarter.equals("第一季度") && !quarter.equals("第二季度") && !quarter.equals("第三季度") && !quarter.equals("第四季度")){
+                        result = "：第" + (i + 1) + "行商品季度输入有误";
+                        int b = 5 / 0;
+                        break;
                     }else{
                         goods.setGoods_quarter(quarter);
                     }
+
                     String wave = rs.getCell(j++, i).getContents().toString().trim();
                     if(wave==null||wave.equals("")){
                         goods.setGoods_wave("   ");
