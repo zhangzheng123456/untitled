@@ -59,6 +59,7 @@ $(function(){
         });
     });
 });
+
 //退出按钮
 function login_out(){
     var _command="/login_out";

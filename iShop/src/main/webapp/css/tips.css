@@ -324,4 +324,10 @@
 	background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
 	background-size: 30px;
 }
-//首页input框样式的变化
+#set_Time_ul li:hover{
+	padding:0;
+	margin:0;
+	background-color: #4a5f7c;
+	color: #ffffff;
+}
+/*首页input框样式的变化*/

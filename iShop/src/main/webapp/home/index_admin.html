@@ -10,6 +10,7 @@
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" href="../css/tips.css">
 </head>
 <body>
     <div id="wrapper">
@@ -214,8 +215,12 @@
                     </div>
                     <div class="col-lg-7">
                         <div class="customer_add_cart">
-                        <label class="cart_title">用户总数增长率</label><label class="rec_week">最近一周<i class="icon-ishop_8-02" style="color:#6cc1c8; margin-left:10px;"></i></label>
-                            <canvas id="canvas_circle" width="800"height="550">
+                        <label class="cart_title">用户总数增长率</label><label class="rec_week" id="set_time"><b style="font-weight: normal">最近一周</b><i class="icon-ishop_8-02" style="color:#6cc1c8; margin-left:10px;"></i></label>
+                            <ul  id="set_Time_ul" style="display:none; position: absolute;right: 20px;top:35px;background-color: #fff;width: 90px;border:0px solid #a9c9e2 ">
+                                <li style="height: 35px;line-height: 35px;padding-left: 5px;">最近一周</li>
+                                <li style="height: 35px;line-height: 35px;padding-left: 5px;">最近一月</li>
+                            </ul>
+                            <canvas id="canvas_circle" width="800" height="550">
                                 <p>Your browserdoes not support the canvas element!</p>
                             </canvas>
                             <span id="tip_note" style="display:none">
@@ -322,7 +327,7 @@
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-
+    <script src="/js/loading.js"></script>
     <script type="text/javascript" src="../js/home/home.js"></script>
     <script type="text/javascript" src="../js/home/home_getsys.js"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -357,7 +362,7 @@
         var perArr = [26,29,26,32,30,34,40];//顶点
         window.onresize=function(){
             init(perArr);
-        }
+        };
         window.onload = init(perArr);
     </script>
 
