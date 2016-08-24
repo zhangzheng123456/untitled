@@ -228,18 +228,34 @@
     </select>
 
     <select id="selectWByAppUserName" resultType="com.bizvane.ishop.entity.CorpWechat">
-        SELECT * FROM rel_corp_wechat
+        SELECT id,
+        app_id,
+        app_name,
+        corp_code,
+        is_authorize
+        FROM rel_corp_wechat
         WHERE app_user_name = #{app_user_name}
     </select>
 
     <select id="selectWByAppId" resultType="com.bizvane.ishop.entity.CorpWechat">
-        SELECT * FROM rel_corp_wechat
+        SELECT id,
+        app_id,
+        app_name,
+        corp_code,
+        is_authorize
+        FROM rel_corp_wechat
         WHERE app_id = #{app_id}
     </select>
 
     <select id="selectWByCorp" resultType="com.bizvane.ishop.entity.CorpWechat">
-        SELECT * FROM rel_corp_wechat
+        SELECT id,
+        app_id,
+        app_name,
+        corp_code,
+        is_authorize
+        FROM rel_corp_wechat
         WHERE corp_code = #{corp_code}
+        AND isactive = 'Y'
     </select>
 
     <insert id="insertCorpWechat" parameterType="com.bizvane.ishop.entity.CorpWechat">
@@ -338,4 +354,10 @@
         </trim>
         WHERE id = #{id};
     </update>
+
+    <delete id="deleteCorpWechat">
+        DELETE FROM
+        rel_corp_wechat
+        WHERE app_id = #{app_id}
+    </delete>
 </mapper>

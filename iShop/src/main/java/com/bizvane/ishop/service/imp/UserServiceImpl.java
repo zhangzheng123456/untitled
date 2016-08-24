@@ -216,6 +216,8 @@ public class UserServiceImpl implements UserService {
             user.setArea_code("");
             user.setArea_name("");
         }
+        List<UserQrcode> qrcodeList = userMapper.selectByUserCode(corp_code,user.getUser_code());
+        user.setQrcodeList(qrcodeList);
         return user;
     }
 
@@ -780,6 +782,8 @@ public class UserServiceImpl implements UserService {
             String qrcode_url = obj.get("url").toString();
             userQrcode = new UserQrcode();
             userQrcode.setApp_id(auth_appid);
+            userQrcode.setCorp_code(corp_code);
+            userQrcode.setUser_code(user_code);
             userQrcode.setQrcode(picture);
             userQrcode.setQrcode_content(qrcode_url);
             Date now = new Date();

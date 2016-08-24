@@ -10,8 +10,6 @@
         <result column="area_code" property="area_code"/>
         <result column="flg_tob" property="flg_tob"/>
         <result column="corp_code" property="corp_code"/>
-        <result column="app_id" property="app_id"/>
-        <result column="qrcode" property="qrcode"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -30,8 +28,6 @@
         store_name,
         brand_code,
         flg_tob,
-        def_store.app_id,
-        qrcode,
         def_store.area_code,
         def_store.corp_code,
         def_store.modified_date,
@@ -54,8 +50,6 @@
         store_name,
         brand_code,
         flg_tob,
-        def_store.app_id,
-        qrcode,
         def_store.area_code,
         def_store.corp_code,
         def_store.modified_date,
@@ -320,12 +314,6 @@
             <if test="corp_code!=null">
                 corp_code,
             </if>
-            <if test="qrcode!=null">
-                qrcode,
-            </if>
-            <if test="qrcode_content!=null">
-                qrcode_content,
-            </if>
             <if test="flg_tob!=null">
                 flg_tob,
             </if>
@@ -366,12 +354,6 @@
             </if>
             <if test="flg_tob!=null">
                 #{flg_tob},
-            </if>
-            <if test="qrcode_content!=null">
-                #{qrcode_content},
-            </if>
-            <if test="qrcode!=null">
-                #{qrcode},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -414,15 +396,6 @@
             </if>
             <if test="flg_tob!=null ">
                 flg_tob = #{flg_tob},
-            </if>
-            <if test="app_id!=null ">
-                app_id = #{app_id},
-            </if>
-            <if test="qrcode!=null ">
-                qrcode = #{qrcode},
-            </if>
-            <if test="qrcode_content!=null ">
-                qrcode_content = #{qrcode_content},
             </if>
             <if test="flg_tob!=null ">
                 flg_tob = #{flg_tob},

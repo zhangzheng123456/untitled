@@ -1,5 +1,7 @@
 package com.bizvane.ishop.entity;
 
+import java.util.List;
+
 public class User {
 	private int id;
 	//用户编号
@@ -61,6 +63,8 @@ public class User {
 	private Corp corp;
 	private Sign sign;
 	private String user_id;
+
+	private List<UserQrcode> qrcodeList;
 
 	public String getUser_id() {
 		return user_id;
@@ -330,5 +334,13 @@ public class User {
 
 	public void setCorp(Corp corp) {
 		this.corp = corp;
+	}
+
+	public List<UserQrcode> getQrcodeList() {
+		return qrcodeList;
+	}
+
+	public void setQrcodeList(List<UserQrcode> qrcodeList) {
+		this.qrcodeList = qrcodeList;
 	}
 }

@@ -717,36 +717,21 @@ public class StoreController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String store_code = jsonObject.get("store_code").toString();
-//            String app_user_name = jsonObject.get("app_user_name").toString();
-//            CorpWechat corpWechat = corpService.getCorpByAppUserName(app_user_name);
-            CorpWechat corpWechat = corpService.getWByCorp(corp_code).get(0);
+            String app_id = jsonObject.get("app_id").toString();
+            CorpWechat corpWechat = corpService.getCorpByAppId(app_id);
             if (corpWechat != null && corpWechat.getApp_id() != null && corpWechat.getApp_id() != "") {
                 String is_authorize = corpWechat.getIs_authorize();
                 String auth_appid = corpWechat.getApp_id();
                 if (is_authorize.equals("Y")) {
-                    String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
-                    String result = IshowHttpClient.get(url);
-                    logger.info("------------creatQrcode  result" + result);
-                    if (!result.startsWith("{")){
+                    String result = storeService.creatStoreQrcode(corp_code,store_code,auth_appid,user_id);
+                    if (result.equals(Common.DATABEAN_CODE_ERROR)){
                         dataBean.setId(id);
                         dataBean.setMessage("生成二维码失败");
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
                     }
-                    JSONObject obj = new JSONObject(result);
-                    String picture = obj.get("picture").toString();
-                    String qrcode_url = obj.get("url").toString();
-                    Store store = storeService.getStoreByCode(corp_code, store_code, "");
-                    store.setApp_id(auth_appid);
-                    store.setQrcode(picture);
-                    store.setQrcode_content(qrcode_url);
-                    Date now = new Date();
-                    store.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    store.setModifier(user_id);
-                    logger.info("------------creatQrcode  update store---");
-                    storeService.updateStore(store);
                     dataBean.setId(id);
-                    dataBean.setMessage(picture);
+                    dataBean.setMessage(result);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     return dataBean.getJsonStr();
                 }
@@ -779,39 +764,24 @@ public class StoreController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            String auth_appid = jsonObject.get("app_id").toString();
             JSONArray list = JSONArray.parseArray(jsonObject.get("list").toString());
+            CorpWechat corpWechat = corpService.getCorpByAppId(auth_appid);
+
             for (int i = 0; i < list.size(); i++) {
                 JSONObject json = new JSONObject(list.get(i).toString());
                 String corp_code = json.get("corp_code").toString();
                 String store_code = json.get("store_code").toString();
-//                CorpWechat corpWechat = corpService.getCorpByAppUserName(app_user_name);
-                List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
-                if (corpWechats.size() > 0) {
-                    CorpWechat corpWechat = corpWechats.get(0);
-                    String auth_appid = corpWechat.getApp_id();
+                if (corpWechat.getCorp_code().equals(corp_code)) {
                     String is_authorize = corpWechat.getIs_authorize();
                     if (is_authorize.equals("Y")) {
-                        String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
-                        String result = IshowHttpClient.get(url);
-                        logger.info("------------creatQrcode  result" + result);
-                        if (!result.startsWith("{")){
+                        String result = storeService.creatStoreQrcode(corp_code,store_code,auth_appid,user_code);
+                        if (result.equals(Common.DATABEAN_CODE_ERROR)){
                             dataBean.setId(id);
                             dataBean.setMessage("生成二维码失败");
                             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                             return dataBean.getJsonStr();
                         }
-                        JSONObject obj = new JSONObject(result);
-                        String picture = obj.get("picture").toString();
-                        String qrcode_url = obj.get("url").toString();
-                        Store store = storeService.getStoreByCode(corp_code, store_code, "");
-                        store.setApp_id(auth_appid);
-                        store.setQrcode(picture);
-                        store.setQrcode_content(qrcode_url);
-                        Date now = new Date();
-                        store.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        store.setModifier(user_code);
-                        logger.info("------------creatQrcode  update store");
-                        storeService.updateStore(store);
                     }else {
                         dataBean.setId(id);
                         dataBean.setMessage(corp_code + "企业未授权,生成二维码中断");

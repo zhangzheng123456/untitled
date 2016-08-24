@@ -1,5 +1,7 @@
 package com.bizvane.ishop.entity;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/5/19.
  */
@@ -18,12 +20,12 @@ public class Store {
     private String flg_tob;
     //公司编号
     private String corp_code;
-    //app_id
-    private String app_id;
-    //二维码图片地址
-    private String qrcode;
-    //二维码图片地址
-    private String qrcode_content;
+//    //app_id
+//    private String app_id;
+//    //二维码图片地址
+//    private String qrcode;
+//    //二维码图片地址
+//    private String qrcode_content;
     //修改时间
     private String modified_date;
     //修改人
@@ -48,6 +50,7 @@ public class Store {
 
     private Area area;
 
+    private List<StoreQrcode> qrcodeList;
     public Store(){}
 
     public Store(int id){
@@ -116,29 +119,29 @@ public class Store {
         this.corp_code = corp_code;
     }
 
-    public String getApp_id() {
-        return app_id;
-    }
-
-    public void setApp_id(String app_id) {
-        this.app_id = app_id;
-    }
-
-    public String getQrcode() {
-        return qrcode;
-    }
-
-    public void setQrcode(String qrcode) {
-        this.qrcode = qrcode;
-    }
-
-    public String getQrcode_content() {
-        return qrcode_content;
-    }
-
-    public void setQrcode_content(String qrcode_content) {
-        this.qrcode_content = qrcode_content;
-    }
+//    public String getApp_id() {
+//        return app_id;
+//    }
+//
+//    public void setApp_id(String app_id) {
+//        this.app_id = app_id;
+//    }
+//
+//    public String getQrcode() {
+//        return qrcode;
+//    }
+//
+//    public void setQrcode(String qrcode) {
+//        this.qrcode = qrcode;
+//    }
+//
+//    public String getQrcode_content() {
+//        return qrcode_content;
+//    }
+//
+//    public void setQrcode_content(String qrcode_content) {
+//        this.qrcode_content = qrcode_content;
+//    }
 
     public String getModified_date() {
         return modified_date;
@@ -234,5 +237,13 @@ public class Store {
 
     public void setIs_this_area(String is_this_area) {
         this.is_this_area = is_this_area;
+    }
+
+    public List<StoreQrcode> getQrcodeList() {
+        return qrcodeList;
+    }
+
+    public void setQrcodeList(List<StoreQrcode> qrcodeList) {
+        this.qrcodeList = qrcodeList;
     }
 }

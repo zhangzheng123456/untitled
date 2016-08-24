@@ -1,48 +1,48 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bizvane.ishop.dao.UserMapper">
+<mapper namespace="com.bizvane.ishop.dao.StoreMapper">
 
-    <select id="selectByUserCode" resultType="com.bizvane.ishop.entity.UserQrcode">
+    <select id="selectByStoreCode" resultType="com.bizvane.ishop.entity.StoreQrcode">
         SELECT
-        ruq.id,
-        ruq.qrcode,
+        rsq.id,
+        rsq.qrcode,
         rcw.app_name
-        FROM rel_user_qrcode ruq ,def_user du,rel_corp_wechat rcw
-        WHERE ruq.corp_code = du.corp_code
-        AND du.corp_code = rcw.corp_code
-        AND ruq.user_code = du.user_code
-        AND ruq.user_code=#{user_code}
-        AND ruq.corp_code=#{corp_code}
-        AND du.isactive = 'Y'
+        FROM rel_store_qrcode rsq ,def_store ds,rel_corp_wechat rcw
+        WHERE rsq.corp_code = ds.corp_code
+        AND ds.corp_code = rcw.corp_code
+        AND rsq.store_code = ds.store_code
+        AND rsq.store_code=#{store_code}
+        AND rsq.corp_code=#{corp_code}
+        AND ds.isactive = 'Y'
     </select>
 
-    <select id="selectByUserApp" resultType="com.bizvane.ishop.entity.UserQrcode">
-        SELECT
-        ruq.id,
-        ruq.qrcode,
+    <select id="selectByStoreApp" resultType="com.bizvane.ishop.entity.StoreQrcode">
+         SELECT
+        rsq.id,
+        rsq.qrcode,
         rcw.app_name
-        FROM rel_user_qrcode ruq ,def_user du,rel_corp_wechat rcw
-        WHERE ruq.corp_code = du.corp_code
-        AND du.corp_code = rcw.corp_code
-        AND ruq.user_code = du.user_code
-        AND ruq.user_code=#{user_code}
-        AND ruq.corp_code=#{corp_code}
+        FROM rel_store_qrcode rsq ,def_store ds,rel_corp_wechat rcw
+        WHERE rsq.corp_code = ds.corp_code
+        AND ds.corp_code = rcw.corp_code
+        AND rsq.store_code = ds.store_code
+        AND rsq.store_code=#{store_code}
+        AND rsq.corp_code=#{corp_code}
         AND rcw.app_id=#{app_id}
-        AND du.isactive = 'Y'
+        AND ds.isactive = 'Y'
     </select>
 
-    <delete id="deleteUserQrcode">
+    <delete id="deleteStoreQrcode">
         DELETE FROM
-        rel_user_qrcode
+        rel_store_qrcode
         WHERE corp_code = #{corp_code}
-        AND user_code = #{user_code}
+        AND store_code = #{store_code}
     </delete>
 
-    <insert id="insertUserQrcode" parameterType="com.bizvane.ishop.entity.UserQrcode">
-        INSERT INTO rel_user_qrcode
+    <insert id="insertStoreQrcode" parameterType="com.bizvane.ishop.entity.StoreQrcode">
+        INSERT INTO rel_store_qrcode
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="user_code!=null">
-                user_code,
+            <if test="store_code!=null">
+                store_code,
             </if>
             <if test="app_id!=null">
                 app_id,
@@ -76,8 +76,8 @@
             </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
-            <if test="user_code!=null">
-                #{user_code},
+            <if test="store_code!=null">
+                #{store_code},
             </if>
             <if test="app_id!=null">
                 #{app_id},
@@ -112,11 +112,11 @@
         </trim>
     </insert>
 
-    <update id="updateUserQrcode" parameterType="com.bizvane.ishop.entity.UserQrcode">
-        UPDATE rel_user_qrcode
+    <update id="updateStoreQrcode" parameterType="com.bizvane.ishop.entity.StoreQrcode">
+        UPDATE rel_store_qrcode
         <trim prefix="SET" suffixOverrides=",">
-            <if test="user_code!=null">
-                user_code=#{user_code},
+            <if test="store_code!=null">
+                store_code=#{store_code},
             </if>
             <if test="app_id!=null">
                 app_id=#{app_id},

@@ -135,18 +135,23 @@ public class CorpServiceImpl implements CorpService {
                     corpWechat.setIsactive(Common.IS_ACTIVE_Y);
                     corpMapper.insertCorpWechat(corpWechat);
                 }else {
-                    corpWechat.setApp_name(object.get("app_name").toString());
-                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    corpWechat.setModifier(user_id);
-                    corpMapper.updateCorpWechat(corpWechat);
+                    if (corpWechat.getCorp_code().equals(corp_code)) {
+                        corpWechat.setApp_name(object.get("app_name").toString());
+                        corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        corpWechat.setModifier(user_id);
+                        corpMapper.updateCorpWechat(corpWechat);
+                    }else {
+                        result = "app_id与别家重复，请检查";
+                    }
                 }
             }
             List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
             for (int i = 0; i < corpWechats.size(); i++) {
                 if (!app_ids.contains(corpWechats.get(i).getApp_id())){
-                    CorpWechat relation = corpWechats.get(i);
-                    relation.setIsactive(Common.IS_ACTIVE_N);
-                    corpMapper.updateCorpWechat(relation);
+//                    CorpWechat relation = corpWechats.get(i);
+//                    relation.setIsactive(Common.IS_ACTIVE_N);
+//                    corpMapper.updateCorpWechat(relation);
+                    corpMapper.deleteCorpWechat(corpWechats.get(i).getApp_id());
                 }
             }
 //            if (!jsonObject.get("wechat").toString().equals("")){
