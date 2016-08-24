@@ -170,7 +170,7 @@ public class HomeController {
     public String storeRanking(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String time_id;
+            String time_id = "";
             String area_code = "";
             String user_id = request.getSession().getAttribute("user_id").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -185,7 +185,7 @@ public class HomeController {
             String store_name = jsonObject.get("store_name").toString();
 
             if (jsonObject.has("time")) {
-                time_id = jsonObject.get("time").toString().replace("-","");
+                time_id = jsonObject.get("time").toString();
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
             }
