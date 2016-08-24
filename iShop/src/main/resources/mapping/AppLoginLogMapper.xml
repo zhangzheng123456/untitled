@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.AppLoginLogMapper">
-    <select id="selectAllAppLoginLog" resultType="com.bizvane.ishop.entity.AppLoginLogMapper">
+    <select id="selectAllAppLoginLog" resultType="com.bizvane.ishop.entity.AppLoginLog">
       SELECT acc_app_login_log.ID,
       acc_app_login_log.PLATFORM,
       acc_app_login_log.USER_NAME,

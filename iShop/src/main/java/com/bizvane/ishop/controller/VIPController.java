@@ -427,12 +427,12 @@ public class VIPController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                    if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
@@ -441,13 +441,13 @@ public class VIPController {
                 }
             }
                 for (int i = 3; i < column3.length; i++) {
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                     if (corp == null) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -464,7 +464,7 @@ public class VIPController {
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                String existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString(), column[i].getContents().toString());
+                String existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim());
                 if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
                     result = "：第" + (i + 1) + "列的会员标签名称已存在";
                     int b = 5 / 0;
@@ -474,19 +474,19 @@ public class VIPController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     VipLabel vipLabel = new VipLabel();
-                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     if(!role_code.equals(Common.ROLE_SYS)){
                         vipLabel.setCorp_code(corp_code);
                     }else{
                         vipLabel.setCorp_code(cellCorp);
                     }
-                    vipLabel.setLabel_name(rs.getCell(j++, i).getContents());
+                    vipLabel.setLabel_name(rs.getCell(j++, i).getContents().toString().trim());
                     if (role_code.equals(Common.ROLE_SYS)) {
                         vipLabel.setLabel_type("sys");
                     } else {
                         vipLabel.setLabel_type("org");
                     }
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
                         vipLabel.setIsactive("N");
                     } else {
                         vipLabel.setIsactive("Y");

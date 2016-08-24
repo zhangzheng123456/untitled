@@ -765,12 +765,12 @@ public class GroupController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i=3;i<column3.length;i++){
-                    if(!column3[i].getContents().toString().equals(corp_code)){
+                    if(!column3[i].getContents().toString().trim().equals(corp_code)){
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
@@ -779,13 +779,13 @@ public class GroupController {
                 }
             }
             for (int i = 3; i < column3.length; i++) {
-                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (corp == null) {
                     result = "：第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
@@ -795,7 +795,7 @@ public class GroupController {
             }
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
-                if (!column2[i].getContents().toString().equals("R2000") && !column2[i].getContents().toString().equals("R3000") && !column2[i].getContents().toString().equals("R4000")) {
+                if (!column2[i].getContents().toString().trim().equals("R2000") && !column2[i].getContents().toString().trim().equals("R3000") && !column2[i].getContents().toString().trim().equals("R4000")) {
                     result = "：第" + (i + 1) + "行角色编号有误";
                     int b = 5 / 0;
                     break;
@@ -814,13 +814,13 @@ public class GroupController {
             Cell[] column = rs.getColumn(2);
             Pattern pattern = Pattern.compile("G\\d{4}");
             for (int i = 3; i < column.length; i++) {
-                Matcher matcher = pattern.matcher(column[i].getContents().toString());
+                Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行群组编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
-                Group group = groupService.selectByCode(column3[i].getContents().toString(), column[i].getContents().toString(), "");
+                Group group = groupService.selectByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(), "");
                 if (group != null) {
                     result = "：第" + (i + 1) + "行群组编号已存在";
                     int b = 5 / 0;
@@ -829,7 +829,7 @@ public class GroupController {
             }
             Cell[] column1 = rs.getColumn(3);
             for (int i = 3; i < column1.length; i++) {
-                Group group = groupService.selectByName(column3[i].getContents().toString(), column1[i].getContents().toString(), "");
+                Group group = groupService.selectByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), "");
                 if (group != null) {
                     result = "：第" + (i + 1) + "行群组名称已存在";
                     int b = 5 / 0;
@@ -839,16 +839,16 @@ public class GroupController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Group group = new Group();
-                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     if(!role_code.equals(Common.ROLE_SYS)){
                         group.setCorp_code(corp_code);
                     }else{
                         group.setCorp_code(cellCorp);
                     }
-                    group.setRole_code(rs.getCell(j++, i).getContents());
-                    group.setGroup_code(rs.getCell(j++, i).getContents());
-                    group.setGroup_name(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    group.setRole_code(rs.getCell(j++, i).getContents().toString().trim());
+                    group.setGroup_code(rs.getCell(j++, i).getContents().toString().trim());
+                    group.setGroup_name(rs.getCell(j++, i).getContents().toString().trim());
+                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
                         group.setIsactive("N");
                     } else {
                         group.setIsactive("Y");

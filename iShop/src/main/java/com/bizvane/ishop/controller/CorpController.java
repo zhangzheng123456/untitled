@@ -541,13 +541,13 @@ public class CorpController {
             Cell[] column = rs.getColumn(0);
             Pattern pattern = Pattern.compile("C\\d{5}");
             for (int i = 3; i < column.length; i++) {
-                Matcher matcher = pattern.matcher(column[i].getContents().toString());
+                Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
-                Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Corp corp = corpService.selectByCorpId(0, column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (corp != null) {
                     result = "：第" + (i + 1) + "行企业编号已存在";
                     int b = 5 / 0;
@@ -557,7 +557,7 @@ public class CorpController {
             Cell[] column4 = rs.getColumn(4);
             Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
             for (int i = 3; i < column4.length; i++) {
-                Matcher matcher = pattern4.matcher(column4[i].getContents().toString());
+                Matcher matcher = pattern4.matcher(column4[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行电话格式有误";
                     int b = 5 / 0;
@@ -566,7 +566,7 @@ public class CorpController {
             }
             Cell[] column1 = rs.getColumn(1);
             for (int i = 3; i < column1.length; i++) {
-                String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                     result = "：第" + (i + 1) + "行企业名称已存在";
                     int b = 5 / 0;
@@ -576,12 +576,12 @@ public class CorpController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Corp corp = new Corp();
-                    corp.setCorp_code(rs.getCell(j++, i).getContents());
-                    corp.setCorp_name(rs.getCell(j++, i).getContents());
-                    corp.setAddress(rs.getCell(j++, i).getContents());
-                    corp.setContact(rs.getCell(j++, i).getContents());
-                    corp.setContact_phone(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    corp.setCorp_code(rs.getCell(j++, i).getContents().toString().trim());
+                    corp.setCorp_name(rs.getCell(j++, i).getContents().toString().trim());
+                    corp.setAddress(rs.getCell(j++, i).getContents().toString().trim());
+                    corp.setContact(rs.getCell(j++, i).getContents().toString().trim());
+                    corp.setContact_phone(rs.getCell(j++, i).getContents().toString().trim());
+                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
                         corp.setIsactive("N");
                     } else {
                         corp.setIsactive("Y");

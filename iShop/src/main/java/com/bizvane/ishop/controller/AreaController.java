@@ -588,12 +588,12 @@ public class AreaController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                    if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
@@ -602,13 +602,13 @@ public class AreaController {
                 }
             }
                 for (int i = 3; i < column3.length; i++) {
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                     if (corp == null) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -638,7 +638,7 @@ public class AreaController {
 //                    int b = 5 / 0;
 //                    break;
 //                }
-                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (area != null) {
                     result = "：第" + (i + 1) + "行区域编号已存在";
                     int b = 5 / 0;
@@ -647,7 +647,7 @@ public class AreaController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                Area area = areaService.getAreaByName(column3[i].getContents().toString(), column1[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Area area = areaService.getAreaByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (area != null) {
                     result = "：第" + (i + 1) + "行区域名称已存在";
                     int b = 5 / 0;
@@ -657,15 +657,15 @@ public class AreaController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Area area = new Area();
-                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     if(!role_code.equals(Common.ROLE_SYS)){
                         area.setCorp_code(corp_code);
                     }else{
                         area.setCorp_code(cellCorp);
                     }
-                    area.setArea_code(rs.getCell(j++, i).getContents());
-                    area.setArea_name(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    area.setArea_code(rs.getCell(j++, i).getContents().toString().trim());
+                    area.setArea_name(rs.getCell(j++, i).getContents().toString().trim());
+                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
                         area.setIsactive("N");
                     } else {
                         area.setIsactive("Y");

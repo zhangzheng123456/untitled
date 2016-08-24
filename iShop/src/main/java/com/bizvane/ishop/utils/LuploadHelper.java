@@ -50,9 +50,9 @@ public class LuploadHelper {
         String result="";
         LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
         for (Cell cell: cells) {
-            Integer num = map.get(cell.getContents().toString());
+            Integer num = map.get(cell.getContents().toString().trim());
             num = null == num ? 1 : num + 1;
-            map.put(cell.getContents().toString(), num);
+            map.put(cell.getContents().toString().trim(), num);
         }
         if (cells.length != map.size())
         {
@@ -90,7 +90,7 @@ public class LuploadHelper {
         for (int i = 1; i < rsRows; i++) { //统计行中为空的单元格数
             nullCellNum = 0;
             for (int j = 0; j < rsCols; j++) {
-                String val = sheet.getCell(0, i).getContents();
+                String val = sheet.getCell(0, i).getContents().toString().trim();
                 val = StringUtils.trimToEmpty(val);
                 if (StringUtils.isBlank(val))
                     nullCellNum++;

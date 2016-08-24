@@ -491,12 +491,12 @@ public class StoreAchvGoalController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                    if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
@@ -505,13 +505,13 @@ public class StoreAchvGoalController {
                 }
             }
                 for (int i = 3; i < column3.length; i++) {
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                     if (corp == null) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -522,7 +522,7 @@ public class StoreAchvGoalController {
 
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
-                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column2[i].getContents().toString(), "");
+                Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), column2[i].getContents().toString().trim(), "");
                 if (store == null) {
                     result = "：第" + (i + 1) + "行店铺编号不存在";
                     int b = 5 / 0;
@@ -532,7 +532,7 @@ public class StoreAchvGoalController {
             Cell[] column1 = rs.getColumn(2);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
             for (int i = 3; i < column1.length; i++) {
-                Matcher matcher = pattern2.matcher(column1[i].getContents().toString());
+                Matcher matcher = pattern2.matcher(column1[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行业绩目标输入有误";
                     int b = 5 / 0;
@@ -541,7 +541,7 @@ public class StoreAchvGoalController {
             }
             Cell[] column = rs.getColumn(3);
             for (int i = 3; i < column.length; i++) {
-                if (!column[i].getContents().toString().equals("D") && !column[i].getContents().toString().equals("W") && !column[i].getContents().toString().equals("M") && !column[i].getContents().toString().equals("Y")) {
+                if (!column[i].getContents().toString().trim().equals("D") && !column[i].getContents().toString().trim().equals("W") && !column[i].getContents().toString().trim().equals("M") && !column[i].getContents().toString().trim().equals("Y")) {
                     result = "：第" + (i + 1) + "行的业绩日期类型缩写有误";
                     int b = 5 / 0;
                     break;
@@ -551,15 +551,15 @@ public class StoreAchvGoalController {
                 for (int j = 0; j < clos; j++) {
 
                     StoreAchvGoal storeAchvGoal = new StoreAchvGoal();
-                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     if(!role_code.equals(Common.ROLE_SYS)){
                         storeAchvGoal.setCorp_code(corp_code);
                     }else{
                         storeAchvGoal.setCorp_code(cellCorp);
                     }
-                    storeAchvGoal.setStore_code(rs.getCell(j++, i).getContents());
-                    storeAchvGoal.setTarget_amount(rs.getCell(j++, i).getContents());
-                    String target_type = rs.getCell(j++, i).getContents().toString();
+                    storeAchvGoal.setStore_code(rs.getCell(j++, i).getContents().toString().trim());
+                    storeAchvGoal.setTarget_amount(rs.getCell(j++, i).getContents().toString().trim());
+                    String target_type = rs.getCell(j++, i).getContents().toString().trim();
                     storeAchvGoal.setTime_type(target_type);
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
                     if (target_type.equals(Common.TIME_TYPE_WEEK)) {
@@ -568,7 +568,7 @@ public class StoreAchvGoalController {
                     } else {
                         storeAchvGoal.setTarget_time(cellTypeForDate);
                     }
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
                         storeAchvGoal.setIsactive("N");
                     } else {
                         storeAchvGoal.setIsactive("Y");

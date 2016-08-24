@@ -341,12 +341,12 @@ public class GoodsController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i = 3; i < column3.length; i++) {
-                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                    if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
@@ -355,13 +355,13 @@ public class GoodsController {
                 }
             }
             for (int i = 3; i < column3.length; i++) {
-                Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
-                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (corp == null) {
                     result = "：第" + (i + 1) + "行企业编号不存在";
                     int b = 5 / 0;
@@ -380,7 +380,7 @@ public class GoodsController {
             }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
-                String goodsCodeExist = goodsService.goodsCodeExist(column3[i].getContents().toString(), column[i].getContents().toString());
+                String goodsCodeExist = goodsService.goodsCodeExist(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim());
                 if (goodsCodeExist.contains(Common.DATABEAN_CODE_ERROR)) {
                     result = "：第" + (i + 1) + "行商品编号已存在";
                     int b = 5 / 0;
@@ -389,7 +389,7 @@ public class GoodsController {
             }
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString(), column1[i].getContents().toString());
+                String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim());
                 if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
                     result = "：第" + (i + 1) + "行商品名称已存在";
                     int b = 5 / 0;
@@ -399,7 +399,7 @@ public class GoodsController {
             Cell[] column4 = rs.getColumn(3);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
             for (int i = 3; i < column4.length; i++) {
-                Matcher matcher = pattern2.matcher(column4[i].getContents().toString());
+                Matcher matcher = pattern2.matcher(column4[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行商品价格输入有误";
                     int b = 5 / 0;
@@ -409,7 +409,7 @@ public class GoodsController {
             Cell[] column5 = rs.getColumn(4);
             Pattern pattern5 = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
             for (int i = 3; i < column5.length; i++) {
-                String images = column5[i].getContents().toString();
+                String images = column5[i].getContents().toString().trim();
                 String[] splitImages = images.split(",");
                 if(splitImages.length>5){
                     result = "：第"+(i+1)+"行上传图片数量过多,上限5张";
@@ -428,13 +428,13 @@ public class GoodsController {
             Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column7 = rs.getColumn(7);
             for (int i = 3; i < column7.length; i++) {
-                Matcher matcher = pattern.matcher(column7[i].getContents().toString());
+                Matcher matcher = pattern.matcher(column7[i].getContents().toString().trim());
                 if (column7[i].getContents().toString()==null || matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行品牌编号格式有误";
                     int b = 5 / 0;
                     break;
                 }
-                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column7[i].getContents().toString());
+                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 if (brand == null) {
                     result = "：第" + (i + 1) + "行品牌编号不存在";
                     int b = 5 / 0;
@@ -444,29 +444,29 @@ public class GoodsController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
-                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     if(!role_code.equals(Common.ROLE_SYS)){
                         goods.setCorp_code(corp_code);
                     }else{
                         goods.setCorp_code(cellCorp);
                     }
-                    goods.setGoods_code(rs.getCell(j++, i).getContents());
-                    goods.setGoods_name(rs.getCell(j++, i).getContents());
-                    goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString()));
-                    goods.setGoods_image(rs.getCell(j++, i).getContents().toString()+"  ");
-                    String quarter = rs.getCell(j++, i).getContents().toString();
+                    goods.setGoods_code(rs.getCell(j++, i).getContents().toString().trim());
+                    goods.setGoods_name(rs.getCell(j++, i).getContents().toString().trim());
+                    goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString().trim()));
+                    goods.setGoods_image(rs.getCell(j++, i).getContents().toString().trim()+"  ");
+                    String quarter = rs.getCell(j++, i).getContents().toString().trim();
                     if(quarter==null||quarter.equals("")) {
                         goods.setGoods_quarter("第一季度");
                     }else{
                         goods.setGoods_quarter(quarter);
                     }
-                    String wave = rs.getCell(j++, i).getContents().toString();
+                    String wave = rs.getCell(j++, i).getContents().toString().trim();
                     if(wave==null||wave.equals("")){
                         goods.setGoods_wave("   ");
                     }else{
                         goods.setGoods_wave(wave);
                     }
-                    String brand_code = rs.getCell(j++, i).getContents().toString();
+                    String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                     if(brand_code==null || brand_code.equals("")){
                         result = "：第" + (i + 1) + "行品牌编号格式有误";
                         int b = 5 / 0;
@@ -477,7 +477,7 @@ public class GoodsController {
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
                     goods.setGoods_time(cellTypeForDate);
                     goods.setGoods_description(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
                         goods.setIsactive("N");
                     } else {
                         goods.setIsactive("Y");

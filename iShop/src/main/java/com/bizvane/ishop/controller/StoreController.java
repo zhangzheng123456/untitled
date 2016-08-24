@@ -997,12 +997,12 @@ public class StoreController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if (!column3[i].getContents().toString().equals(corp_code)) {
+                    if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
                         break;
                     }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
@@ -1011,13 +1011,13 @@ public class StoreController {
                 }
             }
                 for (int i = 3; i < column3.length; i++) {
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString());
+                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                     if (corp == null) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -1041,7 +1041,7 @@ public class StoreController {
                 int b = 5 / 0;
             }
             for (int i = 3; i < column.length; i++) {
-                Store store = storeService.getStoreByCode(column3[i].getContents().toString(), column[i].getContents().toString(), Common.IS_ACTIVE_Y);
+                Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (store != null) {
                     result = "：第" + (i + 1) + "行店铺编号已存在";
                     int b = 5 / 0;
@@ -1050,7 +1050,7 @@ public class StoreController {
             }
 
             for (int i = 3; i < column1.length; i++) {
-                Store store = storeService.getStoreByName(column3[i].getContents().toString(), column1[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Store store = storeService.getStoreByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (store != null) {
                     result = "：第" + (i + 1) + "行店铺名称已存在";
                     int b = 5 / 0;
@@ -1059,7 +1059,7 @@ public class StoreController {
             }
             Pattern pattern = Pattern.compile("B\\d{4}");
             for (int i = 3; i < column5.length; i++) {
-                String brands = column5[i].getContents().toString();
+                String brands = column5[i].getContents().toString().trim();
                 String[] splitBrands = brands.split(",");
                 for (int j=0;j<splitBrands.length;j++) {
                     Matcher matcher = pattern.matcher(splitBrands[j]);
@@ -1068,7 +1068,7 @@ public class StoreController {
                         int b = 5 / 0;
                         break;
                     }
-                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString(), column5[i].getContents().toString());
+                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column5[i].getContents().toString().trim());
                     if (brand == null) {
                         result = "：第" + (i + 1) + "行,第"+(j+1)+"个品牌编号不存在";
                         int b = 5 / 0;
@@ -1079,19 +1079,19 @@ public class StoreController {
           //  Pattern pattern7 = Pattern.compile("A\\d{4}");
 
             for (int i = 3; i < column4.length; i++) {
-//                Matcher matcher = pattern7.matcher(column7[i].getContents().toString());
+//                Matcher matcher = pattern7.matcher(column7[i].getContents().toString().trim());
 //                if (matcher.matches() == false) {
 //                    result = "：第" + (i + 1) + "行区域编号格式有误";
 //                    int b = 5 / 0;
 //                    break;
 //                }
-                Area area = areaService.getAreaByCode(column3[i].getContents().toString(), column4[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), column4[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (area == null) {
                     result = "：第" + (i + 1) + "行区域编号不存在";
                     int b = 5 / 0;
                     break;
                 }
-                Store store=storeService.selStoreByStroeId(column3[i].getContents().toString(),column2[i].getContents().toString(),Common.IS_ACTIVE_Y);
+                Store store=storeService.selStoreByStroeId(column3[i].getContents().toString().trim(),column2[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if(store!=null){
                     result = "：第" + (i + 1) + "行店铺ID已存在";
                     int b = 5 / 0;
@@ -1101,17 +1101,17 @@ public class StoreController {
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Store store = new Store();
-                    String cellCorp = rs.getCell(j++, i).getContents().toString();
+                    String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     if(!role_code.equals(Common.ROLE_SYS)){
                         store.setCorp_code(corp_code);
                     }else{
                         store.setCorp_code(cellCorp);
                     }
-                    store.setStore_code(rs.getCell(j++, i).getContents());
-                    store.setStore_id(rs.getCell(j++, i).getContents());
-                    store.setStore_name(rs.getCell(j++, i).getContents());
-                    store.setArea_code(rs.getCell(j++, i).getContents());
-                    store.setBrand_code(rs.getCell(j++, i).getContents());
+                    store.setStore_code(rs.getCell(j++, i).getContents().toString().trim());
+                    store.setStore_id(rs.getCell(j++, i).getContents().toString().trim());
+                    store.setStore_name(rs.getCell(j++, i).getContents().toString().trim());
+                    store.setArea_code(rs.getCell(j++, i).getContents().toString().trim());
+                    store.setBrand_code(rs.getCell(j++, i).getContents().toString().trim());
                     if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
                         store.setFlg_tob("N");
                     } else {
