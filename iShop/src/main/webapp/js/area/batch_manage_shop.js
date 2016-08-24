@@ -203,11 +203,11 @@ function superaddition(data, num) {
             + "'></label></div></td></tr>");
     }
     for (var j = 0; j < data.length; j++) {
-        if ($("#" + data[j].is_this_area) == "Y") {
-            $("#" + data[j].is_this_area).find("input").parent("div").attr("class", "checkbox2");
-            $("#" + data[j].is_this_area).find("input")[0].checked = true;
-            $("#" + data[j].is_this_area).find("input").attr("disabled", "true");
-            $("#" + data[j].is_this_area).find("input").attr("name", "die");
+        if (data[j].is_this_area == "Y") {
+            $("#"+data[j].id).find("input").parent("div").attr("class", "checkbox2");
+            $("#"+data[j].id).find("input")[0].checked = true;
+            $("#"+data[j].id).find("input").attr("disabled", "true");
+            $("#"+data[j].id).find("input").attr("name", "die");
         }
     }
 };
