@@ -397,6 +397,7 @@ public class GoodsController {
                 }
             }
             Cell[] column4 = rs.getColumn(3);
+            Cell[] column6 = rs.getColumn(5);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
             for (int i = 3; i < column4.length; i++) {
                 Matcher matcher = pattern2.matcher(column4[i].getContents().toString().trim());
@@ -405,8 +406,14 @@ public class GoodsController {
                     int b = 5 / 0;
                     break;
                 }
+                if(!column6[i].getContents().toString().trim().equals("第一季度") && !column6[i].getContents().toString().trim().equals("第二季度")&&!column6[i].getContents().toString().trim().equals("第三季度")&&!column6[i].getContents().toString().trim().equals("第四季度")){
+                    result = "：第" + (i + 1) + "行商品季度输入有误";
+                    int b = 5 / 0;
+                    break;
+                }
             }
             Cell[] column5 = rs.getColumn(4);
+
             Pattern pattern5 = Pattern.compile("(^(http:\\/\\/)(.*?)(\\/(.*)\\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))");
             for (int i = 3; i < column5.length; i++) {
                 String images = column5[i].getContents().toString().trim();
@@ -425,6 +432,8 @@ public class GoodsController {
                     }
                 }
             }
+
+
             Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column7 = rs.getColumn(7);
             for (int i = 3; i < column7.length; i++) {
@@ -525,7 +534,7 @@ public class GoodsController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             // String user_code = jsonObject.get("user_code").toString();
-            //   String temp = jsonObject.get("goods_image").toString();
+            String match_goods = jsonObject.get("match_goods").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
@@ -545,7 +554,7 @@ public class GoodsController {
             } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setMessage("商品名称已存在");
             } else {
-                this.goodsService.insert(goods);
+                this.goodsService.insertGoods(goods,match_goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("success");
             }
@@ -608,11 +617,12 @@ public class GoodsController {
             dataBean.setId(id);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String match_goods = jsonObject.get("match_goods").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
-            String result = goodsService.update(goods);
+            String result = goodsService.update(goods,match_goods);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("商品更改成功");

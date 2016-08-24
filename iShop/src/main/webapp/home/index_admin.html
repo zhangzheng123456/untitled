@@ -193,22 +193,22 @@
                         <div class="ibox float-e-margins">
                             <div class="ibox-content">
                                 <i class="icon-ishop_1-01" style="font-size: 90px;color:#6cc1c8;background: #434960;float: left;"></i>
-                                <div class="index_title"><label class="shop_count">商家总数</label><span class="new_add">昨日新增<label>2</label></span></div>
-                                <div class="shop_num">1980</div>
+                                <div class="index_title"><label class="shop_count" >商家总数</label><span class="new_add" >昨日新增<label id="corp_new_count"></label></span></div>
+                                <div class="shop_num" id="corp_count"></div>
                             </div>
                         </div>
                          <div class="ibox float-e-margins">
                             <div class="ibox-content">
                                 <i class="icon-ishop_1-02" style="font-size: 90px;color:#6cc1c8;background: #434960;float: left;"></i>
-                                <div class="index_title"><label class="shop_count">店仓总数</label><span class="new_add">昨日新增<label>20</label></span></div>
-                                <div class="shop_num">980063</div>
+                                <div class="index_title"><label class="shop_count">店仓总数</label><span class="new_add">昨日新增<label id="store_new_count"></label></span></div>
+                                <div class="shop_num" id="store_count"></div>
                             </div>
                         </div>
                          <div class="ibox float-e-margins">
                             <div class="ibox-content">
                                 <i class="icon-ishop_1-03" style="font-size: 90px;color:#6cc1c8;background: #434960;float: left;"></i>
-                                <div class="index_title"><label class="shop_count">用户总数</label><span class="new_add">昨日新增<label>300</label></span></div>
-                                <div class="shop_num">2850269</div>
+                                <div class="index_title"><label class="shop_count">用户总数</label><span class="new_add">昨日新增<label id="user_new_count"></label></span></div>
+                                <div class="shop_num" id="user_count"></div>
                             </div>
                         </div>
                     </div>
@@ -218,7 +218,7 @@
                             <canvas id="canvas_circle" width="800"height="550">
                                 <p>Your browserdoes not support the canvas element!</p>
                             </canvas>
-                            <span id="tip_note" style="display:none" >
+                            <span id="tip_note" style="display:none">
                                 <label></label>
                                 <s class="top border css-border-arrow"></s>
                             </span>
@@ -233,31 +233,32 @@
                               <label class="list_more">更多 ></label>
                             </div>
                             <div class="list_titles">
-                                <ul>
-                                    <li>
-                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
-                                        <div>=============异常崩溃报告=============</div>
-                                    </li>
-                                    <li>
-                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
-                                        <div>=============异常崩溃报告=============</div>
-                                    </li>
-                                    <li>
-                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
-                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
-                                    </li>
-                                    <li>
-                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
-                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
-                                    </li>
-                                    <li>
-                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
-                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
-                                    </li>
-                                    <li>
-                                        <label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>
-                                        <div>2016-01-072016-01-072016-01-072016-01-07</div>
-                                    </li>
+                                <ul id="feed_back">
+                                    <!--<li>-->
+                                        <!--<label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>-->
+                                        <!--<span style="float: right">17755310395</span>-->
+                                        <!--<div>=============异常崩溃报告=============</div>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>-->
+                                        <!--<div>=============异常崩溃报告=============</div>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>-->
+                                        <!--<div>2016-01-072016-01-072016-01-072016-01-07</div>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>-->
+                                        <!--<div>2016-01-072016-01-072016-01-072016-01-07</div>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>-->
+                                        <!--<div>2016-01-072016-01-072016-01-072016-01-07</div>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<label><i class="icon-ishop_8-01"></i>2015-12-13 08:32:23</label>-->
+                                        <!--<div>2016-01-072016-01-072016-01-072016-01-07</div>-->
+                                    <!--</li>-->
                                 </ul>
                             </div>
                         </div>
@@ -323,6 +324,7 @@
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
 
     <script type="text/javascript" src="../js/home/home.js"></script>
+    <script type="text/javascript" src="../js/home/home_getsys.js"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
     <!-- Custom and plugin javascript -->
@@ -352,12 +354,13 @@
     <!-- 业绩看板 -->
     <script type="text/javascript" src="../js/yeji.js"></script>
     <script type="text/javascript">
-        var perArr = [24,29,26,32,30,34,40];//顶点
+        var perArr = [26,29,26,32,30,34,40];//顶点
         window.onresize=function(){
             init(perArr);
         }
         window.onload = init(perArr);
     </script>
+
 </body>
 
 </html>
