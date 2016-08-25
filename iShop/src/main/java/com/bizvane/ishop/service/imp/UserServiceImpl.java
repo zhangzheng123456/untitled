@@ -767,7 +767,7 @@ public class UserServiceImpl implements UserService {
     public String creatUserQrcode(String corp_code,String user_code,String auth_appid,String user_id) throws Exception{
         UserQrcode userQrcode = selectQrcodeByUserApp(corp_code,user_code,auth_appid);
         String picture ="";
-        if (userQrcode != null) {
+        if (userQrcode == null) {
             String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);

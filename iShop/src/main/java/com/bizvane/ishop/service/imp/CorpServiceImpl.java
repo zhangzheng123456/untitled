@@ -36,8 +36,8 @@ public class CorpServiceImpl implements CorpService {
     @Autowired
     private AreaMapper areaMapper;
 
-    public Corp selectByCorpId(int corp_id, String corp_code,String isactive) throws Exception {
-        return corpMapper.selectByCorpId(corp_id, corp_code,isactive);
+    public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
+        return corpMapper.selectByCorpId(corp_id, corp_code, isactive);
     }
 
     @Transactional
@@ -46,8 +46,8 @@ public class CorpServiceImpl implements CorpService {
         JSONObject jsonObject = new JSONObject(message);
         String corp_code = jsonObject.get("corp_code").toString();
         String corp_name = jsonObject.get("corp_name").toString();
-        Corp corp = selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
-        String exist = getCorpByCorpName(corp_name,Common.IS_ACTIVE_Y);
+        Corp corp = selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
+        String exist = getCorpByCorpName(corp_name, Common.IS_ACTIVE_Y);
         if (corp == null && exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             corp = new Corp();
             corp.setCorp_code(corp_code);
@@ -56,21 +56,30 @@ public class CorpServiceImpl implements CorpService {
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
-                for (int i = 0; i < wechat.size(); i++) {
-                    JSONObject object = new JSONObject(wechat.get(i).toString());
-                    CorpWechat corpWechat = new CorpWechat();
-                    corpWechat.setApp_id(object.get("app_id").toString());
-                    corpWechat.setApp_name(object.get("app_name").toString());
-                    corpWechat.setCorp_code(corp_code);
-                    corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
-                    Date now = new Date();
-                    corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    corpWechat.setCreater(user_id);
-                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    corpWechat.setModifier(user_id);
-                    corpWechat.setIsactive(Common.IS_ACTIVE_Y);
-                    corpMapper.insertCorpWechat(corpWechat);
+            for (int i = 0; i < wechat.size(); i++) {
+                JSONObject object = new JSONObject(wechat.get(i).toString());
+                String app_id = object.get("app_id").toString();
+                if (!app_id.equals("")) {
+                    CorpWechat corpWechat = getCorpByAppId(app_id);
+                    if (corpWechat == null) {
+                        corpWechat = new CorpWechat();
+                        corpWechat.setApp_id(app_id);
+                        corpWechat.setApp_name(object.get("app_name").toString());
+                        corpWechat.setCorp_code(corp_code);
+                        corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
+                        Date now = new Date();
+                        corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                        corpWechat.setCreater(user_id);
+                        corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        corpWechat.setModifier(user_id);
+                        corpWechat.setIsactive(Common.IS_ACTIVE_Y);
+                        corpMapper.insertCorpWechat(corpWechat);
+                    } else {
+                        result = "app_id" + app_id + "已存在";
+                        return result;
+                    }
                 }
+            }
             Date now = new Date();
             corp.setCreated_date(Common.DATETIME_FORMAT.format(now));
             corp.setCreater(user_id);
@@ -99,10 +108,10 @@ public class CorpServiceImpl implements CorpService {
         new_code = corp_code;
         String corp_name = jsonObject.get("corp_name").toString();
 
-        Corp old_corp = selectByCorpId(corp_id, "","");
+        Corp old_corp = selectByCorpId(corp_id, "", "");
         old_code = old_corp.getCorp_code();
-        Corp corp1 = selectByCorpId(0, corp_code,Common.IS_ACTIVE_Y);
-        String exist = getCorpByCorpName(corp_name,Common.IS_ACTIVE_Y);
+        Corp corp1 = selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
+        String exist = getCorpByCorpName(corp_name, Common.IS_ACTIVE_Y);
 
         if ((old_corp.getCorp_code().equals(corp_code) || corp1 == null)
                 && (old_corp.getCorp_name().equals(corp_name) || exist.equals(Common.DATABEAN_CODE_SUCCESS))) {
@@ -120,64 +129,40 @@ public class CorpServiceImpl implements CorpService {
             for (int i = 0; i < wechat.size(); i++) {
                 JSONObject object = new JSONObject(wechat.get(i).toString());
                 String app_id = object.get("app_id").toString();
-                app_ids = app_ids + app_id + ",";
-                CorpWechat corpWechat = getCorpByAppId(app_id);
-                if (corpWechat == null){
-                    corpWechat = new CorpWechat();
-                    corpWechat.setApp_id(app_id);
-                    corpWechat.setApp_name(object.get("app_name").toString());
-                    corpWechat.setCorp_code(corp_code);
-                    corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
-                    corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    corpWechat.setCreater(user_id);
-                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    corpWechat.setModifier(user_id);
-                    corpWechat.setIsactive(Common.IS_ACTIVE_Y);
-                    corpMapper.insertCorpWechat(corpWechat);
-                }else {
-                    if (corpWechat.getCorp_code().equals(corp_code)) {
+                if (!app_id.equals("")) {
+                    app_ids = app_ids + app_id + ",";
+                    CorpWechat corpWechat = getCorpByAppId(app_id);
+                    if (corpWechat == null) {
+                        corpWechat = new CorpWechat();
+                        corpWechat.setApp_id(app_id);
                         corpWechat.setApp_name(object.get("app_name").toString());
+                        corpWechat.setCorp_code(corp_code);
+                        corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
+                        corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                        corpWechat.setCreater(user_id);
                         corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
                         corpWechat.setModifier(user_id);
-                        corpMapper.updateCorpWechat(corpWechat);
-                    }else {
-                        result = "app_id与别家重复，请检查";
+                        corpWechat.setIsactive(Common.IS_ACTIVE_Y);
+                        corpMapper.insertCorpWechat(corpWechat);
+                    } else {
+                        if (corpWechat.getCorp_code().equals(corp_code)) {
+                            corpWechat.setApp_name(object.get("app_name").toString());
+                            corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            corpWechat.setModifier(user_id);
+                            corpMapper.updateCorpWechat(corpWechat);
+                        } else {
+                            result = "app_id:" + app_id + "已存在";
+                            return result;
+                        }
                     }
                 }
             }
             List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
             for (int i = 0; i < corpWechats.size(); i++) {
-                if (!app_ids.contains(corpWechats.get(i).getApp_id())){
-//                    CorpWechat relation = corpWechats.get(i);
-//                    relation.setIsactive(Common.IS_ACTIVE_N);
-//                    corpMapper.updateCorpWechat(relation);
-                    corpMapper.deleteCorpWechat(corpWechats.get(i).getApp_id());
+                if (!app_ids.contains(corpWechats.get(i).getApp_id())) {
+                    corpMapper.deleteCorpWechat(corpWechats.get(i).getApp_id(),"");
                 }
             }
-//            if (!jsonObject.get("wechat").toString().equals("")){
-//                String app_id = jsonObject.get("app_id").toString();
-//                CorpWechat corpWechat = corpMapper.selectWByAppId(app_id);
-//                List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
-//                if (corpWechat == null && corpWechats.size() == 0){
-//                    corpWechat = new CorpWechat();
-//                    corpWechat.setApp_id(app_id);
-//                    corpWechat.setCorp_code(corp_code);
-//                    corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
-//                    corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
-//                    corpWechat.setCreater(user_id);
-//                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-//                    corpWechat.setModifier(user_id);
-//                    corpWechat.setIsactive(Common.IS_ACTIVE_Y);
-//                    corpMapper.insertCorpWechat(corpWechat);
-//                }else if (corpWechats.size() > 0 && !app_id.equals(corpWechats.get(0).getApp_id())){
-//                    corpWechat = corpWechats.get(0);
-//                    corpWechat.setApp_id(app_id);
-//                    corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
-//                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-//                    corpWechat.setModifier(user_id);
-//                    corpMapper.updateCorpWechat(corpWechat);
-//                }
-//            }
             old_corp.setIsactive(jsonObject.get("isactive").toString());
             old_corp.setModified_date(Common.DATETIME_FORMAT.format(now));
             old_corp.setModifier(user_id);
@@ -207,14 +192,13 @@ public class CorpServiceImpl implements CorpService {
      * @param new_corp_code
      */
     @Transactional
-    private void updateCorpcode(String old_corp_code, String new_corp_code)  throws Exception{
+    private void updateCorpcode(String old_corp_code, String new_corp_code) throws Exception {
         if (old_corp_code.equals(new_corp_code)) {
             return;
         }
         codeUpdateMapper.updateRelCorpWechat(new_corp_code, old_corp_code);
 
         codeUpdateMapper.updateAppVersion(new_corp_code, old_corp_code);
-        //   codeUpdateMapper.updateCache(new_corp_code, old_corp_code);
         codeUpdateMapper.updateGoods(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateGroup(new_corp_code, old_corp_code, "", "");
         codeUpdateMapper.updateInterface(new_corp_code, old_corp_code);
@@ -246,7 +230,7 @@ public class CorpServiceImpl implements CorpService {
     public PageInfo<Corp> selectAllCorp(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
         List<Corp> corps = corpMapper.selectAllCorp(search_value);
-        for (Corp corp:corps) {
+        for (Corp corp : corps) {
             corp.setIsactive(CheckUtils.CheckIsactive(corp.getIsactive()));
         }
         PageInfo<Corp> page = new PageInfo<Corp>(corps);
@@ -254,18 +238,18 @@ public class CorpServiceImpl implements CorpService {
     }
 
     @Override
-    public String insertExecl(Corp corp)  throws Exception{
+    public String insertExecl(Corp corp) throws Exception {
         corpMapper.insertCorp(corp);
         return "add success";
     }
 
     @Override
-    public PageInfo<Corp> selectAllCorpScreen(int page_number, int page_size, Map<String, String> map)  throws Exception{
+    public PageInfo<Corp> selectAllCorpScreen(int page_number, int page_size, Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<Corp> list = corpMapper.selectAllCorpScreen(params);
-        for (Corp corp:list) {
+        for (Corp corp : list) {
             corp.setIsactive(CheckUtils.CheckIsactive(corp.getIsactive()));
         }
         PageInfo<Corp> page = new PageInfo<Corp>(list);
@@ -297,8 +281,8 @@ public class CorpServiceImpl implements CorpService {
      * @throws SQLException
      */
     @Override
-    public String getCorpByCorpName(String corp_name,String isactive) throws Exception {
-        List<Corp> corps = corpMapper.selectByCorpName(corp_name,isactive);
+    public String getCorpByCorpName(String corp_name, String isactive) throws Exception {
+        List<Corp> corps = corpMapper.selectByCorpName(corp_name, isactive);
         if (corps == null || corps.size() < 1) {
             return Common.DATABEAN_CODE_SUCCESS;
         }
@@ -306,48 +290,56 @@ public class CorpServiceImpl implements CorpService {
     }
 
     @Override
-    public int getAreaCount(String corp_code)  throws Exception{
+    public int getAreaCount(String corp_code) throws Exception {
         return this.corpMapper.getAreaCount(corp_code);
     }
 
     @Override
-    public int getBranCount(String corp_code)  throws Exception{
+    public int getBranCount(String corp_code) throws Exception {
         return this.corpMapper.getBrandCount(corp_code);
     }
 
     @Override
-    public int getGoodCount(String corp_code)  throws Exception{
+    public int getGoodCount(String corp_code) throws Exception {
         return this.corpMapper.getGoodCount(corp_code);
     }
 
     @Override
-    public int getGroupCount(String corp_code)  throws Exception{
+    public int getGroupCount(String corp_code) throws Exception {
         return corpMapper.getGroupCount(corp_code);
     }
 
     @Override
-    public int getGoodsCount(String corp_code)  throws Exception{
+    public int getGoodsCount(String corp_code) throws Exception {
         return corpMapper.getGoodCount(corp_code);
     }
 
     @Override
-    public int getMessagesTypeCount(String corp_code)  throws Exception{
+    public int getMessagesTypeCount(String corp_code) throws Exception {
         return corpMapper.getMessageTypeCount(corp_code);
     }
 
-    public int selectCount(String create_date)  throws Exception{
+    public int selectCount(String create_date) throws Exception {
         return corpMapper.selectCount(create_date);
     }
 
-    public CorpWechat getCorpByAppUserName(String app_user_name)  throws Exception{
+    public CorpWechat getCorpByAppUserName(String app_user_name) throws Exception {
         return corpMapper.selectWByAppUserName(app_user_name);
     }
 
-    public CorpWechat getCorpByAppId(String app_id)  throws Exception{
+    public CorpWechat getCorpByAppId(String app_id) throws Exception {
         return corpMapper.selectWByAppId(app_id);
     }
 
-    public List<CorpWechat> getWByCorp(String corp_code) throws Exception{
+    public List<CorpWechat> getWByCorp(String corp_code) throws Exception {
         return corpMapper.selectWByCorp(corp_code);
+    }
+
+    public List<CorpWechat> getWAuthByCorp(String corp_code) throws Exception {
+        return corpMapper.selectWAuthByCorp(corp_code);
+    }
+
+    public int deleteCorpWechat(String app_id,String corp_code) throws Exception{
+        return corpMapper.deleteCorpWechat(app_id,corp_code);
     }
 }

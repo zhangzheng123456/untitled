@@ -7,13 +7,13 @@
         ruq.id,
         ruq.qrcode,
         rcw.app_name
-        FROM rel_user_qrcode ruq ,def_user du,rel_corp_wechat rcw
-        WHERE ruq.corp_code = du.corp_code
-        AND du.corp_code = rcw.corp_code
-        AND ruq.user_code = du.user_code
+        FROM rel_user_qrcode ruq ,rel_corp_wechat rcw
+        WHERE  ruq.corp_code = rcw.corp_code
+        and ruq.app_id = rcw.app_id
         AND ruq.user_code=#{user_code}
         AND ruq.corp_code=#{corp_code}
-        AND du.isactive = 'Y'
+        AND rcw.isactive = 'Y'
+        AND rcw.is_authorize = 'Y'
     </select>
 
     <select id="selectByUserApp" resultType="com.bizvane.ishop.entity.UserQrcode">
@@ -21,14 +21,14 @@
         ruq.id,
         ruq.qrcode,
         rcw.app_name
-        FROM rel_user_qrcode ruq ,def_user du,rel_corp_wechat rcw
-        WHERE ruq.corp_code = du.corp_code
-        AND du.corp_code = rcw.corp_code
-        AND ruq.user_code = du.user_code
+        FROM rel_user_qrcode ruq ,rel_corp_wechat rcw
+        WHERE  ruq.corp_code = rcw.corp_code
+        and ruq.app_id = rcw.app_id
         AND ruq.user_code=#{user_code}
         AND ruq.corp_code=#{corp_code}
         AND rcw.app_id=#{app_id}
-        AND du.isactive = 'Y'
+        AND rcw.isactive = 'Y'
+        AND rcw.is_authorize = 'Y'
     </select>
 
     <delete id="deleteUserQrcode">
