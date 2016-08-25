@@ -782,21 +782,26 @@ public class UserServiceImpl implements UserService {
                 return Common.DATABEAN_CODE_ERROR;
             }
             JSONObject obj = new JSONObject(result);
-            picture = obj.get("picture").toString();
-            String qrcode_url = obj.get("url").toString();
-            userQrcode = new UserQrcode();
-            userQrcode.setApp_id(auth_appid);
-            userQrcode.setCorp_code(corp_code);
-            userQrcode.setUser_code(user_code);
-            userQrcode.setQrcode(picture);
-            userQrcode.setQrcode_content(qrcode_url);
-            Date now = new Date();
-            userQrcode.setModified_date(Common.DATETIME_FORMAT.format(now));
-            userQrcode.setModifier(user_id);
-            userQrcode.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            userQrcode.setCreater(user_id);
-            userQrcode.setIsactive(Common.IS_ACTIVE_Y);
-            userMapper.insertUserQrcode(userQrcode);
+            if (result.contains("errcode")) {
+                String rst = obj.get("errcode").toString();
+                return rst;
+            } else {
+                picture = obj.get("picture").toString();
+                String qrcode_url = obj.get("url").toString();
+                userQrcode = new UserQrcode();
+                userQrcode.setApp_id(auth_appid);
+                userQrcode.setCorp_code(corp_code);
+                userQrcode.setUser_code(user_code);
+                userQrcode.setQrcode(picture);
+                userQrcode.setQrcode_content(qrcode_url);
+                Date now = new Date();
+                userQrcode.setModified_date(Common.DATETIME_FORMAT.format(now));
+                userQrcode.setModifier(user_id);
+                userQrcode.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                userQrcode.setCreater(user_id);
+                userQrcode.setIsactive(Common.IS_ACTIVE_Y);
+                userMapper.insertUserQrcode(userQrcode);
+            }
         }else {
             picture = userQrcode.getQrcode();
         }
