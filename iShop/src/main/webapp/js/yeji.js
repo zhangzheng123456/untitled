@@ -33,7 +33,7 @@
         function drawScene(perArr) {
             for (var i=0; i<circles.length; i++) {
                 if(hoveredCircle == i){
-                    $('#tip_note').css({'position':'absolute','left':inint_num+mul_num*i-25,'top':trans(perArr[i])+5,'display':'block'});
+                    $('#tip_note').css({'position':'absolute','left':inint_num+mul_num*i-21,'top':trans(perArr[i])+5,'display':'block'});
                     $('.border').css({'left':26,'top':0});
                     $('#tip_note label').text(perArr[i]);
                 }
