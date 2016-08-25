@@ -483,12 +483,13 @@ public class StoreServiceImpl implements StoreService {
         }
 
         //更新员工
-        new_store_code = Common.STORE_HEAD + new_store_code + ",";
-        old_store_code = Common.STORE_HEAD + old_store_code + ",";
-        codeUpdateMapper.updateUser("", corp_code, "", "", new_store_code, old_store_code, "", "");
+        String new_store_code1 = Common.STORE_HEAD + new_store_code + ",";
+        String old_store_code1 = Common.STORE_HEAD + old_store_code + ",";
+        codeUpdateMapper.updateUser("", corp_code, "", "", new_store_code1, old_store_code1, "", "");
         //更新员工详细信息
-        codeUpdateMapper.updateStaffDetailInfo("", corp_code, "", "", new_store_code, old_store_code);
-
+        codeUpdateMapper.updateStaffDetailInfo("", corp_code, "", "", new_store_code1, old_store_code1);
+        //删除二维码
+        storeMapper.deleteStoreQrcode(corp_code,old_store_code);
     }
     public List<Store> selectAllStores(String corp_code, String search_value) throws Exception{
         List<Store> stores = storeMapper.selectAllStore(corp_code, "");
@@ -506,10 +507,14 @@ public class StoreServiceImpl implements StoreService {
         return array;
     }
 
+    public int deleteStoreQrcode(String corp_code,String store_code) throws Exception{
+        return storeMapper.deleteStoreQrcode(corp_code,store_code);
+    }
+
     public String creatStoreQrcode(String corp_code,String store_code,String auth_appid,String user_id) throws Exception{
         StoreQrcode storeQrcode = storeMapper.selectByStoreApp(corp_code,store_code,auth_appid);
         String picture ="";
-        if (storeQrcode != null) {
+        if (storeQrcode == null) {
             String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + store_code;
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);

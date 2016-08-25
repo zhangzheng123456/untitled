@@ -836,6 +836,7 @@ public class UserController {
                         msg = "请先删除用户的业绩目标，再删除用户" + user.getUser_code();
                         break;
                     }
+                    userService.deleteUserQrcode(corp_code,user_code);
                 }
                 userService.delete(Integer.valueOf(ids[i]), user_code, corp_code);
             }
