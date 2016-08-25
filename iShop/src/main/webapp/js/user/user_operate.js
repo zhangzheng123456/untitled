@@ -848,6 +848,7 @@ jQuery(document).ready(function(){
 					input1.checked=false;
 				}
 				getcorplist();
+				getAppName();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -860,6 +861,7 @@ jQuery(document).ready(function(){
 		});
     }else{
     	getcorplist();
+		getAppName();
     }
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
@@ -939,9 +941,11 @@ jQuery(document).ready(function(){
     	var user_creat="/user/creatQrcode";
     	var user_code=$('#USERID').val();
     	var corp_code=$('#OWN_CORP').val();
+		var app_name=$(".er_code input").val();
     	var _params={};
     	_params["user_code"]=user_code;
     	_params["corp_code"]=corp_code;
+		_params["app_id"]=app_name;
     	oc.postRequire("post",user_creat,"", _params, function(data){
     		var message=data.message;
     		if(data.code=="0"){
@@ -1046,11 +1050,20 @@ function getAppName(){
 	var param={};
 	    param["corp_code"]=corp_code;
 	var _command="/corp/selectWx";
-	oc.postRequire("post", _command,"param", "", function(data){
+	oc.postRequire("post", _command,"", param, function(data){
 		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
-			console.log(msg);
+			var list=msg.list;
+			console.log(list);
+			for(var i=0;i<list.length;i++){
+				$(".er_code ul").append('<li>'+list[i].app_name+'</li>')
+			}
+			$(".er_code ul li").click(function () {
+				var value=$(this).html();
+				console.log(value);
+				$(".er_code input").val(value);
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -1069,10 +1082,6 @@ $(".er_code").click(function () {
 	}else {
 		$(".er_code ul").hide();
 	}
-})
-$(".er_code ul li").click(function () {
-	var value=$(this).html();
-	$(".er_code input").val(value);
 })
 
 

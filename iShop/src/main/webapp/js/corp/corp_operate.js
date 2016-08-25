@@ -166,16 +166,24 @@ var message = JSON.parse(val.message);
                 var CONTACTS = $("#CONTACTS").val();
                 var PHONE = $("#PHONE").val();
                 var list=[];
+                var arr=[];
                 var len=$(".wx_app").find(".wx_span");
                 for(var i=0;i<len.length;i++){
                     var app_id=$(len[i]).find('.WXID').val();
-                    if(app_id==app_id){
-                        alert("公众号ID不能重复");
-                        return;
-                    }
                     var app_name=$(len[i]).find('.AppName').val();
+                    arr.push(app_id);
+                    arr.sort();
+                    for(var j=0;j<arr.length;j++){
+                        if(arr[j]==arr[j+1]){
+                            alert("公众号ID不能重复！")
+                            return;
+                        }
+                    }
                     if(app_id!==""&&app_name==""){
                         alert("名称不能为空！")
+                        return;
+                    }else if(app_name!==""&&app_id==""){
+                        alert("公众号ID不能为空！")
                         return;
                     }
                     var wechat={"app_id":app_id,"app_name":app_name}
