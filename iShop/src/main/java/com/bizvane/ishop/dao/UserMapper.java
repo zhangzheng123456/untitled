@@ -2,6 +2,7 @@ package com.bizvane.ishop.dao;
 
 
 import com.bizvane.ishop.entity.User;
+import com.bizvane.ishop.entity.UserQrcode;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
@@ -16,8 +17,6 @@ public interface UserMapper {
     int updateByUserId(User record) throws SQLException;
 
     List<User> selectByPhone(String phone) throws SQLException;
-
-
 
     List<User> selectLogin(String phone, String password) throws SQLException;
 
@@ -47,4 +46,14 @@ public interface UserMapper {
     List<User> selectPartScreen(Map<String, Object> params) throws SQLException;
 
     List<User> selectAllUserScreen(Map<String, Object> params) throws SQLException;
+
+    List<UserQrcode> selectByUserCode(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws SQLException;
+
+    UserQrcode selectByUserApp(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
+
+    int insertUserQrcode(UserQrcode record);
+
+    int updateUserQrcode(UserQrcode record);
+
+    int deleteUserQrcode(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws SQLException;
 }

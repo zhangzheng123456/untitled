@@ -14,9 +14,6 @@
         <result column="corp_code" property="corp_code"/>
         <result column="store_code" property="store_code"/>
         <result column="group_code" property="group_code"/>
-        <result column="app_id" property="app_id"/>
-        <result column="qrcode" property="qrcode"/>
-        <result column="qrcode_content" property="qrcode_content"/>
         <result column="password" property="password"/>
         <result column="login_time_recently" property="login_time_recently"/>
         <result column="created_date" property="created_date"/>
@@ -43,9 +40,6 @@
         <result column="corp_code" property="corp_code"/>
         <result column="store_code" property="store_code"/>
         <result column="group_code" property="group_code"/>
-        <result column="app_id" property="app_id"/>
-        <result column="qrcode" property="qrcode"/>
-        <result column="qrcode_content" property="qrcode_content"/>
         <result column="modified_date" property="modified_date"/>
         <result column="modifier" property="modifier"/>
         <result column="isactive" property="isactive"/>
@@ -201,8 +195,6 @@
         login_time_recently,
         store_code,
         can_login,
-        def_user.app_id,
-        qrcode,
         def_user.group_code,
         def_user.area_code,
         def_user.corp_code,
@@ -403,12 +395,6 @@
             <if test="group_code!=null">
                 group_code,
             </if>
-            <if test="qrcode!=null">
-                qrcode,
-            </if>
-            <if test="qrcode_content!=null">
-                qrcode_content,
-            </if>
             <if test="login_time_recently!=null">
                 login_time_recently,
             </if>
@@ -473,12 +459,6 @@
             </if>
             <if test="group_code!=null">
                 #{group_code},
-            </if>
-            <if test="qrcode!=null">
-                #{qrcode},
-            </if>
-            <if test="qrcode_content!=null">
-                #{qrcode_content},
             </if>
             <if test="login_time_recently!=null">
                 #{login_time_recently},
@@ -545,15 +525,6 @@
             </if>
             <if test="group_code!=null ">
                 group_code = #{group_code},
-            </if>
-            <if test="app_id!=null ">
-                app_id = #{app_id},
-            </if>
-            <if test="qrcode!=null ">
-                qrcode = #{qrcode},
-            </if>
-            <if test="qrcode_content!=null ">
-                qrcode_content = #{qrcode_content},
             </if>
             <if test="password!=null ">
                 PASSWORD = #{password},

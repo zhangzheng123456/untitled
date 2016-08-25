@@ -165,7 +165,7 @@
                                         </a> <i></i>
                                     </div>
                                     <div id="return">
-                                        <a href="javascript:void(0)">
+                                        <a href="/login.html">
                                             <span class="icon-ishop_3-07"></span>
                                             退出登录
                                         </a>
@@ -188,7 +188,6 @@
 
             </div>
         </nav>
-
         <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="wrapper wrapper-content">
                 <div class="row">
@@ -210,26 +209,6 @@
                                         <span>
                                             <input type="text" class="laydate-icon icon-text">
                                         </span>
-                                        <!-- <span class="Year item" style="width:65px">
-                                            <div class="title" style="width:65px"></div>
-                                            <ul onclick="YYYYDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Month item" style="width:50px">
-                                            <div class="title" style="width:50px"></div>
-                                            <ul onclick="MMDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Week item" style="width:140px;display:none">
-                                            <div class="title" style="width:140px"></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
-                                        <span class="Day item" style="width:90px">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
-                                        </span> -->
                                     </div>
                                 </div>
                                 <div class="performance">
@@ -243,7 +222,6 @@
                                                 <span class="percent"></span>
                                             </span>
                                         </li>
-
                                     </ul>
                                 </div>
                                 <div class="item_list_1">
@@ -290,8 +268,9 @@
                             <div class="check_chart">
                                 <div class="select_2 reg_testdate"  onclick="CDT(this);">
                                     <span class="choose item" style="width:70px">
-                                        <div class="title" style="width:70px">按周查看</div>
+                                        <div class="title" style="width:70px">按日查看</div>
                                         <ul>
+                                            <li>按日查看</li>
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
@@ -300,26 +279,6 @@
                                     <span>
                                         <input type="text" class="laydate-icon icon-text">
                                     </span>
-                                    <!-- <span class="Year item" style="width:65px">
-                                        <div class="title" style="width:65px"></div>
-                                        <ul onclick="YYYYDD(this)">
-                                        </ul>
-                                    </span>
-                                    <span class="Month item" style="width:50px;display:none">
-                                        <div class="title" style="width:50px"></div>
-                                        <ul onclick="MMDD(this)">
-                                        </ul>
-                                    </span>
-                                    <span class="Week item" style="width:140px;" >
-                                        <div class="title" style="width:140px"></div>
-                                        <ul>
-                                        </ul>
-                                    </span>
-                                    <span class="Day item" style="width:90px;display:none;">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
-                                        </span> -->
                                 </div>
                                 <span style="margin-right:10px;">业绩总额<label style="font-size:20px">21114.00</label>元</span>
                             </div>
@@ -350,83 +309,44 @@
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>店铺总数<label>24</label></span>
+                                    <span>店铺总数<label id="store_total"></label></span>
                                 </div>
                                 <div class="check_chart">
-                                     <div class="select_3 reg_testdate"  onclick="CDT(this);">
+                                     <div class="select_3 reg_testdate">
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按周查看</div>
+                                            <div class="title" style="width:70px">按日查看</div>
                                             <ul>
+                                                <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
                                                 <li>按年查看</li>
                                             </ul>
                                         </span>
                                         <span>
-                                            <input type="text" class="laydate-icon icon-text">
+                                            <input id="storeRanking" type="text" class="laydate-icon icon-text">
                                         </span>
-                                        <!-- <span class="Year item" style="width:65px">
-                                            <div class="title" style="width:65px"></div>
-                                            <ul onclick="YYYYDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Month item" style="width:50px;display:none">
-                                            <div class="title" style="width:50px"></div>
-                                            <ul onclick="MMDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Week item" style="width:140px;" >
-                                            <div class="title" style="width:140px"></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
-                                        <span class="Day item" style="width:90px;display:none;">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
-                                        </span> -->
                                     </div>
                                 </div>
                             </div>
                             <div class="list_titles_daogou_paihang">
-                                <div class="list_titles_daogou_paihang">
+                                <div class="list_titles_daogou_paihang" id="store_list">
                                     <table style="width:100%">
-                                        <tr>
-                                           <th>排名</th>
-                                           <th>店铺</th>
-                                           <th>业绩</th>
-                                           <th>折扣</th>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">1</td>
-                                            <td style="width:50%">贵阳荔星名店尹墨专柜</td>
-                                            <td style="width:21%"><em>￥</em>165395</td>
-                                            <td style="width:16%">80.62%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">2</td>
-                                            <td style="width:50%">重庆江北远东尹墨专柜</td>
-                                            <td style="width:21%"><em>￥</em>55659</td>
-                                            <td style="width:16%">89.65%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">3</td>
-                                            <td style="width:50%">重庆新世纪百货（世纪新都）</td>
-                                            <td style="width:21%"><em>￥</em>46740</td>
-                                            <td style="width:16%">78.65%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">4</td>
-                                            <td style="width:50%">昆明金格百货（时光）</td>
-                                            <td style="width:21%"><em>￥</em>17989</td>
-                                            <td style="width:16%">92.21%</td>
-                                        </tr>
-                                        <tr>
-                                            <td style="width:13%">5</td>
-                                            <td style="width:50%">成都仁和春天光华店</td>
-                                            <td style="width:21%"><em>￥</em>15693</td>
-                                            <td style="width:16%">88.03%</td>
-                                        </tr>
+                                        <thead>
+                                            <tr>
+                                               <th>排名</th>
+                                               <th>店铺</th>
+                                               <th>业绩</th>
+                                               <th>折扣</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- <tr>
+                                                <td style="width:13%">1</td>
+                                                <td style="width:50%">贵阳荔星名店尹墨专柜</td>
+                                                <td style="width:21%"><em>￥</em>165395</td>
+                                                <td style="width:16%">80.62%</td>
+                                            </tr> -->
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
@@ -458,26 +378,6 @@
                                         <span>
                                             <input type="text" class="laydate-icon icon-text">
                                         </span>
-                                        <!-- <span class="Year item" style="width:65px">
-                                            <div class="title" style="width:65px"></div>
-                                            <ul onclick="YYYYDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Month item" style="width:50px">
-                                            <div class="title" style="width:50px"></div>
-                                            <ul onclick="MMDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Week item" style="width:140px;display:none">
-                                            <div class="title" style="width:140px"></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
-                                        <span class="Day item" style="width:90px">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
-                                        </span> -->
                                     </div>
                                 </div>
                             </div>
@@ -561,7 +461,7 @@
     <!-- piechart -->
     <script type="text/javascript" src="../js/easypiechart.js"></script>
     <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-    <script type="text/javascript" src="/js/home/home_gm.js"></script>
+    <script type="text/javascript" src="/js/home/home_am.js"></script>
     <!-- 业绩看板 -->
     <script type="text/javascript">
         var perArr = [30,34,31,37,35,39,40];//顶点

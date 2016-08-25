@@ -128,12 +128,12 @@
 #AppName{
 	margin-left: 4px;
 }
-.wx_app input:nth-child(odd){
-	margin-left: 0px;
-}
-.wx_app input:nth-child(even){
-	margin-left: 97px;
-}
+/*.wx_app input:nth-child(odd){*/
+	/*margin-left: 0px;*/
+/*}*/
+/*.wx_app input:nth-child(even){*/
+	/*margin-left: 97px;*/
+/*}*/
 .remove_input{
 	width: 50px;
 	height: 30px;

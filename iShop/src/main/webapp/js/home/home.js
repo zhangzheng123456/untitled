@@ -2,7 +2,6 @@ var oc = new ObjectControl();
 $(function(){
     var _command="/menu";
     oc.postRequire("get", _command,"", "", function(data){
-        console.log(data);
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var index=0;
@@ -14,7 +13,6 @@ $(function(){
             for(index in message.menu){
                 var index_li=0;
                 p=message.menu[index];
-                console.log(p.functions);
                 if(p.functions!==''){
                     html +='<li>'
                     +'<a>'
@@ -59,12 +57,10 @@ $(function(){
         });
     });
 });
-
-//退出按钮
-function login_out(){
-    var _command="/login_out";
-    oc.postRequire("get", _command,"", "", function(data){
-        console.log(data);
-        // window.location="/login.html";
-    });
-}
+//退出登录
+// $("#return").click(function(){
+//     var _command="/login_out";
+//     oc.postRequire("get", _command,"", "", function(data){
+//         // window.location="/login.html";
+//     });
+// })

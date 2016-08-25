@@ -2,6 +2,8 @@ package com.bizvane.ishop.dao;
 
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.StoreQrcode;
+import com.bizvane.ishop.entity.UserQrcode;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
@@ -51,5 +53,15 @@ public interface StoreMapper {
     List<Brand> selectBrandsStore(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code) throws SQLException;
 
     List<Store> selectAllStoresByCorpCode(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
+
+    List<StoreQrcode> selectByStoreCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
+
+    StoreQrcode selectByStoreApp(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("app_id") String app_id) throws SQLException;
+
+    int insertStoreQrcode(StoreQrcode record);
+
+    int updateStoreQrcode(StoreQrcode record);
+
+    int deleteStoreQrcode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
 
 }

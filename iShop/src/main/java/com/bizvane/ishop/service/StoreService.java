@@ -80,5 +80,5 @@ public interface StoreService {
 
      JSONArray selectStoresByAreaCode(String corp_code,String search_value) throws Exception;
 
-
+    String creatStoreQrcode(String corp_code,String store_code,String auth_appid,String user_id) throws Exception;
 }
