@@ -98,6 +98,10 @@ var message = JSON.parse(val.message);
                 for(var i=0;i<len.length;i++){
                     var app_id=$(len[i]).find('.WXID').val();
                     var app_name=$(len[i]).find('.AppName').val();
+                    if(app_id!==""&&app_name==""){
+                        alert("名称不能为空！")
+                        return;
+                    }
                     var wechat={"app_id":app_id,"app_name":app_name}
                     list.push(wechat);
                 }
@@ -162,10 +166,26 @@ var message = JSON.parse(val.message);
                 var CONTACTS = $("#CONTACTS").val();
                 var PHONE = $("#PHONE").val();
                 var list=[];
+                var arr=[];
                 var len=$(".wx_app").find(".wx_span");
                 for(var i=0;i<len.length;i++){
                     var app_id=$(len[i]).find('.WXID').val();
                     var app_name=$(len[i]).find('.AppName').val();
+                    arr.push(app_id);
+                    arr.sort();
+                    for(var j=0;j<arr.length;j++){
+                        if(arr[j]==arr[j+1]){
+                            alert("公众号ID不能重复！")
+                            return;
+                        }
+                    }
+                    if(app_id!==""&&app_name==""){
+                        alert("名称不能为空！")
+                        return;
+                    }else if(app_name!==""&&app_id==""){
+                        alert("公众号ID不能为空！")
+                        return;
+                    }
                     var wechat={"app_id":app_id,"app_name":app_name}
                     list.push(wechat);
                 }
@@ -211,7 +231,6 @@ var message = JSON.parse(val.message);
                 } else {
                     $(window.parent.document).find('#iframepage').attr("src", "/corp/corp_user.html");
                 }
-                whir.loading.remove();//移除加载框
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -220,6 +239,7 @@ var message = JSON.parse(val.message);
                     content: data.message
                 });
             }
+            whir.loading.remove();//移除加载框
         });
     };
 
@@ -303,13 +323,24 @@ jQuery(document).ready(function () {
                 console.log(wechat);
                 var len=$(".wx_app").find(".wx_span");
                 if(wechat.length>0) {
+                    if (wechat[0].is_authorize == "Y") {
+                        $(len[0]).find(".state.val").val("已授权");
+                    } else if (wechat[0].is_authorize == "N") {
+                        $(len[0]).find(".state.val").val("未授权");
+                    }
                     $(len[0]).find(".WXID").val(wechat[0].app_id);
                     $(len[0]).find(".AppName").val(wechat[0].app_name);
                     for (var i = 1; i < wechat.length; i++) {
+                        var is_authorize="";
+                        if (wechat[i].is_authorize == "Y") {
+                            is_authorize="已授权";
+                        } else if (wechat[i].is_authorize == "N") {
+                            is_authorize="未授权";
+                        }
                         $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'
                             + '<input type="text" class="WXID" value=' + wechat[i].app_id + '>'
                             + '<label style="width: 70px;margin:15px 10px">公众号名称</label><input type="text" class="AppName" value=' + wechat[i].app_name + '>'
-                            + '<input type="text" disabled="true" value="未授权" style="width: 100px; margin-left: -8px;" id=""><span class="remove_input" onclick="removeselect(this)">删除</span>'
+                            + '<input type="text" disabled="true" value="'+is_authorize+'" style="width: 100px; margin-left: -8px;" id=""><span class="remove_input" onclick="removeselect(this)">删除</span>'
                             + '</span>')
                     }
                 }
@@ -318,11 +349,6 @@ jQuery(document).ready(function () {
                     input.checked = true;
                 } else if (msg.isactive == "N") {
                     input.checked = false;
-                }
-                if (msg.is_authorize == "Y") {
-                    $("#state_val").val("已授权");
-                } else if (msg.is_authorize == "N") {
-                    $("#state_val").val("未授权");
                 }
                 whir.loading.remove();//移除加载框
             } else if (data.code == "-1") {
@@ -406,7 +432,7 @@ jQuery(document).ready(function () {
         _params["corp_code"] = corp_code;
         oc.postRequire("post", "/corp/is_authorize", "", _params, function (data) {
             if (data.code == "0") {
-                $("#state_val").val(data.message);
+                $(".state_val").val(data.message);
             } else {
                 alert(data.message);
             }

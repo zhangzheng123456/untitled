@@ -54,4 +54,8 @@ public interface CorpService {
     CorpWechat getCorpByAppId(String app_id)  throws Exception;
 
     List<CorpWechat> getWByCorp(String corp_code) throws Exception;
+
+    List<CorpWechat> getWAuthByCorp(String corp_code) throws Exception;
+
+    int deleteCorpWechat(String app_id,String corp_code) throws Exception;
 }

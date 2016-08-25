@@ -7,28 +7,28 @@
         rsq.id,
         rsq.qrcode,
         rcw.app_name
-        FROM rel_store_qrcode rsq ,def_store ds,rel_corp_wechat rcw
-        WHERE rsq.corp_code = ds.corp_code
-        AND ds.corp_code = rcw.corp_code
-        AND rsq.store_code = ds.store_code
+        FROM rel_store_qrcode rsq ,rel_corp_wechat rcw
+        WHERE rsq.corp_code = rcw.corp_code
+        AND rsq.app_id = rcw.app_id
         AND rsq.store_code=#{store_code}
         AND rsq.corp_code=#{corp_code}
-        AND ds.isactive = 'Y'
+        AND rcw.isactive = 'Y'
+        AND rcw.is_authorize = 'Y'
     </select>
 
     <select id="selectByStoreApp" resultType="com.bizvane.ishop.entity.StoreQrcode">
-         SELECT
+        SELECT
         rsq.id,
         rsq.qrcode,
         rcw.app_name
-        FROM rel_store_qrcode rsq ,def_store ds,rel_corp_wechat rcw
-        WHERE rsq.corp_code = ds.corp_code
-        AND ds.corp_code = rcw.corp_code
-        AND rsq.store_code = ds.store_code
+        FROM rel_store_qrcode rsq ,rel_corp_wechat rcw
+        WHERE rsq.corp_code = rcw.corp_code
+        AND rsq.app_id = rcw.app_id
         AND rsq.store_code=#{store_code}
         AND rsq.corp_code=#{corp_code}
         AND rcw.app_id=#{app_id}
-        AND ds.isactive = 'Y'
+        AND rcw.isactive = 'Y'
+        AND rcw.is_authorize = 'Y'
     </select>
 
     <delete id="deleteStoreQrcode">
