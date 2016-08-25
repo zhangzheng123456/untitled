@@ -519,27 +519,29 @@ public class StoreServiceImpl implements StoreService {
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);
             if (!result.startsWith("{")) {
-//                dataBean.setId(id);
-//                dataBean.setMessage("生成二维码失败");
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 return Common.DATABEAN_CODE_ERROR;
             }
             JSONObject obj = new JSONObject(result);
-            picture = obj.get("picture").toString();
-            String qrcode_url = obj.get("url").toString();
-            storeQrcode = new StoreQrcode();
-            storeQrcode.setApp_id(auth_appid);
-            storeQrcode.setCorp_code(corp_code);
-            storeQrcode.setStore_code(store_code);
-            storeQrcode.setQrcode(picture);
-            storeQrcode.setQrcode_content(qrcode_url);
-            Date now = new Date();
-            storeQrcode.setModified_date(Common.DATETIME_FORMAT.format(now));
-            storeQrcode.setModifier(user_id);
-            storeQrcode.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            storeQrcode.setCreater(user_id);
-            storeQrcode.setIsactive(Common.IS_ACTIVE_Y);
-            storeMapper.insertStoreQrcode(storeQrcode);
+            if (result.contains("errcode")) {
+                String rst = obj.get("errcode").toString();
+                return rst;
+            } else {
+                picture = obj.get("picture").toString();
+                String qrcode_url = obj.get("url").toString();
+                storeQrcode = new StoreQrcode();
+                storeQrcode.setApp_id(auth_appid);
+                storeQrcode.setCorp_code(corp_code);
+                storeQrcode.setStore_code(store_code);
+                storeQrcode.setQrcode(picture);
+                storeQrcode.setQrcode_content(qrcode_url);
+                Date now = new Date();
+                storeQrcode.setModified_date(Common.DATETIME_FORMAT.format(now));
+                storeQrcode.setModifier(user_id);
+                storeQrcode.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                storeQrcode.setCreater(user_id);
+                storeQrcode.setIsactive(Common.IS_ACTIVE_Y);
+                storeMapper.insertStoreQrcode(storeQrcode);
+            }
         }else {
             picture = storeQrcode.getQrcode();
         }

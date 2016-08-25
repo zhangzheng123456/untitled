@@ -1323,6 +1323,11 @@ public class UserController {
                         dataBean.setMessage("生成二维码失败");
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
+                    }else if (result.equals("48001")){
+                        dataBean.setId(id);
+                        dataBean.setMessage("该功能未授权");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
                     }
                     dataBean.setId(id);
                     dataBean.setMessage(result);
@@ -1374,6 +1379,11 @@ public class UserController {
                             dataBean.setMessage("生成二维码失败");
                             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                             return dataBean.getJsonStr();
+                        }else if (result.equals("48001")){
+                        dataBean.setId(id);
+                        dataBean.setMessage("该功能未授权");
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        return dataBean.getJsonStr();
                         }
                     } else {
                         dataBean.setId(id);
