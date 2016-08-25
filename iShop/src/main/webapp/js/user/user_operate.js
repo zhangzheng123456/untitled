@@ -378,7 +378,6 @@ function selectownshop(obj){//加载店铺列表的时候
 	var input=$(obj);
 	var div=$(obj).nextAll('.store_list_kuang');
 	var inputs=$(obj).nextAll('.store_list_kuang').find('.search');
-	console.log(inputs);
     if(div.css("display")=="none"){
         div.show();
     }else{
