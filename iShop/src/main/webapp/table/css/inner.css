@@ -982,3 +982,55 @@ input::-webkit-input-placeholder{
 	color: #fff;
 	background: #6cc1c8;
 }
+/****员工批量生成二维码*****/
+#creat_code{
+	width: 400px;
+	min-height: 200px;
+	position: absolute;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0,0,0,0.35);
+	z-index: 789;
+	border-radius: 5px;
+	padding-bottom: 5px;
+	display: none;
+}
+#code_close{
+	position: absolute;
+	top:0;
+	right: 0;
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	font-size: 24px;
+	line-height: 40px;
+	background-color: #999999;
+	cursor: pointer;
+}
+#code_drop_down{
+	outline: none;
+	border: 1px solid #ccc;
+	height: 30px;
+	width: 170px;
+	border-radius: 5px;
+	background: #fff url(../../img/btn_dropmenu.png) no-repeat 100% 50%;
+    background-size: 30px;
+}
+.creat_code{
+	margin-top: 40px;
+	width: 170px;
+	min-height: 150px;
+}
+.p16{
+	margin-left: 15px;
+}
+.code_save{
+	width: 150px;
+	height: 30px;
+	background-color:#6dc1c8;
+	margin: 0 auto;
+	color: #fff;
+	line-height: 30px;
+	text-align: center;
+	border-radius: 5px;
+	cursor:pointer;
+}
