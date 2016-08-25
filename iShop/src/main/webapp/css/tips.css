@@ -61,12 +61,12 @@
 	position: relative;
 }
 .kuang{
-	width: 200px;
+	width: 100px;
 	border:1px solid #ddd;
 	top:2px;
 	position: absolute;
-	left: 200px;
-	display: none;
+	left: 700px;
+	/*display: none;*/
 }
 .kuang img{
 	width: 100%;

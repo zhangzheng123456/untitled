@@ -847,8 +847,16 @@ jQuery(document).ready(function(){
 				}else if(msg.can_login=="N"){
 					input1.checked=false;
 				}
+				var qrcodeList=msg.qrcodeList;
+				var appinput=$(".er_code li input");
+				var img=$(".er_code .kuang img")
+				console.log(qrcodeList);
+				console.log(img);
+				for(var i=0;i<qrcodeList.length;i++){
+					$(appinput[i]).val(qrcodeList[i].app_name);
+					$(img[i]).attr("src",qrcodeList[i].qrcode);
+				}
 				getcorplist();
-				getAppName();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -861,7 +869,6 @@ jQuery(document).ready(function(){
 		});
     }else{
     	getcorplist();
-		getAppName();
     }
 	$(".useradd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/user/user.html");
@@ -936,26 +943,6 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     })
-    //点击生成二维码
-    $("#create").click(function(){
-    	var user_creat="/user/creatQrcode";
-    	var user_code=$('#USERID').val();
-    	var corp_code=$('#OWN_CORP').val();
-		var app_id=$(".er_code input").attr("id");
-    	var _params={};
-    	_params["user_code"]=user_code;
-    	_params["corp_code"]=corp_code;
-		_params["app_id"]=app_id;
-    	oc.postRequire("post",user_creat,"", _params, function(data){
-    		var message=data.message;
-    		if(data.code=="0"){
-    			$("#kuang").show();
-    			$('#kuang img').attr("src",message);
-    		}else if(data.code=="-1"){
-    			alert(data.message);
-    		}
-    	})
-    })
 	//重置密码时提示消失
 	$("#first_pwd").focus(function () {
 		$(".em_1").css("display","none")
@@ -1000,10 +987,6 @@ jQuery(document).ready(function(){
 
 		})
 	})
-    //点击关闭按钮
-    $("#k_close").click(function(){
-    	$("#kuang").hide();
-    })
 });
 function getcorplist(){
 	//获取企业列表
@@ -1045,7 +1028,7 @@ function getcorplist(){
 		}
 	});
 }
-function getAppName(){
+function getAppName(a){
 	var corp_code=$("#OWN_CORP").val();
 	var param={};
 	    param["corp_code"]=corp_code;
@@ -1056,15 +1039,16 @@ function getAppName(){
 			var msg=JSON.parse(data.message);
 			var list=msg.list;
 			console.log(list);
+			$(a).next("ul").empty();
 			for(var i=0;i<list.length;i++){
-				$(".er_code ul").append('<li>'+list[i].app_name+'</li>')
+				$(a).next("ul").append('<li>'+list[i].app_name+'</li>')
 			}
-			$(".er_code ul li").click(function () {
+			$(a).next("ul").find("li").click(function () {
 				var value = $(this).html();
 				console.log(value);
-				$(".er_code input").val(value);
+				$(a).val(value);
 				for (var i = 0; i < list.length; i++) {
-					$(".er_code input").attr("id", list[i].app_id)
+					$(a).attr("id", list[i].app_id)
 				}
 			})
 		}else if(data.code=="-1"){
@@ -1077,14 +1061,55 @@ function getAppName(){
 		}
 	});
 }
+//点击生成二维码
+function getTwoCode(b){
+	var user_creat="/user/creatQrcode";
+	var user_code=$('#USERID').val();
+	var corp_code=$('#OWN_CORP').val();
+	var app_id=$(b).prevAll("input").attr("id");
+	var _params={};
+	_params["user_code"]=user_code;
+	_params["corp_code"]=corp_code;
+	_params["app_id"]=app_id;
+	oc.postRequire("post",user_creat,"", _params, function(data){
+		var message=data.message;
+		if(data.code=="0"){
+			$(b).nextAll(".kuang").show();
+			$(b).nextAll(".kuang").find("img").attr("src",message);
+		}else if(data.code=="-1"){
+			alert(data.message);
+		}
+	})
+	//点击关闭按钮
+	$(b).nextAll(".kuang").find("span").click(function(){
+		$(b).nextAll(".kuang").hide();
+	})
+}
 
 //生成二维码下拉框
-$(".er_code").click(function () {
-	if($(".er_code ul").css("display")=="none"){
-		$(".er_code ul").show();
+function select_down(a){
+	if($(a).next().css("display")=="none"){
+		$(a).next().show();
+		$(a).find("ul").empty();
+		getAppName(a);
 	}else {
-		$(".er_code ul").hide();
+		$(a).next().hide();
 	}
+	$(a).blur(function(){
+		var ul=$(this).next();
+		setTimeout(function(){
+			ul.hide();
+		},200);
+	})
+}
+
+$("#add_app_id").click(function(){
+	$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
+		+'<span class="power create" onclick="getTwoCode(this)">生成</span>'
+		+'<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
+		+'<div class="kuang"><span class="icon-ishop_6-12"></span><img src="" alt="">'
+		+'</div></li>')
 })
-
-
+function remove_app_id(obj) {
+	$(obj).parent().remove();
+}

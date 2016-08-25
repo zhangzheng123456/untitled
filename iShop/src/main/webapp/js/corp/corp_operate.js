@@ -174,7 +174,7 @@ var message = JSON.parse(val.message);
                     arr.push(app_id);
                     arr.sort();
                     for(var j=0;j<arr.length;j++){
-                        if(arr[j]==arr[j+1]){
+                        if(arr[j]==arr[j+1]&&arr[j]!==""){
                             alert("公众号ID不能重复！")
                             return;
                         }
