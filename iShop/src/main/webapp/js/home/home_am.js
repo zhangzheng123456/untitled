@@ -2,10 +2,32 @@ var oc = new ObjectControl();
 var myDate = new Date();       
 var year=myDate.getFullYear();
 var month=myDate.getMonth()+1;
+if(month<10){
+	month="0"+month;
+}else if(month>=10){
+	month=month;
+}
 var data=myDate.getDate();
 var today=year+"-"+month+"-"+data;
-console.log(today);
+$(".icon-text").val(today);
+function superadditionStore(a){
+	var store_list="";
+	for(var i=0;i<a.length;i++){
+		var a=i+1;
+		store_list+="<tr><td style='windth:13%'>"
+		+a
+		+"</td><td>"
+		+a[i].store_name//店铺名称
+		+"</td><td>"
+		+a[i].achv_amount//店铺业绩
+		+"</td><td>"
+		+a[i].discount//折扣
+		+"</td></tr>"
+	}
+	$("#store_list tbody").html(store_list);
+}
 function storeRanking(a){//店铺排行
+	var a=a.replace(/[-]/g,"");
 	var param={};
 	param["time"]=a;
 	param["store_name"]="";
@@ -21,20 +43,7 @@ function storeRanking(a){//店铺排行
 		console.log(achv_detail_m);
 		console.log(achv_detail_y);
 		console.log(achv_detail_w);
-		var store_list="";
-		for(var i=0;i<achv_detail_d.length;i++){
-			var a=i+1;
-			store_list+="<tr><td style='windth:13%'>"
-			+a
-			+"</td><td>"
-			+achv_detail_d[i].store_name//店铺名称
-			+"</td><td>"
-			+achv_detail_d[i].achv_amount//店铺业绩
-			+"</td><td>"
-			+achv_detail_d[i].discount//折扣
-			+"</td></tr>"
-		}
-		$("#store_list tbody").html(store_list);
+		superadditionStore(achv_detail_d);
 	})
 }
 //店铺排行
@@ -45,7 +54,6 @@ var start = {
     istime: true,
     istoday: false,
     choose: function(datas) {
-    	var datas=datas.replace(/[-]/g,"");
     	storeRanking(datas);
     }
 };
