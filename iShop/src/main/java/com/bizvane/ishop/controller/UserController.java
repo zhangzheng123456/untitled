@@ -13,31 +13,23 @@ import com.github.pagehelper.PageInfo;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
-import org.apache.ibatis.session.SqlSession;
-import org.apache.ibatis.session.SqlSessionFactory;
 import org.json.JSONObject;
 import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.context.ContextLoader;
-import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.System;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -570,7 +562,6 @@ public class UserController {
                         user.setStore_code("");
                     }
                     user.setPosition(rs.getCell(j++, i).getContents().toString().trim());
-                    user.setQrcode("");
                     user.setPassword(user.getPhone());
                     Date now = new Date();
                     user.setLogin_time_recently("");
@@ -684,7 +675,6 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
-            user.setQrcode("");
             String password = CheckUtils.encryptMD5Hash(phone);
             user.setPassword(password);
             Date now = new Date();
@@ -1320,37 +1310,21 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String user_code = jsonObject.get("user_code").toString();
-//            String app_user_name = jsonObject.get("app_user_name").toString();
-//            CorpWechat corpWechat = corpService.getCorpByAppUserName(app_user_name);
-            CorpWechat corpWechat = corpService.getWByCorp(corp_code).get(0);
+            String app_id = jsonObject.get("app_id").toString();
+            CorpWechat corpWechat = corpService.getCorpByAppId(app_id);
             if (corpWechat != null && corpWechat.getApp_id() != null && corpWechat.getApp_id() != "") {
                 String auth_appid = corpWechat.getApp_id();
                 String is_authorize = corpWechat.getIs_authorize();
                 if (is_authorize.equals("Y")) {
-                    String user_code1 = user_code;
-                    String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
-                    String result = IshowHttpClient.get(url);
-                    logger.info("------------creatQrcode  result" + result);
-                    if (!result.startsWith("{")) {
+                    String result = userService.creatUserQrcode(corp_code,user_code,auth_appid,user_id);
+                    if (result.equals(Common.DATABEAN_CODE_ERROR)){
                         dataBean.setId(id);
                         dataBean.setMessage("生成二维码失败");
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
                     }
-                    JSONObject obj = new JSONObject(result);
-                    String picture = obj.get("picture").toString();
-                    String qrcode_url = obj.get("url").toString();
-                    User user = userService.userCodeExist(user_code, corp_code, "").get(0);
-                    user.setApp_id(auth_appid);
-                    user.setQrcode(picture);
-                    user.setQrcode_content(qrcode_url);
-                    Date now = new Date();
-                    user.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    user.setModifier(user_id);
-                    logger.info("------------creatQrcode  update user");
-                    userService.updateUser(user);
                     dataBean.setId(id);
-                    dataBean.setMessage(picture);
+                    dataBean.setMessage(result);
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     return dataBean.getJsonStr();
                 }
@@ -1383,38 +1357,23 @@ public class UserController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            String auth_appid = jsonObject.get("app_id").toString();
             JSONArray list = JSONArray.parseArray(jsonObject.get("list").toString());
+            CorpWechat corpWechat = corpService.getCorpByAppId(auth_appid);
             for (int i = 0; i < list.size(); i++) {
                 JSONObject json = new JSONObject(list.get(i).toString());
                 String corp_code = json.get("corp_code").toString();
                 String user_code = json.get("user_code").toString();
-                List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
-                if (corpWechats.size() > 0) {
-                    CorpWechat corpWechat = corpWechats.get(0);
-                    String auth_appid = corpWechat.getApp_id();
+                if (corpWechat.getCorp_code().equals(corp_code)) {
                     String is_authorize = corpWechat.getIs_authorize();
                     if (is_authorize.equals("Y")) {
-                        String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
-                        String result = IshowHttpClient.get(url);
-                        logger.info("------------creatQrcode  result" + result);
-                        if (!result.startsWith("{")) {
+                        String result = userService.creatUserQrcode(corp_code,user_code,auth_appid,user_id);
+                        if (result.equals(Common.DATABEAN_CODE_ERROR)){
                             dataBean.setId(id);
                             dataBean.setMessage("生成二维码失败");
                             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                             return dataBean.getJsonStr();
                         }
-                        JSONObject obj = new JSONObject(result);
-                        String picture = obj.get("picture").toString();
-                        String qrcode_url = obj.get("url").toString();
-                        User user = userService.userCodeExist(user_code, corp_code, "").get(0);
-                        user.setApp_id(auth_appid);
-                        user.setQrcode(picture);
-                        user.setQrcode_content(qrcode_url);
-                        Date now = new Date();
-                        user.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        user.setModifier(user_id);
-                        logger.info("------------creatQrcode  update user");
-                        userService.updateUser(user);
                     } else {
                         dataBean.setId(id);
                         dataBean.setMessage(corp_code + "企业未授权,生成二维码中断");

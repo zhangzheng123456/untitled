@@ -6112,7 +6112,7 @@ body.rtls.top-navigation .footer.fixed {
 }
 .skin-1 .nav-header {
   background: #0e9aef;
-  background: url('patterns/header-profile-skin-1.png');
+  background: url("patterns/header-profile-skin-1.png");
 }
 .skin-1.mini-navbar .nav-second-level {
   background: #3e495f;
@@ -8281,4 +8281,32 @@ li.select_index>a>label>i{
 .edit_shop_icon i{
   padding-left: 5px;
   color: #FFFFFF;
+}
+.er_code input{
+  width: 320px;
+  height: 30px;
+  line-height: 30px;
+  border-radius: 4px;
+  background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
+  background-size: 30px 30px;
+}
+.er_code ul{
+  width: 320px;
+  background: #e8f5fe;
+  margin-top: 2px;
+  margin-left: 123px;
+  border: 1px solid #a9c9e2;
+  position: absolute;
+  display: none;
+  z-index: 100;
+}
+.er_code ul li{
+  display: block;
+  line-height: 24px;
+  text-indent: 10px;
+  color: #807a62;
+}
+.er_code ul li:hover{
+  background:#6cc1c8;
+  color:#ffffff;
 }

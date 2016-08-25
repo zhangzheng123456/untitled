@@ -51,4 +51,6 @@ public interface CorpMapper {
     int insertCorpWechat(CorpWechat record) throws SQLException;
 
     int updateCorpWechat(CorpWechat record) throws SQLException;
+
+    int deleteCorpWechat(@Param("app_id") String app_id) throws SQLException;
 }

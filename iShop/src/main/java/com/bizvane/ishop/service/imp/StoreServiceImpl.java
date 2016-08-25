@@ -6,9 +6,11 @@ import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.IshowHttpClient;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +40,8 @@ public class StoreServiceImpl implements StoreService {
     private CorpMapper corpMapper;
     @Autowired
     private CodeUpdateMapper codeUpdateMapper;
+
+    private static final Logger logger = Logger.getLogger(StoreServiceImpl.class);
 
     /**
      * 通过用户ID和制定的店仓来删除用户的店仓
@@ -77,6 +81,8 @@ public class StoreServiceImpl implements StoreService {
             store.setBrand_name("");
             store.setBrand_code("");
         }
+        List<StoreQrcode> qrcodeList = storeMapper.selectByStoreCode(corp_code,store.getStore_code());
+        store.setQrcodeList(qrcodeList);
         return store;
     }
 
@@ -499,4 +505,40 @@ public class StoreServiceImpl implements StoreService {
         }
         return array;
     }
+
+    public String creatStoreQrcode(String corp_code,String store_code,String auth_appid,String user_id) throws Exception{
+        StoreQrcode storeQrcode = storeMapper.selectByStoreApp(corp_code,store_code,auth_appid);
+        String picture ="";
+        if (storeQrcode != null) {
+            String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + store_code;
+            String result = IshowHttpClient.get(url);
+            logger.info("------------creatQrcode  result" + result);
+            if (!result.startsWith("{")) {
+//                dataBean.setId(id);
+//                dataBean.setMessage("生成二维码失败");
+//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                return Common.DATABEAN_CODE_ERROR;
+            }
+            JSONObject obj = new JSONObject(result);
+            picture = obj.get("picture").toString();
+            String qrcode_url = obj.get("url").toString();
+            storeQrcode = new StoreQrcode();
+            storeQrcode.setApp_id(auth_appid);
+            storeQrcode.setCorp_code(corp_code);
+            storeQrcode.setStore_code(store_code);
+            storeQrcode.setQrcode(picture);
+            storeQrcode.setQrcode_content(qrcode_url);
+            Date now = new Date();
+            storeQrcode.setModified_date(Common.DATETIME_FORMAT.format(now));
+            storeQrcode.setModifier(user_id);
+            storeQrcode.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            storeQrcode.setCreater(user_id);
+            storeQrcode.setIsactive(Common.IS_ACTIVE_Y);
+            storeMapper.insertStoreQrcode(storeQrcode);
+        }else {
+            picture = storeQrcode.getQrcode();
+        }
+        return picture;
+    }
+
 }

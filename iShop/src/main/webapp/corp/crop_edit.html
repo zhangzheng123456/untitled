@@ -16,6 +16,7 @@
         body{
             margin-top:81px;
         }
+       .wx_app input{width:150px;margin-top: 15px;}
     </style>
 </head>
 <body>
@@ -37,14 +38,6 @@
                     <div>
                         <span><label>企业编号</label><input type="text" id="CORPID" style="background:#dfdfdf;" verify="Empty" readonly="true" /> <div style="padding-left:80px" class="hint"><div  hintinfo="企业编号为必填项，支持以大写C开头必须是5位数字的组合！"></div></div></span>
                     </div>
-                    <div class="wx_app">
-                        <span  style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>
-                            <input type="text" id="WXID" style="margin-top:15px" placeholder="此项可不填"/>
-                            <!-- <label style="width: inherit;margin:15px 10px">公众号名称</label> -->
-                            <!-- input type="text" id="AppName" style="margin-top:15px" placeholder="此项可不填"/>
-                            <span onclick="add()" class="add_apple">添加</span> -->
-                        </span>
-                    </div>
                     <div>
                         <span><label>企业名称</label><input type="text" id="CORPNAME" verify="Empty"/>
                             <div style="padding-left:80px" class="hint"><div  hintinfo="企业名称为必填项，不能为空！"></div></div>
@@ -59,6 +52,15 @@
                     </div>
                     <div>
                         <span><label>联系电话</label><input type="text" id="PHONE" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
+                    </div>
+                    <div class="wx_app">
+                        <span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>
+                            <input type="text" class="WXID"/>
+                            <label style="width: 70px;;margin:15px 10px">公众号名称</label>
+                            <input type="text" class="AppName"/>
+                            <input type="text" disabled="true" value="未授权" style="width: 100px; margin-left: -8px;" class="state_val">
+                            <span onclick="add()" class="add_apple">添加</span>
+                        </span>
                     </div>
                     <div>
                         <li>
@@ -115,6 +117,15 @@
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/corp/corp_operate.js"></script>
+    <script>
+        function add(){
+    $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'+'<input type="text" class="WXID" />'+'<label style="width: 70px;;margin:15px 10px">公众号名称</label><input type="text" class="AppName" />'
+                +'<input type="text" disabled="true" value="未授权" style="width: 100px; margin-left: -8px;" class="state_val"><span class="remove_input" onclick="removeselect(this)">删除</span>'+'</span>')
+    }
+        function removeselect(obj){//区域  删除
+    $(obj).parent().remove();
+    }
+    </script>
 </body>
 
 </html>

@@ -263,13 +263,7 @@ public class CorpController {
             String corp_id = jsonObject.get("id").toString();
             Corp corp = corpService.selectByCorpId(Integer.parseInt(corp_id), "","");
             List<CorpWechat> corpWechat = corpService.getWByCorp(corp.getCorp_code());
-            if (corpWechat.size()==0){
-                corp.setApp_id("");
-                corp.setIs_authorize(Common.IS_AUTHORIZE_N);
-            }else {
-                corp.setApp_id(corpWechat.get(0).getApp_id());
-                corp.setIs_authorize(corpWechat.get(0).getIs_authorize());
-            }
+            corp.setWechats(corpWechat);
             data = JSON.toJSONString(corp);
             bean.setCode(Common.DATABEAN_CODE_SUCCESS);
             bean.setId("1");
@@ -623,14 +617,9 @@ public class CorpController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             List<CorpWechat> corpWechats = corpService.getWByCorp(corp_code);
-            String is_authorize = corpWechats.get(0).getIs_authorize();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            if (is_authorize.equals(Common.IS_AUTHORIZE_Y)) {
-                dataBean.setMessage("已授权");
-            } else {
-                dataBean.setMessage("未授权");
-            }
+            dataBean.setMessage(JSON.toJSONString(corpWechats));
         } catch (Exception ex) {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
@@ -674,33 +663,33 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
-//    /**
-//     * 选择公众号
-//     */
-//    @RequestMapping(value = "/selectWx", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String selectWx(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//            String jsString = request.getParameter("param");
-//            logger.info("json---------------" + jsString);
-//            JSONObject jsonObj = JSONObject.parseObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            String corp_code = jsonObject.get("corp_code").toString();
-//            JSONObject result = new JSONObject();
-//            List<CorpWechatRelation> wechat_list = corpService.getRelationByCorp(corp_code);
-//            result.put("list", JSON.toJSONString(wechat_list));
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage(result.toString());
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage() + ex.toString());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    /**
+     * 选择公众号
+     */
+    @RequestMapping(value = "/selectWx", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectWx(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            JSONObject result = new JSONObject();
+            List<CorpWechat> wechatlist = corpService.getWByCorp(corp_code);
+            result.put("list", JSON.toJSONString(wechatlist));
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
 
 }
