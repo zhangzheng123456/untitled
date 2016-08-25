@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../css/liandong_select.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </head>
 <body>
     <div id="wrapper">
@@ -208,7 +209,7 @@
                                             </ul>
                                         </span>
                                         <span>
-                                            <input type="text" class="laydate-icon icon-text">
+                                            <input type="text" id="date0" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -278,7 +279,7 @@
                                         </ul>
                                     </span>
                                     <span>
-                                        <input type="text" class="laydate-icon icon-text">
+                                        <input type="text" id="date1" class="laydate-icon icon-text">
                                     </span>
                                 </div>
                                 <span style="margin-right:10px;">业绩总额<label style="font-size: 20px">21114.00</label>元</span>
@@ -323,7 +324,7 @@
                                             </ul>
                                         </span>
                                         <span>
-                                            <input type="text" class="laydate-icon icon-text">
+                                            <input type="text" id="date2" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -393,7 +394,7 @@
                                             </ul>
                                         </span>
                                         <span>
-                                            <input type="text" class="laydate-icon icon-text">
+                                            <input type="text" id="date3" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -480,15 +481,16 @@
     <script type="text/javascript" src="../js/onvertToPinyin.js"></script>
     <!-- piechart -->
     <script type="text/javascript" src="../js/easypiechart.js"></script>
-    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-    <script type="text/javascript" src="/js/home/home_gm.js"></script>
+    <!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
+    <script type="text/javascript" src="../js/home/home_gm.js"></script>
     <!-- 业绩看板 -->
     <script type="text/javascript">
-        var perArr = [30,34,31,37,35,39,40];//顶点
+        var perArr = [0,34,31,37,35,39,40];//顶点
+        var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
         window.onresize=function(){
-            init(perArr);
+            init(perArr,dateArr);
         }
-        window.onload = init(perArr);
+        window.onload = init(perArr,dateArr);
     </script>
     <script>
         $(document).ready(function () {
@@ -575,7 +577,7 @@
                 }
             ]
         }
-        var myRadar = new Chart(document.getElementById("canvas").getContext("2d")).Radar(radarChartData,{scaleShowLabels : false, pointLabelFontSize : 10});
+        var myRadar= new Chart(document.getElementById("canvas").getContext("2d")).Radar(radarChartData,{scaleShowLabels : false, pointLabelFontSize : 10});
         var myRadar2 = new Chart(document.getElementById("canvas2").getContext("2d")).Radar(radarChartData2,{scaleShowLabels : false, pointLabelFontSize : 10});
         var myRadar3 = new Chart(document.getElementById("canvas3").getContext("2d")).Radar(radarChartData3,{scaleShowLabels : false, pointLabelFontSize : 10});
     </script>
