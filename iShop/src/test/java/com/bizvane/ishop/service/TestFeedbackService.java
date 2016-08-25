@@ -81,34 +81,57 @@ public class TestFeedbackService {
 //            }
 //            String aa=String.valueOf(null+"");
 //            System.out.println(aa.length()+"--"+aa);
-            String store_name = "";
-            String area_code = "";
-            String role_code =Common.ROLE_AM;
-            if (role_code.equals(Common.ROLE_GM)){
-                area_code = "";
-            }else if(role_code.equals(Common.ROLE_AM)){
-                    String code ="A0116,A0117,A0118,A0119,A0120,A0121";
-                    String[] area_codes = code.replace(Common.STORE_HEAD,"").split(",");
-                    area_code = area_codes[0];
-            }
-            Data data_user_id = new Data("user_id", "ABC123", ValueType.PARAM);
+
+
+
+
+//            String store_name = "";
+//            String area_code = "";
+//            String role_code =Common.ROLE_AM;
+//            if (role_code.equals(Common.ROLE_GM)){
+//                area_code = "";
+//            }else if(role_code.equals(Common.ROLE_AM)){
+//                    String code ="A0116,A0117,A0118,A0119,A0120,A0121";
+//                    String[] area_codes = code.replace(Common.STORE_HEAD,"").split(",");
+//                    area_code = area_codes[0];
+//            }
+//            Data data_user_id = new Data("user_id", "ABC123", ValueType.PARAM);
+//            Data data_corp_code = new Data("corp_code", "C10141", ValueType.PARAM);
+//            Data data_time_id = new Data("time_id", "20160823", ValueType.PARAM);
+//            Data data_store_name = new Data("store_name", "", ValueType.PARAM);
+//            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_user_id.key, data_user_id);
+//            datalist.put(data_corp_code.key, data_corp_code);
+//            datalist.put(data_time_id.key, data_time_id);
+//            datalist.put(data_store_name.key, data_store_name);
+//            datalist.put(data_area_code.key, data_area_code);
+//
+//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStoreRanking",datalist);
+//
+//
+//            String result = dataBox.data.get("message").value;
+//            System.out.println(result+"--");
+
+
+
+            Data data_user_id = new Data("user_id", "1221", ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", "C10141", ValueType.PARAM);
             Data data_time_id = new Data("time_id", "20160823", ValueType.PARAM);
-            Data data_store_name = new Data("store_name", "", ValueType.PARAM);
-            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
-
+     //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
+            Data data_store_id = new Data("store_id", "§902116101,", ValueType.PARAM);
+           // 751400901
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_time_id.key, data_time_id);
-            datalist.put(data_store_name.key, data_store_name);
-            datalist.put(data_area_code.key, data_area_code);
-
-            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStoreRanking",datalist);
-
+            datalist.put(data_store_id.key, data_store_id);
+       //     datalist.put(data_store_code.key, data_store_code);
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
 
             String result = dataBox.data.get("message").value;
-            System.out.println(result+"--");
+            System.out.println(result);
         } catch (Exception x) {
             x.printStackTrace();
         }
