@@ -48,9 +48,11 @@ public interface CorpMapper {
 
     List<CorpWechat> selectWByCorp(@Param("corp_code") String corp_code) throws SQLException;
 
+    List<CorpWechat> selectWAuthByCorp(@Param("corp_code") String corp_code) throws SQLException;
+
     int insertCorpWechat(CorpWechat record) throws SQLException;
 
     int updateCorpWechat(CorpWechat record) throws SQLException;
 
-    int deleteCorpWechat(@Param("app_id") String app_id) throws SQLException;
+    int deleteCorpWechat(@Param("app_id") String app_id,@Param("corp_code") String corp_code) throws SQLException;
 }

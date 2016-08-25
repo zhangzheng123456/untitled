@@ -258,6 +258,18 @@
         AND isactive = 'Y'
     </select>
 
+    <select id="selectWAuthByCorp" resultType="com.bizvane.ishop.entity.CorpWechat">
+        SELECT id,
+        app_id,
+        app_name,
+        corp_code,
+        is_authorize
+        FROM rel_corp_wechat
+        WHERE corp_code = #{corp_code}
+        AND is_authorize = 'Y'
+        AND isactive = 'Y'
+    </select>
+
     <insert id="insertCorpWechat" parameterType="com.bizvane.ishop.entity.CorpWechat">
         INSERT INTO rel_corp_wechat
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -358,6 +370,12 @@
     <delete id="deleteCorpWechat">
         DELETE FROM
         rel_corp_wechat
-        WHERE app_id = #{app_id}
+        WHERE 1=1
+        <if test="app_id != null and app_id != ''">
+            AND app_id = #{app_id}
+        </if>
+        <if test="corp_code != null and corp_code != ''">
+            AND corp_code = #{corp_code}
+        </if>
     </delete>
 </mapper>
