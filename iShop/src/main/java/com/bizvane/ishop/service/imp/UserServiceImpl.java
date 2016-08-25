@@ -749,6 +749,9 @@ public class UserServiceImpl implements UserService {
             if (app_user_name != null && !app_user_name.equals(""))
                 codeUpdateMapper.updateRelVipEmp(new_user_code,old_user_code,app_user_name);
         }
+
+        //删除对应的二维码
+        userMapper.deleteUserQrcode(corp_code,old_user_code);
     }
 
     public List<UserQrcode> selectQrcodeByUser(String corp_code, String user_code) throws Exception{
@@ -764,6 +767,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.insertUserQrcode(userQrcode);
     }
 
+    public int deleteUserQrcode(String corp_code,String user_code) throws Exception{
+        return userMapper.deleteUserQrcode(corp_code,user_code);
+    }
+
     public String creatUserQrcode(String corp_code,String user_code,String auth_appid,String user_id) throws Exception{
         UserQrcode userQrcode = selectQrcodeByUserApp(corp_code,user_code,auth_appid);
         String picture ="";
@@ -772,9 +779,6 @@ public class UserServiceImpl implements UserService {
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);
             if (!result.startsWith("{")) {
-//                dataBean.setId(id);
-//                dataBean.setMessage("生成二维码失败");
-//                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 return Common.DATABEAN_CODE_ERROR;
             }
             JSONObject obj = new JSONObject(result);

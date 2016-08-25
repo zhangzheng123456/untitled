@@ -336,6 +336,7 @@ public class StoreController {
                         msg = "店铺" + store_code + "下的业绩目标，请先处理店铺下业绩再删除";
                         break;
                     }
+                    storeService.deleteStoreQrcode(corp_code,store_code);
                 }
                 storeService.delete(Integer.valueOf(ids[i]));
             }
