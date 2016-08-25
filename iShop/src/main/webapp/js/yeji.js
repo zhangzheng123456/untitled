@@ -54,8 +54,8 @@
             //获取画布的上下文：使用画布的getContext方法获取
             var c =canvas.getContext("2d");//画笔
             //绘制横线
-            c.moveTo(20,0); //起始点坐标
-            c.lineTo(20,220); //起始点坐标
+            //c.moveTo(20,0); //起始点坐标
+            c.moveTo(20,220); //起始点坐标
             c.lineTo(end_num,220);//终点坐标
             c.strokeStyle = '#a3adbc';
             c.stroke();
