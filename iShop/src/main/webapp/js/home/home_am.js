@@ -32,8 +32,8 @@ function superadditionStore(c) {
 	}
 	$("#store_list tbody").html(store_list);
 }
-
-function storeRanking(a) { //店铺排行
+//店铺排行
+function storeRanking(a) {
 	var a = a.replace(/[-]/g, "");
 	var param = {};
 	param["time"] = a;
@@ -77,8 +77,8 @@ function superadditionStaff(c) {
 	}
 	$("#store_list tbody").html(store_list);
 }
-
-function staffRanking(a) { //导购排行
+//导购排行
+function staffRanking(a) { 
 	var a = a.replace(/[-]/g, "");
 	var param = {};
 	param["time"] = a;
@@ -110,7 +110,35 @@ function staffRanking(a) { //导购排行
 		superadditionStaff(achv_detail_d);
 	})
 }
-//店铺排行
+//业绩
+function achAnalysis(a){
+	var a = a.replace(/[-]/g, ""); 
+	var param={};
+	param["time"]=a;
+	oc.postRequire("post", "/home/achAnalysis", "", param, function(data) {
+		var message = JSON.parse(data.message);
+		console.log(message);
+		$(".reg_testdate li").click(function() {
+			var value = $(this).html();
+			var id = $(this).parent("ul").attr("id");
+			$(this).parent("ul").prev(".title").html(value);
+			$(this).parent("ul").hide();
+			$(this).parent("ul").parent(".choose").removeClass("cur");
+			if (value == "按日查看" && id == "achv") {
+				superadditionStaff(achv_detail_d);
+			} else if (value == "按周查看" && id == "achv") {
+				superadditionStaff(achv_detail_w);
+			} else if (value == "按月查看" && id == "achv") {
+				superadditionStaff(achv_detail_m);
+			} else if (value == "按年查看" && id == "achv") {
+				superadditionStaff(achv_detail_y);
+			}
+		})
+		// superadditionStaff(achv_detail_d);
+	})
+
+}
+//店铺排行日历
 var store = {
 	elem: '#storeRanking',
 	format: 'YYYY-MM-DD',
@@ -121,6 +149,7 @@ var store = {
 		storeRanking(datas);
 	}
 };
+//员工排行日历
 var staff = {
 	elem: '#staffRanking',
 	format: 'YYYY-MM-DD',
@@ -131,7 +160,31 @@ var staff = {
 		staffRanking(datas);
 	}
 }
+//折线图日历
+var achInfo={
+	elem: '#staffRanking',
+	format: 'YYYY-MM-DD',
+	max: laydate.now(), //最大日期
+	istime: true,
+	istoday: false,
+	choose: function(datas) {
+		staffRanking(datas);
+	}
+}
+//业绩日历
+var achv={
+	elem: '#achAnalysis',
+	format: 'YYYY-MM-DD',
+	max: laydate.now(), //最大日期
+	istime: true,
+	istoday: false,
+	choose: function(datas) {
+		achAnalysis(datas);
+	}
+}
 laydate(store); //店铺
 laydate(staff); //员工
+laydate(achv);//业绩
 storeRanking(today);
 staffRanking(today);
+achAnalysis(today);

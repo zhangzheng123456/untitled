@@ -458,6 +458,7 @@ $("#code_save").click(function(){
         var param1={"user_code":store_code,"corp_code":corp_code};
         list.push(param1);
     }
+    list.reverse();
     param["list"]=list;
     param["app_id"]=app_id;
     if(app_id==""||app_id==undefined){

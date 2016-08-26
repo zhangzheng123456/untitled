@@ -58,6 +58,14 @@ function storeRanking(){//店铺排行
 		console.log(data);
 	})
 }
+function areaRanking(){//区域排行
+	var param={};
+	param["time"]="20160823";
+	param["area_name"]="";
+	oc.postRequire("post","/home/areaRanking","", param, function(data){
+		console.log(data);
+	})
+}
 function Fn0(){
 	console.log("我是第一个Input")
 }
@@ -76,3 +84,4 @@ function Fn3(){
 	console.log("我是第四个Input")
 }
 storeRanking();
+areaRanking();
