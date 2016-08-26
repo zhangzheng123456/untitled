@@ -232,18 +232,16 @@ function superaddition(data,num){//页面加载循环
             + "</td><td style='text-align:left;'>"
             + a
             + "</td><td>"
-            + data[i].user_code
+            + data[i].platform
             + "</td><td>"
             + data[i].user_name
             + "</td><td><span>"
             + data[i].corp_name
             + "</span></td><td>"
-            + data[i].sign_time
+            + data[i].time
             + "</td><td>"
-            + data[i].status
-            + "</td><td>"
-            +data[i].isactive
-            +"</td></tr>");
+            + data[i].isactive
+            + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -276,13 +274,14 @@ qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/sign/list?pageNumber="+a+"&pageSize="+b
+    oc.postRequire("get","/apploginlog/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
         // console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+            console.log(list)
             cout=list.pages;
             var list=list.list;
             superaddition(list,a);
@@ -345,7 +344,7 @@ $("#search").keydown(function() {
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         POST(inx,pageSize);
     }
@@ -357,13 +356,13 @@ $("#d_search").click(function(){
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     POST(inx,pageSize);
 })
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/sign/search","0",param,function(data){
+    oc.postRequire("post","/apploginlog/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -418,7 +417,7 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    oc.postRequire("post","/sign/delete","0",params,function(data){
+    oc.postRequire("post","/apploginlog/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame();
@@ -638,7 +637,7 @@ function getInputValue(){
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
-    _param["funcCode"]=funcCode;
+    //_param["funcCode"]=funcCode;
     var num=0;
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
@@ -669,7 +668,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/sign/screen","0",_param,function(data){
+    oc.postRequire("post","/apploginlog/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
