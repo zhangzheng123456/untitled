@@ -1016,9 +1016,18 @@ input::-webkit-input-placeholder{
     background-size: 30px;
 }
 .creat_code{
-	margin-top: 40px;
-	width: 170px;
+	width: 350px;
 	min-height: 150px;
+	margin: 0 auto;
+	margin-top: 40px;
+}
+.creat_code p{
+	line-height: 150px;
+	height: 0;
+}
+.creat_code li{
+	height: 40px;
+	line-height: 40px;
 }
 .p16{
 	margin-left: 15px;

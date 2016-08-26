@@ -980,7 +980,7 @@ jQuery(document).ready(function(){
 					time: 1,
 					lock:true,
 					cancel: false,
-					content: 失败
+					content: "失败"
 				});
 			}
 

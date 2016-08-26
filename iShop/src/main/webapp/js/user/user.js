@@ -398,6 +398,7 @@ function jumpBianse(){
     //批量生成二维码
     $('#qrcode').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        var length=tr.length-1;
         if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -414,7 +415,7 @@ function jumpBianse(){
         param["list"]=list;
         whir.loading.add("",0.5);//加载等待框
         var param1={};
-        var corp_code1=$(tr[0]).find(".corp_code").attr("data-code");
+        var corp_code1=$(tr[length]).find(".corp_code").attr("data-code");
         param1["corp_code"]=corp_code1;
         oc.postRequire("post","/corp/selectWx","0",param1,function(data){
             console.log(data);
@@ -422,9 +423,14 @@ function jumpBianse(){
                 var msg=JSON.parse(data.message);
                 var list=msg.list;
                 var html="";
-                for(var i=0;i<list.length;i++){
+                if(list.length==0){
+                    html+="<p>请先选择公众号</p>"
+                }
+                if(list.length>0){
+                    for(var i=0;i<list.length;i++){
                     html+="<li data-id='"+list[i].app_id+"'><div class='checkbox1'><input type='radio' value='' name='test'  class='check'  id='checkboxSixInput"
                         +i+1+"'/><label for='checkboxSixInput"+i+1+"'></label></div><span class='p16'>"+list[i].app_name+"</span></li>"
+                    }
                 }
                 $("#creat_code .creat_code").html(html);
             }else if(data.code=="-1"){
@@ -433,17 +439,6 @@ function jumpBianse(){
             }
             whir.loading.remove();//移除加载框
         })
-        // whir.loading.add("",0.5);//加载等待框
-        // oc.postRequire("post","/user/creatUsersQrcode","0",param,function(data){
-        //     if(data.code=="0"){
-        //         frame();
-        //         $('.frame').html(data.message);
-        //     }else if(data.code=="-1"){
-        //         frame();
-        //         $('.frame').html(data.message);
-        //     }
-        //     whir.loading.remove();//移除加载框
-        // })
     });
 }
 //二维码弹框
@@ -465,9 +460,10 @@ $("#code_save").click(function(){
     }
     param["list"]=list;
     param["app_id"]=app_id;
-    if(app_id==""){
+    if(app_id==""||app_id==undefined){
         frame();
         $('.frame').html("请先选择公众号");
+        return;
     }
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/user/creatUsersQrcode","0",param,function(data){

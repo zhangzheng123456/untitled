@@ -323,10 +323,10 @@ jQuery(document).ready(function () {
                 console.log(wechat);
                 var len=$(".wx_app").find(".wx_span");
                 if(wechat.length>0) {
-                    if (wechat[0].is_authorize == "Y") {
-                        $(len[0]).find(".state.val").val("已授权");
+                    if (wechat[0].is_authorize== "Y") {
+                        $('.state_val').val("已授权");
                     } else if (wechat[0].is_authorize == "N") {
-                        $(len[0]).find(".state.val").val("未授权");
+                        $('.state_val').val("未授权");
                     }
                     $(len[0]).find(".WXID").val(wechat[0].app_id);
                     $(len[0]).find(".AppName").val(wechat[0].app_name);
@@ -334,7 +334,8 @@ jQuery(document).ready(function () {
                         var is_authorize="";
                         if (wechat[i].is_authorize == "Y") {
                             is_authorize="已授权";
-                        } else if (wechat[i].is_authorize == "N") {
+                        }
+                        if (wechat[i].is_authorize == "N") {
                             is_authorize="未授权";
                         }
                         $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'
@@ -420,24 +421,28 @@ jQuery(document).ready(function () {
     });
     function callback(data) {
         var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
-        // var a="https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxb0a4eb02ba4f1df4&pre_auth_code="+data+"&redirect_uri=http://wx.bizvane.com/wechat/callback";
         $('#power').html('<a href="' + a + '" target="_parent">授权</a>');
     }
+    // //检查是否可否授权状态、
+    // $("#state").click(function () {
+    //     var corp_code = $("#CORPID").val();
+    //     var _params = {};
+    //     _params["corp_code"] = corp_code;
+    //     oc.postRequire("post", "/corp/is_authorize", "", _params, function (data) {
+    //         var message=JSON.parse(data.message);
+    //         for(var i=0;i<message.length;i++){
+                  
+    //         }
+    //         // if (data.code == "0") {
+    //         //     $(".state_val").val(data.message);
+    //         // } else {
+    //         //     alert(data.message);
+    //         // }
+    //         // if(data.code=="0"){
 
-    // window.parent.location.href="http://wx.bizvane.com/wechat/Authorization.html";
-    //检查是否可否授权状态、
-    $("#state").click(function () {
-        var corp_code = $("#CORPID").val();
-        var _params = {};
-        _params["corp_code"] = corp_code;
-        oc.postRequire("post", "/corp/is_authorize", "", _params, function (data) {
-            if (data.code == "0") {
-                $(".state_val").val(data.message);
-            } else {
-                alert(data.message);
-            }
-        })
-    })
+    //         // }
+    //     })
+    // })
     if (message.user_type == "admin") {
         $(".corpadd_oper_btn ul li:nth-of-type(2)").click(function () {
             $(window.parent.document).find('#iframepage').attr("src", "/corp/corp.html");
