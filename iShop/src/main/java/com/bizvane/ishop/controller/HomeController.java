@@ -133,7 +133,7 @@ public class HomeController {
             JSONObject jsonObject = new JSONObject(message);
 
             if (jsonObject.has("time")) {
-                time_id = jsonObject.get("time").toString().replace("-","");
+                time_id = jsonObject.get("time").toString();
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
             }
@@ -332,8 +332,8 @@ public class HomeController {
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_code.key, data_store_code);
-            datalist.put(data_area_code.key, data_store_code);
-            datalist.put(data_role_code.key, data_store_code);
+            datalist.put(data_area_code.key, data_area_code);
+            datalist.put(data_role_code.key, data_role_code);
             datalist.put(data_time_id.key, data_time_id);
 
             String[] date_types = new String[]{Common.TIME_TYPE_WEEK,Common.TIME_TYPE_MONTH,Common.TIME_TYPE_YEAR};
@@ -408,8 +408,8 @@ public class HomeController {
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_code.key, data_store_code);
-            datalist.put(data_area_code.key, data_store_code);
-            datalist.put(data_role_code.key, data_store_code);
+            datalist.put(data_area_code.key, data_area_code);
+            datalist.put(data_role_code.key, data_role_code);
             datalist.put(data_time_id.key, data_time_id);
 
             String[] date_types = new String[]{Common.TIME_TYPE_DAY,Common.TIME_TYPE_WEEK,Common.TIME_TYPE_MONTH,Common.TIME_TYPE_YEAR};
