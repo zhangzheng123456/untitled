@@ -308,6 +308,7 @@ jQuery(document).ready(function(){
 							+ '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="' + qrcodeList[i].qrcode + '" alt="">'
 							+ '</div></li>')
 					}
+					$(".kuang").show();
 					$(".k_close").click(function () {
 						$(this).parents(".kuang").hide();
 					})
@@ -629,13 +630,15 @@ function getTwoCode(b){
 	_params["store_code"]=store_code;
 	_params["corp_code"]=corp_code;
 	_params["app_id"]=app_id;
+	if(app_id==""||app_id==undefined){
+		alert("请选择公众号!");
+		return;
+	}
 	oc.postRequire("post",user_creat,"", _params, function(data){
 		var message=data.message;
 		if(data.code=="0"){
 			$(b).nextAll(".kuang").show();
 			$(b).nextAll(".kuang").find("img").attr("src",message);
-		}else if($(b).prevAll("input").val()==""){
-			alert("请选择公众号!");
 		}else if(data.code=="-1"){
 			alert(data.message);
 		}
