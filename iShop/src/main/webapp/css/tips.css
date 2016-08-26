@@ -66,12 +66,12 @@
 	top:2px;
 	position: absolute;
 	left: 700px;
-	/*display: none;*/
+	display: none;
 }
 .kuang img{
 	width: 100%;
 }
-#k_close{
+.k_close{
 	position: absolute;
 	right: 0;
 	top:0;

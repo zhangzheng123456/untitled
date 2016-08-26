@@ -847,13 +847,24 @@ jQuery(document).ready(function(){
 					input1.checked=false;
 				}
 				var qrcodeList=msg.qrcodeList;
-				var appinput=$(".er_code li input");
-				var img=$(".er_code .kuang img")
-				console.log(qrcodeList);
-				console.log(img);
-				for(var i=0;i<qrcodeList.length;i++){
-					$(appinput[i]).val(qrcodeList[i].app_name);
-					$(img[i]).attr("src",qrcodeList[i].qrcode);
+				if(qrcodeList.length>0) {
+					var appinput = $(".er_code li input");
+					var img = $(".er_code .kuang img")
+					console.log(qrcodeList);
+					console.log(img);
+					$(appinput[0]).val(qrcodeList[0].app_name);
+					$(img[0]).attr("src", qrcodeList[0].qrcode);
+					for (var i = 1; i < qrcodeList.length; i++) {
+						$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
+							+ '<span class="power create" onclick="getTwoCode(this)">生成</span>'
+							+ '<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
+							+ '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="' + qrcodeList[i].qrcode + '" alt="">'
+							+ '</div></li>')
+					}
+					$(".k_close").click(function () {
+						$(this).parents(".kuang").hide();
+					})
+					$(".kuang").show();
 				}
 				getcorplist();
 			}else if(data.code=="-1"){
@@ -1040,15 +1051,13 @@ function getAppName(a){
 			console.log(list);
 			$(a).next("ul").empty();
 			for(var i=0;i<list.length;i++){
-				$(a).next("ul").append('<li>'+list[i].app_name+'</li>')
+				$(a).next("ul").append('<li data-id="'+list[i].app_id+'">'+list[i].app_name+'</li>')
 			}
 			$(a).next("ul").find("li").click(function () {
 				var value = $(this).html();
 				console.log(value);
 				$(a).val(value);
-				for (var i = 0; i < list.length; i++) {
-					$(a).attr("id", list[i].app_id)
-				}
+				$(a).attr("id",$(this).attr("data-id"));
 			})
 		}else if(data.code=="-1"){
 			art.dialog({
@@ -1075,6 +1084,8 @@ function getTwoCode(b){
 		if(data.code=="0"){
 			$(b).nextAll(".kuang").show();
 			$(b).nextAll(".kuang").find("img").attr("src",message);
+		}else if($(b).prevAll("input").val()==""){
+			alert("请选择公众号!");
 		}else if(data.code=="-1"){
 			alert(data.message);
 		}
@@ -1106,7 +1117,7 @@ $("#add_app_id").click(function(){
 	$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
 		+'<span class="power create" onclick="getTwoCode(this)">生成</span>'
 		+'<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
-		+'<div class="kuang"><span class="icon-ishop_6-12"></span><img src="" alt="">'
+		+'<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="" alt="">'
 		+'</div></li>')
 })
 function remove_app_id(obj) {
