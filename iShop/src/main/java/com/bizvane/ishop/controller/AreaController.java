@@ -115,7 +115,7 @@ public class AreaController {
     /**
      * 区域列表(区经面板)
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "/findArea", method = RequestMethod.GET)
     @ResponseBody
     public String selectArea(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
