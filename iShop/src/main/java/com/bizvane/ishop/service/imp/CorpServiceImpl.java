@@ -159,8 +159,9 @@ public class CorpServiceImpl implements CorpService {
             }
             List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
             for (int i = 0; i < corpWechats.size(); i++) {
-                if (!app_ids.contains(corpWechats.get(i).getApp_id())) {
-                    corpMapper.deleteCorpWechat(corpWechats.get(i).getApp_id(),"");
+                String ids = corpWechats.get(i).getApp_id();
+                if (!app_ids.contains(ids+",")) {
+                    corpMapper.deleteCorpWechat(ids,"");
                 }
             }
             old_corp.setIsactive(jsonObject.get("isactive").toString());
