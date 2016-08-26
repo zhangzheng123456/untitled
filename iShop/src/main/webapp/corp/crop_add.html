@@ -46,7 +46,7 @@
                             <input type="text" class="WXID" />
                             <label style="width: 70px;;margin:15px 10px">公众号名称</label>
                             <input type="text" class="AppName" />
-                            <input type="text" disabled="true" value="未授权" style="width: 100px; margin-left: -8px;" id="">
+                            <input type="text" disabled="true" value="未授权" style="width: 100px;">
                             <span onclick="add()" class="add_apple">添加</span>
                         </span>
                     </div>
@@ -85,7 +85,7 @@
     <script>
         function add(){
             $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'+'<input type="text" class="WXID" />'+'<label style="width: 70px;;margin:15px 10px">公众号名称</label><input type="text" class="AppName"/>'
-                    +'<input type="text" disabled="true" value="未授权" style="width: 100px; margin-left: -8px;" id=""><span class="remove_input" onclick="removeselect(this)">删除</span>'+'</span>')
+                    +'<input type="text" disabled="true" value="未授权" style="width: 100px;" id=""><span class="remove_input" onclick="removeselect(this)">删除</span>'+'</span>')
         }
         function removeselect(obj){//区域  删除
             $(obj).parent().remove();

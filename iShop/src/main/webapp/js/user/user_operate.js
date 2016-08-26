@@ -849,17 +849,22 @@ jQuery(document).ready(function(){
 				var qrcodeList=msg.qrcodeList;
 				if(qrcodeList.length>0) {
 					var appinput = $(".er_code li input");
-					var img = $(".er_code .kuang img")
+					var img = $(".er_code .kuang img");
+					var imgName=$(".er_code .kuang p");
 					console.log(qrcodeList);
 					console.log(img);
 					$(appinput[0]).val(qrcodeList[0].app_name);
 					$(img[0]).attr("src", qrcodeList[0].qrcode);
+					$(imgName[0]).html(qrcodeList[0].app_name);
+					$(imgName[0]).attr("title",qrcodeList[0].app_name);
 					for (var i = 1; i < qrcodeList.length; i++) {
 						$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
 							+ '<span class="power create" onclick="getTwoCode(this)">生成</span>'
 							+ '<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
 							+ '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="' + qrcodeList[i].qrcode + '" alt="">'
-							+ '</div></li>')
+							+ '<p title="'+qrcodeList[i].app_name+'">'
+							+qrcodeList[i].app_name
+							+'</p></div></li>')
 					}
 					$(".k_close").click(function () {
 						$(this).parents(".kuang").hide();
@@ -1120,6 +1125,7 @@ $("#add_app_id").click(function(){
 		+'<span class="power create" onclick="getTwoCode(this)">生成</span>'
 		+'<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
 		+'<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="" alt="">'
+		+'<p></p>'
 		+'</div></li>')
 })
 function remove_app_id(obj) {
