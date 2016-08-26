@@ -305,6 +305,8 @@ public class LoginController {
             menus.put("role_code", role_code);
             menus.put("avatar", user.getAvatar());
             menus.put("user_name", user.getUser_name());
+            menus.put("corp_name", user.getCorp_name());
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(menus.toString());
