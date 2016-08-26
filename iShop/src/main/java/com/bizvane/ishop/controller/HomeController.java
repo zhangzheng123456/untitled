@@ -237,8 +237,10 @@ public class HomeController {
         try {
             String time_id;
             String store_id;
+            String area_code = "";
             String user_id = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
             JSONObject jsonObj = new JSONObject(param);
@@ -257,17 +259,27 @@ public class HomeController {
                 String[] store_ids = store_code.replace(Common.STORE_HEAD,"").split(",");
                 store_id = store_ids[0];
             }
-
+            Map datalist = new HashMap<String, Data>();
+            if(role_code.equals(Common.ROLE_AM)){
+                if (jsonObject.has("area_code")) {
+                    area_code = jsonObject.get("area_code").toString();
+                }else {
+                    String code = request.getSession().getAttribute("area_code").toString();
+                    String[] area_codes = code.replace(Common.STORE_HEAD,"").split(",");
+                    area_code = area_codes[0];
+                }
+                Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+                datalist.put(data_area_code.key, data_area_code);
+            }
             Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
             Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
-            Map datalist = new HashMap<String, Data>();
+
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_time_id.key, data_time_id);
             datalist.put(data_store_id.key, data_store_id);
-
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
             logger.info(dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
