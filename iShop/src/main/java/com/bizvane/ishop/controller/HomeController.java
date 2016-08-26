@@ -122,6 +122,7 @@ public class HomeController {
         DataBean dataBean = new DataBean();
         try {
             String time_id;
+            String role_code = request.getSession().getAttribute("role_code").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String param = request.getParameter("param");
@@ -142,7 +143,7 @@ public class HomeController {
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_time_id = new Data("time_id", time_id, ValueType.PARAM);
             Data data_area_name = new Data("area_name", area_name, ValueType.PARAM);
-
+            
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
