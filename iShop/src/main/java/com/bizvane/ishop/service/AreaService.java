@@ -49,4 +49,5 @@ public interface AreaService {
 
     PageInfo<Store> getAllStoresByCorpCode( int page_number, int page_size, String corp_code, String search_value,String area_code) throws Exception;
 
+    List<Area> selectArea(String corp_code, String area_codes) throws SQLException;
 }

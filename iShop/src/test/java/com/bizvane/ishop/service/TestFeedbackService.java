@@ -84,7 +84,7 @@ public class TestFeedbackService {
 
 
 
-
+//
 //            String store_name = "";
 //            String area_code = "";
 //            String role_code =Common.ROLE_AM;
@@ -110,50 +110,50 @@ public class TestFeedbackService {
 //
 //            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStoreRanking",datalist);
 //
-//
+
 //            String result = dataBox.data.get("message").value;
 //            System.out.println(result+"--");
 
-//            String ss="§SHBS0001,";
-  //      String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
-//            Data data_user_id = new Data("user_id", "AZ0007841", ValueType.PARAM);
-//            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
-//            Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
-//     //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
-//            Data data_store_id = new Data("store_id", store_ids[0], ValueType.PARAM);
-//           // 751400901
-//            Map datalist = new HashMap<String, Data>();
-//            datalist.put(data_user_id.key, data_user_id);
-//            datalist.put(data_corp_code.key, data_corp_code);
-//            datalist.put(data_time_id.key, data_time_id);
-//            datalist.put(data_store_id.key, data_store_id);
-//       //     datalist.put(data_store_code.key, data_store_code);
-//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
-//
-//            String result = dataBox.data.get("message").value;
-//            System.out.println(result);
-
-
-
-
-
-
-            Data data_user_id = new Data("user_id", "AZ0000329", ValueType.PARAM);
+            String ss="§SHBS0001,";
+        String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
+            Data data_user_id = new Data("user_id", "AZ0007841", ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
             Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
-            //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
-            Data data_store_id = new Data("area_code", "21", ValueType.PARAM);
-            // 751400901
+     //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_ids[0], ValueType.PARAM);
+           // 751400901
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_time_id.key, data_time_id);
             datalist.put(data_store_id.key, data_store_id);
-            //     datalist.put(data_store_code.key, data_store_code);
+       //     datalist.put(data_store_code.key, data_store_code);
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
 
             String result = dataBox.data.get("message").value;
             System.out.println(result);
+
+
+
+
+
+
+//            Data data_user_id = new Data("user_id", "AZ0000329", ValueType.PARAM);
+//            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
+//            Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
+//            //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
+//            Data data_store_id = new Data("area_code", "21", ValueType.PARAM);
+//            // 751400901
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_user_id.key, data_user_id);
+//            datalist.put(data_corp_code.key, data_corp_code);
+//            datalist.put(data_time_id.key, data_time_id);
+//            datalist.put(data_store_id.key, data_store_id);
+//            //     datalist.put(data_store_code.key, data_store_code);
+//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
+//
+//            String result = dataBox.data.get("message").value;
+//            System.out.println(result);
 
 
 

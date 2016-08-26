@@ -113,6 +113,31 @@ public class AreaController {
     }
 
     /**
+     * 区域列表(区经面板)
+     */
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public String selectArea(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject result = new JSONObject();
+            String area_code = request.getSession(false).getAttribute("area_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            List<Area>   list = areaService.selectArea( corp_code, area_code);
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
      * 区域列表
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
