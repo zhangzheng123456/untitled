@@ -67,15 +67,16 @@ function storeRanking(a) {
 }
 //导购加载
 function superadditionStaff(c) {
-	var store_list = "";
+	console.log(c);
+	var staff_list = "";
 	for (var i = 0; i < c.length; i++) {
 		var a = i + 1;
-		store_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //导购名称
+		staff_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //导购名称
 			+ "</td><td>" + c[i].achv_amount //业绩
 			+ "</td><td>" + c[i].discount //所属店铺
 			+ "</td></tr>"
 	}
-	$("#store_list tbody").html(store_list);
+	$("#staff_list tbody").html(staff_list);
 }
 //导购排行
 function staffRanking(a) { 
@@ -85,12 +86,14 @@ function staffRanking(a) {
 	param["store_name"] = "";
 	oc.postRequire("post", "/home/staffRanking", "", param, function(data) {
 		var message = JSON.parse(data.message);
-		var total = message.total; //店铺总数
-		var achv_detail_d = message.achv_detail_d //日查看店铺排行
-		var achv_detail_m = message.achv_detail_m //月查看店铺排行
-		var achv_detail_w = message.achv_detail_w //周查看店铺排行
-		var achv_detail_y = message.achv_detail_y //年查看店铺排行
+		var total = message.total; //导购总数
+        var avg=message.avg; //导购平均业绩
+		var achv_detail_d = message.achv_detail_d //日查看导购排行
+		var achv_detail_m = message.achv_detail_m //月查看导购排行
+		var achv_detail_w = message.achv_detail_w //周查看导购排行
+		var achv_detail_y = message.achv_detail_y //年查看导购排行
 		$("#staff_total").html(total);
+		$("#staff_avg").html(avg);
 		$(".reg_testdate li").click(function() {
 			var value = $(this).html();
 			var id = $(this).parent("ul").attr("id");
