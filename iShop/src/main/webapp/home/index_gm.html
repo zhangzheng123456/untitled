@@ -224,7 +224,6 @@
                                                 <span class="percent"></span>
                                             </span>
                                         </li>
-
                                     </ul>
                                 </div>
                                 <div class="item_list_1">
@@ -311,13 +310,13 @@
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>区域总数<label>24</label></span>
+                                    <span>区域总数<label id="area_total"></label></span>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_3 reg_testdate"  onclick="CDT(this);">
+                                    <div class="select_3 reg_testdate">
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按周查看</div>
-                                            <ul>
+                                            <ul id="area">
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
                                                 <li>按年查看</li>
@@ -329,44 +328,24 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="list_titles_daogou_paihang">
+                            <div class="list_titles_daogou_paihang" id="area_list">
                                 <table style="width:100%">
-                                    <tr>
-                                       <th>排名</th>
-                                       <th>区域</th>
-                                       <th>区经</th>
-                                       <th>业绩</th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">1</td>
-                                        <td style="width:45%">华东一区</td>
-                                        <td style="width:21%">李朋</td>
-                                        <td style="width:21%"><em>￥</em>1659595</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">2</td>
-                                        <td style="width:45%">华南三区</td>
-                                        <td style="width:21%">翁舒茵</td>
-                                        <td style="width:21%"><em>￥</em>565949</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">3</td>
-                                        <td style="width:45%">华东六区</td>
-                                        <td style="width:21%">何崇伟</td>
-                                        <td style="width:21%"><em>￥</em>167470</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">4</td>
-                                        <td style="width:45%">华北一区</td>
-                                        <td style="width:21%">张懿</td>
-                                        <td style="width:21%"><em>￥</em>87989</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">5</td>
-                                        <td style="width:45%">华东三区</td>
-                                        <td style="width:21%">董鹏</td>
-                                        <td style="width:21%"><em>￥</em>56893</td>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                           <th>排名</th>
+                                           <th>区域</th>
+                                           <th>区经</th>
+                                           <th>业绩</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <tr>
+                                            <td style="width:13%">1</td>
+                                            <td style="width:45%">华东一区</td>
+                                            <td style="width:21%">李朋</td>
+                                            <td style="width:21%"><em>￥</em>1659595</td>
+                                        </tr> -->
+                                    </tbody>
                                 </table>
                             </div>
                         </div>

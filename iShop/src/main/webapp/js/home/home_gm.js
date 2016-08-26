@@ -58,12 +58,47 @@ function storeRanking(){//店铺排行
 		console.log(data);
 	})
 }
+//区域加载
+function superadditionArea(c) {
+	var area_list = "";
+	for (var i = 0; i < c.length; i++) {
+		var a = i + 1;
+		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //店铺名称
+			+ "</td><td>" + c[i].achv_amount //店铺业绩
+			+ "</td><td>" + c[i].discount //折扣
+			+ "</td></tr>"
+	}
+	$("#store_list tbody").html(store_list);
+}
 function areaRanking(){//区域排行
 	var param={};
 	param["time"]="20160823";
 	param["area_name"]="";
 	oc.postRequire("post","/home/areaRanking","", param, function(data){
-		console.log(data);
+		var message = JSON.parse(data.message);
+		var total = message.total; //店铺总数
+		var achv_detail_d = message.achv_detail_d //日查看店铺排行
+		var achv_detail_m = message.achv_detail_m //月查看店铺排行
+		var achv_detail_w = message.achv_detail_w //周查看店铺排行
+		var achv_detail_y = message.achv_detail_y //年查看店铺排行
+		$("#store_total").html(total);
+		$(".reg_testdate li").click(function() {
+			var value = $(this).html();
+			var id = $(this).parent("ul").attr("id");
+			$(this).parent("ul").prev(".title").html(value);
+			$(this).parent("ul").hide();
+			$(this).parent("ul").parent(".choose").removeClass("cur");
+			if (value == "按日查看" && id == "store") {
+				superadditionArea(achv_detail_d);
+			} else if (value == "按周查看" && id == "store") {
+				superadditionArea(achv_detail_w);
+			} else if (value == "按月查看" && id == "store") {
+				superadditionArea(achv_detail_m);
+			} else if (value == "按年查看" && id == "store") {
+				superadditionArea(achv_detail_y);
+			}
+		})
+		superadditionArea(achv_detail_d);
 	})
 }
 function Fn0(){
