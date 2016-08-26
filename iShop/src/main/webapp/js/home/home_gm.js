@@ -3,6 +3,7 @@ $(function(){
 	var Time=getNowFormatDate();
 	$(".laydate-icon").val(Time)
     areaRanking(Time);
+	storeRanking(Time);
 });
 //点击显示日周年月
 $(".title").click(function() {
@@ -60,16 +61,53 @@ $(".laydate-icon").click(//点击input 显示日期控件界面
 		lay1(InputID)
 	}
 );
-function storeRanking(){//店铺排行
+function storeRanking(a){//店铺排行
 	var param={};
-	param["time"]="20160823";
+	var a = a.replace(/[-]/g, "");
+	param["time"]=a;
 	param["store_name"]="";
 	oc.postRequire("post","/home/storeRanking","", param, function(data){
-		console.log(data);
+		var message = JSON.parse(data.message);
+		var total = message.total; //店铺总数
+		var achv_detail_d = message.achv_detail_d //日查看店铺排行
+		var achv_detail_m = message.achv_detail_m //月查看店铺排行
+		var achv_detail_w = message.achv_detail_w //周查看店铺排行
+		var achv_detail_y = message.achv_detail_y //年查看店铺排行
+		console.log(achv_detail_d);
+		$("#store_total").html(total);
+		$(".select_4 li").click(function() {
+			var value = $(this).html();
+			var id = $(this).parent("ul").attr("id");
+			$(this).parent("ul").prev(".title").html(value);
+			$(this).parent("ul").hide();
+			$(this).parent("ul").parent(".choose").removeClass("cur");
+			if (value == "按日查看" && id == "") {
+				superadditionStore(achv_detail_d);
+			} else if (value == "按周查看" && id == "store") {
+				superadditionStore(achv_detail_w);
+			} else if (value == "按月查看" && id == "store") {
+				superadditionStore(achv_detail_m);
+			} else if (value == "按年查看" && id == "store") {
+				superadditionStore(achv_detail_y);
+			}
+		})
+		superadditionStore(achv_detail_d);
 	})
+
 }
 //区域加载
 function superadditionArea(c) {
+	var area_list = "";
+	for (var i = 0; i < c.length; i++) {
+		var a = i + 1;
+		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //区域名称
+			+ "</td><td>" + c[i].store_trade//折扣
+			+ "</td></tr>"
+	}
+	$("#area_list tbody").html(area_list);
+}
+//店铺排行加载
+function superadditionStore(c) {
 	var area_list = "";
 	for (var i = 0; i < c.length; i++) {
 		var a = i + 1;
@@ -77,7 +115,7 @@ function superadditionArea(c) {
 			+ "</td><td>" + c[i].amt_trade//折扣
 			+ "</td></tr>"
 	}
-	$("#area_list tbody").html(area_list);
+	$("#store_list tbody").html(area_list);
 }
 function areaRanking(a){//区域排行
 	var param={};
@@ -126,3 +164,4 @@ function achieveChart(data){//获取折线图或雷达图
 function Fn3(){
 	console.log("我是第四个Input")
 }
+

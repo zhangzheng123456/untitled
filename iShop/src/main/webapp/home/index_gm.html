@@ -198,10 +198,10 @@
                             <div class="ibox-content_per">
                             <label class="c_a_shoppe"><em>当前企业</em>尹墨IMM女装</label>
                                 <div class="check_select">
-                                    <div class="select_1 reg_testdate" onclick="CDT(this);">
+                                    <div class="select_1 reg_testdate" >
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按日查看</div>
-                                            <ul>
+                                            <ul class="select_Date">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
@@ -268,10 +268,10 @@
                                 </ul>
                             </div>
                             <div class="check_chart">
-                                <div class="select_2 reg_testdate"  onclick="CDT(this);">
+                                <div class="select_2 reg_testdate"  >
                                     <span class="choose item" style="width:70px">
                                         <div class="title" style="width:70px">按周查看</div>
-                                        <ul>
+                                        <ul class="select_Date">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
@@ -316,7 +316,7 @@
                                     <div class="select_3 reg_testdate">
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按周查看</div>
-                                            <ul id="area">
+                                            <ul id="area" class="select_Date">
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
                                                 <li>按年查看</li>
@@ -358,13 +358,13 @@
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>店铺总数<label>24</label></span>
+                                    <span>店铺总数<label id="store_total"></label></span>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_4 reg_testdate" onclick="CDT(this);">
+                                    <div class="select_4 reg_testdate" >
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按日查看</div>
-                                            <ul>
+                                            <ul class="select_Date" id="store">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
@@ -377,47 +377,20 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="list_titles_daogou_paihang">
-                                <div class="list_titles_daogou_paihang">
+                            <div class="list_titles_daogou_paihang" id="store_list">
                                 <table style="width:100%">
+                                    <thead>
                                     <tr>
-                                       <th>排名</th>
-                                       <th>店铺</th>
-                                       <th>业绩</th>
-                                       <th>折扣</th>
+                                        <th>排名</th>
+                                        <th>店铺</th>
+                                        <th>业绩</th>
+                                        <th>折扣</th>
                                     </tr>
-                                    <tr>
-                                        <td style="width:13%">1</td>
-                                        <td style="width:50%">贵阳荔星名店尹墨专柜</td>
-                                        <td style="width:21%"><em>￥</em>165395</td>
-                                        <td style="width:16%">80.62%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">2</td>
-                                        <td style="width:50%">重庆江北远东尹墨专柜</td>
-                                        <td style="width:21%"><em>￥</em>55659</td>
-                                        <td style="width:16%">89.65%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">3</td>
-                                        <td style="width:50%">重庆新世纪百货（世纪新都）</td>
-                                        <td style="width:21%"><em>￥</em>46740</td>
-                                        <td style="width:16%">78.65%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">4</td>
-                                        <td style="width:50%">昆明金格百货（时光）</td>
-                                        <td style="width:21%"><em>￥</em>17989</td>
-                                        <td style="width:16%">92.21%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">5</td>
-                                        <td style="width:50%">成都仁和春天光华店</td>
-                                        <td style="width:21%"><em>￥</em>15693</td>
-                                        <td style="width:16%">88.03%</td>
-                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                   
+                                    </tbody>
                                 </table>
-                            </div>
                             </div>
                         </div>
                    </div>
