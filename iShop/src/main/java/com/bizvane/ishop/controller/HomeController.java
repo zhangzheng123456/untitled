@@ -364,6 +364,7 @@ public class HomeController {
             dataBean.setId(id);
             dataBean.setMessage(object.toString());
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
