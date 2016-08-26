@@ -248,7 +248,7 @@ public class HomeController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             if (jsonObject.has("time")) {
-                time_id = jsonObject.get("time").toString().replace("-","");
+                time_id = jsonObject.get("time").toString();
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY_NO.format(new Data());
             }
