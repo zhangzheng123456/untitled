@@ -341,7 +341,7 @@ jQuery(document).ready(function () {
                         $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'
                             + '<input type="text" class="WXID" value=' + wechat[i].app_id + '>'
                             + '<label style="width: 70px;margin:15px 10px">公众号名称</label><input type="text" class="AppName" value=' + wechat[i].app_name + '>'
-                            + '<input type="text" disabled="true" value="'+is_authorize+'" style="width: 100px; margin-left: -8px;"><span class="remove_input" onclick="removeselect(this)">删除</span>'
+                            + '<input type="text" disabled="true" value="'+is_authorize+'" style="width: 100px;"><span class="remove_input" onclick="removeselect(this)">删除</span>'
                             + '</span>')
                     }
                 }

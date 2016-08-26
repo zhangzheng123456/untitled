@@ -8312,9 +8312,12 @@ li.select_index>a>label>i{
   color:#ffffff;
 }
 .er_code .app_li{
-  margin-top: 70px;
+  margin-top: 80px;
   position: relative;
 }
 .er_code li{
   position: relative;
+}
+.app_li .power{
+  margin-left: 14px;
 }

@@ -61,15 +61,21 @@
 	position: relative;
 }
 .kuang{
-	width: 100px;
-	border:1px solid #ddd;
-	top:2px;
+	width: 80px;
+	top:0px;
 	position: absolute;
-	left: 700px;
+	left: 640px;
 	display: none;
 }
 .kuang img{
 	width: 100%;
+}
+.kuang p{
+	width: inherit;
+	text-overflow: ellipsis;
+	white-space:nowrap;
+	text-align: center;
+	overflow: hidden;
 }
 .k_close{
 	position: absolute;
