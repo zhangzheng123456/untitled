@@ -398,25 +398,41 @@ function jumpBianse(){
     //批量生成二维码
     $('#qrcode').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        var param={};
-        var list=[];
+        var length=tr.length-1;
         if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
             return;
         }
-        for(var i=0;i<tr.length;i++){
-            var store_code=$(tr[i]).find("td:eq(2)").html();
-            var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
-            var param1={"user_code":store_code,"corp_code":corp_code};
-            list.push(param1);
-        }
+        var l=$(window).width();
+        var h=$(document.body).height();
+        var left=($(window).width()-$("#creat_code").width())/2;//弹框定位的left值
+        var tp=($(window).height()-$("#creat_code").height())/2;//弹框定位的top值
+        $("#creat_code").css({"left":+left+"px","top":+tp+"px"});
+        $("#p").show();
+        $("#p").css({"width":+l+"px","height":+h+"px"});
+        $("#creat_code").show();
         param["list"]=list;
         whir.loading.add("",0.5);//加载等待框
-        oc.postRequire("post","/user/creatUsersQrcode","0",param,function(data){
+        var param1={};
+        var corp_code1=$(tr[length]).find(".corp_code").attr("data-code");
+        param1["corp_code"]=corp_code1;
+        oc.postRequire("post","/corp/selectWx","0",param1,function(data){
+            console.log(data);
             if(data.code=="0"){
-                frame();
-                $('.frame').html(data.message);
+                var msg=JSON.parse(data.message);
+                var list=msg.list;
+                var html="";
+                if(list.length==0){
+                    html+="<p>请先选择公众号</p>"
+                }
+                if(list.length>0){
+                    for(var i=0;i<list.length;i++){
+                    html+="<li data-id='"+list[i].app_id+"'><div class='checkbox1'><input type='radio' value='' name='test'  class='check'  id='checkboxSixInput"
+                        +i+1+"'/><label for='checkboxSixInput"+i+1+"'></label></div><span class='p16'>"+list[i].app_name+"</span></li>"
+                    }
+                }
+                $("#creat_code .creat_code").html(html);
             }else if(data.code=="-1"){
                 frame();
                 $('.frame').html(data.message);
@@ -425,6 +441,43 @@ function jumpBianse(){
         })
     });
 }
+//二维码弹框
+$("#code_close").click(function(){
+    $("#p").hide();
+    $("#creat_code").hide();
+})
+//生成二维码
+$("#code_save").click(function(){
+    var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    var app_id=$("#creat_code .creat_code input[type='radio']:checked").parents("li").attr("data-id");
+    var param={};
+    var list=[];
+    for(var i=0;i<tr.length;i++){
+        var store_code=$(tr[i]).find("td:eq(2)").html();
+        var corp_code=$(tr[i]).find(".corp_code").attr("data-code");
+        var param1={"user_code":store_code,"corp_code":corp_code};
+        list.push(param1);
+    }
+    list.reverse();
+    param["list"]=list;
+    param["app_id"]=app_id;
+    if(app_id==""||app_id==undefined){
+        frame();
+        $('.frame').html("请先选择公众号");
+        return;
+    }
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/user/creatUsersQrcode","0",param,function(data){
+        if(data.code=="0"){
+            frame();
+            $('.frame').html(data.message);
+        }else if(data.code=="-1"){
+            frame();
+            $('.frame').html(data.message);
+        }
+        whir.loading.remove();//移除加载框
+    })
+})
 //鼠标按下时触发的收索
 $("#search").keydown(function() {
 	var event=window.event||arguments[0];
@@ -540,7 +593,10 @@ function frame(){
     $('.frame').remove();
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
-    $(".frame").animate({opacity:"0"},1000);   
+    $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+        $(".frame").hide(); 
+    },1500);
 }  
 //全选
 function checkAll(name){

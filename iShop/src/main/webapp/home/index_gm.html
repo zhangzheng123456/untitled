@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="../css/liandong_select.css">
     <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </head>
 <body>
     <div id="wrapper">
@@ -208,7 +209,7 @@
                                             </ul>
                                         </span>
                                         <span>
-                                            <input type="text" class="laydate-icon icon-text">
+                                            <input type="text" id="date0" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -223,7 +224,6 @@
                                                 <span class="percent"></span>
                                             </span>
                                         </li>
-
                                     </ul>
                                 </div>
                                 <div class="item_list_1">
@@ -278,7 +278,7 @@
                                         </ul>
                                     </span>
                                     <span>
-                                        <input type="text" class="laydate-icon icon-text">
+                                        <input type="text" id="date1" class="laydate-icon icon-text">
                                     </span>
                                 </div>
                                 <span style="margin-right:10px;">业绩总额<label style="font-size: 20px">21114.00</label>元</span>
@@ -310,62 +310,42 @@
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>区域总数<label>24</label></span>
+                                    <span>区域总数<label id="area_total"></label></span>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_3 reg_testdate"  onclick="CDT(this);">
+                                    <div class="select_3 reg_testdate">
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按周查看</div>
-                                            <ul>
+                                            <ul id="area">
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
                                                 <li>按年查看</li>
                                             </ul>
                                         </span>
                                         <span>
-                                            <input type="text" class="laydate-icon icon-text">
+                                            <input type="text" id="date2" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
                             </div>
-                            <div class="list_titles_daogou_paihang">
+                            <div class="list_titles_daogou_paihang" id="area_list">
                                 <table style="width:100%">
-                                    <tr>
-                                       <th>排名</th>
-                                       <th>区域</th>
-                                       <th>区经</th>
-                                       <th>业绩</th>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">1</td>
-                                        <td style="width:45%">华东一区</td>
-                                        <td style="width:21%">李朋</td>
-                                        <td style="width:21%"><em>￥</em>1659595</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">2</td>
-                                        <td style="width:45%">华南三区</td>
-                                        <td style="width:21%">翁舒茵</td>
-                                        <td style="width:21%"><em>￥</em>565949</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">3</td>
-                                        <td style="width:45%">华东六区</td>
-                                        <td style="width:21%">何崇伟</td>
-                                        <td style="width:21%"><em>￥</em>167470</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">4</td>
-                                        <td style="width:45%">华北一区</td>
-                                        <td style="width:21%">张懿</td>
-                                        <td style="width:21%"><em>￥</em>87989</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:13%">5</td>
-                                        <td style="width:45%">华东三区</td>
-                                        <td style="width:21%">董鹏</td>
-                                        <td style="width:21%"><em>￥</em>56893</td>
-                                    </tr>
+                                    <thead>
+                                        <tr>
+                                           <th>排名</th>
+                                           <th>区域</th>
+                                           <th>区经</th>
+                                           <th>业绩</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- <tr>
+                                            <td style="width:13%">1</td>
+                                            <td style="width:45%">华东一区</td>
+                                            <td style="width:21%">李朋</td>
+                                            <td style="width:21%"><em>￥</em>1659595</td>
+                                        </tr> -->
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -393,7 +373,7 @@
                                             </ul>
                                         </span>
                                         <span>
-                                            <input type="text" class="laydate-icon icon-text">
+                                            <input type="text" id="date3" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -464,7 +444,7 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
      <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
     <script type="text/javascript" src="../js/home/home.js"></script>
      <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
@@ -480,15 +460,16 @@
     <script type="text/javascript" src="../js/onvertToPinyin.js"></script>
     <!-- piechart -->
     <script type="text/javascript" src="../js/easypiechart.js"></script>
-    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-    <script type="text/javascript" src="/js/home/home_gm.js"></script>
+    <!--<script type="text/javascript" src="../js/laydate/laydate.js"></script>-->
+    <script type="text/javascript" src="../js/home/home_gm.js"></script>
     <!-- 业绩看板 -->
     <script type="text/javascript">
-        var perArr = [30,34,31,37,35,39,40];//顶点
+        var perArr = [0,34,31,37,35,39,40];//顶点
+        var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
         window.onresize=function(){
-            init(perArr);
+            init(perArr,dateArr);
         }
-        window.onload = init(perArr);
+        window.onload = init(perArr,dateArr);
     </script>
     <script>
         $(document).ready(function () {
@@ -575,7 +556,7 @@
                 }
             ]
         }
-        var myRadar = new Chart(document.getElementById("canvas").getContext("2d")).Radar(radarChartData,{scaleShowLabels : false, pointLabelFontSize : 10});
+        var myRadar= new Chart(document.getElementById("canvas").getContext("2d")).Radar(radarChartData,{scaleShowLabels : false, pointLabelFontSize : 10});
         var myRadar2 = new Chart(document.getElementById("canvas2").getContext("2d")).Radar(radarChartData2,{scaleShowLabels : false, pointLabelFontSize : 10});
         var myRadar3 = new Chart(document.getElementById("canvas3").getContext("2d")).Radar(radarChartData3,{scaleShowLabels : false, pointLabelFontSize : 10});
     </script>

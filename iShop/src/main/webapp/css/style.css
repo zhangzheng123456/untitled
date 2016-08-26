@@ -7054,6 +7054,7 @@ body.skin-3 {
   /*width:380px;*/
   height:242px;
   background:#3a4054;
+  overflow-y: auto;
 }
 .list_titles_daogou_paihang tr th{
   text-align:center;
@@ -8309,4 +8310,11 @@ li.select_index>a>label>i{
 .er_code ul li:hover{
   background:#6cc1c8;
   color:#ffffff;
+}
+.er_code .app_li{
+  margin-top: 70px;
+  position: relative;
+}
+.er_code li{
+  position: relative;
 }

@@ -73,15 +73,18 @@
                             </ul>
                         </span>
                     </div>
-                    <div class="er_code">
+                    <div class="er_code" style="width:700px;">
                         <li>
-                            <label for="">二维码</label>
-                            <span class="power" id="create">生成</span>
+                            <label for=""  style="width:70px;margin-right:8px;">生成二维码</label><input onclick="select_down(this)" readonly="readonly">
+                            <ul style="margin-left: 76px;">
+                            </ul>
+                            <span class="power create" onclick="getTwoCode(this)">生成</span>
+                            <span class="power" id="add_app_id">新增</span>
+                            <div class="kuang">
+                                <span class="icon-ishop_6-12 k_close"></span>
+                                <img src="" alt="">
+                            </div>
                         </li>
-                        <div class="kuang" id="kuang">
-                            <span class="icon-ishop_6-12" id="k_close"></span>
-                            <img src="" alt="">
-                        </div>
                     </div>
                 </form>
             </div>

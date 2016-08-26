@@ -222,6 +222,7 @@ public class CorpController {
                         msg = "企业" + corp.getCorp_code() + "下有未处理的商品，请先处理商品";
                         break;
                     }
+                    corpService.deleteCorpWechat("",corp.getCorp_code());
                 }
                 corpService.deleteByCorpId(Integer.valueOf(ids[i]));
             }
@@ -679,8 +680,8 @@ public class CorpController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             JSONObject result = new JSONObject();
-            List<CorpWechat> wechatlist = corpService.getWByCorp(corp_code);
-            result.put("list", JSON.toJSONString(wechatlist));
+            List<CorpWechat> wechatlist = corpService.getWAuthByCorp(corp_code);
+            result.put("list", wechatlist);
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

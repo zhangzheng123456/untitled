@@ -119,18 +119,16 @@
                     </div>
                     <div class="er_code">
                         <li>
-                            <label for="">生成二维码</label><input readonly="readonly">
+                            <label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly">
                             <ul>
-                                <li>1</li>
-                                <li>1</li>
-                                <li>1</li>
                             </ul>
-                            <span class="power" id="create">生成</span>
+                            <span class="power create" onclick="getTwoCode(this)">生成</span>
+                            <span class="power" id="add_app_id">新增</span>
+                            <div class="kuang">
+                                <span class="icon-ishop_6-12 k_close"></span>
+                                <img src="" alt="">
+                            </div>
                         </li>
-                        <div class="kuang" id="kuang">
-                            <span class="icon-ishop_6-12" id="k_close"></span>
-                            <img src="" alt="">
-                        </div>
                     </div>
                 </form>
             </div>

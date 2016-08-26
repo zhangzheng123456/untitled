@@ -378,7 +378,6 @@ function selectownshop(obj){//加载店铺列表的时候
 	var input=$(obj);
 	var div=$(obj).nextAll('.store_list_kuang');
 	var inputs=$(obj).nextAll('.store_list_kuang').find('.search');
-	console.log(inputs);
     if(div.css("display")=="none"){
         div.show();
     }else{
@@ -847,6 +846,26 @@ jQuery(document).ready(function(){
 				}else if(msg.can_login=="N"){
 					input1.checked=false;
 				}
+				var qrcodeList=msg.qrcodeList;
+				if(qrcodeList.length>0) {
+					var appinput = $(".er_code li input");
+					var img = $(".er_code .kuang img")
+					console.log(qrcodeList);
+					console.log(img);
+					$(appinput[0]).val(qrcodeList[0].app_name);
+					$(img[0]).attr("src", qrcodeList[0].qrcode);
+					for (var i = 1; i < qrcodeList.length; i++) {
+						$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
+							+ '<span class="power create" onclick="getTwoCode(this)">生成</span>'
+							+ '<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
+							+ '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="' + qrcodeList[i].qrcode + '" alt="">'
+							+ '</div></li>')
+					}
+					$(".k_close").click(function () {
+						$(this).parents(".kuang").hide();
+					})
+					$(".kuang").show();
+				}
 				getcorplist();
 			}else if(data.code=="-1"){
 				art.dialog({
@@ -934,24 +953,6 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     })
-    //点击生成二维码
-    $("#create").click(function(){
-    	var user_creat="/user/creatQrcode";
-    	var user_code=$('#USERID').val();
-    	var corp_code=$('#OWN_CORP').val();
-    	var _params={};
-    	_params["user_code"]=user_code;
-    	_params["corp_code"]=corp_code;
-    	oc.postRequire("post",user_creat,"", _params, function(data){
-    		var message=data.message;
-    		if(data.code=="0"){
-    			$("#kuang").show();
-    			$('#kuang img').attr("src",message);
-    		}else if(data.code=="-1"){
-    			alert(data.message);
-    		}
-    	})
-    })
 	//重置密码时提示消失
 	$("#first_pwd").focus(function () {
 		$(".em_1").css("display","none")
@@ -990,16 +991,12 @@ jQuery(document).ready(function(){
 					time: 1,
 					lock:true,
 					cancel: false,
-					content: 失败
+					content: "失败"
 				});
 			}
 
 		})
 	})
-    //点击关闭按钮
-    $("#k_close").click(function(){
-    	$("#kuang").hide();
-    })
 });
 function getcorplist(){
 	//获取企业列表
@@ -1041,16 +1038,27 @@ function getcorplist(){
 		}
 	});
 }
-function getAppName(){
+function getAppName(a){
 	var corp_code=$("#OWN_CORP").val();
 	var param={};
 	    param["corp_code"]=corp_code;
 	var _command="/corp/selectWx";
-	oc.postRequire("post", _command,"param", "", function(data){
+	oc.postRequire("post", _command,"", param, function(data){
 		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
-			console.log(msg);
+			var list=msg.list;
+			console.log(list);
+			$(a).next("ul").empty();
+			for(var i=0;i<list.length;i++){
+				$(a).next("ul").append('<li data-id="'+list[i].app_id+'">'+list[i].app_name+'</li>')
+			}
+			$(a).next("ul").find("li").click(function () {
+				var value = $(this).html();
+				console.log(value);
+				$(a).val(value);
+				$(a).attr("id",$(this).attr("data-id"));
+			})
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
@@ -1061,18 +1069,59 @@ function getAppName(){
 		}
 	});
 }
+//点击生成二维码
+function getTwoCode(b){
+	var user_creat="/user/creatQrcode";
+	var user_code=$('#USERID').val();
+	var corp_code=$('#OWN_CORP').val();
+	var app_id=$(b).prevAll("input").attr("id");
+	var _params={};
+	_params["user_code"]=user_code;
+	_params["corp_code"]=corp_code;
+	_params["app_id"]=app_id;
+	if(app_id==""||app_id==undefined){
+		alert("请选择公众号!");
+		return;
+	}
+	oc.postRequire("post",user_creat,"", _params, function(data){
+		var message=data.message;
+		if(data.code=="0"){
+			$(b).nextAll(".kuang").show();
+			$(b).nextAll(".kuang").find("img").attr("src",message);
+		}else if(data.code=="-1"){
+			alert(data.message);
+		}
+	})
+	//点击关闭按钮
+	$(b).nextAll(".kuang").find("span").click(function(){
+		$(b).nextAll(".kuang").hide();
+	})
+}
 
 //生成二维码下拉框
-$(".er_code").click(function () {
-	if($(".er_code ul").css("display")=="none"){
-		$(".er_code ul").show();
+function select_down(a){
+	if($(a).next().css("display")=="none"){
+		$(a).next().show();
+		$(a).find("ul").empty();
+		getAppName(a);
 	}else {
-		$(".er_code ul").hide();
+		$(a).next().hide();
 	}
-})
-$(".er_code ul li").click(function () {
-	var value=$(this).html();
-	$(".er_code input").val(value);
-})
+	$(a).blur(function(){
+		var ul=$(this).next();
+		setTimeout(function(){
+			ul.hide();
+		},200);
+	})
+}
 
-
+$("#add_app_id").click(function(){
+	$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
+		+'<span class="power create" onclick="getTwoCode(this)">生成</span>'
+		+'<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
+		+'<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="" alt="">'
+		+'</div></li>')
+})
+function remove_app_id(obj) {
+	$(obj).parent().remove();
+}

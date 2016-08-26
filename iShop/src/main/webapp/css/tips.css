@@ -15,7 +15,7 @@
 	display: inline-block;
 	width: 70px;
 	height: 30px;
-	margin-left: -5px;
+	margin-left: 10px;
 	line-height: 30px;
 	border-radius: 5px;
 	color: #FFFFFF;
@@ -61,17 +61,17 @@
 	position: relative;
 }
 .kuang{
-	width: 200px;
+	width: 100px;
 	border:1px solid #ddd;
 	top:2px;
 	position: absolute;
-	left: 200px;
+	left: 700px;
 	display: none;
 }
 .kuang img{
 	width: 100%;
 }
-#k_close{
+.k_close{
 	position: absolute;
 	right: 0;
 	top:0;
