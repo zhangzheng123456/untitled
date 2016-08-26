@@ -2,7 +2,17 @@ var oc = new ObjectControl();
 $(function(){
 	var Time=getNowFormatDate();
 	$(".laydate-icon").val(Time)
-
+    areaRanking(Time);
+});
+//点击显示日周年月
+$(".title").click(function() {
+	ul = $(this).nextAll("ul");
+	$(this).parent(".choose").toggleClass("cur");
+	if (ul.css("display") == "none") {
+		ul.show();
+	} else {
+		ul.hide();
+	};
 });
 function getNowFormatDate() {//获取当前日期
 	var date = new Date();
@@ -35,7 +45,7 @@ function lay1(InputID){//定义日期格式
 			case 1:
 				achieveChart(datas);
 				break;
-			case 2:Fn2(datas);
+			case 2:areaRanking(datas);
 				break;
 			case 3:Fn3(datas);
 				break;
@@ -63,16 +73,16 @@ function superadditionArea(c) {
 	var area_list = "";
 	for (var i = 0; i < c.length; i++) {
 		var a = i + 1;
-		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //店铺名称
-			+ "</td><td>" + c[i].achv_amount //店铺业绩
-			+ "</td><td>" + c[i].discount //折扣
+		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].area_name //区域名称
+			+ "</td><td>" + c[i].amt_trade//折扣
 			+ "</td></tr>"
 	}
-	$("#store_list tbody").html(store_list);
+	$("#area_list tbody").html(area_list);
 }
-function areaRanking(){//区域排行
+function areaRanking(a){//区域排行
 	var param={};
-	param["time"]="20160823";
+	var a = a.replace(/[-]/g, "");
+	param["time"]=a;
 	param["area_name"]="";
 	oc.postRequire("post","/home/areaRanking","", param, function(data){
 		var message = JSON.parse(data.message);
@@ -81,20 +91,21 @@ function areaRanking(){//区域排行
 		var achv_detail_m = message.achv_detail_m //月查看店铺排行
 		var achv_detail_w = message.achv_detail_w //周查看店铺排行
 		var achv_detail_y = message.achv_detail_y //年查看店铺排行
-		$("#store_total").html(total);
+		console.log(achv_detail_d);
+		$("#area_total").html(total);
 		$(".reg_testdate li").click(function() {
 			var value = $(this).html();
 			var id = $(this).parent("ul").attr("id");
 			$(this).parent("ul").prev(".title").html(value);
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
-			if (value == "按日查看" && id == "store") {
+			if (value == "按日查看" && id == "") {
 				superadditionArea(achv_detail_d);
-			} else if (value == "按周查看" && id == "store") {
+			} else if (value == "按周查看" && id == "area") {
 				superadditionArea(achv_detail_w);
-			} else if (value == "按月查看" && id == "store") {
+			} else if (value == "按月查看" && id == "area") {
 				superadditionArea(achv_detail_m);
-			} else if (value == "按年查看" && id == "store") {
+			} else if (value == "按年查看" && id == "area") {
 				superadditionArea(achv_detail_y);
 			}
 		})
@@ -112,11 +123,6 @@ function achieveChart(data){//获取折线图或雷达图
 		console.log(data);
 	})
 }
-function Fn2(){
-	console.log("我是第三个Input")
-}
 function Fn3(){
 	console.log("我是第四个Input")
 }
-storeRanking();
-areaRanking();
