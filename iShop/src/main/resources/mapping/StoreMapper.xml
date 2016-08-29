@@ -8,10 +8,10 @@
         <result column="store_name" property="store_name"/>
         <result column="brand_code" property="brand_code"/>
         <result column="area_code" property="area_code"/>
-        <result column="flg_tob" property="flg_tob"/>
+        <result column="flg_tob" property="flg_tob" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
