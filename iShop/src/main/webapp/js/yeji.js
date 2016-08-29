@@ -66,11 +66,14 @@
             for(var i=0; i< dataLen; i++){
                 if(dataLen>7){
                     mul_num=$('.customer_add_cart').width()/(dataLen+1);
+                    if(i%2==0){
+                        c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.8);
+                    }
                 }else {
                     mul_num=$('.customer_add_cart').width()/dataLen;
+                    c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.8);
                 }
 
-                c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.8);
             }
             //绘制曲线图
             c.beginPath();

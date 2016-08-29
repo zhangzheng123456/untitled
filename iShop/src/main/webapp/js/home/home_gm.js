@@ -1,9 +1,11 @@
 var oc = new ObjectControl();
 $(function(){
 	var Time=getNowFormatDate();
-	$(".laydate-icon").val(Time)
+	$(".laydate-icon").val(Time);
     areaRanking(Time);
 	storeRanking(Time);
+	achieveChart(Time);
+	achAnalysis(Time);
 });
 //点击显示日周年月
 $(".title").click(function() {
@@ -69,11 +71,11 @@ function storeRanking(a){//店铺排行
 	oc.postRequire("post","/home/storeRanking","", param, function(data){
 		var message = JSON.parse(data.message);
 		var total = message.total; //店铺总数
-		var achv_detail_d = message.achv_detail_d //日查看店铺排行
-		var achv_detail_m = message.achv_detail_m //月查看店铺排行
-		var achv_detail_w = message.achv_detail_w //周查看店铺排行
-		var achv_detail_y = message.achv_detail_y //年查看店铺排行
-		console.log(achv_detail_d);
+		var achv_detail_d = message.achv_detail_d; //日查看店铺排行
+		var achv_detail_m = message.achv_detail_m;//月查看店铺排行
+		var achv_detail_w = message.achv_detail_w; //周查看店铺排行
+		var achv_detail_y = message.achv_detail_y; //年查看店铺排行
+		//console.log(achv_detail_d);
 		$("#store_total").html(total);
 		$(".select_4 li").click(function() {
 			var value = $(this).html();
@@ -130,7 +132,7 @@ function areaRanking(a){//区域排行
 		var achv_detail_m = message.achv_detail_m //月查看店铺排行
 		var achv_detail_w = message.achv_detail_w //周查看店铺排行
 		var achv_detail_y = message.achv_detail_y //年查看店铺排行
-		console.log(achv_detail_d);
+		//console.log(achv_detail_d);
 		$("#area_total").html(total);
 		$(".reg_testdate li").click(function() {
 			var value = $(this).html();
@@ -154,7 +156,7 @@ function areaRanking(a){//区域排行
 function Fn0(){
 	console.log("我是第一个Input")
 }
-function achieveChart(data){//获取折线图或雷达图
+function achieveChart(data){//获取折线图
 	var param={
 		time:data.replace(/-/g,"")
 	};
@@ -166,3 +168,47 @@ function Fn3(){
 	console.log("我是第四个Input")
 }
 
+//业绩追加
+function superadditionAchv(c){
+	$("#num_sales").html(c.am.num_sales);
+	$("#num_trade").html(c.am.num_trade);
+	$("#all_price").html(c.am.all_price);
+	$("#amount_price").html(c.am.amount_price);
+	$("#relate_rate").html(c.am.relate_rate);
+	$("#discount").html(c.am.discount);
+	$("#num_nvip").html(c.am.num_nvip);
+	$("#vip_amt_rate").html(c.am.vip_amt_rate);
+	$("#amt_trade").html(c.am.amt_trade);
+	$("#area_ranking").attr("data-percent",c.am.area_ranking);
+}
+//业绩加载
+function achAnalysis(a){
+	var a = a.replace(/[-]/g, "");
+	var param={};
+	param["time"]=a;
+	oc.postRequire("post", "/home/achAnalysis", "", param, function(data) {
+		var message = JSON.parse(data.message);
+		console.log(message);
+		var D=JSON.parse(message.D);
+		var M=JSON.parse(message.M);
+		var W=JSON.parse(message.W);
+		var Y=JSON.parse(message.Y);
+		$(".reg_testdate li").click(function() {
+			var value = $(this).html();
+			var id = $(this).parent("ul").attr("id");
+			$(this).parent("ul").prev(".title").html(value);
+			$(this).parent("ul").hide();
+			$(this).parent("ul").parent(".choose").removeClass("cur");
+			if (value == "按日查看" && id == "achv") {
+				superadditionAchv(D);
+			} else if (value == "按周查看" && id == "achv") {
+				superadditionAchv(W);
+			} else if (value == "按月查看" && id == "achv") {
+				superadditionAchv(M);
+			} else if (value == "按年查看" && id == "achv") {
+				superadditionAchv(Y);
+			}
+		});
+		superadditionAchv(D);
+	})
+}

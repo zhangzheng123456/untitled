@@ -36,32 +36,32 @@ function homeGetSys(timeType){
         }
         perArr=perArr.reverse();
         dateArr=dateArr.reverse();
-
-        var dateLast=[];
-        var perLast=[];
-        function selectData(Array){
-            if(Array==perArr){
-                for(index in Array){
-                    if(index%2==0&&timeType=='month'){
-                        perLast.push(Array[index])
-                    }else if(timeType=='week'){
-                        perLast=Array;
-                    }
-                }
-            }else {
-                for(index in Array){
-                    if(index%2==0&&timeType=='month'){
-                        dateLast.push(Array[index])
-                    }else if(timeType=='week'){
-                        dateLast=Array;
-                    }
-                }
-            }
-
-        }
-        selectData(perArr,perLast);
-        selectData(dateArr,dateLast);
-        init(perLast,dateLast);
+        //
+        //var dateLast=[];
+        //var perLast=[];
+        //function selectData(Array){
+        //    if(Array==perArr){
+        //        for(index in Array){
+        //            if(index%2==0&&timeType=='month'){
+        //                perLast.push(Array[index])
+        //            }else if(timeType=='week'){
+        //                perLast=Array;
+        //            }
+        //        }
+        //    }else {
+        //        for(index in Array){
+        //            if(index%2==0&&timeType=='month'){
+        //                dateLast.push(Array[index])
+        //            }else if(timeType=='week'){
+        //                dateLast=Array;
+        //            }
+        //        }
+        //    }
+        //
+        //}
+        //selectData(perArr,perLast);
+        //selectData(dateArr,dateLast);
+        init(perArr,dateArr);
         whir.loading.remove();//移除加载框
         //console.log(JSON.stringify(sysMessage.user_increase))
     });
