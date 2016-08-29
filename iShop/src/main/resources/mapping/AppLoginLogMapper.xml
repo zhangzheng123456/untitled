@@ -7,6 +7,7 @@
       acc_app_login_log.USER_NAME,
       def_corp.CORP_NAME,
       acc_app_login_log.TIME,
+      acc_app_login_log.created_date,
       acc_app_login_log.ISACTIVE
       FROM acc_app_login_log,def_corp
       WHERE  acc_app_login_log.corp_code=def_corp.corp_code
@@ -18,6 +19,7 @@
         (
             acc_app_login_log.PLATFORM LIKE concat('%', #{search_value},'%')
             OR acc_app_login_log.USER_NAME LIKE concat('%', #{search_value},'%')
+            OR acc_app_login_log.created_date LIKE concat('%', #{search_value},'%')
             OR def_corp.CORP_NAME LIKE concat('%', #{search_value},'%')
             OR acc_app_login_log.TIME LIKE concat('%', #{search_value},'%')
             OR   acc_app_login_log.ISACTIVE LIKE concat('%', #{search_value},'%')
@@ -32,6 +34,7 @@
         acc_app_login_log.USER_NAME,
         def_corp.CORP_NAME,
         acc_app_login_log.TIME,
+        acc_app_login_log.created_date,
         acc_app_login_log.ISACTIVE
         FROM acc_app_login_log,def_corp
         WHERE  acc_app_login_log.corp_code=def_corp.corp_code
