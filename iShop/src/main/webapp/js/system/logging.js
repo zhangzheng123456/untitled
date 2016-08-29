@@ -239,6 +239,8 @@ function superaddition(data,num){//页面加载循环
             + data[i].corp_name
             + "</span></td><td>"
             + data[i].time
+            + "</span></td><td>"
+            + data[i].created_date
             + "</td><td>"
             + data[i].isactive
             + "</td></tr>");
