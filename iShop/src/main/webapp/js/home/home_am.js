@@ -20,6 +20,12 @@ $(".title").click(function() {
 		ul.hide();
 	};
 });
+//区域获取区域
+function getAreaList(){
+	oc.postRequire("get", "/area/findArea", "", "", function(data) {
+		console.log(data);
+	})
+}
 //店铺加载
 function superadditionStore(c) {
 	var store_list = "";
@@ -67,13 +73,12 @@ function storeRanking(a) {
 }
 //导购加载
 function superadditionStaff(c) {
-	console.log(c);
 	var staff_list = "";
 	for (var i = 0; i < c.length; i++) {
 		var a = i + 1;
-		staff_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //导购名称
-			+ "</td><td>" + c[i].achv_amount //业绩
-			+ "</td><td>" + c[i].discount //所属店铺
+		staff_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].user_name//导购名称
+			+ "</td><td>" + c[i].amount //业绩
+			+ "</td><td>" + c[i].store_name //所属店铺
 			+ "</td></tr>"
 	}
 	$("#staff_list tbody").html(staff_list);
@@ -86,14 +91,12 @@ function staffRanking(a) {
 	param["store_name"] = "";
 	oc.postRequire("post", "/home/staffRanking", "", param, function(data) {
 		var message = JSON.parse(data.message);
-		var total = message.total; //导购总数
-        var avg=message.avg; //导购平均业绩
-		var achv_detail_d = message.achv_detail_d //日查看导购排行
-		var achv_detail_m = message.achv_detail_m //月查看导购排行
-		var achv_detail_w = message.achv_detail_w //周查看导购排行
-		var achv_detail_y = message.achv_detail_y //年查看导购排行
+		var total = message.user_count; //导购总数
+        console.log(message);
+		var store_achv_d = message.store_achv_d //日查看导购排行
+		var store_achv_m = message.store_achv_m //月查看导购排行
+		var store_achv_w = message.store_achv_w //周查看导购排行
 		$("#staff_total").html(total);
-		$("#staff_avg").html(avg);
 		$(".reg_testdate li").click(function() {
 			var value = $(this).html();
 			var id = $(this).parent("ul").attr("id");
@@ -101,26 +104,40 @@ function staffRanking(a) {
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
 			if (value == "按日查看" && id == "staff") {
-				superadditionStaff(achv_detail_d);
+				superadditionStaff(store_achv_d);
 			} else if (value == "按周查看" && id == "staff") {
-				superadditionStaff(achv_detail_w);
+				superadditionStaff(store_achv_w);
 			} else if (value == "按月查看" && id == "staff") {
-				superadditionStaff(achv_detail_m);
-			} else if (value == "按年查看" && id == "staff") {
-				superadditionStaff(achv_detail_y);
+				superadditionStaff(store_achv_m);
 			}
 		})
-		superadditionStaff(achv_detail_d);
+		superadditionStaff(store_achv_d);
 	})
 }
-//业绩
+//业绩追加
+function superadditionAchv(c){
+	$("#num_sales").html(c.am.num_sales);
+	$("#num_trade").html(c.am.num_trade);
+	$("#all_price").html(c.am.all_price);
+	$("#amount_price").html(c.am.amount_price);
+	$("#relate_rate").html(c.am.relate_rate);
+	$("#discount").html(c.am.discount);
+	$("#num_nvip").html(c.am.num_nvip);
+	$("#vip_amt_rate").html(c.am.vip_amt_rate);
+	$("#amt_trade").html(c.am.amt_trade);
+	$("#area_ranking").attr("data-percent",c.am.area_ranking);
+}
+//业绩加载
 function achAnalysis(a){
-	var a = a.replace(/[-]/g, ""); 
+	var a = a.replace(/[-]/g, "");
 	var param={};
 	param["time"]=a;
 	oc.postRequire("post", "/home/achAnalysis", "", param, function(data) {
 		var message = JSON.parse(data.message);
-		console.log(message);
+		var D=JSON.parse(message.D);
+		var M=JSON.parse(message.M);
+		var W=JSON.parse(message.W);
+		var Y=JSON.parse(message.Y);
 		$(".reg_testdate li").click(function() {
 			var value = $(this).html();
 			var id = $(this).parent("ul").attr("id");
@@ -128,18 +145,17 @@ function achAnalysis(a){
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
 			if (value == "按日查看" && id == "achv") {
-				superadditionStaff(achv_detail_d);
+				superadditionAchv(D);
 			} else if (value == "按周查看" && id == "achv") {
-				superadditionStaff(achv_detail_w);
+				superadditionAchv(W);
 			} else if (value == "按月查看" && id == "achv") {
-				superadditionStaff(achv_detail_m);
+				superadditionAchv(M);
 			} else if (value == "按年查看" && id == "achv") {
-				superadditionStaff(achv_detail_y);
+				superadditionAchv(Y);
 			}
 		})
-		// superadditionStaff(achv_detail_d);
+		superadditionAchv(D);
 	})
-
 }
 //店铺排行日历
 var store = {
@@ -191,3 +207,4 @@ laydate(achv);//业绩
 storeRanking(today);
 staffRanking(today);
 achAnalysis(today);
+getAreaList()//区经  获取区域列表

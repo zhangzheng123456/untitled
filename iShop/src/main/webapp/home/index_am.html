@@ -189,18 +189,29 @@
 
             </div>
         </nav>
-       <!--  <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="wrapper wrapper-content">
                 <div class="row">
                     <div class="col-lg-4">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content_per">
-                            <label class="c_a_shoppe"><i>尹墨IMM女装</i><img src="../img/img_spot_white.png"><i>华东一区</i></label>
+                            <span class="c_a_shoppe">
+                               <i id="corp_name"></i>
+                               <img src="../img/img_spot_white.png">
+                               <i>华东一区</i>
+                               <ul>
+                                   <li>华东二区</li>
+                                   <li>华东三区</li>
+                                   <li>华东四区</li>
+                                   <li>华东五区</li>
+                                   <li>华东六区</li>
+                               </ul>
+                            </span>
                                 <div class="check_select">
                                    <div class="select_1 reg_testdate">
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按日查看</div>
-                                            <ul id="">
+                                            <ul id="achv">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
@@ -215,11 +226,11 @@
                                 <div class="performance">
                                     <ul>
                                         <li class="total_num">
-                                            <div class="t_num">890063</div>
+                                            <div class="t_num" id="amt_trade"></div>
                                             <div class="ranking">业绩总额（元）</div>
                                         </li>
                                         <li class="yield_rate">
-                                            <span class="chart" data-percent="73">
+                                            <span id="area_ranking" class="chart" data-percent="0">
                                                 <span class="percent"></span>
                                             </span>
                                         </li>
@@ -228,30 +239,38 @@
                                 <div class="item_list_1">
                                     <ul>
                                         <li>
-                                            <div><span>同比</span></div>
-                                            <div class="item_1"><em>400</em>%</div>
+                                            <div><span>销售件数</span></div>
+                                            <div class="item_1" id="num_sales"></div>
                                         </li>
                                         <li>
-                                            <div><span>平均折扣</span></div>
-                                            <div class="item_1"><em>73</em>%</div>
+                                            <div><span>成交笔数</span></div>
+                                            <div class="item_1" id="num_trade"></div>
                                         </li>
                                         <li>
-                                            <div><span>店销</span></div>
-                                            <div class="item_1">7531.75</div>
+                                            <div><span>客单价</span></div>
+                                            <div class="item_1" id="all_price"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>件单价</span></div>
+                                            <div class="item_1" id="amount_price"></div>
                                         </li>
                                     </ul>
                                      <ul>
                                         <li>
-                                            <div><span>平均</span></div>
-                                            <div class="item_1">128.2</div>
+                                            <div><span>连带率</span></div>
+                                            <div class="item_1" id="relate_rate"></div>
                                         </li>
                                         <li>
-                                            <div><span>人效</span></div>
-                                            <div class="item_1">2273.74</div>
+                                            <div><span>平均折扣</span></div>
+                                            <div class="item_1" id="discount"></div>
+                                        </li>
+                                        <li>
+                                            <div><span>新增会员</span></div>
+                                            <div class="item_1" id="num_nvip"></div>
                                         </li>
                                         <li>
                                             <div><span>会销占比</span></div>
-                                            <div class="item_1"><em>25</em>%</div>
+                                            <div class="item_1" id="vip_amt_rate"></div>
                                         </li>
                                     </ul>
                                 </div>
@@ -368,7 +387,6 @@
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
-                                                <li>按年查看</li>
                                             </ul>
                                         </span>
                                         <span>
@@ -387,9 +405,9 @@
                                            <th>所属店铺</th>
                                         </tr>
                                     </thead>
-                                    <tobdy>
+                                    <tbody>
                                         
-                                    </tobdy>
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -407,8 +425,8 @@
                    </div>
                 </div>
             </div>
-        </div> -->
-        <p style="font-size: 20px;position: absolute;top: 500px;left: 50%;">仪表盘尚未开放，敬请期待哦！</p>
+        </div>
+        <!-- <p style="font-size: 20px;position: absolute;top: 500px;left: 50%;">仪表盘尚未开放，敬请期待哦！</p> -->
     </div>
     <script src="../js/jquery-2.1.1.min.js"></script>
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
@@ -416,7 +434,7 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
+    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
     <script type="text/javascript" src="../js/home/home.js"></script>
     <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->

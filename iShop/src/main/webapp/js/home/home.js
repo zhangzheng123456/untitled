@@ -10,6 +10,7 @@ $(function(){
             var p=null;
             $('.nav-header .img-circle').attr("src",message.avatar);
             $('.nav-header .font-bold').html(message.user_name);
+            $('#corp_name').html(message.corp_name);
             for(index in message.menu){
                 var index_li=0;
                 p=message.menu[index];
