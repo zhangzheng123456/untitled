@@ -7112,6 +7112,7 @@ body.skin-3 {
   white-space: nowrap;
   text-overflow: ellipsis;
   overflow: hidden;
+  position: relative;
 }
 .c_a_shoppe i{
  font-style:normal;
