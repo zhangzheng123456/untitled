@@ -6636,6 +6636,9 @@ body.skin-3 {
   font-size:14px;
   color:#A3ADBC;
 }
+.new_add label{
+  margin-left: 5px;
+}
 .shop_num{
   color: #ffffff;
   font-family: "Microsoft YaHei";
