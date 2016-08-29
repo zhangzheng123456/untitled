@@ -43,9 +43,9 @@
         def_error_log.MODIFIER,
         def_error_log.ISACTIVE
         from def_error_log
-      WHERE
+      WHERE 1=1
         <if test="search_value != null and search_value !=''">
-     (def_error_log.APP_PLATFORM like concat('%',#{search_value},'%')
+     AND (def_error_log.APP_PLATFORM like concat('%',#{search_value},'%')
             OR def_error_log.CORP_CODE like concat('%',#{search_value},'%')
             OR def_error_log.VERSION like concat('%',#{search_value},'%')
             )
