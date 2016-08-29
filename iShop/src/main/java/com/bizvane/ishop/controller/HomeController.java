@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Feedback;
-import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.TimeUtils;

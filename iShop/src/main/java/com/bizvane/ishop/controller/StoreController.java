@@ -953,15 +953,15 @@ public class StoreController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            int actualRows = LuploadHelper.getRightRows(rs);
-            if (actualRows != rows) {
-                if (rows - actualRows == 1) {
-                    result = "：第" + rows + "行存在空白行,请删除";
-                } else {
-                    result = "：第" + (actualRows + 1) + "行至第" + rows + "存在空白行,请删除";
-                }
-                int i = 5 / 0;
-            }
+//            int actualRows = LuploadHelper.getRightRows(rs);
+//            if (actualRows != rows) {
+//                if (rows - actualRows == 1) {
+//                    result = "：第" + rows + "行存在空白行,请删除";
+//                } else {
+//                    result = "：第" + (actualRows + 1) + "行至第" + rows + "存在空白行,请删除";
+//                }
+//                int i = 5 / 0;
+//            }
             if (rows < 4) {
                 result = "：请从模板第4行开始插入正确数据";
                 int i = 5 / 0;
@@ -980,6 +980,9 @@ public class StoreController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
+                    if(column3[i].getContents().toString().trim().equals("")){
+                        continue;
+                    }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -994,6 +997,9 @@ public class StoreController {
                 }
             }
             for (int i = 3; i < column3.length; i++) {
+                if(column3[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";
@@ -1024,6 +1030,9 @@ public class StoreController {
                 int b = 5 / 0;
             }
             for (int i = 3; i < column.length; i++) {
+                if(column[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (store != null) {
                     result = "：第" + (i + 1) + "行店铺编号已存在";
@@ -1033,6 +1042,9 @@ public class StoreController {
             }
 
             for (int i = 3; i < column1.length; i++) {
+                if(column1[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Store store = storeService.getStoreByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (store != null) {
                     result = "：第" + (i + 1) + "行店铺名称已存在";
@@ -1042,6 +1054,9 @@ public class StoreController {
             }
             Pattern pattern = Pattern.compile("B\\d{4}");
             for (int i = 3; i < column5.length; i++) {
+                if(column5[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 String brands = column5[i].getContents().toString().trim();
                 String[] splitBrands = brands.split(",");
                 for (int j = 0; j < splitBrands.length; j++) {
@@ -1068,6 +1083,9 @@ public class StoreController {
 //                    int b = 5 / 0;
 //                    break;
 //                }
+                if(column4[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), column4[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (area == null) {
                     result = "：第" + (i + 1) + "行区域编号不存在";

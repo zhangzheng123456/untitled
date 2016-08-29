@@ -466,15 +466,15 @@ public class UserAchvGoalControl {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            int actualRows = LuploadHelper.getRightRows(rs);
-            if(actualRows != rows){
-                if(rows-actualRows==1){
-                    result = "：第"+rows+"行存在空白行,请删除";
-                }else{
-                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
-                }
-                int i = 5 / 0;
-            }
+//            int actualRows = LuploadHelper.getRightRows(rs);
+//            if(actualRows != rows){
+//                if(rows-actualRows==1){
+//                    result = "：第"+rows+"行存在空白行,请删除";
+//                }else{
+//                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+//                }
+//                int i = 5 / 0;
+//            }
             if (rows < 4) {
                 result = "：请从模板第4行开始插入正确数据";
                 int i = 5 / 0;
@@ -487,6 +487,9 @@ public class UserAchvGoalControl {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
+                    if(column3[i].getContents().toString().trim().equals("")){
+                        continue;
+                    }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -501,6 +504,9 @@ public class UserAchvGoalControl {
                 }
             }
                 for (int i = 3; i < column3.length; i++) {
+                    if(column3[i].getContents().toString().trim().equals("")){
+                        continue;
+                    }
                     Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行企业编号格式有误";
@@ -519,6 +525,9 @@ public class UserAchvGoalControl {
 
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
+                if(column2[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), column2[i].getContents().toString().trim(), "");
                 if (store == null) {
                     result = "：第" + (i + 1) + "行店铺编号不存在";
@@ -529,6 +538,9 @@ public class UserAchvGoalControl {
 
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
+                if(column1[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 List<User> user = userService.userCodeExist(column1[i].getContents().toString().trim(), column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (user.size() == 0) {
                     result = "：第" + (i + 1) + "行的用户编号不存在";
@@ -540,6 +552,9 @@ public class UserAchvGoalControl {
             Cell[] column8 = rs.getColumn(3);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
             for (int i = 3; i < column8.length; i++) {
+                if(column8[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Matcher matcher = pattern2.matcher(column8[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行业绩目标输入有误";

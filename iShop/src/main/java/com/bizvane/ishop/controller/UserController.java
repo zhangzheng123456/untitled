@@ -359,14 +359,14 @@ public class UserController {
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
             int actualRows = LuploadHelper.getRightRows(rs);
-            if (actualRows != rows) {
-                if (rows - actualRows == 1) {
-                    result = "：第" + rows + "行存在空白行,请删除";
-                } else {
-                    result = "：第" + (actualRows + 1) + "行至第" + rows + "存在空白行,请删除";
-                }
-                int i = 5 / 0;
-            }
+//            if (actualRows != rows) {
+//                if (rows - actualRows == 1) {
+//                    result = "：第" + rows + "行存在空白行,请删除";
+//                } else {
+//                    result = "：第" + (actualRows + 1) + "行至第" + rows + "存在空白行,请删除";
+//                }
+//                int i = 5 / 0;
+//            }
             if (rows < 4) {
                 result = "：请从模板第4行开始插入正确数据";
                 int i = 5 / 0;
@@ -385,6 +385,9 @@ public class UserController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
+                    if(column3[i].getContents().toString().trim().equals("")){
+                        continue;
+                    }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -399,6 +402,9 @@ public class UserController {
                 }
             }
             for (int i = 3; i < column3.length; i++) {
+                if(column3[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";
@@ -431,6 +437,9 @@ public class UserController {
 
             Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
             for (int i = 3; i < column4.length; i++) {
+                if(column4[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Matcher matcher = pattern4.matcher(column4[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行手机号码格式有误";
@@ -439,6 +448,9 @@ public class UserController {
                 }
             }
             for (int i = 3; i < column4.length; i++) {
+                if(column4[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
                 if (user.size() > 0) {
                     result = "：第" + (i + 1) + "行的电话号码已存在";
@@ -448,6 +460,9 @@ public class UserController {
             }
 
             for (int i = 3; i < column1.length; i++) {
+                if(column1[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 List<User> user = userService.userCodeExist(column1[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (user.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户编号已存在";
@@ -466,6 +481,9 @@ public class UserController {
             //Pattern pattern7 = Pattern.compile("A\\d{4}");
 
             for (int i = 3; i < column7.length; i++) {
+                if(column7[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Matcher matcher = pattern.matcher(column7[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行群组编号格式有误";

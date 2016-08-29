@@ -20,10 +20,30 @@ $(".title").click(function() {
 		ul.hide();
 	};
 });
+//点击区域
+$(".c_a_shoppe").click(function(){
+	var ul=$(".c_a_shoppe ul");
+	if(ul.css("display")=="none"){
+		ul.show();
+	}else{
+		ul.hide();
+	}
+})
 //区域获取区域
 function getAreaList(){
 	oc.postRequire("get", "/area/findArea", "", "", function(data) {
-		console.log(data);
+		if(data.code=="0"){
+			var message=JSON.parse(data.message);
+			var list=JSON.parse(message.list);
+        	console.log(list);
+        	$(".area_name").html(list[0].area_name);
+        	$(".area_name").attr("title",list[0].area_name);
+        	var html="";
+        	for(var i=0;i<list.length;i++){
+        		html+="<li data-code='"+list[i].area_code+"'>"+list[i].area_name+"</li>"
+        	}
+        	$(".c_a_shoppe ul").html(html);
+		}
 	})
 }
 //店铺加载

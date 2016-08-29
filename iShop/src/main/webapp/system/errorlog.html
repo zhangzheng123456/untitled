@@ -5,8 +5,6 @@
 	<title>系统管理之日志管理错误日志</title>
 	<link rel="stylesheet" href="../table/css/inner.css">
     <link rel="stylesheet" href="../table/css/style.css">
-    <script src="../table/js/jquery.min.js"></script>
-    <script src="/js/loading.js"></script>
 </head>
 <body>
 	<!-- <div id="navbar">
@@ -17,42 +15,18 @@
     		<div class="title">
                 <span>系统管理</span>
                 <span class="icon-ishop_8-03"></span>
-    			<span>日志管理</span>
-                <span class="icon-ishop_8-03"></span>
                 <span>错误日志</span>
     		</div>
     		<div class="action">
     			<div class="action_l">
-    				<ul id="jurisdiction">
-    					<li>
-    						<span class="icon-ishop_6-01"></span>
-    						新增
-    					</li>
-    					<li class="bg" id="remove">
-    						<span class="icon-ishop_6-02"></span>
-    						删除
-    					</li>
-    					<li>
-                            <a href="/system/errorlog_edit.html">
-        						<span class="icon-ishop_6-03"></span>
-        						编辑
-                            </a>
-    					</li>
-    					<li class="bg">
-    						<span class="icon-ishop_6-04"></span>
-    						保存
-    					</li>
+					<ul id="jurisdiction">
+					</ul>
+    				<ul>
                         <li class="li">
-                            <input type="text" class="input">
-                            <i class="icon-ishop_3-05"></i>
+                            <input type="text" class="input" id="search">
+                            <i class="icon-ishop_3-05" id="d_search"></i>
                         </li>
     				</ul>
-					<ul>
-						<li class="li">
-							<input type="text" class="input" id="search" placeholder="员工编号/姓名/手机/所属企业">
-							<i class="icon-ishop_3-05" id="d_search"></i>
-						</li>
-					</ul>
     			</div>
     			<div class="action_r">
     				<ul>
@@ -92,22 +66,7 @@
                     </div>
                 </div>
                 <div class="inputs">
-                    <li>
-                       <label>公司名称</label>
-                       <input type="text" id="p1">
-                    </li>
-                    <li>
-                        <label>联系人</label>
-                        <input type="text" id="p2">
-                    </li>
-                    <li>
-                        <label>修改人</label>
-                        <input type="text" id="p3">
-                    </li>
-                    <li>
-                        <label>联系电话</label>
-                        <input type="text" id="p4">
-                    </li>
+					<ul></ul>
                 </div>
             </div>
     		<div class="table">
@@ -116,124 +75,113 @@
                  		<tr class="th">
                  			<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                  			<th style="text-align: left;">序号</th>
-                 			<th>运行平台</th>
                  			<th>日志内容</th>
+                 			<th>运行平台</th>
+							<th>企业编号</th>
+							<th>版本号</th>
                             <th>创建时间</th>
-                            <th>处理状态</th>
-							<th width="50px;">可用</th>
                  		</tr>
                  	</thead>
                     <tbody>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">1</td>
-                            <td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput2"/><label for="checkboxTwoInput2"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">2</td>
-                    		<td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput3"/><label for="checkboxTwoInput3"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">3</td>
-                    		<td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput4"/><label for="checkboxTwoInput4"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">4</td>
-                    	    <td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput5"/><label for="checkboxTwoInput5"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">5</td>
-                    		<td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput6"/><label for="checkboxTwoInput6"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">6</td>
-                    		<td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput7"/><label for="checkboxTwoInput7"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">7</td>
-                    		<td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput8"/><label for="checkboxTwoInput8"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">8</td>
-                    		<td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput9"/><label for="checkboxTwoInput9"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">9</td>
-                    	    <td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>
-                    	<tr>
-                    		<td width="50px" style="text-align: left;">
-                    			<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput10"/><label for="checkboxTwoInput10"></label></div>
-                    		</td>
-                    		<td style="text-align: left;">10</td>
-                    	    <td>JSNJO309</td>
-                            <td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>
-                            <td>2016/02/23 15:04:02</td>
-                            <td>已解决</td>
-                            <td width="50px">是</td>
-                    	</tr>                                    													
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput1"/><label for="checkboxTwoInput1"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">1</td>-->
+                            <!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput2"/><label for="checkboxTwoInput2"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">2</td>-->
+                    		<!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput3"/><label for="checkboxTwoInput3"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">3</td>-->
+                    		<!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput4"/><label for="checkboxTwoInput4"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">4</td>-->
+                    	    <!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput5"/><label for="checkboxTwoInput5"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">5</td>-->
+                    		<!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput6"/><label for="checkboxTwoInput6"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">6</td>-->
+                    		<!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput7"/><label for="checkboxTwoInput7"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">7</td>-->
+                    		<!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput8"/><label for="checkboxTwoInput8"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">8</td>-->
+                    		<!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
+                    	<!--<tr>-->
+                    		<!--<td width="50px" style="text-align: left;">-->
+                    			<!--<div class="checkbox"><input type="checkbox" value="" name="test"  class="check"  id="checkboxTwoInput9"/><label for="checkboxTwoInput9"></label></div>-->
+                    		<!--</td>-->
+                    		<!--<td style="text-align: left;">9</td>-->
+                    	    <!--<td>JSNJO309</td>-->
+                            <!--<td><span>系统版本:7.00,设备型号:iphone3,1,设备名称:"Administrator"的iphone</span></td>-->
+                            <!--<td>2016/02/23 15:04:02</td>-->
+                            <!--<td>已解决</td>-->
+                            <!--<td width="50px">是</td>-->
+                    	<!--</tr>-->
                     </tbody>
     			</table>
     		</div>
@@ -295,10 +243,20 @@
             <em class="delete" id="delete">删除</em>
         </div>
     </div>
-   <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+	<div id="side_bar">
+		<div class="gotop">
+			<span class="icon-ishop_4-03"></span>
+		</div>
+		<div class="gobottom">
+			<span class="icon-ishop_4-04"></span>
+		</div>
+	</div>
+	<script src="../table/js/jquery.min.js"></script>
+    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+	<script src="../js/loading.js"></script>
+	<script src="../js/insidePostRequire.js"></script>
+	<script src="../js/system/errorlog.js"></script>
     <!-- <script src="../table/js/inner.js"></script> -->
-	<script type="text/javascript" src="/js/insidePostRequire.js"></script>
-     <script src="/js/system/errorlog.js"></script>
     <script type="text/javascript">
         $(function(){
             $('#sidebar ul>li:eq(6)').find('h1').addClass('h1');

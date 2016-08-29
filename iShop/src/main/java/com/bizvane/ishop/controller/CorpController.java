@@ -506,15 +506,15 @@ public class CorpController {
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
             int clos = rs.getColumns();//得到所有的列
             int rows = rs.getRows();//得到所有的行
-            int actualRows = LuploadHelper.getRightRows(rs);
-            if(actualRows != rows){
-                if(rows-actualRows==1){
-                    result = "：第"+rows+"行存在空白行,请删除";
-                }else{
-                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
-                }
-                int i = 5 / 0;
-            }
+    //        int actualRows = LuploadHelper.getRightRows(rs);
+//            if(actualRows != rows){
+//                if(rows-actualRows==1){
+//                    result = "：第"+rows+"行存在空白行,请删除";
+//                }else{
+//                    result = "：第"+(actualRows+1)+"行至第"+rows+"存在空白行,请删除";
+//                }
+//                int i = 5 / 0;
+//            }
             if(rows<4){
                 result="：请从模板第4行开始插入正确数据";
                 int i=5/0;
@@ -536,6 +536,9 @@ public class CorpController {
             Cell[] column = rs.getColumn(0);
             Pattern pattern = Pattern.compile("C\\d{5}");
             for (int i = 3; i < column.length; i++) {
+                if(column[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";
@@ -552,6 +555,9 @@ public class CorpController {
             Cell[] column4 = rs.getColumn(4);
             Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
             for (int i = 3; i < column4.length; i++) {
+                if(column4[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Matcher matcher = pattern4.matcher(column4[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行电话格式有误";
@@ -561,6 +567,9 @@ public class CorpController {
             }
             Cell[] column1 = rs.getColumn(1);
             for (int i = 3; i < column1.length; i++) {
+                if(column1[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 String existInfo = corpService.getCorpByCorpName(column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
                     result = "：第" + (i + 1) + "行企业名称已存在";
