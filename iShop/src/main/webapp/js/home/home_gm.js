@@ -4,7 +4,7 @@ $(function(){
 	$(".laydate-icon").val(Time);
     areaRanking(Time);
 	storeRanking(Time);
-	achieveChart(Time);
+	//achieveChart(Time);
 	achAnalysis(Time);
 });
 //点击显示日周年月
@@ -43,7 +43,7 @@ function lay1(InputID){//定义日期格式
 		var type=Number(InputID.slice(-1));
 		switch (type){
 			case 0:
-				Fn0(datas);
+				achAnalysis(datas);
 				break;
 			case 1:
 				achieveChart(datas);
@@ -68,6 +68,7 @@ function storeRanking(a){//店铺排行
 	var a = a.replace(/[-]/g, "");
 	param["time"]=a;
 	param["store_name"]="";
+	var value=$("#store_prev").html();
 	oc.postRequire("post","/home/storeRanking","", param, function(data){
 		var message = JSON.parse(data.message);
 		var total = message.total; //店铺总数
@@ -78,7 +79,7 @@ function storeRanking(a){//店铺排行
 		//console.log(achv_detail_d);
 		$("#store_total").html(total);
 		$(".select_4 li").click(function() {
-			var value = $(this).html();
+			value = $(this).html();
 			var id = $(this).parent("ul").attr("id");
 			$(this).parent("ul").prev(".title").html(value);
 			$(this).parent("ul").hide();
@@ -92,8 +93,16 @@ function storeRanking(a){//店铺排行
 			} else if (value == "按年查看" && id == "store") {
 				superadditionStore(achv_detail_y);
 			}
-		})
-		superadditionStore(achv_detail_d);
+		});
+		if (value == "按日查看") {
+			superadditionStore(achv_detail_d);
+		} else if (value == "按周查看") {
+			superadditionStore(achv_detail_w);
+		} else if (value == "按月查看") {
+			superadditionStore(achv_detail_m);
+		} else if (value == "按年查看") {
+			superadditionStore(achv_detail_y);
+		}
 	})
 
 }
@@ -125,22 +134,23 @@ function areaRanking(a){//区域排行
 	var a = a.replace(/[-]/g, "");
 	param["time"]=a;
 	param["area_name"]="";
+	var value=$("#area_prev").html();
 	oc.postRequire("post","/home/areaRanking","", param, function(data){
 		var message = JSON.parse(data.message);
 		var total = message.total; //店铺总数
-		var achv_detail_d = message.achv_detail_d //日查看店铺排行
-		var achv_detail_m = message.achv_detail_m //月查看店铺排行
-		var achv_detail_w = message.achv_detail_w //周查看店铺排行
-		var achv_detail_y = message.achv_detail_y //年查看店铺排行
-		//console.log(achv_detail_d);
+		console.log(message);
+		var achv_detail_d = message.achv_detail_d; //日查看店铺排行
+		var achv_detail_m = message.achv_detail_m;//月查看店铺排行
+		var achv_detail_w = message.achv_detail_w;//周查看店铺排行
+		var achv_detail_y = message.achv_detail_y;//年查看店铺排行
 		$("#area_total").html(total);
 		$(".reg_testdate li").click(function() {
-			var value = $(this).html();
+			value = $(this).html();
 			var id = $(this).parent("ul").attr("id");
 			$(this).parent("ul").prev(".title").html(value);
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
-			if (value == "按日查看" && id == "") {
+			if (value == "按日查看" && id == "area") {
 				superadditionArea(achv_detail_d);
 			} else if (value == "按周查看" && id == "area") {
 				superadditionArea(achv_detail_w);
@@ -149,12 +159,17 @@ function areaRanking(a){//区域排行
 			} else if (value == "按年查看" && id == "area") {
 				superadditionArea(achv_detail_y);
 			}
-		})
-		superadditionArea(achv_detail_d);
+		});
+		if (value == "按日查看") {
+			superadditionArea(achv_detail_d);
+		} else if (value == "按周查看") {
+			superadditionArea(achv_detail_w);
+		} else if (value == "按月查看") {
+			superadditionArea(achv_detail_m);
+		} else if (value == "按年查看") {
+			superadditionArea(achv_detail_y);
+		}
 	})
-}
-function Fn0(){
-	console.log("我是第一个Input")
 }
 function achieveChart(data){//获取折线图
 	var param={
@@ -164,10 +179,6 @@ function achieveChart(data){//获取折线图
 		console.log(data);
 	})
 }
-function Fn3(){
-	console.log("我是第四个Input")
-}
-
 //业绩追加
 function superadditionAchv(c){
 	$("#num_sales").html(c.am.num_sales);
@@ -186,29 +197,37 @@ function achAnalysis(a){
 	var a = a.replace(/[-]/g, "");
 	var param={};
 	param["time"]=a;
+	var value=$('#gm_achv_prev').html();
 	oc.postRequire("post", "/home/achAnalysis", "", param, function(data) {
 		var message = JSON.parse(data.message);
-		console.log(message);
 		var D=JSON.parse(message.D);
 		var M=JSON.parse(message.M);
 		var W=JSON.parse(message.W);
 		var Y=JSON.parse(message.Y);
 		$(".reg_testdate li").click(function() {
-			var value = $(this).html();
+			value = $(this).html();
 			var id = $(this).parent("ul").attr("id");
 			$(this).parent("ul").prev(".title").html(value);
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
-			if (value == "按日查看" && id == "achv") {
+			if (value == "按日查看" && id == "gm_achv") {
 				superadditionAchv(D);
-			} else if (value == "按周查看" && id == "achv") {
+			} else if (value == "按周查看" && id == "gm_achv") {
 				superadditionAchv(W);
-			} else if (value == "按月查看" && id == "achv") {
+			} else if (value == "按月查看" && id == "gm_achv") {
 				superadditionAchv(M);
-			} else if (value == "按年查看" && id == "achv") {
+			} else if (value == "按年查看" && id == "gm_achv") {
 				superadditionAchv(Y);
 			}
 		});
-		superadditionAchv(D);
+		if (value == "按日查看") {
+			superadditionAchv(D);
+		} else if (value == "按周查看") {
+			superadditionAchv(W);
+		} else if (value == "按月查看") {
+			superadditionAchv(M);
+		} else if (value == "按年查看") {
+			superadditionAchv(Y);
+		}
 	})
 }
