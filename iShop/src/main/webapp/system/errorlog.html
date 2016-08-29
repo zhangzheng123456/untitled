@@ -23,7 +23,7 @@
     		</div>
     		<div class="action">
     			<div class="action_l">
-    				<ul>
+    				<ul id="jurisdiction">
     					<li>
     						<span class="icon-ishop_6-01"></span>
     						新增
@@ -47,6 +47,12 @@
                             <i class="icon-ishop_3-05"></i>
                         </li>
     				</ul>
+					<ul>
+						<li class="li">
+							<input type="text" class="input" id="search" placeholder="员工编号/姓名/手机/所属企业">
+							<i class="icon-ishop_3-05" id="d_search"></i>
+						</li>
+					</ul>
     			</div>
     			<div class="action_r">
     				<ul>
@@ -291,6 +297,8 @@
     </div>
    <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
     <!-- <script src="../table/js/inner.js"></script> -->
+	<script type="text/javascript" src="/js/insidePostRequire.js"></script>
+     <script src="/js/system/errorlog.js"></script>
     <script type="text/javascript">
         $(function(){
             $('#sidebar ul>li:eq(6)').find('h1').addClass('h1');
