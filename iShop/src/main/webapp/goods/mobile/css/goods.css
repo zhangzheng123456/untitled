@@ -222,6 +222,7 @@ a {
 }
 .buy-match .content a{
     text-decoration: underline;
+    color:#1f90d8;
 }
 [data-dpr="1"] .buy-match .content {
     line-height: 31px;
