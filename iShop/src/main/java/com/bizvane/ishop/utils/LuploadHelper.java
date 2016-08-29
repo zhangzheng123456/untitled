@@ -48,13 +48,18 @@ public class LuploadHelper {
      */
     public  static  String CheckOnly(Cell[] cells){
         String result="";
+        int cellCount=0;
         LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
         for (Cell cell: cells) {
+            if(cell.getContents().toString().trim().equals("")){
+                continue;
+            }
             Integer num = map.get(cell.getContents().toString().trim());
             num = null == num ? 1 : num + 1;
             map.put(cell.getContents().toString().trim(), num);
+            cellCount++;
         }
-        if (cells.length != map.size())
+        if (cellCount != map.size())
         {
             result="存在重复值";
         }
