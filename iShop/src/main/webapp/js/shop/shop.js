@@ -305,7 +305,7 @@ jQuery(document).ready(function(){
 					$(imgName[0]).html(qrcodeList[0].app_name);
 					$(imgName[0]).attr("title",qrcodeList[0].app_name);
 					for (var i = 1; i < qrcodeList.length; i++) {
-						$(".er_code").append('<li class="app_li" style="width:700px;"><label for="" style="width:70px;margin-right:8px;">二维码</label><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
+						$(".er_code").append('<li class="app_li" style="width:700px;"><label for="" style="width:70px;margin-right:8px;">二维码</label><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul style="margin-left: 76px;"></ul>'
 							+ '<span class="power create" onclick="getTwoCode(this)">生成</span>'
 							+ '<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
 							+ '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="' + qrcodeList[i].qrcode + '" alt="">'

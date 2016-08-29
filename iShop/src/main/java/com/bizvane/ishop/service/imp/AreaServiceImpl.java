@@ -258,7 +258,6 @@ public class AreaServiceImpl implements AreaService {
 
     @Override
     public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
-
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
             if (area_codes.contains(Common.STORE_HEAD))
@@ -276,6 +275,21 @@ public class AreaServiceImpl implements AreaService {
         }
         PageInfo<Area> page = new PageInfo<Area>(areas);
         return page;
+    }
+
+    @Override
+    public List<Area> selectArea(String corp_code, String area_codes) throws SQLException {
+        String[] areaArray = null;
+        if (null != area_codes && !area_codes.isEmpty()) {
+            if (area_codes.contains(Common.STORE_HEAD))
+                area_codes = area_codes.replace(Common.STORE_HEAD, "");
+                areaArray = area_codes.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_codes", areaArray);
+        List<Area> areas = areaMapper.selectArea(params);
+        return areas;
     }
 
     @Override

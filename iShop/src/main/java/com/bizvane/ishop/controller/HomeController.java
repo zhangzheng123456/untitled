@@ -315,6 +315,7 @@ public class HomeController {
             JSONObject jsonObject = new JSONObject(message);
             if (jsonObject.has("time")) {
                 time_id = jsonObject.get("time").toString();
+                time_id = Common.DATETIME_FORMAT_DAY.format(Common.DATETIME_FORMAT_DAY_NO.parse(time_id));
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY.format(new Data());
             }
@@ -392,6 +393,7 @@ public class HomeController {
             JSONObject jsonObject = new JSONObject(message);
             if (jsonObject.has("time")) {
                 time_id = jsonObject.get("time").toString();
+                time_id = Common.DATETIME_FORMAT_DAY.format(Common.DATETIME_FORMAT_DAY_NO.parse(time_id));
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY.format(new Data());
             }

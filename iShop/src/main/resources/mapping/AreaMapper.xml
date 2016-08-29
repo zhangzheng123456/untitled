@@ -210,7 +210,17 @@
         </foreach>
         ORDER BY da.id DESC
     </select>
-
+    <select id="selectArea" resultMap="Area">
+        SELECT area_code,area_name
+        FROM def_area
+        WHERE 1=1
+        AND corp_code=#{corp_code}
+        AND area_code IN
+        <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        AND ISACTIVE = 'Y'
+    </select>
     <select id="selectByAreaCodeSearch" resultMap="Area">
         SELECT
         da.*,

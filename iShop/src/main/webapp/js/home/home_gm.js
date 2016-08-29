@@ -48,7 +48,7 @@ function lay1(InputID){//定义日期格式
 				break;
 			case 2:areaRanking(datas);
 				break;
-			case 3:Fn3(datas);
+			case 3:storeRanking(datas);
 				break;
 		}
 	 }
@@ -100,8 +100,8 @@ function superadditionArea(c) {
 	var area_list = "";
 	for (var i = 0; i < c.length; i++) {
 		var a = i + 1;
-		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //区域名称
-			+ "</td><td>" + c[i].store_trade//折扣
+		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].area_name //区域名称
+			+ "</td><td>" + c[i].amt_trade//折扣
 			+ "</td></tr>"
 	}
 	$("#area_list tbody").html(area_list);
@@ -111,8 +111,9 @@ function superadditionStore(c) {
 	var area_list = "";
 	for (var i = 0; i < c.length; i++) {
 		var a = i + 1;
-		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].area_name //区域名称
-			+ "</td><td>" + c[i].amt_trade//折扣
+		area_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //区域名称
+			+ "</td><td>" + c[i].achv_amount
+			+ "</td><td>" + c[i].discount//折扣
 			+ "</td></tr>"
 	}
 	$("#store_list tbody").html(area_list);
