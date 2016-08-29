@@ -216,11 +216,11 @@
                                 <div class="performance">
                                     <ul>
                                         <li class="total_num">
-                                            <div class="t_num">89810063</div>
+                                            <div class="t_num" id="amt_trade"></div>
                                             <div class="ranking">业绩总额（元）</div>
                                         </li>
                                         <li class="yield_rate">
-                                            <span class="chart" data-percent="73">
+                                            <span class="chart" id="area_ranking" data-percent="0">
                                                 <span class="percent"></span>
                                             </span>
                                         </li>
@@ -229,32 +229,40 @@
                                 <div class="item_list_1">
                                     <ul>
                                         <li>
-                                            <div><span>同比</span></div>
-                                            <div class="item_1"><em>400</em>%</div>
+                                            <div><span>销售件数</span></div>
+                                            <div class="item_1" id="num_sales"></div>
                                         </li>
                                         <li>
-                                            <div><span>平均折扣</span></div>
-                                            <div class="item_1"><em>73</em>%</div>
+                                            <div><span>成交笔数</span></div>
+                                            <div class="item_1" id="num_trade"></div>
                                         </li>
                                         <li>
-                                            <div><span>店销</span></div>
-                                            <div class="item_1">7531.75</div>
-                                        </li>
-                                    </ul>
-                                     <ul>
-                                        <li>
-                                            <div><span>平均</span></div>
-                                            <div class="item_1">128.2</div>
+                                            <div><span>客单价</span></div>
+                                            <div class="item_1" id="all_price"></div>
                                         </li>
                                         <li>
-                                            <div><span>人效</span></div>
-                                            <div class="item_1">2273.74</div>
+                                            <div><span>件单价</span></div>
+                                            <div class="item_1" id="amount_price"></div>
                                         </li>
-                                        <li>
-                                            <div><span>会销占比</span></div>
-                                            <div class="item_1"><em>25</em>%</div>
-                                        </li>
-                                    </ul>
+                                        </ul>
+                                        <ul>
+                                            <li>
+                                                <div><span>连带率</span></div>
+                                                <div class="item_1" id="relate_rate"></div>
+                                            </li>
+                                            <li>
+                                                <div><span>平均折扣</span></div>
+                                                <div class="item_1" id="discount"></div>
+                                            </li>
+                                            <li>
+                                                <div><span>新增会员</span></div>
+                                                <div class="item_1" id="num_nvip"></div>
+                                            </li>
+                                            <li>
+                                                <div><span>会销占比</span></div>
+                                                <div class="item_1" id="vip_amt_rate"></div>
+                                            </li>
+                                        </ul>
                                 </div>
                             </div>
                         </div>
