@@ -5,46 +5,46 @@
     <resultMap type="com.bizvane.ishop.entity.User" id="BaseMap">
         <id column="id" property="id"/>
         <result column="user_code" property="user_code"/>
-        <result column="avatar" property="avatar"/>
-        <result column="user_name" property="user_name"/>
-        <result column="sex" property="sex"/>
-        <result column="phone" property="phone"/>
-        <result column="email" property="email"/>
-        <result column="birthday" property="birthday"/>
+        <result column="avatar" property="avatar" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sex" property="sex" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="phone" property="phone" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="email" property="email" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="birthday" property="birthday" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
-        <result column="store_code" property="store_code"/>
+        <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="group_code" property="group_code"/>
         <result column="password" property="password"/>
-        <result column="login_time_recently" property="login_time_recently"/>
-        <result column="created_date" property="created_date"/>
-        <result column="creater" property="creater"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
-        <result column="isactive" property="isactive"/>
+        <result column="login_time_recently" property="login_time_recently" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="can_login" property="can_login"/>
         <!--地域-->
-        <result column="area_code" property="area_code"/>
-        <result column="position" property="position"/>
+        <result column="area_code" property="area_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="role_code" property="role_code"/>
     </resultMap>
 
     <resultMap type="com.bizvane.ishop.entity.User" id="UserInfo">
         <id column="id" property="id"/>
         <result column="user_code" property="user_code"/>
-        <result column="avatar" property="avatar"/>
-        <result column="user_name" property="user_name"/>
-        <result column="sex" property="sex"/>
-        <result column="phone" property="phone"/>
-        <result column="email" property="email"/>
-        <result column="birthday" property="birthday"/>
+        <result column="avatar" property="avatar" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="sex" property="sex" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="phone" property="phone" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="email" property="email" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="birthday" property="birthday" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
-        <result column="store_code" property="store_code"/>
+        <result column="store_code" property="store_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="group_code" property="group_code"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
-        <result column="isactive" property="isactive"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="can_login" property="can_login"/>
-        <result column="position" property="position"/>
+        <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="role_code" property="role_code"/>
         <association property="group" javaType="com.bizvane.ishop.entity.Group">
             <result column="group_name" property="group_name"/>

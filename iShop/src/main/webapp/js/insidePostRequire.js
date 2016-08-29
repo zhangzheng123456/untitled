@@ -5,7 +5,6 @@ ObjectControl.prototype = {
 			"id":require_id,
 			"message":require_data
 		};
-		console.log(_params);
 		jQuery.ajax({
 			url: require_url,
 			type: require_type,

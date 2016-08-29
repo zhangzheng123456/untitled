@@ -5,7 +5,6 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Feedback;
-import com.bizvane.ishop.entity.LoginLog;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.TimeUtils;
@@ -304,6 +303,7 @@ public class HomeController {
             String time_id;
             String area_code = "";
             String store_code = "";
+            String store_id = "";
             String user_id = request.getSession().getAttribute("user_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -314,8 +314,8 @@ public class HomeController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             if (jsonObject.has("time")) {
-                time_id = jsonObject.get("time").toString();
-                time_id = Common.DATETIME_FORMAT_DAY.format(Common.DATETIME_FORMAT_DAY_NO.parse(time_id));
+                String time = jsonObject.get("time").toString();
+                time_id = Common.DATETIME_FORMAT_DAY.format(Common.DATETIME_FORMAT_DAY_NO.parse(time));
             }else {
                 time_id = Common.DATETIME_FORMAT_DAY.format(new Data());
             }
@@ -334,9 +334,15 @@ public class HomeController {
                 area_code = area_ids[0];
             }
 
+            if (!store_code.equals("")){
+                Store store = storeService.getStoreByCode(corp_code,store_code,"");
+                if (store != null)
+                    store_id = store.getStore_id();
+            }
             Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_store_code = new Data("store_code", store_code, ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
             Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
             Data data_role_code = new Data("user_role", role_code, ValueType.PARAM);
             Data data_time_id = new Data("date", time_id, ValueType.PARAM);
@@ -345,6 +351,7 @@ public class HomeController {
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_store_id.key, data_store_id);
             datalist.put(data_area_code.key, data_area_code);
             datalist.put(data_role_code.key, data_role_code);
             datalist.put(data_time_id.key, data_time_id);
@@ -356,11 +363,10 @@ public class HomeController {
                 Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
                 datalist.put(data_date_type.key, data_date_type);
                 DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysisInfo",datalist);
-                logger.info(dataBox.data.get("message").value);
+                logger.info("home2画面(业绩折线图)"+dataBox.data.get("message").value);
                 String result = dataBox.data.get("message").value;
                 object.put(date_type,result);
             }
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(object.toString());
@@ -382,6 +388,8 @@ public class HomeController {
             String time_id;
             String area_code = "";
             String store_code = "";
+            String store_id = "";
+
             String user_id = request.getSession().getAttribute("user_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
@@ -412,9 +420,15 @@ public class HomeController {
                 area_code = area_ids[0];
             }
 
+            if (!store_code.equals("")){
+                Store store = storeService.getStoreByCode(corp_code,store_code,"");
+                if (store != null)
+                    store_id = store.getStore_id();
+            }
             Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_store_code = new Data("store_code", store_code, ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
             Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
             Data data_role_code = new Data("user_role", role_code, ValueType.PARAM);
             Data data_time_id = new Data("date", time_id, ValueType.PARAM);
@@ -423,6 +437,7 @@ public class HomeController {
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_store_id.key, data_store_id);
             datalist.put(data_area_code.key, data_area_code);
             datalist.put(data_role_code.key, data_role_code);
             datalist.put(data_time_id.key, data_time_id);

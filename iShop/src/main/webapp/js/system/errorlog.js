@@ -231,18 +231,16 @@ function superaddition(data,num){//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td>"
-            + data[i].platform
-            + "</td><td>"
-            + data[i].user_name
-            + "</td><td><span>"
-            + data[i].corp_name
+            + "</td><td><span title='"+data[i].content+"'>"
+            + data[i].content
             + "</span></td><td>"
+            + data[i].app_platform
+            + "</td><td>"
+            + data[i].corp_code
+            + "</td><td>"
+            + data[i].version
+            + "</td><td>"
             + data[i].created_date
-            + "</span></td><td>"
-            + data[i].time
-            + "</td><td>"
-            + data[i].isactive
             + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -275,17 +273,21 @@ function qjia(){
 qjia();
 //页面加载时list请求
 function GET(a,b){
+        param={
+            "page_num":a,
+            "page_size":b
+        }
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/apploginlog/list?pageNumber="+a+"&pageSize="+b
-        +"&funcCode="+funcCode+"","","",function(data){
+    oc.postRequire("get","/errorLog/list?pageNumber="+a+"&pageSize="+b
+        +"&funcCode="+funcCode+"","",param,function(data){
         // console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
+                cout=list.pages;
+                list=list.list;
             console.log(list)
-            cout=list.pages;
-            var list=list.list;
             superaddition(list,a);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
@@ -300,6 +302,22 @@ function jumpBianse(){
         $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
         $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
+    //双击跳转
+    $(".table tbody tr").dblclick(function(){
+        var id=$(this).attr("id");
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["filtrate"]=filtrate;//筛选的值
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+        sessionStorage.setItem("id",id);
+        console.log(id);
+        $(window.parent.document).find('#iframepage').attr("src","/system/errorlog_edit.html");
+})
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
@@ -316,10 +334,6 @@ function jumpBianse(){
             input.checked = false;
             $(this).removeClass("tr");
         }
-    })
-    //点击新增时页面进行的跳转
-    $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/staff/checkin_add.html");
     })
     //删除
     $("#remove").click(function(){
@@ -364,7 +378,7 @@ $("#d_search").click(function(){
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/apploginlog/search","0",param,function(data){
+    oc.postRequire("post","/errorLog/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -419,7 +433,7 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    oc.postRequire("post","/apploginlog/delete","0",params,function(data){
+    oc.postRequire("post","/errorLog/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame();
@@ -670,7 +684,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/apploginlog/screen","0",_param,function(data){
+    oc.postRequire("post","/errorLog/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);

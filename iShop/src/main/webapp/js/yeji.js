@@ -2,7 +2,7 @@
         var circles = [];
         var selectedCircle;//选中的圆
         var hoveredCircle;//滑过的圆
-        var inint_num=$('.customer_add_cart').width()/15;
+        var inint_num=$('.customer_add_cart').width()/12;
         var mul_num=$('.customer_add_cart').width()/7;
         var canvas =document.getElementById('canvas_circle');//画布
         var b =canvas.getContext("2d");//画笔
@@ -102,6 +102,13 @@
             c.fill();
         }
         function init(perArr,dateArr) {
+                if(dateArr.length>7){
+                    inint_num=$('.customer_add_cart').width()/30;
+                    mul_num=$('.customer_add_cart').width()/30;
+                }else {
+                    inint_num=$('.customer_add_cart').width()/12;
+                    mul_num=$('.customer_add_cart').width()/7;
+                }
                 var myCanvas =document.getElementById('canvas_circle');
                 var avail_width=$('.customer_add_cart').width();
                 var avail_height=$('.customer_add_cart').height()*0.8;
