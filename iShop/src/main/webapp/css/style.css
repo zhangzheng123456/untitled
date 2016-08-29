@@ -1,4 +1,4 @@
-// @import url("http://fonts.useso.com/css?family=Open+Sans:300,400,600,700&amp;lang=en");
+ @import url("http://fonts.useso.com/css?family=Open+Sans:300,400,600,700&amp;lang=en");
 /*
  *
  *   H+ - Admin Theme
@@ -7730,14 +7730,15 @@ ul,li{list-style:none;padding:0;margin:0;}
 .tempalte_area{
   width:420px;
   height:100px;
+  margin-left:5px;
   display:inline-block;
   background:#ffffff;
   border-radius:4px;
 }
 .tempalte_area textarea{
-  width:400px;
+  width:410px;
   height:80px;
-  margin:10px;
+  margin-left:10px;
   outline: none;
   appearance: none;
   -webkit-appearance: none;

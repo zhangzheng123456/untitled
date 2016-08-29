@@ -19,49 +19,47 @@
     <!-- <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>日志管理<i class="icon-ishop_8-03"></i>错误日志<i class="icon-ishop_8-03"></i>编辑错误日志</div>
+            <div class="col-lg-12 pre_title">系统管理<i class="icon-ishop_8-03"></i>错误日志<i class="icon-ishop_8-03"></i><label>编辑错误日志</label></div>
             <div class="editor_em col-lg-7  animated fadeInRight">
                 <div class="operation_conpany">
                     <ul>
-                        <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
+                        <li><i class="icon-ishop_6-07"></i>刷新</li>
+                        <li><i class="icon-ishop_6-01"></i>新增</li>
+                        <li><i class="icon-ishop_6-02"></i>删除</li>
+                        <li><i class="icon-ishop_6-10"></i>复制</li>
+                        <li><i class="icon-ishop_6-11"></i>打印</li>
                     </ul>
                 </div>
                 <form class="conpany_msg">
-                    <div class="drop_down item_1">
-                        <span><label style="color:#c26555;">运行平台*</label><input class="input_select" type="text" placeholder="请选择运行平台" readonly/><span class="down_icon icn_1"><i class="icon-ishop_8-02"></i></span>
-                            <ul>
-                                <li>运行平台1</li>
-                                <li>运行平台2</li>
-                            </ul>
+                    <div>
+                        <span>
+                            <label>运行平台</label>
+                            <input  id="app_platform" type="text" readonly/>
                         </span>
                     </div>
                     <div>
-                    <span style="display: inline-flex;width:100%"><label style="height:480px;">日志内容</label><span class="tempalte_area" style="height: 480px"><textarea style="height: 460px"></textarea></span></span>
+                    <span style="display: inline-flex;width:100%"><label style="height:480px;">日志内容</label><span class="tempalte_area" style="height: 480px"><textarea style="height: 480px" readonly="readonly"></textarea></span></span>
                     </div>
                 </form>
             </div>
             <div class="editor_detail_em col-lg-4  animated fadeInRight">
                 <div class="oper_btn">
                     <ul>
-                        <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                         <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
                  <form class="msg_detail">
                     <div>
-                        <span><label>创建时间</label><input type="text" /></span>
+                        <span><label>创建时间</label><input type="text" id="created_time"/></span>
                     </div>
                     <div>
-                        <span><label>创建人</label><input type="text" /></span>
+                        <span><label>创建人</label><input type="text" id="creator" /></span>
                     </div>
                     <div>
-                        <span><label>修改时间</label><input type="text" /></span>
+                        <span><label>修改时间</label><input type="text" id="modify_time"/></span>
                     </div>
                     <div>
-                        <span><label>修改人</label><input type="text" /></span>
-                    </div>
-                    <div>
-                    <span><label>可用</label><i class="icon-ishop_6-13"></i></span>
+                        <span><label>修改人</label><input type="text" id="modifier"/></span>
                     </div>
                 </form>
             </div>
@@ -71,6 +69,10 @@
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="../js/insidePostRequire.js"></script>
+    <script src="../js/artDialog/jquery.artDialog.js"></script>
+    <script src="../js/loading.js"></script>
+    <script src="../js/system/errorlog_operate.js"></script>
     <!-- Custom and plugin javascript -->
     <script src="../js/hplus.js?v=2.2.0"></script>
     <!-- moni select -->
