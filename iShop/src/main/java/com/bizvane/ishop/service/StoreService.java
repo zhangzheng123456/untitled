@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service;
 
 import com.alibaba.fastjson.JSONArray;
+import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.github.pagehelper.PageInfo;
@@ -83,4 +84,7 @@ public interface StoreService {
     int deleteStoreQrcode(String corp_code,String store_code) throws Exception;
 
     String creatStoreQrcode(String corp_code,String store_code,String auth_appid,String user_id) throws Exception;
+
+    List<Store> selectStore(String corp_code, String store_codes) throws SQLException;
+
 }

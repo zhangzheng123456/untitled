@@ -62,6 +62,25 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         List<ParamConfigure> paramConfigures;
         PageHelper.startPage(page_number, page_size);
         paramConfigures = paramConfigureMapper.selectAllParam(search_value);
+        String result="";
+        for (ParamConfigure paramConfigure : paramConfigures) {
+
+          String  param_type=  paramConfigure.getParam_type();
+            if(param_type==null){
+                result="";
+            }else if(param_type.equals("switch")){
+                result="开关";
+            }else if(param_type.equals("list")){
+                result="选择列表";
+            }else if(param_type.equals("custom")){
+            result="自定义";
+            }else{
+                result="";
+            }
+            paramConfigure.setParam_type(result);
+
+        }
+
         PageInfo<ParamConfigure> page = new PageInfo<ParamConfigure>(paramConfigures);
         return page;
     }

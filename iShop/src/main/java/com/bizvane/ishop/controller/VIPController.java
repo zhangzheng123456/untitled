@@ -461,8 +461,6 @@ public class VIPController {
                     }
 
                 }
-
-
             String onlyCell1 = LuploadHelper.CheckOnly(rs.getColumn(1));
             if(onlyCell1.equals("存在重复值")){
                 result = "：Execl中会员标签名称存在重复值";
@@ -487,18 +485,24 @@ public class VIPController {
                 for (int j = 0; j < clos; j++) {
                     VipLabel vipLabel = new VipLabel();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String label_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+                    if(label_name.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if(!role_code.equals(Common.ROLE_SYS)){
                         vipLabel.setCorp_code(corp_code);
                     }else{
                         vipLabel.setCorp_code(cellCorp);
                     }
-                    vipLabel.setLabel_name(rs.getCell(j++, i).getContents().toString().trim());
+                    vipLabel.setLabel_name(label_name);
                     if (role_code.equals(Common.ROLE_SYS)) {
                         vipLabel.setLabel_type("sys");
                     } else {
                         vipLabel.setLabel_type("org");
                     }
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    if (isactive.toUpperCase().equals("N")) {
                         vipLabel.setIsactive("N");
                     } else {
                         vipLabel.setIsactive("Y");

@@ -36,40 +36,24 @@ function homeGetSys(timeType){
         }
         perArr=perArr.reverse();
         dateArr=dateArr.reverse();
-        //
-        //var dateLast=[];
-        //var perLast=[];
-        //function selectData(Array){
-        //    if(Array==perArr){
-        //        for(index in Array){
-        //            if(index%2==0&&timeType=='month'){
-        //                perLast.push(Array[index])
-        //            }else if(timeType=='week'){
-        //                perLast=Array;
-        //            }
-        //        }
-        //    }else {
-        //        for(index in Array){
-        //            if(index%2==0&&timeType=='month'){
-        //                dateLast.push(Array[index])
-        //            }else if(timeType=='week'){
-        //                dateLast=Array;
-        //            }
-        //        }
-        //    }
-        //
-        //}
-        //selectData(perArr,perLast);
-        //selectData(dateArr,dateLast);
         init(perArr,dateArr);
         whir.loading.remove();//移除加载框
-        //console.log(JSON.stringify(sysMessage.user_increase))
     });
 
 }
-$("#set_time").click(function(){
-    $("#set_Time_ul").toggle();
+$("#set_time").mouseover(function(){
+    $("#set_Time_ul").show();
 });
+$("#set_time").mouseout(function(){
+    $("#set_Time_ul").hide();
+});
+$("#set_Time_ul").mouseover(function(){
+    $("#set_Time_ul").show();
+});
+$("#set_Time_ul").mouseout(function(){
+    $("#set_Time_ul").hide();
+});
+
 $("#set_Time_ul li").click(function(){
     $("#set_time b").text($(this).text());
     $("#set_Time_ul").hide();

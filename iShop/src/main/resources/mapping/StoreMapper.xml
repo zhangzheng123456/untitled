@@ -208,6 +208,18 @@
         GROUP BY def_store.id
         ORDER BY DEF_STORE.id DESC
     </select>
+    <select id="selectStore" resultMap="Store">
+        SELECT  store_code,
+        store_name 
+        FROM DEF_STORE
+        WHERE 1=1
+        AND corp_code=#{corp_code}
+        AND store_code IN
+        <foreach collection="store_codes" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        AND ISACTIVE = 'Y'
+    </select>
     <!--下拉框，根据区域拉店铺（店长，导购）-->
     <select id="selStoreByUserCode" resultMap="Store">
         select

@@ -537,24 +537,37 @@ public class UserController {
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String user_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String user_id2 = rs.getCell(j++, i).getContents().toString().trim();
+                    String user_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String phone = rs.getCell(j++, i).getContents().toString().trim();
+                    String email = rs.getCell(j++, i).getContents().toString().trim();
+                    String sex = rs.getCell(j++, i).getContents().toString().trim();
+                    String group_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String area_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String store_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String position = rs.getCell(j++, i).getContents().toString().trim();
+                    if(user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("")  || group_code.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if (!role_code.equals(Common.ROLE_SYS)) {
                         user.setCorp_code(corp_code);
                     } else {
                         user.setCorp_code(cellCorp);
                     }
-                    user.setUser_code(rs.getCell(j++, i).getContents().toString().trim());
-                    user.setUser_id(rs.getCell(j++,i).getContents().toString().trim());
-                    user.setUser_name(rs.getCell(j++, i).getContents().toString().trim());
+                    user.setUser_code(user_code);
+                    user.setUser_id(user_id2);
+                    user.setUser_name(user_name);
                     user.setAvatar("../img/head.png");//头像
-                    user.setPhone(rs.getCell(j++, i).getContents().toString().trim());
-                    user.setEmail(rs.getCell(j++, i).getContents().toString().trim());
-                    if (rs.getCell(j++, i).getContents().equals("男")) {
+                    user.setPhone(phone);
+                    user.setEmail(email);
+                    if (sex.equals("男")) {
                         user.setSex("M");
                     } else {
                         user.setSex("F");
                     }
-                    user.setGroup_code(rs.getCell(j++, i).getContents().toString().trim());
-                    String area_code = rs.getCell(j++, i).getContents().toString().trim();
+                    user.setGroup_code(group_code);
                     if (!area_code.equals("all") && !area_code.equals("")) {
                         String[] areas = area_code.split(",");
                         area_code = "";
@@ -568,7 +581,6 @@ public class UserController {
                     } else {
                         user.setArea_code(area_code);
                     }
-                    String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     if (!store_code.equals("all") && !store_code.equals("")) {
                         String[] codes = store_code.split(",");
                         store_code = "";
@@ -582,7 +594,7 @@ public class UserController {
                     } else {
                         user.setStore_code("");
                     }
-                    user.setPosition(rs.getCell(j++, i).getContents().toString().trim());
+                    user.setPosition(position);
                     user.setPassword(user.getPhone());
                     Date now = new Date();
                     user.setLogin_time_recently("");
