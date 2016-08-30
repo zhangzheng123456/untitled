@@ -10,23 +10,46 @@ if (month < 10) {
 var data = myDate.getDate();
 var today = year + "-" + month + "-" + data;
 $(".icon-text").val(today);
-//点击显示日周年月
-$(".title").click(function() {
+// //点击显示日周年月
+// $(".title").click(function() {
+// 	ul = $(this).nextAll("ul");
+// 	$(this).parent(".choose").toggleClass("cur");
+// 	if (ul.css("display") == "none") {
+// 		ul.show();
+// 	} else {
+// 		ul.hide();
+// 	};
+// });
+$(".title").mouseover(function() {
+	ul = $(this).nextAll("ul");
+		ul.show();
+	$(this).parent(".choose").toggleClass("cur");
+	console.log(ul.css("display"))
+});
+$(".title").mouseout(function() {
 	ul = $(this).nextAll("ul");
 	$(this).parent(".choose").toggleClass("cur");
-	if (ul.css("display") == "none") {
-		ul.show();
-	} else {
-		ul.hide();
-	};
+	ul.hide();
+	console.log(ul.css("display"))
 });
+$(".select_Date").mouseover(function(){
+	$(this).parent(".choose").toggleClass("cur");
+	$(this).show()
+});
+$(".select_Date").mouseout(function(){
+	$(this).parent(".choose").toggleClass("cur");
+	$(this).hide()
+});
+
 //点击区域
 $(".c_a_shoppe").click(function(){
 	var ul=$(".c_a_shoppe ul");
 	if(ul.css("display")=="none"){
 		ul.show();
+		$("#drop_down_m").attr("src","../img/img_arrow_up.png");
 	}else{
 		ul.hide();
+		$("#drop_down_m").attr("src","../img/img_arrow_down.png");
 	}
 })
 //区域获取区域
@@ -38,11 +61,21 @@ function getAreaList(){
         	console.log(list);
         	$(".area_name").html(list[0].area_name);
         	$(".area_name").attr("title",list[0].area_name);
+        	$(".area_name").attr("data-code",list[0].area_code);
         	var html="";
         	for(var i=0;i<list.length;i++){
         		html+="<li data-code='"+list[i].area_code+"'>"+list[i].area_name+"</li>"
         	}
         	$(".c_a_shoppe ul").html(html);
+        	$(".c_a_shoppe ul li").click(function(){
+        		var area_code=$(this).attr("data-code");
+        		$(".area_name").attr("data-code",area_code);
+        		$(".area_name").html($(this).html());
+        		console.log($(this).html());
+        		storeRanking(today,area_code);
+				staffRanking(today,area_code);
+				achAnalysis(today,area_code);
+        	})
 		}
 	})
 }
@@ -59,11 +92,15 @@ function superadditionStore(c) {
 	$("#store_list tbody").html(store_list);
 }
 //店铺排行
-function storeRanking(a) {
+function storeRanking(a,b) {
 	var a = a.replace(/[-]/g, "");
+	var val=$("#store_type").html();
 	var param = {};
 	param["time"] = a;
 	param["store_name"] = "";
+	if(b!==""&&b!==undefined){
+		param["area_code"]=b;
+	}
 	oc.postRequire("post", "/home/storeRanking", "", param, function(data) {
 		var message = JSON.parse(data.message);
 		var total = message.total; //店铺总数
@@ -88,7 +125,15 @@ function storeRanking(a) {
 				superadditionStore(achv_detail_y);
 			}
 		})
-		superadditionStore(achv_detail_d);
+		if (val == "按日查看") {
+			superadditionStore(achv_detail_d);
+		} else if (val == "按周查看") {
+			superadditionStore(achv_detail_w);
+		} else if (val == "按月查看") {
+			superadditionStore(achv_detail_m);
+		} else if (val == "按年查看") {
+			superadditionStore(achv_detail_y);
+		}
 	})
 }
 //导购加载
@@ -104,11 +149,15 @@ function superadditionStaff(c) {
 	$("#staff_list tbody").html(staff_list);
 }
 //导购排行
-function staffRanking(a) { 
+function staffRanking(a,b) { 
 	var a = a.replace(/[-]/g, "");
+	var val=$("#staff_type").html();
 	var param = {};
 	param["time"] = a;
 	param["store_name"] = "";
+	if(b!==""&&b!==undefined){
+		param["area_code"]=b;
+	}
 	oc.postRequire("post", "/home/staffRanking", "", param, function(data) {
 		var message = JSON.parse(data.message);
 		var total = message.user_count; //导购总数
@@ -131,7 +180,13 @@ function staffRanking(a) {
 				superadditionStaff(store_achv_m);
 			}
 		})
-		superadditionStaff(store_achv_d);
+		if (val == "按日查看") {
+			superadditionStaff(store_achv_d);
+		} else if (val == "按周查看") {
+			superadditionStaff(store_achv_w);
+		} else if (value == "按月查看") {
+			superadditionStaff(store_achv_m);
+		}
 	})
 }
 //业绩追加
@@ -148,10 +203,14 @@ function superadditionAchv(c){
 	$("#area_ranking").attr("data-percent",c.am.area_ranking);
 }
 //业绩加载
-function achAnalysis(a){
+function achAnalysis(a,b){
 	var a = a.replace(/[-]/g, "");
+	var val=$("#achv_type").html();
 	var param={};
 	param["time"]=a;
+	if(b!==""&&b!==undefined){
+		param["area_code"]=b;
+	}
 	oc.postRequire("post", "/home/achAnalysis", "", param, function(data) {
 		var message = JSON.parse(data.message);
 		var D=JSON.parse(message.D);
@@ -174,7 +233,15 @@ function achAnalysis(a){
 				superadditionAchv(Y);
 			}
 		})
-		superadditionAchv(D);
+		if (val == "按日查看") {
+			superadditionAchv(D);
+		} else if (val == "按周查看") {
+			superadditionAchv(W);
+		} else if (val == "按月查看") {
+			superadditionAchv(M);
+		} else if (val == "按年查看") {
+			superadditionAchv(Y);
+		}
 	})
 }
 //店铺排行日历
@@ -185,7 +252,8 @@ var store = {
 	istime: true,
 	istoday: false,
 	choose: function(datas) {
-		storeRanking(datas);
+		var area_code=$('.area_name').attr("data-code");
+		storeRanking(datas,area_code);
 	}
 };
 //员工排行日历
@@ -196,7 +264,8 @@ var staff = {
 	istime: true,
 	istoday: false,
 	choose: function(datas) {
-		staffRanking(datas);
+		var area_code=$('.area_name').attr("data-code");
+		staffRanking(datas,area_code);
 	}
 }
 //折线图日历
@@ -207,7 +276,8 @@ var achInfo={
 	istime: true,
 	istoday: false,
 	choose: function(datas) {
-		staffRanking(datas);
+		var area_code=$('.area_name').attr("data-code");
+		staffRanking(datas,area_code);
 	}
 }
 //业绩日历
@@ -218,7 +288,8 @@ var achv={
 	istime: true,
 	istoday: false,
 	choose: function(datas) {
-		achAnalysis(datas);
+		var area_code=$('.area_name').attr("data-code");
+		achAnalysis(datas,area_code);
 	}
 }
 laydate(store); //店铺

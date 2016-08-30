@@ -381,7 +381,7 @@ function Circle(x, y, radius){
 function drawScene(perArr) {
 	for (var i=0; i<circles.length; i++) {
 		if(hoveredCircle == i){
-			$('#tip_note').css({'position':'absolute','left':inint_num+mul_num*i-21,'top':trans(perArr[i])+35,'display':'block'});
+			$('#tip_note').css({'position':'absolute','left':inint_num+mul_num*i-21,'top':trans(perArr[i])+35,'display':'block','z-index':'100'});
 			$('.border').css({'left':26,'top':0});
 			$('#tip_note label').text(perArr[i]);
 		}
@@ -412,13 +412,20 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fillStyle="rgba(255,255,255,0.5)";
 	c.textAlign = "center";
 	for(var i=0; i< dataLen; i++){
-		if(dataLen>7){
+		if(7<dataLen<12){
 			mul_num=$('.customer_add_cart').width()/(dataLen+1);
+			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+		}else if(12<dataLen){
+			mul_num=$('.customer_add_cart').width()/dataLen;
+			if(i%2==0){
+				c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+			}
 		}else {
 			mul_num=$('.customer_add_cart').width()/dataLen;
+			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
 		}
 
-		c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+
 	}
 	//绘制曲线图
 	c.beginPath();
@@ -441,12 +448,23 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fillStyle = "#6cc1c8";
 	c.beginPath();
 	for(var i=0; i< dataLen; i++){
+		//if(dataLen>12){
+		//	inint_num=$('.customer_add_cart').width()/15;
+		//	mul_num=$('.customer_add_cart').width()/7;
+		//}
 		c.moveTo(inint_num+mul_num*i, trans(perArr[i]));
 		c.arc(inint_num+mul_num*i, trans(perArr[i]),2, 0, pi2);
 	}
 	c.fill();
 }
 function init(perArr,dateArr) {
+	if(dateArr.length>12){
+		inint_num=$('.customer_add_cart').width()/(dateArr.length);
+		mul_num=$('.customer_add_cart').width()/(dateArr.length);
+	}else {
+		inint_num=$('.customer_add_cart').width()/15;
+		mul_num=$('.customer_add_cart').width()/7;
+	}
 	var myCanvas =document.getElementById('canvas_circle');
 	var avail_width=$('.customer_add_cart').width();
 	var avail_height=$('.customer_add_cart').height()*0.8;

@@ -565,6 +565,9 @@ public class UserAchvGoalControl {
             Cell[] column = rs.getColumn(4);
             Cell[] column5 = rs.getColumn(5);
             for (int i = 3; i < column.length; i++) {
+                if(column[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 if (!column[i].getContents().toString().trim().equals("D") && !column[i].getContents().toString().trim().equals("W") && !column[i].getContents().toString().trim().equals("M") && !column[i].getContents().toString().trim().equals("Y")) {
                     result = "：第" + (i + 1) + "行的业绩日期类型缩写有误";
                     int b = 5 / 0;
