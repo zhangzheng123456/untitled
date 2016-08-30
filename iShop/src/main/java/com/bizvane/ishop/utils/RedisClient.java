@@ -1,19 +1,20 @@
 package com.bizvane.ishop.utils;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
+import redis.clients.jedis.Jedis;
 
 import java.io.Serializable;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by maoweidong on 2016/2/19.
+ * Created by ZhouZhou on 2016/8/29.
  */
-public final  class RedisUtil {
-    private static Logger logger = LoggerFactory.getLogger(RedisUtil.class);
+public class RedisClient {
+    private static final Logger logger = Logger.getLogger(RedisClient.class);
+
     private RedisTemplate<Serializable, Object> redisTemplate;
 
     /**
@@ -33,7 +34,7 @@ public final  class RedisUtil {
      * @param pattern
      */
     public void removePattern(final String pattern) {
-        Set <Serializable> keys = redisTemplate.keys(pattern);
+        Set<Serializable> keys = redisTemplate.keys(pattern);
         if (keys.size() > 0)
             redisTemplate.delete(keys);
     }
@@ -118,4 +119,14 @@ public final  class RedisUtil {
             RedisTemplate<Serializable, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
     }
+
+
+    public static void main(String[] args) {
+        Jedis jedis = new Jedis("ishop.dev.bizvane.com");
+        jedis.auth("Bizvane-redis-password");
+        System.out.println("Connection to server sucessfully");
+        jedis.set("w3ckey", "Redis tutorial");
+        System.out.println("Stored string in redis:: " + jedis.keys("123*"));
+    }
+
 }
