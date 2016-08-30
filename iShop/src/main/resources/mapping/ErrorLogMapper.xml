@@ -3,15 +3,15 @@
 <mapper namespace="com.bizvane.ishop.dao.ErrorLogMapper">
     <resultMap type="com.bizvane.ishop.entity.ErrorLog" id="ErrorLog">
         <id column="id" property="id"/>
-        <result column="content" property="content"/>
-        <result column="app_platform" property="app_platform"/>
-        <result column="corp_code" property="corp_code"/>
-        <result column="version" property="version"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
-        <result column="created_date" property="created_date"/>
-        <result column="creater" property="creater"/>
-        <result column="isactive" property="isactive"/>
+        <result column="content" property="content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="app_platform" property="app_platform" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="version" property="version" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
 
     <select id="selectByLogId" resultMap="ErrorLog">
