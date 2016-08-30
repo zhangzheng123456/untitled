@@ -205,14 +205,21 @@ function achieveChart(data){//获取折线图
 		var dateArr=[];
 		if (VALUE == "按周查看") {
 			TimeData=JSON.parse(infodata_W).amount;
+			$("#yeJiToTal").html(JSON.parse(infodata_W).total);
 		} else if (VALUE == "按月查看") {
 			TimeData=JSON.parse(infodata_M).amount;
+			$("#yeJiToTal").html(JSON.parse(infodata_M).total);
 		} else if (VALUE == "按年查看") {
 			TimeData=JSON.parse(infodata_Y).amount;
+			$("#yeJiToTal").html(JSON.parse(infodata_Y).total);
 		}
 		for(index in TimeData){
 			perArr.push(TimeData[index].trade);
-			dateArr.push(TimeData[index].date);
+			if(VALUE == "按年查看"){
+				dateArr.push(TimeData[index].date.substring(5));
+			}else {
+				dateArr.push(TimeData[index].date);
+			}
 		}
 		init(perArr,dateArr);
 		$(".reg_testdate li").click(function() {
@@ -225,14 +232,23 @@ function achieveChart(data){//获取折线图
 			$(this).parent("ul").parent(".choose").removeClass("cur");
 			 if (value == "按周查看" && id == "chart") {
 				 TimeData=JSON.parse(infodata_W).amount;
+				 $("#yeJiToTal").html(JSON.parse(infodata_W).total);
 			} else if (value == "按月查看" && id == "chart") {
 				 TimeData=JSON.parse(infodata_M).amount;
+				 $("#yeJiToTal").html(JSON.parse(infodata_M).total);
 			} else if (value == "按年查看" && id == "chart") {
 				 TimeData=JSON.parse(infodata_Y).amount;
+				 $("#yeJiToTal").html(JSON.parse(infodata_Y).total);
 			}
 			for(index in TimeData){
-				perArr.push(TimeData[index].trade);
-				dateArr.push(TimeData[index].date);
+					perArr.push(TimeData[index].trade);
+				if(value == "按年查看"){
+					dateArr.push(TimeData[index].date.substring(5));
+				}else {
+					dateArr.push(TimeData[index].date);
+				}
+
+
 			}
 			init(perArr,dateArr);
 		});

@@ -412,11 +412,12 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fillStyle="rgba(255,255,255,0.5)";
 	c.textAlign = "center";
 	for(var i=0; i< dataLen; i++){
-		if(7<dataLen<12){
-			mul_num=$('.customer_add_cart').width()/(dataLen+1);
+		console.log(dataLen);
+		if(7<dataLen&&dataLen<13){
+			mul_num=$('.customer_add_cart').width()/(dataLen);
 			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
 		}else if(12<dataLen){
-			mul_num=$('.customer_add_cart').width()/dataLen;
+			mul_num=$('.customer_add_cart').width()/(dataLen+1);
 			if(i%2==0){
 				c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
 			}
@@ -461,6 +462,9 @@ function init(perArr,dateArr) {
 	if(dateArr.length>12){
 		inint_num=$('.customer_add_cart').width()/(dateArr.length);
 		mul_num=$('.customer_add_cart').width()/(dateArr.length);
+	}else if(7<dateArr.length&&dateArr.length<13){
+		inint_num=$('.customer_add_cart').width()/23;
+		mul_num=$('.customer_add_cart').width()/12;
 	}else {
 		inint_num=$('.customer_add_cart').width()/15;
 		mul_num=$('.customer_add_cart').width()/7;
