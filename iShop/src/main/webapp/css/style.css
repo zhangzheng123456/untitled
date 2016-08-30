@@ -8326,3 +8326,23 @@ li.select_index>a>label>i{
 .app_li .power{
   margin-left: 14px;
 }
+.paramType{
+  width: 420px;
+  position: absolute;
+  left: 187px;
+  border: 1px solid #a9c9e2;
+  background: #e8f5fe;
+  display:none;
+}
+.paramType li:hover{
+  color: #FFFFFF;
+  background: #6cc1c8;
+}
+.paramType li{
+  height:30px;
+  line-height: 30px;
+}
+#PARAM_TYPE{
+  background: #FFFFFF url("../img/btn_dropmenu.png")no-repeat 100% 50%;
+  background-size: 30px;
+}

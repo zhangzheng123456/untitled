@@ -24,7 +24,7 @@
 	margin:0;
 	padding:0;
 	display:none;
-	height:235px;
+	/*height:235px;*/
 	overflow-y:auto;
 }
 .reg_testdate ul li{

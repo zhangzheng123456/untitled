@@ -200,8 +200,8 @@
                                 <div class="check_select">
                                     <div class="select_1 reg_testdate" >
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按日查看</div>
-                                            <ul class="select_Date">
+                                            <div class="title" style="width:70px;" id="gm_achv_prev">按日查看</div>
+                                            <ul class="select_Date" id="gm_achv">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
@@ -323,8 +323,9 @@
                                 <div class="check_chart">
                                     <div class="select_3 reg_testdate">
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按周查看</div>
+                                            <div class="title" style="width:70px" id="area_prev">按日查看</div>
                                             <ul id="area" class="select_Date">
+                                                <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
                                                 <li>按年查看</li>
@@ -366,7 +367,7 @@
                                 <div class="check_chart">
                                     <div class="select_4 reg_testdate" >
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按日查看</div>
+                                            <div class="title" style="width:70px" id="store_prev">按日查看</div>
                                             <ul class="select_Date" id="store">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
@@ -419,7 +420,7 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
      <!-- ajax -->
-    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
+     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <script type="text/javascript" src="../js/home/home.js"></script>
      <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>

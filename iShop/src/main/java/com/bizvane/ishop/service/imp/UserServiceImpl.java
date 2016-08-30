@@ -77,6 +77,7 @@ public class UserServiceImpl implements UserService {
         users = userMapper.selectAllUser(corp_code, "");
         return users;
     }
+
     /**
      * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）
@@ -112,7 +113,7 @@ public class UserServiceImpl implements UserService {
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
         PageHelper.startPage(page_number, page_size);
-        List<User>  users = userMapper.selectPartUser(params);
+        List<User> users = userMapper.selectPartUser(params);
         conversion(users);
 
         PageInfo<User> page = new PageInfo<User>(users);
@@ -120,10 +121,10 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     *根据店铺拉取员工
+     * 根据店铺拉取员工
      */
     @Override
-    public PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area,String role_code) throws Exception {
+    public PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
@@ -139,9 +140,9 @@ public class UserServiceImpl implements UserService {
         params.put("search_value", search_value);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
-        params.put("areas",area);
+        params.put("areas", area);
         PageHelper.startPage(page_number, page_size);
-        List<User>  users = userMapper.selUserByStoreCode(params);
+        List<User> users = userMapper.selUserByStoreCode(params);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
     }
@@ -156,7 +157,7 @@ public class UserServiceImpl implements UserService {
                 ProcessStoreCode(user);
             }
             String store_name = "";
-            String store_code1= user.getStore_code();
+            String store_code1 = user.getStore_code();
             if (store_code1 != null && !store_code1.equals("")) {
                 String[] ids = store_code1.split(",");
                 String store_code = "";
@@ -175,11 +176,11 @@ public class UserServiceImpl implements UserService {
                 }
                 user.setStore_name(store_name);
                 user.setStore_code(store_code);
-            }else {
+            } else {
                 user.setStore_name("");
                 user.setStore_code("");
             }
-        }else {
+        } else {
             user.setStore_name("");
             user.setStore_code("");
         }
@@ -196,7 +197,7 @@ public class UserServiceImpl implements UserService {
                 for (int i = 0; i < areaCodes.length; i++) {
                     areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
                     Area area = areaMapper.selectAreaByCode(corp_code, areaCodes[i], "");
-                    if (area!=null) {
+                    if (area != null) {
                         String area_name1 = area.getArea_name();
                         area_name = area_name + area_name1;
                         areaCode = areaCode + areaCodes[i];
@@ -208,15 +209,15 @@ public class UserServiceImpl implements UserService {
                 }
                 user.setArea_code(areaCode);
                 user.setArea_name(area_name);
-            }else {
+            } else {
                 user.setArea_code("");
                 user.setArea_name("");
             }
-        }else {
+        } else {
             user.setArea_code("");
             user.setArea_name("");
         }
-        List<UserQrcode> qrcodeList = userMapper.selectByUserCode(corp_code,user.getUser_code());
+        List<UserQrcode> qrcodeList = userMapper.selectByUserCode(corp_code, user.getUser_code());
         user.setQrcodeList(qrcodeList);
         return user;
     }
@@ -229,9 +230,9 @@ public class UserServiceImpl implements UserService {
      * 群组管理
      * 查看用户名单
      */
-    public PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code,String search_value) throws Exception {
+    public PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
-        List<User> users = userMapper.selectGroupUser(corp_code, group_code,search_value);
+        List<User> users = userMapper.selectGroupUser(corp_code, group_code, search_value);
         conversion(users);
         PageInfo<User> page = new PageInfo<User>(users);
         return page;
@@ -242,7 +243,7 @@ public class UserServiceImpl implements UserService {
      * 查看用户名单
      */
     public int selectGroupUser(String corp_code, String group_code) throws Exception {
-        List<User> users = userMapper.selectGroupUser(corp_code, group_code,"");
+        List<User> users = userMapper.selectGroupUser(corp_code, group_code, "");
         int count = users.size();
         return count;
     }
@@ -255,7 +256,7 @@ public class UserServiceImpl implements UserService {
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
         List<User> phone_exist = userPhoneExist(phone);
-        List<User> code_exist = userCodeExist(user_code, corp_code,Common.IS_ACTIVE_Y);
+        List<User> code_exist = userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
         List<User> email_exist = userEmailExist(email);
         if (phone.equals("")) {
             result = "手机号不能为空";
@@ -280,18 +281,19 @@ public class UserServiceImpl implements UserService {
         String result = "";
         int user_id = user.getId();
         User old_user = getUserById(user_id);
-        String[] store_code1 = old_user.getStore_code().split(",");List<User> phone_exist= userPhoneExist(user.getPhone());
+        String[] store_code1 = old_user.getStore_code().split(",");
+        List<User> phone_exist = userPhoneExist(user.getPhone());
         List<User> email_exist = userEmailExist(user.getEmail());
         if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
-            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(),Common.IS_ACTIVE_Y);
-            if (phone_exist.size()>0 && user_id != phone_exist.get(0).getId()){
+            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(), Common.IS_ACTIVE_Y);
+            if (phone_exist.size() > 0 && user_id != phone_exist.get(0).getId()) {
                 result = "手机号已存在";
-            } else if (code_exist.size() > 0 && user_id != code_exist.get(0).getId()){
+            } else if (code_exist.size() > 0 && user_id != code_exist.get(0).getId()) {
                 result = "员工编号已存在";
-            } else if (!user.getEmail().equals("") && email_exist.size()>0 && user_id != email_exist.get(0).getId()) {
+            } else if (!user.getEmail().equals("") && email_exist.size() > 0 && user_id != email_exist.get(0).getId()) {
                 result = "邮箱已存在";
             } else {
-                if (old_user.getUser_code() !=null && !old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
+                if (old_user.getUser_code() != null && !old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
                     updateCauseCodeChange(user.getCorp_code(), user.getUser_code(), old_user.getUser_code());
                 }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
@@ -304,8 +306,8 @@ public class UserServiceImpl implements UserService {
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
-            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(),Common.IS_ACTIVE_Y);
-            if (phone_exist.size()>0) {
+            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(), Common.IS_ACTIVE_Y);
+            if (phone_exist.size() > 0) {
                 result = "手机号已存在";
             } else if (code_exist.size() > 0) {
                 result = "员工编号已存在";
@@ -332,7 +334,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     public int delete(int id, String user_code, String corp_code) throws Exception {
-        privilegeMapper.delete(corp_code + user_code);
+        privilegeMapper.delete(corp_code + "U" + user_code);
         return userMapper.deleteByUserId(id);
     }
 
@@ -412,7 +414,7 @@ public class UserServiceImpl implements UserService {
      * 验证手机号是否已注册
      */
     @Override
-    public List<User> userPhoneExist(String phone)throws Exception {
+    public List<User> userPhoneExist(String phone) throws Exception {
         List<User> user = this.userMapper.selectByPhone(phone);
 
         return user;
@@ -422,7 +424,7 @@ public class UserServiceImpl implements UserService {
      * 验证邮箱是否已注册
      */
     @Override
-    public List<User> userEmailExist(String email) throws Exception{
+    public List<User> userEmailExist(String email) throws Exception {
         List<User> user = null;
         if (!email.equals("")) {
             user = this.userMapper.userEmailExist(email);
@@ -433,21 +435,21 @@ public class UserServiceImpl implements UserService {
     /**
      * 验证企业下用户编号是否已存在
      */
-    public List<User> userCodeExist(String user_code, String corp_code,String isactive) throws Exception {
-        List<User> user = userMapper.selectUserCode(user_code, corp_code,isactive);
+    public List<User> userCodeExist(String user_code, String corp_code, String isactive) throws Exception {
+        List<User> user = userMapper.selectUserCode(user_code, corp_code, isactive);
         return user;
     }
 
     @Override
     public List<User> selUserByUserId(String user_id, String corp_code, String isactive) throws Exception {
-        return userMapper.selUserByUserId(user_id,corp_code,isactive);
+        return userMapper.selUserByUserId(user_id, corp_code, isactive);
     }
 
     /**
      * 注册
      */
     @Transactional
-    public String register(String message) throws Exception{
+    public String register(String message) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         try {
             JSONObject jsonObject = new JSONObject(message);
@@ -546,7 +548,7 @@ public class UserServiceImpl implements UserService {
      * 获取验证码
      */
     @Transactional
-    public String getAuthCode(String phone, String platform) throws Exception{
+    public String getAuthCode(String phone, String platform) throws Exception {
 
         String text = "[爱秀]您的注册验证码为：";
         Random r = new Random();
@@ -598,7 +600,7 @@ public class UserServiceImpl implements UserService {
      * 若导入数据
      * 将store_code封装成固定格式
      */
-    public void ProcessStoreCode(User user) throws Exception{
+    public void ProcessStoreCode(User user) throws Exception {
         String[] ids = user.getStore_code().split(",");
         String store_code = "";
         for (int i = 0; i < ids.length; i++) {
@@ -608,7 +610,7 @@ public class UserServiceImpl implements UserService {
         userMapper.updateByUserId(user);
     }
 
-    public void ProcessAreaCode(User user) throws Exception{
+    public void ProcessAreaCode(User user) throws Exception {
         String[] ids = user.getArea_code().split(",");
         String area_code = "";
         for (int i = 0; i < ids.length; i++) {
@@ -620,17 +622,17 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code) throws Exception{
+    public List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code) throws Exception {
         return this.userAchvGoalMapper.selectUserAchvCount(corp_code, user_code);
         //return this.selectUserAchvCount(corp_code, user_code);
     }
 
-    public int selectCount(String created_date) throws Exception{
+    public int selectCount(String created_date) throws Exception {
         return userMapper.selectCount(created_date);
     }
 
     @Override
-    public PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String,String> map, String store_code, String area_code, String role_code) throws Exception {
+    public PageInfo<User> getScreenPart(int page_number, int page_size, String corp_code, Map<String, String> map, String store_code, String area_code, String role_code) throws Exception {
         String[] stores = null;
 
         if (!store_code.equals("")) {
@@ -661,7 +663,7 @@ public class UserServiceImpl implements UserService {
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
         PageHelper.startPage(page_number, page_size);
-        List<User>  users = userMapper.selectPartScreen(params);
+        List<User> users = userMapper.selectPartScreen(params);
         conversion(users);
 
         PageInfo<User> page = new PageInfo<User>(users);
@@ -669,7 +671,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
+    public PageInfo<User> getAllUserScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
         List<User> users;
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
@@ -684,26 +686,26 @@ public class UserServiceImpl implements UserService {
     /**
      * 列表显示数据转换
      */
-    public void conversion(List<User> users) throws Exception{
+    public void conversion(List<User> users) throws Exception {
         for (User user : users) {
             user.setIsactive(CheckUtils.CheckIsactive(user.getIsactive()));
-            if(user.getSex()==null || user.getSex().equals("")){
+            if (user.getSex() == null || user.getSex().equals("")) {
                 user.setSex("未知");
-            }else if(user.getSex().equals("F")){
+            } else if (user.getSex().equals("F")) {
                 user.setSex("女");
-            }else{
+            } else {
                 user.setSex("男");
             }
             String store = user.getStore_code();
             String area = user.getArea_code();
             String role_code = user.getRole_code();
-            if (role_code != null && (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) && store != null ){
+            if (role_code != null && (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) && store != null) {
                 if (store.contains(Common.STORE_HEAD)) {
                     String store_code1 = store.replace(Common.STORE_HEAD, "");
                     store = store_code1.substring(0, store_code1.length() - 1);
                 }
                 user.setStore_code(store);
-            }else {
+            } else {
                 user.setStore_code("");
             }
             if (role_code != null && role_code.equals(Common.ROLE_AM) && area != null) {
@@ -712,7 +714,7 @@ public class UserServiceImpl implements UserService {
                     area = area_code1.substring(0, area_code1.length() - 1);
                 }
                 user.setArea_code(area);
-            }else {
+            } else {
                 user.setArea_code("");
             }
         }
@@ -723,7 +725,7 @@ public class UserServiceImpl implements UserService {
      * 级联更改关联此编号的回访记录，员工业绩目标，签到，权限列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code, String new_user_code, String old_user_code) throws Exception{
+    void updateCauseCodeChange(String corp_code, String new_user_code, String old_user_code) throws Exception {
         //若修改员工编号，对应修改回访记录中关联的用户编号
         codeUpdateMapper.updateVipRecord("", corp_code, "", "", new_user_code, old_user_code);
 
@@ -747,33 +749,33 @@ public class UserServiceImpl implements UserService {
         for (int i = 0; i < corpWechats.size(); i++) {
             String app_user_name = corpWechats.get(i).getApp_user_name();
             if (app_user_name != null && !app_user_name.equals(""))
-                codeUpdateMapper.updateRelVipEmp(new_user_code,old_user_code,app_user_name);
+                codeUpdateMapper.updateRelVipEmp(new_user_code, old_user_code, app_user_name);
         }
 
         //删除对应的二维码
-        userMapper.deleteUserQrcode(corp_code,old_user_code);
+        userMapper.deleteUserQrcode(corp_code, old_user_code);
     }
 
-    public List<UserQrcode> selectQrcodeByUser(String corp_code, String user_code) throws Exception{
-        return userMapper.selectByUserCode(corp_code,user_code);
+    public List<UserQrcode> selectQrcodeByUser(String corp_code, String user_code) throws Exception {
+        return userMapper.selectByUserCode(corp_code, user_code);
     }
 
-    public UserQrcode selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception{
-        return userMapper.selectByUserApp(corp_code,user_code,app_id);
+    public UserQrcode selectQrcodeByUserApp(String corp_code, String user_code, String app_id) throws Exception {
+        return userMapper.selectByUserApp(corp_code, user_code, app_id);
 
     }
 
-    public int insertUserQrcode(UserQrcode userQrcode) throws Exception{
+    public int insertUserQrcode(UserQrcode userQrcode) throws Exception {
         return userMapper.insertUserQrcode(userQrcode);
     }
 
-    public int deleteUserQrcode(String corp_code,String user_code) throws Exception{
-        return userMapper.deleteUserQrcode(corp_code,user_code);
+    public int deleteUserQrcode(String corp_code, String user_code) throws Exception {
+        return userMapper.deleteUserQrcode(corp_code, user_code);
     }
 
-    public String creatUserQrcode(String corp_code,String user_code,String auth_appid,String user_id) throws Exception{
-        UserQrcode userQrcode = selectQrcodeByUserApp(corp_code,user_code,auth_appid);
-        String picture ="";
+    public String creatUserQrcode(String corp_code, String user_code, String auth_appid, String user_id) throws Exception {
+        UserQrcode userQrcode = selectQrcodeByUserApp(corp_code, user_code, auth_appid);
+        String picture = "";
         if (userQrcode == null) {
             String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + user_code;
             String result = IshowHttpClient.get(url);
@@ -802,7 +804,7 @@ public class UserServiceImpl implements UserService {
                 userQrcode.setIsactive(Common.IS_ACTIVE_Y);
                 userMapper.insertUserQrcode(userQrcode);
             }
-        }else {
+        } else {
             picture = userQrcode.getQrcode();
         }
         return picture;
