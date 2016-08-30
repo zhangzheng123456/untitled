@@ -803,9 +803,11 @@ $("#input-txt").keydown(function() {
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
+                param["pageNumber"]=inx;
                 POST(inx, pageSize);
             } else if (filtrate !== "") {
                 _param["pageSize"] = pageSize;
+                _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
         };

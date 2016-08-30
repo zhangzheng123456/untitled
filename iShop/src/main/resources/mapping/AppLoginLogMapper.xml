@@ -1,7 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.AppLoginLogMapper">
-    <select id="selectAllAppLoginLog" resultType="com.bizvane.ishop.entity.AppLoginLog">
+
+    <resultMap type="com.bizvane.ishop.entity.AppLoginLog" id="AppLoginLog">
+        <id column="id" property="id"/>
+        <result column="platform" property="platform" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_name" property="user_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="time" property="time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+
+    <select id="selectAllAppLoginLog" resultMap="AppLoginLog">
       SELECT acc_app_login_log.ID,
       acc_app_login_log.PLATFORM,
       acc_app_login_log.USER_NAME,
@@ -26,7 +40,7 @@
         ORDER BY acc_app_login_log.ID DESC
     </select>
 
-    <select id="selectAllScreen" resultType="com.bizvane.ishop.entity.AppLoginLog">
+    <select id="selectAllScreen" resultMap="AppLoginLog">
         SELECT acc_app_login_log.ID,
         acc_app_login_log.PLATFORM,
         acc_app_login_log.USER_NAME,
@@ -54,6 +68,7 @@
         </foreach>
         ORDER BY acc_app_login_log.ID DESC
     </select>
+
     <delete id="delAppLoginlogById">
         DELETE FROM acc_app_login_log
         WHERE ID=#{id};

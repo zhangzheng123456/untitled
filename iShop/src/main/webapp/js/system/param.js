@@ -241,6 +241,10 @@ function superaddition(data,num){
             +"</td><td>"
             + data[i].param_name
             + "</td><td>"
+            + data[i].param_type
+            + "</td><td>"
+            + data[i].param_values
+            + "</td><td>"
             + data[i].param_desc
             + "</td><td>"
             +data[i].remark

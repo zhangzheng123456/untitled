@@ -370,7 +370,7 @@ public class HomeController {
                     for (int j = 0; j < array.size(); j++) {
                         JSONObject achv = new JSONObject(array.get(j).toString());
                         String date = achv.get("date").toString();
-                        achv.put("data",date.substring(5,date.length()));
+                        achv.put("date",date.substring(5,date.length()));
                         array1.add(achv);
                     }
                     obj.put("amount",array1);

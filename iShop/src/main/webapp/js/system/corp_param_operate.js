@@ -247,11 +247,18 @@ function getcorplist(a, b) {
 function param_data(c, b) {
     var _params = {};
     _params["corp_code"] = c;//企业编号
-    var _command = "/param/getParamByUser";//调取参数
+    var _command = "/param/getParamInfo";//调取参数
     oc.postRequire("post", _command, "", _params, function (data) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
             console.log(msg);
+            var param_values= msg.param_values;
+            var list=param_values.split(",")
+            if(list.length>0){
+                for(var j = 0; j < list.length; j++){
+                    $("#PARAM_VALUE").append('<ul><li>'+list[j]+'</li></ul>')
+                }
+            }
             var msg_paramName = msg.params;
             $('#PARAM_NAME').empty();
             $('#param_select .searchable-select').remove();

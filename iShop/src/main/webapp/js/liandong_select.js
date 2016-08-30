@@ -412,13 +412,21 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fillStyle="rgba(255,255,255,0.5)";
 	c.textAlign = "center";
 	for(var i=0; i< dataLen; i++){
-		if(dataLen>7){
+		if(7<dataLen&&dataLen<13){
+			mul_num=$('.customer_add_cart').width()/(dataLen);
+			inint_num=$('.customer_add_cart').width()/23;
+			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+		}else if(12<dataLen){
 			mul_num=$('.customer_add_cart').width()/(dataLen+1);
+			inint_num=$('.customer_add_cart').width()/dataLen;
+			if(i%2==0){
+				c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+			}
 		}else {
-			mul_num=$('.customer_add_cart').width()/dataLen;
+			mul_num=$('.customer_add_cart').width()/7;
+			inint_num=$('.customer_add_cart').width()/15;
+			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
 		}
-
-		c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
 	}
 	//绘制曲线图
 	c.beginPath();
@@ -441,23 +449,22 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fillStyle = "#6cc1c8";
 	c.beginPath();
 	for(var i=0; i< dataLen; i++){
-		//if(dataLen>12){
-		//	inint_num=$('.customer_add_cart').width()/15;
-		//	mul_num=$('.customer_add_cart').width()/7;
-		//}
 		c.moveTo(inint_num+mul_num*i, trans(perArr[i]));
 		c.arc(inint_num+mul_num*i, trans(perArr[i]),2, 0, pi2);
 	}
 	c.fill();
 }
 function init(perArr,dateArr) {
-	if(dateArr.length>12){
-		inint_num=$('.customer_add_cart').width()/(dateArr.length);
-		mul_num=$('.customer_add_cart').width()/(dateArr.length);
-	}else {
-		inint_num=$('.customer_add_cart').width()/15;
-		mul_num=$('.customer_add_cart').width()/7;
-	}
+	//if(dateArr.length>12){
+	//	inint_num=$('.customer_add_cart').width()/(dateArr.length);
+	//	mul_num=$('.customer_add_cart').width()/(dateArr.length);
+	//}else if(7<dateArr.length&&dateArr.length<13){
+	//	inint_num=$('.customer_add_cart').width()/23;
+	//	mul_num=$('.customer_add_cart').width()/12;
+	//}else {
+	//	inint_num=$('.customer_add_cart').width()/15;
+	//	mul_num=$('.customer_add_cart').width()/7;
+	//}
 	var myCanvas =document.getElementById('canvas_circle');
 	var avail_width=$('.customer_add_cart').width();
 	var avail_height=$('.customer_add_cart').height()*0.8;
