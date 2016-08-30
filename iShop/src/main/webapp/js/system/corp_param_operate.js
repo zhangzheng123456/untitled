@@ -254,9 +254,9 @@ function param_data(c, b) {
             console.log(msg);
             var param_values= msg.param_values;
             var list=param_values.split(",")
-            if(param_values.length>0){
-                for(var j = 0; j < param_values.length; j++){
-                    $("#PARAM_VALUE").append('<ul><li></li></ul>')
+            if(list.length>0){
+                for(var j = 0; j < list.length; j++){
+                    $("#PARAM_VALUE").append('<ul><li>'+list[j]+'</li></ul>')
                 }
             }
             var msg_paramName = msg.params;
