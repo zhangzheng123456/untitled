@@ -82,6 +82,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 //        String area_name = jsonObject.get("area_name").toString();
 
         String param_name = jsonObject.get("param_name").toString();
+        String param_type = jsonObject.get("param_type").toString();
+        String param_values = jsonObject.get("param_values").toString();
         String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
 
@@ -92,6 +94,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
             paramConfigure = new ParamConfigure();
             Date now = new Date();
             paramConfigure.setParam_name(param_name);
+            paramConfigure.setParam_type(param_type);
+            paramConfigure.setParam_values(param_values);
             paramConfigure.setParam_desc(param_desc);
             paramConfigure.setRemark(remark);
             paramConfigureMapper.insertParam(paramConfigure);
