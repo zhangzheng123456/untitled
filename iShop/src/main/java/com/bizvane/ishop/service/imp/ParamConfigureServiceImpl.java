@@ -109,6 +109,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         int param_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String param_name = jsonObject.get("param_name").toString();
+        String param_type = jsonObject.get("param_type").toString();
+        String param_values = jsonObject.get("param_values").toString();
         String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
 
@@ -123,6 +125,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
             ParamConfigure old_param = new ParamConfigure();
             old_param.setId(param_id);
             old_param.setParam_name(param_name);
+            old_param.setParam_type(param_type);
+            old_param.setParam_values(param_values);
             old_param.setParam_desc(param_desc);
             old_param.setRemark(remark);
             paramConfigureMapper.updateParam(old_param);
