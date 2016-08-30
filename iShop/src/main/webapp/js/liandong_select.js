@@ -412,7 +412,6 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fillStyle="rgba(255,255,255,0.5)";
 	c.textAlign = "center";
 	for(var i=0; i< dataLen; i++){
-		console.log(dataLen);
 		if(7<dataLen&&dataLen<13){
 			mul_num=$('.customer_add_cart').width()/(dataLen);
 			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
