@@ -10,16 +10,37 @@ if (month < 10) {
 var data = myDate.getDate();
 var today = year + "-" + month + "-" + data;
 $(".icon-text").val(today);
-//点击显示日周年月
-$(".title").click(function() {
+// //点击显示日周年月
+// $(".title").click(function() {
+// 	ul = $(this).nextAll("ul");
+// 	$(this).parent(".choose").toggleClass("cur");
+// 	if (ul.css("display") == "none") {
+// 		ul.show();
+// 	} else {
+// 		ul.hide();
+// 	};
+// });
+$(".title").mouseover(function() {
+	ul = $(this).nextAll("ul");
+		ul.show();
+	$(this).parent(".choose").toggleClass("cur");
+	console.log(ul.css("display"))
+});
+$(".title").mouseout(function() {
 	ul = $(this).nextAll("ul");
 	$(this).parent(".choose").toggleClass("cur");
-	if (ul.css("display") == "none") {
-		ul.show();
-	} else {
-		ul.hide();
-	};
+	ul.hide();
+	console.log(ul.css("display"))
 });
+$(".select_Date").mouseover(function(){
+	$(this).parent(".choose").toggleClass("cur");
+	$(this).show()
+});
+$(".select_Date").mouseout(function(){
+	$(this).parent(".choose").toggleClass("cur");
+	$(this).hide()
+});
+
 //点击区域
 $(".c_a_shoppe").click(function(){
 	var ul=$(".c_a_shoppe ul");

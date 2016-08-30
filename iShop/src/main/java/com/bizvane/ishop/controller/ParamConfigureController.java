@@ -301,6 +301,111 @@ public class ParamConfigureController {
 
         return dataBean.getJsonStr();
 }
+    @RequestMapping(value = "/getParamValues", method = RequestMethod.POST)
+    @ResponseBody
+    public String getParamValues(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json-------getParamValues--------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String param_type = jsonObject.get("param_type").toString();
+            JSONObject params = new JSONObject();
+            JSONArray array = new JSONArray();
+            List<ParamConfigure> list = paramConfigureService.getAllParams();
+            if(param_type.equals("开关")){
+                logger.info("json------开关---------" + jsString);
+                for (int i = 0; i < list.size(); i++) {
+                    ParamConfigure paramConfigure = list.get(i);
+                    String param_values =  jsonObject.get("param_values").toString();
+                    int getParam_id=paramConfigure.getId();
+                    JSONObject obj = new JSONObject();
+                    obj.put("param_values", param_values);
+                    obj.put("param_id", getParam_id);
+                    array.add(obj);
+                }
+                params.put("params", array);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(params.toString());
+            }else if(param_type.equals("选择列表")){
+                logger.info("json------选择列表---------" + jsString);
+                for (int i = 0; i < list.size(); i++) {
+                    ParamConfigure paramConfigure = list.get(i);
+                    String param_values =jsonObject.get("param_values").toString();
+                    int getParam_id=paramConfigure.getId();
+                    JSONObject obj = new JSONObject();
+                    obj.put("param_values", param_values);
+                    obj.put("param_id", getParam_id);
+                    array.add(obj);
+                }
+                params.put("params", array);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(params.toString());
+            }else{
+             ParamConfigure paramConfigure=new ParamConfigure();
+                int getParam_id=paramConfigure.getId();
+                String param_values =paramConfigure.getParam_values();
+                JSONObject obj = new JSONObject();
+                obj.put("param_values", param_values);
+                obj.put("param_id", getParam_id);
+                array.add(obj);
+                params.put("params", array);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId("1");
+                dataBean.setMessage(params.toString());
+
+            }
+
+
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+
+        return dataBean.getJsonStr();
+    }
+    @RequestMapping(value = "/getParamType", method = RequestMethod.POST)
+    @ResponseBody
+    public String getParamType(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            JSONObject params = new JSONObject();
+            JSONArray array = new JSONArray();
+            List<ParamConfigure> list = paramConfigureService.getAllParams();
+            for (int i = 0; i < list.size(); i++) {
+                ParamConfigure paramConfigure = list.get(i);
+                int getParam_id=paramConfigure.getId();
+                JSONObject obj = new JSONObject();
+                String param_type=paramConfigure.getParam_type();
+                obj.put("param_type", param_type);
+                obj.put("param_id", getParam_id);
+                array.add(obj);
+            }
+            params.put("params", array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(params.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+
+        return dataBean.getJsonStr();
+    }
 
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody

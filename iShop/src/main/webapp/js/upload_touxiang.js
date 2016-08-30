@@ -10,11 +10,11 @@ function previewImage(file) {
             var rect = clacImgZoomParam(MAXWIDTH, MAXHEIGHT, img.offsetWidth, img.offsetHeight);
             img.width = rect.width;
             img.height = rect.height;
-        }
+        };
         var reader = new FileReader();
         reader.onload = function(evt) {
             img.src = evt.target.result;
-        }
+        };
         reader.readAsDataURL(file.files[0]);
     } else //兼容IE
     {

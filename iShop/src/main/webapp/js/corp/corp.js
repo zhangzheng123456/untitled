@@ -406,7 +406,7 @@ $("#d_search").click(function(){
     param["pageSize"]=pageSize;
     param["funcCode"]=funcCode;
     POST(inx,pageSize);
-})
+});
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
