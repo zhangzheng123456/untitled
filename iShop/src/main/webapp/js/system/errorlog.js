@@ -507,7 +507,7 @@ $("#leading_out").click(function(){
     var param={};
     param["function_code"]=funcCode;
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/sign/getCols","0",param,function(data){
+    oc.postRequire("post","/l  ist/ getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
@@ -729,3 +729,21 @@ $("#input-txt").keydown(function() {
         };
     }
 })
+
+$(function(){
+    $(window).scroll(function(){
+        if($(window).scrollTop()>100){
+            $("#side_bar .gotop").fadeIn();
+        }
+        else{
+            $("#side-bar .gotop").hide();
+        }
+    });
+    $("#side_bar .gotop").click(function(){
+        $('html,body').animate({'scrollTop':0},500);
+    });
+    $("#side_bar .gobottom").click(function(){
+        var btm=$('html,body').height();
+        $('html,body').animate({'scrollTop':btm},500);
+    })
+});

@@ -1,5 +1,6 @@
 package com.bizvane.ishop.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -392,7 +393,7 @@ public class LoginController {
     }
 
     /**
-     * 获取列表画面可筛选列
+     * 获取列表画面可筛选列(公共方法)
      */
     @RequestMapping(value = "/list/filter_column", method = RequestMethod.GET)
     @ResponseBody
@@ -462,7 +463,7 @@ public class LoginController {
         return dataBean.getJsonStr();
     }
     /**
-     * 导入获取Corp_code
+     * 导入获取Corp_code(公共方法)
      */
     @RequestMapping(value = "/list/input_code", method = RequestMethod.GET)
     @ResponseBody
@@ -487,6 +488,32 @@ public class LoginController {
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
             log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+    /**
+     * 查出可导出的列(公共方法)
+     */
+    @RequestMapping(value = "/list/getCols", method = RequestMethod.POST)
+    @ResponseBody
+    public String selAllByCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String function_code = jsonObject.get("function_code").toString();
+            List<TableManager> tableManagers = tableManagerService.selAllByCode(function_code);
+            com.alibaba.fastjson.JSONObject result = new com.alibaba.fastjson.JSONObject();
+            result.put("tableManagers", JSON.toJSONString(tableManagers));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
         }
         return dataBean.getJsonStr();
     }

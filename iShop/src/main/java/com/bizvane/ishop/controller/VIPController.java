@@ -481,6 +481,9 @@ public class VIPController {
                 }
             }
             for (int i = 3; i < rows; i++) {
+                if(column3[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 for (int j = 0; j < clos; j++) {
                     VipLabel vipLabel = new VipLabel();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();

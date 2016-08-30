@@ -530,6 +530,9 @@ public class UserController {
                 }
             }
             for (int i = 3; i < rows; i++) {
+                if(column7[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 for (int j = 0; j < clos; j++) {
                     User user = new User();

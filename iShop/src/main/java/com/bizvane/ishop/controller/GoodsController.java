@@ -467,6 +467,9 @@ public class GoodsController {
                 }
             }
             for (int i = 3; i < rows; i++) {
+                if(column3[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
