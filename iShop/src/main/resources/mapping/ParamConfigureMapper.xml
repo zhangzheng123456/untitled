@@ -5,6 +5,8 @@
     <resultMap type="com.bizvane.ishop.entity.ParamConfigure" id="ParamConfigure">
         <id column="id" property="id"/>
         <result column="param_name" property="param_name"/>
+        <result column="param_type" property="param_type"/>
+        <result column="param_values" property="param_values"/>
         <result column="param_desc" property="param_desc"/>
         <result column="remark" property="remark"/>
    </resultMap>
@@ -21,6 +23,8 @@
         <if test="search_value != null and search_value !=''">
             WHERE
             (param_name like concat('%',#{search_value},'%')
+            OR param_type like concat('%',#{search_value},'%')
+            OR param_values like concat('%',#{search_value},'%')
             OR param_desc like concat('%',#{search_value},'%')
             OR DEF_CORP_CFG.remark like concat('%',#{search_value},'%')
            )
@@ -47,6 +51,12 @@
             <if test="param_name!=null">
                 param_name,
             </if>
+            <if test="param_type!=null">
+                param_type,
+            </if>
+            <if test="param_values!=null">
+                param_values,
+            </if>
             <if test="param_desc!=null">
                 param_desc,
             </if>
@@ -58,6 +68,12 @@
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="param_name!=null">
                 #{param_name},
+            </if>
+            <if test="param_type!=null">
+                #{param_type},
+            </if>
+            <if test="param_values!=null">
+                #{param_values},
             </if>
             <if test="param_desc!=null">
                 #{param_desc},
@@ -73,6 +89,12 @@
         <trim prefix="SET" suffixOverrides=",">
             <if test="param_name!=null">
                 param_name=#{param_name},
+            </if>
+            <if test="param_type!=null">
+                param_type=#{param_type},
+            </if>
+            <if test="param_values!=null">
+                param_values=#{param_values},
             </if>
             <if test="param_desc!=null ">
                 param_desc=#{param_desc},
@@ -99,6 +121,8 @@
     <select id="selectParamScreen" resultMap="ParamConfigure">
         SELECT
         dcc.param_name,
+        dcc.param_type,
+        dcc.param_values,
         dcc.param_desc,
         dcc.remark
         FROM DEF_CORP_CFG dcc

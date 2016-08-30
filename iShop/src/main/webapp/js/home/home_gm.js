@@ -4,19 +4,42 @@ $(function(){
 	$(".laydate-icon").val(Time);
     areaRanking(Time);
 	storeRanking(Time);
-	//achieveChart(Time);
+	achieveChart(Time);
 	achAnalysis(Time);
 });
-//点击显示日周年月
-$(".title").click(function() {
+////点击显示日周年月
+//$(".title").click(function() {
+//	ul = $(this).nextAll("ul");
+//	$(this).parent(".choose").toggleClass("cur");
+//	if (ul.css("display") == "none") {
+//		ul.show();
+//	} else {
+//		ul.hide();
+//	};
+//});
+var ul=null;
+// 点击显示日周年月
+$(".title").mouseover(function() {
+	ul = $(this).nextAll("ul");
+		ul.show();
+	$(this).parent(".choose").toggleClass("cur");
+	console.log(ul.css("display"))
+});
+$(".title").mouseout(function() {
 	ul = $(this).nextAll("ul");
 	$(this).parent(".choose").toggleClass("cur");
-	if (ul.css("display") == "none") {
-		ul.show();
-	} else {
-		ul.hide();
-	};
+	ul.hide();
+	console.log(ul.css("display"))
 });
+$(".select_Date").mouseover(function(){
+	$(this).parent(".choose").toggleClass("cur");
+	$(this).show()
+});
+$(".select_Date").mouseout(function(){
+	$(this).parent(".choose").toggleClass("cur");
+	$(this).hide()
+});
+
 function getNowFormatDate() {//获取当前日期
 	var date = new Date();
 	var seperator1 = "-";
@@ -84,7 +107,7 @@ function storeRanking(a){//店铺排行
 			$(this).parent("ul").prev(".title").html(value);
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
-			if (value == "按日查看" && id == "") {
+			if (value == "按日查看" && id == "store") {
 				superadditionStore(achv_detail_d);
 			} else if (value == "按周查看" && id == "store") {
 				superadditionStore(achv_detail_w);
@@ -138,7 +161,7 @@ function areaRanking(a){//区域排行
 	oc.postRequire("post","/home/areaRanking","", param, function(data){
 		var message = JSON.parse(data.message);
 		var total = message.total; //店铺总数
-		console.log(message);
+		//console.log(message);
 		var achv_detail_d = message.achv_detail_d; //日查看店铺排行
 		var achv_detail_m = message.achv_detail_m;//月查看店铺排行
 		var achv_detail_w = message.achv_detail_w;//周查看店铺排行
