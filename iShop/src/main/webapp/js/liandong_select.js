@@ -412,13 +412,20 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fillStyle="rgba(255,255,255,0.5)";
 	c.textAlign = "center";
 	for(var i=0; i< dataLen; i++){
-		if(dataLen>7){
+		if(7<dataLen<12){
 			mul_num=$('.customer_add_cart').width()/(dataLen+1);
+			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+		}else if(12<dataLen){
+			mul_num=$('.customer_add_cart').width()/dataLen;
+			if(i%2==0){
+				c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+			}
 		}else {
 			mul_num=$('.customer_add_cart').width()/dataLen;
+			c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
 		}
 
-		c.fillText(dateArr[i], inint_num+mul_num*i,init_height*0.64);
+
 	}
 	//绘制曲线图
 	c.beginPath();
