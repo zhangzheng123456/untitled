@@ -316,7 +316,7 @@ public class ParamConfigureController {
             JSONObject params = new JSONObject();
             JSONArray array = new JSONArray();
             List<ParamConfigure> list = paramConfigureService.getAllParams();
-            if(param_type.equals("开关")){
+            if(param_type.equals("switch")){
                 logger.info("json------开关---------" + jsString);
                 for (int i = 0; i < list.size(); i++) {
                     ParamConfigure paramConfigure = list.get(i);
@@ -331,7 +331,7 @@ public class ParamConfigureController {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId("1");
                 dataBean.setMessage(params.toString());
-            }else if(param_type.equals("选择列表")){
+            }else if(param_type.equals("list")){
                 logger.info("json------选择列表---------" + jsString);
                 for (int i = 0; i < list.size(); i++) {
                     ParamConfigure paramConfigure = list.get(i);
