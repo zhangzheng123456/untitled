@@ -1100,6 +1100,9 @@ public class StoreController {
                 }
             }
             for (int i = 3; i < rows; i++) {
+                if(column3[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 for (int j = 0; j < clos; j++) {
                     Store store = new Store();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();

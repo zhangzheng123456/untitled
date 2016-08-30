@@ -578,6 +578,9 @@ public class CorpController {
                 }
             }
             for (int i = 3; i < rows; i++) {
+                if(column[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 for (int j = 0; j < clos; j++) {
                     Corp corp = new Corp();
                     corp.setCorp_code(rs.getCell(j++, i).getContents().toString().trim());
