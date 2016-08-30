@@ -252,6 +252,13 @@ function param_data(c, b) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
             console.log(msg);
+            var param_values= msg.param_values;
+            var list=param_values.split(",")
+            if(param_values.length>0){
+                for(var j = 0; j < param_values.length; j++){
+                    $("#PARAM_VALUE").append('<ul><li></li></ul>')
+                }
+            }
             var msg_paramName = msg.params;
             $('#PARAM_NAME').empty();
             $('#param_select .searchable-select').remove();
