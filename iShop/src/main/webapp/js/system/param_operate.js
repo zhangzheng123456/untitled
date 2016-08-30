@@ -67,7 +67,7 @@ var oc = new ObjectControl();
                 }else if(PARAM_TYPE=="自定义"){
                     PARAM_TYPE="custom"
                 }
-                var PARAM_VALUE= $("#PARAM_value").val();
+                var PARAM_VALUE= $("#PARAM_VALUE").val();
                 if(PARAM_TYPE!=="custom" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
