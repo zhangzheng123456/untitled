@@ -247,7 +247,7 @@ function getcorplist(a, b) {
 function param_data(c, b) {
     var _params = {};
     _params["corp_code"] = c;//企业编号
-    var _command = "/param/getParamByUser";//调取参数
+    var _command = "/param/getParamInfo";//调取参数
     oc.postRequire("post", _command, "", _params, function (data) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);

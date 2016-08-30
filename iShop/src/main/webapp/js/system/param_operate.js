@@ -41,13 +41,32 @@ var oc = new ObjectControl();
             if (paramjs.firstStep()) {
                 var PARAM_DESC = $("#PARAM_DESC").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
+                var PARAM_TYPE = $("#PARAM_TYPE").val();
+                if(PARAM_TYPE=="开关"){
+                    PARAM_TYPE="switch"
+                }else if(PARAM_TYPE=="选择列表"){
+                    PARAM_TYPE="list"
+                }else if(PARAM_TYPE=="自定义"){
+                    PARAM_TYPE="custom"
+                }
+                var PARAM_VALUE= $("#PARAM_VALUE").val();
+                if(PARAM_TYPE!=="custom" && PARAM_VALUE==""){
+                    alert("参数值不能为空！");
+                    return;
+                }
                 var REMARK = $("#REMARK").val();
                 var _command = "/param/add";//接口名
                 var opt = {//返回成功后的操作
                     success: function () {
                     }
                 };
-                var _params = {"param_name": PARAM_NAME, "param_desc": PARAM_DESC, "remark": REMARK};
+                var _params = {
+                    "param_name": PARAM_NAME,
+                    "param_desc": PARAM_DESC,
+                    "param_type": PARAM_TYPE,
+                    "param_values":PARAM_VALUE,
+                    "remark": REMARK
+                };
                 whir.loading.add("", 0.5);
                 paramjs.ajaxSubmit(_command, _params, opt);
             } else {
@@ -162,6 +181,16 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 $("#PARAM_NAME").val(msg.param_name);
                 $("#PARAM_DESC").val(msg.param_desc);
+                var param_type=msg.param_type
+                if(param_type=="switch"){
+                    param_type="开关";
+                }else if(param_type=="list"){
+                    param_type="选择列表";
+                }else if(param_type=="custom"){
+                    param_type="自定义";
+                }
+                $("#PARAM_TYPE").val(param_type);
+                $("#PARAM_VALUE").val(msg.param_values);
                 $("#REMARK").val(msg.remark);
             } else if (data.code == "-1") {
                 art.dialog({
