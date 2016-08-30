@@ -52,14 +52,14 @@ public class GroupServiceImpl implements GroupService {
 
     @Override
     public Group selectByName(String corp_code, String group_name, String isactive) throws Exception {
-        return groupMapper.selectByName(corp_code, group_name,isactive);
+        return groupMapper.selectByName(corp_code, group_name, isactive);
     }
 
     public PageInfo<Group> getGroupAll(int page_number, int page_size, String corp_code, String role_code, String search_value) throws SQLException {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
         groups = groupMapper.selectAllGroup(corp_code, role_code, search_value);
-        for (Group group:groups) {
+        for (Group group : groups) {
             group.setIsactive(CheckUtils.CheckIsactive(group.getIsactive()));
         }
         PageInfo<Group> page = new PageInfo<Group>(groups);
@@ -80,14 +80,14 @@ public class GroupServiceImpl implements GroupService {
         List<Group> groups;
         PageHelper.startPage(page_number, page_size);
         groups = groupMapper.selectAllGroupScreen(params);
-        for (Group group:groups) {
+        for (Group group : groups) {
             group.setIsactive(CheckUtils.CheckIsactive(group.getIsactive()));
         }
         PageInfo<Group> page = new PageInfo<Group>(groups);
         return page;
     }
 
-    public String selectMaxCode()  throws Exception{
+    public String selectMaxCode() throws Exception {
         return groupMapper.selectMaxCode();
     }
 
@@ -137,8 +137,8 @@ public class GroupServiceImpl implements GroupService {
         return result;
     }
 
-    public int deleteGroup(int id,String group_code,String corp_code) throws Exception {
-        privilegeMapper.delete(corp_code+group_code);
+    public int deleteGroup(int id, String group_code, String corp_code) throws Exception {
+        privilegeMapper.delete(corp_code + "G" + group_code);
         return groupMapper.deleteByGroupId(id);
     }
 
@@ -147,7 +147,7 @@ public class GroupServiceImpl implements GroupService {
      * 级联更改关联此编号的员工，权限列表
      */
     @Transactional
-    void updateCauseCodeChange(String corp_code, String new_group_code, String old_group_code) throws Exception{
+    void updateCauseCodeChange(String corp_code, String new_group_code, String old_group_code) throws Exception {
         //若修改群组编号，对应修改员工信息中关联的群组编号
         codeUpdateMapper.updateUser("", corp_code, new_group_code, old_group_code, "", "", "", "");
 
@@ -156,7 +156,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public String selRoleByGroupCode(String corp_code, String group_code) throws Exception{
+    public String selRoleByGroupCode(String corp_code, String group_code) throws Exception {
         Group group = groupMapper.selectByCode(corp_code, group_code, "");
         return group.getRole_code();
     }
