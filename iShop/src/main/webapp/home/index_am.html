@@ -284,9 +284,8 @@
                             <div class="check_chart">
                                 <div class="select_2 reg_testdate">
                                     <span class="choose item" style="width:70px">
-                                        <div class="title" style="width:70px">按日查看</div>
-                                        <ul class="select_Date">
-                                            <li>按日查看</li>
+                                        <div class="title" id="chart_prev" style="width:70px">按周查看</div>
+                                        <ul class="select_Date" id="chart">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
@@ -296,7 +295,7 @@
                                         <input type="text" class="laydate-icon icon-text">
                                     </span>
                                 </div>
-                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px">21114.00</label>元</span>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px" id="yeJiToTal"></label>元</span>
                             </div>
                             <div class="charts_holder">
                                 <canvas id="canvas_circle" width="800"height="550">
@@ -446,15 +445,6 @@
     <!-- piechart -->
     <script type="text/javascript" src="../js/easypiechart.js"></script>
     <script type="text/javascript" src="/js/home/home_am.js"></script>
-    <!-- 业绩看板 -->
-    <script type="text/javascript">
-        var perArr = [0,34,31,37,35,39,40];//顶点
-        var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
-        window.onresize=function(){
-            init(perArr,dateArr);
-        }
-        window.onload = init(perArr,dateArr);
-    </script>
     <script>
         $(document).ready(function () {
             //调用天气预报数据

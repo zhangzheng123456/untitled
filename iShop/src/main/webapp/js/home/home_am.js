@@ -256,6 +256,76 @@ var store = {
 		storeRanking(datas,area_code);
 	}
 };
+//获取折线图
+function achieveChart(data){
+	var param={
+		time:data.replace(/-/g,"")
+	};
+	oc.postRequire("post","/home/achInfo","", param, function(data){
+		var infodata_W=JSON.parse(data.message).W;
+		var infodata_M=JSON.parse(data.message).M;
+		var infodata_Y=JSON.parse(data.message).Y;
+		var TimeData=JSON.parse(infodata_W).amount;
+		var value=$("#chart_prev").html();
+		var perArr=[];
+		var dateArr=[];
+		if (value == "按周查看") {
+			TimeData=JSON.parse(infodata_W).amount;
+			$("#yeJiToTal").html(JSON.parse(infodata_W).total);
+		} else if (value == "按月查看") {
+			TimeData=JSON.parse(infodata_M).amount;
+			$("#yeJiToTal").html(JSON.parse(infodata_M).total);
+		} else if (value == "按年查看") {
+			TimeData=JSON.parse(infodata_Y).amount;
+			$("#yeJiToTal").html(JSON.parse(infodata_Y).total);
+		}
+		for(index in TimeData){
+			perArr.push(TimeData[index].trade);
+			if(value == "按年查看"){
+				dateArr.push(TimeData[index].date.substring(5));
+			}else {
+				dateArr.push(TimeData[index].date);
+			}
+		}
+		init(perArr,dateArr);
+		function setData(V){
+			for(index in TimeData){
+				perArr.push(TimeData[index].trade);
+				if(V == "按年查看"){
+					dateArr.push(TimeData[index].date.substring(5));
+				}else {
+					dateArr.push(TimeData[index].date);
+				}
+			}
+		}
+		$(".reg_testdate li").click(function() {
+			perArr=[];
+			dateArr=[];
+			var value = $(this).html();
+			var id = $(this).parent("ul").attr("id");
+			$(this).parent("ul").prev(".title").html(value);
+			$(this).parent("ul").hide();
+			$(this).parent("ul").parent(".choose").removeClass("cur");
+			 if (value == "按周查看" && id == "chart") {
+				 TimeData=JSON.parse(infodata_W).amount;
+				 $("#yeJiToTal").html(JSON.parse(infodata_W).total);
+				 setData(value);
+				 init(perArr,dateArr);
+			} else if (value == "按月查看" && id == "chart") {
+				 TimeData=JSON.parse(infodata_M).amount;
+				 $("#yeJiToTal").html(JSON.parse(infodata_M).total);
+				 setData(value);
+				 init(perArr,dateArr);
+			} else if (value == "按年查看" && id == "chart") {
+				 TimeData=JSON.parse(infodata_Y).amount;
+				 $("#yeJiToTal").html(JSON.parse(infodata_Y).total);
+				 setData(value);
+				 init(perArr,dateArr);
+			}
+
+		});
+	})
+}
 //员工排行日历
 var staff = {
 	elem: '#staffRanking',
@@ -298,4 +368,5 @@ laydate(achv);//业绩
 storeRanking(today);
 staffRanking(today);
 achAnalysis(today);
+achieveChart(today);
 getAreaList()//区经  获取区域列表

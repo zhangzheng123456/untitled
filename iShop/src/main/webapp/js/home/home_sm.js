@@ -59,12 +59,12 @@ function getShopList(){
 			var message=JSON.parse(data.message);
 			var list=JSON.parse(message.list);
         	console.log(list);
-        	$(".area_name").html(list[0].area_name);
-        	$(".area_name").attr("title",list[0].area_name);
-        	$(".area_name").attr("data-code",list[0].area_code);
+        	$(".area_name").html(list[0].store_name);
+        	$(".area_name").attr("title",list[0].store_code);
+        	$(".area_name").attr("data-code",list[0].store_name);
         	var html="";
         	for(var i=0;i<list.length;i++){
-        		html+="<li data-code='"+list[i].area_code+"'>"+list[i].area_name+"</li>"
+        		html+="<li data-code='"+list[i].store_code+"'>"+list[i].store_name+"</li>"
         	}
         	$(".c_a_shoppe ul").html(html);
         	$(".c_a_shoppe ul li").click(function(){

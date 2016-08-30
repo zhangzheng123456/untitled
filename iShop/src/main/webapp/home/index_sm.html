@@ -287,32 +287,15 @@
                                  <div class="select_2 reg_testdate">
                                     <span class="choose item" style="width:70px">
                                         <div class="title" style="width:70px">按周查看</div>
-                                        <ul>
+                                        <ul id="chart" class="select_Date">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
                                         </ul>
                                     </span>
-                                    <span class="Year item" style="width:65px">
-                                        <div class="title" style="width:65px"></div>
-                                        <ul onclick="YYYYDD(this)">
-                                        </ul>
+                                    <span>
+                                        <input type="text" id="achInfo" class="laydate-icon icon-text">
                                     </span>
-                                    <span class="Month item" style="width:50px;display:none">
-                                        <div class="title" style="width:50px"></div>
-                                        <ul onclick="MMDD(this)">
-                                        </ul>
-                                    </span>
-                                    <span class="Week item" style="width:140px;" >
-                                        <div class="title" style="width:140px"></div>
-                                        <ul>
-                                        </ul>
-                                    </span>
-                                    <span class="Week item" style="width:140px;display: none" >
-                                            <div class="title" style="width:140px"></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
                                 </div>
                                 <span style="margin-right:10px;">业绩总额<label style="font-size:20px">21114.00</label>元</span>
                             </div>
@@ -349,11 +332,11 @@
                                 <div class="check_chart">
                                     <div class="select_3 reg_testdate" id="staff_list">
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按周查看</div>
+                                            <div class="title" style="width:70px">按日查看</div>
                                             <ul id="staff" class="select_Date">
+                                                <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
-                                                <li>按年查看</li>
                                             </ul>
                                         </span>
                                         <span>
@@ -397,8 +380,8 @@
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>商品种类<label>8925</label></span>
-                                    <span class="average_per">库存总量<label>30963</label></span>
+                                    <span>商品种类<label></label></span>
+                                    <span class="average_per">库存总量<label></label></span>
                                 </div>
                                 <div class="check_chart">
                                     <div class="select_4 reg_testdate"  onclick="CDT(this);">
@@ -410,33 +393,13 @@
                                                 <li>按年查看</li>
                                             </ul>
                                         </span>
-                                        <span class="Year item" style="width:65px">
-                                            <div class="title" style="width:65px"></div>
-                                            <ul onclick="YYYYDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Month item" style="width:50px;display:none;">
-                                            <div class="title" style="width:50px"></div>
-                                            <ul onclick="MMDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Week item" style="width:140px;" >
-                                            <div class="title" style="width:140px"></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
-                                        <span class="Day item" style="width:90px;display:none;">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
-                                        </span>
                                     </div>
                                 </div>
                             </div>
                             <div class="list_titles_daogou_paihang">
                                 <div class="list_titles_daogou_paihang">
                                 <table style="width: 100%">
-                                    <tr>
+                                    <!-- <tr>
                                        <th>排名</th>
                                        <th>店铺</th>
                                        <th>单价</th>
@@ -471,7 +434,7 @@
                                         <td style="width:50%">双排扣羊毛韩版修身呢大衣</td>
                                         <td style="width:20%"><em>￥</em>1693</td>
                                         <td style="width:20%">90</td>
-                                    </tr>
+                                    </tr> -->
                                 </table>
                             </div>
                             </div>
@@ -517,14 +480,6 @@
     <script type="text/javascript" src="../js/easypiechart.js"></script>
     <script type="text/javascript" src="/js/home/home_sm.js"></script>
      <!-- 业绩看板 -->
-    <script type="text/javascript">
-        var perArr = [0,34,31,37,35,39,40];//顶点
-        var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
-        window.onresize=function(){
-            init(perArr,dateArr);
-        }
-        window.onload = init(perArr,dateArr);
-    </script>
     <script>
         $(document).ready(function () {
             //调用天气预报数据
