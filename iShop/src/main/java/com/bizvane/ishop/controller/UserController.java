@@ -547,7 +547,7 @@ public class UserController {
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String position = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("")  || user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("")  || group_code.equals("")){
+                    if(user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("")  || group_code.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

@@ -1138,7 +1138,7 @@ public class StoreController {
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                     String flg_tob = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("")  || store_code.equals("") || store_id.equals("") || store_name.equals("") || area_code.equals("")  || brand_code.equals("") ){
+                    if(store_code.equals("") || store_id.equals("") || store_name.equals("") || area_code.equals("")  || brand_code.equals("") ){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

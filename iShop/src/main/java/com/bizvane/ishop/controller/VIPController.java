@@ -487,7 +487,7 @@ public class VIPController {
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String label_name = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("")  || label_name.equals("")){
+                    if(label_name.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

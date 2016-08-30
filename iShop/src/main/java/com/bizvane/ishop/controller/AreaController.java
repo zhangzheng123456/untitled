@@ -705,7 +705,7 @@ public class AreaController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("")  || area_code.equals("") || area_name.equals("")){
+                    if(area_code.equals("") || area_name.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
