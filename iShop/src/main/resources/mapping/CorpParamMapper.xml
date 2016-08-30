@@ -5,9 +5,11 @@
     <select id="selectById" resultType="com.bizvane.ishop.entity.CorpParam">
         SELECT
         rcc.*,
-        dc.corp_name
-        FROM rel_corp_cfg rcc,def_corp dc
+        dc.corp_name,
+        dcc.param_type
+        FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
         WHERE rcc.corp_code = dc.corp_code
+        AND rcc.param_id=dcc.id
         AND  rcc.id=#{id}
     </select>
 
