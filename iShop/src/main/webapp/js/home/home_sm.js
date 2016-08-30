@@ -54,7 +54,7 @@ $(".c_a_shoppe").click(function(){
 })
 //区域获取区域
 function getAreaList(){
-	oc.postRequire("get", "/area/findArea", "", "", function(data) {
+	oc.postRequire("get", "/shop/findStore", "", "", function(data) {
 		if(data.code=="0"){
 			var message=JSON.parse(data.message);
 			var list=JSON.parse(message.list);
@@ -72,67 +72,9 @@ function getAreaList(){
         		$(".area_name").attr("data-code",area_code);
         		$(".area_name").html($(this).html());
         		console.log($(this).html());
-        		storeRanking(today,area_code);
 				staffRanking(today,area_code);
 				achAnalysis(today,area_code);
         	})
-		}
-	})
-}
-//店铺加载
-function superadditionStore(c) {
-	var store_list = "";
-	for (var i = 0; i < c.length; i++) {
-		var a = i + 1;
-		store_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].store_name //店铺名称
-			+ "</td><td>" + c[i].achv_amount //店铺业绩
-			+ "</td><td>" + c[i].discount //折扣
-			+ "</td></tr>"
-	}
-	$("#store_list tbody").html(store_list);
-}
-//店铺排行
-function storeRanking(a,b) {
-	var a = a.replace(/[-]/g, "");
-	var val=$("#store_type").html();
-	var param = {};
-	param["time"] = a;
-	param["store_name"] = "";
-	if(b!==""&&b!==undefined){
-		param["area_code"]=b;
-	}
-	oc.postRequire("post", "/home/storeRanking", "", param, function(data) {
-		var message = JSON.parse(data.message);
-		var total = message.total; //店铺总数
-		var achv_detail_d = message.achv_detail_d //日查看店铺排行
-		var achv_detail_m = message.achv_detail_m //月查看店铺排行
-		var achv_detail_w = message.achv_detail_w //周查看店铺排行
-		var achv_detail_y = message.achv_detail_y //年查看店铺排行
-		$("#store_total").html(total);
-		$(".reg_testdate li").click(function() {
-			var value = $(this).html();
-			var id = $(this).parent("ul").attr("id");
-			$(this).parent("ul").prev(".title").html(value);
-			$(this).parent("ul").hide();
-			$(this).parent("ul").parent(".choose").removeClass("cur");
-			if (value == "按日查看" && id == "store") {
-				superadditionStore(achv_detail_d);
-			} else if (value == "按周查看" && id == "store") {
-				superadditionStore(achv_detail_w);
-			} else if (value == "按月查看" && id == "store") {
-				superadditionStore(achv_detail_m);
-			} else if (value == "按年查看" && id == "store") {
-				superadditionStore(achv_detail_y);
-			}
-		})
-		if (val == "按日查看") {
-			superadditionStore(achv_detail_d);
-		} else if (val == "按周查看") {
-			superadditionStore(achv_detail_w);
-		} else if (val == "按月查看") {
-			superadditionStore(achv_detail_m);
-		} else if (val == "按年查看") {
-			superadditionStore(achv_detail_y);
 		}
 	})
 }
@@ -141,10 +83,45 @@ function superadditionStaff(c) {
 	var staff_list = "";
 	for (var i = 0; i < c.length; i++) {
 		var a = i + 1;
+		var b="";
+		if(c[i].devote_rate==0){
+			b=0;
+		}
+		if(c[i].devote_rate<=20){
+			b=10;
+		}
+		if(c[i].devote_rate<=30&&c[i].devote_rate>20){
+			b=20;
+		}
+		if(c[i].devote_rate<=40&&c[i].devote_rate>30){
+			b=30;
+		}
+		if(c[i].devote_rate<=50&&c[i].devote_rate>40){
+			b=40;
+		}
+		if(c[i].devote_rate<=60&&c[i].devote_rate>50){
+			b=50;
+		}
+		if(c[i].devote_rate<=70&&c[i].devote_rate>60){
+			b=60;
+		}
+		if(c[i].devote_rate<=80&&c[i].devote_rate>70){
+			b=70;
+		}
+		if(c[i].devote_rate<=90&&c[i].devote_rate>80){
+			b=80;
+		}
+		if(c[i].devote_rate<100&&c[i].devote_rate>90){
+			b=90;
+		}
+		if(c[i].devote_rate=="100"){
+			b=100;
+		}
 		staff_list += "<tr><td style='windth:13%'>" + a + "</td><td>" + c[i].user_name//导购名称
 			+ "</td><td>" + c[i].amount //业绩
-			+ "</td><td>" + c[i].store_name //所属店铺
-			+ "</td></tr>"
+			+ "</td><td><img src='../img/contribution_"+b+".png' style='width:4px;height: 20px'>"
+			+ c[i].devote_rate //贡献度
+			+ "%</td></tr>"
 	}
 	$("#staff_list tbody").html(staff_list);
 }
@@ -156,7 +133,7 @@ function staffRanking(a,b) {
 	param["time"] = a;
 	param["store_name"] = "";
 	if(b!==""&&b!==undefined){
-		param["area_code"]=b;
+		param["store_code"]=b;
 	}
 	oc.postRequire("post", "/home/staffRanking", "", param, function(data) {
 		var message = JSON.parse(data.message);
@@ -209,7 +186,7 @@ function achAnalysis(a,b){
 	var param={};
 	param["time"]=a;
 	if(b!==""&&b!==undefined){
-		param["area_code"]=b;
+		param["store_code"]=b;
 	}
 	oc.postRequire("post", "/home/achAnalysis", "", param, function(data) {
 		var message = JSON.parse(data.message);
