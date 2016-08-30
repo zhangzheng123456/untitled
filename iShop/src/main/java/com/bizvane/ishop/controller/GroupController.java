@@ -859,15 +859,23 @@ public class GroupController {
                 for (int j = 0; j < clos; j++) {
                     Group group = new Group();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String role_codeExecl = rs.getCell(j++, i).getContents().toString().trim();
+                    String group_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String group_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+                    if(cellCorp.equals("")  || role_codeExecl.equals("") || role_codeExecl.equals("") || group_code.equals("") || group_name.equals("") ){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if(!role_code.equals(Common.ROLE_SYS)){
                         group.setCorp_code(corp_code);
                     }else{
                         group.setCorp_code(cellCorp);
                     }
-                    group.setRole_code(rs.getCell(j++, i).getContents().toString().trim());
-                    group.setGroup_code(rs.getCell(j++, i).getContents().toString().trim());
-                    group.setGroup_name(rs.getCell(j++, i).getContents().toString().trim());
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    group.setRole_code(role_codeExecl);
+                    group.setGroup_code(group_code);
+                    group.setGroup_name(group_name);
+                    if (isactive.toUpperCase().equals("N")) {
                         group.setIsactive("N");
                     } else {
                         group.setIsactive("Y");

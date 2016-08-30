@@ -570,23 +570,30 @@ public class StoreAchvGoalController {
 
                     StoreAchvGoal storeAchvGoal = new StoreAchvGoal();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String store_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String target_amount = rs.getCell(j++, i).getContents().toString().trim();
+                    String target_type = rs.getCell(j++, i).getContents().toString().trim();
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+                    if(cellCorp.equals("")  || store_code.equals("") || target_amount.equals("") || target_type.equals("") || cellTypeForDate.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if(!role_code.equals(Common.ROLE_SYS)){
                         storeAchvGoal.setCorp_code(corp_code);
                     }else{
                         storeAchvGoal.setCorp_code(cellCorp);
                     }
-                    storeAchvGoal.setStore_code(rs.getCell(j++, i).getContents().toString().trim());
-                    storeAchvGoal.setTarget_amount(rs.getCell(j++, i).getContents().toString().trim());
-                    String target_type = rs.getCell(j++, i).getContents().toString().trim();
+                    storeAchvGoal.setStore_code(store_code);
+                    storeAchvGoal.setTarget_amount(target_amount);
                     storeAchvGoal.setTime_type(target_type);
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
                     if (target_type.equals(Common.TIME_TYPE_WEEK)) {
                         String week = TimeUtils.getWeek(cellTypeForDate);
                         storeAchvGoal.setTarget_time(week);
                     } else {
                         storeAchvGoal.setTarget_time(cellTypeForDate);
                     }
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    if (isactive.toUpperCase().equals("N")) {
                         storeAchvGoal.setIsactive("N");
                     } else {
                         storeAchvGoal.setIsactive("Y");

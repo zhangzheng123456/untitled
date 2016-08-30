@@ -592,24 +592,32 @@ public class UserAchvGoalControl {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String store_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String user_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String user_target = rs.getCell(j++, i).getContents().toString().trim();
+                    String target_type = rs.getCell(j++, i).getContents().toString().trim();
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+                    if(cellCorp.equals("")  || store_code.equals("") || user_code.equals("") || user_target.equals("") || target_type.equals("")  || cellTypeForDate.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if(!role_code.equals(Common.ROLE_SYS)){
                         userAchvGoal.setCorp_code(corp_code);
                     }else{
                         userAchvGoal.setCorp_code(cellCorp);
                     }
-                    userAchvGoal.setStore_code(rs.getCell(j++, i).getContents().toString().trim());
-                    userAchvGoal.setUser_code(rs.getCell(j++, i).getContents().toString().trim());
-                    userAchvGoal.setUser_target(rs.getCell(j++, i).getContents().toString().trim());
-                    String target_type = rs.getCell(j++, i).getContents().toString().trim();
+                    userAchvGoal.setStore_code(store_code);
+                    userAchvGoal.setUser_code(user_code);
+                    userAchvGoal.setUser_target(user_target);
                     userAchvGoal.setTarget_type(target_type);
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
                     if (target_type.equals(Common.TIME_TYPE_WEEK)) {
                         String week = TimeUtils.getWeek(cellTypeForDate);
                         userAchvGoal.setTarget_time(week);
                     } else {
                         userAchvGoal.setTarget_time(cellTypeForDate);
                     }
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    if (isactive.toUpperCase().equals("N")) {
                         userAchvGoal.setIsactive("N");
                     } else {
                         userAchvGoal.setIsactive("Y");

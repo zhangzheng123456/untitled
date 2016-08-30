@@ -698,14 +698,25 @@ public class AreaController {
                 for (int j = 0; j < clos; j++) {
                     Area area = new Area();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String area_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String area_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+//                    if(cellCorp.equals("")  && area_code.equals("") && area_name.equals("") && isactive.equals("")){
+//                        result = "：第"+(i+1)+"行存在空白行,请删除";
+//                        int a=5/0;
+//                    }
+                    if(cellCorp.equals("")  || area_code.equals("") || area_name.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if(!role_code.equals(Common.ROLE_SYS)){
                         area.setCorp_code(corp_code);
                     }else{
                         area.setCorp_code(cellCorp);
                     }
-                    area.setArea_code(rs.getCell(j++, i).getContents().toString().trim());
-                    area.setArea_name(rs.getCell(j++, i).getContents().toString().trim());
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    area.setArea_code(area_code);
+                    area.setArea_name(area_name);
+                    if (isactive.toUpperCase().equals("N")) {
                         area.setIsactive("N");
                     } else {
                         area.setIsactive("Y");

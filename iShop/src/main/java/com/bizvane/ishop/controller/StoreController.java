@@ -124,6 +124,31 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
+
+
+    /**
+     * 店铺列表(店长面板)
+     */
+    @RequestMapping(value = "/findStore", method = RequestMethod.GET)
+    @ResponseBody
+    public String selectArea(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject result = new JSONObject();
+            String store_code = request.getSession(false).getAttribute("store_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            List<Store>   list = storeService.selectStore(corp_code, store_code);
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
     /**
      * 店铺管理
      */
@@ -1060,13 +1085,13 @@ public class StoreController {
                 String brands = column5[i].getContents().toString().trim();
                 String[] splitBrands = brands.split(",");
                 for (int j = 0; j < splitBrands.length; j++) {
-                    Matcher matcher = pattern.matcher(splitBrands[j]);
+                    Matcher matcher = pattern.matcher(splitBrands[j].trim());
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column5[i].getContents().toString().trim());
+                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitBrands[j].trim());
                     if (brand == null) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号不存在";
                         int b = 5 / 0;
@@ -1106,22 +1131,33 @@ public class StoreController {
                 for (int j = 0; j < clos; j++) {
                     Store store = new Store();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String store_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String store_id = rs.getCell(j++, i).getContents().toString().trim();
+                    String store_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String area_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String brand_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String flg_tob = rs.getCell(j++, i).getContents().toString().trim();
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+                    if(cellCorp.equals("")  || store_code.equals("") || store_id.equals("") || store_name.equals("") || area_code.equals("")  || brand_code.equals("") ){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if (!role_code.equals(Common.ROLE_SYS)) {
                         store.setCorp_code(corp_code);
                     } else {
                         store.setCorp_code(cellCorp);
                     }
-                    store.setStore_code(rs.getCell(j++, i).getContents().toString().trim());
-                    store.setStore_id(rs.getCell(j++, i).getContents().toString().trim());
-                    store.setStore_name(rs.getCell(j++, i).getContents().toString().trim());
-                    store.setArea_code(rs.getCell(j++, i).getContents().toString().trim());
-                    store.setBrand_code(rs.getCell(j++, i).getContents().toString().trim());
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    store.setStore_code(store_code);
+                    store.setStore_id(store_id);
+                    store.setStore_name(store_name);
+                    store.setArea_code(area_code);
+                    store.setBrand_code(brand_code);
+                    if (flg_tob.toUpperCase().equals("N")) {
                         store.setFlg_tob("N");
                     } else {
                         store.setFlg_tob("Y");
                     }
-                    if (rs.getCell(j++, i).getContents().toString().toUpperCase().equals("N")) {
+                    if (isactive.toUpperCase().equals("N")) {
                         store.setIsactive("N");
                     } else {
                         store.setIsactive("Y");

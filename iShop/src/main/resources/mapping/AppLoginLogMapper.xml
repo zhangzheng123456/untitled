@@ -7,8 +7,7 @@
       acc_app_login_log.USER_NAME,
       def_corp.CORP_NAME,
       acc_app_login_log.TIME,
-      acc_app_login_log.created_date,
-      acc_app_login_log.ISACTIVE
+      acc_app_login_log.created_date
       FROM acc_app_login_log,def_corp
       WHERE  acc_app_login_log.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -22,7 +21,6 @@
             OR acc_app_login_log.created_date LIKE concat('%', #{search_value},'%')
             OR def_corp.CORP_NAME LIKE concat('%', #{search_value},'%')
             OR acc_app_login_log.TIME LIKE concat('%', #{search_value},'%')
-            OR   acc_app_login_log.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY acc_app_login_log.ID DESC
@@ -34,8 +32,7 @@
         acc_app_login_log.USER_NAME,
         def_corp.CORP_NAME,
         acc_app_login_log.TIME,
-        acc_app_login_log.created_date,
-        acc_app_login_log.ISACTIVE
+        acc_app_login_log.created_date
         FROM acc_app_login_log,def_corp
         WHERE  acc_app_login_log.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
