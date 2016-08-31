@@ -41,9 +41,9 @@ var oc = new ObjectControl();
             if (paramjs.firstStep()) {
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
-                var PARAM_ID = $("#PARAM_NAME").val();
+                var PARAM_ID = $("#paramName_down li").attr("data-id");
                 var REMARK = $("#REMARK").val();
-                var PARAM_VALUE = $("#PARAM_VALUE").val();
+                var PARAM_VALUE = $("#param_value").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (input.checked == true) {
@@ -72,10 +72,10 @@ var oc = new ObjectControl();
         $(".operedit_btn ul li:nth-of-type(1)").click(function () {
             if (paramjs.firstStep()) {
                 var id = sessionStorage.getItem("id");
-                var PARAM_ID = $("#PARAM_NAME").val();
+                var PARAM_ID = $("#paramName_down li").attr("data-id");
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
-                var PARAM_VALUE = $("#PARAM_VALUE").val();
+                var PARAM_VALUE = $("#param_value").val();
                 var REMARK = $("#REMARK").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
@@ -175,12 +175,12 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);
                 $("#OWN_CORP option").text(msg.corp_name);
-                $("#PARAM_NAME").val(msg.param);
-                $("#PARAM_NAME").attr("data-name", msg.param);
+                $("#PARAM_NAME").val(msg.param_name);
+                $("#PARAM_NAME").attr("data-id", msg.param_id);
                 $("#REMARK").attr("data-name", msg.remark);
                 $("#REMARK").val(msg.remark);
-                $("#PARAM_VALUE").val(msg.param_value);
-                $("#PARAM_VALUE").attr("data-name", msg.param_value);
+                $("#param_value").val(msg.param_value);
+                $("#param_value").attr("data-name", msg.param_value);
                 $("#created_time").val(msg.created_date);
                 $("#creator").val(msg.creater);
                 $("#modify_time").val(msg.modified_date);
@@ -251,22 +251,32 @@ function param_data(c, b) {
     oc.postRequire("post", _command, "", _params, function (data) {
         if (data.code == "0") {
             var msg = JSON.parse(data.message);
+                msg=msg.params;
             console.log(msg);
-            var param_values= msg.param_values;
-            var list=param_values.split(",")
-            if(list.length>0){
-                for(var j = 0; j < list.length; j++){
-                    $("#PARAM_VALUE").append('<ul><li>'+list[j]+'</li></ul>')
+            if (msg.length > 0) {
+                for (var i = 0; i < msg.length; i++) {
+                    $('#paramName_down').append('<li data-id="'
+                        +msg[i].param_id
+                        +'" data-type="'
+                        +msg[i].param_type
+                        +'" data-value="'
+                        +msg[i].param_values
+                        +'"><span>'
+                        +msg[i].param_key
+                        +'</span></li>')
                 }
-            }
-            var msg_paramName = msg.params;
-            $('#PARAM_NAME').empty();
-            $('#param_select .searchable-select').remove();
-            if (msg_paramName.length > 0) {
-                for (var i = 0; i < msg_paramName.length; i++) {
-                    $('#PARAM_NAME').append("<option value='" + msg_paramName[i].param_id + "'>" + msg_paramName[i].param_key + "</option>");
-                }
-            } else if (msg_paramName.length <= 0) {
+                $("#paramName_down li").click(function () {
+                    var val = $(this).find("span").html();
+                    $("#PARAM_NAME").val(val);
+                    var dataType=$(this).attr("data-type");
+                    var datavalue=$(this).attr("data-value");
+                    console.log(dataType);
+                    console.log(datavalue);
+                    if(dataType=="custom"){
+                        $("#param_value").val(datavalue);
+                    }
+                })
+            } else if (msg.length <= 0) {
                 art.dialog({
                     time: 1,
                     lock: true,
@@ -274,10 +284,7 @@ function param_data(c, b) {
                     content: "该企业没有参数"
                 });
             }
-            if (b !== "") {
-                $("#PARAM_NAME option[value='" + b + "']").attr("selected", "true")
-            }
-            $("#PARAM_NAME").searchableSelect();
+
         } else if (data.code == "-1") {
             art.dialog({
                 time: 1,
@@ -288,3 +295,16 @@ function param_data(c, b) {
         }
     })
 }
+
+$("#PARAM_NAME").click(function () {
+    if ($("#paramName_down").css("display") == "none") {
+        $("#paramName_down").show();
+    } else {
+        $("#paramName_down").hide();
+    }
+})
+$("#PARAM_NAME").blur(function () {
+    setTimeout(function () {
+        $("#paramName_down").hide();
+    }, 200)
+})

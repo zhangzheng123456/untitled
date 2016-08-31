@@ -30,6 +30,17 @@ public class CorpParam {
     //参数类型
     private String param_type;
 
+    //参数值
+    private String param_values;
+
+    public String getParam_values() {
+        return param_values;
+    }
+
+    public void setParam_values(String param_values) {
+        this.param_values = param_values;
+    }
+
     public String getParam_type() {
         return param_type;
     }

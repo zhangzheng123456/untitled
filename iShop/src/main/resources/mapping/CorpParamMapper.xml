@@ -6,7 +6,9 @@
         SELECT
         rcc.*,
         dc.corp_name,
-        dcc.param_type
+        dcc.param_type,
+        dcc.param_name,
+        dcc.param_values
         FROM rel_corp_cfg rcc,def_corp dc,def_corp_cfg dcc
         WHERE rcc.corp_code = dc.corp_code
         AND rcc.param_id=dcc.id
