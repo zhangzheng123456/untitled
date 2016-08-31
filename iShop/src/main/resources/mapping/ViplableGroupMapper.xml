@@ -55,4 +55,105 @@
         DELETE FROM def_viplabel_group
         WHERE ID=#{id};
     </delete>
+    <insert id="addViplableGroup" parameterType="com.bizvane.ishop.entity.ViplableGroup">
+        INSERT INTO  def_viplabel_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="label_group_code != null">
+                label_group_code,
+            </if>
+            <if test="label_group_name != null">
+                label_group_name,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="isactive != null">
+                ISACTIVE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="label_group_code != null">
+                #{label_group_code},
+            </if>
+            <if test="label_group_name != null">
+                #{label_group_name},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updViplableGroupById" parameterType="com.bizvane.ishop.entity.ViplableGroup">
+        UPDATE  def_viplabel_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="label_group_code != null">
+                label_group_code=  #{label_group_code},
+            </if>
+            <if test="label_group_name != null">
+                label_group_name= #{label_group_name},
+            </if>
+            <if test="modified_date != null">
+                modified_date=    #{modified_date},
+            </if>
+            <if test="created_date != null">
+                created_date= #{created_date},
+            </if>
+            <if test="creater != null">
+                creater=   #{creater},
+            </if>
+            <if test="modifier != null">
+                modifier=   #{modifier},
+            </if>
+            <if test="corp_code != null">
+                corp_code=   #{corp_code},
+            </if>
+            <if test="remark != null">
+                remark=#{remark},
+            </if>
+            <if test="isactive != null">
+                isactive=  #{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+    <select id="selectViplableGroupById" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT * FROM def_viplabel_group
+        WHERE id=#{id}
+    </select>
 </mapper>

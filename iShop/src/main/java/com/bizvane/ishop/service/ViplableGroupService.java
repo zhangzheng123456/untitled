@@ -1,9 +1,9 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.AppLoginLog;
 import com.bizvane.ishop.entity.ViplableGroup;
 import com.github.pagehelper.PageInfo;
 
+import java.sql.SQLException;
 import java.util.Map;
 
 /**
@@ -15,4 +15,11 @@ public interface ViplableGroupService {
     PageInfo<ViplableGroup> selectViplabGroupScreen(int page_number, int page_size, String corp_code,Map<String,String> map) throws Exception;
 
     int delViplabGroupById(int id)throws Exception;
+
+    int addViplableGroup(ViplableGroup viplableGroup) throws SQLException;
+
+    int updViplableGroupById(ViplableGroup viplableGroup) throws SQLException;
+
+    ViplableGroup selectViplableGroupById(int id) throws SQLException;
+
 }

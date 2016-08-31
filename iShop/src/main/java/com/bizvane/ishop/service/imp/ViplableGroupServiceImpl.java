@@ -10,6 +10,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,5 +50,20 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
     @Override
     public int delViplabGroupById(int id) throws Exception {
         return viplableGroupMapper.delViplabGroupById(id);
+    }
+
+    @Override
+    public int addViplableGroup(ViplableGroup viplableGroup) throws SQLException {
+        return viplableGroupMapper.addViplableGroup(viplableGroup);
+    }
+
+    @Override
+    public int updViplableGroupById(ViplableGroup viplableGroup) throws SQLException {
+        return viplableGroupMapper.updViplableGroupById(viplableGroup);
+    }
+
+    @Override
+    public ViplableGroup selectViplableGroupById(int id) throws SQLException {
+        return viplableGroupMapper.selectViplableGroupById(id);
     }
 }

@@ -15,6 +15,9 @@
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
+        <association property="viplablegroup" javaType="com.bizvane.ishop.entity.ViplableGroup">
+            <result column="label_group_name" property="label_group_name"/>
+        </association>
     </resultMap>
 
 
@@ -29,11 +32,16 @@
         vt.created_date,
         vt.creater,
         vt.isactive,
-        cc.corp_name
+        cc.corp_name,
+        vt.label_group_code,
+        dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
+        ,def_viplabel_group dvg
         WHERE
-        vt.corp_code=cc.corp_code
+        vt.corp_code=cc.corp_code AND
+        vt.label_group_code=dvg.label_group_code AND
+        cc.corp_code=dvg.corp_code
         and  vt.id=#{id}
     </select>
 
@@ -66,6 +74,9 @@
             <if test="isactive!=null ">
                 isactive,
             </if>
+            <if test="label_group_code!=null ">
+                label_group_code,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
 
@@ -92,6 +103,9 @@
             </if>
             <if test="isactive!=null ">
                 #{isactive},
+            </if>
+            <if test="label_group_code!=null ">
+                #{label_group_code},
             </if>
         </trim>
 
@@ -126,6 +140,9 @@
             <if test="isactive!=null ">
                 isactive=#{isactive},
             </if>
+            <if test="label_group_code!=null ">
+                label_group_code=#{label_group_code},
+            </if>
         </trim>
         WHERE id=#{id}
     </update>
@@ -148,11 +165,16 @@
         vt.created_date,
         vt.creater,
         vt.isactive,
-        cc.corp_name
+        cc.corp_name,
+        vt.label_group_code,
+        dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
+        ,def_viplabel_group dvg
         WHERE
-        vt.corp_code=cc.corp_code
+        vt.corp_code=cc.corp_code AND
+        vt.label_group_code=dvg.label_group_code AND
+        cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and vt.corp_code=#{corp_code}
         </if>
@@ -163,6 +185,7 @@
             or vt.label_name like concat('%',#{search_value},'%')
             or vt.label_type like concat('%',#{search_value},'%')
             or cc.corp_name like concat('%',#{search_value},'%')
+            or dvg.label_group_name like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY vt.id DESC
@@ -170,22 +193,32 @@
     <select id="selectAllViplabelScreen" resultMap="VipLabels">
         SELECT
         vt.*,
-        cc.corp_name
+        cc.corp_name,
+        dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
+        ,def_viplabel_group dvg
         WHERE
-        vt.corp_code=cc.corp_code
+        vt.corp_code=cc.corp_code AND
+        vt.label_group_code=dvg.label_group_code AND
+        cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and vt.corp_code=#{corp_code}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     cc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <otherwise>
+                <when test="entryValue!='' and entryKey=='label_group_name'">
+                    dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryValue!=''">
                     vt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
                 </otherwise>
             </choose>
         </foreach>
