@@ -10,16 +10,6 @@ if (month < 10) {
 var data = myDate.getDate();
 var today = year + "-" + month + "-" + data;
 $(".icon-text").val(today);
-// //点击显示日周年月
-// $(".title").click(function() {
-// 	ul = $(this).nextAll("ul");
-// 	$(this).parent(".choose").toggleClass("cur");
-// 	if (ul.css("display") == "none") {
-// 		ul.show();
-// 	} else {
-// 		ul.hide();
-// 	};
-// });
 $(".title").mouseover(function() {
 	ul = $(this).nextAll("ul");
 		ul.show();
@@ -71,10 +61,10 @@ function getAreaList(){
         		var area_code=$(this).attr("data-code");
         		$(".area_name").attr("data-code",area_code);
         		$(".area_name").html($(this).html());
-        		console.log($(this).html());
         		storeRanking(today,area_code);
 				staffRanking(today,area_code);
 				achAnalysis(today,area_code);
+				achieveChart(today,area_code);
         	})
 		}
 	})
@@ -257,10 +247,12 @@ var store = {
 	}
 };
 //获取折线图
-function achieveChart(data){
-	var param={
-		time:data.replace(/-/g,"")
-	};
+function achieveChart(a,b){
+	var param={};
+	param["time"]=a;
+	if(b!==""&&b!==undefined){
+		param["area_code"]=b;
+	}
 	oc.postRequire("post","/home/achInfo","", param, function(data){
 		var infodata_W=JSON.parse(data.message).W;
 		var infodata_M=JSON.parse(data.message).M;
@@ -283,7 +275,7 @@ function achieveChart(data){
 		for(index in TimeData){
 			perArr.push(TimeData[index].trade);
 			if(value == "按年查看"){
-				dateArr.push(TimeData[index].date.substring(5));
+				dateArr.push(TimeData[index].date.substring(2,7));
 			}else {
 				dateArr.push(TimeData[index].date);
 			}
@@ -293,7 +285,7 @@ function achieveChart(data){
 			for(index in TimeData){
 				perArr.push(TimeData[index].trade);
 				if(V == "按年查看"){
-					dateArr.push(TimeData[index].date.substring(5));
+					dateArr.push(TimeData[index].date.substring(2,7));
 				}else {
 					dateArr.push(TimeData[index].date);
 				}
@@ -341,14 +333,14 @@ var staff = {
 }
 //折线图日历
 var achInfo={
-	elem: '#staffRanking',
+	elem: '#achvChart',
 	format: 'YYYY-MM-DD',
 	max: laydate.now(), //最大日期
 	istime: true,
 	istoday: false,
 	choose: function(datas) {
 		var area_code=$('.area_name').attr("data-code");
-		staffRanking(datas,area_code);
+		achieveChart(datas,area_code);
 	}
 }
 //业绩日历
@@ -366,10 +358,9 @@ var achv={
 laydate(store); //店铺
 laydate(staff); //员工
 laydate(achv);//业绩
+laydate(achInfo)//折线图
 storeRanking(today);
 staffRanking(today);
 achAnalysis(today);
-getAreaList()//区经  获取区域列表
-$(function(){
-	achieveChart(today);
-});
+achieveChart(today);
+getAreaList()//获取区域列表

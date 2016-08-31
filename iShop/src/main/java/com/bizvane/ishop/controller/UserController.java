@@ -463,13 +463,13 @@ public class UserController {
                 if(column1[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                List<User> user = userService.userCodeExist(column1[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                List<User> user = userService.userCodeExist(column1[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), "");
                 if (user.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户编号已存在";
                     int b = 5 / 0;
                     break;
                 }
-                List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(),"");
                 if (user11.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户ID已存在";
                     int b = 5 / 0;
@@ -530,9 +530,6 @@ public class UserController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column7[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
@@ -547,7 +544,10 @@ public class UserController {
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String position = rs.getCell(j++, i).getContents().toString().trim();
-                    if(user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("")  || group_code.equals("")){
+                    if(cellCorp.equals("") && user_code.equals("") && user_id2.equals("") && user_name.equals("") && phone.equals("")  && group_code.equals("")){
+                       continue;
+                    }
+                    if(cellCorp.equals("") || user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("")  || group_code.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

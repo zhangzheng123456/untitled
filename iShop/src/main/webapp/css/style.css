@@ -8179,7 +8179,7 @@ li.select_index>a>label>i{
   font-size:14px;
 }
 #tip_note{
-  width:60px;
+  min-width:60px;
   height:30px;
   font-size:14px;
   color:#ffffff;

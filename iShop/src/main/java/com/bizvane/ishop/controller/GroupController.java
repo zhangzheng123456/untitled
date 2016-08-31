@@ -853,9 +853,6 @@ public class GroupController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     Group group = new Group();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
@@ -863,7 +860,10 @@ public class GroupController {
                     String group_code = rs.getCell(j++, i).getContents().toString().trim();
                     String group_name = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(role_codeExecl.equals("") || role_codeExecl.equals("") || group_code.equals("") || group_name.equals("") ){
+                    if(cellCorp.equals("") && role_codeExecl.equals("") && role_codeExecl.equals("") && group_code.equals("") && group_name.equals("") ){
+                        continue;
+                    }
+                    if(cellCorp.equals("")||role_codeExecl.equals("") || role_codeExecl.equals("") || group_code.equals("") || group_name.equals("") ){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

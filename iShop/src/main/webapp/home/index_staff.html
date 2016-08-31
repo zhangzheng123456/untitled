@@ -178,7 +178,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                </div>
+                                <!--</div>-->
                             </ul>
                         </div>
                         <div class="logo-element">
@@ -198,12 +198,12 @@
                     <div class="col-lg-4">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content_per">
-                                <label class="c_a_shoppe"><i>尹墨IMM女装</i><img src="../img/img_spot_white.png"><i>华东一区</i><img src="../img/img_spot_white.png"><i>贵阳荔星名店尹墨专柜</i></label>
+                                <span class="c_a_shoppe"><i id="corp_name"></i><img src="../img/img_spot_white.png"><i class="area_name"></i> <ul></ul></span>
                                 <div class="check_select">
-                                    <div class="select_1 reg_testdate" onclick="CDT(this);">
+                                    <div class="select_1 reg_testdate" >
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按日查看</div>
-                                            <ul>
+                                            <div class="title" style="width:70px" id="sm_achv_prev">按日查看</div>
+                                            <ul id="sm_achv" class="select_Date">
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
@@ -218,7 +218,7 @@
                                 <div class="performance">
                                     <ul>
                                         <li class="total_num">
-                                            <div class="t_num">55659.00</div>
+                                            <div class="t_num" id="yeJiTotal"></div>
                                             <div class="ranking">业绩总额（元）</div>
 
                                         </li>
@@ -233,20 +233,20 @@
                                 <div class="item_list">
                                     <ul>
                                         <li>
-                                            <p><span>业绩排名</span></p>
-                                            <p class="item">2</p>
+                                            <p><span >业绩排名</span></p>
+                                            <p class="item" id="yeJiRanking"></p>
                                         </li>
                                         <li>
                                             <p><span>被赞次数</span></p>
-                                            <p class="item">25</p>
+                                            <p class="item" id="zanTime"></p>
                                         </li>
                                         <li>
                                             <p><span>贡献度</span></p>
-                                            <p class="item">70%</p>
+                                            <p class="item" id="Contribution_degree"></p>
                                         </li>
                                         <li>
                                             <p><span>我的会员</span></p>
-                                            <p class="item">120</p>
+                                            <p class="item" id="My_Vip"></p>
                                         </li>
                                     </ul>
                                 </div>
@@ -262,10 +262,10 @@
                                 </ul>
                             </div>
                             <div class="check_chart">
-                                <div class="select_2 reg_testdate"  onclick="CDT(this);">
+                                <div class="select_2 reg_testdate"  >
                                     <span class="choose item" style="width:70px">
                                         <div class="title" style="width:70px">按周查看</div>
-                                        <ul>
+                                        <ul  class="select_Date">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
@@ -308,10 +308,10 @@
                                     <span class="average_per">平均业绩<label>30963</label></span>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_3 reg_testdate"  onclick="CDT(this);">
+                                    <div class="select_3 reg_testdate"  >
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按周查看</div>
-                                            <ul>
+                                            <ul  class="select_Date">
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
                                                 <li>按年查看</li>
@@ -323,56 +323,59 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="list_titles_daogou_paihang">
+                            <div class="list_titles_daogou_paihang" id="staff_list">
                                 <table style="width:100%">
+                                    <thead>
                                     <tr>
                                        <th>排名</th>
                                        <th>姓名</th>
                                        <th>业绩</th>
-                                       <th>目标</th>
-                                       <th>完成度</th>
+                                       <!--<th>目标</th>-->
+                                       <!--<th>完成度</th>-->
                                        <th>贡献度</th>
                                     </tr>
-                                    <tr>
-                                        <td style="width:11%">1</td>
-                                        <td style="width:16%">朱亚晓</td>
-                                        <td style="width:21%"><em>￥</em>165395</td>
-                                        <td style="width:21%"><em>￥</em>165395</td>
-                                        <td style="width:18%"><img src="../img/completion_80.png" style="width:20px;height: 20px"/>81%</td>
-                                        <td style="width:13%"><img src="../img/contribution_30.png" style="width:4px;height: 20px" />32%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">2</td>
-                                        <td style="width:16%">姚思婷</td>
-                                        <td style="width:21%"><em>￥</em>55659</td>
-                                        <td style="width:21%"><em>￥</em>55659</td>
-                                        <td style="width:18%"><img src="../img/completion_70.png" style="width:20px;height: 20px"/>70%</td>
-                                        <td style="width:13%"><img src="../img/contribution_20.png" style="width:4px;height: 20px" />16%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">3</td>
-                                        <td style="width:16%">林思敏</td>
-                                        <td style="width:21%"><em>￥</em>46740</td>
-                                        <td style="width:21%"><em>￥</em>46740</td>
-                                        <td style="width:18%"><img src="../img/completion_70.png" style="width:20px;height: 20px"/>68%</td>
-                                        <td style="width:13%"><img src="../img/contribution_10.png" style="width:4px;height: 20px" />14%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">4</td>
-                                        <td style="width:16%">贺明云</td>
-                                        <td style="width:21%"><em>￥</em>17989</td>
-                                        <td style="width:21%"><em>￥</em>17989</td>
-                                        <td style="width:18%"><img src="../img/completion_60.png" style="width:20px;height: 20px"/>60%</td>
-                                        <td style="width:13%"><img src="../img/contribution_0.png" style="width:4px;height: 20px" />4%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">5</td>
-                                        <td style="width:16%">曹璐</td>
-                                        <td style="width:21%"><em>￥</em>15693</td>
-                                        <td style="width:21%"><em>￥</em>15693</td>
-                                        <td style="width:18%"><img src="../img/completion_60.png" style="width:20px;height: 20px"/>59%</td>
-                                        <td style="width:13%"><img src="../img/contribution_0.png" style="width:4px;height: 20px" />3%</td>
-                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                    <!--<tr>-->
+                                        <!--<td style="width:11%">1</td>-->
+                                        <!--<td style="width:16%">朱亚晓</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>165395</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>165395</td>-->
+                                        <!--<td style="width:18%"><img src="../img/completion_80.png" style="width:20px;height: 20px"/>81%</td>-->
+                                        <!--<td style="width:13%"><img src="../img/contribution_30.png" style="width:4px;height: 20px" />32%</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<td style="width:11%">2</td>-->
+                                        <!--<td style="width:16%">姚思婷</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>55659</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>55659</td>-->
+                                        <!--<td style="width:18%"><img src="../img/completion_70.png" style="width:20px;height: 20px"/>70%</td>-->
+                                        <!--<td style="width:13%"><img src="../img/contribution_20.png" style="width:4px;height: 20px" />16%</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<td style="width:11%">3</td>-->
+                                        <!--<td style="width:16%">林思敏</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>46740</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>46740</td>-->
+                                        <!--<td style="width:18%"><img src="../img/completion_70.png" style="width:20px;height: 20px"/>68%</td>-->
+                                        <!--<td style="width:13%"><img src="../img/contribution_10.png" style="width:4px;height: 20px" />14%</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<td style="width:11%">4</td>-->
+                                        <!--<td style="width:16%">贺明云</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>17989</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>17989</td>-->
+                                        <!--<td style="width:18%"><img src="../img/completion_60.png" style="width:20px;height: 20px"/>60%</td>-->
+                                        <!--<td style="width:13%"><img src="../img/contribution_0.png" style="width:4px;height: 20px" />4%</td>-->
+                                    <!--</tr>-->
+                                    <!--<tr>-->
+                                        <!--<td style="width:11%">5</td>-->
+                                        <!--<td style="width:16%">曹璐</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>15693</td>-->
+                                        <!--<td style="width:21%"><em>￥</em>15693</td>-->
+                                        <!--<td style="width:18%"><img src="../img/completion_60.png" style="width:20px;height: 20px"/>59%</td>-->
+                                        <!--<td style="width:13%"><img src="../img/contribution_0.png" style="width:4px;height: 20px" />3%</td>-->
+                                    <!--</tr>-->
                                 </table>
                             </div>
                         </div>
@@ -394,10 +397,10 @@
                                     </ul>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_4 reg_testdate"  onclick="CDT(this);">
+                                    <div class="select_4 reg_testdate"  >
                                         <span class="choose item" style="width:70px">
                                             <div class="title" style="width:70px">按年查看</div>
-                                            <ul>
+                                            <ul  class="select_Date">
                                                 <li>按年查看</li>
                                             </ul>
                                         </span>
@@ -504,13 +507,13 @@
     <script type="text/javascript" src="../js/easypiechart.js"></script>
     <script type="text/javascript" src="../js/home/home_staff.js"></script>
      <!-- 业绩看板 -->
-    <script type="text/javascript">
-        var perArr = [30,34,31,37,35,39,40];//顶点
-        window.onresize=function(){
-            init(perArr);
-        }
-        window.onload = init(perArr);
-    </script>
+    <!--<script type="text/javascript">-->
+        <!--var perArr = [30,34,31,37,35,39,40];//顶点-->
+        <!--window.onresize=function(){-->
+            <!--init(perArr);-->
+        <!--}-->
+        <!--window.onload = init(perArr);-->
+    <!--</script>-->
     <script>
         $(document).ready(function () {
             //调用天气预报数据
