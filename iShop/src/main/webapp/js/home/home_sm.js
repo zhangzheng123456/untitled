@@ -41,7 +41,7 @@ $(".select_Date").mouseout(function(){
 	$(this).hide()
 });
 
-//点击区域
+//点击店铺
 $(".c_a_shoppe").click(function(){
 	var ul=$(".c_a_shoppe ul");
 	if(ul.css("display")=="none"){
@@ -53,18 +53,18 @@ $(".c_a_shoppe").click(function(){
 	}
 })
 //区域获取区域
-function getAreaList(){
+function getShopList(){
 	oc.postRequire("get", "/shop/findStore", "", "", function(data) {
 		if(data.code=="0"){
 			var message=JSON.parse(data.message);
 			var list=JSON.parse(message.list);
         	console.log(list);
-        	$(".area_name").html(list[0].area_name);
-        	$(".area_name").attr("title",list[0].area_name);
-        	$(".area_name").attr("data-code",list[0].area_code);
+        	$(".area_name").html(list[0].store_name);
+        	$(".area_name").attr("title",list[0].store_code);
+        	$(".area_name").attr("data-code",list[0].store_name);
         	var html="";
         	for(var i=0;i<list.length;i++){
-        		html+="<li data-code='"+list[i].area_code+"'>"+list[i].area_name+"</li>"
+        		html+="<li data-code='"+list[i].store_code+"'>"+list[i].store_name+"</li>"
         	}
         	$(".c_a_shoppe ul").html(html);
         	$(".c_a_shoppe ul li").click(function(){
@@ -168,16 +168,16 @@ function staffRanking(a,b) {
 }
 //业绩追加
 function superadditionAchv(c){
-	$("#num_sales").html(c.am.num_sales);
-	$("#num_trade").html(c.am.num_trade);
-	$("#all_price").html(c.am.all_price);
-	$("#amount_price").html(c.am.amount_price);
-	$("#relate_rate").html(c.am.relate_rate);
-	$("#discount").html(c.am.discount);
-	$("#num_nvip").html(c.am.num_nvip);
-	$("#vip_amt_rate").html(c.am.vip_amt_rate);
-	$("#amt_trade").html(c.am.amt_trade);
-	$("#area_ranking").attr("data-percent",c.am.area_ranking);
+	$("#num_sales").html(c.sm.num_sales);
+	$("#num_trade").html(c.sm.num_trade);
+	$("#all_price").html(c.sm.all_price);
+	$("#amount_price").html(c.sm.amount_price);
+	$("#relate_rate").html(c.sm.relate_rate);
+	$("#discount").html(c.sm.discount);
+	$("#num_nvip").html(c.sm.num_nvip);
+	$("#vip_amt_rate").html(c.sm.vip_amt_rate);
+	$("#amt_trade").html(c.sm.amt_trade);
+	$("#area_ranking").attr("data-percent",c.sm.area_ranking);
 }
 //业绩加载
 function achAnalysis(a,b){
@@ -269,10 +269,8 @@ var achv={
 		achAnalysis(datas,area_code);
 	}
 }
-laydate(store); //店铺
-laydate(staff); //员工
+laydate(staff); //导购
 laydate(achv);//业绩
-storeRanking(today);
 staffRanking(today);
 achAnalysis(today);
-getAreaList()//区经  获取区域列表
+getShopList()//店长获取店铺列表

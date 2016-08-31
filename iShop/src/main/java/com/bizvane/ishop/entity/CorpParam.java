@@ -27,6 +27,27 @@ public class CorpParam {
     private String creater;
     //是否可用
     private String isactive;
+    //参数类型
+    private String param_type;
+
+    //参数值
+    private String param_values;
+
+    public String getParam_values() {
+        return param_values;
+    }
+
+    public void setParam_values(String param_values) {
+        this.param_values = param_values;
+    }
+
+    public String getParam_type() {
+        return param_type;
+    }
+
+    public void setParam_type(String param_type) {
+        this.param_type = param_type;
+    }
 
     public int getId() {
         return id;
