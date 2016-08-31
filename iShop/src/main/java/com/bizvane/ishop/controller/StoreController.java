@@ -1125,6 +1125,7 @@ public class StoreController {
                     break;
                 }
             }
+            ArrayList<Store> stores=new ArrayList<Store>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Store store = new Store();
@@ -1168,8 +1169,13 @@ public class StoreController {
                     store.setCreater(user_id);
                     store.setModified_date(Common.DATETIME_FORMAT.format(now));
                     store.setModifier(user_id);
-                    result = storeService.insertExecl(store);
+                    stores.add(store);
+                  //  result = storeService.insertExecl(store);
                 }
+            }
+            for (Store store:stores
+                 ) {
+                result = storeService.insertExecl(store);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

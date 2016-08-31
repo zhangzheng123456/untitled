@@ -466,6 +466,7 @@ public class GoodsController {
                     break;
                 }
             }
+            ArrayList<Goods> goodses=new ArrayList<Goods>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
@@ -534,8 +535,13 @@ public class GoodsController {
                     goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     goods.setModified_date(Common.DATETIME_FORMAT.format(now));
                     goods.setModifier(user_id);
-                    result = String.valueOf(goodsService.insert(goods));
+                    goodses.add(goods);
+                   // result = String.valueOf(goodsService.insert(goods));
                 }
+            }
+            for (Goods goods:goodses
+                 ) {
+                result = String.valueOf(goodsService.insert(goods));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

@@ -1,7 +1,6 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -32,10 +31,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.lang.System;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -478,6 +474,7 @@ public class VIPController {
                     break;
                 }
             }
+            ArrayList<VipLabel> vipLabels=new ArrayList<VipLabel>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     VipLabel vipLabel = new VipLabel();
@@ -512,10 +509,12 @@ public class VIPController {
                     vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
                     vipLabel.setModifier(user_id);
                     vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                    result = String.valueOf(vipLabelService.insert(vipLabel));
+                    vipLabels.add(vipLabel);
                 }
             }
-
+            for (VipLabel vipLabel:vipLabels) {
+                result = String.valueOf(vipLabelService.insert(vipLabel));
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

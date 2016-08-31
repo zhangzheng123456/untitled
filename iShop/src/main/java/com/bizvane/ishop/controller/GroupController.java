@@ -852,6 +852,7 @@ public class GroupController {
                     break;
                 }
             }
+            ArrayList<Group> groups=new ArrayList<Group>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Group group = new Group();
@@ -880,8 +881,13 @@ public class GroupController {
                     } else {
                         group.setIsactive("Y");
                     }
-                    result = groupService.insertGroup(group);
+                    groups.add(group);
+                //    result = groupService.insertGroup(group);
                 }
+            }
+            for (Group group: groups
+                 ) {
+                result = groupService.insertGroup(group);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
