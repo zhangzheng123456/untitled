@@ -50,6 +50,10 @@ var oc = new ObjectControl();
                     PARAM_TYPE="custom"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
+                if(PARAM_TYPE==""){
+                    alert("参数不能为空！");
+                    return;
+                }
                 if(PARAM_TYPE!=="custom" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
@@ -184,6 +188,7 @@ jQuery(document).ready(function () {
                 var param_type=msg.param_type
                 if(param_type=="switch"){
                     param_type="开关";
+                    $("#PARAM_VALUE").attr("disabled","true");
                 }else if(param_type=="list"){
                     param_type="选择列表";
                 }else if(param_type=="custom"){
@@ -231,9 +236,9 @@ $(".paramType li").click(function () {
     var val = $(this).html();
     console.log(val);
     $("#PARAM_TYPE").val(val);
-    if(val=="自定义"){
+    if(val=="自定义"||val=="开关"){
         $("#PARAM_VALUE").attr("disabled","true");
-    }else if(val=="开关"||val=="选择列表"){
+    }else if(val=="选择列表"){
         $("#PARAM_VALUE").removeAttr("disabled");
     }
 })

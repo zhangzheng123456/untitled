@@ -231,16 +231,14 @@ function superaddition(data,num){//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td><span title='"+data[i].content+"'>"
-            + data[i].content
-            + "</span></td><td>"
-            + data[i].app_platform
             + "</td><td>"
-            + data[i].corp_code
+            + data[i].label_group_code
             + "</td><td>"
-            + data[i].version
+            + data[i].label_group_name
             + "</td><td>"
-            + data[i].created_date
+            + data[i].corp_name
+            + "</td><td>"
+            + data[i].remark
             + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -278,7 +276,7 @@ function GET(a,b){
         "page_size":b
     }
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/errorLog/list?pageNumber="+a+"&pageSize="+b
+    oc.postRequire("get","/viplablegroup/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","",param,function(data){
         // console.log(data);
         if(data.code=="0"){
@@ -378,7 +376,7 @@ $("#d_search").click(function(){
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/errorLog/search","0",param,function(data){
+    oc.postRequire("post","/viplablegroup/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -659,7 +657,7 @@ function getInputValue(){
     for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
         var screen_value=$(input[i]).val().trim();
-        var screen_value="";
+        // var screen_value="";
         if($(input[i]).parent("li").attr("class")=="isActive_select"){
             screen_value=$(input[i]).attr("data-code");
         }else{
