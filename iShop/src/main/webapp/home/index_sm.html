@@ -190,7 +190,6 @@
 
             </div>
         </nav>
-
         <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="wrapper wrapper-content">
                 <div class="row">
@@ -278,15 +277,15 @@
                     <div class="col-lg-7">
                         <div class="customer_add_cart">
                             <div class="cart_tab">
-                                <ul>
+                                <!-- <ul>
                                     <li class="select"><label>业绩趋势</label></li>
                                     <li><label>能力分析</label></li>
-                                </ul>
+                                </ul> -->
                             </div>
                             <div class="check_chart">
                                  <div class="select_2 reg_testdate">
                                     <span class="choose item" style="width:70px">
-                                        <div class="title" style="width:70px">按周查看</div>
+                                        <div id="chart_prev" class="title" style="width:70px">按周查看</div>
                                         <ul id="chart" class="select_Date">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
@@ -294,10 +293,10 @@
                                         </ul>
                                     </span>
                                     <span>
-                                        <input type="text" id="achInfo" class="laydate-icon icon-text">
+                                        <input type="text" id="achvChart" class="laydate-icon icon-text">
                                     </span>
                                 </div>
-                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px">21114.00</label>元</span>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px" id="yeJiToTal"></label>元</span>
                             </div>
                             <div class="charts_holder">
                                 <canvas id="canvas_circle">
