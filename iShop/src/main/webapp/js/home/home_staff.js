@@ -301,6 +301,9 @@ function achieveChart(data){//获取折线图
             }
 
         });
+        $(window).resize(function() {
+            init(perArr,dateArr);
+        });
     })
 }
 

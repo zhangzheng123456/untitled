@@ -38,6 +38,9 @@ function homeGetSys(timeType){
         dateArr=dateArr.reverse();
         init(perArr,dateArr);
         whir.loading.remove();//移除加载框
+        $(window).resize(function() {
+            init(perArr,dateArr);
+        });
     });
 
 }
