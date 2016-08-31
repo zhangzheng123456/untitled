@@ -29,8 +29,11 @@ public class VipAlbumServiceImpl implements VipAlbumService {
     @Override
     public PageInfo<VipAlbum> getAllVipAlbum(int page_num, int page_size, String corp_code, String search_value) throws Exception {
         PageHelper.startPage(page_num, page_size);
-        List<VipAlbum> vip_album = vipAlbumMapper.selectAllAlbum(corp_code, search_value);
-        PageInfo<VipAlbum> vip_albums = new PageInfo<VipAlbum>(vip_album);
+        List<VipAlbum> vipAlbumList = vipAlbumMapper.selectAllAlbum(corp_code, search_value);
+        for (VipAlbum vipAlbum : vipAlbumList) {
+            vipAlbum.setIsactive(CheckUtils.CheckIsactive(vipAlbum.getIsactive()));
+        }
+        PageInfo<VipAlbum> vip_albums = new PageInfo<VipAlbum>(vipAlbumList);
         return vip_albums;
     }
 
