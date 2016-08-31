@@ -19,9 +19,13 @@
         var  max=null;
         //定义关机位置结束
         function trans(degree){
-            return origin.y- (origin.y- (axisY.y + popY))*degree/max;
-            //return 60+(40-degree)*10;
-            //console.log(origin.y- (origin.y- (axisY.y + popY))*degree/max);
+            var a=null;
+            if(max==0){
+                a=origin.y;
+            }else{
+                a=origin.y- (origin.y- (axisY.y + popY))*degree/max;
+            }
+            return  a;
         }
         //圆对象
         function Circle(x, y, radius){

@@ -19,9 +19,13 @@ var  popY=null;
 var  max=null;
 //定义关机位置结束
 function trans(degree){
-	return origin.y- (origin.y- (axisY.y + popY))*degree/max;
-	//return 60+(40-degree)*10;
-	//console.log(origin.y- (origin.y- (axisY.y + popY))*degree/max);
+	var a=null;
+	if(max==0){
+		a=origin.y;
+	}else{
+		a= origin.y- (origin.y- (axisY.y + popY))*degree/max;
+	}
+	return a;
 }
 //圆对象
 function Circle(x, y, radius){
@@ -112,9 +116,7 @@ function init(perArr,dateArr) {
 	circles = [];
 	myCanvas.setAttribute("width", avail_width);
 	myCanvas.setAttribute("height", avail_height);
-	//var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
 	drawChart("canvas_circle", perArr, dateArr);
-
 	//鼠标移动
 	myCanvas.onmousemove=function(e) {
 
