@@ -210,7 +210,7 @@
     </select>
     <select id="selectStore" resultMap="Store">
         SELECT  store_code,
-        store_name 
+        store_name
         FROM DEF_STORE
         WHERE 1=1
         AND corp_code=#{corp_code}

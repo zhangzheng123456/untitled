@@ -586,9 +586,6 @@ public class UserAchvGoalControl {
             }
 
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
@@ -598,7 +595,10 @@ public class UserAchvGoalControl {
                     String target_type = rs.getCell(j++, i).getContents().toString().trim();
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(store_code.equals("") || user_code.equals("") || user_target.equals("") || target_type.equals("")  || cellTypeForDate.equals("")){
+                    if(cellCorp.equals("")&&store_code.equals("") && user_code.equals("") && user_target.equals("") && target_type.equals("")  && cellTypeForDate.equals("")){
+                        continue;
+                    }
+                    if(cellCorp.equals("")||store_code.equals("") || user_code.equals("") || user_target.equals("") || target_type.equals("")  || cellTypeForDate.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
