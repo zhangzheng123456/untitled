@@ -269,6 +269,7 @@ function achieveChart(data){
 		var value=$("#chart_prev").html();
 		var perArr=[];
 		var dateArr=[];
+		console.log(JSON.parse(data.message));
 		if (value == "按周查看") {
 			TimeData=JSON.parse(infodata_W).amount;
 			$("#yeJiToTal").html(JSON.parse(infodata_W).total);
@@ -368,5 +369,7 @@ laydate(achv);//业绩
 storeRanking(today);
 staffRanking(today);
 achAnalysis(today);
-achieveChart(today);
 getAreaList()//区经  获取区域列表
+$(function(){
+	achieveChart(today);
+});

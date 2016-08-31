@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" href="../css/liandong_select.css">
      <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </head>
 <body>
     <div id="wrapper">
@@ -208,25 +210,8 @@
                                                 <li>按年查看</li>
                                             </ul>
                                         </span>
-                                        <span class="Year item" style="width:65px">
-                                            <div class="title" style="width:65px"></div>
-                                            <ul onclick="YYYYDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Month item" style="width:50px">
-                                            <div class="title" style="width:50px"></div>
-                                            <ul onclick="MMDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Week item" style="width:140px;display:none">
-                                            <div class="title" style="width:140px">第1周<label>03-01至03-06</label></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
-                                        <span class="Day item" style="width:90px">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
+                                         <span>
+                                            <input type="text" id="date0" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -286,26 +271,9 @@
                                             <li>按年查看</li>
                                         </ul>
                                     </span>
-                                    <span class="Year item" style="width:65px">
-                                        <div class="title" style="width:65px"></div>
-                                        <ul  onclick="YYYYDD(this)">
-                                        </ul>
-                                    </span>
-                                    <span class="Month item" style="width:50px;display:none">
-                                        <div class="title" style="width:50px"></div>
-                                        <ul onclick="MMDD(this)">
-                                        </ul>
-                                    </span>
-                                    <span class="Week item" style="width:140px;" >
-                                        <div class="title" style="width:140px"></div>
-                                        <ul>
-                                        </ul>
-                                    </span>
-                                    <span class="Day item" style="width:90px;display:none">
-                                        <div class="title" style="width:90px"></div>
-                                            <ul>
-                                            </ul>
-                                    </span>
+                                 <span>
+                                     <input type="text" id="date1" class="laydate-icon icon-text">
+                                 </span>
                                 </div>
                                 <span style="margin-right:10px;">业绩总额<label style="font-size: 20px">21114.00</label>元</span>
                             </div>
@@ -349,25 +317,8 @@
                                                 <li>按年查看</li>
                                             </ul>
                                         </span>
-                                        <span class="Year item" style="width:65px">
-                                            <div class="title" style="width:65px"></div>
-                                            <ul onclick="YYYYDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Month item" style="width:50px;display:none">
-                                            <div class="title" style="width:50px"></div>
-                                            <ul onclick="MMDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Week item" style="width:140px;" >
-                                            <div class="title" style="width:140px"></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
-                                        <span class="Day item" style="width:90px;display:none;">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
+                                   <span>
+                                            <input type="text" id="date2" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -450,25 +401,8 @@
                                                 <li>按年查看</li>
                                             </ul>
                                         </span>
-                                        <span class="Year item" style="width:65px">
-                                            <div class="title" style="width:65px"></div>
-                                            <ul onclick="YYYYDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Month item" style="width:50px;display:none;">
-                                            <div class="title" style="width:50px"></div>
-                                            <ul onclick="MMDD(this)">
-                                            </ul>
-                                        </span>
-                                        <span class="Week item" style="width:140px;display:none;" >
-                                            <div class="title" style="width:140px"></div>
-                                            <ul>
-                                            </ul>
-                                        </span>
-                                        <span class="Day item" style="width:90px;display:none;">
-                                            <div class="title" style="width:90px"></div>
-                                                <ul>
-                                                </ul>
+                                      <span>
+                                            <input type="text" id="date3" class="laydate-icon icon-text">
                                         </span>
                                     </div>
                                 </div>
@@ -552,7 +486,7 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
+     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <script type="text/javascript" src="../js/home/home.js"></script>
     <!-- <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script> -->
@@ -568,6 +502,7 @@
     <script type="text/javascript" src="../js/onvertToPinyin.js"></script>
     <!-- piechart -->
     <script type="text/javascript" src="../js/easypiechart.js"></script>
+    <script type="text/javascript" src="../js/home/home_staff.js"></script>
      <!-- 业绩看板 -->
     <script type="text/javascript">
         var perArr = [30,34,31,37,35,39,40];//顶点

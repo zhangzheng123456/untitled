@@ -396,7 +396,6 @@ function drawChart(canvasId,perArr, dateArr) {
 	var dataLen=dateArr.length;
 	max = Math.max.apply(Math,perArr);
 	popY = (origin.y - axisY.y)/(max/(max/10)+1);
-
 	//获取canva的dom对象
 	var canvas =document.getElementById(canvasId);//画布
 	//获取画布的上下文：使用画布的getContext方法获取
@@ -455,16 +454,6 @@ function drawChart(canvasId,perArr, dateArr) {
 	c.fill();
 }
 function init(perArr,dateArr) {
-	//if(dateArr.length>12){
-	//	inint_num=$('.customer_add_cart').width()/(dateArr.length);
-	//	mul_num=$('.customer_add_cart').width()/(dateArr.length);
-	//}else if(7<dateArr.length&&dateArr.length<13){
-	//	inint_num=$('.customer_add_cart').width()/23;
-	//	mul_num=$('.customer_add_cart').width()/12;
-	//}else {
-	//	inint_num=$('.customer_add_cart').width()/15;
-	//	mul_num=$('.customer_add_cart').width()/7;
-	//}
 	var myCanvas =document.getElementById('canvas_circle');
 	var avail_width=$('.customer_add_cart').width();
 	var avail_height=$('.customer_add_cart').height()*0.8;
