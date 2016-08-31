@@ -65,8 +65,6 @@ public class StoreController {
     @Autowired
     private AreaService areaService;
     @Autowired
-    private FunctionService functionService;
-    @Autowired
     private TableManagerService managerService;
 
     /***
@@ -158,7 +156,6 @@ public class StoreController {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
-            String group_code = request.getSession().getAttribute("group_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
 
@@ -221,10 +218,8 @@ public class StoreController {
     public String corpExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -263,7 +258,6 @@ public class StoreController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -298,7 +292,6 @@ public class StoreController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -333,11 +326,9 @@ public class StoreController {
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String role_code = request.getSession().getAttribute("role_code").toString();
-        String user_id = request.getSession().getAttribute("user_id").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
@@ -352,7 +343,7 @@ public class StoreController {
                 if (store != null) {
                     String store_code = store.getStore_code();
                     String corp_code = store.getCorp_code();
-                    List<User> user = storeService.getStoreUser(corp_code, store_code, role_code, user_id, "");
+                    List<User> user = storeService.getStoreUser(corp_code, store_code, "", role_code, "");
                     count = user.size();
                     if (count > 0) {
                         msg = "店铺" + store_code + "下有所属员工，请先处理店铺下员工再删除";
@@ -398,7 +389,6 @@ public class StoreController {
         try {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
-            System.out.println("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
