@@ -567,9 +567,6 @@ public class BrandController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     Brand brand = new Brand();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
@@ -580,7 +577,10 @@ public class BrandController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(brand_code.equals("") || brand_code.equals("")){
+                    if(cellCorp.equals("") && brand_code.equals("") && brand_name.equals("")){
+                        continue;
+                    }
+                    if(cellCorp.equals("")|| brand_code.equals("") || brand_name.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

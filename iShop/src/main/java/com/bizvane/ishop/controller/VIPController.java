@@ -479,15 +479,15 @@ public class VIPController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     VipLabel vipLabel = new VipLabel();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String label_name = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(label_name.equals("")){
+                    if(cellCorp.equals("")&&label_name.equals("")){
+                       continue;
+                    }
+                    if(cellCorp.equals("")||label_name.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
