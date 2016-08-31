@@ -1085,13 +1085,13 @@ public class StoreController {
                 String brands = column5[i].getContents().toString().trim();
                 String[] splitBrands = brands.split(",");
                 for (int j = 0; j < splitBrands.length; j++) {
-                    Matcher matcher = pattern.matcher(splitBrands[j].trim());
+                    Matcher matcher = pattern.matcher(splitBrands[j]);
                     if (matcher.matches() == false) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号格式有误";
                         int b = 5 / 0;
                         break;
                     }
-                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitBrands[j].trim());
+                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitBrands[j]);
                     if (brand == null) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号不存在";
                         int b = 5 / 0;
@@ -1125,9 +1125,6 @@ public class StoreController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     Store store = new Store();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
@@ -1138,7 +1135,10 @@ public class StoreController {
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                     String flg_tob = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(store_code.equals("") || store_id.equals("") || store_name.equals("") || area_code.equals("")  || brand_code.equals("") ){
+                    if(cellCorp.equals("") && store_code.equals("") && store_id.equals("") && store_name.equals("") && area_code.equals("")  && brand_code.equals("") ){
+                      continue;
+                    }
+                    if(cellCorp.equals("") || store_code.equals("") || store_id.equals("") || store_name.equals("") || area_code.equals("")  || brand_code.equals("") ){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

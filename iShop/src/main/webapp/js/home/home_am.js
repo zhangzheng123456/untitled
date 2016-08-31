@@ -261,6 +261,7 @@ function achieveChart(a,b){
 		var value=$("#chart_prev").html();
 		var perArr=[];
 		var dateArr=[];
+		console.log(JSON.parse(data.message));
 		if (value == "按周查看") {
 			TimeData=JSON.parse(infodata_W).amount;
 			$("#yeJiToTal").html(JSON.parse(infodata_W).total);

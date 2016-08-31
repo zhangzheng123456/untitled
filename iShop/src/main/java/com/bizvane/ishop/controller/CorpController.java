@@ -578,9 +578,6 @@ public class CorpController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     String corp_code = rs.getCell(j++, i).getContents().toString().trim();
                     String corp_name = rs.getCell(j++, i).getContents().toString().trim();
@@ -592,6 +589,9 @@ public class CorpController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
+                    if(corp_code.equals("")  && corp_name.equals("") && address.equals("") && contact.equals("") && contact_phone.equals("")){
+                        continue;
+                    }
                     if(corp_code.equals("")  || corp_name.equals("") || address.equals("") || contact.equals("") || contact_phone.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;

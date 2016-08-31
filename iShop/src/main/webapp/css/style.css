@@ -1,4 +1,4 @@
- // @import url("http://fonts.useso.com/css?family=Open+Sans:300,400,600,700&amp;lang=en");
+ /*// @import url("http://fonts.useso.com/css?family=Open+Sans:300,400,600,700&amp;lang=en");*/
 /*
  *
  *   H+ - Admin Theme
@@ -8347,11 +8347,11 @@ li.select_index>a>label>i{
   background-size: 30px;
 }
 
-#PARAM_VALUE{
-  background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
-  background-size:30px;
-}
-#PARAM_NAME{
+/*#PARAM_VALUE{*/
+  /*background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;*/
+  /*background-size:30px;*/
+/*}*/
+.PARAM_NAME{
   background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
   background-size:30px;
 }
@@ -8374,6 +8374,23 @@ li.select_index>a>label>i{
   margin-left: 5px;
 }
 #paramName_down li:hover{
+  color: #FFFFFF;
+  background: #6cc1c8;
+}
+#paramValue_down{
+  width: 420px;
+  position: absolute;
+  left: 187px;
+  top:180px;
+  border: 1px solid #a9c9e2;
+  background: #e8f5fe;
+  display: none;
+}
+#paramValue_down li{
+  height:30px;
+  line-height: 30px;
+}
+#paramValue_down li:hover{
   color: #FFFFFF;
   background: #6cc1c8;
 }

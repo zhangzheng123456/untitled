@@ -267,13 +267,23 @@ function param_data(c, b) {
                 }
                 $("#paramName_down li").click(function () {
                     var val = $(this).find("span").html();
+                    $("#paramValue_down").empty();
+                    $("#param_value").val("");
                     $("#PARAM_NAME").val(val);
                     var dataType=$(this).attr("data-type");
                     var datavalue=$(this).attr("data-value");
+                        datavalue=datavalue.split(",");
                     console.log(dataType);
                     console.log(datavalue);
                     if(dataType=="custom"){
                         $("#param_value").val(datavalue);
+                    }else{
+                        for(var j=0;j<datavalue.length;j++){
+                            $("#paramValue_down").append('<li>'+datavalue[j]+'</li>')
+                        }
+                        $("#paramValue_down li").click(function () {
+                            $("#param_value").val($(this).html());
+                        })
                     }
                 })
             } else if (msg.length <= 0) {
@@ -306,5 +316,18 @@ $("#PARAM_NAME").click(function () {
 $("#PARAM_NAME").blur(function () {
     setTimeout(function () {
         $("#paramName_down").hide();
+    }, 200)
+})
+
+$("#param_value").click(function () {
+    if ($("#paramValue_down").css("display") == "none") {
+        $("#paramValue_down").show();
+    } else {
+        $("#paramValue_down").hide();
+    }
+})
+$("#param_value").blur(function () {
+    setTimeout(function () {
+        $("#paramValue_down").hide();
     }, 200)
 })

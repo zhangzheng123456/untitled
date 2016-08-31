@@ -467,9 +467,6 @@ public class GoodsController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
@@ -487,7 +484,10 @@ public class GoodsController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(goods_code.equals("") || goods_name.equals("") || goods_price.equals("") || goods_image.equals("")  || brand_code.equals("")  || cellTypeForDate.equals("") || goods_description.equals("")){
+                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("") && goods_image.equals("")  && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
+                        continue;
+                    }
+                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("") || goods_image.equals("")  || brand_code.equals("")  || cellTypeForDate.equals("") || goods_description.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
