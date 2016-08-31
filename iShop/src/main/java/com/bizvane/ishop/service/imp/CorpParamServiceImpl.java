@@ -100,6 +100,7 @@ public class CorpParamServiceImpl implements CorpParamService {
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String param_id = jsonObject.get("param_id").toString();
+
         String param_value = jsonObject.get("param_value").toString();
         List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
 
