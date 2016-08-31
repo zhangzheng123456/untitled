@@ -8398,9 +8398,10 @@ li.select_index>a>label>i{
   background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
   background-size:30px;
 }
-.search_param{
-  width: 400px;
+#search_param{
+  width: 390px;
   height: 30px;
-  border-radius: 20px;
+  border-radius: 8px;
   border: 1px solid #EAE2E2;
+  margin:3px 3px;
 }

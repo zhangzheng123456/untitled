@@ -54,7 +54,7 @@ var oc = new ObjectControl();
                     alert("参数不能为空！");
                     return;
                 }
-                if(PARAM_TYPE!=="custom" && PARAM_VALUE==""){
+                if(PARAM_TYPE=="list" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
                 }
@@ -91,7 +91,7 @@ var oc = new ObjectControl();
                     PARAM_TYPE="custom"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
-                if(PARAM_TYPE!=="custom" && PARAM_VALUE==""){
+                if(PARAM_TYPE=="list" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
                 }
