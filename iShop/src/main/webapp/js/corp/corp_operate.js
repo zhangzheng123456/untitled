@@ -423,6 +423,62 @@ jQuery(document).ready(function () {
         var a = "https://mp.weixin.qq.com/cgi-bin/componentloginpage?component_appid=wxa6780115cc7c1db5&pre_auth_code=" + data + "&redirect_uri=http://wechat.app.bizvane.com/app/wechat/callback";
         $('#power').html('<a href="' + a + '" target="_parent">授权</a>');
     }
+    $("#power").click(function(){
+        var _param={};
+        var corp_code=$("#CORPID").val();
+        var wechat=[];
+        _param["corp_code"]=corp_code;
+        var list = [];
+        var arr = [];
+        var len = $(".wx_app").find(".wx_span");
+        for (var i = 0; i < len.length; i++) {
+            var app_id = $(len[i]).find('.WXID').val();
+            var app_name = $(len[i]).find('.AppName').val();
+            arr.push(app_id);
+            arr.sort();
+            for (var j = 0; j < arr.length; j++) {
+                if (arr[j] == arr[j + 1] && arr[j] !== "") {
+                    alert("公众号ID不能重复！")
+                    return false;
+                }
+            }
+            if(app_name == "") {
+                alert("名称不能为空！")
+                return false;
+            }
+            if (app_id == "") {
+                alert("公众号ID不能为空！")
+                return false;
+            }
+            var wechat = {
+                "app_id": app_id,
+                "app_name": app_name
+            }
+            list.push(wechat);
+        }
+        _param["wechat"]=list;
+        var a="";
+        jQuery.ajax({
+            url: "/corp/updateWechat",
+            type: "post",
+            dataType: 'json',
+            data: {param: JSON.stringify(_param)},
+            async:false,
+            success: function (data) {
+                console.log(data.code);
+                if(data.code=="0"){
+                    a=true;
+                }else if(data.code=="-1"){
+                    a=false;
+                }
+            },
+            error: function (data) {
+                console.log(data);
+
+            }
+        });
+        return a;
+    })
     // //检查是否可否授权状态、
     // $("#state").click(function () {
     //     var corp_code = $("#CORPID").val();
