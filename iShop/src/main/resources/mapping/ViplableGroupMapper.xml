@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.ViplableGroupMapper">
+    <select id="selectViplabGroup" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT dvg.id,dvg.label_group_code,
+        dvg.label_group_name,dvg.modified_date,
+        dvg.remark,
+        dvg.modifier,dc.corp_name,dvg.isactive
+         FROM def_viplabel_group dvg,def_corp dc
+         WHERE dvg.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND  dvg.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            dvg.label_group_code LIKE concat('%', #{search_value},'%')
+            OR dvg.label_group_name LIKE concat('%', #{search_value},'%')
+            OR dvg.modified_date LIKE concat('%', #{search_value},'%')
+            OR dc.CORP_NAME LIKE concat('%', #{search_value},'%')
+            OR dvg.remark LIKE concat('%', #{search_value},'%')
+            OR dvg.modifier LIKE concat('%', #{search_value},'%')
+            OR dvg.isactive LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY dvg.ID DESC
+    </select>
+    <select id="selectViplabGroupScreen" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT dvg.id,dvg.label_group_code,
+        dvg.label_group_name,dvg.modified_date,
+        dvg.remark,
+        dvg.modifier,dc.corp_name,dvg.isactive
+        FROM def_viplabel_group dvg,def_corp dc
+        WHERE dvg.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND  dvg.CORP_CODE = #{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryValue!=''">
+                    dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        ORDER BY dvg.ID DESC
+    </select>
+    <delete id="delViplabGroupById">
+        DELETE FROM def_viplabel_group
+        WHERE ID=#{id};
+    </delete>
+</mapper>
