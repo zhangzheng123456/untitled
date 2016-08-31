@@ -264,8 +264,8 @@
                             <div class="check_chart">
                                 <div class="select_2 reg_testdate"  >
                                     <span class="choose item" style="width:70px">
-                                        <div class="title" style="width:70px">按周查看</div>
-                                        <ul  class="select_Date">
+                                        <div class="title" style="width:70px" id="chart_prev">按周查看</div>
+                                        <ul  class="select_Date" id="chart">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
@@ -275,7 +275,7 @@
                                      <input type="text" id="date1" class="laydate-icon icon-text">
                                  </span>
                                 </div>
-                                <span style="margin-right:10px;">业绩总额<label style="font-size: 20px">21114.00</label>元</span>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size: 20px" id="yeJiToTal_chart"></label>元</span>
                             </div>
                             <div class="charts_holder">
                                 <canvas id="canvas_circle">

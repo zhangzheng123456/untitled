@@ -37,13 +37,10 @@ function lay1(InputID){//定义日期格式
                     achAnalysis(datas);
                     break;
                 case 1:
-                    //achieveChart(datas);
+                    achieveChart(datas);
                     break;
                 case 2:
                     staffRanking(datas);
-                    break;
-                case 3:
-                    //storeRanking(datas);
                     break;
             }
         }
@@ -241,69 +238,69 @@ function achieveChart(data){//获取折线图
         time:data.replace(/-/g,"")
     };
     oc.postRequire("post","/home/achInfo","", param, function(data){
-        //var infodata_W=JSON.parse(data.message).W;
-        //var infodata_M=JSON.parse(data.message).M;
-        //var infodata_Y=JSON.parse(data.message).Y;
-        //var TimeData=JSON.parse(infodata_W).amount;
-        //var value=$("#chart_prev").html();
-        //var perArr=[];
-        //var dateArr=[];
-        console.log(JSON.parse(data));
-        //if (value == "按周查看") {
-        //    TimeData=JSON.parse(infodata_W).amount;
-        //    $("#yeJiToTal").html(JSON.parse(infodata_W).total);
-        //} else if (value == "按月查看") {
-        //    TimeData=JSON.parse(infodata_M).amount;
-        //    $("#yeJiToTal").html(JSON.parse(infodata_M).total);
-        //} else if (value == "按年查看") {
-        //    TimeData=JSON.parse(infodata_Y).amount;
-        //    $("#yeJiToTal").html(JSON.parse(infodata_Y).total);
-        //}
-        //for(index in TimeData){
-        //    perArr.push(TimeData[index].trade);
-        //    if(value == "按年查看"){
-        //        dateArr.push(TimeData[index].date.substring(5));
-        //    }else {
-        //        dateArr.push(TimeData[index].date);
-        //    }
-        //}
-        //init(perArr,dateArr);
-        //function setData(V){
-        //    for(index in TimeData){
-        //        perArr.push(TimeData[index].trade);
-        //        if(V == "按年查看"){
-        //            dateArr.push(TimeData[index].date.substring(5));
-        //        }else {
-        //            dateArr.push(TimeData[index].date);
-        //        }
-        //    }
-        //}
-        //$(".reg_testdate li").click(function() {
-        //    perArr=[];
-        //    dateArr=[];
-        //    var value = $(this).html();
-        //    var id = $(this).parent("ul").attr("id");
-        //    $(this).parent("ul").prev(".title").html(value);
-        //    $(this).parent("ul").hide();
-        //    $(this).parent("ul").parent(".choose").removeClass("cur");
-        //    if (value == "按周查看" && id == "chart") {
-        //        TimeData=JSON.parse(infodata_W).amount;
-        //        $("#yeJiToTal").html(JSON.parse(infodata_W).total);
-        //        setData(value);
-        //        init(perArr,dateArr);
-        //    } else if (value == "按月查看" && id == "chart") {
-        //        TimeData=JSON.parse(infodata_M).amount;
-        //        $("#yeJiToTal").html(JSON.parse(infodata_M).total);
-        //        setData(value);
-        //        init(perArr,dateArr);
-        //    } else if (value == "按年查看" && id == "chart") {
-        //        TimeData=JSON.parse(infodata_Y).amount;
-        //        $("#yeJiToTal").html(JSON.parse(infodata_Y).total);
-        //        setData(value);
-        //        init(perArr,dateArr);
-        //    }
-        //
-        //});
+        var infodata_W=JSON.parse(data.message).W;
+        var infodata_M=JSON.parse(data.message).M;
+        var infodata_Y=JSON.parse(data.message).Y;
+        var TimeData=JSON.parse(infodata_W).amount;
+        var value=$("#chart_prev").html();
+        var perArr=[];
+        var dateArr=[];
+        console.log(JSON.parse(data.message));
+        if (value == "按周查看") {
+            TimeData=JSON.parse(infodata_W).amount;
+            $("#yeJiToTal_chart").html(JSON.parse(infodata_W).total);
+        } else if (value == "按月查看") {
+            TimeData=JSON.parse(infodata_M).amount;
+            $("#yeJiToTal_chart").html(JSON.parse(infodata_M).total);
+        } else if (value == "按年查看") {
+            TimeData=JSON.parse(infodata_Y).amount;
+            $("#yeJiToTal_chart").html(JSON.parse(infodata_Y).total);
+        }
+        for(index in TimeData){
+            perArr.push(TimeData[index].trade);
+            if(value == "按年查看"){
+                dateArr.push(TimeData[index].date.substring(2,7));
+            }else {
+                dateArr.push(TimeData[index].date);
+            }
+        }
+        init(perArr,dateArr);
+        function setData(V){
+            for(index in TimeData){
+                perArr.push(TimeData[index].trade);
+                if(V == "按年查看"){
+                    dateArr.push(TimeData[index].date.substring(2,7));
+                }else {
+                    dateArr.push(TimeData[index].date);
+                }
+            }
+        }
+        $(".reg_testdate li").click(function() {
+            perArr=[];
+            dateArr=[];
+            var value = $(this).html();
+            var id = $(this).parent("ul").attr("id");
+            $(this).parent("ul").prev(".title").html(value);
+            $(this).parent("ul").hide();
+            $(this).parent("ul").parent(".choose").removeClass("cur");
+            if (value == "按周查看" && id == "chart") {
+                TimeData=JSON.parse(infodata_W).amount;
+                $("#yeJiToTal_chart").html(JSON.parse(infodata_W).total);
+                setData(value);
+                init(perArr,dateArr);
+            } else if (value == "按月查看" && id == "chart") {
+                TimeData=JSON.parse(infodata_M).amount;
+                $("#yeJiToTal_chart").html(JSON.parse(infodata_M).total);
+                setData(value);
+                init(perArr,dateArr);
+            } else if (value == "按年查看" && id == "chart") {
+                TimeData=JSON.parse(infodata_Y).amount;
+                $("#yeJiToTal_chart").html(JSON.parse(infodata_Y).total);
+                setData(value);
+                init(perArr,dateArr);
+            }
+
+        });
     })
 }
 
@@ -336,7 +333,7 @@ function vipRanking(T){//会员排行
                +"</tr>"
        }
         if(allVipList.length==0){
-        var nodata="<tr><td colSpan='4' style='padding-top:70px;'>暂无数据</td></tr>";
+        var nodata="<tr><td colSpan='5' style='padding-top:70px;'>暂无数据</td></tr>";
             $("#vip_list tbody").html(nodata);
         }else {
             $("#vip_list tbody").html(html);
