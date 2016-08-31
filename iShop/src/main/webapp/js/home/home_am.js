@@ -275,7 +275,7 @@ function achieveChart(a,b){
 		for(index in TimeData){
 			perArr.push(TimeData[index].trade);
 			if(value == "按年查看"){
-				dateArr.push(TimeData[index].date.substring(5));
+				dateArr.push(TimeData[index].date.substring(2,7));
 			}else {
 				dateArr.push(TimeData[index].date);
 			}
@@ -285,7 +285,7 @@ function achieveChart(a,b){
 			for(index in TimeData){
 				perArr.push(TimeData[index].trade);
 				if(V == "按年查看"){
-					dateArr.push(TimeData[index].date.substring(5));
+					dateArr.push(TimeData[index].date.substring(2,7));
 				}else {
 					dateArr.push(TimeData[index].date);
 				}
