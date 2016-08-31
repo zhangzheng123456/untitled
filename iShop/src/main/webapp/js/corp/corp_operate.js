@@ -424,10 +424,10 @@ jQuery(document).ready(function () {
         $('#power').html('<a href="' + a + '" target="_parent">授权</a>');
     }
     $("#power").click(function(){
-        var _param={};
+        var require_data={};
         var corp_code=$("#CORPID").val();
         var wechat=[];
-        _param["corp_code"]=corp_code;
+        require_data["corp_code"]=corp_code;
         var list = [];
         var arr = [];
         var len = $(".wx_app").find(".wx_span");
@@ -456,13 +456,17 @@ jQuery(document).ready(function () {
             }
             list.push(wechat);
         }
-        _param["wechat"]=list;
+        require_data["wechat"]=list;
+        var _params = {
+            "id":"0",
+            "message":require_data
+        };
         var a="";
         jQuery.ajax({
             url: "/corp/updateWechat",
             type: "post",
             dataType: 'json',
-            data: {param: JSON.stringify(_param)},
+            data: {param: JSON.stringify(_params)},
             async:false,
             success: function (data) {
                 console.log(data.code);
@@ -470,6 +474,7 @@ jQuery(document).ready(function () {
                     a=true;
                 }else if(data.code=="-1"){
                     a=false;
+                    alert(data.message);
                 }
             },
             error: function (data) {
