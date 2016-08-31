@@ -555,7 +555,7 @@ public class BrandController {
                 }
             }
             Cell[] column1 = rs.getColumn(2);
-            for (int i = 3; i < column.length; i++) {
+            for (int i = 3; i < column1.length; i++) {
                 if(column1[i].getContents().toString().trim().equals("")){
                     continue;
                 }
