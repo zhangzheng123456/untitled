@@ -567,20 +567,31 @@ public class BrandController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     Brand brand = new Brand();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String brand_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String brand_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+//                    if(cellCorp.equals("")  && brand_code.equals("") && brand_code.equals("") && isactive.equals("")){
+//                        result = "：第"+(i+1)+"行存在空白行,请删除";
+//                        int a=5/0;
+//                    }
+                    if(cellCorp.equals("") && brand_code.equals("") && brand_name.equals("")){
+                        continue;
+                    }
+                    if(cellCorp.equals("")|| brand_code.equals("") || brand_name.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if(!role_code.equals(Common.ROLE_SYS)){
                         brand.setCorp_code(corp_code);
                     }else{
                         brand.setCorp_code(cellCorp);
                     }
-                    brand.setBrand_code(rs.getCell(j++, i).getContents().toString().trim());
-                    brand.setBrand_name(rs.getCell(j++, i).getContents().toString().trim());
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    brand.setBrand_code(brand_code);
+                    brand.setBrand_name(brand_name);
+                    if (isactive.toUpperCase().equals("N")) {
                         brand.setIsactive("N");
                     } else {
                         brand.setIsactive("Y");

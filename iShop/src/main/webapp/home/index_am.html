@@ -277,29 +277,28 @@
                         <div class="customer_add_cart">
                             <div class="cart_tab">
                                 <ul>
-                                    <li  class="select"><label>业绩趋势</label></li>
-                                    <li><label>能力分析</label></li>
+                                    <!-- <li  class="select"><label>业绩趋势</label></li> -->
+                                    <!-- <li><label>能力分析</label></li> -->
                                 </ul>
                             </div>
                             <div class="check_chart">
                                 <div class="select_2 reg_testdate">
                                     <span class="choose item" style="width:70px">
-                                        <div class="title" style="width:70px">按日查看</div>
-                                        <ul class="select_Date">
-                                            <li>按日查看</li>
+                                        <div class="title" id="chart_prev" style="width:70px">按周查看</div>
+                                        <ul class="select_Date" id="chart">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
                                         </ul>
                                     </span>
                                     <span>
-                                        <input type="text" class="laydate-icon icon-text">
+                                        <input type="text" id="achvChart" class="laydate-icon icon-text">
                                     </span>
                                 </div>
-                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px">21114.00</label>元</span>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size:20px" id="yeJiToTal"></label>元</span>
                             </div>
                             <div class="charts_holder">
-                                <canvas id="canvas_circle" width="800"height="550">
+                                <canvas id="canvas_circle" width="800" height="550">
                                     <p>Your browserdoes not support the canvas element!</p>
                                 </canvas>
                                 <span id="tip_note" style="display:none" >
@@ -376,7 +375,7 @@
                                     <span class="average_per">平均业绩<label id="staff_avg"></label></span>
                                 </div>
                                 <div class="check_chart">
-                                    <div class="select_4 reg_testdate" id="staff_list">
+                                    <div class="select_4 reg_testdate">
                                         <span class="choose item" style="width:70px">
                                             <div class="title" id="staff_type" style="width:70px">按日查看</div>
                                             <ul id="staff" class="select_Date">
@@ -446,15 +445,6 @@
     <!-- piechart -->
     <script type="text/javascript" src="../js/easypiechart.js"></script>
     <script type="text/javascript" src="/js/home/home_am.js"></script>
-    <!-- 业绩看板 -->
-    <script type="text/javascript">
-        var perArr = [0,34,31,37,35,39,40];//顶点
-        var dateArr = ["01-04", "01-05", "01-06", "01-07", "01-08", "01-09", "01-10"];//日期
-        window.onresize=function(){
-            init(perArr,dateArr);
-        }
-        window.onload = init(perArr,dateArr);
-    </script>
     <script>
         $(document).ready(function () {
             //调用天气预报数据

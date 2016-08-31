@@ -241,9 +241,7 @@ function superaddition(data,num){//页面加载循环
             + data[i].created_date
             + "</span></td><td>"
             + data[i].time
-            + "</td><td>"
-            + data[i].isactive
-            + "</td></tr>");
+            + "</td><td></tr>");
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -707,9 +705,11 @@ $("#input-txt").keydown(function() {
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
+                param["pageNumber"]=inx;
                 POST(inx, pageSize);
             } else if (filtrate !== "") {
                 _param["pageSize"] = pageSize;
+                _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
         };

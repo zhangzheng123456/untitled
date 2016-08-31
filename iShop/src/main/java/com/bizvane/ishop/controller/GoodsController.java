@@ -467,22 +467,40 @@ public class GoodsController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
                     Goods goods = new Goods();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
+                    String goods_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String goods_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String goods_price = rs.getCell(j++, i).getContents().toString().trim();
+                    String goods_image = rs.getCell(j++, i).getContents().toString().trim();
+                    String quarter = rs.getCell(j++, i).getContents().toString().trim();
+                    String wave = rs.getCell(j++, i).getContents().toString().trim();
+                    String brand_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
+                    String goods_description = rs.getCell(j++, i).getContents().toString().trim();
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+//                    if(cellCorp.equals("")  && goods_code.equals("") && goods_name.equals("") && goods_price.equals("") && goods_image.equals("") && quarter.equals("") && wave.equals("")  && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("") && isactive.equals("")){
+//                        result = "：第"+(i+1)+"行存在空白行,请删除";
+//                        int a=5/0;
+//                    }
+                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("") && goods_image.equals("")  && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
+                        continue;
+                    }
+                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("") || goods_image.equals("")  || brand_code.equals("")  || cellTypeForDate.equals("") || goods_description.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     if(!role_code.equals(Common.ROLE_SYS)){
                         goods.setCorp_code(corp_code);
                     }else{
                         goods.setCorp_code(cellCorp);
                     }
-                    goods.setGoods_code(rs.getCell(j++, i).getContents().toString().trim());
-                    goods.setGoods_name(rs.getCell(j++, i).getContents().toString().trim());
-                    goods.setGoods_price(Float.parseFloat(rs.getCell(j++, i).getContents().toString().trim()));
-                    goods.setGoods_image(rs.getCell(j++, i).getContents().toString().trim()+"  ");
-                    String quarter = rs.getCell(j++, i).getContents().toString().trim();
+                    goods.setGoods_code(goods_code);
+                    goods.setGoods_name(goods_name);
+                    goods.setGoods_price(Float.parseFloat(goods_price));
+                    goods.setGoods_image(goods_image+"  ");
+
                     if(quarter==null||quarter.equals("")) {
                         goods.setGoods_quarter("第一季度");
                     }else if(!quarter.equals("第一季度") && !quarter.equals("第二季度") && !quarter.equals("第三季度") && !quarter.equals("第四季度")){
@@ -492,14 +510,11 @@ public class GoodsController {
                     }else{
                         goods.setGoods_quarter(quarter);
                     }
-
-                    String wave = rs.getCell(j++, i).getContents().toString().trim();
                     if(wave==null||wave.equals("")){
                         goods.setGoods_wave("   ");
                     }else{
                         goods.setGoods_wave(wave);
                     }
-                    String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                     if(brand_code==null || brand_code.equals("")){
                         result = "：第" + (i + 1) + "行品牌编号格式有误";
                         int b = 5 / 0;
@@ -507,10 +522,9 @@ public class GoodsController {
                     }else{
                         goods.setBrand_code(brand_code);
                     }
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
                     goods.setGoods_time(cellTypeForDate);
-                    goods.setGoods_description(rs.getCell(j++, i).getContents());
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    goods.setGoods_description(goods_description);
+                    if (isactive.toUpperCase().equals("N")) {
                         goods.setIsactive("N");
                     } else {
                         goods.setIsactive("Y");

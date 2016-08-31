@@ -578,17 +578,31 @@ public class CorpController {
                 }
             }
             for (int i = 3; i < rows; i++) {
-                if(column[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
                 for (int j = 0; j < clos; j++) {
+                    String corp_code = rs.getCell(j++, i).getContents().toString().trim();
+                    String corp_name = rs.getCell(j++, i).getContents().toString().trim();
+                    String address = rs.getCell(j++, i).getContents().toString().trim();
+                    String contact = rs.getCell(j++, i).getContents().toString().trim();
+                    String contact_phone = rs.getCell(j++, i).getContents().toString().trim();
+                    String isactive = rs.getCell(j++, i).getContents().toString().trim();
+//                    if(corp_code.equals("")  && corp_name.equals("") && address.equals("") && contact.equals("") && contact_phone.equals("") && isactive.equals("")){
+//                        result = "：第"+(i+1)+"行存在空白行,请删除";
+//                        int a=5/0;
+//                    }
+                    if(corp_code.equals("")  && corp_name.equals("") && address.equals("") && contact.equals("") && contact_phone.equals("")){
+                        continue;
+                    }
+                    if(corp_code.equals("")  || corp_name.equals("") || address.equals("") || contact.equals("") || contact_phone.equals("")){
+                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
+                        int a=5/0;
+                    }
                     Corp corp = new Corp();
-                    corp.setCorp_code(rs.getCell(j++, i).getContents().toString().trim());
-                    corp.setCorp_name(rs.getCell(j++, i).getContents().toString().trim());
-                    corp.setAddress(rs.getCell(j++, i).getContents().toString().trim());
-                    corp.setContact(rs.getCell(j++, i).getContents().toString().trim());
-                    corp.setContact_phone(rs.getCell(j++, i).getContents().toString().trim());
-                    if (rs.getCell(j++, i).getContents().toString().trim().toUpperCase().equals("N")) {
+                    corp.setCorp_code(corp_code);
+                    corp.setCorp_name(corp_name);
+                    corp.setAddress(address);
+                    corp.setContact(contact);
+                    corp.setContact_phone(contact_phone);
+                    if (isactive.toUpperCase().equals("N")) {
                         corp.setIsactive("N");
                     } else {
                         corp.setIsactive("Y");
