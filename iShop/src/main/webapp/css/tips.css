@@ -351,16 +351,19 @@
 	top: 24px;
 	right: 17px;
 	width:134px;
-	height: 150px;
+	max-height: 150px;
 	overflow-y: auto;
 	background-color: #4a5f7c;
 	z-index: 278;
 	display: none;
+	border-radius: 5px;
 }
 .c_a_shoppe ul li{
 	height: 30px;
 	line-height: 30px;
-
+}
+.c_a_shoppe ul li:hover{
+	background-color: 
 }
 .area_name{
 	display: inline-block;

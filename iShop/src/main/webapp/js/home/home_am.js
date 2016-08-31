@@ -248,6 +248,7 @@ var store = {
 };
 //获取折线图
 function achieveChart(a,b){
+	var a = a.replace(/[-]/g, "");
 	var param={};
 	param["time"]=a;
 	if(b!==""&&b!==undefined){
