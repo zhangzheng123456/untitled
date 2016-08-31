@@ -188,6 +188,7 @@ jQuery(document).ready(function () {
                     param_type="选择列表";
                 }else if(param_type=="custom"){
                     param_type="自定义";
+                    $("#PARAM_VALUE").attr("disabled","true");
                 }
                 $("#PARAM_TYPE").val(param_type);
                 $("#PARAM_VALUE").val(msg.param_values);
@@ -228,5 +229,11 @@ $("#PARAM_TYPE").blur(function () {
 
 $(".paramType li").click(function () {
     var val = $(this).html();
+    console.log(val);
     $("#PARAM_TYPE").val(val);
+    if(val=="自定义"){
+        $("#PARAM_VALUE").attr("disabled","true");
+    }else if(val=="开关"||val=="选择列表"){
+        $("#PARAM_VALUE").removeAttr("disabled");
+    }
 })

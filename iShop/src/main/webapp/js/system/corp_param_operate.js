@@ -302,13 +302,16 @@ function param_data(c, b) {
                     console.log(datavalue);
                     if(dataType=="custom"){
                         $("#param_value").val(datavalue);
+                        $("#param_value").removeAttr("readonly");
                     }else{
+                        $("#param_value").attr("readonly","true");
                         $("#param_value").addClass("param_value");
                         for(var j=0;j<datavalue.length;j++){
                             $("#paramValue_down").append('<li>'+datavalue[j]+'</li>')
                         }
                         $("#paramValue_down li").click(function () {
                             $("#param_value").val($(this).html());
+
                         })
                     }
                 })
