@@ -691,6 +691,7 @@ public class AreaController {
                     break;
                 }
             }
+            ArrayList<Area> areas=new ArrayList<Area>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Area area = new Area();
@@ -726,8 +727,12 @@ public class AreaController {
                     area.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     area.setModified_date(Common.DATETIME_FORMAT.format(now));
                     area.setModifier(user_id);
-                    result = areaService.insertExecl(area);
+                    areas.add(area);
+                  //  result = areaService.insertExecl(area);
                 }
+            }
+            for (Area area:areas) {
+                result = areaService.insertExecl(area);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
