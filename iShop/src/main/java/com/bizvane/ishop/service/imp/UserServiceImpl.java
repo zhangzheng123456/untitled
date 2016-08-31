@@ -196,7 +196,7 @@ public class UserServiceImpl implements UserService {
                 String areaCode = "";
                 for (int i = 0; i < areaCodes.length; i++) {
                     areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                    Area area = areaMapper.selectAreaByCode(corp_code, areaCodes[i], "");
+                    Area area = areaMapper.selectAreaByCode(corp_code, areaCodes[i],Common.IS_ACTIVE_Y);
                     if (area != null) {
                         String area_name1 = area.getArea_name();
                         area_name = area_name + area_name1;

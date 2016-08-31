@@ -8179,7 +8179,7 @@ li.select_index>a>label>i{
   font-size:14px;
 }
 #tip_note{
-  width:60px;
+  min-width:60px;
   height:30px;
   font-size:14px;
   color:#ffffff;
@@ -8393,4 +8393,8 @@ li.select_index>a>label>i{
 #paramValue_down li:hover{
   color: #FFFFFF;
   background: #6cc1c8;
+}
+.param_value{
+  background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
+  background-size:30px;
 }
