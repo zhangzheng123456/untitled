@@ -125,44 +125,9 @@ public class CorpServiceImpl implements CorpService {
             old_corp.setAvater(jsonObject.get("avater").toString());
             Date now = new Date();
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
-            String app_ids = "";
-            for (int i = 0; i < wechat.size(); i++) {
-                JSONObject object = new JSONObject(wechat.get(i).toString());
-                String app_id = object.get("app_id").toString();
-                if (!app_id.equals("")) {
-                    app_ids = app_ids + app_id + ",";
-                    CorpWechat corpWechat = getCorpByAppId(app_id);
-                    if (corpWechat == null) {
-                        corpWechat = new CorpWechat();
-                        corpWechat.setApp_id(app_id);
-                        corpWechat.setApp_name(object.get("app_name").toString());
-                        corpWechat.setCorp_code(corp_code);
-                        corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
-                        corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                        corpWechat.setCreater(user_id);
-                        corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                        corpWechat.setModifier(user_id);
-                        corpWechat.setIsactive(Common.IS_ACTIVE_Y);
-                        corpMapper.insertCorpWechat(corpWechat);
-                    } else {
-                        if (corpWechat.getCorp_code().equals(corp_code)) {
-                            corpWechat.setApp_name(object.get("app_name").toString());
-                            corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
-                            corpWechat.setModifier(user_id);
-                            corpMapper.updateCorpWechat(corpWechat);
-                        } else {
-                            result = "app_id:" + app_id + "已存在";
-                            return result;
-                        }
-                    }
-                }
-            }
-            List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
-            for (int i = 0; i < corpWechats.size(); i++) {
-                String ids = corpWechats.get(i).getApp_id();
-                if (!app_ids.contains(ids+",")) {
-                    corpMapper.deleteCorpWechat(ids,"");
-                }
+            result = updateCorpWechat(wechat,corp_code,user_id);
+            if (!result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                return result;
             }
             old_corp.setIsactive(jsonObject.get("isactive").toString());
             old_corp.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -342,5 +307,50 @@ public class CorpServiceImpl implements CorpService {
 
     public int deleteCorpWechat(String app_id,String corp_code) throws Exception{
         return corpMapper.deleteCorpWechat(app_id,corp_code);
+    }
+
+    public String updateCorpWechat(JSONArray wechat,String corp_code,String user_code) throws Exception{
+        String app_ids = "";
+        String result = Common.DATABEAN_CODE_SUCCESS;
+        Date now = new Date();
+        for (int i = 0; i < wechat.size(); i++) {
+            JSONObject object = new JSONObject(wechat.get(i).toString());
+            String app_id = object.get("app_id").toString();
+            if (!app_id.equals("")) {
+                app_ids = app_ids + app_id + ",";
+                CorpWechat corpWechat = getCorpByAppId(app_id);
+                if (corpWechat == null) {
+                    corpWechat = new CorpWechat();
+                    corpWechat.setApp_id(app_id);
+                    corpWechat.setApp_name(object.get("app_name").toString());
+                    corpWechat.setCorp_code(corp_code);
+                    corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
+                    corpWechat.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    corpWechat.setCreater(user_code);
+                    corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    corpWechat.setModifier(user_code);
+                    corpWechat.setIsactive(Common.IS_ACTIVE_Y);
+                    corpMapper.insertCorpWechat(corpWechat);
+                } else {
+                    if (corpWechat.getCorp_code().equals(corp_code)) {
+                        corpWechat.setApp_name(object.get("app_name").toString());
+                        corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        corpWechat.setModifier(user_code);
+                        corpMapper.updateCorpWechat(corpWechat);
+                    } else {
+                        result = "app_id:" + app_id + "已存在";
+                        return result;
+                    }
+                }
+            }
+        }
+        List<CorpWechat> corpWechats = corpMapper.selectWByCorp(corp_code);
+        for (int i = 0; i < corpWechats.size(); i++) {
+            String ids = corpWechats.get(i).getApp_id();
+            if (!app_ids.contains(ids+",")) {
+                corpMapper.deleteCorpWechat(ids,"");
+            }
+        }
+        return result;
     }
 }

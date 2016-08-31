@@ -706,7 +706,7 @@ public class CorpController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             JSONObject result = new JSONObject();
             List<CorpWechat> wechatlist = corpService.getWAuthByCorp(corp_code);
@@ -722,4 +722,39 @@ public class CorpController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 选择公众号
+     */
+    @RequestMapping(value = "/updateWechat", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateWechat(HttpServletRequest request) {
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
+            String result = corpService.updateCorpWechat(wechat,corp_code,user_code);
+            if (!result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage(result.toString());
+            }else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
 }

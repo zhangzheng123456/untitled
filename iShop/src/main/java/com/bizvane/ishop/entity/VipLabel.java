@@ -22,6 +22,33 @@ public class VipLabel {
     private String corp_code;
     private Corp corp;
     private String corp_name;
+    private ViplableGroup viplablegroup;
+    private String label_group_code;
+    private String label_group_name;
+
+    public ViplableGroup getViplablegroup() {
+        return viplablegroup;
+    }
+
+    public void setViplablegroup(ViplableGroup viplablegroup) {
+        this.viplablegroup = viplablegroup;
+    }
+
+    public String getLabel_group_code() {
+        return label_group_code;
+    }
+
+    public void setLabel_group_code(String label_group_code) {
+        this.label_group_code = label_group_code;
+    }
+
+    public String getLabel_group_name() {
+        return label_group_name;
+    }
+
+    public void setLabel_group_name(String label_group_name) {
+        this.label_group_name = label_group_name;
+    }
 
     public String getCorp_name() {
         return corp_name;

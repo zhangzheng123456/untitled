@@ -84,6 +84,10 @@ var oc = new ObjectControl();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_VALUE = $("#param_value").val();
+                if(PARAM_VALUE==""){
+                    alert("参数值不能为空!");
+                    return;
+                }
                 var REMARK = $("#REMARK").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
@@ -285,7 +289,13 @@ function param_data(c, b) {
                         +msg[i].param_key
                         +'</span></li>')
                 }
-                $("#paramName_down li").click(function () {
+                $("#paramName_down li").click(function (e) {
+                    var event=window.event||arguments[0];
+                    if(event.stopPropagation){
+                        event.stopPropagation();
+                    }else{
+                        event.cancelBubble=true;
+                    }
                     var dataId=$(this).attr("data-id");
                     var dataType=$(this).attr("data-type");
                     $("#PARAM_NAME").attr("data-id",dataId);
@@ -342,11 +352,18 @@ $("#PARAM_NAME").click(function () {
         $("#paramName_down").hide();
     }
 })
-$("#PARAM_NAME").blur(function () {
-    setTimeout(function () {
+$(document).click(function(e){
+    if($(e.target).is("#paramName_down")||$(e.target).is(".search_param")||$(e.target).is("#PARAM_NAME")){
+        return;
+    }else{
         $("#paramName_down").hide();
-    }, 200)
+    }
 })
+// $("#PARAM_NAME").blur(function () {
+//     setTimeout(function () {
+//         $("#paramName_down").hide();
+//     }, 200)
+// })
 
 $("#param_value").click(function () {
     if ($("#paramValue_down").css("display") == "none") {

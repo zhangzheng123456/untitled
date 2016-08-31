@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.Store;
@@ -58,4 +59,6 @@ public interface CorpService {
     List<CorpWechat> getWAuthByCorp(String corp_code) throws Exception;
 
     int deleteCorpWechat(String app_id,String corp_code) throws Exception;
+
+    String updateCorpWechat(JSONArray wechat, String corp_code, String user_code) throws Exception;
 }
