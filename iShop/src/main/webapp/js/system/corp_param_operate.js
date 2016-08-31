@@ -84,6 +84,10 @@ var oc = new ObjectControl();
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_VALUE = $("#param_value").val();
+                if(PARAM_VALUE==""){
+                    alert("参数值不能为空!");
+                    return;
+                }
                 var REMARK = $("#REMARK").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
