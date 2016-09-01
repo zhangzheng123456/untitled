@@ -33,7 +33,7 @@
         vt.creater,
         vt.isactive,
         cc.corp_name
---         ,vt.label_group_code,
+        ,vt.label_group_code
 --         dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
@@ -167,8 +167,8 @@
         vt.creater,
         vt.isactive,
         cc.corp_name
---         ,vt.label_group_code,
---         dvg.label_group_name
+        ,vt.label_group_code
+--         ,dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
 --         ,def_viplabel_group dvg
