@@ -100,7 +100,7 @@ public class VipGroupController {
            JSONObject jsonObj = new JSONObject(jsString);
            id = jsonObj.get("id").toString();
            String message = jsonObj.get("message").toString();
-          String  user_id=jsonObj.get("user_code").toString();
+           String user_id = request.getSession().getAttribute("user_code").toString();
            String result = vipGroupService.insert(message,user_id);
            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -181,15 +181,83 @@ public class VipGroupController {
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();}
+    @RequestMapping(value = "/VipGroupCodeExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String VipGroupCodeExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String vip_group_code = jsonObject.get("vip_group_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+           // Store store = storeService.getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
+            VipGroup vipGroup=vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+            if (vipGroup != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("会员分组编号已被使用");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("会员分组编号不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
+
+        }
+        return dataBean.getJsonStr();
+
+
+    }
+    @RequestMapping(value = "/VipGroupNameExist", method = RequestMethod.POST)
+    @ResponseBody
+    public String VipGroupNameExist(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String vip_group_name = jsonObject.get("vip_group_name").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            VipGroup vipGroup=vipGroupService.getVipGroupByName(corp_code,vip_group_name,Common.IS_ACTIVE_Y);
+            if (vipGroup != null) {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("会员分组名称已被使用");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("会员分组名称不存在");
+            }
+        } catch (Exception ex) {
+            dataBean.setId(id);
+
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+
+
+        }
+        return dataBean.getJsonStr();
+    }
+
+   /* @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectByAreaCode(HttpServletRequest request) {}*/
  /*
 
 
-    @RequestMapping(value = "/VipGroupCodeExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String selectByAreaCode(HttpServletRequest request) {}
-    @RequestMapping(value = "/VipGroupNameExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String selectByAreaCode(HttpServletRequest request) {}
+
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String selectByAreaCode(HttpServletRequest request) {}

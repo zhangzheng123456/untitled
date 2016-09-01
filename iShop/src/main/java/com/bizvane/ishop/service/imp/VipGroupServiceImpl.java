@@ -59,9 +59,12 @@ public class VipGroupServiceImpl implements VipGroupService{
         vipGroups = vipGroupMapper.selectVipGroups(corp_code);
         return vipGroups;
     }
+    @Override
     public List<VipGroup> selectVipGroupByCorp(String corp_code, String id) throws Exception {
         return vipGroupMapper.selectVipGroupByCorp(corp_code,id);
     }
+
+
     @Override
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
@@ -131,6 +134,10 @@ public class VipGroupServiceImpl implements VipGroupService{
     @Transactional
     public int delete(int id) throws Exception {
         return vipGroupMapper.deleteVipGroupById(id);
+    }
+    @Override
+    public VipGroup  getVipGroupByCode(String corp_code, String code,String isactive) throws Exception{
+        return vipGroupMapper.selectByVipGroupCode(corp_code,code,isactive);
     }
     @Override
    public  VipGroup   getVipGroupByName(String corp_code, String name,String isactive) throws Exception{
