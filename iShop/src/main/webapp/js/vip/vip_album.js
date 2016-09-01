@@ -463,7 +463,7 @@ $("#delete").click(function () {
     var tr = $("tbody input[type='checkbox']:checked").parents("tr");
     for (var i =tr.length-1, ID = ""; i >=0; i--) {
         var r = $(tr[i]).attr("id");
-        if (i < tr.length - 1) {
+        if (i >0) {
             ID += r + ",";
         } else {
             ID += r;
