@@ -24,13 +24,11 @@ $(".title").mouseover(function() {
 	ul = $(this).nextAll("ul");
 		ul.show();
 	$(this).parent(".choose").toggleClass("cur");
-	console.log(ul.css("display"))
 });
 $(".title").mouseout(function() {
 	ul = $(this).nextAll("ul");
 	$(this).parent(".choose").toggleClass("cur");
 	ul.hide();
-	console.log(ul.css("display"))
 });
 $(".select_Date").mouseover(function(){
 	$(this).parent(".choose").toggleClass("cur");
@@ -57,7 +55,6 @@ function getShopList(){
 		if(data.code=="0"){
 			var message=JSON.parse(data.message);
 			var list=JSON.parse(message.list);
-        	console.log(list);
         	$(".area_name").html(list[0].store_name);
         	$(".area_name").attr("title",list[0].store_name);
         	$(".area_name").attr("data-code",list[0].store_code);
@@ -70,7 +67,6 @@ function getShopList(){
         		var area_code=$(this).attr("data-code");
         		$(".area_name").attr("data-code",area_code);
         		$(".area_name").html($(this).html());
-        		console.log($(this).html());
 				staffRanking(today,area_code);
 				achAnalysis(today,area_code);
         	})
@@ -137,7 +133,6 @@ function staffRanking(a,b) {
 	oc.postRequire("post", "/home/staffRanking", "", param, function(data) {
 		var message = JSON.parse(data.message);
 		var total = message.user_count; //导购总数
-        console.log(message);
 		var store_achv_d = message.store_achv_d //日查看导购排行
 		var store_achv_m = message.store_achv_m //月查看导购排行
 		var store_achv_w = message.store_achv_w //周查看导购排行
@@ -236,7 +231,6 @@ function achieveChart(a,b){
 		var value=$("#chart_prev").html();
 		var perArr=[];
 		var dateArr=[];
-		console.log(JSON.parse(data.message));
 		if (value == "按周查看") {
 			TimeData=JSON.parse(infodata_W).amount;
 			$("#yeJiToTal").html(JSON.parse(infodata_W).total);
