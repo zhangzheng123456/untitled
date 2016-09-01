@@ -507,16 +507,18 @@ $("#leading_out").click(function(){
     var param={};
     param["function_code"]=funcCode;
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/l  ist/ getCols","0",param,function(data){
+    oc.postRequire("post","/list/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
             console.log(message);
-            $("#file_list ul").empty();
+            $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
-                $("#file_list ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                     +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
+            bianse();
+            $("#file_list_r ul").empty();
             whir.loading.remove();//移除加载框
         }else if(data.code=="-1"){
             alert(data.message);
@@ -524,11 +526,22 @@ $("#leading_out").click(function(){
         }
     })
 })
+function bianse(){
+    $("#file_list_l li:odd").css("backgroundColor","#fff");
+    $("#file_list_l li:even").css("backgroundColor","#ededed");
+    $("#file_list_r li:odd").css("backgroundColor","#fff");
+    $("#file_list_r li:even").css("backgroundColor","#ededed");
+}
 //导出提交的
 $("#file_submit").click(function(){
-    var li=$("#file_list input[type='checkbox']:checked").parents("li");
+    var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
     var param={};
     var tablemanager=[];
+    if(li.length=="0"){
+        frame();
+        $('.frame').html('请把要导出的列移到右边');
+        return;
+    }
     for(var i=0;i<li.length;i++){
         var r=$(li[i]).attr("data-name");
         var z=$(li[i]).children("span").html();

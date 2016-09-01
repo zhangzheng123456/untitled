@@ -321,7 +321,6 @@ function param_data(c, b) {
                         }
                         $("#paramValue_down li").click(function () {
                             $("#param_value").val($(this).html());
-
                         })
                     }
                 })
@@ -353,7 +352,7 @@ $("#PARAM_NAME").click(function () {
     }
 })
 $(document).click(function(e){
-    if($(e.target).is("#paramName_down")||$(e.target).is(".search_param")||$(e.target).is("#PARAM_NAME")){
+    if($(e.target).is("#paramName_down")||$(e.target).is("#search_param")||$(e.target).is("#PARAM_NAME")){
         return;
     }else{
         $("#paramName_down").hide();
@@ -376,4 +375,16 @@ $("#param_value").blur(function () {
     setTimeout(function () {
         $("#paramValue_down").hide();
     }, 200)
+})
+//自定义选择器
+$.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
+$("#search_param").on('keyup', function(event){
+    var text=$(this).val();
+    console.log(text);
+    $(this).siblings('li').addClass('store_list_kuang_hide');
+    $(this).siblings('li:searchableSelectContains('+text+')').removeClass('store_list_kuang_hide');
 })

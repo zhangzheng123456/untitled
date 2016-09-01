@@ -24,7 +24,7 @@ $(function(){
     $('#left_shift').click(function(){
         //先判断是否有选中
         var li=$("#file_list_l input[type='checkbox']:checked").parents("li");
-        if(li.length=="0"){          
+        if(li.length=="0"){
             frame();
             $('.frame').html('请先选择'); 
         }
@@ -56,7 +56,7 @@ $(function(){
         //获取全部的选项,删除并追加给对方
         var li=$("#file_list_l input[type='checkbox']").parents("li");
         for(var i=li.length;i>=0;i--){
-            $(li[i]).appendTo('#file_list_r ul'); 
+            $(li[i]).appendTo('#file_list_r ul');
         }
         bianse();
     });

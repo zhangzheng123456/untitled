@@ -6827,6 +6827,9 @@ body.skin-3 {
   height:140px;
   list-style:none;
   display:-webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: -ms-box;
 }
 .ibox-content_per .performance ul li{
   width: 100%;
@@ -6889,6 +6892,9 @@ body.skin-3 {
   margin:0;
   list-style:none;
   display:-webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: -ms-box;
 }
 .item_list_1 ul{
   padding:0;
@@ -6896,6 +6902,9 @@ body.skin-3 {
   height:55px;
   list-style:none;
   display:-webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: -ms-box;
 }
 .item_list_1 ul li{
   width: 100%;
@@ -6948,6 +6957,9 @@ body.skin-3 {
   width:160px;
   list-style:none;
   display:-webkit-box;
+  display: -moz-box;
+  display: -o-box;
+  display: -ms-box;
   vertical-align:middle;
   line-height:40px;
 }
@@ -7286,7 +7298,7 @@ body.skin-3 {
   margin-left:90px;
 }
 .u_c_note div{
-  text-align:center;
+  // text-align:center;
 }
 .u_c_note label{
   width:auto;
@@ -8398,9 +8410,10 @@ li.select_index>a>label>i{
   background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
   background-size:30px;
 }
-.search_param{
-  width: 400px;
+#search_param{
+  width: 390px;
   height: 30px;
-  border-radius: 20px;
+  border-radius: 8px;
   border: 1px solid #EAE2E2;
+  margin:3px 3px;
 }

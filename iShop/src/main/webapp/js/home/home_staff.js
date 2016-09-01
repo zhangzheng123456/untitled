@@ -245,7 +245,6 @@ function achieveChart(data){//获取折线图
         var value=$("#chart_prev").html();
         var perArr=[];
         var dateArr=[];
-        console.log(JSON.parse(data.message));
         if (value == "按周查看") {
             TimeData=JSON.parse(infodata_W).amount;
             $("#yeJiToTal_chart").html(JSON.parse(infodata_W).total);

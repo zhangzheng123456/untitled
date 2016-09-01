@@ -43,6 +43,7 @@
 }
 .parentFileBox>.fileBoxUl>li>.diyCancel {
 	background:url(../img/x_alt.png) no-repeat;
+	background-position: right top;
 }
 .parentFileBox>.fileBoxUl>li>.diySuccess {
 	background:url(../img/check_alt.png) no-repeat;
