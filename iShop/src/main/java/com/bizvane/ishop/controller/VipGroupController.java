@@ -39,20 +39,16 @@ public class VipGroupController {
             logger.info("json---------------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
             String role_code = request.getSession().getAttribute("role_code").toString();
-
-            String corp_code = jsonObject.get("corp_code").toString();
-            String searchValue = jsonObject.get("searchValue").toString();
             PageInfo<VipGroup> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, "", searchValue);
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, "", "");
             }else{
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code, searchValue);
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code, "");
 
             }
             JSONObject result = new JSONObject();

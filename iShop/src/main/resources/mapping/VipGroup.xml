@@ -37,6 +37,8 @@
         dvg.corp_code,
         dvg.modified_date,
         dvg.modifier,
+        dvg.created_date,
+        dvg.creater,
         dvg.isactive,
         dc.corp_name
         FROM def_vip_group dvg,def_corp dc
