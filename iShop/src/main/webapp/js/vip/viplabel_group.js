@@ -239,6 +239,8 @@ function superaddition(data,num){//页面加载循环
             + data[i].corp_name
             + "</td><td>"
             + data[i].remark
+            + "</td><td>"
+            + data[i].isactive
             + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
@@ -249,7 +251,7 @@ function jurisdiction(actions){
     $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
-            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
+            $('#jurisdiction').append("<li id='add'><a href='javascript:voi(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
         }else if(actions[i].act_name=="delete"){
             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
         }else if(actions[i].act_name=="edit"){
@@ -265,7 +267,7 @@ function qjia(){
         var message=JSON.parse(data.message);
         var actions=message.actions;
         jurisdiction(actions);
-        jumpBianse();
+        crud();
     })
 }
 qjia();
@@ -294,6 +296,53 @@ function GET(a,b){
         }
     });
 }
+//新增.编辑.删除操作
+function crud() {
+    //点击新增时页面进行的跳转
+    $('#add').click(function(){
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_groupadd.html");
+    })
+    //点击编辑时页面进行的跳转
+    $('#compile').click(function(){
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==1){
+            var id=$(tr).attr("id");
+            var return_jump={};//定义一个对象
+            return_jump["inx"]=inx;//跳转到第几页
+            return_jump["value"]=value;//搜索的值;
+            return_jump["filtrate"]=filtrate;//筛选的值
+            return_jump["param"]=JSON.stringify(param);//搜索定义的值
+            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+            return_jump["list"]=list;//筛选的请求的list;
+            return_jump["pageSize"]=pageSize;//每页多少行
+            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+            sessionStorage.setItem("id",id);
+            $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_groupedit.html");
+        }else if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+        }else if(tr.length>1){
+            frame();
+            $('.frame').html("不能选择多个");
+        }
+    })
+    //删除
+    $("#remove").click(function(){
+        var l=$(window).width();
+        var h=$(document.body).height();
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        $("#p").show();
+        $("#tk").show();
+        console.log(left);
+        $("#p").css({"width":+l+"px","height":+h+"px"});
+        $("#tk").css({"left":+left+"px","top":+tp+"px"});
+    })
+}
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色 
@@ -314,7 +363,7 @@ function jumpBianse(){
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/system/errorlog_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/viplabel_groupedit.html");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
@@ -332,22 +381,6 @@ function jumpBianse(){
             input.checked = false;
             $(this).removeClass("tr");
         }
-    })
-    //删除
-    $("#remove").click(function(){
-        var l=$(window).width();
-        var h=$(document.body).height();
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        if(tr.length==0){
-            frame();
-            $('.frame').html("请先选择");
-            return;
-        }
-        $("#p").show();
-        $("#tk").show();
-        console.log(left);
-        $("#p").css({"width":+l+"px","height":+h+"px"});
-        $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
 }
 //鼠标按下时触发的收索
@@ -421,17 +454,19 @@ $("#delete").click(function(){
     $("#p").hide();
     $("#tk").hide();
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    for(var i=0,ID="";i<tr.length;i++){
+    for(var i=tr.length-1,ID="";i>=0;i--){
         var r=$(tr[i]).attr("id");
-        if(i<tr.length-1){
+        if(i>0){
             ID+=r+",";
         }else{
             ID+=r;
         }
+        console.log(ID);
     }
+
     var params={};
     params["id"]=ID;
-    oc.postRequire("post","/errorLog/delete","0",params,function(data){
+    oc.postRequire("post","/viplablegroup/delete","0",params,function(data){
         if(data.code=="0"){
             if (value == "" && filtrate == "") {
                 frame();
@@ -682,7 +717,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/errorLog/screen","0",_param,function(data){
+    oc.postRequire("post","/viplablegroup/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
