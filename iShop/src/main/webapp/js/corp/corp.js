@@ -456,9 +456,9 @@ $("#delete").click(function(){
     $("#p").hide();
     $("#tk").hide();
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    for(var i=0,ID="";i<tr.length;i++){
+    for(var i=tr.length-1,ID="";i>=0;i--){
         var r=$(tr[i]).attr("id");
-        if(i<tr.length-1){
+        if(i>0){
             ID+=r+",";
         }else{
              ID+=r;
@@ -466,6 +466,7 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
+    console.log(params);
     oc.postRequire("post","/corp/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
@@ -832,9 +833,11 @@ $("#input-txt").keydown(function() {
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
+                param["pageNumber"]=inx;
                 POST(inx, pageSize);
             } else if (filtrate !== "") {
                 _param["pageSize"] = pageSize;
+                _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
         };
