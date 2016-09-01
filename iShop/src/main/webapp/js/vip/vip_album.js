@@ -371,7 +371,7 @@ function jumpBianse() {
         sessionStorage.setItem("return_jump", JSON.stringify(return_jump));
         sessionStorage.setItem("id", id);
         console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src", "/goods/fab_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_album_detail.html");
     })
     //删除
     $("#remove").click(function () {
