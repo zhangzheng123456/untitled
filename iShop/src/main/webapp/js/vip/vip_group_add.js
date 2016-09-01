@@ -1,7 +1,12 @@
 var oc = new ObjectControl();
 $(function(){
-    getcorplist();
     window.vip.init();
+    if($(".pre_title label").text()=="编辑会员分组"){
+        console.log("这是编辑界面")
+    }else{
+        console.log("这是新增界面");
+        getcorplist();
+    }
 });
 (function(root,factory){
     root.vip = factory();
@@ -34,7 +39,7 @@ $(function(){
     };
     vipjs.firstStep = function(){
         var inputText = jQuery(".conpany_msg").find(":text");
-        console.log(inputText.length)
+        //console.log(inputText.length)
         for(var i=0,length=inputText.length-1;i<length;i++){
             if(!bindFun(inputText[i]))return false;
         }
@@ -174,10 +179,10 @@ function getcorplist(){
     //获取所属企业列表
     var corp_command="/user/getCorpByUser";
     oc.postRequire("post", corp_command,"", "", function(data){
-        console.log(data);
+        //console.log(data);
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
-            console.log(msg);
+            //console.log(msg);
             var index=0;
             var corp_html='';
             var c=null;
