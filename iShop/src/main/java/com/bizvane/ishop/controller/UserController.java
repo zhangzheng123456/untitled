@@ -6,7 +6,10 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.*;
+import com.bizvane.ishop.utils.CheckUtils;
+import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.OutExeclHelper;
+import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
@@ -14,8 +17,8 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.json.JSONObject;
-import org.slf4j.LoggerFactory;
 import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -385,7 +388,7 @@ public class UserController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
+                    if (column3[i].getContents().toString().trim().equals("")) {
                         continue;
                     }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
@@ -402,7 +405,7 @@ public class UserController {
                 }
             }
             for (int i = 3; i < column3.length; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
+                if (column3[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
@@ -437,7 +440,7 @@ public class UserController {
 
             Pattern pattern4 = Pattern.compile("(^(\\d{3,4}-)?\\d{7,8})$|(1[3,4,5,7,8]{1}\\d{9})");
             for (int i = 3; i < column4.length; i++) {
-                if(column4[i].getContents().toString().trim().equals("")){
+                if (column4[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 Matcher matcher = pattern4.matcher(column4[i].getContents().toString().trim());
@@ -448,7 +451,7 @@ public class UserController {
                 }
             }
             for (int i = 3; i < column4.length; i++) {
-                if(column4[i].getContents().toString().trim().equals("")){
+                if (column4[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
@@ -460,7 +463,7 @@ public class UserController {
             }
 
             for (int i = 3; i < column1.length; i++) {
-                if(column1[i].getContents().toString().trim().equals("")){
+                if (column1[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 List<User> user = userService.userCodeExist(column1[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), "");
@@ -469,7 +472,7 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
-                List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(),"");
+                List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), "");
                 if (user11.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户ID已存在";
                     int b = 5 / 0;
@@ -481,7 +484,7 @@ public class UserController {
             //Pattern pattern7 = Pattern.compile("A\\d{4}");
 
             for (int i = 3; i < column7.length; i++) {
-                if(column7[i].getContents().toString().trim().equals("")){
+                if (column7[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 Matcher matcher = pattern.matcher(column7[i].getContents().toString().trim());
@@ -529,6 +532,7 @@ public class UserController {
                     }
                 }
             }
+            ArrayList<User> users = new ArrayList<User>();
             for (int i = 3; i < rows; i++) {
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 for (int j = 0; j < clos; j++) {
@@ -544,12 +548,12 @@ public class UserController {
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String position = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("") && user_code.equals("") && user_id2.equals("") && user_name.equals("") && phone.equals("")  && group_code.equals("")){
-                       continue;
+                    if (cellCorp.equals("") && user_code.equals("") && user_id2.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
+                        continue;
                     }
-                    if(cellCorp.equals("") || user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("")  || group_code.equals("")){
-                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
-                        int a=5/0;
+                    if (cellCorp.equals("") || user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("") || group_code.equals("")) {
+                        result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
+                        int a = 5 / 0;
                     }
                     if (!role_code.equals(Common.ROLE_SYS)) {
                         user.setCorp_code(corp_code);
@@ -604,10 +608,13 @@ public class UserController {
                     user.setModifier(user_id);
                     user.setIsactive("Y");
                     user.setCan_login("Y");
-                    result = userService.insert(user);
+                    users.add(user);
                 }
             }
-
+            for (User user : users
+                    ) {
+                result = userService.insert(user);
+            }
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -869,7 +876,7 @@ public class UserController {
                         msg = "请先删除用户的业绩目标，再删除用户" + user.getUser_code();
                         break;
                     }
-                    userService.deleteUserQrcode(corp_code,user_code);
+                    userService.deleteUserQrcode(corp_code, user_code);
                 }
                 userService.delete(Integer.valueOf(ids[i]), user_code, corp_code);
             }
@@ -1350,13 +1357,13 @@ public class UserController {
                 String auth_appid = corpWechat.getApp_id();
                 String is_authorize = corpWechat.getIs_authorize();
                 if (is_authorize.equals("Y")) {
-                    String result = userService.creatUserQrcode(corp_code,user_code,auth_appid,user_id);
-                    if (result.equals(Common.DATABEAN_CODE_ERROR)){
+                    String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_id);
+                    if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                         dataBean.setId(id);
                         dataBean.setMessage("生成二维码失败");
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         return dataBean.getJsonStr();
-                    }else if (result.equals("48001")){
+                    } else if (result.equals("48001")) {
                         dataBean.setId(id);
                         dataBean.setMessage("该功能未授权");
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -1406,17 +1413,17 @@ public class UserController {
                 if (corpWechat.getCorp_code().equals(corp_code)) {
                     String is_authorize = corpWechat.getIs_authorize();
                     if (is_authorize.equals("Y")) {
-                        String result = userService.creatUserQrcode(corp_code,user_code,auth_appid,user_id);
-                        if (result.equals(Common.DATABEAN_CODE_ERROR)){
+                        String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_id);
+                        if (result.equals(Common.DATABEAN_CODE_ERROR)) {
                             dataBean.setId(id);
                             dataBean.setMessage("生成二维码失败");
                             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                             return dataBean.getJsonStr();
-                        }else if (result.equals("48001")){
-                        dataBean.setId(id);
-                        dataBean.setMessage("该功能未授权");
-                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                        return dataBean.getJsonStr();
+                        } else if (result.equals("48001")) {
+                            dataBean.setId(id);
+                            dataBean.setMessage("该功能未授权");
+                            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                            return dataBean.getJsonStr();
                         }
                     } else {
                         dataBean.setId(id);

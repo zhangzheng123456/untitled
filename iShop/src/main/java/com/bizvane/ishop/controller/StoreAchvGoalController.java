@@ -37,10 +37,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -562,6 +559,7 @@ public class StoreAchvGoalController {
                     break;
                 }
             }
+            ArrayList<StoreAchvGoal> storeAchvGoals=new ArrayList<StoreAchvGoal>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     StoreAchvGoal storeAchvGoal = new StoreAchvGoal();
@@ -602,14 +600,21 @@ public class StoreAchvGoalController {
                     storeAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     storeAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
                     storeAchvGoal.setModifier(user_id);
-                    result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal));
-                    if (result.equals("店铺业绩重复")){
-                        result = "：第"+(i+1)+ "条店铺业绩目标已经设定";
-                        int b = 5 / 0;
-                    }
+                    storeAchvGoals.add(storeAchvGoal);
+//                    result = String.valueOf(storeAchvGoalService.insert(storeAchvGoal));
+//                    if (result.equals("店铺业绩重复")){
+//                        result = "：第"+(i+1)+ "条店铺业绩目标已经设定";
+//                        int b = 5 / 0;
+//                    }
                 }
             }
-
+            for (int i=0;i<storeAchvGoals.size();i++){
+                result = String.valueOf(storeAchvGoalService.insert(storeAchvGoals.get(i)));
+                if (result.equals("店铺业绩重复")){
+                    result = "：第"+(i+1)+ "条店铺业绩目标已经设定";
+                    int b = 5 / 0;
+                }
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

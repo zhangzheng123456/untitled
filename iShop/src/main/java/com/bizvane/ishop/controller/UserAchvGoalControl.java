@@ -428,7 +428,7 @@ public class UserAchvGoalControl {
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,userAchvGoals, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, userAchvGoals, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
@@ -485,9 +485,9 @@ public class UserAchvGoalControl {
             }
             Cell[] column3 = rs.getColumn(0);
             Pattern pattern1 = Pattern.compile("C\\d{5}");
-            if(!role_code.equals(Common.ROLE_SYS)) {
+            if (!role_code.equals(Common.ROLE_SYS)) {
                 for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
+                    if (column3[i].getContents().toString().trim().equals("")) {
                         continue;
                     }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
@@ -503,29 +503,29 @@ public class UserAchvGoalControl {
                     }
                 }
             }
-                for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
-                        continue;
-                    }
-                    Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行企业编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                    Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
-                    if (corp == null) {
-                        result = "：第" + (i + 1) + "行企业编号不存在";
-                        int b = 5 / 0;
-                        break;
-                    }
-
+            for (int i = 3; i < column3.length; i++) {
+                if (column3[i].getContents().toString().trim().equals("")) {
+                    continue;
                 }
+                Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
+                if (matcher.matches() == false) {
+                    result = "：第" + (i + 1) + "行企业编号格式有误";
+                    int b = 5 / 0;
+                    break;
+                }
+                Corp corp = corpService.selectByCorpId(0, column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
+                if (corp == null) {
+                    result = "：第" + (i + 1) + "行企业编号不存在";
+                    int b = 5 / 0;
+                    break;
+                }
+
+            }
 
 
             Cell[] column2 = rs.getColumn(1);
             for (int i = 3; i < column2.length; i++) {
-                if(column2[i].getContents().toString().trim().equals("")){
+                if (column2[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), column2[i].getContents().toString().trim(), "");
@@ -538,10 +538,10 @@ public class UserAchvGoalControl {
 
             Cell[] column1 = rs.getColumn(2);
             for (int i = 3; i < column1.length; i++) {
-                if(column1[i].getContents().toString().trim().equals("")){
+                if (column1[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
-                List<User> user = userService.userCodeExist(column1[i].getContents().toString().trim(), column3[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
+                List<User> user = userService.userCodeExist(column1[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (user.size() == 0) {
                     result = "：第" + (i + 1) + "行的用户编号不存在";
                     int b = 5 / 0;
@@ -552,7 +552,7 @@ public class UserAchvGoalControl {
             Cell[] column8 = rs.getColumn(3);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
             for (int i = 3; i < column8.length; i++) {
-                if(column8[i].getContents().toString().trim().equals("")){
+                if (column8[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 Matcher matcher = pattern2.matcher(column8[i].getContents().toString().trim());
@@ -565,7 +565,7 @@ public class UserAchvGoalControl {
             Cell[] column = rs.getColumn(4);
             Cell[] column5 = rs.getColumn(5);
             for (int i = 3; i < column.length; i++) {
-                if(column[i].getContents().toString().trim().equals("")){
+                if (column[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 if (!column[i].getContents().toString().trim().equals("D") && !column[i].getContents().toString().trim().equals("W") && !column[i].getContents().toString().trim().equals("M") && !column[i].getContents().toString().trim().equals("Y")) {
@@ -579,12 +579,12 @@ public class UserAchvGoalControl {
                 userAchvGoal.setTarget_type(column[i].getContents().toString().trim());
                 userAchvGoal.setTarget_time(column5[i].getContents().toString().trim());
                 int count = userAchvGoalService.checkUserAchvGoal(userAchvGoal);
-                if(count>0){
+                if (count > 0) {
                     result = "：用户" + userAchvGoal.getUser_code() + "业绩目标已经设定";
                     int b = 5 / 0;
                 }
             }
-
+            ArrayList<UserAchvGoal> userAchvGoals = new ArrayList<UserAchvGoal>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     UserAchvGoal userAchvGoal = new UserAchvGoal();
@@ -593,18 +593,18 @@ public class UserAchvGoalControl {
                     String user_code = rs.getCell(j++, i).getContents().toString().trim();
                     String user_target = rs.getCell(j++, i).getContents().toString().trim();
                     String target_type = rs.getCell(j++, i).getContents().toString().trim();
-                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),target_type);
+                    String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i), target_type);
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("")&&store_code.equals("") && user_code.equals("") && user_target.equals("") && target_type.equals("")  && cellTypeForDate.equals("")){
+                    if (cellCorp.equals("") && store_code.equals("") && user_code.equals("") && user_target.equals("") && target_type.equals("") && cellTypeForDate.equals("")) {
                         continue;
                     }
-                    if(cellCorp.equals("")||store_code.equals("") || user_code.equals("") || user_target.equals("") || target_type.equals("")  || cellTypeForDate.equals("")){
-                        result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
-                        int a=5/0;
+                    if (cellCorp.equals("") || store_code.equals("") || user_code.equals("") || user_target.equals("") || target_type.equals("") || cellTypeForDate.equals("")) {
+                        result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
+                        int a = 5 / 0;
                     }
-                    if(!role_code.equals(Common.ROLE_SYS)){
+                    if (!role_code.equals(Common.ROLE_SYS)) {
                         userAchvGoal.setCorp_code(corp_code);
-                    }else{
+                    } else {
                         userAchvGoal.setCorp_code(cellCorp);
                     }
                     userAchvGoal.setStore_code(store_code);
@@ -627,14 +627,21 @@ public class UserAchvGoalControl {
                     userAchvGoal.setCreated_date(Common.DATETIME_FORMAT.format(now));
                     userAchvGoal.setModified_date(Common.DATETIME_FORMAT.format(now));
                     userAchvGoal.setModifier(user_id);
-                    result = String.valueOf(userAchvGoalService.insert(userAchvGoal));
-                    if (result.equals("用户业绩重复")){
-                        result = "：用户" + userAchvGoal.getUser_code() + "业绩目标已经设定";
-                        int b = 5 / 0;
-                    }
+                    userAchvGoals.add(userAchvGoal);
+//                    result = String.valueOf(userAchvGoalService.insert(userAchvGoal));
+//                    if (result.equals("用户业绩重复")){
+//                        result = "：用户" + userAchvGoal.getUser_code() + "业绩目标已经设定";
+//                        int b = 5 / 0;
+//                    }
                 }
             }
-
+            for (int i = 0; i < userAchvGoals.size(); i++) {
+                result = String.valueOf(userAchvGoalService.insert(userAchvGoals.get(i)));
+                if (result.equals("用户业绩重复")) {
+                    result = "：用户" + userAchvGoals.get(i).getUser_code() + "业绩目标已经设定";
+                    int b = 5 / 0;
+                }
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);

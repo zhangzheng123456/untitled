@@ -37,10 +37,7 @@ import java.io.File;
 import java.lang.System;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -555,7 +552,7 @@ public class BrandController {
                 }
             }
             Cell[] column1 = rs.getColumn(2);
-            for (int i = 3; i < column.length; i++) {
+            for (int i = 3; i < column1.length; i++) {
                 if(column1[i].getContents().toString().trim().equals("")){
                     continue;
                 }
@@ -566,6 +563,7 @@ public class BrandController {
                     break;
                 }
             }
+            ArrayList<Brand> brands=new ArrayList<Brand>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
                     Brand brand = new Brand();
@@ -601,8 +599,12 @@ public class BrandController {
                     brand.setCreater(user_id);
                     brand.setModified_date(Common.DATETIME_FORMAT.format(now));
                     brand.setModifier(user_id);
-                    result = brandService.insertExecl(brand);
+                    brands.add(brand);
+                  //  result = brandService.insertExecl(brand);
                 }
+            }
+            for (Brand brand:brands) {
+                result = brandService.insertExecl(brand);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

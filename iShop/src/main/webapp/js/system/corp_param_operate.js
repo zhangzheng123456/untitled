@@ -41,9 +41,17 @@ var oc = new ObjectControl();
             if (paramjs.firstStep()) {
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
-                var PARAM_ID = $("#paramName_down li").attr("data-id");
+                var PARAM_ID = $("#PARAM_NAME").attr("data-id");
                 var REMARK = $("#REMARK").val();
                 var PARAM_VALUE = $("#param_value").val();
+                if(PARAM_NAME==""){
+                    alert("参数不能为空!");
+                    return;
+                }
+                if(PARAM_VALUE==""){
+                    alert("参数值不能为空!");
+                    return;
+                }
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
                 if (input.checked == true) {
@@ -72,10 +80,14 @@ var oc = new ObjectControl();
         $(".operedit_btn ul li:nth-of-type(1)").click(function () {
             if (paramjs.firstStep()) {
                 var id = sessionStorage.getItem("id");
-                var PARAM_ID = $("#paramName_down li").attr("data-id");
+                var PARAM_ID = $("#PARAM_NAME").attr("data-id");
                 var OWN_CORP = $("#OWN_CORP").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_VALUE = $("#param_value").val();
+                if(PARAM_VALUE==""){
+                    alert("参数值不能为空!");
+                    return;
+                }
                 var REMARK = $("#REMARK").val();
                 var ISACTIVE = "";
                 var input = $(".checkbox_isactive").find("input")[0];
@@ -172,6 +184,8 @@ jQuery(document).ready(function () {
                 var msg = JSON.parse(data.message);
                 var corp_code = msg.corp_code;
                 var param_id = msg.param_id;
+                var param_values=msg.param_values;
+                var param_type=msg.param_type;
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);
                 $("#OWN_CORP option").text(msg.corp_name);
@@ -179,8 +193,18 @@ jQuery(document).ready(function () {
                 $("#PARAM_NAME").attr("data-id", msg.param_id);
                 $("#REMARK").attr("data-name", msg.remark);
                 $("#REMARK").val(msg.remark);
+                if(param_type!=="custom"){
+                    $("#param_value").addClass("param_value");
+                    param_values=param_values.split(",");
+                    for(var j=0;j<param_values.length;j++){
+                        $("#paramValue_down").append('<li>'+param_values[j]+'</li>')
+                    }
+                    $("#paramValue_down li").click(function () {
+                        $("#param_value").val($(this).html());
+                    })
+                }
                 $("#param_value").val(msg.param_value);
-                $("#param_value").attr("data-name", msg.param_value);
+                // $("#param_value").attr("data-name", msg.param_value);
                 $("#created_time").val(msg.created_date);
                 $("#creator").val(msg.creater);
                 $("#modify_time").val(msg.modified_date);
@@ -265,10 +289,21 @@ function param_data(c, b) {
                         +msg[i].param_key
                         +'</span></li>')
                 }
-                $("#paramName_down li").click(function () {
+                $("#paramName_down li").click(function (e) {
+                    var event=window.event||arguments[0];
+                    if(event.stopPropagation){
+                        event.stopPropagation();
+                    }else{
+                        event.cancelBubble=true;
+                    }
+                    var dataId=$(this).attr("data-id");
+                    var dataType=$(this).attr("data-type");
+                    $("#PARAM_NAME").attr("data-id",dataId);
+                    $("#PARAM_NAME").attr("data-type",dataType);
                     var val = $(this).find("span").html();
                     $("#paramValue_down").empty();
                     $("#param_value").val("");
+                    $("#param_value").removeClass("param_value");
                     $("#PARAM_NAME").val(val);
                     var dataType=$(this).attr("data-type");
                     var datavalue=$(this).attr("data-value");
@@ -277,7 +312,10 @@ function param_data(c, b) {
                     console.log(datavalue);
                     if(dataType=="custom"){
                         $("#param_value").val(datavalue);
+                        $("#param_value").removeAttr("readonly");
                     }else{
+                        $("#param_value").attr("readonly","true");
+                        $("#param_value").addClass("param_value");
                         for(var j=0;j<datavalue.length;j++){
                             $("#paramValue_down").append('<li>'+datavalue[j]+'</li>')
                         }
@@ -313,11 +351,18 @@ $("#PARAM_NAME").click(function () {
         $("#paramName_down").hide();
     }
 })
-$("#PARAM_NAME").blur(function () {
-    setTimeout(function () {
+$(document).click(function(e){
+    if($(e.target).is("#paramName_down")||$(e.target).is("#search_param")||$(e.target).is("#PARAM_NAME")){
+        return;
+    }else{
         $("#paramName_down").hide();
-    }, 200)
+    }
 })
+// $("#PARAM_NAME").blur(function () {
+//     setTimeout(function () {
+//         $("#paramName_down").hide();
+//     }, 200)
+// })
 
 $("#param_value").click(function () {
     if ($("#paramValue_down").css("display") == "none") {
@@ -330,4 +375,16 @@ $("#param_value").blur(function () {
     setTimeout(function () {
         $("#paramValue_down").hide();
     }, 200)
+})
+//自定义选择器
+$.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
+$("#search_param").on('keyup', function(event){
+    var text=$(this).val();
+    console.log(text);
+    $(this).siblings('li').addClass('store_list_kuang_hide');
+    $(this).siblings('li:searchableSelectContains('+text+')').removeClass('store_list_kuang_hide');
 })

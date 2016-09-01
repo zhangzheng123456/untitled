@@ -178,7 +178,7 @@
                                         </a>
                                     </div>
                                 </div>
-                                </div>
+                                <!--</div>-->
                             </ul>
                         </div>
                         <div class="logo-element">
@@ -198,7 +198,7 @@
                     <div class="col-lg-4">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content_per">
-                                <label class="c_a_shoppe"><i id="corp_name"></i><img src="../img/img_spot_white.png"><i>贵阳荔星名店尹墨专柜</i></label>
+                                <span class="c_a_shoppe"><i id="corp_name"></i><img src="../img/img_spot_white.png"><i class="area_name"></i> <ul></ul></span>
                                 <div class="check_select">
                                     <div class="select_1 reg_testdate" >
                                         <span class="choose item" style="width:70px">
@@ -264,8 +264,8 @@
                             <div class="check_chart">
                                 <div class="select_2 reg_testdate"  >
                                     <span class="choose item" style="width:70px">
-                                        <div class="title" style="width:70px">按周查看</div>
-                                        <ul  class="select_Date">
+                                        <div class="title" style="width:70px" id="chart_prev">按周查看</div>
+                                        <ul  class="select_Date" id="chart">
                                             <li>按周查看</li>
                                             <li>按月查看</li>
                                             <li>按年查看</li>
@@ -275,7 +275,7 @@
                                      <input type="text" id="date1" class="laydate-icon icon-text">
                                  </span>
                                 </div>
-                                <span style="margin-right:10px;">业绩总额<label style="font-size: 20px">21114.00</label>元</span>
+                                <span style="margin-right:10px;">业绩总额<label style="font-size: 20px" id="yeJiToTal_chart"></label>元</span>
                             </div>
                             <div class="charts_holder">
                                 <canvas id="canvas_circle">
@@ -304,17 +304,18 @@
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
                                 <div class="item_total">
-                                    <span>导购总数<label>25</label></span>
-                                    <span class="average_per">平均业绩<label>30963</label></span>
+                                    <span>导购总数<label id="daoGouTotal"></label></span>
+                                    <span class="average_per">平均业绩<label id="Average"></label></span>
                                 </div>
                                 <div class="check_chart">
                                     <div class="select_3 reg_testdate"  >
                                         <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按周查看</div>
-                                            <ul  class="select_Date">
+                                            <div class="title" style="width:70px" id="daoGouRanking_prev">按日查看</div>
+                                            <ul  class="select_Date" id="daoGouRanking">
+                                                <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
-                                                <li>按年查看</li>
+                                                <!--<li>按年查看</li>-->
                                             </ul>
                                         </span>
                                    <span>
@@ -323,56 +324,19 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="list_titles_daogou_paihang">
+                            <div class="list_titles_daogou_paihang" id="staff_list">
                                 <table style="width:100%">
+                                    <thead>
                                     <tr>
                                        <th>排名</th>
                                        <th>姓名</th>
                                        <th>业绩</th>
-                                       <th>目标</th>
-                                       <th>完成度</th>
+                                       <!--<th>目标</th>-->
+                                       <!--<th>完成度</th>-->
                                        <th>贡献度</th>
                                     </tr>
-                                    <tr>
-                                        <td style="width:11%">1</td>
-                                        <td style="width:16%">朱亚晓</td>
-                                        <td style="width:21%"><em>￥</em>165395</td>
-                                        <td style="width:21%"><em>￥</em>165395</td>
-                                        <td style="width:18%"><img src="../img/completion_80.png" style="width:20px;height: 20px"/>81%</td>
-                                        <td style="width:13%"><img src="../img/contribution_30.png" style="width:4px;height: 20px" />32%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">2</td>
-                                        <td style="width:16%">姚思婷</td>
-                                        <td style="width:21%"><em>￥</em>55659</td>
-                                        <td style="width:21%"><em>￥</em>55659</td>
-                                        <td style="width:18%"><img src="../img/completion_70.png" style="width:20px;height: 20px"/>70%</td>
-                                        <td style="width:13%"><img src="../img/contribution_20.png" style="width:4px;height: 20px" />16%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">3</td>
-                                        <td style="width:16%">林思敏</td>
-                                        <td style="width:21%"><em>￥</em>46740</td>
-                                        <td style="width:21%"><em>￥</em>46740</td>
-                                        <td style="width:18%"><img src="../img/completion_70.png" style="width:20px;height: 20px"/>68%</td>
-                                        <td style="width:13%"><img src="../img/contribution_10.png" style="width:4px;height: 20px" />14%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">4</td>
-                                        <td style="width:16%">贺明云</td>
-                                        <td style="width:21%"><em>￥</em>17989</td>
-                                        <td style="width:21%"><em>￥</em>17989</td>
-                                        <td style="width:18%"><img src="../img/completion_60.png" style="width:20px;height: 20px"/>60%</td>
-                                        <td style="width:13%"><img src="../img/contribution_0.png" style="width:4px;height: 20px" />4%</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">5</td>
-                                        <td style="width:16%">曹璐</td>
-                                        <td style="width:21%"><em>￥</em>15693</td>
-                                        <td style="width:21%"><em>￥</em>15693</td>
-                                        <td style="width:18%"><img src="../img/completion_60.png" style="width:20px;height: 20px"/>59%</td>
-                                        <td style="width:13%"><img src="../img/contribution_0.png" style="width:4px;height: 20px" />3%</td>
-                                    </tr>
+                                    </thead>
+                                    <tbody></tbody>
                                 </table>
                             </div>
                         </div>
@@ -385,79 +349,44 @@
                                     <span><img src="../img/icon_hp_more.png" alt="更多" /></span>
                                     <span><img src="../img/icon_search_small.png" alt="搜索"/></span>
                                 </div>
-                                <div class="member_detail">
+                                <div class="member_detail" style="margin-top:20px;">
                                     <ul>
-                                    <li><div><span>会员总数</span></div><div><label>2895</label></div></li>
-                                        <li><div><span>生日会员</span></div><div>60</div></li>
-                                        <li><div><span>休眠会员</span></div><div>89</div></li>
-                                        <li><div><span>昨日新增</span></div><div>19</div></li>
+                                    <li><div><span>会员总数</span></div><div><label id="all_vip_count"></label></div></li>
+                                        <li><div><span>生日会员</span></div><div id="birth_vip_count"></div></li>
+                                        <li><div><span>休眠会员</span></div><div id="dormant_vip_count"></div></li>
+                                        <li><div><span>昨日新增</span></div><div id="new_vip_count"></div></li>
                                     </ul>
                                 </div>
-                                <div class="check_chart">
-                                    <div class="select_4 reg_testdate"  >
-                                        <span class="choose item" style="width:70px">
-                                            <div class="title" style="width:70px">按年查看</div>
-                                            <ul  class="select_Date">
-                                                <li>按年查看</li>
-                                            </ul>
-                                        </span>
-                                      <span>
-                                            <input type="text" id="date3" class="laydate-icon icon-text">
-                                        </span>
-                                    </div>
-                                </div>
+                                <!--<div class="check_chart">-->
+                                    <!--<div class="select_4 reg_testdate"  >-->
+                                        <!--<span class="choose item" style="width:70px">-->
+                                            <!--<div class="title" style="width:70px">按年查看</div>-->
+                                            <!--<ul  class="select_Date">-->
+                                                <!--<li>按年查看</li>-->
+                                            <!--</ul>-->
+                                        <!--</span>-->
+                                      <!--<span>-->
+                                            <!--<input type="text" id="date3" class="laydate-icon icon-text">-->
+                                        <!--</span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                             </div>
                             <div class="list_titles_daogou_paihang">
                                 <div class="list_titles_daogou_paihang">
-                                <table style="width: 100%">
+                                <table style="width: 100%" id="vip_list">
+                                    <thead>
                                     <tr>
-                                       <th>排名</th>
-                                       <th>姓名</th>
-                                       <th>等级</th>
-                                       <th>消费金额</th>
-                                       <th>总次数</th>
-                                       <th>导购</th>
+                                        <th>排名</th>
+                                        <th>姓名</th>
+                                        <th>等级</th>
+                                        <th>消费金额</th>
+                                        <th>总次数</th>
+                                        <!--<th>导购</th>-->
                                     </tr>
-                                    <tr>
-                                        <td style="width:11%">1</td>
-                                        <td style="width:16%">罗娅</td>
-                                        <td style="width:21%">钻石卡</td>
-                                        <td style="width:21%"><em>￥</em>29895</td>
-                                        <td style="width:18%">18</td>
-                                        <td style="width:13%">朱亚晓</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">2</td>
-                                        <td style="width:16%">孙晶晶</td>
-                                        <td style="width:21%">白金卡</td>
-                                        <td style="width:21%"><em>￥</em>19559</td>
-                                        <td style="width:18%">14</td>
-                                        <td style="width:13%">姚思婷</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">3</td>
-                                        <td style="width:16%">樊婕莹</td>
-                                        <td style="width:21%">白金卡</td>
-                                        <td style="width:21%"><em>￥</em>11440</td>
-                                        <td style="width:18%">12</td>
-                                        <td style="width:13%">林思敏</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">4</td>
-                                        <td style="width:16%">何军</td>
-                                        <td style="width:21%">男装自营卡</td>
-                                        <td style="width:21%"><em>￥</em>11089</td>
-                                        <td style="width:18%">10</td>
-                                        <td style="width:13%">贺明云</td>
-                                    </tr>
-                                    <tr>
-                                        <td style="width:11%">5</td>
-                                        <td style="width:16%">叶启明</td>
-                                        <td style="width:21%">女装体验卡</td>
-                                        <td style="width:21%"><em>￥</em>9693</td>
-                                        <td style="width:18%">15</td>
-                                        <td style="width:13%">曹璐</td>
-                                    </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    </tbody>
                                 </table>
                             </div>
                             </div>

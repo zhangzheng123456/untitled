@@ -50,7 +50,11 @@ var oc = new ObjectControl();
                     PARAM_TYPE="custom"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
-                if(PARAM_TYPE!=="custom" && PARAM_VALUE==""){
+                if(PARAM_TYPE==""){
+                    alert("参数不能为空！");
+                    return;
+                }
+                if(PARAM_TYPE=="list" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
                 }
@@ -87,7 +91,7 @@ var oc = new ObjectControl();
                     PARAM_TYPE="custom"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
-                if(PARAM_TYPE!=="custom" && PARAM_VALUE==""){
+                if(PARAM_TYPE=="list" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
                 }
@@ -184,10 +188,12 @@ jQuery(document).ready(function () {
                 var param_type=msg.param_type
                 if(param_type=="switch"){
                     param_type="开关";
+                    $("#PARAM_VALUE").attr("disabled","true");
                 }else if(param_type=="list"){
                     param_type="选择列表";
                 }else if(param_type=="custom"){
                     param_type="自定义";
+                    $("#PARAM_VALUE").attr("disabled","true");
                 }
                 $("#PARAM_TYPE").val(param_type);
                 $("#PARAM_VALUE").val(msg.param_values);
@@ -228,5 +234,11 @@ $("#PARAM_TYPE").blur(function () {
 
 $(".paramType li").click(function () {
     var val = $(this).html();
+    console.log(val);
     $("#PARAM_TYPE").val(val);
+    if(val=="自定义"||val=="开关"){
+        $("#PARAM_VALUE").attr("disabled","true");
+    }else if(val=="选择列表"){
+        $("#PARAM_VALUE").removeAttr("disabled");
+    }
 })

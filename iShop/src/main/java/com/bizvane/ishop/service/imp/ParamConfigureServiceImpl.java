@@ -102,7 +102,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 
         String param_name = jsonObject.get("param_name").toString();
         String param_type = jsonObject.get("param_type").toString();
-        String param_values = jsonObject.get("param_values").toString();
+        String param_values = "Y,N";
         String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
 
@@ -128,12 +128,18 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     @Override
     public String update(String message) throws Exception {
         String result = "";
+        String param_values =null;
         JSONObject jsonObject = new JSONObject(message);
         int param_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String param_name = jsonObject.get("param_name").toString();
         String param_type = jsonObject.get("param_type").toString();
-        String param_values = jsonObject.get("param_values").toString();
+        if(param_type.equals("switch")){
+            param_values = "Y,N";
+        }else{
+            param_values=jsonObject.get("param_values").toString();
+        }
+
         String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
 

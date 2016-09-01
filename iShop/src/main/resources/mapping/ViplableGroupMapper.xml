@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.ViplableGroupMapper">
+    <select id="selectViplabGroup" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT dvg.id,dvg.label_group_code,
+        dvg.label_group_name,dvg.modified_date,
+        dvg.remark,
+        dvg.modifier,dc.corp_name,dvg.isactive
+         FROM def_viplabel_group dvg,def_corp dc
+         WHERE dvg.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND  dvg.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            dvg.label_group_code LIKE concat('%', #{search_value},'%')
+            OR dvg.label_group_name LIKE concat('%', #{search_value},'%')
+            OR dvg.modified_date LIKE concat('%', #{search_value},'%')
+            OR dc.CORP_NAME LIKE concat('%', #{search_value},'%')
+            OR dvg.remark LIKE concat('%', #{search_value},'%')
+            OR dvg.modifier LIKE concat('%', #{search_value},'%')
+            OR dvg.isactive LIKE concat('%', #{search_value},'%')
+            )
+        </if>
+        ORDER BY dvg.ID DESC
+    </select>
+    <select id="selectViplabGroupScreen" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT dvg.id,dvg.label_group_code,
+        dvg.label_group_name,dvg.modified_date,
+        dvg.remark,
+        dvg.modifier,dc.corp_name,dvg.isactive
+        FROM def_viplabel_group dvg,def_corp dc
+        WHERE dvg.corp_code=dc.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND  dvg.CORP_CODE = #{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryValue!=''">
+                    dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        ORDER BY dvg.ID DESC
+    </select>
+    <delete id="delViplabGroupById">
+        DELETE FROM def_viplabel_group
+        WHERE ID=#{id};
+    </delete>
+    <insert id="addViplableGroup" parameterType="com.bizvane.ishop.entity.ViplableGroup">
+        INSERT INTO  def_viplabel_group
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+
+            <if test="label_group_code != null">
+                label_group_code,
+            </if>
+            <if test="label_group_name != null">
+                label_group_name,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="corp_code != null">
+                corp_code,
+            </if>
+            <if test="remark != null">
+                remark,
+            </if>
+            <if test="isactive != null">
+                ISACTIVE,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="label_group_code != null">
+                #{label_group_code},
+            </if>
+            <if test="label_group_name != null">
+                #{label_group_name},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="corp_code != null">
+                #{corp_code},
+            </if>
+            <if test="remark != null">
+                #{remark},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+
+    <update id="updViplableGroupById" parameterType="com.bizvane.ishop.entity.ViplableGroup">
+        UPDATE  def_viplabel_group
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="label_group_code != null">
+                label_group_code=  #{label_group_code},
+            </if>
+            <if test="label_group_name != null">
+                label_group_name= #{label_group_name},
+            </if>
+            <if test="modified_date != null">
+                modified_date=    #{modified_date},
+            </if>
+            <if test="created_date != null">
+                created_date= #{created_date},
+            </if>
+            <if test="creater != null">
+                creater=   #{creater},
+            </if>
+            <if test="modifier != null">
+                modifier=   #{modifier},
+            </if>
+            <if test="corp_code != null">
+                corp_code=   #{corp_code},
+            </if>
+            <if test="remark != null">
+                remark=#{remark},
+            </if>
+            <if test="isactive != null">
+                isactive=  #{isactive},
+            </if>
+        </trim>
+        WHERE ID=#{id};
+    </update>
+    <select id="selectViplableGroupById" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT * FROM def_viplabel_group
+        WHERE id=#{id}
+    </select>
+</mapper>

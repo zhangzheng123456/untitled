@@ -135,7 +135,13 @@ function superadditionArea(c) {
 			+ "</td><td>" + c[i].amt_trade//折扣
 			+ "</td></tr>"
 	}
-	$("#area_list tbody").html(area_list);
+	var nodata="<tr><td colSpan='3' style='padding-top:70px;'>暂无数据</td></tr>";
+	if(c.length==0){
+		$("#area_list tbody").html(nodata);
+	}else {
+		$("#area_list tbody").html(area_list);
+	}
+
 }
 //店铺排行加载
 function superadditionStore(c) {
@@ -147,7 +153,12 @@ function superadditionStore(c) {
 			+ "</td><td>" + c[i].discount//折扣
 			+ "</td></tr>"
 	}
-	$("#store_list tbody").html(area_list);
+	var nodata="<tr><td colSpan='3' style='padding-top:70px;'>暂无数据</td></tr>";
+	if(c.length==0){
+		$("#store_list tbody").html(nodata);
+	}else {
+		$("#store_list tbody").html(area_list);
+	}
 }
 function areaRanking(a){//区域排行
 	var param={};
@@ -216,7 +227,7 @@ function achieveChart(data){//获取折线图
 		for(index in TimeData){
 			perArr.push(TimeData[index].trade);
 			if(value == "按年查看"){
-				dateArr.push(TimeData[index].date.substring(5));
+				dateArr.push(TimeData[index].date.substring(2,7));
 			}else {
 				dateArr.push(TimeData[index].date);
 			}
@@ -226,7 +237,7 @@ function achieveChart(data){//获取折线图
 			for(index in TimeData){
 				perArr.push(TimeData[index].trade);
 				if(V == "按年查看"){
-					dateArr.push(TimeData[index].date.substring(5));
+					dateArr.push(TimeData[index].date.substring(2,7));
 				}else {
 					dateArr.push(TimeData[index].date);
 				}
@@ -257,6 +268,9 @@ function achieveChart(data){//获取折线图
 				 init(perArr,dateArr);
 			}
 
+		});
+		$(window).resize(function() {
+			init(perArr,dateArr);
 		});
 	})
 }
