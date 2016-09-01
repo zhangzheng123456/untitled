@@ -585,7 +585,6 @@ function frame(){
         }
         var params= {};
         params["id"] = ID;
-        console.log(params);
         oc.postRequire("post", "/shop/delete", "0", params, function(data) {
             if (data.code == "0") {
                 if (value == "" && filtrate == "") {
