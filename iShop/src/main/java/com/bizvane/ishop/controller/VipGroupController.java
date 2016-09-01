@@ -41,8 +41,8 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+            int page_size = Integer.parseInt(request.getParameter("pageSize"));
             String role_code = request.getSession().getAttribute("role_code").toString();
 
             String corp_code = jsonObject.get("corp_code").toString();
