@@ -190,7 +190,7 @@ jQuery(document).ready(function(){
 				var phone=$("#phone").val(msg.phone);
 				var birthday=$("#birthday").val(msg.birthday);
 				var register_date=$("#register_date").val(msg.register_date);
-				
+
 				var OWN_CORP=$("#OWN_CORP").val(msg.corp_code);
 				var OWN_STORE=$("#OWN_STORE").val(msg.store_code);
 				var OWN_SALES=$("#OWN_SALES").val(msg.user_code);

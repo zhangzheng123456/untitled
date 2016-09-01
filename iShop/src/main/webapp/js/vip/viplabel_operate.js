@@ -181,7 +181,7 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 				getcorplist(corp_code);
-				// $('#LABEL_TYPE').searchableSelect();
+				getlabelGroup();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -193,7 +193,7 @@ jQuery(document).ready(function(){
 		});
 	}else{
 		getcorplist(a);
-		// $('#LABEL_TYPE').searchableSelect();
+		getlabelGroup();
 	}
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
@@ -201,6 +201,17 @@ jQuery(document).ready(function(){
 	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
 	});
+
+	//标签分组下拉菜单
+	$("#label_group").click(function () {
+		$(".labelgp_select").show()
+	})
+
+	$("#label_group").blur(function () {
+		setTimeout(function () {
+			$(".labelgp_select").hide();
+		}, 200)
+	})
 });
 function getcorplist(a){
 	//获取所属企业列表
@@ -236,4 +247,27 @@ function getcorplist(a){
 			});
 		}
 	});//获取企业列表信息
+}
+function getlabelGroup(){
+	var corp_code=$("#OWN_CORP").val();
+	console.log(corp_code);
+	var param={};
+	    param["corp_code"]=corp_code;
+	oc.postRequire("post","/viplablegroup/selectViplabGroupList","",param,function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			for(var i=0;i<msg.length;i++){
+				$(".labelgp_select").append('<li id="'+msg[i].label_group_code+'">'+msg[i].label_group_name+'</li>')
+			}
+		}else if(data.code=="-1") {
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	})
 }
