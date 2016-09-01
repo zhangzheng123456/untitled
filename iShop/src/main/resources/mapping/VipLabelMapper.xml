@@ -32,16 +32,17 @@
         vt.created_date,
         vt.creater,
         vt.isactive,
-        cc.corp_name,
-        vt.label_group_code,
-        dvg.label_group_name
+        cc.corp_name
+--         ,vt.label_group_code,
+--         dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
-        ,def_viplabel_group dvg
+--         ,def_viplabel_group dvg
         WHERE
-        vt.corp_code=cc.corp_code AND
-        vt.label_group_code=dvg.label_group_code AND
-        cc.corp_code=dvg.corp_code
+        vt.corp_code=cc.corp_code
+--         AND
+--         vt.label_group_code=dvg.label_group_code AND
+--         cc.corp_code=dvg.corp_code
         and  vt.id=#{id}
     </select>
 
@@ -165,16 +166,17 @@
         vt.created_date,
         vt.creater,
         vt.isactive,
-        cc.corp_name,
-        vt.label_group_code,
-        dvg.label_group_name
+        cc.corp_name
+--         ,vt.label_group_code,
+--         dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
-        ,def_viplabel_group dvg
+--         ,def_viplabel_group dvg
         WHERE
-        vt.corp_code=cc.corp_code AND
-        vt.label_group_code=dvg.label_group_code AND
-        cc.corp_code=dvg.corp_code
+        vt.corp_code=cc.corp_code
+--         AND
+--         vt.label_group_code=dvg.label_group_code AND
+--         cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and vt.corp_code=#{corp_code}
         </if>
@@ -185,7 +187,7 @@
             or vt.label_name like concat('%',#{search_value},'%')
             or vt.label_type like concat('%',#{search_value},'%')
             or cc.corp_name like concat('%',#{search_value},'%')
-            or dvg.label_group_name like concat('%',#{search_value},'%')
+--             or dvg.label_group_name like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY vt.id DESC
@@ -193,15 +195,17 @@
     <select id="selectAllViplabelScreen" resultMap="VipLabels">
         SELECT
         vt.*,
-        cc.corp_name,
-        dvg.label_group_name
+        cc.corp_name
+--         ,
+--         dvg.label_group_name
         FROM
         def_viplabel vt,DEF_CORP cc
-        ,def_viplabel_group dvg
+--         ,def_viplabel_group dvg
         WHERE
-        vt.corp_code=cc.corp_code AND
-        vt.label_group_code=dvg.label_group_code AND
-        cc.corp_code=dvg.corp_code
+        vt.corp_code=cc.corp_code
+--         AND
+--         vt.label_group_code=dvg.label_group_code AND
+--         cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and vt.corp_code=#{corp_code}
         </if>
@@ -211,9 +215,9 @@
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     cc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <when test="entryValue!='' and entryKey=='label_group_name'">
-                    dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
-                </when>
+                <!--<when test="entryValue!='' and entryKey=='label_group_name'">-->
+                    <!--dvg.${entryKey} LIKE concat('%',#{entryValue},'%')-->
+                <!--</when>-->
                 <when test="entryValue!=''">
                     vt.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
