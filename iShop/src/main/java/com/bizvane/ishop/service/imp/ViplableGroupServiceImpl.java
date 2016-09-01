@@ -66,4 +66,19 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
     public ViplableGroup selectViplableGroupById(int id) throws SQLException {
         return viplableGroupMapper.selectViplableGroupById(id);
     }
+
+    @Override
+    public List<ViplableGroup> checkCodeOnly(String corp_code, String label_group_code, String isactive) throws SQLException {
+        return viplableGroupMapper.checkCodeOnly(corp_code,label_group_code,isactive);
+    }
+
+    @Override
+    public List<ViplableGroup> checkNameOnly(String corp_code, String label_group_name, String isactive) throws SQLException {
+        return viplableGroupMapper.checkCodeOnly(corp_code,label_group_name,isactive);
+    }
+
+    @Override
+    public List<ViplableGroup> selectViplabGroupList(String corp_code) throws SQLException {
+        return viplableGroupMapper.selectViplabGroupList(corp_code);
+    }
 }

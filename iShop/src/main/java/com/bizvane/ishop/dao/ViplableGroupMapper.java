@@ -25,4 +25,11 @@ public interface ViplableGroupMapper {
     int updViplableGroupById(ViplableGroup viplableGroup) throws SQLException;
 
     ViplableGroup selectViplableGroupById(@Param("id") int id) throws SQLException;
+
+    List<ViplableGroup> checkCodeOnly(@Param("corp_code")String corp_code,@Param("label_group_code")String label_group_code,@Param("isactive")String isactive);
+
+    List<ViplableGroup> checkNameOnly(@Param("corp_code")String corp_code,@Param("label_group_name")String label_group_name,@Param("isactive")String isactive);
+
+    List<ViplableGroup> selectViplabGroupList(@Param("corp_code")String corp_code);
+
 }

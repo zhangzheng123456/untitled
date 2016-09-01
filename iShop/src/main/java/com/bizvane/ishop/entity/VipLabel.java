@@ -25,6 +25,24 @@ public class VipLabel {
     private ViplableGroup viplablegroup;
     private String label_group_code;
     private String label_group_name;
+    private String countlable;
+    private String label_id;
+
+    public String getCountlable() {
+        return countlable;
+    }
+
+    public void setCountlable(String countlable) {
+        this.countlable = countlable;
+    }
+
+    public String getLabel_id() {
+        return label_id;
+    }
+
+    public void setLabel_id(String label_id) {
+        this.label_id = label_id;
+    }
 
     public ViplableGroup getViplablegroup() {
         return viplablegroup;

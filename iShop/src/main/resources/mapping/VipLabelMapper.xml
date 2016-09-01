@@ -232,4 +232,11 @@
          and
         corp_code=#{corp_code}
     </select>
+
+    <select id="countLable" resultType="com.bizvane.ishop.entity.VipLabel">
+        SELECT count(1) countlable,corp_code,label_id FROM rel_vip_label
+        GROUP BY label_id
+        HAVING corp_code=#{corp_code}
+        AND label_id=#{label_id}
+    </select>
 </mapper>

@@ -6,10 +6,10 @@
         dvg.label_group_name,dvg.modified_date,
         dvg.remark,
         dvg.modifier,dc.corp_name,dvg.isactive
-         FROM def_viplabel_group dvg,def_corp dc
-         WHERE dvg.corp_code=dc.corp_code
+        FROM def_viplabel_group dvg,def_corp dc
+        WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            AND  dvg.CORP_CODE = #{corp_code}
+            AND dvg.CORP_CODE = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
@@ -33,10 +33,10 @@
         FROM def_viplabel_group dvg,def_corp dc
         WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            AND  dvg.CORP_CODE = #{corp_code}
+            AND dvg.CORP_CODE = #{corp_code}
         </if>
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     dc.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -56,7 +56,7 @@
         WHERE ID=#{id};
     </delete>
     <insert id="addViplableGroup" parameterType="com.bizvane.ishop.entity.ViplableGroup">
-        INSERT INTO  def_viplabel_group
+        INSERT INTO def_viplabel_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
 
             <if test="label_group_code != null">
@@ -120,34 +120,34 @@
 
 
     <update id="updViplableGroupById" parameterType="com.bizvane.ishop.entity.ViplableGroup">
-        UPDATE  def_viplabel_group
+        UPDATE def_viplabel_group
         <trim prefix="SET" suffixOverrides=",">
             <if test="label_group_code != null">
-                label_group_code=  #{label_group_code},
+                label_group_code= #{label_group_code},
             </if>
             <if test="label_group_name != null">
                 label_group_name= #{label_group_name},
             </if>
             <if test="modified_date != null">
-                modified_date=    #{modified_date},
+                modified_date= #{modified_date},
             </if>
             <if test="created_date != null">
                 created_date= #{created_date},
             </if>
             <if test="creater != null">
-                creater=   #{creater},
+                creater= #{creater},
             </if>
             <if test="modifier != null">
-                modifier=   #{modifier},
+                modifier= #{modifier},
             </if>
             <if test="corp_code != null">
-                corp_code=   #{corp_code},
+                corp_code= #{corp_code},
             </if>
             <if test="remark != null">
                 remark=#{remark},
             </if>
             <if test="isactive != null">
-                isactive=  #{isactive},
+                isactive= #{isactive},
             </if>
         </trim>
         WHERE ID=#{id};
@@ -155,5 +155,26 @@
     <select id="selectViplableGroupById" resultType="com.bizvane.ishop.entity.ViplableGroup">
         SELECT * FROM def_viplabel_group
         WHERE id=#{id}
+    </select>
+
+    <select id="checkCodeOnly" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT * FROM def_viplabel_group
+        WHERE corp_code=#{corp_code}
+        AND label_group_code=#{label_group_code}
+        AND isactive=#{isactive}
+    </select>
+    <select id="checkNameOnly" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT * FROM def_viplabel_group
+        WHERE corp_code=#{corp_code}
+        AND label_group_name=#{label_group_name}
+        AND isactive=#{isactive}
+    </select>
+    <select id="selectViplabGroupList" resultType="com.bizvane.ishop.entity.ViplableGroup">
+        SELECT
+        dvg.label_group_code,dvg.label_group_name
+        FROM def_viplabel_group dvg
+        WHERE 1=1
+        AND dvg.CORP_CODE = #{corp_code}
+        AND dvg.isactive='Y'
     </select>
 </mapper>

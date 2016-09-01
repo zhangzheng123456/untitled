@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipLabel;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
 import java.util.Map;
@@ -71,4 +72,7 @@ public interface VipLabelService {
      * @throws SQLException
      */
     String VipLabelNameExist(String corp_code, String tag_name) throws Exception;
+
+
+    VipLabel countLable(String corp_code, String label_id)throws Exception;
 }

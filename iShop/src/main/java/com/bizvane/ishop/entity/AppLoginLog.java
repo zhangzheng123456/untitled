@@ -21,6 +21,33 @@ public class AppLoginLog {
     private String creater;
     //是否可用
     private String isactive;
+    private String store_name;
+    private String position;
+    private String phone;
+
+    public String getStore_name() {
+        return store_name;
+    }
+
+    public void setStore_name(String store_name) {
+        this.store_name = store_name;
+    }
+
+    public String getPosition() {
+        return position;
+    }
+
+    public void setPosition(String position) {
+        this.position = position;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public String getCorp_name() {
         return corp_name;
