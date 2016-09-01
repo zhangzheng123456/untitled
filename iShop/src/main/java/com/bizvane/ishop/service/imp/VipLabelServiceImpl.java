@@ -73,6 +73,8 @@ public class VipLabelServiceImpl implements VipLabelService {
         list = vipLabelMapper.selectAllVipLabel(corp_code, search_value);
         for (VipLabel vipLabel:list) {
             vipLabel.setIsactive(CheckUtils.CheckIsactive(vipLabel.getIsactive()));
+            VipLabel vipLabel1 = countLable(vipLabel.getCorp_code(), vipLabel.getId() + "");
+            vipLabel.setCountlable(vipLabel1.getCountlable());
             if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
                 vipLabel.setLabel_type("");
             }else if(vipLabel.getLabel_type().equals("user")){
@@ -97,6 +99,8 @@ public class VipLabelServiceImpl implements VipLabelService {
         labels = vipLabelMapper.selectAllViplabelScreen(params);
         for (VipLabel vipLabel:labels) {
             vipLabel.setIsactive(CheckUtils.CheckIsactive(vipLabel.getIsactive()));
+            VipLabel vipLabel1 = countLable(vipLabel.getCorp_code(), vipLabel.getId() + "");
+            vipLabel.setCountlable(vipLabel1.getCountlable());
             if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
                 vipLabel.setLabel_type("");
             }else if(vipLabel.getLabel_type().equals("user")){
@@ -130,5 +134,10 @@ public class VipLabelServiceImpl implements VipLabelService {
             result = Common.DATABEAN_CODE_SUCCESS;
         }
         return result;
+    }
+
+    @Override
+    public VipLabel countLable(String corp_code, String label_id)throws Exception {
+        return vipLabelMapper.countLable(corp_code,label_id);
     }
 }

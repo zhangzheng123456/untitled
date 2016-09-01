@@ -2,8 +2,10 @@ package com.bizvane.ishop.service;
 
 import com.bizvane.ishop.entity.ViplableGroup;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -21,5 +23,11 @@ public interface ViplableGroupService {
     int updViplableGroupById(ViplableGroup viplableGroup) throws SQLException;
 
     ViplableGroup selectViplableGroupById(int id) throws SQLException;
+
+    List<ViplableGroup> checkCodeOnly(String corp_code,String label_group_code,String isactive) throws SQLException;
+
+    List<ViplableGroup> checkNameOnly(String corp_code,String label_group_name,String isactive) throws SQLException;
+
+    List<ViplableGroup> selectViplabGroupList(String corp_code) throws SQLException;
 
 }

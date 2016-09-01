@@ -18,7 +18,11 @@
     <select id="selectAllAppLoginLog" resultMap="AppLoginLog">
       SELECT acc_app_login_log.ID,
       acc_app_login_log.PLATFORM,
+      acc_app_login_log.USER_CODE,
       acc_app_login_log.USER_NAME,
+        acc_app_login_log.STORE_NAME,
+        acc_app_login_log.POSITION,
+        acc_app_login_log.PHONE,
       def_corp.CORP_NAME,
       acc_app_login_log.TIME,
       acc_app_login_log.created_date
@@ -43,7 +47,11 @@
     <select id="selectAllScreen" resultMap="AppLoginLog">
         SELECT acc_app_login_log.ID,
         acc_app_login_log.PLATFORM,
+        acc_app_login_log.USER_CODE,
         acc_app_login_log.USER_NAME,
+        acc_app_login_log.STORE_NAME,
+        acc_app_login_log.POSITION,
+        acc_app_login_log.PHONE,
         def_corp.CORP_NAME,
         acc_app_login_log.TIME,
         acc_app_login_log.created_date

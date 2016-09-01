@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -259,6 +260,96 @@ public class ViplableGroupController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/checkCodeOnly", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkCodeOnly(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String label_group_code = jsonObject.get("label_group_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(corp_code, label_group_code, Common.IS_ACTIVE_Y);
+            if(viplableGroups.size()>0){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("该编号已被使用");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("该编号可以使用");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            return dataBean.getJsonStr();
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/checkNameOnly", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkNameOnly(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String label_group_name = jsonObject.get("label_group_name").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(corp_code, label_group_name, Common.IS_ACTIVE_Y);
+            if(viplableGroups.size()>0){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage("该名称已被使用");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("该名称可以使用");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            return dataBean.getJsonStr();
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/selectViplabGroupList", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectViplabGroupList(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            List<ViplableGroup> viplableGroups = viplableGroupService.selectViplabGroupList(corp_code);
+            JSONObject result = new JSONObject();
+            result.put("viplableGroups", JSON.toJSONString(viplableGroups));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            return dataBean.getJsonStr();
         }
         return dataBean.getJsonStr();
     }
