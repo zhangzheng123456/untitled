@@ -33,4 +33,6 @@ public interface VipLabelMapper {
     // VipLabel selectTypeCodeByName(@Param("corp_code") String corp_code, @Param("type_name") String type_name);
 
     VipLabel countLable(@Param("corp_code")String corp_code,@Param("label_id")String label_id)throws Exception;
+
+    List<VipLabel> lableList(@Param("corp_code")String corp_code,@Param("label_group_code")String label_group_code);
 }

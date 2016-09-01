@@ -243,4 +243,9 @@
         HAVING corp_code=#{corp_code}
         AND label_id=#{label_id}
     </select>
+    <select id="lableList" resultType="com.bizvane.ishop.entity.VipLabel">
+        SELECT * FROM def_viplabel
+        WHERE corp_code=#{corp_code}
+        AND label_group_code=#{label_group_code}
+    </select>
 </mapper>

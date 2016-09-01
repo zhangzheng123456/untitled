@@ -6,6 +6,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,4 +76,7 @@ public interface VipLabelService {
 
 
     VipLabel countLable(String corp_code, String label_id)throws Exception;
+
+    List<VipLabel> lableList(String corp_code, String label_group_code);
+
 }

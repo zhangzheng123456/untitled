@@ -181,4 +181,9 @@ public class VipLabelServiceImpl implements VipLabelService {
     public VipLabel countLable(String corp_code, String label_id)throws Exception {
         return vipLabelMapper.countLable(corp_code,label_id);
     }
+
+    @Override
+    public List<VipLabel> lableList(String corp_code, String label_group_code) {
+        return vipLabelMapper.lableList(corp_code,label_group_code);
+    }
 }

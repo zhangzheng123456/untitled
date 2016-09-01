@@ -5,8 +5,10 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.AppLoginLog;
 import com.bizvane.ishop.entity.ValidateCode;
+import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.entity.ViplableGroup;
 import com.bizvane.ishop.service.AppLoginLogService;
+import com.bizvane.ishop.service.VipLabelService;
 import com.bizvane.ishop.service.ViplableGroupService;
 import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
@@ -31,6 +33,9 @@ import java.util.Map;
 public class ViplableGroupController {
     @Autowired
     private ViplableGroupService viplableGroupService;
+
+    @Autowired
+    private VipLabelService vipLabelService;
     String id;
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
@@ -143,6 +148,7 @@ public class ViplableGroupController {
     @Transactional
     public String delete(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String result="";
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
@@ -151,6 +157,14 @@ public class ViplableGroupController {
             JSONObject jsonObject = new JSONObject(message);
             String app_id = jsonObject.get("id").toString();
             String[] ids = app_id.split(",");
+            for (int i=0;i<ids.length;i++){
+                ViplableGroup viplableGroup = viplableGroupService.selectViplableGroupById(Integer.valueOf(ids[i]));
+                List<VipLabel> vipLabels = vipLabelService.lableList(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code());
+                if(vipLabels.size()>0){
+                    result="所选标签分组下有会员标签正在使用,不可删除";
+                    int a=5/0;
+                }
+            }
             for (int i = 0; i < ids.length; i++) {
                 viplableGroupService.delViplabGroupById(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -160,8 +174,7 @@ public class ViplableGroupController {
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            return dataBean.getJsonStr();
+            dataBean.setMessage(result);
         }
         return dataBean.getJsonStr();
     }
