@@ -74,7 +74,11 @@ public class VipLabelServiceImpl implements VipLabelService {
         for (VipLabel vipLabel:list) {
             vipLabel.setIsactive(CheckUtils.CheckIsactive(vipLabel.getIsactive()));
             VipLabel vipLabel1 = countLable(vipLabel.getCorp_code(), vipLabel.getId() + "");
-            vipLabel.setCountlable(vipLabel1.getCountlable());
+            if(vipLabel1==null) {
+                vipLabel.setCountlable("0");
+            }else{
+                vipLabel.setCountlable(vipLabel1.getCountlable());
+            }
             if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
                 vipLabel.setLabel_type("");
             }else if(vipLabel.getLabel_type().equals("user")){
@@ -100,7 +104,11 @@ public class VipLabelServiceImpl implements VipLabelService {
         for (VipLabel vipLabel:labels) {
             vipLabel.setIsactive(CheckUtils.CheckIsactive(vipLabel.getIsactive()));
             VipLabel vipLabel1 = countLable(vipLabel.getCorp_code(), vipLabel.getId() + "");
-            vipLabel.setCountlable(vipLabel1.getCountlable());
+            if(vipLabel1==null) {
+                vipLabel.setCountlable("0");
+            }else{
+                vipLabel.setCountlable(vipLabel1.getCountlable());
+            }
             if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
                 vipLabel.setLabel_type("");
             }else if(vipLabel.getLabel_type().equals("user")){
