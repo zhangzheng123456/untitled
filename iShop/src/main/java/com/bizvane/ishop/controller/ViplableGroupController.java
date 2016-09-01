@@ -190,10 +190,16 @@ public class ViplableGroupController {
             viplableGroup.setCreater(user_id);
             viplableGroup.setModified_date(Common.DATETIME_FORMAT.format(date));
             viplableGroup.setModifier(user_id);
-            viplableGroupService.addViplableGroup(viplableGroup);
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("add success");
+            String result = viplableGroupService.addViplableGroup(viplableGroup);
+            if(result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
@@ -281,11 +287,11 @@ public class ViplableGroupController {
             if(viplableGroups.size()>0){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该编号已被使用");
+                dataBean.setMessage("会员标签分组编号已被使用");
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("该编号可以使用");
+                dataBean.setMessage("会员标签分组编号可以使用");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -309,15 +315,15 @@ public class ViplableGroupController {
             JSONObject jsonObject = new JSONObject(message);
             String label_group_name = jsonObject.get("label_group_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(corp_code, label_group_name, Common.IS_ACTIVE_Y);
+            List<ViplableGroup> viplableGroups = viplableGroupService.checkNameOnly(corp_code, label_group_name, Common.IS_ACTIVE_Y);
             if(viplableGroups.size()>0){
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setId(id);
-                dataBean.setMessage("该名称已被使用");
+                dataBean.setMessage("会员标签分组名称已被使用");
             }else{
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("该名称可以使用");
+                dataBean.setMessage("会员标签分组名称可以使用");
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

@@ -18,9 +18,9 @@ public interface ViplableGroupService {
 
     int delViplabGroupById(int id)throws Exception;
 
-    int addViplableGroup(ViplableGroup viplableGroup) throws SQLException;
+    String  addViplableGroup(ViplableGroup viplableGroup) throws SQLException;
 
-    int updViplableGroupById(ViplableGroup viplableGroup) throws SQLException;
+    String updViplableGroupById(ViplableGroup viplableGroup) throws SQLException;
 
     ViplableGroup selectViplableGroupById(int id) throws SQLException;
 

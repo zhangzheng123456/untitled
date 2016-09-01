@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.ViplableGroupMapper;
 import com.bizvane.ishop.entity.AppLoginLog;
 import com.bizvane.ishop.entity.ViplableGroup;
@@ -7,6 +8,7 @@ import com.bizvane.ishop.service.ViplableGroupService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.omg.CORBA.COMM_FAILURE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,13 +55,35 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
     }
 
     @Override
-    public int addViplableGroup(ViplableGroup viplableGroup) throws SQLException {
-        return viplableGroupMapper.addViplableGroup(viplableGroup);
+    public String addViplableGroup(ViplableGroup viplableGroup) throws SQLException {
+        List<ViplableGroup> viplableGroups1= checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code(), Common.IS_ACTIVE_Y);
+        List<ViplableGroup> viplableGroups2 = checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_name(), Common.IS_ACTIVE_Y);
+        String result=Common.DATABEAN_CODE_ERROR;
+        if(viplableGroups1.size()==0 && viplableGroups2.size()==0){
+            viplableGroupMapper.addViplableGroup(viplableGroup);
+            result=Common.DATABEAN_CODE_SUCCESS;
+        }else if(viplableGroups1.size()>0){
+            result="会员标签分组编号已存在";
+        }else if(viplableGroups2.size()>0){
+            result="会员标签分组名称已存在";
+        }
+        return result;
     }
 
     @Override
-    public int updViplableGroupById(ViplableGroup viplableGroup) throws SQLException {
-        return viplableGroupMapper.updViplableGroupById(viplableGroup);
+    public String updViplableGroupById(ViplableGroup viplableGroup) throws SQLException {
+        List<ViplableGroup> viplableGroups1= checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code(), Common.IS_ACTIVE_Y);
+        List<ViplableGroup> viplableGroups2 = checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_name(), Common.IS_ACTIVE_Y);
+        String result=Common.DATABEAN_CODE_ERROR;
+        if(viplableGroups1.size()==0 && viplableGroups2.size()==0){
+            viplableGroupMapper.updViplableGroupById(viplableGroup)
+            result=Common.DATABEAN_CODE_SUCCESS;
+        }else if(viplableGroups1.size()>0){
+            result="会员标签分组编号已存在";
+        }else if(viplableGroups2.size()>0){
+            result="会员标签分组名称已存在";
+        }
+        return result;
     }
 
     @Override
