@@ -32,7 +32,23 @@ public class VipLabelServiceImpl implements VipLabelService {
     private ViplableGroupService viplableGroupService;
     @Override
     public VipLabel getVipLabelById(int id) throws Exception {
-        return this.vipLabelMapper.selectByPrimaryKey(id);
+        VipLabel vipLabel = vipLabelMapper.selectByPrimaryKey(id);
+        String lable_g_Code="";
+        if(vipLabel.getLabel_group_code()==null){
+            lable_g_Code="";
+        }else{
+            lable_g_Code=vipLabel.getLabel_group_code();
+        }
+        List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(vipLabel.getCorp_code(), lable_g_Code, Common.IS_ACTIVE_Y);
+        if(viplableGroups.size()>0) {
+            ViplableGroup viplableGroup = viplableGroups.get(0);
+            vipLabel.setLabel_group_code(viplableGroup.getLabel_group_code());
+            vipLabel.setLabel_group_name(viplableGroup.getLabel_group_name());
+        }else {
+            vipLabel.setLabel_group_code("");
+            vipLabel.setLabel_group_name("");
+        }
+        return vipLabel;
     }
 
     @Override
