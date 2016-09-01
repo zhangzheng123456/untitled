@@ -181,7 +181,6 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 				getcorplist(corp_code);
-				getlabelGroup();
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -193,7 +192,6 @@ jQuery(document).ready(function(){
 		});
 	}else{
 		getcorplist(a);
-		getlabelGroup();
 	}
 	$(".operadd_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/vip/viplabel.html");
@@ -204,12 +202,13 @@ jQuery(document).ready(function(){
 
 	//标签分组下拉菜单
 	$("#label_group").click(function () {
-		$(".labelgp_select").show()
+		$("#labelgp_select").show()
+		getlabelGroup();
 	})
 
 	$("#label_group").blur(function () {
 		setTimeout(function () {
-			$(".labelgp_select").hide();
+			$("#labelgp_select").hide();
 		}, 200)
 	})
 });
