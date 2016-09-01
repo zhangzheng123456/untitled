@@ -4,7 +4,9 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipLabelMapper;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.entity.VipLabel;
+import com.bizvane.ishop.entity.ViplableGroup;
 import com.bizvane.ishop.service.VipLabelService;
+import com.bizvane.ishop.service.ViplableGroupService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -26,7 +28,8 @@ public class VipLabelServiceImpl implements VipLabelService {
 
     @Autowired
     private VipLabelMapper vipLabelMapper;
-
+    @Autowired
+    private ViplableGroupService viplableGroupService;
     @Override
     public VipLabel getVipLabelById(int id) throws Exception {
         return this.vipLabelMapper.selectByPrimaryKey(id);
@@ -78,6 +81,21 @@ public class VipLabelServiceImpl implements VipLabelService {
                 vipLabel.setCountlable("0");
             }else{
                 vipLabel.setCountlable(vipLabel1.getCountlable());
+            }
+            String lable_g_Code="";
+            if(vipLabel.getLabel_group_code()==null){
+                lable_g_Code="";
+            }else{
+                lable_g_Code=vipLabel.getLabel_group_code();
+            }
+            List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(vipLabel.getCorp_code(), lable_g_Code, Common.IS_ACTIVE_Y);
+            ViplableGroup viplableGroup = viplableGroups.get(0);
+            if(viplableGroup==null){
+                vipLabel.setLabel_group_code("");
+                vipLabel.setLabel_group_name("");
+            }else{
+                vipLabel.setLabel_group_code(viplableGroup.getLabel_group_code());
+                vipLabel.setLabel_group_name(viplableGroup.getLabel_group_name());
             }
             if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
                 vipLabel.setLabel_type("");
