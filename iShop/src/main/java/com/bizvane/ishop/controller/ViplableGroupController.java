@@ -161,7 +161,7 @@ public class ViplableGroupController {
                 ViplableGroup viplableGroup = viplableGroupService.selectViplableGroupById(Integer.valueOf(ids[i]));
                 List<VipLabel> vipLabels = vipLabelService.lableList(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code());
                 if(vipLabels.size()>0){
-                    result="所选标签分组编号为 "+viplableGroup.getCorp_code()+" 下有会员标签正在使用,不可删除";
+                    result="所选标签分组编号为 "+viplableGroup.getLabel_group_code()+" 下有会员标签正在使用,不可删除";
                     int a=5/0;
                 }
             }
