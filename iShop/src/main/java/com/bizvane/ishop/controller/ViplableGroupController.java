@@ -258,7 +258,16 @@ public class ViplableGroupController {
             Date date = new Date();
             viplableGroup.setModified_date(Common.DATETIME_FORMAT.format(date));
             viplableGroup.setModifier(user_id);
-            viplableGroupService.updViplableGroupById(viplableGroup);
+            String result = viplableGroupService.updViplableGroupById(viplableGroup);
+            if(result.equals(Common.DATABEAN_CODE_SUCCESS)){
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("edit success");
+            }else{
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage("edit success");
