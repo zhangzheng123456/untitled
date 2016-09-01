@@ -76,7 +76,7 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
         List<ViplableGroup> viplableGroups2 = checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_name(), Common.IS_ACTIVE_Y);
         String result=Common.DATABEAN_CODE_ERROR;
         if(viplableGroups1.size()==0 && viplableGroups2.size()==0){
-            viplableGroupMapper.updViplableGroupById(viplableGroup)
+            viplableGroupMapper.updViplableGroupById(viplableGroup);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else if(viplableGroups1.size()>0){
             result="会员标签分组编号已存在";
