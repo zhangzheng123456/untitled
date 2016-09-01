@@ -102,10 +102,14 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 
         String param_name = jsonObject.get("param_name").toString();
         String param_type = jsonObject.get("param_type").toString();
-        String param_values = "Y,N";
+        String param_values = null;
         String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
-
+        if(param_type.equals("switch")){
+            param_values = "Y,N";
+        }else{
+            param_values=jsonObject.get("param_values").toString();
+        }
         ParamConfigure paramConfigure = getParamByKey(param_name);
 //        ParamConfigure paramConfigure1 = getParamByName(param_desc);
 
