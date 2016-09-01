@@ -1,7 +1,7 @@
 var oc = new ObjectControl();
 $(function(){
 	var Time=getNowFormatDate();
-	$(".laydate-icon").val(Time);
+	$(".icon-text").val(Time);
     areaRanking(Time);
 	storeRanking(Time);
 	// achieveChart(Time);
@@ -67,7 +67,7 @@ function lay1(InputID){//定义日期格式
 	};
 	laydate(start)
 }
-$(".laydate-icon").click(//点击input 显示日期控件界面
+$(".icon-text").click(//点击input 显示日期控件界面
 	function () {
 		var InputID='#'+$(this).attr("id");
 		lay1(InputID)

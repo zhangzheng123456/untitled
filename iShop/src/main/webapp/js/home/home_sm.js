@@ -1,25 +1,21 @@
 var oc = new ObjectControl();
-var myDate = new Date();
-var year = myDate.getFullYear();
-var month = myDate.getMonth() + 1;
-if (month < 10) {
-	month = "0" + month;
-} else if (month >= 10) {
-	month = month;
+function getNowFormatDate() {//获取当前日期
+	var date = new Date();
+	var seperator1 = "-";
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+		strDate = "0" + strDate;
+	}
+	var currentdate = year + seperator1 + month + seperator1 + strDate;
+	return currentdate
 }
-var data = myDate.getDate();
-var today = year + "-" + month + "-" + data;
+var today = getNowFormatDate();
 $(".icon-text").val(today);
-// //点击显示日周年月
-// $(".title").click(function() {
-// 	ul = $(this).nextAll("ul");
-// 	$(this).parent(".choose").toggleClass("cur");
-// 	if (ul.css("display") == "none") {
-// 		ul.show();
-// 	} else {
-// 		ul.hide();
-// 	};
-// });
 $(".title").mouseover(function() {
 	ul = $(this).nextAll("ul");
 		ul.show();
@@ -118,7 +114,12 @@ function superadditionStaff(c) {
 			+ c[i].devote_rate //贡献度
 			+ "%</td></tr>"
 	}
-	$("#staff_list tbody").html(staff_list);
+	var nodata="<tr><td colSpan='4' style='padding-top:70px;'>暂无数据</td></tr>";
+	if(c.length==0){
+		$("#staff_list tbody").html(nodata);
+	}else {
+		$("#staff_list tbody").html(staff_list);
+	}
 }
 //导购排行
 function staffRanking(a,b) { 
