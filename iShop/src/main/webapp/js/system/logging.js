@@ -16,7 +16,6 @@ var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
-    console.log(return_jump);
     inx=return_jump.inx;
     pageSize=return_jump.pageSize;
     value=return_jump.value;
@@ -234,14 +233,20 @@ function superaddition(data,num){//页面加载循环
             + "</td><td>"
             + data[i].platform
             + "</td><td>"
-            + data[i].user_name
+            + data[i].user_name+
+            "</td><td>" +
+            data[i].user_code+
+            "</td><td>"
+            + data[i].position
             + "</td><td><span>"
+            + data[i].store_name
+            + "</span></td><td><span>"
             + data[i].corp_name
-            + "</span></td><td>"
+            + "</span></td><td><span>"
             + data[i].created_date
             + "</span></td><td>"
             + data[i].time
-            + "</td><td></tr>");
+            + "</td></tr>");
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -276,12 +281,10 @@ function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/apploginlog/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
-        // console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
-            console.log(list)
             cout=list.pages;
             var list=list.list;
             superaddition(list,a);
@@ -303,7 +306,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -331,7 +333,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -498,7 +499,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -588,7 +588,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
