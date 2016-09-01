@@ -89,13 +89,13 @@ public class VipLabelServiceImpl implements VipLabelService {
                 lable_g_Code=vipLabel.getLabel_group_code();
             }
             List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(vipLabel.getCorp_code(), lable_g_Code, Common.IS_ACTIVE_Y);
-            ViplableGroup viplableGroup = viplableGroups.get(0);
-            if(viplableGroup==null){
-                vipLabel.setLabel_group_code("");
-                vipLabel.setLabel_group_name("");
-            }else{
+            if(viplableGroups.size()>0) {
+                ViplableGroup viplableGroup = viplableGroups.get(0);
                 vipLabel.setLabel_group_code(viplableGroup.getLabel_group_code());
                 vipLabel.setLabel_group_name(viplableGroup.getLabel_group_name());
+            }else {
+                vipLabel.setLabel_group_code("");
+                vipLabel.setLabel_group_name("");
             }
             if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
                 vipLabel.setLabel_type("");
@@ -126,6 +126,21 @@ public class VipLabelServiceImpl implements VipLabelService {
                 vipLabel.setCountlable("0");
             }else{
                 vipLabel.setCountlable(vipLabel1.getCountlable());
+            }
+            String lable_g_Code="";
+            if(vipLabel.getLabel_group_code()==null){
+                lable_g_Code="";
+            }else{
+                lable_g_Code=vipLabel.getLabel_group_code();
+            }
+            List<ViplableGroup> viplableGroups = viplableGroupService.checkCodeOnly(vipLabel.getCorp_code(), lable_g_Code, Common.IS_ACTIVE_Y);
+            if(viplableGroups.size()>0) {
+                ViplableGroup viplableGroup = viplableGroups.get(0);
+                vipLabel.setLabel_group_code(viplableGroup.getLabel_group_code());
+                vipLabel.setLabel_group_name(viplableGroup.getLabel_group_name());
+            }else {
+                vipLabel.setLabel_group_code("");
+                vipLabel.setLabel_group_name("");
             }
             if(vipLabel.getLabel_type()==null||vipLabel.getLabel_type().equals("")){
                 vipLabel.setLabel_type("");
