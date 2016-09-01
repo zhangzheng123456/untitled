@@ -4,19 +4,9 @@ $(function(){
 	$(".laydate-icon").val(Time);
     areaRanking(Time);
 	storeRanking(Time);
-	achieveChart(Time);
+	// achieveChart(Time);
 	achAnalysis(Time);
 });
-////点击显示日周年月
-//$(".title").click(function() {
-//	ul = $(this).nextAll("ul");
-//	$(this).parent(".choose").toggleClass("cur");
-//	if (ul.css("display") == "none") {
-//		ul.show();
-//	} else {
-//		ul.hide();
-//	};
-//});
 // 点击显示日周年月
 $(".title").mouseover(function() {
 	ul = $(this).nextAll("ul");

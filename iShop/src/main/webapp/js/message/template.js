@@ -451,9 +451,9 @@ $("#delete").click(function(){
     $("#p").hide();
     $("#tk").hide();
     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-    for(var i=0,ID="";i<tr.length;i++){
+    for(var i=tr.length-1,ID="";i>=0;i--){
         var r=$(tr[i]).attr("id");
-        if(i<tr.length-1){
+        if(i>0){
             ID+=r+",";
         }else{
              ID+=r;
@@ -757,19 +757,22 @@ function filtrates(a,b){
 //跳转页面的键盘按下事件
 $("#input-txt").keydown(function() {
     var event=window.event||arguments[0];
-    var inx= this.value.replace(/[^1-9]/g, '');
+    var inx= this.value.replace(/[^0-9]/g, '');
+    var inx=parseInt(inx);
     if (inx > cout) {
-        inx = cout
-    };
+            inx = cout
+        };
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
                 GET(inx, pageSize);
             } else if (value !== "") {
                 param["pageSize"] = pageSize;
+                param["pageNumber"]=inx;
                 POST(inx, pageSize);
             } else if (filtrate !== "") {
                 _param["pageSize"] = pageSize;
+                _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
         };
