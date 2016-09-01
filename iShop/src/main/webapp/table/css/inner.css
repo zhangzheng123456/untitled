@@ -115,6 +115,7 @@ input::-webkit-input-placeholder{
 	margin-left: 10px;
 	color: #888;
 	padding-left: 5px;
+	background: #dfdfdf;
 }
 .list .list_r{
 	float: right;

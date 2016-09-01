@@ -238,6 +238,10 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td><span title='"+data[i].corp.corp_name+"'>"
                         + data[i].corp.corp_name
                         + "</span></td><td>"
+                        + data[i].label_group_name
+                        + "</td><td>"
+                        + data[i].countlable
+                        + "</td><td>"
                         +data[i].modified_date
                         + "</td><td>"
                         +data[i].isactive

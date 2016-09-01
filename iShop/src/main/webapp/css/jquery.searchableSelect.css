@@ -95,6 +95,9 @@
   box-sizing: border-box;
   width: 100%;
 }
+.corp_select div,.message_type_select div{
+  margin-bottom: 0px !important;
+}
 .per_type .searchable-select-input{
   width:310px;
   margin-top: 5px;
@@ -132,7 +135,7 @@
   position: absolute;
   text-align: center;
   z-index: 10;
-  background-color:#6cc1c8;
+  background-color:#eee;
   line-height: 8px;
   cursor: pointer;
 }

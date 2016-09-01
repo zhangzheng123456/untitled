@@ -8417,3 +8417,25 @@ li.select_index>a>label>i{
   border: 1px solid #EAE2E2;
   margin:3px 3px;
 }
+#label_group{
+  background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
+  background-size:30px;
+  margin-left: -4px;
+}
+#labelgp_select{
+  width: 420px;
+  position: absolute;
+  left: 187px;
+  top:180px;
+  border: 1px solid #a9c9e2;
+  background: #e8f5fe;
+  display: none;
+}
+#labelgp_select li{
+  height:30px;
+  line-height: 30px;
+}
+#labelgp_select li:hover{
+  color: #FFFFFF;
+  background: #6cc1c8;
+}
