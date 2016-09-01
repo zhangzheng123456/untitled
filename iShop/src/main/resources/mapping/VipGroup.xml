@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipGroupMapper">
+    <resultMap id="VipGroup" type="com.bizvane.ishop.entity.VipGroup">
+        <id column="id" property="id"/>
+        <result column="vip_group_code" property="vip_group_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="vip_group_name" property="vip_group_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+    <select id="selectVipGroupById" resultMap="VipGroup">
+        SELECT
+        vip_group_code,
+        vip_group_name,
+        remark,
+        dvg.corp_code,
+        dvg.modified_date,
+        dvg.modifier,
+        dvg.isactive
+        FROM DEF_VIP_GROUP dvg,def_corp dc
+        WHERE dvg.corp_code=dc.corp_code
+        and dvg.id=#{id}
+    </select>
+    <select id="selectAllVipGroup" resultMap="VipGroup">
+        SELECT
+        vip_group_code,
+        vip_group_name,
+        remark,
+        dvg.corp_code,
+        dvg.modified_date,
+        dvg.modifier,
+        dvg.isactive,
+        dc.corp_name
+        FROM def_vip_group dvg,def_corp dc
+        WHERE dvg.corp_code=dc.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND dvg.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (vip_group_code like concat('%',#{search_value},'%')
+            OR vip_group_name like concat('%',#{search_value},'%')
+            OR remark like concat('%',#{search_value},'%')
+            OR dc.corp_name like concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY dvg.id DESC
+    </select>
+    <select id="selectVipGroups" resultType="com.bizvane.ishop.entity.VipGroup">
+        select
+        vip_group_code,
+        vip_group_name,
+        remark,
+        dvg.corp_code,
+        dvg.modified_date,
+        dvg.modifier,
+        dvg.isactive
+        from DEF_VIP_GROUP
+        where CORP_CODE = #{corp_code}
+        AND isactive = 'Y'
+        ORDER BY DEF_VIP_GROUP.id DESC
+    </select>
+
+    <select id="selectVipGroupByCorp" resultType="com.bizvane.ishop.entity.VipGroup">
+        SELECT
+        vip_group_code,
+        vip_group_name,
+       corp_code,
+       isactive
+        FROM DEF_VIP_GROUP
+        WHERE corp_code = #{corp_code}
+        AND  id=#{id}
+        AND isactive = 'Y'
+    </select>
+    <select id="selectByVipGroupName" resultType="com.bizvane.ishop.entity.VipGroup">
+        SELECT
+        vip_group_code,
+        vip_group_name,
+        dvg.corp_code,
+        dvg.isactive
+        FROM DEF_VIP_GROUP
+        WHERE corp_code=#{corp_code}
+        AND vip_group_name=#{vip_group_name}
+        <if test="isactive != null and isactive !=''">
+            AND isactive = #{isactive}
+        </if>
+    </select>
+    <select id="selectByVipGroupId" resultType="com.bizvane.ishop.entity.VipGroup">
+        SELECT *
+        FROM DEF_VIP_GROUP
+        WHERE id=#{id}
+        AND isactive = 'Y'
+    </select>
+    <delete id="deleteVipGroupById">
+        delete from
+        DEF_VIP_GROUP
+        where ID=#{id}
+    </delete>
+    <insert id="insertVipGroup" parameterType="com.bizvane.ishop.entity.VipGroup">
+        insert into DEF_VIP_GROUP
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="vip_group_code!=null">
+                vip_group_code,
+            </if>
+            <if test="vip_group_name!=null">
+                vip_group_name,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="vip_group_code!=null">
+                #{vip_group_code},
+            </if>
+            <if test="vip_group_name!=null">
+                #{vip_group_name},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateVipGroup" parameterType="com.bizvane.ishop.entity.VipGroup">
+        UPDATE DEF_VIP_GROUP
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="vip_group_code!=null">
+                vip_group_code=#{vip_group_code},
+            </if>
+            <if test="vip_group_name!=null">
+                vip_group_name=#{vip_group_name},
+            </if>
+            <if test="remark!=null">
+                remark=#{remark},
+            </if>
+
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+    <select id="selectAllVipGroupScreen" resultMap="VipGroup">
+        SELECT
+        vip_group_code,
+        vip_group_name,
+        remark,
+        dvg.corp_code,
+        dvg.modified_date,
+        dvg.modifier,
+        dc.corp_name,
+        dvg..isactive
+        FROM DEF_VIP_GROUP dvg,DEF_CORP dc
+         WHERE dvg.CORP_CODE = dc.CORP_CODE
+        <if test="corp_code!=null and corp_code!=''">
+            AND dvg.corp_code=#{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </otherwise>
+            </choose>
+        </foreach>
+        ORDER BY dvg.id DESC
+    </select>
+
+</mapper>
