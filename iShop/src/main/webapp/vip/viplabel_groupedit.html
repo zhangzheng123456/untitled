@@ -3,14 +3,13 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
-    <title>新增会员标签分组</title>
+    <title>编辑会员标签分组</title>
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
         body{
             margin-top:81px;
@@ -19,16 +18,9 @@
 </head>
 
 <body>
-<!-- <div id="wrapper">
-</div> -->
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员标签分组<i class="icon-ishop_8-03"></i><label>新增会员标签分组</label></div>
+    <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员标签分组<i class="icon-ishop_8-03"></i><label>编辑会员标签分组</label></div>
     <div class="editor_em col-lg-7 animated fadeInRight">
-        <!--  <div class="operation_conpany">
-             <ul>
-                 <li><i class="icon-ishop_6-07"></i>刷新</li><li><i class="icon-ishop_6-01"></i>新增</li><li><i class="icon-ishop_6-02"></i>删除</li><li><i class="icon-ishop_6-10"></i>复制</li><li><i class="icon-ishop_6-11"></i>打印</li>
-             </ul>
-         </div> -->
         <form class="conpany_msg">
             <div>
                 <ul style="display:inline-flex;">
@@ -53,13 +45,25 @@
         </form>
     </div>
     <div class="editor_detail_em col-lg-4 animated fadeInRight">
-        <div class="operadd_btn">
+        <div class="operedit_btn">
             <ul>
                 <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                 <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
             </ul>
         </div>
         <form class="msg_detail">
+            <div>
+                <span><label>创建时间</label><input type="text" id="created_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>创建人</label><input type="text" id="creator" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改时间</label><input type="text" id="modify_time" readonly/></span>
+            </div>
+            <div>
+                <span><label>修改人</label><input type="text" id="modifier" readonly/></span>
+            </div>
             <div>
                     <span><label>可用</label><em class="checkbox_isactive">
                     <input type="checkbox" value="" name="test" class="check" id="is_active">
