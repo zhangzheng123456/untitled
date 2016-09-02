@@ -80,7 +80,7 @@ public class VipGroupServiceImpl implements VipGroupService{
         String vip_group_name = jsonObject.get("vip_group_name").toString();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
-        VipGroup vipGroup=getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+        VipGroup vipGroup=getVipGroupByCode(corp_code,vip_group_code,jsonObject.get("isactive").toString());
         if (vipGroup!=null) {
             result = "该会员分组已存在";
         }else {
@@ -112,8 +112,8 @@ VipGroup vipGroup1=new VipGroup();
         String vip_group_name = jsonObject.get("vip_group_name").toString();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
-        VipGroup vipGroup1=getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
-        VipGroup vipGroup2=getVipGroupByName(corp_code,vip_group_name,Common.IS_ACTIVE_Y);
+        VipGroup vipGroup1=getVipGroupByCode(corp_code,vip_group_code,jsonObject.get("isactive").toString());
+        VipGroup vipGroup2=getVipGroupByName(corp_code,vip_group_name,jsonObject.get("isactive").toString());
 
         if (vipGroup1==null || vipGroup2==null||vipGroup1.getId() == id) {
             VipGroup vipGroup = new VipGroup();
