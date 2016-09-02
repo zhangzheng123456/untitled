@@ -195,7 +195,6 @@ public class VipGroupController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String vip_group_code = jsonObject.get("vip_group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-           // Store store = storeService.getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
             VipGroup vipGroup=vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
             if (vipGroup != null) {
                 dataBean.setId(id);
