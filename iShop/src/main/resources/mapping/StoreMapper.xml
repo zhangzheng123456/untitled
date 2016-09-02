@@ -4,7 +4,7 @@
 
     <resultMap type="com.bizvane.ishop.entity.Store" id="Store">
         <id column="id" property="id"/>
-        <result column="store_id" property="store_id"/>
+        <result column="store_id" property="store_id" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="store_code" property="store_code"/>
         <result column="store_name" property="store_name"/>
         <result column="brand_code" property="brand_code"/>
