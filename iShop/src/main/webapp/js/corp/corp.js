@@ -770,7 +770,6 @@ function getInputValue(){
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
         var screen_value="";
        if($(input[i]).parent("li").attr("class")=="isActive_select"){
            screen_value=$(input[i]).attr("data-code");

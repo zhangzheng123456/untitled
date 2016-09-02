@@ -680,6 +680,13 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         }
         $("#sxk .inputs ul").html(li);
         filtrateDown();
+        //筛选的keydow事件
+        $('#sxk .inputs input').keydown(function(){
+            var event=window.event||arguments[0];
+            if(event.keyCode == 13){
+                getInputValue();
+            }
+        })
     }
 });
 function filtrateDown(){
@@ -708,7 +715,11 @@ function filtrateDown(){
 }
 //筛选查找
 $("#find").click(function(){
+    getInputValue();
+})
+function getInputValue(){
     var input=$('#sxk .inputs input');
+    inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
     _param["funcCode"]=funcCode;
@@ -716,7 +727,6 @@ $("#find").click(function(){
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
         var screen_value="";
         if($(input[i]).parent("li").attr("class")=="isActive_select"){
             screen_value=$(input[i]).attr("data-code");
@@ -738,7 +748,7 @@ $("#find").click(function(){
     }else if(num<=0){
         filtrate="";
     }
-})
+}
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
