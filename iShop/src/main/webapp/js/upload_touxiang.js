@@ -70,13 +70,13 @@ $(function(){
             storeAs = '/Corp_logo/ishow/'+corp_code.trim()+'.jpg';
         }
         if(user_code!==""&&user_code!==undefined){
-            storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code+'.jpg';
+            storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
         }
         console.log(file.name + ' => ' + storeAs);
         client.multipartUpload(storeAs, file).then(function (result) {
-            console.log(result);
+            // console.log(result);
         }).catch(function (err) {
-            console.log(err);
+            // console.log(err);
         });
     });
 });

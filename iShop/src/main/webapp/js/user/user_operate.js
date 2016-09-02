@@ -203,7 +203,6 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				var ID=sessionStorage.getItem("id");
 				var USERID=$("#USERID").val();
 				var USER_NAME=$("#USER_NAME").val();
-				var HEADPORTRAIT=$("#preview img").attr("src");
 				var USER_PHONE=$("#USER_PHONE").val();
 				var USER_EMAIL=$("#USER_EMAIL").val();
 				var USER_SEX=$("#USER_SEX").val();
@@ -233,6 +232,12 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 					});
 					return;
 				}
+				var avater="";//头像
+                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/head.png') {
+                    avater= "http://products-image.oss-cn-hangzhou.aliyuncs.com/Avatar/User/iShow/"+OWN_CORP.trim()+USERID.trim()+'.jpg';
+                } else {
+                   avater=$("#preview img").attr("src");//头像
+                }
 				var can_login="";//可登录状态
                 var input1=$("#invisible")[0];
                 if(input1.checked==true){
@@ -282,7 +287,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				var _params={};
 				_params["user_code"]=USERID;//员工编号
 				_params["username"]=USER_NAME;//员工名称
-				_params["avater"]=HEADPORTRAIT;//头像
+				_params["avater"]=avater;//头像
 				_params["position"]=position;//职务
 				_params["phone"]=USER_PHONE;//手机
 				_params["email"]=USER_EMAIL//邮箱
