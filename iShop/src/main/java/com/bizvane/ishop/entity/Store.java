@@ -49,7 +49,6 @@ public class Store {
     private Brand brand;
 
     private Area area;
-
     private List<StoreQrcode> qrcodeList;
     public Store(){}
 

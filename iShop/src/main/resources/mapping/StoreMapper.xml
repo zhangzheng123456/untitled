@@ -4,6 +4,7 @@
 
     <resultMap type="com.bizvane.ishop.entity.Store" id="Store">
         <id column="id" property="id"/>
+        <result column="store_id" property="store_id"/>
         <result column="store_code" property="store_code"/>
         <result column="store_name" property="store_name"/>
         <result column="brand_code" property="brand_code"/>
@@ -24,6 +25,7 @@
     <select id="selectByStoreId" resultMap="Store">
         SELECT
         def_store.id,
+        store_id,
         store_code,
         store_name,
         brand_code,
@@ -46,6 +48,7 @@
     <select id="selectStoreById" resultMap="Store">
         SELECT
         def_store.id,
+        store_id,
         store_code,
         store_name,
         brand_code,
@@ -83,6 +86,7 @@
     <select id="selectAllStore" resultMap="Store">
         SELECT
         def_store.id,
+        store_id,
         store_code,
         store_name,
         flg_tob,
@@ -106,6 +110,7 @@
         <if test="search_value != null and search_value !=''">
             AND
             (store_code LIKE concat('%',#{search_value},'%')
+            OR store_id LIKE concat('%',#{search_value},'%')
             OR store_name LIKE concat('%',#{search_value},'%')
             OR def_area.area_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
@@ -137,6 +142,7 @@
     <select id="selectByAreaCode" resultMap="Store">
         select
         def_store.id,
+        store_id,
         store_code,
         store_name,
         def_store.brand_code,
@@ -161,6 +167,7 @@
             AND
             (STORE_CODE like concat('%',#{search_value},'%')
             OR def_store.ID like concat('%',#{search_value},'%')
+            OR store_id LIKE concat('%',#{search_value},'%')
             OR store_name like concat('%',#{search_value},'%')
             OR def_area.area_name like concat('%',#{search_value},'%')
             OR def_corp.corp_name like concat('%',#{search_value},'%')
@@ -255,6 +262,7 @@
     <select id="selectByUserId" resultMap="Store">
         select
         DEF_STORE.id,
+        store_id,
         store_code,
         store_name,
         brand_code,
@@ -279,6 +287,7 @@
             AND
             (STORE_CODE like concat('%',#{search_value},'%')
             OR DEF_STORE.ID like concat('%',#{search_value},'%')
+            OR DEF_STORE.STORE_ID like concat('%',#{search_value},'%')
             OR STORE_NAME like concat('%',#{search_value},'%')
             OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
             OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
