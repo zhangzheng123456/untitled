@@ -121,8 +121,8 @@ public class VipGroupServiceImpl implements VipGroupService {
         String corp_code = jsonObject.get("corp_code").toString();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
-
-        if (vipGroup1 == null && vipGroup2 == null && vipGroup1.getId() == id) {
+        VipGroup vipGroup3=getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_N);
+        if (vipGroup1 == null && vipGroup2 == null ||vipGroup1.getId()==id||vipGroup3.getId()==id) {
             VipGroup vipGroup = new VipGroup();
             Date now = new Date();
             vipGroup.setId(id);
