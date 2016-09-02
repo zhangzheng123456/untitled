@@ -16,7 +16,6 @@ var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
-    console.log(return_jump);
     inx=return_jump.inx;
     pageSize=return_jump.pageSize;
     value=return_jump.value;
@@ -305,7 +304,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        //console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -372,7 +370,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -385,7 +382,7 @@ $("#search").keydown(function() {
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         POST(inx,pageSize);
     }
@@ -397,13 +394,13 @@ $("#d_search").click(function(){
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     POST(inx,pageSize);
-})
+});
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/search","0",param,function(data){
+    oc.postRequire("post","/vipGroup/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -433,7 +430,6 @@ function POST(a,b){
         }
     })
 }
-//console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -459,8 +455,7 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    console.log(params);
-    oc.postRequire("post","/area/delete","0",params,function(data){
+    oc.postRequire("post","/vipGroup/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
                 frame();
@@ -526,34 +521,34 @@ function clearAll(name){
     }
 };
 //导出拉出list
-$("#leading_out").click(function(){
-    var l=$(window).width();
-    var h=$(document.body).height();
-    $("#p").show();
-    $("#p").css({"width":+l+"px","height":+h+"px"});
-    $('.file').show();
-    $(".into_frame").hide();
-    var param={};
-    param["function_code"]=funcCode;
-    whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/getCols","0",param,function(data){
-        if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var message=JSON.parse(message.tableManagers);
-            $("#file_list_l ul").empty();
-            for(var i=0;i<message.length;i++){
-                $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
-                    +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
-            }
-            bianse();
-            $("#file_list_r ul").empty();
-            whir.loading.remove();//移除加载框
-        }else if(data.code=="-1"){
-            alert(data.message);
-            whir.loading.remove();//移除加载框
-        }
-    })
-})
+//$("#leading_out").click(function(){
+//    var l=$(window).width();
+//    var h=$(document.body).height();
+//    $("#p").show();
+//    $("#p").css({"width":+l+"px","height":+h+"px"});
+//    $('.file').show();
+//    $(".into_frame").hide();
+//    var param={};
+//    param["function_code"]=funcCode;
+//    whir.loading.add("",0.5);//加载等待框
+//    oc.postRequire("post","/area/getCols","0",param,function(data){
+//        if(data.code=="0"){
+//            var message=JSON.parse(data.message);
+//            var message=JSON.parse(message.tableManagers);
+//            $("#file_list_l ul").empty();
+//            for(var i=0;i<message.length;i++){
+//                $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+//                    +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
+//            }
+//            bianse();
+//            $("#file_list_r ul").empty();
+//            whir.loading.remove();//移除加载框
+//        }else if(data.code=="-1"){
+//            alert(data.message);
+//            whir.loading.remove();//移除加载框
+//        }
+//    })
+//});
 function bianse(){
     $("#file_list_l li:odd").css("backgroundColor","#fff");
     $("#file_list_l li:even").css("backgroundColor","#ededed");
@@ -561,122 +556,121 @@ function bianse(){
     $("#file_list_r li:even").css("backgroundColor","#ededed");
 }
 
-//导出提交的
-$("#file_submit").click(function(){
-    var li=$("#file_list input[type='checkbox']:checked").parents("li");
-    var param={};
-    var tablemanager=[];
-    if(li.length=="0"){
-        frame();
-        $('.frame').html('请把要导出的列移到右边');
-        return;
-    }
-    for(var i=0;i<li.length;i++){
-        var r=$(li[i]).attr("data-name");
-        var z=$(li[i]).children("span").html();
-        var param1={"column_name":r,"show_name":z};
-        tablemanager.push(param1);
-    }
-    tablemanager.reverse();
-    param["tablemanager"]=tablemanager;
-    param["searchValue"]=value;
-    if(filtrate==""){
-        param["list"]="";
-    }else if(filtrate!==""){
-        param["list"]=list;
-    }
-    whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/exportExecl","0",param,function(data){
-        if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var path=message.path;
-            var path=path.substring(1,path.length-1);
-            $('#download').html("<a href='/"+path+"'>下载文件</a>");
-            $('#download').addClass("download");
-            $('#file_submit').hide();
-            $('#download').show();
-            //导出关闭按钮
-            $('#file_close').click(function(){
-                $('.file').hide();
-            })
-            $('#download').click(function(){
-                $("#p").hide();
-                $('.file').hide();
-                $('#file_submit').show();
-                $('#download').hide();
-            })
-        }else if(data.code=="-1"){
-            alert(data.message);
-        }
-        whir.loading.remove();//移除加载框
-    })
-})
+////导出提交的
+//$("#file_submit").click(function(){
+//    var li=$("#file_list input[type='checkbox']:checked").parents("li");
+//    var param={};
+//    var tablemanager=[];
+//    if(li.length=="0"){
+//        frame();
+//        $('.frame').html('请把要导出的列移到右边');
+//        return;
+//    }
+//    for(var i=0;i<li.length;i++){
+//        var r=$(li[i]).attr("data-name");
+//        var z=$(li[i]).children("span").html();
+//        var param1={"column_name":r,"show_name":z};
+//        tablemanager.push(param1);
+//    }
+//    tablemanager.reverse();
+//    param["tablemanager"]=tablemanager;
+//    param["searchValue"]=value;
+//    if(filtrate==""){
+//        param["list"]="";
+//    }else if(filtrate!==""){
+//        param["list"]=list;
+//    }
+//    whir.loading.add("",0.5);//加载等待框
+//    oc.postRequire("post","/area/exportExecl","0",param,function(data){
+//        if(data.code=="0"){
+//            var message=JSON.parse(data.message);
+//            var path=message.path;
+//            var path=path.substring(1,path.length-1);
+//            $('#download').html("<a href='/"+path+"'>下载文件</a>");
+//            $('#download').addClass("download");
+//            $('#file_submit').hide();
+//            $('#download').show();
+//            //导出关闭按钮
+//            $('#file_close').click(function(){
+//                $('.file').hide();
+//            })
+//            $('#download').click(function(){
+//                $("#p").hide();
+//                $('.file').hide();
+//                $('#file_submit').show();
+//                $('#download').hide();
+//            })
+//        }else if(data.code=="-1"){
+//            alert(data.message);
+//        }
+//        whir.loading.remove();//移除加载框
+//    })
+//});
 //导出关闭按钮
-$('#file_close').click(function(){
-    $("#p").hide();
-    $('.file').hide();
-    $('#file_submit').show();
-    $('#download').hide();
-})
+//$('#file_close').click(function(){
+//    $("#p").hide();
+//    $('.file').hide();
+//    $('#file_submit').show();
+//    $('#download').hide();
+//});
 //点击导入
-$("#guide_into").click(function(){
-    var l=$(window).width();
-    var h=$(document.body).height();
-    $("#p").show();
-    $("#p").css({"width":+l+"px","height":+h+"px"});
-    $('.file').hide();
-    $(".into_frame").show();
-})
+//$("#guide_into").click(function(){
+//    var l=$(window).width();
+//    var h=$(document.body).height();
+//    $("#p").show();
+//    $("#p").css({"width":+l+"px","height":+h+"px"});
+//    $('.file').hide();
+//    $(".into_frame").show();
+//});
 //导入关闭按钮
 $("#x1").click(function(){
     $("#p").hide();
     $(".into_frame").hide();
 })
 //上传文件
-function UpladFile() {
-    whir.loading.add("",0.5);//加载等待框
-    var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
-    var FileController = "/area/addByExecl"; //接收上传文件的后台地址
-    var form = new FormData();
-    form.append("file", fileObj); // 文件对象
-    // XMLHttpRequest 对象
-    var xhr = null;
-    if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-    } else {
-        xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                doResult(xhr.responseText);
-            } else {
-                console.log('服务器返回了错误的响应状态码');
-                $('#file').val("");
-                whir.loading.remove();//移除加载框
-            }
-        }
-    }
-    function doResult(data) {
-        var data=JSON.parse(data);
-        if(data.code=="0"){
-            alert('导入成功');
-            window.location.reload();
-        }else if(data.code=="-1"){
-            alert("导入失败"+data.message);
-        }
-        $('#file').val("");
-        whir.loading.remove();//移除加载框
-    }
-    xhr.open("post", FileController, true);
-    xhr.onload = function() {
-        // alert("上传完成!");
-    };
-    xhr.send(form);
-    $("#p").hide();
-    $(".into_frame").hide();
-}
+//function UpladFile() {
+//    whir.loading.add("",0.5);//加载等待框
+//    var fileObj = document.getElementById("file").files[0];
+//    var FileController = "/area/addByExecl"; //接收上传文件的后台地址
+//    var form = new FormData();
+//    form.append("file", fileObj); // 文件对象
+//    // XMLHttpRequest 对象
+//    var xhr = null;
+//    if (window.XMLHttpRequest) {
+//        xhr = new XMLHttpRequest();
+//    } else {
+//        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+//    }
+//    xhr.onreadystatechange = function() {
+//        if (xhr.readyState === 4) {
+//            if (xhr.status === 200) {
+//                doResult(xhr.responseText);
+//            } else {
+//                console.log('服务器返回了错误的响应状态码');
+//                $('#file').val("");
+//                whir.loading.remove();//移除加载框
+//            }
+//        }
+//    }
+//    function doResult(data) {
+//        var data=JSON.parse(data);
+//        if(data.code=="0"){
+//            alert('导入成功');
+//            window.location.reload();
+//        }else if(data.code=="-1"){
+//            alert("导入失败"+data.message);
+//        }
+//        $('#file').val("");
+//        whir.loading.remove();//移除加载框
+//    }
+//    xhr.open("post", FileController, true);
+//    xhr.onload = function() {
+//        // alert("上传完成!");
+//    };
+//    xhr.send(form);
+//    $("#p").hide();
+//    $(".into_frame").hide();
+//}
 //筛选按钮
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
@@ -689,7 +683,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
@@ -785,7 +778,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/screen","0",_param,function(data){
+    oc.postRequire("post","/vipGroup/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -829,6 +822,6 @@ $("#input-txt").keydown(function() {
                 _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
-        };
+        }
     }
-})
+});
