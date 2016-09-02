@@ -6,6 +6,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.VipGroupService;
+import com.bizvane.ishop.utils.WebUtils;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.json.JSONObject;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nanji on 2016/9/1.
@@ -181,7 +183,7 @@ public class VipGroupController {
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();}
-    @RequestMapping(value = "/VipGroupCodeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/vipGroupCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String VipGroupCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -217,7 +219,7 @@ public class VipGroupController {
 
 
     }
-    @RequestMapping(value = "/VipGroupNameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/vipGroupNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String VipGroupNameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -251,18 +253,79 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
-   /* @RequestMapping(value = "/search", method = RequestMethod.POST)
-    @ResponseBody
-    public String selectByAreaCode(HttpServletRequest request) {}*/
- /*
-
-
-
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
-    public String selectByAreaCode(HttpServletRequest request) {}
+    public String selectByAreaCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String search_value = jsonObject.get("searchValue").toString();
+
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<VipGroup> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, "", search_value);
+            } else {
+                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code, search_value);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+
+    }
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
-    public String selectByAreaCode(HttpServletRequest request) {}
-*/
+    public String vipGroupScreen(HttpServletRequest request) {
+
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+
+            Map<String, String> map = WebUtils.Json2Map(jsonObject);
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            JSONObject result = new JSONObject();
+            PageInfo<VipGroup> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "",  map);
+            } else  {
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, corp_code,  map);
+            }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
 }
