@@ -240,6 +240,8 @@ function superaddition(data,num){
                         + "</td><td style='text-align:left;'>"
                         + a
                         +"</td><td>"
+                        + data[i].user_id
+                        +"</td><td>"
                         + data[i].user_code
                         + "</td><td><img src='"+avatar+"' alt=''>"
                         + "</td><td>"
