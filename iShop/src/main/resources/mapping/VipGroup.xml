@@ -71,7 +71,6 @@
         dvg.isactive
         from DEF_VIP_GROUP dvg
         where dvg.CORP_CODE = #{corp_code}
-        AND dvg.isactive = 'Y'
         ORDER BY DEF_VIP_GROUP.id DESC
     </select>
 
@@ -116,7 +115,6 @@
         SELECT *
         FROM DEF_VIP_GROUP
         WHERE id=#{id}
-        AND isactive = 'Y'
     </select>
     <delete id="deleteVipGroupById">
         delete from
@@ -253,8 +251,6 @@
                 </choose>
             </foreach>
         </if>
-        AND dc.isactive = 'Y'
-        AND dvg.isactive = 'Y'
         ORDER BY dvg.id DESC
     </select>
 </mapper>
