@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.ErrorLog;
 import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.service.*;
@@ -35,6 +36,8 @@ public class HomeController {
     StoreService storeService;
     @Autowired
     FeedbackService feedbackService;
+    @Autowired
+    ErrorLogService errorLogService;
     @Autowired
     IceInterfaceService iceInterfaceService;
 
@@ -72,6 +75,7 @@ public class HomeController {
             int user_new_count = userService.selectCount(yesterday);
 
             PageInfo<Feedback> feedback = feedbackService.selectAllFeedback(1, 6, "");
+            PageInfo<ErrorLog> errorLog = errorLogService.getAllLog(1,6,"");
             int day_length = 0;
             if (time.equals("week")) {
                 day_length = 7;
@@ -94,6 +98,7 @@ public class HomeController {
             dashboard.put("store_new_count", store_new_count);
             dashboard.put("user_new_count", user_new_count);
             dashboard.put("feedback", JSON.toJSONString(feedback.getList()));
+            dashboard.put("errorlog", JSON.toJSONString(errorLog.getList()));
             dashboard.put("user_increase", user_increase);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
