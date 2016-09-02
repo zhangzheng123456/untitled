@@ -296,6 +296,7 @@ function param_data(c, b) {
                     }else{
                         event.cancelBubble=true;
                     }
+                    $("#paramName_down").hide();
                     var dataId=$(this).attr("data-id");
                     var dataType=$(this).attr("data-type");
                     $("#PARAM_NAME").attr("data-id",dataId);

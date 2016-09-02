@@ -60,16 +60,16 @@
     <select id="selectVipGroups" resultType="com.bizvane.ishop.entity.VipGroup">
         select
         dvg.id,
-        vip_group_code,
-        vip_group_name,
-        remark,
+        dvg.vip_group_code,
+        dvg.vip_group_name,
+        dvg.remark,
         dvg.corp_code,
         dvg.modified_date,
         dvg.modifier,
         dvg.isactive
-        from DEF_VIP_GROUP
-        where CORP_CODE = #{corp_code}
-        AND isactive = 'Y'
+        from DEF_VIP_GROUP dvg
+        where dvg.CORP_CODE = #{corp_code}
+        AND dvg.isactive = 'Y'
         ORDER BY DEF_VIP_GROUP.id DESC
     </select>
 
@@ -80,22 +80,21 @@
         dvg.vip_group_name,
        dvg.corp_code,
        dvg.isactive
-        FROM DEF_VIP_GROUP
-        WHERE corp_code = #{corp_code}
-        AND  id=#{id}
-        AND isactive = 'Y'
+        FROM DEF_VIP_GROUP dvg
+        WHERE dvg.corp_code = #{corp_code}
     </select>
 
     <select id="selectByVipGroupCode" resultType="com.bizvane.ishop.entity.VipGroup">
         SELECT
         dvg.id,
-        vip_group_code,
+        dvg.vip_group_code,
         dvg.corp_code,
         dvg.isactive
-        where CORP_CODE = #{corp_code}
-        AND vip_group_code = #{vip_group_code}
+        From DEF_VIP_GROUP dvg
+        where dvg.CORP_CODE = #{corp_code}
+        AND dvg.vip_group_code = #{vip_group_code}
         <if test="isactive != null and isactive !=''">
-            AND isactive = #{isactive}
+            AND dvg.isactive = #{isactive}
         </if>
     </select>
     <select id="selectByVipGroupName" resultType="com.bizvane.ishop.entity.VipGroup">
@@ -104,7 +103,7 @@
         vip_group_name,
         dvg.corp_code,
         dvg.isactive
-        FROM DEF_VIP_GROUP
+        FROM DEF_VIP_GROUP dvg
         WHERE corp_code=#{corp_code}
         AND vip_group_name=#{vip_group_name}
         <if test="isactive != null and isactive !=''">
@@ -228,25 +227,32 @@
         dvg.corp_code,
         dvg.modified_date,
         dvg.modifier,
-        dc.corp_name,
-        dvg..isactive
-        FROM DEF_VIP_GROUP dvg,DEF_CORP dc
-         WHERE dvg.CORP_CODE = dc.CORP_CODE
+        dvg.isactive,
+        dc.corp_name
+        FROM DEF_VIP_GROUP dvg,def_corp dc
+        WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND dvg.corp_code=#{corp_code}
         </if>
-        AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
-            <choose>
-                <when test="entryKey=='corp_name'">
-                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
-                </when>
-                <otherwise>
-                    dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
-                </otherwise>
-            </choose>
-        </foreach>
+
+        <if test="map!=null">
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+                <choose>
+                    <when test="entryKey=='corp_name' and entryValue!=''">
+                        dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <when test="entryValue!=''">
+                        dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+        AND dc.isactive = 'Y'
+        AND dvg.isactive = 'Y'
         ORDER BY dvg.id DESC
     </select>
-
 </mapper>
