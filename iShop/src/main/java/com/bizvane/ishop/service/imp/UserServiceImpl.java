@@ -159,10 +159,10 @@ public class UserServiceImpl implements UserService {
             String store_name = "";
             String store_code1 = user.getStore_code();
             if (store_code1 != null && !store_code1.equals("")) {
+                store_code1 = store_code1.replace(Common.STORE_HEAD,"");
                 String[] ids = store_code1.split(",");
                 String store_code = "";
                 for (int i = 0; i < ids.length; i++) {
-                    ids[i] = ids[i].substring(1, ids[i].length());
                     Store store = storeService.getStoreByCode(corp_code, ids[i], Common.IS_ACTIVE_Y);
                     if (store != null) {
                         String store_name1 = store.getStore_name();
@@ -192,10 +192,10 @@ public class UserServiceImpl implements UserService {
             String area_name = "";
             String area_code1 = user.getArea_code();
             if (area_code1 != null && !area_code1.equals("")) {
+                area_code1 = area_code1.replace(Common.STORE_HEAD,"");
                 String[] areaCodes = area_code1.split(",");
                 String areaCode = "";
                 for (int i = 0; i < areaCodes.length; i++) {
-                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
                     Area area = areaMapper.selectAreaByCode(corp_code, areaCodes[i],Common.IS_ACTIVE_Y);
                     if (area != null) {
                         String area_name1 = area.getArea_name();
