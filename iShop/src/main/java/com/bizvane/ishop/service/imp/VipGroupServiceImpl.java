@@ -80,23 +80,22 @@ public class VipGroupServiceImpl implements VipGroupService{
         String vip_group_name = jsonObject.get("vip_group_name").toString();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
-        List<VipGroup> vipGroups = selectVipGroupByCorp(corp_code);
-        if (vipGroups.size() >0) {
+        VipGroup vipGroup=getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+        if (vipGroup!=null) {
             result = "该会员分组已存在";
         }else {
-            VipGroup vipGroup = new VipGroup();
             Date now = new Date();
-
-            vipGroup.setRemark(remark);
-            vipGroup.setVip_group_code(vip_group_code);
-            vipGroup.setVip_group_name(vip_group_name);
-            vipGroup.setCorp_code(corp_code);
-            vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            vipGroup.setCreater(user_id);
-            vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
-            vipGroup.setModifier(user_id);
-            vipGroup.setIsactive(jsonObject.get("isactive").toString());
-            vipGroupMapper.insertVipGroup(vipGroup);
+VipGroup vipGroup1=new VipGroup();
+            vipGroup1.setRemark(remark);
+            vipGroup1.setVip_group_code(vip_group_code);
+            vipGroup1.setVip_group_name(vip_group_name);
+            vipGroup1.setCorp_code(corp_code);
+            vipGroup1.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            vipGroup1.setCreater(user_id);
+            vipGroup1.setModified_date(Common.DATETIME_FORMAT.format(now));
+            vipGroup1.setModifier(user_id);
+            vipGroup1.setIsactive(jsonObject.get("isactive").toString());
+            vipGroupMapper.insertVipGroup(vipGroup1);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
         return result;
@@ -113,9 +112,10 @@ public class VipGroupServiceImpl implements VipGroupService{
         String vip_group_name = jsonObject.get("vip_group_name").toString();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
-        List<VipGroup> vipGroups = selectVipGroupByCorp(corp_code);
+        VipGroup vipGroup1=getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+        VipGroup vipGroup2=getVipGroupByName(corp_code,vip_group_name,Common.IS_ACTIVE_Y);
 
-        if (vipGroups.size() == 0 || vipGroups.get(0).getId() == id) {
+        if (vipGroup1!=null || vipGroup2!=null||vipGroup1.getId() == id) {
             VipGroup vipGroup = new VipGroup();
             Date now = new Date();
             vipGroup.setId(id);
