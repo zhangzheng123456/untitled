@@ -98,7 +98,6 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				}
 				var USERID=$("#USERID").val();//员工编号
 				var USER_NAME=$("#USER_NAME").val();//员工名称
-				var HEADPORTRAIT=$("#preview img").attr("src");//头像
 				var USER_PHONE=$("#USER_PHONE").val();//手机
 				var USER_EMAIL=$("#USER_EMAIL").val();//邮箱
 				var USER_SEX=$("#USER_SEX").val();//性别
@@ -166,7 +165,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				var _params={};
 				_params["user_code"]=USERID;//员工编号
 				_params["username"]=USER_NAME;//员工名称
-				_params["avater"]=HEADPORTRAIT;//头像
+				_params["avater"]="";//新增的时候头像字段先设置为空
 				_params["phone"]=USER_PHONE;//手机
 				_params["position"]=position;//职务
 				_params["email"]=USER_EMAIL//邮箱
