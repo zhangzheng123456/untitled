@@ -67,7 +67,6 @@ $(function(){
         var li=$("#file_list_r input[type='checkbox']").parents("li");
         for(var i=li.length-1;i>=0;i--){
             var child_input=$(li[i]).find('input:checkbox')[0];
-            console.log(child_input);
             child_input.removeAttribute('checked');
             $(li[i]).appendTo('#file_list_l ul'); 
         }

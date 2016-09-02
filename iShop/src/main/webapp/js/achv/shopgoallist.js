@@ -531,6 +531,9 @@ function clearAll(name){
 $("#leading_out").click(function(){
     var l=$(window).width();
     var h=$(document.body).height();
+    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
+    $(".file").css({"left":+left+"px","top":+tp+"px"});
     $("#p").show();
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $('.file').show();
@@ -623,6 +626,9 @@ $('#file_close').click(function(){
 $("#guide_into").click(function(){
     var l=$(window).width();
     var h=$(document.body).height();
+    var left=($(window).width()-$(".into_frame").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$(".into_frame").height())/2;//弹框定位的top值
+    $(".into_frame").css({"left":+left+"px","top":+tp+"px"});
     $("#p").show();
     $("#p").css({"width":+l+"px","height":+h+"px"});
     $('.file').hide();
