@@ -8354,6 +8354,7 @@ li.select_index>a>label>i{
 .paramType li{
   height:30px;
   line-height: 30px;
+  padding-left: 5px;
 }
 #PARAM_TYPE{
   background: #FFFFFF url("../img/btn_dropmenu.png")no-repeat 100% 50%;
@@ -8382,6 +8383,7 @@ li.select_index>a>label>i{
 #paramName_down li{
   height:30px;
   line-height: 30px;
+  padding-left: 5px;
 }
 #paramName_down li span{
   margin-left: 5px;
@@ -8402,6 +8404,7 @@ li.select_index>a>label>i{
 #paramValue_down li{
   height:30px;
   line-height: 30px;
+  padding-left: 5px;
 }
 #paramValue_down li:hover{
   color: #FFFFFF;
@@ -8435,6 +8438,7 @@ li.select_index>a>label>i{
 #labelgp_select li{
   height:30px;
   line-height: 30px;
+  padding-left: 5px;
 }
 #labelgp_select li:hover{
   color: #FFFFFF;
