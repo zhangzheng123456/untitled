@@ -7,55 +7,48 @@
     <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
     <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
     <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
     <link href="../css/style.css?v=2.2.0" rel="stylesheet">
     <link rel="stylesheet" href="../css/font_style.css">
-    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <link rel="stylesheet" type="text/css" href="../js/artDialog/skins/default.css">
     <style>
         body{
             margin-top:81px;
         }
     </style>
 </head>
+
 <body>
-<!-- <div id="wrapper">
-</div> -->
 <div id="page-wrapper" class="gray-bg dashbard-1">
-    <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员分组<i class="icon-ishop_8-03"></i>新增会员分组</div>
-    <div class="editor_em col-lg-7  animated fadeInRight">
+    <div class="col-lg-12 pre_title">会员分组<i class="icon-ishop_8-03"></i><label>新增会员分组</label></div>
+    <div class="editor_1 col-lg-6 editor_line  animated fadeInRight">
         <form class="conpany_msg">
-            <div class="drop_down item_2">
-                        <span><label style="color:#c26555;">分组编号*</label><input id="platform" class="input_select" type="text" value="Android" placeholder="请选择"  readonly/>
-                            <ul>
-                                <li>Android</li>
-                                <li>iOS</li>
-                            </ul>
-                        </span>
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业</label></li>
+                    <li>
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex">
+                                    </select>
+                                </span>
+                    </li>
+                </ul>
             </div>
             <div>
-                        <span>
-                            <label style="color:#c26555;">分组名称*</label><input id="download_addr" type="text" verify="Empty"/>
-                            <div style="padding-left:122px" class="hint"><div  hintinfo="地址不能为空！"></div></div>
-                        </span>
+                <span><label>分组编号</label><input type="text" id="vip_num" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组编号不能为空！"></div></div></span>
             </div>
             <div>
-                        <span>
-                            <label style="color:#c26555;">企业编号*</label><input id="version_id" type="text" verify="Empty"/>
-                            <div style="padding-left:122px" class="hint"><div  hintinfo="版本不能为空！"></div></div>
-                        </span>
+                <span><label>分组名称</label><input type="text" id="vip_id" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="分组名称不能为空！"></div></div></span>
             </div>
+
             <div>
-                        <span style="display: inline-flex;width:100%">
-                            <label style="color:#c26555;" style="height: 120px;">备注*</label>
-                            <span class="tempalte_area" style="height: 120px">
-                                <textarea style="height: 100px" id="corp_code"></textarea>
-                            </span>
-                        </span>
+                <span><label>备注</label><input type="text" id="vip_remark" /></span>
             </div>
         </form>
     </div>
-    <div class="editor_detail_em col-lg-4  animated fadeInRight">
-        <div class="appadd_oper_btn">
+    <div class="editor_detail col-lg-4  animated fadeInRight">
+        <div class="areaadd_oper_btn">
             <ul>
                 <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
                 <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
@@ -63,7 +56,7 @@
         </div>
         <form class="msg_detail">
             <div>
-                <span><label>可用</label><em class="checkbox_isactive"><input type="checkbox" value="" name="test" class="check" checked="true" id="is_active"><label for="is_active"></label></em></span>
+                <span><label>可用</label><em class="checkbox_isactive"><input checked="true" type="checkbox" value="" name="test" class="check" id="is_active"><label for="is_active"></label></em></span>
             </div>
         </form>
     </div>
@@ -75,12 +68,18 @@
 <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
 <!-- Custom and plugin javascript -->
 <script src="../js/hplus.js?v=2.2.0"></script>
-<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
-<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
 <!-- moni select -->
 <script type="text/javascript" src="../js/moni_select.js"></script>
+<script src="../js/loading.js"></script>
+<!-- Dialog -->
+<script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
+<script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+<!-- ajax -->
 <script type="text/javascript" src="../js/insidePostRequire.js"></script>
-<!--<script type="text/javascript" src="../js/system/appversion_operate.js"></script>-->
+<!-- 带搜索的下拉框 -->
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<!-- error tips -->
+<script type="text/javascript" src="../js/vip/vip_group_add.js"></script>
 </body>
 
 </html>

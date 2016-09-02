@@ -4,6 +4,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipGroupMapper;
 import com.bizvane.ishop.entity.VipGroup;
 import com.bizvane.ishop.service.VipGroupService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nanji on 2016/8/31.
@@ -49,6 +52,9 @@ public class VipGroupServiceImpl implements VipGroupService{
         List<VipGroup> vipGroups;
         PageHelper.startPage(page_number, page_size);
         vipGroups = vipGroupMapper.selectAllVipGroup(corp_code, search_value);
+        for (VipGroup vipGroup:vipGroups) {
+            vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
+        }
         PageInfo<VipGroup> page = new PageInfo<VipGroup>(vipGroups);
         return page;
     }
@@ -57,21 +63,24 @@ public class VipGroupServiceImpl implements VipGroupService{
     public List<VipGroup> getAllVipGroup(String corp_code) throws Exception {
         List<VipGroup> vipGroups;
         vipGroups = vipGroupMapper.selectVipGroups(corp_code);
+
         return vipGroups;
     }
-    public List<VipGroup> selectVipGroupByCorp(String corp_code, String id) throws Exception {
-        return vipGroupMapper.selectVipGroupByCorp(corp_code,id);
+    @Override
+    public List<VipGroup> selectVipGroupByCorp(String corp_code) throws Exception {
+        return vipGroupMapper.selectVipGroupByCorp(corp_code);
     }
+
+
     @Override
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String vip_group_code = jsonObject.get("vip_group_code").toString();
         String vip_group_name = jsonObject.get("vip_group_name").toString();
-        String vipGroup_id = jsonObject.get("id").toString();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
-        List<VipGroup> vipGroups = selectVipGroupByCorp(corp_code,vipGroup_id);
+        List<VipGroup> vipGroups = selectVipGroupByCorp(corp_code);
         if (vipGroups.size() >0) {
             result = "该会员分组已存在";
         }else {
@@ -104,7 +113,7 @@ public class VipGroupServiceImpl implements VipGroupService{
         String vip_group_name = jsonObject.get("vip_group_name").toString();
         String remark = jsonObject.get("remark").toString();
         String corp_code = jsonObject.get("corp_code").toString();
-        List<VipGroup> vipGroups = selectVipGroupByCorp(corp_code,vipGroup_id);
+        List<VipGroup> vipGroups = selectVipGroupByCorp(corp_code);
 
         if (vipGroups.size() == 0 || vipGroups.get(0).getId() == id) {
             VipGroup vipGroup = new VipGroup();
@@ -133,9 +142,28 @@ public class VipGroupServiceImpl implements VipGroupService{
         return vipGroupMapper.deleteVipGroupById(id);
     }
     @Override
+    public VipGroup  getVipGroupByCode(String corp_code, String code,String isactive) throws Exception{
+        return vipGroupMapper.selectByVipGroupCode(corp_code,code,isactive);
+    }
+    @Override
    public  VipGroup   getVipGroupByName(String corp_code, String name,String isactive) throws Exception{
         VipGroup vipGroup = this.vipGroupMapper.selectByVipGroupName(corp_code,name,isactive);
         return vipGroup;
     }
+    public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,  Map<String, String> map) throws Exception{
+        Map<String, Object> params = new HashMap<String, Object>();
+        String[] areas = null;
+        String[] stores = null;
+        params.put("corp_code", corp_code);
+        params.put("map", map);
+        PageHelper.startPage(page_number, page_size);
+        List<VipGroup> list1 = vipGroupMapper.selectAllVipGroupScreen(params);
+        for (VipGroup vipGroup:list1) {
+            vipGroup.setIsactive(CheckUtils.CheckIsactive(vipGroup.getIsactive()));
+        }
+        PageInfo<VipGroup> page = new PageInfo<VipGroup>(list1);
+        return page;
+    }
+
 
 }

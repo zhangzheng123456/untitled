@@ -232,11 +232,17 @@ function superaddition(data,num){//页面加载循环
             + "</td><td style='text-align:left;'>"
             + a
             + "</td><td>"
-            + data[i].area_code
+            + data[i].vip_group_code
             + "</td><td>"
-            + data[i].area_name
+            + data[i].vip_group_name
             + "</td><td>"
-            + data[i].corp.corp_name
+            + data[i].corp_name
+            +"</td><td>"
+            +data[i].remark
+            +"</td><td>"
+            +data[i].modified_date
+            +"</td><td>"
+            +data[i].modifier
             +"</td><td>"
             +data[i].isactive
             +"</td></tr>");
@@ -299,7 +305,7 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
+        //console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -427,7 +433,7 @@ function POST(a,b){
         }
     })
 }
-console.log(left);
+//console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
