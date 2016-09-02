@@ -72,7 +72,7 @@ var message = JSON.parse(val.message);
     corpjs.bindbutton = function () {
         $(".corpadd_oper_btn ul li:nth-of-type(1)").click(function () {
             var nameMark = $("#CORPNAME").attr("data-mark");
-            var codeMark = $("#CORPID").attr("data-mark");
+            var codeMark = $("#OWN_CORP").attr("data-mark");
             if (corpjs.firstStep()) {
                 if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
@@ -81,13 +81,13 @@ var message = JSON.parse(val.message);
                         div.addClass("error_tips");
                     }
                     if (codeMark == "N") {
-                        var div = $("#CORPID").next('.hint').children();
+                        var div = $("#OWN_CORP").next('.hint').children();
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
                     return;
                 }
-                var CORPID = $("#CORPID").val();
+                var CORPID = $("#OWN_CORP").val();
                 var WXID = $("#WXID").val();
                 var CORPNAME = $("#CORPNAME").val();
                 var CORPADDRESS = $("#CORPADDRESS").val();
@@ -136,7 +136,7 @@ var message = JSON.parse(val.message);
         });
         $(".corpedit_oper_btn ul li:nth-of-type(1)").click(function () {
             var nameMark = $("#CORPNAME").attr("data-mark");
-            var codeMark = $("#CORPID").attr("data-mark");
+            var codeMark = $("#OWN_CORP").attr("data-mark");
             console.log(nameMark);
             if (corpjs.firstStep()) {
                 if (nameMark == "N" || codeMark == "N") {
@@ -146,7 +146,7 @@ var message = JSON.parse(val.message);
                         div.addClass("error_tips");
                     }
                     if (codeMark == "N") {
-                        var div = $("#CORPID").next('.hint').children();
+                        var div = $("#OWN_CORP").next('.hint').children();
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
@@ -154,12 +154,12 @@ var message = JSON.parse(val.message);
                 }
                 var ID = sessionStorage.getItem("id");
                 var HEADPORTRAIT = "";
-                if ($("#CORPID").val() !== '' && $("#preview img").attr("src") !== '../img/bg.png') {
-                    HEADPORTRAIT = "http://products-image.oss-cn-hangzhou.aliyuncs.com/Corp_logo/ishow/" + $("#CORPID").val().trim() + ".jpg";
+                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/bg.png') {
+                    HEADPORTRAIT = "http://products-image.oss-cn-hangzhou.aliyuncs.com/Corp_logo/ishow/" + $("#OWN_CORP").val().trim() + ".jpg";
                 } else {
                     HEADPORTRAIT = "";
                 }
-                var CORPID = $("#CORPID").val();
+                var CORPID = $("#OWN_CORP").val();
                 var WXID = $("#WXID").val();
                 var CORPNAME = $("#CORPNAME").val();
                 var CORPADDRESS = $("#CORPADDRESS").val();
@@ -308,8 +308,8 @@ jQuery(document).ready(function () {
                     $("#c_logo label").html("上传logo");
                 }
                 $("#WXID").val(msg.app_id);
-                $("#CORPID").val(msg.corp_code);
-                $("#CORPID").attr("data-name", msg.corp_code);
+                $("#OWN_CORP").val(msg.corp_code);
+                $("#OWN_CORP").attr("data-name", msg.corp_code);
                 $("#CORPNAME").val(msg.corp_name);
                 $("#CORPADDRESS").val(msg.address);
                 $("#CONTACTS").val(msg.contact);
@@ -374,9 +374,9 @@ jQuery(document).ready(function () {
             oc.postRequire("post", "/corp/Corp_codeExist", "", _params, function (data) {
                 if (data.code == "0") {
                     div.html("");
-                    $("#CORPID").attr("data-mark", "Y");
+                    $("#OWN_CORP").attr("data-mark", "Y");
                 } else if (data.code == "-1") {
-                    $("#CORPID").attr("data-mark", "N");
+                    $("#OWN_CORP").attr("data-mark", "N");
                     div.addClass("error_tips");
                     div.html("该编号已经存在！");
                 }
@@ -425,7 +425,7 @@ jQuery(document).ready(function () {
     }
     $("#power").click(function(){
         var require_data={};
-        var corp_code=$("#CORPID").val();
+        var corp_code=$("#OWN_CORP").val();
         var wechat=[];
         require_data["corp_code"]=corp_code;
         var list = [];

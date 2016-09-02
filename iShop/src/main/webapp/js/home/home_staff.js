@@ -1,7 +1,7 @@
 var oc = new ObjectControl();
 $(function(){
     var Time=getNowFormatDate();
-    $(".laydate-icon").val(Time);
+    $(".icon-text").val(Time);
     staffRanking(Time);
     achAnalysis(Time);
     getShopList();
@@ -47,7 +47,7 @@ function lay1(InputID){//定义日期格式
     };
     laydate(start)
 }
-$(".laydate-icon").click(//点击input 显示日期控件界面
+$(".icon-text").click(//点击input 显示日期控件界面
     function () {
         var InputID='#'+$(this).attr("id");
         lay1(InputID)
@@ -225,18 +225,21 @@ function getShopList(){//切换店铺
                 var area_code=$(this).attr("data-code");
                 $(".area_name").attr("data-code",area_code);
                 $(".area_name").html($(this).html());
-                console.log($(this).html());
+                $(".c_a_shoppe ul").hide();
                 //staffRanking(today,area_code);
                 //achAnalysis(today,area_code);
+                achieveChart(data)
             })
         }
     })
 }
 
 function achieveChart(data){//获取折线图
-    var param={
-        time:data.replace(/-/g,"")
-    };
+    var param={};
+    param["time"]=data.replace(/-/g,"")
+    if(area_code!=''&&area_code!=undefined){
+        param["store_code"]=area_code;
+    }
     oc.postRequire("post","/home/achInfo","", param, function(data){
         var infodata_W=JSON.parse(data.message).W;
         var infodata_M=JSON.parse(data.message).M;

@@ -61,7 +61,17 @@ $(function(){
     });
     document.getElementById('file').addEventListener('change', function (e) {
         var file = e.target.files[0];
-        var storeAs = '/Corp_logo/ishow/'+$("#CORPID").val().trim()+'.jpg';
+        var corp_code=$("#OWN_CORP").val()//公司编号
+        var user_code=$("#USERID").val()//员工编号
+        // console.log(corp_code);
+        // console.log(user_code);
+        var storeAs="";
+        if(user_code==""||user_code==undefined){
+            storeAs = '/Corp_logo/ishow/'+corp_code.trim()+'.jpg';
+        }
+        if(user_code!==""&&user_code!==undefined){
+            storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code+'.jpg';
+        }
         console.log(file.name + ' => ' + storeAs);
         client.multipartUpload(storeAs, file).then(function (result) {
             console.log(result);
