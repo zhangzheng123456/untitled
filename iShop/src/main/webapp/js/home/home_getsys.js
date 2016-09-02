@@ -14,7 +14,9 @@ function homeGetSys(timeType){
     oc.postRequire("post", _command1,"", _param, function(data){
         var sysMessage=JSON.parse(data.message);
         var feedbackContent=JSON.parse(sysMessage.feedback);
+        var errorlog=JSON.parse(sysMessage.errorlog);
         var feedbackHtml="";
+        var errorhtml="";
         $("#corp_count").html(sysMessage.corp_count);
         $("#store_count").html(sysMessage.store_count);
         $("#user_count").html(sysMessage.user_count);
@@ -26,9 +28,18 @@ function homeGetSys(timeType){
             feedbackHtml+='<li>'
                 +' <label><i class="icon-ishop_8-01"></i>'+feedbackContent[index].feedback_date+'</label>'
                 +'<label style="float: right">'+feedbackContent[index].phone+'</label>'
-                +'<div>'+feedbackContent[index].feedback_content+'</div>'
+                +'<div title="'+feedbackContent[index].feedback_content+'">'+feedbackContent[index].feedback_content+'</div>'
                 +'</li>';
             $("#feed_back").html(feedbackHtml);
+        }
+        console.log(errorlog)
+        for(index in errorlog){
+            errorhtml+='<li>'
+                +'<label><i class="icon-ishop_8-01"></i>'+errorlog[index].created_date+'</label>'
+                +'<label style="float: right">'+errorlog[index].app_platform+'</label>'
+                +'<div title="'+errorlog[index].content+'">'+errorlog[index].content+'</div>'
+                +'</li>';
+            $("#error_log").html(errorhtml);
         }
         for(index in sysMessage.user_increase){
             perArr.push(sysMessage.user_increase[index].count);
