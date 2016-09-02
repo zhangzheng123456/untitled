@@ -39,7 +39,6 @@ $(function(){
     };
     vipjs.firstStep = function(){
         var inputText = jQuery(".conpany_msg").find(":text");
-        //console.log(inputText.length)
         for(var i=0,length=inputText.length-1;i<length;i++){
             if(!bindFun(inputText[i]))return false;
         }
@@ -50,25 +49,25 @@ $(function(){
             //var codeMark=$("#vip_id").attr("data-mark");//区域名称是否唯一的标志
             var nmae=$("#vip_id").attr("data-mark");//区域名称是否唯一的标志
             //var nameMark=$("#vip_nym").attr("data-mark");//区域编号是否唯一的标志
-            var num=$("#vip_nym").attr("data-mark");//区域编号是否唯一的标志
-            var remark=$("#vip_remark").attr("data-mark");//备注
+            var num=$("#vip_num").attr("data-mark");//区域编号是否唯一的标志
             if(vipjs.firstStep()){
-                if(nameMark=="N"||codeMark=="N"){
-                    if(nameMark=="N"){
-                        var div=$("#AREA_NAME").next('.hint').children();
-                        div.html("该名称已经存在！");
-                        div.addClass("error_tips");
-                    }
-                    if(codeMark=="N"){
-                        var div=$("#AREA_ID").next('.hint').children();
-                        div.html("该编号已经存在！");
-                        div.addClass("error_tips");
-                    }
-                    return;
-                }
-                var AREA_ID=$("#AREA_ID").val();
-                var AREA_NAME=$("#AREA_NAME").val();
+                //if(nameMark=="N"||codeMark=="N"){
+                //    if(nameMark=="N"){
+                //        var div=$("#AREA_NAME").next('.hint').children();
+                //        div.html("该名称已经存在！");
+                //        div.addClass("error_tips");
+                //    }
+                //    if(codeMark=="N"){
+                //        var div=$("#AREA_ID").next('.hint').children();
+                //        div.html("该编号已经存在！");
+                //        div.addClass("error_tips");
+                //    }
+                //    return;
+                //}
+                var vip_id=$("#vip_id").val();
+                var vip_num=$("#vip_num").val();
                 var OWN_CORP=$("#OWN_CORP").val();
+                var vip_remark=$("#vip_remark").val();
                 var ISACTIVE="";
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(input.checked==true){
@@ -76,13 +75,13 @@ $(function(){
                 }else if(input.checked==false){
                     ISACTIVE="N";
                 }
-                var _command="/area/add";//接口名
+                var _command="/vipGroup/add";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
 
                     }
                 };
-                var _params={"corp_code":OWN_CORP,"area_code":AREA_ID,"area_name":AREA_NAME,"isactive":ISACTIVE};
+                var _params={"vip_group_code":vip_num,"vip_group_name":vip_id,"corp_name":OWN_CORP,"remark":vip_remark,"isactive":ISACTIVE};
                 vipjs.ajaxSubmit(_command,_params,opt);
             }else{
                 return;
@@ -92,18 +91,18 @@ $(function(){
             var codeMark=$("#vip_id").attr("data-mark");//区域名称是否唯一的标志
             var nameMark=$("#vip_nym").attr("data-mark");//区域编号是否唯一的标志
             if(vipjs.firstStep()){
-                if(nameMark=="N"){
-                    var div=$("#AREA_NAME").next('.hint').children();
-                    div.html("该名称已经存在！");
-                    div.addClass("error_tips");
-                    return;
-                }
-                if(codeMark=="N"){
-                    var div=$("#AREA_ID").next('.hint').children();
-                    div.html("该编号已经存在！");
-                    div.addClass("error_tips");
-                    return;
-                }
+                //if(nameMark=="N"){
+                //    var div=$("#AREA_NAME").next('.hint').children();
+                //    div.html("该名称已经存在！");
+                //    div.addClass("error_tips");
+                //    return;
+                //}
+                //if(codeMark=="N"){
+                //    var div=$("#AREA_ID").next('.hint').children();
+                //    div.html("该编号已经存在！");
+                //    div.addClass("error_tips");
+                //    return;
+                //}
                 var ID=sessionStorage.getItem("id");
                 var AREA_ID=$("#AREA_ID").val();
                 var AREA_NAME=$("#AREA_NAME").val();
@@ -195,10 +194,8 @@ function getcorplist(){
             $('.searchable-select-item').click(function(){
                 $("#vip_id").val("");
                 $("#vip_num").val("");
-                $("#vip_remark").val("");
                 $("#vip_id").attr("data-mark","");
                 $("#vip_num").attr("data-mark","");
-                $("#vip_remark").attr("data-mark","");
                 //console.log($("#OWN_CORP").val())
             })
         }else if(data.code=="-1"){
@@ -211,3 +208,48 @@ function getcorplist(){
         }
     });
 }
+//验证编号是不是唯一
+$("#vip_num").blur(function(){
+    // var isCode=/^[A]{1}[0-9]{4}$/;
+    var _params={};
+    var vip_group_code=$(this).val();
+    var vip_group_code1=$(this).attr("data-name");
+    var corp_code=$("#OWN_CORP").val();
+    if(vip_group_code!==""&&vip_group_code!==vip_group_code1){
+        _params["vip_group_code"]=vip_group_code;
+        _params["corp_code"]=corp_code;
+        var div=$(this).next('.hint').children();
+        oc.postRequire("post","/vipGroup/VipGroupCodeExist","", _params, function(data){
+            if(data.code=="0"){
+                div.html("");
+                $("#vip_num").attr("data-mark","Y");
+            }else if(data.code=="-1"){
+                $("#vip_num").attr("data-mark","N");
+                div.addClass("error_tips");
+                div.html("该编号已经存在！");
+            }
+        })
+    }
+});
+//验证名称是否唯一
+$("#vip_id").blur(function(){
+    var corp_code=$("#OWN_CORP").val();
+    var vip_id=$("#vip_id").val();
+    var vip_id1=$("#vip_id").attr("data-name");
+    var div=$(this).next('.hint').children();
+    if(vip_id!==""&&vip_id!==vip_id1){
+        var _params={};
+        _params["vip_group_name"]=vip_id;
+        _params["corp_code"]=corp_code;
+        oc.postRequire("post","/vipGroup/VipGroupNameExist","", _params, function(data){
+            if(data.code=="0"){
+                div.shtml("");
+                $("#vip_id").attr("data-mark","Y");
+            }else if(data.code=="-1"){
+                div.html("该名称已经存在！");
+                div.addClass("error_tips");
+                $("#vip_id").attr("data-mark","N");
+            }
+        })
+    }
+});

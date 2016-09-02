@@ -232,11 +232,17 @@ function superaddition(data,num){//页面加载循环
             + "</td><td style='text-align:left;'>"
             + a
             + "</td><td>"
-            + data[i].area_code
+            + data[i].vip_group_code
             + "</td><td>"
-            + data[i].area_name
+            + data[i].vip_group_name
             + "</td><td>"
-            + data[i].corp.corp_name
+            + data[i].corp_name
+            +"</td><td>"
+            +data[i].remark
+            +"</td><td>"
+            +data[i].modified_date
+            +"</td><td>"
+            +data[i].modifier
             +"</td><td>"
             +data[i].isactive
             +"</td></tr>");
