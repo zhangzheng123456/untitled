@@ -91,8 +91,8 @@ var oc = new ObjectControl();
                     SEX="F";
                 }
                 var avater="";//头像
-                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/head.png') {
-                    avater= "http://products-image.oss-cn-hangzhou.aliyuncs.com/Avatar/User/iShow/"+OWN_CORP.trim()+USERID.trim()+'.jpg';
+                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/a3.jpg') {
+                    avater= "http://products-image.oss-cn-hangzhou.aliyuncs.com/Avatar/User/iShow/"+CORP_CODE.trim()+USERID.trim()+'.jpg';
                 } else {
                    avater=$("#preview img").attr("src");//头像
                 }
@@ -106,7 +106,7 @@ var oc = new ObjectControl();
                 _params["id"]=ID;//ID
                 _params["user_code"]=USERID;//员工编号
                 _params["username"]=USER_NAME;//员工名称
-                _params["avatar"]=HEADIMG;//头像
+                _params["avater"]=avater;//头像
                 _params["position"]=POSITION;//职务
                 _params["phone"]=USER_PHONE;//手机
                 _params["email"]=USER_EMAIL//邮箱
@@ -128,7 +128,12 @@ var oc = new ObjectControl();
         // console.log(JSON.stringify(_params));
         oc.postRequire("post", _command,"", _params, function(data){
             if(data.code=="0"){
-                $(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: "修改成功"
+                });
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
