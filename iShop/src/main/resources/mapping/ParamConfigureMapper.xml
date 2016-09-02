@@ -5,10 +5,10 @@
     <resultMap type="com.bizvane.ishop.entity.ParamConfigure" id="ParamConfigure">
         <id column="id" property="id"/>
         <result column="param_name" property="param_name"/>
-        <result column="param_type" property="param_type"/>
-        <result column="param_values" property="param_values"/>
-        <result column="param_desc" property="param_desc"/>
-        <result column="remark" property="remark"/>
+        <result column="param_type" property="param_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="param_values" property="param_values" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="param_desc" property="param_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
    </resultMap>
 
     <select id="selectById" resultMap="ParamConfigure">
@@ -31,7 +31,7 @@
         ORDER BY DEF_CORP_CFG.id DESC
     </select>
 
-    <select id="selectParams" resultType="com.bizvane.ishop.entity.ParamConfigure">
+    <select id="selectParams" resultMap="ParamConfigure">
         select *
         from DEF_CORP_CFG
 
@@ -105,13 +105,13 @@
         WHERE DEF_CORP_CFG.id=#{id};
     </update>
 
-    <select id="selectParamByKey" resultType="com.bizvane.ishop.entity.ParamConfigure">
+    <select id="selectParamByKey" resultMap="ParamConfigure">
         select * from DEF_CORP_CFG
         WHERE param_name=#{param_name}
 
     </select>
 
-    <select id="selectParamByName" resultType="com.bizvane.ishop.entity.ParamConfigure">
+    <select id="selectParamByName" resultMap="ParamConfigure">
         select * from DEF_CORP_CFG
         WHERE param_desc=#{param_desc}
 
