@@ -71,7 +71,7 @@ var oc = new ObjectControl();
         $("#personal_save").click(function(){
             if(useroperatejs.firstStep()){
                 var ID=$("#id").val();
-                var USERID=$("#USER_ID").val();
+                var USERID=$("#USERID").val();
                 var CORP_CODE=$("#OWN_CORP").val();//空字段
                 var GROUP_CODE=$("#group_code").val();//空字段
                 var role_code=$("#role_code").val();//空字段
@@ -186,7 +186,7 @@ jQuery(document).ready(function(){
                  $("#id").val(msg.id);
                  $("#IMG").attr("src",msg.avatar);
                  $("#corp_code").val(msg.corp_name);
-                 $("#USER_ID").val(msg.user_code);
+                 $("#USERID").val(msg.user_code);
                  $("#USER_NAME").val(msg.user_name);
                  $("#POSITION").val(msg.position);
                  $("#IPHONE").val(msg.phone);
