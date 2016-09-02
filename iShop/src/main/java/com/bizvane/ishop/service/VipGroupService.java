@@ -1,9 +1,11 @@
 package com.bizvane.ishop.service;
 
+
 import com.bizvane.ishop.entity.VipGroup;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by nanji on 2016/8/31.
@@ -21,10 +23,14 @@ public interface VipGroupService {
 
     String update(String message, String user_id) throws Exception;
 
-    List<VipGroup> selectVipGroupByCorp(String corp_code,String id) throws Exception ;
+    int delete(int id) throws Exception;
 
-        int delete(int id) throws Exception;
+    List<VipGroup> selectVipGroupByCorp(String corp_code) throws Exception ;
+
+    VipGroup   getVipGroupByCode(String corp_code, String code,String isactive) throws Exception;
+
     VipGroup   getVipGroupByName(String corp_code, String name,String isactive) throws Exception;
 
+    PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,  Map<String, String> map) throws Exception;
 
 }

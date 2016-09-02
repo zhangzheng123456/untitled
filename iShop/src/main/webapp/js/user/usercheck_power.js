@@ -17,21 +17,21 @@ $("#edit_power").click(function(){
     $(".content").show();
     GET();
 })
-$("#add_power").click(function(){
-   group_code=$('#OWN_RIGHT').attr("data-myrcode");
-   if(group_code==undefined){
-        art.dialog({
-            time: 1,
-            lock:true,
-            cancel: false,
-            content: "请先选择所属群组"
-        });
-        return;
-   }         
-   $("#page-wrapper").hide();
-   $(".content").show();
-   GET();
-})
+// $("#add_power").click(function(){
+//    group_code=$('#OWN_RIGHT').attr("data-myrcode");
+//    if(group_code==undefined){
+//         art.dialog({
+//             time: 1,
+//             lock:true,
+//             cancel: false,
+//             content: "请先选择所属群组"
+//         });
+//         return;
+//    }         
+//    $("#page-wrapper").hide();
+//    $(".content").show();
+//    GET();
+// })
 $('#turnoff').click(function(){
 	$("#page-wrapper").show();
     $(".content").hide();

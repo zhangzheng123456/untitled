@@ -299,7 +299,7 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
+        //console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -427,7 +427,7 @@ function POST(a,b){
         }
     })
 }
-console.log(left);
+//console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();

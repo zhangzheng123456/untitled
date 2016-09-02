@@ -742,14 +742,16 @@ input::-webkit-input-placeholder{
     float: right;
 }
 #file_list{
-	overflow: hidden;
+	overflow-y: auto;
 	padding-left: 20px;
 	padding-right: 20px;
+	height:200px;
 }
 #file_list_l{
 	width: 42%;
 	min-height:30px;
 	float: left;
+	margin-right: 15.7%;
 }
 #file_list_r{
 	width: 42%;
@@ -757,11 +759,13 @@ input::-webkit-input-placeholder{
 }
 #file_list_z{
 	width: 15.7%;
-	min-height:30px;
-	float: left;
+	height: 240px;
+	position: absolute;
+	left:236px;
+	top:25px;
 }
 .c_shift{
-	margin-top:10%;
+	margin:40px auto;
 }
 .shift{
 	width: 30px;

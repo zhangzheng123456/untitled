@@ -177,22 +177,58 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     @Override
     public PageInfo<ParamConfigure> selectByParamSearch(int page_number, int page_size ,String search_value) throws Exception {
 
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("search_value", search_value);
+       // Map<String, Object> params = new HashMap<String, Object>();
+       // params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<ParamConfigure> paramConfigures = paramConfigureMapper.selectAllParam(search_value);
+        String result="";
+        for (ParamConfigure paramConfigure : paramConfigures) {
+
+            String  param_type=  paramConfigure.getParam_type();
+            if(param_type==null){
+                result="";
+            }else if(param_type.equals("switch")){
+                result="开关";
+            }else if(param_type.equals("list")){
+                result="选择列表";
+            }else if(param_type.equals("custom")){
+                result="自定义";
+            }else{
+                result="";
+            }
+            paramConfigure.setParam_type(result);
+
+        }
+
         PageInfo<ParamConfigure> page = new PageInfo<ParamConfigure>(paramConfigures);
         return page;
     }
 
     @Override
    public  PageInfo<ParamConfigure> selectParamScreen(int page_number, int page_size, Map<String, String> map) throws Exception{
-        String[] paramArray = null;
         List<ParamConfigure> names;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
+
+        String result="";
         names = paramConfigureMapper.selectParamScreen(params);
+        for (ParamConfigure paramConfigure : names) {
+
+            String param_type = paramConfigure.getParam_type();
+            if (param_type == null) {
+                result = "";
+            } else if (param_type.equals("switch")) {
+                result = "开关";
+            } else if (param_type.equals("list")) {
+                result = "选择列表";
+            } else if (param_type.equals("custom")) {
+                result = "自定义";
+            } else {
+                result = "";
+            }
+            paramConfigure.setParam_type(result);
+        }
         PageInfo<ParamConfigure> page = new PageInfo<ParamConfigure>(names);
         return page;
 

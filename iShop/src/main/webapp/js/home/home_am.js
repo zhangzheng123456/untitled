@@ -1,14 +1,20 @@
 var oc = new ObjectControl();
-var myDate = new Date();
-var year = myDate.getFullYear();
-var month = myDate.getMonth() + 1;
-if (month < 10) {
-	month = "0" + month;
-} else if (month >= 10) {
-	month = month;
+function getNowFormatDate() {//获取当前日期
+	var date = new Date();
+	var seperator1 = "-";
+	var year = date.getFullYear();
+	var month = date.getMonth() + 1;
+	var strDate = date.getDate();
+	if (month >= 1 && month <= 9) {
+		month = "0" + month;
+	}
+	if (strDate >= 0 && strDate <= 9) {
+		strDate = "0" + strDate;
+	}
+	var currentdate = year + seperator1 + month + seperator1 + strDate;
+	return currentdate
 }
-var data = myDate.getDate();
-var today = year + "-" + month + "-" + data;
+var today = getNowFormatDate()
 $(".icon-text").val(today);
 $(".title").mouseover(function() {
 	ul = $(this).nextAll("ul");
@@ -79,7 +85,12 @@ function superadditionStore(c) {
 			+ "</td><td>" + c[i].discount //折扣
 			+ "</td></tr>"
 	}
-	$("#store_list tbody").html(store_list);
+	var nodata="<tr><td colSpan='3' style='padding-top:70px;'>暂无数据</td></tr>";
+	if(c.length==0){
+		$("#store_list tbody").html(nodata);
+	}else {
+		$("#store_list tbody").html(store_list);
+	}
 }
 //店铺排行
 function storeRanking(a,b) {
@@ -136,7 +147,12 @@ function superadditionStaff(c) {
 			+ "</td><td>" + c[i].store_name //所属店铺
 			+ "</td></tr>"
 	}
-	$("#staff_list tbody").html(staff_list);
+	var nodata="<tr><td colSpan='4' style='padding-top:70px;'>暂无数据</td></tr>";
+	if(c.length==0){
+		$("#staff_list tbody").html(nodata);
+	}else {
+		$("#staff_list tbody").html(staff_list);
+	}
 }
 //导购排行
 function staffRanking(a,b) { 
