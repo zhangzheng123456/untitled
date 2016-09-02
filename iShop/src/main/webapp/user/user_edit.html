@@ -55,7 +55,7 @@
                     <div>
                         <span><label>头像</label></span>
                         <span class="touxiang" id="preview"><img id="imghead" src="../img/head.png"></span>
-                        <span class="change_touxiang" style="position: relative;"><i class="icon-ishop_6-09"></i><input type="file" onchange="previewImage(this)"/ style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
+                        <span class="change_touxiang" style="position: relative;"><i class="icon-ishop_6-09"></i><input type="file" id="file" onchange="previewImage(this)"/ style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                     </div>
                     <div>
                         <span><label>手机</label><input type="text" id="USER_PHONE" verify="Phone"/><div style="padding-left:125px" class="hint"><div  hintinfo="手机号码为必填项，不能为空！"></div></div></span>
@@ -329,13 +329,11 @@
     <script src="../js/bootstrap.min.js?v=3.4.0"></script>
     <script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
     <script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-    <!-- Custom and plugin javascript -->
-    <script src="../js/hplus.js?v=2.2.0"></script>
     <!-- moni select -->
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <script src="/js/loading.js"></script>
     <!-- 上传头像 -->
-    <!-- <script type="text/javascript" src="../js/upload_touxiang.js"></script> -->
+    <script type="text/javascript" src="../js/upload_touxiang.js"></script>
     <!-- Dialog -->
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
@@ -347,7 +345,6 @@
     <script type="text/javascript" src="../js/user/user_operate.js"></script>
     <script src="/js/user/usercheck_power.js"></script>
 <script>
-
     function chongzhi() {
         $("#chongzhi_pwd").css('display','block');
         $("#chongzhi_box").css('display','block');
