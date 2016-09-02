@@ -123,8 +123,6 @@ VipGroup vipGroup1=new VipGroup();
             vipGroup.setVip_group_code(vip_group_code);
             vipGroup.setVip_group_name(vip_group_name);
             vipGroup.setCorp_code(corp_code);
-            vipGroup.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            vipGroup.setCreater(user_id);
             vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setModifier(user_id);
             vipGroup.setIsactive(jsonObject.get("isactive").toString());
