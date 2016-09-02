@@ -24,6 +24,9 @@
         .conpany_msg .pwd{width: 300px}
         .conpany_msg .chongzhi_pwd input{width:320px;}
         .pwd_btn{padding:6px 30px;margin-left:6px;background: #6cc1c8;color:#ffffff;border-radius: 4px}
+        .disabled{
+            background: #dfdfdf;
+        }
     </style>
 </head>
 <body>
@@ -33,7 +36,7 @@
                 <form class="conpany_msg">
                     <div>
                         <input id="id" type="hidden"/>
-                        <input id="corp_code" type="hidden"/>
+                        <input id="OWN_CORP" type="hidden"/>
                         <input id="group_code" type="hidden"/>
                         <input id="role_code" type="hidden"/>
                         <input id="area_code" type="hidden"/>
@@ -42,17 +45,19 @@
                         <input id="can_login" type="hidden"/>
                     </div>
                     <div>
-                        <label>头像</label><span class="head_img"><img src="" id="IMG"></span>
-                        <span class="change_touxiang" style="position: relative;"><i class="icon-ishop_6-09"></i><input type="file" onchange="previewImage(this)" style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
+                        <label>头像</label><span class="head_img" id="preview"><img src="" id="IMG"></span>
+                        <span class="change_touxiang" style="position: relative;">
+                        <i class="icon-ishop_6-09"></i>
+                        <input type="file" id="file" onchange="previewImage(this)" style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                     </div>
                     <div>
-                        <label>所属企业</label><input id="OWN_CORP" disabled="disabled" />
+                        <label>所属企业</label><input class="disabled" id="corp_code" disabled="disabled" />
                     </div>
                     <div>
-                        <label>员工编号</label><input id="USER_ID" disabled="disabled" />
+                        <label>员工编号</label><input class="disabled" id="USER_ID" disabled="disabled" />
                     </div>
                     <div>
-                        <label>职务</label><input id="POSITION" disabled="disabled" />
+                        <label>职务</label><input class="disabled" id="POSITION" disabled="disabled" />
                     </div>
                     <div>
                         <label>手机</label><input id="IPHONE"  verify="Empty"/>
@@ -83,13 +88,13 @@
                         </ul>
                     </div>
                     <div>
-                        <label>所属群组</label><input id="OWN_GROUP" disabled="disabled" />
+                        <label>所属群组</label><input class="disabled" id="OWN_GROUP" disabled="disabled" />
                     </div>
                     <div>
-                        <label>所属区域</label><input id="OWN_AREA" disabled="disabled" />
+                        <label>所属区域</label><input class="disabled" id="OWN_AREA" disabled="disabled" />
                     </div>
                     <div>
-                        <label>所属店铺</label><input id="OWN_SHOP" disabled="disabled" />
+                        <label>所属店铺</label><input class="disabled" id="OWN_SHOP" disabled="disabled" />
                     </div>
                 </form>
             </div>
@@ -103,11 +108,13 @@
             </div>
     </div>
 </body>
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script src="js/jquery-2.1.1.min.js"></script>
 <script src="js/insidePostRequire.js"></script>
 <script src="js/bootstrap.min.js?v=3.4.0"></script>
 <script type="text/javascript" src="js/moni_select.js"></script>
 <script src="js/artDialog/jquery.artDialog.js"></script>
 <script src="js/artDialog/plugins/iframeTools.js"></script>
+<script type="text/javascript" src="js/upload_touxiang.js"></script>
 <script src="js/personal_data.js"></script>
 </html>

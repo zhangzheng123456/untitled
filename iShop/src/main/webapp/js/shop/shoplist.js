@@ -232,9 +232,9 @@ function superaddition(data,num){//页面加载循环
                         + "</td><td style='text-align:left;'>"
                         + a
                         + "</td><td>"
-                        + data[i].store_id
-                        +"</td><td>"
                         + data[i].store_code
+                        +"</td><td>"
+                        + data[i].store_id
                         + "</td><td>"
                         + data[i].store_name
                         + "</td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
