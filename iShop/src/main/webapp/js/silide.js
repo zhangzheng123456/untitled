@@ -55,7 +55,9 @@ $(function(){
     $('#left_shift_all').click(function(){
         //获取全部的选项,删除并追加给对方
         var li=$("#file_list_l input[type='checkbox']").parents("li");
-        for(var i=li.length;i>=0;i--){
+        for(var i=li.length-1;i>=0;i--){
+            var child_input=$(li[i]).find('input:checkbox')[0];
+            child_input.setAttribute('checked','true');
             $(li[i]).appendTo('#file_list_r ul');
         }
         bianse();
@@ -63,7 +65,10 @@ $(function(){
     //全部移到左边
     $('#right_shift_all').click(function(){
         var li=$("#file_list_r input[type='checkbox']").parents("li");
-        for(var i=li.length;i>=0;i--){
+        for(var i=li.length-1;i>=0;i--){
+            var child_input=$(li[i]).find('input:checkbox')[0];
+            console.log(child_input);
+            child_input.removeAttribute('checked');
             $(li[i]).appendTo('#file_list_l ul'); 
         }
         bianse();
