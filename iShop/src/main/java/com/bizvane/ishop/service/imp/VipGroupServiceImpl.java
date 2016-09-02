@@ -115,7 +115,7 @@ VipGroup vipGroup1=new VipGroup();
         VipGroup vipGroup1=getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
         VipGroup vipGroup2=getVipGroupByName(corp_code,vip_group_name,Common.IS_ACTIVE_Y);
 
-        if (vipGroup1!=null || vipGroup2!=null||vipGroup1.getId() == id) {
+        if (vipGroup1==null || vipGroup2==null||vipGroup1.getId() == id) {
             VipGroup vipGroup = new VipGroup();
             Date now = new Date();
             vipGroup.setId(id);
@@ -152,8 +152,6 @@ VipGroup vipGroup1=new VipGroup();
     }
     public PageInfo<VipGroup> getAllVipGrouScreen(int page_number, int page_size, String corp_code,  Map<String, String> map) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
-        String[] areas = null;
-        String[] stores = null;
         params.put("corp_code", corp_code);
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);

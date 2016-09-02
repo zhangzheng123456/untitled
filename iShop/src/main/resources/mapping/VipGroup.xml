@@ -25,6 +25,8 @@
         dvg.corp_code,
         dvg.modified_date,
         dvg.modifier,
+         dvg.created_date,
+        dvg.creater,
         dvg.isactive
         FROM DEF_VIP_GROUP dvg,def_corp dc
         WHERE dvg.corp_code=dc.corp_code

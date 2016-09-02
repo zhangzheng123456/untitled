@@ -254,7 +254,7 @@ public class VipGroupController {
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
-    public String selectByAreaCode(HttpServletRequest request) {
+    public String searchVipGroup(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
