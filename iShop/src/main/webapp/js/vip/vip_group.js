@@ -110,7 +110,7 @@ $("#empty").click(function(){
     $('#search').val("");
     $(".table p").remove();
     GET(inx,pageSize);
-})
+});
 function setPage(container, count, pageindex,pageSize,funcCode){
     var container = container;
     var count = count;
@@ -234,11 +234,11 @@ function superaddition(data,num){//页面加载循环
             + data[i].vip_group_code
             + "</td><td>"
             + data[i].vip_group_name
-            + "</td><td>"
+            + "</td><td><span>"
             + data[i].corp_name
-            +"</td><td>"
+            +"</span></td><td><span title="+data[i].remark+">"
             +data[i].remark
-            +"</td><td>"
+            +"</span></td><td>"
             +data[i].modified_date
             +"</td><td>"
             +data[i].modifier
@@ -768,7 +768,7 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
+    filtrates(inx,pageSize);
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){

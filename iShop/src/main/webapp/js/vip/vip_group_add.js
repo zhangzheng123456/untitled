@@ -55,7 +55,6 @@ $(function(){
                 whir.loading.remove();//移除加载框
             });
     }else{
-        console.log("这是新增界面");
         getcorplist();
     }
 });
