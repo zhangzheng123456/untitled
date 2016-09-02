@@ -270,7 +270,7 @@ jQuery(document).ready(function(){
 	    	_params["corp_code"]=corp_code;
 	    	oc.postRequire("post","/area/Area_nameExist","", _params, function(data){
 	            if(data.code=="0"){
-	            	div.shtml("");
+	            	div.html("");
 	            	$("#AREA_NAME").attr("data-mark","Y");
 	            }else if(data.code=="-1"){
 	            	div.html("该名称已经存在！")

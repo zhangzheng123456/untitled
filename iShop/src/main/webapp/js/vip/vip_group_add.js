@@ -219,7 +219,7 @@ $("#vip_num").blur(function(){
         _params["vip_group_code"]=vip_group_code;
         _params["corp_code"]=corp_code;
         var div=$(this).next('.hint').children();
-        oc.postRequire("post","/vipGroup/VipGroupCodeExist","", _params, function(data){
+        oc.postRequire("post","/vipGroup/vipGroupCodeExist","", _params, function(data){
             if(data.code=="0"){
                 div.html("");
                 $("#vip_num").attr("data-mark","Y");
@@ -241,9 +241,9 @@ $("#vip_id").blur(function(){
         var _params={};
         _params["vip_group_name"]=vip_id;
         _params["corp_code"]=corp_code;
-        oc.postRequire("post","/vipGroup/VipGroupNameExist","", _params, function(data){
+        oc.postRequire("post","/vipGroup/vipGroupNameExist","", _params, function(data){
             if(data.code=="0"){
-                div.shtml("");
+                div.html("");
                 $("#vip_id").attr("data-mark","Y");
             }else if(data.code=="-1"){
                 div.html("该名称已经存在！");
