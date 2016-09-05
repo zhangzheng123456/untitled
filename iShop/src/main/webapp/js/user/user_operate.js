@@ -97,6 +97,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 		            return;
 				}
 				var USERID=$("#USERID").val();//员工编号
+				var user_id=$("#user_id").val();
 				var USER_NAME=$("#USER_NAME").val();//员工名称
 				var USER_PHONE=$("#USER_PHONE").val();//手机
 				var USER_EMAIL=$("#USER_EMAIL").val();//邮箱
@@ -164,6 +165,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				};
 				var _params={};
 				_params["user_code"]=USERID;//员工编号
+				_params["user_id"]=user_id;//员工ID
 				_params["username"]=USER_NAME;//员工名称
 				_params["avater"]="";//新增的时候头像字段先设置为空
 				_params["phone"]=USER_PHONE;//手机
@@ -202,6 +204,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			if(useroperatejs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var USERID=$("#USERID").val();
+				var user_id=$("#user_id").val();
 				var USER_NAME=$("#USER_NAME").val();
 				var USER_PHONE=$("#USER_PHONE").val();
 				var USER_EMAIL=$("#USER_EMAIL").val();
@@ -286,6 +289,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				};
 				var _params={};
 				_params["user_code"]=USERID;//员工编号
+				_params["user_id"]=user_id;//员工ID
 				_params["username"]=USER_NAME;//员工名称
 				_params["avater"]=avater;//头像
 				_params["position"]=position;//职务
@@ -702,6 +706,7 @@ jQuery(document).ready(function(){
 				var j_code=msg.group.role_code;//角色编号
 				$("#USERID").val(msg.user_code);
 				$("#USERID").attr("data-name",msg.user_code);
+				$("#user_id").val(msg.user_id);
 				$("#USER_NAME").val(msg.user_name);
 				$("#preview img").attr("src",msg.avatar);
 				$("#USER_PHONE").val(msg.phone);
