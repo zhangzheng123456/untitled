@@ -277,13 +277,17 @@ input::-webkit-input-placeholder{
 	color: #888;
 }
 .sxk{
-	// height: 100px;
 	background-color: #d7d8da;
-	/*overflow: hidden;*/
 	display: none;
 	margin-bottom: 10px;
-	height: 160px;
 	padding-top: 3px;
+}
+.sxk:after{
+	content: ",";
+	height: 0;
+	visibility: hidden;
+	display: block;
+	clear: both;
 }
 .sxk .sbtn{
 	margin: 10px 10px 0 10px;

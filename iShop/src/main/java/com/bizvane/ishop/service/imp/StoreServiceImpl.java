@@ -185,10 +185,10 @@ public class StoreServiceImpl implements StoreService {
         List<User> user = new ArrayList<User>();
 
         if (!store_code.equals("")) {
-            user = userMapper.selectStoreUser(corp_code, store_code + ",", "", role_code,isactive);
+            user = userMapper.selectStoreUser(corp_code, Common.STORE_HEAD+store_code + ",", "", role_code,isactive);
         }
         if (!area_code.equals("")){
-            user = userMapper.selectStoreUser(corp_code, "", area_code + ",", role_code,isactive);
+            user = userMapper.selectStoreUser(corp_code, "", Common.STORE_HEAD+area_code + ",", role_code,isactive);
         }
         for (User user1:user) {
             user1.setIsactive(CheckUtils.CheckIsactive(user1.getIsactive()));
@@ -222,6 +222,7 @@ public class StoreServiceImpl implements StoreService {
         JSONObject jsonObject = new JSONObject(message);
         String result = Common.DATABEAN_CODE_ERROR;
         String store_code = jsonObject.get("store_code").toString();
+        String store_id = jsonObject.get("store_id").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String store_name = jsonObject.get("store_name").toString();
         Store store = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
@@ -229,6 +230,11 @@ public class StoreServiceImpl implements StoreService {
         if (store == null && store1 == null) {
             Store shop = new Store();
             shop.setStore_code(store_code);
+            if (store_id.equals("")){
+                shop.setStore_id(store_code);
+            }else {
+                shop.setStore_id(store_id);
+            }
             shop.setStore_name(store_name);
             shop.setArea_code(jsonObject.get("area_code").toString());
             shop.setCorp_code(corp_code);
@@ -324,6 +330,7 @@ public class StoreServiceImpl implements StoreService {
         JSONObject jsonObject = new JSONObject(message);
         int store_id = Integer.valueOf(jsonObject.get("id").toString());
         String store_code = jsonObject.get("store_code").toString();
+        String store_id1 = jsonObject.get("store_id").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String store_name = jsonObject.get("store_name").toString();
 
@@ -341,6 +348,11 @@ public class StoreServiceImpl implements StoreService {
                 }
                 store = new Store();
                 store.setId(store_id);
+                if (store_id1.equals("")) {
+                    store.setStore_id(store_code);
+                }else {
+                    store.setStore_id(store_id1);
+                }
                 store.setStore_code(store_code);
                 store.setStore_name(store_name);
                 store.setArea_code(jsonObject.get("area_code").toString());
@@ -362,6 +374,11 @@ public class StoreServiceImpl implements StoreService {
                 store = new Store();
                 store.setId(store_id);
                 store.setStore_code(store_code);
+                if (store_id1.equals("")) {
+                    store.setStore_id(store_code);
+                }else {
+                    store.setStore_id(store_id1);
+                }
                 store.setStore_name(store_name);
                 store.setArea_code(jsonObject.get("area_code").toString());
                 store.setCorp_code(corp_code);

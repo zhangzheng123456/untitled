@@ -231,21 +231,21 @@ function superaddition(data,num){//页面加载循环
                         + "'></label></div>"
                         + "</td><td style='text-align:left;'>"
                         + a
-                        + "</td><td>"
-                        + data[i].store_id
-                        +"</td><td>"
+                        + "</td><td><span title='"+data[i].store_code+"'>"
                         + data[i].store_code
-                        + "</td><td>"
+                        +"</span></td><td><span title='"+data[i].store_id+"'>"
+                        + data[i].store_id
+                        + "</td><td><span title='"+data[i].store_name+"'>"
                         + data[i].store_name
-                        + "</td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
+                        + "</span></td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
                         +"查看"
-                        + "</a></td><td>"
+                        + "</a></td><td><span title='"+data[i].area.area_name+"'>"
                         + data[i].area.area_name
                         + "</td><td><span title='"+data[i].brand_name+"'>"
                         +data[i].brand_name
-                        + "</span></td><td>"
+                        + "</span></td><td><span title='"+data[i].corp.corp_name+"'>"
                         +data[i].corp.corp_name
-                        + "</td><td>"
+                        + "</span></td><td>"
                         +data[i].modifier
                         + "</td><td>"
                         +data[i].modified_date

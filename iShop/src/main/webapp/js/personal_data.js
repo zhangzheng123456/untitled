@@ -71,9 +71,8 @@ var oc = new ObjectControl();
         $("#personal_save").click(function(){
             if(useroperatejs.firstStep()){
                 var ID=$("#id").val();
-                var HEADIMG=$("#IMG").attr("src");
-                var USERID=$("#USER_ID").val();
-                var CORP_CODE=$("#corp_code").val();//空字段
+                var USERID=$("#USERID").val();
+                var CORP_CODE=$("#OWN_CORP").val();//空字段
                 var GROUP_CODE=$("#group_code").val();//空字段
                 var role_code=$("#role_code").val();//空字段
                 var area_code=$("#area_code").val();//空字段
@@ -91,7 +90,12 @@ var oc = new ObjectControl();
                 }else if(USER_SEX=="女"){
                     SEX="F";
                 }
-
+                var avater="";//头像
+                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/a3.jpg') {
+                    avater= "http://products-image.oss-cn-hangzhou.aliyuncs.com/Avatar/User/iShow/"+CORP_CODE.trim()+USERID.trim()+'.jpg';
+                } else {
+                   avater=$("#preview img").attr("src");//头像
+                }
                 var _command="/user/edit";//接口名
                 var opt = {//返回成功后的操作
                     success:function(){
@@ -102,7 +106,7 @@ var oc = new ObjectControl();
                 _params["id"]=ID;//ID
                 _params["user_code"]=USERID;//员工编号
                 _params["username"]=USER_NAME;//员工名称
-                _params["avatar"]=HEADIMG;//头像
+                _params["avater"]=avater;//头像
                 _params["position"]=POSITION;//职务
                 _params["phone"]=USER_PHONE;//手机
                 _params["email"]=USER_EMAIL//邮箱
@@ -124,7 +128,12 @@ var oc = new ObjectControl();
         // console.log(JSON.stringify(_params));
         oc.postRequire("post", _command,"", _params, function(data){
             if(data.code=="0"){
-                $(window.parent.document).find('#iframepage').attr("src","/user/user.html");
+                art.dialog({
+                    time: 1,
+                    lock:true,
+                    cancel: false,
+                    content: "修改成功"
+                });
             }else if(data.code=="-1"){
                 art.dialog({
                     time: 1,
@@ -181,8 +190,8 @@ jQuery(document).ready(function(){
                  console.log(msg);
                  $("#id").val(msg.id);
                  $("#IMG").attr("src",msg.avatar);
-                 $("#OWN_CORP").val(msg.corp_name);
-                 $("#USER_ID").val(msg.user_code);
+                 $("#corp_code").val(msg.corp_name);
+                 $("#USERID").val(msg.user_code);
                  $("#USER_NAME").val(msg.user_name);
                  $("#POSITION").val(msg.position);
                  $("#IPHONE").val(msg.phone);
@@ -196,7 +205,7 @@ jQuery(document).ready(function(){
                  $("#OWN_AREA").val(msg.area_name);
                  $("#OWN_GROUP").val(msg.group_name);
                  $("#OWN_SHOP").val(msg.store_name);
-                 $("#corp_code").val(msg.corp_code);//空字段
+                 $("#OWN_CORP").val(msg.corp_code);//空字段
                  $("#group_code").val(msg.group_code);//空字段
                  $("#role_code").val(msg.role_code);//空字段
                  $("#area_code").val(msg.area_code);//空字段

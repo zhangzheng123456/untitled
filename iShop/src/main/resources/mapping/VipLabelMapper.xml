@@ -35,8 +35,8 @@
         ,vt.label_group_code
 --         dvg.label_group_name
         FROM
-        def_viplabel vt,DEF_CORP cc
---         ,def_viplabel_group dvg
+        def_vip_label vt,DEF_CORP cc
+--         ,def_vip_label_group dvg
         WHERE
         vt.corp_code=cc.corp_code
 --         AND
@@ -46,7 +46,7 @@
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipLabel">
-        INSERT INTO def_viplabel
+        INSERT INTO def_vip_label
         <trim prefix="(" suffixOverrides="," suffix=")">
 
             <if test="label_name!=null ">
@@ -111,7 +111,7 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipLabel">
-        update def_viplabel
+        update def_vip_label
         <trim prefix="set " suffixOverrides=",">
 
             <if test="label_name!=null ">
@@ -146,7 +146,7 @@
     </update>
 
     <delete id="deleteByPrimaryKey">
-        delete from def_viplabel
+        delete from def_vip_label
         WHERE id=#{id}
     </delete>
 
@@ -165,8 +165,8 @@
         ,vt.label_group_code
 --         ,dvg.label_group_name
         FROM
-        def_viplabel vt,DEF_CORP cc
---         ,def_viplabel_group dvg
+        def_vip_label vt,DEF_CORP cc
+--         ,def_vip_label_group dvg
         WHERE
         vt.corp_code=cc.corp_code
 --         AND
@@ -195,8 +195,8 @@
 --         ,
 --         dvg.label_group_name
         FROM
-        def_viplabel vt,DEF_CORP cc
---         ,def_viplabel_group dvg
+        def_vip_label vt,DEF_CORP cc
+--         ,def_vip_label_group dvg
         WHERE
         vt.corp_code=cc.corp_code
 --         AND
@@ -226,7 +226,7 @@
     </select>
 
     <select id="selectVipLabelName" resultType="com.bizvane.ishop.entity.VipLabel">
-        select * from def_viplabel
+        select * from def_vip_label
          where
          label_name=#{label_name}
          and
@@ -241,7 +241,7 @@
     </select>
 
     <select id="lableList" resultType="com.bizvane.ishop.entity.VipLabel">
-        SELECT * FROM def_viplabel
+        SELECT * FROM def_vip_label
         WHERE corp_code=#{corp_code}
         AND label_group_code=#{label_group_code}
     </select>

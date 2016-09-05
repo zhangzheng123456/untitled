@@ -646,7 +646,7 @@ public class UserController {
     @ResponseBody
     public String addUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String user_id = request.getSession().getAttribute("user_code").toString();
+        String user_code1 = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
             logger.info("json--user add-------------" + jsString);
@@ -656,10 +656,17 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String user_code = jsonObject.get("user_code").toString();
+            String user_id = jsonObject.get("user_id").toString();
+
             String corp_code = jsonObject.get("corp_code").toString();
             String phone = jsonObject.get("phone").toString();
             User user = new User();
             user.setUser_code(user_code);
+            if (user_id.equals("")){
+                user.setUser_id(user_code);
+            }else {
+                user.setUser_id(user_id);
+            }
             user.setUser_name(jsonObject.get("username").toString());
             user.setAvatar(jsonObject.get("avater").toString());
             user.setPosition(jsonObject.get("position").toString());
@@ -669,7 +676,6 @@ public class UserController {
             //     user.setBirthday(jsonObject.get("birthday").toString());
             user.setCorp_code(corp_code);
             user.setGroup_code(jsonObject.get("group_code").toString());
-            //    String role_code = jsonObject.get("role_code").toString();
             Group group = groupService.selectByCode(user.getCorp_code(), user.getGroup_code(), "");
             String role_code = group.getRole_code();
             if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
@@ -720,9 +726,9 @@ public class UserController {
             Date now = new Date();
             user.setLogin_time_recently("");
             user.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            user.setCreater(user_id);
+            user.setCreater(user_code1);
             user.setModified_date(Common.DATETIME_FORMAT.format(now));
-            user.setModifier(user_id);
+            user.setModifier(user_code1);
             user.setIsactive(jsonObject.get("isactive").toString());
             user.setCan_login(jsonObject.get("can_login").toString());
             String result = userService.insert(user);
@@ -761,9 +767,16 @@ public class UserController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            String user_code1 = jsonObject.get("user_code").toString();
+            String user_id = jsonObject.get("user_id").toString();
             User user = new User();
             user.setId(Integer.parseInt(jsonObject.get("id").toString()));
-            user.setUser_code(jsonObject.get("user_code").toString());
+            user.setUser_code(user_code1);
+            if (user_id.equals("")){
+                user.setUser_id(user_code1);
+            }else {
+                user.setUser_id(user_id);
+            }
             user.setUser_name(jsonObject.get("username").toString());
             user.setPosition(jsonObject.get("position").toString());
             user.setAvatar(jsonObject.get("avater").toString());

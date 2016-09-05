@@ -233,7 +233,7 @@ public class GroupController {
                     } else {
                         dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                         dataBean.setId(id);
-                        dataBean.setMessage("该群组下有所属员工，请先处理群组下员工再删除");
+                        dataBean.setMessage("群组"+group_code+"下有所属员工，请先处理群组下员工再删除");
                         return dataBean.getJsonStr();
                     }
                 }
