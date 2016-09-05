@@ -121,10 +121,10 @@ public class VipGroupServiceImpl implements VipGroupService {
         String corp_code = jsonObject.get("corp_code").toString();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
-        VipGroup vipGroup3 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_N);
+      //  VipGroup vipGroup3 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_N);
         if (vipGroup1 != null && vipGroup1.getId() != id){
             result = "该会员分组编号已存在";
-        }else if (vipGroup2 != null && vipGroup1.getId() != id){
+        }else if (vipGroup2 != null && vipGroup2.getId() != id){
             result = "该会员分组名称已存在";
         }else {
             VipGroup vipGroup = new VipGroup();
@@ -140,22 +140,22 @@ public class VipGroupServiceImpl implements VipGroupService {
             vipGroupMapper.updateVipGroup(vipGroup);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
-//        if (vipGroup1 == null && vipGroup2 == null ||vipGroup1.getId()==id||vipGroup3.getId()==id) {
-//            VipGroup vipGroup = new VipGroup();
-//            Date now = new Date();
-//            vipGroup.setId(id);
-//            vipGroup.setRemark(remark);
-//            vipGroup.setVip_group_code(vip_group_code);
-//            vipGroup.setVip_group_name(vip_group_name);
-//            vipGroup.setCorp_code(corp_code);
-//            vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
-//            vipGroup.setModifier(user_id);
-//            vipGroup.setIsactive(jsonObject.get("isactive").toString());
-//            vipGroupMapper.updateVipGroup(vipGroup);
-//            result = Common.DATABEAN_CODE_SUCCESS;
-//        } else {
-//            result = "该会员分组已存在";
-//        }
+       /* if (vipGroup1 == null && vipGroup2 == null ||vipGroup1.getId()==id||vipGroup3.getId()==id) {
+            VipGroup vipGroup = new VipGroup();
+            Date now = new Date();
+            vipGroup.setId(id);
+            vipGroup.setRemark(remark);
+            vipGroup.setVip_group_code(vip_group_code);
+            vipGroup.setVip_group_name(vip_group_name);
+            vipGroup.setCorp_code(corp_code);
+            vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
+            vipGroup.setModifier(user_id);
+            vipGroup.setIsactive(jsonObject.get("isactive").toString());
+            vipGroupMapper.updateVipGroup(vipGroup);
+            result = Common.DATABEAN_CODE_SUCCESS;
+        } else {
+            result = "该会员分组已存在";
+        }*/
         return result;
     }
 
