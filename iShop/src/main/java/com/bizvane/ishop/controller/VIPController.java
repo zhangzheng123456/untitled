@@ -296,32 +296,7 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-    /***
-     * 查出要导出的列
-     */
-    @RequestMapping(value = "/getCols", method = RequestMethod.POST)
-    @ResponseBody
-    public String selAllByCode(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String function_code = jsonObject.get("function_code").toString();
-            List<TableManager> tableManagers = managerService.selAllByCode(function_code);
-            org.json.JSONObject result = new org.json.JSONObject();
-            result.put("tableManagers", JSON.toJSONString(tableManagers));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
-        return dataBean.getJsonStr();
-    }
+
 
     /***
      * 导出数据
