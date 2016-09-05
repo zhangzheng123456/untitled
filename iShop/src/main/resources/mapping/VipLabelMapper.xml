@@ -171,8 +171,8 @@
         vt.corp_code=cc.corp_code
         AND vt.corp_code=dvg.corp_code
         AND cc.corp_code=dvg.corp_code
-        GROUP BY vt.label_name
-        HAVING 1=1
+
+
 --         AND
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
@@ -187,6 +187,7 @@
             or cc.corp_name like concat('%',#{search_value},'%')
             )
         </if>
+        GROUP BY vt.label_name
         ORDER BY vt.id DESC
     </select>
 
@@ -203,8 +204,6 @@
         vt.corp_code=cc.corp_code
         AND vt.corp_code=dvg.corp_code
         AND cc.corp_code=dvg.corp_code
-        GROUP BY vt.label_name
-        HAVING 1=1
 --        AND
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
@@ -228,6 +227,7 @@
                 </otherwise>
             </choose>
         </foreach>
+        GROUP BY vt.label_name
         ORDER BY vt.id DESC
     </select>
 
