@@ -330,9 +330,9 @@ function jumpBianse() {
         }
     })
     //点击新增时页面进行的跳转
-    $('#add').click(function () {
-        $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_album_add.html");
-    })
+    //$('#add').click(function () {
+    //    $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_album_add.html");
+    //})
     //点击编辑时页面进行的跳转
     $('#compile').click(function () {
         var tr = $("tbody input[type='checkbox']:checked").parents("tr");
