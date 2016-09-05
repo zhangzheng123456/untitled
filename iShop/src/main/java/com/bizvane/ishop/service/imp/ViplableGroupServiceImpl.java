@@ -57,7 +57,7 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
     @Override
     public String addViplableGroup(ViplableGroup viplableGroup) throws SQLException {
         List<ViplableGroup> viplableGroups1= checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code(), Common.IS_ACTIVE_Y);
-        List<ViplableGroup> viplableGroups2 = checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_name(), Common.IS_ACTIVE_Y);
+        List<ViplableGroup> viplableGroups2 = checkNameOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_name(), Common.IS_ACTIVE_Y);
         String result=Common.DATABEAN_CODE_ERROR;
         if(viplableGroups1.size()==0 && viplableGroups2.size()==0){
             viplableGroupMapper.addViplableGroup(viplableGroup);
@@ -73,9 +73,11 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
     @Override
     public String updViplableGroupById(ViplableGroup viplableGroup) throws SQLException {
         List<ViplableGroup> viplableGroups1= checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_code(), Common.IS_ACTIVE_Y);
-        List<ViplableGroup> viplableGroups2 = checkCodeOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_name(), Common.IS_ACTIVE_Y);
+        List<ViplableGroup> viplableGroups2 = checkNameOnly(viplableGroup.getCorp_code(), viplableGroup.getLabel_group_name(), Common.IS_ACTIVE_Y);
         String result=Common.DATABEAN_CODE_ERROR;
-        if(viplableGroups1.size()==0 && viplableGroups2.size()==0){
+        ViplableGroup viplableGroup1 = selectViplableGroupById(viplableGroup.getId());
+        if((viplableGroups1.size()==0||viplableGroup1.getLabel_group_code().equals(viplableGroup.getLabel_group_code()))
+                && (viplableGroups2.size()==0||viplableGroup1.getLabel_group_name().equals(viplableGroup.getLabel_group_name()))){
             viplableGroupMapper.updViplableGroupById(viplableGroup);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else if(viplableGroups1.size()>0){
@@ -98,7 +100,7 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
 
     @Override
     public List<ViplableGroup> checkNameOnly(String corp_code, String label_group_name, String isactive) throws SQLException {
-        return viplableGroupMapper.checkCodeOnly(corp_code,label_group_name,isactive);
+        return viplableGroupMapper.checkNameOnly(corp_code,label_group_name,isactive);
     }
 
     @Override
