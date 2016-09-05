@@ -120,6 +120,7 @@ function superadditionStaff(c) {
 	}else {
 		$("#staff_list tbody").html(staff_list);
 	}
+	$("#staff_mask").hide();
 }
 //导购排行
 function staffRanking(a,b) { 
@@ -131,6 +132,7 @@ function staffRanking(a,b) {
 	if(b!==""&&b!==undefined){
 		param["store_code"]=b;
 	}
+	$("#staff_mask").show();
 	oc.postRequire("post", "/home/staffRanking", "", param, function(data) {
 		var message = JSON.parse(data.message);
 		var total = message.user_count; //导购总数
@@ -145,10 +147,13 @@ function staffRanking(a,b) {
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
 			if (value == "按日查看" && id == "staff") {
+				$("#staff_mask").show();
 				superadditionStaff(store_achv_d);
 			} else if (value == "按周查看" && id == "staff") {
+				$("#staff_mask").show();
 				superadditionStaff(store_achv_w);
 			} else if (value == "按月查看" && id == "staff") {
+				$("#staff_mask").show();
 				superadditionStaff(store_achv_m);
 			}
 		})
@@ -173,6 +178,7 @@ function superadditionAchv(c){
 	$("#vip_amt_rate").html(c.sm.vip_amt_rate);
 	$("#amt_trade").html(c.sm.amt_trade);
 	$("#area_ranking").attr("data-percent",c.sm.area_ranking);
+	$("#achv_mask").hide();
 }
 //业绩加载
 function achAnalysis(a,b){
@@ -183,6 +189,7 @@ function achAnalysis(a,b){
 	if(b!==""&&b!==undefined){
 		param["store_code"]=b;
 	}
+	$("#achv_mask").show();
 	oc.postRequire("post", "/home/achAnalysis", "", param, function(data) {
 		var message = JSON.parse(data.message);
 		var D=JSON.parse(message.D);
@@ -196,12 +203,16 @@ function achAnalysis(a,b){
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
 			if (value == "按日查看" && id == "achv") {
+				$("#achv_mask").show();
 				superadditionAchv(D);
 			} else if (value == "按周查看" && id == "achv") {
+				$("#achv_mask").show();
 				superadditionAchv(W);
 			} else if (value == "按月查看" && id == "achv") {
+				$("#achv_mask").show();
 				superadditionAchv(M);
 			} else if (value == "按年查看" && id == "achv") {
+				$("#achv_mask").show();
 				superadditionAchv(Y);
 			}
 		})
@@ -224,6 +235,7 @@ function achieveChart(a,b){
 	if(b!==""&&b!==undefined){
 		param["store_code"]=b;
 	}
+	$("#chart_mask").show();
 	oc.postRequire("post","/home/achInfo","", param, function(data){
 		var infodata_W=JSON.parse(data.message).W;
 		var infodata_M=JSON.parse(data.message).M;
@@ -251,6 +263,7 @@ function achieveChart(a,b){
 			}
 		}
 		init(perArr,dateArr);
+		$("#chart_mask").hide();
 		function setData(V){
 			for(index in TimeData){
 				perArr.push(TimeData[index].trade);

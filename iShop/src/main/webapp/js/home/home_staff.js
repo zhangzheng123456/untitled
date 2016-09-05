@@ -105,6 +105,7 @@ function superadditionStaff(c) {
     }else {
         $("#staff_list tbody").html(staff_list);
     }
+    $("#staff_mask").hide();
 }
 
 function staffRanking(T){//导购排行
@@ -113,6 +114,7 @@ function staffRanking(T){//导购排行
     param["time"]=a;
     param["user_name"]='';
     var value=$("#daoGouRanking_prev").html();
+    $("#staff_mask").show();
     oc.postRequire("post","/home/staffRanking","", param, function(data){
         var message=JSON.parse(data.message);
         var D=message.store_achv_d;
@@ -131,12 +133,15 @@ function staffRanking(T){//导购排行
             $(this).parent("ul").hide();
             $(this).parent("ul").parent(".choose").removeClass("cur");
             if (value == "按日查看" && id == "daoGouRanking") {
+                $("#staff_mask").show();
                 superadditionStaff(D);
                 $("#Average").html(Averageyeji_D)
             } else if (value == "按周查看" && id == "daoGouRanking") {
+                $("#staff_mask").show();
                 superadditionStaff(W);
                 $("#Average").html(Averageyeji_W)
             } else if (value == "按月查看" && id == "daoGouRanking") {
+                $("#staff_mask").show();
                 superadditionStaff(M);
                 $("#Average").html(Averageyeji_M)
             }
@@ -160,6 +165,7 @@ function achAnalysis(T){//业绩加载
     var a =T.replace(/[-]/g, "");
     param["time"]=a;
     var value=$('#sm_achv_prev').html();
+    $("#achv_mask").show();
     oc.postRequire("post","/home/achAnalysis","", param, function(data){
       var message=JSON.parse(data.message);
       var D=JSON.parse(message.D);
@@ -173,12 +179,16 @@ function achAnalysis(T){//业绩加载
             $(this).parent("ul").hide();
             $(this).parent("ul").parent(".choose").removeClass("cur");
             if (value == "按日查看" && id == "sm_achv") {
+                $("#achv_mask").show();
                 superadditionAchv(D);
             } else if (value == "按周查看" && id == "sm_achv") {
+                $("#achv_mask").show();
                 superadditionAchv(W);
             } else if (value == "按月查看" && id == "sm_achv") {
+                $("#achv_mask").show();
                 superadditionAchv(M);
             } else if (value == "按年查看" && id == "sm_achv") {
+                $("#achv_mask").show();
                 superadditionAchv(Y);
             }
         });
@@ -202,6 +212,7 @@ function superadditionAchv(c){
    $("#My_Vip").html(c.staff.vip_count);
 
     //$("#area_ranking").attr("data-percent",c.am.area_ranking);
+    $("#achv_mask").show();
 }
 
 function getShopList(){//切换店铺
@@ -240,6 +251,7 @@ function achieveChart(data){//获取折线图
     if(area_code!=''&&area_code!=undefined){
         param["store_code"]=area_code;
     }
+    $("#chart_mask").show();
     oc.postRequire("post","/home/achInfo","", param, function(data){
         var infodata_W=JSON.parse(data.message).W;
         var infodata_M=JSON.parse(data.message).M;
@@ -267,6 +279,7 @@ function achieveChart(data){//获取折线图
             }
         }
         init(perArr,dateArr);
+        $("#chart_mask").hide();
         function setData(V){
             for(index in TimeData){
                 perArr.push(TimeData[index].trade);
@@ -319,6 +332,7 @@ function vipRanking(T){//会员排行
         param["store_code"]=area_code;
     }
     param["time"]=a;
+    $("#vip_mask").show();
     oc.postRequire("post","/home/vipRanking","", param, function(data){
         var message=JSON.parse(data.message);
         var allVipList=message.all_vip_list;
@@ -343,6 +357,7 @@ function vipRanking(T){//会员排行
         }else {
             $("#vip_list tbody").html(html);
         }
+        $("#vip_mask").hide();
     })
 }
 
