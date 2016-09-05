@@ -8,7 +8,11 @@ $(function(){
             var html =" ";
             var li_html=" ";
             var p=null;
-            $('.nav-header .img-circle').attr("src",message.avatar);
+            if(message.avatar==""){
+                $('.nav-header .img-circle').attr("src","../img/head.png");
+            }else if(message.avatar!==""){
+                $('.nav-header .img-circle').attr("src",message.avatar);
+            }
             $('.nav-header .font-bold').html(message.user_name);
             $('#corp_name').html(message.corp_name);
             for(index in message.menu){

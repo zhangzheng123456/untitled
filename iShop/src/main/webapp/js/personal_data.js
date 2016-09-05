@@ -187,9 +187,12 @@ jQuery(document).ready(function(){
              if(data.code=="0"){
                  var msg = JSON.parse(data.message);
                      msg=JSON.parse(msg.user);
-                 console.log(msg);
                  $("#id").val(msg.id);
-                 $("#IMG").attr("src",msg.avatar);
+                 if(msg.avatar==""){
+                    $("#IMG").attr("src","../img/head.png");
+                 }else if(
+                    $("#IMG").attr("src",msg.avatar);
+                 )
                  $("#corp_code").val(msg.corp_name);
                  $("#USERID").val(msg.user_code);
                  $("#USER_NAME").val(msg.user_name);
