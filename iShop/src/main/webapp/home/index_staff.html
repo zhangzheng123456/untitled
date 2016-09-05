@@ -192,10 +192,10 @@
             </div>
         </nav>
 
-        <!-- <div id="page-wrapper" class="gray-bg dashbard-1">
+        <div id="page-wrapper" class="gray-bg dashbard-1">
             <div class="wrapper wrapper-content">
                 <div class="row">
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mask">
                         <div class="ibox float-e-margins">
                             <div class="ibox-content_per">
                                 <span class="c_a_shoppe"><i id="corp_name"></i><img src="../img/img_spot_white.png"><i class="area_name"></i> <ul></ul></span>
@@ -252,8 +252,13 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="zhezhaocen" id="achv_mask">
+                            <div class="zhe_img">
+                                加载中
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-lg-7">
+                    <div class="col-lg-7 mask">
                         <div class="customer_add_cart">
                             <div class="cart_tab">
                                
@@ -289,10 +294,15 @@
                                 <canvas id="canvas3" height="290" width="227"></canvas>
                             </div>
                         </div>
+                        <div class="zhezhaocen" id="chart_mask">
+                            <div class="zhe_img">
+                                加载中
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row">
-                   <div class="col-lg-4">
+                   <div class="col-lg-4 mask">
                        <div class="ibox float-e-margins">
                             <div class="ibox-list_daogou_paihang">
                                 <div class="item_title">
@@ -312,6 +322,7 @@
                                                 <li>按日查看</li>
                                                 <li>按周查看</li>
                                                 <li>按月查看</li>
+                                                <!--<li>按年查看</li>-->
                                             </ul>
                                         </span>
                                    <span>
@@ -327,6 +338,8 @@
                                        <th>排名</th>
                                        <th>姓名</th>
                                        <th>业绩</th>
+                                       <!--<th>目标</th>-->
+                                       <!--<th>完成度</th>-->
                                        <th>贡献度</th>
                                     </tr>
                                     </thead>
@@ -334,8 +347,13 @@
                                 </table>
                             </div>
                         </div>
+                        <div class="zhezhaocen" id="staff_mask">
+                            <div class="zhe_img">
+                                加载中
+                            </div>
+                        </div>
                    </div>
-                    <div class="col-lg-4">
+                    <div class="col-lg-4 mask">
                        <div class="ibox float-e-margins">
                             <div class="ibox-list_daogou_paihang">
                                 <div class="item_title">
@@ -351,6 +369,19 @@
                                         <li><div><span>昨日新增</span></div><div id="new_vip_count"></div></li>
                                     </ul>
                                 </div>
+                                <!--<div class="check_chart">-->
+                                    <!--<div class="select_4 reg_testdate"  >-->
+                                        <!--<span class="choose item" style="width:70px">-->
+                                            <!--<div class="title" style="width:70px">按年查看</div>-->
+                                            <!--<ul  class="select_Date">-->
+                                                <!--<li>按年查看</li>-->
+                                            <!--</ul>-->
+                                        <!--</span>-->
+                                      <!--<span>-->
+                                            <!--<input type="text" id="date3" class="laydate-icon icon-text">-->
+                                        <!--</span>-->
+                                    <!--</div>-->
+                                <!--</div>-->
                             </div>
                             <div class="list_titles_daogou_paihang">
                                 <div class="list_titles_daogou_paihang">
@@ -362,6 +393,7 @@
                                         <th>等级</th>
                                         <th>消费金额</th>
                                         <th>总次数</th>
+                                        <!--<th>导购</th>-->
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -369,6 +401,11 @@
                                     </tbody>
                                 </table>
                             </div>
+                            </div>
+                        </div>
+                        <div class="zhezhaocen" id="vip_mask">
+                            <div class="zhe_img">
+                                加载中
                             </div>
                         </div>
                    </div>
@@ -385,8 +422,8 @@
                    </div>
                 </div>
             </div>
-        </div> -->
-        <p style="font-size: 20px;position: absolute;top: 500px;left: 50%;">仪表盘尚未开放，敬请期待哦！</p>
+        </div>
+        <!-- <p style="font-size: 20px;position: absolute;top: 500px;left: 50%;">仪表盘尚未开放，敬请期待哦！</p> -->
     </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
