@@ -289,7 +289,7 @@ function GET(a,b){
                 var list=JSON.parse(message.list);
                 cout=list.pages;
                 var list=list.list;
-                superaddition(list,inx);
+                superaddition(list,a);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
@@ -420,7 +420,7 @@ function POST(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,inx);
+                superaddition(list,a);
                 jumpBianse();
             }
             var input=$(".inputs input");
@@ -748,7 +748,7 @@ function filtrates(a,b){
                 whir.loading.remove();//移除加载框
             }else if(list.length>0){
                 $(".table p").remove();
-                superaddition(list,inx);
+                superaddition(list,a);
                 jumpBianse();
             }
             setPage($("#foot-num")[0],cout,a,b,funcCode,value);
