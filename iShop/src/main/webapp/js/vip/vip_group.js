@@ -157,7 +157,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
             a[a.length] = "...<li><span>" + count + "</span></li>";
         }
     }
-    if (pageindex == count) {
+    if (pageindex == count||count==0) {
         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
     }else{
         a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
@@ -186,7 +186,7 @@ function setPage(container, count, pageindex,pageSize,funcCode){
             }
         }
         oAlink[oAlink.length - 1].onclick = function() { //点击下一页
-            if (inx == count) {
+            if (inx == count||count==0) {
                 return false;
             }
             inx++;
