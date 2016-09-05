@@ -198,7 +198,7 @@
         WHERE
         vt.corp_code=cc.corp_code
         AND vt.corp_code=dvg.corp_code
---         AND
+--        AND
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
