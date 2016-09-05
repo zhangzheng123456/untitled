@@ -537,7 +537,7 @@ $("#leading_out").click(function(){
     $(".into_frame").hide();
     var param={};
     param["function_code"]=funcCode;
-    oc.postRequire("post","/user/getCols","0",param,function(data){
+    oc.postRequire("post","/list/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
