@@ -93,13 +93,9 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-    public String insert(String message) throws Exception {
+    public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
-//        String area_code = jsonObject.get("area_code").toString();
-//        String corp_code = jsonObject.get("corp_code").toString();
-//        String area_name = jsonObject.get("area_name").toString();
-
         String param_name = jsonObject.get("param_name").toString();
         String param_type = jsonObject.get("param_type").toString();
         String param_values = null;
@@ -111,8 +107,6 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
             param_values=jsonObject.get("param_values").toString();
         }
         ParamConfigure paramConfigure = getParamByKey(param_name);
-//        ParamConfigure paramConfigure1 = getParamByName(param_desc);
-
         if (paramConfigure == null ) {
             paramConfigure = new ParamConfigure();
             Date now = new Date();
@@ -121,6 +115,11 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
             paramConfigure.setParam_values(param_values);
             paramConfigure.setParam_desc(param_desc);
             paramConfigure.setRemark(remark);
+            paramConfigure.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            paramConfigure.setCreater(user_id);
+            paramConfigure.setModified_date(Common.DATETIME_FORMAT.format(now));
+            paramConfigure.setModifier(user_id);
+            paramConfigure.setIsactive(jsonObject.get("isactive").toString());
             paramConfigureMapper.insertParam(paramConfigure);
             result = Common.DATABEAN_CODE_SUCCESS;
         } else {
@@ -130,7 +129,7 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-    public String update(String message) throws Exception {
+    public String update(String message, String user_id) throws Exception {
         String result = "";
         String param_values =null;
         JSONObject jsonObject = new JSONObject(message);
@@ -148,20 +147,21 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         String remark = jsonObject.get("remark").toString();
 
         ParamConfigure paramByKey = getParamByKey(param_name);
-//        ParamConfigure paramByName = getParamByName(param_desc);
 
         if (paramByKey != null && paramByKey.getId() != param_id) {
             result = "参数已存在";
-//        } else if (paramByName != null && paramByName.getId() != param_id) {
-//            result = "参数名称已存在";
         } else {
             ParamConfigure old_param = new ParamConfigure();
+            Date now = new Date();
             old_param.setId(param_id);
             old_param.setParam_name(param_name);
             old_param.setParam_type(param_type);
             old_param.setParam_values(param_values);
             old_param.setParam_desc(param_desc);
             old_param.setRemark(remark);
+            old_param.setModified_date(Common.DATETIME_FORMAT.format(now));
+            old_param.setModifier(user_id);
+            old_param.setIsactive(jsonObject.get("isactive").toString());
             paramConfigureMapper.updateParam(old_param);
             result = Common.DATABEAN_CODE_SUCCESS;
         }

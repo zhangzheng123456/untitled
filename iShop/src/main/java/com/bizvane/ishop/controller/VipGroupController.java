@@ -32,6 +32,12 @@ public class VipGroupController {
     private VipGroupService vipGroupService;
 
     String id;
+
+    /**
+     * 列表
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
     public String vipGroupList(HttpServletRequest request) {
@@ -67,6 +73,12 @@ public class VipGroupController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 根据id查看
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public String selectById(HttpServletRequest request) {
@@ -91,7 +103,13 @@ public class VipGroupController {
             dataBean.setMessage(ex.getMessage());
         }
         return dataBean.getJsonStr();}
-   @RequestMapping(value = "/add", method = RequestMethod.POST)
+
+    /**
+     * 新增
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addVipGroup(HttpServletRequest request) {
        DataBean dataBean = new DataBean();
@@ -122,6 +140,11 @@ public class VipGroupController {
        return dataBean.getJsonStr();
    }
 
+    /**
+     * 编辑
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String updateVipGroup(HttpServletRequest request) {
@@ -152,6 +175,11 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 删除
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
     public String deleteVipGroup(HttpServletRequest request) {
@@ -183,6 +211,12 @@ public class VipGroupController {
         }
         logger.info("delete-----" + dataBean.getJsonStr());
         return dataBean.getJsonStr();}
+
+    /**
+     * 验证会员分组编号唯一性
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/vipGroupCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String VipGroupCodeExist(HttpServletRequest request) {
@@ -218,6 +252,12 @@ public class VipGroupController {
 
 
     }
+
+    /**
+     * 验证会员分组名称唯一性
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/vipGroupNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String VipGroupNameExist(HttpServletRequest request) {
@@ -252,6 +292,11 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 搜索
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String searchVipGroup(HttpServletRequest request) {
@@ -289,6 +334,12 @@ public class VipGroupController {
         return dataBean.getJsonStr();
 
     }
+
+    /**
+     * 筛选
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String vipGroupScreen(HttpServletRequest request) {

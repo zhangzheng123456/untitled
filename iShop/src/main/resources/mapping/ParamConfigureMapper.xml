@@ -9,7 +9,13 @@
         <result column="param_values" property="param_values" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="param_desc" property="param_desc" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-   </resultMap>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+
+    </resultMap>
 
     <select id="selectById" resultMap="ParamConfigure">
         select *
@@ -62,6 +68,21 @@
             <if test="remark!=null">
                 remark,
             </if>
+            <if test="modified_date != null">
+                MODIFIED_DATE,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                CREATED_DATE,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
 
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
@@ -79,6 +100,21 @@
             </if>
             <if test="remark!=null">
                 #{remark},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
             </if>
         </trim>
     </insert>
@@ -100,6 +136,21 @@
             </if>
             <if test="remark!=null">
                 remark=#{remark},
+            </if>
+            <if test="modified_date != null">
+                modified_date = #{modified_date},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="created_date != null">
+                created_date = #{created_date},
+            </if>
+            <if test="creater != null">
+                creater = #{creater},
+            </if>
+            <if test="isactive != null">
+                isactive = #{isactive},
             </if>
         </trim>
         WHERE DEF_CORP_CFG.id=#{id};

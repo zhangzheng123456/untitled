@@ -21,9 +21,9 @@ public interface ParamConfigureService {
     PageInfo<ParamConfigure> getAllParamByPage(int page_number, int page_size, String search_value) throws Exception;
     List<ParamConfigure> getAllParams() throws Exception;
 
-    String insert(String message) throws Exception;
+    String insert(String message, String user_id) throws Exception;
 
-    String update(String message) throws Exception;
+    String update(String message, String user_id) throws Exception;
 
     int delete(int id) throws Exception;
 
