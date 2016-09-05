@@ -708,7 +708,11 @@ jQuery(document).ready(function(){
 				$("#USERID").attr("data-name",msg.user_code);
 				$("#user_id").val(msg.user_id);
 				$("#USER_NAME").val(msg.user_name);
-				$("#preview img").attr("src",msg.avatar);
+				if(msg.avatar==""){
+					$("#preview img").attr("src","../img/head.png");
+				}else if(msg.avatar!==""){
+					$("#preview img").attr("src",msg.avatar);
+				}
 				$("#USER_PHONE").val(msg.phone);
 				$("#USER_PHONE").attr("data-name",msg.phone);
 				$("#USER_EMAIL").val(msg.email);

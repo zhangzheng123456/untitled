@@ -36,7 +36,11 @@ $(function(){
         var key = "key";
         sessionStorage.setItem(key, str);
         var message=JSON.parse(data.message);
-        $('#img img').attr("src",message.avatar);
+        if(message.avatar==""){
+            $('#img img').attr("src","../img/head.png");  
+        }else if(message.avatar!==""){
+            $('#img img').attr("src",message.avatar);  
+        }
         var menu=message.menu;
         for(var i=0;i<menu.length;i++){
         	var li="<li>";
