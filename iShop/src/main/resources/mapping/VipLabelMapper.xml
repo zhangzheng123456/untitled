@@ -178,11 +178,9 @@
         <if test="search_value!=null and search_value!=''">
             and
             (
-            vt.id like concat('%',#{search_value},'%')
-            or vt.label_name like concat('%',#{search_value},'%')
+            vt.label_name like concat('%',#{search_value},'%')
             or vt.label_type like concat('%',#{search_value},'%')
             or cc.corp_name like concat('%',#{search_value},'%')
---             or dvg.label_group_name like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY vt.id DESC
