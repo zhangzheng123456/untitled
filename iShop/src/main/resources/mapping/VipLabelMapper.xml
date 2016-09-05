@@ -166,9 +166,13 @@
 --         ,dvg.label_group_name
         FROM
         def_vip_label vt,DEF_CORP cc
---         ,def_vip_label_group dvg
+        ,def_vip_label_group dvg
         WHERE
         vt.corp_code=cc.corp_code
+        AND vt.corp_code=dvg.corp_code
+        AND cc.corp_code=dvg.corp_code
+        GROUP BY vt.label_name
+        HAVING 1=1
 --         AND
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
@@ -198,6 +202,9 @@
         WHERE
         vt.corp_code=cc.corp_code
         AND vt.corp_code=dvg.corp_code
+        AND cc.corp_code=dvg.corp_code
+        GROUP BY vt.label_name
+        HAVING 1=1
 --        AND
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
