@@ -185,6 +185,16 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 $("#PARAM_NAME").val(msg.param_name);
                 $("#PARAM_DESC").val(msg.param_desc);
+                $("#created_time").val(msg.created_date);
+                $("#creator").val(msg.creater);
+                $("#modify_time").val(msg.modified_date);
+                $("#modifier").val(msg.modifier);
+                var input=$(".checkbox_isactive").find("input")[0];
+                if(msg.isactive=="Y"){
+                    input.checked=true;
+                }else if(msg.isactive=="N"){
+                    input.checked=false;
+                }
                 var param_type=msg.param_type
                 if(param_type=="switch"){
                     param_type="开关";

@@ -204,6 +204,12 @@ jQuery(document).ready(function () {
                     })
                 }
                 $("#param_value").val(msg.param_value);
+                var input=$(".checkbox_isactive").find("input")[0];
+                if(msg.isactive=="Y"){
+                    input.checked=true;
+                }else if(msg.isactive=="N"){
+                    input.checked=false;
+                }
                 // $("#param_value").attr("data-name", msg.param_value);
                 $("#created_time").val(msg.created_date);
                 $("#creator").val(msg.creater);
