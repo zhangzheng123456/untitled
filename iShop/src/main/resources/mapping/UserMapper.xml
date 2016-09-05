@@ -507,6 +507,9 @@
             <if test="user_code!=null ">
                 user_code = #{user_code},
             </if>
+            <if test="user_id!=null ">
+                user_id = #{user_id},
+            </if>
             <if test="avatar!=null ">
                 avatar = #{avatar},
             </if>

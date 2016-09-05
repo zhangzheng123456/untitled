@@ -264,7 +264,7 @@ jQuery(document).ready(function(){
             oc.postRequire("post", "/viplablegroup/checkNameOnly", "", _params, function (data) {
                 if (data.code == "0") {
                     div.html("");
-                    $("#vipgp_code").attr("data-mark", "Y");
+                    $("#vipgp_name").attr("data-mark", "Y");
                 } else if (data.code == "-1") {
                     div.html("该名称已经存在！")
                     div.addClass("error_tips");

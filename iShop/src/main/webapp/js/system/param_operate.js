@@ -59,6 +59,13 @@ var oc = new ObjectControl();
                     return;
                 }
                 var REMARK = $("#REMARK").val();
+                var ISACTIVE = "";
+                var input = $(".checkbox_isactive").find("input")[0];
+                if (input.checked == true) {
+                    ISACTIVE = "Y";
+                } else if (input.checked == false) {
+                    ISACTIVE = "N";
+                }
                 var _command = "/param/add";//接口名
                 var opt = {//返回成功后的操作
                     success: function () {
@@ -69,7 +76,8 @@ var oc = new ObjectControl();
                     "param_desc": PARAM_DESC,
                     "param_type": PARAM_TYPE,
                     "param_values":PARAM_VALUE,
-                    "remark": REMARK
+                    "remark": REMARK,
+                    "isactive":ISACTIVE
                 };
                 whir.loading.add("", 0.5);
                 paramjs.ajaxSubmit(_command, _params, opt);
@@ -96,6 +104,13 @@ var oc = new ObjectControl();
                     return;
                 }
                 var REMARK = $("#REMARK").val();
+                var ISACTIVE = "";
+                var input = $(".checkbox_isactive").find("input")[0];
+                if (input.checked == true) {
+                    ISACTIVE = "Y";
+                } else if (input.checked == false) {
+                    ISACTIVE = "N";
+                }
                 var _command = "/param/edit";//接口名
                 var opt = {//返回成功后的操作
                     success: function () {
@@ -107,7 +122,8 @@ var oc = new ObjectControl();
                     "param_desc": PARAM_DESC,
                     "param_type": PARAM_TYPE,
                     "param_values":PARAM_VALUE,
-                    "remark": REMARK
+                    "remark": REMARK,
+                    "isactive":ISACTIVE
                 };
                 whir.loading.add("", 0.5);
                 paramjs.ajaxSubmit(_command, _params, opt);
