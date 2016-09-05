@@ -178,11 +178,9 @@
         <if test="search_value!=null and search_value!=''">
             and
             (
---             vt.id like concat('%',#{search_value},'%')
             vt.label_name like concat('%',#{search_value},'%')
             or vt.label_type like concat('%',#{search_value},'%')
             or cc.corp_name like concat('%',#{search_value},'%')
---             or dvg.label_group_name like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY vt.id DESC
@@ -196,9 +194,10 @@
 --         dvg.label_group_name
         FROM
         def_vip_label vt,DEF_CORP cc
---         ,def_vip_label_group dvg
+        ,def_vip_label_group dvg
         WHERE
         vt.corp_code=cc.corp_code
+        AND vt.corp_code=dvg.corp_code
 --         AND
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
@@ -211,9 +210,9 @@
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     cc.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
-                <!--<when test="entryValue!='' and entryKey=='label_group_name'">-->
-                    <!--dvg.${entryKey} LIKE concat('%',#{entryValue},'%')-->
-                <!--</when>-->
+                <when test="entryValue!='' and entryKey=='label_group_name'">
+                    dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
                 <when test="entryValue!=''">
                     vt.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>

@@ -86,8 +86,8 @@ public class ParamConfigureController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-
-            String result = paramConfigureService.insert(message);
+            String user_id = request.getSession().getAttribute("user_code").toString();
+            String result = paramConfigureService.insert(message,user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -122,7 +122,8 @@ public class ParamConfigureController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = paramConfigureService.update(message);
+            String user_id = request.getSession().getAttribute("user_code").toString();
+            String result = paramConfigureService.update(message,user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);

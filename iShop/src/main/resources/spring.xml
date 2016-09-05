@@ -17,6 +17,7 @@
 			<list>
 				<value>classpath:redis.properties</value>
 				<value>classpath:jdbc.properties</value>
+				<value>classpath:mongodb.properties</value>
 				<!--要是有多个配置文件，只需在这里继续添加即可 -->
 			</list>
 		</property>
@@ -50,27 +51,21 @@
 		</property>
 	</bean>
 
-	<bean id="redisClient" class="com.bizvane.ishop.utils.RedisClient">
+	<bean id="redisClient" class="com.bizvane.sun.common.service.redis.RedisClient">
 		<property name="redisTemplate" ref="redisTemplate"/>
 	</bean>
 	<!--jedis 配置 结束-->
 
-	<!-- cache配置 <bean id="methodCacheInterceptor" class="com.bizvane.ishop.utils.MethodCacheInterceptor"
-		> <property name="redisClient" ref="redisClient" /> </bean > <bean id="redisClient"
-		class="com.bizvane.ishop.utils.RedisUtil" > <property name="redisTemplate"
-		ref="redisTemplate" /> </bean > -->
-	<!--&lt;!&ndash; 需要加入缓存的类或方法 &ndash;&gt; -->
-	<!--<bean id="methodCachePointCut" class="org.springframework.aop.support.RegexpMethodPointcutAdvisor"
-		> -->
-	<!--<property name="advice" > -->
-	<!--<ref local="methodCacheInterceptor" /> -->
-	<!--</property> -->
-	<!--<property name="patterns" > -->
-	<!--<list> -->
-	<!--&lt;!&ndash; 确定正则表达式列表 &ndash;&gt; -->
-	<!--<value></value > -->
-	<!--</list> -->
-	<!--</property> -->
-	<!--</bean > -->
+	<!-- MongoDB Client 配置开始 -->
+	<bean id="mongodbClient" class="com.bizvane.sun.common.service.mongodb.MongoDBClient">
+		<property name="host" value="${mongodb.host}"/>
+		<property name="port" value="${mongodb.port}"/>
+		<property name="replSetName" value="${mongodb.replSetName}"/>
+		<property name="defaultDataBase" value="${mongodb.defaultDataBase}"/>
+		<property name="database" value="${mongodb.database}"/>
+		<property name="userName" value="${mongodb.username}"/>
+		<property name="password" value="${mongodb.password}"/>
+	</bean>
+	<!-- MongoDB Client 配置结束 -->
 
 </beans>

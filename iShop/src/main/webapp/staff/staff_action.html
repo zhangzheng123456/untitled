@@ -2,26 +2,48 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>会员标签分组管理</title>
+    <title>用户行为日志</title>
     <link rel="stylesheet" href="../table/css/inner.css">
-    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" href="../table/css/style.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js"></script>
 </head>
 <body>
 <div class="content">
     <div class="con_table" id="con_table">
         <div class="title">
-            <span>会员管理</span>
+            <span>员工管理</span>
             <span class="icon-ishop_8-03"></span>
-            <span>会员标签分组管理</span>
+            <span>用户行为日志</span>
         </div>
         <div class="action">
             <div class="action_l">
                 <ul id="jurisdiction">
+                    <!--<li id="add">-->
+                    <!--<a href="javascript:void(0);">-->
+                    <!--<span class="icon-ishop_6-01"></span>-->
+                    <!--新增-->
+                    <!--</a>-->
 
+                    <!--</li>-->
+                    <!--<li class="bg" id="remove">-->
+                    <!--<span class="icon-ishop_6-02"></span>-->
+                    <!--删除-->
+                    <!--</li>-->
+                    <!--<li id="compile">-->
+                    <!--<a href="javascript:void(0);">-->
+                    <!--<span class="icon-ishop_6-03"></span>-->
+                    <!--编辑-->
+                    <!--</a>-->
+                    <!--</li>-->
+                    <!-- <li class="bg">
+                        <span class="icon-ishop_6-04"></span>
+                        保存
+                    </li> -->
                 </ul>
                 <ul>
                     <li class="li">
-                        <input type="text" class="input" id="search" placeholder="分组编号/分组名称/企业名称">
+                        <input type="text" class="input" id="search" placeholder="请输入关键词">
                         <i class="icon-ishop_3-05" id="d_search"></i>
                     </li>
                 </ul>
@@ -44,8 +66,8 @@
                         <span class="icon-ishop_6-08"></span>
                         更多
                         <!--<div class="more_down">-->
-                            <!--<div id="leading_out">导出</div>-->
-                             <!--<div id="guide_into">导入</div>-->
+                        <!--<div id="leading_out">导出</div>-->
+                        <!--<div id="guide_into">导入</div>-->
                         <!--</div>-->
                     </li>
                 </ul>
@@ -59,7 +81,9 @@
             <div id="file_list">
                 <div id="file_list_l">
                     <ul>
-
+                        <!-- <li><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                        +i+1+"'/><label for='checkboxInput'></label></div><span class='p15'>我的世界</span>
+                        </li> -->
                     </ul>
                 </div>
                 <div id="file_list_z">
@@ -72,7 +96,9 @@
                 </div>
                 <div id="file_list_r">
                     <ul>
-
+                        <!-- <li><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                        +i+1+"'/><label for='checkboxInput'></label></div><span class='p15'>我的世界</span>
+                        </li> -->
                     </ul>
                 </div>
             </div>
@@ -84,7 +110,7 @@
             <span class="icon-ishop_6-12" id="x1"></span>
             <div class="into_text">请先下载模板，然后按模板提示规则填入数据并导入文件</div>
             <div class="into_frame_c">
-                <div class="down_load"><a href="/ExeclFormwork/Viplabel.xls">下载模板</a></div>
+                <div class="down_load"><a href="/ExeclFormwork/Goods.xls">下载模板</a></div>
                 <div class="down_load_file">
                     <label>导入文件</label>
                     <input type="file" id="file" onchange="UpladFile()">
@@ -116,17 +142,20 @@
             <table id="table" cellpadding="0" cellspacing="0" width="100%">
                 <thead>
                 <tr class="th">
-                    <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th  style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                     <th style="text-align: left;">序号</th>
-                    <th>分组编号</th>
-                    <th>分组名称</th>
-                    <th>企业名称</th>
-                    <th>备注</th>
-                    <th width="50px;">可用</th>
+                    <th>字段一</th>
+                    <th>字段二</th>
+                    <th>字段三</th>
+                    <th>字段四</th>
+                    <th>字段五</th>
+                    <th>字段六</th>
                 </tr>
                 </thead>
                 <tbody>
+                <tr>
 
+                </tr>
                 </tbody>
             </table>
         </div>
@@ -188,7 +217,6 @@
         <em class="delete" id="delete">删除</em>
     </div>
 </div>
-
 <div id="side_bar">
     <div class="gotop">
         <span class="icon-ishop_4-03"></span>
@@ -198,10 +226,9 @@
     </div>
 </div>
 </body>
-<script src="../table/js/jquery.min.js"></script>
-<script src="../js/loading.js"></script>
-<script type="text/javascript" src="../js/insidePostRequire.js"></script>
-<script src="../js/vip/viplabel_group.js"></script>
+<script type="text/javascript" src="/js/insidePostRequire.js"></script>
+<!--<script src="/js/vip/vip_album.js"></script>-->
+<!--<script src="/js/silide.js"></script>-->
 <script type="text/javascript">
     $(function(){
         $(window).scroll(function(){
