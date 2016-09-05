@@ -546,7 +546,7 @@ $("#leading_out").click(function () {
     var param = {};
     param["function_code"] = funcCode;
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("post", "/goods/getCols", "0", param, function (data) {
+    oc.postRequire("post", "/list/ getCols", "0", param, function (data) {
         if (data.code == "0") {
             var message = JSON.parse(data.message);
             var message = JSON.parse(message.tableManagers);
