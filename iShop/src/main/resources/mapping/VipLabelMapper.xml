@@ -218,6 +218,7 @@
                 </when>
                 <when test="entryValue!='' and entryKey=='label_group_name'">
                     dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    and vt.label_group_code  is not null
                 </when>
                 <when test="entryValue!=''">
                     vt.${entryKey} LIKE concat('%',#{entryValue},'%')
