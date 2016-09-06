@@ -310,7 +310,7 @@ function jumpBianse(){
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
-        $(this).toggleClass("tr");  
+        $(this).toggleClass("tr");
         console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
