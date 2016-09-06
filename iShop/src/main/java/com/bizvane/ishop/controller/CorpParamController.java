@@ -43,6 +43,7 @@ public class CorpParamController {
 
     /**
      * 企业参数配置列表
+     *
      * @param request
      * @return
      */
@@ -54,7 +55,7 @@ public class CorpParamController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             JSONObject result = new JSONObject();
-            PageInfo<CorpParam> list=corpParamService.selectAllParam(page_number, page_size, "");
+            PageInfo<CorpParam> list = corpParamService.selectAllParam(page_number, page_size, "");
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -66,8 +67,10 @@ public class CorpParamController {
         }
         return dataBean.getJsonStr();
     }
+
     /**
      * 根据企业编号拉取企业参数
+     *
      * @param request
      * @return
      */
@@ -85,7 +88,7 @@ public class CorpParamController {
             JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String param_id = jsonObject.get("param_id").toString();
-         List<CorpParam> list=corpParamService.selectByCorpParam(corp_code,param_id);
+            List<CorpParam> list = corpParamService.selectByCorpParam(corp_code, param_id);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -101,8 +104,10 @@ public class CorpParamController {
         return dataBean.getJsonStr();
 
     }
+
     /**
      * 添加企业参数配置
+     *
      * @param request
      * @return
      */
@@ -118,7 +123,7 @@ public class CorpParamController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result=corpParamService.insert(message,user_code);
+            String result = corpParamService.insert(message, user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -139,6 +144,7 @@ public class CorpParamController {
 
     /**
      * 编辑企业参数配置
+     *
      * @param request
      * @return
      */
@@ -154,7 +160,7 @@ public class CorpParamController {
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result=corpParamService.update(message,user_code);
+            String result = corpParamService.update(message, user_code);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -175,6 +181,7 @@ public class CorpParamController {
 
     /**
      * 删除企业参数配置
+     *
      * @param request
      * @return
      */
@@ -194,10 +201,10 @@ public class CorpParamController {
             String[] ids = corpParam_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
-                CorpParam corpParam=corpParamService.selectById(Integer.valueOf(ids[i]));
+                CorpParam corpParam = corpParamService.selectById(Integer.valueOf(ids[i]));
                 if (corpParam != null) {
                     corpParamService.delete(Integer.valueOf(ids[i]));
-                }   else{
+                } else {
                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                     dataBean.setId(id);
                     dataBean.setMessage(message);
@@ -218,6 +225,7 @@ public class CorpParamController {
 
     /**
      * 选择企业参数
+     *
      * @param request
      * @return
      */
@@ -248,6 +256,7 @@ public class CorpParamController {
 
     /**
      * 搜索企业参数
+     *
      * @param request
      * @return
      */
@@ -285,6 +294,7 @@ public class CorpParamController {
 
     /**
      * 筛选企业参数
+     *
      * @param request
      * @return
      */
@@ -292,7 +302,7 @@ public class CorpParamController {
     @ResponseBody
     public String Screen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
-        String id="";
+        String id = "";
 
         try {
             String jsString = request.getParameter("param");
@@ -306,7 +316,7 @@ public class CorpParamController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             JSONObject result = new JSONObject();
             PageInfo<CorpParam> list = null;
-           // String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            // String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             list = corpParamService.selectAllParamScreen(page_number, page_size, "", map);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);

@@ -21,13 +21,14 @@ import java.util.Map;
  * Created by yan on 2016/8/10.
  */
 @Service
-public class ParamConfigureServiceImpl implements ParamConfigureService{
+public class ParamConfigureServiceImpl implements ParamConfigureService {
     @Autowired
     ParamConfigureMapper paramConfigureMapper;
 
     /**
      * 根据参数id
      * 获取某参数配置信息
+     *
      * @param id
      * @return
      * @throws SQLException
@@ -39,18 +40,19 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
 
     @Override
     public ParamConfigure getParamByKey(String param_name) throws Exception {
-        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByKey(param_name);
-        return  paramConfigure;
+        ParamConfigure paramConfigure = this.paramConfigureMapper.selectParamByKey(param_name);
+        return paramConfigure;
     }
 
     @Override
     public ParamConfigure getParamByName(String param_desc) throws Exception {
-        ParamConfigure paramConfigure=this.paramConfigureMapper.selectParamByName(param_desc);
-        return  paramConfigure;
+        ParamConfigure paramConfigure = this.paramConfigureMapper.selectParamByName(param_desc);
+        return paramConfigure;
     }
 
     /**
      * 分页显示参数配置
+     *
      * @param page_number
      * @param page_size
      * @param search_value
@@ -62,20 +64,20 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         List<ParamConfigure> paramConfigures;
         PageHelper.startPage(page_number, page_size);
         paramConfigures = paramConfigureMapper.selectAllParam(search_value);
-        String result="";
+        String result = "";
         for (ParamConfigure paramConfigure : paramConfigures) {
 
-          String  param_type=  paramConfigure.getParam_type();
-            if(param_type==null){
-                result="";
-            }else if(param_type.equals("switch")){
-                result="开关";
-            }else if(param_type.equals("list")){
-                result="选择列表";
-            }else if(param_type.equals("custom")){
-            result="自定义";
-            }else{
-                result="";
+            String param_type = paramConfigure.getParam_type();
+            if (param_type == null) {
+                result = "";
+            } else if (param_type.equals("switch")) {
+                result = "开关";
+            } else if (param_type.equals("list")) {
+                result = "选择列表";
+            } else if (param_type.equals("custom")) {
+                result = "自定义";
+            } else {
+                result = "";
             }
             paramConfigure.setParam_type(result);
 
@@ -101,13 +103,13 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         String param_values = null;
         String param_desc = jsonObject.get("param_desc").toString();
         String remark = jsonObject.get("remark").toString();
-        if(param_type.equals("switch")){
+        if (param_type.equals("switch")) {
             param_values = "Y,N";
-        }else{
-            param_values=jsonObject.get("param_values").toString();
+        } else {
+            param_values = jsonObject.get("param_values").toString();
         }
         ParamConfigure paramConfigure = getParamByKey(param_name);
-        if (paramConfigure == null ) {
+        if (paramConfigure == null) {
             paramConfigure = new ParamConfigure();
             Date now = new Date();
             paramConfigure.setParam_name(param_name);
@@ -131,16 +133,18 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     @Override
     public String update(String message, String user_id) throws Exception {
         String result = "";
-        String param_values =null;
+        String param_values = null;
         JSONObject jsonObject = new JSONObject(message);
         int param_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String param_name = jsonObject.get("param_name").toString();
         String param_type = jsonObject.get("param_type").toString();
-        if(param_type.equals("switch")){
+        if (param_type.equals("switch")) {
             param_values = "Y,N";
-        }else{
-            param_values=jsonObject.get("param_values").toString();
+        } else if (param_type.equals("list")) {
+            param_values = jsonObject.get("param_values").toString();
+        } else {
+            param_values = "";
         }
 
         String param_desc = jsonObject.get("param_desc").toString();
@@ -175,26 +179,26 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-    public PageInfo<ParamConfigure> selectByParamSearch(int page_number, int page_size ,String search_value) throws Exception {
+    public PageInfo<ParamConfigure> selectByParamSearch(int page_number, int page_size, String search_value) throws Exception {
 
-       // Map<String, Object> params = new HashMap<String, Object>();
-       // params.put("search_value", search_value);
+        // Map<String, Object> params = new HashMap<String, Object>();
+        // params.put("search_value", search_value);
         PageHelper.startPage(page_number, page_size);
         List<ParamConfigure> paramConfigures = paramConfigureMapper.selectAllParam(search_value);
-        String result="";
+        String result = "";
         for (ParamConfigure paramConfigure : paramConfigures) {
 
-            String  param_type=  paramConfigure.getParam_type();
-            if(param_type==null){
-                result="";
-            }else if(param_type.equals("switch")){
-                result="开关";
-            }else if(param_type.equals("list")){
-                result="选择列表";
-            }else if(param_type.equals("custom")){
-                result="自定义";
-            }else{
-                result="";
+            String param_type = paramConfigure.getParam_type();
+            if (param_type == null) {
+                result = "";
+            } else if (param_type.equals("switch")) {
+                result = "开关";
+            } else if (param_type.equals("list")) {
+                result = "选择列表";
+            } else if (param_type.equals("custom")) {
+                result = "自定义";
+            } else {
+                result = "";
             }
             paramConfigure.setParam_type(result);
 
@@ -205,13 +209,13 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
     }
 
     @Override
-   public  PageInfo<ParamConfigure> selectParamScreen(int page_number, int page_size, Map<String, String> map) throws Exception{
+    public PageInfo<ParamConfigure> selectParamScreen(int page_number, int page_size, Map<String, String> map) throws Exception {
         List<ParamConfigure> names;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("map", map);
 
-        String result="";
+        String result = "";
         names = paramConfigureMapper.selectParamScreen(params);
         for (ParamConfigure paramConfigure : names) {
 
@@ -233,7 +237,6 @@ public class ParamConfigureServiceImpl implements ParamConfigureService{
         return page;
 
     }
-
 
 
 }

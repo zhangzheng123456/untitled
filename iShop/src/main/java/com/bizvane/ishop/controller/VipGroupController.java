@@ -41,6 +41,7 @@ public class VipGroupController {
 
     /**
      * 列表
+     *
      * @param request
      * @return
      */
@@ -61,7 +62,7 @@ public class VipGroupController {
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
                 list = vipGroupService.getAllVipGroupByPage(page_number, page_size, "", "");
-            }else{
+            } else {
                 list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code, "");
 
             }
@@ -82,6 +83,7 @@ public class VipGroupController {
 
     /**
      * 根据id查看
+     *
      * @param request
      * @return
      */
@@ -108,46 +110,49 @@ public class VipGroupController {
             dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
         }
-        return dataBean.getJsonStr();}
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 新增
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public String addVipGroup(HttpServletRequest request) {
-       DataBean dataBean = new DataBean();
-       try {
-           String jsString = request.getParameter("param");
-           logger.info("json--vipGroup add-------------" + jsString);
-           System.out.println("json---------------" + jsString);
-           JSONObject jsonObj = new JSONObject(jsString);
-           id = jsonObj.get("id").toString();
-           String message = jsonObj.get("message").toString();
-           String user_id = request.getSession().getAttribute("user_code").toString();
-           String result = vipGroupService.insert(message,user_id);
-           if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
-               dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-               dataBean.setId(id);
-               dataBean.setMessage("add success");
-           } else {
-               dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-               dataBean.setId(id);
-               dataBean.setMessage(result);
-           }
-       } catch (Exception ex) {
-           dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-           dataBean.setId("1");
-           dataBean.setMessage(ex.getMessage());
-       }
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json--vipGroup add-------------" + jsString);
+            System.out.println("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            String user_id = request.getSession().getAttribute("user_code").toString();
+            String result = vipGroupService.insert(message, user_id);
+            if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setId(id);
+                dataBean.setMessage("add success");
+            } else {
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId(id);
+                dataBean.setMessage(result);
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
 
-       return dataBean.getJsonStr();
-   }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 编辑
+     *
      * @param request
      * @return
      */
@@ -183,6 +188,7 @@ public class VipGroupController {
 
     /**
      * 删除
+     *
      * @param request
      * @return
      */
@@ -203,7 +209,7 @@ public class VipGroupController {
             int count = 0;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
-              vipGroupService.delete(Integer.valueOf(ids[i]));
+                vipGroupService.delete(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
@@ -216,10 +222,12 @@ public class VipGroupController {
             return dataBean.getJsonStr();
         }
         logger.info("delete-----" + dataBean.getJsonStr());
-        return dataBean.getJsonStr();}
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 验证会员分组编号唯一性
+     *
      * @param request
      * @return
      */
@@ -235,7 +243,7 @@ public class VipGroupController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String vip_group_code = jsonObject.get("vip_group_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            VipGroup vipGroup=vipGroupService.getVipGroupByCode(corp_code,vip_group_code,Common.IS_ACTIVE_Y);
+            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
             if (vipGroup != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -261,6 +269,7 @@ public class VipGroupController {
 
     /**
      * 验证会员分组名称唯一性
+     *
      * @param request
      * @return
      */
@@ -276,7 +285,7 @@ public class VipGroupController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String vip_group_name = jsonObject.get("vip_group_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            VipGroup vipGroup=vipGroupService.getVipGroupByName(corp_code,vip_group_name,Common.IS_ACTIVE_Y);
+            VipGroup vipGroup = vipGroupService.getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
             if (vipGroup != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -300,6 +309,7 @@ public class VipGroupController {
 
     /**
      * 搜索
+     *
      * @param request
      * @return
      */
@@ -343,6 +353,7 @@ public class VipGroupController {
 
     /**
      * 筛选
+     *
      * @param request
      * @return
      */
@@ -367,9 +378,9 @@ public class VipGroupController {
             JSONObject result = new JSONObject();
             PageInfo<VipGroup> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "",  map);
-            } else  {
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, corp_code,  map);
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "", map);
+            } else {
+                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, corp_code, map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -412,9 +423,9 @@ public class VipGroupController {
             } else {
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "",  map);
-                } else  {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, corp_code,  map);
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "", map);
+                } else {
+                    list = vipGroupService.getAllVipGrouScreen(1, 30000, corp_code, map);
                 }
             }
             List<VipGroup> vipGroups = list.getList();
@@ -428,7 +439,7 @@ public class VipGroupController {
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,vipGroups, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, vipGroups, map, response, request);
             JSONObject result = new JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
