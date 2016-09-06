@@ -445,6 +445,11 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
+            }
+            for(int i=3;i<column2.length;i++){
+                if (column2[i].getContents().toString().trim().equals("")) {
+                    continue;
+                }
                 List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), "");
                 if (user11.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户ID已存在";
