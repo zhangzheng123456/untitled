@@ -7405,9 +7405,9 @@ body.skin-3 {
 .editor_detail{
   /*margin-left:80px;*/
   /*margin-top:10px;*/
-  margin-left: 0;
+  /*margin-left: 0;*/
   /*margin-top: 50px;*/
-  text-align: center;"
+  text-align: center;
 }
 .editor_detail ul{
   width:100%;
@@ -8345,7 +8345,7 @@ li.select_index>a>label>i{
 .paramType{
   width: 420px;
   position: absolute;
-  left: 187px;
+  left: 132px;
   border: 1px solid #a9c9e2;
   background: #e8f5fe;
   display:none;
@@ -8377,7 +8377,7 @@ li.select_index>a>label>i{
   height: 200px;
   overflow-y: auto;
   position: absolute;
-  left: 187px;
+  left: 132px;
   top:130px;
   border: 1px solid #a9c9e2;
   background: #e8f5fe;
@@ -8398,7 +8398,7 @@ li.select_index>a>label>i{
 #paramValue_down{
   width: 420px;
   position: absolute;
-  left: 187px;
+  left: 132px;
   top:180px;
   border: 1px solid #a9c9e2;
   background: #e8f5fe;
