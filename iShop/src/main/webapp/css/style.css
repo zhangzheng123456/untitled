@@ -7252,7 +7252,7 @@ body.skin-3 {
   margin:0px 5px;
 }
 .conpany_msg label{
-  width:60px;
+  width:105px;
   height:30px;
   text-align:right;
   margin-right:18px;
@@ -7262,7 +7262,7 @@ body.skin-3 {
 }
 .conpany_msg{
   margin-top:50px;
-  margin-left:8%;
+  /*margin-left:8%;*/
 }
 .shop_m{
   width:400px;
@@ -7403,8 +7403,11 @@ body.skin-3 {
     vertical-align: middle;
 }
 .editor_detail{
-  margin-left:80px;
-  margin-top:10px;
+  /*margin-left:80px;*/
+  /*margin-top:10px;*/
+  /*margin-left: 0;*/
+  /*margin-top: 50px;*/
+  text-align: center;
 }
 .editor_detail ul{
   width:100%;
@@ -7439,7 +7442,7 @@ body.skin-3 {
 }
 .msg_detail{
   margin-top:40px;
-  margin-left:65px;
+  /*margin-left:65px;*/
 }
 .msg_detail div{
   margin-bottom:20px;
@@ -7480,7 +7483,7 @@ body.skin-3 {
 }
 .editor_line{
   border-top:2px #e0e0e0 solid;
-  margin:30px 20px 0px 20px;
+  /*margin:30px 20px 0px 20px;*/
 }
 .oper_btn{
   text-align:center;
@@ -8342,7 +8345,7 @@ li.select_index>a>label>i{
 .paramType{
   width: 420px;
   position: absolute;
-  left: 187px;
+  left: 132px;
   border: 1px solid #a9c9e2;
   background: #e8f5fe;
   display:none;
@@ -8374,7 +8377,7 @@ li.select_index>a>label>i{
   height: 200px;
   overflow-y: auto;
   position: absolute;
-  left: 187px;
+  left: 132px;
   top:130px;
   border: 1px solid #a9c9e2;
   background: #e8f5fe;
@@ -8395,7 +8398,7 @@ li.select_index>a>label>i{
 #paramValue_down{
   width: 420px;
   position: absolute;
-  left: 187px;
+  left: 132px;
   top:180px;
   border: 1px solid #a9c9e2;
   background: #e8f5fe;

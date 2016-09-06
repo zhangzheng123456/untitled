@@ -3,7 +3,18 @@
 <mapper namespace="com.bizvane.ishop.dao.TaskMapper">
     <!--据角色企业查询任务列表 role_ident为角色标识，GM和SYS分企业，其他的只查和自己相关的任务-->
     <select id="selectAllTask" resultType="com.bizvane.ishop.entity.Task">
-        SELECT * FROM def_task,DEF_CORP,def_task_type
+        SELECT
+        def_task.id,
+        def_task.task_code,
+        def_task.task_title,
+        def_task_type.task_type_name,
+        def_task.TASK_DESCRIPTION,
+        DEF_CORP.corp_name,
+        def_task.target_start_time,
+        def_task.target_end_time,
+        def_task.modifier,
+        def_task.ISACTIVE
+        FROM def_task,DEF_CORP,def_task_type
         WHERE def_task.corp_code = DEF_CORP.corp_code
         AND def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
         AND DEF_CORP.corp_code = def_task_type.corp_code
@@ -25,7 +36,6 @@
             or DEF_CORP.corp_name LIKE concat('%', #{search_value},'%')
             OR def_task.target_end_time LIKE concat('%', #{search_value},'%')
             OR def_task.modifier LIKE concat('%', #{search_value},'%')
-            OR def_task.modified_date LIKE concat('%', #{search_value},'%')
             OR def_task.ISACTIVE LIKE concat('%', #{search_value},'%')
             )
         </if>
@@ -33,7 +43,18 @@
     </select>
     <!--筛选-->
     <select id="selectAllTaskScreen" resultType="com.bizvane.ishop.entity.Task">
-        SELECT * from def_task,DEF_CORP,def_task_type
+        SELECT
+        def_task.id,
+        def_task.task_code,
+        def_task.task_title,
+        def_task_type.task_type_name,
+        def_task.TASK_DESCRIPTION,
+        DEF_CORP.corp_name,
+        def_task.target_start_time,
+        def_task.target_end_time,
+        def_task.modifier,
+        def_task.ISACTIVE
+        from def_task,DEF_CORP,def_task_type
         where def_task.corp_code = DEF_CORP.corp_code
         and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
         and DEF_CORP.corp_code = def_task_type.corp_code
