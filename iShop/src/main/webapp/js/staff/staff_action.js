@@ -303,6 +303,10 @@ function superaddition(data,num){//页面加载循环
         //+data[i].isactive
         +"</td></tr>");
     }
+    $(document).ready(function(){//隔行变色
+        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+    })
     //whir.loading.remove();//移除加载框
     //sessionStorage.removeItem("return_jump");
 };
