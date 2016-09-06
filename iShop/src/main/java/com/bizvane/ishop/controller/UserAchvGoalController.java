@@ -45,7 +45,7 @@ import java.util.regex.Pattern;
  */
 @Controller
 @RequestMapping("/userAchvGoal")
-public class UserAchvGoalControl {
+public class UserAchvGoalController {
     private static final Logger logger = Logger.getLogger(LoginController.class);
 
     @Autowired

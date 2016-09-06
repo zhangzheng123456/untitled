@@ -30,7 +30,7 @@ import java.util.Map;
 
 @Service
 public class CorpParamServiceImpl implements CorpParamService {
-   @Autowired
+    @Autowired
     CorpParamMapper corpParamMapper;
 
     /**
@@ -43,7 +43,7 @@ public class CorpParamServiceImpl implements CorpParamService {
     }
 
     public List<CorpParam> selectByCorpParam(String corp_code, String param_id) throws Exception {
-        return corpParamMapper.selectByCorpParam(corp_code,param_id);
+        return corpParamMapper.selectByCorpParam(corp_code, param_id);
     }
 
     public List<CorpParam> selectByParamId(String param_id) throws Exception {
@@ -71,9 +71,9 @@ public class CorpParamServiceImpl implements CorpParamService {
         String param_id = jsonObject.get("param_id").toString();
         String param_value = jsonObject.get("param_value").toString();
         List<CorpParam> corpParams = selectByCorpParam(corp_code, param_id);
-        if (corpParams.size() >0) {
+        if (corpParams.size() > 0) {
             result = "该企业参数配置已存在";
-        }else {
+        } else {
             CorpParam corpParam = new CorpParam();
             Date now = new Date();
             corpParam.setRemark(remark);
@@ -128,8 +128,9 @@ public class CorpParamServiceImpl implements CorpParamService {
     public int delete(int id) throws Exception {
         return corpParamMapper.deleteById(id);
     }
+
     @Override
-     public PageInfo<CorpParam> selectAllParamScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
+    public PageInfo<CorpParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
         List<CorpParam> corp_params;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();

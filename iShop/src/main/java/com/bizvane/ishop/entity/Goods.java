@@ -15,7 +15,7 @@ public class Goods {
     //商品图片
     private String goods_image;
     //商品价格
-    private float goods_price;
+    private String goods_price;
     //商品时间
     private String goods_time;
     //商品季度
@@ -96,11 +96,11 @@ public class Goods {
         this.goods_image = goods_image;
     }
 
-    public float getGoods_price() {
+    public String getGoods_price() {
         return goods_price;
     }
 
-    public void setGoods_price(float goods_price) {
+    public void setGoods_price(String goods_price) {
         this.goods_price = goods_price;
     }
 
