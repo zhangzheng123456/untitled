@@ -113,7 +113,7 @@ public class TestFeedbackService {
 
 //            String result = dataBox.data.get("message").value;
 //            System.out.println(result+"--");
-
+//
 //            String ss="§SHBS0001,";
 //        String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
 //            Data data_user_id = new Data("user_id", "AZ0007841", ValueType.PARAM);
@@ -138,56 +138,56 @@ public class TestFeedbackService {
 
 
 //
-//            Data data_user_id = new Data("user_id", "AZ0000329", ValueType.PARAM);
-//            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
-//            Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
-//            //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
-//            Data data_store_id = new Data("area_code", "21", ValueType.PARAM);
-//            // 751400901
-//            Map datalist = new HashMap<String, Data>();
-//            datalist.put(data_user_id.key, data_user_id);
-//            datalist.put(data_corp_code.key, data_corp_code);
-//            datalist.put(data_time_id.key, data_time_id);
-//            datalist.put(data_store_id.key, data_store_id);
-//            //     datalist.put(data_store_code.key, data_store_code);
-//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
-//
-//            String result = dataBox.data.get("message").value;
-//            System.out.println(result);
-
-
-
-
-
-            Data data_user_id = new Data("user_id", "LL001", ValueType.PARAM);
-            Data data_corp_code = new Data("corp_code", "C10141", ValueType.PARAM);
-            Data data_store_code = new Data("store_code", "", ValueType.PARAM);
-            Data data_area_code = new Data("area_code", "", ValueType.PARAM);
-            Data data_role_code = new Data("user_role", Common.ROLE_GM, ValueType.PARAM);
-            Data data_time_id = new Data("date", "2016-07-21", ValueType.PARAM);
-
-
+            Data data_user_id = new Data("user_id", "AZ0000329", ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
+            Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
+            //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
+            Data data_store_id = new Data("area_code", "21", ValueType.PARAM);
+            // 751400901
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_store_code.key, data_store_code);
-            datalist.put(data_area_code.key, data_store_code);
-            datalist.put(data_role_code.key, data_store_code);
             datalist.put(data_time_id.key, data_time_id);
+            datalist.put(data_store_id.key, data_store_id);
+            //     datalist.put(data_store_code.key, data_store_code);
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
 
-            String[] date_types = new String[]{Common.TIME_TYPE_WEEK,Common.TIME_TYPE_MONTH,Common.TIME_TYPE_YEAR};
-            org.json.JSONObject object = new org.json.JSONObject();
-            for (int i = 0; i < date_types.length; i++) {
-                String date_type = date_types[i];
-                Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
-                datalist.put(data_date_type.key, data_date_type);
-                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysisInfo",datalist);
+            String result = dataBox.data.get("message").value;
+            System.out.println(result);
 
-                String result = dataBox.data.get("message").value;
-                System.out.println(result);
-                object.put(date_type,result);
-            }
-            System.out.println(object.toString());
+
+
+
+
+//            Data data_user_id = new Data("user_id", "LL001", ValueType.PARAM);
+//            Data data_corp_code = new Data("corp_code", "C10141", ValueType.PARAM);
+//            Data data_store_code = new Data("store_code", "", ValueType.PARAM);
+//            Data data_area_code = new Data("area_code", "", ValueType.PARAM);
+//            Data data_role_code = new Data("user_role", Common.ROLE_GM, ValueType.PARAM);
+//            Data data_time_id = new Data("date", "2016-07-21", ValueType.PARAM);
+//
+//
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_user_id.key, data_user_id);
+//            datalist.put(data_corp_code.key, data_corp_code);
+//            datalist.put(data_store_code.key, data_store_code);
+//            datalist.put(data_area_code.key, data_store_code);
+//            datalist.put(data_role_code.key, data_store_code);
+//            datalist.put(data_time_id.key, data_time_id);
+//
+//            String[] date_types = new String[]{Common.TIME_TYPE_WEEK,Common.TIME_TYPE_MONTH,Common.TIME_TYPE_YEAR};
+//            org.json.JSONObject object = new org.json.JSONObject();
+//            for (int i = 0; i < date_types.length; i++) {
+//                String date_type = date_types[i];
+//                Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
+//                datalist.put(data_date_type.key, data_date_type);
+//                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysisInfo",datalist);
+//
+//                String result = dataBox.data.get("message").value;
+//                System.out.println(result);
+//                object.put(date_type,result);
+//            }
+//            System.out.println(object.toString());
 
 
 
