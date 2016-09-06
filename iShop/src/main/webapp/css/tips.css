@@ -13,15 +13,18 @@
 }
 .power{
 	display: inline-block;
-	width: 70px;
+	width: 60px;
 	height: 30px;
 	margin-left: -3px;
 	line-height: 30px;
-	border-radius: 5px;
+	border-radius: 7px;
 	color: #FFFFFF;
 	background-color: #6dc1c8;
 	text-align: center;
 	cursor: pointer;
+}
+.remove_app_id{
+	background: #c26555;
 }
 .power a{
 	display: block;
@@ -64,10 +67,9 @@
 	position: relative;
 }
 .kuang{
-	width: 80px;
-	top:0px;
-	position: absolute;
-	left: 640px;
+	width: 100px;
+	height: 100px;
+	margin:10px 0 10px 123px;
 	display: none;
 }
 .kuang img{
@@ -80,13 +82,7 @@
 	text-align: center;
 	overflow: hidden;
 }
-.k_close{
-	position: absolute;
-	right: 0;
-	top:0;
-	font-size: 20px;
-	cursor: pointer;
-}
+
 #add_power{
 	background-color: #ddd!important;
 }

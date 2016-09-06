@@ -47,7 +47,7 @@
                         <span><label>员工编号</label><input type="text" id="USERID" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="用户编号为必填项,不能为空!"></div></div></span>
                     </div>
                     <div>
-                        <span><label>员工ID</label><input type="text" id="user_id"></span>
+                        <span><label title="客户业务系统下的员工ID">员工ID</label><input type="text" id="user_id"></span>
                     </div>
                     <div>
                         <span><label>姓名</label><input type="text" id="USER_NAME" verify="Empty"/><div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项，不能为空！"></div></div></span>
@@ -126,13 +126,13 @@
                             <ul>
                             </ul>
                             <span class="power create" onclick="getTwoCode(this)">生成</span>
-                            <span class="power" id="add_app_id">新增</span>
+                            <span class="power k_close" style="display: none;">关闭</span>
+                            <span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>
                             <div class="kuang">
-                                <span class="icon-ishop_6-12 k_close"></span>
                                 <img src="" alt="">
-                                <p></p>
                             </div>
                         </li>
+                        <div id="add_app_id">新增<span>+</span></div>
                     </div>
                 </form>
             </div>
