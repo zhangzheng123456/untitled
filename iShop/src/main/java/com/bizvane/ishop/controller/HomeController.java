@@ -75,7 +75,7 @@ public class HomeController {
             int user_new_count = userService.selectCount(yesterday);
 
             PageInfo<Feedback> feedback = feedbackService.selectAllFeedback(1, 6, "");
-            PageInfo<ErrorLog> errorLog = errorLogService.getAllLog(1,6,"");
+            PageInfo<ErrorLog> errorLog = errorLogService.getAllLog(1, 6, "");
             int day_length = 0;
             if (time.equals("week")) {
                 day_length = 7;
@@ -302,6 +302,7 @@ public class HomeController {
     @ResponseBody
     public String achInfo(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        JSONObject object = new JSONObject();
         try {
             String time_id;
             String area_code = "";
@@ -359,8 +360,15 @@ public class HomeController {
             datalist.put(data_role_code.key, data_role_code);
             datalist.put(data_time_id.key, data_time_id);
 
+//            String date_type = jsonObject.get("date_type").toString();
+//            Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
+//            datalist.put(data_date_type.key, data_date_type);
+//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysisInfo", datalist);
+//            logger.info("home2画面(业绩折线图)" + dataBox.data.get("message").value);
+//            String result = dataBox.data.get("message").value;
+//            object.put(date_type, result);
+
             String[] date_types = new String[]{Common.TIME_TYPE_WEEK, Common.TIME_TYPE_MONTH, Common.TIME_TYPE_YEAR};
-            JSONObject object = new JSONObject();
             for (int i = 0; i < date_types.length; i++) {
                 String date_type = date_types[i];
                 Data data_date_type = new Data("date_type", date_type, ValueType.PARAM);
