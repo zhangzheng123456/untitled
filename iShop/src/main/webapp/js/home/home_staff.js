@@ -226,7 +226,17 @@ function superadditionAchv(c){
     //$("#area_ranking").attr("data-percent",c.am.area_ranking);
     $("#achv_mask").hide();
 }
-
+//点击店铺
+$(".c_a_shoppe").click(function(){
+    var ul=$(".c_a_shoppe ul");
+    if(ul.css("display")=="none"){
+        ul.show();
+        $("#drop_down_m").attr("src","../img/img_arrow_up.png");
+    }else{
+        ul.hide();
+        $("#drop_down_m").attr("src","../img/img_arrow_down.png");
+    }
+});
 function getShopList(){//切换店铺
     oc.postRequire("get", "/shop/findStore", "", "", function(data) {
         if(data.code=="0"){
@@ -241,14 +251,14 @@ function getShopList(){//切换店铺
                 html+="<li data-code='"+list[i].store_code+"'>"+list[i].store_name+"</li>"
             }
             $(".c_a_shoppe ul").html(html);
-            $(".area_name").click(function(){
-                $(".c_a_shoppe ul").show();
-            });
+            //$(".area_name").click(function(){
+            //    $(".c_a_shoppe ul").show();
+            //});
             $(".c_a_shoppe ul li").click(function(){
                 var area_code=$(this).attr("data-code");
                 $(".area_name").attr("data-code",area_code);
                 $(".area_name").html($(this).html());
-                $(".c_a_shoppe ul").hide();
+                //$(".c_a_shoppe ul").hide();
                 staffRanking($("#date2").val());
                 achAnalysis($("#date0").val());
                 achieveChart($("#date1").val());

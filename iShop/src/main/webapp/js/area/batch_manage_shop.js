@@ -342,7 +342,7 @@ $('#save').click(function () {
             $(".content").hide();
             window.location.reload();
         } else if (data.code == "-1") {
-            alert(data.message);
+            alert("请选择店铺!");
         }
     })
 })
