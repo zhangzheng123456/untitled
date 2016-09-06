@@ -60,6 +60,8 @@ public interface StoreService {
 
     Store getStoreByName(String corp_code, String store_name,String isactive) throws Exception;
 
+    Store storeIdExist(String corp_code, String store_id) throws Exception;
+
     int selectAchCount(String corp_code, String store_code) throws Exception;
 
     int selectCount(String created_date) throws Exception;

@@ -36,6 +36,8 @@ public interface StoreMapper {
 
     Store selectByStoreName(@Param("corp_code") String corp_code, @Param("store_name") String store_name, @Param("isactive") String isactive) throws SQLException;
 
+    Store storeIdExist(@Param("corp_code") String corp_code, @Param("store_id") String store_id) throws SQLException;
+
     int selectCount(@Param("created_date") String created_date) throws SQLException;
 
     int selectAchCount(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;

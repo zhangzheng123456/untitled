@@ -654,10 +654,17 @@ public class StoreController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String store_code = jsonObject.get("store_code").toString();
+
             String corp_code = jsonObject.get("corp_code").toString();
-            //         Area area = areaService.getAreaByName(corp_code, store_code);
-            Store store = storeService.getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
+            Store store = null;
+            if (jsonObject.has("store_code")) {
+                String store_code = jsonObject.get("store_code").toString();
+                store = storeService.getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
+            }
+            if (jsonObject.has("store_id")) {
+                String store_id = jsonObject.get("store_id").toString();
+                store = storeService.storeIdExist(corp_code, store_id);
+            }
 
             if (store != null) {
                 dataBean.setId(id);
