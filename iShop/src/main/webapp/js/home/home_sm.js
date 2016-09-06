@@ -264,9 +264,7 @@ function achieveChart(data){//获取折线图
 			perArr.push(TimeData[index].trade);
 			if(value == "按年查看"){
 				dateArr.push(TimeData[index].date.substring(2,7));
-			}else if(value == "按月查看"){
-				dateArr.push(TimeData[index].date.substring(5));
-			}else {
+			}else{
 				dateArr.push(TimeData[index].date);
 			}
 		}
