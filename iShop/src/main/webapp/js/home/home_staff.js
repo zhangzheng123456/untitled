@@ -244,7 +244,6 @@ function getShopList(){//切换店铺
         }
     })
 }
-
 function achieveChart(data){//获取折线图
     var param={};
     param["time"]=data.replace(/-/g,"")
