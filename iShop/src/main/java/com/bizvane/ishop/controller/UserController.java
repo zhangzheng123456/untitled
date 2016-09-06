@@ -518,6 +518,9 @@ public class UserController {
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String user_code = rs.getCell(j++, i).getContents().toString().trim();
                     String user_id2 = rs.getCell(j++, i).getContents().toString().trim();
+                    if(user_id2.equals("")){
+                        user_id2 = user_code;
+                    }
                     String user_name = rs.getCell(j++, i).getContents().toString().trim();
                     String phone = rs.getCell(j++, i).getContents().toString().trim();
                     String email = rs.getCell(j++, i).getContents().toString().trim();
@@ -526,10 +529,10 @@ public class UserController {
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String position = rs.getCell(j++, i).getContents().toString().trim();
-                    if (cellCorp.equals("") && user_code.equals("") && user_id2.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
+                    if (cellCorp.equals("") && user_code.equals("")  && user_name.equals("") && phone.equals("") && group_code.equals("")) {
                         continue;
                     }
-                    if (cellCorp.equals("") || user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("") || group_code.equals("")) {
+                    if (cellCorp.equals("") || user_code.equals("")|| user_name.equals("") || phone.equals("") || group_code.equals("")) {
                         result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
                         int a = 5 / 0;
                     }
