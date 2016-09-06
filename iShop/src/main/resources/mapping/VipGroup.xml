@@ -19,22 +19,7 @@
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
-    <select id="selectVipGroupById" resultMap="VipGroup">
-        SELECT
-        dvg.id,
-        dvg.vip_group_code,
-        dvg.vip_group_name,
-        dvg.remark,
-        dvg.corp_code,
-        dvg.modified_date,
-        dvg.modifier,
-         dvg.created_date,
-        dvg.creater,
-        dvg.isactive
-        FROM DEF_VIP_GROUP dvg,def_corp dc
-        WHERE dvg.corp_code=dc.corp_code
-        and dvg.id=#{id}
-    </select>
+
     <select id="selectAllVipGroup" resultMap="VipGroup">
         SELECT dvg.id,
         dvg.vip_group_code,
@@ -115,7 +100,17 @@
         </if>
     </select>
     <select id="selectByVipGroupId" resultType="com.bizvane.ishop.entity.VipGroup">
-        SELECT *
+         SELECT
+        dvg.id,
+        dvg.vip_group_code,
+        dvg.vip_group_name,
+        dvg.remark,
+        dvg.corp_code,
+        dvg.modified_date,
+        dvg.modifier,
+         dvg.created_date,
+        dvg.creater,
+        dvg.isactive
         FROM DEF_VIP_GROUP
         WHERE id=#{id}
     </select>
