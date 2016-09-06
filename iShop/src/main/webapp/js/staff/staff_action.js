@@ -217,48 +217,93 @@ function superaddition(data,num){//页面加载循环
     pageSize=10;
     data=[{
         id:1,
-       user_code:'abc12',
+       user_code:'EC160803',
         vip_code:'',
-        action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
-        action_discrobe:'浏览日志',
-        action_conpany:'罗莱',
+        action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=AM0AM01387MW',
+        action_discrobe:'浏览商品详情',
+        action_conpany:'tommy',
         action_time:'2016-09-06  12:23:22'
     },
         {
             id:2,
-            user_code:'abc13',
+            user_code:'EC160803',
             vip_code:'',
-            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
-            action_discrobe:'浏览日志',
-            action_conpany:'罗莱',
-            action_time:'2016-09-06  12:23:22'
+            action_adress:'http://m.tommy.com.cn/index.php',
+            action_discrobe:'浏览商品列表',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:20:22'
         },
         {
             id:3,
-            user_code:'abc14',
+            user_code:'JXT1605003',
             vip_code:'',
-            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
-            action_discrobe:'浏览日志',
-            action_conpany:'罗莱',
-            action_time:'2016-09-06  12:23:22'
+            action_adress:'http://m.tommy.com.cn/index.php',
+            action_discrobe:'浏览商品列表',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:17:24'
         },
         {
             id:4,
-            user_code:'abc15',
+            user_code:'JXT1605003',
             vip_code:'',
-            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
-            action_discrobe:'浏览日志',
-            action_conpany:'罗莱',
-            action_time:'2016-09-06  12:23:22'
+            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=08878A2591MW&colorName=%E7%99%BD%E8%89%B2&screenSize=1366*768',
+            action_discrobe:'浏览商品详情',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:16:45'
         },
         {
             id:5,
-            user_code:'abc16',
+            user_code:'EC160802',
             vip_code:'',
-            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
-            action_discrobe:'浏览日志',
-            action_conpany:'罗莱',
-            action_time:'2016-09-06  12:23:22'
+            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
+            action_discrobe:'浏览商品详情',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:16:12'
+        },
+        {
+            id:6,
+            user_code:'EC160802',
+            vip_code:'',
+            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
+            action_discrobe:'浏览商品详情',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:15:56'
+        },
+        {
+            id:7,
+            user_code:'EC160802',
+            vip_code:'',
+            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
+            action_discrobe:'浏览商品详情',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:15:44'
+        },
+        {
+            id:8,
+            user_code:'EC160802',
+            vip_code:'',
+            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
+            action_discrobe:'浏览商品详情',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:14:37'
+        },
+        {
+            id:9,
+            user_code:'EC160802',
+            vip_code:'',
+            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
+            action_discrobe:'浏览商品详情',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:14:12'
+        },
+        {
+            id:10,
+            user_code:'EC160802',
+            vip_code:'',
+            action_adress:'http://m.tommy.com.cn/index.php',
+            action_discrobe:'浏览商品列表',
+            action_conpany:'tommy',
+            action_time:'2016-09-06  12:07:59'
         }
     ];
     num=2;
