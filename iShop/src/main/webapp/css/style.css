@@ -7405,9 +7405,9 @@ body.skin-3 {
 .editor_detail{
   /*margin-left:80px;*/
   /*margin-top:10px;*/
-  margin-left: 0;
+  /*margin-left: 0;*/
   /*margin-top: 50px;*/
-  text-align: center;"
+  text-align: center;
 }
 .editor_detail ul{
   width:100%;
