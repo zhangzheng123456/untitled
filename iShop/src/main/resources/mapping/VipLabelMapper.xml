@@ -193,8 +193,17 @@
 
     <select id="selectAllViplabelScreen" resultMap="VipLabels">
         SELECT
-        vt.*,
+        vt.id,
+        vt.label_name,
+        vt.label_type,
+        vt.corp_code,
+        vt.modified_date,
+        vt.modifier,
+        vt.created_date,
+        vt.creater,
+        vt.isactive,
         cc.corp_name
+        ,vt.label_group_code
         FROM
         def_vip_label vt,DEF_CORP cc
         ,def_vip_label_group dvg

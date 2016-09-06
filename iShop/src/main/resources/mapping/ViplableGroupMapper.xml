@@ -2,10 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.ViplableGroupMapper">
     <select id="selectViplabGroup" resultType="com.bizvane.ishop.entity.ViplableGroup">
-        SELECT dvg.id,dvg.label_group_code,
-        dvg.label_group_name,dvg.modified_date,
+        SELECT dvg.id,
+        dvg.label_group_code,
+        dvg.label_group_name,
+        dvg.modified_date,
         dvg.remark,
-        dvg.modifier,dc.corp_name,dvg.isactive
+        dvg.modifier,
+        dc.corp_name,
+        dvg.isactive
         FROM def_vip_label_group dvg,def_corp dc
         WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
@@ -26,10 +30,15 @@
         ORDER BY dvg.ID DESC
     </select>
     <select id="selectViplabGroupScreen" resultType="com.bizvane.ishop.entity.ViplableGroup">
-        SELECT dvg.id,dvg.label_group_code,
-        dvg.label_group_name,dvg.modified_date,
+        SELECT
+        dvg.id,
+        dvg.label_group_code,
+        dvg.label_group_name,
+        dvg.modified_date,
         dvg.remark,
-        dvg.modifier,dc.corp_name,dvg.isactive
+        dvg.modifier,
+        dc.corp_name,
+        dvg.isactive
         FROM def_vip_label_group dvg,def_corp dc
         WHERE dvg.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
