@@ -321,8 +321,6 @@ public class StoreServiceImpl implements StoreService {
 //        return newList;
 //    }
 
-
-
     //修改店铺
     @Override
     public String update(String message, String user_id) throws Exception {
@@ -412,6 +410,12 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public Store getStoreByName(String corp_code, String store_name,String isactive) throws Exception {
         Store store = this.storeMapper.selectByStoreName(corp_code, store_name,isactive);
+        return store;
+    }
+
+    @Override
+    public Store storeIdExist(String corp_code, String store_id) throws Exception {
+        Store store = this.storeMapper.storeIdExist(corp_code, store_id);
         return store;
     }
 
@@ -508,10 +512,12 @@ public class StoreServiceImpl implements StoreService {
         //删除二维码
         storeMapper.deleteStoreQrcode(corp_code,old_store_code);
     }
+
     public List<Store> selectAllStores(String corp_code, String search_value) throws Exception{
         List<Store> stores = storeMapper.selectAllStore(corp_code, "");
         return stores;
     }
+
     public JSONArray selectStoresByAreaCode(String corp_code,String search_value) throws Exception{
         JSONArray array = new JSONArray();
         List<Store> stores = storeMapper.selectAllStore(corp_code, "");

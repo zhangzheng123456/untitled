@@ -8316,7 +8316,6 @@ li.select_index>a>label>i{
   width: 270px;
   background: #e8f5fe;
   margin-top: 2px;
-  margin-left: 123px;
   border: 1px solid #a9c9e2;
   position: absolute;
   display: none;
@@ -8334,6 +8333,7 @@ li.select_index>a>label>i{
 }
 .er_code .app_li{
   margin-top: 20px;
+  margin-left: 123px;
   position: relative;
 }
 .app_li .power{

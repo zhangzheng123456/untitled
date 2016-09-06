@@ -868,7 +868,7 @@ jQuery(document).ready(function(){
 					$(appinput[0]).val(qrcodeList[0].app_name);
 					$(img[0]).attr("src", qrcodeList[0].qrcode);
 					for (var i = 1; i < qrcodeList.length; i++) {
-						$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
+						$(".er_code").append('<li class="app_li"><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
 							+ '<span class="power create" onclick="getTwoCode(this)">生成</span>'
 							+ '<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
 							+ '<div class="kuang"><img src="' + qrcodeList[i].qrcode + '" alt="">'
@@ -1136,7 +1136,7 @@ function close_two_code() {
 }
 
 $("#add_app_id").click(function(){
-	$("#add_app_id").before('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
+	$("#add_app_id").before('<li class="app_li"><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
 		+'<span class="power create" onclick="getTwoCode(this)">生成</span>'
 		+'<span class="power k_close" style="display: none;">关闭</span>'
 		+'<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'

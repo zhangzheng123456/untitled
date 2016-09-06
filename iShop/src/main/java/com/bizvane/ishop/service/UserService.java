@@ -48,6 +48,8 @@ public interface UserService {
 
     List<User> userEmailExist(String email) throws Exception;
 
+    List<User> userIdExist(String user_id,String corp_code) throws Exception;
+
     List<User> userCodeExist(String user_code, String corp_code,String isactive) throws Exception;
 
     List<User> selUserByUserId(String user_id, String corp_code,String isactive) throws Exception;

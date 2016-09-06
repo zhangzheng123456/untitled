@@ -433,6 +433,15 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
+     * 验证企业下用户id是否已存在
+     */
+    @Override
+    public List<User> userIdExist(String user_id,String corp_code) throws Exception {
+        List<User> user = userMapper.userIdExist(user_id,corp_code);
+        return user;
+    }
+
+    /**
      * 验证企业下用户编号是否已存在
      */
     public List<User> userCodeExist(String user_code, String corp_code, String isactive) throws Exception {

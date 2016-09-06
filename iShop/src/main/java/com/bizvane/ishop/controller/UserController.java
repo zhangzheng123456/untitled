@@ -1238,12 +1238,17 @@ public class UserController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String user_code = jsonObject.get("user_code").toString();
-
             String corp_code = jsonObject.get("corp_code").toString();
-            String current_corp_code = request.getSession(false).getAttribute("corp_code").toString();
-            corp_code = (corp_code == null || corp_code.isEmpty()) ? current_corp_code : corp_code;
-            List<User> existInfo = userService.userCodeExist(user_code, corp_code, "");
+            List<User> existInfo = new ArrayList<User>();
+            if (jsonObject.has("user_code")) {
+                String user_code = jsonObject.get("user_code").toString();
+                existInfo = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
+
+            }
+            if (jsonObject.has("user_id")) {
+                String user_id = jsonObject.get("user_id").toString();
+                existInfo = userService.userIdExist(user_id,corp_code);
+            }
             if (existInfo.size() != 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
