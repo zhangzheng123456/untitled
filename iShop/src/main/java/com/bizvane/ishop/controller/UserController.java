@@ -512,7 +512,6 @@ public class UserController {
             }
             ArrayList<User> users = new ArrayList<User>();
             for (int i = 3; i < rows; i++) {
-                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
@@ -536,6 +535,7 @@ public class UserController {
                         result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
                         int a = 5 / 0;
                     }
+                    String role = groupService.selRoleByGroupCode(cellCorp, group_code);
                     if (!role_code.equals(Common.ROLE_SYS)) {
                         user.setCorp_code(corp_code);
                     } else {
