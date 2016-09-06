@@ -445,6 +445,11 @@ public class UserController {
                     int b = 5 / 0;
                     break;
                 }
+            }
+            for(int i=3;i<column2.length;i++){
+                if (column2[i].getContents().toString().trim().equals("")) {
+                    continue;
+                }
                 List<User> user11 = userService.selUserByUserId(column2[i].getContents().toString().trim(), column3[i].getContents().toString().trim(), "");
                 if (user11.size() != 0) {
                     result = "：第" + (i + 1) + "行的用户ID已存在";
@@ -507,12 +512,14 @@ public class UserController {
             }
             ArrayList<User> users = new ArrayList<User>();
             for (int i = 3; i < rows; i++) {
-                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 for (int j = 0; j < clos; j++) {
                     User user = new User();
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String user_code = rs.getCell(j++, i).getContents().toString().trim();
                     String user_id2 = rs.getCell(j++, i).getContents().toString().trim();
+                    if(user_id2.equals("")){
+                        user_id2 = user_code;
+                    }
                     String user_name = rs.getCell(j++, i).getContents().toString().trim();
                     String phone = rs.getCell(j++, i).getContents().toString().trim();
                     String email = rs.getCell(j++, i).getContents().toString().trim();
@@ -521,13 +528,14 @@ public class UserController {
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String position = rs.getCell(j++, i).getContents().toString().trim();
-                    if (cellCorp.equals("") && user_code.equals("") && user_id2.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
+                    if (cellCorp.equals("") && user_code.equals("")  && user_name.equals("") && phone.equals("") && group_code.equals("")) {
                         continue;
                     }
-                    if (cellCorp.equals("") || user_code.equals("") || user_id2.equals("") || user_name.equals("") || phone.equals("") || group_code.equals("")) {
+                    if (cellCorp.equals("") || user_code.equals("")|| user_name.equals("") || phone.equals("") || group_code.equals("")) {
                         result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
                         int a = 5 / 0;
                     }
+                    String role = groupService.selRoleByGroupCode(cellCorp, group_code);
                     if (!role_code.equals(Common.ROLE_SYS)) {
                         user.setCorp_code(corp_code);
                     } else {

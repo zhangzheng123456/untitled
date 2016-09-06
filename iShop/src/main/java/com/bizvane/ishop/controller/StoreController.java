@@ -1082,6 +1082,11 @@ public class StoreController {
                     int b = 5 / 0;
                     break;
                 }
+            }
+            for(int i=0;i<column2.length;i++){
+                if(column2[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
                 Store store = storeService.selStoreByStroeId(column3[i].getContents().toString().trim(), column2[i].getContents().toString().trim(), Common.IS_ACTIVE_Y);
                 if (store != null) {
                     result = "：第" + (i + 1) + "行店铺ID已存在";
@@ -1096,15 +1101,18 @@ public class StoreController {
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_id = rs.getCell(j++, i).getContents().toString().trim();
+                    if(store_id.equals("")){
+                        store_id=store_code;
+                    }
                     String store_name = rs.getCell(j++, i).getContents().toString().trim();
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                     String flg_tob = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if(cellCorp.equals("") && store_code.equals("") && store_id.equals("") && store_name.equals("") && area_code.equals("")  && brand_code.equals("") ){
+                    if(cellCorp.equals("") && store_code.equals("")  && store_name.equals("") && area_code.equals("")  && brand_code.equals("") ){
                       continue;
                     }
-                    if(cellCorp.equals("") || store_code.equals("") || store_id.equals("") || store_name.equals("") || area_code.equals("")  || brand_code.equals("") ){
+                    if(cellCorp.equals("") || store_code.equals("") || store_name.equals("") || area_code.equals("")  || brand_code.equals("") ){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }

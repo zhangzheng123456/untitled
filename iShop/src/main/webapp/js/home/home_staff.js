@@ -252,6 +252,21 @@ function getShopList(){//切换店铺
         }
     })
 }
+
+$(".reg_testdate li").click(function() {
+    var value = $(this).html();
+    var id = $(this).parent("ul").attr("id");
+    $(this).parent("ul").prev(".title").html(value);
+    $(this).parent("ul").hide();
+    $(this).parent("ul").parent(".choose").removeClass("cur");
+    var getTime=$("#date1").val();
+    var dateType=$(this).attr("date-type");
+    $(this).parent("ul").prev(".title").attr("date-type",dateType);
+  if(id == "chart"){
+      achieveChart(getTime);
+  }
+});
+
 function achieveChart(data){//获取折线图
     var param={};
     param["time"]=data.replace(/-/g,"");
@@ -260,70 +275,29 @@ function achieveChart(data){//获取折线图
         param["store_code"]=store_code;
     }
     $("#chart_mask").show();
+    var value=$("#chart_prev").html();
+    var date_type=$("#chart_prev").attr("date-type");
+    param["date_type"]=date_type;
+
     oc.postRequire("post","/home/achInfo","", param, function(data){
-        var infodata_W=JSON.parse(data.message).W;
-        var infodata_M=JSON.parse(data.message).M;
-        var infodata_Y=JSON.parse(data.message).Y;
-        var TimeData=JSON.parse(infodata_W).amount;
-        var value=$("#chart_prev").html();
+        var date_type=param["date_type"];
         var perArr=[];
         var dateArr=[];
-        if (value == "按周查看") {
-            TimeData=JSON.parse(infodata_W).amount;
-            $("#yeJiToTal_chart").html(JSON.parse(infodata_W).total);
-        } else if (value == "按月查看") {
-            TimeData=JSON.parse(infodata_M).amount;
-            $("#yeJiToTal_chart").html(JSON.parse(infodata_M).total);
-        } else if (value == "按年查看") {
-            TimeData=JSON.parse(infodata_Y).amount;
-            $("#yeJiToTal_chart").html(JSON.parse(infodata_Y).total);
-        }
+       var  dateData=JSON.parse(data.message)[date_type];
+        $("#yeJiToTal_chart").html(JSON.parse(dateData).total);
+        var TimeData=JSON.parse(dateData).amount;
         for(index in TimeData){
             perArr.push(TimeData[index].trade);
             if(value == "按年查看"){
                 dateArr.push(TimeData[index].date.substring(2,7));
+            }else if(value == "按月查看"){
+                dateArr.push(TimeData[index].date.substring(5));
             }else {
                 dateArr.push(TimeData[index].date);
             }
         }
         init(perArr,dateArr);
         $("#chart_mask").hide();
-        function setData(V){
-            for(index in TimeData){
-                perArr.push(TimeData[index].trade);
-                if(V == "按年查看"){
-                    dateArr.push(TimeData[index].date.substring(2,7));
-                }else {
-                    dateArr.push(TimeData[index].date);
-                }
-            }
-        }
-        $(".reg_testdate li").click(function() {
-            perArr=[];
-            dateArr=[];
-            var value = $(this).html();
-            var id = $(this).parent("ul").attr("id");
-            $(this).parent("ul").prev(".title").html(value);
-            $(this).parent("ul").hide();
-            $(this).parent("ul").parent(".choose").removeClass("cur");
-            if (value == "按周查看" && id == "chart") {
-                TimeData=JSON.parse(infodata_W).amount;
-                $("#yeJiToTal_chart").html(JSON.parse(infodata_W).total);
-                setData(value);
-                init(perArr,dateArr);
-            } else if (value == "按月查看" && id == "chart") {
-                TimeData=JSON.parse(infodata_M).amount;
-                $("#yeJiToTal_chart").html(JSON.parse(infodata_M).total);
-                setData(value);
-                init(perArr,dateArr);
-            } else if (value == "按年查看" && id == "chart") {
-                TimeData=JSON.parse(infodata_Y).amount;
-                $("#yeJiToTal_chart").html(JSON.parse(infodata_Y).total);
-                setData(value);
-                init(perArr,dateArr);
-            }
-
-        });
         $(window).resize(function() {
             init(perArr,dateArr);
         });
