@@ -368,19 +368,6 @@ public class HomeController {
                 DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVAnalysisInfo", datalist);
                 logger.info("home2画面(业绩折线图)" + dataBox.data.get("message").value);
                 String result = dataBox.data.get("message").value;
-                if (date_type.equals(Common.TIME_TYPE_MONTH)) {
-                    JSONObject obj = new JSONObject(result);
-                    JSONArray array = JSONArray.parseArray(obj.get("amount").toString());
-                    JSONArray array1 = new JSONArray();
-                    for (int j = 0; j < array.size(); j++) {
-                        JSONObject achv = new JSONObject(array.get(j).toString());
-                        String date = achv.get("date").toString();
-                        achv.put("date", date.substring(5, date.length()));
-                        array1.add(achv);
-                    }
-                    obj.put("amount", array1);
-                    result = obj.toString();
-                }
                 object.put(date_type, result);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
