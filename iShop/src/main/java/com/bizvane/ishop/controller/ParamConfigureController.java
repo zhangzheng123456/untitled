@@ -72,6 +72,7 @@ public class ParamConfigureController {
 
     /**
      * 添加参数配置
+     *
      * @param request
      * @return
      */
@@ -87,7 +88,7 @@ public class ParamConfigureController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
-            String result = paramConfigureService.insert(message,user_id);
+            String result = paramConfigureService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -108,6 +109,7 @@ public class ParamConfigureController {
 
     /**
      * 编辑参数
+     *
      * @param request
      * @return
      */
@@ -123,7 +125,7 @@ public class ParamConfigureController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
-            String result = paramConfigureService.update(message,user_id);
+            String result = paramConfigureService.update(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -144,12 +146,13 @@ public class ParamConfigureController {
 
     /**
      * 删除参数
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public String delete(HttpServletRequest request)throws SQLException {
+    public String delete(HttpServletRequest request) throws SQLException {
         DataBean dataBean = new DataBean();
 
         try {
@@ -159,32 +162,32 @@ public class ParamConfigureController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-                logger.info("-------------delete--" + id);
+            logger.info("-------------delete--" + id);
             String param_id = jsonObject.get("id").toString();
             String[] ids = param_id.split(",");
             for (int i = 0; i < ids.length; i++) {
                 logger.info("-------------delete--" + Integer.valueOf(ids[i]));
                 ParamConfigure paramConfigure = paramConfigureService.getParamById(Integer.valueOf(ids[i]));
                 if (paramConfigure != null) {
-                    List<CorpParam> corpParam= corpParamService.selectByParamId(ids[i]);
-                    if(corpParam.size() == 0){
-                     paramConfigureService.delete(Integer.valueOf(ids[i]));
-                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                     dataBean.setId(id);
-                     dataBean.setMessage("success");
-                 }else{
-                     dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                     dataBean.setId(id);
-                     dataBean.setMessage("请先删除该企业的企业参数配置");
-                     return dataBean.getJsonStr();
-                       }
-                }else{
+                    List<CorpParam> corpParam = corpParamService.selectByParamId(ids[i]);
+                    if (corpParam.size() == 0) {
+                        paramConfigureService.delete(Integer.valueOf(ids[i]));
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setId(id);
+                        dataBean.setMessage("success");
+                    } else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("请先删除该企业的企业参数配置");
+                        return dataBean.getJsonStr();
+                    }
+                } else {
                     paramConfigureService.delete(Integer.valueOf(ids[i]));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                     dataBean.setId(id);
                     dataBean.setMessage("success");
-                     }
                 }
+            }
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -198,6 +201,7 @@ public class ParamConfigureController {
 
     /**
      * 选择参数
+     *
      * @param request
      * @return
      */
@@ -231,6 +235,7 @@ public class ParamConfigureController {
 
     /**
      * 搜索参数
+     *
      * @param request
      * @return
      */
@@ -270,6 +275,7 @@ public class ParamConfigureController {
     /**
      * 根据用户获取
      * 参数列表
+     *
      * @param request
      * @return
      */
@@ -280,20 +286,20 @@ public class ParamConfigureController {
         try {
             JSONObject params = new JSONObject();
             JSONArray array = new JSONArray();
-                List<ParamConfigure> list = paramConfigureService.getAllParams();
-                for (int i = 0; i < list.size(); i++) {
-                    ParamConfigure paramConfigure = list.get(i);
-                    String param_key = paramConfigure.getParam_name();
-                    String param_type = paramConfigure.getParam_type();
-                    String param_values = paramConfigure.getParam_values();
-                    int getParam_id=paramConfigure.getId();
-                    JSONObject obj = new JSONObject();
-                    obj.put("param_key", param_key);
-                    obj.put("param_id", getParam_id);
-                    obj.put("param_type", param_type);
-                    obj.put("param_values", param_values);
-                    array.add(obj);
-                }
+            List<ParamConfigure> list = paramConfigureService.getAllParams();
+            for (int i = 0; i < list.size(); i++) {
+                ParamConfigure paramConfigure = list.get(i);
+                String param_key = paramConfigure.getParam_name();
+                String param_type = paramConfigure.getParam_type();
+                String param_values = paramConfigure.getParam_values();
+                int getParam_id = paramConfigure.getId();
+                JSONObject obj = new JSONObject();
+                obj.put("param_key", param_key);
+                obj.put("param_id", getParam_id);
+                obj.put("param_type", param_type);
+                obj.put("param_values", param_values);
+                array.add(obj);
+            }
             params.put("params", array);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -305,7 +311,7 @@ public class ParamConfigureController {
         }
 
         return dataBean.getJsonStr();
-}
+    }
 
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
@@ -325,7 +331,7 @@ public class ParamConfigureController {
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
             JSONObject result = new JSONObject();
             PageInfo<ParamConfigure> list = null;
-            list=paramConfigureService.selectParamScreen(page_number,page_size,map);
+            list = paramConfigureService.selectParamScreen(page_number, page_size, map);
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -337,8 +343,6 @@ public class ParamConfigureController {
         }
 
 
-
-
         return dataBean.getJsonStr();
     }
-    }
+}

@@ -113,6 +113,10 @@ function staffRanking(T){//导购排行
     var a =T.replace(/[-]/g, "");
     param["time"]=a;
     param["user_name"]='';
+    var store_code=$(".area_name").attr("data-code");
+    if(store_code!=''&&store_code!=undefined){
+        param["store_code"]=store_code;
+    }
     var value=$("#daoGouRanking_prev").html();
     $("#staff_mask").show();
     oc.postRequire("post","/home/staffRanking","", param, function(data){
@@ -166,6 +170,10 @@ function achAnalysis(T){//业绩加载
     param["time"]=a;
     var value=$('#sm_achv_prev').html();
     $("#achv_mask").show();
+    var store_code=$(".area_name").attr("data-code");
+    if(store_code!=''&&store_code!=undefined){
+        param["store_code"]=store_code;
+    }
     oc.postRequire("post","/home/achAnalysis","", param, function(data){
       var message=JSON.parse(data.message);
       var D=JSON.parse(message.D);
@@ -212,7 +220,7 @@ function superadditionAchv(c){
    $("#My_Vip").html(c.staff.vip_count);
 
     //$("#area_ranking").attr("data-percent",c.am.area_ranking);
-    $("#achv_mask").show();
+    $("#achv_mask").hide();
 }
 
 function getShopList(){//切换店铺
@@ -244,12 +252,12 @@ function getShopList(){//切换店铺
         }
     })
 }
-
 function achieveChart(data){//获取折线图
     var param={};
-    param["time"]=data.replace(/-/g,"")
-    if(area_code!=''&&area_code!=undefined){
-        param["store_code"]=area_code;
+    param["time"]=data.replace(/-/g,"");
+    var store_code=$(".area_name").attr("data-code");
+    if(store_code!=''&&store_code!=undefined){
+        param["store_code"]=store_code;
     }
     $("#chart_mask").show();
     oc.postRequire("post","/home/achInfo","", param, function(data){
@@ -328,9 +336,9 @@ function vipRanking(T){//会员排行
     var a =T.replace(/[-]/g, "");
     var area_code=$('.area_name').attr("data-code");
     var html="";
-    if(area_code!=''&&area_code!=undefined){
-        param["store_code"]=area_code;
-    }
+    //if(area_code!=''&&area_code!=undefined){
+    //    param["store_code"]=area_code;
+    //}
     param["time"]=a;
     $("#vip_mask").show();
     oc.postRequire("post","/home/vipRanking","", param, function(data){

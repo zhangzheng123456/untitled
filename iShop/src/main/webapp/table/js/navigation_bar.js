@@ -29,9 +29,6 @@ $(function(){
     var url=keyVal.url;//url的参数
     $('#iframepage').attr("src",url);//给获取的src赋值
     oc.postRequire("get","/menu","0","",function(data){//左侧导航栏的循环操作
-        console.log(data);
-        // var val=sessionStorage.getItem("key");
-        // val=JSON.parse(val);
         var str = JSON.stringify(data);
         var key = "key";
         sessionStorage.setItem(key, str);
@@ -61,7 +58,6 @@ $(function(){
         	e.stopPropagation();
         	var src=$(this).attr("data-url");
         	var func_code=$(this).attr("data-code");
-        	console.log(func_code);
         	$('#iframepage').attr("src",src);
             sessionStorage.removeItem("return_jump");
             var key_val={"url":src,"func_code":func_code};

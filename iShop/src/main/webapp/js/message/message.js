@@ -244,7 +244,7 @@ qjia();
 //页面加载时list请求
 function GET(a, b) {
     whir.loading.add("", 0.5);//加载等待框
-    oc.postRequire("get", "/message/list?pageNumber=" + inx + "&pageSize=" + pageSize
+    oc.postRequire("get", "/message/list?pageNumber=" + a + "&pageSize=" + b
         + "&funcCode=" + funcCode + "", "", "", function (data) {
         if (data.code == "0") {
             $(".table tbody").empty();

@@ -110,7 +110,7 @@ var oc = new ObjectControl();
                 _params["position"]=POSITION;//职务
                 _params["phone"]=USER_PHONE;//手机
                 _params["email"]=USER_EMAIL//邮箱
-                _params["sex"]=SEX//性别s
+                _params["sex"]=SEX//性别
                 _params["corp_code"]=CORP_CODE;//
                 _params["group_code"]=GROUP_CODE;//
                 _params["role_code"]=role_code;//
@@ -125,7 +125,6 @@ var oc = new ObjectControl();
         });
     };
     useroperatejs.ajaxSubmit=function(_command,_params,opt){
-        // console.log(JSON.stringify(_params));
         oc.postRequire("post", _command,"", _params, function(data){
             if(data.code=="0"){
                 art.dialog({
@@ -183,16 +182,15 @@ jQuery(document).ready(function(){
          var _params={"id":id};
          var _command="/user/myAccount";
          oc.postRequire("get", _command, "", _params, function(data) {
-             console.log(data);
              if(data.code=="0"){
                  var msg = JSON.parse(data.message);
                      msg=JSON.parse(msg.user);
                  $("#id").val(msg.id);
                  if(msg.avatar==""){
                     $("#IMG").attr("src","../img/head.png");
-                 }else if(
+                 }else if(msg.avatar!==""){
                     $("#IMG").attr("src",msg.avatar);
-                 )
+                 }
                  $("#corp_code").val(msg.corp_name);
                  $("#USERID").val(msg.user_code);
                  $("#USER_NAME").val(msg.user_name);
@@ -216,7 +214,6 @@ jQuery(document).ready(function(){
                  $("#isactive").val(msg.isactive);//空字段
                  $("#can_login").val(msg.can_login);//空字段
                  if($("#OWN_GROUP").val()=="区经"){
-                     console.log($("#OWN_GROUP").val());
                      $("#OWN_SHOP").css("display","none");
                      $("#OWN_SHOP").prev().css("display","none");
                  }

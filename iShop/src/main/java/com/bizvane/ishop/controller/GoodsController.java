@@ -474,7 +474,7 @@ public class GoodsController {
                     }
                     goods.setGoods_code(goods_code);
                     goods.setGoods_name(goods_name);
-                    goods.setGoods_price(Float.parseFloat(goods_price));
+                    goods.setGoods_price(goods_price);
                     goods.setGoods_image(goods_image+"  ");
 
                     if(quarter==null||quarter.equals("")) {
@@ -558,7 +558,7 @@ public class GoodsController {
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
             Date now = new Date();
-            goods.setGoods_price(Float.parseFloat(jsonObject.getString("goods_price")));
+            goods.setGoods_price(jsonObject.getString("goods_price"));
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
             goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
