@@ -214,15 +214,53 @@ function dian(a,b){//点击分页的时候调什么接口
 }
 */
 function superaddition(data,num){//页面加载循环
+    pageSize=10;
     data=[{
         id:1,
-       user_code:'abc123',
+       user_code:'abc12',
         vip_code:'',
         action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
         action_discrobe:'浏览日志',
         action_conpany:'罗莱',
         action_time:'2016-09-06  12:23:22'
-    }];
+    },
+        {
+            id:2,
+            user_code:'abc13',
+            vip_code:'',
+            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
+            action_discrobe:'浏览日志',
+            action_conpany:'罗莱',
+            action_time:'2016-09-06  12:23:22'
+        },
+        {
+            id:3,
+            user_code:'abc14',
+            vip_code:'',
+            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
+            action_discrobe:'浏览日志',
+            action_conpany:'罗莱',
+            action_time:'2016-09-06  12:23:22'
+        },
+        {
+            id:4,
+            user_code:'abc15',
+            vip_code:'',
+            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
+            action_discrobe:'浏览日志',
+            action_conpany:'罗莱',
+            action_time:'2016-09-06  12:23:22'
+        },
+        {
+            id:5,
+            user_code:'abc16',
+            vip_code:'',
+            action_adress:'http://ishop.dev.bizvane.com/navigation_bar.html?url=/system/logging.html&func_code=F0023",',
+            action_discrobe:'浏览日志',
+            action_conpany:'罗莱',
+            action_time:'2016-09-06  12:23:22'
+        }
+    ];
     num=2;
     if(data.length==1&&num>1){
         pageNumber=num-1;
