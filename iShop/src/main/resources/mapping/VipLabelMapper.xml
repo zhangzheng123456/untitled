@@ -195,8 +195,6 @@
         SELECT
         vt.*,
         cc.corp_name
---         ,
---         dvg.label_group_name
         FROM
         def_vip_label vt,DEF_CORP cc
         ,def_vip_label_group dvg
@@ -204,9 +202,6 @@
         vt.corp_code=cc.corp_code
         AND vt.corp_code=dvg.corp_code
         AND cc.corp_code=dvg.corp_code
---        AND
---         vt.label_group_code=dvg.label_group_code AND
---         cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
             and vt.corp_code=#{corp_code}
         </if>
@@ -218,8 +213,7 @@
                 </when>
                 <when test="entryValue!='' and entryKey=='label_group_name'">
                     dvg.${entryKey} LIKE concat('%',#{entryValue},'%')
-                    and vt.label_group_code  is not null
-                    and vt.label_group_code = dvg.label_group_code
+                    AND vt.label_group_code = dvg.label_group_code
                 </when>
                 <when test="entryValue!=''">
                     vt.${entryKey} LIKE concat('%',#{entryValue},'%')
