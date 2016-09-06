@@ -215,9 +215,13 @@ function achAnalysis(T){//业绩加载
 function superadditionAchv(c){
    $("#yeJiTotal").html(c.staff.total);
    $("#yeJiRanking").html(c.staff.ranking);
+   $("#yeJiRanking").attr("title",c.staff.ranking);
    $("#zanTime").html(c.staff.praised_count);
+   $("#zanTime").attr("title",c.staff.praised_count);
    $("#Contribution_degree").html(c.staff.contribute);
+   $("#Contribution_degree").attr("title",c.staff.contribute);
    $("#My_Vip").html(c.staff.vip_count);
+   $("#My_Vip").attr("title",c.staff.vip_count);
 
     //$("#area_ranking").attr("data-percent",c.am.area_ranking);
     $("#achv_mask").hide();
@@ -234,7 +238,7 @@ function getShopList(){//切换店铺
             $(".area_name").attr("data-code",list[0].store_code);
             var html="";
             for(var i=0;i<list.length;i++){
-                html+="<li data-code='"+list[i].store_code+"'>"+list[i].store_name+"<>"
+                html+="<li data-code='"+list[i].store_code+"'>"+list[i].store_name+"</li>"
             }
             $(".c_a_shoppe ul").html(html);
             $(".area_name").click(function(){
@@ -245,9 +249,10 @@ function getShopList(){//切换店铺
                 $(".area_name").attr("data-code",area_code);
                 $(".area_name").html($(this).html());
                 $(".c_a_shoppe ul").hide();
-                //staffRanking(today,area_code);
-                //achAnalysis(today,area_code);
-                achieveChart(data)
+                staffRanking($("#date2").val());
+                achAnalysis($("#date0").val());
+                achieveChart($("#date1").val());
+                vipRanking(getNowFormatDate())
             })
         }
     })

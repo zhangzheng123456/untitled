@@ -65,6 +65,7 @@ function getShopList(){
         		$(".area_name").html($(this).html());
 				staffRanking(today,area_code);
 				achAnalysis(today,area_code);
+				achieveChart($("#date1"),area_code)
         	})
 		}
 	})
