@@ -42,12 +42,12 @@ var oc = new ObjectControl();
                 var codeMark = $("#vipgp_code").attr("data-mark");
                 if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
-                        var div = $("#CORPNAME").next('.hint').children();
+                        var div = $("#vipgp_name").next('.hint').children();
                         div.html("该名称已经存在！");
                         div.addClass("error_tips");
                     }
                     if (codeMark == "N") {
-                        var div = $("#CORPID").next('.hint').children();
+                        var div = $("#vipgp_code").next('.hint').children();
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
@@ -87,12 +87,12 @@ var oc = new ObjectControl();
                 var codeMark = $("#vipgp_code").attr("data-mark");
                 if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
-                        var div = $("#CORPNAME").next('.hint').children();
+                        var div = $("#vipgp_name").next('.hint').children();
                         div.html("该名称已经存在！");
                         div.addClass("error_tips");
                     }
                     if (codeMark == "N") {
-                        var div = $("#CORPID").next('.hint').children();
+                        var div = $("#vipgp_code").next('.hint').children();
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
