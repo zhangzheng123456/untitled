@@ -863,25 +863,17 @@ jQuery(document).ready(function(){
 				if(qrcodeList.length>0) {
 					var appinput = $(".er_code li input");
 					var img = $(".er_code .kuang img");
-					var imgName=$(".er_code .kuang p");
 					console.log(qrcodeList);
 					console.log(img);
 					$(appinput[0]).val(qrcodeList[0].app_name);
 					$(img[0]).attr("src", qrcodeList[0].qrcode);
-					$(imgName[0]).html(qrcodeList[0].app_name);
-					$(imgName[0]).attr("title",qrcodeList[0].app_name);
 					for (var i = 1; i < qrcodeList.length; i++) {
 						$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
 							+ '<span class="power create" onclick="getTwoCode(this)">生成</span>'
-							+ '<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
-							+ '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="' + qrcodeList[i].qrcode + '" alt="">'
-							+ '<p title="'+qrcodeList[i].app_name+'">'
-							+qrcodeList[i].app_name
-							+'</p></div></li>')
+							+ '<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
+							+ '<div class="kuang"><img src="' + qrcodeList[i].qrcode + '" alt="">'
+							+'</div></li>')
 					}
-					$(".k_close").click(function () {
-						$(this).parents(".kuang").hide();
-					})
 					$(".kuang").show();
 				}
 				getcorplist();
@@ -1089,6 +1081,12 @@ function getAppName(a){
 }
 //点击生成二维码
 function getTwoCode(b){
+	var input=$(b).prevAll("input").val();
+	close_two_code();
+	if(input!==""){
+		$(b).hide();
+		$(b).nextAll(".k_close").show();
+	}
 	var user_creat="/user/creatQrcode";
 	var user_code=$('#USERID').val();
 	var corp_code=$('#OWN_CORP').val();
@@ -1110,10 +1108,6 @@ function getTwoCode(b){
 			alert(data.message);
 		}
 	})
-	//点击关闭按钮
-	$(b).nextAll(".kuang").find("span").click(function(){
-		$(b).nextAll(".kuang").hide();
-	})
 }
 
 //生成二维码下拉框
@@ -1132,15 +1126,27 @@ function select_down(a){
 		},200);
 	})
 }
+//关闭二维码
+function close_two_code() {
+	$(".k_close").click(function () {
+		$(this).nextAll(".kuang").hide();
+		$(this).hide();
+		$(this).prev(".create").show();
+	})
+}
 
 $("#add_app_id").click(function(){
-	$(".er_code").append('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
+	$("#add_app_id").before('<li class="app_li"><label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly"><ul></ul>'
 		+'<span class="power create" onclick="getTwoCode(this)">生成</span>'
-		+'<span class="power" class="remove_app_id" onclick="remove_app_id(this)">删除</span>'
-		+'<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="" alt="">'
-		+'<p></p>'
+		+'<span class="power k_close" style="display: none;">关闭</span>'
+		+'<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
+		+'<div class="kuang"><img src="" alt="">'
 		+'</div></li>')
+
+	close_two_code();
 })
 function remove_app_id(obj) {
 	$(obj).parent().remove();
 }
+
+

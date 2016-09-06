@@ -7629,7 +7629,7 @@ body.skin-3 {
 ul,li{list-style:none;padding:0;margin:0;}
 .drop_down input{width:420px; height:30px; line-height:30px;border-radius:4px;background: #ffffff url(../img/btn_dropmenu.png) no-repeat 100% 50%;
     background-size: 30px 30px;}
-.drop_down ul{width:420px; background:#e8f5fe; margin-top:2px;margin-left:123px; border:1px solid #a9c9e2; position:absolute; display:none;z-index:100;}
+.drop_down ul{width:420px; background:#e8f5fe; margin-top:2px;margin-left:123px; border:1px solid #a9c9e2; position:absolute;left:52px; display:none;z-index:100;}
 .drop_down ul li{height:24px; line-height:24px; text-indent:10px;}
 .drop_down ul li{display:block; height:24px; color:#807a62; text-decoration:none;}
 .drop_down ul li.rel{ background-color:#6cc1c8;}
@@ -8305,7 +8305,7 @@ li.select_index>a>label>i{
   color: #FFFFFF;
 }
 .er_code input{
-  width: 320px;
+  width: 270px;
   height: 30px;
   line-height: 30px;
   border-radius: 4px;
@@ -8313,7 +8313,7 @@ li.select_index>a>label>i{
   background-size: 30px 30px;
 }
 .er_code ul{
-  width: 320px;
+  width: 270px;
   background: #e8f5fe;
   margin-top: 2px;
   margin-left: 123px;
@@ -8333,10 +8333,7 @@ li.select_index>a>label>i{
   color:#ffffff;
 }
 .er_code .app_li{
-  margin-top: 80px;
-  position: relative;
-}
-.er_code li{
+  margin-top: 20px;
   position: relative;
 }
 .app_li .power{
@@ -8379,8 +8376,11 @@ li.select_index>a>label>i{
   position: absolute;
   left: 132px;
   top:130px;
-  border: 1px solid #a9c9e2;
-  background: #e8f5fe;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
   display:none;
 }
 #paramName_down li{
@@ -8393,15 +8393,18 @@ li.select_index>a>label>i{
 }
 #paramName_down li:hover{
   color: #FFFFFF;
-  background: #6cc1c8;
+  background: #4a5f7c;
 }
 #paramValue_down{
   width: 420px;
   position: absolute;
   left: 132px;
   top:180px;
-  border: 1px solid #a9c9e2;
-  background: #e8f5fe;
+  border: 1px solid #ddd;
+  background: #f5f5f5;
+  -webkit-border-radius:4px;
+  -moz-border-radius:4px;
+  border-radius:4px;
   display: none;
 }
 #paramValue_down li{
@@ -8411,7 +8414,7 @@ li.select_index>a>label>i{
 }
 #paramValue_down li:hover{
   color: #FFFFFF;
-  background: #6cc1c8;
+  background: #4a5f7c;
 }
 .param_value{
   background: #ffffff url("../img/btn_dropmenu.png") no-repeat 100% 50%;
@@ -8450,3 +8453,16 @@ li.select_index>a>label>i{
 .viplabel_div{
   position: relative;
 }
+ #add_app_id{
+   height: 50px;
+   line-height: 50px;
+   margin-top: 20px;;
+   margin-left: 120px;
+   text-align: center;
+   width: 420px;
+   background: #f4f4f4;
+   border-radius: 5px;
+   color: #6dc1c8;
+   font-size: 14px;
+ }
+ #add_app_id span{font-size: 20px;margin-left: 10px;}
