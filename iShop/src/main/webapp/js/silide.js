@@ -46,7 +46,7 @@ $(function(){
         }
         else{
             for(var i=li.length;i>=0;i--){
-                $
+                
                 child_input.removeAttribute('checked');
                 $(li[i]).appendTo('#file_list_r ul');
             }
@@ -70,6 +70,7 @@ $(function(){
             li[i].checked=false;
             $(li[i]).appendTo('#file_list_l ul'); 
         }
+        
         bianse();
     });
 });
