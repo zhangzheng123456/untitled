@@ -323,14 +323,14 @@ jQuery(document).ready(function () {
                 console.log(wechat);
                 var len=$(".wx_app").find(".wx_span");
                 if(wechat.length>0) {
-                    if (wechat[0].is_authorize== "Y") {
-                        $('.state_val').val("已授权");
-                    } else if (wechat[0].is_authorize == "N") {
-                        $('.state_val').val("未授权");
-                    }
-                    $(len[0]).find(".WXID").val(wechat[0].app_id);
-                    $(len[0]).find(".AppName").val(wechat[0].app_name);
-                    for (var i = 1; i < wechat.length; i++) {
+                    // if (wechat[0].is_authorize== "Y") {
+                    //     $('.state_val').val("已授权");
+                    // } else if (wechat[0].is_authorize == "N") {
+                    //     $('.state_val').val("未授权");
+                    // }
+                    // $(len[0]).find(".WXID").val(wechat[0].app_id);
+                    // $(len[0]).find(".AppName").val(wechat[0].app_name);
+                    for (var i = 0; i < wechat.length; i++) {
                         var is_authorize="";
                         if (wechat[i].is_authorize == "Y") {
                             is_authorize="已授权";
