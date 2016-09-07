@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.VipParamMapper">
+
+    <select id="selectById" resultType="com.bizvane.ishop.entity.VipParam">
+        SELECT
+        dvp.*
+        FROM def_vip_param dvp
+        AND  dvp.id=#{id}
+    </select>
+
+    <select id="selectAllParam" resultType="com.bizvane.ishop.entity.VipParam">
+        SELECT
+        dvp.ID,
+        dvp.PARAM_NAME,
+        dvp.PARAM_TYPE,
+        dvp.PARAM_VALUES,
+        dvp.PARAM_DESC,
+        dc.corp_name,
+        dvp.REMARK,
+        dvp.MODIFIED_DATE,
+        dvp.MODIFIER,
+        dvp.ISACTIVE
+        FROM def_vip_param dvp,def_corp dc
+        WHERE dvp.corp_code = dc.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND dvp.CORP_CODE = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (dvp.PARAM_NAME like concat('%',#{search_value},'%')
+            OR dvp.PARAM_TYPE like concat('%',#{search_value},'%')
+            OR dvp.PARAM_VALUES like concat('%',#{search_value},'%')
+            OR dvp.PARAM_DESC like concat('%',#{search_value},'%')
+            OR dc.corp_name like concat('%',#{search_value},'%')
+            OR dvp.REMARK like concat('%',#{search_value},'%')
+            OR dvp.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR dvp.MODIFIER like concat('%',#{search_value},'%')
+            OR dvp.ISACTIVE like concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY dvp.id DESC
+    </select>
+
+    <select id="checkParamName" resultType="com.bizvane.ishop.entity.VipParam">
+        SELECT *
+        FROM def_vip_param
+        WHERE CORP_CODE = #{corp_code}
+        AND  PARAM_NAME=#{param_name}
+        AND ISACTIVE = 'Y'
+    </select>
+
+
+    <delete id="deleteById">
+        delete from
+        def_vip_param
+        where id=#{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.VipParam">
+        INSERT INTO def_vip_param
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="param_name!=null">
+                param_name,
+            </if>
+            <if test="param_type!=null">
+                param_type,
+            </if>
+            <if test="param_values!=null">
+                param_values,
+            </if>
+            <if test="param_desc!=null">
+                param_desc,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="remark!=null">
+                remark,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="param_name!=null">
+                #{param_name},
+            </if>
+            <if test="param_type!=null">
+                #{param_type},
+            </if>
+            <if test="param_values!=null">
+                #{param_values},
+            </if>
+
+            <if test="param_desc!=null">
+                #{param_desc},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="remark!=null">
+                #{remark},
+            </if>
+            <if test="modified_date">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="update" parameterType="com.bizvane.ishop.entity.VipParam">
+        UPDATE def_vip_param
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="param_name!=null">
+                param_name= #{param_name},
+            </if>
+            <if test="param_type!=null">
+                param_type= #{param_type},
+            </if>
+            <if test="param_values!=null">
+                param_values= #{param_values},
+            </if>
+
+            <if test="param_desc!=null">
+                param_desc= #{param_desc},
+            </if>
+            <if test="corp_code!=null">
+                corp_code= #{corp_code},
+            </if>
+            <if test="remark!=null">
+                remark= #{remark},
+            </if>
+            <if test="modified_date">
+                modified_date= #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier= #{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date= #{created_date},
+            </if>
+            <if test="creater!=null">
+                creater= #{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive= #{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectAllParamScreen" resultType="com.bizvane.ishop.entity.VipParam">
+        SELECT
+        dvp.ID,
+        dvp.PARAM_NAME,
+        dvp.PARAM_TYPE,
+        dvp.PARAM_VALUES,
+        dvp.PARAM_DESC,
+        dc.corp_name,
+        dvp.REMARK,
+        dvp.MODIFIED_DATE,
+        dvp.MODIFIER,
+        dvp.ISACTIVE
+        FROM def_vip_param dvp,def_corp dc
+        WHERE dvp.corp_code = dc.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND dvp.CORP_CODE = #{corp_code}
+        </if>
+        AND
+        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+            <choose>
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryValue!=''">
+                    dvp.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
+        </foreach>
+        ORDER BY dvp.id DESC
+    </select>
+</mapper>

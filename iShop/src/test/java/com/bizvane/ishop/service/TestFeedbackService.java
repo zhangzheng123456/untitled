@@ -51,12 +51,27 @@ public class TestFeedbackService {
     private ParamConfigureService paramConfigureService;
     @Autowired
     IceInterfaceService iceInterfaceService;
+    @Autowired
+    private VipParamService vipParamService;
     String id;
 
     //成功
     @Test
     public void testselectAllFeedback() {
         try {
+            VipParam vipParam=new VipParam();
+            vipParam.setParam_name("1");
+            vipParam.setParam_type("1");
+            vipParam.setParam_values("1");
+            vipParam.setCorp_code("C10000");
+            vipParam.setRemark("1");
+            vipParam.setParam_desc("1");
+            vipParam.setModified_date("1");
+            vipParam.setModifier("1");
+            vipParam.setCreated_date("1");
+            vipParam.setCreater("1");
+            vipParam.setIsactive("1");
+            String insert = vipParamService.insert(vipParam);
             //"[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
        //     String str = "aaa,bbb,ccc,dddd";
          //    System.out.println(WebUtils.StringFilter(str));
@@ -138,22 +153,22 @@ public class TestFeedbackService {
 
 
 //
-            Data data_user_id = new Data("user_id", "AZ0000329", ValueType.PARAM);
-            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
-            Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
-            //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
-            Data data_store_id = new Data("area_code", "21", ValueType.PARAM);
-            // 751400901
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_user_id.key, data_user_id);
-            datalist.put(data_corp_code.key, data_corp_code);
-            datalist.put(data_time_id.key, data_time_id);
-            datalist.put(data_store_id.key, data_store_id);
-            //     datalist.put(data_store_code.key, data_store_code);
-            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
-
-            String result = dataBox.data.get("message").value;
-            System.out.println(result);
+//            Data data_user_id = new Data("user_id", "AZ0000329", ValueType.PARAM);
+//            Data data_corp_code = new Data("corp_code", "C10016", ValueType.PARAM);
+//            Data data_time_id = new Data("time_id", "20160707", ValueType.PARAM);
+//            //       Data data_store_code = new Data("store_code", "902116101", ValueType.PARAM);
+//            Data data_store_id = new Data("area_code", "21", ValueType.PARAM);
+//            // 751400901
+//            Map datalist = new HashMap<String, Data>();
+//            datalist.put(data_user_id.key, data_user_id);
+//            datalist.put(data_corp_code.key, data_corp_code);
+//            datalist.put(data_time_id.key, data_time_id);
+//            datalist.put(data_store_id.key, data_store_id);
+//            //     datalist.put(data_store_code.key, data_store_code);
+//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
+//
+//            String result = dataBox.data.get("message").value;
+//            System.out.println(result);
 
 
 
@@ -198,6 +213,17 @@ public class TestFeedbackService {
 //                }
 //                System.out.println("-----"+a[i]+"----------");
 //            }
+
+
+
+
+
+
+
+
+
+
+
         } catch (Exception x) {
             x.printStackTrace();
         }
