@@ -13,6 +13,18 @@
 }
 .power{
 	display: inline-block;
+	width: 60px;
+	height: 30px;
+	margin-left: -3px;
+	line-height: 30px;
+	border-radius: 7px;
+	color: #FFFFFF;
+	background-color: #6dc1c8;
+	text-align: center;
+	cursor: pointer;
+}
+.power_d{
+	display: inline-block;
 	width: 120px;
 	height: 30px;
 	margin-left: -3px;
@@ -26,7 +38,7 @@
 .remove_app_id{
 	background: #c26555;
 }
-.power a{
+.power_d a{
 	display: block;
 }
 .state{
@@ -85,7 +97,7 @@
 }
 
 #add_power{
-	background-color: #ddd!important;
+	background-color: #ccc!important;
 }
 /*********日期后面下来样式**************/
 #year,#month{
@@ -421,7 +433,8 @@ div.wx_app_new{
 	color:#888888
 }
 div.wx_app_new input:nth-child(3){
-	width: 52px;
+	width: 50px;
+	text-indent: 0px;
 	padding:0;
 	background:#E8E8E8;
 	margin:10px 0 10px 0
@@ -432,8 +445,12 @@ div.wx_app_new p{
 	margin:10px 0 10px 0;
 	font-size:20px;
 	color:#c26555 ;
-	line-height: 30px;}
-
+	line-height: 30px;
+}
+/*兼容360显示input效果*/
+ .wx_span input{
+	line-height: 30px;
+}
 .hint{
     padding-left: 120px !important;
 }

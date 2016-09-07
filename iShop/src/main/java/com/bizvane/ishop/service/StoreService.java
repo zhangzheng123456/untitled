@@ -85,6 +85,8 @@ public interface StoreService {
 
     int deleteStoreQrcode(String corp_code,String store_code) throws Exception;
 
+    int deleteStoreQrcodeOne(String corp_code, String store_code, String app_id) throws Exception;
+
     String creatStoreQrcode(String corp_code,String store_code,String auth_appid,String user_id) throws Exception;
 
     List<Store> selectStore(String corp_code, String store_codes) throws SQLException;

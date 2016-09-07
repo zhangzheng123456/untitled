@@ -15,7 +15,10 @@ import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBObject;
 import com.mongodb.MongoClient;
+import com.mongodb.QueryOperators;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoCursor;
 import com.mongodb.client.MongoDatabase;
@@ -23,9 +26,7 @@ import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
-import org.bson.BsonDocument;
-import org.bson.BsonString;
-import org.bson.Document;
+import org.bson.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -73,32 +74,48 @@ public class UserActionController {
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-
-            JSONObject result = new JSONObject();
+//            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
+//            int page_size = Integer.parseInt(request.getParameter("pageSize"));
             MongoClient client = mongodbClient.getMongoClient();
             MongoDatabase database = client.getDatabase("ishow");
-            MongoCollection<Document> collection = database.getCollection("test");
-            System.out.println("===========collection : " + collection);
+            MongoCollection<Document> collection = database.getCollection("vipActionLogger");
+            System.out.println("===========collection vipActionLogger: " + collection);
             // 读取数据
             MongoCursor<Document> cursor;
-            if (role_code.equals(Common.ROLE_SYS)){
-                cursor = collection.find().iterator();
-            }else {
-                BsonDocument filter = new BsonDocument();
-                filter.append("CORP_CODE", new BsonString(corp_code));
-                cursor = collection.find(filter).iterator();
-            }
-            String result1 = "zhouzhou";
+
+//            if (page_number == 1) {
+//                if (role_code.equals(Common.ROLE_SYS)) {
+//                    cursor = collection.find().sort(sort).skip((page_number - 1) * page_size).limit(page_size).iterator();
+//                } else {
+//                    BsonDocument filter = new BsonDocument();
+//                    filter.append("CORP_CODE", new BsonString(corp_code));
+//                    cursor = collection.find(filter).sort(sort).skip((page_number - 1) * page_size).limit(page_size).iterator();
+//                }
+//            }else {
+//                String time = "";
+//                BasicDBObject queryObject = new BasicDBObject().append("time",new BasicDBObject().append(QueryOperators.GT,time));
+//                BsonDocument less = new BsonDocument();
+//                less.append("time",new BsonMinKey());
+//                if (role_code.equals(Common.ROLE_SYS)) {
+//                    cursor = collection.find().sort(sort).skip((page_number - 1) * page_size).limit(page_size).iterator();
+//                } else {
+//                    BsonDocument filter = new BsonDocument();
+//                    filter.append("CORP_CODE", new BsonString(corp_code));
+//                    cursor = collection.find(filter).sort(sort).skip((page_number - 1) * page_size).limit(page_size).iterator();
+//                }
+//            }
+            cursor = collection.find().skip(1).limit(3).iterator();
             JSONArray array = new JSONArray();
             while (cursor.hasNext()) {
-                System.out.print("----------cursor.hasNext()--------");
-                String list = cursor.next().toString();
+                System.out.print("------1111--cursor.hasNext()--------");
+                Document doc = cursor.next();
+                String list = doc.get("MSG").toString();
+//                String list = cursor.next().toString();
+                array.add(list);
             }
-            System.out.print("------------"+result1);
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage(result.toString());
+            dataBean.setMessage(JSON.toJSONString(array));
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

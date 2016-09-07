@@ -16,7 +16,6 @@ var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
-    console.log(return_jump);
     inx=return_jump.inx;
     pageSize=return_jump.pageSize;
     value=return_jump.value;
@@ -31,10 +30,10 @@ if(return_jump==null){
     }
 }else if(return_jump!==null){
     if(pageSize==10){
-        $("#page_row").val("10行/页");  
+        $("#page_row").val("10行/页");
     }
     if(pageSize==30){
-        $("#page_row").val("30行/页");  
+        $("#page_row").val("30行/页");
     }
     if(pageSize==50){
         $("#page_row").val("50行/页");
@@ -46,23 +45,23 @@ if(return_jump==null){
         GET(inx,pageSize);
     }else if(value!==""){
         $("#search").val(value);
-        POST(inx,pageSize); 
+        POST(inx,pageSize);
     }else if(filtrate!==""){
-        filtrates(inx,pageSize); 
+        filtrates(inx,pageSize);
     }
 }
 //模仿select
-$(function(){  
+$(function(){
         $("#page_row").click(function(){
-            if("block" == $("#liebiao").css("display")){  
-                hideLi();  
-            }else{  
-                showLi();  
-            }  
-        });                                     
-        $("#liebiao li").each(function(i,v){  
+            if("block" == $("#liebiao").css("display")){
+                hideLi();
+            }else{
+                showLi();
+            }
+        });
+        $("#liebiao li").each(function(i,v){
             $(this).click(function(){
-                pageSize=$(this).attr('id');  
+                pageSize=$(this).attr('id');
                 if(value==""&&filtrate==""){
                     inx=1;
                     GET(inx,pageSize);
@@ -75,29 +74,29 @@ $(function(){
                     inx=1;
                     _param["pageNumber"]=inx;
                     _param["pageSize"]=pageSize;
-                    filtrates(inx,pageSize); 
+                    filtrates(inx,pageSize);
                 }
-                $("#page_row").val($(this).html());  
+                $("#page_row").val($(this).html());
                 hideLi();
-            });    
-        });      
-        $("#page_row").blur(function(){  
-            setTimeout(hideLi,200);  
-        });          
-    }      
-); 
-function showLi(){  
-    $("#liebiao").show();  
-}  
-function hideLi(){  
-    $("#liebiao").hide();  
+            });
+        });
+        $("#page_row").blur(function(){
+            setTimeout(hideLi,200);
+        });
+    }
+);
+function showLi(){
+    $("#liebiao").show();
+}
+function hideLi(){
+    $("#liebiao").hide();
 }
 $("#filtrate").click(function(){//点击筛选框弹出下拉框
     $(".sxk").slideToggle();
-})
+});
 $("#pack_up").click(function(){//点击收回 取消下拉框
     $(".sxk").slideUp();
-})
+});
 //点击清空  清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");
@@ -111,14 +110,14 @@ $("#empty").click(function(){
     $('#search').val("");
     $(".table p").remove();
     GET(inx,pageSize);
-})
+});
 function setPage(container, count, pageindex,pageSize,funcCode){
     var container = container;
     var count = count;
     var pageindex = pageindex;
     var pageSize=pageSize;
     var a = [];
-              //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
+    //总页数少于10 全部显示,大于10 显示前3 后3 中间3 其余....
     if (pageindex == 1) {
         a[a.length] = "<li><span class=\"icon-ishop_4-01 unclick\"></span></li>";
     } else {
@@ -155,10 +154,10 @@ function setPage(container, count, pageindex,pageSize,funcCode){
             for (var i = pageindex - 2; i <= pageindex + 2; i++) {
                 setPageList();
             }
-                a[a.length] = "...<li><span>" + count + "</span></li>";
-            }
+            a[a.length] = "...<li><span>" + count + "</span></li>";
         }
-    if (pageindex == count) {
+    }
+    if (pageindex == count||count==0) {
         a[a.length] = "<li><span class=\"icon-ishop_4-02 unclick\"></span></li>";
     }else{
         a[a.length] = "<li><span class=\"icon-ishop_4-02\"></span></li>";
@@ -180,14 +179,14 @@ function setPage(container, count, pageindex,pageSize,funcCode){
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
-            inx = parseInt(this.innerHTML);
+                inx = parseInt(this.innerHTML);
                 dian(inx,pageSize);
                 // setPage(container, count, inx,pageSize,funcCode,value);
                 return false;
             }
         }
         oAlink[oAlink.length - 1].onclick = function() { //点击下一页
-            if (inx == count) {
+            if (inx == count||count==0) {
                 return false;
             }
             inx++;
@@ -223,27 +222,27 @@ function superaddition(data,num){//页面加载循环
             var a=i+1;
         }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'/><label for='checkboxTwoInput"
-                        + i
-                        + 1
-                        + "'></label></div>"
-                        + "</td><td style='text-align:left;'>"
-                        + a
-                        + "</td><td>"
-                        + data[i].area_code
-                        + "</td><td>"
-                        + data[i].area_name
-                        + "</td><td>"
-                        + data[i].corp.corp_name
-                        +"</td><td>"
-                        +data[i].modifier
-                        + "</td><td>"
-                        +data[i].modified_date
-                        + "</td><td>"
-                        +data[i].isactive
-                        +"</td></tr>");
+            + i
+            + 1
+            + "'/><label for='checkboxTwoInput"
+            + i
+            + 1
+            + "'></label></div>"
+            + "</td><td style='text-align:left;'>"
+            + a
+            + "</td><td>"
+            + data[i].template_type_code
+            + "</td><td>"
+            + data[i].template_type_name
+            + "</td><td><span>"
+            + data[i].corp_name
+            +"</span></td><td>"
+            +data[i].modified_date
+            +"</td><td>"
+            +data[i].modifier
+            +"</td><td>"
+            +data[i].isactive
+            +"</td></tr>");
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
@@ -276,34 +275,33 @@ qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/area/list?pageNumber="+a+"&pageSize="+b
+    oc.postRequire("get","/smsTemplateType/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
-            if(data.code=="0"){
-                $(".table tbody").empty();
-                var message=JSON.parse(data.message);
-                var list=JSON.parse(message.list);
-                cout=list.pages;
-                var list=list.list;
-                superaddition(list,a);
-                jumpBianse();
-                setPage($("#foot-num")[0],cout,a,b,funcCode);
-            }else if(data.code=="-1"){
-                alert(data.message);
-            }
+        if(data.code=="0"){
+            $(".table tbody").empty();
+            var message=JSON.parse(data.message);
+            var list=JSON.parse(message.list);
+            cout=list.pages;
+            var list=list.list;
+            superaddition(list,a);
+            jumpBianse();
+            setPage($("#foot-num")[0],cout,a,b,funcCode);
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
     });
 }
 //加载完成以后页面进行的操作
 function jumpBianse(){
-    $(document).ready(function(){//隔行变色 
-         $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-         $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+    $(document).ready(function(){//隔行变色
+        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
     })
     //点击tr input是选择状态  tr增加class属性
     $(".table tbody tr").click(function(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
-        $(this).toggleClass("tr");  
-        console.log(input);
+        $(this).toggleClass("tr");
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -317,7 +315,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/area/area_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_add.html");
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
@@ -332,7 +330,7 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_edit.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -349,7 +347,7 @@ function jumpBianse(){
             return_jump["pageSize"]=pageSize;//每页多少行
             sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/area/area_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -370,7 +368,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -383,7 +380,7 @@ $("#search").keydown(function() {
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
         POST(inx,pageSize);
     }
@@ -395,13 +392,13 @@ $("#d_search").click(function(){
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
+    //param["funcCode"]=funcCode;
     POST(inx,pageSize);
-})
+});
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/search","0",param,function(data){
+    oc.postRequire("post","/vipGroup/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -431,7 +428,6 @@ function POST(a,b){
         }
     })
 }
-console.log(left);
 //弹框关闭
 $("#X").click(function(){
     $("#p").hide();
@@ -452,31 +448,30 @@ $("#delete").click(function(){
         if(i>0){
             ID+=r+",";
         }else{
-             ID+=r;
-        }     
+            ID+=r;
+        }
     }
     var params={};
     params["id"]=ID;
-    console.log(params);
-    oc.postRequire("post","/area/delete","0",params,function(data){
+    oc.postRequire("post","/vipGroup/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
-               frame();
-               $('.frame').html('删除成功');
-               GET(inx,pageSize);
+                frame();
+                $('.frame').html('删除成功');
+                GET(inx,pageSize);
             }else if(value!==""){
-               frame();
-               $('.frame').html('删除成功');
-               param["pageNumber"]=pageNumber;
-               POST(inx,pageSize);
+                frame();
+                $('.frame').html('删除成功');
+                param["pageNumber"]=pageNumber;
+                POST(inx,pageSize);
             }else if(filtrate!==""){
                 frame();
                 $('.frame').html('删除成功');
                 _param["pageNumber"]=pageNumber;
-                filtrates(inx,pageSize); 
+                filtrates(inx,pageSize);
             }
-        var thinput=$("thead input")[0];
-        thinput.checked =false;
+            var thinput=$("thead input")[0];
+            thinput.checked =false;
         }else if(data.code=="-1"){
             frame();
             $('.frame').html(data.message);
@@ -494,7 +489,7 @@ function frame(){
     setTimeout(function(){
         $(".frame").hide();
     },2000);
-} 
+}
 //全选
 function checkAll(name){
     var el=$("tbody input");
@@ -502,12 +497,12 @@ function checkAll(name){
     var len = el.length;
 
     for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
         {
-           if((el[i].type=="checkbox") && (el[i].name==name))
-            {
-              el[i].checked = true;
-            }
+            el[i].checked = true;
         }
+    }
 };
 
 //取消全选
@@ -516,45 +511,42 @@ function clearAll(name){
     el.parents("tr").removeClass("tr");
     var len = el.length;
     for(var i=0; i<len; i++)
+    {
+        if((el[i].type=="checkbox") && (el[i].name==name))
         {
-            if((el[i].type=="checkbox") && (el[i].name==name))
-            {
-              el[i].checked = false;
-            }
+            el[i].checked = false;
         }
+    }
 };
 //导出拉出list
-$("#leading_out").click(function(){
-    var l=$(window).width();
-    var h=$(document.body).height();
-    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
-    $(".file").css({"left":+left+"px","top":+tp+"px"});
-    $("#p").show();
-    $("#p").css({"width":+l+"px","height":+h+"px"});
-    $('.file').show();
-    $(".into_frame").hide();
-    var param={};
-    param["function_code"]=funcCode;
-    whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/list/getCols","0",param,function(data){
-        if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var message=JSON.parse(message.tableManagers);
-            $("#file_list_l ul").empty();
-            for(var i=0;i<message.length;i++){
-                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
-                +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
-            }
-            bianse();
-            $("#file_list_r ul").empty();
-            whir.loading.remove();//移除加载框
-        }else if(data.code=="-1"){
-            alert(data.message);
-            whir.loading.remove();//移除加载框
-        }
-    })
-})
+//$("#leading_out").click(function(){
+//    var l=$(window).width();
+//    var h=$(document.body).height();
+//    $("#p").show();
+//    $("#p").css({"width":+l+"px","height":+h+"px"});
+//    $('.file').show();
+//    $(".into_frame").hide();
+//    var param={};
+//    param["function_code"]=funcCode;
+//    whir.loading.add("",0.5);//加载等待框
+//    oc.postRequire("post","/list/getCols","0",param,function(data){
+//        if(data.code=="0"){
+//            var message=JSON.parse(data.message);
+//            var message=JSON.parse(message.tableManagers);
+//            $("#file_list_l ul").empty();
+//            for(var i=0;i<message.length;i++){
+//                $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+//                    +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
+//            }
+//            bianse();
+//            $("#file_list_r ul").empty();
+//            whir.loading.remove();//移除加载框
+//        }else if(data.code=="-1"){
+//            alert(data.message);
+//            whir.loading.remove();//移除加载框
+//        }
+//    })
+//});
 function bianse(){
     $("#file_list_l li:odd").css("backgroundColor","#fff");
     $("#file_list_l li:even").css("backgroundColor","#ededed");
@@ -562,125 +554,121 @@ function bianse(){
     $("#file_list_r li:even").css("backgroundColor","#ededed");
 }
 
-//导出提交的
-$("#file_submit").click(function(){
-    var li=$("#file_list_r input[type='checkbox']").parents("li");
-    var param={};
-    var tablemanager=[];
-    if(li.length=="0"){
-        frame();
-        $('.frame').html('请把要导出的列移到右边');
-        return;
-    }
-    for(var i=0;i<li.length;i++){
-        var r=$(li[i]).attr("data-name");
-        var z=$(li[i]).children("span").html();
-        var param1={"column_name":r,"show_name":z};
-        tablemanager.push(param1);
-    }
-    tablemanager.reverse();
-    param["tablemanager"]=tablemanager;
-    param["searchValue"]=value;
-    if(filtrate==""){
-        param["list"]="";
-    }else if(filtrate!==""){
-        param["list"]=list;
-    }
-    whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/exportExecl","0",param,function(data){
-        if(data.code=="0"){
-            var message=JSON.parse(data.message);
-            var path=message.path;
-            var path=path.substring(1,path.length-1);
-            $('#download').html("<a href='/"+path+"'>下载文件</a>");
-            $('#download').addClass("download");
-            $('#file_submit').hide();
-            $('#download').show();
-            //导出关闭按钮
-            $('#file_close').click(function(){
-                $('.file').hide();
-            })
-            $('#download').click(function(){
-                $("#p").hide();
-                $('.file').hide();
-                $('#file_submit').show();
-                $('#download').hide();
-            })
-        }else if(data.code=="-1"){
-            alert(data.message);
-        }
-        whir.loading.remove();//移除加载框
-    })
-})
+////导出提交的
+//$("#file_submit").click(function(){
+//    var li=$("#file_list input[type='checkbox']:checked").parents("li");
+//    var param={};
+//    var tablemanager=[];
+//    if(li.length=="0"){
+//        frame();
+//        $('.frame').html('请把要导出的列移到右边');
+//        return;
+//    }
+//    for(var i=0;i<li.length;i++){
+//        var r=$(li[i]).attr("data-name");
+//        var z=$(li[i]).children("span").html();
+//        var param1={"column_name":r,"show_name":z};
+//        tablemanager.push(param1);
+//    }
+//    tablemanager.reverse();
+//    param["tablemanager"]=tablemanager;
+//    param["searchValue"]=value;
+//    if(filtrate==""){
+//        param["list"]="";
+//    }else if(filtrate!==""){
+//        param["list"]=list;
+//    }
+//    whir.loading.add("",0.5);//加载等待框
+//    oc.postRequire("post","/area/exportExecl","0",param,function(data){
+//        if(data.code=="0"){
+//            var message=JSON.parse(data.message);
+//            var path=message.path;
+//            var path=path.substring(1,path.length-1);
+//            $('#download').html("<a href='/"+path+"'>下载文件</a>");
+//            $('#download').addClass("download");
+//            $('#file_submit').hide();
+//            $('#download').show();
+//            //导出关闭按钮
+//            $('#file_close').click(function(){
+//                $('.file').hide();
+//            })
+//            $('#download').click(function(){
+//                $("#p").hide();
+//                $('.file').hide();
+//                $('#file_submit').show();
+//                $('#download').hide();
+//            })
+//        }else if(data.code=="-1"){
+//            alert(data.message);
+//        }
+//        whir.loading.remove();//移除加载框
+//    })
+//});
 //导出关闭按钮
-$('#file_close').click(function(){
-    $("#p").hide();
-    $('.file').hide();
-    $('#file_submit').show();
-    $('#download').hide();
-})
+//$('#file_close').click(function(){
+//    $("#p").hide();
+//    $('.file').hide();
+//    $('#file_submit').show();
+//    $('#download').hide();
+//});
 //点击导入
-$("#guide_into").click(function(){
-    var l=$(window).width();
-    var h=$(document.body).height();
-    var left=($(window).width()-$(".into_frame").width())/2;//弹框定位的left值
-    var tp=($(window).height()-$(".into_frame").height())/2;//弹框定位的top值
-    $(".into_frame").css({"left":+left+"px","top":+tp+"px"});
-    $("#p").show();
-    $("#p").css({"width":+l+"px","height":+h+"px"});
-    $('.file').hide();
-    $(".into_frame").show();
-})
+//$("#guide_into").click(function(){
+//    var l=$(window).width();
+//    var h=$(document.body).height();
+//    $("#p").show();
+//    $("#p").css({"width":+l+"px","height":+h+"px"});
+//    $('.file').hide();
+//    $(".into_frame").show();
+//});
 //导入关闭按钮
 $("#x1").click(function(){
     $("#p").hide();
     $(".into_frame").hide();
 })
 //上传文件
-function UpladFile() {
-    whir.loading.add("",0.5);//加载等待框
-    var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
-    var FileController = "/area/addByExecl"; //接收上传文件的后台地址
-    var form = new FormData();
-    form.append("file", fileObj); // 文件对象
-    // XMLHttpRequest 对象
-    var xhr = null;
-    if (window.XMLHttpRequest) {
-        xhr = new XMLHttpRequest();
-    } else {
-        xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                doResult(xhr.responseText);
-            } else {
-                console.log('服务器返回了错误的响应状态码');
-                $('#file').val("");
-                whir.loading.remove();//移除加载框
-            }
-        }
-    }
-    function doResult(data) {
-        var data=JSON.parse(data);
-        if(data.code=="0"){
-            alert('导入成功');
-            window.location.reload();
-        }else if(data.code=="-1"){
-             alert("导入失败"+data.message);
-        }
-        $('#file').val("");
-        whir.loading.remove();//移除加载框
-    }
-    xhr.open("post", FileController, true);
-    xhr.onload = function() {
-        // alert("上传完成!");
-    };
-    xhr.send(form);
-    $("#p").hide();
-    $(".into_frame").hide();
-}
+//function UpladFile() {
+//    whir.loading.add("",0.5);//加载等待框
+//    var fileObj = document.getElementById("file").files[0];
+//    var FileController = "/area/addByExecl"; //接收上传文件的后台地址
+//    var form = new FormData();
+//    form.append("file", fileObj); // 文件对象
+//    // XMLHttpRequest 对象
+//    var xhr = null;
+//    if (window.XMLHttpRequest) {
+//        xhr = new XMLHttpRequest();
+//    } else {
+//        xhr = new ActiveXObject('Microsoft.XMLHTTP');
+//    }
+//    xhr.onreadystatechange = function() {
+//        if (xhr.readyState === 4) {
+//            if (xhr.status === 200) {
+//                doResult(xhr.responseText);
+//            } else {
+//                console.log('服务器返回了错误的响应状态码');
+//                $('#file').val("");
+//                whir.loading.remove();//移除加载框
+//            }
+//        }
+//    }
+//    function doResult(data) {
+//        var data=JSON.parse(data);
+//        if(data.code=="0"){
+//            alert('导入成功');
+//            window.location.reload();
+//        }else if(data.code=="-1"){
+//            alert("导入失败"+data.message);
+//        }
+//        $('#file').val("");
+//        whir.loading.remove();//移除加载框
+//    }
+//    xhr.open("post", FileController, true);
+//    xhr.onload = function() {
+//        // alert("上传完成!");
+//    };
+//    xhr.send(form);
+//    $("#p").hide();
+//    $(".into_frame").hide();
+//}
 //筛选按钮
 oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function(data){
     if(data.code=="0"){
@@ -693,7 +681,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
@@ -734,7 +721,7 @@ function filtrateDown(){
         }else{
             ul.hide();
         }
-    })
+    });
     $(".isActive_select input").blur(function(){
         var ul=$(this).next(".isActive_select_down");
         setTimeout(function(){
@@ -755,31 +742,31 @@ $("#find").click(function(){
 })
 function getInputValue(){
     var input=$('#sxk .inputs input');
-   inx=1;
-   _param["pageNumber"]=inx;
-   _param["pageSize"]=pageSize;
-   _param["funcCode"]=funcCode;
-   var num=0;
-   list=[];//定义一个list
-   for(var i=0;i<input.length;i++){
+    inx=1;
+    _param["pageNumber"]=inx;
+    _param["pageSize"]=pageSize;
+    _param["funcCode"]=funcCode;
+    var num=0;
+    list=[];//定义一个list
+    for(var i=0;i<input.length;i++){
         var screen_key=$(input[i]).attr("id");
         var screen_value=$(input[i]).val().trim();
         var screen_value="";
-       if($(input[i]).parent("li").attr("class")=="isActive_select"){
-           screen_value=$(input[i]).attr("data-code");
-       }else{
-           screen_value=$(input[i]).val().trim();
-       }
+        if($(input[i]).parent("li").attr("class")=="isActive_select"){
+            screen_value=$(input[i]).attr("data-code");
+        }else{
+            screen_value=$(input[i]).val().trim();
+        }
         if(screen_value!=""){
             num++;
         }
-       var param1={"screen_key":screen_key,"screen_value":screen_value};
-       list.push(param1);
-   }
-   _param["list"]=list;
+        var param1={"screen_key":screen_key,"screen_value":screen_value};
+        list.push(param1);
+    }
+    _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
+    filtrates(inx,pageSize);
     if(num>0){
         filtrate="sucess";
     }else if(num<=0){
@@ -789,7 +776,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-   oc.postRequire("post","/area/screen","0",_param,function(data){
+    oc.postRequire("post","/vipGroup/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -810,7 +797,7 @@ function filtrates(a,b){
         }else if(data.code=="-1"){
             alert(data.message);
         }
-   });
+    });
 }
 //跳转页面的键盘按下事件
 $("#input-txt").keydown(function() {
@@ -818,8 +805,8 @@ $("#input-txt").keydown(function() {
     var inx= this.value.replace(/[^0-9]/g, '');
     var inx=parseInt(inx);
     if (inx > cout) {
-            inx = cout
-        };
+        inx = cout
+    };
     if (inx > 0) {
         if (event.keyCode == 13) {
             if (value == "" && filtrate == "") {
@@ -833,6 +820,6 @@ $("#input-txt").keydown(function() {
                 _param["pageNumber"]=inx;
                 filtrates(inx, pageSize);
             }
-        };
+        }
     }
-})
+});

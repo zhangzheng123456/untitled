@@ -782,6 +782,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.deleteUserQrcode(corp_code, user_code);
     }
 
+    public int deleteUserQrcodeOne(String corp_code, String user_code,String app_id) throws Exception {
+        return userMapper.deleteUserQrcodeOne(corp_code, user_code,app_id);
+    }
+
     public String creatUserQrcode(String corp_code, String user_code, String auth_appid, String user_id) throws Exception {
         UserQrcode userQrcode = selectQrcodeByUserApp(corp_code, user_code, auth_appid);
         String picture = "";
