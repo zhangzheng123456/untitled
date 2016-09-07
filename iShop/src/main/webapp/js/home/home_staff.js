@@ -215,13 +215,13 @@ function achAnalysis(T){//业绩加载
 function superadditionAchv(c){
    $("#yeJiTotal").html(c.staff.total);
    $("#yeJiRanking").html(c.staff.ranking);
-   $("#yeJiRanking").attr("title",c.staff.ranking);
+   //$("#yeJiRanking").attr("title",c.staff.ranking);
    $("#zanTime").html(c.staff.praised_count);
-   $("#zanTime").attr("title",c.staff.praised_count);
+   //$("#zanTime").attr("title",c.staff.praised_count);
    $("#Contribution_degree").html(c.staff.contribute);
-   $("#Contribution_degree").attr("title",c.staff.contribute);
+   //$("#Contribution_degree").attr("title",c.staff.contribute);
    $("#My_Vip").html(c.staff.vip_count);
-   $("#My_Vip").attr("title",c.staff.vip_count);
+   //$("#My_Vip").attr("title",c.staff.vip_count);
 
     //$("#area_ranking").attr("data-percent",c.am.area_ranking);
     $("#achv_mask").hide();
