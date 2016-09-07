@@ -1,4 +1,4 @@
-/*
+
 var oc = new ObjectControl();
 var left=($(window).width()-$("#tk").width())/2;//弹框定位的left值
 var tp=($(window).height()-$("#tk").height())/2;//弹框定位的top值
@@ -17,42 +17,42 @@ var funcCode=key_val.func_code;
 
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
-if(return_jump!==null){
-    console.log(return_jump);
-    inx=return_jump.inx;
-    pageSize=return_jump.pageSize;
-    value=return_jump.value;
-    filtrate=return_jump.filtrate;
-    list=return_jump.list;
-    param=JSON.parse(return_jump.param);
-    _param=JSON.parse(return_jump._param);
-}
-if(return_jump==null){
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }
-}else if(return_jump!==null){
-    if(pageSize==10){
-        $("#page_row").val("10行/页");
-    }
-    if(pageSize==30){
-        $("#page_row").val("30行/页");
-    }
-    if(pageSize==50){
-        $("#page_row").val("50行/页");
-    }
-    if(pageSize==100){
-        $("#page_row").val("100行/页");
-    }
-    if(value==""&&filtrate==""){
-        GET(inx,pageSize);
-    }else if(value!==""){
-        $("#search").val(value);
-        POST(inx,pageSize);
-    }else if(filtrate!==""){
-        filtrates(inx,pageSize);
-    }
-}
+// if(return_jump!==null){
+//     console.log(return_jump);
+//     inx=return_jump.inx;
+//     pageSize=return_jump.pageSize;
+//     value=return_jump.value;
+//     filtrate=return_jump.filtrate;
+//     list=return_jump.list;
+//     param=JSON.parse(return_jump.param);
+//     _param=JSON.parse(return_jump._param);
+// }
+// if(return_jump==null){
+//     if(value==""&&filtrate==""){
+//         GET(inx,pageSize);
+//     }
+// }else if(return_jump!==null){
+//     if(pageSize==10){
+//         $("#page_row").val("10行/页");
+//     }
+//     if(pageSize==30){
+//         $("#page_row").val("30行/页");
+//     }
+//     if(pageSize==50){
+//         $("#page_row").val("50行/页");
+//     }
+//     if(pageSize==100){
+//         $("#page_row").val("100行/页");
+//     }
+//     if(value==""&&filtrate==""){
+//         GET(inx,pageSize);
+//     }else if(value!==""){
+//         $("#search").val(value);
+//         POST(inx,pageSize);
+//     }else if(filtrate!==""){
+//         filtrates(inx,pageSize);
+//     }
+// }
 //模仿select
 $(function(){
         $("#page_row").click(function(){
@@ -94,12 +94,12 @@ function showLi(){
 function hideLi(){
     $("#liebiao").hide();
 }
-$("#filtrate").click(function(){//点击筛选框弹出下拉框
-    $(".sxk").slideToggle();
-})
-$("#pack_up").click(function(){//点击收回 取消下拉框
-    $(".sxk").slideUp();
-})
+// $("#filtrate").click(function(){//点击筛选框弹出下拉框
+//     $(".sxk").slideToggle();
+// })
+// $("#pack_up").click(function(){//点击收回 取消下拉框
+//     $(".sxk").slideUp();
+// })
 //点击清空  清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");
@@ -212,101 +212,7 @@ function dian(a,b){//点击分页的时候调什么接口
         filtrates(a,b);
     }
 }
-*/
 function superaddition(data,num){//页面加载循环
-    pageSize=10;
-    data=[{
-        id:1,
-       user_code:'EC160803',
-        vip_code:'',
-        action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=AM0AM01387MW',
-        action_discrobe:'浏览商品详情',
-        action_conpany:'tommy',
-        action_time:'2016-09-06  12:23:22'
-    },
-        {
-            id:2,
-            user_code:'EC160803',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php',
-            action_discrobe:'浏览商品列表',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:20:22'
-        },
-        {
-            id:3,
-            user_code:'JXT1605003',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php',
-            action_discrobe:'浏览商品列表',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:17:24'
-        },
-        {
-            id:4,
-            user_code:'JXT1605003',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=08878A2591MW&colorName=%E7%99%BD%E8%89%B2&screenSize=1366*768',
-            action_discrobe:'浏览商品详情',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:16:45'
-        },
-        {
-            id:5,
-            user_code:'EC160802',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
-            action_discrobe:'浏览商品详情',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:16:12'
-        },
-        {
-            id:6,
-            user_code:'EC160802',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
-            action_discrobe:'浏览商品详情',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:15:56'
-        },
-        {
-            id:7,
-            user_code:'EC160802',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
-            action_discrobe:'浏览商品详情',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:15:44'
-        },
-        {
-            id:8,
-            user_code:'EC160802',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
-            action_discrobe:'浏览商品详情',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:14:37'
-        },
-        {
-            id:9,
-            user_code:'EC160802',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php/product/detail?productId=WW0WW14607MF&colorName=%E9%9D%9B%E8%93%9D%E8%89%B2&screenSize=1366*768',
-            action_discrobe:'浏览商品详情',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:14:12'
-        },
-        {
-            id:10,
-            user_code:'EC160802',
-            vip_code:'',
-            action_adress:'http://m.tommy.com.cn/index.php',
-            action_discrobe:'浏览商品列表',
-            action_conpany:'tommy',
-            action_time:'2016-09-06  12:07:59'
-        }
-    ];
-    num=2;
     if(data.length==1&&num>1){
         pageNumber=num-1;
     }else{
@@ -327,81 +233,72 @@ function superaddition(data,num){//页面加载循环
         + 1
         + "'></label></div>"
         + "</td><td style='text-align:left;'>"
-        //+ a
-        //+ "</td><td>"
-        + data[i].user_code
+        + a
         + "</td><td>"
-        + data[i].vip_code
-        + "</td><td><span title='"+data[i].action_adress+"'>"
-        + data[i].action_adress
+        + data[i].emp_id
+        + "</td><td>"
+        + data[i].emp_name
+        + "</td><td>"
+        + data[i].vip_id
+        + "</td><td><span title='"+data[i].url+"'>"
+        + data[i].url
         +"</span></td><td>"
-        + data[i].action_discrobe
+        + data[i].action
         +"</td><td>"
-        + data[i]. action_conpany
+        + data[i].corp_name
         +"</td><td>"
-        + data[i].action_time
-        //+"</td><td>"
-        //+data[i].modifier
-        //+ "</td><td>"
-        //+data[i].modified_date
-        //+ "</td><td>"
-        //+data[i].isactive
+        + data[i].time
         +"</td></tr>");
     }
-    $(document).ready(function(){//隔行变色
-        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-    })
-    //whir.loading.remove();//移除加载框
+    whir.loading.remove();//移除加载框
     //sessionStorage.removeItem("return_jump");
 };
-superaddition();
-/*
-//权限配置
-function jurisdiction(actions){
-    $('#jurisdiction').empty();
-    for(var i=0;i<actions.length;i++){
-        if(actions[i].act_name=="add"){
-            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
-        }else if(actions[i].act_name=="delete"){
-            $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
-        }else if(actions[i].act_name=="edit"){
-            $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
-        }
-    }
-}
+// 权限配置
+// function jurisdiction(actions){
+//     $('#jurisdiction').empty();
+//     for(var i=0;i<actions.length;i++){
+//         if(actions[i].act_name=="add"){
+//             $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
+//         }else if(actions[i].act_name=="delete"){
+//             $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+//         }else if(actions[i].act_name=="edit"){
+//             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+//         }
+//     }
+// }
 //页面加载调权限接口
-function qjia(){
-    var param={};
-    param["funcCode"]=funcCode;
-    oc.postRequire("post","/list/action","0",param,function(data){
-        var message=JSON.parse(data.message);
-        var actions=message.actions;
-        jurisdiction(actions);
-        jumpBianse();
-    })
-}
-qjia();
+// function qjia(){
+//     var param={};
+//     param["funcCode"]=funcCode;
+//     oc.postRequire("post","/list/action","0",param,function(data){
+//         var message=JSON.parse(data.message);
+//         var actions=message.actions;
+//         jurisdiction(actions);
+//         jumpBianse();
+//     })
+// }
+// qjia();
 //页面加载时list请求
 function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/storeAchvGoal/list?pageNumber="+a+"&pageSize="+b
+    oc.postRequire("get","/userAction/list?pageNumber="+a+"&pageSize="+b
     +"&funcCode="+funcCode+"","","",function(data){
-        console.log(data);
         if(data.code=="0"){
             $(".table tbody").empty();
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var list=list.list;
+            console.log(message);
+            var list=message.list;
+            cout=message.pages;
             superaddition(list,a);
             jumpBianse();
+            $(".table p").remove();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
         }
     });
 }
+GET(pageNumber,pageSize);
 //加载完成以后页面进行的操作
 function jumpBianse(){
     $(document).ready(function(){//隔行变色
@@ -425,50 +322,50 @@ function jumpBianse(){
             $(this).removeClass("tr");
         }
     })
-    //点击新增时页面进行的跳转
-    $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_add.html");
-    })
-    //点击编辑时页面进行的跳转
-    $('#compile').click(function(){
-        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
-        if(tr.length==1){
-            id=$(tr).attr("id");
-            var return_jump={};//定义一个对象
-            return_jump["inx"]=inx;//跳转到第几页
-            return_jump["value"]=value;//搜索的值;
-            return_jump["filtrate"]=filtrate;//筛选的值
-            return_jump["param"]=JSON.stringify(param);//搜索定义的值
-            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-            return_jump["list"]=list;//筛选的请求的list;
-            return_jump["pageSize"]=pageSize;//每页多少行
-            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-            sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
-        }else if(tr.length==0){
-            frame();
-            $('.frame').html("请先选择");
-        }else if(tr.length>1){
-            frame();
-            $('.frame').html("不能选择多个");
-        }
-    })
-    //双击跳转
-    $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
-        var return_jump={};//定义一个对象
-        return_jump["inx"]=inx;//跳转到第几页
-        return_jump["value"]=value;//搜索的值;
-        return_jump["filtrate"]=filtrate;//筛选的值
-        return_jump["param"]=JSON.stringify(param);//搜索定义的值
-        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-        return_jump["list"]=list;//筛选的请求的list;
-        return_jump["pageSize"]=pageSize;//每页多少行
-        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
-    })
+    // //点击新增时页面进行的跳转
+    // $('#add').click(function(){
+    //     $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_add.html");
+    // })
+    // //点击编辑时页面进行的跳转
+    // $('#compile').click(function(){
+    //     var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+    //     if(tr.length==1){
+    //         id=$(tr).attr("id");
+    //         var return_jump={};//定义一个对象
+    //         return_jump["inx"]=inx;//跳转到第几页
+    //         return_jump["value"]=value;//搜索的值;
+    //         return_jump["filtrate"]=filtrate;//筛选的值
+    //         return_jump["param"]=JSON.stringify(param);//搜索定义的值
+    //         return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+    //         return_jump["list"]=list;//筛选的请求的list;
+    //         return_jump["pageSize"]=pageSize;//每页多少行
+    //         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+    //         sessionStorage.setItem("id",id);
+    //         $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
+    //     }else if(tr.length==0){
+    //         frame();
+    //         $('.frame').html("请先选择");
+    //     }else if(tr.length>1){
+    //         frame();
+    //         $('.frame').html("不能选择多个");
+    //     }
+    // })
+    // //双击跳转
+    // $(".table tbody tr").dblclick(function(){
+    //     var id=$(this).attr("id");
+    //     var return_jump={};//定义一个对象
+    //     return_jump["inx"]=inx;//跳转到第几页
+    //     return_jump["value"]=value;//搜索的值;
+    //     return_jump["filtrate"]=filtrate;//筛选的值
+    //     return_jump["param"]=JSON.stringify(param);//搜索定义的值
+    //     return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+    //     return_jump["list"]=list;//筛选的请求的list;
+    //     return_jump["pageSize"]=pageSize;//每页多少行
+    //     sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+    //     sessionStorage.setItem("id",id);
+    //     console.log(id);
+    //     $(window.parent.document).find('#iframepage').attr("src","/achv/shopgoal_edit.html");
+    // })
     //删除
     $("#remove").click(function(){
         var l=$(window).width();
@@ -494,9 +391,12 @@ $("#search").keydown(function() {
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        POST(inx,pageSize);
+        if(value==""){
+            GET(inx,pageSize); 
+        }else{
+           POST(inx,pageSize); 
+        }   
     }
 });
 //点击放大镜触发搜索
@@ -506,19 +406,21 @@ $("#d_search").click(function(){
     param["searchValue"]=value;
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
-    POST(inx,pageSize);
+    if(value==""){
+       GET(inx,pageSize); 
+    }else{
+       POST(inx,pageSize); 
+    }
 })
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/storeAchvGoal/search","0",param,function(data){
+    oc.postRequire("post","/userAction/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var list=list.list;
-            var actions=message.actions;
+            console.log(message);
+            var list=message.list;
+            cout=message.pages;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
@@ -940,6 +842,4 @@ $("#input-txt").keydown(function() {
             }
         };
     }
-})/**
- * Created by Bizvane on 2016/9/6.
- */
+})

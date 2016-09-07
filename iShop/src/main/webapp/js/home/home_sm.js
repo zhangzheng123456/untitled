@@ -63,6 +63,7 @@ function getShopList(){
         		var area_code=$(this).attr("data-code");
         		$(".area_name").attr("data-code",area_code);
         		$(".area_name").html($(this).html());
+        		var staff_time=
 				staffRanking(today,area_code);
 				achAnalysis(today,area_code);
 				achieveChart($("#date1").val(),area_code);
