@@ -65,11 +65,12 @@
 }
 .er_code{
 	position: relative;
+	margin-top:-45px ;
 }
 .kuang{
 	width: 100px;
 	height: 100px;
-	margin:10px 0 10px 123px;
+	margin:10px 0 10px 0;
 	display: none;
 }
 .kuang img{
