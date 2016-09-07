@@ -327,7 +327,7 @@ jQuery(document).ready(function () {
                 }
                 if (qrcodeList.length > 0) {
                     for (var i = 0; i < qrcodeList.length; i++) {
-                        $("#add_app_id").before('<li class="app_li"><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
+                        $("#add_app_id").before('<li class="app_li"><input onclick="select_down(this)" id="'+qrcodeList[i].app_id+'" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
                             + '<span class="power create" onclick="getTwoCode(this)">生成</span>'
                             + '<span class="power k_close" style="display: none;">关闭</span>'
                             + '<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
@@ -734,5 +734,19 @@ $("#add_app_id").click(function () {
     close_two_code();
 })
 function remove_app_id(obj) {
-    $(obj).parent().remove();
+    var user_code = $("#USERID").val();//员工编号
+    var corp_code = $("#OWN_CORP").val();//公司编号
+    var app_id = $(obj).prevAll("input").attr("id");
+    var param={
+        "corp_code":corp_code,
+        "user_code":user_code,
+        "app_id":app_id
+    }
+    oc.postRequire("post","/shop/deletQrcode","",param,function () {
+        if(data.code=="0"){
+            $(obj).parent().remove();
+        }else if(data.code=="-1"){
+            alert("删除失败!");
+        }
+    })
 }
