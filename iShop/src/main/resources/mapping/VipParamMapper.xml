@@ -6,7 +6,7 @@
         SELECT
         dvp.*
         FROM def_vip_param dvp
-        AND  dvp.id=#{id}
+        WHERE  dvp.id=#{id}
     </select>
 
     <select id="selectAllParam" resultType="com.bizvane.ishop.entity.VipParam">

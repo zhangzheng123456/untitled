@@ -60,19 +60,27 @@ public class TestFeedbackService {
     public void testselectAllFeedback() {
         try {
             VipParam vipParam=new VipParam();
-            vipParam.setParam_name("1");
-            vipParam.setParam_type("1");
-            vipParam.setParam_values("1");
+            vipParam.setId(1);
+            vipParam.setParam_name("3");
+            vipParam.setParam_type("2");
+            vipParam.setParam_values("2");
             vipParam.setCorp_code("C10000");
-            vipParam.setRemark("1");
-            vipParam.setParam_desc("1");
-            vipParam.setModified_date("1");
-            vipParam.setModifier("1");
-            vipParam.setCreated_date("1");
-            vipParam.setCreater("1");
-            vipParam.setIsactive("1");
-            String insert = vipParamService.insert(vipParam);
+            vipParam.setRemark("2");
+            vipParam.setParam_desc("2");
+            vipParam.setModified_date("2");
+            vipParam.setModifier("2");
+            vipParam.setCreated_date("2");
+            vipParam.setCreater("2");
+            vipParam.setIsactive("2");
+            String insert = vipParamService.update(vipParam);
             System.out.println("------"+insert);
+
+//            PageInfo<VipParam> vipParamPageInfo = vipParamService.selectAllParam(1, 20, "", "");
+//            List<VipParam> list = vipParamPageInfo.getList();
+//            for (VipParam vipParam:list
+//                 ) {
+//                System.out.println(vipParam.getCorp_name()+"---"+vipParam.getParam_name());
+//            }
             //"[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
        //     String str = "aaa,bbb,ccc,dddd";
          //    System.out.println(WebUtils.StringFilter(str));
