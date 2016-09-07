@@ -253,11 +253,11 @@ function jurisdiction(actions){
     $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
-            $('#jurisdiction').append("<li id='add'><a href='javascript:void(0);'><span class='icon-ishop_6-01'></span>新增</a></li>");
+            $('#jurisdiction').append("<li id='add'><span class='icon-ishop_6-01'></span>新增</li>");
         }else if(actions[i].act_name=="delete"){
-            $('#jurisdiction').append("<li id='remove'><a href='javascript:void(0);'><span class='icon-ishop_6-02'></span>删除</a></li>");
+            $('#jurisdiction').append("<li id='remove'><span class='icon-ishop_6-02'></span>删除</li>");
         }else if(actions[i].act_name=="edit"){
-            $('#jurisdiction').append("<li class='bg' id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
+            $('#jurisdiction').append("<li class='bg' id='compile'><span class='icon-ishop_6-03'></span>编辑</li>");
         }
     }
 }

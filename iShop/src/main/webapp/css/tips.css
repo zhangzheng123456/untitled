@@ -412,3 +412,6 @@
 	text-align: center;
 	line-height: 40px;
 }
+.hint{
+    padding-left: 120px !important;
+}
