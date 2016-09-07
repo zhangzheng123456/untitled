@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.bizvane.ishop.dao.SmsTemplateTypeMapper">
+
+    <resultMap type="com.bizvane.ishop.entity.SmsTemplateType" id="SmsTemplateType">
+        <id column="id" property="id"/>
+        <result column="template_type_code" property="template_type_code"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_type_name" property="template_type_name"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
+            <result column="corp_name" property="corp_name"/>
+        </association>
+    </resultMap>
+
+    <select id="selectAllSmsTemplateType" resultMap="SmsTemplateType">
+        SELECT dstt.id,
+        dstt.template_type_code,
+        dstt.template_type_name,
+        dstt.corp_code,
+        dstt.modified_date,
+        dstt.modifier,
+        dstt.created_date,
+        dstt.creater,
+        dstt.isactive,
+        def_corp.corp_name
+        FROM def_sms_template_type dstt,def_corp
+        WHERE dstt.corp_code=def_corp.corp_code
+        <if test="corp_code != null and corp_code !=''">
+            AND dstt.corp_code = #{corp_code}
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (dstt.template_type_code like concat('%',#{search_value},'%')
+            OR dstt.template_type_name like concat('%',#{search_value},'%')
+            OR dstt.remark like concat('%',#{search_value},'%')
+            OR def_corp.corp_name like concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY dstt.id DESC
+    </select>
+    <delete id="deleteSmsTemplateTypeById">
+        delete from
+        def_sms_template_type
+        where ID=#{id}
+    </delete>
+    <insert id="insertSmsTemplateType" parameterType="com.bizvane.ishop.entity.SmsTemplateType">
+        insert into def_sms_template_type
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="template_type_code!=null">
+                template_type_code,
+            </if>
+            <if test="template_type_name!=null">
+                template_type_name,
+            </if>
+
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="modified_date!=null">
+                modified_date,
+            </if>
+            <if test="modifier!=null">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date,
+            </if>
+            <if test="creater!=null">
+                creater,
+            </if>
+            <if test="isactive!=null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="template_type_code!=null">
+                #{template_type_code},
+            </if>
+            <if test="template_type_name!=null">
+                #{template_type_name},
+            </if>
+             <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date},
+            </if>
+            <if test="modifier!=null">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null">
+                #{creater},
+            </if>
+            <if test="isactive!=null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="selectBySmsTemplateTypeCode" resultType="com.bizvane.ishop.entity.SmsTemplateType">
+       SELECT  dstt.id,
+        dstt.template_type_code,
+        dstt.corp_code,
+        dstt.isactive
+        FROM def_sms_template_type dstt
+        where dstt.CORP_CODE = #{corp_code}
+        AND dstt.template_type_code = #{template_type_code}
+        <if test="isactive != null and isactive !=''">
+            AND dstt.isactive = #{isactive}
+        </if>
+    </select>
+    <select id="selectBySmsTemplateTypeName" resultType="com.bizvane.ishop.entity.SmsTemplateType">
+        SELECT dstt.id,
+        dstt.template_type_name,
+        dstt.corp_code,
+        dstt.isactive
+        FROM def_sms_template_type dstt
+        WHERE dstt.corp_code=#{corp_code}
+        AND template_type_name=#{template_type_name}
+        <if test="isactive != null and isactive !=''">
+            AND dstt.isactive = #{isactive}
+        </if>
+    </select>
+</mapper>

@@ -1,12 +1,11 @@
 package com.bizvane.ishop.controller;
 
+
 import com.alibaba.fastjson.JSON;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.VipGroup;
-import com.bizvane.ishop.entity.ViplableGroup;
-import com.bizvane.ishop.service.VipGroupService;
+import com.bizvane.ishop.entity.SmsTemplateType;
+import com.bizvane.ishop.service.SmsTemplateTypeService;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -27,18 +26,15 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by nanji on 2016/9/1.
+ * Created by nanji on 2016/9/7.
  */
-
 @Controller
-@RequestMapping("/vipGroup")
-public class VipGroupController {
-    private static final Logger logger = Logger.getLogger(VipGroupController.class);
+@RequestMapping("/smsTemplateType")
+public class SmsTemplateTypeController {
+    private static final Logger logger = Logger.getLogger(SmsTemplateTypeController.class);
     @Autowired
-    private VipGroupService vipGroupService;
-
+    private SmsTemplateTypeService smsTemplateTypeService;
     String id;
-
     /**
      * 列表
      *
@@ -47,7 +43,7 @@ public class VipGroupController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public String vipGroupList(HttpServletRequest request) {
+    public String smsTemplateTypeList(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
@@ -58,12 +54,12 @@ public class VipGroupController {
             int page_number = Integer.parseInt(request.getParameter("pageNumber"));
             int page_size = Integer.parseInt(request.getParameter("pageSize"));
             String role_code = request.getSession().getAttribute("role_code").toString();
-            PageInfo<VipGroup> list;
+            PageInfo<SmsTemplateType> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, "", "");
+                list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, "", "");
             } else {
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code, "");
+                list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, corp_code, "");
 
             }
             JSONObject result = new JSONObject();
@@ -81,12 +77,12 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
-    /**
+   /* *//**
      * 根据id查看
      *
      * @param request
      * @return
-     */
+     *//*
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public String selectById(HttpServletRequest request) {
@@ -112,7 +108,7 @@ public class VipGroupController {
         }
         return dataBean.getJsonStr();
     }
-
+*/
     /**
      * 新增
      *
@@ -121,7 +117,7 @@ public class VipGroupController {
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
-    public String addVipGroup(HttpServletRequest request) {
+    public String addSmsTemplateType(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
@@ -131,7 +127,7 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
-            String result = vipGroupService.insert(message, user_id);
+            String result = smsTemplateTypeService.insert(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -150,12 +146,12 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
-    /**
+  /*  *//**
      * 编辑
      *
      * @param request
      * @return
-     */
+     *//*
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public String updateVipGroup(HttpServletRequest request) {
@@ -185,7 +181,7 @@ public class VipGroupController {
         }
         return dataBean.getJsonStr();
     }
-
+*/
     /**
      * 删除
      *
@@ -194,7 +190,7 @@ public class VipGroupController {
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     @ResponseBody
-    public String deleteVipGroup(HttpServletRequest request) {
+    public String deleteSmsTemplateType(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
@@ -203,13 +199,13 @@ public class VipGroupController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String vipGroup_id = jsonObject.get("id").toString();
-            String[] ids = vipGroup_id.split(",");
+            String smsTemplateTypeId = jsonObject.get("id").toString();
+            String[] ids = smsTemplateTypeId.split(",");
             String msg = null;
             int count = 0;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
-                vipGroupService.delete(Integer.valueOf(ids[i]));
+                smsTemplateTypeService.delete(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
                 dataBean.setMessage("success");
@@ -231,9 +227,9 @@ public class VipGroupController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/vipGroupCodeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/smsTemplateTypeCodeExist", method = RequestMethod.POST)
     @ResponseBody
-    public String vipGroupCodeExist(HttpServletRequest request) {
+    public String smsTemplateTypeCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -241,17 +237,17 @@ public class VipGroupController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String vip_group_code = jsonObject.get("vip_group_code").toString();
+            String template_type_code = jsonObject.get("template_type_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            VipGroup vipGroup = vipGroupService.getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
-            if (vipGroup != null) {
+            SmsTemplateType smsTemplateType = smsTemplateTypeService.getSmsTemplateTypeByCode(corp_code, template_type_code, Common.IS_ACTIVE_Y);
+            if (smsTemplateType != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("会员分组编号已被使用");
+                dataBean.setMessage("消息模板分组编号已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("会员分组编号不存在");
+                dataBean.setMessage("消息模板分组编号不存在");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -268,14 +264,14 @@ public class VipGroupController {
     }
 
     /**
-     * 验证会员分组名称唯一性
+     * 验证消息模板分组名称唯一性
      *
      * @param request
      * @return
      */
-    @RequestMapping(value = "/vipGroupNameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/smsTemplateTypeNameExist", method = RequestMethod.POST)
     @ResponseBody
-    public String vipGroupNameExist(HttpServletRequest request) {
+    public String smsTemplateTypeNameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -283,17 +279,17 @@ public class VipGroupController {
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String vip_group_name = jsonObject.get("vip_group_name").toString();
+            String template_type_name = jsonObject.get("template_type_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            VipGroup vipGroup = vipGroupService.getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
-            if (vipGroup != null) {
+            SmsTemplateType smsTemplateType = smsTemplateTypeService.getSmsTemplateTypeByName(corp_code, template_type_name, Common.IS_ACTIVE_Y);
+            if (smsTemplateType != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("会员分组名称已被使用");
+                dataBean.setMessage("消息模板分组名称已被使用");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("会员分组名称不存在");
+                dataBean.setMessage("凶消息模板分组名称不存在");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -307,12 +303,12 @@ public class VipGroupController {
         return dataBean.getJsonStr();
     }
 
-    /**
+   /* *//**
      * 搜索
      *
      * @param request
      * @return
-     */
+     *//*
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String searchVipGroup(HttpServletRequest request) {
@@ -351,12 +347,12 @@ public class VipGroupController {
 
     }
 
-    /**
+    *//**
      * 筛选
      *
      * @param request
      * @return
-     */
+     *//*
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String vipGroupScreen(HttpServletRequest request) {
@@ -395,67 +391,5 @@ public class VipGroupController {
     }
 
 
-    /***
-     * 导出数据
-     */
-    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
-    @ResponseBody
-    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
-        DataBean dataBean = new DataBean();
-        String errormessage = "数据异常，导出失败";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            String search_value = jsonObject.get("searchValue").toString();
-            String screen = jsonObject.get("list").toString();
-            PageInfo<VipGroup> list;
-            if (screen.equals("")) {
-                if (role_code.equals(Common.ROLE_SYS)) {
-                    //系统管理员
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000, "", search_value);
-                } else {
-                    list = vipGroupService.getAllVipGroupByPage(1, 30000, corp_code, search_value);
-                }
-            } else {
-                Map<String, String> map = WebUtils.Json2Map(jsonObject);
-                if (role_code.equals(Common.ROLE_SYS)) {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, "", map);
-                } else {
-                    list = vipGroupService.getAllVipGrouScreen(1, 30000, corp_code, map);
-                }
-            }
-            List<VipGroup> vipGroups = list.getList();
-            ObjectMapper mapper = new ObjectMapper();
-            mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
-            String json = mapper.writeValueAsString(vipGroups);
-            if (vipGroups.size() >= 29999) {
-                errormessage = "导出数据过大";
-                int i = 9 / 0;
-            }
-            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
-            // String column_name1 = "corp_code,corp_name";
-            // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json, vipGroups, map, response, request);
-            JSONObject result = new JSONObject();
-            if (pathname == null || pathname.equals("")) {
-                errormessage = "数据异常，导出失败";
-                int a = 8 / 0;
-            }
-            result.put("path", JSON.toJSONString("lupload/" + pathname));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception e) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
-            dataBean.setMessage(errormessage);
-        }
-        return dataBean.getJsonStr();
-    }
-
-
+*/
 }
