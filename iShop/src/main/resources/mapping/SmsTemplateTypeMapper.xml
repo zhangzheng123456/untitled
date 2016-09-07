@@ -19,7 +19,20 @@
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
-
+    <select id="selectSmsTemplateById" resultMap="SmsTemplateType">
+       SELECT dstt.id,
+        dstt.template_type_code,
+        dstt.template_type_name,
+        dstt.corp_code,
+        dstt.modified_date,
+        dstt.modifier,
+        dstt.created_date,
+        dstt.creater,
+        dstt.isactive
+        FROM def_sms_template_type dstt,def_corp
+        WHERE dstt.corp_code=def_corp.corp_code
+        and dstt.id=#{id}
+    </select>
     <select id="selectAllSmsTemplateType" resultMap="SmsTemplateType">
         SELECT dstt.id,
         dstt.template_type_code,
@@ -44,6 +57,20 @@
             OR def_corp.corp_name like concat('%',#{search_value},'%')
             )
         </if>
+        ORDER BY dstt.id DESC
+    </select>
+    <select id="selectSmsTwmplateTypes" resultType="com.bizvane.ishop.entity.SmsTemplateType">
+         SELECT dstt.id,
+        dstt.template_type_code,
+        dstt.template_type_name,
+        dstt.corp_code,
+        dstt.modified_date,
+        dstt.modifier,
+        dstt.created_date,
+        dstt.creater,
+        dstt.isactive
+        FROM def_sms_template_type dstt
+        WHERE dstt.corp_code=#{corp_code}
         ORDER BY dstt.id DESC
     </select>
     <delete id="deleteSmsTemplateTypeById">
@@ -131,5 +158,72 @@
         <if test="isactive != null and isactive !=''">
             AND dstt.isactive = #{isactive}
         </if>
+    </select>
+    <update id="updateSmsTemplateType" parameterType="com.bizvane.ishop.entity.SmsTemplateType">
+        UPDATE def_sms_template_type
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="template_type_code!=null">
+                template_type_code=#{template_type_code},
+            </if>
+            <if test="template_type_name!=null">
+                template_type_name=#{template_type_name},
+            </if>
+
+            <if test="corp_code!=null">
+                corp_code=#{corp_code},
+            </if>
+            <if test="modified_date!=null">
+                modified_date=#{modified_date},
+            </if>
+            <if test="modifier!=null">
+                modifier=#{modifier},
+            </if>
+            <if test="created_date!=null">
+                created_date=#{created_date},
+            </if>
+            <if test="creater!=null">
+                creater=#{creater},
+            </if>
+            <if test="isactive!=null">
+                isactive=#{isactive},
+            </if>
+        </trim>
+        WHERE id=#{id};
+    </update>
+
+    <select id="selectSmsTemplateTypeScreen" resultMap="SmsTemplateType">
+        SELECT dstt.id,
+        dstt.template_type_code,
+        dstt.template_type_name,
+        dstt.corp_code,
+        dstt.modified_date,
+        dstt.modifier,
+        dstt.created_date,
+        dstt.creater,
+        dstt.isactive,
+        def_corp.corp_name
+        FROM def_sms_template_type dstt,def_corp
+        WHERE dstt.corp_code=def_corp.corp_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND dstt.corp_code=#{corp_code}
+        </if>
+
+        <if test="map!=null">
+            AND
+            <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+                <choose>
+                    <when test="entryKey=='corp_name' and entryValue!=''">
+                        def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <when test="entryValue!=''">
+                        dstt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    </when>
+                    <otherwise>
+                        1=1
+                    </otherwise>
+                </choose>
+            </foreach>
+        </if>
+        ORDER BY dstt.id DESC
     </select>
 </mapper>

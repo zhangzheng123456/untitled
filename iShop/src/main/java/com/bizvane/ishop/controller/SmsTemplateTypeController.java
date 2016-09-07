@@ -35,6 +35,7 @@ public class SmsTemplateTypeController {
     @Autowired
     private SmsTemplateTypeService smsTemplateTypeService;
     String id;
+
     /**
      * 列表
      *
@@ -77,12 +78,13 @@ public class SmsTemplateTypeController {
         return dataBean.getJsonStr();
     }
 
-   /* *//**
+
+    /**
      * 根据id查看
      *
      * @param request
      * @return
-     *//*
+     */
     @RequestMapping(value = "/select", method = RequestMethod.POST)
     @ResponseBody
     public String selectById(HttpServletRequest request) {
@@ -97,7 +99,7 @@ public class SmsTemplateTypeController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String id = jsonObject.get("id").toString();
-            data = JSON.toJSONString(vipGroupService.getVipGroupById(Integer.parseInt(id)));
+            data = JSON.toJSONString(smsTemplateTypeService.getSmsTemplateTypeById(Integer.parseInt(id)));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(data);
@@ -108,7 +110,7 @@ public class SmsTemplateTypeController {
         }
         return dataBean.getJsonStr();
     }
-*/
+
     /**
      * 新增
      *
@@ -146,24 +148,24 @@ public class SmsTemplateTypeController {
         return dataBean.getJsonStr();
     }
 
-  /*  *//**
+    /**
      * 编辑
      *
      * @param request
      * @return
-     *//*
+     */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
-    public String updateVipGroup(HttpServletRequest request) {
+    public String updateSmsTemplateType(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
-            logger.info("json------updateVipGroup---------" + jsString);
+            logger.info("json------updateSmsTemplateType---------" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            String result = vipGroupService.update(message, user_id);
+            String result = smsTemplateTypeService.update(message, user_id);
             if (result.equals(Common.DATABEAN_CODE_SUCCESS)) {
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -181,7 +183,8 @@ public class SmsTemplateTypeController {
         }
         return dataBean.getJsonStr();
     }
-*/
+
+
     /**
      * 删除
      *
@@ -222,7 +225,7 @@ public class SmsTemplateTypeController {
     }
 
     /**
-     * 验证会员分组编号唯一性
+     * 验证消息模板分组编号唯一性
      *
      * @param request
      * @return
@@ -255,8 +258,6 @@ public class SmsTemplateTypeController {
             dataBean.setMessage(ex.getMessage() + ex.toString());
             logger.info(ex.getMessage() + ex.toString());
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-
-
         }
         return dataBean.getJsonStr();
 
@@ -289,7 +290,7 @@ public class SmsTemplateTypeController {
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("凶消息模板分组名称不存在");
+                dataBean.setMessage("消息模板分组名称不存在");
             }
         } catch (Exception ex) {
             dataBean.setId(id);
@@ -303,12 +304,12 @@ public class SmsTemplateTypeController {
         return dataBean.getJsonStr();
     }
 
-   /* *//**
+    /**
      * 搜索
      *
      * @param request
      * @return
-     *//*
+     */
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     @ResponseBody
     public String searchVipGroup(HttpServletRequest request) {
@@ -326,12 +327,12 @@ public class SmsTemplateTypeController {
             String role_code = request.getSession().getAttribute("role_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<VipGroup> list;
+            PageInfo<SmsTemplateType> list;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, "", search_value);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, "", search_value);
             } else {
-                list = vipGroupService.getAllVipGroupByPage(page_number, page_size, corp_code, search_value);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeByPage(page_number, page_size, corp_code, search_value);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -347,12 +348,12 @@ public class SmsTemplateTypeController {
 
     }
 
-    *//**
+    /**
      * 筛选
      *
      * @param request
      * @return
-     *//*
+     */
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String vipGroupScreen(HttpServletRequest request) {
@@ -372,11 +373,11 @@ public class SmsTemplateTypeController {
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             JSONObject result = new JSONObject();
-            PageInfo<VipGroup> list;
+            PageInfo<SmsTemplateType> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, "", map);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, "", map);
             } else {
-                list = vipGroupService.getAllVipGrouScreen(page_number, page_size, corp_code, map);
+                list = smsTemplateTypeService.getAllSmsTemplateTypeScreen(page_number, page_size, corp_code, map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -390,6 +391,4 @@ public class SmsTemplateTypeController {
         return dataBean.getJsonStr();
     }
 
-
-*/
 }
