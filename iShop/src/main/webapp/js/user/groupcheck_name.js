@@ -209,6 +209,8 @@ function superaddition(data,num){
                         + "</td><td style='text-align:left;padding-left:22px'>"
                         + a
                         + "</td><td>"
+                        + data[i].user_code
+                        + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
                         + data[i].sex
@@ -216,8 +218,6 @@ function superaddition(data,num){
                         +data[i].phone
                         + "</td><td>"
                         +data[i].corp.corp_name
-                        + "</td><td>"
-                        +data[i].login_time_recently
                         + "</td><td>"
                         +data[i].group.group_name
                         + "</td><td>"
