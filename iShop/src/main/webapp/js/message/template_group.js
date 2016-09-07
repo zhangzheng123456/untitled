@@ -745,7 +745,7 @@ function getInputValue(){
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
-    _param["funcCode"]=funcCode;
+    //_param["funcCode"]=funcCode;
     var num=0;
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
