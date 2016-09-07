@@ -72,6 +72,7 @@ public class TestFeedbackService {
             vipParam.setCreater("1");
             vipParam.setIsactive("1");
             String insert = vipParamService.insert(vipParam);
+            System.out.println("------"+insert);
             //"[`~!@#$%^&*()+=|{}':;',\\[\\].<>/?~！@#￥%……&*（）——+|{}【】‘；：”“’。，、？]";
        //     String str = "aaa,bbb,ccc,dddd";
          //    System.out.println(WebUtils.StringFilter(str));
