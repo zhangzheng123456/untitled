@@ -254,6 +254,7 @@
             AND isactive = #{isactive}
         </if>
     </select>
+
     <select id="selUserByUserId" resultType="com.bizvane.ishop.entity.User">
         SELECT *
         FROM def_user
@@ -263,9 +264,17 @@
             AND isactive = #{isactive}
         </if>
     </select>
+
     <select id="userEmailExist" resultType="com.bizvane.ishop.entity.User">
         SELECT * FROM def_user
         WHERE email = #{email}
+        AND isactive = 'Y'
+    </select>
+
+    <select id="userIdExist" resultType="com.bizvane.ishop.entity.User">
+        SELECT * FROM def_user
+        WHERE user_id = #{user_id}
+        AND corp_code = #{corp_code}
         AND isactive = 'Y'
     </select>
 

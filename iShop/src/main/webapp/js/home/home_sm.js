@@ -44,7 +44,7 @@ $(".c_a_shoppe").click(function(){
 		ul.hide();
 		$("#drop_down_m").attr("src","../img/img_arrow_down.png");
 	}
-})
+});
 //获取
 function getShopList(){
 	oc.postRequire("get", "/shop/findStore", "", "", function(data) {
@@ -65,6 +65,7 @@ function getShopList(){
         		$(".area_name").html($(this).html());
 				staffRanking(today,area_code);
 				achAnalysis(today,area_code);
+				achieveChart($("#date1").val(),area_code);
         	})
 		}
 	})

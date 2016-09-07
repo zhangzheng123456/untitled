@@ -466,6 +466,14 @@
         </if>
     </select>
 
+    <!--判断店铺id是否重复-->
+    <select id="storeIdExist" resultType="com.bizvane.ishop.entity.Store">
+        SELECT * FROM def_store
+        WHERE corp_code=#{corp_code}
+        AND store_id=#{store_id}
+        AND isactive = 'Y'
+    </select>
+
     <!--店铺数量  / 店铺新增数量-->
     <select id="selectCount" resultType="java.lang.Integer">
         SELECT COUNT(1) FROM DEF_STORE
