@@ -11,7 +11,7 @@
 #week_p{
 	position: relative;
 }
-.power{
+.power_d{
 	display: inline-block;
 	width: 120px;
 	height: 30px;
@@ -26,7 +26,7 @@
 .remove_app_id{
 	background: #c26555;
 }
-.power a{
+.power_d a{
 	display: block;
 }
 .state{
