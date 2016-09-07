@@ -421,13 +421,13 @@ div.wx_app_new{
 	color:#888888
 }
 div.wx_app_new input:nth-child(3){
-	width: 51px;
+	width: 52px;
 	padding:0;
 	background:#E8E8E8;
 	margin:10px 0 10px 0
 }
 div.wx_app_new p{
-	width: 30px;
+	width: 29px;
 	height:30px;
 	margin:10px 0 10px 0;
 	font-size:20px;
