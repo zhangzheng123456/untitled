@@ -6479,7 +6479,7 @@ body.skin-3 {
   }
 }
 #check_per input{
-    width: 315px;
+    width: 320px;
     height: 30px;
     line-height: 30px;
     background:#dfdfdf;
@@ -6493,13 +6493,12 @@ body.skin-3 {
     display: inline-block;
     border-radius: 0px 4px 4px 0px;
     text-align: center;
+    padding-left: 9px;
     line-height: 30px;
-    margin-left: 5px;
 }
 #check_per .check_icon i{
   color:#ffffff;
   font-size:12px;
-  margin-left:10px;
 }
 @media (max-width: 768px) {
   #page-wrapper {
