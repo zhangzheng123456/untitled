@@ -67,10 +67,14 @@ function getAreaList(){
         		var area_code=$(this).attr("data-code");
         		$(".area_name").attr("data-code",area_code);
         		$(".area_name").html($(this).html());
-        		storeRanking(today,area_code);
-				staffRanking(today,area_code);
-				achAnalysis(today,area_code);
-				achieveChart(today);
+        		var sis_time=$("#achAnalysis").val();//业绩时间
+        		var store_time=$("#storeRanking").val();//店铺时间
+        		var staff_time=$("#staffRanking").val();//员工时间
+        		var chart_time=$("#achvChart").val();//折线图时间
+        		storeRanking(store_time,area_code);//加载店铺
+				staffRanking(staff_time,area_code);//加载员工
+				achAnalysis(sis_time,area_code);//加载业绩
+				achieveChart(chart_time);//折线图
         	})
 		}
 	})
