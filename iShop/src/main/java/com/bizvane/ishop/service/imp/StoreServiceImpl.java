@@ -538,7 +538,7 @@ public class StoreServiceImpl implements StoreService {
         StoreQrcode storeQrcode = storeMapper.selectByStoreApp(corp_code,store_code,auth_appid);
         String picture ="";
         if (storeQrcode == null) {
-            String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=e&emp_id=" + store_code;
+            String url = "http://wechat.app.bizvane.com/app/wechat/creatQrcode?auth_appid=" + auth_appid + "&prd=ishop&src=s&store_id=" + store_code;
             String result = IshowHttpClient.get(url);
             logger.info("------------creatQrcode  result" + result);
             if (!result.startsWith("{")) {
