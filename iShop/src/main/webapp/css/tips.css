@@ -23,6 +23,18 @@
 	text-align: center;
 	cursor: pointer;
 }
+.power_d{
+	display: inline-block;
+	width: 120px;
+	height: 30px;
+	margin-left: -3px;
+	line-height: 30px;
+	border-radius: 7px;
+	color: #FFFFFF;
+	background-color: #6dc1c8;
+	text-align: center;
+	cursor: pointer;
+}
 .remove_app_id{
 	background: #c26555;
 }
