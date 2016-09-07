@@ -6,6 +6,7 @@
         SELECT
         ruq.id,
         ruq.qrcode,
+        ruq.app_id,
         rcw.app_name
         FROM rel_user_qrcode ruq ,rel_corp_wechat rcw
         WHERE  ruq.corp_code = rcw.corp_code
@@ -20,6 +21,7 @@
         SELECT
         ruq.id,
         ruq.qrcode,
+        ruq.app_id,
         rcw.app_name
         FROM rel_user_qrcode ruq ,rel_corp_wechat rcw
         WHERE  ruq.corp_code = rcw.corp_code
