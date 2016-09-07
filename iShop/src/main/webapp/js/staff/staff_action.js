@@ -14,7 +14,6 @@ var filtrate="";//筛选的定义的值
 var key_val=sessionStorage.getItem("key_val");//取页面的function_code
 key_val=JSON.parse(key_val);
 var funcCode=key_val.func_code;
-
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 // if(return_jump!==null){
@@ -94,12 +93,12 @@ function showLi(){
 function hideLi(){
     $("#liebiao").hide();
 }
-// $("#filtrate").click(function(){//点击筛选框弹出下拉框
-//     $(".sxk").slideToggle();
-// })
-// $("#pack_up").click(function(){//点击收回 取消下拉框
-//     $(".sxk").slideUp();
-// })
+$("#filtrate").click(function(){//点击筛选框弹出下拉框
+    $(".sxk").slideToggle();
+})
+$("#pack_up").click(function(){//点击收回 取消下拉框
+    $(".sxk").slideUp();
+})
 //点击清空  清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");
@@ -796,13 +795,11 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/storeAchvGoal/screen","0",_param,function(data){
+    oc.postRequire("post","/userAction/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var list=list.list;
-            var actions=message.actions;
+            var list=message.list;
+            cout=message.pages;
             $(".table tbody").empty();
             if(list.length<=0){
                 $(".table p").remove();
