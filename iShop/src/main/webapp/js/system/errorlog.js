@@ -466,6 +466,9 @@ function frame(){
     $('.content').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
     $(".frame").animate({opacity:"1"},1000);
     $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+         $(".frame").hide();
+    },2000);
 }
 //全选
 function checkAll(name){
@@ -534,7 +537,7 @@ function bianse(){
 }
 //导出提交的
 $("#file_submit").click(function(){
-    var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
+    var li=$("#file_list_r input[type='checkbox']").parents("li");
     var param={};
     var tablemanager=[];
     if(li.length=="0"){

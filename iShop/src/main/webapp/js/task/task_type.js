@@ -544,7 +544,7 @@ $("#leading_out").click(function(){
             var message=JSON.parse(message.tableManagers);
             console.log(message);
             $("#file_list_l ul").empty();
-            for(var i=0;i<=message.length;i++){
+            for(var i=0;i<message.length;i++){
                  $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
                 +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
             }
@@ -563,7 +563,7 @@ function bianse(){
 }
 //导出提交的
 $("#file_submit").click(function(){
-    var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
+    var li=$("#file_list_r input[type='checkbox']").parents("li");
     var param={};
     var tablemanager=[];
     if(li.length=="0"){

@@ -39,16 +39,16 @@ $(function(){
     //移到左边
     $('#right_shift').click(function(){
         var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
+        var input=$("#file_list_r input[type='checkbox']");
         //先判断是否有选中
         if(li.length=="0"){         
             frame();
             $('.frame').html('请先选择'); 
         }
         else{
-            for(var i=li.length;i>=0;i--){
-                
-                child_input.removeAttribute('checked');
-                $(li[i]).appendTo('#file_list_r ul');
+            for(var i=li.length-1;i>=0;i--){
+                input[i].checked=false;
+                $(li[i]).appendTo('#file_list_l ul'); 
             }
             bianse();
         }
@@ -57,8 +57,9 @@ $(function(){
     $('#left_shift_all').click(function(){
         //获取全部的选项,删除并追加给对方
         var li=$("#file_list_l input[type='checkbox']").parents("li");
+        var input=$("#file_list_l input[type='checkbox']");
         for(var i=li.length-1;i>=0;i--){
-            li[i].checked = true;
+            input[i].checked = true;
             $(li[i]).appendTo('#file_list_r ul');
         }
         bianse();
@@ -66,11 +67,11 @@ $(function(){
     //全部移到左边
     $('#right_shift_all').click(function(){
         var li=$("#file_list_r input[type='checkbox']").parents("li");
+        var input=$("#file_list_r input[type='checkbox']");
         for(var i=li.length-1;i>=0;i--){
-            li[i].checked=false;
+            input[i].checked=false;
             $(li[i]).appendTo('#file_list_l ul'); 
         }
-        
         bianse();
     });
 });
