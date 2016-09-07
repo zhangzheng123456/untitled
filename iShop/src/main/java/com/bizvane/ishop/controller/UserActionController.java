@@ -189,6 +189,7 @@ public class UserActionController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
+            Pattern pattern = Pattern.compile("^.*" + search_value+ ".*$", Pattern.CASE_INSENSITIVE);
             System.out.println("======vipActionLogger===== ");
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -196,14 +197,14 @@ public class UserActionController {
 
             BasicDBObject queryCondition = new BasicDBObject();
             BasicDBList values = new BasicDBList();
-            values.add(new BasicDBObject("emp_id", search_value));
-            values.add(new BasicDBObject("url", search_value));
-            values.add(new BasicDBObject("corp_name", search_value));
-            values.add(new BasicDBObject("time", search_value));
-            values.add(new BasicDBObject("vip_id", search_value));
-            values.add(new BasicDBObject("action", search_value));
-            values.add(new BasicDBObject("emp_name", search_value));
-            values.add(new BasicDBObject("corp_code", search_value));
+            values.add(new BasicDBObject("emp_id", pattern));
+            values.add(new BasicDBObject("url", pattern));
+            values.add(new BasicDBObject("corp_name", pattern));
+            values.add(new BasicDBObject("time", pattern));
+            values.add(new BasicDBObject("vip_id", pattern));
+            values.add(new BasicDBObject("action", pattern));
+            values.add(new BasicDBObject("emp_name", pattern));
+            values.add(new BasicDBObject("corp_code", pattern));
             queryCondition.put("$or", values);
 
             DBCursor dbCursor = null;
@@ -220,19 +221,19 @@ public class UserActionController {
                 dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======sys=====dbCursor : " + dbCursor);
             } else {
-                Map keyMap = new HashMap();
-                keyMap.put("corp_code",corp_code);
-                BasicDBObject ref = new BasicDBObject();
-                ref.putAll(keyMap);
-
-                DBCursor dbCursor1 = cursor.find(ref,queryCondition);
-                int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and",value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                int count = Integer.parseInt(String.valueOf(dbCursor2.count()));
                 if (count%page_size == 0){
                     pages = count/page_size;
                 }else {
                     pages = count/page_size+1;
                 }
-                dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = dbCursor2.skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList list = new ArrayList();
