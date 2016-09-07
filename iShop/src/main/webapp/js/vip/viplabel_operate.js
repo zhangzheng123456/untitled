@@ -180,6 +180,7 @@ jQuery(document).ready(function(){
 				// $("#LABEL_TYPE option[value='"+label_type+"']").attr("selected","true");
 				$("#LABEL_NAME").val(msg.label_name);
 				$("#label_group").val(msg.label_group_name);
+				$("#label_group").attr("data-id",msg.label_group_code);
 				$("#created_time").val(msg.created_date);
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
@@ -246,6 +247,8 @@ function getcorplist(a){
 				$("#STORE_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
 				$("#STORE_NAME").attr("data-mark","");
+				$("#label_group").attr("data-id","");
+				$("#label_group").val("");
 			})
 		}else if(data.code=="-1"){
 			art.dialog({

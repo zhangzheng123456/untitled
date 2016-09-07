@@ -160,6 +160,7 @@ input::-webkit-input-placeholder{
    vertical-align: middle;
    color: #6cc1c8;
    margin-left: 8px;
+   line-height: 19px;
 }
 .action li{
 	cursor: pointer;
