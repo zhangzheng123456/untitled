@@ -644,7 +644,7 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
-    @RequestMapping(value = "/Store_CodeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/storeCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String Store_CodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -688,7 +688,7 @@ public class StoreController {
     }
 
 
-    @RequestMapping(value = "/Store_NameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/storeNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String Store_NameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

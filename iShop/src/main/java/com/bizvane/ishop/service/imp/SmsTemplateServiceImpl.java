@@ -2,8 +2,10 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.SmsTemplateMapper;
+import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.service.SmsTemplateService;
+import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,6 +84,9 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
     public PageInfo<SmsTemplate> selectBySearch(int page_number, int page_size, String corp_code, String search_value) throws Exception{
         PageHelper.startPage(page_number, page_size);
         List<SmsTemplate> list = this.smsTemplateMapper.selectBySearch(corp_code, search_value);
+        for (SmsTemplate smsTemplate:list) {
+            smsTemplate.setIsactive(CheckUtils.CheckIsactive(smsTemplate.getIsactive()));
+        }
         PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>(list);
         return page;
     }

@@ -56,8 +56,11 @@ public class CorpParamServiceImpl implements CorpParamService {
     @Override
     public PageInfo<CorpParam> selectAllParam(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
-        List<CorpParam> areas = corpParamMapper.selectAllParam(search_value);
-        PageInfo<CorpParam> page = new PageInfo<CorpParam>(areas);
+        List<CorpParam> list = corpParamMapper.selectAllParam(search_value);
+        for (CorpParam corpParam:list) {
+            corpParam.setIsactive(CheckUtils.CheckIsactive(corpParam.getIsactive()));
+        }
+        PageInfo<CorpParam> page = new PageInfo<CorpParam>(list);
         return page;
     }
 
@@ -131,13 +134,16 @@ public class CorpParamServiceImpl implements CorpParamService {
 
     @Override
     public PageInfo<CorpParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception {
-        List<CorpParam> corp_params;
+        List<CorpParam> corpParams;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("map", map);
-        corp_params = corpParamMapper.selectAllParamScreen(params);
-        PageInfo<CorpParam> page = new PageInfo<CorpParam>(corp_params);
+        corpParams = corpParamMapper.selectAllParamScreen(params);
+        for (CorpParam corpParam:corpParams) {
+            corpParam.setIsactive(CheckUtils.CheckIsactive(corpParam.getIsactive()));
+        }
+        PageInfo<CorpParam> page = new PageInfo<CorpParam>(corpParams);
         return page;
     }
 }

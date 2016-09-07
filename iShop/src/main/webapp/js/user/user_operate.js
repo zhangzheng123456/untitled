@@ -861,15 +861,10 @@ jQuery(document).ready(function(){
 				}
 				var qrcodeList=msg.qrcodeList;
 				if(qrcodeList.length>0) {
-					var appinput = $(".er_code li input");
-					var img = $(".er_code .kuang img");
-					console.log(qrcodeList);
-					console.log(img);
-					$(appinput[0]).val(qrcodeList[0].app_name);
-					$(img[0]).attr("src", qrcodeList[0].qrcode);
-					for (var i = 1; i < qrcodeList.length; i++) {
-						$(".er_code").append('<li class="app_li"><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
+					for (var i = 0; i < qrcodeList.length; i++) {
+						$("#add_app_id").before('<li class="app_li"><input onclick="select_down(this)" value="' + qrcodeList[i].app_name + '" readonly="readonly"><ul></ul>'
 							+ '<span class="power create" onclick="getTwoCode(this)">生成</span>'
+							+ '<span class="power k_close" style="display: none;">关闭</span>'
 							+ '<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
 							+ '<div class="kuang"><img src="' + qrcodeList[i].qrcode + '" alt="">'
 							+'</div></li>')
@@ -906,7 +901,7 @@ jQuery(document).ready(function(){
 			_params["user_code"]=user_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/user/UserCodeExist","", _params, function(data){
+			oc.postRequire("post","/user/userCodeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
 	                    $("#USERID").attr("data-mark","Y");

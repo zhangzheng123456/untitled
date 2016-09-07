@@ -4,16 +4,16 @@
 
     <resultMap id="VipInfos" type="com.bizvane.ishop.entity.VipRecord">
         <id column="id" property="id"/>
-        <result column="vip_code" property="vip_code"/>
-        <result column="user_code" property="user_code"/>
-        <result column="action" property="action"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
-        <result column="isactive" property="isactive"/>
-        <result column="created_date" property="created_date"/>
-        <result column="creater" property="creater"/>
-        <result column="corp_code" property="corp_code"/>
-        <result column="corp_name" property="corp_name"/>
+        <result column="vip_code" property="vip_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="action" property="action" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <association property="vipRecordType" javaType="com.bizvane.ishop.entity.VipRecordType">
             <result column="type_name" property="type_name"/>
         </association>
@@ -49,7 +49,6 @@
         dvc.action=dvrt.type_code
                 and dvc.id=#{id}
      </select>
-
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipRecord">
         INSERT INTO DEF_VIP_RECORD
@@ -114,18 +113,18 @@
             </if>
         </trim>
     </insert>
+
     <delete id="deleteByPrimary">
         DELETE FROM
         DEF_VIP_RECORD
         WHERE id=#{id}
     </delete>
+
     <select id="selectAllVipRecordInfo" resultMap="VipInfos">
-        select
+        SELECT
         dvc.id ,
         dvc.vip_code ,
         dvc.user_code,
-        dvc.created_date ,
-        dvc.creater,
         dvc.modified_date ,
         dvc.modifier,
         dvc.isactive,
@@ -133,32 +132,33 @@
         du.user_name,
         dc.corp_name,
         dvrt.type_name
-        from
+        FROM
         DEF_VIP_RECORD dvc,
         DEF_USER du,
         DEF_VIP_RECORD_TYPE dvrt,
         DEF_CORP dc
         WHERE
-        dvc.corp_code=du.corp_code and
-        dvc.corp_code=dc.corp_code and
-        dvc.user_code=du.user_code and
+        dvc.corp_code=du.corp_code AND
+        dvc.corp_code=dc.corp_code AND
+        dvc.user_code=du.user_code AND
         dvc.action=dvrt.type_code
         <if test="corp_code!=null and corp_code!=''">
-            and dvc.corp_code=#{corp_code}
+            AND dvc.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
-            and (
-            dvc.vip_code like concat('%',#{search_value},'%')
-            or dvc.user_code like concat('%',#{search_value},'%')
-            or dvrt.type_name like concat('%',#{search_value},'%')
-            or du.user_name like concat('%',#{search_value},'%')
+            AND (
+            dvc.vip_code LIKE concat('%',#{search_value},'%')
+            OR dvc.user_code LIKE concat('%',#{search_value},'%')
+            OR dvrt.type_name LIKE concat('%',#{search_value},'%')
+            OR du.user_name LIKE concat('%',#{search_value},'%')
+            OR dc.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY dvc.id DESC
     </select>
 
     <select id="selectAllVipRecordScreen" resultMap="VipInfos">
-        select
+        SELECT
         dvc.id ,
         dvc.vip_code ,
         dvc.user_code,
@@ -169,18 +169,18 @@
         du.user_name,
         dc.corp_name,
         dvrt.type_name
-        from
+        FROM
         DEF_VIP_RECORD dvc,
         DEF_USER du,
         DEF_VIP_RECORD_TYPE dvrt,
         DEF_CORP dc
         WHERE
-        dvc.corp_code=du.corp_code and
-        dvc.corp_code=dc.corp_code and
-        dvc.user_code=du.user_code and
+        dvc.corp_code=du.corp_code AND
+        dvc.corp_code=dc.corp_code AND
+        dvc.user_code=du.user_code AND
         dvc.action=dvrt.type_code
         <if test="corp_code!=null and corp_code!=''">
-            and dvc.corp_code=#{corp_code}
+            AND dvc.corp_code=#{corp_code}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
@@ -203,7 +203,7 @@
     </select>
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipRecord">
-        update DEF_VIP_RECORD
+        UPDATE DEF_VIP_RECORD
         <trim prefix="set" suffixOverrides=",">
             <if test="vip_code!=null and  vip_code!=''">
                 vip_code=#{vip_code},
