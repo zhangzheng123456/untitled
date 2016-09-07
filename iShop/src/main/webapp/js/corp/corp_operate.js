@@ -338,11 +338,16 @@ jQuery(document).ready(function () {
                         if (wechat[i].is_authorize == "N") {
                             is_authorize="未授权";
                         }
-                        $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'
-                            + '<input type="text" class="WXID" value=' + wechat[i].app_id + '>'
-                            + '<label style="width: 70px;margin:15px 10px">公众号名称</label><input type="text" class="AppName" value=' + wechat[i].app_name + '>'
-                            + '<input type="text" disabled="true" value="'+is_authorize+'" style="width: 100px;"><span class="remove_input" onclick="removeselect(this)">删除</span>'
-                            + '</span>')
+                        //$(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'
+                        //    + '<input type="text" class="WXID" value=' + wechat[i].app_id + '>'
+                        //    + '<label style="width: 70px;margin:15px 10px">公众号名称</label><input type="text" class="AppName" value=' + wechat[i].app_name + '>'
+                        //    + '<input type="text" disabled="true" value="'+is_authorize+'" style="width: 100px;"><span class="remove_input" onclick="removeselect(this)">删除</span>'
+                        //    + '</span>')
+                        $(".wx_app").append('<span class="wx_span" style="display:inline-flex">'
+                        + '<input type="text" class="WXID" value=' + wechat[i].app_id + '>'
+                        + '<input type="text" class="AppName" value=' + wechat[i].app_name + '>'
+                        + '<input type="text" disabled="true" value="'+is_authorize+'" ><p class="icon-ishop_6-12"onclick="removeselect(this)"></p>'
+                        + '</span>')
                     }
                 }
                 var input = $(".checkbox_isactive").find("input")[0];

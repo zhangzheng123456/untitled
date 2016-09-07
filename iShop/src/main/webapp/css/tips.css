@@ -13,7 +13,7 @@
 }
 .power{
 	display: inline-block;
-	width: 60px;
+	width: 120px;
 	height: 30px;
 	margin-left: -3px;
 	line-height: 30px;
@@ -121,11 +121,11 @@
 	color: #ffffff
 }
 .wx_app{
-	width: 650px;
+	width: 420px;
 }
 .wx_app input{
-	// width: 160px;
-	// margin-top: 15px;
+	width: 160px;
+	margin: 10px 10px 10px 0px;
 }
 #WXID{
 	margin-left: 0;
@@ -410,4 +410,26 @@
 	background:rgba(0,0,0,0.4);
 	text-align: center;
 	line-height: 40px;
+}
+/*公众号授权*/
+div.wx_app_new{
+	/*display:inline-flex;*/
+	background:#E8E8E8;
+	margin-bottom: 0px;
+	margin-top: 0px;
+	color:#888888
+}
+div.wx_app_new input:nth-child(3){
+	width: 51px;
+	padding:0;
+	background:#E8E8E8;
+	margin:10px 0 10px 0
+}
+div.wx_app_new p{
+	width: 30px;
+	height:30px;
+	margin:10px 0 10px 0;
+	font-size:20px;
+	color:#c26555 ;
+	line-height: 30px;
 }

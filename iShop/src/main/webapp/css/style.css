@@ -8453,7 +8453,7 @@ li.select_index>a>label>i{
 .viplabel_div{
   position: relative;
 }
- #add_app_id{
+ #add_app_id ,.code_style{
    height: 50px;
    line-height: 50px;
    margin-top: 20px;;
@@ -8464,5 +8464,8 @@ li.select_index>a>label>i{
    border-radius: 5px;
    color: #6dc1c8;
    font-size: 14px;
+ }
+ div.code_style{
+   height: auto;
  }
  #add_app_id span{font-size: 20px;margin-left: 10px;}
