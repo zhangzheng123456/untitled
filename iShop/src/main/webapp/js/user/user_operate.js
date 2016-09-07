@@ -74,10 +74,17 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 	};
 	useroperatejs.bindbutton=function(){
 		$(".useradd_oper_btn ul li:nth-of-type(1)").click(function(){
-			var codeMark=$("#USERID").attr("data-mark");
+			var codeMark=$("#USERID").attr("data-mark");//编号是唯一的标志
+			var idMark=$("#user_id").attr("data-mark");//ID是否唯一的标志
 			var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
 			var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 			if(useroperatejs.firstStep()){
+				if(idMark=="N"){
+					var div=$("#user_id").next('.hint').children();
+					div.html("员工ID已经存在！");
+					div.addClass("error_tips");
+					return;
+				}
 				if(phoneMark=="N"){
 					var div=$("#USER_PHONE").next('.hint').children();
 					div.html("该手机号码已经存在！");
@@ -707,6 +714,7 @@ jQuery(document).ready(function(){
 				$("#USERID").val(msg.user_code);
 				$("#USERID").attr("data-name",msg.user_code);
 				$("#user_id").val(msg.user_id);
+				$("#user_id").attr("data-name",msg.user_id);
 				$("#USER_NAME").val(msg.user_name);
 				if(msg.avatar==""){
 					$("#preview img").attr("src","../img/head.png");
@@ -913,6 +921,28 @@ jQuery(document).ready(function(){
 		    })
 		}
     })
+	//验证员工ID唯一性
+	$("#user_id").blur(function(){
+		var _params={};
+		var user_id=$(this).val();//员工编号
+		var corp_code=$("#OWN_CORP").val();//公司编号
+		var user_id1=$(this).attr("data-name");
+		if(user_id!==""&&user_id!==user_id1){
+			_params["user_id"]=user_id;
+			_params["corp_code"]=corp_code;
+			var div=$(this).next('.hint').children();
+			oc.postRequire("post","/user/userCodeExist","", _params, function(data){
+				if(data.code=="0"){
+					div.html("");
+					$("#user_id").attr("data-mark","Y");
+				}else if(data.code=="-1"){
+					$("#user_id").attr("data-mark","N");
+					div.addClass("error_tips");
+					div.html("员工ID已经存在！");
+				}
+			})
+		}
+	})
     //验证邮箱是否唯一的方法
     $("#USER_EMAIL").blur(function(){
     	var email=$("#USER_EMAIL").val();//邮箱名称

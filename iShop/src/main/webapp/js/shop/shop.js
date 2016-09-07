@@ -40,7 +40,14 @@ var oc = new ObjectControl();
         $(".shopadd_oper_btn ul li:nth-of-type(1)").click(function () {
             var nameMark = $("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
             var codeMark = $("#STORE_ID").attr("data-mark");//店铺ID是否唯一的标志
+            var idMark = $("#storeId").attr("data-mark");//店铺ID是唯一的标志
             if (shopjs.firstStep()) {
+                if (idMark == "N"){
+                    var div = $("#storeId").next(".hint").children();
+                    div.html("店铺ID已存在")
+                    div.addClass("errop_tips");
+                    return ;
+                }
                 if (nameMark == "N" || codeMark == "N") {
                     if (nameMark == "N") {
                         var div = $("#STORE_NAME").next('.hint').children();
@@ -291,6 +298,7 @@ jQuery(document).ready(function () {
                 $("#STORE_ID").val(msg.store_code);
                 $("#STORE_ID").attr("data-name", msg.store_code);
                 $("#storeId").val(msg.store_id);
+                $("#storeId").attr("data-name", msg.store_id);
                 $("#OWN_AREA").val(msg.area_name);
                 $("#OWN_AREA").attr("data-myacode", msg.area_code);
                 if (msg.flg_tob == "Y") {
@@ -362,6 +370,27 @@ jQuery(document).ready(function () {
                     $("#STORE_ID").attr("data-mark", "N");
                     div.addClass("error_tips");
                     div.html("该编号已经存在！");
+                }
+            })
+        }
+    })
+    $("#storeId").blur(function () {
+        var _params = {};
+        var store_id= $(this).val();//店仓ID
+        var store_id1 = $(this).attr("data-name");//标志
+        var corp_code = $("#OWN_CORP").val();//公司编号
+        if (store_id !== "" && store_id !== store_id1) {
+            _params["store_id"] = store_id;
+            _params["corp_code"] = corp_code;
+            var div = $(this).next('.hint').children();
+            oc.postRequire("post", "/shop/storeCodeExist", "", _params, function (data) {
+                if (data.code == "0") {
+                    div.html("");
+                    $("#STORE_ID").attr("data-mark", "Y");
+                } else if (data.code == "-1") {
+                    $("#STORE_ID").attr("data-mark", "N");
+                    div.addClass("error_tips");
+                    div.html("店铺ID已经存在！");
                 }
             })
         }
@@ -701,6 +730,8 @@ $("#add_app_id").click(function () {
         + '<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
         + '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="" alt="">'
         + '</div></li>')
+
+    close_two_code();
 })
 function remove_app_id(obj) {
     $(obj).parent().remove();
