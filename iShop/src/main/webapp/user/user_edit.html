@@ -120,18 +120,19 @@
                     <div>
                         <span><label>最后登录</label><input type="text" id="recently_login" style="background: #dfdfdf;" readonly/></span>
                     </div>
+                    <label for="">生成二维码</label>
                     <div class="er_code">
-                        <li>
-                            <label for="">生成二维码</label><input onclick="select_down(this)" readonly="readonly">
-                            <ul>
-                            </ul>
-                            <span class="power create" onclick="getTwoCode(this)">生成</span>
-                            <span class="power k_close" style="display: none;">关闭</span>
-                            <span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>
-                            <div class="kuang">
-                                <img src="" alt="">
-                            </div>
-                        </li>
+                        <!--<li class="app_li">-->
+                            <!--<input onclick="select_down(this)" readonly="readonly">-->
+                            <!--<ul>-->
+                            <!--</ul>-->
+                            <!--<span class="power create" onclick="getTwoCode(this)">生成</span>-->
+                            <!--<span class="power k_close" style="display: none;">关闭</span>-->
+                            <!--<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>-->
+                            <!--<div class="kuang">-->
+                                <!--<img src="" alt="">-->
+                            <!--</div>-->
+                        <!--</li>-->
                         <div id="add_app_id">新增<span>+</span></div>
                     </div>
                 </form>
@@ -185,7 +186,7 @@
                             <label>员工名称</label>
                             <input type="text" disabled="true" id="user_name">
                         </li>
-                    </ul>            
+                    </ul>
                 </div>
                 <div class="list_r">
                     <div class="save" id="save">
@@ -295,11 +296,11 @@
                             <th>模块名称</th>
                             <th>功能名称</th>
                             <th>动作名称</th>
-                            <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>   
+                            <th width="50px;" style="text-align: left;"><div class="checkbox1"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
                         </tr>
                     </thead>
                     <tbody>
-                        
+
                     </tbody>
                 </table>
             </div>

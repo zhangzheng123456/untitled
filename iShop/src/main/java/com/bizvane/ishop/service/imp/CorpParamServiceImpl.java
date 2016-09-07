@@ -56,8 +56,11 @@ public class CorpParamServiceImpl implements CorpParamService {
     @Override
     public PageInfo<CorpParam> selectAllParam(int page_number, int page_size, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
-        List<CorpParam> areas = corpParamMapper.selectAllParam(search_value);
-        PageInfo<CorpParam> page = new PageInfo<CorpParam>(areas);
+        List<CorpParam> list = corpParamMapper.selectAllParam(search_value);
+        for (CorpParam corpParam:list) {
+            corpParam.setIsactive(CheckUtils.CheckIsactive(corpParam.getIsactive()));
+        }
+        PageInfo<CorpParam> page = new PageInfo<CorpParam>(list);
         return page;
     }
 
