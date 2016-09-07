@@ -166,7 +166,7 @@ $(function(){
 
                     }
                 };
-                var _params={"id":ID,"template_type_code":template_group_coded,"template_type_name":template_group_name,"corp_code":OWN_CORP,"isactive":ISACTIVE};
+                var _params={"id":ID,"template_type_code":template_group_code,"template_type_name":template_group_name,"corp_code":OWN_CORP,"isactive":ISACTIVE};
                 templateGroupjs.ajaxSubmit(_command,_params,opt);
             }else{
                 return;
