@@ -678,7 +678,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var li="";
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
-                li+="<li><label style='width:100px;'>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
                 var ul="<ul class='isActive_select_down'>";
