@@ -1228,7 +1228,7 @@ public class UserController {
     /**
      * 用户编号是否重复
      */
-    @RequestMapping(value = "/UserCodeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/userCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String UserCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

@@ -901,7 +901,7 @@ jQuery(document).ready(function(){
 			_params["user_code"]=user_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/user/UserCodeExist","", _params, function(data){
+			oc.postRequire("post","/user/userCodeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
 	                    $("#USERID").attr("data-mark","Y");

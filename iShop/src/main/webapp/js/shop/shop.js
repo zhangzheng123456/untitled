@@ -1,3 +1,4 @@
+
 var oc = new ObjectControl();
 (function (root, factory) {
     root.shop = factory();
@@ -353,7 +354,7 @@ jQuery(document).ready(function () {
             _params["store_code"] = store_code;
             _params["corp_code"] = corp_code;
             var div = $(this).next('.hint').children();
-            oc.postRequire("post", "/shop/Store_CodeExist", "", _params, function (data) {
+            oc.postRequire("post", "/shop/storeCodeExist", "", _params, function (data) {
                 if (data.code == "0") {
                     div.html("");
                     $("#STORE_ID").attr("data-mark", "Y");
@@ -374,7 +375,7 @@ jQuery(document).ready(function () {
             var _params = {};
             _params["store_name"] = store_name;
             _params["corp_code"] = corp_code;
-            oc.postRequire("post", "/shop/Store_NameExist", "", _params, function (data) {
+            oc.postRequire("post", "/shop/storeNameExist", "", _params, function (data) {
                 if (data.code == "0") {
                     div.html("");
                     $("#STORE_NAME").attr("data-mark", "Y");
