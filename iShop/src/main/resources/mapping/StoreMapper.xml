@@ -45,6 +45,7 @@
         AND def_store.area_code = def_area.area_code
         AND def_store.id=#{id}
     </select>
+
     <select id="selectStoreById" resultMap="Store">
         SELECT
         def_store.id,
@@ -75,6 +76,7 @@
             AND isactive = #{isactive}
         </if>
     </select>
+
     <select id="selStoreByStroeId" resultType="com.bizvane.ishop.entity.Store">
         SELECT * FROM DEF_STORE
         where CORP_CODE = #{corp_code}
@@ -83,6 +85,7 @@
             AND isactive = #{isactive}
         </if>
     </select>
+
     <select id="selectAllStore" resultMap="Store">
         SELECT
         def_store.id,

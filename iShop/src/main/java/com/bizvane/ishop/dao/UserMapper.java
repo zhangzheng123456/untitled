@@ -55,7 +55,10 @@ public interface UserMapper {
 
     int insertUserQrcode(UserQrcode record);
 
-    int updateUserQrcode(UserQrcode record);
-
     int deleteUserQrcode(@Param("corp_code") String corp_code, @Param("user_code") String user_code) throws SQLException;
+
+    int deleteQrcode(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
+
+    int deleteUserQrcodeOne(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
+
 }

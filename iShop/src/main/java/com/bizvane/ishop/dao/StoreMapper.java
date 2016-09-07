@@ -59,9 +59,9 @@ public interface StoreMapper {
 
     int insertStoreQrcode(StoreQrcode record);
 
-    int updateStoreQrcode(StoreQrcode record);
-
     int deleteStoreQrcode(@Param("corp_code") String corp_code, @Param("store_code") String store_code) throws SQLException;
+
+    int deleteStoreQrcodeOne(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("app_id") String app_id) throws SQLException;
 
     List<Store>  selectStore(Map<String, Object> params) throws SQLException;
 

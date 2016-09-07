@@ -38,6 +38,14 @@
         AND user_code = #{user_code}
     </delete>
 
+    <delete id="deleteUserQrcodeOne">
+        DELETE FROM
+        rel_user_qrcode
+        WHERE corp_code = #{corp_code}
+        AND user_code = #{user_code}
+        AND app_id = #{app_id}
+    </delete>
+
     <insert id="insertUserQrcode" parameterType="com.bizvane.ishop.entity.UserQrcode">
         INSERT INTO rel_user_qrcode
         <trim prefix="(" suffix=")" suffixOverrides=",">
