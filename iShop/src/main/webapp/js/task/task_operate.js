@@ -461,7 +461,8 @@ $("#staff_code_drop").click(function(e){
 				$(a[j]).remove();
 			}
 		}
-		$('.xingming').append("<li data-code='"+user_codes[i]+"' data-phone='"+phone[i]+"'>"+user_names[i]+"<div class='delectxing' onclick='deleteName(this)'></div></li>");	
+		//$('.xingming').append("<li data-code='"+user_codes[i]+"' data-phone='"+phone[i]+"'>"+user_names[i]+"<div class='delectxing' onclick='deleteName(this)'></div></li>");
+		$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+user_codes[i]+"' data-phone='"+phone[i]+"' value='"+user_names[i]+"'><span class='power remove_app_id' onclick='deleteName(this)'>删除</span></p>");
 	}
 	//删除姓名
 	$(".xingming li").hover(function(){
@@ -653,14 +654,15 @@ function nssignment(){//加载list的文件
  		var task_code=msg.task_code;//任务编号
  		var ul="";
  		for(var i=0;i<list.length;i++){
- 			ul+="<li data-code='"+list[i].user_code+"' data-phone='"+list[i].phone+"'>"+list[i].user_name+"<div class='delectxing' onclick='deleteName(this)'></div></li>";	
+ 			//ul+="<li data-code='"+list[i].user_code+"' data-phone='"+list[i].phone+"'>"+list[i].user_name+"<div class='delectxing' onclick='deleteName(this)'></div></li>"
+			ul+="<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+list[i].user_code+"' data-phone='"+list[i].phone+"' value='"+list[i].user_name+"'><span class='power remove_app_id' onclick='deleteName(this)'>删除</span></p>";
  		}
  		$('.xingming').html(ul);
- 		$(".xingming li").hover(function(){
-	    	$(this).find('.delectxing').show();
-		},function(){
-		    $(this).find('.delectxing').hide();
-		})
+ 		//$(".xingming li").hover(function(){
+	    	//$(this).find('.delectxing').show();
+		//},function(){
+		//    $(this).find('.delectxing').hide();
+		//})
  		$("#task_title_e").val(msg.task_title);//任务名称
  		$("#task_describe").val(msg.task_description);//任务描述
  		$("#task_code_e").val(msg.task_code);//任务编号
@@ -690,6 +692,7 @@ function editAssignment(a){
  	nssignment();
 }
 //编辑进入界面
+
 function editAssignmentb(a){
     var tr=$("#table tbody input[type='checkbox']:checked").parents("tr");
 	if (tr.length>1||tr.length=='0') {
@@ -706,7 +709,7 @@ function editAssignmentb(a){
 }
 //删除名称
 function deleteName(a){
-	$(a).parent("li").remove();
+	$(a).parent("p").remove();
 }
 //新增关闭
 $("#add_close").click(function(){
