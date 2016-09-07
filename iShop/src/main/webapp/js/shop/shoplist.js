@@ -404,7 +404,7 @@ function jumpBianse(){
         return_jump["list"]=list;//筛选的请求的list;
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-        var store_code=$(this).parents('tr').find("td:eq(2)").html();
+        var store_code=$(this).parents('tr').find("td:eq(2) span").html();
         var corp_code=$(this).attr("data-code");
         var store_corp={"store_code":store_code,"corp_code":corp_code};
         sessionStorage.setItem("store_corp",JSON.stringify(store_corp));
@@ -468,7 +468,7 @@ $("#code_save").click(function(){
     var param={};
     var list=[];
     for(var i=0;i<tr.length;i++){
-        var store_code=$(tr[i]).find("td:eq(2)").html();
+        var store_code=$(tr[i]).find("td:eq(2) span").html();
         var corp_code=$(tr[i]).find(".staff").attr("data-code");
         var param1={"store_code":store_code,"corp_code":corp_code};
         list.push(param1);

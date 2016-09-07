@@ -534,6 +534,10 @@ public class StoreServiceImpl implements StoreService {
         return storeMapper.deleteStoreQrcode(corp_code,store_code);
     }
 
+    public int deleteStoreQrcodeOne(String corp_code, String store_code, String app_id) throws Exception{
+        return storeMapper.deleteStoreQrcodeOne(corp_code,store_code,app_id);
+    }
+
     public String creatStoreQrcode(String corp_code,String store_code,String auth_appid,String user_id) throws Exception{
         StoreQrcode storeQrcode = storeMapper.selectByStoreApp(corp_code,store_code,auth_appid);
         String picture ="";

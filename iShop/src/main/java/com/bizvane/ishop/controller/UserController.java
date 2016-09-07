@@ -1465,8 +1465,9 @@ public class UserController {
             JSONObject jsonObject = new JSONObject(message);
             String user_code = jsonObject.get("user_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+            String app_id = jsonObject.get("app_id").toString();
 
-            userService.deleteUserQrcode(corp_code,user_code);
+            userService.deleteUserQrcodeOne(corp_code,user_code,app_id);
             dataBean.setId(id);
             dataBean.setMessage("success");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

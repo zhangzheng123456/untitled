@@ -6,6 +6,7 @@
         SELECT
         rsq.id,
         rsq.qrcode,
+        rsq.app_id,
         rcw.app_name
         FROM rel_store_qrcode rsq ,rel_corp_wechat rcw
         WHERE rsq.corp_code = rcw.corp_code
@@ -20,6 +21,7 @@
         SELECT
         rsq.id,
         rsq.qrcode,
+        rsq.app_id,
         rcw.app_name
         FROM rel_store_qrcode rsq ,rel_corp_wechat rcw
         WHERE rsq.corp_code = rcw.corp_code
@@ -36,6 +38,14 @@
         rel_store_qrcode
         WHERE corp_code = #{corp_code}
         AND store_code = #{store_code}
+    </delete>
+
+    <delete id="deleteStoreQrcodeOne">
+        DELETE FROM
+        rel_store_qrcode
+        WHERE corp_code = #{corp_code}
+        AND store_code = #{store_code}
+        AND app_id = #{app_id}
     </delete>
 
     <insert id="insertStoreQrcode" parameterType="com.bizvane.ishop.entity.StoreQrcode">

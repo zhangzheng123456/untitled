@@ -6,7 +6,6 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.IshowHttpClient;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -842,7 +841,36 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 删除二维码
+     */
+    @RequestMapping(value = "/deletQrcode", method = RequestMethod.POST)
+    @ResponseBody
+    public String deletQrcode(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("------------UserController deletQrcode" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String store_code = jsonObject.get("store_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String app_id = jsonObject.get("app_id").toString();
 
+            storeService.deleteStoreQrcodeOne(corp_code,store_code,app_id);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
 
     /***
      * 导出数据
