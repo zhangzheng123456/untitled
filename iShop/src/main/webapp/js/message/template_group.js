@@ -246,7 +246,7 @@ function superaddition(data,num){//页面加载循环
     }
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
-};
+}
 //权限配置
 function jurisdiction(actions){
     $('#jurisdiction').empty();
@@ -315,7 +315,7 @@ function jumpBianse(){
     })
     //点击新增时页面进行的跳转
     $('#add').click(function(){
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_add.html");
+        $(window.parent.document).find('#iframepage').attr("src","/message/template_group_add.html");
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
@@ -330,7 +330,7 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/message/template_group_edit.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
@@ -347,7 +347,7 @@ function jumpBianse(){
             return_jump["pageSize"]=pageSize;//每页多少行
             sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/message/template_group_edit.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
@@ -398,7 +398,7 @@ $("#d_search").click(function(){
 //搜索的请求函数
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/vipGroup/search","0",param,function(data){
+    oc.postRequire("post","/smsTemplateType/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -453,7 +453,7 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    oc.postRequire("post","/vipGroup/delete","0",params,function(data){
+    oc.postRequire("post","/smsTemplateType/delete","0",params,function(data){
         if(data.code=="0"){
             if(value==""&&filtrate==""){
                 frame();
@@ -477,7 +477,7 @@ $("#delete").click(function(){
             $('.frame').html(data.message);
         }
     })
-})
+});
 //删除弹框
 function frame(){
     var left=($(window).width()-$("#frame").width())/2;//弹框定位的left值
@@ -678,7 +678,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var li="";
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
-                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+                li+="<li><label style='width:100px;'>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
                 var ul="<ul class='isActive_select_down'>";
@@ -776,7 +776,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/vipGroup/screen","0",_param,function(data){
+    oc.postRequire("post","/smsTemplateType/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
