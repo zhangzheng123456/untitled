@@ -1449,7 +1449,36 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 删除二维码
+     */
+    @RequestMapping(value = "/deletQrcode", method = RequestMethod.POST)
+    @ResponseBody
+    public String deletQrcode(HttpServletRequest request){
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("------------UserController deletQrcode" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String user_code = jsonObject.get("user_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
 
+            userService.deleteUserQrcode(corp_code,user_code);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+        
     /**
      * 员工管理
      * 筛选
@@ -1571,31 +1600,5 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
-
-    /**
-     * 导购根据user_code生成二维码
-     */
-//    @RequestMapping(value = "/creatQrcode", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String creatQrcode(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String user_id = request.getSession().getAttribute("user_code").toString();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            logger.info("------------UserController creatQrcode" + jsString);
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            String message = jsonObj.get("message").toString();
-//            JSONObject jsonObject = new JSONObject(message);
-//            String corp_code = jsonObject.get("corp_code").toString();
-//            String user_code = jsonObject.get("user_code").toString();
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId(id);
-//            dataBean.setMessage(ex.getMessage() + ex.toString());
-//            logger.info(ex.getMessage() + ex.toString() + "========ex==========");
-//        }
-//        return dataBean.getJsonStr();
-//    }
 
 }
