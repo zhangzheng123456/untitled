@@ -41,29 +41,12 @@
                     <div>
                         <span><label>联系电话</label><input type="text" id="PHONE" verify="Phone"/><div style="padding-left:80px" class="hint"><div  hintinfo="联系电话不能为空！"></div></div></span>
                     </div>
-                    <!--<div class="wx_app">-->
-                        <!--<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>-->
-                            <!--<input type="text" class="WXID" />-->
-                            <!--<label style="width: 70px;;margin:15px 10px">公众号名称</label>-->
-                            <!--<input type="text" class="AppName" />-->
-                            <!--<input type="text" disabled="true" value="未授权" style="width: 100px;">-->
-                            <!--<span onclick="add()" class="add_apple">添加</span>-->
-                        <!--</span>-->
-                    <!--</div>-->
                     <div class="code_style"style="height:50px;display:inline-flex;margin-bottom: 0px;margin-top: 0px;color:#888888">
                         <p style="width: 160px;font-size: 14px">微信公众号AppID</p>
                         <p style="width: 160px;font-size: 14px;margin:0 10px 0 10px">公众号名称</p>
                         <p style="margin-left:15px">状态</p>
                     </div>
                     <div class="wx_app code_style wx_app_new">
-                        <!--<span class="wx_span" style="display:inline-flex;background:#E8E8E8">-->
-                        <!--<input type="text" class="WXID"/>-->
-                        <!--<input type="text" class="AppName"/>-->
-                        <!--<input type="text" disabled="true" value="未授权"  class="state_val">-->
-                        <!--&lt;!&ndash;<span onclick="add()" class="add_apple">添加</span>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<span class="remove_input" onclick="removeselect(this)">删除</span>'&ndash;&gt;-->
-                        <!--<p class="icon-ishop_6-12"onclick="removeselect(this)"></p>-->
-                        <!--</span>-->
                     </div>
                     <div id="add_app_id"onclick="add()"style="margin-bottom: 0px;margin-top: 2px;color:#888888">新增 <span>+</span></div>
                 </form>
@@ -99,16 +82,8 @@
     <!-- error tips -->
     <script type="text/javascript" src="../js/corp/corp_operate.js"></script>
     <script>
-//        function add(){
-//            $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'+'<input type="text" class="WXID" />'+'<label style="width: 70px;;margin:15px 10px">公众号名称</label><input type="text" class="AppName"/>'
-//                    +'<input type="text" disabled="true" value="未授权" style="width: 100px;" id=""><span class="remove_input" onclick="removeselect(this)">删除</span>'+'</span>')
-//        }
          function add(){
-//            wechat=[{app_id:123456789,app_name:'chtty'}];
-//            i=0;
               is_authorize='未授权';
-//    $(".wx_app").append('<span class="wx_span" style="display:inline-flex"><label style="height:60px">微信公众号AppID</label>'+'<input type="text" class="WXID" />'+'<label style="width: 70px;;margin:15px 10px">公众号名称</label><input type="text" class="AppName" />'
-//                +'<input type="text" disabled="true" value="未授权" style="width: 100px;" class="state_val"><span class="remove_input" onclick="removeselect(this)">删除</span>'+'</span>')
               $(".wx_app").append('<span class="wx_span" style="display:inline-flex">'
                + '<input type="text" class="WXID" value=' + ''+ '>'
               + '<input type="text" class="AppName" value=' + ''+ '>'
