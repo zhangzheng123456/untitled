@@ -65,11 +65,12 @@
 }
 .er_code{
 	position: relative;
+	margin-top:-45px ;
 }
 .kuang{
 	width: 100px;
 	height: 100px;
-	margin:10px 0 10px 123px;
+	margin:10px 0 10px 0;
 	display: none;
 }
 .kuang img{
@@ -431,5 +432,8 @@ div.wx_app_new p{
 	margin:10px 0 10px 0;
 	font-size:20px;
 	color:#c26555 ;
-	line-height: 30px;
+	line-height: 30px;}
+
+.hint{
+    padding-left: 120px !important;
 }
