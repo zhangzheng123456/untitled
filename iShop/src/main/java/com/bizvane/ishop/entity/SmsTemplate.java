@@ -16,7 +16,8 @@ public class SmsTemplate {
     private String template_name;
     //模板内容
     private String template_content;
-
+    //模板分组
+    private String template_type;
     //企业编号
     private String corp_code;
     //修改日期
@@ -29,9 +30,43 @@ public class SmsTemplate {
     private String creater;
     //是否可用
     private String isactive;
-
+    private String template_title;
     private Corp corp;
     private String corp_name;
+    private SmsTemplateType smsTemplateType;
+    private String template_type_name;
+
+    public SmsTemplateType getSmsTemplateType() {
+        return smsTemplateType;
+    }
+
+    public String getTemplate_title() {
+        return template_title;
+    }
+
+    public void setTemplate_title(String template_title) {
+        this.template_title = template_title;
+    }
+
+    public void setSmsTemplateType(SmsTemplateType smsTemplateType) {
+        this.smsTemplateType = smsTemplateType;
+    }
+
+    public String getTemplate_type_name() {
+        return template_type_name;
+    }
+
+    public void setTemplate_type_name(String template_type_name) {
+        this.template_type_name = template_type_name;
+    }
+
+    public String getTemplate_type() {
+        return template_type;
+    }
+
+    public void setTemplate_type(String template_type) {
+        this.template_type = template_type;
+    }
 
     public String getCorp_name() {
         return corp_name;

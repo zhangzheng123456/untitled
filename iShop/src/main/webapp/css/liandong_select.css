@@ -10,6 +10,7 @@
 	cursor:pointer;
 }
 .reg_testdate .title{
+	width: 76px !important;
 	height:26px;
     background: #434960 url(../img/img_arrow_down.png) no-repeat 100% 50%;
     background-size: 8px 4px;

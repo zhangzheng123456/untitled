@@ -192,6 +192,7 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				var corp_code=msg.corp.corp_code;
+				var template_type=msg.template_type;
 				// var template_type=msg.template_type;
 				$("#MOBAN_ID").val(msg.template_code);
 				$("#MOBAN_ID").attr("data-name",msg.template_code);
@@ -211,7 +212,7 @@ jQuery(document).ready(function(){
 					input.checked=false;
 				}
 				getcorplist(corp_code);
-				// mobileType(template_type);
+				getTemplateGroup(template_type);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -222,8 +223,8 @@ jQuery(document).ready(function(){
 			}
 		});
 	}else{
-		getcorplist(a);
-		// mobileType(b);
+		getcorplist();
+		getTemplateGroup();
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
@@ -303,6 +304,43 @@ function getcorplist(a){
 				$("input[verify='Code']").attr("data-mark","");
 				$("#STORE_NAME").attr("data-mark","");
 
+			})
+
+		}else if(data.code=="-1"){
+			art.dialog({
+				time: 1,
+				lock:true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	});
+}
+function getTemplateGroup(a){
+//获取消息模板分组
+	var corp_command="/smsTemplateType/getSmsTemplateTypeInfo";
+	oc.postRequire("post", corp_command,"", "", function(data){
+		console.log(data);
+		if(data.code=="0"){
+			var msg=JSON.parse(data.message);
+			console.log(msg);
+			var index=0;
+			var corp_html='';
+			var c=null;
+			for(index in msg.params){
+				c=msg.params[index];
+				corp_html+='<option value="'+c.template_type_code+'">'+c.template_type_name+'</option>';
+			}
+			$("#OWN_template").append(corp_html);
+			if(a!==""){
+				$("#OWN_template option[value='"+a+"']").attr("selected","true");
+			}
+			$('#OWN_template').searchableSelect();
+			$('.searchable-select-item').click(function(){
+				//$("#MOBAN_ID").val("");
+				//$("#MOBAN_NAME").val("");
+				//$("input[verify='Code']").attr("data-mark","");
+				//$("#STORE_NAME").attr("data-mark","");
 			})
 
 		}else if(data.code=="-1"){

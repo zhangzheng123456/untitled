@@ -544,7 +544,7 @@ $("#leading_out").click(function(){
     var param={};
     param["function_code"]=funcCode;
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/list/ getCols","0",param,function(data){
+    oc.postRequire("post","/list/getCols","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
@@ -570,7 +570,7 @@ function bianse(){
 }
 //导出提交的
 $("#file_submit").click(function(){
-    var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
+    var li=$("#file_list_r input[type='checkbox']").parents("li");
     var param={};
     var tablemanager=[];
     if(li.length=="0"){
@@ -593,7 +593,7 @@ $("#file_submit").click(function(){
         param["list"]=list;
     }
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/storeAchvGoal/exportExecl","0",param,function(data){
+    oc.postRequire("post","/userAction/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var path=message.path;
@@ -785,11 +785,12 @@ function getInputValue(){
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
-    filtrates(inx,pageSize)
     if(num>0){
         filtrate="sucess";
-    }else if(num<=0){
+        filtrates(inx,pageSize)
+    }else if(num==0){
         filtrate="";
+        GET(inx,pageSize);
     }
 }
 //筛选发送请求
