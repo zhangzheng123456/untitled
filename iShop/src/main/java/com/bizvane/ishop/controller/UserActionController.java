@@ -189,6 +189,7 @@ public class UserActionController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
+            Pattern pattern = Pattern.compile("^.*" + search_value+ ".*$", Pattern.CASE_INSENSITIVE);
             System.out.println("======vipActionLogger===== ");
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -196,14 +197,14 @@ public class UserActionController {
 
             BasicDBObject queryCondition = new BasicDBObject();
             BasicDBList values = new BasicDBList();
-            values.add(new BasicDBObject("emp_id", search_value));
-            values.add(new BasicDBObject("url", search_value));
-            values.add(new BasicDBObject("corp_name", search_value));
-            values.add(new BasicDBObject("time", search_value));
-            values.add(new BasicDBObject("vip_id", search_value));
-            values.add(new BasicDBObject("action", search_value));
-            values.add(new BasicDBObject("emp_name", search_value));
-            values.add(new BasicDBObject("corp_code", search_value));
+            values.add(new BasicDBObject("emp_id", pattern));
+            values.add(new BasicDBObject("url", pattern));
+            values.add(new BasicDBObject("corp_name", pattern));
+            values.add(new BasicDBObject("time", pattern));
+            values.add(new BasicDBObject("vip_id", pattern));
+            values.add(new BasicDBObject("action", pattern));
+            values.add(new BasicDBObject("emp_name", pattern));
+            values.add(new BasicDBObject("corp_code", pattern));
             queryCondition.put("$or", values);
 
             DBCursor dbCursor = null;
@@ -220,19 +221,19 @@ public class UserActionController {
                 dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======sys=====dbCursor : " + dbCursor);
             } else {
-                Map keyMap = new HashMap();
-                keyMap.put("corp_code",corp_code);
-                BasicDBObject ref = new BasicDBObject();
-                ref.putAll(keyMap);
-
-                DBCursor dbCursor1 = cursor.find(ref,queryCondition);
-                int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and",value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                int count = Integer.parseInt(String.valueOf(dbCursor2.count()));
                 if (count%page_size == 0){
                     pages = count/page_size;
                 }else {
                     pages = count/page_size+1;
                 }
-                dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = dbCursor2.skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList list = new ArrayList();
@@ -261,34 +262,197 @@ public class UserActionController {
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String Screen(HttpServletRequest request) {
+        JSONObject result = new JSONObject();
         DataBean dataBean = new DataBean();
+        int pages=0;
         try {
-            String jsString = request.getParameter("param");
-            logger.info("json-----------" + jsString);
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
-            id = jsonObject.getString("id");
-            String message = jsonObject.get("message").toString();
-            org.json.JSONObject jsonObject1 = new org.json.JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject1.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject1.get("pageSize").toString());
-            Map<String, String> map = WebUtils.Json2Map(jsonObject1);
             String role_code = request.getSession(false).getAttribute("role_code").toString();
-            org.json.JSONObject result = new org.json.JSONObject();
-            PageInfo<UserAchvGoal> list = null;
-            if (role_code.equals(Common.ROLE_SYS)) {
-            } else {
-                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String list = jsonObject.get("list").toString();
+
+            JSONArray array = JSONArray.parseArray(list);
+            BasicDBObject queryCondition = new BasicDBObject();
+            BasicDBList values = new BasicDBList();
+            for (int i = 0; i < array.size(); i++) {
+                String info = array.get(i).toString();
+                JSONObject json = JSONObject.parseObject(info);
+                String screen_key = json.get("screen_key").toString();
+                String screen_value = json.get("screen_value").toString();
+                Pattern pattern = Pattern.compile("^.*" + screen_value+ ".*$", Pattern.CASE_INSENSITIVE);
+                values.add(new BasicDBObject(screen_key, pattern));
             }
-            result.put("list", JSON.toJSONString(list));
+            queryCondition.put("$and", values);
+            System.out.println("======vipActionLogger===== ");
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+
+            DBCursor dbCursor = null;
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                DBCursor dbCursor1 = cursor.find(queryCondition);
+                int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
+                if (count%page_size == 0){
+                    pages = count/page_size;
+                }else {
+                    pages = count/page_size+1;
+                }
+                System.out.println("======vipActionLogger=====pages : " + pages);
+                dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
+                System.out.println("======sys=====dbCursor : " + dbCursor);
+            } else {
+                BasicDBList value = new BasicDBList();
+                value.add(new BasicDBObject("corp_code", corp_code));
+                value.add(queryCondition);
+                BasicDBObject queryCondition1 = new BasicDBObject();
+                queryCondition1.put("$and",value);
+                DBCursor dbCursor2 = cursor.find(queryCondition1);
+                int count = Integer.parseInt(String.valueOf(dbCursor2.count()));
+                if (count%page_size == 0){
+                    pages = count/page_size;
+                }else {
+                    pages = count/page_size+1;
+                }
+                dbCursor = dbCursor2.skip((page_number - 1) * page_size).limit(page_size);
+                System.out.println("======other=====dbCursor : " + dbCursor);
+            }
+            ArrayList lists = new ArrayList();
+            while(dbCursor.hasNext()) {
+                DBObject obj = dbCursor.next();
+                lists.add(obj.toMap());
+            }
+            result.put("list",lists);
+            result.put("pages",pages);
+            result.put("page_number",page_number);
+            result.put("page_size",page_size);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
+            dataBean.setId("1");
             dataBean.setMessage(result.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
+            dataBean.setId("1");
             dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String errormessage = "数据异常，导出失败";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
+            ArrayList list = new ArrayList();
+            if (screen.equals("")) {
+                Pattern pattern = Pattern.compile("^.*" + search_value+ ".*$", Pattern.CASE_INSENSITIVE);
 
+                MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+                DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("emp_id", pattern));
+                values.add(new BasicDBObject("url", pattern));
+                values.add(new BasicDBObject("corp_name", pattern));
+                values.add(new BasicDBObject("time", pattern));
+                values.add(new BasicDBObject("vip_id", pattern));
+                values.add(new BasicDBObject("action", pattern));
+                values.add(new BasicDBObject("emp_name", pattern));
+                values.add(new BasicDBObject("corp_code", pattern));
+                queryCondition.put("$or", values);
+
+                DBCursor dbCursor = null;
+                // 读取数据
+                if (role_code.equals(Common.ROLE_SYS)) {
+                     dbCursor = cursor.find(queryCondition);
+                } else {
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and",value);
+                    dbCursor = cursor.find(queryCondition1);
+                }
+                while(dbCursor.hasNext()) {
+                    DBObject obj = dbCursor.next();
+                    list.add(obj.toMap());
+                }
+            } else {
+                JSONArray array = JSONArray.parseArray(screen);
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                for (int i = 0; i < array.size(); i++) {
+                    String info = array.get(i).toString();
+                    JSONObject json = JSONObject.parseObject(info);
+                    String screen_key = json.get("screen_key").toString();
+                    String screen_value = json.get("screen_value").toString();
+                    Pattern pattern = Pattern.compile("^.*" + screen_value+ ".*$", Pattern.CASE_INSENSITIVE);
+                    values.add(new BasicDBObject(screen_key, pattern));
+                }
+                queryCondition.put("$and", values);
+                MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+                DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+                DBCursor dbCursor = null;
+                // 读取数据
+                if (role_code.equals(Common.ROLE_SYS)) {
+                     dbCursor = cursor.find(queryCondition);
+
+                } else {
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and",value);
+                    dbCursor = cursor.find(queryCondition1);
+                }
+                while(dbCursor.hasNext()) {
+                    DBObject obj = dbCursor.next();
+                    list.add(obj.toMap());
+                }
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+            String json = mapper.writeValueAsString(list);
+            if (list.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
+            // String column_name1 = "corp_code,corp_name";
+            // String[] cols = column_name.split(",");//前台传过来的字段
+            String pathname = OutExeclHelper.OutExecl(json,list, map, response, request);
+            org.json.JSONObject result = new org.json.JSONObject();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
+            }
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception e) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
 }

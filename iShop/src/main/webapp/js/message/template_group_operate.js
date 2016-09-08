@@ -98,16 +98,15 @@ $(function(){
             var name=$("#template_group_name").attr("data-mark");//区域名称是否唯一的标志
             var num=$("#template_group_code").attr("data-mark");//区域编号是否唯一的标志
             if(templateGroupjs.firstStep()){
-                console.log(num)
                 if(name=="N"||num=="N"){
                     if(name=="N"){
                         var div=$("#template_group_name").next('.hint').children();
-                        div.html("该模板分组名称已经存在！");
+                        div.html("该分组名称已经存在！");
                         div.addClass("error_tips");
                     }
                     if(num=="N"){
                         var div=$("#template_group_code").next('.hint').children();
-                        div.html("该模板分组编号已经存在！");
+                        div.html("该分组编号已经存在！");
                         div.addClass("error_tips");
                     }
                     return;
@@ -139,13 +138,13 @@ $(function(){
             if(templateGroupjs.firstStep()){
                 if(name=="N"){
                     var div=$("#template_group_name").next('.hint').children();
-                    div.html("该模板分组名称已经存在！");
+                    div.html("该分组名称已经存在！");
                     div.addClass("error_tips");
                     return;
                 }
                 if(num=="N"){
                     var div=$("#template_group_code").next('.hint').children();
-                    div.html("该模板分组编号已经存在！");
+                    div.html("该分组编号已经存在！");
                     div.addClass("error_tips");
                     return;
                 }
@@ -224,10 +223,8 @@ function getcorplist(C){
     //获取所属企业列表
     var corp_command="/user/getCorpByUser";
     oc.postRequire("post", corp_command,"", "", function(data){
-        //console.log(data);
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
-            //console.log(msg);
             var index=0;
             var corp_html='';
             var c=null;
@@ -246,7 +243,6 @@ function getcorplist(C){
                 $("#template_group_name").val("");
                 $("#template_group_name").attr("data-mark","");
                 $("#template_group_code").attr("data-mark","");
-                //console.log($("#OWN_CORP").val())
             })
         }else if(data.code=="-1"){
             art.dialog({
@@ -276,7 +272,7 @@ $("#template_group_code").blur(function(){
             }else if(data.code=="-1"){
                 $("#template_group_code").attr("data-mark","N");
                 div.addClass("error_tips");
-                div.html("该模板分组编号已经存在！");
+                div.html("该分组编号已经存在！");
             }
         })
     }
@@ -296,7 +292,7 @@ $("#template_group_name").blur(function(){
                 div.html("");
                 $("#template_group_name").attr("data-mark","Y");
             }else if(data.code=="-1"){
-                div.html("该模板分组名称已经存在！");
+                div.html("该分组名称已经存在！");
                 div.addClass("error_tips");
                 $("#template_group_name").attr("data-mark","N");
             }

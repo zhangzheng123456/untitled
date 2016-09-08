@@ -678,7 +678,7 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
         var li="";
         for(var i=0;i<filter.length;i++){
             if(filter[i].type=="text"){
-                li+="<li><label style='width:100px;'>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
+                li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
                 var ul="<ul class='isActive_select_down'>";
@@ -739,13 +739,13 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
     getInputValue();
-})
+});
 function getInputValue(){
     var input=$('#sxk .inputs input');
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
-    _param["funcCode"]=funcCode;
+    //_param["funcCode"]=funcCode;
     var num=0;
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
