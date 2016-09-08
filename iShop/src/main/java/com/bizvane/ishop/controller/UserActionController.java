@@ -81,6 +81,7 @@ public class UserActionController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection("log_person_action");
 
+            DBObject sort_obj = new BasicDBObject("time",-1);
             DBCursor dbCursor = null;
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
@@ -91,7 +92,7 @@ public class UserActionController {
                     pages = count/page_size+1;
                 }
                 System.out.println("======vipActionLogger=====pages : " + pages);
-                dbCursor = cursor.find().skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = cursor.find().sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======sys=====dbCursor : " + dbCursor);
             } else {
                 Map keyMap = new HashMap();
@@ -106,7 +107,7 @@ public class UserActionController {
                 }else {
                     pages = count/page_size+1;
                 }
-                dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList list = new ArrayList();
@@ -206,6 +207,7 @@ public class UserActionController {
             values.add(new BasicDBObject("emp_name", pattern));
             values.add(new BasicDBObject("corp_code", pattern));
             queryCondition.put("$or", values);
+            DBObject sort_obj = new BasicDBObject("time",-1);
 
             DBCursor dbCursor = null;
             // 读取数据
@@ -218,7 +220,7 @@ public class UserActionController {
                     pages = count/page_size+1;
                 }
                 System.out.println("======vipActionLogger=====pages : " + pages);
-                dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======sys=====dbCursor : " + dbCursor);
             } else {
                 BasicDBList value = new BasicDBList();
@@ -233,7 +235,7 @@ public class UserActionController {
                 }else {
                     pages = count/page_size+1;
                 }
-                dbCursor = dbCursor2.skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = dbCursor2.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList list = new ArrayList();
@@ -293,6 +295,7 @@ public class UserActionController {
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+            DBObject sort_obj = new BasicDBObject("time",-1);
 
             DBCursor dbCursor = null;
             // 读取数据
@@ -305,7 +308,7 @@ public class UserActionController {
                     pages = count/page_size+1;
                 }
                 System.out.println("======vipActionLogger=====pages : " + pages);
-                dbCursor = dbCursor1.skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======sys=====dbCursor : " + dbCursor);
             } else {
                 BasicDBList value = new BasicDBList();
@@ -313,14 +316,14 @@ public class UserActionController {
                 value.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
                 queryCondition1.put("$and",value);
-                DBCursor dbCursor2 = cursor.find(queryCondition1);
-                int count = Integer.parseInt(String.valueOf(dbCursor2.count()));
+                DBCursor dbCursor1 = cursor.find(queryCondition1);
+                int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
                 if (count%page_size == 0){
                     pages = count/page_size;
                 }else {
                     pages = count/page_size+1;
                 }
-                dbCursor = dbCursor2.skip((page_number - 1) * page_size).limit(page_size);
+                dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList lists = new ArrayList();
