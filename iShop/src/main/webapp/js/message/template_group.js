@@ -739,7 +739,7 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
     getInputValue();
-})
+});
 function getInputValue(){
     var input=$('#sxk .inputs input');
     inx=1;
