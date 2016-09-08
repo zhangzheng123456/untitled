@@ -343,5 +343,116 @@ public class UserActionController {
         }
         return dataBean.getJsonStr();
     }
+    /***
+     * 导出数据
+     */
+    @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)
+    @ResponseBody
+    public String exportExecl(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String errormessage = "数据异常，导出失败";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String search_value = jsonObject.get("searchValue").toString();
+            String screen = jsonObject.get("list").toString();
+            ArrayList list = new ArrayList();
+            if (screen.equals("")) {
+                Pattern pattern = Pattern.compile("^.*" + search_value+ ".*$", Pattern.CASE_INSENSITIVE);
 
+                MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+                DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                values.add(new BasicDBObject("emp_id", pattern));
+                values.add(new BasicDBObject("url", pattern));
+                values.add(new BasicDBObject("corp_name", pattern));
+                values.add(new BasicDBObject("time", pattern));
+                values.add(new BasicDBObject("vip_id", pattern));
+                values.add(new BasicDBObject("action", pattern));
+                values.add(new BasicDBObject("emp_name", pattern));
+                values.add(new BasicDBObject("corp_code", pattern));
+                queryCondition.put("$or", values);
+
+                DBCursor dbCursor = null;
+                // 读取数据
+                if (role_code.equals(Common.ROLE_SYS)) {
+                     dbCursor = cursor.find(queryCondition);
+                } else {
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and",value);
+                    dbCursor = cursor.find(queryCondition1);
+                }
+                while(dbCursor.hasNext()) {
+                    DBObject obj = dbCursor.next();
+                    list.add(obj.toMap());
+                }
+            } else {
+                JSONArray array = JSONArray.parseArray(screen);
+                BasicDBObject queryCondition = new BasicDBObject();
+                BasicDBList values = new BasicDBList();
+                for (int i = 0; i < array.size(); i++) {
+                    String info = array.get(i).toString();
+                    JSONObject json = JSONObject.parseObject(info);
+                    String screen_key = json.get("screen_key").toString();
+                    String screen_value = json.get("screen_value").toString();
+                    Pattern pattern = Pattern.compile("^.*" + screen_value+ ".*$", Pattern.CASE_INSENSITIVE);
+                    values.add(new BasicDBObject(screen_key, pattern));
+                }
+                queryCondition.put("$and", values);
+                MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+                DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+                DBCursor dbCursor = null;
+                // 读取数据
+                if (role_code.equals(Common.ROLE_SYS)) {
+                     dbCursor = cursor.find(queryCondition);
+
+                } else {
+                    BasicDBList value = new BasicDBList();
+                    value.add(new BasicDBObject("corp_code", corp_code));
+                    value.add(queryCondition);
+                    BasicDBObject queryCondition1 = new BasicDBObject();
+                    queryCondition1.put("$and",value);
+                    dbCursor = cursor.find(queryCondition1);
+                }
+                while(dbCursor.hasNext()) {
+                    DBObject obj = dbCursor.next();
+                    list.add(obj.toMap());
+                }
+            }
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_DEFAULT);
+            String json = mapper.writeValueAsString(list);
+            if (list.size() >= 29999) {
+                errormessage = "导出数据过大";
+                int i = 9 / 0;
+            }
+            LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
+            // String column_name1 = "corp_code,corp_name";
+            // String[] cols = column_name.split(",");//前台传过来的字段
+            String pathname = OutExeclHelper.OutExecl(json,list, map, response, request);
+            org.json.JSONObject result = new org.json.JSONObject();
+            if (pathname == null || pathname.equals("")) {
+                errormessage = "数据异常，导出失败";
+                int a = 8 / 0;
+            }
+            result.put("path", JSON.toJSONString("lupload/" + pathname));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception e) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(errormessage);
+        }
+        return dataBean.getJsonStr();
+    }
 }
