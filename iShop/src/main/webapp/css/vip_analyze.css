@@ -1,4 +1,4 @@
-/*Í¨ÓÃÑùÊ½*/
+/*Í¨ï¿½ï¿½ï¿½ï¿½Ê½*/
 *{
     box-sizing: border-box;
 }
@@ -24,7 +24,7 @@
     margin-top:0.5%;
     clear: both;
 }
-/*select_analyze²éÑ¯*/
+/*select_analyzeï¿½ï¿½Ñ¯*/
 #side_analyze>ul{
     background-color: #fff;
     width:100%;
@@ -35,7 +35,7 @@
 #side_analyze h4{
     background-color: #fff;
 }
-/*µÚÒ»¸öul ²éÑ¯Óò*/
+/*ï¿½ï¿½Ò»ï¿½ï¿½ul ï¿½ï¿½Ñ¯ï¿½ï¿½*/
 #side_analyze>ul:first-child{
     margin-bottom: 10px;
     padding:10px;
@@ -50,7 +50,7 @@
     font-size: 16px;
     margin-right: 30px;
     font-weight: normal;
-    font-family: 'Î¢ÈíÑÅºÚ';
+    font-family: 'Î¢ï¿½ï¿½ï¿½Åºï¿½';
 }
 #side_analyze>ul:first-child li s{
     text-decoration: none;
@@ -88,7 +88,7 @@
     padding:5px;
     color:#999;
 }
-/*Í¼±í·ÖÎöÊý¾ÝÑùÊ½*/
+/*Í¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ê½*/
 #chart_analyze .chart_module{
     margin:0px 0.5% 0.5% 0;
     float:left;
@@ -103,13 +103,10 @@
     background: skyblue;
     padding: 10px;
 }
-/*ÓÒ²àÊý¾Ý*/
+/*ï¿½Ò²ï¿½ï¿½ï¿½ï¿½ï¿½*/
 .vip_nav_bar{
     height: 30px;
     border-bottom: 1px solid #888888;
-}
-.vip_nav_bar li:active{
-    border-bottom: 1px solid #00E8D7;
 }
 .vip_nav_bar li{
     width:23%;
