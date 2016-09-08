@@ -364,6 +364,8 @@ public class UserActionController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             ArrayList list = new ArrayList();
+            DBObject sort_obj = new BasicDBObject("time",-1);
+
             if (screen.equals("")) {
                 Pattern pattern = Pattern.compile("^.*" + search_value+ ".*$", Pattern.CASE_INSENSITIVE);
 
@@ -385,14 +387,14 @@ public class UserActionController {
                 DBCursor dbCursor = null;
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
-                     dbCursor = cursor.find(queryCondition);
+                     dbCursor = cursor.find(queryCondition).sort(sort_obj);
                 } else {
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
                     value.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and",value);
-                    dbCursor = cursor.find(queryCondition1);
+                    dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 }
                 while(dbCursor.hasNext()) {
                     DBObject obj = dbCursor.next();
@@ -416,7 +418,7 @@ public class UserActionController {
                 DBCursor dbCursor = null;
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
-                     dbCursor = cursor.find(queryCondition);
+                     dbCursor = cursor.find(queryCondition).sort(sort_obj);
 
                 } else {
                     BasicDBList value = new BasicDBList();
@@ -424,7 +426,7 @@ public class UserActionController {
                     value.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
                     queryCondition1.put("$and",value);
-                    dbCursor = cursor.find(queryCondition1);
+                    dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 }
                 while(dbCursor.hasNext()) {
                     DBObject obj = dbCursor.next();
