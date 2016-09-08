@@ -440,4 +440,16 @@
             AND corp_code = #{old_corp_code}
         </if>
     </update>
+
+    <update id="updateTemplateType">
+        UPDATE def_sms_template
+        <trim prefix="set" suffixOverrides=",">
+            <if test="new_template_type!=null ">
+                template_type=#{new_template_type},
+            </if>
+        </trim>
+        WHERE template_type=#{old_template_type}
+        AND corp_code = #{corp_code}
+    </update>
+
 </mapper>

@@ -26,5 +26,6 @@ public interface SmsTemplateMapper {
 
     List<SmsTemplate> selectAllSmsTemplateScreen(Map<String, Object> params) throws SQLException;
 
+    List<SmsTemplate> selectByTemplateType(@Param("corp_code") String corp_code, @Param("template_type") String template_type) throws SQLException;
     /*List<TemplateType> getTypes();*/
 }
