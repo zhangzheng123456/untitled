@@ -227,6 +227,11 @@
     <orderEntry type="library" name="Maven: org.apache.directory.server:apacheds-i18n:2.0.0-M15" level="project" />
     <orderEntry type="library" name="Maven: org.apache.directory.api:api-asn1-api:1.0.0-M20" level="project" />
     <orderEntry type="library" name="Maven: org.apache.directory.api:api-util:1.0.0-M20" level="project" />
+    <orderEntry type="library" name="Maven: org.mongojack:mongojack:2.6.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.mongodb:mongodb-driver-core:3.2.1" level="project" />
+    <orderEntry type="library" name="Maven: de.undercouch:bson4jackson:2.7.0" level="project" />
+    <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.bizvane.sun:server_ice:1.0.3" level="project" />
   </component>
 </module>
