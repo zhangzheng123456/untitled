@@ -103,4 +103,7 @@ public interface CodeUpdateMapper {
     //app_id企业关系
     int updateRelCorpWechat(@Param("new_corp_code") String new_corp_code, @Param("old_corp_code") String old_corp_code) throws SQLException;
 
+    //消息模板类型
+    int updateTemplateType(@Param("new_template_type") String new_template_type, @Param("old_template_type") String old_template_type
+                        , @Param("corp_code") String corp_code) throws SQLException;
 }
