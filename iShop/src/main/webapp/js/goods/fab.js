@@ -272,6 +272,9 @@ function jurisdiction(actions) {
             $('#jurisdiction').append("<li id='compile' class='bg'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }
     }
+    if($('#jurisdiction li').length==0){
+       $('#search').parent('.li').css("marginLeft","0");
+    }
 }
 //页面加载调权限接口
 function qjia() {

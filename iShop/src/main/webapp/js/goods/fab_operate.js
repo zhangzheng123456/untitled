@@ -138,7 +138,7 @@ var oc = new ObjectControl();
 				return;
 			}
 		});
-		$(".fabedit_oper_btn ul li:nth-of-type(1)").click(function(){
+		$("#edit_save").click(function(){
 			if(fabjs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -149,7 +149,6 @@ var oc = new ObjectControl();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
 				var GOODS_BUYPOINT=$("#edit .froala-element").html();
-				console.log(GOODS_BUYPOINT);
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -231,7 +230,6 @@ var oc = new ObjectControl();
 		});
 	};
 	fabjs.ajaxSubmit=function(_command,_params,opt){
-		console.log(_params);
 		oc.postRequire("post", _command,"",_params, function(data){
 			if(data.code=="0"){
 				$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
@@ -293,7 +291,7 @@ jQuery(document).ready(function(){
 				var message=JSON.parse(data.message);
 				var action=message.actions;
 				if(action.length<=0){
-					$(".corpedit_oper_btn li:eq(0)").remove();
+					$("#edit_save").hide();
 				}
 			}
 		});
@@ -303,7 +301,6 @@ jQuery(document).ready(function(){
 		var a="";
 		var b="";
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data.message);
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
@@ -344,7 +341,6 @@ jQuery(document).ready(function(){
 				$("#GOODS_RELEASETIME").val(msg.goods_time);
 				$("#edit .froala-element").html(msg.goods_description);
 				var list=msg.matchgoods;
-				console.log(list);
 				for(var i=0;i<list.length;i++){
 					jQuery('.match_goods ul').append('<li id="'+list[i].goods_code+'"><img class="goodsImg" src="'
 						+ list[i].goods_image
@@ -424,7 +420,7 @@ jQuery(document).ready(function(){
 	$(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
-	$(".fabedit_oper_btn ul li:nth-of-type(2)").click(function(){
+	$("#edit_close").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
 
@@ -437,10 +433,8 @@ function getcorplist(a,b){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
-			console.log(msg);
 			var index=0;
 			var corp_html='';
 			var c=null;
@@ -482,10 +476,8 @@ function getvarbrandlist(c,d){
 	var brand_command="/shop/brand";
 	oc.postRequire("post", brand_command,"",_params,function(data){
 		if(data.code=="0"){
-			console.log(data);
 			var brands=JSON.parse(data.message);//品牌编号list
 			brands=brands.brands;
-			console.log(brands);
 			var brand_html="";
 			$('#brand_select .searchable-select').remove();//删除
 			$('#OWN_BRAND').empty();//清空
@@ -568,11 +560,9 @@ function getmatchgoodsList() {
 	param["goods_code"]=goods_code;
 	param["searchValue"]=searchValue;
 	oc.postRequire("post", "/goods/corp_fab", "",param, function(data){
-		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			var list=JSON.parse(msg.list);
-			console.log(msg);
 			if(list.length<1){
 				jQuery('#search_match_goods ul').append("<p>找不到相关宝贝</p>")
 			}else{

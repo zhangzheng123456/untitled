@@ -3161,7 +3161,7 @@ video {
   margin:0 15px;
 }
 #page-wrapper {
-  padding: 0 10px;
+  padding-left: 10px;
   /*min-height: 568px;*/
   /*min-width:1160px;*/
   position: relative !important;

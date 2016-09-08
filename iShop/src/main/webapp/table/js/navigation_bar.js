@@ -27,6 +27,7 @@ $(function(){
     var keyVal=sessionStorage.getItem("key_val");//获取本地的属性
     keyVal=JSON.parse(keyVal);//把本地的属性转成json
     var url=keyVal.url;//url的参数
+    sessionStorage.removeItem("return_jump");
     $('#iframepage').attr("src",url);//给获取的src赋值
     oc.postRequire("get","/menu","0","",function(data){//左侧导航栏的循环操作
         var str = JSON.stringify(data);

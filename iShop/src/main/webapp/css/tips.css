@@ -351,7 +351,7 @@
 /*首页input框样式的变化*/
 /*******首页input框样式的变化******/
 .icon-text{
-	width:78px;
+	width:85px;
 	background-color: #434960 !important;
 	border:none !important;
 	margin-left: 12px;
@@ -453,4 +453,7 @@ div.wx_app_new p{
 }
 .hint{
     padding-left: 120px !important;
+}
+#return a{
+	display: block;
 }
