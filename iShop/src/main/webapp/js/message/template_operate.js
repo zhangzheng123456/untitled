@@ -56,7 +56,7 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();//企业编号
 				var MOBAN_ID=$("#MOBAN_ID").val();//模板编号
 				var MOBAN_NAME=$("#MOBAN_NAME").val();//模板名称
-				// var MOBAN_TYPE=$("#MOBAN_TYPE").val();//模板类型
+				 var template_type=$("#OWN_template").val();//模板类型
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";//是否可用
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -75,7 +75,7 @@ var oc = new ObjectControl();
 					"template_code": MOBAN_ID,//模板编号
 					"template_content": MOBAN_CONTENT,//模板内容
 					"template_name": MOBAN_NAME,//模板名称
-					// "template_type": MOBAN_TYPE,//模板类型
+					 "template_type": template_type,//模板类型
 					"isactive": ISACTIVE//是否可用
 				};
 				mobilejs.ajaxSubmit(_command, _params, opt);
@@ -89,7 +89,7 @@ var oc = new ObjectControl();
 				var MOBAN_ID=$("#MOBAN_ID").val();
 				var OWN_CORP=$("#OWN_CORP").val();//模板编号
 				var MOBAN_NAME=$("#MOBAN_NAME").val();//模板名称
-				// var MOBAN_TYPE=$("#MOBAN_TYPE").val();//模板类型
+				var template_type=$("#OWN_template").val();//模板类型
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -109,7 +109,7 @@ var oc = new ObjectControl();
 					"template_code": MOBAN_ID,//模板编号
 					"template_content": MOBAN_CONTENT,//模板内容
 					"template_name": MOBAN_NAME,//模板名称
-					// "template_type": MOBAN_TYPE,//模板类型
+					 "template_type": template_type,//模板类型
 					"isactive": ISACTIVE//是否可用
 				};
 				mobilejs.ajaxSubmit(_command,_params,opt);
@@ -327,6 +327,8 @@ function getTemplateGroup(a){
 			var index=0;
 			var corp_html='';
 			var c=null;
+			$('#OWN_template').empty();
+			$('#template_select .searchable-select').remove();
 			for(index in msg.params){
 				c=msg.params[index];
 				corp_html+='<option value="'+c.template_type_code+'">'+c.template_type_name+'</option>';
@@ -335,7 +337,7 @@ function getTemplateGroup(a){
 			if(a!==""){
 				$("#OWN_template option[value='"+a+"']").attr("selected","true");
 			}
-			$('#OWN_template').searchableSelect();
+			$('.corp_select').searchableSelect();
 			$('.searchable-select-item').click(function(){
 				//$("#MOBAN_ID").val("");
 				//$("#MOBAN_NAME").val("");
