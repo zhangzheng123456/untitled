@@ -1,4 +1,4 @@
-/*ͨ����ʽ*/
+/*通锟斤拷锟斤拷式*/
 *{
     box-sizing: border-box;
 }
@@ -16,6 +16,7 @@
 }
 #side_analyze{
     margin-right:0.5%;
+    position: relative;
 }
 #table_analyze{
     background: #fff;
@@ -24,7 +25,7 @@
     margin-top:0.5%;
     clear: both;
 }
-/*select_analyze��ѯ*/
+/*select_analyze锟斤拷询*/
 #side_analyze>ul{
     background-color: #fff;
     width:100%;
@@ -35,7 +36,7 @@
 #side_analyze h4{
     background-color: #fff;
 }
-/*��һ��ul ��ѯ��*/
+/*锟斤拷一锟斤拷ul 锟斤拷询锟斤拷*/
 #side_analyze>ul:first-child{
     margin-bottom: 10px;
     padding:10px;
@@ -50,7 +51,7 @@
     font-size: 16px;
     margin-right: 30px;
     font-weight: normal;
-    font-family: '΢���ź�';
+    font-family: '微锟斤拷锟脚猴拷';
 }
 #side_analyze>ul:first-child li s{
     text-decoration: none;
@@ -88,7 +89,7 @@
     padding:5px;
     color:#999;
 }
-/*ͼ�����������ʽ*/
+/*图锟斤拷锟斤拷锟斤拷锟斤拷锟斤拷锟绞�*/
 #chart_analyze .chart_module{
     margin:0px 0.5% 0.5% 0;
     float:left;
@@ -103,7 +104,7 @@
     background: skyblue;
     padding: 10px;
 }
-/*�Ҳ�����*/
+/*锟揭诧拷锟斤拷锟斤拷*/
 .vip_nav_bar{
     height: 30px;
     border-bottom: 1px solid #888888;
@@ -160,4 +161,15 @@
     font-size: 15px;
     color: #6dc1c8;
     line-height: 35px;
+}
+/*下拉框定位*/
+#select_analyze{
+    position: absolute;
+    left: 0px;
+    top:0px;
+}
+#select_analyze ul{
+    width: 100px;
+    height: 30px;
+    border: 1px solid #333;
 }
