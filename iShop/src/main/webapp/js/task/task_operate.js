@@ -538,7 +538,7 @@ $("#staff_more").click(function(){
 //点击保存
 $("#add_save").click(function(){
 	var _param={};
-	var a=$('.xingming li');
+	var a=$('.xingming input');
 	var user_codes="";
 	var phone="";
 	for(var i=0;i<a.length;i++){
