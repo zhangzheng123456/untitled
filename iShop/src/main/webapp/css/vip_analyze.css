@@ -165,11 +165,13 @@
 /*下拉框定位*/
 #select_analyze{
     position: absolute;
-    left: 0px;
-    top:0px;
+    display:none;
+    left: 22%;
+    top:69px;
+    z-index: 100;
+    background: #E8E8E8;
 }
 #select_analyze ul{
-    width: 100px;
-    height: 30px;
+    width: 273px;
     border: 1px solid #333;
 }
