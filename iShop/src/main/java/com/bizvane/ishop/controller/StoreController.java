@@ -121,7 +121,60 @@ public class StoreController {
         return dataBean.getJsonStr();
     }
 
-
+    /***
+     * 根据区域拉店铺
+     */
+    @RequestMapping(value = "/findByAreaCode", method = RequestMethod.POST)
+    @ResponseBody
+    public String findByAreaCode(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String searchValue = jsonObject.get("searchValue").toString();
+            PageInfo<Store> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                String area_code = jsonObject.get("area_code").toString();
+                String[] areaCodes = area_code.split(",");
+                list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
+            } else {
+                if (role_code.equals(Common.ROLE_GM)) {
+                    String area_code = jsonObject.get("area_code").toString();
+                    String[] areaCodes = area_code.split(",");
+                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    String[] areaCodes = area_code.split(",");
+                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                } else {
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = storeService.selStoreByUserCode(page_number, page_size, store_code, corp_code, searchValue);
+                }
+            }
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
      * 店铺列表(店长面板)

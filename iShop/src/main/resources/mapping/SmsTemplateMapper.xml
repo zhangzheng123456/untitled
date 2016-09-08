@@ -219,11 +219,6 @@
         select * from def_sms_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
     </select>
 
-    <!--   <select id="getTypes" resultMap="types">
-           select * from def_template_type
-       </select>
-   -->
-
     <select id="selectAllSmsTemplateScreen" resultMap="MessageTemplates">
         select
         dmt.id,
@@ -267,4 +262,30 @@
         </foreach>
         ORDER by dmt.id DESC
     </select>
+
+    <select id="selectByTemplateType" resultMap="MessageTemplates">
+        SELECT
+        dmt.id,
+        dmt.template_code,
+        dmt.template_name,
+        dmt.template_content,
+        dmt.template_title,
+        dmt.template_type,
+        dmt.isactive,
+        dmt.corp_code,
+        dmt.modifier,
+        dmt.modified_date,
+        dmt.created_date,
+        dmt.creater,
+        dc.corp_name,
+        dstt.template_type_name
+        FROM def_sms_template dmt,DEF_CORP dc,def_sms_template_type dstt
+        WHERE dmt.corp_code=dc.corp_code
+        AND dmt.corp_code = dstt.corp_code
+        AND dmt.template_type=dstt.template_type_code
+        AND dmt.corp_code=#{corp_code}
+        AND dmt.template_type = #{template_type}
+        ORDER BY dmt.id DESC
+    </select>
+
 </mapper>
