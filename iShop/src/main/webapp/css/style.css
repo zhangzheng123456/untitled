@@ -6807,23 +6807,23 @@ body.skin-3 {
   border: 2px #6ab7bc solid;
 }
 /*导购页样式*/
+
 .ibox-content_per{
     color: inherit;
     border-color: #e7eaec;
     border-image: none;
     border-width: 1px 0px;
     background-color: #434960;
-    /*width: 380px;*/
     height: 310px;
 }
+/*
 .ibox-content_per .performance{
-  /*width:380px;*/
+  width:380px;
   height:140px;
 }
 .ibox-content_per .performance ul{
   padding:0;
   margin:0;
-  /*width:380px;*/
   height:140px;
   list-style:none;
   display:-webkit-box;
@@ -6879,12 +6879,10 @@ body.skin-3 {
 }
 .item_list{
   height:90px;
-  /*width:380px;*/
   margin-top:22px;
 }
 .item_list_1{
   height:90px;
-  /*width:380px;*/
   margin-top:10px;
 }
 .item_list ul{
@@ -6941,6 +6939,7 @@ body.skin-3 {
   font-style: normal;
   font-weight: normal;
 }
+*/
 .cart_tab{
   height:40px;
   width:160px;
