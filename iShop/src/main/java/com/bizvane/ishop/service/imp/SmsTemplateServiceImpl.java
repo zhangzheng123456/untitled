@@ -118,6 +118,9 @@ public class SmsTemplateServiceImpl implements SmsTemplateService {
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         smsTemplates = smsTemplateMapper.selectAllSmsTemplateScreen(params);
+        for (SmsTemplate smsTemplate:smsTemplates) {
+            smsTemplate.setIsactive(CheckUtils.CheckIsactive(smsTemplate.getIsactive()));
+        }
         PageInfo<SmsTemplate> page = new PageInfo<SmsTemplate>(smsTemplates);
         return page;
     }
