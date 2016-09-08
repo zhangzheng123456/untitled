@@ -375,7 +375,7 @@ function getcorplist(a,b){
 				c=msg.corps[index];
 				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
 			}
-			$("#OWN_CORP").append(corp_html);
+			$("#OWN_CORP").append(corp_html,b);
 			if(a!==""){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}

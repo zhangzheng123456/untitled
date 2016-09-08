@@ -1,7 +1,10 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.CodeUpdateMapper;
+import com.bizvane.ishop.dao.SmsTemplateMapper;
 import com.bizvane.ishop.dao.SmsTemplateTypeMapper;
+import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.entity.SmsTemplateType;
 import com.bizvane.ishop.service.SmsTemplateTypeService;
 import com.bizvane.ishop.utils.CheckUtils;
@@ -23,7 +26,10 @@ import java.util.Map;
 public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
     @Autowired
     SmsTemplateTypeMapper smsTemplateTypeMapper;
-
+    @Autowired
+    SmsTemplateMapper smsTemplateMapper;
+    @Autowired
+    CodeUpdateMapper codeUpdateMapper;
     @Override
     public SmsTemplateType getSmsTemplateTypeById(int id) throws Exception {
         return smsTemplateTypeMapper.selectSmsTemplateById(id);
@@ -99,6 +105,10 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
         } else if (smsTemplateType2 != null && smsTemplateType2.getId() != id) {
             result = "该消息模板分组名称已存在";
         } else {
+            SmsTemplateType smsTemplateType3 = getSmsTemplateTypeById(id);
+            if (!smsTemplateType3.getTemplate_type_code().equals(template_type_code)){
+                codeUpdateMapper.updateTemplateType(template_type_code,smsTemplateType3.getTemplate_type_code(),smsTemplateType3.getCorp_code());
+            }
             SmsTemplateType smsTemplateType = new SmsTemplateType();
             Date now = new Date();
             smsTemplateType.setId(id);
@@ -145,5 +155,12 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
         }
         PageInfo<SmsTemplateType> page = new PageInfo<SmsTemplateType>(list1);
         return page;
+    }
+
+    @Override
+    public List<SmsTemplate> selectByTemplateType(String corp_code,String template_type) throws Exception {
+        List<SmsTemplate> smsTemplates = smsTemplateMapper.selectByTemplateType(corp_code,template_type);
+
+        return smsTemplates;
     }
 }

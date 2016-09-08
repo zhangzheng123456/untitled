@@ -5,11 +5,11 @@
 
     <resultMap id="MessageTemplates" type="com.bizvane.ishop.entity.SmsTemplate">
         <id column="id" property="id"/>
-        <result column="template_code" property="template_code"/>
-        <result column="template_name" property="template_name"/>
-        <result column="template_content" property="template_content"/>
-        <result column="template_title" property="template_title"/>
-        <result column="template_type" property="template_type"/>
+        <result column="template_code" property="template_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_name" property="template_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_content" property="template_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_title" property="template_title" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="template_type" property="template_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -20,12 +20,6 @@
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
-        <association property="smsTemplateType" javaType="com.bizvane.ishop.entity.SmsTemplateType">
-            <result column="template_type_name" property="template_type_name"/>
-        </association>
-        <!--<association property="templateType" javaType="com.bizvane.ishop.entity.TemplateType">-->
-        <!--<result column="type_name" property="type_name"/>-->
-        <!--</association>-->
     </resultMap>
 
     <!--<resultMap id="types" type="com.bizvane.ishop.entity.TemplateType">
@@ -57,7 +51,8 @@
         dstt.template_type_name
         FROM def_sms_template dmt,DEF_CORP dc,def_sms_template_type dstt
         WHERE dmt.corp_code=dc.corp_code
-        AND dmt.template_type=dstt.id
+        AND dmt.corp_code = dstt.corp_code
+        AND dmt.template_type=dstt.template_type_code
         <if test="corp_code!=null and corp_code!=''">
             AND dmt.corp_code=#{corp_code}
         </if>
@@ -72,7 +67,6 @@
             )
         </if>
         ORDER BY dmt.id DESC
-
     </select>
 
     <select id="selectByPrimaryKey" resultMap="MessageTemplates">
@@ -93,7 +87,8 @@
         dstt.template_type_name
         FROM def_sms_template dmt,DEF_CORP dc,def_sms_template_type dstt
         WHERE dmt.corp_code=dc.corp_code
-        AND dmt.template_type=dstt.id
+        AND dmt.corp_code = dstt.corp_code
+        AND dmt.template_type=dstt.template_type_code
         AND dmt.id=#{id}
      </select>
 
@@ -141,14 +136,15 @@
             <if test="template_name!=null ">
                 #{template_name },
             </if>
-            <if test="template_content!=null ">
-                #{template_content},
-            </if>
+
             <if test="template_title!=null ">
                 #{template_title},
             </if>
             <if test="template_type!=null ">
                 #{template_type},
+            </if>
+            <if test="template_content!=null ">
+                #{template_content},
             </if>
             <if test="isactive!=null ">
                 #{isactive} ,
@@ -223,11 +219,6 @@
         select * from def_sms_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
     </select>
 
-    <!--   <select id="getTypes" resultMap="types">
-           select * from def_template_type
-       </select>
-   -->
-
     <select id="selectAllSmsTemplateScreen" resultMap="MessageTemplates">
         select
         dmt.id,
@@ -246,7 +237,8 @@
         dstt.template_type_name
         from def_sms_template dmt,DEF_CORP dc,def_sms_template_type dstt
         WHERE dmt.corp_code=dc.corp_code
-        AND dmt.template_type=dstt.id
+        AND dmt.corp_code = dstt.corp_code
+        AND dmt.template_type=dstt.template_type_code
         <if test="corp_code!=null and corp_code!=''">
             and dmt.corp_code=#{corp_code}
         </if>
@@ -270,4 +262,30 @@
         </foreach>
         ORDER by dmt.id DESC
     </select>
+
+    <select id="selectByTemplateType" resultMap="MessageTemplates">
+        SELECT
+        dmt.id,
+        dmt.template_code,
+        dmt.template_name,
+        dmt.template_content,
+        dmt.template_title,
+        dmt.template_type,
+        dmt.isactive,
+        dmt.corp_code,
+        dmt.modifier,
+        dmt.modified_date,
+        dmt.created_date,
+        dmt.creater,
+        dc.corp_name,
+        dstt.template_type_name
+        FROM def_sms_template dmt,DEF_CORP dc,def_sms_template_type dstt
+        WHERE dmt.corp_code=dc.corp_code
+        AND dmt.corp_code = dstt.corp_code
+        AND dmt.template_type=dstt.template_type_code
+        AND dmt.corp_code=#{corp_code}
+        AND dmt.template_type = #{template_type}
+        ORDER BY dmt.id DESC
+    </select>
+
 </mapper>

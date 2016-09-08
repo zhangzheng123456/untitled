@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.entity.SmsTemplateType;
 import com.bizvane.ishop.service.SmsTemplateTypeService;
 import com.bizvane.ishop.utils.OutExeclHelper;
@@ -209,6 +210,18 @@ public class SmsTemplateTypeController {
             int count = 0;
             for (int i = 0; i < ids.length; i++) {
                 logger.info("inter---------------" + Integer.valueOf(ids[i]));
+                SmsTemplateType smsTemplateType = smsTemplateTypeService.getSmsTemplateTypeById(Integer.valueOf(ids[i]));
+                if (smsTemplateType != null){
+                    String template_type_code = smsTemplateType.getTemplate_type_code();
+                    String corp_code = smsTemplateType.getCorp_code();
+                    List<SmsTemplate> smsTemplates = smsTemplateTypeService.selectByTemplateType(corp_code,template_type_code);
+                    if (smsTemplates.size()>0){
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage("消息模板分类"+template_type_code+"下有消息模板，请处理后再删除");
+                        return dataBean.getJsonStr();
+                    }
+                }
                 smsTemplateTypeService.delete(Integer.valueOf(ids[i]));
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
@@ -402,16 +415,17 @@ public class SmsTemplateTypeController {
     public String getSmsTemplateTypeInfo(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+
             JSONObject params = new JSONObject();
             JSONArray array = new JSONArray();
-            List<SmsTemplateType> list;
-            String role_code = request.getSession().getAttribute("role_code").toString();
-            String corp_code = request.getSession().getAttribute("corp_code").toString();
-            if (role_code.equals(Common.ROLE_SYS)) {
-                 list = smsTemplateTypeService.getAllSmsTemplateType("");
-            } else {
-               list = smsTemplateTypeService.getAllSmsTemplateType(corp_code);
-            }
+            List<SmsTemplateType> list = smsTemplateTypeService.getAllSmsTemplateType(corp_code);
             for (int i = 0; i < list.size(); i++) {
                 SmsTemplateType smsTemplateType = list.get(i);
                 String template_type_name = smsTemplateType.getTemplate_type_name();

@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.entity.SmsTemplate;
 import com.bizvane.ishop.entity.SmsTemplateType;
 import com.bizvane.ishop.entity.VipGroup;
 import com.github.pagehelper.PageInfo;
@@ -30,5 +31,5 @@ public interface SmsTemplateTypeService {
 
     PageInfo<SmsTemplateType> getAllSmsTemplateTypeScreen(int page_number, int page_size, String corp_code,  Map<String, String> map) throws Exception;
 
-
+    List<SmsTemplate> selectByTemplateType(String corp_code, String template_type) throws Exception;
 }

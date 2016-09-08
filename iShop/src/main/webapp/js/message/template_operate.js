@@ -56,7 +56,7 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();//企业编号
 				var MOBAN_ID=$("#MOBAN_ID").val();//模板编号
 				var MOBAN_NAME=$("#MOBAN_NAME").val();//模板名称
-				// var MOBAN_TYPE=$("#MOBAN_TYPE").val();//模板类型
+				var template_type=$("#OWN_template").val();//模板类型
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";//是否可用
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -75,7 +75,7 @@ var oc = new ObjectControl();
 					"template_code": MOBAN_ID,//模板编号
 					"template_content": MOBAN_CONTENT,//模板内容
 					"template_name": MOBAN_NAME,//模板名称
-					// "template_type": MOBAN_TYPE,//模板类型
+					 "template_type": template_type,//模板类型
 					"isactive": ISACTIVE//是否可用
 				};
 				mobilejs.ajaxSubmit(_command, _params, opt);
@@ -89,7 +89,7 @@ var oc = new ObjectControl();
 				var MOBAN_ID=$("#MOBAN_ID").val();
 				var OWN_CORP=$("#OWN_CORP").val();//模板编号
 				var MOBAN_NAME=$("#MOBAN_NAME").val();//模板名称
-				// var MOBAN_TYPE=$("#MOBAN_TYPE").val();//模板类型
+				var template_type=$("#OWN_template").val();//模板类型
 				var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -109,7 +109,7 @@ var oc = new ObjectControl();
 					"template_code": MOBAN_ID,//模板编号
 					"template_content": MOBAN_CONTENT,//模板内容
 					"template_name": MOBAN_NAME,//模板名称
-					// "template_type": MOBAN_TYPE,//模板类型
+					 "template_type": template_type,//模板类型
 					"isactive": ISACTIVE//是否可用
 				};
 				mobilejs.ajaxSubmit(_command,_params,opt);
@@ -168,6 +168,8 @@ var oc = new ObjectControl();
 }));
 jQuery(document).ready(function(){
 	window.mobile.init();//初始化
+	var a="";
+    var b="";
 	if($(".pre_title label").text()=="编辑消息模板"){
 		var id=sessionStorage.getItem("id");
 		var key_val=sessionStorage.getItem("key_val");//取页面的function_code
@@ -185,8 +187,6 @@ jQuery(document).ready(function(){
 		});
 		var _params={"id":id};
 		var _command="/message/mobile/template/select";
-		var a="";
-		var b="";
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log(data);
 			if(data.code=="0"){
@@ -211,8 +211,7 @@ jQuery(document).ready(function(){
 				}else if(msg.isactive=="N"){
 					input.checked=false;
 				}
-				getcorplist(corp_code);
-				getTemplateGroup(template_type);
+				getcorplist(corp_code,template_type);
 			}else if(data.code=="-1"){
 				art.dialog({
 					time: 1,
@@ -223,8 +222,7 @@ jQuery(document).ready(function(){
 			}
 		});
 	}else{
-		getcorplist();
-		getTemplateGroup();
+		getcorplist(a,b);
 	}
 	//验证编号是不是唯一
 	$("input[verify='Code']").blur(function(){
@@ -278,7 +276,7 @@ jQuery(document).ready(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/message/template.html");
 	});
 });
-function getcorplist(a){
+function getcorplist(a,b){
 //获取企业信息列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
@@ -297,8 +295,12 @@ function getcorplist(a){
 			if(a!==""){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}
-			$('.corp_select select').searchableSelect();
-			$('.searchable-select-item').click(function(){
+			$('#OWN_CORP').searchableSelect();
+			var corp_code=$("#OWN_CORP").val();
+			getTemplateGroup(corp_code,b);
+			$('#corp_select .searchable-select-item').click(function(){
+				var c=$(this).attr("data-value");
+				getTemplateGroup(c,b);
 				$("#MOBAN_ID").val("");
 				$("#MOBAN_NAME").val("");
 				$("input[verify='Code']").attr("data-mark","");
@@ -316,10 +318,12 @@ function getcorplist(a){
 		}
 	});
 }
-function getTemplateGroup(a){
+function getTemplateGroup(a,b){
 //获取消息模板分组
 	var corp_command="/smsTemplateType/getSmsTemplateTypeInfo";
-	oc.postRequire("post", corp_command,"", "", function(data){
+	var param={};
+	param["corp_code"]=a;
+	oc.postRequire("post", corp_command,"", param, function(data){
 		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
@@ -327,22 +331,17 @@ function getTemplateGroup(a){
 			var index=0;
 			var corp_html='';
 			var c=null;
+			$('#OWN_template').empty();
+			$('#template_select .searchable-select').remove();
 			for(index in msg.params){
 				c=msg.params[index];
 				corp_html+='<option value="'+c.template_type_code+'">'+c.template_type_name+'</option>';
 			}
 			$("#OWN_template").append(corp_html);
-			if(a!==""){
-				$("#OWN_template option[value='"+a+"']").attr("selected","true");
+			if(b!==""){
+				$("#OWN_template option[value='"+b+"']").attr("selected","true");
 			}
 			$('#OWN_template').searchableSelect();
-			$('.searchable-select-item').click(function(){
-				//$("#MOBAN_ID").val("");
-				//$("#MOBAN_NAME").val("");
-				//$("input[verify='Code']").attr("data-mark","");
-				//$("#STORE_NAME").attr("data-mark","");
-			})
-
 		}else if(data.code=="-1"){
 			art.dialog({
 				time: 1,
