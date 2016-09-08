@@ -69,7 +69,6 @@
         dstt.creater,
         dstt.isactive
         FROM def_sms_template_type dstt
-        WHERE dstt.corp_code=#{corp_code}
         ORDER BY dstt.id DESC
     </select>
     <delete id="deleteSmsTemplateTypeById">

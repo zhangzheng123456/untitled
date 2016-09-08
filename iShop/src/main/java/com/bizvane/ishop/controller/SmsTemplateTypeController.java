@@ -2,6 +2,7 @@ package com.bizvane.ishop.controller;
 
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.SmsTemplateType;
@@ -391,4 +392,48 @@ public class SmsTemplateTypeController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/getSmsTemplateTypeInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public String getSmsTemplateTypeInfo(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject params = new JSONObject();
+            JSONArray array = new JSONArray();
+            List<SmsTemplateType> list;
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            if (role_code.equals(Common.ROLE_SYS)) {
+                 list = smsTemplateTypeService.getAllSmsTemplateType("");
+            } else {
+               list = smsTemplateTypeService.getAllSmsTemplateType(corp_code);
+            }
+            for (int i = 0; i < list.size(); i++) {
+                SmsTemplateType smsTemplateType = list.get(i);
+                String template_type_name = smsTemplateType.getTemplate_type_name();
+                int smsTemplateTypeId = smsTemplateType.getId();
+               String template_type_code = smsTemplateType.getTemplate_type_code();
+
+                JSONObject obj = new JSONObject();
+                obj.put("template_type_name", template_type_name);
+                obj.put("template_type_code", template_type_code);
+                obj.put("smsTemplateTypeId", smsTemplateTypeId);
+                array.add(obj);
+            }
+            params.put("params", array);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(params.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+
+        return dataBean.getJsonStr();
+    }
 }
