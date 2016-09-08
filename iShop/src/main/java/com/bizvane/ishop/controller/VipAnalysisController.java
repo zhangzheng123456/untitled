@@ -40,48 +40,6 @@ public class VipAnalysisController {
 
     String id;
 
-    //生日会员
-    @RequestMapping(value = "/vipBirth", method = RequestMethod.POST)
-    @ResponseBody
-    public String vipBirth(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String user_code = request.getSession().getAttribute("user_code").toString();
-        String corp_code = request.getSession().getAttribute("corp_code").toString();
-        try {
-            JSONObject dashboard = new JSONObject();
-
-            String param = request.getParameter("param");
-            logger.info("json---------------" + param);
-            JSONObject jsonObj = new JSONObject(param);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String query_type;
-            if (jsonObject.has("query_type")) {
-                query_type = jsonObject.get("query_type").toString();
-            } else {
-                query_type = "current_month";
-            }
-
-
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(dashboard.toString());
-            return dataBean.getJsonStr();
-
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        dataBean.setId(id);
-        dataBean.setMessage("非系统管理员");
-        return dataBean.getJsonStr();
-    }
-
-
     //会员列表
     @RequestMapping(value = "/allVip", method = RequestMethod.POST)
     @ResponseBody
@@ -148,4 +106,91 @@ public class VipAnalysisController {
         }
         return dataBean.getJsonStr();
     }
+
+    //新入会员
+    @RequestMapping(value = "/vipNew", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipNew(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = new JSONObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+
+            String user_id = "";
+            String area_code = "";
+            String store_id = "";
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            } else if (role_code.equals(Common.ROLE_GM)){
+                if (jsonObject.has("area_code")){
+                    area_code = jsonObject.get("area_code").toString();
+                }
+            } else if (role_code.equals(Common.ROLE_AM)){
+                if (jsonObject.has("area_code")){
+                    area_code = jsonObject.get("area_code").toString();
+                }else {
+                    area_code = request.getSession().getAttribute("area_code").toString().replace(Common.STORE_HEAD,"");
+                    String[] area_codes = area_code.split(",");
+                    area_code = area_codes[0];
+                }
+                if (jsonObject.has("store_code")){
+                    store_id = jsonObject.get("store_code").toString();
+                }
+            } else if (role_code.equals(Common.ROLE_SM)){
+                if (jsonObject.has("store_code")){
+                    store_id = jsonObject.get("store_code").toString();
+                }else {
+                    String store_code = request.getSession().getAttribute("store_code").toString().replace(Common.STORE_HEAD, "");
+                    String[] store_codes = store_code.split(",");
+                    store_id = store_codes[0];
+                }
+            } else if (role_code.equals(Common.ROLE_STAFF)){
+                user_id = user_code;
+                if (jsonObject.has("store_code")){
+                    store_id = jsonObject.get("store_code").toString();
+                }
+            }
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_id.key, data_store_id);
+            datalist.put(data_area_code.key, data_area_code);
+            datalist.put(data_role_code.key, data_role_code);
+            datalist.put(data_page_num.key, data_page_num);
+            datalist.put(data_page_size.key, data_page_size);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisNewVip", datalist);
+            logger.info("-------vip列表" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    
 }

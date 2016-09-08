@@ -70,7 +70,7 @@ public class UserActionController {
     public String userActionList(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         JSONObject result = new JSONObject();
-        int pages=0;
+        int pages = 0;
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -81,44 +81,44 @@ public class UserActionController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection("log_person_action");
 
-            DBObject sort_obj = new BasicDBObject("time",-1);
+            DBObject sort_obj = new BasicDBObject("time", -1);
             DBCursor dbCursor = null;
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
                 int count = Integer.parseInt(String.valueOf(cursor.count()));
-                if (count%page_size == 0){
-                    pages = count/page_size;
-                }else {
-                    pages = count/page_size+1;
+                if (count % page_size == 0) {
+                    pages = count / page_size;
+                } else {
+                    pages = count / page_size + 1;
                 }
                 System.out.println("======vipActionLogger=====pages : " + pages);
                 dbCursor = cursor.find().sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======sys=====dbCursor : " + dbCursor);
             } else {
                 Map keyMap = new HashMap();
-                keyMap.put("corp_code",corp_code);
+                keyMap.put("corp_code", corp_code);
                 BasicDBObject ref = new BasicDBObject();
                 ref.putAll(keyMap);
 
                 DBCursor dbCursor1 = cursor.find(ref);
                 int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
-                if (count%page_size == 0){
-                    pages = count/page_size;
-                }else {
-                    pages = count/page_size+1;
+                if (count % page_size == 0) {
+                    pages = count / page_size;
+                } else {
+                    pages = count / page_size + 1;
                 }
                 dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList list = new ArrayList();
-            while(dbCursor.hasNext()) {
+            while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
                 list.add(obj.toMap());
             }
-            result.put("list",list);
-            result.put("pages",pages);
-            result.put("page_number",page_number);
-            result.put("page_size",page_size);
+            result.put("list", list);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -178,7 +178,7 @@ public class UserActionController {
     public String search(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         JSONObject result = new JSONObject();
-        int pages=0;
+        int pages = 0;
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -190,7 +190,7 @@ public class UserActionController {
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String search_value = jsonObject.get("searchValue").toString();
-            Pattern pattern = Pattern.compile("^.*" + search_value+ ".*$", Pattern.CASE_INSENSITIVE);
+            Pattern pattern = Pattern.compile("^.*" + search_value + ".*$", Pattern.CASE_INSENSITIVE);
             System.out.println("======vipActionLogger===== ");
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -207,17 +207,17 @@ public class UserActionController {
             values.add(new BasicDBObject("emp_name", pattern));
             values.add(new BasicDBObject("corp_code", pattern));
             queryCondition.put("$or", values);
-            DBObject sort_obj = new BasicDBObject("time",-1);
+            DBObject sort_obj = new BasicDBObject("time", -1);
 
             DBCursor dbCursor = null;
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
-                if (count%page_size == 0){
-                    pages = count/page_size;
-                }else {
-                    pages = count/page_size+1;
+                if (count % page_size == 0) {
+                    pages = count / page_size;
+                } else {
+                    pages = count / page_size + 1;
                 }
                 System.out.println("======vipActionLogger=====pages : " + pages);
                 dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
@@ -227,26 +227,26 @@ public class UserActionController {
                 value.add(new BasicDBObject("corp_code", corp_code));
                 value.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
-                queryCondition1.put("$and",value);
+                queryCondition1.put("$and", value);
                 DBCursor dbCursor2 = cursor.find(queryCondition1);
                 int count = Integer.parseInt(String.valueOf(dbCursor2.count()));
-                if (count%page_size == 0){
-                    pages = count/page_size;
-                }else {
-                    pages = count/page_size+1;
+                if (count % page_size == 0) {
+                    pages = count / page_size;
+                } else {
+                    pages = count / page_size + 1;
                 }
                 dbCursor = dbCursor2.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList list = new ArrayList();
-            while(dbCursor.hasNext()) {
+            while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
                 list.add(obj.toMap());
             }
-            result.put("list",list);
-            result.put("pages",pages);
-            result.put("page_number",page_number);
-            result.put("page_size",page_size);
+            result.put("list", list);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -260,13 +260,12 @@ public class UserActionController {
     }
 
 
-
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String Screen(HttpServletRequest request) {
         JSONObject result = new JSONObject();
         DataBean dataBean = new DataBean();
-        int pages=0;
+        int pages = 0;
         try {
             String role_code = request.getSession(false).getAttribute("role_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
@@ -287,7 +286,7 @@ public class UserActionController {
                 JSONObject json = JSONObject.parseObject(info);
                 String screen_key = json.get("screen_key").toString();
                 String screen_value = json.get("screen_value").toString();
-                Pattern pattern = Pattern.compile("^.*" + screen_value+ ".*$", Pattern.CASE_INSENSITIVE);
+                Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                 values.add(new BasicDBObject(screen_key, pattern));
             }
             queryCondition.put("$and", values);
@@ -295,17 +294,17 @@ public class UserActionController {
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection("log_person_action");
-            DBObject sort_obj = new BasicDBObject("time",-1);
+            DBObject sort_obj = new BasicDBObject("time", -1);
 
             DBCursor dbCursor = null;
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
                 DBCursor dbCursor1 = cursor.find(queryCondition);
                 int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
-                if (count%page_size == 0){
-                    pages = count/page_size;
-                }else {
-                    pages = count/page_size+1;
+                if (count % page_size == 0) {
+                    pages = count / page_size;
+                } else {
+                    pages = count / page_size + 1;
                 }
                 System.out.println("======vipActionLogger=====pages : " + pages);
                 dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
@@ -315,26 +314,26 @@ public class UserActionController {
                 value.add(new BasicDBObject("corp_code", corp_code));
                 value.add(queryCondition);
                 BasicDBObject queryCondition1 = new BasicDBObject();
-                queryCondition1.put("$and",value);
+                queryCondition1.put("$and", value);
                 DBCursor dbCursor1 = cursor.find(queryCondition1);
                 int count = Integer.parseInt(String.valueOf(dbCursor1.count()));
-                if (count%page_size == 0){
-                    pages = count/page_size;
-                }else {
-                    pages = count/page_size+1;
+                if (count % page_size == 0) {
+                    pages = count / page_size;
+                } else {
+                    pages = count / page_size + 1;
                 }
                 dbCursor = dbCursor1.sort(sort_obj).skip((page_number - 1) * page_size).limit(page_size);
                 System.out.println("======other=====dbCursor : " + dbCursor);
             }
             ArrayList lists = new ArrayList();
-            while(dbCursor.hasNext()) {
+            while (dbCursor.hasNext()) {
                 DBObject obj = dbCursor.next();
                 lists.add(obj.toMap());
             }
-            result.put("list",lists);
-            result.put("pages",pages);
-            result.put("page_number",page_number);
-            result.put("page_size",page_size);
+            result.put("list", lists);
+            result.put("pages", pages);
+            result.put("page_number", page_number);
+            result.put("page_size", page_size);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -346,6 +345,7 @@ public class UserActionController {
         }
         return dataBean.getJsonStr();
     }
+
     /***
      * 导出数据
      */
@@ -364,10 +364,10 @@ public class UserActionController {
             String search_value = jsonObject.get("searchValue").toString();
             String screen = jsonObject.get("list").toString();
             ArrayList list = new ArrayList();
-            DBObject sort_obj = new BasicDBObject("time",-1);
+            DBObject sort_obj = new BasicDBObject("time", -1);
 
             if (screen.equals("")) {
-                Pattern pattern = Pattern.compile("^.*" + search_value+ ".*$", Pattern.CASE_INSENSITIVE);
+                Pattern pattern = Pattern.compile("^.*" + search_value + ".*$", Pattern.CASE_INSENSITIVE);
 
                 MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
                 DBCollection cursor = mongoTemplate.getCollection("log_person_action");
@@ -387,16 +387,16 @@ public class UserActionController {
                 DBCursor dbCursor = null;
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
-                     dbCursor = cursor.find(queryCondition).sort(sort_obj);
+                    dbCursor = cursor.find(queryCondition).sort(sort_obj);
                 } else {
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
                     value.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and",value);
+                    queryCondition1.put("$and", value);
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 }
-                while(dbCursor.hasNext()) {
+                while (dbCursor.hasNext()) {
                     DBObject obj = dbCursor.next();
                     list.add(obj.toMap());
                 }
@@ -409,7 +409,7 @@ public class UserActionController {
                     JSONObject json = JSONObject.parseObject(info);
                     String screen_key = json.get("screen_key").toString();
                     String screen_value = json.get("screen_value").toString();
-                    Pattern pattern = Pattern.compile("^.*" + screen_value+ ".*$", Pattern.CASE_INSENSITIVE);
+                    Pattern pattern = Pattern.compile("^.*" + screen_value + ".*$", Pattern.CASE_INSENSITIVE);
                     values.add(new BasicDBObject(screen_key, pattern));
                 }
                 queryCondition.put("$and", values);
@@ -418,17 +418,17 @@ public class UserActionController {
                 DBCursor dbCursor = null;
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
-                     dbCursor = cursor.find(queryCondition).sort(sort_obj);
+                    dbCursor = cursor.find(queryCondition).sort(sort_obj);
 
                 } else {
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));
                     value.add(queryCondition);
                     BasicDBObject queryCondition1 = new BasicDBObject();
-                    queryCondition1.put("$and",value);
+                    queryCondition1.put("$and", value);
                     dbCursor = cursor.find(queryCondition1).sort(sort_obj);
                 }
-                while(dbCursor.hasNext()) {
+                while (dbCursor.hasNext()) {
                     DBObject obj = dbCursor.next();
                     list.add(obj.toMap());
                 }
@@ -443,7 +443,7 @@ public class UserActionController {
             LinkedHashMap<String, String> map = WebUtils.Json2ShowName(jsonObject);
             // String column_name1 = "corp_code,corp_name";
             // String[] cols = column_name.split(",");//前台传过来的字段
-            String pathname = OutExeclHelper.OutExecl(json,list, map, response, request);
+            String pathname = OutExeclHelper.OutExecl(json, list, map, response, request);
             org.json.JSONObject result = new org.json.JSONObject();
             if (pathname == null || pathname.equals("")) {
                 errormessage = "数据异常，导出失败";
