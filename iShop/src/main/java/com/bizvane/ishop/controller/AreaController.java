@@ -123,8 +123,10 @@ public class AreaController {
             JSONObject result = new JSONObject();
             String area_code = request.getSession(false).getAttribute("area_code").toString();
             String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
             List<Area>   list = areaService.selectArea( corp_code, area_code);
             result.put("list", JSON.toJSONString(list));
+            result.put("role_code", JSON.toJSONString(role_code));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
