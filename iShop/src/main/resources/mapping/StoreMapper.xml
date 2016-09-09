@@ -218,6 +218,7 @@
         GROUP BY def_store.id
         ORDER BY DEF_STORE.id DESC
     </select>
+
     <select id="selectStore" resultMap="Store">
         SELECT  store_code,
         store_name
@@ -260,7 +261,6 @@
         GROUP BY def_store.id
         ORDER BY DEF_STORE.id DESC
     </select>
-
 
     <select id="selectByUserId" resultMap="Store">
         select
@@ -577,6 +577,20 @@
         </if>
         AND def_corp.isactive = 'Y'
         AND def_store.isactive = 'Y'
+        ORDER BY def_store.id DESC
+    </select>
+
+    <select id="selectStoreCountByArea" resultType="com.bizvane.ishop.entity.Store">
+        SELECT
+        def_store.id,
+        store_code,
+        store_name,
+        def_store.area_code,
+        def_store.corp_code
+        FROM def_store
+        WHERE def_store.corp_code = #{corp_code}
+        AND def_store.area_code = #{area_code}
+        AND def_store.isactive = #{isactive}
         ORDER BY def_store.id DESC
     </select>
 </mapper>

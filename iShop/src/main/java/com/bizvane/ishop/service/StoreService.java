@@ -75,6 +75,8 @@ public interface StoreService {
 
     List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) throws Exception;
 
+    List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception;
+
     String insertExecl(Store store) throws Exception;
 
     PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map) throws Exception;

@@ -377,8 +377,8 @@ public class AreaController {
             JSONObject jsonObject = new JSONObject(message);
             String area_id = jsonObject.get("id").toString();
             Area area = areaService.getAreaById(Integer.parseInt(area_id));
-            String[] area_code = new String[]{area.getArea_code()};
-            int count = storeService.selectByAreaCode(area.getCorp_code(),area_code,Common.IS_ACTIVE_Y).size();
+            String area_code = area.getArea_code();
+            int count = storeService.selectStoreCountByArea(area.getCorp_code(),area_code,Common.IS_ACTIVE_Y).size();
             area.setStore_count(String.valueOf(count));
             data = JSON.toJSONString(area);
 
