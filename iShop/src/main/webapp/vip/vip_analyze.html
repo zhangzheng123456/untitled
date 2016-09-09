@@ -19,13 +19,13 @@
     }
     .vip_table_lg .date_btn {
         width: 100%;
-        height:40px;
+        height:50px;
         background: #fff;
         margin-top: 15px;
     }
     .vip_table_lg .month_btn{
         width: 100%;
-        height:40px;
+        height:50px;
         background: #fff;
         margin-top: 15px;
     }
@@ -34,6 +34,7 @@
         height:40px;
         background: #fff;
         margin-top: 15px;
+        margin-left: 0;
         padding-left: 10px;
     }
     .vip_table_lg .date_btn li{
@@ -41,12 +42,14 @@
     }
     .vip_table_lg .date_btn li span{
         margin-left: 10px;
+        margin-top: 10px;
     }
     .vip_table_lg .month_btn li{
         width:13%;
     }
     .vip_table_lg .month_btn li span{
         margin-left: 10px;
+        margin-top: 10px;
     }
     .vip_table_lg .vip_nav_bar{
         border-bottom: 1px solid #fff;
@@ -76,7 +79,7 @@
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
-            <span>会员分析</span>
+            <span id="vipAnalyze_return">会员分析</span>
         </div>
         <!-- 左侧总体数据分析-->
         <div id="side_analyze" class="col_lg_4 lf">
@@ -676,7 +679,7 @@
     })
 
     //加载更多页面放大
-    $(".more_data").click(function () {
+    function vipTable_lg() {
         $("#table_analyze").addClass("vip_table_lg");
         $("#chart_analyze").hide();
         $(".more_data").hide();
@@ -684,6 +687,21 @@
         $("html").css("background","#e8e8e8");
         $("#table_analyze").css("background","#e8e8e8");
         $(".vip_table_lg .icon-ishop_8-03").hide();
+    }
+    $(".more_data").click(function () {
+       vipTable_lg();
+    })
+    $(".vip_table tbody tr").click(function () {
+       vipTable_lg();
+    })
+
+    //点击标题返回
+    $("#vipAnalyze_return").click(function () {
+        $("#table_analyze").removeClass("vip_table_lg");
+        $("#chart_analyze").show();
+        $(".more_data").show();
+        $("#side_analyze").show();
+        $("#table_analyze").css("background","#fff");
     })
 </script>
 
