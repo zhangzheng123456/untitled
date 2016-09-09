@@ -418,4 +418,8 @@
       </trim>
         WHERE id=#{id}
     </update>
+    <update id="updTaskBycode" parameterType="com.bizvane.ishop.entity.Task">
+        UPDATE def_task  SET TASK_TYPE_CODE =#{task_type_code_old}
+        WHERE CORP_CODE =#{corp_code} AND TASK_TYPE_CODE =#{task_type_code_new}
+    </update>
 </mapper>

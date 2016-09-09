@@ -40,6 +40,24 @@ public class Task {
     private User user;
     private String task_type_name;
     private TaskType taskType;
+    private String task_type_code_old;
+    private String task_type_code_new;
+
+    public String getTask_type_code_old() {
+        return task_type_code_old;
+    }
+
+    public void setTask_type_code_old(String task_type_code_old) {
+        this.task_type_code_old = task_type_code_old;
+    }
+
+    public String getTask_type_code_new() {
+        return task_type_code_new;
+    }
+
+    public void setTask_type_code_new(String task_type_code_new) {
+        this.task_type_code_new = task_type_code_new;
+    }
 
     public String getTask_type_name() {
         return task_type_name;

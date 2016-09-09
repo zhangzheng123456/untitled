@@ -38,4 +38,6 @@ public interface TaskMapper {
 
         int updTaskAllocation(TaskAllocation taskAllocation);
 
+        int updTaskBycode(@Param("task_type_code_old")String task_type_code_old,@Param("corp_code")String corp_code,@Param("task_type_code_new")String task_type_code_new);
+
 }
