@@ -41,6 +41,7 @@
     <select id="selectParams" resultMap="ParamConfigure">
         select *
         from DEF_CORP_CFG
+        WHERE DEF_CORP_CFG.isactive="Y"
 
        ORDER BY DEF_CORP_CFG.id DESC
     </select>
@@ -160,12 +161,14 @@
     <select id="selectParamByKey" resultMap="ParamConfigure">
         select * from DEF_CORP_CFG
         WHERE param_name=#{param_name}
+        AND DEF_CORP_CFG.isactive="Y"
 
     </select>
 
     <select id="selectParamByName" resultMap="ParamConfigure">
         select * from DEF_CORP_CFG
         WHERE param_desc=#{param_desc}
+        And DEF_CORP_CFG.isactive="Y"
 
     </select>
 
