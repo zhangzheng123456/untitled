@@ -950,13 +950,13 @@ require(
             myChart4.setOption(option2);
             myChart5.setOption(option);
             myChart6.setOption(option);
-            window.onresize =function(){
-                myChart.setOption(option);
-                myChart1.setOption(option1);
-                myChart4.setOption(option2);
-                myChart5.setOption(option);
-                myChart6.setOption(option);
-            };
+            window.addEventListener("resize", function () {
+                myChart.resize();
+                myChart1.resize();
+                myChart4.resize();
+                myChart5.resize();
+                myChart6.resize();
+            });
         }
 );
 </script>
