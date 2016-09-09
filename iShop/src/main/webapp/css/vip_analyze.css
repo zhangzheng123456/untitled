@@ -191,17 +191,4 @@
     margin-left: 10px;
     color: #888;
 }
-/*下拉框定位*/
-#select_analyze{
-    position: absolute;
-    display:none;
-    left: 22%;
-    top:69px;
-    z-index: 100;
-    background: #E8E8E8;
-}
-#select_analyze ul{
-    width: 273px;
-    border: 1px solid #333;
-}
 
