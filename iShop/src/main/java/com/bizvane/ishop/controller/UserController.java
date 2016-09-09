@@ -479,7 +479,7 @@ public class UserController {
                 }
             }
             for(int i=3;i<column3.length;i++) {
-                if (column8[i].getContents().toString().trim().equals("")) {
+                if (String.valueOf(column8[i].getContents()+"").equals("null")||column8[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
@@ -503,7 +503,7 @@ public class UserController {
                 }
             }
             for(int i=0;i<column3.length;i++){
-                if (column9[i].getContents().toString().trim().equals("")) {
+                if (String.valueOf(column9[i].getContents()+"").equals("null")||column9[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
