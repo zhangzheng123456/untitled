@@ -106,6 +106,9 @@
     background: skyblue;
     padding: 10px;
 }
+#main{
+    height:270px;
+}
 /*锟揭诧拷锟斤拷锟斤拷*/
 .vip_nav_bar{
     height: 30px;
@@ -113,6 +116,7 @@
 }
 .vip_nav_bar li{
     width:23%;
+    height:29px;
     line-height: 30px;
     float: left;
     text-align: center;
@@ -123,6 +127,7 @@
     width:33.3333%;
     float: left;
     height:40px;
+    cursor: pointer;
 }
 .date_btn li span{
     width: 100px;
@@ -135,14 +140,31 @@
     margin-top:5px;
     margin-left: 85px;
 }
+.month_btn li{
+    width:20%;
+    float: left;
+    height:40px;
+    cursor: pointer;
+}
+.month_btn li span{
+    width: 120px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border:1px solid #c1c3c4;
+    border-radius: 10px;
+    float: left;
+    margin-top:5px;
+    margin-left: 10px;
+}
 .vip_table{
     width: 98%;
     margin-left: 10px;
     text-align: center;
 }
 .vip_table thead tr{
-    height: 40px;
-    line-height: 40px;
+    height: 35px;
+    line-height: 35px;
     color: #434960;
     font-size: 14px;
     background: #e8e8e8;
@@ -152,7 +174,7 @@
     font-weight: normal;
 }
 .vip_table tbody tr td{
-    height: 27px;
+    height: 30px;
     border-bottom:1px solid #e8e8e8 ;
 }
 .vip_table .icon-ishop_8-03{
@@ -163,6 +185,11 @@
     font-size: 15px;
     color: #6dc1c8;
     line-height: 35px;
+}
+.newVip_title{
+    line-height: 40px;
+    margin-left: 10px;
+    color: #888;
 }
 /*下拉框定位*/
 #select_analyze{
@@ -177,3 +204,4 @@
     width: 273px;
     border: 1px solid #333;
 }
+
