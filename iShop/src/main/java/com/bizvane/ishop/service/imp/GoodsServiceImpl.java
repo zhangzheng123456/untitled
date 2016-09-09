@@ -110,7 +110,7 @@ public class GoodsServiceImpl implements GoodsService {
             } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
                 return "名称已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-                goodsMapper.deleteMatch(goods.getCorp_code(),goods.getGoods_code());
+                goodsMapper.deleteMatch(goods.getCorp_code(),old.getGoods_code());
                 Date now = new Date();
                 if (!match_goods.equals("")) {
                     String[] matches = match_goods.split(",");
