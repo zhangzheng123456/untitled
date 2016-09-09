@@ -89,7 +89,7 @@ $(function(){
             }   
         });
     })
-    $("#logo").click(function(){
+    function renturn_h(){
         var val=sessionStorage.getItem("key");//取登录里面的key
         val=JSON.parse(val);//
         var message=JSON.parse(val.message);//
@@ -106,5 +106,11 @@ $(function(){
             } else if(user_type == "sm"){
                 window.location.href="home/index_sm.html";
             }
+    }
+    $("#logo").click(function(){
+       renturn_h();
+    })
+    $("#renturn_h").click(function(){
+        renturn_h();
     })
 })

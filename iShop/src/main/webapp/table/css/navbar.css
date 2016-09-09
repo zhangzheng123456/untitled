@@ -63,6 +63,33 @@ body{
 	background-color:#f3f3f3;
 	cursor: pointer;
 }
+.navbar .floot-r li .aixiu_code{
+	width: 150px;
+	position: absolute;
+	top: 60px;
+	left: -56px;
+	display: none;
+}
+.navbar .floot-r li .aixiu_code i{
+	position: absolute;
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+    top: -14px;
+    right: 66px;
+}
+#aixiu_code{
+	height: 60px;
+}
+#aixiu_code:hover .aixiu_code{
+	box-shadow: 0 0 5px rgba(0,0,0,0.4);
+	border-radius: 7px;
+	display: block;
+}
+.navbar .floot-r li .aixiu_code img{
+	width: 100%;
+	border: 2px solid #ccc;
+	border-radius: 7px;
+}
 .navbar .floot-r li a:hover{
 	color: #7ee8f1;
 }
@@ -101,7 +128,7 @@ body{
 	font-size: 14px;
 	color:#888;
 }
-.navbar .floot-r li img{
+#img img{
 	border-radius: 20px;
 	border:2px solid #71cbd3;
 }

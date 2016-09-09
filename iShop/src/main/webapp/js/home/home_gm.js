@@ -19,11 +19,11 @@ $(".title").mouseout(function() {
 	ul.hide();
 });
 $(".select_Date").mouseover(function(){
-	$(this).parent(".choose").toggleClass("cur");
+	$(this).parent(".choose").addClass("cur");
 	$(this).show()
 });
 $(".select_Date").mouseout(function(){
-	$(this).parent(".choose").toggleClass("cur");
+	$(this).parent(".choose").removeClass("cur");
 	$(this).hide()
 });
 
