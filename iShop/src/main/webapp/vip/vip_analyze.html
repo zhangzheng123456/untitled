@@ -947,7 +947,9 @@ require(
                 ]
             };
             var option3 = {
-
+                tooltip : {
+                    trigger: 'item'
+                },
                 dataRange: {
                     itemWidth:5,
                     itemGap:1,
@@ -1006,63 +1008,17 @@ require(
                             {name: '香港',value: Math.round(Math.random()*1000)},
                             {name: '澳门',value: Math.round(Math.random()*1000)}
                         ]
-                    },
-                    {
-                        name: 'iphone4',
-                        type: 'map',
-                        mapType: 'china',
-                        itemStyle:{
-                            normal:{label:{show:true}},
-                            emphasis:{label:{show:true}}
-                        },
-                        data:[
-                            {name: '北京',value: Math.round(Math.random()*1000)},
-                            {name: '天津',value: Math.round(Math.random()*1000)},
-                            {name: '上海',value: Math.round(Math.random()*1000)},
-                            {name: '重庆',value: Math.round(Math.random()*1000)},
-                            {name: '河北',value: Math.round(Math.random()*1000)},
-                            {name: '安徽',value: Math.round(Math.random()*1000)},
-                            {name: '新疆',value: Math.round(Math.random()*1000)},
-                            {name: '浙江',value: Math.round(Math.random()*1000)},
-                            {name: '江西',value: Math.round(Math.random()*1000)},
-                            {name: '山西',value: Math.round(Math.random()*1000)},
-                            {name: '内蒙古',value: Math.round(Math.random()*1000)},
-                            {name: '吉林',value: Math.round(Math.random()*1000)},
-                            {name: '福建',value: Math.round(Math.random()*1000)},
-                            {name: '广东',value: Math.round(Math.random()*1000)},
-                            {name: '西藏',value: Math.round(Math.random()*1000)},
-                            {name: '四川',value: Math.round(Math.random()*1000)},
-                            {name: '宁夏',value: Math.round(Math.random()*1000)},
-                            {name: '香港',value: Math.round(Math.random()*1000)},
-                            {name: '澳门',value: Math.round(Math.random()*1000)}
-                        ]
-                    },
-                    {
-                        name: 'iphone5',
-                        type: 'map',
-                        mapType: 'china',
-                        itemStyle:{
-                            normal:{label:{show:true}},
-                            emphasis:{label:{show:true}}
-                        },
-                        data:[
-                            {name: '北京',value: Math.round(Math.random()*1000)},
-                            {name: '天津',value: Math.round(Math.random()*1000)},
-                            {name: '上海',value: Math.round(Math.random()*1000)},
-                            {name: '广东',value: Math.round(Math.random()*1000)},
-                            {name: '台湾',value: Math.round(Math.random()*1000)},
-                            {name: '香港',value: Math.round(Math.random()*1000)},
-                            {name: '澳门',value: Math.round(Math.random()*1000)}
-                        ]
                     }
                 ]
             };
+//            myChart.showLoading();
             myChart.setOption(option);
             myChart1.setOption(option1);
             myChart4.setOption(option2);
             myChart5.setOption(option);
             myChart6.setOption(option);
             myChart7.setOption(option3);
+//            myChart.hideLoading();
             window.addEventListener("resize", function () {
                 myChart.resize();
                 myChart1.resize();
