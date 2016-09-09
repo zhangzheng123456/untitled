@@ -478,7 +478,10 @@ public class UserController {
                     break;
                 }
             }
-            for(int i=3;i<column8.length;i++) {
+            for(int i=3;i<column3.length;i++) {
+                if (column8[i].getContents().toString().trim().equals("")) {
+                    continue;
+                }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 if (role.equals(Common.ROLE_AM) || role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
                     String areas = column8[i].getContents().toString().trim();
@@ -499,7 +502,10 @@ public class UserController {
                     }
                 }
             }
-            for(int i=0;i<column9.length;i++){
+            for(int i=0;i<column3.length;i++){
+                if (column9[i].getContents().toString().trim().equals("")) {
+                    continue;
+                }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
                     String stores = column9[i].getContents().toString().trim();

@@ -98,7 +98,7 @@ public class StoreController {
                     String[] areaCodes = area_code.split(",");
                     list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
                 } else if (role_code.equals(Common.ROLE_AM)) {
-                    String area_code = request.getSession().getAttribute("area_code").toString();
+                    String area_code = jsonObject.get("area_code").toString();
                     String[] areaCodes = area_code.split(",");
                     list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
                 } else {
@@ -153,7 +153,8 @@ public class StoreController {
                     String[] areaCodes = area_code.split(",");
                     list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
                 } else if (role_code.equals(Common.ROLE_AM)) {
-                    String area_code = request.getSession().getAttribute("area_code").toString();
+                   // String area_code = request.getSession().getAttribute("area_code").toString();
+                    String area_code = jsonObject.get("area_code").toString();
                     String[] areaCodes = area_code.split(",");
                     list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
                 } else {
