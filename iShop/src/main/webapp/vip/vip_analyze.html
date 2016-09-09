@@ -11,10 +11,63 @@
 </head>
 <style>
     .vip_table_lg{
-        position: absolute;
+        background: #e8e8e8;
+        position: relative;
         width: 100%;
         height:100%;
         z-index:1000;
+    }
+    .vip_table_lg .date_btn {
+        width: 100%;
+        height:40px;
+        background: #fff;
+        margin-top: 15px;
+    }
+    .vip_table_lg .month_btn{
+        width: 100%;
+        height:40px;
+        background: #fff;
+        margin-top: 15px;
+    }
+    .vip_table_lg .newVip_title{
+        width: 100%;
+        height:40px;
+        background: #fff;
+        margin-top: 15px;
+        padding-left: 10px;
+    }
+    .vip_table_lg .date_btn li{
+        width:10%;
+    }
+    .vip_table_lg .date_btn li span{
+        margin-left: 10px;
+    }
+    .vip_table_lg .month_btn li{
+        width:13%;
+    }
+    .vip_table_lg .month_btn li span{
+        margin-left: 10px;
+    }
+    .vip_table_lg .vip_nav_bar{
+        border-bottom: 1px solid #fff;
+    }
+    .vip_table_lg .vip_table{
+        width: 100%;
+        margin-left: 0;
+        margin-top: 15px;
+    }
+
+    .vip_table_lg .vip_table tbody tr:nth-child(even){
+        background: #fff;
+        line-height: 45px;
+    }
+    .vip_table_lg .vip_table tbody tr:nth-child(odd){
+        background: #e8e8e8;
+        line-height: 45px;
+    }
+    .vip_table_lg .vip_table thead tr{
+        background: #fff;
+        line-height: 45px;
     }
 </style>
 <body>
@@ -36,7 +89,7 @@
                 <li>
                     <b>区域</b>
                     <s>华东西区</s>
-                    <span class="icon-ishop_8-02"onclick="show_select()"></span>
+                    <span class="icon-ishop_8-02 area"></span>
                 </li>
                 <li style="border-bottom: none">
                     <b>店铺</b>
@@ -49,19 +102,10 @@
                 <div>
                     <b>
                         <input >
-                        <span class="icon-ishop_3-05"></span>
+                        <span class="icon-ishop_3-05 ishop"></span>
                     </b>
                     <ul>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
-                        <li>华中新区</li>
+
                     </ul>
                     <s>...加载更多...</s>
                 </div>
@@ -240,7 +284,7 @@
             </div>
 
             <div style="display: none" class="newVip">
-               <span class="newVip_title">最近一个月新入会员</span>
+               <div class="newVip_title">最近一个月新入会员</div>
                 <table class="vip_table" cellpadding="0" cellspacing="0">
                     <thead>
                     <tr>
@@ -637,6 +681,10 @@
         $("#table_analyze").addClass("vip_table_lg");
         $("#chart_analyze").hide();
         $(".more_data").hide();
+        $("#side_analyze").hide();
+        $("html").css("background","#e8e8e8");
+        $("#table_analyze").css("background","#e8e8e8");
+        $(".vip_table_lg .icon-ishop_8-03").hide();
     })
 </script>
 
