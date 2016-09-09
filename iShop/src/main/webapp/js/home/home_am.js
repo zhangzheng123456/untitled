@@ -29,14 +29,13 @@ $(".title").mouseout(function() {
 	console.log(ul.css("display"))
 });
 $(".select_Date").mouseover(function(){
-	$(this).parent(".choose").toggleClass("cur");
+	$(this).parent(".choose").addClass("cur");
 	$(this).show()
 });
 $(".select_Date").mouseout(function(){
-	$(this).parent(".choose").toggleClass("cur");
+	$(this).parent(".choose").removeClass("cur");
 	$(this).hide()
 });
-
 //点击区域
 $(".c_a_shoppe").click(function(){
 	var ul=$(".c_a_shoppe ul");
@@ -122,6 +121,7 @@ function storeRanking(a,b) {
 			$(this).parent("ul").prev(".title").html(value);
 			$(this).parent("ul").hide();
 			$(this).parent("ul").parent(".choose").removeClass("cur");
+			console.log($(this).parent("ul").parent(".choose")[0]);
 			if (value == "按日查看" && id == "store") {
 				$("#store_mask").show();
 				superadditionStore(achv_detail_d);
