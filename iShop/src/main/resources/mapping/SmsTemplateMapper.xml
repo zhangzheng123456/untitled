@@ -8,7 +8,7 @@
         <result column="template_code" property="template_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="template_name" property="template_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="template_content" property="template_content" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="template_title" property="template_title" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+      <!--  <result column="template_title" property="template_title" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>-->
         <result column="template_type" property="template_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -27,7 +27,6 @@
         dmt.template_code,
         dmt.template_name,
         dmt.template_content,
-        dmt.template_title,
         dmt.template_type,
         dmt.isactive,
         dmt.corp_code,
@@ -64,7 +63,6 @@
         dmt.template_name,
         template_type,
         dmt.template_content,
-         dmt.template_title,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
@@ -89,9 +87,7 @@
             <if test="template_name!=null">
                 template_name ,
             </if>
-            <if test="template_title!=null">
-                template_title ,
-            </if>
+
             <if test="template_type!=null">
                 template_type ,
             </if>
@@ -125,9 +121,6 @@
                 #{template_name },
             </if>
 
-            <if test="template_title!=null ">
-                #{template_title},
-            </if>
             <if test="template_type!=null ">
                 #{template_type},
             </if>
@@ -166,9 +159,6 @@
             </if>
             <if test="template_content!=null ">
                 template_content=#{template_content},
-            </if>
-            <if test="template_title!=null ">
-                template_title=#{template_title},
             </if>
             <if test="template_type!=null ">
                 template_type=#{template_type},
@@ -222,7 +212,6 @@
         dmt.template_name,
         dmt.template_type,
         dmt.template_content,
-        dmt.template_title,
         dmt.isactive,
         dmt.corp_code,
         dmt.modifier,
@@ -265,7 +254,6 @@
         dmt.template_code,
         dmt.template_name,
         dmt.template_content,
-        dmt.template_title,
         dmt.template_type,
         dmt.isactive,
         dmt.corp_code,
