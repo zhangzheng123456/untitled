@@ -89,6 +89,46 @@ function newVip_add() {
     param["area_code"]=area_code;
     oc.postRequire("post","/vipAnalysis/vipNew","",param,function(data){
         console.log(data);
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+                msg=msg.new_vip_list;
+            console.log(msg.length);
+            if(msg.length<10){
+                for(var i=0;i<msg.length;i++){
+                    var a=i+1;
+                    $(".newVip tbody").append('<tr><td>'
+                        + a
+                        +'</td><td>'
+                        + msg[i].vip_name
+                        +'</td><td>'
+                        + msg[i].vip_card_type
+                        +'</td><td>'
+                        + msg[i].join_date
+                        +'</td><td>'
+                        + msg[i].vip_birthday
+                        +'</td></tr>');
+                }
+            }else if(msg.length>=10){
+                for(var i=0;i<10;i++){
+                    var a=i+1;
+                    $(".newVip tbody").append('<tr><td>'
+                        + a
+                        +'</td><td>'
+                        + msg[i].vip_name
+                        +'</td><td>'
+                        + msg[i].vip_card_type
+                        +'</td><td>'
+                        + msg[i].join_date
+                        +'</td><td>'
+                        + msg[i].vip_birthday
+                        +'</td></tr>');
+                }
+            }
+
+        }else if(data.code=="-1"){
+            console.log(data.message);
+        }
+
     });
 }
 
