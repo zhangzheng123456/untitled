@@ -478,8 +478,9 @@ public class UserController {
                     break;
                 }
             }
-            for(int i=3;i<column3.length;i++) {
-                if (String.valueOf(column8[i].getContents()+"").equals("null")||column8[i].getContents().toString().trim().equals("")) {
+            for(int i=3;i<column8.length;i++) {
+                String areaCheck=column8[i].getContents().toString().trim();
+                if (areaCheck==null||areaCheck.equals("")) {
                     continue;
                 }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
@@ -502,8 +503,9 @@ public class UserController {
                     }
                 }
             }
-            for(int i=0;i<column3.length;i++){
-                if (String.valueOf(column9[i].getContents()+"").equals("null")||column9[i].getContents().toString().trim().equals("")) {
+            for(int i=0;i<column9.length;i++){
+                String storeCheck=column9[i].getContents().toString().trim();
+                if (storeCheck==null||storeCheck.equals("")) {
                     continue;
                 }
                 String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
