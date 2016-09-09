@@ -69,6 +69,8 @@ body{
 	top: 60px;
 	left: -56px;
 	display: none;
+	box-shadow: 0 0 5px rgba(0,0,0,0.4);
+	border-radius: 7px;
 }
 .navbar .floot-r li .aixiu_code i{
 	position: absolute;
@@ -81,8 +83,6 @@ body{
 	height: 60px;
 }
 #aixiu_code:hover .aixiu_code{
-	box-shadow: 0 0 5px rgba(0,0,0,0.4);
-	border-radius: 7px;
 	display: block;
 }
 .navbar .floot-r li .aixiu_code img{

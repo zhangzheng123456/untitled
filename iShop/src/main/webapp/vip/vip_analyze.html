@@ -652,8 +652,7 @@
             </div>     <div class="chart_module"style="margin-right: 0px">
                 <ul>
                     <span class="chart_head">地域分布</span>
-                    <li id="main7" >
-                        <h2>数据加载中</h2>
+                    <li id="main7" style="height:270px;">
                     </li>
                 </ul>
             </div>
@@ -741,7 +740,8 @@ require(
         [
             'echarts',
             'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
-            'echarts/chart/radar'
+            'echarts/chart/radar',
+            'echarts/chart/map'
         ],
         function (ec) {
             var aa=[
@@ -759,6 +759,7 @@ require(
             var myChart4 = ec.init(document.getElementById('main4'));
             var myChart5 = ec.init(document.getElementById('main5'));
             var myChart6 = ec.init(document.getElementById('main6'));
+            var myChart7 = ec.init(document.getElementById('main7'));
             var option = {
                 color:['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2','#5C778F','#4D5F7C','#444960','#2C3244'] ,
                 tooltip : {
@@ -800,7 +801,8 @@ require(
                     }]
                 },
                 series : [
-                    {	center:['60%','50%'],
+                    {	 name:'消费分类',
+                        center:['60%','50%'],
                         type:'pie',
                         radius : ['50%', '60%'],
                         itemStyle : {
@@ -948,18 +950,87 @@ require(
                     }
                 ]
             };
+            var option3 = {
+                tooltip : {
+                    trigger: 'item'
+                },
+                dataRange: {
+                    itemWidth:5,
+                    itemGap:0.2,
+                    color:['#A7CFD5','#3C95A2'],
+                    splitNumber:'20',
+                    orient:'horizontal',
+                    min: 0,
+                    max: 2500,
+                    x: 'left',
+                    y: 'top',
+                    text:['高','低'],           // 文本，默认为数值文本
+                },
+                series : [
+                    {
+                        name: 'iphone3',
+                        type: 'map',
+                        mapType: 'china',
+                        roam: false,
+                        itemStyle:{
+                            normal:{label:{show:false}},
+                            emphasis:{label:{show:true}}
+                        },
+                        data:[
+                            {name: '北京',value: Math.round(Math.random()*1000)},
+                            {name: '天津',value: Math.round(Math.random()*1000)},
+                            {name: '上海',value: Math.round(Math.random()*1000)},
+                            {name: '重庆',value: Math.round(Math.random()*1000)},
+                            {name: '河北',value: Math.round(Math.random()*1000)},
+                            {name: '河南',value: Math.round(Math.random()*1000)},
+                            {name: '云南',value: Math.round(Math.random()*1000)},
+                            {name: '辽宁',value: Math.round(Math.random()*1000)},
+                            {name: '黑龙江',value: Math.round(Math.random()*1000)},
+                            {name: '湖南',value: Math.round(Math.random()*1000)},
+                            {name: '安徽',value: Math.round(Math.random()*1000)},
+                            {name: '山东',value: Math.round(Math.random()*1000)},
+                            {name: '新疆',value: Math.round(Math.random()*1000)},
+                            {name: '江苏',value: Math.round(Math.random()*1000)},
+                            {name: '浙江',value: Math.round(Math.random()*1000)},
+                            {name: '江西',value: Math.round(Math.random()*1000)},
+                            {name: '湖北',value: Math.round(Math.random()*1000)},
+                            {name: '广西',value: Math.round(Math.random()*1000)},
+                            {name: '甘肃',value: Math.round(Math.random()*1000)},
+                            {name: '山西',value: Math.round(Math.random()*1000)},
+                            {name: '内蒙古',value: Math.round(Math.random()*1000)},
+                            {name: '陕西',value: Math.round(Math.random()*1000)},
+                            {name: '吉林',value: Math.round(Math.random()*1000)},
+                            {name: '福建',value: Math.round(Math.random()*1000)},
+                            {name: '贵州',value: Math.round(Math.random()*1000)},
+                            {name: '广东',value: Math.round(Math.random()*1000)},
+                            {name: '青海',value: Math.round(Math.random()*1000)},
+                            {name: '西藏',value: Math.round(Math.random()*1000)},
+                            {name: '四川',value: Math.round(Math.random()*1000)},
+                            {name: '宁夏',value: Math.round(Math.random()*1000)},
+                            {name: '海南',value: Math.round(Math.random()*1000)},
+                            {name: '台湾',value: Math.round(Math.random()*1000)},
+                            {name: '香港',value: Math.round(Math.random()*1000)},
+                            {name: '澳门',value: Math.round(Math.random()*1000)}
+                        ]
+                    }
+                ]
+            };
+//            myChart.showLoading();
             myChart.setOption(option);
             myChart1.setOption(option1);
             myChart4.setOption(option2);
             myChart5.setOption(option);
             myChart6.setOption(option);
-            window.onresize =function(){
-                myChart.setOption(option);
-                myChart1.setOption(option1);
-                myChart4.setOption(option2);
-                myChart5.setOption(option);
-                myChart6.setOption(option);
-            };
+            myChart7.setOption(option3);
+//            myChart.hideLoading();
+            window.addEventListener("resize", function () {
+                myChart.resize();
+                myChart1.resize();
+                myChart4.resize();
+                myChart5.resize();
+                myChart6.resize();
+                myChart7.resize();
+            });
         }
 );
 </script>

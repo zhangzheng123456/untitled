@@ -515,3 +515,29 @@ div.wx_app_new p{
     color: #ffffff;
     margin-top:10px;
 }
+.dropdown{
+	position: relative;
+}
+.aixiu_code{
+	width: 150px;
+	position: absolute;
+	top: 66px;
+	left: -56px;
+	display: none;
+	box-shadow: 0 0 5px rgba(0,0,0,0.4);
+	border-radius: 7px;
+}
+#aixiu_code:hover .aixiu_code{
+	display: block;
+}
+.aixiu_code i{
+	position: absolute;
+    border: 7px solid transparent;
+    border-bottom-color: #fff;
+    top: -14px;
+    right: 66px;
+}
+.aixiu_code img{
+	width: 100%;
+	border: 2px solid #ccc;
+}
