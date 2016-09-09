@@ -30,19 +30,12 @@ public class SmsTemplate {
     private String creater;
     //是否可用
     private String isactive;
-    private String template_title;
+    //private String template_title;
     private Corp corp;
     private String corp_name;
     private String template_type_name;
 
 
-    public String getTemplate_title() {
-        return template_title;
-    }
-
-    public void setTemplate_title(String template_title) {
-        this.template_title = template_title;
-    }
 
     public String getTemplate_type_name() {
         return template_type_name;
