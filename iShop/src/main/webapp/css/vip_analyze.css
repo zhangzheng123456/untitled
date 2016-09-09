@@ -17,9 +17,11 @@
 #side_analyze{
     margin-right:0.5%;
     position: relative;
+    height:440px;
 }
 #table_analyze{
     background: #fff;
+    height:440px;
 }
 #chart_analyze{
     margin-top:0.5%;
