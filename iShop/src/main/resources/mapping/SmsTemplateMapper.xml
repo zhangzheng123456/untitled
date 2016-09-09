@@ -16,23 +16,11 @@
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <!--<result column="template_type" property="template_type"/>-->
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
     </resultMap>
 
-    <!--<resultMap id="types" type="com.bizvane.ishop.entity.TemplateType">
-        <id column="id" property="id"/>
-        <result column="type_name" property="type_name"/>
-        <result column="type_description" property="type_description"/>
-        <result column="modified_date" property="modified_date"/>
-        <result column="modifier" property="modifier"/>
-        <result column="creater" property="creater"/>
-        <result column="created_date" property="created_date"/>
-        <result column="isactive" property="isactive"/>
-    </resultMap>
-    -->
     <select id="selectBySearch" resultMap="MessageTemplates">
         SELECT
         dmt.id,
@@ -212,11 +200,19 @@
     </delete>
 
     <select id="selectByName" resultType="com.bizvane.ishop.entity.SmsTemplate">
-        select * from def_sms_template WHERE template_name=#{template_name} and corp_code=#{corp_code}
+        SELECT *
+        FROM def_sms_template
+        WHERE template_name=#{template_name}
+        AND corp_code=#{corp_code}
+        AND isactive = 'Y'
     </select>
 
     <select id="selectByCode" resultType="com.bizvane.ishop.entity.SmsTemplate">
-        select * from def_sms_template WHERE template_code=#{template_code} and corp_code=#{corp_code}
+        SELECT *
+        FROM def_sms_template
+        WHERE template_code=#{template_code}
+        AND corp_code=#{corp_code}
+        AND isactive = 'Y'
     </select>
 
     <select id="selectAllSmsTemplateScreen" resultMap="MessageTemplates">

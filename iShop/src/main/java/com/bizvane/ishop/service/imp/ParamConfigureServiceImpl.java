@@ -109,7 +109,10 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
             param_values = jsonObject.get("param_values").toString();
         }
         ParamConfigure paramConfigure = getParamByKey(param_name);
-        if (paramConfigure == null) {
+        if (paramConfigure != null) {
+            result = "参数名已存在";
+
+        }else{
             paramConfigure = new ParamConfigure();
             Date now = new Date();
             paramConfigure.setParam_name(param_name);
@@ -124,9 +127,8 @@ public class ParamConfigureServiceImpl implements ParamConfigureService {
             paramConfigure.setIsactive(jsonObject.get("isactive").toString());
             paramConfigureMapper.insertParam(paramConfigure);
             result = Common.DATABEAN_CODE_SUCCESS;
-        } else {
-            result = "参数名已存在";
         }
+
         return result;
     }
 

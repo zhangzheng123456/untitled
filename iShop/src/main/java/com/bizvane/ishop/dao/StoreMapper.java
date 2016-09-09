@@ -44,6 +44,7 @@ public interface StoreMapper {
 
     List<Store> selectByAreaCode(Map<String, Object> params) throws SQLException;
 
+
     List<Store> selStoreByAreaCode(Map<String, Object> params) throws SQLException;
 
 
@@ -65,5 +66,6 @@ public interface StoreMapper {
 
     List<Store>  selectStore(Map<String, Object> params) throws SQLException;
 
+    List<Store> selectStoreCountByArea(@Param("corp_code") String corp_code, @Param("area_code") String area_code,@Param("isactive") String isactive) throws SQLException;
 
 }

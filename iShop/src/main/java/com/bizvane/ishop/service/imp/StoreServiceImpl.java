@@ -476,6 +476,11 @@ public class StoreServiceImpl implements StoreService {
         return stores;
     }
 
+    public List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception{
+        List<Store> stores = storeMapper.selectStoreCountByArea(corp_code, area_code, isactive);
+        return stores;
+    }
+
     public int selectCount(String created_date) throws Exception{
         return this.storeMapper.selectCount(created_date);
     }
