@@ -585,15 +585,14 @@
             <div class="chart_module">
                <ul>
                    <span class="chart_head">消费类型</span>
-                   <li id="main">
+                   <li id="main" style="padding-left: 10px;">
                    </li>
                </ul>
            </div>
             <div class="chart_module">
                 <ul>
                     <span class="chart_head">星期偏好</span>
-                    <li>
-                        <h2>数据加载中</h2>
+                    <li id="main1" style="height: 270px;">
                     </li>
                 </ul>
             </div>
@@ -607,7 +606,7 @@
             </div>
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">消费类型</span>
+                    <span class="chart_head">购买时段</span>
                     <li>
                         <h2>数据加载中</h2>
                     </li>
@@ -615,16 +614,27 @@
             </div>
             <div class="chart_module">
                 <ul>
-                    <span class="chart_head">星期偏好</span>
-                    <li>
-                        <h2>数据加载中</h2>
+                    <span class="chart_head">月份偏好</span>
+                    <li id="main4" style="height: 270px;">
                     </li>
                 </ul>
             </div>
             <div class="chart_module"style="margin-right: 0px">
                 <ul>
-                    <span class="chart_head">价格偏好</span>
-                    <li >
+                    <span class="chart_head">系列偏好</span>
+                    <li id="main5" style="height: 270px;padding-left: 10px;">
+                    </li>
+                </ul>
+            </div>     <div class="chart_module">
+                <ul>
+                    <span class="chart_head">消费频率</span>
+                    <li id="main6" style="height: 270px;padding-left: 10px;">
+                    </li>
+                </ul>
+            </div>     <div class="chart_module"style="margin-right: 0px">
+                <ul>
+                    <span class="chart_head">地域分布</span>
+                    <li id="main7" >
                         <h2>数据加载中</h2>
                     </li>
                 </ul>
@@ -697,7 +707,8 @@
 require(
         [
             'echarts',
-            'echarts/chart/pie'  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
+            'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
+            'echarts/chart/radar'
         ],
         function (ec) {
             var aa=[
@@ -711,7 +722,11 @@ require(
                 {value:1548, name:'裤子'}
             ];
             var myChart = ec.init(document.getElementById('main'));
-            option = {
+            var myChart1 = ec.init(document.getElementById('main1'));
+            var myChart4 = ec.init(document.getElementById('main4'));
+            var myChart5 = ec.init(document.getElementById('main5'));
+            var myChart6 = ec.init(document.getElementById('main6'));
+            var option = {
                 color:['#9AD8DB', '#8BC0C8', '#7BA8B5', '#6C8FA2','#5C778F','#4D5F7C','#444960','#2C3244'] ,
                 tooltip : {
                     textStyle : {
@@ -753,9 +768,8 @@ require(
                 },
                 series : [
                     {	center:['60%','50%'],
-                        name:'访问来源',
                         type:'pie',
-                        radius : ['40%', '50%'],
+                        radius : ['50%', '60%'],
                         itemStyle : {
                             normal : {
 
@@ -773,7 +787,7 @@ require(
 
                                     position : 'center',
                                     textStyle : {
-                                        fontSize : '30',
+                                        fontSize : '20',
                                         fontWeight : 'bold'
                                     }
                                 }
@@ -783,8 +797,136 @@ require(
                     }
                 ]
             };
-
+            var option1 = {
+                color:['#A7DADE'],
+                axis:{
+                    areaStyle:{
+                        color:['red']
+                    }
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                polar : [
+                    {
+                        indicator : [
+                            {text : '周一', max  : 100},
+                            {text : '周二', max  : 100},
+                            {text : '周三', max  : 100},
+                            {text : '周四', max  : 100},
+                            {text : '周五', max  : 100},
+                            {text : '周六', max  : 100},
+                            {text : '周七', max  : 100},
+                            {text : '无数据', max  : 100}
+                        ],
+                        radius : 100,
+                        splitNumber: 8,
+                        startAngle: 68,
+                        splitArea : {
+                            show : true,
+                            areaStyle : {
+                                color: '#fff'
+                            }
+                        },
+                    }
+                ],
+                series : [
+                    {
+                        symbol:'circle',
+                        type: 'radar',
+                        itemStyle: {
+                            normal: {
+                                areaStyle: {
+                                    type: 'default',
+                                },
+                                lineStyle:{
+                                    width:'0'
+                                }
+                            }
+                        },
+                        symbolSize:'0',
+                        data : [
+                            {
+                                value : [97, 42, 88, 94, 90, 86,'20','null'],
+                                name : '周变'
+                            }
+                        ]
+                    }
+                ]
+            };
+            var option2 = {
+                color:['#A7DADE'],
+                axis:{
+                    areaStyle:{
+                        color:['red']
+                    }
+                },
+                tooltip : {
+                    trigger: 'axis'
+                },
+                polar : [
+                    {
+                        indicator : [
+                            {text : '一月', max  : 100},
+                            {text : '二月', max  : 100},
+                            {text : '三月', max  : 100},
+                            {text : '四月', max  : 100},
+                            {text : '五月', max  : 100},
+                            {text : '六月', max  : 100},
+                            {text : '七月', max  : 100},
+                            {text : '八月', max  : 100},
+                            {text : '九月', max  : 100},
+                            {text : '十月', max  : 100},
+                            {text : '十一月', max  : 100},
+                            {text : '十二月', max  : 100}
+                        ],
+                        radius : 100,
+                        splitNumber: 8,
+                        startAngle: 45,
+                        splitArea : {
+                            show : true,
+                            areaStyle : {
+                                color: '#fff'
+                            }
+                        },
+                    }
+                ],
+                series : [
+                    {
+                        symbol:'circle',
+                        type: 'radar',
+                        itemStyle: {
+                            normal: {
+                                areaStyle: {
+                                    type: 'default',
+                                },
+                                lineStyle:{
+                                    width:'0'
+                                }
+                            }
+                        },
+                        symbolSize:'0',
+                        data : [
+                            {
+                                value : [97, 42, 88, 94, 90, 86,69,66,33,58,44,55,66],
+                                name : '月变'
+                            }
+                        ]
+                    }
+                ]
+            };
             myChart.setOption(option);
+            myChart1.setOption(option1);
+            myChart4.setOption(option2);
+            myChart5.setOption(option);
+            myChart6.setOption(option);
+            window.onresize =function(){
+                myChart.setOption(option);
+                myChart1.setOption(option1);
+                myChart4.setOption(option2);
+                myChart5.setOption(option);
+                myChart6.setOption(option);
+            };
         }
 );
 </script>
