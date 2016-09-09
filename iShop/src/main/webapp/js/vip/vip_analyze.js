@@ -1,6 +1,9 @@
 var oc = new ObjectControl();
 var page=1;
-//¼ÓÔØÇøÓò
+var area_code;
+var store_code;
+var corp_code="C10000";
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 function GetArea(){
     var searchValue="";
     var param={};
@@ -9,7 +12,7 @@ function GetArea(){
     param['searchValue']=searchValue;
     oc.postRequire("post","/area/findAreaByCorpCode","",param,function(data){
         if(data.code=="0"){
-            var message=JSON.parse(data.message);//»ñÈ¡messagejson¶ÔÏóµÄDOM¶ÔÏó
+            var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
             var output=JSON.parse(message.list);
             var ul='';
             var first_area='';
@@ -41,22 +44,37 @@ function getStore(a){
         $('#select_analzye')
     });
 }
-//°ó¶¨liµÄµ¥»÷ÊÂ¼þ
+//ï¿½ï¿½liï¿½Äµï¿½ï¿½ï¿½ï¿½Â¼ï¿½
 function areaClick(e){
     var e= e.target;
     $('#side_analyze ul li:nth-child(2) s').html($(e).html());
     $('#select_analyze').toggle();
 //
 }
-//ÏÔÊ¾selcet
+//ï¿½ï¿½Ê¾selcet
 function show_select(e){
     console.log('OK');
     $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
-    //¸ù¾ÝÊÇ·ñÓÐarea¿ØÖÆµ¯³ö¿òÎ»ÖÃ
+    //ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½areaï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
 }
 $().ready(function(){
     GetArea();
+    newVip_add();
     $('#side_analyze span').click(show_select);
     $('#select_analyze ul').on('click','li',areaClick);
 });
+
+//æ–°å…¥ä¼šå‘˜
+function newVip_add() {
+    var param={};
+    param['pageNumber']=page;
+    param['pageSize']=7;
+    param['store_code']=store_code;
+    param['corp_code']=corp_code;
+    param["area_code"]=area_code;
+    oc.postRequire("post","/vipAnalysis/vipNew","",param,function(data){
+        console.log(data);
+    });
+}
+
