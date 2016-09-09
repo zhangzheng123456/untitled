@@ -21,6 +21,7 @@ function GetArea(){
             var first_area='';
             var first_area_code='';
             var output_list=output.list;
+            console.log(output_list);
             output_list.length>7? $('#select_analyze s').attr('style','display:block'): $('#select_analyze s').attr('style','display:none');
             first_area=output_list[0].area_name;
             first_area_code=output_list[0].area_code;
@@ -55,6 +56,7 @@ function getStore(a){
         console.log(message);
         var output=JSON.parse(message.list);
         var output_list=output.list;
+        console.log(output_list);
         first_corp_name=output_list[0].corp.corp_name;
         first_corp_code=output_list[0].corp.corp_code;
         for(var i= 0;i<output_list.length;i++){
@@ -64,9 +66,6 @@ function getStore(a){
         $('#side_analyze ul li:nth-child(3) s').html( first_corp_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_corp',first_corp_code);
         $('#select_analyze_shop ul').append(ul);
-        console.log(output_list);
-     //    ï¿½Ð¶Ï½ï¿½É«
-      console.log(b);
     });
 }
 //ï¿½ï¿½liï¿½Äµï¿½ï¿½ï¿½ï¿½Â¼ï¿½
@@ -88,15 +87,23 @@ function show_select(e){
     //ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½areaï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
 }
+//µã»÷¼ÓÔØ»ñÈ¡¸ü¶à
+function getMore(e){
+    var e= e.target;
+    console.log(e);
+}
 $().ready(function(){
     GetArea();
     newVip_add();
     $('#side_analyze span').click(show_select);
+    //µã»÷¼ÓÔØ¸ü¶à
+    $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',areaClick);
     $('#select_analyze_shop ul').on('click','li',areaClick);
 });
+/*****************************************************************************************************************/
 //æ–°å…¥ä¼šå‘˜
-function newVip_add() {
+function newVip_add(){
     var param={};
     param['pageNumber']=page;
     param['pageSize']=7;
