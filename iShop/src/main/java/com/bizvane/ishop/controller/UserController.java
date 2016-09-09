@@ -478,7 +478,7 @@ public class UserController {
                     break;
                 }
             }
-            for(int i=3;i<column3.length;i++) {
+            for(int i=3;i<column8.length;i++) {
                 String areaCheck=column8[i].getContents().toString().trim();
                 if (areaCheck==null||areaCheck.equals("")) {
                     continue;
@@ -503,7 +503,7 @@ public class UserController {
                     }
                 }
             }
-            for(int i=0;i<column3.length;i++){
+            for(int i=0;i<column9.length;i++){
                 String storeCheck=column9[i].getContents().toString().trim();
                 if (storeCheck==null||storeCheck.equals("")) {
                     continue;
