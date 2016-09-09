@@ -145,7 +145,15 @@ public class AreaController {
                     List<Area> areas = new ArrayList<Area>();
                     Area area = new Area();
                     area.setArea_code("");
-                    area.setArea_name("全部");
+                    area.setArea_name("");
+                    area.setCorp_code("");
+                    area.setCorp_name("");
+                    area.setCreated_date("");
+                    area.setCreater("");
+                    area.setId(0);
+                    area.setIsactive("");
+                    area.setModified_date("");
+                    area.setModifier("");
                     areas.add(0,area);
                     areas.addAll(list.getList());
                     list.setList(areas);
