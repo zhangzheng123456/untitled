@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.VipLabelMapper;
 import com.bizvane.ishop.dao.ViplableGroupMapper;
 import com.bizvane.ishop.entity.AppLoginLog;
 import com.bizvane.ishop.entity.ViplableGroup;
@@ -24,6 +25,8 @@ import java.util.Map;
 public class ViplableGroupServiceImpl implements ViplableGroupService {
     @Autowired
     private ViplableGroupMapper viplableGroupMapper;
+    @Autowired
+    private VipLabelMapper vipLabelMapper;
     @Override
     public PageInfo<ViplableGroup> selectViplabGroup(int page_number, int page_size, String corp_code, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
@@ -78,6 +81,7 @@ public class ViplableGroupServiceImpl implements ViplableGroupService {
         ViplableGroup viplableGroup1 = selectViplableGroupById(viplableGroup.getId());
         if((viplableGroups1.size()==0||viplableGroup1.getLabel_group_code().equals(viplableGroup.getLabel_group_code()))
                 && (viplableGroups2.size()==0||viplableGroup1.getLabel_group_name().equals(viplableGroup.getLabel_group_name()))){
+            vipLabelMapper.updViplableBycode(viplableGroup.getLabel_group_code(),viplableGroup.getCorp_code(),viplableGroup1.getLabel_group_code());
             viplableGroupMapper.updViplableGroupById(viplableGroup);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else if(viplableGroups1.size()>0){

@@ -258,4 +258,8 @@
         WHERE corp_code=#{corp_code}
         AND label_group_code=#{label_group_code}
     </select>
+    <update id="updViplableBycode" parameterType="com.bizvane.ishop.entity.VipLabel">
+        UPDATE def_vip_label  SET label_group_code =#{label_group_code_old}
+        WHERE CORP_CODE =#{corp_code} AND label_group_code =#{label_group_code_new}
+    </update>
 </mapper>

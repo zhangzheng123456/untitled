@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.dao.TaskMapper;
 import com.bizvane.ishop.dao.TaskTypeMapper;
 import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.TaskType;
@@ -25,6 +26,8 @@ public class TaskTypeServiceImpl implements TaskTypeService {
 
     @Autowired
     TaskTypeMapper taskTypeMapper;
+    @Autowired
+    TaskMapper taskMapper;
 
     public TaskType selectById(String id) {
         return taskTypeMapper.selectById(Integer.parseInt(id));
@@ -105,7 +108,9 @@ public class TaskTypeServiceImpl implements TaskTypeService {
         task_type.setModified_date(Common.DATETIME_FORMAT.format(now));
         task_type.setModifier(user_code);
         task_type.setIsactive(jsonObject.get("isactive").toString());
+        taskMapper.updTaskBycode(task_type_code,corp_code,task_type0.getTask_type_code());
         int result = taskTypeMapper.updateTaskType(task_type);
+        //修改任务下面的任务类型
         if (result == 1) {
             return Common.DATABEAN_CODE_SUCCESS;
         } else {

@@ -35,4 +35,6 @@ public interface VipLabelMapper {
     VipLabel countLable(@Param("corp_code")String corp_code,@Param("label_id")String label_id)throws Exception;
 
     List<VipLabel> lableList(@Param("corp_code")String corp_code,@Param("label_group_code")String label_group_code);
+
+    int updViplableBycode(@Param("label_group_code_old")String label_group_code_old,@Param("corp_code")String corp_code,@Param("label_group_code_new")String label_group_code_new);
 }
