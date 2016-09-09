@@ -302,6 +302,12 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.corp_select .searchable-select-input').keydown(function(){
+				var event=window.event||arguments[0];
+				if(event.code==13){
+					console.log(123123);
+				}
+			})
 			$('.searchable-select-item').click(function(){
 				$("input[verify='Code']").val("");
 				$("#BRAND_NAME").val("");

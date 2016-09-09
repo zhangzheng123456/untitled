@@ -36,6 +36,11 @@ jQuery(function(){
             var hasNextPage=list.hasNextPage;
             cout=list.pages;
             var list=list.list;
+            if(list.length==0){
+            	$("#kong_img").show();
+            }else{
+            	$("#kong_img").hide();
+            }
             superaddition(list);
             if(hasNextPage==true){
             	$(".more").show();
