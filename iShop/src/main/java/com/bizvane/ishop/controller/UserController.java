@@ -503,7 +503,7 @@ public class UserController {
                     }
              //   }
             }
-            for(int i=0;i<column9.length;i++){
+            for(int i=3;i<column9.length;i++){
                 String storeCheck=column9[i].getContents().toString().trim();
                 if (storeCheck==null||storeCheck.equals("")) {
                     continue;
