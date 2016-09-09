@@ -106,7 +106,8 @@
     display: block;
     width: 100%;
     font-size: 14px;
-    background: skyblue;
+    background: #434960;
+    color:#fff;
     padding: 10px;
 }
 #main{
