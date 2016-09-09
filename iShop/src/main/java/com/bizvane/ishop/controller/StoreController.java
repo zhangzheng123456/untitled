@@ -152,11 +152,25 @@ public class StoreController {
                     String area_code = jsonObject.get("area_code").toString();
                     String[] areaCodes = area_code.split(",");
                     list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                    List<Store> stores = new ArrayList<Store>();
+                    Store store = new Store();
+                    store.setStore_code("");
+                    store.setStore_name("全部");
+                    stores.add(0,store);
+                    stores.addAll(list.getList());
+                    list.setList(stores);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                    // String area_code = request.getSession().getAttribute("area_code").toString();
                     String area_code = jsonObject.get("area_code").toString();
                     String[] areaCodes = area_code.split(",");
                     list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, areaCodes, searchValue);
+                    List<Store> stores = new ArrayList<Store>();
+                    Store store = new Store();
+                    store.setStore_code("");
+                    store.setStore_name("全部");
+                    stores.add(0,store);
+                    stores.addAll(list.getList());
+                    list.setList(stores);
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     list = storeService.selStoreByUserCode(page_number, page_size, store_code, corp_code, searchValue);
