@@ -87,23 +87,14 @@ public class UserServiceImpl implements UserService {
 
         if (!store_code.equals("")) {
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
-                if (!stores[i].startsWith(Common.STORE_HEAD)) {
-                    stores[i] = Common.STORE_HEAD + stores[i];
-                }
-                stores[i] = stores[i].substring(1, stores[i].length());
-
-            }
         }
         if (!area_code.equals("")) {
+            area_code = area_code.replace(Common.STORE_HEAD,"");
             String[] areas = area_code.split(",");
-            for (int i = 0; i < areas.length; i++) {
-                areas[i] = areas[i].substring(1, areas[i].length());
-            }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas,Common.IS_ACTIVE_Y);
             String a = "";
             for (int i = 0; i < store.size(); i++) {
-                a = a + store.get(i).getStore_code() + ",";
+                a = a + Common.STORE_HEAD+store.get(i).getStore_code() + ",";
             }
             stores = a.split(",");
         }
@@ -646,23 +637,14 @@ public class UserServiceImpl implements UserService {
 
         if (!store_code.equals("")) {
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
-                if (!stores[i].startsWith(Common.STORE_HEAD)) {
-                    stores[i] = Common.STORE_HEAD + stores[i];
-                }
-                stores[i] = stores[i].substring(1, stores[i].length());
-
-            }
         }
         if (!area_code.equals("")) {
+            area_code = area_code.replace(Common.STORE_HEAD,"");
             String[] areas = area_code.split(",");
-            for (int i = 0; i < areas.length; i++) {
-                areas[i] = areas[i].substring(1, areas[i].length());
-            }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
+            List<Store> store = storeService.selectByAreaCode(corp_code, areas,Common.IS_ACTIVE_Y);
             String a = "";
             for (int i = 0; i < store.size(); i++) {
-                a = a + store.get(i).getStore_code() + ",";
+                a = a + Common.STORE_HEAD+store.get(i).getStore_code() + ",";
             }
             stores = a.split(",");
         }
