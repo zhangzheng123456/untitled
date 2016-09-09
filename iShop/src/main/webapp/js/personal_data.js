@@ -84,6 +84,7 @@ var oc = new ObjectControl();
                 var USER_PHONE=$("#IPHONE").val();
                 var USER_EMAIL=$("#USER_EMAIL").val();
                 var USER_SEX=$("#USER_SEX").val();
+                var user_id=$("#user_id").val();
                 var SEX="";
                 if(USER_SEX=="男"){
                     SEX="M";
@@ -118,6 +119,7 @@ var oc = new ObjectControl();
                 _params["store_code"]=store_code;//
                 _params["isactive"]=isactive;//
                 _params["can_login"]=can_login;//
+                _params["user_id"]=user_id;//用户id
                 useroperatejs.ajaxSubmit(_command,_params,opt);
             }else{
                 return;
@@ -198,6 +200,7 @@ jQuery(document).ready(function(){
                  $("#IPHONE").val(msg.phone);
                  $("#USER_EMAIL").val(msg.email);
                  $("#PASSWORD").val(msg.password);
+                 $("#user_id").val(msg.user_id);
                  if(msg.sex=="F"){
                      $("#USER_SEX").val("女");
                  }else if(msg.sex=="M"){
