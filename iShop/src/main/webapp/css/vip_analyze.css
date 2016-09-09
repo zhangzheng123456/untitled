@@ -2,6 +2,9 @@
 *{
     box-sizing: border-box;
 }
+#vipAnalyze_return{
+    cursor: pointer;
+}
 .lf{
     float:left;
 }
@@ -161,11 +164,12 @@
     width: 98%;
     margin-left: 10px;
     text-align: center;
+    color:#999;
 }
 .vip_table thead tr{
     height: 35px;
     line-height: 35px;
-    color: #434960;
+    color: #999;
     font-size: 14px;
     background: #e8e8e8;
     margin-left: 10px;
@@ -193,7 +197,7 @@
 }
 
 /*/!*下拉框定位*!/*/
-#select_analyze{
+#select_analyze,#select_analyze_shop{
     position: absolute;
     display:none;
     left: 2%;
@@ -201,11 +205,11 @@
     z-index: 100;
     background: #E8E8E8;
 }
-#select_analyze>div{
+#select_analyze>div,#select_analyze_shop>div{
     width: 273px;
     background: #f5f5f5;
 }
-#select_analyze>div{
+#select_analyze>div,#select_analyze_shop>div{
     width: 349px;
     left: 132px;
     top:130px;
@@ -214,7 +218,7 @@
     background: #f5f5f5;
     border-radius:4px;
 }
-#select_analyze input{
+#select_analyze input,#select_analyze_shop input{
     width: 90%;
     height: 30px;
     border-radius: 8px;
@@ -223,34 +227,34 @@
     padding-right: 15px;
     margin-left: 5%;
 }
-#select_analyze b{
+#select_analyze b,#select_analyze_shop b{
     display: block;
     width: 100%;
     position: relative;
 }
-#select_analyze span{
+#select_analyze span,#select_analyze_shop span{
     position: absolute;
     right: 5%;
     top: 0px;
     color:#f5f5f5;
     font-size: 30px;
 }
-#select_analyze ul{
+#select_analyze ul,#select_analyze_shop ul{
     overflow-y: auto;
     width:100%;
     max-height:207px;
 }
-#select_analyze ul li{
+#select_analyze ul li,#select_analyze_shop ul li{
     padding: 5px 5px 5px 20px;
     margin-left: 5%;
 }
-#select_analyze ul li:hover{
+#select_analyze ul li:hover,#select_analyze_shop ul li:hover{
     background:#4a5f7c;
     color: #fff;
     border-radius: 8px;
     cursor: pointer;
 }
-#select_analyze s{
+#select_analyze s,#select_analyze_shop s{
     text-decoration: none;
     text-align: center;
     display: block;
@@ -258,7 +262,7 @@
     border-radius: 8px;
     background: #eee;
 }
-#select_analyze s:hover {
+#select_analyze s:hover,#select_analyze_shop s:hover {
     cursor: pointer;
     background: #888888;
     color: #fff;
