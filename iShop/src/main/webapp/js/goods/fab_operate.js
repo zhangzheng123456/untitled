@@ -396,27 +396,27 @@ jQuery(document).ready(function(){
 		    })
 		}
     })
-    $("#GOODS_NAME").blur(function(){
-    	var goods_name=$("#GOODS_NAME").val();
-    	var goods_name1=$("#GOODS_NAME").attr("data-name");
-    	var div=$(this).next('.hint').children();
-    	var corp_code=$("#OWN_CORP").val();
-    	if(goods_name!==""&&goods_name!==goods_name1){
-	    	var _params={};
-	    	_params["goods_name"]=goods_name;
-	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/goods/FabNameExist","", _params, function(data){
-	            if(data.code=="0"){
-	            	div.html("");
-	            	$("#GOODS_NAME").attr("data-mark","Y");
-	            }else if(data.code=="-1"){
-	            	div.html("该名称已经存在！")
-	            	div.addClass("error_tips");
-	            	$("#GOODS_NAME").attr("data-mark","N");
-	            }
-	    	})
-	    }
-    })
+    // $("#GOODS_NAME").blur(function(){
+    // 	var goods_name=$("#GOODS_NAME").val();
+    // 	var goods_name1=$("#GOODS_NAME").attr("data-name");
+    // 	var div=$(this).next('.hint').children();
+    // 	var corp_code=$("#OWN_CORP").val();
+    // 	if(goods_name!==""&&goods_name!==goods_name1){
+	   //  	var _params={};
+	   //  	_params["goods_name"]=goods_name;
+	   //  	_params["corp_code"]=corp_code;
+	   //  	oc.postRequire("post","/goods/FabNameExist","", _params, function(data){
+	   //          if(data.code=="0"){
+	   //          	div.html("");
+	   //          	$("#GOODS_NAME").attr("data-mark","Y");
+	   //          }else if(data.code=="-1"){
+	   //          	div.html("该名称已经存在！")
+	   //          	div.addClass("error_tips");
+	   //          	$("#GOODS_NAME").attr("data-mark","N");
+	   //          }
+	   //  	})
+	   //  }
+    // })
 	$(".fabadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/goods/fab.html");
 	});
