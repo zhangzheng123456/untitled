@@ -428,12 +428,12 @@ public class GoodsController {
                 if(column7[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                Matcher matcher = pattern.matcher(column7[i].getContents().toString().trim());
-                if (column7[i].getContents().toString()==null || matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行品牌编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
+              //  Matcher matcher = pattern.matcher(column7[i].getContents().toString().trim());
+//                if (column7[i].getContents().toString()==null || matcher.matches() == false) {
+//                    result = "：第" + (i + 1) + "行品牌编号格式有误";
+//                    int b = 5 / 0;
+//                    break;
+//                }
                 Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 if (brand == null) {
                     result = "：第" + (i + 1) + "行品牌编号不存在";
