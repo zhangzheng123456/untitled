@@ -460,10 +460,10 @@ public class GoodsController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("") && goods_image.equals("")  && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
+                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && goods_image.equals("") && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
                         continue;
                     }
-                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("") || goods_image.equals("")  || brand_code.equals("")  || cellTypeForDate.equals("") || goods_description.equals("")){
+                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")  || cellTypeForDate.equals("") ){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
