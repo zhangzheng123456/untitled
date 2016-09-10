@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>快捷回复</title>
+    <link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" href="../table/css/style.css">
+    <script src="../table/js/jquery.min.js"></script>
+    <script src="/js/loading.js"></script>
+</head>
+<body>
+<!-- <div id="navbar">
+
+</div> -->
+<div class="content">
+    <div class="con_table" id="con_table">
+        <div class="title">
+            <span>消息管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>快捷回复</span>
+        </div>
+        <div class="action">
+            <div class="action_l">
+                <ul id="jurisdiction">
+                </ul>
+                <ul>
+                    <li class="li">
+                        <input type="text" class="input" id="search" placeholder="内容/所属企业">
+                        <i class="icon-ishop_3-05" id="d_search"></i>
+                    </li>
+                </ul>
+            </div>
+            <div class="action_r">
+                <ul>
+                    <li id="filtrate">
+                        <span class="icon-ishop_6-05"></span>
+                        筛选
+                    </li>
+                    <li class="bg">
+                        <span class="icon-ishop_6-06"></span>
+                        配置
+                    </li>
+                    <li>
+                        <span class="icon-ishop_6-07"></span>
+                        刷新
+                    </li>
+                    <li class="bg" id="more">
+                        <span class="icon-ishop_6-08"></span>
+                        更多
+                        <!--<div class="more_down">-->
+                        <!--<div id="leading_out">导出</div>-->
+                        <!--<div id="guide_into">导入</div>-->
+                        <!--</div>-->
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- 导出-->
+        <!--<div class="file">-->
+        <!--<div class="file_content">-->
+        <!--<div id="download"></div>-->
+        <!--<div  class="icon-ishop_6-12" id="file_close"></div>-->
+        <!--</div>-->
+        <!--<div id="file_list">-->
+        <!--<ul>-->
+
+        <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="file_btn">-->
+        <!--<div class="file_submit" id="file_submit">提交</div>-->
+        <!--</div>-->
+        <!--</div>-->
+        <div class="sxk" id="sxk">
+            <div class="sbtn">
+                <div class="empty" id="empty">
+                    <i class="icon-ishop_6-16"></i>清空筛选
+                </div>
+                <div class="r_btn">
+                    <div class="pack_up" id="pack_up">
+                        <i class="icon-ishop_6-18"></i>
+                        收起
+                    </div>
+                    <div class="find" id="find">
+                        <i class="icon-ishop_6-19"></i>
+                        查找
+                    </div>
+                </div>
+            </div>
+            <div class="inputs">
+                <ul></ul>
+            </div>
+        </div>
+        <div class="table">
+            <table id="table" cellpadding="0" cellspacing="0" width="100%">
+                <thead>
+                <tr class="th">
+                    <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
+                    <th style="text-align: left;">序号</th>
+                    <th>内容</th>
+                    <th>所属企业</th>
+                    <th>修改时间</th>
+                    <th>修改人</th>
+                    <th>可用</th>
+                </tr>
+                </thead>
+                <tbody>
+                </tbody>
+            </table>
+        </div>
+        <div class="foot">
+            <ul>
+                <li class="foot-jum">
+                    <span>跳转至</span>
+                    <input class="input-txt" value="" id="input-txt">
+                    <em>页</em>
+                </li>
+                <li class="foot-num" >
+                    <ul id="foot-num">
+                        <li class="icon-ishop_4-01" style="color: #afafaf">
+
+                        </li>
+
+                        <li class="icon-ishop_4-02">
+
+                        </li>
+                    </ul>
+                </li>
+                <li class="foot-sum">
+                    <div class="page_p">
+                        <input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">
+                        <ul class="liebiao" style="display:none;" id="liebiao">
+                            <li id="10">10行/页</li>
+                            <li id="30">30行/页</li>
+                            <li id="50">50行/页</li>
+                            <li id="100">100行/页</li>
+                        </ul>
+                        <span class="icon-ishop_8-02 icon"></span>
+                    </div>
+                    <span class="zy">共 75 页</span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="p" id="p"></div>
+<div class="tk" id="tk">
+    <span class="icon-ishop_6-12" id="X"></span>
+    <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel">取消</em>
+        <em class="delete" id="delete">删除</em>
+    </div>
+</div>
+<div id="side_bar">
+    <div class="gotop">
+        <span class="icon-ishop_4-03"></span>
+    </div>
+    <div class="gobottom">
+        <span class="icon-ishop_4-04"></span>
+    </div>
+</div>
+<script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
+<!--<script src="../table/js/inner.js"></script>-->
+<script src="/js/loading.js"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<!--<script type="text/javascript" src="../js/message/template_group.js"></script>-->
+<script src="../js/silide.js"></script>
+</body>
+</html>
