@@ -411,14 +411,14 @@ public class GoodsController {
                     int b = 5 / 0;
                     break;
                 }
-                for (int j=0;j<splitImages.length;j++){
-                    Matcher matcher = pattern5.matcher(splitImages[j]);
-                    if(matcher.matches()==false){
-                        result = "：第" + (i + 1) + "行,第"+(j+1)+"个图片地址输入有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                }
+//                for (int j=0;j<splitImages.length;j++){
+//                    Matcher matcher = pattern5.matcher(splitImages[j]);
+//                    if(matcher.matches()==false){
+//                        result = "：第" + (i + 1) + "行,第"+(j+1)+"个图片地址输入有误";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                }
             }
 
 
