@@ -570,8 +570,8 @@ public class GoodsController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setMessage("商品编号已存在");
-            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("商品名称已存在");
+//            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setMessage("商品名称已存在");
             } else {
                 this.goodsService.insertGoods(goods,match_goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

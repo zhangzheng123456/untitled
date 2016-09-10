@@ -344,8 +344,8 @@ function jumpBianse() {
                         + "</td><td>"
                         + list[i].message_receiver
                         + "</td><td>"
-                        + list[i].receiver_type
-                        + "</td><td>"
+                        // + list[i].receiver_type
+                        // + "</td><td>"
                         + status
                         + "</td></tr>");
                 }
