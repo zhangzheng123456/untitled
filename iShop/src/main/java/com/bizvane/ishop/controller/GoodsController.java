@@ -354,11 +354,11 @@ public class GoodsController {
                 result = "：Execl中商品编号存在重复值";
                 int b = 5 / 0;
             }
-            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
-            if(onlyCell2.equals("存在重复值")){
-                result = "：Execl中商品名称存在重复值";
-                int b = 5 / 0;
-            }
+//            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
+//            if(onlyCell2.equals("存在重复值")){
+//                result = "：Execl中商品名称存在重复值";
+//                int b = 5 / 0;
+//            }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 if(column[i].getContents().toString().trim().equals("")){
@@ -371,18 +371,18 @@ public class GoodsController {
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(2);
-            for (int i = 3; i < column1.length; i++) {
-                if(column1[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
-                String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim());
-                if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
-                    result = "：第" + (i + 1) + "行商品名称已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
+//            Cell[] column1 = rs.getColumn(2);
+//            for (int i = 3; i < column1.length; i++) {
+//                if(column1[i].getContents().toString().trim().equals("")){
+//                    continue;
+//                }
+//                String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim());
+//                if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
+//                    result = "：第" + (i + 1) + "行商品名称已存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//            }
             Cell[] column4 = rs.getColumn(3);
             Cell[] column6 = rs.getColumn(5);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");

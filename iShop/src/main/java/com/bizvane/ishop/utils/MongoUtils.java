@@ -2,12 +2,10 @@ package com.bizvane.ishop.utils;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.mongodb.BasicDBList;
-import com.mongodb.BasicDBObject;
-import com.mongodb.DBCursor;
-import com.mongodb.DBObject;
+import com.mongodb.*;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 /**
@@ -75,5 +73,59 @@ public class MongoUtils {
         DBObject sort_obj = new BasicDBObject(sort_key, sort_type);
         dbCursor = dbCursor.sort(sort_obj).skip((page_num - 1) * page_size).limit(page_size);
         return dbCursor;
+    }
+
+
+//mongodb插入、删除模板
+
+    //save方式插入数据
+    private static void saveData(DBCollection collection){
+        DBObject saveData=new BasicDBObject();
+        saveData.put("userName", "iwtxokhtd");
+        saveData.put("age", "26");
+        saveData.put("gender", "m");
+
+        DBObject infoData=new BasicDBObject();
+        infoData.put("height", 16.3);
+        infoData.put("weight", 22);
+
+        saveData.put("info", infoData);
+
+        collection.save(saveData);
+    }
+
+    //insert方式插入数据
+    private static void insertData(DBCollection collection){
+        DBObject saveData=new BasicDBObject();
+        saveData.put("userName", "iwtxokhtd");
+        saveData.put("age", "26");
+        saveData.put("gender", "m");
+        collection.insert(saveData);
+    }
+
+    //insert批量插入数据
+    private static void insertListData(DBCollection collection){
+        DBObject insertData1=new BasicDBObject();
+        insertData1.put("userName", "iwtxokhtd");
+        insertData1.put("age", "26");
+        insertData1.put("gender", "m");
+
+        DBObject insertData2=new BasicDBObject();
+        insertData2.put("userName", "iwtxokhtd");
+        insertData2.put("age", "26");
+        insertData2.put("gender", "m");
+
+        List<DBObject> insertListData = new ArrayList<DBObject>();
+        insertListData.add(insertData1);
+        insertListData.add(insertData2);
+
+        collection.insert(insertListData);
+    }
+
+    //删除数据
+    private static void deleteDate(DBCollection collection) {
+        DBObject deletePig = new BasicDBObject();
+        deletePig.put("name", "pig");
+        collection.remove(deletePig);
     }
 }
