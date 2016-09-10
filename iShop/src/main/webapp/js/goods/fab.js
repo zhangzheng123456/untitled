@@ -649,6 +649,7 @@ $("#x1").click(function () {
 })
 //上传文件
 function UpladFile() {
+    whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
     console.log(fileObj);
     var FileController = "/goods/fab/addByExecl"; //接收上传文件的后台地址
@@ -668,11 +669,13 @@ function UpladFile() {
             } else {
                 console.log('服务器返回了错误的响应状态码');
                 $('#file').val("");
+                whir.loading.remove();//移除加载框
             }
         }
     }
     function doResult(data) {
         var data = JSON.parse(data);
+        whir.loading.remove();//移除加载框
         if (data.code == "0") {
             alert('导入成功');
             window.location.reload();
