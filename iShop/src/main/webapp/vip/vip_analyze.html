@@ -617,8 +617,7 @@
             <div class="chart_module"style="margin-right: 0px">
                 <ul>
                     <span class="chart_head">价格偏好</span>
-                    <li >
-                        <h2>数据加载中</h2>
+                    <li id="main2" style="height: 270px;text-align: center">
                     </li>
                 </ul>
             </div>
@@ -741,7 +740,8 @@ require(
             'echarts',
             'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
             'echarts/chart/radar',
-            'echarts/chart/map'
+            'echarts/chart/map',
+            'echarts/chart/bar'
         ],
         function (ec) {
             var aa=[
@@ -756,6 +756,7 @@ require(
             ];
             var myChart = ec.init(document.getElementById('main'));
             var myChart1 = ec.init(document.getElementById('main1'));
+            var myChart2 = ec.init(document.getElementById('main2'));
             var myChart4 = ec.init(document.getElementById('main4'));
             var myChart5 = ec.init(document.getElementById('main5'));
             var myChart6 = ec.init(document.getElementById('main6'));
@@ -862,7 +863,7 @@ require(
                             areaStyle : {
                                 color: '#fff'
                             }
-                        },
+                        }
                     }
                 ],
                 series : [
@@ -872,7 +873,7 @@ require(
                         itemStyle: {
                             normal: {
                                 areaStyle: {
-                                    type: 'default',
+                                    type: 'default'
                                 },
                                 lineStyle:{
                                     width:'0'
@@ -923,7 +924,7 @@ require(
                             areaStyle : {
                                 color: '#fff'
                             }
-                        },
+                        }
                     }
                 ],
                 series : [
@@ -933,7 +934,7 @@ require(
                         itemStyle: {
                             normal: {
                                 areaStyle: {
-                                    type: 'default',
+                                    type: 'default'
                                 },
                                 lineStyle:{
                                     width:'0'
@@ -964,7 +965,7 @@ require(
                     max: 2500,
                     x: 'left',
                     y: 'top',
-                    text:['高','低'],           // 文本，默认为数值文本
+                    text:['高','低']      // 文本，默认为数值文本
                 },
                 series : [
                     {
@@ -973,7 +974,10 @@ require(
                         mapType: 'china',
                         roam: false,
                         itemStyle:{
-                            normal:{label:{show:false}},
+                            normal:{label:{show:true, textStyle: {
+                                color: "#434960",
+                                fontSize:10
+                            }}},
                             emphasis:{label:{show:true}}
                         },
                         data:[
@@ -1015,9 +1019,57 @@ require(
                     }
                 ]
             };
+            var option4 = {
+                color:['#6CC1C8'],
+                tooltip : {
+                    trigger: 'item',
+                    formatter : function (params) {
+                        return params.seriesName + ' :'+params.value;
+                    }
+                },
+                grid:{
+                    borderWidth:0
+                },
+                xAxis : [
+
+                    {	show:false,
+                        type : 'value',
+                        boundaryGap:[0,0.01]
+
+                    }
+                ],
+                yAxis : [
+                    {   axisLine:{
+                        show:false
+                    },
+                        axisTick:{
+                            show:false
+                        },
+                        splitLine:{
+                            show:false
+                        },
+                        type : 'category',
+                        data : ['10000以上','2000-10000','1000-1999','899-999','600-799','400-599','200-399','200以下']
+                    }
+                ],
+                series : [
+                    {	itemStyle: {
+                        normal: {
+                            barBorderRadius:0
+                        }
+                    },
+                        name:'价格偏好',
+                        type:'bar',
+                        barWidth:10,
+                        data:[100, 200, 300, 400, 500, 600,700,800]
+                    }
+                ]
+            };
+
 //            myChart.showLoading();
             myChart.setOption(option);
             myChart1.setOption(option1);
+            myChart2.setOption(option4);
             myChart4.setOption(option2);
             myChart5.setOption(option);
             myChart6.setOption(option);
@@ -1026,6 +1078,7 @@ require(
             window.addEventListener("resize", function () {
                 myChart.resize();
                 myChart1.resize();
+                myChart2.resize();
                 myChart4.resize();
                 myChart5.resize();
                 myChart6.resize();
