@@ -406,11 +406,11 @@ public class GoodsController {
                 }
                 String images = column5[i].getContents().toString().trim();
                 String[] splitImages = images.split(",");
-                if(splitImages.length>5){
-                    result = "：第"+(i+1)+"行上传图片数量过多,上限5张";
-                    int b = 5 / 0;
-                    break;
-                }
+//                if(splitImages.length>5){
+//                    result = "：第"+(i+1)+"行上传图片数量过多,上限5张";
+//                    int b = 5 / 0;
+//                    break;
+//                }
 //                for (int j=0;j<splitImages.length;j++){
 //                    Matcher matcher = pattern5.matcher(splitImages[j]);
 //                    if(matcher.matches()==false){
@@ -463,7 +463,7 @@ public class GoodsController {
                     if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && goods_image.equals("") && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
                         continue;
                     }
-                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")  || cellTypeForDate.equals("") ){
+                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
