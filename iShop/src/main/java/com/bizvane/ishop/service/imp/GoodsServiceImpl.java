@@ -30,20 +30,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods getGoodsById(int id) throws Exception {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
         List<Goods> matchgoods = new ArrayList<Goods>();
-//        if (goods.getMatch_goods() != null && !goods.getMatch_goods().equals("")){
-//            String[] match_goods = goods.getMatch_goods().split(",");
-//            for (int i = 0; i < match_goods.length; i++) {
-//                Goods match = getGoodsByCode(goods.getCorp_code(),match_goods[i]);
-//                String goods_image = match.getGoods_image();
-//                    if (goods_image != null && !goods_image.isEmpty()) {
-//                        match.setGoods_image(goods_image.split(",")[0]);
-//                    }
-//                matchgoods.add(match);
-//            }
-//            goods.setMatchgoods(matchgoods);
-//        }else{
-//            goods.setMatchgoods(matchgoods);
-//        }
+
         String corp_code = goods.getCorp_code();
         String goods_code = goods.getGoods_code();
         List<GoodsMatch> matches1 = goodsMapper.selectMatchGoods1(corp_code,goods_code);
@@ -52,20 +39,24 @@ public class GoodsServiceImpl implements GoodsService {
         for (int i = 0; i < matches1.size(); i++) {
             String goods_code_match = matches1.get(i).getGoods_code_match();
             Goods match = getGoodsByCode(corp_code,goods_code_match);
-            String goods_image = match.getGoods_image();
-            if (goods_image != null && !goods_image.isEmpty()) {
-                match.setGoods_image(goods_image.split(",")[0]);
+            if (match != null) {
+                String goods_image = match.getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    match.setGoods_image(goods_image.split(",")[0]);
+                }
+                matchgoods.add(match);
             }
-            matchgoods.add(match);
         }
         for (int i = 0; i < matches2.size(); i++) {
             String good_code = matches2.get(i).getGoods_code();
             Goods match = getGoodsByCode(corp_code,good_code);
-            String goods_image = match.getGoods_image();
-            if (goods_image != null && !goods_image.isEmpty()) {
-                match.setGoods_image(goods_image.split(",")[0]);
+            if (match != null) {
+                String goods_image = match.getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    match.setGoods_image(goods_image.split(",")[0]);
+                }
+                matchgoods.add(match);
             }
-            matchgoods.add(match);
         }
         goods.setMatchgoods(matchgoods);
 
