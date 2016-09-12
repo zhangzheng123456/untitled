@@ -76,7 +76,7 @@ function getStore(a){
     });
 }
 //点击li填充s中的数据显示
-function show_name_Click(e){
+function showNameClick(e){
     var e= e.target;
     var d=$(e).parent().parent().parent();
     console.log($(d).attr('id'));
@@ -99,10 +99,8 @@ function show_name_Click(e){
 //???selcet
 function show_select(e){
     $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
-    //?????????area?????????λ??
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
 }
-//������ػ�ȡ����
 //加载更多
 function getMore(e){
     var e= e.target;
@@ -119,18 +117,12 @@ function shopSearch(e){
 $().ready(function(){
     GetArea();
     newVip_add();
-    $('#side_analyze span').click(show_select);
-    //������ظ���
     $('#select_analyze s').click(getMore);
-    $('#select_analyze ul').on('click','li',areaClick);
-    $('#select_analyze_shop ul').on('click','li',areaClick);
+    $('#select_analyze ul').on('click','li',showNameClick);
+    $('#select_analyze_shop ul').on('click','li',showNameClick);
     $('#side_analyze>ul span').click(show_select);
     //加载更多
     $('#side_analyze div s').click(getMore);
-    $('#select_analyze ul').on('click','li',show_name_Click);
-    $('#select_analyze_shop ul').on('click','li',show_name_Click);
-    //搜索
-    $('#side_analyze span').on('click',shopSearch);
 });
 /*****************************************************************************************************************/
 //新入会员
