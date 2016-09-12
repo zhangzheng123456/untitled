@@ -95,16 +95,69 @@ function showNameClick(e){
     }
 
 }
-function show_select(e){
-    if($(e.target).find('b').html()=='区域'){
-        $('#select_analyze').toggle();
+// function show_select(){
+//     var event=window.event||arguments[0];
+//     if(event.stopPropagation){
+//         event.stopPropagation();
+//     }else{
+//         event.cancelBubble=true;
+//     }
+//     console.log(this);
+//     if($(this).find('b').html()=='区域'){
+//         $('#select_analyze').toggle();
+//         $('#select_analyze_shop').hide();
+//     }else{
+//         $('#select_analyze_shop').toggle()
+//     }
+//     // $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
+//     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
+// }
+//取消下拉框
+$(document).on('click',function(e){
+    if(e.target==$($('#side_analyze>ul')[0]).find('li:nth-child(2)')  ){
+       return
+    }else if(e.target==$('#select_analyze')){
+       return
+    }else if(e.target==$('#select_analyze div')){
+       return
+    }else if(e.target==$('#select_analyze div b')){
+        return
+    }else if(e.target==$('#select_analyze div b input')){
+        return
+    }else if(e.target==$('#select_analyze div b span')){
+        return
+    }else if(e.target==$('#select_analyze div ul')){
+        return
+    }else if(e.target==$('#select_analyze div ul li')){
+        return
+    }else if(e.target==$('#select_analyze div s')){
+        return
     }else{
-        $('#select_analyze_shop').toggle()
+        $('#select_analyze').hide();
     }
-    // $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
-    //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
-}
-
+    //第二个框
+    if(e.target==$($('#side_analyze_shop>ul')[0]).find('li:nth-child(2)')  ){
+        return
+    }else if(e.target==$('#select_analyze_shop')){
+        return
+    }else if(e.target==$('#select_analyze_shop div')){
+        return
+    }else if(e.target==$('#select_analyze_shop div b')){
+        return
+    }else if(e.target==$('#select_analyze_shop div b input')){
+        return
+    }else if(e.target==$('#select_analyze_shop div b span')){
+        return
+    }else if(e.target==$('#select_analyze_shop div ul')){
+        return
+    }else if(e.target==$('#select_analyze_shop div ul li')){
+        return
+    }else if(e.target==$('#select_analyze_shop div s')){
+        return
+    }else{
+        $('#select_analyze_shop').hide();
+    }
+});
 //加载更多
 function getMore(e){
     var e= e.target;
@@ -134,12 +187,27 @@ function searchValue(e){
 }
 //页面加载前加载区域
 GetArea();
+//绑定事件
+$('#side_analyze>ul:nth-child(1) li:gt(0)').click(
+    function(){
+        var event=window.event||arguments[0];
+        if(event.stopPropagation){
+            event.stopPropagation();
+        }else{
+            event.cancelBubble=true;
+        }
+        if($(this).find('b').html()=='区域'){
+            $('#select_analyze').toggle();
+            $('#select_analyze_shop').hide();
+        }else{
+            $('#select_analyze_shop').toggle()
+        }
+    });
 $().ready(function(){
     newVip_add();
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
     $('#select_analyze_shop ul').on('click','li',showNameClick);
-    $('#side_analyze>ul li').click(show_select);
     //加载更多
     $('#side_analyze div s').click(getMore);
     //添加搜索
