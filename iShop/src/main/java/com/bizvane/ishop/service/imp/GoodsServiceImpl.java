@@ -30,20 +30,7 @@ public class GoodsServiceImpl implements GoodsService {
     public Goods getGoodsById(int id) throws Exception {
         Goods goods = this.goodsMapper.selectByPrimaryKey(id);
         List<Goods> matchgoods = new ArrayList<Goods>();
-//        if (goods.getMatch_goods() != null && !goods.getMatch_goods().equals("")){
-//            String[] match_goods = goods.getMatch_goods().split(",");
-//            for (int i = 0; i < match_goods.length; i++) {
-//                Goods match = getGoodsByCode(goods.getCorp_code(),match_goods[i]);
-//                String goods_image = match.getGoods_image();
-//                    if (goods_image != null && !goods_image.isEmpty()) {
-//                        match.setGoods_image(goods_image.split(",")[0]);
-//                    }
-//                matchgoods.add(match);
-//            }
-//            goods.setMatchgoods(matchgoods);
-//        }else{
-//            goods.setMatchgoods(matchgoods);
-//        }
+
         String corp_code = goods.getCorp_code();
         String goods_code = goods.getGoods_code();
         List<GoodsMatch> matches1 = goodsMapper.selectMatchGoods1(corp_code,goods_code);
@@ -52,20 +39,24 @@ public class GoodsServiceImpl implements GoodsService {
         for (int i = 0; i < matches1.size(); i++) {
             String goods_code_match = matches1.get(i).getGoods_code_match();
             Goods match = getGoodsByCode(corp_code,goods_code_match);
-            String goods_image = match.getGoods_image();
-            if (goods_image != null && !goods_image.isEmpty()) {
-                match.setGoods_image(goods_image.split(",")[0]);
+            if (match != null) {
+                String goods_image = match.getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    match.setGoods_image(goods_image.split(",")[0]);
+                }
+                matchgoods.add(match);
             }
-            matchgoods.add(match);
         }
         for (int i = 0; i < matches2.size(); i++) {
             String good_code = matches2.get(i).getGoods_code();
             Goods match = getGoodsByCode(corp_code,good_code);
-            String goods_image = match.getGoods_image();
-            if (goods_image != null && !goods_image.isEmpty()) {
-                match.setGoods_image(goods_image.split(",")[0]);
+            if (match != null) {
+                String goods_image = match.getGoods_image();
+                if (goods_image != null && !goods_image.isEmpty()) {
+                    match.setGoods_image(goods_image.split(",")[0]);
+                }
+                matchgoods.add(match);
             }
-            matchgoods.add(match);
         }
         goods.setMatchgoods(matchgoods);
 
@@ -107,8 +98,8 @@ public class GoodsServiceImpl implements GoodsService {
             if ((!old.getGoods_code().equals(goods.getGoods_code()))
                     && (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR))) {
                 return "编号已经存在";
-            } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-                return "名称已经存在";
+//            } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+//                return "名称已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
                 goodsMapper.deleteMatch(goods.getCorp_code(),old.getGoods_code());
                 Date now = new Date();
@@ -133,8 +124,8 @@ public class GoodsServiceImpl implements GoodsService {
         } else {
             if (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR)) {
                 return "编号已经存在";
-            } else if (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR)) {
-                return "名称已经存在";
+//            } else if (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+//                return "名称已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
                 return Common.DATABEAN_CODE_SUCCESS;
             }

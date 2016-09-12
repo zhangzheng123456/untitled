@@ -17,6 +17,8 @@ public class Corp {
     private String address;
     //联系人
     private String contact;
+    //企业默认客服
+    private String cus_user_code;
     //联系电话
     private String contact_phone;
     //修改时间
@@ -37,6 +39,8 @@ public class Corp {
 //    private String is_authorize;
 
     private List<CorpWechat> wechats;
+
+    private String cus_user_name;
 
     public String getAvater() {
         return avater;
@@ -99,6 +103,14 @@ public class Corp {
 
     public void setContact_phone(String contact_phone) {
         this.contact_phone = contact_phone;
+    }
+
+    public String getCus_user_code() {
+        return cus_user_code;
+    }
+
+    public void setCus_user_code(String cus_user_code) {
+        this.cus_user_code = cus_user_code;
     }
 
     public String getModified_date() {
@@ -164,5 +176,13 @@ public class Corp {
 
     public void setWechats(List<CorpWechat> wechats) {
         this.wechats = wechats;
+    }
+
+    public String getCus_user_name() {
+        return cus_user_name;
+    }
+
+    public void setCus_user_name(String cus_user_name) {
+        this.cus_user_name = cus_user_name;
     }
 }

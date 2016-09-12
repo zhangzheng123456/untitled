@@ -354,11 +354,11 @@ public class GoodsController {
                 result = "：Execl中商品编号存在重复值";
                 int b = 5 / 0;
             }
-            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
-            if(onlyCell2.equals("存在重复值")){
-                result = "：Execl中商品名称存在重复值";
-                int b = 5 / 0;
-            }
+//            String onlyCell2 = LuploadHelper.CheckOnly(rs.getColumn(2));
+//            if(onlyCell2.equals("存在重复值")){
+//                result = "：Execl中商品名称存在重复值";
+//                int b = 5 / 0;
+//            }
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 if(column[i].getContents().toString().trim().equals("")){
@@ -371,18 +371,18 @@ public class GoodsController {
                     break;
                 }
             }
-            Cell[] column1 = rs.getColumn(2);
-            for (int i = 3; i < column1.length; i++) {
-                if(column1[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
-                String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim());
-                if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
-                    result = "：第" + (i + 1) + "行商品名称已存在";
-                    int b = 5 / 0;
-                    break;
-                }
-            }
+//            Cell[] column1 = rs.getColumn(2);
+//            for (int i = 3; i < column1.length; i++) {
+//                if(column1[i].getContents().toString().trim().equals("")){
+//                    continue;
+//                }
+//                String goodsNameExist = goodsService.goodsNameExist(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim());
+//                if (goodsNameExist.contains(Common.DATABEAN_CODE_ERROR)) {
+//                    result = "：第" + (i + 1) + "行商品名称已存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//            }
             Cell[] column4 = rs.getColumn(3);
             Cell[] column6 = rs.getColumn(5);
             Pattern pattern2 = Pattern.compile("([1-9]\\d*\\.?\\d*)|(0\\.\\d*[1-9])");
@@ -406,19 +406,19 @@ public class GoodsController {
                 }
                 String images = column5[i].getContents().toString().trim();
                 String[] splitImages = images.split(",");
-                if(splitImages.length>5){
-                    result = "：第"+(i+1)+"行上传图片数量过多,上限5张";
-                    int b = 5 / 0;
-                    break;
-                }
-                for (int j=0;j<splitImages.length;j++){
-                    Matcher matcher = pattern5.matcher(splitImages[j]);
-                    if(matcher.matches()==false){
-                        result = "：第" + (i + 1) + "行,第"+(j+1)+"个图片地址输入有误";
-                        int b = 5 / 0;
-                        break;
-                    }
-                }
+//                if(splitImages.length>5){
+//                    result = "：第"+(i+1)+"行上传图片数量过多,上限5张";
+//                    int b = 5 / 0;
+//                    break;
+//                }
+//                for (int j=0;j<splitImages.length;j++){
+//                    Matcher matcher = pattern5.matcher(splitImages[j]);
+//                    if(matcher.matches()==false){
+//                        result = "：第" + (i + 1) + "行,第"+(j+1)+"个图片地址输入有误";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
+//                }
             }
 
 
@@ -428,12 +428,12 @@ public class GoodsController {
                 if(column7[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                Matcher matcher = pattern.matcher(column7[i].getContents().toString().trim());
-                if (column7[i].getContents().toString()==null || matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行品牌编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
+              //  Matcher matcher = pattern.matcher(column7[i].getContents().toString().trim());
+//                if (column7[i].getContents().toString()==null || matcher.matches() == false) {
+//                    result = "：第" + (i + 1) + "行品牌编号格式有误";
+//                    int b = 5 / 0;
+//                    break;
+//                }
                 Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
                 if (brand == null) {
                     result = "：第" + (i + 1) + "行品牌编号不存在";
@@ -460,10 +460,10 @@ public class GoodsController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("") && goods_image.equals("")  && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
+                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && goods_image.equals("") && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
                         continue;
                     }
-                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("") || goods_image.equals("")  || brand_code.equals("")  || cellTypeForDate.equals("") || goods_description.equals("")){
+                    if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")){
                         result = "：第"+(i+1)+"行信息不完整,请参照Execl中对应的批注";
                         int a=5/0;
                     }
@@ -570,8 +570,8 @@ public class GoodsController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
                 dataBean.setMessage("商品编号已存在");
-            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setMessage("商品名称已存在");
+//            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
+//                dataBean.setMessage("商品名称已存在");
             } else {
                 this.goodsService.insertGoods(goods,match_goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

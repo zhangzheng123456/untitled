@@ -1,16 +1,15 @@
 package com.bizvane.ishop.service.imp;
 
-import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.BrandMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.StoreMapper;
-import com.bizvane.ishop.entity.Area;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.Brand;
 import com.bizvane.ishop.entity.Store;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.BrandService;
 import com.bizvane.ishop.utils.CheckUtils;
-import com.bizvane.sun.v1.common.Data;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.json.JSONObject;
@@ -34,11 +33,20 @@ public class BrandServiceImpl implements BrandService {
     @Autowired
     StoreMapper storeMapper;
     @Autowired
+    UserMapper userMapper;
+    @Autowired
     private CodeUpdateMapper codeUpdateMapper;
 
     @Override
     public Brand getBrandById(int id) throws SQLException {
-        return brandMapper.selectByBrandId(id);
+        Brand brand = brandMapper.selectByBrandId(id);
+        String cus_user_code = brand.getCus_user_code();
+        if (cus_user_code != null && !cus_user_code.equals("")){
+            List<User> users = userMapper.selectUserCode(cus_user_code,brand.getCorp_code(),Common.IS_ACTIVE_Y);
+            String cus_user_name = users.get(0).getUser_name();
+            brand.setCus_user_name(cus_user_name);
+        }
+        return brand;
     }
 
     @Override
@@ -81,6 +89,7 @@ public class BrandServiceImpl implements BrandService {
         String corp_code = jsonObject.get("corp_code").toString();
         String brand_name = jsonObject.get("brand_name").toString();
 
+
         Brand brand = getBrandByCode(corp_code, brand_code);
         Brand brand1 = getBrandByName(corp_code, brand_name);
         if (brand == null && brand1 == null) {
@@ -89,6 +98,9 @@ public class BrandServiceImpl implements BrandService {
             brand.setBrand_code(brand_code);
             brand.setBrand_name(brand_name);
             brand.setCorp_code(corp_code);
+            if (jsonObject.has("cus_user_code")){
+                brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
+            }
             brand.setCreated_date(Common.DATETIME_FORMAT.format(now));
             brand.setCreater(user_id);
             brand.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -149,6 +161,9 @@ public class BrandServiceImpl implements BrandService {
                 brand.setBrand_code(brand_code);
                 brand.setBrand_name(brand_name);
                 brand.setCorp_code(corp_code);
+                if (jsonObject.has("cus_user_code")){
+                    brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
+                }
                 brand.setModified_date(Common.DATETIME_FORMAT.format(now));
                 brand.setModifier(user_id);
                 brand.setIsactive(jsonObject.get("isactive").toString());
@@ -167,6 +182,9 @@ public class BrandServiceImpl implements BrandService {
                 brand.setBrand_code(brand_code);
                 brand.setBrand_name(brand_name);
                 brand.setCorp_code(corp_code);
+                if (jsonObject.has("cus_user_code")){
+                    brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
+                }
                 brand.setModified_date(Common.DATETIME_FORMAT.format(now));
                 brand.setModifier(user_id);
                 brand.setIsactive(jsonObject.get("isactive").toString());

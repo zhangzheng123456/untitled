@@ -156,6 +156,11 @@ public class StoreController {
                     Store store = new Store();
                     store.setStore_code("");
                     store.setStore_name("全部");
+                    store.setArea_code("");
+                    store.setArea_name("");
+                    store.setCorp_code("");
+                    store.setCorp_name("");
+                    store.setId(0);
                     stores.add(0,store);
                     stores.addAll(list.getList());
                     list.setList(stores);
@@ -168,6 +173,11 @@ public class StoreController {
                     Store store = new Store();
                     store.setStore_code("");
                     store.setStore_name("全部");
+                    store.setArea_code("");
+                    store.setArea_name("");
+                    store.setCorp_code("");
+                    store.setCorp_name("");
+                    store.setId(0);
                     stores.add(0,store);
                     stores.addAll(list.getList());
                     list.setList(stores);

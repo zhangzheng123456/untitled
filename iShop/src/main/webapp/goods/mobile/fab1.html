@@ -15,8 +15,7 @@
 </body>
 <script>
 	function iShop(){
-		this.version = "1.0.1";
-		
+		this.version = "1.0.1";	
 		//获取手机系统
 		this.getOSType = function(){
 			var browser = navigator.userAgent;
@@ -32,7 +31,6 @@
 				return "Unknown"
 			}
 		}
-
 		//获取iShop用户信息
 		this.user = function(){
 			var osType = this.getOSType();
