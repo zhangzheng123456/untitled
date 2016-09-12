@@ -3,8 +3,109 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>会员信息</title>
+    <link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" href="../css/vip_analyze.css">
 </head>
-<body>
+<style>
+     /*导航头部*/
+    .con_table{
+        /*overflow: hidden;*/
+    }
+    .nav_bar li{
+        width:14%;
+        height:30px;
+        line-height: 30px;
+        float: left;
+        font-size: 14px;
+        color: #888888;
+        text-align: center;
+    }
+    .nav_bar li div{
+        margin: 0 auto;
+    }
+    .nav_bar_active{
+        border-bottom: 3px solid #6dc1c8;
+    }
+    .nav_bar{
+        height: 40px;
+        border-bottom: 1px solid #fff;
+    }
 
+    /*模块窗口*/
+     .remark span{
+         display: inline-flex;
+         margin-top: 30px;
+         margin-left: 15%;
+     }
+    .remark textarea{
+        width: 410px;
+        height:200px;
+        margin-left: 10px;
+        resize: none;
+        border: none;
+        outline: none;
+        border-radius: 4px;
+    }
+    .remark_save{
+        width: 160px;
+        height: 30px;
+        margin-left: 15%;
+        background: #6dc1c8;
+        color: #ffffff;
+        line-height: 30px;
+        text-align: center;
+        border-radius: 4px;
+        font-size: 14px;
+        letter-spacing: 10px;
+    }
+</style>
+<body>
+    <div class="con_table">
+        <div class="title">
+            <span>会员管理</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>会员列表</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>会员信息</span>
+            <span class="icon-ishop_8-03"></span>
+            <span>编辑会员资料</span>
+        </div>
+
+        <div>
+            <div>
+                <ul class="nav_bar" id="nav_bar">
+                    <li><div>基本信息</div></li>
+                    <li><div>拓展信息</div></li>
+                    <li><div>衣橱</div></li>
+                    <li><div>积分</div></li>
+                    <li><div>相册</div></li>
+                    <li><div>标签</div></li>
+                    <li><div>备注</div></li>
+                </ul>
+            </div>
+
+            <div class="remark">
+               <span>
+                     <label>备注</label>
+                     <textarea value="输入备注" id=""></textarea>
+               </span>
+                <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script>
+    //给导航选中状态增加宽度
+    window.onresize=function () {
+        var liWidth=$(".nav_bar li").width()-20;
+        $(".nav_bar li div").css("width",liWidth+"px");
+    }
+    //导航选中效果
+    $("#nav_bar li div").click(function () {
+        $(this).addClass("nav_bar_active");
+        $(this).parents("li").siblings().children("div").removeClass("nav_bar_active")
+    })
+</script>
