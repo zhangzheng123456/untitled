@@ -41,11 +41,19 @@ public class BrandServiceImpl implements BrandService {
     public Brand getBrandById(int id) throws SQLException {
         Brand brand = brandMapper.selectByBrandId(id);
         String cus_user_code = brand.getCus_user_code();
-        if (cus_user_code != null && !cus_user_code.equals("")){
-            List<User> users = userMapper.selectUserCode(cus_user_code,brand.getCorp_code(),Common.IS_ACTIVE_Y);
-            String cus_user_name = users.get(0).getUser_name();
-            brand.setCus_user_name(cus_user_name);
+        String cus_user_name = "";
+        if (cus_user_code != null && !cus_user_code.equals("")) {
+            String[] cus_user_codes = cus_user_code.split(",");
+            for (int i = 0; i < cus_user_codes.length; i++) {
+                String user_code = cus_user_codes[i];
+                List<User> user = userMapper.selectUserCode(user_code, brand.getCorp_code(),Common.IS_ACTIVE_Y);
+                if (user.size() > 0) {
+                    String user_name = user.get(0).getUser_name();
+                    cus_user_name = cus_user_name + user_name + ",";
+                }
+            }
         }
+        brand.setCus_user_name(cus_user_name);
         return brand;
     }
 

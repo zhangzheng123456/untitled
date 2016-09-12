@@ -24,4 +24,8 @@ public interface SignService {
     PageInfo<Sign> selectSignAllScreen(int page_number, int page_size, String corp_code, String area_code, String store_code, String role_code, Map<String, String> map) throws Exception;
 
     PageInfo<Sign> selectSignAllScreenByUser(int page_number, int page_size, String corp_code, String user_code, Map<String, String> map) throws Exception;
+
+    int insert(Sign sign) throws Exception;
+
+    int deleteByUser(String user_code,String corp_code)throws Exception;
 }

@@ -66,7 +66,7 @@ public class SignServiceImpl implements SignService {
             //0是签到，-1是签退
             if(sign.getStatus()==null||sign.getStatus().equals("")){
                 sign.setStatus("");
-            }else if(sign.getStatus().equals("0")){
+            }else if(sign.getStatus().equals(Common.STATUS_CHECK_IN)){
                 sign.setStatus("签到");
             }else{
                 sign.setStatus("签退");
@@ -166,5 +166,15 @@ public class SignServiceImpl implements SignService {
         }
         PageInfo<Sign> page = new PageInfo<Sign>(list);
         return page;
+    }
+
+    @Override
+    public int insert(Sign sign) throws Exception{
+        return signMapper.insert(sign);
+    }
+
+    @Override
+    public int deleteByUser(String user_code,String corp_code)throws Exception{
+        return signMapper.delSignByUser(user_code,corp_code);
     }
 }

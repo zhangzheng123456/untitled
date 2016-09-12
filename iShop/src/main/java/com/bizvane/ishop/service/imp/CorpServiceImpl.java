@@ -42,13 +42,19 @@ public class CorpServiceImpl implements CorpService {
     public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
         Corp corp = corpMapper.selectByCorpId(corp_id, corp_code, isactive);
         String cus_user_code = corp.getCus_user_code();
+        String cus_user_name = "";
         if (cus_user_code != null && !cus_user_code.equals("")) {
-            List<User> user = userMapper.selectUserCode(cus_user_code, corp.getCorp_code(),Common.IS_ACTIVE_Y);
-            if (user.size() > 0) {
-                String cus_user_name = user.get(0).getUser_name();
-                corp.setCus_user_name(cus_user_name);
+            String[] cus_user_codes = cus_user_code.split(",");
+            for (int i = 0; i < cus_user_codes.length; i++) {
+                String user_code = cus_user_codes[i];
+                List<User> user = userMapper.selectUserCode(user_code, corp.getCorp_code(),Common.IS_ACTIVE_Y);
+                if (user.size() > 0) {
+                    String user_name = user.get(0).getUser_name();
+                    cus_user_name = cus_user_name + user_name + ",";
+                }
             }
         }
+        corp.setCus_user_name(cus_user_name);
         return corp;
     }
 

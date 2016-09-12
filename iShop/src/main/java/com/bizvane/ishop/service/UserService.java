@@ -78,4 +78,9 @@ public interface UserService {
     int deleteUserQrcodeOne(String corp_code, String user_code,String app_id) throws Exception;
 
     String creatUserQrcode(String corp_code,String user_code,String auth_appid,String user_id) throws Exception;
+
+    void checkIn(JSONObject jsonObject,String user_code) throws Exception;
+
+    void checkOut(JSONObject jsonObject,String user_code) throws Exception;
+
 }

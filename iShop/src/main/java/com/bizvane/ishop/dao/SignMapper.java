@@ -12,14 +12,18 @@ import java.util.Map;
 /**
  * Created by yin on 2016/6/23.
  */
-public interface SignMapper {
+public interface SignMapper{
         List<Sign> selectSignByInp(Map<String, Object> params) throws SQLException;
 
         int delSignById(@Param("id")int id) throws SQLException;
+
+        int delSignByUser(@Param("user_code")String user_code,@Param("corp_code")String corp_code) throws SQLException;
 
         List<Sign> selectByUser(@Param("corp_code")String corp_code,@Param("user_code")String user_code,@Param("search_value") String search_value) throws SQLException;
 
         List<Sign> selectSignAllScreen(Map<String, Object> params) throws SQLException;
 
         List<Sign> selectSignAllScreenUser(Map<String, Object> params) throws SQLException;
+
+        int insert(Sign sign) throws SQLException;
 }
