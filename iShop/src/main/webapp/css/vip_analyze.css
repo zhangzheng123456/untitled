@@ -17,10 +17,13 @@
 .col_lg_12{
     width:100%;
 }
+.row{
+    overflow: hidden;
+}
 #side_analyze{
     margin-right:0.5%;
     position: relative;
-    height:440px;
+    height:100%;
 }
 #table_analyze{
     background: #fff;
