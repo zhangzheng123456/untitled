@@ -101,8 +101,8 @@
         WHERE id=#{id}
     </select>
     <delete id="deleteMessageQuickReplyById">
-        delete from
-         FROM def_chat_message_model dcmm
+        delete
+         FROM def_chat_message_model
         WHERE id=#{id}
     </delete>
     <insert id="insertMessageQuickReply" parameterType="com.bizvane.ishop.entity.MessageQuickReply">
