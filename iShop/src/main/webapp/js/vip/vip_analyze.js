@@ -96,9 +96,18 @@ function showNameClick(e){
 
 }
 function show_select(e){
-    $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
+    console.log($(e.target).parent().parent().find('b')[1]);
+    var b=$(e.target).parent().parent().find('b')[1];
+    console.log($(b).);
+    if($(e.target).find('b').html()=='区域'){
+        $('#select_analyze').toggle();
+    }else{
+        $('#select_analyze_shop').toggle()
+    }
+    // $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
 }
+
 //加载更多
 function getMore(e){
     var e= e.target;
@@ -133,7 +142,7 @@ $().ready(function(){
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
     $('#select_analyze_shop ul').on('click','li',showNameClick);
-    $('#side_analyze>ul span').click(show_select);
+    $('#side_analyze>ul li').click(show_select);
     //加载更多
     $('#side_analyze div s').click(getMore);
     //添加搜索
