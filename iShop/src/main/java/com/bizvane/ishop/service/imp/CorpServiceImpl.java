@@ -5,8 +5,10 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.CorpMapper;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.CorpWechat;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
@@ -29,7 +31,8 @@ import java.util.Map;
 public class CorpServiceImpl implements CorpService {
     @Autowired
     private CorpMapper corpMapper;
-
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private CodeUpdateMapper codeUpdateMapper;
 
@@ -37,7 +40,16 @@ public class CorpServiceImpl implements CorpService {
     private AreaMapper areaMapper;
 
     public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
-        return corpMapper.selectByCorpId(corp_id, corp_code, isactive);
+        Corp corp = corpMapper.selectByCorpId(corp_id, corp_code, isactive);
+        String cus_user_code = corp.getCus_user_code();
+        if (cus_user_code != null && !cus_user_code.equals("")) {
+            List<User> user = userMapper.selectUserCode(cus_user_code, corp.getCorp_code(),Common.IS_ACTIVE_Y);
+            if (user.size() > 0) {
+                String cus_user_name = user.get(0).getUser_name();
+                corp.setCus_user_name(cus_user_name);
+            }
+        }
+        return corp;
     }
 
     @Transactional
@@ -55,6 +67,9 @@ public class CorpServiceImpl implements CorpService {
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
+            if (jsonObject.has("cus_user_code")){
+                corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
+            }
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
             for (int i = 0; i < wechat.size(); i++) {
                 JSONObject object = new JSONObject(wechat.get(i).toString());
@@ -123,6 +138,9 @@ public class CorpServiceImpl implements CorpService {
             old_corp.setContact(jsonObject.get("contact").toString());
             old_corp.setContact_phone(jsonObject.get("phone").toString());
             old_corp.setAvater(jsonObject.get("avater").toString());
+            if (jsonObject.has("cus_user_code")){
+                old_corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
+            }
             Date now = new Date();
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
             result = updateCorpWechat(wechat,corp_code,user_id);

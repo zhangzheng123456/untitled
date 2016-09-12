@@ -11,6 +11,8 @@ public class Brand {
     private String brand_name;
     //公司编号
     private String corp_code;
+    //品牌默认客服
+    private String cus_user_code;
     //修改时间
     private String modified_date;
     //修改人
@@ -24,6 +26,8 @@ public class Brand {
 
     private Corp corp;
     private String corp_name;
+
+    private String cus_user_name;
 
     public String getCorp_name() {
         return corp_name;
@@ -73,6 +77,14 @@ public class Brand {
         this.corp_code = corp_code;
     }
 
+    public String getCus_user_code() {
+        return cus_user_code;
+    }
+
+    public void setCus_user_code(String cus_user_code) {
+        this.cus_user_code = cus_user_code;
+    }
+
     public String getModified_date() {
         return modified_date;
     }
@@ -119,5 +131,13 @@ public class Brand {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public String getCus_user_name() {
+        return cus_user_name;
+    }
+
+    public void setCus_user_name(String cus_user_name) {
+        this.cus_user_name = cus_user_name;
     }
 }

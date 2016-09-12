@@ -8,6 +8,7 @@
         <result column="address" property="address" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="contact" property="contact" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="contact_phone" property="contact_phone" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="cus_user_code" property="cus_user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -71,31 +72,34 @@
     </select>
 
     <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.Corp">
-        insert into DEF_CORP
+        INSERT INTO DEF_CORP
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
-                CORP_NAME,
+                corp_name,
             </if>
             <if test="corp_code != null">
-                CORP_CODE,
+                corp_code,
             </if>
             <if test="address != null">
-                ADDRESS,
+                address,
             </if>
             <if test="contact != null">
-                CONTACT,
+                contact,
             </if>
             <if test="contact_phone != null">
-                CONTACT_PHONE,
+                contact_phone,
+            </if>
+            <if test="cus_user_code != null">
+                cus_user_code,
             </if>
             <if test="modified_date != null">
-                MODIFIED_DATE,
+                modified_date,
             </if>
             <if test="modifier != null">
                 modifier,
             </if>
             <if test="created_date != null">
-                CREATED_DATE,
+                created_date,
             </if>
             <if test="creater != null">
                 creater,
@@ -122,6 +126,9 @@
             </if>
             <if test="contact_phone != null">
                 #{contact_phone},
+            </if>
+            <if test="cus_user_code != null">
+                #{cus_user_code},
             </if>
             <if test="modified_date != null">
                 #{modified_date},
@@ -162,6 +169,9 @@
             </if>
             <if test="contact_phone != null">
                 contact_phone = #{contact_phone},
+            </if>
+            <if test="cus_user_code != null">
+                cus_user_code = #{cus_user_code},
             </if>
             <if test="modified_date != null">
                 modified_date = #{modified_date},
