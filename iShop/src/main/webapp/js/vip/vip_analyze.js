@@ -5,7 +5,7 @@ var store_code;
 var corp_code="C10000";
 //????????
 function GetArea(){
-    var searchValue="";
+    var searchValue=$('#select_analyze input').val();
     var param={};
     param['pageNumber']=page;
     param['pageSize']="7";
@@ -16,8 +16,6 @@ function GetArea(){
             var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
             var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
             var role_code=message.role_code;//��ɫ����
-            var message=JSON.parse(data.message);//???messagejson?????DOM????
-            var message=JSON.parse(data.message);//???messagejson?????DOM????
             var message=JSON.parse(data.message);//???messagejson?????DOM????
             var role_code=message.role_code;//???????
             var output=JSON.parse(message.list);
@@ -35,6 +33,7 @@ function GetArea(){
             $('#side_analyze ul li:nth-child(2) s').html(first_area);
             $('#side_analyze ul li:nth-child(2) s').attr('data_area',first_area_code);
             var area_code=output_list[0].area_code;
+            localStorage.setItem('area_code',area_code);
             //清除内容店铺下拉列表
             $('#select_analyze_shop ul').html('');
             getStore(area_code);
@@ -45,7 +44,7 @@ function GetArea(){
     });
 }
 function getStore(a){
-    var searchValue='';
+    var searchValue=$('#select_analyze_shop input').val();
     var area_code=a;
     var param={};
     param['pageNumber']=page;
@@ -96,7 +95,6 @@ function showNameClick(e){
     }
 
 }
-//???selcet
 function show_select(e){
     $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
@@ -110,12 +108,27 @@ function getMore(e){
     getStore(area_code);
 }
 //搜索
-function shopSearch(e){
+function searchValue(e){
+    //page初始化
+    page=1;
+    //进入搜索清空内容
+    $(e.target).parent().next().html('');
+    //清楚加载更多
+    $(e.target).parent().next().next().attr('style','display:block');
     //获取店铺列表的value值e
-    console.log($(e.target).html());
+    var searchValue=$(e.target).prev().val();
+    //获得其父级元素的id熟属性
+    var parent=$(e.target).parent().parent().parent();
+    //判断是区域搜索还是店铺搜索
+      if($(parent).attr('id')=='select_analyze'){
+          GetArea();
+      }else{
+          getStore(localStorage.getItem('area_code'));
+      }
 }
+//页面加载前加载区域
+GetArea();
 $().ready(function(){
-    GetArea();
     newVip_add();
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
@@ -123,6 +136,8 @@ $().ready(function(){
     $('#side_analyze>ul span').click(show_select);
     //加载更多
     $('#side_analyze div s').click(getMore);
+    //添加搜索
+    $('#side_analyze div b span').click(searchValue);
 });
 /*****************************************************************************************************************/
 //新入会员
