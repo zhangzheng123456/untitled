@@ -541,3 +541,14 @@ div.wx_app_new p{
 	width: 100%;
 	border: 2px solid #ccc;
 }
+/******多选下拉框样式******/
+.Acc_dropdown li{
+	height: 30px !important;
+	line-height: 30px !important;
+}
+.Acc_dropdown li:hover{
+	background-color: #e8f5fe !important;
+}
+.Acc_dropdown p{
+	margin: 0 !important;
+}

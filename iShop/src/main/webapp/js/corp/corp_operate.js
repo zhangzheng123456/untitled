@@ -154,7 +154,7 @@ var message = JSON.parse(val.message);
                 }
                 var ID = sessionStorage.getItem("id");
                 var HEADPORTRAIT = "";
-                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/bg.png') {
+                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src")!=='../img/bg.png') {
                     HEADPORTRAIT = "http://products-image.oss-cn-hangzhou.aliyuncs.com/Corp_logo/ishow/" + $("#OWN_CORP").val().trim() + ".jpg";
                 } else {
                     HEADPORTRAIT = "";

@@ -466,8 +466,9 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    console.log(params);
+    whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/corp/delete","0",params,function(data){
+        whir.loading.remove();//移除加载框
         if(data.code=="0"){
             if(value==""&&filtrate==""){
                frame();
