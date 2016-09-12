@@ -136,6 +136,7 @@
         width: 160px;
         height: 30px;
         text-indent: 10px;
+        margin: 0 20px 0 10px;
         border: 1px solid #d7d7d7;
         border-radius: 4px;
         outline: none;
@@ -144,13 +145,13 @@
 <body>
 <div class="con_table" id="con_table">
     <!-- 导航-->
-    <div class="title">
+    <div class="title" style="display: none">
         <span>会员管理</span>
         <span class="icon-ishop_8-03"></span>
         <span id="vipAnalyze_return">会员信息</span>
     </div>
     <!--头部-->
-       <div class="header">
+       <div class="header" style="display: none">
           <div class="left">
               <div class="left-class">
                   <div  class="content">
@@ -409,7 +410,7 @@
           </div>
        </div>
     <!-- 分析数据图表描述-->
-    <div id="chart_analyze" class="col_lg_12"style="display: inline-block">
+    <div id="chart_analyze" class="col_lg_12"style="display: none">
         <div class="chart_module">
             <ul>
                 <span class="chart_head">消费类型</span>
@@ -465,7 +466,7 @@
         </ul>
     </div>
     </div>
-    <div class="con_table">
+    <div class="">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
@@ -507,14 +508,15 @@
                             <li><span>至</span><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
                         </ul>
                         <ul class="record_input">
-                            <li style="margin-right: 20px">订单号<input></li>
+                            <li>订单号<input></li>
                             <li>商品编号<input></li>
-                            <li>商品名称<input></li>
+                            <li>商品名称<input style="margin-right: 0px"></li>
                         </ul>
                     </div>
                 </div>
-            <div>
-
+                <div>
+                    
+                </div>
             </div>
 
             <div class="remark">
@@ -525,20 +527,7 @@
                 <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
             </div>
         </div>
-        </div>
-    <script>
-        //给导航选中状态增加宽度
-        window.onresize=function () {
-            var liWidth=$(".nav_bar li").width()-20;
-            $(".nav_bar li div").css("width",liWidth+"px");
-        }
-        //导航选中效果
-        $("#nav_bar li div").click(function () {
-            $(this).addClass("nav_bar_active");
-            $(this).parents("li").siblings().children("div").removeClass("nav_bar_active")
-        })
-    </script>
-</div>
+    </div>
 </div>
 </body>
 <script src="../js/jquery-2.1.1.min.js"></script>
@@ -546,6 +535,18 @@
 <!--<script src="/js/staff/staff_action.js"></script>-->
 <!--<script src="../js/vip/vip_analyze.js"></script>-->
 <script type="text/javascript"></script>
+<script>
+    //给导航选中状态增加宽度
+    window.onresize=function () {
+        var liWidth=$(".nav_bar li").width()-20;
+        $(".nav_bar li div").css("width",liWidth+"px");
+    }
+    //导航选中效果
+    $("#nav_bar li div").click(function () {
+        $(this).addClass("nav_bar_active");
+        $(this).parents("li").siblings().children("div").removeClass("nav_bar_active")
+    })
+</script>
 <script>
     $(".vip_nav_bar li:nth-child(1)").click(function () {
         $('.birthVip').show();

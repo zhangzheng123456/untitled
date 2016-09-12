@@ -982,10 +982,13 @@ button {
 .froala-editor .froala-popup div.f-popup-line {
     margin: 0 7px;
     padding: 10px 0;
-    display: block;
+    /*display: block;*/
     position: relative
 }
 
+.froala-editor .drop-upload{
+    display: none;
+}
 .froala-editor .froala-popup div.f-popup-line.f-popup-toolbar {
     background: #fff
 }
