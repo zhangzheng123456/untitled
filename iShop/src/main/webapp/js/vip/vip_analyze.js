@@ -96,9 +96,6 @@ function showNameClick(e){
 
 }
 function show_select(e){
-    console.log($(e.target).parent().parent().find('b')[1]);
-    var b=$(e.target).parent().parent().find('b')[1];
-    console.log($(b).);
     if($(e.target).find('b').html()=='区域'){
         $('#select_analyze').toggle();
     }else{
