@@ -135,6 +135,7 @@ var oc = new ObjectControl();
                 //     cancel: false,
                 //     content: data.message
                 // });
+                alert(data.message);
             }
         });
     };
