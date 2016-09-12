@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.Brand;
@@ -41,19 +42,33 @@ public class BrandServiceImpl implements BrandService {
     public Brand getBrandById(int id) throws SQLException {
         Brand brand = brandMapper.selectByBrandId(id);
         String cus_user_code = brand.getCus_user_code();
-        String cus_user_name = "";
+        JSONArray array_user = new JSONArray();
+        JSONArray array_app_id = new JSONArray();
+
         if (cus_user_code != null && !cus_user_code.equals("")) {
             String[] cus_user_codes = cus_user_code.split(",");
             for (int i = 0; i < cus_user_codes.length; i++) {
                 String user_code = cus_user_codes[i];
                 List<User> user = userMapper.selectUserCode(user_code, brand.getCorp_code(),Common.IS_ACTIVE_Y);
                 if (user.size() > 0) {
-                    String user_name = user.get(0).getUser_name();
-                    cus_user_name = cus_user_name + user_name + ",";
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("cus_user_code",user_code);
+                    userObj.put("cus_user_name",user.get(0).getUser_name());
+                    array_user.add(userObj);
                 }
             }
         }
-        brand.setCus_user_name(cus_user_name);
+        brand.setCus_user(array_user);
+        List<CorpWechat> corpWechats = corpMapper.selectWByCorpBrand(brand.getCorp_code(),brand.getBrand_code());
+        if (corpWechats.size()>0){
+            for (int i = 0; i < corpWechats.size(); i++) {
+                JSONObject appObj = new JSONObject();
+                appObj.put("app_id",corpWechats.get(0).getApp_id());
+                appObj.put("app_name",corpWechats.get(0).getApp_name());
+                array_app_id.add(appObj);
+            }
+        }
+        brand.setApp_id(array_app_id);
         return brand;
     }
 

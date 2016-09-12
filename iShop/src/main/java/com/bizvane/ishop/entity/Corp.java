@@ -1,5 +1,7 @@
 package com.bizvane.ishop.entity;
 
+import com.alibaba.fastjson.JSONArray;
+
 import java.lang.*;
 import java.util.Date;
 import java.util.List;
@@ -40,7 +42,7 @@ public class Corp {
 
     private List<CorpWechat> wechats;
 
-    private String cus_user_name;
+    private JSONArray cus_user;
 
     public String getAvater() {
         return avater;
@@ -178,11 +180,11 @@ public class Corp {
         this.wechats = wechats;
     }
 
-    public String getCus_user_name() {
-        return cus_user_name;
+    public JSONArray getCus_user() {
+        return cus_user;
     }
 
-    public void setCus_user_name(String cus_user_name) {
-        this.cus_user_name = cus_user_name;
+    public void setCus_user(JSONArray cus_user) {
+        this.cus_user = cus_user;
     }
 }
