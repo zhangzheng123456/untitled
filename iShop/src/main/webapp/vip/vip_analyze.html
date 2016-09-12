@@ -1069,11 +1069,22 @@ require(
                 ]
             };
             var option5= {
+                color:['#6DADC8'],
+                tooltip : {
+                    trigger: 'item'
+                },
                 grid:{
-                    borderWidth:0
+                    borderWidth:0,
+                    x:'50',
+                    y:'20',
+                    x2:'20',
+                    y2:'50'
                 },
                 xAxis : [
-                    { splitLine:{
+                    { axisLine:{
+                        lineStyle:{color:'#58A0C0'}
+                    },
+                        splitLine:{
                         show:false
                     },
                         axisLabel:{
@@ -1114,7 +1125,7 @@ require(
                                 }
                             }
                         },
-                        name:'搜索引擎',
+                        name:'购买时段',
                         type:'line',
                         stack: '总量',
                         symbolSize:0,
