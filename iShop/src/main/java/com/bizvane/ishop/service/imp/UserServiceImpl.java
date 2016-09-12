@@ -829,7 +829,16 @@ public class UserServiceImpl implements UserService {
                 sign.setUser_name(user.getUser_name());
                 sign.setStatus(Common.STATUS_CHECK_IN);
                 sign.setSign_time(Common.DATETIME_FORMAT.format(now));
-                sign.setStore_code(user.getStore_code());
+                if (user.getStore_code()!=null && !user.getStore_code().equals("")){
+                    String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
+                    sign.setStore_code(store_code[0]);
+                }
+                if (user.getArea_code()!=null && !user.getArea_code().equals("")){
+                    String[] area_code = user.getArea_code().replace(Common.STORE_HEAD,"").split(",");
+                    List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(),area_code,Common.IS_ACTIVE_Y);
+                    if (stores.size()>0)
+                    sign.setStore_code(stores.get(0).getStore_code());
+                }
                 sign.setCorp_code(user.getCorp_code());
                 sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 sign.setModifier(user_code);
@@ -858,7 +867,16 @@ public class UserServiceImpl implements UserService {
                 sign.setUser_name(user.getUser_name());
                 sign.setStatus(Common.STATUS_CHECK_OUT);
                 sign.setSign_time(Common.DATETIME_FORMAT.format(now));
-                sign.setStore_code(user.getStore_code());
+                if (user.getStore_code()!=null && !user.getStore_code().equals("")){
+                    String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
+                    sign.setStore_code(store_code[0]);
+                }
+                if (user.getArea_code()!=null && !user.getArea_code().equals("")){
+                    String[] area_code = user.getArea_code().replace(Common.STORE_HEAD,"").split(",");
+                    List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(),area_code,Common.IS_ACTIVE_Y);
+                    if (stores.size()>0)
+                        sign.setStore_code(stores.get(0).getStore_code());
+                }
                 sign.setCorp_code(user.getCorp_code());
                 sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 sign.setModifier(user_code);
