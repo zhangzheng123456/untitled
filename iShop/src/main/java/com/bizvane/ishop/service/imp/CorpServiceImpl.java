@@ -248,14 +248,6 @@ public class CorpServiceImpl implements CorpService {
         return list;
     }
 
-    /**
-     * 查找最大的corp_code
-     * 以便新增企业时
-     * 自动生成corp_code
-     */
-    public String selectMaxCorpCode() throws Exception {
-        return corpMapper.selectMaxCorpCode();
-    }
 
     /**
      * 校验企业名称是否唯一

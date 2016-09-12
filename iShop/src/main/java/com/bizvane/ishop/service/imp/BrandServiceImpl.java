@@ -1,11 +1,9 @@
 package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
-import com.bizvane.ishop.dao.BrandMapper;
-import com.bizvane.ishop.dao.CodeUpdateMapper;
-import com.bizvane.ishop.dao.StoreMapper;
-import com.bizvane.ishop.dao.UserMapper;
+import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.Brand;
+import com.bizvane.ishop.entity.CorpWechat;
 import com.bizvane.ishop.entity.Store;
 import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.BrandService;
@@ -28,6 +26,8 @@ import java.util.Map;
  */
 @Service
 public class BrandServiceImpl implements BrandService {
+    @Autowired
+    CorpMapper corpMapper;
     @Autowired
     BrandMapper brandMapper;
     @Autowired
@@ -82,7 +82,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    public String insert(String message, String user_id) throws Exception {
+    public String insert(String message, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String brand_code = jsonObject.get("brand_code").toString();
@@ -101,10 +101,23 @@ public class BrandServiceImpl implements BrandService {
             if (jsonObject.has("cus_user_code")){
                 brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
             }
+            if (jsonObject.has("app_id")){
+                String app_id = jsonObject.get("app_id").toString();
+                if (!app_id.equals("")) {
+                    String[] app_ids = app_id.split(",");
+                    for (int i = 0; i < app_ids.length; i++) {
+                        CorpWechat corpWechat = corpMapper.selectWByAppId(app_ids[i]);
+                        corpWechat.setBrand_code(brand_code);
+                        corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        corpWechat.setModifier(user_code);
+                        corpMapper.updateCorpWechat(corpWechat);
+                    }
+                }
+            }
             brand.setCreated_date(Common.DATETIME_FORMAT.format(now));
-            brand.setCreater(user_id);
+            brand.setCreater(user_code);
             brand.setModified_date(Common.DATETIME_FORMAT.format(now));
-            brand.setModifier(user_id);
+            brand.setModifier(user_code);
             brand.setIsactive(jsonObject.get("isactive").toString());
             brandMapper.insertBrand(brand);
             result = Common.DATABEAN_CODE_SUCCESS;
@@ -136,7 +149,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     @Transactional
-    public String update(String message, String user_id) throws Exception {
+    public String update(String message, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         int brand_id = Integer.parseInt(jsonObject.get("id").toString());
@@ -164,8 +177,21 @@ public class BrandServiceImpl implements BrandService {
                 if (jsonObject.has("cus_user_code")){
                     brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
                 }
+                if (jsonObject.has("app_id")){
+                    String app_id = jsonObject.get("app_id").toString();
+                    if (!app_id.equals("")) {
+                        String[] app_ids = app_id.split(",");
+                        for (int i = 0; i < app_ids.length; i++) {
+                            CorpWechat corpWechat = corpMapper.selectWByAppId(app_ids[i]);
+                            corpWechat.setBrand_code(brand_code);
+                            corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            corpWechat.setModifier(user_code);
+                            corpMapper.updateCorpWechat(corpWechat);
+                        }
+                    }
+                }
                 brand.setModified_date(Common.DATETIME_FORMAT.format(now));
-                brand.setModifier(user_id);
+                brand.setModifier(user_code);
                 brand.setIsactive(jsonObject.get("isactive").toString());
                 brandMapper.updateBrand(brand);
                 result = Common.DATABEAN_CODE_SUCCESS;
@@ -185,8 +211,21 @@ public class BrandServiceImpl implements BrandService {
                 if (jsonObject.has("cus_user_code")){
                     brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
                 }
+                if (jsonObject.has("app_id")){
+                    String app_id = jsonObject.get("app_id").toString();
+                    if (!app_id.equals("")) {
+                        String[] app_ids = app_id.split(",");
+                        for (int i = 0; i < app_ids.length; i++) {
+                            CorpWechat corpWechat = corpMapper.selectWByAppId(app_ids[i]);
+                            corpWechat.setBrand_code(brand_code);
+                            corpWechat.setModified_date(Common.DATETIME_FORMAT.format(now));
+                            corpWechat.setModifier(user_code);
+                            corpMapper.updateCorpWechat(corpWechat);
+                        }
+                    }
+                }
                 brand.setModified_date(Common.DATETIME_FORMAT.format(now));
-                brand.setModifier(user_id);
+                brand.setModifier(user_code);
                 brand.setIsactive(jsonObject.get("isactive").toString());
                 brandMapper.updateBrand(brand);
                 result = Common.DATABEAN_CODE_SUCCESS;
