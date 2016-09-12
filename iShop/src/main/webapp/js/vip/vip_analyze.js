@@ -12,7 +12,7 @@ function GetArea(){
     param['searchValue']=searchValue;
     oc.postRequire("post","/area/findAreaByCorpCode","",param,function(data){
         if(data.code=="0"){
-            var message=JSON.parse(data.message);//»ñÈ¡messagejson¶ÔÏóµÄDOM¶ÔÏó
+            var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
             var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
             var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
             var role_code=message.role_code;//ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
@@ -51,7 +51,7 @@ function getStore(a){
         var ul='';
         var first_corp_name='';
         var first_corp_code='';
-        var message=JSON.parse(data.message);//»ñÈ¡messagejson¶ÔÏóµÄDOM¶ÔÏó
+        var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
         var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
         console.log(message);
         var output=JSON.parse(message.list);
@@ -87,7 +87,7 @@ function show_select(e){
     //ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½areaï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
 }
-//µã»÷¼ÓÔØ»ñÈ¡¸ü¶à
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø»ï¿½È¡ï¿½ï¿½ï¿½ï¿½
 function getMore(e){
     var e= e.target;
     console.log(e);
@@ -96,7 +96,7 @@ $().ready(function(){
     GetArea();
     newVip_add();
     $('#side_analyze span').click(show_select);
-    //µã»÷¼ÓÔØ¸ü¶à
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',areaClick);
     $('#select_analyze_shop ul').on('click','li',areaClick);
@@ -131,6 +131,10 @@ function newVip_add(){
                         + msg[i].vip_birthday
                         +'</td></tr>');
                 }
+                $(".vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+
             }else if(msg.length>=10){
                 for(var i=0;i<10;i++){
                     var a=i+1;
@@ -146,6 +150,10 @@ function newVip_add(){
                         + msg[i].vip_birthday
                         +'</td></tr>');
                 }
+                $(".vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+
             }
 
         }else if(data.code=="-1"){
