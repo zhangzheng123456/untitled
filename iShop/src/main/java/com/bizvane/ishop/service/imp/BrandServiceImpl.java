@@ -17,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ZhouZhou on 2016/6/4.
@@ -42,8 +39,8 @@ public class BrandServiceImpl implements BrandService {
     public Brand getBrandById(int id) throws SQLException {
         Brand brand = brandMapper.selectByBrandId(id);
         String cus_user_code = brand.getCus_user_code();
-        JSONArray array_user = new JSONArray();
-        JSONArray array_app_id = new JSONArray();
+        List<String> array_user = new ArrayList<String>();
+        List<String> array_app_id = new ArrayList<String>();
 
         if (cus_user_code != null && !cus_user_code.equals("")) {
             String[] cus_user_codes = cus_user_code.split(",");
@@ -54,7 +51,7 @@ public class BrandServiceImpl implements BrandService {
                     JSONObject userObj = new JSONObject();
                     userObj.put("cus_user_code",user_code);
                     userObj.put("cus_user_name",user.get(0).getUser_name());
-                    array_user.add(userObj);
+                    array_user.add(userObj.toString());
                 }
             }
         }
@@ -65,7 +62,7 @@ public class BrandServiceImpl implements BrandService {
                 JSONObject appObj = new JSONObject();
                 appObj.put("app_id",corpWechats.get(0).getApp_id());
                 appObj.put("app_name",corpWechats.get(0).getApp_name());
-                array_app_id.add(appObj);
+                array_app_id.add(appObj.toString());
             }
         }
         brand.setApp_id(array_app_id);

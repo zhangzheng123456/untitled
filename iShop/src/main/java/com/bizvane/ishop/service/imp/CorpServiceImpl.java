@@ -19,10 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/5/23.
@@ -41,7 +38,7 @@ public class CorpServiceImpl implements CorpService {
 
     public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
         Corp corp = corpMapper.selectByCorpId(corp_id, corp_code, isactive);
-        JSONArray array_user = new JSONArray();
+        List<String> array_user = new ArrayList<String>();
         String cus_user_code = corp.getCus_user_code();
         if (cus_user_code != null && !cus_user_code.equals("")) {
             String[] cus_user_codes = cus_user_code.split(",");
@@ -52,7 +49,7 @@ public class CorpServiceImpl implements CorpService {
                     JSONObject userObj = new JSONObject();
                     userObj.put("cus_user_code",user_code);
                     userObj.put("cus_user_name",user.get(0).getUser_name());
-                    array_user.add(userObj);
+                    array_user.add(userObj.toString());
                 }
             }
         }
