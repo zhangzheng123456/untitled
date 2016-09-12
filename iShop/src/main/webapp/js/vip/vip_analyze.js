@@ -31,7 +31,8 @@ function GetArea(){
             $('#side_analyze ul li:nth-child(2) s').html(first_area);
             $('#side_analyze ul li:nth-child(2) s').attr('data_area',first_area_code);
             var area_code=output_list[0].area_code;
-            console.log(area_code);
+            //清除内容店铺下拉列表
+            $('#select_analyze_shop ul').html('');
             getStore(area_code);
             $('#select_analyze ul').append(ul);
         }else if(data.code=="-1"){
@@ -40,8 +41,6 @@ function GetArea(){
     });
 }
 function getStore(a){
-    //清除内容
-    $('#select_analyze_shop ul').html('');
     var searchValue='';
     var area_code=a;
     var param={};
@@ -76,6 +75,8 @@ function show_name_Click(e){
         var area_code=$(e).attr('data_area');
         $('#side_analyze ul li:nth-child(2) s').html($(e).html());
         $('#side_analyze ul li:nth-child(2) s').attr('data_area',area_code);
+        //清除内容店铺下拉列表
+        $('#select_analyze_shop ul').html('');
         getStore(area_code);
         $('#select_analyze').toggle();
     }else{
@@ -96,10 +97,14 @@ function show_select(e){
 function getMore(e){
     var e= e.target;
     page+=1;
-
-    //getStore(a)
-    console.log(e);
-
+    var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
+    console.log(area_code);
+    getStore(area_code);
+}
+//搜索
+function shopSearch(e){
+    //获取店铺列表的value值e
+    console.log($(e.target).html());
 }
 $().ready(function(){
     GetArea();
@@ -109,6 +114,8 @@ $().ready(function(){
     $('#side_analyze div s').click(getMore);
     $('#select_analyze ul').on('click','li',show_name_Click);
     $('#select_analyze_shop ul').on('click','li',show_name_Click);
+    //搜索
+    $('#side_analyze span').on('click',shopSearch);
 });
 /*****************************************************************************************************************/
 //新入会员
