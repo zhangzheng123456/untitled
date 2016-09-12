@@ -3,7 +3,7 @@ var page=1;
 var area_code;
 var store_code;
 var corp_code="C10000";
-//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+//????????
 function GetArea(){
     var searchValue="";
     var param={};
@@ -12,10 +12,14 @@ function GetArea(){
     param['searchValue']=searchValue;
     oc.postRequire("post","/area/findAreaByCorpCode","",param,function(data){
         if(data.code=="0"){
-            var message=JSON.parse(data.message);//»ñÈ¡messagejson¶ÔÏóµÄDOM¶ÔÏó
+            var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
             var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
             var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
             var role_code=message.role_code;//ï¿½ï¿½É«ï¿½ï¿½ï¿½ï¿½
+            var message=JSON.parse(data.message);//???messagejson?????DOM????
+            var message=JSON.parse(data.message);//???messagejson?????DOM????
+            var message=JSON.parse(data.message);//???messagejson?????DOM????
+            var role_code=message.role_code;//???????
             var output=JSON.parse(message.list);
             var ul='';
             var first_area='';
@@ -31,7 +35,8 @@ function GetArea(){
             $('#side_analyze ul li:nth-child(2) s').html(first_area);
             $('#side_analyze ul li:nth-child(2) s').attr('data_area',first_area_code);
             var area_code=output_list[0].area_code;
-            console.log(area_code);
+            //æ¸…é™¤å†…å®¹åº—é“ºä¸‹æ‹‰åˆ—è¡¨
+            $('#select_analyze_shop ul').html('');
             getStore(area_code);
             $('#select_analyze ul').append(ul);
         }else if(data.code=="-1"){
@@ -51,55 +56,81 @@ function getStore(a){
         var ul='';
         var first_corp_name='';
         var first_corp_code='';
-        var message=JSON.parse(data.message);//»ñÈ¡messagejson¶ÔÏóµÄDOM¶ÔÏó
+        var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
         var message=JSON.parse(data.message);//ï¿½ï¿½È¡messagejsonï¿½ï¿½ï¿½ï¿½ï¿½DOMï¿½ï¿½ï¿½ï¿½
         console.log(message);
+        var first_store_name='';
+        var first_store_code='';
+        var message=JSON.parse(data.message);//???messagejson?????DOM????
+        var message=JSON.parse(data.message);//???messagejson?????DOM????
         var output=JSON.parse(message.list);
         var output_list=output.list;
-        console.log(output_list);
-        first_corp_name=output_list[0].corp.corp_name;
-        first_corp_code=output_list[0].corp.corp_code;
+        first_store_name=output_list[0].store_name;
+        first_store_code=output_list[0].sstore_code;
         for(var i= 0;i<output_list.length;i++){
-            console.log(output_list[i].corp);
-            ul+="<li data_corp='"+output_list[i].corp.corp_code+"'>"+output_list[i].corp.corp_name+"</li>";
+            ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
         }
-        $('#side_analyze ul li:nth-child(3) s').html( first_corp_name);
-        $('#side_analyze ul li:nth-child(3) s').attr('data_corp',first_corp_code);
+        $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
+        $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
         $('#select_analyze_shop ul').append(ul);
     });
 }
-//ï¿½ï¿½liï¿½Äµï¿½ï¿½ï¿½ï¿½Â¼ï¿½
-function areaClick(e){
+//ç‚¹å‡»liå¡«å……sä¸­çš„æ•°æ®æ˜¾ç¤º
+function show_name_Click(e){
     var e= e.target;
     var d=$(e).parent().parent().parent();
     console.log($(d).attr('id'));
-    if($(d).attr('id')=='select_analyze'){console.log('OK')}
-    var area_code=$(e).attr('data_area');
-    $('#side_analyze ul li:nth-child(2) s').html($(e).html());
-    $('#side_analyze ul li:nth-child(2) s').attr('data_area','area_code');
-    getStore(area_code);
-    $('#select_analyze').toggle();
-//
+    if($(d).attr('id')=='select_analyze'){
+        var area_code=$(e).attr('data_area');
+        $('#side_analyze ul li:nth-child(2) s').html($(e).html());
+        $('#side_analyze ul li:nth-child(2) s').attr('data_area',area_code);
+        //æ¸…é™¤å†…å®¹åº—é“ºä¸‹æ‹‰åˆ—è¡¨
+        $('#select_analyze_shop ul').html('');
+        getStore(area_code);
+        $('#select_analyze').toggle();
+    }else{
+        var store_code=$(e).attr('data_store');
+        $('#side_analyze ul li:nth-child(3) s').html($(e).html());
+        $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
+        $('#select_analyze_shop').toggle();
+    }
+
 }
-//ï¿½ï¿½Ê¾selcet
+//???selcet
 function show_select(e){
     $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
-    //ï¿½ï¿½ï¿½ï¿½ï¿½Ç·ï¿½ï¿½ï¿½areaï¿½ï¿½ï¿½Æµï¿½ï¿½ï¿½ï¿½ï¿½Î»ï¿½ï¿½
+    //?????????area?????????Î»??
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
 }
-//µã»÷¼ÓÔØ»ñÈ¡¸ü¶à
+//ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø»ï¿½È¡ï¿½ï¿½ï¿½ï¿½
+//åŠ è½½æ›´å¤š
 function getMore(e){
     var e= e.target;
-    console.log(e);
+    page+=1;
+    var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
+    console.log(area_code);
+    getStore(area_code);
+}
+//æœç´¢
+function shopSearch(e){
+    //è·å–åº—é“ºåˆ—è¡¨çš„valueå€¼e
+    console.log($(e.target).html());
 }
 $().ready(function(){
     GetArea();
     newVip_add();
     $('#side_analyze span').click(show_select);
-    //µã»÷¼ÓÔØ¸ü¶à
+    //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ø¸ï¿½ï¿½ï¿½
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',areaClick);
     $('#select_analyze_shop ul').on('click','li',areaClick);
+    $('#side_analyze>ul span').click(show_select);
+    //åŠ è½½æ›´å¤š
+    $('#side_analyze div s').click(getMore);
+    $('#select_analyze ul').on('click','li',show_name_Click);
+    $('#select_analyze_shop ul').on('click','li',show_name_Click);
+    //æœç´¢
+    $('#side_analyze span').on('click',shopSearch);
 });
 /*****************************************************************************************************************/
 //æ–°å…¥ä¼šå‘˜
@@ -131,6 +162,10 @@ function newVip_add(){
                         + msg[i].vip_birthday
                         +'</td></tr>');
                 }
+                $(".vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+
             }else if(msg.length>=10){
                 for(var i=0;i<10;i++){
                     var a=i+1;
@@ -146,6 +181,10 @@ function newVip_add(){
                         + msg[i].vip_birthday
                         +'</td></tr>');
                 }
+                $(".vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+
             }
 
         }else if(data.code=="-1"){

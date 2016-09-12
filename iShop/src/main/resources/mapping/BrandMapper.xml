@@ -7,6 +7,7 @@
         <result column="brand_code" property="brand_code"/>
         <result column="brand_name" property="brand_name"/>
         <result column="corp_code" property="corp_code"/>
+        <result column="cus_user_code" property="cus_user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive"/>
@@ -17,19 +18,20 @@
 
     <select id="selectByBrandId" resultMap="Brand">
       SELECT
-        DEF_BRAND.id,
+        def_brand.id,
         brand_code,
         brand_name,
-        DEF_BRAND.corp_code,
-        DEF_BRAND.modified_date,
-        DEF_BRAND.modifier,
-        DEF_BRAND.created_date,
-        DEF_BRAND.creater,
-        DEF_BRAND.isactive,
-        def_corp.CORP_NAME
-      FROM DEF_BRAND,DEF_CORP
-      WHERE DEF_BRAND.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_BRAND.ID=#{id}
+        def_brand.corp_code,
+        def_brand.cus_user_code,
+        def_brand.modified_date,
+        def_brand.modifier,
+        def_brand.created_date,
+        def_brand.creater,
+        def_brand.isactive,
+        def_corp.corp_name
+      FROM def_brand,def_corp
+      WHERE def_brand.corp_code = def_corp.corp_code
+        AND def_brand.id=#{id}
     </select>
 
     <select id="selectCorpBrand" resultType="com.bizvane.ishop.entity.Brand">
@@ -91,6 +93,9 @@
             <if test="corp_code!=null">
                 corp_code,
             </if>
+            <if test="cus_user_code!=null">
+                cus_user_code,
+            </if>
             <if test="modified_date!=null">
                 modified_date,
             </if>
@@ -116,6 +121,9 @@
             </if>
             <if test="corp_code!=null">
                 #{corp_code},
+            </if>
+            <if test="cus_user_code!=null">
+                #{cus_user_code},
             </if>
             <if test="modified_date!=null">
                 #{modified_date},
@@ -147,6 +155,9 @@
             <if test="corp_code!=null">
                 corp_code=#{corp_code},
             </if>
+            <if test="cus_user_code!=null">
+                cus_user_code=#{cus_user_code},
+            </if>
             <if test="modified_date!=null">
                 modified_date=#{modified_date},
             </if>
@@ -163,7 +174,7 @@
                 isactive=#{isactive},
             </if>
         </trim>
-        WHERE ID=#{id};
+        WHERE id=#{id};
     </update>
 
     <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
