@@ -3,7 +3,7 @@ var page=1;
 var area_code;
 var store_code;
 var corp_code="C10000";
-//��������
+//????????
 function GetArea(){
     var searchValue="";
     var param={};
@@ -16,6 +16,10 @@ function GetArea(){
             var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
             var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
             var role_code=message.role_code;//��ɫ����
+            var message=JSON.parse(data.message);//???messagejson?????DOM????
+            var message=JSON.parse(data.message);//???messagejson?????DOM????
+            var message=JSON.parse(data.message);//???messagejson?????DOM????
+            var role_code=message.role_code;//???????
             var output=JSON.parse(message.list);
             var ul='';
             var first_area='';
@@ -31,7 +35,8 @@ function GetArea(){
             $('#side_analyze ul li:nth-child(2) s').html(first_area);
             $('#side_analyze ul li:nth-child(2) s').attr('data_area',first_area_code);
             var area_code=output_list[0].area_code;
-            console.log(area_code);
+            //清除内容店铺下拉列表
+            $('#select_analyze_shop ul').html('');
             getStore(area_code);
             $('#select_analyze ul').append(ul);
         }else if(data.code=="-1"){
@@ -54,43 +59,62 @@ function getStore(a){
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
         console.log(message);
+        var first_store_name='';
+        var first_store_code='';
+        var message=JSON.parse(data.message);//???messagejson?????DOM????
+        var message=JSON.parse(data.message);//???messagejson?????DOM????
         var output=JSON.parse(message.list);
         var output_list=output.list;
-        console.log(output_list);
-        first_corp_name=output_list[0].corp.corp_name;
-        first_corp_code=output_list[0].corp.corp_code;
+        first_store_name=output_list[0].store_name;
+        first_store_code=output_list[0].sstore_code;
         for(var i= 0;i<output_list.length;i++){
-            console.log(output_list[i].corp);
-            ul+="<li data_corp='"+output_list[i].corp.corp_code+"'>"+output_list[i].corp.corp_name+"</li>";
+            ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
         }
-        $('#side_analyze ul li:nth-child(3) s').html( first_corp_name);
-        $('#side_analyze ul li:nth-child(3) s').attr('data_corp',first_corp_code);
+        $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
+        $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
         $('#select_analyze_shop ul').append(ul);
     });
 }
-//��li�ĵ����¼�
-function areaClick(e){
+//点击li填充s中的数据显示
+function show_name_Click(e){
     var e= e.target;
     var d=$(e).parent().parent().parent();
     console.log($(d).attr('id'));
-    if($(d).attr('id')=='select_analyze'){console.log('OK')}
-    var area_code=$(e).attr('data_area');
-    $('#side_analyze ul li:nth-child(2) s').html($(e).html());
-    $('#side_analyze ul li:nth-child(2) s').attr('data_area','area_code');
-    getStore(area_code);
-    $('#select_analyze').toggle();
-//
+    if($(d).attr('id')=='select_analyze'){
+        var area_code=$(e).attr('data_area');
+        $('#side_analyze ul li:nth-child(2) s').html($(e).html());
+        $('#side_analyze ul li:nth-child(2) s').attr('data_area',area_code);
+        //清除内容店铺下拉列表
+        $('#select_analyze_shop ul').html('');
+        getStore(area_code);
+        $('#select_analyze').toggle();
+    }else{
+        var store_code=$(e).attr('data_store');
+        $('#side_analyze ul li:nth-child(3) s').html($(e).html());
+        $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
+        $('#select_analyze_shop').toggle();
+    }
+
 }
-//��ʾselcet
+//???selcet
 function show_select(e){
     $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
-    //�����Ƿ���area���Ƶ�����λ��
+    //?????????area?????????λ??
     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
 }
 //������ػ�ȡ����
+//加载更多
 function getMore(e){
     var e= e.target;
-    console.log(e);
+    page+=1;
+    var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
+    console.log(area_code);
+    getStore(area_code);
+}
+//搜索
+function shopSearch(e){
+    //获取店铺列表的value值e
+    console.log($(e.target).html());
 }
 $().ready(function(){
     GetArea();
@@ -100,6 +124,13 @@ $().ready(function(){
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',areaClick);
     $('#select_analyze_shop ul').on('click','li',areaClick);
+    $('#side_analyze>ul span').click(show_select);
+    //加载更多
+    $('#side_analyze div s').click(getMore);
+    $('#select_analyze ul').on('click','li',show_name_Click);
+    $('#select_analyze_shop ul').on('click','li',show_name_Click);
+    //搜索
+    $('#side_analyze span').on('click',shopSearch);
 });
 /*****************************************************************************************************************/
 //新入会员
