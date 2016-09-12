@@ -26,12 +26,6 @@ public class User {
 	private String store_code;
 	//群组编号
 	private String group_code;
-//	//app_id
-//	private String app_id;
-//	//二维码图片地址
-//	private String qrcode;
-//	//二维码图片地址
-//	private String qrcode_content;
 	//上次登录时间
 	private String login_time_recently;
 	//修改时间
@@ -50,6 +44,8 @@ public class User {
 	private String area_code;
 	//职位
 	private String position;
+	//是否在线
+	private String isonline;
 
 	private String area_name;
 
@@ -216,30 +212,6 @@ public class User {
 		this.group_code = group_code;
 	}
 
-//	public String getApp_id() {
-//		return app_id;
-//	}
-//
-//	public void setApp_id(String app_id) {
-//		this.app_id = app_id;
-//	}
-//
-//	public String getQrcode() {
-//		return qrcode;
-//	}
-//
-//	public void setQrcode(String qrcode) {
-//		this.qrcode = qrcode;
-//	}
-//
-//	public String getQrcode_content() {
-//		return qrcode_content;
-//	}
-//
-//	public void setQrcode_content(String qrcode_content) {
-//		this.qrcode_content = qrcode_content;
-//	}
-
 	public String getLogin_time_recently() {
 		return login_time_recently;
 	}
@@ -302,6 +274,14 @@ public class User {
 
 	public void setPosition(String position) {
 		this.position = position;
+	}
+
+	public String getIsonline() {
+		return isonline;
+	}
+
+	public void setIsonline(String isonline) {
+		this.isonline = isonline;
 	}
 
 	public Group getGroup() {

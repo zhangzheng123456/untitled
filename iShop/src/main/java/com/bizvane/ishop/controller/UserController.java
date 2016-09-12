@@ -64,7 +64,7 @@ public class UserController {
     @Autowired
     private AreaService areaService;
     @Autowired
-    private TableManagerService managerService;
+    private SignService signService;
     String id;
 
     /***
@@ -395,11 +395,11 @@ public class UserController {
                 }
 
             }
-            String onlyCell1 = LuploadHelper.CheckOnly(column4);
-            if (onlyCell1.equals("存在重复值")) {
-                result = "：Execl中手机号码存在重复值";
-                int b = 5 / 0;
-            }
+//            String onlyCell1 = LuploadHelper.CheckOnly(column4);
+//            if (onlyCell1.equals("存在重复值")) {
+//                result = "：Execl中手机号码存在重复值";
+//                int b = 5 / 0;
+//            }
             String onlyCell2 = LuploadHelper.CheckOnly(column1);
             if (onlyCell2.equals("存在重复值")) {
                 result = "：Execl中用户编号存在重复值";
@@ -416,23 +416,23 @@ public class UserController {
                 if (column4[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
-                Matcher matcher = pattern4.matcher(column4[i].getContents().toString().trim());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行手机号码格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
+//                Matcher matcher = pattern4.matcher(column4[i].getContents().toString().trim());
+//                if (matcher.matches() == false) {
+//                    result = "：第" + (i + 1) + "行手机号码格式有误";
+//                    int b = 5 / 0;
+//                    break;
+//                }
             }
             for (int i = 3; i < column4.length; i++) {
                 if (column4[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
-                List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
-                if (user.size() > 0) {
-                    result = "：第" + (i + 1) + "行的电话号码已存在";
-                    int b = 5 / 0;
-                    break;
-                }
+//                List<User> user = userService.userPhoneExist(column4[i].getContents().toString().trim());
+//                if (user.size() > 0) {
+//                    result = "：第" + (i + 1) + "行的电话号码已存在";
+//                    int b = 5 / 0;
+//                    break;
+//                }
             }
 
             for (int i = 3; i < column1.length; i++) {
@@ -543,7 +543,7 @@ public class UserController {
                     if (cellCorp.equals("") && user_code.equals("")  && user_name.equals("") && phone.equals("") && group_code.equals("")) {
                         continue;
                     }
-                    if (cellCorp.equals("") || user_code.equals("")|| user_name.equals("") || phone.equals("") || group_code.equals("")) {
+                    if (cellCorp.equals("") || user_code.equals("")|| user_name.equals("")  || group_code.equals("")) {
                         result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
                         int a = 5 / 0;
                     }
@@ -883,6 +883,7 @@ public class UserController {
                         break;
                     }
                     userService.deleteUserQrcode(corp_code, user_code);
+                    signService.deleteByUser(user_code,corp_code);
                 }
                 userService.delete(Integer.valueOf(ids[i]), user_code, corp_code);
             }
@@ -1614,4 +1615,39 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+    /**
+     * 批量签到
+     *
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/sign", method = RequestMethod.POST)
+    @ResponseBody
+    public String sign(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json--user sign-------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String type = jsonObject.get("type").toString();
+            if (type.equals("checkIn")) {
+                userService.checkIn(jsonObject, user_code);
+            }else if (type.equals("checkOut")){
+                userService.checkOut(jsonObject,user_code);
+            }
+            dataBean.setId(id);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString() + "========ex==========");
+        }
+        return dataBean.getJsonStr();
+    }
 }
