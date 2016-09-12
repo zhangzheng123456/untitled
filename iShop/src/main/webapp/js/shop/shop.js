@@ -415,6 +415,7 @@ jQuery(document).ready(function () {
                 }
             })
         }
+        
     });
     $("#OWN_AREA").click(function (event) {
         $("#OWN_BRAND").parent().children("#brand_data").css("display", "none");
@@ -563,7 +564,7 @@ jQuery(document).ready(function () {
                     var s = $("#OWN_BRAND").attr("data-mybcode");
                     var c_input = $('.checkboxselect-container input');
                     var ss = '';
-                    if (s.indexOf(',') !== -1) {
+                    if (s.indexOf(',')!==-1) {
                         ss = s.split(",");
                         for (var i = 0; i < ss.length; i++) {
                             for (var j = 0; j < c_input.length; j++) {
@@ -580,7 +581,6 @@ jQuery(document).ready(function () {
                             }
                         }
                     }
-
                 }
             } else if (data.code == "-1") {
                 art.dialog({
@@ -592,7 +592,6 @@ jQuery(document).ready(function () {
             }
         });
     });
-
     $(".corp_select").click(function () {
         $("#OWN_AREA").val('');
         $("#OWN_BRAND").val('');

@@ -278,6 +278,82 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     })
+    //公众号多选
+    $("#Accounts").click(function(){
+    	$('.Acc_dropdown').toggle();
+    	var corp_code = $('#OWN_CORP').val();
+		var corp_code1=$('#OWN_CORP').attr("corp_code1");
+		if(corp_code==corp_code1){
+			return;
+		}
+		$('#OWN_CORP').attr("corp_code1",corp_code);
+		Accounts();
+    })
+    $("#Accounts").blur(function(){
+    	setTimeout(function(e){
+    		console.log(e);
+        	$("#Acc_dropdown").hide();
+        },200);  
+    })
+    //公众号
+    function Accounts(){
+    	var param={};
+    	var checknow_data=[];
+        var checknow_namedata=[];
+    	var corp_code=$("#OWN_CORP").val();
+    	whir.loading.add("",0.5);//加载等待框
+    	param["corp_code"]=corp_code;
+    	oc.postRequire("post","/corp/selectWx","0",param,function(data){
+    		if(data.code=="0"){
+                var msg=JSON.parse(data.message);
+                var list=msg.list;
+                var html="";
+                if(list.length==0){
+                	art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"请先授权公众号"
+					});
+                }
+                if(list.length>0){
+                    for(var i=0;i<list.length;i++){
+                   		html+="<li><p class='checkbox_isactive'><input  type='checkbox' value='"+list[i].app_id+"' data-appname='"+list[i].app_name+"' name='test'  class='check'  id='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'></label></p><span class='p16'>"+list[i].app_name+"</span></li>"
+                    }
+                }
+                $("#Acc_dropdown").html(html);
+                var check_input = $('#Acc_dropdown input');
+                console.log(check_input[0]);
+				for (var c = 0; c < check_input.length; c++) {
+					check_input[c].onclick = function() {
+						if (this.checked == true) {
+							checknow_data.push($(this).val());
+							checknow_namedata.push($(this).attr("data-appname"));
+							$('#Accounts').val(checknow_namedata.toString());
+							$('#Accounts').attr('data-appid', checknow_data.toString());
+						} else if (this.checked == false) {
+							checknow_namedata.remove($(this).attr("data-appname"));
+							checknow_data.remove($(this).val());
+							$('#Accounts').val(checknow_namedata.toString());
+							$('#Accounts').attr('data-appid', checknow_data.toString());
+						}
+					}
+				}
+            }else if(data.code=="-1"){
+                // frame();
+                // $('.frame').html(data.message);
+            }
+            whir.loading.remove();//移除加载框
+    	});
+    }
+    //默认客服
+
 	$(".brandadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
