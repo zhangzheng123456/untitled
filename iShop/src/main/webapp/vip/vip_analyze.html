@@ -624,8 +624,7 @@
             <div class="chart_module">
                 <ul>
                     <span class="chart_head">购买时段</span>
-                    <li>
-                        <h2>数据加载中</h2>
+                    <li id="main3" style="height: 270px;">
                     </li>
                 </ul>
             </div>
@@ -741,7 +740,8 @@ require(
             'echarts/chart/pie',  // 按需加载所需图表，如需动态类型切换功能，别忘了同时加载相应图表
             'echarts/chart/radar',
             'echarts/chart/map',
-            'echarts/chart/bar'
+            'echarts/chart/bar',
+            'echarts/chart/line'
         ],
         function (ec) {
             var aa=[
@@ -757,6 +757,7 @@ require(
             var myChart = ec.init(document.getElementById('main'));
             var myChart1 = ec.init(document.getElementById('main1'));
             var myChart2 = ec.init(document.getElementById('main2'));
+            var myChart3 = ec.init(document.getElementById('main3'));
             var myChart4 = ec.init(document.getElementById('main4'));
             var myChart5 = ec.init(document.getElementById('main5'));
             var myChart6 = ec.init(document.getElementById('main6'));
@@ -1053,7 +1054,7 @@ require(
                             show:false
                         },
                         type : 'category',
-                        data : ['10000以上','2000-10000','1000-1999','899-999','600-799','400-599','200-399','200以下']
+                        data : ['10000以上','2000-10000','1000-1999','800-999','600-799','400-599','200-399','200以下']
                     }
                 ],
                 series : [
@@ -1069,11 +1070,67 @@ require(
                     }
                 ]
             };
+            var option5= {
+                grid:{
+                    borderWidth:0
+                },
+                xAxis : [
+                    { splitLine:{
+                        show:false
+                    },
+                        axisLabel:{
+                            rotate:45
+                        },
+                        axisTick:{
+                            show:false
+                        },
+                        type : 'category',
+                        boundaryGap : false,
+                        data : ['10.00','11;00','12:00','13:00','14:00','15:00','16:00','17:00','18:00','19:00','20:00']
+                    }
+                ],
+                yAxis : [
+                    {	axisLine:{
+                        show:false
+                    },
+                        splitArea:{
+                            show:false
+                        },
+                        splitLine:{
+                            lineStyle:{
+                                color:'#999',
+                                type: 'dashed'
+                            }
+                        },
+                        type : 'value'
+                    }
+                ],
+                series : [
+                    {
+                        itemStyle: {
+                            symbolSize:'0',
+                            normal: {
+                                borderRadius:0,
+                                nodeStyle:{
+                                    borderRadius:0
+                                }
+                            }
+                        },
+                        name:'搜索引擎',
+                        type:'line',
+                        stack: '总量',
+                        symbolSize:0,
+                        smooth:false,
+                        data:[1000, 3000, 1500, 2800, 1000,5000,4444,6666,3333,2222,5555]
+                    }
+                ]
+            };
 
 //            myChart.showLoading();
             myChart.setOption(option);
             myChart1.setOption(option1);
             myChart2.setOption(option4);
+            myChart3.setOption(option5);
             myChart4.setOption(option2);
             myChart5.setOption(option);
             myChart6.setOption(option);
@@ -1083,6 +1140,7 @@ require(
                 myChart.resize();
                 myChart1.resize();
                 myChart2.resize();
+                myChart3.resize();
                 myChart4.resize();
                 myChart5.resize();
                 myChart6.resize();
