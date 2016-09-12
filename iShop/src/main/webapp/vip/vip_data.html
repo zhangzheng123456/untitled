@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="../table/css/inner.css">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" href="../css/vip_analyze.css">
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </head>
 <style>
      /*导航头部*/
@@ -23,6 +24,7 @@
     }
     .nav_bar li div{
         margin: 0 auto;
+        cursor: pointer;
     }
     .nav_bar_active{
         border-bottom: 3px solid #6dc1c8;
@@ -33,6 +35,9 @@
     }
 
     /*模块窗口*/
+     .remark{
+         display: none;
+     }
      .remark span{
          display: inline-flex;
          margin-top: 30px;
@@ -40,8 +45,9 @@
      }
     .remark textarea{
         width: 410px;
-        height:200px;
+        height:350px;
         margin-left: 10px;
+        padding: 10px;
         resize: none;
         border: none;
         outline: none;
@@ -50,7 +56,8 @@
     .remark_save{
         width: 160px;
         height: 30px;
-        margin-left: 15%;
+        margin-left: 18%;
+        margin-top: 20px;
         background: #6dc1c8;
         color: #ffffff;
         line-height: 30px;
@@ -58,6 +65,75 @@
         border-radius: 4px;
         font-size: 14px;
         letter-spacing: 10px;
+    }
+    /*消费记录*/
+     .record{
+         background: #fff;
+         font-size: 14px;
+         color: #888888;
+     }
+    .record_head{
+        height: 50px;
+        margin-top: 10px ;
+        padding: 10px;
+    }
+    .record_head s{
+        font-size: 16px;
+        color: #c26555;
+        text-decoration: none;
+    }
+    .record_head .consume_total{
+        font-size: 20px;
+        color: #c26555;
+    }
+    .record_head .amount{
+        font-size: 20px;
+        color: #58b4bc;
+    }
+    .record_head ul{
+        float: right;
+    }
+    .record ul li{
+        float: left;
+        margin-left: 10px;
+        color: #434960;
+    }
+    .record_head ul li:first-child span{
+        font-size: 16px;
+        color: #c26555;
+    }
+    .record_head ul li:nth-child(2) span{
+        color: #888888;
+    }
+    hr{
+        margin: 0 10px;
+        color: #d7d7d7;
+    }
+    .record_head_down{
+        height: 50px;
+        padding: 10px;
+    }
+    .record_head_down .record_date input{
+        width: 130px;
+        height: 30px;
+        text-indent: 10px;
+        border: 1px solid #d7d7d7;
+        border-radius: 4px;
+        outline: none;
+    }
+    .record_date span{
+        margin: 0 10px 0 0;
+    }
+    .record_input{
+        float: right;
+    }
+    .record_input input{
+        width: 160px;
+        height: 30px;
+        text-indent: 10px;
+        border: 1px solid #d7d7d7;
+        border-radius: 4px;
+        outline: none;
     }
 </style>
 <body>
@@ -85,10 +161,36 @@
                 </ul>
             </div>
 
+            <div class="record">
+                <div>
+                    <div class="record_head">
+                        总消费<s>￥</s><span class="consume_total">9600</span>共<span class="amount"> 24 </span>单
+
+                        <ul>
+                            <li>会员等级:<span>高级VIP</span></li>
+                            <li>会员卡号:<span>suda10900123103208</span></li>
+                            <li>顾客:刘洋</li>
+                        </ul>
+                    </div>
+                    <hr/>
+                    <div class="record_head_down">
+                        <ul class="record_date">
+                            <li><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
+                            <li><span>至</span><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
+                        </ul>
+                        <ul class="record_input">
+                            <li style="margin-right: 20px">订单号<input></li>
+                            <li>商品编号<input></li>
+                            <li>商品名称<input></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="remark">
                <span>
                      <label>备注</label>
-                     <textarea value="输入备注" id=""></textarea>
+                     <textarea id=""></textarea>
                </span>
                 <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
             </div>
