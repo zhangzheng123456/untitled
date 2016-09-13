@@ -385,6 +385,9 @@
             <if test="isactive != null">
                 isactive = #{isactive},
             </if>
+            <if test="brand_code != null">
+                brand_code = #{brand_code},
+            </if>
         </trim>
         WHERE id = #{id};
     </update>

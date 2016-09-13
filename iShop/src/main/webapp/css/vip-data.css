@@ -1,0 +1,235 @@
+body{
+    margin-top: 81px;
+}
+.header .left,.header .center,.header .right{
+    height:390px;
+    width: 33%;
+    float: left;
+    background-color:#fff ;
+}
+.header .left,.header .center {
+    margin-right: 0.5%;
+}
+.header .left .left-class{
+    width:50%;
+    float:left;
+    background-color: #6CC1C8;
+    height: 130px;
+    position: relative
+}
+.header .left .left-bottom{
+  width:100%;
+    float:left;
+    background-color: #3a4054;
+    height: 130px;
+    position: relative;
+}
+
+.header .left .left-color-1{
+    background-color: #58B4BC;
+}.header .left .left-color-2{
+    background-color: #4A5F7C;
+}.header .left .left-color-3{
+      background-color: #434960;
+  }.header .left .left-color-1{
+    background-color: #58B4BC;
+}
+.header .left .left-class .content,.header .left .left-bottom .content{
+    color:#fff;
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    width: 80%;text-align: center
+}
+.header .left .left-class .content .Fsize-22{
+    display: block;
+    font-size: 22px;
+}
+.header .left .left-bottom .content .Fsize-12{
+    display: block;
+    font-size: 12px;
+}
+.header .left .left-bottom .content .Fsize-22{
+    display: block;
+    font-size: 22px;
+}
+.header .left .left-class .content .Fsize-12{
+    font-size: 12px;
+}
+.header .center .message-class ul{
+    text-align: center;
+    background-color: #fff;
+    height: 30px;
+    line-height: 30px;
+    border-bottom: 1px solid #DDDDDD;
+}
+.header .center .message-class ul li{
+    cursor: pointer;
+    float: left;
+    font-family:'Microsoft YaHei';
+    font-size: 14px;
+    width:25%;
+    box-sizing: border-box;
+    height: 30px;
+    moz-user-select: -moz-none;
+    -moz-user-select: none;
+    -o-user-select:none;
+    -khtml-user-select:none; /* you could also put this in a class */
+    -webkit-user-select:none;/* and add the CSS class here instead */
+    -ms-user-select:none;
+    user-select:none;/**禁止选中文字*/
+}
+.active{
+    border-bottom:3px solid #6dc1c8;
+    color:#6dc1c8;
+}
+.header .center .message-class .tabs-parent table .TR{
+    background-color: #efefef;
+    height: 30px;
+    line-height: 30px;
+    color: #999999;
+}
+.header .center .message-class .tabs-parent table .TR th{
+    font-weight: normal;
+    text-align: center;
+}
+.header .center .message-class .tabs-parent table tbody tr{
+    text-align: center;
+    height: 29px;
+    line-height: 29px;
+    background-color: #fff;
+    border-bottom:1px solid #e8e8e8;
+    color:#888888
+}
+
+.icon-ishop_8-03.style{
+    float: right;
+    height: 29px;
+    line-height: 29px;
+    color: #888888;
+    margin-right: 3px;"
+}
+.header .center .message-class .tabs-parent table tbody .more{
+    text-align: center;
+    height: 29px;
+    line-height: 29px;
+    background-color: #fff;
+    box-sizing:border-box;
+    color:#888888
+}
+.header .center .message-class .tabs-parent table tbody .more td i{
+    margin-top:-2px;
+    color: #888888;
+    margin-right: 3px;
+    vertical-align: middle
+}
+.header .center .message-class .tabs-parent .images .img-parent,.header .center .message-class .tabs-parent .vip-label .label-parent{
+    width: 100%;
+    padding:20px;
+    height: 360px;
+    background-color: #fff;
+    overflow: hidden;
+}
+.header .center .message-class .tabs-parent .images .img-parent span{
+    width: 20%;float: left;margin-right: 5%;margin-bottom:5%;text-align: center;
+}
+.header .center .message-class .tabs-parent .images .img-parent span img{
+  max-height: 70px;
+}
+.header .center .message-class .tabs-parent .vip-label .label-parent span{
+    margin-bottom:10px;
+    background-color: #6cc1c8;
+    border-radius: 5px;
+    display: inline-block;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+    font-family:'Microsoft YaHei';
+    color:#fff;font-size: 14px;
+}
+.right .person{
+    height: 110px;
+}
+.right .person .person-left{
+width: 30%;float: left;
+padding:25px 0 0 20px;
+}
+.right .person .person-left .person-img{
+    display: inline-block;
+    width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-image: url(../img/vipImg.png);
+    background-size:contain ;
+    background-repeat:no-repeat
+}
+.right .person  .person-right{
+    padding:10px;
+}
+.right .person  .person-right .person-message{
+    width: 70%;
+    display: inline-block;
+    height:30px;
+    line-height: 30px;
+}
+.right .person  .person-right .person-message .person-name{
+    font-style:normal;
+    font-size: 18px;
+    color:#4a5f7c;
+    font-family:'Microsoft YaHei';
+}
+.right .person  .person-right .person-message .sex-girl{
+    display:inline-block;
+    background-image: url(../img/sexgirl.png);
+    height: 15px;
+    width: 15px;
+    background-size:contain;
+    background-repeat:no-repeat;
+}
+.right .person  .person-right .vip{
+    width: 70%;
+    display: inline-block;
+    font-size: 14px;
+    height:30px;
+    line-height: 30px;
+    color:#4a5f7c;
+    font-family:'Microsoft YaHei'
+}
+.right .person-detail{
+    padding: 10px;
+}
+.right .person-detail .datail-first{
+    height: 30px;
+    box-sizing: border-box;
+    border-top:1px solid #E8E8E8;
+    line-height: 30px;
+}.right .person-detail .datail-last{
+     height: 30px;
+     line-height: 30px;
+     box-sizing: border-box;
+     border-bottom:1px solid #E8E8E8;
+     line-height: 30px; "
+}
+.right .person-detail .detail-left{
+    width: 30%;
+    text-align: center;
+    display: inline-block;
+    color: #4a5f7c;
+    font-family:'Microsoft YaHei'
+}
+.right .person-detail .detail-right{
+    width: 70%;color: #888888
+}
+.person-more {
+    text-align: center;
+    height: 30px;
+    line-height: 30px;
+    color: #888
+}
+.person-more i{
+    vertical-align: middle;
+    margin-top: -2px;
+    color: #888
+}
+

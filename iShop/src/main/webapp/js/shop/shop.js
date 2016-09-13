@@ -727,23 +727,23 @@ $("#add_app_id").click(function () {
         + '<span class="power create" onclick="getTwoCode(this)">生成</span>'
         + '<span class="power k_close" style="display: none;">关闭</span>'
         + '<span class="power remove_app_id" onclick="remove_app_id(this)">删除</span>'
-        + '<div class="kuang"><span class="icon-ishop_6-12 k_close"></span><img src="" alt="">'
+        + '<div class="kuang"><img src="" alt="">'
         + '</div></li>')
 
     close_two_code();
 })
 function remove_app_id(obj) {
-    var user_code = $("#USERID").val();//员工编号
+    var store_code = $("#STORE_ID").val();//店铺编号
     var corp_code = $("#OWN_CORP").val();//公司编号
     var app_id = $(obj).prevAll("input").attr("id");
     var src=$(obj).next(".kuang").children().attr("src");
     var param={
         "corp_code":corp_code,
-        "user_code":user_code,
+        "store_code":store_code,
         "app_id":app_id
     }
     if(src!==""){
-        oc.postRequire("post","/user/deletQrcode","",param,function (data) {
+        oc.postRequire("post","/shop/deletQrcode","",param,function (data) {
             if(data.code=="0"){
                 $(obj).parent().remove();
             }else if(data.code=="-1"){

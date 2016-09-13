@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.*;
 import com.bizvane.ishop.entity.Brand;
@@ -11,16 +12,12 @@ import com.bizvane.ishop.service.BrandService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by ZhouZhou on 2016/6/4.
@@ -42,8 +39,9 @@ public class BrandServiceImpl implements BrandService {
     public Brand getBrandById(int id) throws SQLException {
         Brand brand = brandMapper.selectByBrandId(id);
         String cus_user_code = brand.getCus_user_code();
-        JSONArray array_user = new JSONArray();
-        JSONArray array_app_id = new JSONArray();
+        List<JSONObject> array_user = new ArrayList<JSONObject>();
+        String app_id = "";
+        String app_name = "";
 
         if (cus_user_code != null && !cus_user_code.equals("")) {
             String[] cus_user_codes = cus_user_code.split(",");
@@ -62,13 +60,14 @@ public class BrandServiceImpl implements BrandService {
         List<CorpWechat> corpWechats = corpMapper.selectWByCorpBrand(brand.getCorp_code(),brand.getBrand_code());
         if (corpWechats.size()>0){
             for (int i = 0; i < corpWechats.size(); i++) {
-                JSONObject appObj = new JSONObject();
-                appObj.put("app_id",corpWechats.get(0).getApp_id());
-                appObj.put("app_name",corpWechats.get(0).getApp_name());
-                array_app_id.add(appObj);
+                String app_id1 = corpWechats.get(0).getApp_id();
+                String app_name1 = corpWechats.get(0).getApp_name();
+                app_id = app_id + app_id1 + ",";
+                app_name = app_name + app_name1 + ",";
             }
         }
-        brand.setApp_id(array_app_id);
+        brand.setApp_id(app_id.substring(0,app_id.length()-1));
+        brand.setApp_name(app_name.substring(0,app_name.length()-1));
         return brand;
     }
 
@@ -107,7 +106,7 @@ public class BrandServiceImpl implements BrandService {
     @Transactional
     public String insert(String message, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         String brand_code = jsonObject.get("brand_code").toString();
         String corp_code = jsonObject.get("corp_code").toString();
         String brand_name = jsonObject.get("brand_name").toString();
@@ -121,10 +120,10 @@ public class BrandServiceImpl implements BrandService {
             brand.setBrand_code(brand_code);
             brand.setBrand_name(brand_name);
             brand.setCorp_code(corp_code);
-            if (jsonObject.has("cus_user_code")){
+            if (jsonObject.containsKey("cus_user_code")){
                 brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
             }
-            if (jsonObject.has("app_id")){
+            if (jsonObject.containsKey("app_id")){
                 String app_id = jsonObject.get("app_id").toString();
                 if (!app_id.equals("")) {
                     String[] app_ids = app_id.split(",");
@@ -174,7 +173,7 @@ public class BrandServiceImpl implements BrandService {
     @Transactional
     public String update(String message, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         int brand_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String brand_code = jsonObject.get("brand_code").toString();
@@ -197,10 +196,10 @@ public class BrandServiceImpl implements BrandService {
                 brand.setBrand_code(brand_code);
                 brand.setBrand_name(brand_name);
                 brand.setCorp_code(corp_code);
-                if (jsonObject.has("cus_user_code")){
+                if (jsonObject.containsKey("cus_user_code")){
                     brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
                 }
-                if (jsonObject.has("app_id")){
+                if (jsonObject.containsKey("app_id")){
                     String app_id = jsonObject.get("app_id").toString();
                     if (!app_id.equals("")) {
                         String[] app_ids = app_id.split(",");
@@ -231,10 +230,10 @@ public class BrandServiceImpl implements BrandService {
                 brand.setBrand_code(brand_code);
                 brand.setBrand_name(brand_name);
                 brand.setCorp_code(corp_code);
-                if (jsonObject.has("cus_user_code")){
+                if (jsonObject.containsKey("cus_user_code")){
                     brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
                 }
-                if (jsonObject.has("app_id")){
+                if (jsonObject.containsKey("app_id")){
                     String app_id = jsonObject.get("app_id").toString();
                     if (!app_id.equals("")) {
                         String[] app_ids = app_id.split(",");

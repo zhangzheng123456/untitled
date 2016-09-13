@@ -1,6 +1,7 @@
 package com.bizvane.ishop.entity;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.lang.*;
 import java.util.Date;
@@ -36,13 +37,9 @@ public class Corp {
     //图片路径
     private String avater;
 
-//    private String app_id;
-//
-//    private String is_authorize;
-
     private List<CorpWechat> wechats;
 
-    private JSONArray cus_user;
+    private List<JSONObject> cus_user;
 
     public String getAvater() {
         return avater;
@@ -180,11 +177,11 @@ public class Corp {
         this.wechats = wechats;
     }
 
-    public JSONArray getCus_user() {
+    public List<JSONObject> getCus_user() {
         return cus_user;
     }
 
-    public void setCus_user(JSONArray cus_user) {
+    public void setCus_user(List<JSONObject> cus_user) {
         this.cus_user = cus_user;
     }
 }

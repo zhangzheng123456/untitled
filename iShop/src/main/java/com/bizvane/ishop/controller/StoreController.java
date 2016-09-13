@@ -929,7 +929,7 @@ public class StoreController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            logger.info("------------UserController deletQrcode" + jsString);
+            logger.info("------------StoreController deletQrcode" + jsString);
             JSONObject jsonObj = new JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
