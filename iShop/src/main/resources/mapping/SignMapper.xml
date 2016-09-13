@@ -184,12 +184,6 @@
             <if test="isactive != null">
                 isactive,
             </if>
-            <if test="distance != null">
-                distance,
-            </if>
-            <if test="location != null">
-                location,
-            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="user_code!=null">
@@ -227,12 +221,6 @@
             </if>
             <if test="isactive != null">
                 #{isactive},
-            </if>
-            <if test="distance != null">
-                #{distance},
-            </if>
-            <if test="location != null">
-                #{location},
             </if>
         </trim>
     </insert>
