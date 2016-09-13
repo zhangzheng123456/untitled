@@ -3,7 +3,6 @@ var page=1;
 var area_code;
 var store_code;
 var corp_code="C10000";
-//????????
 function GetArea(){
     var searchValue=$('#select_analyze input').val();
     var param={};
@@ -24,7 +23,8 @@ function GetArea(){
             var first_area_code='';
             var output_list=output.list;
             console.log(output_list);
-            output_list.length>7? $('#select_analyze s').attr('style','display:block'): $('#select_analyze s').attr('style','display:none');
+            // output_list.length>7? $('#select_analyze s').attr('style','display:block'): $('#select_analyze s').attr('style','display:none');
+            output_list.length<7&&($('#select_analyze s').attr('style','display:none'));
             first_area=output_list[0].area_name;
             first_area_code=output_list[0].area_code;
             for(var i= 0;i<output_list.length;i++){
@@ -64,6 +64,7 @@ function getStore(a){
         var message=JSON.parse(data.message);//???messagejson?????DOM????
         var output=JSON.parse(message.list);
         var output_list=output.list;
+        output_list.length<7&&($('#select_analyze_shop s').attr('style','display:none'));
         first_store_name=output_list[0].store_name;
         first_store_code=output_list[0].sstore_code;
         for(var i= 0;i<output_list.length;i++){
@@ -93,70 +94,27 @@ function showNameClick(e){
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
         $('#select_analyze_shop').toggle();
     }
-
 }
-// function show_select(){
-//     var event=window.event||arguments[0];
-//     if(event.stopPropagation){
-//         event.stopPropagation();
-//     }else{
-//         event.cancelBubble=true;
-//     }
-//     console.log(this);
-//     if($(this).find('b').html()=='区域'){
-//         $('#select_analyze').toggle();
-//         $('#select_analyze_shop').hide();
-//     }else{
-//         $('#select_analyze_shop').toggle()
-//     }
-//     // $(e.target).attr('class').indexOf('area')==-1?$('#select_analyze_shop').toggle(): $('#select_analyze').toggle();
-//     //$(e.target).attr('class').indexOf('area')==-1? $('#select_analyze').css('top','100px'): $('#select_analyze').css('top','69px');
-// }
 //取消下拉框
 $(document).on('click',function(e){
-    if(e.target==$($('#side_analyze>ul')[0]).find('li:nth-child(2)')  ){
-       return
-    }else if(e.target==$('#select_analyze')){
-       return
-    }else if(e.target==$('#select_analyze div')){
-       return
-    }else if(e.target==$('#select_analyze div b')){
-        return
-    }else if(e.target==$('#select_analyze div b input')){
-        return
-    }else if(e.target==$('#select_analyze div b span')){
-        return
-    }else if(e.target==$('#select_analyze div ul')){
-        return
-    }else if(e.target==$('#select_analyze div ul li')){
-        return
-    }else if(e.target==$('#select_analyze div s')){
-        return
-    }else{
-        $('#select_analyze').hide();
-    }
-    //第二个框
-    if(e.target==$($('#side_analyze_shop>ul')[0]).find('li:nth-child(2)')  ){
-        return
-    }else if(e.target==$('#select_analyze_shop')){
-        return
-    }else if(e.target==$('#select_analyze_shop div')){
-        return
-    }else if(e.target==$('#select_analyze_shop div b')){
-        return
-    }else if(e.target==$('#select_analyze_shop div b input')){
-        return
-    }else if(e.target==$('#select_analyze_shop div b span')){
-        return
-    }else if(e.target==$('#select_analyze_shop div ul')){
-        return
-    }else if(e.target==$('#select_analyze_shop div ul li')){
-        return
-    }else if(e.target==$('#select_analyze_shop div s')){
-        return
-    }else{
-        $('#select_analyze_shop').hide();
-    }
+    if(!(e.target==$($('#side_analyze>ul')[0]).find('li:nth-child(2)')
+    || e.target==$('#select_analyze')
+    || e.target==$('#select_analyze div')[0]
+    || e.target==$('#select_analyze div b')[0]
+    || e.target==$('#select_analyze div b input')[0]
+    || e.target==$('#select_analyze div b span')[0]
+    || e.target==$('#select_analyze div ul')[0]
+    || e.target==$('#select_analyze div ul li')[0]
+    || e.target==$('#select_analyze div s')[0]))$('#select_analyze').hide();
+    if(!(e.target==$($('#side_analyze_shop>ul')[0]).find('li:nth-child(2)')
+        || e.target==$('#select_analyze_shop')
+        || e.target==$('#select_analyze_shop div')[0]
+        || e.target==$('#select_analyze_shop div b')[0]
+        || e.target==$('#select_analyze_shop div b input')[0]
+        || e.target==$('#select_analyze_shop div b span')[0]
+        || e.target==$('#select_analyze_shop div ul')[0]
+        || e.target==$('#select_analyze_shop div ul li')[0]
+        || e.target==$('#select_analyze_shop div s')[0]))$('#select_analyze_shop').hide();
 });
 //加载更多
 function getMore(e){
@@ -187,7 +145,7 @@ function searchValue(e){
 }
 //页面加载前加载区域
 GetArea();
-//绑定事件
+//绑定事件下拉事件
 $('#side_analyze>ul:nth-child(1) li:gt(0)').click(
     function(){
         var event=window.event||arguments[0];
