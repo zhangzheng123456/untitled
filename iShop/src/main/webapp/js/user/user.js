@@ -267,6 +267,7 @@ function superaddition(data,num){
 };
 //权限配置
 function jurisdiction(actions){
+    console.log(actions);
     $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
@@ -277,8 +278,13 @@ function jurisdiction(actions){
             $('#jurisdiction').append("<li id='compile'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>编辑</a></li>");
         }else if(actions[i].act_name=="qrcode"){
             $('#jurisdiction').append("<li id='qrcode'><a href='javascript:void(0);'><span class='icon-ishop_6-03'></span>生成</a></li>");
+        }else if(actions[i].act_name=="signIn"){
+            $('#more_down').append("<div id='signIn'>签到</div>");
+        }else if(actions[i].act_name=="signOut"){
+            $('#more_down').append("<div id='signOut'>签退</div>");
         }
     }
+    quanXian();
 }
 //页面加载调权限接口
 function qjia(){
@@ -288,71 +294,75 @@ function qjia(){
         var message=JSON.parse(data.message);
         var actions=message.actions;
         jurisdiction(actions);
-        jumpBianse();
     })
 }
-qjia();
-//页面加载时list请求
-function GET(a,b){
-    whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("get","/user/list?pageNumber="+a+"&pageSize="+b
-        +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
-            if(data.code=="0"){
-            	$(".table tbody").empty();
-                var message=JSON.parse(data.message);
-                var list=JSON.parse(message.list);
-                cout=list.pages;
-                var list=list.list;
-                superaddition(list,a);
-                jumpBianse();
-                setPage($("#foot-num")[0],cout,a,b,funcCode);
-            }else if(data.code=="-1"){
-                console.log(data.message);
-            }
-    });
-}
-//加载完成以后页面进行的操作
-function jumpBianse(){
-	$(document).ready(function(){//隔行变色 
-   		 $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-    	 $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+function quanXian(){
+    $(document).ready(function(){//隔行变色 
          $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
-	})
-	//双击跳转
-	$(".table tbody tr").dblclick(function(){
-	    var id=$(this).attr("id");
-        var return_jump={};//定义一个对象
-        return_jump["inx"]=inx;//跳转到第几页
-        return_jump["value"]=value;//搜索的值;
-        return_jump["filtrate"]=filtrate;//筛选的值
-        return_jump["param"]=JSON.stringify(param);//搜索定义的值
-        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
-        return_jump["list"]=list;//筛选的请求的list;
-        return_jump["pageSize"]=pageSize;//每页多少行
-        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
-        sessionStorage.setItem("id",id);
-        console.log(id);
-        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
-	})
-	//点击tr input是选择状态  tr增加class属性
-	$(".table tbody tr").click(function(){
-		var input=$(this).find("input")[0];
-		var thinput=$("thead input")[0];
-		$(this).toggleClass("tr");  
-		console.log(input);
-		if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
-			input.checked = true;
-			$(this).addClass("tr");
-		}else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
-			if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
-				thinput.checked=false;
-			}
-			input.checked = false;
-			$(this).removeClass("tr");
-		}
-	})
-    //点击新增时页面进行的跳转
+    })
+    //签到
+    $("#signIn").click(function(){
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        for(var i=tr.length-1,ID="";i>=0;i--){
+            var r=$(tr[i]).attr("id");
+            if(i>0){
+                ID+=r+",";
+            }else{
+                 ID+=r;
+            }     
+        }
+        var param={};
+        param["id"]=ID;
+        param["type"]="signIn";
+        whir.loading.add("",0.5);//加载等待框
+        oc.postRequire("post","/user/sign","0",param,function(data){
+          if(data.code=="0"){
+            frame();
+            $('.frame').html("签到成功");
+          }else if(data.code=="-1"){
+            frame();
+            $('.frame').html("签到失败");
+          }
+          whir.loading.remove();//移除加载框
+        })
+    })
+    //签退
+    $("#signOut").click(function(){
+        var tr=$("tbody input[type='checkbox']:checked").parents("tr");
+        if(tr.length==0){
+            frame();
+            $('.frame').html("请先选择");
+            return;
+        }
+        for(var i=tr.length-1,ID="";i>=0;i--){
+            var r=$(tr[i]).attr("id");
+            if(i>0){
+                ID+=r+",";
+            }else{
+                 ID+=r;
+            }     
+        }
+        var param={};
+        param["id"]=ID;
+        param["type"]="signOut";
+        whir.loading.add("",0.5);//加载等待框
+        oc.postRequire("post","/user/sign","0",param,function(data){
+            if(data.code=="0"){
+                frame();
+                $('.frame').html("签退成功");
+            }else if(data.code=="-1"){
+                frame();
+                $('.frame').html("签退失败");
+            }
+            whir.loading.remove();//移除加载框
+        });
+    })
+     //点击新增时页面进行的跳转
     $('#add').click(function(){
         $(window.parent.document).find('#iframepage').attr("src","/user/user_add.html");
         sessionStorage.removeItem('id');
@@ -442,6 +452,68 @@ function jumpBianse(){
             whir.loading.remove();//移除加载框
         })
     });
+}
+qjia();
+//页面加载时list请求
+function GET(a,b){
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("get","/user/list?pageNumber="+a+"&pageSize="+b
+        +"&funcCode="+funcCode+"","","",function(data){
+            console.log(data);
+            if(data.code=="0"){
+            	$(".table tbody").empty();
+                var message=JSON.parse(data.message);
+                var list=JSON.parse(message.list);
+                cout=list.pages;
+                var list=list.list;
+                superaddition(list,a);
+                jumpBianse();
+                setPage($("#foot-num")[0],cout,a,b,funcCode);
+            }else if(data.code=="-1"){
+                console.log(data.message);
+            }
+    });
+}
+//加载完成以后页面进行的操作
+function jumpBianse(){
+	$(document).ready(function(){//隔行变色 
+   		 $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+    	 $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+         $("#jurisdiction li:odd").css("backgroundColor","#f4f4f4");
+	})
+	//双击跳转
+	$(".table tbody tr").dblclick(function(){
+	    var id=$(this).attr("id");
+        var return_jump={};//定义一个对象
+        return_jump["inx"]=inx;//跳转到第几页
+        return_jump["value"]=value;//搜索的值;
+        return_jump["filtrate"]=filtrate;//筛选的值
+        return_jump["param"]=JSON.stringify(param);//搜索定义的值
+        return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+        return_jump["list"]=list;//筛选的请求的list;
+        return_jump["pageSize"]=pageSize;//每页多少行
+        sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+        sessionStorage.setItem("id",id);
+        console.log(id);
+        $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
+	})
+	//点击tr input是选择状态  tr增加class属性
+	$(".table tbody tr").click(function(){
+		var input=$(this).find("input")[0];
+		var thinput=$("thead input")[0];
+		$(this).toggleClass("tr");  
+		console.log(input);
+		if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+			input.checked = true;
+			$(this).addClass("tr");
+		}else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+			if(thinput.type=="checkbox"&&input.name=="test"&&input.checked==true){
+				thinput.checked=false;
+			}
+			input.checked = false;
+			$(this).removeClass("tr");
+		}
+	})
 }
 //二维码弹框
 $("#code_close").click(function(){
@@ -562,7 +634,6 @@ $("#delete").click(function(){
     }
     var params={};
     params["id"]=ID;
-    console.log(param);
     oc.postRequire("post","/user/delete","0",params,function(data){
        if(data.code=="0"){
             if (value == "" && filtrate == "") {
