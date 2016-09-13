@@ -166,12 +166,9 @@
         }).mouseover(function(){
             var len=$(this).width();
             var index=$(this).index();
-            $(this).addClass("active");
-            $(this).siblings().removeClass("active");
             $("#remark").animate({left:len*index},200);
         }).mouseout(function(){
             $("#remark").stop(true,true);
-            $(this).removeClass("active");
         });
         $("#tabs-all").mouseleave(function(){
             $("#remark").stop();
