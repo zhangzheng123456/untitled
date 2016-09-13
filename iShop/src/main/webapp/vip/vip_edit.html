@@ -38,10 +38,11 @@
             box-sizing: border-box;
             display: inline-block;width:90%;height: 30px;
         }
-        .active{
+        .set-message-tabs ul .active{
+            color:#6dc1c8;
        }
         .active1{
-           border-bottom: 3px solid #fff;
+
        }
     </style>
 </head>
@@ -52,7 +53,7 @@
             <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员列表<i class="icon-ishop_8-03"></i><label>会员信息</label><i class="icon-ishop_8-03"></i><label>编辑会员资料</label></div>
            <div class="set-message-tabs">
                <ul id="tabs-all" style="position: relative;">
-                   <li class="active"><span>基本信息</span></li>
+                   <li class="active active1">基本信息</li>
                    <li>扩展信息</li>
                    <li>衣橱</li>
                    <li>积分</li>
@@ -158,19 +159,26 @@
     <script>
         $("#tabs-all li").click(function () {
             var index=$(this).index();
-            $(this).addClass("active");
-            $(this).siblings().removeClass("active");
+            $(this).addClass("active active1");
+            $(this).siblings().removeClass("active active1");
             $("#ALL").children().eq(index).show();
             $("#ALL").children().eq(index).siblings().hide();
         }).mouseover(function(){
             var len=$(this).width();
             var index=$(this).index();
-            $("#remark").animate({left:len*index},100);
+            $(this).addClass("active");
+            $(this).siblings().removeClass("active");
+            $("#remark").animate({left:len*index},200);
+        }).mouseout(function(){
+            $("#remark").stop(true,true);
+            $(this).removeClass("active");
         });
         $("#tabs-all").mouseleave(function(){
-            var _this=$(".active").index();
+            $("#remark").stop();
+            var _this=$(".active1").index();
+            $(this).children().eq(_this).addClass("active");
             var len=$(this).children().width();
-            $("#remark").animate({left:len*_this},100);
+            $("#remark").animate({left:len*_this},200);
         });
     </script>
 </body>
