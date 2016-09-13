@@ -1,5 +1,6 @@
 var oc = new ObjectControl();
 var page=1;
+var jump=1;
 var area_code;
 var store_code;
 var count='';
@@ -72,7 +73,8 @@ function getStore(a){
         $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
         $('#select_analyze_shop ul').append(ul);
-        newVipGet();
+        newVipGet();//获取新会员
+        sleepVipGet();//获取活跃会员
     });
 }
 //点击li填充s中的数据显示
@@ -93,7 +95,8 @@ function showNameClick(e){
         $('#side_analyze ul li:nth-child(3) s').html($(e).html());
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
         $('#select_analyze_shop').toggle();
-        newVipGet();
+        sleepVipGet();//获取活跃会员
+        newVipGet();//获取新会员
     }
 }
 //取消下拉框
@@ -168,25 +171,34 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     $(".newVip").hide();
     $(".activeVip").hide();
     $(".rank").hide();
+    $("#page_row").val("10行/页");
+    jump=1;
 })
 $(".vip_nav_bar li:nth-child(2)").click(function () {
     $('.birthVip').hide();
     $(".newVip").show();
     $(".activeVip").hide();
     $(".rank").hide();
-    //异步请求数据
+    $("#page_row").val("10行/页");
+    newVipGet();
+    jump=2;
 })
 $(".vip_nav_bar li:nth-child(3)").click(function () {
     $('.birthVip').hide();
     $(".newVip").hide();
     $(".activeVip").show();
     $(".rank").hide();
+    $("#page_row").val("10行/页");
+    sleepVipGet();
+    jump=3;
 })
 $(".vip_nav_bar li:nth-child(4)").click(function () {
     $('.birthVip').hide();
     $(".newVip").hide();
     $(".activeVip").hide();
     $(".rank").show();
+    $("#page_row").val("10行/页");
+    jump=4;
 })
 $(".vip_nav_bar li").click(function () {
     $(this).css("border-bottom","2px solid #6cc1c8");
@@ -224,8 +236,10 @@ $("#vipAnalyze_return").click(function () {
     $("#table_analyze").css("background","#fff");
     $(".foot").hide();
 })
+/******************新VIP会员****************************/
 //新VIP模块数据请求加载
 function newVipGet(){
+    var type='new';
     $('.newVip .vip_table tbody').empty();
     console.log($('#side_analyze ul li:nth-child(3) s')[0]);
    console.log('store:'+$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store'));
@@ -247,7 +261,11 @@ function newVipGet(){
             msg=msg.new_vip_list;
             if(msg.length){
                 for(var i=0;i<msg.length;i++){
-                    var a=i+1;
+                    if(pageIndex>=2){
+                        var a=i+1+(pageIndex-1)*pageSize;
+                    }else{
+                        var a=i+1;
+                    }
                     $(".newVip tbody").append('<tr><td>'
                         + a
                         +'</td><td>'
@@ -288,11 +306,13 @@ function newVipGet(){
             console.log(data.message);
         }
         //调用生成页码
-        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize)
+        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
     });
 }
 //生成分页
-function setPage(container, count, pageindex,pageSize,funcCode) {
+function setPage(container, count, pageindex,pageSize,type) {
+    var type=type;
+    console.log(type);
     var container = container;//节点
     var count = count;//5
     var pageindex = pageindex;//1
@@ -354,14 +374,14 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
                 return false;
             }
             inx--;
-            dian(inx,pageSize);
+            dian(inx,pageSize,type);
             // setPage(container, count, inx,pageSize,funcCode,value,filtrate);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
                 inx = parseInt(this.innerHTML);
-                dian(inx,pageSize);
+                dian(inx,pageSize,type);
                 // setPage(container, count, inx,pageSize,funcCode,value,filtrate);
                 return false;
             }
@@ -371,7 +391,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
                 return false;
             }
             inx++;
-            dian(inx,pageSize);
+            dian(inx,pageSize,type);
             // setPage(container, count, inx,pageSize,funcCode,value,filtrate);
             return false;
         }
@@ -380,6 +400,7 @@ function setPage(container, count, pageindex,pageSize,funcCode) {
 //页码仿写select
 $(function(){
         $("#page_row").click(function(){
+
             if("block" == $("#liebiao").css("display")){
                 hideLi();
             }else{
@@ -391,7 +412,8 @@ $(function(){
             $(this).click(function(){
                 pageSize=$(this).attr('id');
                 var a=1;
-                newVipGet(a,pageSize);
+                jump==2&&(newVipGet(a,pageSize));
+                jump==3&&(sleepVipGet(a,pageSize));
                 // if(value==""&&filtrate==""){
                 //     inx=1;
                 //     GET(inx,pageSize);
@@ -409,6 +431,7 @@ $(function(){
                 $("#page_row").val($(this).html());
                 hideLi();
             });
+
         });
         $("#page_row").blur(function(){
             setTimeout(hideLi,200);
@@ -424,25 +447,81 @@ function hideLi(){
     $("#liebiao").hide();
 }
 //页码点击事件
-function dian(a,b){
+function dian(a,b,c){
     var a=a;
     var b=b;
-    newVipGet(a,b);
+    var c=c;
+    console.log(c);
+    c=='new'&&(newVipGet(a,b));
+    c=='sleep'&&(sleepVipGet(a,b));
 }
 //指定页面的跳转
 $("#input-txt").keydown(function() {
+    console.log(jump);
     var event=window.event||arguments[0];
     var inx= this.value.replace(/[^0-9]/g, '');
     var inx=parseInt(inx);
+    console.log($(this).parent().parent().parent());
     if (inx > count) {
         inx = count
     };
     if (inx > 0) {
         if (event.keyCode == 13) {
-                newVipGet(inx)
+                jump==2&&(newVipGet(inx));
+                jump==3&&(sleepVipGet(inx));
             }
         };
 })
+/*************活跃会员****************/
+//获取活跃用户
+function sleepVipGet() {
+    var type='sleep';
+    $('.activeVip .vip_table tbody').empty();
+    var param={};
+    var query_type=0;
+    var pageSize=arguments[1]?arguments[1]:10;
+    var pageIndex=arguments[0]?arguments[0]:page;
+    param['pageNumber']=pageIndex;
+    param['pageSize']=pageSize;
+    param['query_type']=query_type;
+    param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
+    param['corp_code']=localStorage.getItem('corp_code');
+    param["area_code"]=localStorage.getItem('area_code');
+    oc.postRequire("post","/vipAnalysis/vipSleep","",param,function(data) {
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            count=msg.pages;
+            console.log(msg);
+            var pageIndex=msg.pageNum;
+            msg=msg.sleep_vip_list;
+            if(msg.length){
+                for(var i=0;i<msg.length;i++){
+                    var a=i+1;
+                    $(".activeVip tbody").append('<tr><td>'
+                        + a
+                        +'</td><td>'
+                        + msg[i].vip_name
+                        +'</td><td>'
+                        + msg[i].vip_card_type
+                        +'</td><td>'
+                        + msg[i].amount
+                        +'</td><td>'
+                        + msg[i].consume_times
+                        +'</td><td>'
+                        + msg[i].recently_consume_date
+                        +'</td></tr>');
+                }
+                $(".activeVip .vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+            }
+        }else if(data.code=="-1"){
+            console.log(data.message);
+        }
+        //调用生成页码
+        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
+    });
+}
 /***************************图表分析数据***********************************/
 //图表
 require.config({
