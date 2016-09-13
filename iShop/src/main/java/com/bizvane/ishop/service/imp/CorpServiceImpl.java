@@ -1,6 +1,7 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
@@ -13,7 +14,6 @@ import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,7 +38,7 @@ public class CorpServiceImpl implements CorpService {
 
     public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
         Corp corp = corpMapper.selectByCorpId(corp_id, corp_code, isactive);
-        List<String> array_user = new ArrayList<String>();
+        List<JSONObject> array_user = new ArrayList<JSONObject>();
         String cus_user_code = corp.getCus_user_code();
         if (cus_user_code != null && !cus_user_code.equals("")) {
             String[] cus_user_codes = cus_user_code.split(",");
@@ -49,7 +49,7 @@ public class CorpServiceImpl implements CorpService {
                     JSONObject userObj = new JSONObject();
                     userObj.put("cus_user_code",user_code);
                     userObj.put("cus_user_name",user.get(0).getUser_name());
-                    array_user.add(userObj.toString());
+                    array_user.add(userObj);
                 }
             }
         }
@@ -60,7 +60,7 @@ public class CorpServiceImpl implements CorpService {
     @Transactional
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         String corp_code = jsonObject.get("corp_code").toString();
         String corp_name = jsonObject.get("corp_name").toString();
         Corp corp = selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
@@ -72,12 +72,12 @@ public class CorpServiceImpl implements CorpService {
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
-            if (jsonObject.has("cus_user_code")){
+            if (jsonObject.containsKey("cus_user_code")){
                 corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
             }
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
             for (int i = 0; i < wechat.size(); i++) {
-                JSONObject object = new JSONObject(wechat.get(i).toString());
+                JSONObject object = JSONObject.parseObject(wechat.get(i).toString());
                 String app_id = object.get("app_id").toString();
                 if (!app_id.equals("")) {
                     CorpWechat corpWechat = getCorpByAppId(app_id);
@@ -121,7 +121,7 @@ public class CorpServiceImpl implements CorpService {
         String new_code = null;
         String old_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         int corp_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String corp_code = jsonObject.get("corp_code").toString();
@@ -143,7 +143,7 @@ public class CorpServiceImpl implements CorpService {
             old_corp.setContact(jsonObject.get("contact").toString());
             old_corp.setContact_phone(jsonObject.get("phone").toString());
             old_corp.setAvater(jsonObject.get("avater").toString());
-            if (jsonObject.has("cus_user_code")){
+            if (jsonObject.containsKey("cus_user_code")){
                 old_corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
             }
             Date now = new Date();
@@ -329,7 +329,7 @@ public class CorpServiceImpl implements CorpService {
         String result = Common.DATABEAN_CODE_SUCCESS;
         Date now = new Date();
         for (int i = 0; i < wechat.size(); i++) {
-            JSONObject object = new JSONObject(wechat.get(i).toString());
+            JSONObject object = JSONObject.parseObject(wechat.get(i).toString());
             String app_id = object.get("app_id").toString();
             if (!app_id.equals("")) {
                 app_ids = app_ids + app_id + ",";

@@ -66,7 +66,7 @@ public class SignServiceImpl implements SignService {
             //0是签到，-1是签退
             if(sign.getStatus()==null||sign.getStatus().equals("")){
                 sign.setStatus("");
-            }else if(sign.getStatus().equals(Common.STATUS_CHECK_IN)){
+            }else if(sign.getStatus().equals(Common.STATUS_SIGN_IN)){
                 sign.setStatus("签到");
             }else{
                 sign.setStatus("签退");

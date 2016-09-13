@@ -48,22 +48,22 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         if (role_code.equals(Common.ROLE_SYS)) {
             corp_code = jsonObject.get("corp_code").toString();
         } else if (role_code.equals(Common.ROLE_GM)){
-            if (jsonObject.containsKey("area_code")){
+            if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
                 area_code = jsonObject.get("area_code").toString();
             }
-        } else if (role_code.equals(Common.ROLE_AM)){
-            if (jsonObject.containsKey("area_code")){
+        } else if (role_code.equals(Common.ROLE_AM) ){
+            if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
                 area_code = jsonObject.get("area_code").toString();
             }else {
                 area_code = request.getSession().getAttribute("area_code").toString().replace(Common.STORE_HEAD,"");
                 String[] area_codes = area_code.split(",");
                 area_code = area_codes[0];
             }
-            if (jsonObject.containsKey("store_code")){
+            if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
                 store_id = jsonObject.get("store_code").toString();
             }
         } else if (role_code.equals(Common.ROLE_SM)){
-            if (jsonObject.containsKey("store_code")){
+            if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
                 store_id = jsonObject.get("store_code").toString();
             }else {
                 String store_code = request.getSession().getAttribute("store_code").toString().replace(Common.STORE_HEAD, "");
@@ -72,7 +72,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             }
         } else if (role_code.equals(Common.ROLE_STAFF)){
             user_id = user_code;
-            if (jsonObject.containsKey("store_code")){
+            if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
                 store_id = jsonObject.get("store_code").toString();
             }
         }

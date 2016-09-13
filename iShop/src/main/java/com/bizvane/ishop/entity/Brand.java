@@ -1,6 +1,7 @@
 package com.bizvane.ishop.entity;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
@@ -31,9 +32,11 @@ public class Brand {
     private Corp corp;
     private String corp_name;
 
-    private List<String> cus_user;
+    private List<JSONObject> cus_user;
 
-    private List<String> app_id;
+    private String app_id;
+
+    private String app_name;
 
     public String getCorp_name() {
         return corp_name;
@@ -139,19 +142,27 @@ public class Brand {
         this.corp = corp;
     }
 
-    public List<String> getCus_user() {
+    public List<JSONObject> getCus_user() {
         return cus_user;
     }
 
-    public void setCus_user(List<String> cus_user) {
+    public void setCus_user(List<JSONObject> cus_user) {
         this.cus_user = cus_user;
     }
 
-    public List<String> getApp_id() {
+    public String getApp_id() {
         return app_id;
     }
 
-    public void setApp_id(List<String> app_id) {
+    public void setApp_id(String app_id) {
         this.app_id = app_id;
+    }
+
+    public String getApp_name() {
+        return app_name;
+    }
+
+    public void setApp_name(String app_name) {
+        this.app_name = app_name;
     }
 }
