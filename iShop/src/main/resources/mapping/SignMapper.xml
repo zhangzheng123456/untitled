@@ -64,8 +64,14 @@
     </select>
 
     <delete id="delSignById">
-        DELETE FROM ACC_SIGN
+        DELETE FROM acc_sign
         WHERE ID=#{id};
+    </delete>
+
+    <delete id="delSignByUser">
+        DELETE FROM acc_sign
+        WHERE user_code=#{user_code}
+        AND corp_code = #{corp_code};
     </delete>
 
     <select id="selectSignAllScreen" resultType="com.bizvane.ishop.entity.Sign">
@@ -138,4 +144,84 @@
         </foreach>
         ORDER BY acc_sign.ID DESC
     </select>
+
+    <insert id="insert" parameterType="com.bizvane.ishop.entity.Sign">
+        INSERT INTO acc_sign
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="user_code!=null">
+                user_code,
+            </if>
+            <if test="user_name!=null">
+                user_name,
+            </if>
+            <if test="phone != null">
+                phone,
+            </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="corp_code!=null">
+                corp_code,
+            </if>
+            <if test="store_code!=null">
+                store_code,
+            </if>
+            <if test="sign_time!=null">
+                sign_time,
+            </if>
+            <if test="modified_date != null">
+                modified_date,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="created_date != null">
+                created_date,
+            </if>
+            <if test="creater != null">
+                creater,
+            </if>
+            <if test="isactive != null">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="user_code!=null">
+                #{user_code},
+            </if>
+            <if test="user_name!=null">
+                #{user_name},
+            </if>
+            <if test="phone != null">
+                #{phone},
+            </if>
+            <if test="status != null">
+                #{status},
+            </if>
+            <if test="corp_code!=null">
+                #{corp_code},
+            </if>
+            <if test="store_code!=null">
+                #{store_code},
+            </if>
+            <if test="sign_time!=null">
+                #{sign_time},
+            </if>
+            <if test="modified_date != null">
+                #{modified_date},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="created_date != null">
+                #{created_date},
+            </if>
+            <if test="creater != null">
+                #{creater},
+            </if>
+            <if test="isactive != null">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
 </mapper>

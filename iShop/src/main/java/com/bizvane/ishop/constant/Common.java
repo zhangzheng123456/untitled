@@ -51,4 +51,9 @@ public class Common {
     public static final String STORE_HEAD = "§";
 
     public static final String VIP_LABEL_TYPE_SYS = "sys";
+    //签到
+    public static final String STATUS_SIGN_IN = "0";
+    //签退
+    public static final String STATUS_SIGN_OUT = "-1";
+
 }

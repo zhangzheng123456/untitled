@@ -14,13 +14,57 @@
         body{
             margin-top:81px;
         }
+        .set-message-tabs{
+            padding:0 10px;
+            overflow: hidden;
+        }
+        .set-message-tabs ul{
+             text-align: center;
+             box-sizing: border-box;
+            overflow:hidden;
+            border-bottom:1px  solid #fff;
+        }
+        .set-message-tabs ul li{
+            cursor: pointer;
+            box-sizing: border-box;
+            float: left;
+            height: 30px;
+            width: 14.28%;
+            line-height: 30px;
+            font-size: 14px;
+            color: #888;
+        }
+        .set-message-tabs ul li span{
+            box-sizing: border-box;
+            display: inline-block;width:90%;height: 30px;
+        }
+        .set-message-tabs ul .active{
+            color:#6dc1c8;
+       }
+        .active1{
+
+       }
     </style>
 </head>
 <body>
     <!-- <div id="wrapper">
     </div> -->
     <div id="page-wrapper" class="gray-bg dashbard-1">
-            <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员列表<i class="icon-ishop_8-03"></i><label>编辑会员信息</label></div>
+            <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员列表<i class="icon-ishop_8-03"></i><label>会员信息</label><i class="icon-ishop_8-03"></i><label>编辑会员资料</label></div>
+           <div class="set-message-tabs">
+               <ul id="tabs-all" style="position: relative;">
+                   <li class="active active1">基本信息</li>
+                   <li>扩展信息</li>
+                   <li>衣橱</li>
+                   <li>积分</li>
+                   <li>相册</li>
+                   <li>标签</li>
+                   <li>备注</li>
+                   <div id="remark" style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0;"></div>
+               </ul>
+           </div>
+     <div id="ALL">
+        <div >
             <div class="editor_em col-lg-7  animated fadeInRight">
                 <div class="operation_conpany">
                     <ul>
@@ -55,7 +99,7 @@
                             </ul>
                         </span>
                     </div>
-                     <div class="drop_down item_2">
+                    <div class="drop_down item_2">
                         <span><label>性别</label><input class="input_select" id="sex" type="text" placeholder="请选择性别" readonly/>
                             <ul>
                                 <li>男</li>
@@ -72,7 +116,7 @@
                         <li id="edit_close"><i class="icon-ishop_6-12"></i>关闭</li>
                     </ul>
                 </div>
-                 <form class="msg_detail">
+                <form class="msg_detail">
                     <div>
                         <span><label>创建时间</label><input type="text" id="created_time" /></span>
                     </div>
@@ -87,11 +131,19 @@
                     </div>
                     <div>
                     <span><label>可用</label><em class="checkbox_isactive">
-                    <input type="checkbox" value="" name="test" class="check" id="is_active">
-                    <label for="is_active"></label></em></span>
+                        <input type="checkbox" value="" name="test" class="check" id="is_active">
+                        <label for="is_active"></label></em></span>
                     </div>
                 </form>
             </div>
+        </div>
+        <div style="display: none">扩展信息</div>
+        <div style="display: none">衣橱</div>
+        <div style="display: none">积分</div>
+        <div style="display: none">相册</div>
+        <div style="display: none">标签</div>
+        <div style="display: none">备注</div>
+     </div>
         </div>
     <!-- Mainly scripts -->
     <script src="../js/jquery-2.1.1.min.js"></script>
@@ -104,6 +156,31 @@
     <script type="text/javascript" src="../js/moni_select.js"></script>
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!--<script type="text/javascript" src="../js/vip/vip_operate.js"></script>-->
+    <script>
+        $("#tabs-all li").click(function () {
+            var index=$(this).index();
+            $(this).addClass("active active1");
+            $(this).siblings().removeClass("active active1");
+            $("#ALL").children().eq(index).show();
+            $("#ALL").children().eq(index).siblings().hide();
+        }).mouseover(function(){
+            var len=$(this).width();
+            var index=$(this).index();
+            $(this).addClass("active");
+            $(this).siblings().removeClass("active");
+            $("#remark").animate({left:len*index},200);
+        }).mouseout(function(){
+            $("#remark").stop(true,true);
+            $(this).removeClass("active");
+        });
+        $("#tabs-all").mouseleave(function(){
+            $("#remark").stop();
+            var _this=$(".active1").index();
+            $(this).children().eq(_this).addClass("active");
+            var len=$(this).children().width();
+            $("#remark").animate({left:len*_this},200);
+        });
+    </script>
 </body>
 
 </html>

@@ -8,7 +8,6 @@
   font-weight: normal;
   font-style: normal;
 }
-
 [class^="icon-"], [class*=" icon-"] {
   /* use !important to prevent issues with browser extensions that change fonts */
   font-family: 'icomoon' !important;
@@ -186,3 +185,7 @@
 .icon-ishop_8-03:before {
   content: "\e931";
 }
+.icon-ishop_9-01:before {
+  content: "\e936";
+}
+

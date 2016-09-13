@@ -15,6 +15,8 @@ public class CorpWechat {
     private String app_user_name;
     //是否已授权
     private String is_authorize;
+    //品牌编号
+    private String brand_code;
     //修改时间
     private String modified_date;
     //修改人
@@ -71,6 +73,14 @@ public class CorpWechat {
 
     public void setApp_user_name(String app_user_name) {
         this.app_user_name = app_user_name;
+    }
+
+    public String getBrand_code() {
+        return brand_code;
+    }
+
+    public void setBrand_code(String brand_code) {
+        this.brand_code = brand_code;
     }
 
     public String getModified_date() {

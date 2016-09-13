@@ -1,26 +1,25 @@
 package com.bizvane.ishop.service.imp;
 
 import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
 import com.bizvane.ishop.dao.CorpMapper;
+import com.bizvane.ishop.dao.UserMapper;
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.CorpWechat;
+import com.bizvane.ishop.entity.User;
 import com.bizvane.ishop.service.CorpService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Administrator on 2016/5/23.
@@ -29,7 +28,8 @@ import java.util.Map;
 public class CorpServiceImpl implements CorpService {
     @Autowired
     private CorpMapper corpMapper;
-
+    @Autowired
+    private UserMapper userMapper;
     @Autowired
     private CodeUpdateMapper codeUpdateMapper;
 
@@ -37,13 +37,30 @@ public class CorpServiceImpl implements CorpService {
     private AreaMapper areaMapper;
 
     public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
-        return corpMapper.selectByCorpId(corp_id, corp_code, isactive);
+        Corp corp = corpMapper.selectByCorpId(corp_id, corp_code, isactive);
+        List<JSONObject> array_user = new ArrayList<JSONObject>();
+        String cus_user_code = corp.getCus_user_code();
+        if (cus_user_code != null && !cus_user_code.equals("")) {
+            String[] cus_user_codes = cus_user_code.split(",");
+            for (int i = 0; i < cus_user_codes.length; i++) {
+                String user_code = cus_user_codes[i];
+                List<User> user = userMapper.selectUserCode(user_code, corp.getCorp_code(),Common.IS_ACTIVE_Y);
+                if (user.size() > 0) {
+                    JSONObject userObj = new JSONObject();
+                    userObj.put("cus_user_code",user_code);
+                    userObj.put("cus_user_name",user.get(0).getUser_name());
+                    array_user.add(userObj);
+                }
+            }
+        }
+        corp.setCus_user(array_user);
+        return corp;
     }
 
     @Transactional
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         String corp_code = jsonObject.get("corp_code").toString();
         String corp_name = jsonObject.get("corp_name").toString();
         Corp corp = selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
@@ -55,9 +72,12 @@ public class CorpServiceImpl implements CorpService {
             corp.setAddress(jsonObject.get("address").toString());
             corp.setContact(jsonObject.get("contact").toString());
             corp.setContact_phone(jsonObject.get("phone").toString());
+            if (jsonObject.containsKey("cus_user_code")){
+                corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
+            }
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
             for (int i = 0; i < wechat.size(); i++) {
-                JSONObject object = new JSONObject(wechat.get(i).toString());
+                JSONObject object = JSONObject.parseObject(wechat.get(i).toString());
                 String app_id = object.get("app_id").toString();
                 if (!app_id.equals("")) {
                     CorpWechat corpWechat = getCorpByAppId(app_id);
@@ -101,7 +121,7 @@ public class CorpServiceImpl implements CorpService {
         String new_code = null;
         String old_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
-        JSONObject jsonObject = new JSONObject(message);
+        JSONObject jsonObject = JSONObject.parseObject(message);
         int corp_id = Integer.parseInt(jsonObject.get("id").toString());
 
         String corp_code = jsonObject.get("corp_code").toString();
@@ -123,6 +143,9 @@ public class CorpServiceImpl implements CorpService {
             old_corp.setContact(jsonObject.get("contact").toString());
             old_corp.setContact_phone(jsonObject.get("phone").toString());
             old_corp.setAvater(jsonObject.get("avater").toString());
+            if (jsonObject.containsKey("cus_user_code")){
+                old_corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
+            }
             Date now = new Date();
             JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
             result = updateCorpWechat(wechat,corp_code,user_id);
@@ -230,14 +253,6 @@ public class CorpServiceImpl implements CorpService {
         return list;
     }
 
-    /**
-     * 查找最大的corp_code
-     * 以便新增企业时
-     * 自动生成corp_code
-     */
-    public String selectMaxCorpCode() throws Exception {
-        return corpMapper.selectMaxCorpCode();
-    }
 
     /**
      * 校验企业名称是否唯一
@@ -314,7 +329,7 @@ public class CorpServiceImpl implements CorpService {
         String result = Common.DATABEAN_CODE_SUCCESS;
         Date now = new Date();
         for (int i = 0; i < wechat.size(); i++) {
-            JSONObject object = new JSONObject(wechat.get(i).toString());
+            JSONObject object = JSONObject.parseObject(wechat.get(i).toString());
             String app_id = object.get("app_id").toString();
             if (!app_id.equals("")) {
                 app_ids = app_ids + app_id + ",";

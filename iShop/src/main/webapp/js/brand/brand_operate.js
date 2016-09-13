@@ -71,8 +71,19 @@ var oc = new ObjectControl();
 				var BRAND_ID=$("#BRAND_ID").val();
 				var BRAND_NAME=$("#BRAND_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
+				var app_id=$("#Accounts").attr("data-appid");
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
+				var a=$('.xingming input');
+				var cus_user_code="";
+				for(var i=0;i<a.length;i++){
+			        var u=$(a[i]).attr("data-code");
+			        if(i<a.length-1){
+			            cus_user_code+=u+",";
+			        }else{
+			            cus_user_code+=u;
+			        }     
+    			}
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -84,7 +95,14 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"corp_code":OWN_CORP,"brand_code":BRAND_ID,"brand_name":BRAND_NAME,"isactive":ISACTIVE};
+				var _params = {
+					"corp_code": OWN_CORP,
+					"brand_code": BRAND_ID,
+					"brand_name": BRAND_NAME,
+					"app_id":app_id,
+					"cus_user_code":cus_user_code,
+					"isactive": ISACTIVE
+				};
 				brandjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -113,6 +131,17 @@ var oc = new ObjectControl();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
+				var app_id=$("#Accounts").attr("data-appid");//公众号
+				var a=$('.xingming input');//所属客服
+				var cus_user_code="";
+				for(var i=0;i<a.length;i++){
+			        var u=$(a[i]).attr("data-code");
+			        if(i<a.length-1){
+			            cus_user_code+=u+",";
+			        }else{
+			            cus_user_code+=u;
+			        }     
+    			}
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -124,7 +153,15 @@ var oc = new ObjectControl();
 
 					}
 				};
-				var _params={"id":ID,"corp_code":OWN_CORP,"brand_code":BRAND_ID,"brand_name":BRAND_NAME,"isactive":ISACTIVE};
+				var _params = {
+					"id": ID,
+					"corp_code": OWN_CORP,
+					"brand_code": BRAND_ID,
+					"app_id":app_id,
+					"cus_user_code":cus_user_code,
+					"brand_name": BRAND_NAME,
+					"isactive": ISACTIVE
+				};
 				brandjs.ajaxSubmit(_command,_params,opt);
 			}else{
 				return;
@@ -181,6 +218,8 @@ var oc = new ObjectControl();
 	return obj;
 }));
 jQuery(document).ready(function(){
+	var checknow_data=[];
+    var checknow_namedata=[];
 	window.brand.init();//初始化
 	if($(".pre_title label").text()=="编辑品牌信息"){
 		var id=sessionStorage.getItem("id");
@@ -204,7 +243,8 @@ jQuery(document).ready(function(){
 			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
-				console.log(msg);
+				var list=msg.cus_user;
+				console.log(list);
 				$("#BRAND_ID").val(msg.brand_code);
 				$("#BRAND_ID").attr("data-name",msg.brand_code);
 				$("#BRAND_NAME").val(msg.brand_name);
@@ -215,7 +255,24 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
+				$("#Accounts").val(msg.app_id);
+				$("#Accounts").attr("data-appid",msg.appid);
 				var input=$(".checkbox_isactive").find("input")[0];
+				if (msg.app_id!= "") {
+                    if (msg.brand_code.indexOf(',') !== -1) {
+                        checknow_data = msg.app_id.split(",");
+                        checknow_namedata = msg.app_name.split(",");
+                    } else {
+                        checknow_data.push(msg.brand_code);
+                        checknow_namedata.push(msg.brand_name);
+                    }
+                }
+				var ul="";
+		 		for(var i=0;i<list.length;i++){
+					ul+="<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+list[i].cus_user_code+"' value='"+list[i].cus_user_name
+                     +"'><span class='power remove_app_id' onclick='deleteName(this)'>删除</span></p>";
+		 		}
+ 				$('.xingming').html(ul);
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
@@ -278,6 +335,78 @@ jQuery(document).ready(function(){
 	    	})
 	    }
     })
+    //公众号多选
+    $("#Accounts").click(function(){
+    	$('.Acc_dropdown').toggle();
+    	var corp_code = $('#OWN_CORP').val();
+		var corp_code1=$('#OWN_CORP').attr("corp_code1");
+		if(corp_code==corp_code1){
+			return;
+		}
+		$('#OWN_CORP').attr("corp_code1",corp_code);
+		Accounts();
+    })
+    $("#Accounts").blur(function(){
+    	setTimeout(function(e){
+    		console.log(e);
+        	$("#Acc_dropdown").hide();
+        },200);  
+    })
+    //公众号
+    function Accounts(){
+    	var param={};
+    	var corp_code=$("#OWN_CORP").val();
+    	whir.loading.add("",0.5);//加载等待框
+    	param["corp_code"]=corp_code;
+    	oc.postRequire("post","/corp/selectWx","0",param,function(data){
+    		if(data.code=="0"){
+                var msg=JSON.parse(data.message);
+                var list=msg.list;
+                var html="";
+                if(list.length==0){
+                	art.dialog({
+						time: 1,
+						lock:true,
+						cancel: false,
+						content:"请先授权公众号"
+					});
+                }
+                if(list.length>0){
+                    for(var i=0;i<list.length;i++){
+                   		html+="<li><p class='checkbox_isactive'><input  type='checkbox' value='"+list[i].app_id+"' data-appname='"+list[i].app_name+"' name='test'  class='check'  id='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'/><label for='checkboxOneInput"
+                        + i
+                        + 1
+                        + "'></label></p><span class='p16'>"+list[i].app_name+"</span></li>"
+                    }
+                }
+                $("#Acc_dropdown").html(html);
+                var check_input = $('#Acc_dropdown input');
+                console.log(check_input[0]);
+				for (var c = 0; c < check_input.length; c++) {
+					check_input[c].onclick = function() {
+						if (this.checked == true) {
+							checknow_data.push($(this).val());
+							checknow_namedata.push($(this).attr("data-appname"));
+							$('#Accounts').val(checknow_namedata.toString());
+							$('#Accounts').attr('data-appid', checknow_data.toString());
+						} else if (this.checked == false) {
+							checknow_namedata.remove($(this).attr("data-appname"));
+							checknow_data.remove($(this).val());
+							$('#Accounts').val(checknow_namedata.toString());
+							$('#Accounts').attr('data-appid', checknow_data.toString());
+						}
+					}
+				}
+            }else if(data.code=="-1"){
+                // frame();
+                // $('.frame').html(data.message);
+            }
+            whir.loading.remove();//移除加载框
+    	});
+    }
 	$(".brandadd_oper_btn ul li:nth-of-type(2)").click(function(){
 		$(window.parent.document).find('#iframepage').attr("src","/brand/brand.html");
 	});
@@ -295,10 +424,8 @@ function getcorplist(){
 			console.log(msg);
 			var index=0;
 			var corp_html='';
-			var c=null;
-			for(index in msg.corps){
-				c=msg.corps[index];
-				corp_html+='<option value="'+c.corp_code+'">'+c.corp_name+'</option>';
+			for( var i=0;i<msg.corps.length;i++){
+				corp_html+='<option value="'+msg.corps[i].corp_code+'">'+msg.corps[i].corp_name+'</option>';
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();

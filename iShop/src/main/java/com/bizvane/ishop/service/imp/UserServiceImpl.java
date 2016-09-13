@@ -42,6 +42,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     RoleService roleService;
     @Autowired
+    SignService signService;
+    @Autowired
     ValidateCodeService validateCodeService;
     @Autowired
     GroupMapper groupMapper;
@@ -53,6 +55,7 @@ public class UserServiceImpl implements UserService {
     CodeUpdateMapper codeUpdateMapper;
     @Autowired
     private PrivilegeMapper privilegeMapper;
+
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -246,12 +249,13 @@ public class UserServiceImpl implements UserService {
         String user_code = user.getUser_code();
         String corp_code = user.getCorp_code();
         String email = user.getEmail();
-        List<User> phone_exist = userPhoneExist(phone);
+        List<User> phone_exist = new ArrayList<User>();
+        if (!phone.equals("")) {
+            phone_exist = userPhoneExist(phone);
+        }
         List<User> code_exist = userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
         List<User> email_exist = userEmailExist(email);
-        if (phone.equals("")) {
-            result = "手机号不能为空";
-        } else if (user_code.equals("")) {
+        if (user_code.equals("")) {
             result = "员工编号不能为空";
         } else if (phone_exist.size() > 0) {
             result = "手机号已存在";
@@ -273,7 +277,10 @@ public class UserServiceImpl implements UserService {
         int user_id = user.getId();
         User old_user = getUserById(user_id);
         String[] store_code1 = old_user.getStore_code().split(",");
-        List<User> phone_exist = userPhoneExist(user.getPhone());
+        List<User> phone_exist = new ArrayList<User>();
+        if (!user.getPhone().equals("")) {
+            phone_exist = userPhoneExist(user.getPhone());
+        }
         List<User> email_exist = userEmailExist(user.getEmail());
         if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
             List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(), Common.IS_ACTIVE_Y);
@@ -803,5 +810,85 @@ public class UserServiceImpl implements UserService {
             picture = userQrcode.getQrcode();
         }
         return picture;
+    }
+
+    @Transactional
+    public void signIn(JSONObject jsonObject, String user_code) throws Exception{
+        String user_id = jsonObject.get("id").toString();
+        String[] ids = user_id.split(",");
+        Date now = new Date();
+        for (int i = 0; i < ids.length; i++) {
+            logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
+            User user = getById(Integer.parseInt(ids[i]));
+            if (user.getIsonline() == null || user.getIsonline().equals("") || user.getIsonline().equals("N")){
+                user.setIsonline("Y");
+                user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                user.setModifier(user_code);
+                updateUser(user);
+                Sign sign = new Sign();
+                sign.setUser_code(user.getUser_code());
+                sign.setUser_name(user.getUser_name());
+                sign.setPhone(user.getPhone());
+                sign.setStatus(Common.STATUS_SIGN_IN);
+                sign.setSign_time(Common.DATETIME_FORMAT.format(now));
+                if (user.getStore_code()!=null && !user.getStore_code().equals("")){
+                    String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
+                    sign.setStore_code(store_code[0]);
+                }
+                if (user.getArea_code()!=null && !user.getArea_code().equals("")){
+                    String[] area_code = user.getArea_code().replace(Common.STORE_HEAD,"").split(",");
+                    List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(),area_code,Common.IS_ACTIVE_Y);
+                    if (stores.size()>0)
+                    sign.setStore_code(stores.get(0).getStore_code());
+                }
+                sign.setCorp_code(user.getCorp_code());
+                sign.setModified_date(Common.DATETIME_FORMAT.format(now));
+                sign.setModifier(user_code);
+                sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                sign.setCreater(user_code);
+                sign.setIsactive(Common.IS_ACTIVE_Y);
+                signService.insert(sign);
+            }
+        }
+    }
+
+    @Transactional
+    public void signOut(JSONObject jsonObject, String user_code) throws Exception{
+        String user_id = jsonObject.get("id").toString();
+        String[] ids = user_id.split(",");
+        Date now = new Date();
+        for (int i = 0; i < ids.length; i++) {
+            logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
+            User user = getById(Integer.parseInt(ids[i]));
+            if (user.getIsonline() != null && user.getIsonline().equals("Y")){
+                user.setIsonline("N");
+                user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                user.setModifier(user_code);
+                updateUser(user);
+                Sign sign = new Sign();
+                sign.setUser_code(user.getUser_code());
+                sign.setUser_name(user.getUser_name());
+                sign.setPhone(user.getPhone());
+                sign.setStatus(Common.STATUS_SIGN_OUT);
+                sign.setSign_time(Common.DATETIME_FORMAT.format(now));
+                if (user.getStore_code()!=null && !user.getStore_code().equals("")){
+                    String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
+                    sign.setStore_code(store_code[0]);
+                }
+                if (user.getArea_code()!=null && !user.getArea_code().equals("")){
+                    String[] area_code = user.getArea_code().replace(Common.STORE_HEAD,"").split(",");
+                    List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(),area_code,Common.IS_ACTIVE_Y);
+                    if (stores.size()>0)
+                        sign.setStore_code(stores.get(0).getStore_code());
+                }
+                sign.setCorp_code(user.getCorp_code());
+                sign.setModified_date(Common.DATETIME_FORMAT.format(now));
+                sign.setModifier(user_code);
+                sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                sign.setCreater(user_code);
+                sign.setIsactive(Common.IS_ACTIVE_Y);
+                signService.insert(sign);
+            }
+        }
     }
 }

@@ -38,7 +38,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			}
 		}else{
 			this.displayHint(hint);
-			return false;
+			return true;
 		}
 	};
 	useroperatejs.checkMail = function(obj,hint){

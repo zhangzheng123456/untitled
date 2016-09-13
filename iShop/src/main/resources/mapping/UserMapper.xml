@@ -22,10 +22,11 @@
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="can_login" property="can_login"/>
+        <result column="can_login" property="can_login" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <!--地域-->
         <result column="area_code" property="area_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isonline" property="isonline" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="role_code" property="role_code"/>
     </resultMap>
 
@@ -45,8 +46,10 @@
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="area_code" property="area_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="can_login" property="can_login"/>
         <result column="position" property="position" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isonline" property="isonline" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="role_code" property="role_code"/>
         <association property="group" javaType="com.bizvane.ishop.entity.Group">
             <result column="group_name" property="group_name"/>
@@ -71,6 +74,7 @@
         def_user.modified_date,
         def_user.modifier,
         def_user.isactive,
+        def_user.isonline,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -117,6 +121,7 @@
         def_user.modified_date,
         def_user.modifier,
         def_user.isactive,
+        def_user.isonline,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -210,6 +215,7 @@
         def_user.created_date,
         def_user.creater,
         def_user.isactive,
+        def_user.isonline,
         def_corp.corp_name,
         def_group.group_name,
         def_group.role_code
@@ -297,6 +303,7 @@
         def_user.created_date,
         def_user.creater,
         def_user.isactive,
+        def_user.isonline,
         def_group.group_name,
         def_group.role_code
         FROM def_user,def_group,def_corp
@@ -344,6 +351,7 @@
         def_user.created_date,
         def_user.creater,
         def_user.isactive,
+        def_user.isonline,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -442,6 +450,9 @@
             <if test="user_id != null">
                 user_id,
             </if>
+            <if test="isonline != null">
+                isonline,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="user_code!=null">
@@ -506,6 +517,9 @@
             </if>
             <if test="user_id != null">
                 #{user_id},
+            </if>
+            <if test="isonline != null">
+                #{isonline},
             </if>
         </trim>
     </insert>
@@ -576,6 +590,9 @@
             <if test="area_code!=null ">
                 area_code = #{area_code},
             </if>
+            <if test="isonline != null">
+                isonline = #{isonline},
+            </if>
         </trim>
         WHERE ID = #{id};
     </update>
@@ -604,6 +621,7 @@
         def_user.modified_date,
         def_user.modifier,
         def_user.isactive,
+        def_user.isonline,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name
@@ -655,6 +673,7 @@
         def_user.modified_date,
         def_user.modifier,
         def_user.isactive,
+        def_user.isonline,
         def_group.group_name,
         def_group.role_code,
         def_corp.corp_name

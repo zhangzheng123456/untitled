@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="renderer" content="webkit">
+    <title>新增快捷回复</title>
+    <link href="../css/bootstrap.min.css?v=3.4.0" rel="stylesheet">
+    <link href="../font-awesome/css/font-awesome.css?v=4.3.0" rel="stylesheet">
+    <link href="../css/animate.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../css/jquery.searchableSelect.css">
+    <link href="../css/style.css?v=2.2.0" rel="stylesheet">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" type="text/css" href="../css/tips.css">
+    <style>
+        body{
+            margin-top:81px;
+        }
+    </style>
+</head>
+<body>
+<div id="page-wrapper" class="gray-bg dashbard-1">
+    <div class="col-lg-12 pre_title">消息管理<i class="icon-ishop_8-03"></i><label>新增快捷回复</label></div>
+    <div class="editor_em col-lg-7 editor_line  animated fadeInRight">
+        <form class="conpany_msg" style="margin-left:0px">
+            <div>
+                <ul style="display:inline-flex;">
+                    <li><label style="color:#c26555;">所属企业*</label></li>
+                    <li id="corp_select">
+                                <span class="corp_select">
+                                    <select id="OWN_CORP" style="display:inline-flex;" >
+                                    </select>
+                                </span>
+                    </li>
+                </ul>
+            </div>
+            <div>
+                <span style="display: inline-flex;width:100%">
+                    <label style="height:100px;">模板内容</label>
+                    <span class="reply_area">
+                    <textarea id="MOBAN_CONTENT" verify="Empty"></textarea>
+                    <div style="margin-top:25px" class="hint"><div  hintinfo="内容为必填项，不能为空！"></div></div>
+                    </span>
+                </span>
+            </div>
+        </form>
+    </div>
+    <div class="editor_detail col-lg-4 col-md-7 animated fadeInRight">
+        <div class="operadd_btn">
+            <ul>
+                <li style="cursor: pointer;"><i class="icon-ishop_6-04"></i>保存</li>
+                <li style="cursor: pointer;"><i class="icon-ishop_6-12"></i>关闭</li>
+            </ul>
+        </div>
+        <form class="msg_detail">
+            <div>
+                    <span><label>可用</label><em class="checkbox_isactive">
+                    <input checked="true" type="checkbox" value="" name="test" class="check" id="is_active">
+                    <label for="is_active"></label></em></span>
+            </div>
+        </form>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../js/bootstrap.min.js?v=3.4.0"></script>
+<script src="../js/plugins/metisMenu/jquery.metisMenu.js"></script>
+<script src="../js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<!-- Custom and plugin javascript -->
+<script src="../js/hplus.js?v=2.2.0"></script>
+<!-- moni select -->
+<script type="text/javascript" src="../js/moni_select.js"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js"></script>
+<script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
+<script type="text/javascript" src="../js/message/quick_reply_operate.js"></script>
+</body>
+
+</html>

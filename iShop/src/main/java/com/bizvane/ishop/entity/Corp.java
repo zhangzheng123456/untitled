@@ -1,5 +1,8 @@
 package com.bizvane.ishop.entity;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
 import java.lang.*;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +20,8 @@ public class Corp {
     private String address;
     //联系人
     private String contact;
+    //企业默认客服
+    private String cus_user_code;
     //联系电话
     private String contact_phone;
     //修改时间
@@ -32,11 +37,9 @@ public class Corp {
     //图片路径
     private String avater;
 
-//    private String app_id;
-//
-//    private String is_authorize;
-
     private List<CorpWechat> wechats;
+
+    private List<JSONObject> cus_user;
 
     public String getAvater() {
         return avater;
@@ -99,6 +102,14 @@ public class Corp {
 
     public void setContact_phone(String contact_phone) {
         this.contact_phone = contact_phone;
+    }
+
+    public String getCus_user_code() {
+        return cus_user_code;
+    }
+
+    public void setCus_user_code(String cus_user_code) {
+        this.cus_user_code = cus_user_code;
     }
 
     public String getModified_date() {
@@ -164,5 +175,13 @@ public class Corp {
 
     public void setWechats(List<CorpWechat> wechats) {
         this.wechats = wechats;
+    }
+
+    public List<JSONObject> getCus_user() {
+        return cus_user;
+    }
+
+    public void setCus_user(List<JSONObject> cus_user) {
+        this.cus_user = cus_user;
     }
 }

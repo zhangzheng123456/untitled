@@ -154,7 +154,7 @@ var message = JSON.parse(val.message);
                 }
                 var ID = sessionStorage.getItem("id");
                 var HEADPORTRAIT = "";
-                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/bg.png') {
+                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src")!=='../img/bg.png') {
                     HEADPORTRAIT = "http://products-image.oss-cn-hangzhou.aliyuncs.com/Corp_logo/ishow/" + $("#OWN_CORP").val().trim() + ".jpg";
                 } else {
                     HEADPORTRAIT = "";
@@ -190,6 +190,16 @@ var message = JSON.parse(val.message);
                     list.push(wechat);
                 }
                 var input = $(".checkbox_isactive").find("input")[0];
+                var a=$('.xingming input');//所属客服
+                var cus_user_code="";
+                for(var i=0;i<a.length;i++){
+                    var u=$(a[i]).attr("data-code");
+                    if(i<a.length-1){
+                        cus_user_code+=u+",";
+                    }else{
+                        cus_user_code+=u;
+                    }     
+                }
                 if (input.checked == true) {
                     ISACTIVE = "Y";
                 } else if (input.checked == false) {
@@ -211,6 +221,7 @@ var message = JSON.parse(val.message);
                     "contact": CONTACTS,
                     "phone": PHONE,
                     "isactive": ISACTIVE,
+                    "cus_user_code":cus_user_code,
                     "wechat":list
                 };
                 whir.loading.add("", 0.5);
@@ -300,7 +311,7 @@ jQuery(document).ready(function () {
             console.log(data);
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
-                console.log(msg);
+                var list=msg.cus_user;
                 $("#preview img").attr("src", msg.avater);
                 if ($("#preview img").attr("src").indexOf('http') !== -1) {
                     $("#c_logo label").html("更换logo");
@@ -323,13 +334,6 @@ jQuery(document).ready(function () {
                 console.log(wechat);
                 var len=$(".wx_app").find(".wx_span");
                 if(wechat.length>0) {
-                    // if (wechat[0].is_authorize== "Y") {
-                    //     $('.state_val').val("已授权");
-                    // } else if (wechat[0].is_authorize == "N") {
-                    //     $('.state_val').val("未授权");
-                    // }
-                    // $(len[0]).find(".WXID").val(wechat[0].app_id);
-                    // $(len[0]).find(".AppName").val(wechat[0].app_name);
                     for (var i = 0; i < wechat.length; i++) {
                         var is_authorize="";
                         if (wechat[i].is_authorize == "Y") {
@@ -346,6 +350,12 @@ jQuery(document).ready(function () {
                     }
                 }
                 var input = $(".checkbox_isactive").find("input")[0];
+                var ul="";
+                for(var i=0;i<list.length;i++){
+                    ul+="<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+list[i].cus_user_code+"' value='"+list[i].cus_user_name
+                     +"'><span class='power remove_app_id' onclick='deleteName(this)'>删除</span></p>";
+                }
+                $('.xingming').html(ul);
                 if (msg.isactive == "Y") {
                     input.checked = true;
                 } else if (msg.isactive == "N") {

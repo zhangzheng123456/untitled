@@ -186,26 +186,13 @@ public class VipAnalysisController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String query_type = jsonObject.get("query_type").toString();
 
-            DataBox dataBox = null;
             Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
-            if (query_type.equals("active")){
-                //活跃会员
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipRecent", datalist);
-            }else if (query_type.equals("three")){
-                //三个月
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
-            }else if (query_type.equals("six")){
-                //六个月
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
-            }else if (query_type.equals("nine")){
-                //九个月
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
-            }else if (query_type.equals("twelve")){
-                //十二个月
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
-            }
-            logger.info("----query_type: "+query_type+"---vipConsume:" + dataBox.data.get("message").value);
+            Data data_query_type = new Data("query_type", query_type, ValueType.PARAM);
+            datalist.put(data_query_type.key, data_query_type);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisSleep", datalist);
             String result = dataBox.data.get("message").value;
+            logger.info("----query_type: "+query_type+"---vipConsume:" + dataBox.data.get("message").value);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

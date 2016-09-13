@@ -43,7 +43,76 @@
                     <div>
                         <span><label>品牌名称</label><input type="text" id="BRAND_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="所属品牌不能为空！"></div></div></span>
                     </div>
+                    <div>
+                        <div class="drop_down">
+                        <span><label>所属公众号</label><input class="input_select" id="Accounts" data-appid="" type="text" placeholder="选取公众号" readonly />
+                            <ul class="Acc_dropdown" id="Acc_dropdown">
+                                 
+                            </ul>
+                        </span>
+                    </div>
+                    <div>
+                        <div class="task_allot"style="margin-right:14px;display: inline-block; vertical-align:top;">默认客服</div>
+                        <div class="good_imgs" style="display: inline-block;width:420px">
+                            <div class="xingming">
+                                
+                            </div>
+                            <div id="test">
+                                <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                    新增 <span>+</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    </div>
                 </form>
+                <div class="distribution_frame" id="distribution_frame">
+                    <div id="area_code" class="drop-down">
+                        <h5>所属区域</h5>
+                        <input type="text" class="input" readonly="true" id="area_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="area_search">
+                            <i class="icon-ishop_3-05" id="area_search_d"></i>
+                        </div>    
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="area_more">加载更多</div>
+                        </div>
+                        <div id="area_code_drop" class="drop_q">确定</div>
+                    </div>
+                    <div id="store_code" class="drop-down">
+                        <h5>所属店铺</h5>
+                        <input type="text" class="input" readonly="true" id="store_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="store_search">
+                            <i class="icon-ishop_3-05" id="store_search_d"></i>
+                        </div>
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="store_more">加载更多</div>
+                        </div>
+                        <div id="store_code_drop" class="drop_q">确定</div>   
+                    </div>
+                    <div id="staff_code" class="drop-down">
+                        <h5>员工名称</h5>
+                        <input type="text" class="input" readonly="true" id="staff_input">
+                        <div class="search">
+                            <input type="text" placeholder="请输入搜索信息" id="staff_search">
+                            <i class="icon-ishop_3-05" id="staff_search_d"></i>
+                        </div>
+                        <div class="drop_down_ul">
+                            <ul>
+                                
+                            </ul>
+                            <div class="area_more" id="staff_more">加载更多</div>
+                        </div>
+                        <div id="staff_code_drop" class="drop_q">确定</div>  
+                    </div>
+                </div>
             </div>
             <div class="editor_detail col-lg-4  col-md-7 animated fadeInRight">
                 <div class="brandadd_oper_btn">
@@ -72,11 +141,13 @@
    <!-- Dialog -->
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
+    <script type="text/javascript" src="../js/multiple_choice.js"></script>
     <!-- ajax -->
     <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/brand/brand_operate.js"></script>
+    <script type="text/javascript" src="../js/brand/get_staff.js"></script>
 </body>
 </html>

@@ -28,8 +28,6 @@ public interface CorpService {
 
     List<Corp> selectAllCorp() throws Exception;
 
-    String selectMaxCorpCode()throws Exception;
-
     String getCorpByCorpName(String corp_name,String isactive) throws Exception;
 
     int getAreaCount(String corp_code) throws Exception;

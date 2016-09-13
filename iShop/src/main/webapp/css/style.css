@@ -7753,6 +7753,23 @@ ul,li{list-style:none;padding:0;margin:0;}
   background:#ffffff;
   border-radius:4px;
 }
+.reply_area{
+  width:420px;
+  height:100px;
+  display:inline-block;
+  background:#ffffff;
+  border-radius:4px;
+}
+.reply_area textarea{
+  width:410px;
+  height:80px;
+  margin-left:10px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+}
 .tempalte_area textarea{
   width:410px;
   height:80px;

@@ -1,5 +1,10 @@
 package com.bizvane.ishop.entity;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
+
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/5/19.
  */
@@ -11,6 +16,8 @@ public class Brand {
     private String brand_name;
     //公司编号
     private String corp_code;
+    //品牌默认客服
+    private String cus_user_code;
     //修改时间
     private String modified_date;
     //修改人
@@ -24,6 +31,12 @@ public class Brand {
 
     private Corp corp;
     private String corp_name;
+
+    private List<JSONObject> cus_user;
+
+    private String app_id;
+
+    private String app_name;
 
     public String getCorp_name() {
         return corp_name;
@@ -73,6 +86,14 @@ public class Brand {
         this.corp_code = corp_code;
     }
 
+    public String getCus_user_code() {
+        return cus_user_code;
+    }
+
+    public void setCus_user_code(String cus_user_code) {
+        this.cus_user_code = cus_user_code;
+    }
+
     public String getModified_date() {
         return modified_date;
     }
@@ -119,5 +140,29 @@ public class Brand {
 
     public void setCorp(Corp corp) {
         this.corp = corp;
+    }
+
+    public List<JSONObject> getCus_user() {
+        return cus_user;
+    }
+
+    public void setCus_user(List<JSONObject> cus_user) {
+        this.cus_user = cus_user;
+    }
+
+    public String getApp_id() {
+        return app_id;
+    }
+
+    public void setApp_id(String app_id) {
+        this.app_id = app_id;
+    }
+
+    public String getApp_name() {
+        return app_name;
+    }
+
+    public void setApp_name(String app_name) {
+        this.app_name = app_name;
     }
 }
