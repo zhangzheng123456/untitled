@@ -710,66 +710,68 @@
 <script src="../js/vip/vip_analyze.js"></script>
 <script type="text/javascript"></script>
 <script>
-    // 列表点击效果
-    $(".vip_nav_bar li:nth-child(1)").click(function () {
-        $('.birthVip').show();
-        $(".newVip").hide();
-        $(".activeVip").hide();
-        $(".rank").hide();
-    })
-    $(".vip_nav_bar li:nth-child(2)").click(function () {
-        $('.birthVip').hide();
-        $(".newVip").show();
-        $(".activeVip").hide();
-        $(".rank").hide();
-    })
-    $(".vip_nav_bar li:nth-child(3)").click(function () {
-        $('.birthVip').hide();
-        $(".newVip").hide();
-        $(".activeVip").show();
-        $(".rank").hide();
-    })
-    $(".vip_nav_bar li:nth-child(4)").click(function () {
-        $('.birthVip').hide();
-        $(".newVip").hide();
-        $(".activeVip").hide();
-        $(".rank").show();
-    })
-    $(".vip_nav_bar li").click(function () {
-        $(this).css("border-bottom","2px solid #6cc1c8");
-        $(this).siblings().css("border-bottom","");
-    })
-    $(".date_btn span").click(function () {
-        $(this).css({"color":"#fff","background":"#6dc1c8"});
-        $(this).parent("li").siblings().children("span").css({"color":"","background":""});
-    })
-    $(".month_btn span").click(function () {
-        $(this).css({"color":"#fff","background":"#6dc1c8"});
-        $(this).parent("li").siblings().children("span").css({"color":"","background":""});
-    })
-
-    //加载更多页面放大
-    function vipTable_lg() {
-        $("#table_analyze").addClass("vip_table_lg");
-        $("#chart_analyze").hide();
-        $(".more_data").hide();
-        $("#side_analyze").hide();
-        $("html").css("background","#e8e8e8");
-        $("#table_analyze").css("background","#e8e8e8");
-        $(".vip_table_lg .icon-ishop_8-03").hide();
-        $(".foot").show();
-    }
-    $(".more_data").click(function () {
-       vipTable_lg();
-    })
-    //点击标题返回
-    $("#vipAnalyze_return").click(function () {
-        $("#table_analyze").removeClass("vip_table_lg");
-        $("#chart_analyze").show();
-        $(".more_data").show();
-        $("#side_analyze").show();
-        $("#table_analyze").css("background","#fff");
-        $(".foot").hide();
-    })
+//    // 列表点击效果
+//    $(".vip_nav_bar li:nth-child(1)").click(function () {
+//        $('.birthVip').show();
+//        $(".newVip").hide();
+//        $(".activeVip").hide();
+//        $(".rank").hide();
+//    })
+//    $(".vip_nav_bar li:nth-child(2)").click(function () {
+//        $('.birthVip').hide();
+//        $(".newVip").show();
+//        $(".activeVip").hide();
+//        $(".rank").hide();
+//        //异步请求数据
+//    })
+//    $(".vip_nav_bar li:nth-child(3)").click(function () {
+//        $('.birthVip').hide();
+//        $(".newVip").hide();
+//        $(".activeVip").show();
+//        $(".rank").hide();
+//    })
+//    $(".vip_nav_bar li:nth-child(4)").click(function () {
+//        $('.birthVip').hide();
+//        $(".newVip").hide();
+//        $(".activeVip").hide();
+//        $(".rank").show();
+//    })
+//    $(".vip_nav_bar li").click(function () {
+//        $(this).css("border-bottom","2px solid #6cc1c8");
+//        $(this).siblings().css("border-bottom","");
+//    })
+//    $(".date_btn span").click(function () {
+//        $(this).css({"color":"#fff","background":"#6dc1c8"});
+//        $(this).parent("li").siblings().children("span").css({"color":"","background":""});
+//    })
+//    $(".month_btn span").click(function () {
+//        $(this).css({"color":"#fff","background":"#6dc1c8"});
+//        $(this).parent("li").siblings().children("span").css({"color":"","background":""});
+//    })
+//
+//    //加载更多页面放大
+//    function vipTable_lg() {
+//        $("#table_analyze").addClass("vip_table_lg");
+//        $("#chart_analyze").hide();
+//        $(".more_data").hide();
+//        $("#side_analyze").hide();
+//        $("html").css("background","#e8e8e8");
+//        $("#table_analyze").css("background","#e8e8e8");
+//        $(".vip_table_lg .icon-ishop_8-03").hide();
+//        $(".foot").show();
+//    }
+//    $(".more_data").click(function () {
+//       vipTable_lg();
+//    })
+//    //点击标题返回
+//    $("#vipAnalyze_return").click(function () {
+//        $("#table_analyze").removeClass("vip_table_lg");
+//        $("#chart_analyze").show();
+//        $(".more_data").show();
+//        $("#side_analyze").show();
+//        $("#table_analyze").css("background","#fff");
+//        $(".foot").hide();
+//    })
+//
 </script>
 </html>
