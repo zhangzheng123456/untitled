@@ -1634,10 +1634,10 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             String type = jsonObject.get("type").toString();
-            if (type.equals("checkIn")) {
-                userService.checkIn(jsonObject, user_code);
-            }else if (type.equals("checkOut")){
-                userService.checkOut(jsonObject,user_code);
+            if (type.equals("signIn")) {
+                userService.signIn(jsonObject, user_code);
+            }else if (type.equals("signOut")){
+                userService.signOut(jsonObject,user_code);
             }
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

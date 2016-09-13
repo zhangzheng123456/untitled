@@ -79,8 +79,8 @@ public interface UserService {
 
     String creatUserQrcode(String corp_code,String user_code,String auth_appid,String user_id) throws Exception;
 
-    void checkIn(JSONObject jsonObject,String user_code) throws Exception;
+    void signIn(JSONObject jsonObject, String user_code) throws Exception;
 
-    void checkOut(JSONObject jsonObject,String user_code) throws Exception;
+    void signOut(JSONObject jsonObject, String user_code) throws Exception;
 
 }
