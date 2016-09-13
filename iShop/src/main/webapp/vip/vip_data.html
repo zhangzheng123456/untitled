@@ -10,34 +10,27 @@
     <link rel="stylesheet" href="../css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/vip-data.css">
-    <script src="../table/js/jquery.min.js"></script>
-    <!--<script src="/js/loading.js"></script>-->
-    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </head>
 <style>
      /*导航头部*/
-    .con_table{
-        /*overflow: hidden;*/
-    }
     .nav_bar li{
-        width:14%;
+        width:14.2865%;
         height:30px;
         line-height: 30px;
         float: left;
         font-size: 14px;
         color: #888888;
         text-align: center;
-    }
-    .nav_bar li div{
-        margin: 0 auto;
         cursor: pointer;
     }
-    .nav_bar_active{
-        border-bottom: 3px solid #6dc1c8;
+    .active1{
+        color: #6dc1c8;
     }
     .nav_bar{
         height: 35px;
         border-bottom: 1px solid #fff;
+        position: relative;
+        overflow: hidden;
     }
 
     /*基本信息*/
@@ -104,10 +97,16 @@
         margin-top: 10px ;
         padding: 10px;
     }
-    .record s{
+    .record em{
         font-size: 16px;
         color: #c26555;
         text-decoration: none;
+    }
+    .record_head em{
+        margin-left: 10px;
+    }
+    .record_head .consume_total{
+        margin-right: 10px;
     }
     .record .consume_total{
         font-size: 20px;
@@ -705,7 +704,6 @@
     </div>
     </div>
 
-
     <div class="">
         <div class="title">
             <span>会员管理</span>
@@ -720,17 +718,19 @@
         <div>
             <div class="nav">
                 <ul class="nav_bar" id="nav_bar">
-                    <li><div>基本信息</div></li>
-                    <li><div>拓展信息</div></li>
-                    <li><div>衣橱</div></li>
-                    <li><div>积分</div></li>
-                    <li><div>相册</div></li>
-                    <li><div>标签</div></li>
-                    <li><div>备注</div></li>
+                    <li>基本信息</li>
+                    <li>拓展信息</li>
+                    <li>衣橱</li>
+                    <li>积分</li>
+                    <li>相册</li>
+                    <li>标签</li>
+                    <li>备注</li>
+                    <div id="remark" style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
             </div>
 
-            <div class="basic_message" id="basic_message">
+            <div class="all_list">
+                <div class="basic_message" id="basic_message">
                 <!--左侧个人信息-->
                 <div class="editor_em col-lg-7  animated fadeInRight">
                     <form class="conpany_msg">
@@ -813,10 +813,14 @@
                 </div>
             </div>
 
-            <div class="record">
-                <div>
+                <div class="" style="display: none">
+                    拓展
+                </div>
+
+                <div class="record">
+                    <div>
                     <div class="record_head">
-                        总消费<s>￥</s><span class="consume_total">9600</span>共<span class="amount"> 24 </span>单
+                        总消费<em>￥</em><span class="consume_total">9600</span>共<span class="amount"> 24 </span>单
 
                         <ul>
                             <li>会员等级:<span>高级VIP</span></li>
@@ -837,9 +841,9 @@
                         </ul>
                     </div>
                 </div>
-                <div class="record_list">
+                    <div class="record_list">
                     <div class="order_list">
-                    <div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><s>￥</s><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>
+                    <div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>
                     <div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>
                 </div>
                     <hr/>
@@ -891,9 +895,9 @@
                     </table>
                     <div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>
                 </div>
-                <div class="record_list">
+                    <div class="record_list">
                     <div class="order_list">
-                        <div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><s>￥</s><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>
+                        <div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>
                         <div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>
                     </div>
                     <hr/>
@@ -945,9 +949,9 @@
                     </table>
                     <div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>
                 </div>
-            </div>
+                </div>
 
-            <div class="points">
+                <div class="points">
                 <div>
                     <div class="point_head">
                         总积分<s>￥</s><span class="consume_total">9600</span>
@@ -1075,9 +1079,9 @@
                 </div>
             </div>
 
-            <div class="album"></div>
+                <div class="album"></div>
 
-            <div class="viplabel">
+                <div class="viplabel">
                 <div class="search">
                     <input type="text" class="input" id="search" placeholder="当前页面搜索">
                     <i class="icon-ishop_3-05" id="d_search"></i>
@@ -1193,126 +1197,43 @@
                 </div>
             </div>
 
-            <div class="remark">
+                <div class="remark">
                <span>
                      <label>备注</label>
                      <textarea id=""></textarea>
                </span>
                 <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
             </div>
+            </div>
         </div>
     </div>
 </div>
 </body>
-<script src="../js/jquery-2.1.1.min.js"></script>
+<script src="../table/js/jquery.min.js"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <!--<script type="text/javascript" src="/js/insidePostRequire.js"></script>-->
-<!--<script src="/js/staff/staff_action.js"></script>-->
-<!--<script src="../js/vip/vip_analyze.js"></script>-->
-<script type="text/javascript"></script>
 <script>
-    //给导航选中状态增加宽度
-    window.onresize=function () {
-        var liWidth=$(".nav_bar li").width()-20;
-        $(".nav_bar li div").css("width",liWidth+"px");
-    }
-    //导航选中效果
-    $("#nav_bar li div").click(function () {
-        $(this).addClass("nav_bar_active");
-        $(this).parents("li").siblings().children("div").removeClass("nav_bar_active")
-    })
     //导航点击切换窗口
-    $("#nav_bar li:nth-child(1)").click(function () {
-        $(".basic_message").show();
-        $(".basic_message").siblings("div").hide();
-        $(".nav").show();
-    })
-    $("#nav_bar li:nth-child(3)").click(function () {
-        $(".record").show();
-        $(".record").siblings("div").hide();
-        $(".nav").show();
-    })
-    $("#nav_bar li:nth-child(4)").click(function () {
-        $(".points").show();
-        $(".points").siblings("div").hide();
-        $(".nav").show();
-    })
-    $("#nav_bar li:nth-child(5)").click(function () {
-        $(".album").show();
-        $(".album").siblings("div").hide();
-        $(".nav").show();
-    })
-    $("#nav_bar li:nth-child(6)").click(function () {
-        $(".viplabel").show();
-        $(".viplabel").siblings("div").hide();
-        $(".nav").show();
-    })
-    $("#nav_bar li:nth-child(7)").click(function () {
-        $(".remark").show();
-        $(".remark").siblings("div").hide();
-        $(".nav").show();
-    })
-</script>
-<script>
-    $(".vip_nav_bar li:nth-child(1)").click(function () {
-        $('.birthVip').show();
-        $(".newVip").hide();
-        $(".activeVip").hide();
-        $(".rank").hide();
-    })
-    $(".vip_nav_bar li:nth-child(2)").click(function () {
-        $('.birthVip').hide();
-        $(".newVip").show();
-        $(".activeVip").hide();
-        $(".rank").hide();
-    })
-    $(".vip_nav_bar li:nth-child(3)").click(function () {
-        $('.birthVip').hide();
-        $(".newVip").hide();
-        $(".activeVip").show();
-        $(".rank").hide();
-    })
-    $(".vip_nav_bar li:nth-child(4)").click(function () {
-        $('.birthVip').hide();
-        $(".newVip").hide();
-        $(".activeVip").hide();
-        $(".rank").show();
-    })
-    $(".vip_nav_bar li").click(function () {
-        $(this).css("border-bottom","2px solid #6cc1c8");
-        $(this).siblings().css("border-bottom","");
-    })
-    $(".date_btn span").click(function () {
-        $(this).css({"color":"#fff","background":"#6dc1c8"});
-        $(this).parent("li").siblings().children("span").css({"color":"","background":""});
-    })
-    $(".month_btn span").click(function () {
-        $(this).css({"color":"#fff","background":"#6dc1c8"});
-        $(this).parent("li").siblings().children("span").css({"color":"","background":""});
-    })
-
-    //加载更多页面放大
-    function vipTable_lg() {
-        $("#table_analyze").addClass("vip_table_lg");
-        $("#chart_analyze").hide();
-        $(".more_data").hide();
-        $("#side_analyze").hide();
-        $("html").css("background","#e8e8e8");
-        $("#table_analyze").css("background","#e8e8e8");
-        $(".vip_table_lg .icon-ishop_8-03").hide();
-    }
-    $(".more_data").click(function () {
-        vipTable_lg();
+    $("#nav_bar li").click(function () {
+        var index=$(this).index();
+        $(this).addClass("active1");
+        $(this).siblings().removeClass("active1");
+        $(".all_list").children().eq(index).show();
+        $(".all_list").children().eq(index).siblings().hide();
+    }).mouseover(function(){
+        var len=$(this).width();
+        var index=$(this).index();
+        $("#remark").animate({left:len*index},200);
+    }).mouseout(function(){
+        $("#remark").stop(true,true);
     });
-    //点击标题返回
-    $("#vipAnalyze_return").click(function () {
-        $("#table_analyze").removeClass("vip_table_lg");
-        $("#chart_analyze").show();
-        $(".more_data").show();
-        $("#side_analyze").show();
-        $("#table_analyze").css("background","#fff");
-    })
+    $(".nav_bar").mouseleave(function() {
+        $("#remark").stop();
+        var _this = $(".active1").index();
+        $(this).children().eq(_this).addClass("active1");
+        var len = $(this).children().width();
+        $("#remark").animate({left: len * _this}, 200);})
 </script>
-
 <script src="../js/dist/echarts.js"></script>
 <script type="text/javascript">
     require.config({
