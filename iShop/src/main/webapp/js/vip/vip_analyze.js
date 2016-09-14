@@ -1,6 +1,7 @@
 var oc = new ObjectControl();
 var page=1;
 var jump=1;//标签跳转
+var jump_s=0;//消费记录标签
 var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
@@ -94,6 +95,10 @@ function showNameClick(e){
         $('#select_analyze_shop').toggle();
         sleepVipGet();//获取活跃会员
         newVipGet();//获取新会员
+        brithVipGet();
+        consumeVipGet();
+        consumeVipGetam();
+        consumeVipGetre();
     }
 }
 //取消下拉框
@@ -301,6 +306,7 @@ function birthVipGet_sub(ali) {
 /******************新VIP会员****************************/
 //新VIP模块数据请求加载
 function newVipGet(){
+    whir.loading.add("",0.5);//加载等待框
     var type='new';
     $('.newVip .vip_table tbody').empty();
     var param={};
@@ -341,35 +347,19 @@ function newVipGet(){
                 })
 
             }
-            // else if(msg.length>=10){
-            //     for(var i=0;i<10;i++){
-            //         var a=i+1;
-            //         $(".newVip tbody").append('<tr><td>'
-            //             + a
-            //             +'</td><td>'
-            //             + msg[i].vip_name
-            //             +'</td><td>'
-            //             + msg[i].vip_card_type
-            //             +'</td><td>'
-            //             + msg[i].join_date
-            //             +'</td><td>'
-            //             + msg[i].vip_birthday
-            //             +'</td></tr>');
-            //     }
-            //     $(".vip_table tbody tr").click(function () {
-            //         vipTable_lg();
-            //     })
-            // }
         }else if(data.code=="-1"){
             console.log(data.message);
+            whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
     });
+    whir.loading.remove();//移除加载框
 }
 /*************活跃会员********************************/
 //获取活跃用户
 function sleepVipGet() {
+    whir.loading.add("",0.5);//加载等待框
     var type='sleep';
     $('.activeVip .vip_table tbody').empty();
     var param={};
@@ -415,10 +405,12 @@ function sleepVipGet() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
+            whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
+    whir.loading.remove();//移除加载框
 }
 function sleepVipGet_sub(ali) {
     var ali=ali;//当前对象
@@ -432,6 +424,7 @@ function sleepVipGet_sub(ali) {
 }
 /*************消费排行****************/
 function consumeVipGet() {
+    whir.loading.add("",0.5);//加载等待框
     var type='consume';
     $('.rank .vip_table tbody').empty();
     $('.rank .vip_table thead').empty();
@@ -482,12 +475,15 @@ function consumeVipGet() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
+            whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
+    whir.loading.remove();//移除加载框
 }
 function consumeVipGetre() {
+    whir.loading.add("",0.5);//加载等待框
     var type='consume';
     $('.rank .vip_table tbody').empty();
     $('.rank .vip_table thead').empty();
@@ -506,7 +502,7 @@ function consumeVipGetre() {
             var msg=JSON.parse(data.message);
             count=msg.pages;
             var pageIndex=msg.pageNum;
-            msg=msg.vip_consume_recently_list;
+            msg=msg.vip_cost_freq_list;
             if(msg.length){
                 $(".rank thead").append('<tr>'
                     + '<th>序号</th>'
@@ -527,9 +523,9 @@ function consumeVipGetre() {
                         +'</td><td>'
                         + msg[i].vip_type
                         +'</td><td>'
-                        + msg[i].amount
+                        + msg[i].avg_amount
                         +'</td><td>'
-                        + msg[i].consume_time
+                        + msg[i].consume_frequently
                         +'</td></tr>');
                 }
                 $(".rank .vip_table tbody tr").click(function () {
@@ -538,12 +534,15 @@ function consumeVipGetre() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
+            whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
+    whir.loading.remove();//移除加载框
 }
 function consumeVipGetam() {
+    whir.loading.add("",0.5);//加载等待框
     var type='consume';
     $('.rank .vip_table tbody').empty();
     $('.rank .vip_table thead').empty();
@@ -562,14 +561,13 @@ function consumeVipGetam() {
             var msg=JSON.parse(data.message);
             count=msg.pages;
             var pageIndex=msg.pageNum;
-            msg=msg.vip_consume_recently_list;
-            if(msg.length){
+            msg=msg.amount_list;
+            if(msg.length>0){
                 $(".rank thead").append('<tr>'
                     + '<th>序号</th>'
                     + '<th>会员</th>'
                     + '<th>会员等级</th>'
-                    + '<th>消费总额</th>'
-                    + '<th>最近消费日期</th></tr>')
+                    + '<th>消费总额</th></tr>')
                 for(var i=0;i<msg.length;i++){
                     if(pageIndex>=2){
                         var a=i+1+(pageIndex-1)*pageSize;
@@ -581,11 +579,9 @@ function consumeVipGetam() {
                         +'</td><td>'
                         + msg[i].vip_name
                         +'</td><td>'
-                        + msg[i].vip_type
+                        + msg[i].vip_card_type
                         +'</td><td>'
                         + msg[i].amount
-                        +'</td><td>'
-                        + msg[i].consume_time
                         +'</td></tr>');
                 }
                 $(".rank .vip_table tbody tr").click(function () {
@@ -594,10 +590,12 @@ function consumeVipGetam() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
+            whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
+    whir.loading.remove();//移除加载框
 }
 function consumeVipGet_sub(ali) {
     var ali=ali;//当前对象
@@ -606,10 +604,12 @@ function consumeVipGet_sub(ali) {
         case '消费频率': query_type="freq";consumeVipGetre('','',query_type);break;
         case '本月消费': query_type="month";consumeVipGetam('','',query_type);break;
         case '前三月消费': query_type="three_month";consumeVipGetam('','',query_type);break;
-        case '历史总额': query_type="hitory";consumeVipGetam('','',query_type);break;
+        case '历史总额': query_type="history";consumeVipGetam('','',query_type);break;
     }
 }
 $('.rank .month_btn li').click(function () {
+    jump_s=$(this).index();
+    console.log(jump_s);
     consumeVipGet_sub(this);
     $("#page_row").val("10行/页");
 });
@@ -719,6 +719,9 @@ $(function(){
                 jump==2&&(newVipGet(a,pageSize));
                 jump==3&&(sleepVipGet(a,pageSize,query_type));
                 jump==1&&(brithVipGet(a,pageSize,month_type));
+                jump_s==0&&(consumeVipGet(a,pageSize,month_type));
+                jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
+                jump_s>1&&(consumeVipGetam(a,pageSize,query_type));
                 // if(value==""&&filtrate==""){
                 //     inx=1;
                 //     GET(inx,pageSize);
@@ -771,6 +774,14 @@ function dian(a,b,c,query_type){
     }else if( c=='birth'&&(query_type) ){
         brithVipGet(a,b,query_type)
     }
+    //当请求类型为consume 判断请求的类型
+    if(c=='consume'&&(query_type=='recent')){
+        consumeVipGet(a,b);
+    }else if( c=='consume'&&(query_type=="freq") ){
+        consumeVipGetre(a,b,query_type);
+    }else if( c=='consume'&&(query_type=="month"||query_type=="three_month"||query_type=="history") ){
+        consumeVipGetam(a,b,query_type);
+    }
 }
 //指定页面的跳转
 $("#input-txt").keydown(function() {
@@ -786,6 +797,9 @@ $("#input-txt").keydown(function() {
                 jump==2&&(newVipGet(inx));
                 jump==3&&(sleepVipGet(inx,'',query_type));
                 jump==1&&(brithVipGet(inx,'',month_type));
+                jump_s==0&&(consumeVipGet(inx,'',month_type));
+                jump_s==1&&(consumeVipGetre(inx,'',query_type));
+                jump_s>1&&(consumeVipGetam(inx,'',query_type));
             }
         };
 })
