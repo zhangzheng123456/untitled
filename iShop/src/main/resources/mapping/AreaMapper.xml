@@ -210,7 +210,7 @@
         </foreach>
         ORDER BY da.id DESC
     </select>
-    <select id="selectArea" resultMap="Area">
+    <select id="selectArea" resultType="com.bizvane.ishop.entity.Area">
         SELECT area_code,area_name
         FROM def_area
         WHERE 1=1
