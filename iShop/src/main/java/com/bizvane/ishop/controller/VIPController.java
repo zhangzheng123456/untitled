@@ -6,6 +6,9 @@ import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.sun.v1.common.Data;
+import com.bizvane.sun.v1.common.DataBox;
+import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,53 +17,64 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by zhouying on 2016-04-20.
  */
 @Controller
-@RequestMapping("/VIP")
+@RequestMapping("/vip")
 public class VIPController {
 
-    @Autowired
-    private VipService vipService;
-
-    private static final Logger log = Logger.getLogger(VIPController.class);
+    private static final Logger logger = Logger.getLogger(VIPController.class);
 
     String id;
-
+    @Autowired
+    IceInterfaceService iceInterfaceService;
     /**
      * 会员列表
      */
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @RequestMapping(value = "/list", method = RequestMethod.GET)
+//    @ResponseBody
+//    public String VIPManage(HttpServletRequest request) {
+//        DataBean dataBean = new DataBean();
+//        try {
+//
+//        } catch (Exception ex) {
+//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+//            dataBean.setId("1");
+//            dataBean.setMessage(ex.getMessage());
+//            logger.info(ex.getMessage());
+//        }
+//        return dataBean.getJsonStr();
+//    }
+
+    //会员积分
+    @RequestMapping(value = "/vipPoints", method = RequestMethod.POST)
     @ResponseBody
-    public String VIPManage(HttpServletRequest request) {
+    public String vipPoints(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            Map datalist = iceInterfaceService.viBasicMethod(jsonObject,request);
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.VipDetailQuery", datalist);
+            logger.info("-------会员积分" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
 
-            int page_number = Integer.parseInt(request.getParameter("pageNumber"));
-            int page_size = Integer.parseInt(request.getParameter("pageSize"));
-            JSONObject result = new JSONObject();
-            PageInfo<VIPInfo> list;
-            if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipService.selectBySearch(page_number, page_size, "", "");
-            } else {
-                list = vipService.selectBySearch(page_number, page_size, corp_code, "");
-            }
-            result.put("list", list);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId("1");
-            dataBean.setMessage(result.toString());
+            dataBean.setId(id);
+            dataBean.setMessage(result);
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId("1");
+            dataBean.setId(id);
             dataBean.setMessage(ex.getMessage());
-            log.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
-
-
 }

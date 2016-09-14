@@ -34,6 +34,51 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         return dataBox;
     }
 
+    public Map viBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception{
+        String user_code = request.getSession().getAttribute("user_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
+        String page_num = jsonObject.get("pageNumber").toString();
+        String page_size = jsonObject.get("pageSize").toString();
+
+        String user_id = "";
+        String area_code = "";
+        String store_id = "";
+        if (role_code.equals(Common.ROLE_SYS)) {
+            corp_code = jsonObject.get("corp_code").toString();
+        } else if (role_code.equals(Common.ROLE_GM)){
+
+        } else if (role_code.equals(Common.ROLE_AM)){
+            area_code = request.getSession().getAttribute("area_code").toString();
+            area_code = area_code.replace(Common.STORE_HEAD,"");
+        } else if (role_code.equals(Common.ROLE_SM)){
+            String store_code = request.getSession().getAttribute("store_code").toString();
+            store_id = store_code.replace(Common.STORE_HEAD,"");
+        } else if (role_code.equals(Common.ROLE_STAFF)){
+            user_id = user_code;
+        }
+
+        Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+        Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+        Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+        Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+        Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+        Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+        Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+        Map datalist = new HashMap<String, Data>();
+        datalist.put(data_user_id.key, data_user_id);
+        datalist.put(data_corp_code.key, data_corp_code);
+        datalist.put(data_store_id.key, data_store_id);
+        datalist.put(data_area_code.key, data_area_code);
+        datalist.put(data_role_code.key, data_role_code);
+        datalist.put(data_page_num.key, data_page_num);
+        datalist.put(data_page_size.key, data_page_size);
+
+        return datalist;
+    }
+
     public Map vipAnalysisBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception{
         String user_code = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();

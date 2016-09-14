@@ -15,5 +15,7 @@ import java.util.Map;
 public interface IceInterfaceService {
     DataBox iceInterface(String method , Map datalist) throws Exception;
 
+    Map viBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception;
+
     Map vipAnalysisBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception;
 }
