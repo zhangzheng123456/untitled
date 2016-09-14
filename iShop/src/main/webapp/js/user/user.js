@@ -30,7 +30,7 @@ if(return_jump==null){
     if(value==""&&filtrate==""){
         GET(inx,pageSize);
     }
-}else if(return_jump!==null){
+ }else if(return_jump!==null){
     if(pageSize==10){
         $("#page_row").val("10行/页");  
     }

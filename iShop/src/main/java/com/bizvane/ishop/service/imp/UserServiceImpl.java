@@ -812,7 +812,8 @@ public class UserServiceImpl implements UserService {
         return picture;
     }
 
-    public void checkIn(JSONObject jsonObject,String user_code) throws Exception{
+    @Transactional
+    public void signIn(JSONObject jsonObject, String user_code) throws Exception{
         String user_id = jsonObject.get("id").toString();
         String[] ids = user_id.split(",");
         Date now = new Date();
@@ -827,7 +828,8 @@ public class UserServiceImpl implements UserService {
                 Sign sign = new Sign();
                 sign.setUser_code(user.getUser_code());
                 sign.setUser_name(user.getUser_name());
-                sign.setStatus(Common.STATUS_CHECK_IN);
+                sign.setPhone(user.getPhone());
+                sign.setStatus(Common.STATUS_SIGN_IN);
                 sign.setSign_time(Common.DATETIME_FORMAT.format(now));
                 if (user.getStore_code()!=null && !user.getStore_code().equals("")){
                     String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
@@ -840,7 +842,7 @@ public class UserServiceImpl implements UserService {
                     sign.setStore_code(stores.get(0).getStore_code());
                 }
                 sign.setCorp_code(user.getCorp_code());
-                sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                sign.setModified_date(Common.DATETIME_FORMAT.format(now));
                 sign.setModifier(user_code);
                 sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 sign.setCreater(user_code);
@@ -850,7 +852,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public void checkOut(JSONObject jsonObject,String user_code) throws Exception{
+    @Transactional
+    public void signOut(JSONObject jsonObject, String user_code) throws Exception{
         String user_id = jsonObject.get("id").toString();
         String[] ids = user_id.split(",");
         Date now = new Date();
@@ -865,7 +868,8 @@ public class UserServiceImpl implements UserService {
                 Sign sign = new Sign();
                 sign.setUser_code(user.getUser_code());
                 sign.setUser_name(user.getUser_name());
-                sign.setStatus(Common.STATUS_CHECK_OUT);
+                sign.setPhone(user.getPhone());
+                sign.setStatus(Common.STATUS_SIGN_OUT);
                 sign.setSign_time(Common.DATETIME_FORMAT.format(now));
                 if (user.getStore_code()!=null && !user.getStore_code().equals("")){
                     String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
@@ -878,7 +882,7 @@ public class UserServiceImpl implements UserService {
                         sign.setStore_code(stores.get(0).getStore_code());
                 }
                 sign.setCorp_code(user.getCorp_code());
-                sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                sign.setModified_date(Common.DATETIME_FORMAT.format(now));
                 sign.setModifier(user_code);
                 sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 sign.setCreater(user_code);

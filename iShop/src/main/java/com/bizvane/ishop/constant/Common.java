@@ -52,8 +52,8 @@ public class Common {
 
     public static final String VIP_LABEL_TYPE_SYS = "sys";
     //签到
-    public static final String STATUS_CHECK_IN = "0";
+    public static final String STATUS_SIGN_IN = "0";
     //签退
-    public static final String STATUS_CHECK_OUT = "-1";
+    public static final String STATUS_SIGN_OUT = "-1";
 
 }

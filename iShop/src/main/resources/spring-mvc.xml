@@ -93,8 +93,8 @@
         <mvc:exclude-mapping path="/phone_exist"/>
         <mvc:exclude-mapping path="/userlogin"/>
         <mvc:exclude-mapping path="/api/**"/>
-        <mvc:exclude-mapping path="/corp/Corp_codeExist"/>
-        <mvc:exclude-mapping path="/corp/CorpNameExist"/>
+        <mvc:exclude-mapping path="/Websocket/**"/>
+        <!--<mvc:exclude-mapping path="/corp/CorpNameExist"/>-->
 
         <bean class="com.bizvane.ishop.interceptor.SpringMVCInterceptor"/>
     </mvc:interceptor>
