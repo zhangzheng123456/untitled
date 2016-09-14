@@ -314,7 +314,6 @@ public class UserController {
     }
 
 
-
     /***
      * Execl增加用户
      */
@@ -446,7 +445,7 @@ public class UserController {
                     break;
                 }
             }
-            for(int i=3;i<column2.length;i++){
+            for (int i = 3; i < column2.length; i++) {
                 if (column2[i].getContents().toString().trim().equals("")) {
                     continue;
                 }
@@ -478,49 +477,49 @@ public class UserController {
                     break;
                 }
             }
-            for(int i=3;i<column8.length;i++) {
-                String areaCheck=column8[i].getContents().toString().trim();
-                if (areaCheck==null||areaCheck.equals("")) {
+            for (int i = 3; i < column8.length; i++) {
+                String areaCheck = column8[i].getContents().toString().trim();
+                if (areaCheck == null || areaCheck.equals("")) {
                     continue;
                 }
 //                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
 //                if (role.equals(Common.ROLE_AM) || role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
-                    String areas = column8[i].getContents().toString().trim();
-                    String[] splitAreas = areas.split(",");
-                    for (int j = 0; j < splitAreas.length; j++) {
+                String areas = column8[i].getContents().toString().trim();
+                String[] splitAreas = areas.split(",");
+                for (int j = 0; j < splitAreas.length; j++) {
 //                        Matcher matcher7 = pattern7.matcher(splitAreas[j]);
 //                        if (matcher7.matches() == false) {
 //                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个区域编号格式有误";
 //                            int b = 5 / 0;
 //                            break;
 //                        }
-                        Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
-                        if (area == null) {
-                            result = "：第" + (i + 1) + "行,第" + (j + 1) + "个区域编号不存在";
-                            int b = 5 / 0;
-                            break;
-                        }
+                    Area area = areaService.getAreaByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
+                    if (area == null) {
+                        result = "：第" + (i + 1) + "行,第" + (j + 1) + "个区域编号不存在";
+                        int b = 5 / 0;
+                        break;
                     }
-             //   }
+                }
+                //   }
             }
-            for(int i=3;i<column9.length;i++){
-                String storeCheck=column9[i].getContents().toString().trim();
-                if (storeCheck==null||storeCheck.equals("")) {
+            for (int i = 3; i < column9.length; i++) {
+                String storeCheck = column9[i].getContents().toString().trim();
+                if (storeCheck == null || storeCheck.equals("")) {
                     continue;
                 }
 //                String role = groupService.selRoleByGroupCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
 //                if (role.equals(Common.ROLE_SM) || role.equals(Common.ROLE_STAFF)) {
-                    String stores = column9[i].getContents().toString().trim();
-                    String[] splitAreas = stores.split(",");
-                    for (int j = 0; j < splitAreas.length; j++) {
-                        Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
-                        if (store == null) {
-                            result = "：第" + (i + 1) + "行,第" + (j + 1) + "个店铺编号不存在";
-                            int b = 5 / 0;
-                            break;
-                        }
+                String stores = column9[i].getContents().toString().trim();
+                String[] splitAreas = stores.split(",");
+                for (int j = 0; j < splitAreas.length; j++) {
+                    Store store = storeService.getStoreByCode(column3[i].getContents().toString().trim(), splitAreas[j], Common.IS_ACTIVE_Y);
+                    if (store == null) {
+                        result = "：第" + (i + 1) + "行,第" + (j + 1) + "个店铺编号不存在";
+                        int b = 5 / 0;
+                        break;
                     }
-              //  }
+                }
+                //  }
             }
             ArrayList<User> users = new ArrayList<User>();
             for (int i = 3; i < rows; i++) {
@@ -529,7 +528,7 @@ public class UserController {
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String user_code = rs.getCell(j++, i).getContents().toString().trim();
                     String user_id2 = rs.getCell(j++, i).getContents().toString().trim();
-                    if(user_id2.equals("")){
+                    if (user_id2.equals("")) {
                         user_id2 = user_code;
                     }
                     String user_name = rs.getCell(j++, i).getContents().toString().trim();
@@ -540,10 +539,10 @@ public class UserController {
                     String area_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String position = rs.getCell(j++, i).getContents().toString().trim();
-                    if (cellCorp.equals("") && user_code.equals("")  && user_name.equals("") && phone.equals("") && group_code.equals("")) {
+                    if (cellCorp.equals("") && user_code.equals("") && user_name.equals("") && phone.equals("") && group_code.equals("")) {
                         continue;
                     }
-                    if (cellCorp.equals("") || user_code.equals("")|| user_name.equals("")  || group_code.equals("")) {
+                    if (cellCorp.equals("") || user_code.equals("") || user_name.equals("") || group_code.equals("")) {
                         result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
                         int a = 5 / 0;
                     }
@@ -655,9 +654,9 @@ public class UserController {
             String phone = jsonObject.get("phone").toString();
             User user = new User();
             user.setUser_code(user_code);
-            if (user_id.equals("")){
+            if (user_id.equals("")) {
                 user.setUser_id(user_code);
-            }else {
+            } else {
                 user.setUser_id(user_id);
             }
             user.setUser_name(jsonObject.get("username").toString());
@@ -765,9 +764,9 @@ public class UserController {
             User user = new User();
             user.setId(Integer.parseInt(jsonObject.get("id").toString()));
             user.setUser_code(user_code1);
-            if (user_id.equals("")){
+            if (user_id.equals("")) {
                 user.setUser_id(user_code1);
-            }else {
+            } else {
                 user.setUser_id(user_id);
             }
             user.setUser_name(jsonObject.get("username").toString());
@@ -883,7 +882,7 @@ public class UserController {
                         break;
                     }
                     userService.deleteUserQrcode(corp_code, user_code);
-                    signService.deleteByUser(user_code,corp_code);
+                    signService.deleteByUser(user_code, corp_code);
                 }
                 userService.delete(Integer.valueOf(ids[i]), user_code, corp_code);
             }
@@ -1260,7 +1259,7 @@ public class UserController {
             }
             if (jsonObject.has("user_id")) {
                 String user_id = jsonObject.get("user_id").toString();
-                existInfo = userService.userIdExist(user_id,corp_code);
+                existInfo = userService.userIdExist(user_id, corp_code);
             }
             if (existInfo.size() != 0) {
                 dataBean.setId(id);
@@ -1462,12 +1461,56 @@ public class UserController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 自动生成二维码（APP接口）
+     */
+    @RequestMapping(value = "/creatQrcodesForUser", method = RequestMethod.POST)
+    @ResponseBody
+    public String creatQrcodesForUser(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("------------UserController creatQrcodesForUser" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String user_code = jsonObject.get("user_code").toString();
+            List<CorpWechat> corpWechats = corpService.getWAuthByCorp(corp_code);
+            for (int i = 0; i < corpWechats.size(); i++) {
+                String auth_appid = corpWechats.get(i).getApp_id();
+                String result = userService.creatUserQrcode(corp_code, user_code, auth_appid, user_code);
+                if (result.equals(Common.DATABEAN_CODE_ERROR)) {
+                    dataBean.setId(id);
+                    dataBean.setMessage("生成二维码失败");
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    return dataBean.getJsonStr();
+                } else if (result.equals("48001")) {
+                    dataBean.setId(id);
+                    dataBean.setMessage("该功能未授权");
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    return dataBean.getJsonStr();
+                }
+            }
+            dataBean.setId(id);
+            dataBean.setMessage("生成完成");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+        } catch (Exception ex) {
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+        }
+        return dataBean.getJsonStr();
+    }
+
     /**
      * 删除二维码
      */
     @RequestMapping(value = "/deletQrcode", method = RequestMethod.POST)
     @ResponseBody
-    public String deletQrcode(HttpServletRequest request){
+    public String deletQrcode(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -1480,7 +1523,7 @@ public class UserController {
             String corp_code = jsonObject.get("corp_code").toString();
             String app_id = jsonObject.get("app_id").toString();
 
-            userService.deleteUserQrcodeOne(corp_code,user_code,app_id);
+            userService.deleteUserQrcodeOne(corp_code, user_code, app_id);
             dataBean.setId(id);
             dataBean.setMessage("success");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -1492,7 +1535,7 @@ public class UserController {
         }
         return dataBean.getJsonStr();
     }
-        
+
     /**
      * 员工管理
      * 筛选
@@ -1636,8 +1679,8 @@ public class UserController {
             String type = jsonObject.get("type").toString();
             if (type.equals("signIn")) {
                 userService.signIn(jsonObject, user_code);
-            }else if (type.equals("signOut")){
-                userService.signOut(jsonObject,user_code);
+            } else if (type.equals("signOut")) {
+                userService.signOut(jsonObject, user_code);
             }
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);

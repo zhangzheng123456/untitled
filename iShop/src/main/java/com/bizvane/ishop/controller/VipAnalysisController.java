@@ -1,12 +1,9 @@
 package com.bizvane.ishop.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.service.*;
-import com.bizvane.ishop.utils.TimeUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
@@ -229,13 +226,19 @@ public class VipAnalysisController {
                 dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
             }else if (query_type.equals("month")){
                 //本月消费
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
+                Data data_query_type = new Data("query_type", "1", ValueType.PARAM);
+                datalist.put(data_query_type.key, data_query_type);
+                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnlysisVipAmount", datalist);
             }else if (query_type.equals("three_month")){
                 //前三月消费
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
+                Data data_query_type = new Data("query_type", "2", ValueType.PARAM);
+                datalist.put(data_query_type.key, data_query_type);
+                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnlysisVipAmount", datalist);
             }else if (query_type.equals("history")){
                 //历史总额
-                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipFreq", datalist);
+                Data data_query_type = new Data("query_type", "3", ValueType.PARAM);
+                datalist.put(data_query_type.key, data_query_type);
+                dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnlysisVipAmount", datalist);
             }
             logger.info("----query_type: "+query_type+"---vipConsume:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
