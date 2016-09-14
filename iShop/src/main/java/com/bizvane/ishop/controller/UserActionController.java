@@ -49,7 +49,7 @@ import java.util.regex.Pattern;
 @Controller
 @RequestMapping("/userAction")
 public class UserActionController {
-    private static final Logger logger = Logger.getLogger(LoginController.class);
+    private static final Logger logger = Logger.getLogger(UserActionController.class);
 
     @Autowired
     MongoDBClient mongodbClient;
@@ -166,9 +166,6 @@ public class UserActionController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String search_value = jsonObject.get("searchValue").toString();
             String vip_id = jsonObject.get("vip_id").toString();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
