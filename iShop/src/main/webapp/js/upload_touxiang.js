@@ -72,9 +72,8 @@ $(function(){
         if(user_code!==""&&user_code!==undefined){
             storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
         }
-        console.log(file.name + ' => ' + storeAs);
         client.multipartUpload(storeAs, file).then(function (result) {
-            // console.log(result);
+            $("#imghead").attr("src",result.url);
         }).catch(function (err) {
             // console.log(err);
         });

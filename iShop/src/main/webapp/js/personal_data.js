@@ -33,7 +33,7 @@ var oc = new ObjectControl();
             }
         }else{
             this.displayHint(hint);
-            return false;
+            return true;
         }
     };
     useroperatejs.checkMail = function(obj,hint){
@@ -92,10 +92,11 @@ var oc = new ObjectControl();
                     SEX="F";
                 }
                 var avater="";//头像
-                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/a3.jpg') {
-                    avater= "http://products-image.oss-cn-hangzhou.aliyuncs.com/Avatar/User/iShow/"+CORP_CODE.trim()+USERID.trim()+'.jpg';
-                } else {
-                   avater=$("#preview img").attr("src");//头像
+                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+                if(reg.test($("#IMG").attr("src"))==true){
+                    avater=$("#IMG").attr("src");//头像
+                }else if(reg.test($("#IMG").attr("src"))==false){
+                    avater="";
                 }
                 var _command="/user/edit";//接口名
                 var opt = {//返回成功后的操作
@@ -185,14 +186,15 @@ jQuery(document).ready(function(){
          var _command="/user/myAccount";
          oc.postRequire("get", _command, "", _params, function(data) {
              if(data.code=="0"){
-                 var msg = JSON.parse(data.message);
-                     msg=JSON.parse(msg.user);
-                 $("#id").val(msg.id);
-                 if(msg.avatar==""){
-                    $("#IMG").attr("src","../img/head.png");
-                 }else if(msg.avatar!==""){
+                var msg = JSON.parse(data.message);
+                    msg=JSON.parse(msg.user);
+                $("#id").val(msg.id);
+                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+                if(reg.test(msg.avatar)==true){
                     $("#IMG").attr("src",msg.avatar);
-                 }
+                }else if(reg.test(msg.avatar)==false){
+                    $("#IMG").attr("src","../img/head.png");
+                }
                  $("#corp_code").val(msg.corp_name);
                  $("#USERID").val(msg.user_code);
                  $("#USER_NAME").val(msg.user_name);

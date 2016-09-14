@@ -377,6 +377,7 @@ $(document).click(function(e){
 	    return;
     }else{
 	    $("#distribution_frame").hide();
+	    $('.Acc_dropdown').hide();
 	    flase=0;
 	}
 });

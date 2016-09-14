@@ -548,6 +548,7 @@ div.wx_app_new p{
 }
 .Acc_dropdown li:hover{
 	background-color: #e8f5fe !important;
+	color: #888 !important;
 }
 .Acc_dropdown p{
 	margin: 0 !important;

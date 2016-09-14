@@ -224,12 +224,24 @@ function superaddition(data,num){
             var a=i+1;
         }
         var avatar="";
-        if(data[i].avatar==undefined||data[i].avatar==""){
+        var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+        if(data[i].avatar==undefined||data[i].avatar==""||reg.test(data[i].avatar)==false){
             avatar="../img/head.png";
         }
-        if(data[i].avatar!==""&&data[i].avatar!==undefined){
+        if(data[i].avatar!==""&&data[i].avatar!==undefined&&reg.test(data[i].avatar)==true){
             avatar=data[i].avatar;
         }
+        var isonline="";
+        if(data[i].isonline==""){
+            isonline="";
+        }
+        if(data[i].isonline=="Y"){
+            isonline="签到";
+        }
+        if(data[i].isonline=="N"){
+            isonline="签退";
+        }
+        console.log(data[i].isonline);
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -243,7 +255,8 @@ function superaddition(data,num){
                         + data[i].user_code
                         +"</td><td>"
                         + data[i].user_id
-                        + "</td><td><img src='"+avatar+"' alt=''>"
+                        + "</td><td>"
+                        +"<img src='"+avatar+"' alt=''>"
                         + "</td><td>"
                         + data[i].user_name
                         + "</td><td>"
@@ -258,7 +271,9 @@ function superaddition(data,num){
                         +data[i].store_code
                         + "</span></td><td><span title='"+data[i].area_code+"'>"
                         +data[i].area_code
-                        + "</span></td><td>"
+                        + "</span></td><td class='switch'><div class='bg'><span class=''>"
+                        +isonline
+                        + "</span></div></td><td>"
                         +data[i].isactive
                         +"</td></tr>");
     }

@@ -153,11 +153,12 @@ var message = JSON.parse(val.message);
                     return;
                 }
                 var ID = sessionStorage.getItem("id");
-                var HEADPORTRAIT = "";
-                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src")!=='../img/bg.png') {
-                    HEADPORTRAIT = "http://products-image.oss-cn-hangzhou.aliyuncs.com/Corp_logo/ishow/" + $("#OWN_CORP").val().trim() + ".jpg";
-                } else {
-                    HEADPORTRAIT = "";
+                var avater="";//头像
+                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+                if(reg.test($("#preview img").attr("src"))==true){
+                    avater=$("#preview img").attr("src");//头像
+                }else if(reg.test($("#preview img").attr("src"))==false){
+                    avater="";
                 }
                 var CORPID = $("#OWN_CORP").val();
                 var WXID = $("#WXID").val();
@@ -213,7 +214,7 @@ var message = JSON.parse(val.message);
                 };
                 var _params = {
                     "id": ID,
-                    "avater": HEADPORTRAIT,
+                    "avater":avater,
                     "corp_code": CORPID,
                     "app_id": WXID,
                     "corp_name": CORPNAME,
@@ -312,7 +313,12 @@ jQuery(document).ready(function () {
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
                 var list=msg.cus_user;
-                $("#preview img").attr("src", msg.avater);
+                var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+                if(reg.test(msg.avatar)==true){
+                    $("#preview img").attr("src",msg.avatar);
+                }else if(reg.test(msg.avatar)==false){
+                    $("#preview img").attr("src","../img/bg1.png");
+                }
                 if ($("#preview img").attr("src").indexOf('http') !== -1) {
                     $("#c_logo label").html("更换logo");
                 } else {
@@ -381,7 +387,7 @@ jQuery(document).ready(function () {
         if (corp_code !== "" && corp_code !== corp_code1 && isCode.test(corp_code) == true) {
             console.log(corp_code);
             _params["corp_code"] = corp_code;
-            oc.postRequire("post", "/corp/Corp_codeExist", "", _params, function (data) {
+            oc.postRequire("post", "/corp/corpCodeExist", "", _params, function (data) {
                 if (data.code == "0") {
                     div.html("");
                     $("#OWN_CORP").attr("data-mark", "Y");
@@ -400,7 +406,7 @@ jQuery(document).ready(function () {
         if (corp_name !== "" && corp_name !== corp_name1) {
             var _params = {};
             _params["corp_name"] = corp_name;
-            oc.postRequire("post", "/corp/CorpNameExist", "", _params, function (data) {
+            oc.postRequire("post", "/corp/corpNameExist", "", _params, function (data) {
                 if (data.code == "0") {
                     div.html("");
                     $("#CORPNAME").attr("data-mark", "Y");

@@ -530,7 +530,7 @@ jQuery(document).ready(function () {
                 var brand_html = '';
                 var b = null;
                 if (msg.brands.length == 0) {
-                    art.dialog({
+                    art.dialosg({
                         time: 1,
                         lock: true,
                         cancel: false,

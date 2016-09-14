@@ -8,10 +8,11 @@ $(function(){
             var html =" ";
             var li_html=" ";
             var p=null;
-            if(message.avatar==""){
-                $('.nav-header .img-circle').attr("src","../img/head.png");
-            }else if(message.avatar!==""){
+            var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+            if(reg.test(message.avatar)==true){
                 $('.nav-header .img-circle').attr("src",message.avatar);
+            }else if(reg.test(message.avatar)==false){
+                $('.nav-header .img-circle').attr("src","../img/head.png");
             }
             $('.nav-header .font-bold').html(message.user_name);
             $('#corp_name').html(message.corp_name);

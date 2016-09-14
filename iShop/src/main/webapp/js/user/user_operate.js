@@ -243,11 +243,12 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 					return;
 				}
 				var avater="";//头像
-                if ($("#OWN_CORP").val() !== '' && $("#preview img").attr("src") !== '../img/head.png') {
-                    avater= "http://products-image.oss-cn-hangzhou.aliyuncs.com/Avatar/User/iShow/"+OWN_CORP.trim()+USERID.trim()+'.jpg';
-                } else {
-                   avater=$("#preview img").attr("src");//头像
-                }
+				var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+				if(reg.test($("#preview img").attr("src"))==true){
+					avater=$("#preview img").attr("src");//头像
+				}else if(reg.test($("#preview img").attr("src"))==false){
+					avater="";
+				}	 
 				var can_login="";//可登录状态
                 var input1=$("#invisible")[0];
                 if(input1.checked==true){
@@ -716,10 +717,11 @@ jQuery(document).ready(function(){
 				$("#user_id").val(msg.user_id);
 				$("#user_id").attr("data-name",msg.user_id);
 				$("#USER_NAME").val(msg.user_name);
-				if(msg.avatar==""){
-					$("#preview img").attr("src","../img/head.png");
-				}else if(msg.avatar!==""){
+				var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+				if(reg.test(msg.avatar)==true){
 					$("#preview img").attr("src",msg.avatar);
+				}else if(reg.test(msg.avatar)==false){
+					$("#preview img").attr("src","../img/head.png");
 				}
 				$("#USER_PHONE").val(msg.phone);
 				$("#USER_PHONE").attr("data-name",msg.phone);

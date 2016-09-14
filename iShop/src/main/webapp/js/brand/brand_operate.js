@@ -255,16 +255,16 @@ jQuery(document).ready(function(){
 				$("#creator").val(msg.creater);
 				$("#modify_time").val(msg.modified_date);
 				$("#modifier").val(msg.modifier);
-				$("#Accounts").val(msg.app_id);
-				$("#Accounts").attr("data-appid",msg.appid);
+				$("#Accounts").val(msg.app_name);
+				$("#Accounts").attr("data-appid",msg.app_id);
 				var input=$(".checkbox_isactive").find("input")[0];
 				if (msg.app_id!= "") {
                     if (msg.brand_code.indexOf(',') !== -1) {
                         checknow_data = msg.app_id.split(",");
                         checknow_namedata = msg.app_name.split(",");
                     } else {
-                        checknow_data.push(msg.brand_code);
-                        checknow_namedata.push(msg.brand_name);
+                        checknow_data.push(msg.app_id);
+                        checknow_namedata.push(msg.app_name);
                     }
                 }
 				var ul="";
@@ -336,7 +336,8 @@ jQuery(document).ready(function(){
 	    }
     })
     //公众号多选
-    $("#Accounts").click(function(){
+    $("#Accounts").click(function(e){
+    	e.stopPropagation();
     	$('.Acc_dropdown').toggle();
     	var corp_code = $('#OWN_CORP').val();
 		var corp_code1=$('#OWN_CORP').attr("corp_code1");
@@ -345,12 +346,6 @@ jQuery(document).ready(function(){
 		}
 		$('#OWN_CORP').attr("corp_code1",corp_code);
 		Accounts();
-    })
-    $("#Accounts").blur(function(){
-    	setTimeout(function(e){
-    		console.log(e);
-        	$("#Acc_dropdown").hide();
-        },200);  
     })
     //公众号
     function Accounts(){
@@ -400,6 +395,26 @@ jQuery(document).ready(function(){
 						}
 					}
 				}
+				var s = $('#Accounts').attr("data-appid");
+                var c_input = $('#Acc_dropdown input');
+                var ss = '';
+                if (s.indexOf(',')!==-1) {
+                    ss = s.split(",");
+                    for (var i = 0; i < ss.length; i++) {
+                        for (var j = 0; j < c_input.length; j++) {
+                            if ($(c_input[j]).val() == ss[i]) {
+                                $(c_input[j]).attr("checked", true);
+                            }
+                        }
+                    }
+                } else {
+                    ss = s;
+                    for (var j = 0; j < c_input.length; j++) {
+                        if ($(c_input[j]).val() == ss) {
+                            $(c_input[j]).attr("checked", true);
+                        }
+                    }
+                }
             }else if(data.code=="-1"){
                 // frame();
                 // $('.frame').html(data.message);
