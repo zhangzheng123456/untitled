@@ -231,15 +231,21 @@ function superaddition(data,num){
         if(data[i].avatar!==""&&data[i].avatar!==undefined&&reg.test(data[i].avatar)==true){
             avatar=data[i].avatar;
         }
-        var isonline="";
+        var div="";
+        var span="";
         if(data[i].isonline==""){
-            isonline="";
+            div="";
+            span="ON";
         }
         if(data[i].isonline=="Y"){
             isonline="签到";
+            div="bg";
+            span="";
         }
         if(data[i].isonline=="N"){
             isonline="签退";
+            div="";
+            span="ON";
         }
         console.log(data[i].isonline);
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
@@ -271,8 +277,7 @@ function superaddition(data,num){
                         +data[i].store_code
                         + "</span></td><td><span title='"+data[i].area_code+"'>"
                         +data[i].area_code
-                        + "</span></td><td class='switch'><div class='bg'><span class=''>"
-                        +isonline
+                        + "</span></td><td class='switch'><div class='"+div+"' data-switch='"+data[i].isonline+"'><span class='"+span+"'>"
                         + "</span></div></td><td>"
                         +data[i].isactive
                         +"</td></tr>");

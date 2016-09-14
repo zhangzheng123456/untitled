@@ -36,9 +36,9 @@ $(function(){
         var message=JSON.parse(data.message);
         var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
         if(reg.test(message.avatar)==true){
-            $("#img").attr("src",msg.avatar);
+            $("#img img").attr("src",message.avatar);
         }else if(reg.test(message.avatar)==false){
-            $("#img").attr("src","../img/head.png");
+            $("#img img").attr("src","../img/head.png");
         }
         var menu=message.menu;
         for(var i=0;i<menu.length;i++){

@@ -353,7 +353,7 @@ input::-webkit-input-placeholder{
 }
 .sxk .inputs li input{
 	margin-left: 10px;
-	width: 165px;
+	width: 260px;
 	height: 30px;
 	border: none;
 	outline: none;
@@ -976,13 +976,13 @@ input::-webkit-input-placeholder{
 	position: absolute;
 	left: 65px;
 	top: 32px;
-	width: 170px;
+	width: 260px;
 	border: 1px solid #a9c9e2;
 	background: #e8f5fe;
 	z-index: 1;
 }
 .sxk .inputs .isActive_select_down li{
-	width:170px;
+	width:260px;
 	height:35px;
 	margin:0;
 	line-height: 30px;
