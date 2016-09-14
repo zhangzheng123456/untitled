@@ -38,22 +38,24 @@ public class CorpServiceImpl implements CorpService {
 
     public Corp selectByCorpId(int corp_id, String corp_code, String isactive) throws Exception {
         Corp corp = corpMapper.selectByCorpId(corp_id, corp_code, isactive);
-        List<JSONObject> array_user = new ArrayList<JSONObject>();
-        String cus_user_code = corp.getCus_user_code();
-        if (cus_user_code != null && !cus_user_code.equals("")) {
-            String[] cus_user_codes = cus_user_code.split(",");
-            for (int i = 0; i < cus_user_codes.length; i++) {
-                String user_code = cus_user_codes[i];
-                List<User> user = userMapper.selectUserCode(user_code, corp.getCorp_code(),Common.IS_ACTIVE_Y);
-                if (user.size() > 0) {
-                    JSONObject userObj = new JSONObject();
-                    userObj.put("cus_user_code",user_code);
-                    userObj.put("cus_user_name",user.get(0).getUser_name());
-                    array_user.add(userObj);
+        if (corp != null) {
+            List<JSONObject> array_user = new ArrayList<JSONObject>();
+            String cus_user_code = corp.getCus_user_code();
+            if (cus_user_code != null && !cus_user_code.equals("")) {
+                String[] cus_user_codes = cus_user_code.split(",");
+                for (int i = 0; i < cus_user_codes.length; i++) {
+                    String user_code = cus_user_codes[i];
+                    List<User> user = userMapper.selectUserCode(user_code, corp.getCorp_code(), Common.IS_ACTIVE_Y);
+                    if (user.size() > 0) {
+                        JSONObject userObj = new JSONObject();
+                        userObj.put("cus_user_code", user_code);
+                        userObj.put("cus_user_name", user.get(0).getUser_name());
+                        array_user.add(userObj);
+                    }
                 }
             }
+            corp.setCus_user(array_user);
         }
-        corp.setCus_user(array_user);
         return corp;
     }
 
