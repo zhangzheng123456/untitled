@@ -169,6 +169,7 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     $(".activeVip").hide();
     $(".rank").hide();
     $("#page_row").val("10行/页");
+    brithVipGet();
     jump=1;
 })
 $(".vip_nav_bar li:nth-child(2)").click(function () {
@@ -236,6 +237,7 @@ $("#vipAnalyze_return").click(function () {
 });
 /******************生日会员****************************/
 function brithVipGet() {
+    whir.loading.add("",0.5);//加载等待框
     var type='birth';
     $('.birthVip .vip_table tbody').empty();
     var param={};
@@ -286,6 +288,7 @@ function brithVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
     });
+    whir.loading.remove();//移除加载框
 }
 function birthVipGet_sub(ali) {
     var ali=ali;//当前对象
