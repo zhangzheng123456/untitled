@@ -65,6 +65,8 @@
 				<div id="file_list">
 					<div id="file_list_l">
 						<ul>
+                            <li ><label>登录时间</label><input type="text" id="start_time" data-code="" class="time_data"><label class="tm20">至</label><input type="text" id="end_time" data-code="" class="time_data">
+                            </li>    
 						</ul>
 					</div>
 					<div id="file_list_z">
@@ -207,18 +209,7 @@
 	<script src="../js/insidePostRequire.js"></script>
 	<script src="../js/system/logging.js"></script>
     <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
-    <!-- <script src="../table/js/inner.js"></script> -->
 	<script src="../js/silide.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            $('#sidebar ul>li:eq(6)').find('h1').addClass('h1');
-            $('#sidebar ul>li:eq(6)').find('h1 span').addClass('icon-ishop_8-02');
-            $('#sidebar ul>li:eq(6)').find('dl').show();
-            $('#sidebar ul>li:eq(6)').find('ul').show();
-            $('#sidebar ul>li:eq(6)').find('ul>li:eq(1) a').css({color:"#6cc1c8"});
-            $('#sidebar ul>li:eq(6)').find('ul>li:eq(1) span').addClass('icon-ishop_8-01');
-            $('#sidebar ul>li:eq(6)').find('dl>dd:eq(4) i').addClass('icon-ishop_8-02');
-        })
-    </script>
+    <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 </body>
 </html>

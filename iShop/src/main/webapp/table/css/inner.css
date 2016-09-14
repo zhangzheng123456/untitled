@@ -361,6 +361,19 @@ input::-webkit-input-placeholder{
 	padding-left: 5px;
 	color: #888;
 }
+.sxk .inputs li .time_data{
+	width: 117.5px;
+}
+.laydate-icon{
+	padding-right:0 !important;
+}
+#end{
+	margin-left: 0;
+}
+.sxk .inputs .tm20{
+	width: 20px;
+	text-align: center;
+}
 .table tr{
 	height: 50px;
 	line-height: 50px;

@@ -597,6 +597,16 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 }
                 ul+="</ul>";
                 li+="<li class='isActive_select'><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"' data-code='' readonly>"+ul+"</li>"
+            }else if(filter[i].type=="date"){
+                li+="<li class='created_date' id='"
+                +filter[i].col_name
+                +"'><label>"
+                +filter[i].show_name
+                +"</label>"                                                         
+                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({istime: true, format: 'YYYY-MM-DD'})\">"
+                +"<label class='tm20'>至</label>"
+                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({istime: true, format: 'YYYY-MM-DD'})\">"
+                +"</li>";
             }
 
         }
@@ -651,7 +661,7 @@ $("#find").click(function(){
     getInputValue();
 })
 function getInputValue(){
-    var input=$('#sxk .inputs input');
+    var input=$('#sxk .inputs li');
     inx=1;
     _param["pageNumber"]=inx;
     _param["pageSize"]=pageSize;
@@ -659,13 +669,19 @@ function getInputValue(){
     var num=0;
     list=[];//定义一个list
     for(var i=0;i<input.length;i++){
-        var screen_key=$(input[i]).attr("id");
-        var screen_value=$(input[i]).val().trim();
+        var screen_key="";
         var screen_value="";
-        if($(input[i]).parent("li").attr("class")=="isActive_select"){
-            screen_value=$(input[i]).attr("data-code");
+        if($(input[i]).attr("class")=="isActive_select"){
+            screen_value=$(input[i]).find("input").attr("data-code");
+            screen_key=$(input[i]).find("input").attr("id");
+        }else if($(input[i]).attr("class")=="created_date"){
+            var start=$('#start').val();
+            var end=$('#end').val();
+            screen_key=$(input[i]).attr("id");
+            screen_value={"start":start,"end":end};
         }else{
-            screen_value=$(input[i]).val().trim();
+            screen_value=$(input[i]).find("input").val().trim();
+            screen_key=$(input[i]).find("input").attr("id");
         }
         if(screen_value!=""){
             num++;
@@ -673,6 +689,7 @@ function getInputValue(){
         var param1={"screen_key":screen_key,"screen_value":screen_value};
         list.push(param1);
     }
+    console.log( _param);
     _param["list"]=list;
     value="";//把搜索滞空
     $("#search").val("");
