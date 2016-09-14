@@ -20,8 +20,6 @@ function GetArea(){
             var first_area='';
             var first_area_code='';
             var output_list=output.list;
-            console.log(output_list);
-            // output_list.length>7? $('#select_analyze s').attr('style','display:block'): $('#select_analyze s').attr('style','display:none');
             output_list.length<7&&($('#select_analyze s').attr('style','display:none'));
             first_area=output_list[0].area_name;
             first_area_code=output_list[0].area_code;
@@ -57,7 +55,6 @@ function getStore(a){
         var first_corp_code='';
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
-        console.log(message);
         var first_store_name='';
         var first_store_code='';
         var message=JSON.parse(data.message);//???messagejson?????DOM????
@@ -241,10 +238,6 @@ $("#vipAnalyze_return").click(function () {
 function newVipGet(){
     var type='new';
     $('.newVip .vip_table tbody').empty();
-    console.log($('#side_analyze ul li:nth-child(3) s')[0]);
-   console.log('store:'+$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store'));
-    console.log('area:'+localStorage.getItem('area_code'))
-    console.log('corp:'+localStorage.getItem('corp_code'))
     var param={};
     var pageSize=arguments[1]?arguments[1]:10;
     var pageIndex=arguments[0]?arguments[0]:page;
@@ -312,7 +305,6 @@ function newVipGet(){
 //生成分页
 function setPage(container, count, pageindex,pageSize,type) {
     var type=type;
-    console.log(type);
     var container = container;//节点
     var count = count;//5
     var pageindex = pageindex;//1
@@ -408,7 +400,6 @@ $(function(){
             }
         });
         $("#liebiao li").each(function(i,v){
-            console.log(i,v);
             $(this).click(function(){
                 pageSize=$(this).attr('id');
                 var a=1;
@@ -478,7 +469,7 @@ function sleepVipGet() {
     var type='sleep';
     $('.activeVip .vip_table tbody').empty();
     var param={};
-    var query_type=0;
+    var query_type=arguments[2]?arguments[2]:0;;
     var pageSize=arguments[1]?arguments[1]:10;
     var pageIndex=arguments[0]?arguments[0]:page;
     param['pageNumber']=pageIndex;
@@ -491,7 +482,6 @@ function sleepVipGet() {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             count=msg.pages;
-            console.log(msg);
             var pageIndex=msg.pageNum;
             msg=msg.sleep_vip_list;
             if(msg.length){
@@ -522,6 +512,27 @@ function sleepVipGet() {
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
     });
 }
+function sleepVipGet_sub(ali) {
+    var query_type='';
+    var ali=ali;//当前对象
+    console.log('调用');
+    console.log($($(ali).html()).html());
+    switch($($(ali).html()).html()){
+        case '活跃会员1.26%': query_type=0;sleepVipGet('','',query_type);break;
+        case '3个月23.95%': query_type=1;sleepVipGet('','',query_type);break;
+        case '6个月31.09%': query_type=2;sleepVipGet('','',query_type);break;
+        case '9个月26.05%': query_type=3;sleepVipGet('','',query_type);break;
+        case '12个月20.01%': query_type=4;sleepVipGet('','',query_type);break;
+    }
+}
+//活跃会员1.26%
+//3个月23.95%
+//6个月31.09%
+//9个月26.05%
+//12个月20.01%
+$('.activeVip .month_btn li').click(function () {
+    sleepVipGet_sub(this);
+});
 /***************************图表分析数据***********************************/
 //图表
 require.config({
