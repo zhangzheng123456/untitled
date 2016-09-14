@@ -342,7 +342,7 @@ public class CorpController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/CorpNameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/corpNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String CorpExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -373,16 +373,16 @@ public class CorpController {
     }
 
 
-    @RequestMapping(value = "/Corp_codeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/corpCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String Corp_codeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
 
             Corp corp = corpService.selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
