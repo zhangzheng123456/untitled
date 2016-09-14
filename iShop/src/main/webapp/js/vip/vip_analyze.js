@@ -195,6 +195,7 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
     $(".activeVip").hide();
     $(".rank").show();
     $("#page_row").val("10行/页");
+    consumeVipGet();
     jump=4;
 })
 $(".vip_nav_bar li").click(function () {
@@ -426,6 +427,104 @@ function sleepVipGet_sub(ali) {
         case '12个月20.01%': query_type=4;sleepVipGet('','',query_type);break;
     }
 }
+/*************消费排行****************/
+function consumeVipGet() {
+    var type='consume';
+    $('.rank .vip_table tbody').empty();
+    $('.rank .vip_table thead').empty();
+    var param={};
+    var query_type=arguments[2]?arguments[2]:"recent";
+    var pageSize=arguments[1]?arguments[1]:10;
+    var pageIndex=arguments[0]?arguments[0]:page;
+    param['pageNumber']=pageIndex;
+    param['pageSize']=pageSize;
+    param['query_type']=query_type;
+    param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
+    param['corp_code']=localStorage.getItem('corp_code');
+    param["area_code"]=localStorage.getItem('area_code');
+    oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            count=msg.pages;
+            var pageIndex=msg.pageNum;
+            var msg_re=msg.vip_consume_recently_list;
+            var msg_amount=msg.amount_list;
+            if(msg_amount.length){
+                $(".rank thead").append('<tr>'
+                    + '<th>序号</th>'
+                    + '<th>会员</th>'
+                    + '<th>会员等级</th>'
+                    + '<th>消费总额</th>></tr>')
+                for(var i=0;i<msg_amount.length;i++){
+                    if(pageIndex>=2){
+                        var a=i+1+(pageIndex-1)*pageSize;
+                    }else{
+                        var a=i+1;
+                    }
+                    $(".rank tbody").append('<tr><td>'
+                        + a
+                        +'</td><td>'
+                        + msg[i].vip_name
+                        +'</td><td>'
+                        + msg[i].vip_type
+                        +'</td><td>'
+                        + msg[i].amount
+                        +'</td></tr>');
+                }
+                $(".rank .vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+            }
+            if(msg_re.length){
+                $(".rank thead").append('<tr>'
+                    + '<th>序号</th>'
+                    + '<th>会员</th>'
+                    + '<th>会员等级</th>'
+                    + '<th>消费总额</th>'
+                    + '<th>最近消费日期</th></tr>')
+                for(var i=0;i<msg_re.length;i++){
+                    if(pageIndex>=2){
+                        var a=i+1+(pageIndex-1)*pageSize;
+                    }else{
+                        var a=i+1;
+                    }
+                    $(".rank tbody").append('<tr><td>'
+                        + a
+                        +'</td><td>'
+                        + msg_re[i].vip_name
+                        +'</td><td>'
+                        + msg_re[i].vip_type
+                        +'</td><td>'
+                        + msg_re[i].amount
+                        +'</td><td>'
+                        + msg_re[i].consume_time
+                        +'</td></tr>');
+                }
+                $(".rank .vip_table tbody tr").click(function () {
+                    vipTable_lg();
+                })
+            }
+        }else if(data.code=="-1"){
+            console.log(data.message);
+        }
+        //调用生成页码
+        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
+    });
+}
+function consumeVipGet_sub(ali) {
+    var ali=ali;//当前对象
+    switch($($(ali).html()).html()){
+        case '最近消费': query_type="recent";consumeVipGet('','',query_type);break;
+        case '消费频率': query_type="freq";consumeVipGet('','',query_type);break;
+        case '本月消费': query_type="month";consumeVipGet('','',query_type);break;
+        case '前三月消费': query_type="three_month";consumeVipGet('','',query_type);break;
+        case '历史总额': query_type="hitory";consumeVipGet('','',query_type);break;
+    }
+}
+$('.rank .month_btn li').click(function () {
+    consumeVipGet_sub(this);
+    $("#page_row").val("10行/页");
+});
 /*******************共用方法***************************/
 //生成分页
 function setPage(container, count, pageindex,pageSize,type,query_type) {
