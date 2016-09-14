@@ -1,6 +1,7 @@
 var oc = new ObjectControl();
 var page=1;
-var jump=1;
+var jump=1;//标签跳转
+var query_type='';//创建活跃会员的标签请求
 var area_code;
 var store_code;
 var count='';
@@ -302,9 +303,11 @@ function newVipGet(){
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
     });
 }
+/*******************共用方法***************************/
 //生成分页
-function setPage(container, count, pageindex,pageSize,type) {
+function setPage(container, count, pageindex,pageSize,type,query_type) {
     var type=type;
+    var query_type=query_type;
     var container = container;//节点
     var count = count;//5
     var pageindex = pageindex;//1
@@ -366,14 +369,14 @@ function setPage(container, count, pageindex,pageSize,type) {
                 return false;
             }
             inx--;
-            dian(inx,pageSize,type);
+            dian(inx,pageSize,type,query_type);
             // setPage(container, count, inx,pageSize,funcCode,value,filtrate);
             return false;
         }
         for (var i = 1; i < oAlink.length - 1; i++) { //点击页码
             oAlink[i].onclick = function() {
                 inx = parseInt(this.innerHTML);
-                dian(inx,pageSize,type);
+                dian(inx,pageSize,type,query_type);
                 // setPage(container, count, inx,pageSize,funcCode,value,filtrate);
                 return false;
             }
@@ -383,7 +386,7 @@ function setPage(container, count, pageindex,pageSize,type) {
                 return false;
             }
             inx++;
-            dian(inx,pageSize,type);
+            dian(inx,pageSize,type,query_type);
             // setPage(container, count, inx,pageSize,funcCode,value,filtrate);
             return false;
         }
@@ -438,13 +441,18 @@ function hideLi(){
     $("#liebiao").hide();
 }
 //页码点击事件
-function dian(a,b,c){
+function dian(a,b,c,query_type){
     var a=a;
     var b=b;
     var c=c;
-    console.log(c);
+    var query_type=query_type;
     c=='new'&&(newVipGet(a,b));
-    c=='sleep'&&(sleepVipGet(a,b));
+  //判断query_type的值
+    if(c=='sleep'&&(query_type==0)){
+        sleepVipGet(a,b)
+    }else if( c=='sleep'&&(query_type) ){
+        sleepVipGet(a,b,query_type)
+    }
 }
 //指定页面的跳转
 $("#input-txt").keydown(function() {
@@ -509,14 +517,11 @@ function sleepVipGet() {
             console.log(data.message);
         }
         //调用生成页码
-        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
+        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
 }
 function sleepVipGet_sub(ali) {
-    var query_type='';
     var ali=ali;//当前对象
-    console.log('调用');
-    console.log($($(ali).html()).html());
     switch($($(ali).html()).html()){
         case '活跃会员1.26%': query_type=0;sleepVipGet('','',query_type);break;
         case '3个月23.95%': query_type=1;sleepVipGet('','',query_type);break;
@@ -525,11 +530,7 @@ function sleepVipGet_sub(ali) {
         case '12个月20.01%': query_type=4;sleepVipGet('','',query_type);break;
     }
 }
-//活跃会员1.26%
-//3个月23.95%
-//6个月31.09%
-//9个月26.05%
-//12个月20.01%
+//活跃用户切换
 $('.activeVip .month_btn li').click(function () {
     sleepVipGet_sub(this);
 });
