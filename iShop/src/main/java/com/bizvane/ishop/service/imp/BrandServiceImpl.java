@@ -65,9 +65,11 @@ public class BrandServiceImpl implements BrandService {
                 app_id = app_id + app_id1 + ",";
                 app_name = app_name + app_name1 + ",";
             }
+            app_id = app_id.substring(0,app_id.length()-1);
+            app_name = app_name.substring(0,app_name.length()-1);
         }
-        brand.setApp_id(app_id.substring(0,app_id.length()-1));
-        brand.setApp_name(app_name.substring(0,app_name.length()-1));
+        brand.setApp_id(app_id);
+        brand.setApp_name(app_name);
         return brand;
     }
 
