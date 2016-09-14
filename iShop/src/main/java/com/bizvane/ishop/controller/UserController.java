@@ -1465,18 +1465,14 @@ public class UserController {
     /**
      * 自动生成二维码（APP接口）
      */
-    @RequestMapping(value = "/creatQrcodesForUser", method = RequestMethod.POST)
+    @RequestMapping(value = "/creatQrcodesForUser", method = RequestMethod.GET)
     @ResponseBody
     public String creatQrcodesForUser(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
-            String jsString = request.getParameter("param");
-            logger.info("------------UserController creatQrcodesForUser" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
-            String user_code = jsonObject.get("user_code").toString();
+            logger.info("------------UserController creatQrcodesForUser------");
+            String corp_code = request.getParameter("corp_code");
+            String user_code = request.getParameter("user_code");
             List<CorpWechat> corpWechats = corpService.getWAuthByCorp(corp_code);
             for (int i = 0; i < corpWechats.size(); i++) {
                 String auth_appid = corpWechats.get(i).getApp_id();

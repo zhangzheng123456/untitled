@@ -62,11 +62,20 @@
         <if test="corp_code!=null and corp_code!=''">
             AND  acc_app_login_log.CORP_CODE = #{corp_code}
         </if>
+        <if test="created_date_start!=null and created_date_start!=''">
+            AND  acc_app_login_log.created_date &gt;= #{created_date_start}
+        </if>
+        <if test="created_date_end!=null and created_date_end!=''">
+            AND  acc_app_login_log.created_date &lt;= #{created_date_end}
+        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
                     DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                </when>
+                <when test="entryValue!='' and entryKey=='created_date'">
+                    acc_app_login_log.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <when test="entryValue!=''">
                     acc_app_login_log.${entryKey} LIKE concat('%',#{entryValue},'%')

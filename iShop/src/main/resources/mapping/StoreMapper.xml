@@ -219,7 +219,7 @@
         ORDER BY DEF_STORE.id DESC
     </select>
 
-    <select id="selectStore" resultMap="com.bizvane.ishop.entity.Store">
+    <select id="selectStore" resultType="com.bizvane.ishop.entity.Store">
         SELECT  store_code,
         store_name
         FROM DEF_STORE

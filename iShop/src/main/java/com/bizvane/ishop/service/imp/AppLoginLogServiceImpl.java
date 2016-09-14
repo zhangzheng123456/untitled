@@ -1,5 +1,7 @@
+
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.dao.AppLoginLogMapper;
 import com.bizvane.ishop.entity.AppLoginLog;
 import com.bizvane.ishop.service.AppLoginLogService;
@@ -34,7 +36,11 @@ public class AppLoginLogServiceImpl implements AppLoginLogService {
     @Override
     public PageInfo<AppLoginLog> selectAllScreen(int page_number, int page_size, String corp_code,Map<String, String> map) throws Exception {
         Map<String, Object> params = new HashMap<String, Object>();
+        JSONObject date = JSONObject.parseObject(map.get("created_date"));
+        params.put("created_date_start", date.get("start").toString());
+        params.put("created_date_end", date.get("end").toString());
         params.put("corp_code", corp_code);
+        map.remove("created_date");
         params.put("map", map);
         PageHelper.startPage(page_number, page_size);
         List<AppLoginLog> list = loginLogMapper.selectAllScreen(params);
