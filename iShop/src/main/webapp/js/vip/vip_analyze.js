@@ -2,10 +2,7 @@ var oc = new ObjectControl();
 var page=1;
 var jump=1;//标签跳转
 var query_type='';//创建活跃会员的标签请求
-var area_code;
-var store_code;
 var count='';
-var corp_code="C10000";
 /**********************左侧数据*****************************************/
 function GetArea(){
     var searchValue=$('#select_analyze input').val();
@@ -407,7 +404,7 @@ $(function(){
                 pageSize=$(this).attr('id');
                 var a=1;
                 jump==2&&(newVipGet(a,pageSize));
-                jump==3&&(sleepVipGet(a,pageSize));
+                jump==3&&(sleepVipGet(a,pageSize,query_type));
                 // if(value==""&&filtrate==""){
                 //     inx=1;
                 //     GET(inx,pageSize);
@@ -456,18 +453,17 @@ function dian(a,b,c,query_type){
 }
 //指定页面的跳转
 $("#input-txt").keydown(function() {
-    console.log(jump);
     var event=window.event||arguments[0];
     var inx= this.value.replace(/[^0-9]/g, '');
     var inx=parseInt(inx);
-    console.log($(this).parent().parent().parent());
     if (inx > count) {
         inx = count
     };
     if (inx > 0) {
         if (event.keyCode == 13) {
+            console.log(query_type);
                 jump==2&&(newVipGet(inx));
-                jump==3&&(sleepVipGet(inx));
+                jump==3&&(sleepVipGet(inx,'',query_type));
             }
         };
 })
@@ -494,7 +490,11 @@ function sleepVipGet() {
             msg=msg.sleep_vip_list;
             if(msg.length){
                 for(var i=0;i<msg.length;i++){
-                    var a=i+1;
+                    if(pageIndex>=2){
+                        var a=i+1+(pageIndex-1)*pageSize;
+                    }else{
+                        var a=i+1;
+                    }
                     $(".activeVip tbody").append('<tr><td>'
                         + a
                         +'</td><td>'
@@ -530,10 +530,6 @@ function sleepVipGet_sub(ali) {
         case '12个月20.01%': query_type=4;sleepVipGet('','',query_type);break;
     }
 }
-//活跃用户切换
-$('.activeVip .month_btn li').click(function () {
-    sleepVipGet_sub(this);
-});
 /***************************图表分析数据***********************************/
 //图表
 require.config({
@@ -972,6 +968,11 @@ $().ready(function(){
     $('#side_analyze div s').click(getMore);
     //添加搜索
     $('#side_analyze div b span').click(searchValue);
+    //活跃用户切换
+    $('.activeVip .month_btn li').click(function () {
+        sleepVipGet_sub(this);
+        $("#page_row").val("10行/页");
+    });
 });
 /*****************************************************************************************************************/
 
