@@ -4,6 +4,7 @@ body{
 .header .left,.header .center,.header .right{
     height:390px;
     width: 33%;
+    /*min-width: 348px;*/
     float: left;
     background-color:#fff ;
 }
@@ -46,20 +47,36 @@ body{
     -o-transform: translate(-50%,-50%);
     width: 80%;text-align: center
 }
-.header .left .left-class .content .Fsize-22{
+.header .left .left-class .content .Fsize-28{
     display: block;
-    font-size: 22px;
+    font-size: 28px;
+    margin-bottom: 10px;
+    padding:0;
+    height:28px;
+    line-height: 28px;
+
 }
 .header .left .left-bottom .content .Fsize-12{
     display: block;
     font-size: 12px;
+    padding:0;
+    height: 12px;
+    line-height: 12px;
 }
-.header .left .left-bottom .content .Fsize-22{
+.header .left .left-bottom .content .Fsize-28{
     display: block;
-    font-size: 22px;
+    font-size: 28px;
+    margin:10px 0;
+    padding:0;
+    height:28px;
+    line-height: 28px;
 }
 .header .left .left-class .content .Fsize-12{
+    display: block;
     font-size: 12px;
+    padding:0;
+    height: 12px;
+    line-height: 12px;
 }
 .header .center .message-class ul{
     text-align: center;
@@ -88,6 +105,7 @@ body{
     border-bottom:3px solid #6dc1c8;
     color:#6dc1c8;
 }
+
 .header .center .message-class .tabs-parent table .TR{
     background-color: #efefef;
     height: 30px;
@@ -157,7 +175,7 @@ body{
 }
 .right .person .person-left{
 width: 30%;float: left;
-padding:25px 0 0 20px;
+padding:25px 0 0 15px;
 }
 .right .person .person-left .person-img{
     display: inline-block;
@@ -168,12 +186,13 @@ padding:25px 0 0 20px;
     background-size:contain ;
     background-repeat:no-repeat
 }
-.right .person  .person-right{
-    padding:10px;
-}
+/*.right .person  .person-right{*/
+    /*padding:10px;*/
+/*}*/
 .right .person  .person-right .person-message{
     width: 70%;
     display: inline-block;
+    margin-top: 20px;
     height:30px;
     line-height: 30px;
 }
@@ -183,13 +202,8 @@ padding:25px 0 0 20px;
     color:#4a5f7c;
     font-family:'Microsoft YaHei';
 }
-.right .person  .person-right .person-message .sex-girl{
-    display:inline-block;
-    background-image: url(../img/sexgirl.png);
-    height: 15px;
-    width: 15px;
-    background-size:contain;
-    background-repeat:no-repeat;
+.right .person  .person-right .person-message .icon-ishop_9-02{
+   color:#f3a5a5;
 }
 .right .person  .person-right .vip{
     width: 70%;
@@ -199,6 +213,12 @@ padding:25px 0 0 20px;
     line-height: 30px;
     color:#4a5f7c;
     font-family:'Microsoft YaHei'
+}
+.right .person  .person-right .vip .margin-right10{
+    margin-right: 10px;
+}
+.right .person  .person-right .vip .vipClass{
+    color: #c26555;
 }
 .right .person-detail{
     padding: 10px;
@@ -216,20 +236,30 @@ padding:25px 0 0 20px;
      line-height: 30px; "
 }
 .right .person-detail .detail-left{
-    width: 30%;
-    text-align: center;
+    text-align: right;
+    width: 20%;
+    min-width: 80px;
     display: inline-block;
     color: #4a5f7c;
-    font-family:'Microsoft YaHei'
+    font-size: 14px;
+    margin-right: 10px;
+    font-family:'Microsoft YaHei';
 }
 .right .person-detail .detail-right{
-    width: 70%;color: #888888
+    text-align: center;
+    display: inline-block;
+    color: #888888;
+    font-size: 14px;
+}
+.right .person-detail .detail-right.jifen{
+    color:#c26555;
 }
 .person-more {
     text-align: center;
     height: 30px;
     line-height: 30px;
-    color: #888
+    color: #888;
+    font-size: 14px;
 }
 .person-more i{
     vertical-align: middle;
