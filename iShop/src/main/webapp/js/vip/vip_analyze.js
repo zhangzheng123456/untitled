@@ -1,7 +1,7 @@
 var oc = new ObjectControl();
 var page=1;
 var jump=1;//标签跳转
-var jump_s=0;//消费记录标签
+var jump_s="";//消费记录标签
 var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
@@ -205,8 +205,10 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
     jump=4;
 })
 $(".vip_nav_bar li").click(function () {
-    $(this).css("border-bottom","2px solid #6cc1c8");
-    $(this).siblings().css("border-bottom","");
+    // $(this).css("border-bottom","2px solid #6cc1c8");
+    // $(this).siblings().css("border-bottom","");
+    $(this).addClass("liactive");
+    $(this).siblings().removeClass("liactive");
 })
 $(".date_btn span").click(function () {
     $(this).css({"color":"#fff","background":"#6dc1c8"});
@@ -794,12 +796,13 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             console.log(month_type,jump);
+            console.log(jump_s);
                 jump==2&&(newVipGet(inx));
                 jump==3&&(sleepVipGet(inx,'',query_type));
                 jump==1&&(brithVipGet(inx,'',month_type));
-                jump_s==0&&(consumeVipGet(inx,'',month_type));
-                jump_s==1&&(consumeVipGetre(inx,'',query_type));
-                jump_s>1&&(consumeVipGetam(inx,'',query_type));
+                jump==4&&jump_s==0&&(consumeVipGet(inx,'',month_type));
+                jump==4&&jump_s==1&&(consumeVipGetre(inx,'',query_type));
+                jump==4&&jump_s>1&&(consumeVipGetam(inx,'',query_type));
             }
         };
 })
