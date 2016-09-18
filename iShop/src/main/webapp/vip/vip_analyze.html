@@ -6,9 +6,6 @@
     <link rel="stylesheet" href="../table/css/inner.css">
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" href="../css/vip_analyze.css">
-    <script src="../table/js/jquery.min.js"></script>
-    <script src="../js/loading.js"></script>
-    <script src="../js/dist/echarts.js"></script>
 </head>
 <body>
     <div class="con_table" id="con_table">
@@ -61,12 +58,25 @@
                     <s>...加载更多...</s>
                 </div>
             </div>
-            <h4>按日查看<span class="icon-ishop_8-02"></span>2016-1-12<span class="icon-ishop_8-02"></span></h4>
+            <div class="date_title">
+                <span class="choose item">
+                    <div class="title_l">按日查看</div>
+                        <ul class="select_Date">
+                            <li>按日查看</li>
+                            <li>按周查看</li>
+                            <li>按月查看</li>
+                            <li>按年查看</li>
+                        </ul>
+                </span>
+                <span>
+                    <input placeholder="选择日期" type="text" class="icon-text" readonly="readonly" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})">
+                </span>
+            </div>
            <!-- 所有VIP-->
            <ul>
                <span class="vip_kind">所有VIP <b class="vip_count">总数：12699</b></span>
                <li>
-                   <table>
+                   <table cellpadding="0" cellspacing="0">
                        <thead>
                             <th>业绩占比</th>
                             <th>客件总价</th>
@@ -485,8 +495,9 @@
     </div>
 </body>
 <script src="../js/jquery-2.1.1.min.js"></script>
-<script type="text/javascript" src="/js/insidePostRequire.js"></script>
+<script src="../js/dist/echarts.js"></script>
+<script type="text/javascript" src="../js/insidePostRequire.js"></script>
 <script src="../js/loading.js"></script>
+<script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script src="../js/vip/vip_analyze.js"></script>
-<script type="text/javascript"></script>
 </html>
