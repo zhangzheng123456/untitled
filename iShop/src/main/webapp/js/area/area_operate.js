@@ -304,6 +304,15 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					$("#AREA_ID").val("");
+					$("#AREA_NAME").val("");
+					$("#AREA_ID").attr("data-mark","");
+					$("#AREA_NAME").attr("data-mark","");
+				}
+			})
 			$('.searchable-select-item').click(function(){
 				$("#AREA_ID").val("");
 				$("#AREA_NAME").val("");

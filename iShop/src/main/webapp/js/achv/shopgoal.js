@@ -382,6 +382,12 @@ function getcorplist(a,b){
 			$("#OWN_CORP").searchableSelect();
 			var c=$('#corp_select .selected').attr("data-value");
 			store_data(c,b);
+			$("#corp_select .searchable-select-input").keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					
+				}
+			})
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
 				store_data(c,b);

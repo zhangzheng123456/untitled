@@ -215,7 +215,35 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			}
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var codeMark=$("#USERID").attr("data-mark");//编号是唯一的标志
+			var idMark=$("#user_id").attr("data-mark");//ID是否唯一的标志
+			var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
+			var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 			if(useroperatejs.firstStep()){
+				if(idMark=="N"){
+					var div=$("#user_id").next('.hint').children();
+					div.html("员工ID已经存在！");
+					div.addClass("error_tips");
+					return;
+				}
+				if(phoneMark=="N"){
+					var div=$("#USER_PHONE").next('.hint').children();
+					div.html("该手机号码已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(emailMark=="N"){
+					var div=$("#USER_EMAIL").next('.hint').children();
+					div.html("该邮箱已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(codeMark=="N"){
+					var div=$("#USERID").next('.hint').children();
+					div.html("该编号已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
 				var ID=sessionStorage.getItem("id");
 				var USERID=$("#USERID").val();
 				var user_id=$("#user_id").val();
@@ -1053,10 +1081,30 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					$("#USER_PHONE").val("");
+					$("#USER_EMAIL").val("");
+					$("#USERID").val("");
+					$("#user_id").val("");
+					$("#user_id").attr("data-mark","");
+					$("#USERID").attr("data-mark","");
+					$("#USER_PHONE").attr("data-mark","");
+					$("#USER_EMAIL").attr("data-mark","");
+					$("#OWN_RIGHT").val('');
+					$("#OWN_RIGHT").attr("data-myrcode","");
+					$("#OWN_STORE").val('');
+					$("#OWN_STORE").attr("data-myscode","");
+					$("#ownshop_list .per_type").nextAll().remove();
+				}
+			})
 			$('.searchable-select-item').click(function(){
 					$("#USER_PHONE").val("");
 					$("#USER_EMAIL").val("");
 					$("#USERID").val("");
+					$("#user_id").val("");
+					$("#user_id").attr("data-mark","");
 					$("#USERID").attr("data-mark","");
 					$("#USER_PHONE").attr("data-mark","");
 					$("#USER_EMAIL").attr("data-mark","");

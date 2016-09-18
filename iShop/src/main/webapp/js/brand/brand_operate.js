@@ -444,10 +444,13 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
-			$('.corp_select .searchable-select-input').keydown(function(){
+			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];
-				if(event.code==13){
-					console.log(123123);
+				if(event.keyCode == 13){
+					$("input[verify='Code']").val("");
+					$("#BRAND_NAME").val("");
+					$("input[verify='Code']").attr("data-mark","");
+					$("#BRAND_NAME").attr("data-mark","");
 				}
 			})
 			$('.searchable-select-item').click(function(){
