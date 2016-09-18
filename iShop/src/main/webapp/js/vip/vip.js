@@ -235,7 +235,7 @@ function superaddition(data,num){//页面加载循环
         + "'></label></div>"
         + "</td><td style='text-align:left;'>"
         + a
-        + "</td><td>"
+        + "</td><td id='"+data[i].vip_id+"'>"
         + data[i].vip_id
         + "</td><td>"
         + data[i].vip_name
@@ -338,7 +338,7 @@ function jumpBianse(){
     })
     //双击跳转
     $(".table tbody tr").dblclick(function(){
-        var id=$(this).attr("id");
+        var id=$(this).children().eq(2).attr("id");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
@@ -349,13 +349,13 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_edit.html");
+        $(window.parent.document).find('#iframepage').attr("src","/vip/vip_data.html");
     })
     //点击编辑时页面进行的跳转
     $('#compile').click(function(){
         var tr=$("tbody input[type='checkbox']:checked").parents("tr");
         if(tr.length==1){
-            var id=$(tr).attr("id");
+            var id=$(tr).children().eq(2).attr("id");
             var return_jump={};//定义一个对象
             return_jump["inx"]=inx;//跳转到第几页
             return_jump["value"]=value;//搜索的值;
@@ -366,7 +366,7 @@ function jumpBianse(){
             return_jump["pageSize"]=pageSize;//每页多少行
             sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
             sessionStorage.setItem("id",id);
-            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_group_edit.html");
+            $(window.parent.document).find('#iframepage').attr("src","/vip/vip_data.html");
         }else if(tr.length==0){
             frame();
             $('.frame').html("请先选择");
