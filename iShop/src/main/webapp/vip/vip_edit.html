@@ -41,9 +41,6 @@
         .set-message-tabs ul .active{
             color:#6dc1c8;
        }
-        .active1{
-
-       }
     </style>
 </head>
 <body>
@@ -53,7 +50,7 @@
             <div class="col-lg-12 pre_title">会员管理<i class="icon-ishop_8-03"></i>会员列表<i class="icon-ishop_8-03"></i><label>会员信息</label><i class="icon-ishop_8-03"></i><label>编辑会员资料</label></div>
            <div class="set-message-tabs">
                <ul id="tabs-all" style="position: relative;">
-                   <li class="active active1">基本信息</li>
+                   <li class="active">基本信息</li>
                    <li>扩展信息</li>
                    <li>衣橱</li>
                    <li>积分</li>
@@ -159,8 +156,8 @@
     <script>
         $("#tabs-all li").click(function () {
             var index=$(this).index();
-            $(this).addClass("active active1");
-            $(this).siblings().removeClass("active active1");
+            $(this).addClass("active");
+            $(this).siblings().removeClass("active");
             $("#ALL").children().eq(index).show();
             $("#ALL").children().eq(index).siblings().hide();
         }).mouseover(function(){
@@ -171,8 +168,8 @@
             $("#remark").stop(true,true);
         });
         $("#tabs-all").mouseleave(function(){
-            $("#remark").stop();
-            var _this=$(".active1").index();
+            $("#remark").stop(true,true);
+            var _this=$(".active").index();
             $(this).children().eq(_this).addClass("active");
             var len=$(this).children().width();
             $("#remark").animate({left:len*_this},200);
