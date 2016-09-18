@@ -170,21 +170,23 @@ public class UserActionController {
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection("log_person_action");
-
+            DBCursor dbCursor=null;
             // 读取数据
             if (role_code.equals(Common.ROLE_SYS)) {
                 BasicDBObject dbObject=new BasicDBObject();
                 dbObject.put("vip_id",vip_id);
-                cursor.find(dbObject);
+                dbCursor= cursor.find(dbObject);
             System.out.println(cursor.toString());
             } else {
                 BasicDBObject dbObject=new BasicDBObject();
                 dbObject.put("vip_id",vip_id);
                 dbObject.put("corp_code",corp_code);
-                cursor.find(dbObject);
+                dbCursor= cursor.find(dbObject);
                 System.out.println(cursor.toString());
             }
 
+            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+            result.put("list", list);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
