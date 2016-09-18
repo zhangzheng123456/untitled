@@ -698,6 +698,7 @@ input::-webkit-input-placeholder{
 	text-align: center;
 	border: 1px solid #a9c9e2;
 	width:80px;
+	z-index: 3;
 }
 .more_down div{
 	width:80px;
@@ -1081,7 +1082,7 @@ input::-webkit-input-placeholder{
 .switch .bg{
 	background-color:#3eb454;
 }
-.switch div .ON{
+.switch div .Off{
 	left: 20px;
 }
 .switch div span{

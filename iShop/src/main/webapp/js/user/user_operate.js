@@ -142,6 +142,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }else if(input.checked==false){
                 	can_login="N";
                 }
+                var isonline="";//签到状态
+                var input2=$("#isonline")[0];
+                if(input2.checked==true){
+                	isonline="Y";
+                }else if(input2.checked==false){
+                	isonline="N";
+                }
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -184,6 +191,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["isactive"]=ISACTIVE;//是否可用
 				_params["corp_code"]=OWN_CORP;//公司编号
 				_params["can_login"]=can_login;//是否登录
+				_params["isonline"]=isonline;//签到状态
 				if(r_code=="R2000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号
 	            	_params["area_code"]="";//区域编号
@@ -203,7 +211,6 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 	            }
 				useroperatejs.ajaxSubmit(_command,_params,opt);
 			}else{
-				console.log("lalla");
 				return;
 			}
 		});
@@ -248,7 +255,8 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 					avater=$("#preview img").attr("src");//头像
 				}else if(reg.test($("#preview img").attr("src"))==false){
 					avater="";
-				}	 
+				}
+					 
 				var can_login="";//可登录状态
                 var input1=$("#invisible")[0];
                 if(input1.checked==true){
@@ -256,7 +264,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }else if(input1.checked==false){
                 	can_login="N";
                 }
-
+                var isonline="";//签到状态
+                var input2=$("#isonline")[0];
+                if(input2.checked==true){
+                	isonline="Y";
+                }else if(input2.checked==false){
+                	isonline="N";
+                }
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -309,6 +323,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["isactive"]=ISACTIVE;//是否可用
 				_params["corp_code"]=OWN_CORP;//公司编号
 				_params["can_login"]=can_login;//是否登录
+				_params["isonline"]=isonline;//签到状态
 				// _params["password"]=PSW;//密码
 				_params["id"]=ID;//ID
 				if(r_code=="R2000"){
@@ -390,7 +405,6 @@ function selectownshop(obj){//加载店铺列表的时候
 	} else {
 		event.cancelBubble = true;
 	}
-	console.log(obj);
 	var input=$(obj);
 	var div=$(obj).nextAll('.store_list_kuang');
 	var inputs=$(obj).nextAll('.store_list_kuang').find('.search');
@@ -403,7 +417,6 @@ function selectownshop(obj){//加载店铺列表的时候
     $(div).parent().parent().siblings('div').find(".store_list_kuang").hide();
     $(inputs).on('keyup', function(event){
 	    var text=$(this).val();
-	    console.log(text);
 	    $(this).siblings('ul').find("li").addClass('store_list_kuang_hide');
 	    $(this).siblings('ul').find('li:searchableSelectContains('+text+')').removeClass('store_list_kuang_hide');
     })
@@ -423,7 +436,6 @@ function selectownarea(obj){//加载区域列表的时候
 	} else {
 		event.cancelBubble = true;
 	}
-	console.log(obj);
 	var input=$(obj);
 	var div=$(obj).nextAll('.store_list_kuang');
 	var inputs=$(obj).nextAll('.store_list_kuang').find('.search');
@@ -435,7 +447,6 @@ function selectownarea(obj){//加载区域列表的时候
     $(div).parent().parent().siblings('div').find(".store_list_kuang").hide();
     $(inputs).on('keyup', function(event){
 	    var text=$(this).val();
-	    console.log(text);
 	    $(this).siblings('ul').find("li").addClass('store_list_kuang_hide');
 	    $(this).siblings('ul').find('li:searchableSelectContains('+text+')').removeClass('store_list_kuang_hide');
     })
@@ -475,14 +486,10 @@ function role_data(c){//
 	var _command="/user/role";
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", _command,"", _params, function(data){
-		console.log(data);
 		var msg=JSON.parse(data.message);
-		console.log(msg.group);
 		var msg_roles=JSON.parse(msg.group);
-		console.log(msg_roles);
 		var index=0;
 		var html="";
-		console.log(msg_roles.length);
 		if(msg_roles.length!==0){
 			for(index in msg_roles){
 				html +='<li data-jucode="'+msg_roles[index].role_code+'" data-rolecode="'+msg_roles[index].group_code+'">'+msg_roles[index].group_name+'</li>';
@@ -572,12 +579,10 @@ function area_li_list(p) {//区域
 function store_data(p,c){//店铺
 	// var _params={"group_code":r,"corp_code":c};
 	var _params={"corp_code":c};	
-	console.log(_params);
 	var _command="/user/store";
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", _command,"", _params, function(data){
 		var msg=JSON.parse(data.message);
-		console.log(msg.stores);
 		var msg_stores=JSON.parse(msg.stores);
 		var index=0;
 		var html="";
@@ -604,7 +609,6 @@ function store_data(p,c){//店铺
         	}
             var this_=this;
             var txt = $(this_).text();
-            console.log(txt);
             var s_code=$(this_).data("storecode");
             $(this_).parent().parent().parent().children(".input_select").val(txt);
             $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
@@ -615,11 +619,9 @@ function store_data(p,c){//店铺
 }
 function area_data(p,c){//区域
 	var _params={"corp_code":c};	
-	console.log(_params);
 	var _command="/shop/area";
 	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", _command,"", _params, function(data){
-		console.log(data);
 		var msg=JSON.parse(data.message);
 		var msg_areas=msg.areas;
 		var index=0;
@@ -647,7 +649,6 @@ function area_data(p,c){//区域
         	}
             var this_=this;
             var txt = $(this_).text();
-            console.log(txt);
             var s_code=$(this_).data("storecode");
             $(this_).parent().parent().parent().children(".input_select").val(txt);
             $(this_).parent().parent().parent().children(".input_select").attr('data-myscode',s_code);
@@ -658,7 +659,6 @@ function area_data(p,c){//区域
 }
 function addshopselect(){//店铺
 		var k=$("#select_ownshop .shop_list div").length;
-		console.log(k);
 		$(".shop_list").append('<div id="per_type">'
             +'<span style="display:inline-block;" data-i="1" id="store_lists_'+k+'">'
                 +'<input class="input_select"  style="width:280px" type="text" placeholder="请选择所属店铺" readonly data-myscode="" onclick="selectownshop(this)"/>'
@@ -708,7 +708,6 @@ jQuery(document).ready(function(){
 		var _command="/user/select";
 		whir.loading.add("",0.5);//加载等待框
 		oc.postRequire("post", _command,"", _params, function(data){
-			console.log(data);
 			if(data.code=="0"){
 				var msg=JSON.parse(data.message);
 				var j_code=msg.group.role_code;//角色编号
@@ -869,6 +868,11 @@ jQuery(document).ready(function(){
 				}else if(msg.can_login=="N"){
 					input1.checked=false;
 				}
+				if(msg.isonline=="Y"){
+					$("#isonline")[0].checked=true;
+				}else if(msg.isonline=="N"||msg.isonline==""){
+					$("#isonline")[0].checked=false;
+				}
 				var qrcodeList=msg.qrcodeList;
 				if(qrcodeList.length>0) {
 					for (var i = 0; i < qrcodeList.length; i++) {
@@ -951,7 +955,6 @@ jQuery(document).ready(function(){
     	var email1=$("#USER_EMAIL").attr("data-name");//编辑的标志
     	var div=$(this).next('.hint').children();
     	var corp_code=$("#OWN_CORP").val();//企业编号
-    	console.log(corp_code);
     	if(email!==""&&email!==email1){
 	    	var _params={};
 	    	_params["email"]=email;//邮箱
@@ -1039,10 +1042,8 @@ function getcorplist(){
 	//获取企业列表
 	var corp_command="/user/getCorpByUser";
 	oc.postRequire("post", corp_command,"", "", function(data){
-		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
-			console.log(msg);
 			var index=0;
 			var corp_html='';
 			var c=null;
@@ -1081,18 +1082,15 @@ function getAppName(a){
 	    param["corp_code"]=corp_code;
 	var _command="/corp/selectWx";
 	oc.postRequire("post", _command,"", param, function(data){
-		console.log(data);
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			var list=msg.list;
-			console.log(list);
 			$(a).next("ul").empty();
 			for(var i=0;i<list.length;i++){
 				$(a).next("ul").append('<li data-id="'+list[i].app_id+'">'+list[i].app_name+'</li>')
 			}
 			$(a).next("ul").find("li").click(function () {
 				var value = $(this).html();
-				console.log(value);
 				$(a).val(value);
 				$(a).attr("id",$(this).attr("data-id"));
 			})

@@ -17,7 +17,6 @@ var funcCode=key_val.func_code;
 var return_jump=sessionStorage.getItem("return_jump");//获取本页面的状态
 return_jump=JSON.parse(return_jump);
 if(return_jump!==null){
-    console.log(return_jump);
     inx=return_jump.inx;
     pageSize=return_jump.pageSize;
     value=return_jump.value;
@@ -231,23 +230,16 @@ function superaddition(data,num){
         if(data[i].avatar!==""&&data[i].avatar!==undefined&&reg.test(data[i].avatar)==true){
             avatar=data[i].avatar;
         }
-        var div="";
-        var span="";
+        var isonline="";
         if(data[i].isonline==""){
-            div="";
-            span="ON";
+            isonline="";
         }
         if(data[i].isonline=="Y"){
             isonline="签到";
-            div="bg";
-            span="";
         }
         if(data[i].isonline=="N"){
             isonline="签退";
-            div="";
-            span="ON";
         }
-        console.log(data[i].isonline);
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
                         + i
                         + 1
@@ -277,8 +269,9 @@ function superaddition(data,num){
                         +data[i].store_code
                         + "</span></td><td><span title='"+data[i].area_code+"'>"
                         +data[i].area_code
-                        + "</span></td><td class='switch'><div class='"+div+"' data-switch='"+data[i].isonline+"'><span class='"+span+"'>"
-                        + "</span></div></td><td>"
+                        + "</span></td><td class='switch'><span>"
+                        + isonline
+                        + "</span></td><td>"
                         +data[i].isactive
                         +"</td></tr>");
     }
@@ -287,7 +280,6 @@ function superaddition(data,num){
 };
 //权限配置
 function jurisdiction(actions){
-    console.log(actions);
     $('#jurisdiction').empty();
     for(var i=0;i<actions.length;i++){
         if(actions[i].act_name=="add"){
@@ -343,6 +335,9 @@ function quanXian(){
         oc.postRequire("post","/user/sign","0",param,function(data){
           if(data.code=="0"){
             frame();
+            for(var i=tr.length-1,ID="";i>=0;i--){
+                $(tr[i]).find(".switch").children("span").html("签到");
+            }
             $('.frame').html("签到成功");
           }else if(data.code=="-1"){
             frame();
@@ -374,6 +369,9 @@ function quanXian(){
         oc.postRequire("post","/user/sign","0",param,function(data){
             if(data.code=="0"){
                 frame();
+                for(var i=tr.length-1,ID="";i>=0;i--){
+                    $(tr[i]).find(".switch").children("span").html("签退");
+                }
                 $('.frame').html("签退成功");
             }else if(data.code=="-1"){
                 frame();
@@ -423,7 +421,6 @@ function quanXian(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -450,7 +447,6 @@ function quanXian(){
         var corp_code1=$(tr[length]).find(".corp_code").attr("data-code");
         param1["corp_code"]=corp_code1;
         oc.postRequire("post","/corp/selectWx","0",param1,function(data){
-            console.log(data);
             if(data.code=="0"){
                 var msg=JSON.parse(data.message);
                 var list=msg.list;
@@ -479,7 +475,6 @@ function GET(a,b){
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("get","/user/list?pageNumber="+a+"&pageSize="+b
         +"&funcCode="+funcCode+"","","",function(data){
-            console.log(data);
             if(data.code=="0"){
             	$(".table tbody").empty();
                 var message=JSON.parse(data.message);
@@ -490,7 +485,7 @@ function GET(a,b){
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
             }else if(data.code=="-1"){
-                console.log(data.message);
+                alert(data.message);
             }
     });
 }
@@ -514,7 +509,6 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
-        console.log(id);
         $(window.parent.document).find('#iframepage').attr("src","/user/user_edit.html");
 	})
 	//点击tr input是选择状态  tr增加class属性
@@ -522,7 +516,6 @@ function jumpBianse(){
 		var input=$(this).find("input")[0];
 		var thinput=$("thead input")[0];
 		$(this).toggleClass("tr");  
-		console.log(input);
 		if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
 			input.checked = true;
 			$(this).addClass("tr");
@@ -599,7 +592,6 @@ $("#d_search").click(function(){
 function POST(a,b){
     whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post","/user/search","0",param,function(data){
-        console.log(data);
 		if(data.code=="0"){
 			$(".table tbody").empty();
             var message=JSON.parse(data.message);
@@ -625,7 +617,7 @@ function POST(a,b){
             $(".sxk").slideUp();
 		 	setPage($("#foot-num")[0],cout,a,b,funcCode);
 		}else if(data.code=="-1"){
-			console.log(data.message);
+			alert.log(data.message);
 		}
 	})
 }
@@ -736,7 +728,6 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
             $("#file_list_l ul").empty();
             for(var i=0;i<message.length;i++){
                  $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
@@ -835,7 +826,6 @@ $("#x1").click(function(){
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/user/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -888,7 +878,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
