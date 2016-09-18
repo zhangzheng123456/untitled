@@ -223,7 +223,14 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        console.log();
+        var avatar="";
+        var reg=/(^(http:\/\/)(.*?)(\/(.*)\.(jpg|bmp|gif|ico|pcx|jpeg|tif|png|raw|tga)$))/;
+        if(reg.test(data[i].product_image)==false){
+            avatar="../img/head.png";
+        }
+        if(reg.test(data[i].product_image)){
+            avatar=data[i].product_image;
+        }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
@@ -233,7 +240,7 @@ function superaddition(data,num){//页面加载循环
             + "'></label></div>"
             + "</td><td style='text-align:left;'>"
             + a
-            + "</td><td><img src="+data[i].product_image+ ">"
+            + "</td><td><img src="+avatar+ ">"
             + "</td><td><span>"
             + data[i].product_url
             + "</span></td><td class='app_id'>"
