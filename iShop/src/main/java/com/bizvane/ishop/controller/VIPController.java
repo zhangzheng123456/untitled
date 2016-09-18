@@ -50,6 +50,51 @@ public class VIPController {
 //        return dataBean.getJsonStr();
 //    }
 
+    /**
+     * 会员近一年消费和累计消费的接口
+     */
+    @RequestMapping(value = "/vipConsumCount", method = RequestMethod.POST)
+    @ResponseBody
+    public String VIPManage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_vip_id.key, data_vip_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+
+            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipMonetary", datalist);
+            String result = dataBox.data.get("message").value;
+            logger.info("----vip_id: "+vip_id+"---vipConsumCount:" + dataBox.data.get("message").value);
+
+            JSONObject obj = new JSONObject();
+            obj.put("Consum",result);
+            obj.put("vipInfo","");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+
     //会员积分
     @RequestMapping(value = "/vipPoints", method = RequestMethod.POST)
     @ResponseBody

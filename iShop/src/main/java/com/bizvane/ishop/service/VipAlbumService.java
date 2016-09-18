@@ -3,6 +3,7 @@ package com.bizvane.ishop.service;
 import com.bizvane.ishop.entity.VipAlbum;
 import com.github.pagehelper.PageInfo;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -17,4 +18,6 @@ public interface VipAlbumService {
     int deleteVipAlbum(int id) throws Exception;
 
     PageInfo<VipAlbum> getAllVipAlbumScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
+
+    List<VipAlbum> selectAlbumByVip(String corp_code, String vip_code) throws Exception;
 }

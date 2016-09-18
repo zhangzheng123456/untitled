@@ -151,4 +151,23 @@
         AND dc.isactive = 'Y'
         ORDER BY dva.id DESC
     </select>
+
+    <select id="selectAlbumByVip" resultMap="VipAlbum">
+        SELECT dva.id,
+        dva.vip_code,
+        dva.vip_name,
+        dva.cardno,
+        dva.image_url,
+        dva.corp_code,
+        dva.created_date,
+        dva.creater,
+        dva.isactive,
+        dc.corp_name
+        FROM def_vip_album dva,def_corp dc
+        WHERE dva.corp_code = dc.corp_code
+        AND dva.corp_code = #{corp_code}
+        AND dva.vip_code = #{vip_code}
+        AND dc.isactive = 'Y'
+        ORDER BY dva.id DESC
+    </select>
 </mapper>

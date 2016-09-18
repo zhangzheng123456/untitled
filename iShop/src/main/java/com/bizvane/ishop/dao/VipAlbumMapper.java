@@ -19,4 +19,7 @@ public interface VipAlbumMapper {
     int deleteVipAlbum(int id) throws SQLException;
 
     List<VipAlbum> selectAlbumScreen(Map<String, Object> params) throws SQLException;
+
+    List<VipAlbum> selectAlbumByVip(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code) throws SQLException;
+
 }

@@ -67,6 +67,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
         Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
+
         Map datalist = new HashMap<String, Data>();
         datalist.put(data_user_id.key, data_user_id);
         datalist.put(data_corp_code.key, data_corp_code);
