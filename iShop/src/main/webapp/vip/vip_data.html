@@ -321,6 +321,33 @@
         text-align: left;
     }
 
+    /*相册*/
+     .album{
+         width:100%;
+         overflow: hidden;
+         background: #e8e8e8;
+     }
+     .album ul li{
+         width:14%;
+         float: left;
+         text-align: center;
+         position: relative;
+     }
+     .album img{
+         margin-top: 20px;
+         cursor: pointer;
+     }
+     .album .cancel_img{
+         width: 30px;
+         height: 30px;
+         background: url('../img/x_alt.png') no-repeat right;
+         background-size:20px;
+         position: absolute;
+         top:5px;
+         right:5px;
+         z-index: 100;
+     }
+
      /*标签*/
      .viplabel{
          font-size: 14px;
@@ -1124,7 +1151,7 @@
                 </div>
 
                 <div class="points">
-                <div>
+                    <div>
                     <div class="point_head">
                         总积分<s>￥</s><span class="consume_total">9600</span>
                         <ul>
@@ -1249,9 +1276,36 @@
                         </ul>
                     </div>
                 </div>
-            </div>
+                </div>
 
-                <div class="album"></div>
+                <div class="album">
+                    <ul>
+                        <li>
+                            <img src="../img/vipImg.png">
+                            <div class="cancel_img">
+
+                            </div>
+                        </li>
+                        <li>
+                            <img src="../img/vipImg.png">
+                        </li>
+                        <li>
+                            <img src="../img/vipImg.png">
+                        </li>
+                        <li>
+                            <img src="../img/vipImg.png">
+                        </li>
+                        <li>
+                            <img src="../img/vipImg.png">
+                        </li>
+                        <li>
+                            <img src="../img/vipImg.png">
+                        </li>
+                        <li>
+                            <img src="../img/vipImg.png">
+                        </li>
+                    </ul>
+                </div>
 
                 <div class="viplabel">
                 <div class="search">

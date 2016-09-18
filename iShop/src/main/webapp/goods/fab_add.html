@@ -53,6 +53,7 @@
         .goods_add{width: 40px;height:50px;float:right;font-size: 30px;  margin-top: -5px; text-align: center;  line-height: 50px;color:#c3c3c3; }
         .goods_add:hover{color:#6dc1c8;cursor: pointer;}
         .bttn-wrapper .fr-bttn:last-child{display: none;}
+        .bttn-wrapper .fr-bttn:nth-last-of-type(4){display: none}
     </style>
 </head>
 <body>
@@ -205,9 +206,27 @@
     <script src="font_editor/js/plugins/font_family.min.js"></script>
     <script src="font_editor/js/plugins/font_size.min.js"></script>
     <script src="font_editor/js/plugins/block_styles.min.js"></script>
+    <script src="font_editor/js/langs/zh_cn.js"></script>
     <script>
         $(function(){
-            $('#edit').editable({inlineMode: false, alwaysBlank: true})
+            $('#edit').editable({
+                inlineMode: false,
+                alwaysBlank: true,
+                language: "zh_cn",
+                direction: "ltr",
+                allowedImageTypes: ["jpeg", "jpg", "png", "gif"],
+                autosave: true,
+                autosaveInterval: 2500,
+                saveURL: 'hander/FroalaHandler.ashx',
+                saveParams: { postId: "123" },
+                spellcheck: true,
+                plainPaste: true,
+                imageButtons: ["floatImageLeft", "floatImageNone", "floatImageRight", "linkImage", "replaceImage", "removeImage"],
+                imageUploadURL: 'hander/FroalaHandler.ashx',
+                imageParams: { postId: "123" },
+                enableScript: false
+
+            })
         });
     </script>
 </body>
