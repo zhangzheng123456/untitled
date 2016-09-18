@@ -258,8 +258,37 @@
         WHERE corp_code=#{corp_code}
         AND label_group_code=#{label_group_code}
     </select>
+
     <update id="updViplableBycode" parameterType="com.bizvane.ishop.entity.VipLabel">
         UPDATE def_vip_label  SET label_group_code =#{label_group_code_old}
         WHERE CORP_CODE =#{corp_code} AND label_group_code =#{label_group_code_new}
     </update>
+
+    <select id="selectLabelByVip" resultMap="VipLabels">
+        SELECT
+        vt.id,
+        vt.label_name,
+        vt.label_type,
+        vt.corp_code,
+        vt.modified_date,
+        vt.modifier,
+        vt.created_date,
+        vt.creater,
+        vt.isactive,
+        cc.corp_name,
+        vt.label_group_code
+        FROM
+        def_vip_label vt,DEF_CORP cc,rel_vip_label rvl
+        ,def_vip_label_group dvg
+        WHERE
+        vt.corp_code=cc.corp_code
+        AND vt.corp_code=dvg.corp_code
+        AND cc.corp_code=dvg.corp_code
+        AND vt.ID = rvl.LABEL_ID
+        AND vt.corp_code=rvl.corp_code
+        AND rvl.corp_code=#{corp_code}
+        AND rvl.vip_code = #{vip_code}
+        GROUP BY vt.label_name
+        ORDER BY vt.id DESC
+    </select>
 </mapper>

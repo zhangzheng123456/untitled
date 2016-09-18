@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -32,6 +33,11 @@ public class VIPController {
     String id;
     @Autowired
     IceInterfaceService iceInterfaceService;
+    @Autowired
+    VipAlbumService vipAlbumService;
+    @Autowired
+    VipLabelService vipLabelService;
+
     /**
      * 会员列表
      */
@@ -55,7 +61,7 @@ public class VIPController {
      */
     @RequestMapping(value = "/vipConsumCount", method = RequestMethod.POST)
     @ResponseBody
-    public String VIPManage(HttpServletRequest request) {
+    public String vipConsumCount(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
@@ -66,6 +72,7 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
+//            String store_code = jsonObject.get("store_id").toString();
 
             Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
@@ -78,9 +85,14 @@ public class VIPController {
             String result = dataBox.data.get("message").value;
             logger.info("----vip_id: "+vip_id+"---vipConsumCount:" + dataBox.data.get("message").value);
 
+            List<VipAlbum> vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code,vip_id);
+            List<VipLabel> vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
+
             JSONObject obj = new JSONObject();
             obj.put("Consum",result);
-            obj.put("vipInfo","");
+            obj.put("Album",JSON.toJSONString(vipAlbumList));
+            obj.put("Label",JSON.toJSONString(vipLabelList));
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result);
@@ -93,6 +105,41 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
+
+    /**
+     * 会员相册和标签
+     */
+    @RequestMapping(value = "/vipAlbumAndLabel", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipAlbumAndLabel(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            List<VipAlbum> vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code,vip_id);
+
+
+            JSONObject obj = new JSONObject();
+            obj.put("album",JSON.toJSONString(vipAlbumList));
+            obj.put("vipInfo","");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(obj.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 
     //会员积分
