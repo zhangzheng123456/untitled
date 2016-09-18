@@ -289,7 +289,7 @@ $('#test').click(function(e){
 		$(".distribution_frame").show();
 		flase=1;
 		var left=($(window).width()-$(".distribution_frame").width())/2;//弹框定位的left值
-		var tp=($(window).height()-$(".distribution_frame").height())/2;//弹框定位的top值
+		var tp=($(window).height()-$(".distribution_frame").height())/2+100;//弹框定位的top值
 		$(".distribution_frame").css({"left":+left+"px","top":+tp+"px"});
 		var corp_code = $('#OWN_CORP').val();
 		var corp_code1=$('#OWN_CORP').attr("corp_code");

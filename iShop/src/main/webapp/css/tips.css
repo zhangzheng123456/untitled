@@ -259,16 +259,8 @@
 	z-index: 20;
 	cursor: pointer;
 }
-.xingming li{
-	width: 60px;
-	height: 60px;
-	float: left;
-	margin-left: 3px;
-	margin-bottom: 3px;
-	line-height: 60px;
-	text-align: center;
-	background-color: #ddd;
-	position: relative;
+.xingming{
+	margin: 0 !important;
 }
 .delectxing{
 	position: absolute;
