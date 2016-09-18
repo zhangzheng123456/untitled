@@ -505,7 +505,7 @@ function consumeVipGetre() {
             count=msg.pages;
             var pageIndex=msg.pageNum;
             msg=msg.vip_cost_freq_list;
-            if(msg.length){
+            if(msg.length>0){
                 $(".rank thead").append('<tr>'
                     + '<th>序号</th>'
                     + '<th>会员</th>'
@@ -721,9 +721,9 @@ $(function(){
                 jump==2&&(newVipGet(a,pageSize));
                 jump==3&&(sleepVipGet(a,pageSize,query_type));
                 jump==1&&(brithVipGet(a,pageSize,month_type));
-                jump_s==0&&(consumeVipGet(a,pageSize,month_type));
-                jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
-                jump_s>1&&(consumeVipGetam(a,pageSize,query_type));
+                jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,month_type));
+                jump==4&&jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
+                jump==4&&jump_s>1&&(consumeVipGetam(a,pageSize,query_type));
                 // if(value==""&&filtrate==""){
                 //     inx=1;
                 //     GET(inx,pageSize);
