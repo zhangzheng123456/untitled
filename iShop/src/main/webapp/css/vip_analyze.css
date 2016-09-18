@@ -256,6 +256,7 @@
 #select_analyze ul li,#select_analyze_shop ul li{
     padding: 5px 5px 5px 20px;
     margin-left: 5%;
+    margin-right: 5%;
 }
 #select_analyze ul li:hover,#select_analyze_shop ul li:hover{
     background:#4a5f7c;
