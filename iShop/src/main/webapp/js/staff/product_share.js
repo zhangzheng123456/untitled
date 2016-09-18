@@ -241,11 +241,11 @@ function superaddition(data,num){//页面加载循环
             + "</td><td style='text-align:left;'>"
             + a
             + "</td><td><img src="+avatar+ ">"
-            + "</td><td><span>"
+            + "</td><td><span title='"+data[i].product_url+"'>"
             + data[i].product_url
             + "</span></td><td class='app_id'>"
             + data[i].product_title
-            + "</td><td><span title='"+data[i].url+"'>"
+            + "</td><td><span>"
             + data[i].corp_code
             +"</span></td><td>"
             + data[i].operator_id
@@ -313,7 +313,6 @@ function jumpBianse(){
         var input=$(this).find("input")[0];
         var thinput=$("thead input")[0];
         $(this).toggleClass("tr");
-        console.log(input);
         if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
             input.checked = true;
             $(this).addClass("tr");
@@ -357,10 +356,8 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var param={};
         var vip_id=$(this).find("td:eq(4)").html()
-        console.log(vip_id);
         param["vip_id"]=vip_id;
         oc.postRequire("post","/userAction/select","0",param,function(data){
-            console.log(data);
         })
     })
     //删除
@@ -375,7 +372,6 @@ function jumpBianse(){
         }
         $("#p").show();
         $("#tk").show();
-        console.log(left);
         $("#p").css({"width":+l+"px","height":+h+"px"});
         $("#tk").css({"left":+left+"px","top":+tp+"px"});
     })
@@ -415,7 +411,6 @@ function POST(a,b){
     oc.postRequire("post","/productShare/search","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            console.log(message);
             var list=message.list;
             cout=message.pages;
             $(".table tbody").empty();
@@ -644,7 +639,6 @@ $("#x1").click(function(){
 function UpladFile() {
     whir.loading.add("",0.5);//加载等待框
     var fileObj = document.getElementById("file").files[0];
-    console.log(fileObj);
     var FileController = "/storeAchvGoal/addByExecl"; //接收上传文件的后台地址
     var form = new FormData();
     form.append("file", fileObj); // 文件对象
@@ -697,7 +691,6 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 li+="<li><label>"+filter[i].show_name+"</label><input type='text' id='"+filter[i].col_name+"'></li>";
             }else if(filter[i].type=="select"){
                 var msg=filter[i].value;
-                console.log(msg);
                 var ul="<ul class='isActive_select_down'>";
                 for(var j=0;j<msg.length;j++){
                     ul+="<li data-code='"+msg[j].value+"'>"+msg[j].key+"</li>"
