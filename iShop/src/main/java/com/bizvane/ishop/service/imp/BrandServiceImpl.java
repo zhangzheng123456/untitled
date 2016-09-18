@@ -38,38 +38,40 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand getBrandById(int id) throws SQLException {
         Brand brand = brandMapper.selectByBrandId(id);
-        String cus_user_code = brand.getCus_user_code();
-        List<JSONObject> array_user = new ArrayList<JSONObject>();
-        String app_id = "";
-        String app_name = "";
+        if (brand != null) {
+            String cus_user_code = brand.getCus_user_code();
+            List<JSONObject> array_user = new ArrayList<JSONObject>();
+            String app_id = "";
+            String app_name = "";
 
-        if (cus_user_code != null && !cus_user_code.equals("")) {
-            String[] cus_user_codes = cus_user_code.split(",");
-            for (int i = 0; i < cus_user_codes.length; i++) {
-                String user_code = cus_user_codes[i];
-                List<User> user = userMapper.selectUserCode(user_code, brand.getCorp_code(),Common.IS_ACTIVE_Y);
-                if (user.size() > 0) {
-                    JSONObject userObj = new JSONObject();
-                    userObj.put("cus_user_code",user_code);
-                    userObj.put("cus_user_name",user.get(0).getUser_name());
-                    array_user.add(userObj);
+            if (cus_user_code != null && !cus_user_code.equals("")) {
+                String[] cus_user_codes = cus_user_code.split(",");
+                for (int i = 0; i < cus_user_codes.length; i++) {
+                    String user_code = cus_user_codes[i];
+                    List<User> user = userMapper.selectUserCode(user_code, brand.getCorp_code(), Common.IS_ACTIVE_Y);
+                    if (user.size() > 0) {
+                        JSONObject userObj = new JSONObject();
+                        userObj.put("cus_user_code", user_code);
+                        userObj.put("cus_user_name", user.get(0).getUser_name());
+                        array_user.add(userObj);
+                    }
                 }
             }
-        }
-        brand.setCus_user(array_user);
-        List<CorpWechat> corpWechats = corpMapper.selectWByCorpBrand(brand.getCorp_code(),brand.getBrand_code());
-        if (corpWechats.size()>0){
-            for (int i = 0; i < corpWechats.size(); i++) {
-                String app_id1 = corpWechats.get(0).getApp_id();
-                String app_name1 = corpWechats.get(0).getApp_name();
-                app_id = app_id + app_id1 + ",";
-                app_name = app_name + app_name1 + ",";
+            brand.setCus_user(array_user);
+            List<CorpWechat> corpWechats = corpMapper.selectWByCorpBrand(brand.getCorp_code(), brand.getBrand_code());
+            if (corpWechats.size() > 0) {
+                for (int i = 0; i < corpWechats.size(); i++) {
+                    String app_id1 = corpWechats.get(0).getApp_id();
+                    String app_name1 = corpWechats.get(0).getApp_name();
+                    app_id = app_id + app_id1 + ",";
+                    app_name = app_name + app_name1 + ",";
+                }
+                app_id = app_id.substring(0, app_id.length() - 1);
+                app_name = app_name.substring(0, app_name.length() - 1);
             }
-            app_id = app_id.substring(0,app_id.length()-1);
-            app_name = app_name.substring(0,app_name.length()-1);
+            brand.setApp_id(app_id);
+            brand.setApp_name(app_name);
         }
-        brand.setApp_id(app_id);
-        brand.setApp_name(app_name);
         return brand;
     }
 

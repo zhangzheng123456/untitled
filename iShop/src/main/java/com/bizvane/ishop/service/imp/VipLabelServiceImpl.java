@@ -199,7 +199,12 @@ public class VipLabelServiceImpl implements VipLabelService {
     }
 
     @Override
-    public List<VipLabel> lableList(String corp_code, String label_group_code) {
+    public List<VipLabel> lableList(String corp_code, String label_group_code)throws Exception  {
         return vipLabelMapper.lableList(corp_code,label_group_code);
+    }
+
+    @Override
+    public List<VipLabel> selectLabelByVip(String corp_code, String vip_code) throws Exception {
+        return vipLabelMapper.selectLabelByVip(corp_code,vip_code);
     }
 }

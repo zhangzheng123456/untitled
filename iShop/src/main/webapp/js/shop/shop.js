@@ -42,13 +42,7 @@ var oc = new ObjectControl();
             var codeMark = $("#STORE_ID").attr("data-mark");//店铺ID是否唯一的标志
             var idMark = $("#storeId").attr("data-mark");//店铺ID是唯一的标志
             if (shopjs.firstStep()) {
-                if (idMark == "N"){
-                    var div = $("#storeId").next(".hint").children();
-                    div.html("店铺ID已存在")
-                    div.addClass("errop_tips");
-                    return ;
-                }
-                if (nameMark == "N" || codeMark == "N") {
+                if (nameMark == "N" || codeMark == "N"||idMark=="N") {
                     if (nameMark == "N") {
                         var div = $("#STORE_NAME").next('.hint').children();
                         div.html("该名称已经存在！");
@@ -56,6 +50,11 @@ var oc = new ObjectControl();
                     }
                     if (codeMark == "N") {
                         var div = $("#STORE_ID").next('.hint').children();
+                        div.html("该编号已经存在！");
+                        div.addClass("error_tips");
+                    }
+                    if(idMark=="N"){
+                        var div = $("#storeId").next('.hint').children();
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
@@ -123,9 +122,10 @@ var oc = new ObjectControl();
         });
         $("#edit_save").click(function () {
             var nameMark = $("#STORE_NAME").attr("data-mark");//店铺名称是否唯一的标志
-            var codeMark = $("#STORE_ID").attr("data-mark");//店铺ID是否唯一的标志
+            var codeMark = $("#STORE_ID").attr("data-mark");//店铺编号是否唯一的标志
+            var idMark=$("#storeId").attr("data-mark");//店铺id是否唯一的标志
             if (shopjs.firstStep()) {
-                if (nameMark == "N" || codeMark == "N") {
+                if (nameMark == "N" || codeMark == "N"||idMark=="N") {
                     if (nameMark == "N") {
                         var div = $("#STORE_NAME").next('.hint').children();
                         div.html("该名称已经存在！");
@@ -133,6 +133,11 @@ var oc = new ObjectControl();
                     }
                     if (codeMark == "N") {
                         var div = $("#STORE_ID").next('.hint').children();
+                        div.html("该编号已经存在！");
+                        div.addClass("error_tips");
+                    }
+                    if(idMark=="N"){
+                        var div = $("#storeId").next('.hint').children();
                         div.html("该编号已经存在！");
                         div.addClass("error_tips");
                     }
@@ -386,9 +391,9 @@ jQuery(document).ready(function () {
             oc.postRequire("post", "/shop/storeCodeExist", "", _params, function (data) {
                 if (data.code == "0") {
                     div.html("");
-                    $("#STORE_ID").attr("data-mark", "Y");
+                    $("#storeId").attr("data-mark", "Y");
                 } else if (data.code == "-1") {
-                    $("#STORE_ID").attr("data-mark", "N");
+                    $("#storeId").attr("data-mark", "N");
                     div.addClass("error_tips");
                     div.html("店铺ID已经存在！");
                 }
@@ -618,8 +623,19 @@ function getcorplist() {
             }
             $("#OWN_CORP").append(corp_html);
             $('.corp_select select').searchableSelect();
+            $('.corp_select .searchable-select-input').keydown(function(event){
+                var event=window.event||arguments[0];
+                if(event.keyCode == 13){
+                    $("#STORE_ID").val("");
+                    $("#storeId").val("");
+                    $("#STORE_NAME").val("");
+                    $("input[verify='Code']").attr("data-mark", "");
+                    $("#STORE_NAME").attr("data-mark", "");
+                }
+            })
             $('.searchable-select-item').click(function () {
-                $("input[verify='Code']").val("");
+                $("#STORE_ID").val("");
+                $("#storeId").val("");
                 $("#STORE_NAME").val("");
                 $("input[verify='Code']").attr("data-mark", "");
                 $("#STORE_NAME").attr("data-mark", "");
