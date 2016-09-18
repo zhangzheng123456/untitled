@@ -6,6 +6,7 @@ var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
 /**********************左侧数据**************************************************************************************/
+//获取区域
 function GetArea(){
     var searchValue=$('#select_analyze input').val();
     var param={};
@@ -41,6 +42,7 @@ function GetArea(){
         }
     });
 }
+//获取店铺
 function getStore(a){
     var searchValue=$('#select_analyze_shop input').val();
     var area_code=a;
@@ -51,8 +53,8 @@ function getStore(a){
     param["area_code"]=area_code;
     oc.postRequire("post","/shop/findByAreaCode","",param,function(data){
         var ul='';
-        var first_corp_name='';
-        var first_corp_code='';
+        // var first_corp_name='';
+        // var first_corp_code='';
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
         var first_store_name='';
@@ -65,7 +67,8 @@ function getStore(a){
         first_store_name=output_list[0].store_name;
         first_store_code=output_list[0].store_code;
         for(var i= 0;i<output_list.length;i++){
-            ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
+            // ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
+            output_list[i].store_name=='全部'?'':ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
         }
         $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
