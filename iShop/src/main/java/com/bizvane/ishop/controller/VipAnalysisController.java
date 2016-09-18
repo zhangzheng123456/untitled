@@ -49,7 +49,7 @@ public class VipAnalysisController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            Map datalist = iceInterfaceService.viBasicMethod(jsonObject,request);
+            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisAllVip", datalist);
             logger.info("-------vip列表" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;

@@ -7631,14 +7631,15 @@ ul,li{list-style:none;padding:0;margin:0;}
 }
 .reply_area{
   width:420px;
-  height:100px;
+  height:250px;
+  padding-top: 10px;
   display:inline-block;
   background:#ffffff;
   border-radius:4px;
 }
 .reply_area textarea{
   width:410px;
-  height:80px;
+  height:240px;
   margin-left:10px;
   outline: none;
   appearance: none;

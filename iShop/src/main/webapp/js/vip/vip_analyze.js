@@ -1,11 +1,12 @@
 var oc = new ObjectControl();
 var page=1;
 var jump=1;//标签跳转
-var jump_s=0;//消费记录标签
+var jump_s="";//消费记录标签
 var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
 /**********************左侧数据**************************************************************************************/
+//获取区域
 function GetArea(){
     var searchValue=$('#select_analyze input').val();
     var param={};
@@ -41,6 +42,7 @@ function GetArea(){
         }
     });
 }
+//获取店铺
 function getStore(a){
     var searchValue=$('#select_analyze_shop input').val();
     var area_code=a;
@@ -51,8 +53,8 @@ function getStore(a){
     param["area_code"]=area_code;
     oc.postRequire("post","/shop/findByAreaCode","",param,function(data){
         var ul='';
-        var first_corp_name='';
-        var first_corp_code='';
+        // var first_corp_name='';
+        // var first_corp_code='';
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
         var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
         var first_store_name='';
@@ -65,7 +67,8 @@ function getStore(a){
         first_store_name=output_list[0].store_name;
         first_store_code=output_list[0].store_code;
         for(var i= 0;i<output_list.length;i++){
-            ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
+            // ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
+            output_list[i].store_name=='全部'?'':ul+="<li data_store='"+output_list[i].store_code+"'>"+output_list[i].store_name+"</li>";
         }
         $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
@@ -205,8 +208,10 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
     jump=4;
 })
 $(".vip_nav_bar li").click(function () {
-    $(this).css("border-bottom","2px solid #6cc1c8");
-    $(this).siblings().css("border-bottom","");
+    // $(this).css("border-bottom","2px solid #6cc1c8");
+    // $(this).siblings().css("border-bottom","");
+    $(this).addClass("liactive");
+    $(this).siblings().removeClass("liactive");
 })
 $(".date_btn span").click(function () {
     $(this).css({"color":"#fff","background":"#6dc1c8"});
@@ -503,7 +508,7 @@ function consumeVipGetre() {
             count=msg.pages;
             var pageIndex=msg.pageNum;
             msg=msg.vip_cost_freq_list;
-            if(msg.length){
+            if(msg.length>0){
                 $(".rank thead").append('<tr>'
                     + '<th>序号</th>'
                     + '<th>会员</th>'
@@ -719,9 +724,9 @@ $(function(){
                 jump==2&&(newVipGet(a,pageSize));
                 jump==3&&(sleepVipGet(a,pageSize,query_type));
                 jump==1&&(brithVipGet(a,pageSize,month_type));
-                jump_s==0&&(consumeVipGet(a,pageSize,month_type));
-                jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
-                jump_s>1&&(consumeVipGetam(a,pageSize,query_type));
+                jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,month_type));
+                jump==4&&jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
+                jump==4&&jump_s>1&&(consumeVipGetam(a,pageSize,query_type));
                 // if(value==""&&filtrate==""){
                 //     inx=1;
                 //     GET(inx,pageSize);
@@ -794,12 +799,13 @@ $("#input-txt").keydown(function() {
     if (inx > 0) {
         if (event.keyCode == 13) {
             console.log(month_type,jump);
+            console.log(jump_s);
                 jump==2&&(newVipGet(inx));
                 jump==3&&(sleepVipGet(inx,'',query_type));
                 jump==1&&(brithVipGet(inx,'',month_type));
-                jump_s==0&&(consumeVipGet(inx,'',month_type));
-                jump_s==1&&(consumeVipGetre(inx,'',query_type));
-                jump_s>1&&(consumeVipGetam(inx,'',query_type));
+                jump==4&&jump_s==0&&(consumeVipGet(inx,'',month_type));
+                jump==4&&jump_s==1&&(consumeVipGetre(inx,'',query_type));
+                jump==4&&jump_s>1&&(consumeVipGetam(inx,'',query_type));
             }
         };
 })

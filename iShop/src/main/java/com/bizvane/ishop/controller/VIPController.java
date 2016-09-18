@@ -62,7 +62,7 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            Map datalist = iceInterfaceService.viBasicMethod(jsonObject,request);
+            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
             DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.VipDetailQuery", datalist);
             logger.info("-------会员积分" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;

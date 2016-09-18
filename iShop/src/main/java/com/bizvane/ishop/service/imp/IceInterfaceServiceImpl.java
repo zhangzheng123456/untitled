@@ -34,7 +34,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
         return dataBox;
     }
 
-    public Map viBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception{
+    public Map vipBasicMethod(JSONObject jsonObject, HttpServletRequest request) throws Exception{
         String user_code = request.getSession().getAttribute("user_code").toString();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
         String role_code = request.getSession().getAttribute("role_code").toString();

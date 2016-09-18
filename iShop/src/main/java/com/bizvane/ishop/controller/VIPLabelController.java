@@ -9,16 +9,22 @@ import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -47,7 +53,8 @@ public class VIPLabelController {
     private VipLabelService vipLabelService;
     @Autowired
     private CorpService corpService;
-
+    @Autowired
+    MongoDBClient mongodbClient;
     private static final Logger log = Logger.getLogger(VIPLabelController.class);
 
     String id;
@@ -621,5 +628,123 @@ public class VIPLabelController {
         }
         return dataBean.getJsonStr();
     }
+    /**
+     * MongDB
+     * 会员标签
+     * 新增
+     */
+    @RequestMapping(value = "/label/labelAdd", method = RequestMethod.POST)
+    @ResponseBody
+    public String labelAdd(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject result = new JSONObject();
+        int pages = 0;
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String label_id = jsonObject.get("label_id").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
+            String vip_code = jsonObject.get("vip_code").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection("log_vip_list");
+            BasicDBObject dbObject=new BasicDBObject();
+            dbObject.put("vip_code",vip_code);
+            dbObject.put("label_id",label_id);
+
+            BasicDBObject dbObject1=new BasicDBObject();
+            dbObject1.put("labels",dbObject);
+            BasicDBObject dbObject2=new BasicDBObject();
+            dbObject1.put("$addToSet",dbObject1);
+            //根据vip_code,image_url匹配查询到某条记录中满足要求的会员相册
+            BasicDBObject query = new BasicDBObject();
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                query.put("vip_id", vip_id);
+            } else {
+                query.put("corp_code", corp_code);
+                query.put("vip_id", vip_id);
+            }
+
+            cursor.update(query,dbObject2);
+            DBCursor dbCursor = cursor.find(query);
+
+            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+            result.put("list", list);
+           // result.put("dbObject",dbObject);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * MongoDB
+     * 会员相册删除
+     */
+    @RequestMapping(value = "/label/labelDelete", method = RequestMethod.POST)
+    @ResponseBody
+    public String labelDelete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject result = new JSONObject();
+        int pages = 0;
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String label_id = jsonObject.get("label_id").toString();
+            String vip_code = jsonObject.get("vip_code").toString();
+
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection("log_vip_list");
+            BasicDBObject dbObject=new BasicDBObject();
+            dbObject.put("vip_code",vip_code);
+            dbObject.put("label_id",label_id);
+            BasicDBObject dbObject1=new BasicDBObject();
+            dbObject1.put("labels",dbObject);
+            BasicDBObject dbObject2=new BasicDBObject();
+            dbObject1.put("$pull",dbObject1);
+            //根据vip_code,image_url匹配查询到某条记录中满足要求的会员相册
+            BasicDBObject query = new BasicDBObject();
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                query.put("vip_id", vip_id);
+            } else {
+                query.put("corp_code", corp_code);
+                query.put("vip_id", vip_id);
+            }
+
+            cursor.update(query,dbObject2);
+            DBCursor dbCursor = cursor.find(query);
+
+            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+            result.put("list", list);
+            //result.put("dbObject",dbObject);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 
 }

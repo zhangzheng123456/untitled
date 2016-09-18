@@ -7,16 +7,24 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.*;
+import com.sun.corba.se.spi.ior.ObjectId;
 import jxl.Cell;
 import jxl.Sheet;
 import jxl.Workbook;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.ModelMap;
@@ -30,11 +38,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.lang.System;
 import java.sql.SQLException;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -57,7 +63,8 @@ public class VipAlbumController {
 
     @Autowired
     private VipAlbumService vipAlbumService;
-
+    @Autowired
+    MongoDBClient mongodbClient;
     /**
      * 列表
      */
@@ -250,9 +257,9 @@ public class VipAlbumController {
             JSONObject result = new JSONObject();
             PageInfo<VipAlbum> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size,"", map);
-            }else {
-                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size,corp_code, map);
+                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size, "", map);
+            } else {
+                list = vipAlbumService.getAllVipAlbumScreen(page_number, page_size, corp_code, map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
@@ -262,6 +269,131 @@ public class VipAlbumController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
             dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+
+
+
+
+    /**
+     * MongDB
+     * 会员相册
+     * 新增
+     */
+    @RequestMapping(value = "/vipAlbumAdd", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipAlbumAdd(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject result = new JSONObject();
+        int pages = 0;
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+
+
+            String vip_code = jsonObject.get("vip_code").toString();
+            String image_url = jsonObject.get("image_url").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection("log_vip_list");
+            BasicDBObject dbObject=new BasicDBObject();
+            dbObject.put("vip_code",vip_code);
+            dbObject.put("image_url",image_url);
+            BasicDBObject dbObject1=new BasicDBObject();
+            dbObject1.put("albums",dbObject);
+            BasicDBObject dbObject2=new BasicDBObject();
+            dbObject1.put("$addToSet",dbObject1);
+            //根据vip_code,image_url匹配查询到某条记录中满足要求的会员相册
+            BasicDBObject query = new BasicDBObject();
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                query.put("vip_id", vip_id);
+            } else {
+                query.put("corp_code", corp_code);
+                query.put("vip_id", vip_id);
+            }
+
+            cursor.update(query,dbObject2);
+            DBCursor dbCursor = cursor.find(query);
+
+            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+            result.put("list", list);
+            result.put("dbObject",dbObject);
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * MongoDB
+     * 会员相册删除
+     */
+    @RequestMapping(value = "/vipAlbumDelete", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipAlbumDelete(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        JSONObject result = new JSONObject();
+        int pages = 0;
+        try {
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+
+
+            String vip_code = jsonObject.get("vip_code").toString();
+            String image_url = jsonObject.get("image_url").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection("log_vip_list");
+            BasicDBObject dbObject=new BasicDBObject();
+            dbObject.put("vip_code",vip_code);
+            dbObject.put("image_url",image_url);
+            BasicDBObject dbObject1=new BasicDBObject();
+            dbObject1.put("albums",dbObject);
+            BasicDBObject dbObject2=new BasicDBObject();
+            dbObject1.put("$pull",dbObject1);
+            //根据vip_code,image_url匹配查询到某条记录中满足要求的会员相册
+            BasicDBObject query = new BasicDBObject();
+            // 读取数据
+            if (role_code.equals(Common.ROLE_SYS)) {
+                query.put("vip_id", vip_id);
+            } else {
+                query.put("corp_code", corp_code);
+                query.put("vip_id", vip_id);
+            }
+
+            cursor.update(query,dbObject2);
+            DBCursor dbCursor = cursor.find(query);
+
+            ArrayList list = MongoUtils.dbCursorToList(dbCursor);
+            result.put("list", list);
+            result.put("dbObject",dbObject);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
         }
         return dataBean.getJsonStr();
     }
