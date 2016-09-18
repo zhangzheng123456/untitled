@@ -121,7 +121,7 @@ public class ProductShareController {
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection("log_product_share");
 
-            String[] column_names = new String[]{"product_url","product_image","product_title","operator_id","corp_name"};
+            String[] column_names = new String[]{"product_image","product_url","product_title","corp_name","operator_id","time"};
             BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
 
             DBCursor dbCursor = null;
@@ -187,6 +187,7 @@ public class ProductShareController {
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
             DBCollection cursor = mongoTemplate.getCollection("log_product_share");
+
 
             DBCursor dbCursor = null;
             // 读取数据
