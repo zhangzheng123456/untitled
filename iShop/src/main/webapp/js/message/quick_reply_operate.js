@@ -62,6 +62,14 @@ var oc = new ObjectControl();
                 }
                 var OWN_CORP=$("#OWN_CORP").val();//企业编号
                 var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//内容
+                if(MOBAN_CONTENT==""){
+                    $(".reply_area .hint div").addClass("error_tips");
+                    $(".reply_area .hint div").html("内容为必填项，不能为空！");
+                    return ;
+                }else if(MOBAN_CONTENT!==""){
+                    $(".reply_area .hint div").removeClass("error_tips");
+                    $(".reply_area .hint div").html("");
+                }
                 var ISACTIVE="";//是否可用
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(input.checked==true){
@@ -95,10 +103,16 @@ var oc = new ObjectControl();
                 }
                 var ID=sessionStorage.getItem("id");
                 var MOBAN_ID=$("#MOBAN_ID").val();
-                var OWN_CORP=$("#OWN_CORP").val();//模板编号
-                var MOBAN_NAME=$("#MOBAN_NAME").val();//模板名称
-                var template_type=$("#OWN_template").val();//模板类型
+                var OWN_CORP=$("#OWN_CORP").val();//编号
                 var MOBAN_CONTENT=$("#MOBAN_CONTENT").val();//模板内容
+                if(MOBAN_CONTENT==""){
+                    $(".reply_area .hint div").addClass("error_tips");
+                    $(".reply_area .hint div").html("内容为必填项，不能为空！");
+                    return ;
+                }else if(MOBAN_CONTENT!==""){
+                    $(".reply_area .hint div").removeClass("error_tips");
+                    $(".reply_area .hint div").html("");
+                }
                 var ISACTIVE="";
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(input.checked==true){
