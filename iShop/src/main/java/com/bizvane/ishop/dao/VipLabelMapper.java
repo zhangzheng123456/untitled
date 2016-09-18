@@ -37,4 +37,7 @@ public interface VipLabelMapper {
     List<VipLabel> lableList(@Param("corp_code")String corp_code,@Param("label_group_code")String label_group_code);
 
     int updViplableBycode(@Param("label_group_code_old")String label_group_code_old,@Param("corp_code")String corp_code,@Param("label_group_code_new")String label_group_code_new);
+
+    List<VipLabel> selectLabelByVip(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code);
+
 }

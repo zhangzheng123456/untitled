@@ -461,43 +461,43 @@
 <body>
 <div class="con_table" id="con_table">
     <!-- 导航-->
-    <div class="title" style="display: none" >
+    <div class="title" >
         <span>会员管理</span>
         <span class="icon-ishop_8-03"></span>
         <span id="vipAnalyze_return">会员信息</span>
     </div>
     <!--头部-->
-       <div class="header" style="overflow: hidden;display: none">
+       <div class="header" style="overflow: hidden;">
           <div class="left">
               <div class="left-class">
                   <div  class="content">
-                      <span class="Fsize-22">8956.99</span>
+                      <span class="Fsize-22" id="total_amount_Y">8956.99</span>
                       <span class="Fsize-12">近一年消费金额(元)</span>
                   </div>
               </div>
               <div  class="left-class left-color-1">
                   <div class="content">
-                      <span class="Fsize-22">3</span>
+                      <span class="Fsize-22" id="consume_times_Y">3</span>
                       <span class="Fsize-12">近一年消费单数</span>
                   </div>
               </div>
               <div  class="left-class left-color-2">
                   <div class="content">
-                      <span class="Fsize-22">39617.28</span>
+                      <span class="Fsize-22" id="total_amount">39617.28</span>
                       <span class="Fsize-12">累计消费金额(元)</span>
                   </div>
               </div>
               <div class="left-class left-color-3">
                   <div class="content">
-                      <span class="Fsize-22">24</span>
+                      <span class="Fsize-22" id="consume_times">24</span>
                       <span class="Fsize-12">累计消费单数</span>
                   </div>
               </div>
               <div class="left-bottom">
                   <div class="content">
                       <span class="Fsize-12">沉睡天数</span>
-                      <span class="Fsize-22">124</span>
-                      <span class="Fsize-12">最近消费：2016-09-09</span>
+                      <span class="Fsize-22" id="dormant_time">124</span>
+                      <span class="Fsize-12" id="last_date">最近消费：2016-09-09</span>
                   </div>
               </div>
           </div>
@@ -898,7 +898,7 @@
           </div>
        </div>
     <!-- 分析数据图表描述-->
-    <div id="chart_analyze" class="col_lg_12" style="overflow: hidden;display: none">
+    <div id="chart_analyze" class="col_lg_12" style="overflow: hidden;">
         <div class="chart_module">
             <ul>
                 <span class="chart_head">消费类型</span>
@@ -913,7 +913,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module"style="margin-right: 0px">
+        <div class="chart_module" style="margin-right: 0px">
             <ul>
                 <span class="chart_head">价格偏好</span>
                 <li id="main2" style="height: 270px;">
@@ -955,7 +955,7 @@
     </div>
     </div>
 
-    <div class="">
+    <div class="" style="display: none">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
@@ -1563,30 +1563,10 @@
 <script src="../table/js/jquery.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
-<!--<script type="text/javascript" src="/js/insidePostRequire.js"></script>-->
-<script>
-    //导航点击切换窗口
-    $("#nav_bar li").click(function () {
-        var index=$(this).index();
-        $(this).addClass("active1");
-        $(this).siblings().removeClass("active1");
-        $(".all_list").children().eq(index).show();
-        $(".all_list").children().eq(index).siblings().hide();
-    }).mouseover(function(){
-        var len=$(this).width();
-        var index=$(this).index();
-        $("#remark").animate({left:len*index},200);
-    }).mouseout(function(){
-        $("#remark").stop(true,true);
-    });
-    $(".nav_bar").mouseleave(function() {
-        $("#remark").stop();
-        var _this = $(".active1").index();
-        $(this).children().eq(_this).addClass("active1");
-        var len = $(this).children().width();
-        $("#remark").animate({left: len * _this}, 200);})
-</script>
+<script type="text/javascript" src="/js/insidePostRequire.js"></script>
 <script src="../js/dist/echarts.js"></script>
+<script src="../js/vip/vip_data.js"></script>
+
 <script type="text/javascript">
     require.config({
         paths: {

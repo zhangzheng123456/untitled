@@ -1,11 +1,7 @@
 package com.bizvane.ishop.service;
 
-import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipLabel;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.annotations.Param;
-
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +17,7 @@ public interface VipLabelService {
      *
      * @param id
      * @return
-     * @throws SQLException
+     * @throws Exception
      */
     VipLabel getVipLabelById(int id) throws Exception;
 
@@ -30,7 +26,7 @@ public interface VipLabelService {
      *
      * @param
      * @return
-     * @throws SQLException
+     * @throws Exception
      */
     String insert(VipLabel vipLabel) throws Exception;
 
@@ -39,7 +35,6 @@ public interface VipLabelService {
      *
      * @param id
      * @return
-     * @throws SQLException
      */
     int delete(int id) throws Exception;
 
@@ -70,13 +65,13 @@ public interface VipLabelService {
      * @param corp_code ： 公司编号
      * @param tag_name  ： VIP标签名称
      * @return
-     * @throws SQLException
      */
     String VipLabelNameExist(String corp_code, String tag_name) throws Exception;
 
 
     VipLabel countLable(String corp_code, String label_id)throws Exception;
 
-    List<VipLabel> lableList(String corp_code, String label_group_code);
+    List<VipLabel> lableList(String corp_code, String label_group_code) throws Exception;
 
+    List<VipLabel> selectLabelByVip(String corp_code, String vip_code) throws Exception;
 }
