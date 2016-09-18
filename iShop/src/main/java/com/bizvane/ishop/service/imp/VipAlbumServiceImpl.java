@@ -80,4 +80,11 @@ public class VipAlbumServiceImpl implements VipAlbumService {
         PageInfo<VipAlbum> page = new PageInfo<VipAlbum>(vipAlbumList);
         return page;
     }
+
+    @Override
+    public List<VipAlbum> selectAlbumByVip(String corp_code, String vip_code) throws Exception {
+        List<VipAlbum> vipAlbumList = vipAlbumMapper.selectAlbumByVip(corp_code, vip_code);
+
+        return vipAlbumList;
+    }
 }
