@@ -1,6 +1,9 @@
 body{
     margin-top: 81px;
 }
+#VIP_LIST{
+    cursor: pointer;
+}
 .header .left,.header .center,.header .right{
     height:390px;
     width: 33%;
@@ -86,11 +89,12 @@ body{
     border-bottom: 1px solid #DDDDDD;
 }
 .header .center .message-class ul li{
+    padding:0 10px;
     cursor: pointer;
     float: left;
     font-family:'Microsoft YaHei';
-    font-size: 14px;
     width:25%;
+    color:#888;
     box-sizing: border-box;
     height: 30px;
     moz-user-select: -moz-none;
@@ -101,17 +105,31 @@ body{
     -ms-user-select:none;
     user-select:none;/**禁止选中文字*/
 }
-.active{
+.header .center .message-class ul li a{
+    text-decoration: none;
+    font-size: 14px;
+    color:#888;
+    display: inline-block;
+    height:30px;
+    line-height: 30px;
+    width:100%;
+}
+.header .center .message-class ul .active{
     border-bottom:3px solid #6dc1c8;
     color:#6dc1c8;
 }
-
+.header .center .message-class .tabs-parent .table{
+    padding:0 10px;
+    margin-bottom: 0;
+}
 .header .center .message-class .tabs-parent table .TR{
     background-color: #efefef;
     height: 30px;
     line-height: 30px;
-    color: #999999;
+    color: #888;
+    font-size: 14px;
 }
+
 .header .center .message-class .tabs-parent table .TR th{
     font-weight: normal;
     text-align: center;
@@ -132,43 +150,52 @@ body{
     color: #888888;
     margin-right: 3px;"
 }
-.header .center .message-class .tabs-parent table tbody .more{
-    text-align: center;
-    height: 29px;
-    line-height: 29px;
-    background-color: #fff;
-    box-sizing:border-box;
-    color:#888888
-}
-.header .center .message-class .tabs-parent table tbody .more td i{
-    margin-top:-2px;
-    color: #888888;
-    margin-right: 3px;
-    vertical-align: middle
-}
-.header .center .message-class .tabs-parent .images .img-parent,.header .center .message-class .tabs-parent .vip-label .label-parent{
+.header .center .message-class .tabs-parent .images .img-parent{
     width: 100%;
-    padding:20px;
-    height: 360px;
+    padding:20px 10px 0 10px;
+    height: 330px;
     background-color: #fff;
     overflow: hidden;
+    box-sizing: border-box;
 }
-.header .center .message-class .tabs-parent .images .img-parent span{
-    width: 20%;float: left;margin-right: 5%;margin-bottom:5%;text-align: center;
+.header .center .message-class .tabs-parent .vip-label .label-parent{
+    width: 100%;
+    padding:20px 10px 0 10px;
+    height: 330px;
+    background-color: #fff;
+    overflow: hidden;
+    box-sizing: border-box;
 }
-.header .center .message-class .tabs-parent .images .img-parent span img{
-  max-height: 70px;
+.header .center .message-class .tabs-parent .vip-label .label-parent #labels{
+    height:310px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #E8E8E8;
+    padding-left: 10px;
 }
-.header .center .message-class .tabs-parent .vip-label .label-parent span{
+.header .center .message-class .tabs-parent .images .img-parent #images{
+    height:310px;
+    padding-bottom: 5px;
+    padding-left:10px;
+    border-bottom: 1px solid #E8E8E8;
+}
+.header .center .message-class .tabs-parent .images .img-parent img{
+     width: 25%;
+     height: 25%;
+    box-sizing: border-box;
+    padding-right: 10px;
+}
+.header .center .message-class .tabs-parent .vip-label .label-parent #labels span{
     margin-bottom:10px;
+    margin-right:10px;
     background-color: #6cc1c8;
     border-radius: 5px;
     display: inline-block;
     height: 30px;
+    padding:0 10px;
     line-height: 30px;
-    padding: 0 10px;
     font-family:'Microsoft YaHei';
     color:#fff;font-size: 14px;
+    float: left;
 }
 .right .person{
     height: 110px;
@@ -186,9 +213,24 @@ padding:25px 0 0 15px;
     background-size:contain ;
     background-repeat:no-repeat
 }
-/*.right .person  .person-right{*/
-    /*padding:10px;*/
-/*}*/
+.right .person  .person-right{
+    position: relative;
+}
+.right .person  .person-right .edit{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color:#E8E8E8;
+    color:#c1c1c1;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    cursor: pointer;
+}
 .right .person  .person-right .person-message{
     width: 70%;
     display: inline-block;
