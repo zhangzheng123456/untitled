@@ -1,4 +1,4 @@
-var oc = new ObjectControl();
+// var oc = new ObjectControl();
 $(function(){
     getConsumCount();
 });
@@ -38,3 +38,27 @@ $(".nav_bar").mouseleave(function() {
     $(this).children().eq(_this).addClass("active1");
     var len = $(this).children().width();
     $("#remark").animate({left: len * _this}, 200);})
+
+//相册关闭按钮显示
+$(".album img").mouseover(function () {
+    $(this).next(".cancel_img").show();
+}).mouseleave(function () {
+    $(this).next(".cancel_img").hide();
+})
+$(".cancel_img").mouseover(function () {
+    $(this).show();
+}).mouseleave(function () {
+    $(this).hide();
+})
+
+//相册图片点击放大.关闭
+$(".album li").click(function () {
+  var img=$(this).find("img").prop("outerHTML");
+      $(".album_shade").after(img);
+      $(".album_shade").next("img").addClass("album_lg")
+      $(".album_shade").show();
+})
+$(".album_shade").click(function () {
+    $(".album_shade").next(".album_lg").remove();
+    $(".album_shade").hide();
+})

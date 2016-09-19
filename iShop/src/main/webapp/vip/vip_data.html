@@ -36,7 +36,7 @@
     /*基本信息*/
      #basic_message{
          overflow: hidden;
-         display: none;
+         display: block;
      }
      #basic_message .editor_detail_em{
          margin-top: 20px;
@@ -57,13 +57,13 @@
      }
      .remark span{
          display: inline-flex;
-         margin-top: 30px;
-         margin-left: 15%;
+         margin-top: 20px;
+         margin-left: 190px;
      }
     .remark textarea{
-        width: 410px;
-        height:350px;
-        margin-left: 10px;
+        width: 380px;
+        height:400px;
+        margin-left: 20px;
         padding: 10px;
         resize: none;
         border: none;
@@ -73,7 +73,7 @@
     .remark_save{
         width: 160px;
         height: 30px;
-        margin-left: 18%;
+        margin-left: 240px;
         margin-top: 20px;
         background: #6dc1c8;
         color: #ffffff;
@@ -323,29 +323,86 @@
 
     /*相册*/
      .album{
+         display: none;
          width:100%;
          overflow: hidden;
          background: #e8e8e8;
      }
      .album ul li{
-         width:14%;
+         width:120px;
+         height: 170px;
+         margin-right: 20px;
          float: left;
          text-align: center;
          position: relative;
      }
-     .album img{
+     .album ul li img{
+         width: 120px;
+         height: 120px;
+         border: 1px solid #d7d7d7;
          margin-top: 20px;
          cursor: pointer;
      }
      .album .cancel_img{
-         width: 30px;
-         height: 30px;
+         display: none;
+         width: 20px;
+         height: 20px;
          background: url('../img/x_alt.png') no-repeat right;
-         background-size:20px;
          position: absolute;
-         top:5px;
-         right:5px;
+         top:10px;
+         right:-5px;
          z-index: 100;
+     }
+     .album_date{
+         width: 120px;
+         height: 30px;
+         line-height: 30px;
+         margin-bottom: 20px;
+         display: block;
+         color: #888888;
+     }
+     .add_new_album{
+         width: 120px;
+         height: 120px;
+         margin-top: 20px;
+         line-height: 120px;
+         color: #888888;
+         font-size: 16px;
+         border: 2px #c3c3c3 dashed;
+         display: inline-block;
+         text-align: center;
+     }
+     .add_new_album input{
+         position: absolute;
+         top: 0;
+         opacity: 0;
+         filter:alpha(opacity=0);
+         width: 120px;
+         height: 110px;
+     }
+     .album_shade{
+         display:none;
+         position:absolute;
+         left:0;
+         top:0;
+         margin: 80px 200px;
+         width: 100%;
+         height: 700px;
+         text-align: center;
+         filter:alpha(opacity=50);
+         background: #000000;
+         opacity:0.5;
+         -moz-opacity:0.5;
+     }
+     .album .album_lg{
+         position: absolute;
+         top:200px;
+         left: 45%;
+         z-index: 1000;
+         width:300px;
+         height: 400px;
+         filter:alpha(opacity=100);
+         opacity:1;
      }
 
      /*标签*/
@@ -405,7 +462,8 @@
     .viplabel table tbody tr:nth-child(even){
          background: #fff;
      }
-    /*扩展模块*/
+
+     /*扩展模块*/
      .all_list{
          overflow: hidden;
      }
@@ -461,7 +519,7 @@
 <body>
 <div class="con_table" id="con_table">
     <!-- 导航-->
-    <div class="title" >
+    <div class="title">
         <span>会员管理</span>
         <span class="icon-ishop_8-03"></span>
         <span id="vipAnalyze_return">会员信息</span>
@@ -947,7 +1005,7 @@
     </div>
     </div>
 
-    <div class="" style="display: none">
+    <div class="">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
@@ -975,7 +1033,7 @@
             <div class="all_list">
                 <div class="basic_message" id="basic_message">
                 <!--左侧个人信息-->
-                <div class="editor_em col-lg-7  animated fadeInRight">
+                    <div class="editor_em col-lg-7  animated fadeInRight">
                     <form class="conpany_msg">
                         <div>
                             <label>头像</label><span class="head_img" id="preview"><img src="" id="IMG"></span>
@@ -1034,7 +1092,7 @@
                     </form>
                 </div>
                 <!--右侧保持信息-->
-                <div class="editor_detail_em col-lg-4  animated fadeInRight">
+                    <div class="editor_detail_em col-lg-4  animated fadeInRight">
                     <form class="msg_detail">
                         <div>
                             <span><label>创建时间</label><input type="text" id="created_time" /></span>
@@ -1054,7 +1112,7 @@
                         </div>
                     </form>
                 </div>
-            </div>
+                </div>
                 <!--拓展模块-->
                 <div class="expand" style="display: none">
                     <!--左侧-->
@@ -1399,18 +1457,8 @@
                     <ul>
                         <li>
                             <img src="../img/vipImg.png">
-                            <div class="cancel_img">
-
-                            </div>
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
+                            <div class="cancel_img"></div>
+                            <span class="album_date">2016-10-29</span>
                         </li>
                         <li>
                             <img src="../img/vipImg.png">
@@ -1422,6 +1470,10 @@
                             <img src="../img/vipImg.png">
                         </li>
                     </ul>
+                    <span class="add_new_album" style="position: relative;">
+                        <input type="file">添加图片+
+                    </span>
+                    <div class="album_shade"></div>
                 </div>
 
                 <div class="viplabel">

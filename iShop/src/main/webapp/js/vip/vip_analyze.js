@@ -214,11 +214,11 @@ $(".vip_nav_bar li").click(function () {
     $(this).siblings().removeClass("liactive");
 })
 $(".date_btn span").click(function () {
-    $(this).css({"color":"#fff","background":"#6dc1c8"});
+    $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
 })
 $(".month_btn span").click(function () {
-    $(this).css({"color":"#fff","background":"#6dc1c8"});
+    $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
 })
 $(".more_data").click(function () {
