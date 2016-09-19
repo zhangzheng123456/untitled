@@ -22,22 +22,40 @@ function getConsumCount(){
       $("#last_date").html(conSumData.last_date);
         for(var i=0;i<album.length;i++){
             if(i<16){
-                HTML+="<img src="+album[0].image_url+" />"
+                HTML+="<span><img src="+album[0].image_url+" /></span>"
             }
             }
         $("#images").html(HTML);
         for(var i=0;i<label.length;i++){
                 LABEL+="<span >"+label[i].label_name+"</span>"
         }
-        $("#labels").html(LABEL)
+        $("#labels").html(LABEL);
+        lg_img()
     })
+
 }
+function lg_img(){
+    //点击图片放大
+    $("#images span").click(function(){
+        var src=$(this).children().attr("src");
+        $("#mask").css("display","block");
+        $("#lg_img img").attr("src",src);
+        $("#lg_img").show();
+    });
+}
+$("#mask").click(function(){
+    $(this).hide();
+    $("#lg_img").hide();
+});
+$("#lg_img").click(function(){
+    $(this).hide();
+    $("#mask").hide();
+});
+
+//回到会员列表
 $("#VIP_LIST").click(function(){
     $(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
 });
-
-
-
 //导航点击切换窗口
 $("#nav_bar li").click(function () {
     var index=$(this).index();

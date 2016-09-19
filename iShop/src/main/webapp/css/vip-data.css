@@ -38,7 +38,7 @@ body{
   }.header .left .left-color-1{
     background-color: #58B4BC;
 }
-.header .left .left-class .content,.header .left .left-bottom .content{
+.header .left .left-class .content1,.header .left .left-bottom .content1{
     color:#fff;
     position: absolute;
     left: 50%;
@@ -48,9 +48,10 @@ body{
     -moz-transform: translate(-50%,-50%);
     -webkit-transform: translate(-50%,-50%);
     -o-transform: translate(-50%,-50%);
-    width: 80%;text-align: center
+    width: 80%;!important;
+    text-align: center
 }
-.header .left .left-class .content .Fsize-28{
+.header .left .left-class .content1 .Fsize-28{
     display: block;
     font-size: 28px;
     margin-bottom: 10px;
@@ -59,14 +60,14 @@ body{
     line-height: 28px;
 
 }
-.header .left .left-bottom .content .Fsize-12{
+.header .left .left-bottom .content1 .Fsize-12{
     display: block;
     font-size: 12px;
     padding:0;
     height: 12px;
     line-height: 12px;
 }
-.header .left .left-bottom .content .Fsize-28{
+.header .left .left-bottom .content1 .Fsize-28{
     display: block;
     font-size: 28px;
     margin:10px 0;
@@ -74,7 +75,7 @@ body{
     height:28px;
     line-height: 28px;
 }
-.header .left .left-class .content .Fsize-12{
+.header .left .left-class .content1 .Fsize-12{
     display: block;
     font-size: 12px;
     padding:0;
@@ -158,6 +159,32 @@ body{
     overflow: hidden;
     box-sizing: border-box;
 }
+.header .center .message-class .tabs-parent .images .mask{
+    display: none;
+    background-color:#000000;
+    opacity:0.8;
+    position: absolute;
+    left:200px;
+    top:80px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+}
+.header .center .message-class .tabs-parent .images .lg_img img{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    text-align: center;
+    z-index: 3;
+    display: inline-block;
+    max-width: 800px;
+    max-height: 600px;
+}
 .header .center .message-class .tabs-parent .vip-label .label-parent{
     width: 100%;
     padding:20px 10px 0 10px;
@@ -177,12 +204,18 @@ body{
     padding-bottom: 5px;
     padding-left:10px;
     border-bottom: 1px solid #E8E8E8;
+    overflow: hidden;
 }
-.header .center .message-class .tabs-parent .images .img-parent img{
-     width: 25%;
-     height: 25%;
+.header .center .message-class .tabs-parent .images .img-parent #images span{
+    width: 25%;
+    height: 25%;
     box-sizing: border-box;
     padding-right: 10px;
+    z-index: 2;
+    display: inline-block;
+}
+.header .center .message-class .tabs-parent .images .img-parent img{
+ width: 100%;
 }
 .header .center .message-class .tabs-parent .vip-label .label-parent #labels span{
     margin-bottom:10px;
