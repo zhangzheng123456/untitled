@@ -603,9 +603,9 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
                 +"'><label>"
                 +filter[i].show_name
                 +"</label>"                                                         
-                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({istime: true, format: 'YYYY-MM-DD'})\">"
+                +"<input type='text' id='start' class='time_data laydate-icon' onClick=\"laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})\">"
                 +"<label class='tm20'>至</label>"
-                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({istime: true, format: 'YYYY-MM-DD'})\">"
+                +"<input type='text' id='end' class='time_data laydate-icon' onClick=\"laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})\">"
                 +"</li>";
             }
 

@@ -142,13 +142,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }else if(input.checked==false){
                 	can_login="N";
                 }
-                var isonline="";//签到状态
-                var input2=$("#isonline")[0];
-                if(input2.checked==true){
-                	isonline="Y";
-                }else if(input2.checked==false){
-                	isonline="N";
-                }
+                // var isonline="";//签到状态
+                // var input2=$("#isonline")[0];
+                // if(input2.checked==true){
+                // 	isonline="Y";
+                // }else if(input2.checked==false){
+                // 	isonline="N";
+                // }
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -191,7 +191,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["isactive"]=ISACTIVE;//是否可用
 				_params["corp_code"]=OWN_CORP;//公司编号
 				_params["can_login"]=can_login;//是否登录
-				_params["isonline"]=isonline;//签到状态
+				// _params["isonline"]=isonline;//签到状态
 				if(r_code=="R2000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号
 	            	_params["area_code"]="";//区域编号
@@ -292,13 +292,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }else if(input1.checked==false){
                 	can_login="N";
                 }
-                var isonline="";//签到状态
-                var input2=$("#isonline")[0];
-                if(input2.checked==true){
-                	isonline="Y";
-                }else if(input2.checked==false){
-                	isonline="N";
-                }
+                // var isonline="";//签到状态
+                // var input2=$("#isonline")[0];
+                // if(input2.checked==true){
+                // 	isonline="Y";
+                // }else if(input2.checked==false){
+                // 	isonline="N";
+                // }
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -351,7 +351,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["isactive"]=ISACTIVE;//是否可用
 				_params["corp_code"]=OWN_CORP;//公司编号
 				_params["can_login"]=can_login;//是否登录
-				_params["isonline"]=isonline;//签到状态
+				// _params["isonline"]=isonline;//签到状态
 				// _params["password"]=PSW;//密码
 				_params["id"]=ID;//ID
 				if(r_code=="R2000"){
@@ -896,11 +896,11 @@ jQuery(document).ready(function(){
 				}else if(msg.can_login=="N"){
 					input1.checked=false;
 				}
-				if(msg.isonline=="Y"){
-					$("#isonline")[0].checked=true;
-				}else if(msg.isonline=="N"||msg.isonline==""){
-					$("#isonline")[0].checked=false;
-				}
+				// if(msg.isonline=="Y"){
+				// 	$("#isonline")[0].checked=true;
+				// }else if(msg.isonline=="N"||msg.isonline==""){
+				// 	$("#isonline")[0].checked=false;
+				// }
 				var qrcodeList=msg.qrcodeList;
 				if(qrcodeList.length>0) {
 					for (var i = 0; i < qrcodeList.length; i++) {

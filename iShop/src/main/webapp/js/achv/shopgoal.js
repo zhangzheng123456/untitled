@@ -385,7 +385,8 @@ function getcorplist(a,b){
 			$("#corp_select .searchable-select-input").keydown(function(event){
 				var event=window.event||arguments[0];
 				if(event.keyCode == 13){
-					
+					var corp_code=$("#OWN_CORP").val();
+					store_data(corp_code,b);
 				}
 			})
 			$("#corp_select .searchable-select-item").click(function(){
