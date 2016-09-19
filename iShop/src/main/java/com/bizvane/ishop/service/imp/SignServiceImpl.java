@@ -177,4 +177,11 @@ public class SignServiceImpl implements SignService {
     public int deleteByUser(String user_code,String corp_code)throws Exception{
         return signMapper.delSignByUser(user_code,corp_code);
     }
+
+    @Override
+    public List<Sign> selectUserRecord(String corp_code, String user_code, String date,String status) throws Exception {
+        List<Sign> signs = signMapper.selectUserRecord(corp_code, user_code, date,status);
+        return signs;
+    }
+
 }
