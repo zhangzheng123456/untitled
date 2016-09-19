@@ -86,11 +86,12 @@ body{
     border-bottom: 1px solid #DDDDDD;
 }
 .header .center .message-class ul li{
+    padding:0 10px;
     cursor: pointer;
     float: left;
     font-family:'Microsoft YaHei';
-    font-size: 14px;
     width:25%;
+    color:#888;
     box-sizing: border-box;
     height: 30px;
     moz-user-select: -moz-none;
@@ -101,17 +102,32 @@ body{
     -ms-user-select:none;
     user-select:none;/**禁止选中文字*/
 }
-.active{
+.header .center .message-class ul li a{
+    text-decoration: none;
+    font-size: 14px;
+    color:#888;
+    display: inline-block;
+    height:30px;
+    line-height: 30px;
+    width:100%;
+}
+.header .center .message-class ul .active{
     border-bottom:3px solid #6dc1c8;
     color:#6dc1c8;
 }
+/*.active{*/
+    /*border-bottom:3px solid #6dc1c8;*/
+    /*color:#6dc1c8;!important;*/
+/*}*/
 
 .header .center .message-class .tabs-parent table .TR{
     background-color: #efefef;
     height: 30px;
     line-height: 30px;
-    color: #999999;
+    color: #888;
+    font-size: 14px;
 }
+
 .header .center .message-class .tabs-parent table .TR th{
     font-weight: normal;
     text-align: center;
@@ -146,29 +162,68 @@ body{
     margin-right: 3px;
     vertical-align: middle
 }
-.header .center .message-class .tabs-parent .images .img-parent,.header .center .message-class .tabs-parent .vip-label .label-parent{
+.header .center .message-class .tabs-parent .images .img-parent{
     width: 100%;
-    padding:20px;
-    height: 360px;
+    padding:20px 10px 0 20px;
+    height: 330px;
     background-color: #fff;
     overflow: hidden;
+    box-sizing: border-box;
 }
-.header .center .message-class .tabs-parent .images .img-parent span{
-    width: 20%;float: left;margin-right: 5%;margin-bottom:5%;text-align: center;
+.header .center .message-class .tabs-parent .vip-label .label-parent{
+    width: 100%;
+    padding:20px 10px 0 20px;
+    height: 330px;
+    background-color: #fff;
+    overflow: hidden;
+    box-sizing: border-box;
 }
-.header .center .message-class .tabs-parent .images .img-parent span img{
-  max-height: 70px;
+.header .center .message-class .tabs-parent .vip-label .label-parent #labels{
+    height:310px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #E8E8E8;
 }
-.header .center .message-class .tabs-parent .vip-label .label-parent span{
+/*.header .center .message-class .tabs-parent .images .img-parent span{*/
+    /*width: 20%;*/
+    /*float: left;*/
+    /*margin-right: 5%;*/
+    /*margin-bottom:5%;*/
+    /*text-align: center;*/
+/*}*/
+
+.header .center .message-class .tabs-parent .images .img-parent #images{
+    height:310px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #E8E8E8;
+}
+.header .center .message-class .tabs-parent .images .img-more,.header .center .message-class .tabs-parent .images .img-more i,.header .center .message-class .tabs-parent .vip-label .label-more,.header .center .message-class .tabs-parent .vip-label .label-more i{
+    height:30px;
+    line-height: 29px;
+    text-align: center;
+    color: #888888;
+}
+.header .center .message-class .tabs-parent .images .img-parent .img-more i{
+    margin-top: -2px;
+    margin-right: 3px;
+    vertical-align: middle;
+}
+.header .center .message-class .tabs-parent .images .img-parent img{
+     width: 25%;
+    box-sizing: border-box;
+    padding-right: 10px;
+}
+.header .center .message-class .tabs-parent .vip-label .label-parent #labels span{
     margin-bottom:10px;
+    margin-right:10px;
     background-color: #6cc1c8;
     border-radius: 5px;
     display: inline-block;
     height: 30px;
+    padding:0 10px;
     line-height: 30px;
-    padding: 0 10px;
     font-family:'Microsoft YaHei';
     color:#fff;font-size: 14px;
+    float: left;
 }
 .right .person{
     height: 110px;

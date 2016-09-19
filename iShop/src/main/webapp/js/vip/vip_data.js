@@ -5,16 +5,31 @@ $(function(){
 function getConsumCount(){
     var id=sessionStorage.getItem("id");
     var param={};
-    param["corp_code"]="C10000";
+    param["corp_code"]="C10141";
     param["vip_id"]=id;
     oc.postRequire("post","/vip/vipConsumCount","",param,function(data){
-       var conSumData=JSON.parse(data.message);
+       var Data=JSON.parse(data.message);
+       var album=JSON.parse(Data.Album);
+       var label=JSON.parse(Data.Label);
+       var conSumData=JSON.parse(Data.Consum);
+       var HTML="";
+       var LABEL="";
       $("#total_amount_Y").html(conSumData.total_amount_Y);
       $("#consume_times_Y").html(conSumData.consume_times_Y);
       $("#total_amount").html(conSumData.total_amount);
       $("#consume_times").html(conSumData.consume_times);
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
+        for(var i=0;i<album.length;i++){
+            if(i<16){
+                HTML+="<img src="+album[0].image_url+" />"
+            }
+            }
+        $("#images").html(HTML);
+        for(var i=0;i<label.length;i++){
+                LABEL+="<span >"+label[i].label_name+"</span>"
+        }
+        $("#labels").html(LABEL)
     })
 }
 
