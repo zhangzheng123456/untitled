@@ -115,11 +115,10 @@ body{
     border-bottom:3px solid #6dc1c8;
     color:#6dc1c8;
 }
-/*.active{*/
-    /*border-bottom:3px solid #6dc1c8;*/
-    /*color:#6dc1c8;!important;*/
-/*}*/
-
+.header .center .message-class .tabs-parent .table{
+    padding:0 10px;
+    margin-bottom: 0;
+}
 .header .center .message-class .tabs-parent table .TR{
     background-color: #efefef;
     height: 30px;
@@ -148,23 +147,9 @@ body{
     color: #888888;
     margin-right: 3px;"
 }
-.header .center .message-class .tabs-parent table tbody .more{
-    text-align: center;
-    height: 29px;
-    line-height: 29px;
-    background-color: #fff;
-    box-sizing:border-box;
-    color:#888888
-}
-.header .center .message-class .tabs-parent table tbody .more td i{
-    margin-top:-2px;
-    color: #888888;
-    margin-right: 3px;
-    vertical-align: middle
-}
 .header .center .message-class .tabs-parent .images .img-parent{
     width: 100%;
-    padding:20px 10px 0 20px;
+    padding:20px 10px 0 10px;
     height: 330px;
     background-color: #fff;
     overflow: hidden;
@@ -172,7 +157,7 @@ body{
 }
 .header .center .message-class .tabs-parent .vip-label .label-parent{
     width: 100%;
-    padding:20px 10px 0 20px;
+    padding:20px 10px 0 10px;
     height: 330px;
     background-color: #fff;
     overflow: hidden;
@@ -182,30 +167,13 @@ body{
     height:310px;
     padding-bottom: 5px;
     border-bottom: 1px solid #E8E8E8;
+    padding-left: 10px;
 }
-/*.header .center .message-class .tabs-parent .images .img-parent span{*/
-    /*width: 20%;*/
-    /*float: left;*/
-    /*margin-right: 5%;*/
-    /*margin-bottom:5%;*/
-    /*text-align: center;*/
-/*}*/
-
 .header .center .message-class .tabs-parent .images .img-parent #images{
     height:310px;
     padding-bottom: 5px;
+    padding-left:10px;
     border-bottom: 1px solid #E8E8E8;
-}
-.header .center .message-class .tabs-parent .images .img-more,.header .center .message-class .tabs-parent .images .img-more i,.header .center .message-class .tabs-parent .vip-label .label-more,.header .center .message-class .tabs-parent .vip-label .label-more i{
-    height:30px;
-    line-height: 29px;
-    text-align: center;
-    color: #888888;
-}
-.header .center .message-class .tabs-parent .images .img-parent .img-more i{
-    margin-top: -2px;
-    margin-right: 3px;
-    vertical-align: middle;
 }
 .header .center .message-class .tabs-parent .images .img-parent img{
      width: 25%;
@@ -241,9 +209,7 @@ padding:25px 0 0 15px;
     background-size:contain ;
     background-repeat:no-repeat
 }
-/*.right .person  .person-right{*/
-    /*padding:10px;*/
-/*}*/
+
 .right .person  .person-right .person-message{
     width: 70%;
     display: inline-block;
