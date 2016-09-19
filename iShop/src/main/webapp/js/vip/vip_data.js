@@ -62,3 +62,26 @@ $(".album_shade").click(function () {
     $(".album_shade").next(".album_lg").remove();
     $(".album_shade").hide();
 })
+
+//标签导航切换窗口
+$(".label_nav li").click(function () {
+    var index=$(this).index()+1;
+    $(this).addClass("label_li_active");
+    $(this).siblings().removeClass("label_li_active");
+    $(".label_box").eq(index).show();
+    $(".label_box").eq(index).siblings("div").hide();
+})
+//添加，删除标签
+$(".labeladd_btn").click(function () {
+    var val=$(".labeladd_box input").val();
+    console.log(val);
+    if(val!==""){
+        $("#label_box span:last-child").after('<span class="label_u_active">'+val+'<i class="icon-ishop_6-12"></i></span>')
+    }
+    $("#label_box span i").click(function () {
+        $(this).parent("span").remove();
+    })
+})
+$("#label_box span i").click(function () {
+    $(this).parent("span").remove();
+})

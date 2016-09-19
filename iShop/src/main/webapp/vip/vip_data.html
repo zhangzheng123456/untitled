@@ -83,6 +83,7 @@
         font-size: 14px;
         letter-spacing: 10px;
     }
+
     /*消费记录*/
      .record{
          display: none;
@@ -408,60 +409,110 @@
      /*标签*/
      .viplabel{
          font-size: 14px;
+         color: #888888;
          display: none;
          overflow: hidden;
      }
-    .viplabel .search{
-        float: left;
-        width: 320px;
+     .labeladd_box{
+         padding: 10px;
+         margin-top: 20px;
+         background: #fff;
+         display: inline-flex;
+     }
+    .labeladd_box input{
+        width: 400px;
         height: 30px;
-        margin-top: 10px;
-    }
-    .input{
-        width: 265px;
-        height: 27px;
-        border: none;
+        border: 1px solid #e8e8e8;
         outline: none;
-        border-radius: 18px;
+        border-radius: 5px;
        text-indent: 10px;
     }
-    .viplabel i{
-        position: relative;
-        left: -35px;
-        top: 8px;
-        z-index: 100;
-        font-size: 25px;
-    }
-    .viplabel ul{
-        float: right;
-    }
-    .viplabel ul li{
-        float: left;
-        width: 80px;
+    .labeladd_btn{
+        display: block;
+        width:80px;
         height: 30px;
         line-height: 30px;
+        text-align: center;
+        background: #6cc1c8;
+        color: #fff;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-left:10px;
+    }
+    .own_label{
+        width: 510px;
+        padding: 10px;
         margin-top: 10px;
-        background-color: #fff;
+        background: #fff;
     }
-    .viplabel ul span{
+    .own_label label{
+        display: block;
+        width: 490px;
+        height: 30px;
+        line-height: 30px;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .label_box span:first-child{
+        margin-right:20px;
+    }
+    .label_box span{
         display: inline-block;
-        width: 25px;
-        height: 20px;
-        font-size: 20px;
-        vertical-align: middle;
-        color: #6cc1c8;
-        margin-left: 8px;
-        line-height: 19px;
+        height:30px;
+        line-height: 30px;
+        padding: 0px 8px;
+        text-align: center;
+        border-radius: 5px;
+        margin-bottom: 20px;
     }
-    .viplabel .table{
-        margin-top: 50px;
+    .label_box span + span{
+        margin-right: 20px;
     }
-    .viplabel table tbody tr:nth-child(odd){
-        background: #f4f4f4;
+    .label_box span i{
+        margin-left: 5px;
     }
-    .viplabel table tbody tr:nth-child(even){
-         background: #fff;
-     }
+    .label_box{
+        margin: 20px 10px;
+    }
+    .label_u_active{
+        color: #fff;
+        background:#9b9b9b;
+    }
+    .label_u{
+        color:  #9d9d9d;
+        border: 1px dashed #9d9d9d;
+    }
+    .label_g{
+        color:  #6dc1c8;
+        border: 1px dashed #6dc1c8;
+    }
+    .label_g_active{
+        background: #6cc1c8;
+        color: #fff;
+    }
+    .all_label{
+        width: 580px;
+        height: 100%;
+        padding: 0 20px;
+        margin-top: -250px;
+        margin-left: 530px;
+        background: #fff
+    }
+    .label_nav{
+        width: 100%;
+        height:30px;
+        border-bottom: 1px solid #e8e8e8;
+    }
+    .label_nav li{
+        width:33.3333333%;
+        height:29px;
+        line-height: 30px;
+        text-align: center;
+        cursor: pointer;
+        float: left;
+    }
+    .label_li_active{
+        border-bottom: 1px solid #6dc1c8;
+    }
 
      /*扩展模块*/
      .all_list{
@@ -1005,7 +1056,7 @@
     </div>
     </div>
 
-    <div class="" style="display: none">
+    <div class="" style="display:none;">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
@@ -1477,119 +1528,107 @@
                 </div>
 
                 <div class="viplabel">
-                <div class="search">
-                    <input type="text" class="input" id="search" placeholder="当前页面搜索">
-                    <i class="icon-ishop_3-05" id="d_search"></i>
-                </div>
-                <ul>
-                    <li id="add"><span class="icon-ishop_6-01"></span>新增</li>
-                    <li id="remove"><span class="icon-ishop_6-02"></span>删除</li>
-                </ul>
-                <div class="table">
-                    <table cellpadding="0" cellspacing="0" width="100%">
-                        <thead>
-                        <tr class="th">
-                            <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
-                            <th style="text-align: left;">序号</th>
-                            <th>标签名称</th>
-                            <th>添加人</th>
-                            <th>添加日期</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            <td width="50px" style="text-align: left;">
-                                <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                            </td>
-                            <td style="text-align: left;">1</td>
-                            <td>老同学</td>
-                            <td>张某某</td>
-                            <td>2016-02-23</td>
-                        </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    <div>
+                        <div class="labeladd_box">
+                            <input type="text" placeholder="添加标签">
+                            <span class="labeladd_btn">贴上</span>
+                        </div>
+
+                        <div class="own_label">
+                            <label>已有标签<span>6</span>个</label>
+                            <div class="label_box" id="label_box">
+                                <span class="label_u_active">老同学<i class="icon-ishop_6-12"></i></span>
+                                <span class="label_u_active">家有地暖<i class="icon-ishop_6-12"></i></span>
+                                <span class="label_u_active">买2套浴巾送人<i class="icon-ishop_6-12"></i></span>
+                                <span class="label_g_active">有品位<i class="icon-ishop_6-12"></i></span>
+                                <span class="label_u_active">8月31生日<i class="icon-ishop_6-12"></i></span>
+                                <span class="label_u_active">喜欢红色<i class="icon-ishop_6-12"></i></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="all_label">
+                        <ul class="label_nav">
+                            <li class="label_li_active">热门</li>
+                            <li>官方</li>
+                            <li>用户</li>
+                        </ul>
+
+                        <div class="label_box">
+                            <span class="label_g">有钱</span>
+                            <span class="label_u_active">家有地暖</span>
+                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
+                            <span class="label_g_active">有品位</span>
+                            <span class="label_g">时尚</span>
+                            <span class="label_g">美女</span>
+                            <span class="label_g">会员卡丢失</span>
+                            <span class="label_g">小朋友</span>
+                            <span class="label_u">老人</span>
+                            <span class="label_u_active">8月31生日</span>
+                            <span class="label_u">非常有钱</span>
+                            <span class="label_u_active">喜欢红色</span>
+                        </div>
+                        <div class="label_box" style="display: none">
+                            <span class="label_g">有钱2</span>
+                            <span class="label_u_active">家有地暖</span>
+                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
+                            <span class="label_g_active">有品位</span>
+                            <span class="label_g">时尚</span>
+                            <span class="label_g">美女</span>
+                            <span class="label_g">会员卡丢失</span>
+                            <span class="label_g">小朋友</span>
+                            <span class="label_u">老人</span>
+                            <span class="label_u_active">8月31生日</span>
+                            <span class="label_u">非常有钱</span>
+                            <span class="label_u_active">喜欢红色</span>
+                        </div>
+                        <div class="label_box" style="display: none">
+                            <span class="label_g">有钱3</span>
+                            <span class="label_u_active">家有地暖</span>
+                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
+                            <span class="label_g_active">有品位</span>
+                            <span class="label_g">时尚</span>
+                            <span class="label_g">美女</span>
+                            <span class="label_g">会员卡丢失</span>
+                            <span class="label_g">小朋友</span>
+                            <span class="label_u">老人</span>
+                            <span class="label_u_active">8月31生日</span>
+                            <span class="label_u">非常有钱</span>
+                            <span class="label_u_active">喜欢红色</span>
+                        </div>
+                    </div>
+                <!--<div class="search">-->
+                    <!--<input type="text" class="input" id="search" placeholder="当前页面搜索">-->
+                    <!--<i class="icon-ishop_3-05" id="d_search"></i>-->
+                <!--</div>-->
+                <!--<ul>-->
+                    <!--<li id="add"><span class="icon-ishop_6-01"></span>新增</li>-->
+                    <!--<li id="remove"><span class="icon-ishop_6-02"></span>删除</li>-->
+                <!--</ul>-->
+                <!--<div class="table">-->
+                    <!--<table cellpadding="0" cellspacing="0" width="100%">-->
+                        <!--<thead>-->
+                        <!--<tr class="th">-->
+                            <!--<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>-->
+                            <!--<th style="text-align: left;">序号</th>-->
+                            <!--<th>标签名称</th>-->
+                            <!--<th>添加人</th>-->
+                            <!--<th>添加日期</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                            <!--<tr>-->
+                            <!--<td width="50px" style="text-align: left;">-->
+                                <!--<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>-->
+                            <!--</td>-->
+                            <!--<td style="text-align: left;">1</td>-->
+                            <!--<td>老同学</td>-->
+                            <!--<td>张某某</td>-->
+                            <!--<td>2016-02-23</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
             </div>
 
                 <div class="remark">
