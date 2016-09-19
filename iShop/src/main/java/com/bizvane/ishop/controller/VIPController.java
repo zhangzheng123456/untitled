@@ -57,7 +57,8 @@ public class VIPController {
 //    }
 
     /**
-     * 会员近一年消费和累计消费的接口
+     * 会员列表
+     * 近一年消费和累计消费的接口+相册+标签
      */
     @RequestMapping(value = "/vipConsumCount", method = RequestMethod.POST)
     @ResponseBody
@@ -95,7 +96,7 @@ public class VIPController {
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(result);
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");

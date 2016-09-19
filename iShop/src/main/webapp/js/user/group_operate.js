@@ -344,6 +344,13 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					$("input[verify='Code']").val("");
+					$("input[verify='Code']").attr("data-mark","");
+				}
+			})
 			$('.searchable-select-item').click(function(){
 				$("input[verify='Code']").val("");
 				$("input[verify='Code']").attr("data-mark","");

@@ -334,11 +334,15 @@ function quanXian(){
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/user/sign","0",param,function(data){
           if(data.code=="0"){
-            frame();
-            for(var i=tr.length-1,ID="";i>=0;i--){
-                $(tr[i]).find(".switch").children("span").html("签到");
-            }
-            $('.frame').html("签到成功");
+                if(value==""&&filtrate==""){
+                    GET(inx,pageSize);
+                }else if(value!==""){
+                    POST(inx,pageSize); 
+                }else if(filtrate!==""){
+                    filtrates(inx,pageSize); 
+                }
+                frame();
+                $('.frame').html("签到成功");
           }else if(data.code=="-1"){
             frame();
             $('.frame').html("签到失败");
@@ -368,10 +372,14 @@ function quanXian(){
         whir.loading.add("",0.5);//加载等待框
         oc.postRequire("post","/user/sign","0",param,function(data){
             if(data.code=="0"){
-                frame();
-                for(var i=tr.length-1,ID="";i>=0;i--){
-                    $(tr[i]).find(".switch").children("span").html("签退");
+                if(value==""&&filtrate==""){
+                    GET(inx,pageSize);
+                }else if(value!==""){
+                    POST(inx,pageSize); 
+                }else if(filtrate!==""){
+                    filtrates(inx,pageSize); 
                 }
+                frame();
                 $('.frame').html("签退成功");
             }else if(data.code=="-1"){
                 frame();

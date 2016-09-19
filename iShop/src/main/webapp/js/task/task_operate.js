@@ -81,6 +81,23 @@ function getcorplist(a,b){
 			$("#OWN_CORP").searchableSelect();
 			var c=$('#OWN_CORP').val();
 			getasktypelist(c,b);
+			$("#corp_select .searchable-select-input").keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					var corp_code=$("#OWN_CORP").val();
+					getasktypelist(corp_code,b);
+					$(".xingming").empty();
+					$("#area_input").val("");
+					$("#area_input").attr("data-areacode","");
+					$("#store_input").val("");
+					$("#store_input").attr("data-storecode","");
+					$("#staff_input").val("");
+					$("#staff_input").attr("data-usercode","");
+					$("#staff_input").attr("data-userphone","");
+					$("#store_code ul").empty();
+					$("#staff_code ul").empty();
+				}
+			})
 			$("#corp_select .searchable-select-item").click(function(){
 				var c=$(this).attr("data-value");
 				getasktypelist(c,b);

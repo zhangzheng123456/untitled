@@ -1,6 +1,9 @@
 body{
     margin-top: 81px;
 }
+#VIP_LIST{
+    cursor: pointer;
+}
 .header .left,.header .center,.header .right{
     height:390px;
     width: 33%;
@@ -35,7 +38,7 @@ body{
   }.header .left .left-color-1{
     background-color: #58B4BC;
 }
-.header .left .left-class .content,.header .left .left-bottom .content{
+.header .left .left-class .content1,.header .left .left-bottom .content1{
     color:#fff;
     position: absolute;
     left: 50%;
@@ -45,9 +48,10 @@ body{
     -moz-transform: translate(-50%,-50%);
     -webkit-transform: translate(-50%,-50%);
     -o-transform: translate(-50%,-50%);
-    width: 80%;text-align: center
+    width: 80%;!important;
+    text-align: center
 }
-.header .left .left-class .content .Fsize-28{
+.header .left .left-class .content1 .Fsize-28{
     display: block;
     font-size: 28px;
     margin-bottom: 10px;
@@ -56,14 +60,14 @@ body{
     line-height: 28px;
 
 }
-.header .left .left-bottom .content .Fsize-12{
+.header .left .left-bottom .content1 .Fsize-12{
     display: block;
     font-size: 12px;
     padding:0;
     height: 12px;
     line-height: 12px;
 }
-.header .left .left-bottom .content .Fsize-28{
+.header .left .left-bottom .content1 .Fsize-28{
     display: block;
     font-size: 28px;
     margin:10px 0;
@@ -71,7 +75,7 @@ body{
     height:28px;
     line-height: 28px;
 }
-.header .left .left-class .content .Fsize-12{
+.header .left .left-class .content1 .Fsize-12{
     display: block;
     font-size: 12px;
     padding:0;
@@ -86,11 +90,12 @@ body{
     border-bottom: 1px solid #DDDDDD;
 }
 .header .center .message-class ul li{
+    padding:0 10px;
     cursor: pointer;
     float: left;
     font-family:'Microsoft YaHei';
-    font-size: 14px;
     width:25%;
+    color:#888;
     box-sizing: border-box;
     height: 30px;
     moz-user-select: -moz-none;
@@ -101,17 +106,31 @@ body{
     -ms-user-select:none;
     user-select:none;/**禁止选中文字*/
 }
-.active{
+.header .center .message-class ul li a{
+    text-decoration: none;
+    font-size: 14px;
+    color:#888;
+    display: inline-block;
+    height:30px;
+    line-height: 30px;
+    width:100%;
+}
+.header .center .message-class ul .active{
     border-bottom:3px solid #6dc1c8;
     color:#6dc1c8;
 }
-
+.header .center .message-class .tabs-parent .table{
+    padding:0 10px;
+    margin-bottom: 0;
+}
 .header .center .message-class .tabs-parent table .TR{
     background-color: #efefef;
     height: 30px;
     line-height: 30px;
-    color: #999999;
+    color: #888;
+    font-size: 14px;
 }
+
 .header .center .message-class .tabs-parent table .TR th{
     font-weight: normal;
     text-align: center;
@@ -132,43 +151,84 @@ body{
     color: #888888;
     margin-right: 3px;"
 }
-.header .center .message-class .tabs-parent table tbody .more{
-    text-align: center;
-    height: 29px;
-    line-height: 29px;
-    background-color: #fff;
-    box-sizing:border-box;
-    color:#888888
-}
-.header .center .message-class .tabs-parent table tbody .more td i{
-    margin-top:-2px;
-    color: #888888;
-    margin-right: 3px;
-    vertical-align: middle
-}
-.header .center .message-class .tabs-parent .images .img-parent,.header .center .message-class .tabs-parent .vip-label .label-parent{
+.header .center .message-class .tabs-parent .images .img-parent{
     width: 100%;
-    padding:20px;
-    height: 360px;
+    padding:20px 10px 0 10px;
+    height: 330px;
     background-color: #fff;
     overflow: hidden;
+    box-sizing: border-box;
 }
-.header .center .message-class .tabs-parent .images .img-parent span{
-    width: 20%;float: left;margin-right: 5%;margin-bottom:5%;text-align: center;
+.header .center .message-class .tabs-parent .images .mask{
+    display: none;
+    background-color:#000000;
+    opacity:0.8;
+    position: absolute;
+    left:200px;
+    top:80px;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
 }
-.header .center .message-class .tabs-parent .images .img-parent span img{
-  max-height: 70px;
+.header .center .message-class .tabs-parent .images .lg_img img{
+    position: absolute;
+    left: 50%;
+    top:50%;
+    transform: translate(-50%,-50%);
+    -ms-transform: translate(-50%,-50%);
+    -moz-transform: translate(-50%,-50%);
+    -webkit-transform: translate(-50%,-50%);
+    -o-transform: translate(-50%,-50%);
+    text-align: center;
+    z-index: 3;
+    display: inline-block;
+    max-width: 800px;
+    max-height: 600px;
 }
-.header .center .message-class .tabs-parent .vip-label .label-parent span{
+.header .center .message-class .tabs-parent .vip-label .label-parent{
+    width: 100%;
+    padding:20px 10px 0 10px;
+    height: 330px;
+    background-color: #fff;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.header .center .message-class .tabs-parent .vip-label .label-parent #labels{
+    height:310px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #E8E8E8;
+    padding-left: 10px;
+}
+.header .center .message-class .tabs-parent .images .img-parent #images{
+    height:310px;
+    padding-bottom: 5px;
+    padding-left:10px;
+    border-bottom: 1px solid #E8E8E8;
+    overflow: hidden;
+}
+.header .center .message-class .tabs-parent .images .img-parent #images span{
+    width: 25%;
+    height: 25%;
+    box-sizing: border-box;
+    padding-right: 10px;
+    z-index: 2;
+    display: inline-block;
+}
+.header .center .message-class .tabs-parent .images .img-parent img{
+ width: 100%;
+}
+.header .center .message-class .tabs-parent .vip-label .label-parent #labels span{
     margin-bottom:10px;
+    margin-right:10px;
     background-color: #6cc1c8;
     border-radius: 5px;
     display: inline-block;
     height: 30px;
+    padding:0 10px;
     line-height: 30px;
-    padding: 0 10px;
     font-family:'Microsoft YaHei';
     color:#fff;font-size: 14px;
+    float: left;
 }
 .right .person{
     height: 110px;
@@ -186,9 +246,24 @@ padding:25px 0 0 15px;
     background-size:contain ;
     background-repeat:no-repeat
 }
-/*.right .person  .person-right{*/
-    /*padding:10px;*/
-/*}*/
+.right .person  .person-right{
+    position: relative;
+}
+.right .person  .person-right .edit{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background-color:#E8E8E8;
+    color:#c1c1c1;
+    border-radius: 5px;
+    text-align: center;
+    vertical-align: middle;
+    line-height: 30px;
+    cursor: pointer;
+}
 .right .person  .person-right .person-message{
     width: 70%;
     display: inline-block;

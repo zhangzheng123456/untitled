@@ -307,6 +307,15 @@ function getcorplist(a){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}
 			$('.corp_select select').searchableSelect();
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					$("input[verify='Code']").val("");
+					$("#task_type").val("");
+					$("input[verify='Code']").attr("data-mark","");
+					$("#task_type").attr("data-mark","");
+				}
+			})
 			$('.searchable-select-item').click(function(){
 				$("input[verify='Code']").val("");
 				$("#task_type").val("");
