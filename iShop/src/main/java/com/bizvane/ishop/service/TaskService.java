@@ -13,24 +13,24 @@ import java.util.Map;
  * Created by yin on 2016/7/27.
  */
 public interface TaskService {
-    PageInfo<Task> selectAllTask(int page_num, int page_size,String corp_code,String role_ident,String user_code,String search_value);
+    PageInfo<Task> selectAllTask(int page_num, int page_size,String corp_code,String role_ident,String user_code,String search_value)throws Exception;
 
-    PageInfo<Task> selectSignAllScreen(int page_num, int page_size, String corp_code, String role_ident, String user_code, Map<String,String> map);
+    PageInfo<Task> selectSignAllScreen(int page_num, int page_size, String corp_code, String role_ident, String user_code, Map<String,String> map)throws Exception;
 
 
-    String delTask(String id,String corp_code,String task_code);
+    String delTask(String id,String corp_code,String task_code)throws Exception;
 
-    String addTask(Task task,String[] user_codes,String phone,String users,String user_code);
+    String addTask(Task task,String[] user_codes,String phone,String users,String user_code)throws Exception;
 
-    String updTask(Task task,String[] user_codes,String user_code);
+    String updTask(Task task,String[] user_codes,String user_code)throws Exception;
 
-    Task selectTaskById(String id);
+    Task selectTaskById(String id)throws Exception;
 
-    TaskAllocation selTaskAllocationById(String id);
+    TaskAllocation selTaskAllocationById(String id)throws Exception;
 
-    List<TaskAllocation> selTaskAllocation(String corp_code,String task_code);
+    List<TaskAllocation> selTaskAllocation(String corp_code,String task_code)throws Exception;
 
-    String delTaskAllocation(String id);
+    String delTaskAllocation(String id)throws Exception;
 
-    List<TaskType> selectAllTaskType(String corp_code);
+    List<TaskType> selectAllTaskType(String corp_code)throws Exception;
 }

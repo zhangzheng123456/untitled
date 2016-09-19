@@ -10,23 +10,23 @@ import java.util.Map;
  * Created by ZhouZhou on 2016/7/21.
  */
 public interface TaskTypeService {
-    TaskType selectById(String id);
+    TaskType selectById(String id)throws Exception;
 
-    List<TaskType> selectByCode(String corp_code, String task_type_code);
+    List<TaskType> selectByCode(String corp_code, String task_type_code)throws Exception;
 
-    PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value);
+    PageInfo<TaskType> selectAllTaskType(int page_num, int page_size, String corp_code, String search_value)throws Exception;
 
-    String insertTaskType(String message,String user_code);
+    String insertTaskType(String message,String user_code)throws Exception;
 
-    String updateTaskType(String message,String user_code);
+    String updateTaskType(String message,String user_code)throws Exception;
 
-    int deleteTaskType(int id);
+    int deleteTaskType(int id)throws Exception;
 
-    List<TaskType> codeExist(String corp_code,String task_type_code);
+    List<TaskType> codeExist(String corp_code,String task_type_code)throws Exception;
 
-    List<TaskType> nameExist(String corp_code,String task_type_name);
+    List<TaskType> nameExist(String corp_code,String task_type_name)throws Exception;
 
-    PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map);
+    PageInfo<TaskType> selectAllTaskTypeScreen(int page_number, int page_size, String corp_code, Map<String, String> map)throws Exception;
 
 
 }
