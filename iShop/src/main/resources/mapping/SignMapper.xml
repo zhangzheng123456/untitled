@@ -224,4 +224,15 @@
             </if>
         </trim>
     </insert>
+
+    <select id="selectUserRecord" resultType="com.bizvane.ishop.entity.Sign">
+        SELECT *
+        FROM acc_sign,def_corp
+        WHERE acc_sign.corp_code=def_corp.corp_code
+        AND acc_sign.status=#{status}
+        AND acc_sign.user_code=#{user_code}
+        AND acc_sign.corp_code=#{corp_code}
+        AND acc_sign.sign_time REGEXP #{today}
+        ORDER BY acc_sign.ID DESC
+    </select>
 </mapper>

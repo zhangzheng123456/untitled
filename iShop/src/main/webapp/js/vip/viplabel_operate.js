@@ -242,6 +242,17 @@ function getcorplist(a){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}
 			$('.corp_select select').searchableSelect();
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					$("input[verify='Code']").val("");
+					$("#STORE_NAME").val("");
+					$("input[verify='Code']").attr("data-mark","");
+					$("#STORE_NAME").attr("data-mark","");
+					$("#label_group").attr("data-id","");
+					$("#label_group").val("");
+				}
+			})
 			$('.searchable-select-item').click(function(){
 				$("input[verify='Code']").val("");
 				$("#STORE_NAME").val("");

@@ -270,11 +270,6 @@
         vt.label_name,
         vt.label_type,
         vt.corp_code,
-        vt.modified_date,
-        vt.modifier,
-        vt.created_date,
-        vt.creater,
-        vt.isactive,
         cc.corp_name,
         vt.label_group_code
         FROM

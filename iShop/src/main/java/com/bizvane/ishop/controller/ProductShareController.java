@@ -243,17 +243,18 @@ public class ProductShareController {
             ArrayList list = new ArrayList();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+            DBCollection cursor = mongoTemplate.getCollection("log_product_share");
             DBObject sort_obj = new BasicDBObject("time", -1);
 
             if (screen.equals("")) {
-                String[] column_names = new String[]{"emp_id","emp_name","corp_name","url","time","vip_id","action"};
+                String[] column_names = new String[]{"product_image","product_url","product_title","corp_name","operator_id","time"};
                 BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
 
                 DBCursor dbCursor = null;
                 // 读取数据
                 if (role_code.equals(Common.ROLE_SYS)) {
                     dbCursor = cursor.find(queryCondition).sort(sort_obj);
+
                 } else {
                     BasicDBList value = new BasicDBList();
                     value.add(new BasicDBObject("corp_code", corp_code));

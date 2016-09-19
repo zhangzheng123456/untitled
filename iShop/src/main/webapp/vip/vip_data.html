@@ -573,37 +573,39 @@
     <div class="title">
         <span>会员管理</span>
         <span class="icon-ishop_8-03"></span>
+        <span id="VIP_LIST">会员列表</span>
+        <span class="icon-ishop_8-03"></span>
         <span id="vipAnalyze_return">会员信息</span>
     </div>
     <!--头部-->
        <div class="header" style="overflow: hidden;">
           <div class="left">
               <div class="left-class">
-                  <div  class="content">
+                  <div  class="content1">
                       <span class="Fsize-28" id="total_amount_Y"></span>
                       <span class="Fsize-12">近一年消费金额(元)</span>
                   </div>
               </div>
               <div  class="left-class left-color-1">
-                  <div class="content">
+                  <div class="content1">
                       <span class="Fsize-28" id="consume_times_Y"></span>
                       <span class="Fsize-12">近一年消费单数</span>
                   </div>
               </div>
               <div  class="left-class left-color-2">
-                  <div class="content">
+                  <div class="content1">
                       <span class="Fsize-28" id="total_amount"></span>
                       <span class="Fsize-12">累计消费金额(元)</span>
                   </div>
               </div>
               <div class="left-class left-color-3">
-                  <div class="content">
+                  <div class="content1">
                       <span class="Fsize-28" id="consume_times"></span>
                       <span class="Fsize-12">累计消费单数</span>
                   </div>
               </div>
               <div class="left-bottom">
-                  <div class="content">
+                  <div class="content1">
                       <span class="Fsize-12">沉睡天数</span>
                       <span class="Fsize-28" id="dormant_time"></span>
                       <span class="Fsize-12" >最近消费：<span id="last_date"></span></span>
@@ -613,10 +615,10 @@
           <div class="center">
               <div class="message-class">
                   <ul>
-                      <li class="active">消费</li>
-                      <li>积分</li>
-                      <li>相册</li>
-                      <li>标签</li>
+                      <li><a class="active">消费</a></li>
+                      <li><a>积分</a></li>
+                      <li><a>相册</a></li>
+                      <li><a>标签</a></li>
                   </ul>
                   <div class="tabs-parent">
                       <div class="table">
@@ -681,14 +683,12 @@
                                     <td>5</td>
                                     <td>9.6</td>
                                      <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr class="more">
-                                    <td colspan="4" class="person-more">查看更多<i class="icon-ishop_8-03"></i></td>
                                 </tr>
                               </tbody>
                           </table>
 
                       </div>
-                      <div style="display: none">
+                      <div style="display: none" class="table">
                           <table style="width: 100%" cellpadding="0" cellspacing="0">
                               <thead>
                               <tr class="TR">
@@ -728,227 +728,26 @@
                                   <td>5</td>
                                   <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
                               </tr>
-                              <tr class="more">
-                                  <td colspan="4">查看更多<i class="icon-ishop_8-03" ></i></td>
-                              </tr>
+
                               </tbody>
                           </table>
                       </div>
                       <div style="display: none" class="images">
-                          <div class="img-parent" style="overflow-x:hidden ;overflow-y:auto;" id="images">
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span> <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span> <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-
+                          <div class="img-parent">
+                                <div id="images"></div>
                           </div>
-                          <div></div>
-                          <div></div>
+                          <div class="mask" id="mask"></div>
+                          <div class="lg_img" id="lg_img">
+                              <img src="" alt="">
+                          </div>
                       </div>
                       <div style="display: none" class="vip-label" >
-                          <div class="label-parent" style="overflow-x:hidden;overflow-y: auto" id="label">
-                              <span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span>
+                          <div class="label-parent" >
+                                <div id="labels"></div>
                           </div>
                       </div>
                   </div>
+                  <div class="person-more">查看更多<i class="icon-ishop_8-03"></i></div>
               </div>
           </div>
           <div class="right">
@@ -958,6 +757,7 @@
                       </span>
                   </div>
                   <div  class="person-right">
+                      <span class="icon-ishop_9-01 edit" title="编辑资料"></span>
                       <span class="person-message">
                           <i class="person-name">刘杨</i> <a class="icon-ishop_9-02"></a>
                       </span>
@@ -2081,18 +1881,16 @@
                 });
             }
     );
-    $(".message-class ul li").click(function(){
+    $(".message-class ul li a").click(function(){
         $(this).addClass("active");
-        $(this).siblings().removeClass("active");
-
-       var nowIndex=$(this).index();
-
+        $(this).parent().siblings().children().removeClass("active");
+       var nowIndex=$(this).parent().index();
         $(".tabs-parent").children().eq(nowIndex).show();
         $(".tabs-parent").children().eq(nowIndex).siblings().hide()
-    })
+    });
 
-    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
-    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
+//    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
+//    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
 //   扩展模块JS
     $(function(){
         $(".item_1 .input_select").click(function(e){

@@ -28,4 +28,6 @@ public interface SignService {
     int insert(Sign sign) throws Exception;
 
     int deleteByUser(String user_code,String corp_code)throws Exception;
+
+    List<Sign> selectUserRecord(String corp_code, String user_code, String date,String status) throws Exception;
 }

@@ -113,6 +113,7 @@ var oc = new ObjectControl();
 						matchgoods+=r;
 					}
 				}
+				console.log(matchgoods);
 				var _command="/goods/fab/add";//接口名
 				var opt = {//返回成功后的操作
 					success:function(){
@@ -173,7 +174,7 @@ var oc = new ObjectControl();
 				var isexit_flg=[];
 				var img_list_json={};
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
-				if(img_url_list.length<=5){
+				if(img_url_list.length<=20){
 					for(var i=0;i<img_url_list.length;i++){
 						if(img_url_list[i].src.indexOf("http")!==-1){
 							img_list.push(img_url_list[i].src);
@@ -190,7 +191,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content:"商品图片最多可以上传5张!"
+						content:"商品图片最多可以上传20张!"
 					});
 				}
 				var li=$(".match_goods ul").find("li");
@@ -304,6 +305,7 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
+				console.log(msg);
 				var goods_img=msg.goods_image;
 				var goods_arr=[];
 				var filename;//图片名
@@ -446,16 +448,28 @@ function getcorplist(a,b){
 			if(a!==""){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}
-			$('.corp_select select').searchableSelect();
+			$("#OWN_CORP").searchableSelect();
 			var c=$("#OWN_CORP").val();//公司编号
 			getvarbrandlist(c,b);
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					var c=$("#OWN_CORP").val();//公司编号
+					getvarbrandlist(c,b);
+					$("#GOODS_CODE").val("");
+					$("#GOODS_CODE").attr("data-mark","");
+					$(".good_imgs .parentFileBox .fileBoxUl").empty();
+					$("#search_match_goods ul").empty();
+					$("#search").empty();
+					$(".match_goods ul").empty();
+				}
+			})
 			$('.searchable-select-item').click(function(){
 				var c=$(this).attr("data-value");
 				getvarbrandlist(c,b);
-				$("input[verify='Code']").val("");
-				$("#BRAND_NAME").val("");
-				$("input[verify='Code']").attr("data-mark","");
-				$("#BRAND_NAME").attr("data-mark","");
+				$("#GOODS_CODE").val("");
+				$("#GOODS_CODE").attr("data-mark","");
+				$(".good_imgs .parentFileBox .fileBoxUl").empty();
 				$("#search_match_goods ul").empty();
 				$("#search").empty();
 				$(".match_goods ul").empty();
