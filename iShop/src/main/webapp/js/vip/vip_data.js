@@ -1,4 +1,4 @@
-// var oc = new ObjectControl();
+var oc = new ObjectControl();
 $(function(){
     getConsumCount();
 });
