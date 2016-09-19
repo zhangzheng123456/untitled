@@ -32,6 +32,11 @@ function getConsumCount(){
         $("#labels").html(LABEL)
     })
 }
+$("#VIP_LIST").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+});
+
+
 
 //导航点击切换窗口
 $("#nav_bar li").click(function () {
@@ -70,7 +75,7 @@ $(".cancel_img").mouseover(function () {
 $(".album li").click(function () {
   var img=$(this).find("img").prop("outerHTML");
       $(".album_shade").after(img);
-      $(".album_shade").next("img").addClass("album_lg")
+      $(".album_shade").next("img").addClass("album_lg");
       $(".album_shade").show();
 })
 $(".album_shade").click(function () {

@@ -1,6 +1,9 @@
 body{
     margin-top: 81px;
 }
+#VIP_LIST{
+    cursor: pointer;
+}
 .header .left,.header .center,.header .right{
     height:390px;
     width: 33%;
@@ -177,6 +180,7 @@ body{
 }
 .header .center .message-class .tabs-parent .images .img-parent img{
      width: 25%;
+     height: 25%;
     box-sizing: border-box;
     padding-right: 10px;
 }
