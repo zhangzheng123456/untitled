@@ -745,6 +745,71 @@ public class VIPLabelController {
         }
         return dataBean.getJsonStr();
     }
+    //热门标签
+    @RequestMapping(value = "/label/findHotViplabel", method = RequestMethod.POST)
+    @ResponseBody
+    public String findHotViplabel(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.getString("corp_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            List<VipLabel> hotViplabel = vipLabelService.findHotViplabel(corp_code);
+            result.put("list", JSON.toJSONString(hotViplabel));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
+
+    @RequestMapping(value = "/label/findViplabelByType", method = RequestMethod.POST)
+    @ResponseBody
+    public String findViplabelByType(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            int page_Number = jsonObject.getInt("pageNumber");
+            int page_Size = 20;
+            String search_value = jsonObject.getString("searchValue").toString();
+            String type = jsonObject.getString("type").toString();
+            String corp_code = jsonObject.getString("corp_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            PageInfo<VipLabel> list=null;
+          if(type.equals("1")){
+              list= vipLabelService.findViplabelByType(page_Number,page_Size,corp_code,"",search_value);
+          }else if(type.equals("2")){
+              list= vipLabelService.findViplabelByType(page_Number,page_Size,corp_code,"org","");
+          }else if(type.equals("3")){
+              list= vipLabelService.findViplabelByType(page_Number,page_Size,corp_code,"user","");
+          }
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
 }

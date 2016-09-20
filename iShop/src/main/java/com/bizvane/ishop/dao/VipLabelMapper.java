@@ -40,4 +40,8 @@ public interface VipLabelMapper {
 
     List<VipLabel> selectLabelByVip(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code);
 
+    List<VipLabel> findHotViplabel(@Param("corp_code")String corp_code);
+
+    List<VipLabel> findViplabelByType(@Param("corp_code")String corp_code,@Param("label_type")String label_type,@Param("search_value")String search_value);
+
 }

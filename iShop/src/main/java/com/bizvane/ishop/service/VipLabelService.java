@@ -74,4 +74,8 @@ public interface VipLabelService {
     List<VipLabel> lableList(String corp_code, String label_group_code) throws Exception;
 
     List<VipLabel> selectLabelByVip(String corp_code, String vip_code) throws Exception;
+
+    List<VipLabel> findHotViplabel(String corp_code)throws Exception;
+
+    PageInfo<VipLabel> findViplabelByType(int page_number, int page_size,String corp_code,String label_type,String search_value)throws Exception;
 }
