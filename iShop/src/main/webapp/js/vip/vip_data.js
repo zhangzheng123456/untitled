@@ -1,4 +1,5 @@
 var oc = new ObjectControl();
+var page=1;
 $(function(){
     getConsumCount();
 });
@@ -45,18 +46,60 @@ function lg_img(){
 $("#fenLei").click(function(){
    $("#VIP_Message").hide();
    $("#VIP_edit").show();
+    gethotVIPlabel();
+    getOtherlabel();
 });
 $("#VIP_message_back").click(function(){
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
 });
+
 function gethotVIPlabel() {
+    //热门标签
     var param={};
     param["corp_code"]="C10000";
-    oc.postRequire("post","VIP/label/findHotViplabel","",param,function(data){
-            console.log(data);
+    oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list);
+            var html="";
+            console.log(msg.length);
+            for(var i=0;i<msg.length;i++){
+                if(msg[i].label_type=="user"){
+                    html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
+                }else if(msg[i].label_type=="org"){
+                    html+="<span>"+msg[i].label_name+"</span>"
+                }
+            }
+            $("#hotlabel").append(html);
+        }
     })
 }
+//官方会员搜索标签
+function getOtherlabel() {
+    var param={};
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="2";
+    oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list)
+                msg=msg.list;
+            console.log(msg);
+            for(var i=0;i<msg.length;i++){
+                var html="";
+                    html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+            }
+            $("#label_org").append(html);
+        }
+    })
+}
+$("#label_org").click(function () {
+    $("#hotlabel").empty();
+    getOtherlabel()
+})
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
