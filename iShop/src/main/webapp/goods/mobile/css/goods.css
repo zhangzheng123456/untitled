@@ -136,7 +136,10 @@ a {
     padding: 0 0.36232rem 0 0.36232rem; }
     .buy-match .match-con img {
       width: 100%; }
-
+.buy-match .content a{
+  text-decoration: underline;
+  color:#6cc1c8;
+}
 input-placeholder {
   text-align: center; }
 
@@ -145,70 +148,61 @@ input::-webkit-input-placeholder {
 
 .header_line {
   width: 100%;
-  height: 1.30435rem;
+  height: 54px;
   background-color: #e8e8e8;
-  padding-left: 0.24155rem;
   box-sizing: border-box;
   position: fixed;
   top: 0;
   z-index: 1; }
   .header_line .search {
-    padding-left: 1.0628rem;
-    padding-right: 0.24155rem;
-    height: 1.30435rem;
-    background: url(../image/button_shanxuan.png) no-repeat center left;
-    background-size: 1.0628rem 1.0628rem; }
+    padding-left: 5px;
+    padding-right: 10px; }
   .header_line input {
     width: 100%;
-    height: 0.70048rem;
+    height: 29px;
     border: none;
     outline: none;
-    border-radius: 0.19324rem;
+    border-radius: 8px;
+    padding-left: 5px;
     color: #8e8e93;
-    margin-top: 0.28986rem; }
-    [data-dpr="1"] .header_line input {
-      font-size: 14px; }
-    [data-dpr="2"] .header_line input {
-      font-size: 28px; }
-    [data-dpr="3"] .header_line input {
-      font-size: 42px; }
+    font-size: 18px;
+    margin-top: 12px; }
 
 .allShops {
   width: 100%;
-  padding-left: 0.24155rem;
+  padding-left: 10px;
   box-sizing: border-box; }
   .allShops .shop {
     width: 100%;
     position: relative;
-    padding-left: 2.1256rem;
+    padding-left: 88px;
     box-sizing: border-box;
-    height: 2.05314rem;
-    border-bottom: 0.02415rem solid #ededed; }
+    height: 85px;
+    border-bottom: 1px solid #ededed; }
   .allShops .img {
     position: absolute;
     left: 0;
-    top: 0.02415rem;
-    width: 1.88406rem;
-    height: 1.88406rem; }
+    top: 1px;
+    width: 79px;
+    height: 78px; }
     .allShops .img img {
-      width: 1.88406rem;
-      height: 1.88406rem; }
+      width: 78px;
+      height: 78px; }
   .allShops .shop-t {
-    margin-top: 0.09662rem;
-    margin-right: 0.24155rem;
-    line-height: 0.89372rem;
+    margin-top: 4px;
+    margin-right: 10px;
+    line-height: 26px;
     color: #8e8e93; }
     .allShops .shop-t h1 {
       color: #8e8e93;
+      font-size: 16px;
       overflow: hidden;
       white-space: nowrap;
       text-overflow: ellipsis;
       font-weight: normal; }
-      [data-dpr="1"] .allShops .shop-t h1 {
-        font-size: 18px; }
-      [data-dpr="2"] .allShops .shop-t h1 {
-        font-size: 36px; }
-      [data-dpr="3"] .allShops .shop-t h1 {
-        font-size: 54px; }
-    .allShops .shop-t ul {
-      overflow: hidden; }
+    .allShops .shop-t p {
+      text-align: left;
+      font-size: 16px; }
+    .allShops .shop-t .pice span {
+      color: #dd6c5e;
+      font-size: 13px; }

@@ -523,7 +523,6 @@ function clearAll(name){
         }
     }
 };
-导出拉出list
 $("#leading_out").click(function(){
     var l=$(window).width();
     var h=$(document.body).height();

@@ -3,6 +3,7 @@ $(function(){
     getConsumCount();
 });
 function getConsumCount(){
+    //whir.loading.add("",0.5);//加载等待框
     var id=sessionStorage.getItem("id");
     var param={};
     param["corp_code"]="C10141";
@@ -38,19 +39,10 @@ function lg_img(){
     //点击图片放大
     $("#images span").click(function(){
         var src=$(this).children().attr("src");
-        $("#mask").css("display","block");
-        $("#lg_img img").attr("src",src);
-        $("#lg_img").show();
+        whir.loading.add("",0.8,src);//显示图片
     });
 }
-$("#mask").click(function(){
-    $(this).hide();
-    $("#lg_img").hide();
-});
-$("#lg_img").click(function(){
-    $(this).hide();
-    $("#mask").hide();
-});
+
 
 //回到会员列表
 $("#VIP_LIST").click(function(){

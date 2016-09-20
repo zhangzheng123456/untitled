@@ -136,82 +136,73 @@ input::-webkit-input-placeholder{
 } 
 .header_line{
 	width: 100%;
-	height: rem(54);
+	height: 54px;
 	background-color: #e8e8e8;
-	padding-left: rem(10);
 	box-sizing:border-box;
 	position: fixed;
 	top:0;
 	z-index: 1;
 	.search{
-		padding-left: rem(44);
-		padding-right: rem(10);
-		height: rem(54);
-		background: url(../image/button_shanxuan.png) no-repeat center left;
-		background-size: rem(44) rem(44);
+		padding-left: 10px;
+		padding-right: 10px;
+		// height: rem(54);
+		// background: url(../image/button_shanxuan.png) no-repeat center left;
+		// background-size: rem(44) rem(44);
 	}
 	& input{
 		width: 100%;
-		height: rem(29);
+		height: 29px;
 		border:none;
 		outline: none;
-		border-radius: rem(8);
+		border-radius: 8px;
 		color: #8e8e93;
-		@include font(14);
-		margin-top: rem(12);
+		font-size: 18px;
+		margin-top: 12px;
 	}
 }
 .allShops{
 	width: 100%;
-	padding-left: rem(10);
+	padding-left: 10px;
 	box-sizing:border-box;
 	.shop{
 		width: 100%;
 		position: relative;
-		padding-left: rem(88);
+		padding-left:88px;
 		box-sizing:border-box;
-		height: rem(85);
-		border-bottom:rem(1) solid #ededed;
+		height: 85px;
+		border-bottom:1px solid #ededed;
 	}
 	.img{
 		position: absolute;
 		left:0;
-		top:rem(1);
-		width: rem(78);
-		height: rem(78);
+		top:1px;
+		width:79px;
+		height:78px;
 		& img{
-			width: rem(78);
-			height: rem(78);
+			width: 78px;
+			height: 78px;
 		}
 	}
 	.shop-t{
-		margin-top:rem(4);
-		margin-right: rem(10);
-		line-height: rem(37);
+		margin-top:4px;
+		margin-right: 10px;
+		line-height: 26px;
 		color: #8e8e93;
 		& h1{
 			color: #8e8e93;
-			@include font(18);
+			font-size: 20px;
 			overflow:hidden;
     		white-space:nowrap;
             text-overflow:ellipsis;
             font-weight: normal;
 		}
-		& ul{
-			overflow: hidden;
-			// .taolun{
-			// 	float: left;
-			// 	padding-left: rem(24);
-			// 	@include font(12);
-			// 	background: url(../image/p_03.png) no-repeat center left;
-			// 	background-size: rem(18) rem(16);
-			// 	cursor: pointer;
-			// }
-			// .time{
-			// 	float: right;
-			// 	margin-right: rem(10);
-			// 	@include font(12);
-			// }		 
+		& p{
+			text-align: left;
+			font-size: 20px;
+		}
+		.pice span{
+			color: #dd6c5e;
+			font-size: 15px;
 		}
 	}
 }
