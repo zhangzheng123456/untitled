@@ -42,7 +42,13 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
 }
-
+function gethotVIPlabel() {
+    var param={};
+    param["corp_code"]="C10000";
+    oc.postRequire("post","VIP/label/findHotViplabel","",param,function(data){
+            console.log(data);
+    })
+}
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
