@@ -16,63 +16,63 @@
     </resultMap>
 
     <select id="selectByAreaId" resultMap="Area">
-        select
-        DEF_AREA.id,
+        SELECT
+        def_area.id,
         area_code,
         area_name,
-        DEF_AREA.corp_code,
-        DEF_AREA.modified_date,
-        DEF_AREA.modifier,
-        DEF_AREA.created_date,
-        DEF_AREA.creater,
-        DEF_AREA.isactive,
-        DEF_CORP.CORP_NAME
-        from DEF_AREA,DEF_CORP
-        where DEF_AREA.CORP_CODE = DEF_CORP.CORP_CODE
-        and  DEF_AREA.ID=#{id}
+        def_area.corp_code,
+        def_area.modified_date,
+        def_area.modifier,
+        def_area.created_date,
+        def_area.creater,
+        def_area.isactive,
+        def_corp.corp_name
+        FROM def_area,def_corp
+        WHERE def_area.corp_code = def_corp.corp_code
+        AND  def_area.ID=#{id}
     </select>
 
     <select id="selectAllArea" resultMap="Area">
-        select
-        DEF_AREA.id,
+        SELECT
+        def_area.id,
         area_code,
         area_name,
-        DEF_AREA.corp_code,
-        DEF_AREA.modified_date,
-        DEF_AREA.modifier,
-        DEF_AREA.isactive,
-        DEF_CORP.CORP_NAME
-        from DEF_AREA,DEF_CORP
-        where DEF_AREA.CORP_CODE = DEF_CORP.CORP_CODE
+        def_area.corp_code,
+        def_area.modified_date,
+        def_area.modifier,
+        def_area.isactive,
+        def_corp.corp_name
+        FROM def_area,def_corp
+        WHERE def_area.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_AREA.CORP_CODE = #{corp_code}
+            AND def_area.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (area_code like concat('%',#{search_value},'%')
-            OR area_name like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
+            (area_code LIKE concat('%',#{search_value},'%')
+            OR area_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_AREA.id DESC
+        ORDER BY def_area.id DESC
     </select>
 
     <select id="selectAreas" resultType="com.bizvane.ishop.entity.Area">
-        select *
-        from DEF_AREA
-        where CORP_CODE = #{corp_code}
+        SELECT *
+        FROM def_area
+        WHERE corp_code = #{corp_code}
         AND ISACTIVE = 'Y'
-        ORDER BY DEF_AREA.id DESC
+        ORDER BY def_area.id DESC
     </select>
 
     <delete id="deleteByAreaId">
-        delete from
-        DEF_AREA
-        where ID=#{id}
+        DELETE FROM
+        def_area
+        WHERE ID=#{id}
     </delete>
 
     <insert id="insertArea" parameterType="com.bizvane.ishop.entity.Area">
-        insert into DEF_AREA
+        INSERT INTO def_area
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="area_code!=null">
                 area_code,
@@ -159,7 +159,7 @@
     </update>
 
     <select id="selectAreaByName" resultType="com.bizvane.ishop.entity.Area">
-        select * from def_area
+        SELECT * FROM def_area
         WHERE corp_code=#{corp_code}
         AND area_name=#{area_name}
         <if test="isactive!=null and isactive!=''">
@@ -168,7 +168,7 @@
     </select>
 
     <select id="getAreaByCorp" resultMap="Area">
-        select * from DEF_AREA
+        select * from def_area
         WHERE corp_code=#{corp_code}
     </select>
     <!--根据企业code和用户登录时得到的区域code查找所属的区域-->
@@ -185,9 +185,9 @@
     <select id="selectAllAreaScreen" resultMap="Area">
         SELECT
         da.*,
-        dc.CORP_NAME
-        FROM DEF_AREA da,DEF_CORP dc
-        WHERE da.CORP_CODE = dc.CORP_CODE
+        dc.corp_name
+        FROM def_area da,def_corp dc
+        WHERE da.corp_code = dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
@@ -238,12 +238,12 @@
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (da.area_code like concat('%',#{search_value},'%')
-            OR da.area_name like concat('%',#{search_value},'%')
-            OR dc.corp_name like concat('%',#{search_value},'%')
-            OR da.modified_date like concat('%',#{search_value},'%')
-            OR da.modifier like concat('%',#{search_value},'%')
-            OR da.isactive like concat('%',#{search_value},'%')
+            (da.area_code LIKE concat('%',#{search_value},'%')
+            OR da.area_name LIKE concat('%',#{search_value},'%')
+            OR dc.corp_name LIKE concat('%',#{search_value},'%')
+            OR da.modified_date LIKE concat('%',#{search_value},'%')
+            OR da.modifier LIKE concat('%',#{search_value},'%')
+            OR da.isactive LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY da.id DESC
@@ -253,32 +253,32 @@
 
 <!--下拉框取值，只取可用数据-->
     <select id="selAreaByCorpCode" resultMap="Area">
-        select
+        SELECT
         da.*,
-        dc.CORP_NAME
-        from DEF_AREA da,DEF_CORP dc
-        where da.CORP_CODE = dc.CORP_CODE
+        dc.corp_name
+        FROM def_area da,def_corp dc
+        WHERE da.corp_code = dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND da.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null and area_codes != ''">
-            AND da.area_code in
+            AND da.area_code IN
             <foreach collection="area_codes" index="index" item="item" separator="," open="(" close=")">
                 #{item}
             </foreach>
         </if>
         <if test="store_code != null and store_code !=''">
-            and da.area_code in
+            AND da.area_code IN
             (SELECT area_code from def_store
-            where corp_code = #{corp_code} AND
-            STORE_CODE in
+            WHERE corp_code = #{corp_code} AND
+            STORE_CODE IN
             <foreach collection="store_code" index="index" item="item" separator="," open="(" close=")">
                 #{item}
             </foreach>
-            and isactive ='Y')
+            AND isactive ='Y')
         </if>
         <if test="search_value != null and search_value !=''">
-            AND da.area_name like concat('%',#{search_value},'%')
+            AND da.area_name LIKE concat('%',#{search_value},'%')
         </if>
         AND da.ISACTIVE ='Y'
         ORDER BY da.id DESC

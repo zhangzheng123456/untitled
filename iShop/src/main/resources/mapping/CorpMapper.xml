@@ -68,11 +68,11 @@
     </select>
 
     <select id="selectMaxCorpCode" resultType="java.lang.String">
-    select max(CORP_CODE) from DEF_CORP
+    SELECT max(CORP_CODE) FROM def_corp
     </select>
 
     <insert id="insertCorp" parameterType="com.bizvane.ishop.entity.Corp">
-        INSERT INTO DEF_CORP
+        INSERT INTO def_corp
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="corp_name != null">
                 corp_name,
@@ -153,7 +153,7 @@
     </insert>
 
     <update id="updateByCorpId" parameterType="com.bizvane.ishop.entity.Corp">
-        UPDATE DEF_CORP
+        UPDATE def_corp
         <trim prefix="SET" suffixOverrides=",">
             <if test="corp_name != null">
                 corp_name = #{corp_name},
@@ -196,13 +196,13 @@
     </update>
 
     <delete id="deleteByCorpId">
-        delete from
-        DEF_CORP
-        where ID = #{id}
+        DELETE FROM
+        def_corp
+        WHERE ID = #{id}
     </delete>
 
     <select id="selectCount" resultType="java.lang.Integer">
-        SELECT COUNT(1) FROM DEF_CORP
+        SELECT COUNT(1) FROM def_corp
         WHERE 1=1
         <if test="created_date !=''">
             AND created_date LIKE concat(#{created_date},'%')
@@ -210,22 +210,22 @@
     </select>
 
     <select id="getBrandCount" resultType="java.lang.Integer">
-        select count(*) from DEF_BRAND WHERE corp_code=#{corp_code}
+        SELECT count(*) FROM def_brand WHERE corp_code=#{corp_code}
     </select>
 
     <select id="getGoodCount" resultType="java.lang.Integer">
-        select count(*) from DEF_GOODS WHERE corp_code=#{corp_code}
+        SELECT count(*) FROM def_goods WHERE corp_code=#{corp_code}
     </select>
 
 
     <select id="getGroupCount" resultType="java.lang.Integer">
-        select count(*) from DEF_GROUP WHERE corp_code=#{corp_code}
+        SELECT count(*) FROM def_group WHERE corp_code=#{corp_code}
     </select>
 
     <select id="selectAllCorpScreen" resultMap="CorpInfo">
-        select *
-        from DEF_CORP
-        where
+        SELECT *
+        FROM def_corp
+        WHERE
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             ${entryKey} LIKE concat('%', #{entryValue},'%')
         </foreach>
@@ -234,7 +234,7 @@
     </select>
 
     <select id="getMessageTypeCount" resultType="java.lang.Integer">
-        select count(*) from def_message_type where corp_code=#{corp_code}
+        SELECT count(*) FROM def_message_type WHERE corp_code=#{corp_code}
     </select>
 
     <select id="selectWByAppUserName" resultType="com.bizvane.ishop.entity.CorpWechat">

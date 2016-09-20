@@ -9,11 +9,11 @@
         <if test="search_value != null and search_value !=''">
             AND
             (
-            USER_CODE LIKE concat('%', #{search_value},'%')
-            OR FEEDBACK_CONTENT LIKE concat('%', #{search_value},'%')
-            OR PHONE LIKE concat('%', #{search_value},'%')
-            OR FEEDBACK_DATE LIKE concat('%',#{search_value},'%')
-            OR PROCESS_STATE LIKE concat('%', #{search_value},'%')
+            user_code LIKE concat('%', #{search_value},'%')
+            OR feedback_content LIKE concat('%', #{search_value},'%')
+            OR phone LIKE concat('%', #{search_value},'%')
+            OR feedback_date LIKE concat('%',#{search_value},'%')
+            OR process_state LIKE concat('%', #{search_value},'%')
             )
         </if>
         ORDER BY id DESC
@@ -32,34 +32,34 @@
         <trim prefix="(" suffix=")" suffixOverrides=",">
 
         <if test="user_code != null">
-            USER_CODE,
+            user_code,
         </if>
         <if test="feedback_content != null">
-            FEEDBACK_CONTENT,
+            feedback_content,
         </if>
         <if test="phone != null">
-            PHONE,
+            phone,
         </if>
         <if test="feedback_date != null">
-            FEEDBACK_DATE,
+            feedback_date,
         </if>
         <if test="process_state != null">
-            PROCESS_STATE,
+            process_state,
         </if>
         <if test="created_date != null">
-            CREATED_DATE,
+            created_date,
         </if>
         <if test="creater != null">
-            CREATER,
+            creater,
         </if>
         <if test="modified_date != null">
-            MODIFIED_DATE,
+            modified_date,
         </if>
         <if test="modifier != null">
-            MODIFIER,
+            modifier,
         </if>
         <if test="isactive != null">
-            ISACTIVE,
+            isactive,
         </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -100,35 +100,35 @@
         UPDATE  def_feedback
         <trim prefix="SET" suffixOverrides=",">
             <if test="user_code != null">
-                USER_CODE =   #{user_code},
+                user_code =   #{user_code},
             </if>
 
             <if test="feedback_content != null">
-                FEEDBACK_CONTENT= #{feedback_content},
+                feedback_content= #{feedback_content},
             </if>
             <if test="phone != null">
-                PHONE=   #{phone},
+                phone=   #{phone},
             </if>
             <if test="feedback_date != null">
-                FEEDBACK_DATE= #{feedback_date},
+                feedback_date= #{feedback_date},
             </if>
             <if test="process_state != null">
-                PROCESS_STATE=   #{process_state},
+                process_state=   #{process_state},
             </if>
             <if test="created_date != null">
-                CREATED_DATE=  #{created_date},
+                created_date=  #{created_date},
             </if>
             <if test="creater != null">
-                CREATER=  #{createra},
+                creater=  #{createra},
             </if>
             <if test="modified_date != null">
-                MODIFIED_DATE=   #{modified_date},
+                modified_date=   #{modified_date},
             </if>
             <if test="modifier != null">
-                MODIFIER=  #{modifier},
+                modifier=  #{modifier},
             </if>
             <if test="isactive != null">
-                ISACTIVE=  #{isactive},
+                isactive=  #{isactive},
             </if>
         </trim>
         WHERE ID=#{id};

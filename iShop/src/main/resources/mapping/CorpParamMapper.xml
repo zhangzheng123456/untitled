@@ -51,9 +51,9 @@
     </select>
 
     <delete id="deleteById">
-        delete from
+        DELETE FROM
         rel_corp_cfg
-        where id=#{id}
+        WHERE id=#{id}
     </delete>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.CorpParam">
