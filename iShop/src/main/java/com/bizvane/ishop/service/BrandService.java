@@ -34,7 +34,5 @@ public interface BrandService {
 
     int getGoodsCount(String corp_code, String brand_code) throws Exception;
 
-    int getStoresCount(String corp_code, String brand_code) throws Exception;
-
     PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 }

@@ -309,15 +309,19 @@
 
     <select id="selectStoreBrandArea" resultType="com.bizvane.ishop.entity.Store">
         SELECT *
-        FROM DEF_STORE
-        where CORP_CODE = #{corp_code}
+        FROM def_store ds,def_corp dc,def_brand db
+        WHERE ds.corp_code = dc.corp_code
+        AND ds.corp_code = db.corp_code
+        AND ds.corp_code=#{corp_code}
         <if test="brand_code != null and brand_code !=''">
-            AND brand_code like #{brand_code}
+            AND ds.brand_code REGEXP #{brand_code}
         </if>
         <if test="area_code != null and area_code !=''">
-            AND area_code like #{area_code}
+            AND ds.area_code = #{area_code}
         </if>
-        AND ISACTIVE = 'Y'
+        AND ds.isactive = #{isactive}
+        AND dc.isactive = 'Y'
+        AND db.isactive = 'Y'
     </select>
 
     <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
@@ -546,14 +550,6 @@
         AND db.isactive = 'Y'
         GROUP BY ds.id
         ORDER BY ds.id DESC
-    </select>
-
-    <select id="selectBrandsStore" resultType="com.bizvane.ishop.entity.Brand">
-        SELECT * FROM def_brand
-        WHERE
-        corp_code=#{corp_code}
-        AND
-        #{brand_code} LIKE brand_code
     </select>
 
     <select id="selectAllStoresByCorpCode" resultType="com.bizvane.ishop.entity.Store">

@@ -194,7 +194,7 @@ public class BrandController {
                         msg = "有使用品牌" + brand_code + "的商品，请先行处理";
                         break;
                     }
-                    count = brandService.getStoresCount(corp_code, brand_code);
+                    count = brandService.getBrandStore(corp_code, brand_code).size();
                     if (count > 0) {
                         msg = "有使用品牌" + brand_code + "的店铺，请先行处理";
                         break;

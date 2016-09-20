@@ -71,7 +71,7 @@ public class AreaServiceImpl implements AreaService {
     //获得区域下店铺
     @Override
     public List<Store> getAreaStore(String corp_code, String area_code) throws Exception {
-        return storeMapper.selectStoreBrandArea(corp_code, "", "%" + area_code + "%");
+        return storeMapper.selectStoreBrandArea(corp_code, "", area_code,"");
     }
 
     @Override
