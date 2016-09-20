@@ -6,7 +6,7 @@ function getConsumCount(){
     //whir.loading.add("",0.5);//加载等待框
     var id=sessionStorage.getItem("id");
     var param={};
-    param["corp_code"]="C10141";
+    param["corp_code"]="C10000";
     param["vip_id"]=id;
     oc.postRequire("post","/vip/vipConsumCount","",param,function(data){
        var Data=JSON.parse(data.message);
@@ -42,7 +42,21 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
 }
-
+$("#fenLei").click(function(){
+   $("#VIP_Message").hide();
+   $("#VIP_edit").show();
+});
+$("#VIP_message_back").click(function(){
+   $("#VIP_Message").show();
+   $("#VIP_edit").hide();
+});
+function gethotVIPlabel() {
+    var param={};
+    param["corp_code"]="C10000";
+    oc.postRequire("post","VIP/label/findHotViplabel","",param,function(data){
+            console.log(data);
+    })
+}
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
@@ -83,14 +97,8 @@ $(".cancel_img").mouseover(function () {
 
 //相册图片点击放大.关闭
 $(".album li").click(function () {
-  var img=$(this).find("img").prop("outerHTML");
-      $(".album_shade").after(img);
-      $(".album_shade").next("img").addClass("album_lg");
-      $(".album_shade").show();
-})
-$(".album_shade").click(function () {
-    $(".album_shade").next(".album_lg").remove();
-    $(".album_shade").hide();
+  var src=$(this).find("img").attr("src");
+    whir.loading.add("",0.8,src);
 })
 
 //标签导航切换窗口

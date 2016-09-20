@@ -11,565 +11,10 @@
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/vip-data.css">
 </head>
-<style>
-     /*导航头部*/
-    .nav_bar li{
-        width:14.2865%;
-        height:30px;
-        line-height: 30px;
-        float: left;
-        font-size: 14px;
-        color: #888888;
-        text-align: center;
-        cursor: pointer;
-    }
-   .nav_bar .active1{
-        color: #6dc1c8;
-    }
-    .nav_bar{
-        height: 35px;
-        border-bottom: 1px solid #fff;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /*基本信息*/
-     #basic_message{
-         overflow: hidden;
-         display: block;
-     }
-     #basic_message .editor_detail_em{
-         margin-top: 20px;
-         margin-left: -19px;
-     }
-     #basic_message .msg_detail{
-         margin-top: 10px;
-     }
-     #basic_message .msg_detail div{
-         float:right;
-     }
-     #basic_message .btn_margin{
-         marrgin-top:30px;
-     }
-    /*备注*/
-     .remark{
-         display: none;
-     }
-     .remark span{
-         display: inline-flex;
-         margin-top: 20px;
-         margin-left: 190px;
-     }
-    .remark textarea{
-        width: 380px;
-        height:400px;
-        margin-left: 20px;
-        padding: 10px;
-        resize: none;
-        border: none;
-        outline: none;
-        border-radius: 4px;
-    }
-    .remark_save{
-        width: 160px;
-        height: 30px;
-        margin-left: 240px;
-        margin-top: 20px;
-        background: #6dc1c8;
-        color: #ffffff;
-        line-height: 30px;
-        text-align: center;
-        border-radius: 4px;
-        font-size: 14px;
-        letter-spacing: 10px;
-    }
-
-    /*消费记录*/
-     .record{
-         display: none;
-         font-size: 14px;
-         color: #888888;
-     }
-     .record>div{
-         background: #fff;
-     }
-    .record_head{
-        height: 50px;
-        margin-top: 10px ;
-        padding: 10px;
-    }
-    .record em{
-        font-size: 16px;
-        color: #c26555;
-        text-decoration: none;
-    }
-    .record_head em{
-        margin-left: 10px;
-    }
-    .record_head .consume_total{
-        margin-right: 10px;
-    }
-    .record .consume_total{
-        font-size: 20px;
-        color: #c26555;
-    }
-    .record_head .amount{
-        font-size: 20px;
-        color: #58b4bc;
-    }
-    .record_head ul{
-        float: right;
-        line-height: 30px;
-    }
-    .record ul li{
-        float: left;
-        margin-left: 10px;
-        color: #434960;
-    }
-    .record_head ul li:first-child span{
-        font-size: 16px;
-        color: #c26555;
-    }
-    .record_head ul li:nth-child(2) span{
-        color: #888888;
-    }
-    hr{
-        margin: 0 10px;
-        color: #d7d7d7;
-    }
-    .record_head_down{
-        height: 50px;
-        padding: 10px;
-    }
-    .record_head_down .record_date input{
-        width: 130px;
-        height: 30px;
-        text-indent: 10px;
-        border: 1px solid #d7d7d7;
-        border-radius: 4px;
-        outline: none;
-    }
-    .record_date span{
-        margin: 0 10px 0 0;
-    }
-    .record_input{
-        float: right;
-    }
-    .record_input input{
-        width: 160px;
-        height: 30px;
-        text-indent: 10px;
-        margin: 0 20px 0 10px;
-        border: 1px solid #d7d7d7;
-        border-radius: 4px;
-        outline: none;
-    }
-    .order_list{
-        font-size: 14px;
-        color: #888888;
-        background: #fff;
-        margin-top: 10px;
-        padding: 0 20px;
-    }
-    .black_font{
-        color: #434960;
-    }
-    .order_list ul{
-        float: right;
-        height: 30px;
-        line-height: 30px;
-    }
-    .order_list ul li{
-        color: #888888;
-    }
-    .list_head{
-        height: 30px;
-        line-height: 30px;
-    }
-    .list_table{
-        width: 100%;
-        background: #fff;
-        font-size: 14px;
-    }
-    .list_table thead tr{
-        height: 50px;
-        line-height: 50px;
-        color: #434960;
-        font-size: 14px;
-        text-align: center;
-    }
-    .list_table thead tr th{
-         font-weight: normal;
-         text-align: center;
-     }
-    .list_table tbody tr{
-         height: 60px;
-     }
-    .list_table tbody tr td{
-         font-weight: normal;
-         text-align: center;
-     }
-    .list_table tbody tr:nth-child(odd){
-         background: #f4f4f4;
-     }
-    .list_table img{
-        width: 50px;
-        height: 50px;
-        border: 1px solid;
-        border-radius: 5px;
-    }
-    .list_table .money{
-        color: #c26555;
-    }
-    .list_table .product_name{
-         text-align: left;
-    }
-    .list_table .product_name span{
-        display: block;
-        width: 250px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .record_list{
-        margin-top: 10px;
-    }
-    .more_list{
-        display: none;
-        text-align: center;
-        cursor: pointer;
-    }
-
-     /*积分*/
-    .points{
-        display: none;
-        font-size: 14px;
-     }
-    .point_head{
-         height: 50px;
-         margin-top: 10px ;
-         padding: 10px;
-     }
-    .points .consume_total{
-        font-size: 20px;
-        color: #c26555;
-        margin-left: 10px;
-     }
-    .point_head{
-        background: #fff;
-    }
-    .point_head ul{
-        float: right;
-        line-height: 30px;
-    }
-    .point_head ul li{
-         float: left;
-         margin-left: 10px;
-         color: #434960;
-     }
-    .point_head ul li:first-child span{
-         font-size: 16px;
-         color: #c26555;
-     }
-    .point_head ul li:nth-child(2) span{
-         color: #888888;
-     }
-    .point_head_down{
-         height: 50px;
-         padding: 10px;
-        background: #fff;
-     }
-    .point_head_down .record_date input{
-         width: 130px;
-         height: 30px;
-         text-indent: 10px;
-         border: 1px solid #d7d7d7;
-         border-radius: 4px;
-         outline: none;
-     }
-    .point_head_down .record_date li{
-        float: left;
-    }
-    .record_date span{
-         margin: 0 10px;
-     }
-    .point_table{
-        width:100%;
-        margin-top: 10px;
-        color: #888888;
-        background: #fff;
-    }
-    .point_table thead tr{
-        height: 50px;
-        line-height: 50px;
-        color: #434960;
-        font-size: 14px;
-    }
-    .point_table tbody tr{
-        height: 50px;
-    }
-    .point_table tbody tr:nth-child(odd){
-        background: #f4f4f4;
-    }
-    .point_table tr th:nth-child(1){
-        padding-left: 20px;
-    }
-     .point_table tr td:nth-child(1){
-         padding-left: 20px;
-     }
-    .point_table thead tr th{
-        font-weight: normal;
-        text-align: left;
-    }
-
-    /*相册*/
-     .album{
-         display: none;
-         width:100%;
-         overflow: hidden;
-         background: #e8e8e8;
-     }
-     .album ul li{
-         width:120px;
-         height: 170px;
-         margin-right: 20px;
-         float: left;
-         text-align: center;
-         position: relative;
-     }
-     .album ul li img{
-         width: 120px;
-         height: 120px;
-         border: 1px solid #d7d7d7;
-         margin-top: 20px;
-         cursor: pointer;
-     }
-     .album .cancel_img{
-         display: none;
-         width: 20px;
-         height: 20px;
-         background: url('../img/x_alt.png') no-repeat right;
-         position: absolute;
-         top:10px;
-         right:-5px;
-         z-index: 100;
-     }
-     .album_date{
-         width: 120px;
-         height: 30px;
-         line-height: 30px;
-         margin-bottom: 20px;
-         display: block;
-         color: #888888;
-     }
-     .add_new_album{
-         width: 120px;
-         height: 120px;
-         margin-top: 20px;
-         line-height: 120px;
-         color: #888888;
-         font-size: 16px;
-         border: 2px #c3c3c3 dashed;
-         display: inline-block;
-         text-align: center;
-     }
-     .add_new_album input{
-         position: absolute;
-         top: 0;
-         opacity: 0;
-         filter:alpha(opacity=0);
-         width: 120px;
-         height: 110px;
-     }
-     .album_shade{
-         display:none;
-         position:absolute;
-         left:0;
-         top:0;
-         margin: 80px 200px;
-         width: 100%;
-         height: 700px;
-         text-align: center;
-         filter:alpha(opacity=50);
-         background: #000000;
-         opacity:0.5;
-         -moz-opacity:0.5;
-     }
-     .album .album_lg{
-         position: absolute;
-         top:200px;
-         left: 45%;
-         z-index: 1000;
-         width:300px;
-         height: 400px;
-         filter:alpha(opacity=100);
-         opacity:1;
-     }
-
-     /*标签*/
-     .viplabel{
-         font-size: 14px;
-         color: #888888;
-         display: none;
-         overflow: hidden;
-     }
-     .labeladd_box{
-         padding: 10px;
-         margin-top: 20px;
-         background: #fff;
-         display: inline-flex;
-     }
-    .labeladd_box input{
-        width: 400px;
-        height: 30px;
-        border: 1px solid #e8e8e8;
-        outline: none;
-        border-radius: 5px;
-       text-indent: 10px;
-    }
-    .labeladd_btn{
-        display: block;
-        width:80px;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-        background: #6cc1c8;
-        color: #fff;
-        cursor: pointer;
-        border-radius: 5px;
-        margin-left:10px;
-    }
-    .own_label{
-        width: 510px;
-        padding: 10px;
-        margin-top: 10px;
-        background: #fff;
-    }
-    .own_label label{
-        display: block;
-        width: 490px;
-        height: 30px;
-        line-height: 30px;
-        border-bottom: 1px solid #e8e8e8;
-    }
-    .label_box span:first-child{
-        margin-right:20px;
-    }
-    .label_box span{
-        display: inline-block;
-        height:30px;
-        line-height: 30px;
-        padding: 0px 8px;
-        text-align: center;
-        border-radius: 5px;
-        margin-bottom: 20px;
-    }
-    .label_box span + span{
-        margin-right: 20px;
-    }
-    .label_box span i{
-        margin-left: 5px;
-    }
-    .label_box{
-        margin: 20px 10px;
-    }
-    .label_u_active{
-        color: #fff;
-        background:#9b9b9b;
-    }
-    .label_u{
-        color:  #9d9d9d;
-        border: 1px dashed #9d9d9d;
-    }
-    .label_g{
-        color:  #6dc1c8;
-        border: 1px dashed #6dc1c8;
-    }
-    .label_g_active{
-        background: #6cc1c8;
-        color: #fff;
-    }
-    .all_label{
-        width: 580px;
-        height: 100%;
-        padding: 0 20px;
-        margin-top: -250px;
-        margin-left: 530px;
-        background: #fff
-    }
-    .label_nav{
-        width: 100%;
-        height:30px;
-        border-bottom: 1px solid #e8e8e8;
-    }
-    .label_nav li{
-        width:33.3333333%;
-        height:29px;
-        line-height: 30px;
-        text-align: center;
-        cursor: pointer;
-        float: left;
-    }
-    .label_li_active{
-        border-bottom: 1px solid #6dc1c8;
-    }
-
-     /*扩展模块*/
-     .all_list{
-         overflow: hidden;
-     }
-    .expand{
-        padding:20px 30px 0 30px;
-        overflow: hidden;
-    }
-     .expand ul{
-         width: 33.33%;
-         float: left;
-         padding-right: 20px;
-     }
-     .expand ul li{
-      margin-bottom: 10px;
-     }
-     .expand ul li b{
-         padding-top: 3px;
-         float: left;
-         width: 140px;
-         padding-right: 10px;
-         text-align: right;
-         font-weight: normal;
-     }
-     .expand ul li div{
-         margin-left: 140px;
-     }
-     .expand ul li div input{
-         width:100%;
-         height: 30px;
-         border-radius: 3px;
-         padding:5px 3px 5px 2px;
-     }
-     /*配合定位*/
-     .expand .position{
-         position: relative;
-     }
-    .expand .expand_selection{
-        position: absolute;
-        left:-124px;
-        top:26px;
-        width:100%;
-        border-radius: 3px;
-    }
-    .expand .input_select:hover{
-        cursor: pointer;
-    }
-    .expand ul:last-child{
-        clear: both;
-        width: 100%;
-    }
-
-</style>
 <body>
 <div class="con_table" id="con_table">
-    <!-- 导航-->
+ <div id="VIP_Message">
+     <!-- 导航-->
     <div class="title">
         <span>会员管理</span>
         <span class="icon-ishop_8-03"></span>
@@ -743,7 +188,7 @@
                           </div>
                       </div>
                   </div>
-                  <div class="person-more">查看更多<i class="icon-ishop_8-03"></i></div>
+                  <div class="person-more"><label id="fenLei">查看更多<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
           <div class="right">
@@ -790,7 +235,7 @@
               <div class="datail-last">
                   <span class="detail-left">推荐人</span><span class="detail-right">吴燕</span>
               </div>
-                  <div class="person-more">详细资料<i class="icon-ishop_8-03"></i></div>
+                  <div class="person-more"><label>详细资料<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
        </div>
@@ -850,15 +295,15 @@
             </li>
         </ul>
     </div>
-    </div>
+    </div></div>
 
-    <div class="" style="display:none;">
+    <div id="VIP_edit" style="display:none;">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
             <span>会员列表</span>
             <span class="icon-ishop_8-03"></span>
-            <span>会员信息</span>
+            <span id="VIP_message_back">会员信息</span>
             <span class="icon-ishop_8-03"></span>
             <span>编辑会员资料</span>
         </div>
@@ -1320,11 +765,11 @@
                     <span class="add_new_album" style="position: relative;">
                         <input type="file">添加图片+
                     </span>
-                    <div class="album_shade"></div>
+                    <!--<div class="album_shade"></div>-->
                 </div>
 
                 <div class="viplabel">
-                    <div>
+                    <div class="label_left_box">
                         <div class="labeladd_box">
                             <input type="text" placeholder="添加标签">
                             <span class="labeladd_btn">贴上</span>
@@ -1428,12 +873,12 @@
             </div>
 
                 <div class="remark">
-               <span>
-                     <label>备注</label>
-                     <textarea id=""></textarea>
-               </span>
-                <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
-            </div>
+                    <span>
+                        <label>备注</label>
+                        <textarea id=""></textarea>
+                    </span>
+                    <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
+                </div>
             </div>
         </div>
     </div>

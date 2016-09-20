@@ -72,8 +72,6 @@ var oc = new ObjectControl();
 				var BRAND_NAME=$("#BRAND_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var app_id=$("#Accounts").attr("data-appid");
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
 				var a=$('.xingming input');
 				var cus_user_code="";
 				for(var i=0;i<a.length;i++){
@@ -84,6 +82,8 @@ var oc = new ObjectControl();
 			            cus_user_code+=u;
 			        }     
     			}
+				var ISACTIVE="";
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -129,8 +129,6 @@ var oc = new ObjectControl();
 				var BRAND_ID=$("#BRAND_ID").val();
 				var BRAND_NAME=$("#BRAND_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
 				var app_id=$("#Accounts").attr("data-appid");//公众号
 				var a=$('.xingming input');//所属客服
 				var cus_user_code="";
@@ -142,6 +140,8 @@ var oc = new ObjectControl();
 			            cus_user_code+=u;
 			        }     
     			}
+    			var ISACTIVE="";
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -257,7 +257,6 @@ jQuery(document).ready(function(){
 				$("#modifier").val(msg.modifier);
 				$("#Accounts").val(msg.app_name);
 				$("#Accounts").attr("data-appid",msg.app_id);
-				var input=$(".checkbox_isactive").find("input")[0];
 				if (msg.app_id!= "") {
                     if (msg.brand_code.indexOf(',') !== -1) {
                         checknow_data = msg.app_id.split(",");
@@ -273,6 +272,7 @@ jQuery(document).ready(function(){
                      +"'><span class='power remove_app_id' onclick='deleteName(this)'>删除</span></p>";
 		 		}
  				$('.xingming').html(ul);
+ 				var input=$("#is_active")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){

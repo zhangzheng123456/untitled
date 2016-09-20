@@ -286,4 +286,47 @@
         GROUP BY vt.label_name
         ORDER BY vt.id DESC
     </select>
+
+
+<!--热门标签-->
+    <select id="findHotViplabel" resultMap="VipLabels">
+    SELECT
+    tvl.LABEL_ID,
+    dl.LABEL_NAME,
+    dl.LABEL_TYPE,
+    COUNT(1) cnt
+    FROM
+    rel_vip_label tvl,
+    def_vip_label dl
+    WHERE
+    tvl.LABEL_ID = dl.ID
+    AND tvl.ISACTIVE = 'Y'
+    AND dl.ISACTIVE = 'Y'
+    AND tvl.corp_code = #{corp_code}
+    AND dl.corp_code =  #{corp_code}
+    GROUP BY
+    tvl.LABEL_ID,
+    dl.LABEL_NAME,
+    dl.LABEL_TYPE
+    ORDER BY
+    cnt DESC
+    LIMIT 0,20
+    </select>
+<!--用户和官方标签-->
+    <select id="findViplabelByType" resultType="com.bizvane.ishop.entity.VipLabel">
+        SELECT
+        ID,
+        LABEL_NAME,
+        LABEL_TYPE,
+        CORP_CODE
+        FROM def_vip_label
+        WHERE CORP_CODE=#{corp_code}
+        <if test="label_type!=null and label_type!=''">
+            AND LABEL_TYPE =#{label_type}
+        </if>
+        <if test="search_value!=null and search_value!=''">
+            AND LABEL_NAME like concat('%',#{search_value},'%')
+        </if>
+        AND ISACTIVE ='Y'
+    </select>
 </mapper>

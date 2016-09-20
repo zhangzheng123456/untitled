@@ -207,4 +207,17 @@ public class VipLabelServiceImpl implements VipLabelService {
     public List<VipLabel> selectLabelByVip(String corp_code, String vip_code) throws Exception {
         return vipLabelMapper.selectLabelByVip(corp_code,vip_code);
     }
+
+    @Override
+    public List<VipLabel> findHotViplabel(String corp_code)throws Exception {
+        return vipLabelMapper.findHotViplabel(corp_code);
+    }
+
+    @Override
+    public PageInfo<VipLabel> findViplabelByType(int page_number, int page_size,String corp_code, String label_type, String search_value)throws Exception {
+        PageHelper.startPage(page_number, page_size);
+        List<VipLabel> viplabels = vipLabelMapper.findViplabelByType(corp_code,label_type,search_value);
+        PageInfo<VipLabel> page = new PageInfo<VipLabel>(viplabels);
+        return page;
+    }
 }
