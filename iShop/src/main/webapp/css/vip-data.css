@@ -234,8 +234,8 @@ body{
     height: 110px;
 }
 .right .person .person-left{
-width: 30%;float: left;
-padding:25px 0 0 15px;
+float: left;
+padding:25px 15px 0 15px;
 }
 .right .person .person-left .person-img{
     display: inline-block;
@@ -312,8 +312,8 @@ padding:25px 0 0 15px;
 }
 .right .person-detail .detail-left{
     text-align: right;
-    width: 20%;
-    min-width: 80px;
+    width: 65px;
+    padding-left: 5px;
     display: inline-block;
     color: #4a5f7c;
     font-size: 14px;
