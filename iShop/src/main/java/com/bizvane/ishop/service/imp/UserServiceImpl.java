@@ -121,13 +121,8 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
+            store_code = store_code.replace(Common.STORE_HEAD,"");
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
-                if (!stores[i].startsWith(Common.STORE_HEAD)) {
-                    stores[i] = Common.STORE_HEAD + stores[i];
-                }
-                stores[i] = stores[i].substring(1, stores[i].length());
-            }
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);

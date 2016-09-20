@@ -7,12 +7,12 @@ import com.bizvane.ishop.entity.ValidateCode;
  * Created by Administrator on 2016/5/23.
  */
 public interface LoginLogService {
-    int insertLoginLog(LoginLog log);
+    int insertLoginLog(LoginLog log)throws Exception;
 
-    LoginLog selectLoginLog(int log_id, String phone);
+    LoginLog selectLoginLog(int log_id, String phone)throws Exception;
 
-    int updateLoginLog(LoginLog log);
+    int updateLoginLog(LoginLog log)throws Exception;
 
-    int deleteLoginLog(int log_id);
+    int deleteLoginLog(int log_id)throws Exception;
 
 }
