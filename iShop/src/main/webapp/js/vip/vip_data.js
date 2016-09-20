@@ -6,7 +6,7 @@ function getConsumCount(){
     //whir.loading.add("",0.5);//加载等待框
     var id=sessionStorage.getItem("id");
     var param={};
-    param["corp_code"]="C10141";
+    param["corp_code"]="C10000";
     param["vip_id"]=id;
     oc.postRequire("post","/vip/vipConsumCount","",param,function(data){
        var Data=JSON.parse(data.message);
