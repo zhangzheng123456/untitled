@@ -17,15 +17,15 @@
     <select id="selectByLogId" resultMap="ErrorLog">
         SELECT
         def_error_log.ID,
-        CONTENT,
-        APP_PLATFORM,
-       def_error_log.CORP_CODE,
-       VERSION,
+        content,
+        app_platform,
+       def_error_log.corp_code,
+       version,
        def_error_log.created_date,
         def_error_log.creater,
         modified_date,
         modifier,
-         def_error_log.ISACTIVE
+         def_error_log.isactive
         FROM def_error_log
         WHERE def_error_log.id=#{id}
     </select>
@@ -37,17 +37,17 @@
         app_platform,
         corp_code,
         version,
-        def_error_log.CREATED_DATE,
-        def_error_log.CREATER,
-        def_error_log.MODIFIED_DATE,
-        def_error_log.MODIFIER,
-        def_error_log.ISACTIVE
-        from def_error_log
+        def_error_log.created_date,
+        def_error_log.creater,
+        def_error_log.modified_date,
+        def_error_log.modifier,
+        def_error_log.isactive
+        FROM def_error_log
       WHERE 1=1
         <if test="search_value != null and search_value !=''">
-     AND (def_error_log.APP_PLATFORM like concat('%',#{search_value},'%')
-            OR def_error_log.CORP_CODE like concat('%',#{search_value},'%')
-            OR def_error_log.VERSION like concat('%',#{search_value},'%')
+     AND (def_error_log.app_platform LIKE concat('%',#{search_value},'%')
+            OR def_error_log.corp_code LIKE concat('%',#{search_value},'%')
+            OR def_error_log.version LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY def_error_log.id DESC
@@ -72,9 +72,9 @@
     </select>
 
     <delete id="deleteByLogId">
-        delete from
+        DELETE FROM
         def_error_log
-        where ID=#{id}
+        WHERE ID=#{id}
     </delete>
 
 </mapper>
