@@ -18,49 +18,49 @@
     </resultMap>
 
     <select id="selectAllAppLoginLog" resultMap="AppLoginLog">
-      SELECT acc_app_login_log.ID,
-      acc_app_login_log.PLATFORM,
-      acc_app_login_log.USER_CODE,
-      acc_app_login_log.USER_NAME,
-        acc_app_login_log.STORE_NAME,
-        acc_app_login_log.POSITION,
-        acc_app_login_log.PHONE,
-      def_corp.CORP_NAME,
-      acc_app_login_log.TIME,
+      SELECT acc_app_login_log.id,
+      acc_app_login_log.platform,
+      acc_app_login_log.user_code,
+      acc_app_login_log.user_name,
+        acc_app_login_log.store_name,
+        acc_app_login_log.position,
+        acc_app_login_log.phone,
+      def_corp.corp_name,
+      acc_app_login_log.time,
       acc_app_login_log.created_date
       FROM acc_app_login_log,def_corp
       WHERE  acc_app_login_log.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            AND  acc_app_login_log.CORP_CODE = #{corp_code}
+            AND  acc_app_login_log.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
         AND
         (
-            acc_app_login_log.PLATFORM LIKE concat('%', #{search_value},'%')
-            OR acc_app_login_log.USER_NAME LIKE concat('%', #{search_value},'%')
+            acc_app_login_log.platform LIKE concat('%', #{search_value},'%')
+            OR acc_app_login_log.user_name LIKE concat('%', #{search_value},'%')
             OR acc_app_login_log.created_date LIKE concat('%', #{search_value},'%')
-            OR def_corp.CORP_NAME LIKE concat('%', #{search_value},'%')
-            OR acc_app_login_log.TIME LIKE concat('%', #{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%', #{search_value},'%')
+            OR acc_app_login_log.time LIKE concat('%', #{search_value},'%')
             )
         </if>
-        ORDER BY acc_app_login_log.ID DESC
+        ORDER BY acc_app_login_log.id DESC
     </select>
 
     <select id="selectAllScreen" resultMap="AppLoginLog">
-        SELECT acc_app_login_log.ID,
-        acc_app_login_log.PLATFORM,
-        acc_app_login_log.USER_CODE,
-        acc_app_login_log.USER_NAME,
-        acc_app_login_log.STORE_NAME,
-        acc_app_login_log.POSITION,
-        acc_app_login_log.PHONE,
-        def_corp.CORP_NAME,
-        acc_app_login_log.TIME,
+        SELECT acc_app_login_log.id,
+        acc_app_login_log.platform,
+        acc_app_login_log.user_code,
+        acc_app_login_log.user_name,
+        acc_app_login_log.store_name,
+        acc_app_login_log.position,
+        acc_app_login_log.phone,
+        def_corp.corp_name,
+        acc_app_login_log.time,
         acc_app_login_log.created_date
         FROM acc_app_login_log,def_corp
         WHERE  acc_app_login_log.corp_code=def_corp.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            AND  acc_app_login_log.CORP_CODE = #{corp_code}
+            AND  acc_app_login_log.corp_code = #{corp_code}
         </if>
         <if test="created_date_start!=null and created_date_start!=''">
             AND  acc_app_login_log.created_date &gt;= #{created_date_start}
@@ -72,7 +72,7 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
-                    DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <when test="entryValue!='' and entryKey=='created_date'">
                     acc_app_login_log.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -85,11 +85,11 @@
                 </otherwise>
             </choose>
         </foreach>
-        ORDER BY acc_app_login_log.ID DESC
+        ORDER BY acc_app_login_log.id DESC
     </select>
 
     <delete id="delAppLoginlogById">
         DELETE FROM acc_app_login_log
-        WHERE ID=#{id};
+        WHERE id=#{id};
     </delete>
 </mapper>

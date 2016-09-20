@@ -3,125 +3,125 @@
 <mapper namespace="com.bizvane.ishop.dao.FunctionMapper">
 
     <select id="selectAllFun" resultType="com.bizvane.ishop.entity.Function">
-        select *
-        from DEF_FUNCTION WHERE FUNCTION_CODE IN (
-        SELECT FUNCTION_CODE FROM DEF_PRIVILEGE
-        WHERE (MASTER_CODE = #{user_code}
-        or MASTER_CODE = #{role_code}
-        or MASTER_CODE = #{group_code})
-        and enable = 'Y'
-        and isactive = 'Y')
-        and ISACTIVE = 'Y'
+        SELECT *
+        FROM def_function WHERE function_code IN (
+        SELECT function_code FROM def_privilege
+        WHERE (master_code = #{user_code}
+        OR master_code = #{role_code}
+        OR master_code = #{group_code})
+        AND enable = 'Y'
+        AND isactive = 'Y')
+        AND isactive = 'Y'
         AND show_order IS NOT NULL
         AND show_order != ''
-        order by show_order
+        ORDER BY show_order
     </select>
 
     <select id="selectActionByFun" resultType="com.bizvane.ishop.entity.Action">
-       select *
-        from DEF_ACTION a, DEF_PRIVILEGE p
-        WHERE a.ACTION_CODE = p.ACTION_CODE
-        AND a.FUNCTION_CODE = p.FUNCTION_CODE
-        AND p.FUNCTION_CODE = #{function_code}
-        AND (p.MASTER_CODE = #{user_code}
-            or p.MASTER_CODE = #{role_code}
-            or p.MASTER_CODE = #{group_code})
-        and p.enable = 'Y'
-        and p.isactive = 'Y'
-        and a.ISACTIVE = 'Y'
-        order by a.ACTION_CODE
+       SELECT *
+        FROM def_action a, def_privilege p
+        WHERE a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND p.function_code = #{function_code}
+        AND (p.master_code = #{user_code}
+            OR p.master_code = #{role_code}
+            OR p.master_code = #{group_code})
+        AND p.enable = 'Y'
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        ORDER BY a.action_code
     </select>
 
     <select id="selectRolePrivilege" resultType="com.bizvane.ishop.entity.Function">
-        select *
-        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
-        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND a.ACTION_CODE = p.ACTION_CODE
-        AND a.FUNCTION_CODE = p.FUNCTION_CODE
-        AND p.MASTER_CODE = #{role_code}
-        and p.ISACTIVE = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
-        order by b.show_order
+        SELECT *
+        FROM def_action a,def_function b,def_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND p.master_code = #{role_code}
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+        ORDER BY b.show_order
     </select>
 
     <select id="selectGroupPrivilege" resultType="com.bizvane.ishop.entity.Function">
-        select *
-        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
-        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND a.ACTION_CODE = p.ACTION_CODE
-        AND a.FUNCTION_CODE = p.FUNCTION_CODE
-        AND p.MASTER_CODE = #{group_code}
-        and p.ISACTIVE = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
-        order by b.show_order
+        SELECT *
+        FROM def_action a,def_function b,def_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND p.master_code = #{group_code}
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+        ORDER BY b.show_order
     </select>
 
     <select id="selectUserPrivilege" resultType="com.bizvane.ishop.entity.Function">
-        select *
-        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
-        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND a.ACTION_CODE = p.ACTION_CODE
-        AND a.FUNCTION_CODE = p.FUNCTION_CODE
-        AND p.MASTER_CODE = #{user_code}
-        and p.ISACTIVE = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
-        order by b.show_order
+        SELECT *
+        FROM def_action a,def_function b,def_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND p.master_code = #{user_code}
+        AND p.isactive = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+       ORDER BY b.show_order
     </select>
 
     <select id="selectPrivilege" resultType="com.bizvane.ishop.entity.Function">
-        select *
-        FROM DEF_ACTION a,DEF_FUNCTION b,DEF_PRIVILEGE p
-        WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
-        AND a.ACTION_CODE = p.ACTION_CODE
-        AND a.FUNCTION_CODE = p.FUNCTION_CODE
-        AND (MASTER_CODE = #{group_code}
-        OR MASTER_CODE = #{role_code}
+        SELECT *
+        FROM def_action a,def_function b,def_privilege p
+        WHERE a.function_code = b.function_code
+        AND a.action_code = p.action_code
+        AND a.function_code = p.function_code
+        AND (master_code = #{group_code}
+        OR master_code = #{role_code}
         <if test="user_code!=''">
-            OR MASTER_CODE = #{user_code}
+            OR master_code = #{user_code}
         </if>
         )
-        and p.ISACTIVE = 'Y'
+        AND p.isactive = 'Y'
         <if test="search_value!=''">
             AND (
-            b.module_name like concat('%',#{search_value},'%')
-            OR  b.function_name like concat('%',#{search_value},'%')
-            OR  a.action_name like concat('%',#{search_value},'%')
+            b.module_name LIKE concat('%',#{search_value},'%')
+            OR  b.function_name LIKE concat('%',#{search_value},'%')
+            OR  a.action_name LIKE concat('%',#{search_value},'%')
             )
         </if>
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
-        order by b.show_order
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
+        ORDER BY b.show_order
     </select>
 
     <insert id="insertFunction" parameterType="com.bizvane.ishop.entity.Function">
-        insert into DEF_FUNCTION
+        INSERT INTO def_function
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="function_code != null">
-                FUNCTION_CODE,
+                function_code,
             </if>
             <if test="function_name != null">
-                FUNCTION_NAME,
+                function_name,
             </if>
             <if test="module_name != null">
-                MODULE_NAME,
+                module_name,
             </if>
             <if test="url != null">
-                URL,
+                url,
             </if>
             <if test="icon != null">
-                ICON,
+                icon,
             </if>
             <if test="modified_date != null">
-                MODIFIED_DATE,
+                modified_date,
             </if>
             <if test="modifier != null">
                 modifier,
             </if>
             <if test="created_date != null">
-                CREATED_DATE,
+                created_date,
             </if>
             <if test="creater != null">
                 creater,
