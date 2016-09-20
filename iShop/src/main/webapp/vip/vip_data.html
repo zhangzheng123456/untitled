@@ -419,6 +419,9 @@
          background: #fff;
          display: inline-flex;
      }
+     .label_left_box{
+         float:left;
+     }
     .labeladd_box input{
         width: 400px;
         height: 30px;
@@ -490,12 +493,13 @@
         color: #fff;
     }
     .all_label{
-        width: 580px;
+        width: 50%;
         height: 100%;
+        float: right;
         padding: 0 20px;
-        margin-top: -250px;
-        margin-left: 530px;
-        background: #fff
+        margin-top: 20px;
+        margin-left: 20px;
+        background: #fff;
     }
     .label_nav{
         width: 100%;
@@ -1324,11 +1328,11 @@
                     <span class="add_new_album" style="position: relative;">
                         <input type="file">添加图片+
                     </span>
-                    <div class="album_shade"></div>
+                    <!--<div class="album_shade"></div>-->
                 </div>
 
                 <div class="viplabel">
-                    <div>
+                    <div class="label_left_box">
                         <div class="labeladd_box">
                             <input type="text" placeholder="添加标签">
                             <span class="labeladd_btn">贴上</span>
@@ -1432,12 +1436,12 @@
             </div>
 
                 <div class="remark">
-               <span>
-                     <label>备注</label>
-                     <textarea id=""></textarea>
-               </span>
-                <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
-            </div>
+                    <span>
+                        <label>备注</label>
+                        <textarea id=""></textarea>
+                    </span>
+                    <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
+                </div>
             </div>
         </div>
     </div>

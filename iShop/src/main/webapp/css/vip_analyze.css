@@ -117,6 +117,7 @@
     left: -10px;
     z-index: 100;
     background: #fff;
+    cursor: pointer;
 }
 .date_title .title_l{
     width: 76px !important;

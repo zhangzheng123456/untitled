@@ -91,14 +91,8 @@ $(".cancel_img").mouseover(function () {
 
 //相册图片点击放大.关闭
 $(".album li").click(function () {
-  var img=$(this).find("img").prop("outerHTML");
-      $(".album_shade").after(img);
-      $(".album_shade").next("img").addClass("album_lg");
-      $(".album_shade").show();
-})
-$(".album_shade").click(function () {
-    $(".album_shade").next(".album_lg").remove();
-    $(".album_shade").hide();
+  var src=$(this).find("img").attr("src");
+    whir.loading.add("",0.8,src);
 })
 
 //标签导航切换窗口
