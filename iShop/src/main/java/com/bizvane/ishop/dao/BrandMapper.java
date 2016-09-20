@@ -26,7 +26,5 @@ public interface BrandMapper {
 
     int getGoodsCount(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code) throws SQLException;
 
-    int getStoresCount(@Param("corp_code") String corp_code, @Param("brand_code") String brand_code) throws SQLException;
-
     List<Brand> selectAllBrandScreen(Map<String, Object> params) throws SQLException;
 }

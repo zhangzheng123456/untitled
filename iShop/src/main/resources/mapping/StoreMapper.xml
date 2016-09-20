@@ -37,8 +37,8 @@
         def_store.created_date,
         def_store.creater,
         def_store.isactive,
-        DEF_CORP.CORP_NAME,
-        DEF_AREA.AREA_NAME
+        def_corp.corp_name,
+        def_area.area_name
         FROM def_store,def_corp,def_area
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = def_area.corp_code
@@ -61,26 +61,26 @@
         def_store.created_date,
         def_store.creater,
         def_store.isactive,
-        DEF_CORP.CORP_NAME
+        def_corp.corp_name
         FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.id=#{id}
     </select>
 
     <select id="selectByCode" resultType="com.bizvane.ishop.entity.Store">
-        select *
-        from DEF_STORE
-        where CORP_CODE = #{corp_code}
-        AND STORE_CODE = #{store_code}
+        SELECT *
+        FROM def_store
+        WHERE corp_code = #{corp_code}
+        AND store_code = #{store_code}
         <if test="isactive != null and isactive !=''">
             AND isactive = #{isactive}
         </if>
     </select>
 
     <select id="selStoreByStroeId" resultType="com.bizvane.ishop.entity.Store">
-        SELECT * FROM DEF_STORE
-        where CORP_CODE = #{corp_code}
-        AND STORE_ID = #{store_id}
+        SELECT * FROM def_store
+        where corp_code = #{corp_code}
+        AND store_id = #{store_id}
         <if test="isactive != null and isactive !=''">
             AND isactive = #{isactive}
         </if>
@@ -128,8 +128,8 @@
 
     <select id="selectStores" resultType="com.bizvane.ishop.entity.Store">
         select
-        DEF_STORE.store_code,
-        DEF_STORE.store_name
+        def_store.store_code,
+        def_store.store_name
         FROM def_store,def_corp,def_area
         WHERE def_store.corp_code = def_corp.corp_code
         AND def_store.corp_code = def_area.corp_code
@@ -168,7 +168,7 @@
         </foreach>
         <if test="search_value != null and search_value !=''">
             AND
-            (STORE_CODE like concat('%',#{search_value},'%')
+            (store_code like concat('%',#{search_value},'%')
             OR def_store.ID like concat('%',#{search_value},'%')
             OR store_id LIKE concat('%',#{search_value},'%')
             OR store_name like concat('%',#{search_value},'%')
@@ -191,137 +191,141 @@
 <!--下拉框，根据区域拉店铺(区经，企业管理员)-->
     <select id="selStoreByAreaCode" resultMap="Store">
         select
-        DEF_STORE.id,
+        def_store.id,
         store_code,
         store_name,
-        DEF_STORE.AREA_CODE,
-        DEF_STORE.corp_code,
-        DEF_CORP.CORP_NAME,
-        DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
-        WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
-        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND DEF_STORE.CORP_CODE = #{corp_code}
-        AND DEF_STORE.AREA_CODE IN
+        def_store.area_code,
+        def_store.corp_code,
+        def_corp.corp_name,
+        def_area.area_name
+        from def_store,def_corp,def_area
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = def_area.corp_code
+        AND def_store.area_code = def_area.area_code
+        AND def_store.corp_code = #{corp_code}
+        AND def_store.area_code IN
         <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
             #{item}
         </foreach>
         <if test="search_value != null and search_value !=''">
-            and DEF_STORE.STORE_NAME like concat('%',#{search_value},'%')
+            and def_store.STORE_NAME like concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
-            AND DEF_STORE.ISACTIVE = #{isactive}
+            AND def_store.isactive = #{isactive}
         </if>
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
         GROUP BY def_store.id
-        ORDER BY DEF_STORE.id DESC
+        ORDER BY def_store.id DESC
     </select>
 
     <select id="selectStore" resultType="com.bizvane.ishop.entity.Store">
         SELECT  store_code,
         store_name
-        FROM DEF_STORE
+        FROM def_store
         WHERE 1=1
         AND corp_code=#{corp_code}
         AND store_code IN
         <foreach collection="store_codes" index="index" item="item" separator="," open="(" close=")">
             #{item}
         </foreach>
-        AND ISACTIVE = 'Y'
+        AND isactive = 'Y'
     </select>
     <!--下拉框，根据区域拉店铺（店长，导购）-->
     <select id="selStoreByUserCode" resultMap="Store">
         select
-        DEF_STORE.id,
+        def_store.id,
         store_code,
         store_name,
-        DEF_STORE.AREA_CODE,
-        DEF_STORE.corp_code,
-        DEF_CORP.CORP_NAME,
-        DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
-        WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
-        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND DEF_STORE.STORE_CODE IN
+        def_store.area_code,
+        def_store.corp_code,
+        def_corp.corp_name,
+        def_area.area_name
+        from def_store,def_corp,def_area
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = def_area.corp_code
+        AND def_store.area_code = def_area.area_code
+        AND def_store.store_code IN
         <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
             #{item}
         </foreach>
-        AND DEF_STORE.CORP_CODE = #{corp_code}
+        AND def_store.corp_code = #{corp_code}
         <if test="search_value != null and search_value !=''">
-            and DEF_STORE.STORE_NAME like concat('%',#{search_value},'%')
+            and def_store.STORE_NAME like concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
-            AND DEF_STORE.ISACTIVE = #{isactive}
+            AND def_store.isactive = #{isactive}
         </if>
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
         GROUP BY def_store.id
-        ORDER BY DEF_STORE.id DESC
+        ORDER BY def_store.id DESC
     </select>
 
     <select id="selectByUserId" resultMap="Store">
         select
-        DEF_STORE.id,
+        def_store.id,
         store_id,
         store_code,
         store_name,
         brand_code,
         flg_tob,
-        DEF_STORE.AREA_CODE,
-        DEF_STORE.corp_code,
-        DEF_STORE.modified_date,
-        DEF_STORE.modifier,
-        DEF_STORE.isactive,
-        DEF_CORP.CORP_NAME,
-        DEF_AREA.AREA_NAME
-        from DEF_STORE,DEF_CORP,DEF_AREA
-        WHERE DEF_STORE.CORP_CODE = DEF_CORP.CORP_CODE
-        AND DEF_STORE.CORP_CODE = DEF_AREA.CORP_CODE
-        AND DEF_STORE.AREA_CODE = DEF_AREA.AREA_CODE
-        AND DEF_STORE.STORE_CODE IN
+        def_store.area_code,
+        def_store.corp_code,
+        def_store.modified_date,
+        def_store.modifier,
+        def_store.isactive,
+        def_corp.corp_name,
+        def_area.area_name
+        from def_store,def_corp,def_area
+        WHERE def_store.corp_code = def_corp.corp_code
+        AND def_store.corp_code = def_area.corp_code
+        AND def_store.area_code = def_area.area_code
+        AND def_store.store_code IN
         <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
             #{item}
         </foreach>
-        AND DEF_STORE.CORP_CODE = #{corp_code}
+        AND def_store.corp_code = #{corp_code}
         <if test="search_value != null and search_value !=''">
             AND
-            (STORE_CODE like concat('%',#{search_value},'%')
-            OR DEF_STORE.ID like concat('%',#{search_value},'%')
-            OR DEF_STORE.STORE_ID like concat('%',#{search_value},'%')
+            (store_code like concat('%',#{search_value},'%')
+            OR def_store.ID like concat('%',#{search_value},'%')
+            OR def_store.store_id like concat('%',#{search_value},'%')
             OR STORE_NAME like concat('%',#{search_value},'%')
-            OR DEF_AREA.AREA_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR DEF_STORE.MODIFIER like concat('%',#{search_value},'%')
-            OR DEF_STORE.ISACTIVE like concat('%',#{search_value},'%')
+            OR def_area.area_name like concat('%',#{search_value},'%')
+            OR def_corp.corp_name like concat('%',#{search_value},'%')
+            OR def_store.MODIFIED_DATE like concat('%',#{search_value},'%')
+            OR def_store.MODIFIER like concat('%',#{search_value},'%')
+            OR def_store.isactive like concat('%',#{search_value},'%')
             )
         </if>
         <if test="isactive != null and isactive !=''">
-            AND DEF_STORE.ISACTIVE = #{isactive}
+            AND def_store.isactive = #{isactive}
         </if>
         AND def_corp.isactive = 'Y'
         AND def_area.isactive = 'Y'
-        ORDER BY DEF_STORE.id DESC
+        ORDER BY def_store.id DESC
     </select>
 
     <select id="selectStoreBrandArea" resultType="com.bizvane.ishop.entity.Store">
         SELECT *
-        FROM DEF_STORE
-        where CORP_CODE = #{corp_code}
+        FROM def_store ds,def_corp dc,def_brand db
+        WHERE ds.corp_code = dc.corp_code
+        AND ds.corp_code = db.corp_code
+        AND ds.corp_code=#{corp_code}
         <if test="brand_code != null and brand_code !=''">
-            AND brand_code like #{brand_code}
+            AND ds.brand_code REGEXP #{brand_code}
         </if>
         <if test="area_code != null and area_code !=''">
-            AND area_code like #{area_code}
+            AND ds.area_code = #{area_code}
         </if>
-        AND ISACTIVE = 'Y'
+        AND ds.isactive = #{isactive}
+        AND dc.isactive = 'Y'
+        AND db.isactive = 'Y'
     </select>
 
     <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
-        insert into DEF_STORE
+        INSERT INTO def_store
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="store_code!=null">
                 store_code,
@@ -401,7 +405,7 @@
     </insert>
 
     <update id="updateStore" parameterType="com.bizvane.ishop.entity.Store">
-        UPDATE DEF_STORE
+        UPDATE def_store
         <trim prefix="SET" suffixOverrides=",">
             <if test="store_code!=null ">
                 store_code=#{store_code},
@@ -447,9 +451,9 @@
     </update>
 
     <delete id="deleteByStoreId">
-        delete from
-        DEF_STORE
-        where ID=#{id}
+        DELETE FROM
+        def_store
+        WHERE ID=#{id}
     </delete>
 
     <!--删除店铺下员工-->
@@ -479,7 +483,7 @@
 
     <!--店铺数量  / 店铺新增数量-->
     <select id="selectCount" resultType="java.lang.Integer">
-        SELECT COUNT(1) FROM DEF_STORE
+        SELECT COUNT(1) FROM def_store
         WHERE 1=1
         <if test="created_date !=''">
             AND created_date LIKE concat(#{created_date},'%')
@@ -487,7 +491,7 @@
     </select>
 
     <select id="selectAchCount" resultType="java.lang.Integer">
-        SELECT count(1) FROM DEF_STORE_ACHV_GOAL
+        SELECT count(1) FROM def_store_ACHV_GOAL
         WHERE store_code=#{store_code}
         AND corp_code = #{corp_code}
     </select>
@@ -495,8 +499,8 @@
     <select id="selectAllStoreScreen" resultMap="Store">
         SELECT
         ds.*,
-        dc.CORP_NAME,
-        da.AREA_NAME
+        dc.corp_name,
+        da.area_name
         FROM def_store ds,def_corp dc ,def_area da,def_brand db
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = da.corp_code
@@ -546,14 +550,6 @@
         AND db.isactive = 'Y'
         GROUP BY ds.id
         ORDER BY ds.id DESC
-    </select>
-
-    <select id="selectBrandsStore" resultType="com.bizvane.ishop.entity.Brand">
-        SELECT * FROM def_brand
-        WHERE
-        corp_code=#{corp_code}
-        AND
-        #{brand_code} LIKE brand_code
     </select>
 
     <select id="selectAllStoresByCorpCode" resultType="com.bizvane.ishop.entity.Store">

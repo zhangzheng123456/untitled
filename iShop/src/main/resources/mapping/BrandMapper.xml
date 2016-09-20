@@ -186,9 +186,11 @@
         SELECT count(*) FROM def_goods WHERE brand_code=#{brand_code} AND corp_code=#{corp_code}
     </select>
 
+
     <select id="getStoresCount" resultType="java.lang.Integer">
         SELECT count(*) FROM def_store WHERE brand_code=#{brand_code} AND corp_code=#{corp_code}
     </select>
+    
     <select id="selectAllBrandScreen" resultMap="Brand">
         SELECT
         db.*,

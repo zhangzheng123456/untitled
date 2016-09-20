@@ -103,7 +103,7 @@ public class BrandServiceImpl implements BrandService {
     //获得品牌下店铺
     @Override
     public List<Store> getBrandStore(String corp_code, String brand_code) throws Exception {
-        return storeMapper.selectStoreBrandArea(corp_code, "%" + brand_code + "%", "");
+        return storeMapper.selectStoreBrandArea(corp_code, "%" + brand_code + "%", "","");
     }
 
     @Override
@@ -165,11 +165,6 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public int getGoodsCount(String corp_code, String brand_code) throws Exception {
         return brandMapper.getGoodsCount(corp_code, brand_code);
-    }
-
-    @Override
-    public int getStoresCount(String corp_code, String brand_code) throws Exception {
-        return brandMapper.getStoresCount(corp_code, brand_code);
     }
 
 

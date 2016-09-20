@@ -12,31 +12,31 @@
     <select id="selectAllParam" resultType="com.bizvane.ishop.entity.VipParam">
         SELECT
         dvp.ID,
-        dvp.PARAM_NAME,
-        dvp.PARAM_TYPE,
-        dvp.PARAM_VALUES,
-        dvp.PARAM_DESC,
+        dvp.param_name,
+        dvp.param_type,
+        dvp.param_values,
+        dvp.param_desc,
         dc.corp_name,
-        dvp.REMARK,
-        dvp.MODIFIED_DATE,
-        dvp.MODIFIER,
-        dvp.ISACTIVE
+        dvp.remark,
+        dvp.modified_date,
+        dvp.modifier,
+        dvp.isactive
         FROM def_vip_param dvp,def_corp dc
         WHERE dvp.corp_code = dc.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND dvp.CORP_CODE = #{corp_code}
+            AND dvp.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (dvp.PARAM_NAME like concat('%',#{search_value},'%')
-            OR dvp.PARAM_TYPE like concat('%',#{search_value},'%')
-            OR dvp.PARAM_VALUES like concat('%',#{search_value},'%')
-            OR dvp.PARAM_DESC like concat('%',#{search_value},'%')
+            (dvp.param_name like concat('%',#{search_value},'%')
+            OR dvp.param_type like concat('%',#{search_value},'%')
+            OR dvp.param_values like concat('%',#{search_value},'%')
+            OR dvp.param_desc like concat('%',#{search_value},'%')
             OR dc.corp_name like concat('%',#{search_value},'%')
-            OR dvp.REMARK like concat('%',#{search_value},'%')
-            OR dvp.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR dvp.MODIFIER like concat('%',#{search_value},'%')
-            OR dvp.ISACTIVE like concat('%',#{search_value},'%')
+            OR dvp.remark like concat('%',#{search_value},'%')
+            OR dvp.modified_date like concat('%',#{search_value},'%')
+            OR dvp.modifier like concat('%',#{search_value},'%')
+            OR dvp.isactive like concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY dvp.id DESC
@@ -45,9 +45,9 @@
     <select id="checkParamName" resultType="com.bizvane.ishop.entity.VipParam">
         SELECT *
         FROM def_vip_param
-        WHERE CORP_CODE = #{corp_code}
-        AND  PARAM_NAME=#{param_name}
-        AND ISACTIVE = 'Y'
+        WHERE corp_code = #{corp_code}
+        AND  param_name=#{param_name}
+        AND isactive = 'Y'
     </select>
 
 
@@ -176,19 +176,19 @@
     <select id="selectAllParamScreen" resultType="com.bizvane.ishop.entity.VipParam">
         SELECT
         dvp.ID,
-        dvp.PARAM_NAME,
-        dvp.PARAM_TYPE,
-        dvp.PARAM_VALUES,
-        dvp.PARAM_DESC,
+        dvp.param_name,
+        dvp.param_type,
+        dvp.param_values,
+        dvp.param_desc,
         dc.corp_name,
-        dvp.REMARK,
-        dvp.MODIFIED_DATE,
-        dvp.MODIFIER,
-        dvp.ISACTIVE
+        dvp.remark,
+        dvp.modified_date,
+        dvp.modifier,
+        dvp.isactive
         FROM def_vip_param dvp,def_corp dc
         WHERE dvp.corp_code = dc.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND dvp.CORP_CODE = #{corp_code}
+            AND dvp.corp_code = #{corp_code}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">

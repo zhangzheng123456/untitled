@@ -42,7 +42,7 @@
 --         AND
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
-        and  vt.id=#{id}
+        AND  vt.id=#{id}
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipLabel">
@@ -111,7 +111,7 @@
     </insert>
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipLabel">
-        update def_vip_label
+        UPDATE def_vip_label
         <trim prefix="set " suffixOverrides=",">
 
             <if test="label_name!=null ">
@@ -146,7 +146,7 @@
     </update>
 
     <delete id="deleteByPrimaryKey">
-        delete from def_vip_label
+        DELETE FROM def_vip_label
         WHERE id=#{id}
     </delete>
 
@@ -177,14 +177,14 @@
 --         vt.label_group_code=dvg.label_group_code AND
 --         cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            and vt.corp_code=#{corp_code}
+            AND vt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
-            and
+            AND
             (
-            vt.label_name like concat('%',#{search_value},'%')
-            or vt.label_type like concat('%',#{search_value},'%')
-            or cc.corp_name like concat('%',#{search_value},'%')
+            vt.label_name LIKE concat('%',#{search_value},'%')
+            OR vt.label_type LIKE concat('%',#{search_value},'%')
+            OR cc.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         GROUP BY vt.label_name
@@ -212,7 +212,7 @@
         AND vt.corp_code=dvg.corp_code
         AND cc.corp_code=dvg.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            and vt.corp_code=#{corp_code}
+            AND vt.corp_code=#{corp_code}
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
@@ -239,10 +239,10 @@
     </select>
 
     <select id="selectVipLabelName" resultType="com.bizvane.ishop.entity.VipLabel">
-        select * from def_vip_label
-         where
+        SELECT * FROM def_vip_label
+         WHERE
          label_name=#{label_name}
-         and
+         AND
         corp_code=#{corp_code}
     </select>
 

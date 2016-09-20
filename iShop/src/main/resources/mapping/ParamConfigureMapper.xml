@@ -19,41 +19,41 @@
     </resultMap>
 
     <select id="selectById" resultMap="ParamConfigure">
-        select *
-        from DEF_CORP_CFG
-        where id=#{id}
+        SELECT *
+        FROM def_corp_cfg
+        WHERE id=#{id}
     </select>
 
     <select id="selectAllParam" resultMap="ParamConfigure">
-        select*
-        from DEF_CORP_CFG
+        SELECT *
+        FROM def_corp_cfg
         <if test="search_value != null and search_value !=''">
             WHERE
-            (param_name like concat('%',#{search_value},'%')
-            OR param_values like concat('%',#{search_value},'%')
-            OR param_desc like concat('%',#{search_value},'%')
-            OR DEF_CORP_CFG.remark like concat('%',#{search_value},'%')
+            (param_name LIKE concat('%',#{search_value},'%')
+            OR param_values LIKE concat('%',#{search_value},'%')
+            OR param_desc LIKE concat('%',#{search_value},'%')
+            OR def_corp_cfg.remark LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_CORP_CFG.id DESC
+        ORDER BY def_corp_cfg.id DESC
     </select>
 
     <select id="selectParams" resultMap="ParamConfigure">
-        select *
-        from DEF_CORP_CFG
-        WHERE DEF_CORP_CFG.isactive="Y"
+        SELECT *
+        FROM def_corp_cfg
+        WHERE def_corp_cfg.isactive="Y"
 
-       ORDER BY DEF_CORP_CFG.id DESC
+       ORDER BY def_corp_cfg.id DESC
     </select>
 
     <delete id="deleteByParamId">
-        delete from
-        DEF_CORP_CFG
-        where ID=#{id}
+        DELETE FROM 
+        def_corp_cfg
+        WHERE ID=#{id}
     </delete>
 
     <insert id="insertParam" parameterType="com.bizvane.ishop.entity.ParamConfigure">
-        insert into DEF_CORP_CFG
+        INSERT INTO def_corp_cfg
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="param_name!=null">
                 param_name,
@@ -122,7 +122,7 @@
     </insert>
 
     <update id="updateParam" parameterType="com.bizvane.ishop.entity.ParamConfigure">
-        UPDATE DEF_CORP_CFG
+        UPDATE def_corp_cfg
         <trim prefix="SET" suffixOverrides=",">
             <if test="param_name!=null">
                 param_name=#{param_name},
@@ -155,20 +155,20 @@
                 isactive = #{isactive},
             </if>
         </trim>
-        WHERE DEF_CORP_CFG.id=#{id};
+        WHERE def_corp_cfg.id=#{id};
     </update>
 
     <select id="selectParamByKey" resultMap="ParamConfigure">
-        select * from DEF_CORP_CFG
+        SELECT * FROM def_corp_cfg
         WHERE param_name=#{param_name}
-        AND DEF_CORP_CFG.isactive="Y"
+        AND def_corp_cfg.isactive="Y"
 
     </select>
 
     <select id="selectParamByName" resultMap="ParamConfigure">
-        select * from DEF_CORP_CFG
+        SELECT * FROM def_corp_cfg
         WHERE param_desc=#{param_desc}
-        And DEF_CORP_CFG.isactive="Y"
+        And def_corp_cfg.isactive="Y"
 
     </select>
 
@@ -179,7 +179,7 @@
         dcc.param_values,
         dcc.param_desc,
         dcc.remark
-        FROM DEF_CORP_CFG dcc
+        FROM def_corp_cfg dcc
         WHERE
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>

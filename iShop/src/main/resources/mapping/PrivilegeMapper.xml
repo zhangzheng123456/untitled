@@ -23,13 +23,13 @@
         b.function_name,
         b.MODULE_NAME,
         a.action_name
-        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        FROM def_privilege c,DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND  b.FUNCTION_CODE = c.FUNCTION_CODE
         AND c.MASTER_CODE = #{role_code}
         and c.enable = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
         order by b.FUNCTION_CODE
     </select>
     <select id="selectGroupPrivilege" resultType="com.bizvane.ishop.entity.Function">
@@ -38,13 +38,13 @@
         b.function_name,
         b.MODULE_NAME,
         a.action_name
-        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        FROM def_privilege c,DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND  b.FUNCTION_CODE = c.FUNCTION_CODE
         AND c.MASTER_CODE = #{group_code}
         and c.enable = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
         order by b.FUNCTION_CODE
     </select>
     <select id="selectUserPrivilege" resultType="com.bizvane.ishop.entity.Function">
@@ -53,13 +53,13 @@
         b.function_name,
         b.MODULE_NAME,
         a.action_name
-        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        FROM def_privilege c,DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND  b.FUNCTION_CODE = c.FUNCTION_CODE
         AND c.MASTER_CODE = #{user_id}
         and c.enable = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
         order by b.FUNCTION_CODE
     </select>
 
@@ -69,7 +69,7 @@
         b.function_name,
         b.MODULE_NAME,
         a.action_name
-        FROM DEF_PRIVILEGE c,DEF_ACTION a,DEF_FUNCTION b
+        FROM def_privilege c,DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND b.FUNCTION_CODE = c.FUNCTION_CODE
         AND c.MASTER_CODE = #{group_code}
@@ -78,8 +78,8 @@
           OR MASTER_CODE = #{user_id}
         </if>
         and c.enable = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
         order by b.FUNCTION_CODE
     </select>
 
@@ -88,14 +88,14 @@
         FROM DEF_ACTION a,DEF_FUNCTION b
         WHERE a.FUNCTION_CODE = b.FUNCTION_CODE
         AND b.ADMIN_FUNC = 'Y'
-        AND a.ISACTIVE = 'Y'
-        AND b.ISACTIVE = 'Y'
+        AND a.isactive = 'Y'
+        AND b.isactive = 'Y'
         order by a.FUNCTION_CODE
     </select>
 -->
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Privilege">
-        insert into DEF_PRIVILEGE
+        INSERT INT def_privilege
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="action_code!=null">
                 action_code,
@@ -110,19 +110,19 @@
                 enable,
             </if>
             <if test="modified_date != null">
-                MODIFIED_DATE,
+                modified_date,
             </if>
             <if test="modifier != null">
-                MODIFIER,
+                modifier,
             </if>
             <if test="created_date != null">
-                CREATED_DATE,
+                created_date,
             </if>
             <if test="creater != null">
-                CREATER,
+                creater,
             </if>
             <if test="isactive != null">
-                ISACTIVE,
+                isactive,
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -157,8 +157,8 @@
     </insert>
 
     <delete id="delete">
-        delete from
-        DEF_PRIVILEGE
-        where master_code = #{master_code}
+        DELETE FROM
+        def_privilege
+        WHERE master_code = #{master_code}
     </delete>
 </mapper>

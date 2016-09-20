@@ -51,9 +51,9 @@
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (dstt.template_type_code like concat('%',#{search_value},'%')
-            OR dstt.template_type_name like concat('%',#{search_value},'%')
-            OR def_corp.corp_name like concat('%',#{search_value},'%')
+            (dstt.template_type_code LIKE concat('%',#{search_value},'%')
+            OR dstt.template_type_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY dstt.id DESC
@@ -74,12 +74,12 @@
         ORDER BY dstt.id DESC
     </select>
     <delete id="deleteSmsTemplateTypeById">
-        delete from
+        DELETE FROM
         def_sms_template_type
-        where ID=#{id}
+        WHERE ID=#{id}
     </delete>
     <insert id="insertSmsTemplateType" parameterType="com.bizvane.ishop.entity.SmsTemplateType">
-        insert into def_sms_template_type
+        INSERT INTO def_sms_template_type
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="template_type_code!=null">
                 template_type_code,
@@ -114,7 +114,7 @@
             <if test="template_type_name!=null">
                 #{template_type_name},
             </if>
-             <if test="corp_code!=null">
+            <if test="corp_code!=null">
                 #{corp_code},
             </if>
             <if test="modified_date!=null">
@@ -136,12 +136,12 @@
     </insert>
 
     <select id="selectBySmsTemplateTypeCode" resultType="com.bizvane.ishop.entity.SmsTemplateType">
-       SELECT  dstt.id,
+        SELECT dstt.id,
         dstt.template_type_code,
         dstt.corp_code,
         dstt.isactive
         FROM def_sms_template_type dstt
-        where dstt.CORP_CODE = #{corp_code}
+        WHERE dstt.CORP_CODE = #{corp_code}
         AND dstt.template_type_code = #{template_type_code}
         <if test="isactive != null and isactive !=''">
             AND dstt.isactive = #{isactive}
