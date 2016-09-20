@@ -22,76 +22,76 @@
     </resultMap>
 
     <select id="selectByGroupId" resultMap="GroupInfo">
-        select
-        DEF_GROUP.id,
-        DEF_GROUP.group_code,
-        DEF_GROUP.group_name,
-        DEF_GROUP.role_code,
-        DEF_GROUP.corp_code,
-        DEF_ROLE.role_name,
-        DEF_CORP.corp_name,
-        DEF_GROUP.remark,
-        DEF_GROUP.modified_date,
-        DEF_GROUP.modifier,
-        DEF_GROUP.created_date,
-        DEF_GROUP.creater,
-        DEF_GROUP.isactive
-        from DEF_GROUP,DEF_ROLE,DEF_CORP
-        where DEF_GROUP.role_code = DEF_ROLE.role_code
-        AND DEF_GROUP.corp_code = DEF_CORP.corp_code
-        AND DEF_GROUP.ID = #{group_id}
+        SELECT
+        def_group.id,
+        def_group.group_code,
+        def_group.group_name,
+        def_group.role_code,
+        def_group.corp_code,
+        def_role.role_name,
+        def_corp.corp_name,
+        def_group.remark,
+        def_group.modified_date,
+        def_group.modifier,
+        def_group.created_date,
+        def_group.creater,
+        def_group.isactive
+        FROM def_group,def_role,def_corp
+        WHERE def_group.role_code = def_role.role_code
+        AND def_group.corp_code = def_corp.corp_code
+        AND def_group.ID = #{group_id}
     </select>
 
     <select id="selectByCode" resultType="com.bizvane.ishop.entity.Group">
-        select *
-        from DEF_GROUP
-        where group_code = #{group_code}
-        and corp_code = #{corp_code}
+        SELECT *
+        FROM def_group
+        WHERE group_code = #{group_code}
+        AND corp_code = #{corp_code}
         <if test="isactive !=''">
-            and isactive = #{isactive}
+            AND isactive = #{isactive}
         </if>
     </select>
 
     <select id="selectByName" resultType="com.bizvane.ishop.entity.Group">
-        select *
-        from DEF_GROUP
-        where group_name = #{group_name}
-        and corp_code = #{corp_code}
+        SELECT *
+        FROM def_group
+        WHERE group_name = #{group_name}
+        AND corp_code = #{corp_code}
         <if test="isactive !=''">
-            and isactive = #{isactive}
+            AND isactive = #{isactive}
         </if>
     </select>
 
     <select id="selectAllGroup" resultMap="GroupInfo">
-        select
-        DEF_GROUP.id,
-        DEF_GROUP.group_code,
-        DEF_GROUP.group_name,
-        DEF_GROUP.role_code,
-        DEF_GROUP.corp_code,
-        DEF_ROLE.role_name,
-        DEF_CORP.corp_name,
-        DEF_GROUP.remark,
-        DEF_GROUP.modified_date,
-        DEF_GROUP.modifier,
-        DEF_GROUP.created_date,
-        DEF_GROUP.creater,
-        DEF_GROUP.isactive
-        from DEF_GROUP,DEF_ROLE,DEF_CORP
-        where DEF_GROUP.role_code = DEF_ROLE.role_code
-        AND DEF_GROUP.corp_code = DEF_CORP.corp_code
+        SELECT
+        def_group.id,
+        def_group.group_code,
+        def_group.group_name,
+        def_group.role_code,
+        def_group.corp_code,
+        def_role.role_name,
+        def_corp.corp_name,
+        def_group.remark,
+        def_group.modified_date,
+        def_group.modifier,
+        def_group.created_date,
+        def_group.creater,
+        def_group.isactive
+        FROM def_group,def_role,def_corp
+        WHERE def_group.role_code = def_role.role_code
+        AND def_group.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_GROUP.CORP_CODE = #{corp_code}
+            AND def_group.CORP_CODE = #{corp_code}
         </if>
         <if test="role_code != null and role_code !=''">
-            AND DEF_GROUP.role_code &lt; #{role_code}
+            AND def_group.role_code &lt; #{role_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
-            (DEF_GROUP.group_code like concat('%',#{search_value},'%')
-            OR DEF_GROUP.group_name like concat('%',#{search_value},'%')
-            OR DEF_ROLE.role_name like concat('%',#{search_value},'%')
-            OR DEF_CORP.corp_name like concat('%',#{search_value},'%')
+            (def_group.group_code LIKE concat('%',#{search_value},'%')
+            OR def_group.group_name LIKE concat('%',#{search_value},'%')
+            OR def_role.role_name LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND def_role.isactive = 'Y'
@@ -168,7 +168,7 @@
     </select>
 
     <select id="selectMaxCode" resultType="java.lang.String">
-        select max(GROUP_CODE) from DEF_GROUP
+        SELECT max(GROUP_CODE) FROM def_group
     </select>
 
     <insert id="insertGroup" parameterType="com.bizvane.ishop.entity.Group">

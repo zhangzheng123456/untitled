@@ -17,9 +17,9 @@
         WHERE 1 = 1
         <if test="search_value != null and search_value !=''">
             AND
-            (role_code like concat('%',#{search_value},'%')
-            OR role_name like concat('%',#{search_value},'%')
-            OR remark like concat('%',#{search_value},'%')
+            (role_code LIKE concat('%',#{search_value},'%')
+            OR role_name LIKE concat('%',#{search_value},'%')
+            OR remark LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY id DESC

@@ -302,7 +302,7 @@ jQuery(document).ready(function(){
 			_params["brand_code"]=brand_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/brand/Brand_codeExist","", _params, function(data){
+			oc.postRequire("post","/brand/brandCodeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
 	                    $("#BRAND_ID").attr("data-mark","Y");
@@ -323,7 +323,7 @@ jQuery(document).ready(function(){
 	    	var _params={};
 	    	_params["brand_name"]=brand_name;
 	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/brand/Brand_nameExist","", _params, function(data){
+	    	oc.postRequire("post","/brand/brandNameExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
 	            	$("#BRAND_NAME").attr("data-mark","Y");

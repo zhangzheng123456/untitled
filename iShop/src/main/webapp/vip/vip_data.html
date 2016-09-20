@@ -763,7 +763,7 @@
                         </li>
                     </ul>
                     <span class="add_new_album" style="position: relative;">
-                        <input type="file">添加图片+
+                        <input type="file" id="upAlbum">添加图片+
                     </span>
                     <!--<div class="album_shade"></div>-->
                 </div>
@@ -795,33 +795,33 @@
                             <li>用户</li>
                         </ul>
 
-                        <div class="label_box">
-                            <span class="label_g">有钱</span>
-                            <span class="label_u_active">家有地暖</span>
-                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
-                            <span class="label_g_active">有品位</span>
-                            <span class="label_g">时尚</span>
-                            <span class="label_g">美女</span>
-                            <span class="label_g">会员卡丢失</span>
-                            <span class="label_g">小朋友</span>
-                            <span class="label_u">老人</span>
-                            <span class="label_u_active">8月31生日</span>
-                            <span class="label_u">非常有钱</span>
-                            <span class="label_u_active">喜欢红色</span>
+                        <div class="label_box" id="hotlabel">
+                            <!--<span class="label_g">有钱</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
                         </div>
-                        <div class="label_box" style="display: none">
-                            <span class="label_g">有钱2</span>
-                            <span class="label_u_active">家有地暖</span>
-                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
-                            <span class="label_g_active">有品位</span>
-                            <span class="label_g">时尚</span>
-                            <span class="label_g">美女</span>
-                            <span class="label_g">会员卡丢失</span>
-                            <span class="label_g">小朋友</span>
-                            <span class="label_u">老人</span>
-                            <span class="label_u_active">8月31生日</span>
-                            <span class="label_u">非常有钱</span>
-                            <span class="label_u_active">喜欢红色</span>
+                        <div class="label_box" id="label_org" style="display: none">
+                            <!--<span class="label_g">有钱2</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
                         </div>
                         <div class="label_box" style="display: none">
                             <span class="label_g">有钱3</span>
@@ -885,11 +885,14 @@
 </div>
 </body>
 <script src="../table/js/jquery.min.js"></script>
+<!-- oss存储 -->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
 <script src="/js/loading.js"></script>
 <script src="../js/dist/echarts.js"></script>
+<!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js"></script>
 
 <script type="text/javascript">

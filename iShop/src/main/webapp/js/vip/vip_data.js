@@ -1,6 +1,8 @@
 var oc = new ObjectControl();
+var page=1;
 $(function(){
     getConsumCount();
+    upLoadAlbum();
 });
 function getConsumCount(){
     //whir.loading.add("",0.5);//加载等待框
@@ -42,21 +44,63 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
 }
-$("#fenLei").click(function(){
+$("#fenLei").click(function(){//点击查看更多调到编辑资料
    $("#VIP_Message").hide();
    $("#VIP_edit").show();
+    gethotVIPlabel();
+    getOtherlabel();
 });
-$("#VIP_message_back").click(function(){
+$("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
 });
+
 function gethotVIPlabel() {
+    //热门标签
     var param={};
     param["corp_code"]="C10000";
-    oc.postRequire("post","VIP/label/findHotViplabel","",param,function(data){
-            console.log(data);
+    oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list);
+            var html="";
+            console.log(msg.length);
+            for(var i=0;i<msg.length;i++){
+                if(msg[i].label_type=="user"){
+                    html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
+                }else if(msg[i].label_type=="org"){
+                    html+="<span>"+msg[i].label_name+"</span>"
+                }
+            }
+            $("#hotlabel").append(html);
+        }
     })
 }
+//官方会员搜索标签
+function getOtherlabel() {
+    var param={};
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="2";
+    oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list)
+                msg=msg.list;
+            console.log(msg);
+            for(var i=0;i<msg.length;i++){
+                var html="";
+                    html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+            }
+            $("#label_org").append(html);
+        }
+    })
+}
+$("#label_org").click(function () {
+    $("#hotlabel").empty();
+    getOtherlabel()
+})
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
@@ -119,7 +163,39 @@ $(".labeladd_btn").click(function () {
     $("#label_box span i").click(function () {
         $(this).parent("span").remove();
     })
-})
+});
 $("#label_box span i").click(function () {
     $(this).parent("span").remove();
-})
+});
+function upLoadAlbum(){
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        bucket: 'products-image'
+    });
+    document.getElementById('upAlbum').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        //var corp_code=$("#OWN_CORP").val()//公司编号
+        //var user_code=$("#USERID").val()//员工编号
+        // console.log(corp_code);
+        // console.log(user_code);
+        //var storeAs="";
+        //if(user_code==""||user_code==undefined){
+        //    storeAs = '/Corp_logo/ishow/'+corp_code.trim()+'.jpg';
+        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
+        //}
+        //if(user_code!==""&&user_code!==undefined){
+        //    storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
+        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
+        //}
+        var storeAs='Album/Vip/iShow/C10141-123-20160920186524.jpg';
+        client.multipartUpload(storeAs, file).then(function (result) {
+            $("#imghead").attr("src",result.url);
+            $("#upAlbum").val("");
+            console.log(result.url);
+        }).catch(function (err) {
+             console.log(err);
+        });
+    });
+}

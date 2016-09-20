@@ -29,7 +29,7 @@
         dc.corp_name
         FROM def_chat_message_model dcmm,def_corp dc
         WHERE dcmm.corp_code=dc.corp_code
-        and dcmm.id=#{id}
+        AND dcmm.id=#{id}
     </select>
     <select id="selectAllMessageQuickReply" resultMap="MessageQuickReply">
         SELECT
@@ -101,12 +101,12 @@
         WHERE id=#{id}
     </select>
     <delete id="deleteMessageQuickReplyById">
-        delete
+        DELETE
          FROM def_chat_message_model
         WHERE id=#{id}
     </delete>
     <insert id="insertMessageQuickReply" parameterType="com.bizvane.ishop.entity.MessageQuickReply">
-        insert into def_chat_message_model
+        INSERT INTO def_chat_message_model
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="content!=null">
                 content,
@@ -195,7 +195,7 @@
         dcmm.isactive,
         dc.corp_name
         FROM def_chat_message_model dcmm,def_corp dc
-        where dcmm.CORP_CODE =dc.corp_code
+        WHERE dcmm.CORP_CODE =dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND dcmm.corp_code=#{corp_code}
         </if>
