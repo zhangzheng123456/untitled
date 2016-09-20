@@ -62,19 +62,6 @@ public class AreaServiceImpl implements AreaService {
     }
 
     @Override
-    public List<Area> getAllArea(String corp_code) throws Exception {
-        List<Area> areas;
-        areas = areaMapper.selectAreas(corp_code);
-        return areas;
-    }
-
-    //获得区域下店铺
-    @Override
-    public List<Store> getAreaStore(String corp_code, String area_code) throws Exception {
-        return storeMapper.selectStoreBrandArea(corp_code, "", area_code,"");
-    }
-
-    @Override
     @Transactional
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;

@@ -5,10 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.*;
-import com.bizvane.ishop.service.BrandService;
-import com.bizvane.ishop.service.CorpService;
-import com.bizvane.ishop.service.FunctionService;
-import com.bizvane.ishop.service.TableManagerService;
+import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -53,9 +50,7 @@ public class BrandController {
     @Autowired
     private BrandService brandService;
     @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private TableManagerService managerService;
+    private StoreService storeService;
     @Autowired
     private CorpService corpService;
     private static final Logger logger = Logger.getLogger(BrandController.class);
@@ -191,12 +186,12 @@ public class BrandController {
                     int count = 0;
                     count = brandService.getGoodsCount(corp_code, brand_code);
                     if (count > 0) {
-                        msg = "有使用品牌" + brand_code + "的商品，请先行处理";
+                        msg = "有使用品牌" + brand_code + "的商品，请先处理品牌下商品再删除";
                         break;
                     }
-                    count = brandService.getBrandStore(corp_code, brand_code).size();
+                    count = storeService.selectStoreCountByBrand(corp_code, brand_code,"").size();
                     if (count > 0) {
-                        msg = "有使用品牌" + brand_code + "的店铺，请先行处理";
+                        msg = "有使用品牌" + brand_code + "的店铺，请先处理品牌下店铺再删除";
                         break;
                     }
                 }
@@ -294,7 +289,7 @@ public class BrandController {
     }
 
 
-    @RequestMapping(value = "/Brand_codeExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/brandCodeExist", method = RequestMethod.POST)
     @ResponseBody
     public String Brand_codeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -325,7 +320,7 @@ public class BrandController {
     }
 
 
-    @RequestMapping(value = "/Brand_nameExist", method = RequestMethod.POST)
+    @RequestMapping(value = "/brandNameExist", method = RequestMethod.POST)
     @ResponseBody
     public String Brand_nameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -354,7 +349,6 @@ public class BrandController {
         }
         return dataBean.getJsonStr();
     }
-
 
 
     /***
@@ -426,8 +420,7 @@ public class BrandController {
     @RequestMapping(value = "/addByExecl", method = RequestMethod.POST,produces = {"application/json;charset=UTF-8"})
     @ResponseBody
     @Transactional()
-    public String addByExecl(HttpServletRequest
-                                     request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
+    public String addByExecl(HttpServletRequest request, @RequestParam(value = "file", required = false) MultipartFile file, ModelMap model) throws SQLException {
         DataBean dataBean = new DataBean();
         File targetFile = LuploadHelper.lupload(request, file, model);
         String user_id = request.getSession().getAttribute("user_code").toString();
@@ -603,7 +596,7 @@ public class BrandController {
      */
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
-    public String Screen(HttpServletRequest request) {
+    public String screen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -628,6 +621,38 @@ public class BrandController {
                 list = brandService.getAllBrandScreen(page_number, page_size, corp_code, map);
             }
             result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 获取所选品牌下的店铺
+     */
+    @RequestMapping(value = "/getStores", method = RequestMethod.POST)
+    @ResponseBody
+    public String getStores(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
+            String brand_code = jsonObject.get("brand_code").toString();
+
+            List<Store> stores = storeService.selectStoreCountByBrand(corp_code,brand_code,Common.IS_ACTIVE_Y);
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(stores));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(result.toString());

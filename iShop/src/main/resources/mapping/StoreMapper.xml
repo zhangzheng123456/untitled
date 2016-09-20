@@ -307,23 +307,6 @@
         ORDER BY DEF_STORE.id DESC
     </select>
 
-    <select id="selectStoreBrandArea" resultType="com.bizvane.ishop.entity.Store">
-        SELECT *
-        FROM def_store ds,def_corp dc,def_brand db
-        WHERE ds.corp_code = dc.corp_code
-        AND ds.corp_code = db.corp_code
-        AND ds.corp_code=#{corp_code}
-        <if test="brand_code != null and brand_code !=''">
-            AND ds.brand_code REGEXP #{brand_code}
-        </if>
-        <if test="area_code != null and area_code !=''">
-            AND ds.area_code = #{area_code}
-        </if>
-        AND ds.isactive = #{isactive}
-        AND dc.isactive = 'Y'
-        AND db.isactive = 'Y'
-    </select>
-
     <insert id="insertStore" parameterType="com.bizvane.ishop.entity.Store">
         insert into DEF_STORE
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -578,15 +561,43 @@
 
     <select id="selectStoreCountByArea" resultType="com.bizvane.ishop.entity.Store">
         SELECT
-        def_store.id,
+        ds.id,
         store_code,
         store_name,
-        def_store.area_code,
-        def_store.corp_code
-        FROM def_store
-        WHERE def_store.corp_code = #{corp_code}
-        AND def_store.area_code = #{area_code}
-        AND def_store.isactive = #{isactive}
-        ORDER BY def_store.id DESC
+        ds.area_code,
+        ds.corp_code
+        FROM def_store ds,def_corp dc,def_area da
+        WHERE ds.corp_code = dc.corp_code
+        AND ds.corp_code = da.corp_code
+        AND ds.corp_code = #{corp_code}
+        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+            ds.area_code = #{area_code}
+        </foreach>
+        <if test="isactive != null and isactive !=''">
+        AND ds.isactive = #{isactive}
+        </if>
+        AND dc.isactive = 'Y'
+        AND da.isactive = 'Y'
+        ORDER BY ds.id DESC
+    </select>
+
+    <select id="selectStoreCountByBrand" resultType="com.bizvane.ishop.entity.Store">
+        SELECT ds.id,
+        ds.store_code,
+        ds.store_name
+        FROM def_store ds,def_corp dc,def_brand db
+        WHERE ds.corp_code = dc.corp_code
+        AND ds.corp_code = db.corp_code
+        AND ds.corp_code=#{corp_code}
+        AND
+        <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+            ds.brand_code REGEXP #{item}
+        </foreach>
+        <if test="isactive != null and isactive !=''">
+            AND ds.isactive = #{isactive}
+        </if>
+        AND dc.isactive = 'Y'
+        AND db.isactive = 'Y'
+        ORDER BY ds.id DESC
     </select>
 </mapper>
