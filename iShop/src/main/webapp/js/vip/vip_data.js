@@ -50,8 +50,13 @@ $("#VIP_message_back").click(function(){
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
 });
-
-
+function gethotVIPlabel() {
+    var param={};
+    param["corp_code"]="C10000";
+    oc.postRequire("post","VIP/label/findHotViplabel","",param,function(data){
+            console.log(data);
+    })
+}
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
