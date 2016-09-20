@@ -24,13 +24,15 @@ $(function(){
     $('#left_shift').click(function(){
         //先判断是否有选中
         var li=$("#file_list_l input[type='checkbox']:checked").parents("li");
+        var input=$("#file_list_r input[type='checkbox']:checked");
         if(li.length=="0"){
             frame();
             $('.frame').html('请先选择'); 
         }
         //获取选中的选项，删除并追加给对方
         else{
-            for(var i=li.length;i>=0;i--){
+            for(var i=input.length-1;i>=0;i--){
+               input[i].checked=false;
                $(li[i]).appendTo('#file_list_r ul'); 
             }
             bianse();
@@ -39,14 +41,14 @@ $(function(){
     //移到左边
     $('#right_shift').click(function(){
         var li=$("#file_list_r input[type='checkbox']:checked").parents("li");
-        var input=$("#file_list_r input[type='checkbox']");
+        var input=$("#file_list_r input[type='checkbox']:checked");
         //先判断是否有选中
-        if(li.length=="0"){         
+        if(li.length=="0"){
             frame();
-            $('.frame').html('请先选择'); 
+            $('.frame').html('请先选择');
         }
         else{
-            for(var i=li.length-1;i>=0;i--){
+            for(var i=input.length-1;i>=0;i--){
                 input[i].checked=false;
                 $(li[i]).appendTo('#file_list_l ul'); 
             }
@@ -58,8 +60,8 @@ $(function(){
         //获取全部的选项,删除并追加给对方
         var li=$("#file_list_l input[type='checkbox']").parents("li");
         var input=$("#file_list_l input[type='checkbox']");
-        for(var i=li.length-1;i>=0;i--){
-            input[i].checked = true;
+        for(var i=input.length-1;i>=0;i--){
+            input[i].checked = false;
             $(li[i]).appendTo('#file_list_r ul');
         }
         bianse();
@@ -68,7 +70,7 @@ $(function(){
     $('#right_shift_all').click(function(){
         var li=$("#file_list_r input[type='checkbox']").parents("li");
         var input=$("#file_list_r input[type='checkbox']");
-        for(var i=li.length-1;i>=0;i--){
+        for(var i=input.length-1;i>=0;i--){
             input[i].checked=false;
             $(li[i]).appendTo('#file_list_l ul'); 
         }
