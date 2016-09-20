@@ -1,7 +1,7 @@
 body{
     margin-top: 81px;
 }
-#VIP_LIST{
+#VIP_LIST,#VIP_message_back{
     cursor: pointer;
 }
 .header .left,.header .center,.header .right{
@@ -309,6 +309,9 @@ padding:25px 15px 0 15px;
     line-height: 30px;
     color: #888;
     font-size: 14px;
+}
+.person-more label{
+    cursor: pointer;
 }
 .person-more i{
     vertical-align: middle;

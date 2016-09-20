@@ -42,6 +42,15 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
 }
+$("#fenLei").click(function(){
+   $("#VIP_Message").hide();
+   $("#VIP_edit").show();
+});
+$("#VIP_message_back").click(function(){
+   $("#VIP_Message").show();
+   $("#VIP_edit").hide();
+});
+
 
 
 //回到会员列表

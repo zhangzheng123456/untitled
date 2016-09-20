@@ -53,7 +53,7 @@ function clacImgZoomParam(maxWidth, maxHeight, width, height) {
 }
 //上传头像至oss存储
 $(function(){
-    var client = new OSS.Wrapper({
+        var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
         accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
