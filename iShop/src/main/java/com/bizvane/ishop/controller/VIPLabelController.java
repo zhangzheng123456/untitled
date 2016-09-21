@@ -847,7 +847,8 @@ public class VIPLabelController {
                 relViplabel.setModifier(user_id);
                 int i = vipLabelService.addRelViplabel(relViplabel);
                 if(i>0){
-                    result_add="新增成功";
+                    int id1 = relViplabels.get(0).getId();
+                    result_add = id1+"";
                 }
             }
             result.put("list", JSON.toJSONString(result_add));
@@ -934,12 +935,15 @@ public class VIPLabelController {
                 relViplabel.setModified_date(Common.DATETIME_FORMAT.format(date));
                 relViplabel.setModifier(user_id);
                 int i = vipLabelService.addRelViplabel(relViplabel);
+                int id1 =0;
                 if(i>0){
-                    System.out.println("---------------新增成功-------------------");
+                    String vip_code = relViplabel.getVip_code();
+                    List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code,vip_code,label_id);
+                    id1 = relViplabels.get(0).getId();
                 }
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("成功");
+                dataBean.setMessage(id1+"");
             } else {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
