@@ -1,5 +1,6 @@
 var oc = new ObjectControl();
 var page=1;
+var param={};//定义传值对象
 $(function(){
     getConsumCount();
     upLoadAlbum();
@@ -68,7 +69,6 @@ $("#fenLei").click(function(){//点击查看更多调到编辑资料
         }
     });
     gethotVIPlabel();
-    getOtherlabel();
 });
 $("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
@@ -98,29 +98,46 @@ function gethotVIPlabel() {
 }
 //官方会员搜索标签
 function getOtherlabel() {
-    var param={};
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
-    param['type']="2";
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
                 msg=JSON.parse(msg.list)
                 msg=msg.list;
             console.log(msg);
-            for(var i=0;i<msg.length;i++){
-                var html="";
+            if(msg[0].label_type=="org"){
+                for(var i=0;i<msg.length;i++){
+                    var html="";
                     html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                }
+                $("#label_org").append(html);
+            }else if(msg[0].label_type=="user"){
+                for(var j=0;j<msg.length;j++){
+                    var html="";
+                    html+="<span class="+'label_u'+">"+msg[j].label_name+"</span>"
+                }
+                $("#label_user").append(html);
             }
-            $("#label_org").append(html);
+
         }
     })
 }
-$("#label_org").click(function () {
-    $("#hotlabel").empty();
-    getOtherlabel()
+$("#label_li_org").click(function () {
+    $("#label_org").empty();
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="2";
+    getOtherlabel();
 })
+$("#label_li_user").click(function () {
+    $("#label_user").empty();
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="3";
+    getOtherlabel();
+})
+
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
