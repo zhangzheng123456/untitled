@@ -698,6 +698,7 @@ hr{
     overflow: hidden;
 }
 .labeladd_box{
+    position: relative;
     padding: 10px;
     margin-top: 20px;
     background: #fff;
@@ -804,6 +805,31 @@ hr{
 }
 .label_li_active{
     border-bottom: 1px solid #6dc1c8;
+}
+.search_list{
+    padding: 5px 0;
+    display: none;
+    position: absolute;
+    top: 40px;
+    width: 400px;
+    max-height: 200px;
+    overflow-y: scroll;
+    border: 1px solid #ddd;
+    background: #f7f7f7;
+}
+.search_list li{
+    text-indent: 5px;
+    height: 25px;
+    line-height: 25px;
+    border: none;
+    color:#9d9d9d;
+}
+.search_list li:hover{
+    background: #4a5f7c;
+    color: #fff;
+}
+.span_total{
+    margin: 0 3px;
 }
 
 /*扩展模块*/

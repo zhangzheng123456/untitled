@@ -35,9 +35,12 @@ function getConsumCount(){
                 LABEL+="<span >"+label[i].label_name+"</span>";
                 LABELALL+= "<span class='label_u_active' data-rid='"+label[i].rid+"'>"+label[i].label_name+"<i class='icon-ishop_6-12'></i></span>";
         }
+        //统计已有标签
+        $(".span_total").html(label.length);
         $("#labels").html(LABEL);
         $("#label_box").html(LABELALL);
-        lg_img()
+        lg_img();
+        labelDelete();
     })
 
 }
@@ -146,7 +149,6 @@ $("#label_li_user").click(function () {
 
 //搜索热门标签
 function searchHotlabel() {
-    $("#hotlabel").empty();
     param["corp_code"]="C10000";
     param['pageNumber']=page;
     param['searchValue']=$("#search_input").val();
@@ -158,35 +160,29 @@ function searchHotlabel() {
             msg=msg.list;
             var html="";
             console.log(msg);
-            if(msg==""){
-                $("#search_label").hide();
-                $("#labeladd_btn").show();
-            }else if(msg!==""){
                 for(var i=0;i<msg.length;i++){
                     if(msg[i].label_type=="user"){
-                        html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
+                        html+="<li class="+'label_u'+">"+msg[i].label_name+"</li>"
                     }else if(msg[i].label_type=="org"){
-                        html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                        html+="<li class="+'label_g'+">"+msg[i].label_name+"</li>"
                     }
                 }
-                $("#hotlabel").append(html);
-            }
+                $(".search_list").append(html);
         }
     })
 }
-$("#search_label").click(function () {
-    searchHotlabel();
-    $(".label_nav li:first-child").addClass("label_li_active");
-    $(".label_nav li:first-child").siblings().removeClass("label_li_active");
-    $(".label_box").eq(1).show();
-    $(".label_box").eq(1).siblings("div").hide();
-})
 $("#search_input").keydown(function () {
     //键盘按下搜索
+    $(".search_list").show();
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
-        gethotVIPlabel();
+       searchHotlabel();
     }
+})
+$("#search_input").blur(function () {
+    setTimeout(function () {
+        $(".search_list").hide();
+    }, 200)
 })
 
 
@@ -244,14 +240,6 @@ $(".label_nav li").click(function () {
     $(".label_box").eq(index).siblings("div").hide();
 })
 //添加，删除标签
-function labelDelete() {
-    param["rid"]="";
-    oc.postRequire("post","/VIP/label/delRelViplabel","",param,function(data){
-        if(data.code=="0"){
-            $(this).parent("span").remove();
-        }
-    })
-}
 function addViplabel() {
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
@@ -259,24 +247,43 @@ function addViplabel() {
     param["corp_code"]="C10000";
     param['label_name']=val;
     param['vip_code']=id;
+    param['label_id']="";
     param['store_code']=store_id;
-    oc.postRequire("post","/VIP/label/addViplabel","",param,function(data){
+    oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
         if(data.code=="0"){
-            $("#label_box span:last-child").after('<span class="label_g">'+val+'<i class="icon-ishop_6-12"></i></span>')
+            var len=$("#label_box span").length;
+            var html='<span class="label_g">'+val+'<i class="icon-ishop_6-12"></i></span>';
+            if(len==0){
+                $("#label_box").append(html);
+            }else {
+                $("#label_box span:last-child").after(html);
+            }
+            var total=parseInt($(".span_total").html())+1;
+            $(".span_total").html(total);
         }
-        $("#label_box span i").click(function () {
-            labelDelete();
-        })
     })
+    labelDelete();
 }
 $("#labeladd_btn").click(function () {
-    $("#search_label").show();
-    $("#labeladd_btn").hide();
+    //统计已有标签
     addViplabel();
 });
-$("#label_box span i").click(function () {
-    labelDelete();
-});
+function labelDelete() {
+    $("#label_box span i").click(function () {
+        var param={};
+        var span=$(this);
+        var rid=$(this).parent("span").attr("data-rid");
+        param["rid"]=rid;
+        oc.postRequire("post","/VIP/label/delRelViplabel","",param,function(data){
+            if(data.code=="0"){
+                span.parent("span").remove();
+                var total=parseInt($(".span_total").html())-1;
+                $(".span_total").html(total);
+            }
+        })
+    });
+}
+
 function upLoadAlbum(){
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
