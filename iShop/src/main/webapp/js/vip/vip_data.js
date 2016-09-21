@@ -77,6 +77,7 @@ $("#VIP_message_back").click(function(){//回到会员信息
 
 function gethotVIPlabel() {
     //热门标签
+    $("#hotlabel").empty();
     var param={};
     param["corp_code"]="C10000";
     oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
@@ -96,6 +97,9 @@ function gethotVIPlabel() {
         }
     })
 }
+$("#hot_label").click(function () {
+    gethotVIPlabel();
+})
 //官方用户标签
 function getOtherlabel() {
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
@@ -142,7 +146,7 @@ $("#label_li_user").click(function () {
 function searchHotlabel() {
     param["corp_code"]="C10000";
     param['pageNumber']=page;
-    param['searchValue']="";
+    param['searchValue']=$("#search_input").val();
     param['type']="1";
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
@@ -159,7 +163,7 @@ function searchHotlabel() {
                     if(msg[i].label_type=="user"){
                         html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
                     }else if(msg[i].label_type=="org"){
-                        html+="<span>"+msg[i].label_name+"</span>"
+                        html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
                     }
                 }
                 $("#hotlabel").append(html);
@@ -170,6 +174,10 @@ function searchHotlabel() {
 $("#search_label").click(function () {
     $("#hotlabel").empty();
     searchHotlabel();
+    $(".label_nav li:first-child").addClass("label_li_active");
+    $(".label_nav li:first-child").siblings().removeClass("label_li_active");
+    $(".label_box").eq(1).show();
+    $(".label_box").eq(1).siblings("div").hide();
 })
 
 

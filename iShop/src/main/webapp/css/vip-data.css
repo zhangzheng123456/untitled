@@ -750,6 +750,7 @@ hr{
     text-align: center;
     border-radius: 5px;
     margin-bottom: 20px;
+    cursor: pointer;
 }
 .label_box span + span{
     margin-right: 20px;
