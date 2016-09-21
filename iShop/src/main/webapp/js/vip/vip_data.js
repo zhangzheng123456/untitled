@@ -5,7 +5,7 @@ $(function(){
     getConsumCount();
     upLoadAlbum();
 });
-function getConsumCount(){
+function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
     var id=sessionStorage.getItem("id");
     var param={};
@@ -311,8 +311,20 @@ function upLoadAlbum(){
             $("#imghead").attr("src",result.url);
             $("#upAlbum").val("");
             console.log(result.url);
+            addVipAlbum(result.url)
         }).catch(function (err) {
              console.log(err);
         });
     });
+}
+function addVipAlbum(url){//上传照片到相册
+     var param_addAblum={};
+    param_addAblum["vip_code"]=sessionStorage.getItem("id");
+    param_addAblum["vip_name"]="罗晓珊";
+    param_addAblum["cardno"]="suda10900123103308";
+    param_addAblum["image_url"]=url;
+    param_addAblum["corp_code"]="C10000";
+    oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
+        console.log(data)
+    })
 }
