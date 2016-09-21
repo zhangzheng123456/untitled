@@ -1,4 +1,6 @@
 body{
+    min-width: 1200px;
+    overflow-x: auto;
     margin-top: 0;
     padding-top: 81px;
     background-color: #e8e8e8;
@@ -322,7 +324,7 @@ padding:25px 15px 0 15px;
 }
 /*导航头部*/
 .nav_bar li{
-    width:14.2865%;
+    width:14.28%;
     height:30px;
     line-height: 30px;
     float: left;
