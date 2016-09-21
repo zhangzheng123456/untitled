@@ -868,12 +868,19 @@ public class VIPLabelController {
                         int id1 = relViplabels.get(0).getId();
                         result_add = id1+"";
                     }
+                    result.put("list", JSON.toJSONString(result_add));
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage(result.toString());
                 }
             }else {
                 List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code, vip_code, label_id);
                 if (relViplabels.size() > 0) {
                     result_add = "该会员标签已存在";
-                    int i = 5 / 0;
+                    result.put("list", JSON.toJSONString(result_add));
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage(result.toString());
                 } else {
                     RelViplabel relViplabel = WebUtils.JSON2Bean(jsonObject, RelViplabel.class);
                     //------------操作日期-------------
@@ -887,12 +894,13 @@ public class VIPLabelController {
                         int id1 = relViplabels.get(0).getId();
                         result_add = id1 + "";
                     }
+                    result.put("list", JSON.toJSONString(result_add));
+                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                    dataBean.setId(id);
+                    dataBean.setMessage(result.toString());
                 }
             }
-            result.put("list", JSON.toJSONString(result_add));
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);
