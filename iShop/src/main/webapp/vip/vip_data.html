@@ -60,10 +60,10 @@
           <div class="center">
               <div class="message-class">
                   <ul>
-                      <li><a class="active">消费</a></li>
-                      <li><a>积分</a></li>
-                      <li><a>相册</a></li>
-                      <li><a>标签</a></li>
+                      <li><a class="active" data-name="consume">消费</a></li>
+                      <li><a data-name="jifen">积分</a></li>
+                      <li><a data-name="Ablum">相册</a></li>
+                      <li><a data-name="label">标签</a></li>
                   </ul>
                   <div class="tabs-parent">
                       <div class="table">
@@ -310,13 +310,13 @@
 
         <div>
             <div class="nav">
-                <ul class="nav_bar" id="nav_bar">
-                    <li>基本信息</li>
+                <ul class="nav_bar" id="nav_bar" style="position: relative">
+                    <li class="active1">基本信息</li>
                     <li>拓展信息</li>
-                    <li>衣橱</li>
-                    <li>积分</li>
-                    <li>相册</li>
-                    <li>标签</li>
+                    <li data-name="consume">衣橱</li>
+                    <li data-name="jifen">积分</li>
+                    <li data-name="Ablum">相册</li>
+                    <li data-name="label">标签</li>
                     <li>备注</li>
                     <div id="remark" style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
@@ -1327,14 +1327,6 @@
                 });
             }
     );
-    $(".message-class ul li a").click(function(){
-        $(this).addClass("active");
-        $(this).parent().siblings().children().removeClass("active");
-       var nowIndex=$(this).parent().index();
-        $(".tabs-parent").children().eq(nowIndex).show();
-        $(".tabs-parent").children().eq(nowIndex).siblings().hide()
-    });
-
 //    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
 //    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
 //   扩展模块JS
