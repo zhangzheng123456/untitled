@@ -44,9 +44,29 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
 }
+$(".message-class ul li a").click(function(){
+    $(this).addClass("active");
+    $(this).parent().siblings().children().removeClass("active");
+    var nowIndex=$(this).parent().index();
+    $(".tabs-parent").children().eq(nowIndex).show();
+    $(".tabs-parent").children().eq(nowIndex).siblings().hide()
+});
+
 $("#fenLei").click(function(){//点击查看更多调到编辑资料
+   var nowdataName=$(".message-class ul li .active").attr("data-name");
    $("#VIP_Message").hide();
    $("#VIP_edit").show();
+    $("#nav_bar").find("li").each(function(){
+        if($(this).attr("data-name")==nowdataName){
+            var len=$(this).width();
+            var index=$(this).index();
+            $(this).addClass("active1");
+            $(this).siblings().removeClass("active1");
+            $(".all_list").children().eq(index).show();
+            $(".all_list").children().eq(index).siblings().hide();
+            $("#remark").animate({left:len*index},0.1);
+        }
+    });
     gethotVIPlabel();
     getOtherlabel();
 });
@@ -125,7 +145,7 @@ $(".nav_bar").mouseleave(function() {
     var _this = $(".active1").index();
     $(this).children().eq(_this).addClass("active1");
     var len = $(this).children().width();
-    $("#remark").animate({left: len * _this}, 200);})
+    $("#remark").animate({left: len * _this}, 200);});
 
 //相册关闭按钮显示
 $(".album img").mouseover(function () {
