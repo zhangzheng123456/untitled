@@ -76,7 +76,7 @@ function gethotVIPlabel() {
         }
     })
 }
-//官方会员搜索标签
+//官方用户标签
 function getOtherlabel() {
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
@@ -117,6 +117,41 @@ $("#label_li_user").click(function () {
     param['type']="3";
     getOtherlabel();
 })
+
+//搜索热门标签
+function searchHotlabel() {
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="1";
+    oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            msg=JSON.parse(msg.list)
+            msg=msg.list;
+            var html="";
+            console.log(msg);
+            if(msg==""){
+                $("#search_label").hide();
+                $("#labeladd_btn").show();
+            }else if(msg!==""){
+                for(var i=0;i<msg.length;i++){
+                    if(msg[i].label_type=="user"){
+                        html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
+                    }else if(msg[i].label_type=="org"){
+                        html+="<span>"+msg[i].label_name+"</span>"
+                    }
+                }
+                $("#hotlabel").append(html);
+            }
+        }
+    })
+}
+$("#search_label").click(function () {
+    $("#hotlabel").empty();
+    searchHotlabel();
+})
+
 
 
 //回到会员列表
@@ -171,7 +206,9 @@ $(".label_nav li").click(function () {
     $(".label_box").eq(index).siblings("div").hide();
 })
 //添加，删除标签
-$(".labeladd_btn").click(function () {
+$("#labeladd_btn").click(function () {
+    $("#search_label").show();
+    $("#labeladd_btn").hide();
     var val=$(".labeladd_box input").val();
     console.log(val);
     if(val!==""){
