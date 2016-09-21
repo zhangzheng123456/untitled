@@ -182,7 +182,7 @@ body{
     border-bottom: 1px solid #E8E8E8;
     overflow: hidden;
 }
-.header .center .message-class .tabs-parent .images .img-parent #images span{
+.header .center .message-class .tabs-parent .images .img-parent #images span,.header .center .message-class .tabs-parent .images .img-parent #images span img{
     width: 25%;
     height: 25%;
     box-sizing: border-box;

@@ -5,7 +5,7 @@ $(function(){
     getConsumCount();
     upLoadAlbum();
 });
-function getConsumCount(){
+function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
     var id=sessionStorage.getItem("id");
     var param={};
