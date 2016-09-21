@@ -14,7 +14,9 @@ import java.util.Map;
 public interface BrandService {
     Brand getBrandById(int id) throws Exception;
 
-    Brand getBrandByCode(String corp_code, String brand_code) throws Exception;
+    Brand getBrandByCode(String corp_code, String brand_code,String isactive) throws Exception;
+
+    Brand getBrandByName(String corp_code, String brand_name,String isactive) throws Exception;
 
     PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
@@ -25,8 +27,6 @@ public interface BrandService {
     String update(String message, String user_id) throws Exception;
 
     int delete(int id) throws Exception;
-
-    Brand getBrandByName(String corp_code, String brand_name) throws Exception;
 
     String insertExecl(Brand brand) throws Exception;
 

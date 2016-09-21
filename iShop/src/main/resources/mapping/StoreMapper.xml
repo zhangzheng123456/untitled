@@ -231,7 +231,7 @@
         </foreach>
         AND isactive = 'Y'
     </select>
-    <!--下拉框，根据区域拉店铺（店长，导购）-->
+    <!--下拉框，根据店铺编号拉店铺（店长，导购）-->
     <select id="selStoreByUserCode" resultMap="Store">
         select
         def_store.id,
@@ -251,7 +251,7 @@
         </foreach>
         AND def_store.corp_code = #{corp_code}
         <if test="search_value != null and search_value !=''">
-            and def_store.STORE_NAME like concat('%',#{search_value},'%')
+            AND def_store.store_name LIKE concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
             AND def_store.isactive = #{isactive}
@@ -593,6 +593,9 @@
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             ds.brand_code REGEXP #{item}
         </foreach>
+        <if test="search_value != null and search_value !=''">
+            AND ds.store_name LIKE concat('%',#{search_value},'%')
+        </if>
         <if test="isactive != null and isactive !=''">
             AND ds.isactive = #{isactive}
         </if>

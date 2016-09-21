@@ -364,8 +364,8 @@ public class GoodsController {
                 if(column[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                String goodsCodeExist = goodsService.goodsCodeExist(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim());
-                if (goodsCodeExist.contains(Common.DATABEAN_CODE_ERROR)) {
+                Goods goods = goodsService.getGoodsByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
+                if (goods != null) {
                     result = "：第" + (i + 1) + "行商品编号已存在";
                     int b = 5 / 0;
                     break;
@@ -434,7 +434,7 @@ public class GoodsController {
 //                    int b = 5 / 0;
 //                    break;
 //                }
-                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim());
+                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column7[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (brand == null) {
                     result = "：第" + (i + 1) + "行品牌编号不存在";
                     int b = 5 / 0;
@@ -563,15 +563,12 @@ public class GoodsController {
             goods.setModifier(user_id);
             goods.setCreated_date(Common.DATETIME_FORMAT.format(now));
             goods.setCreater(user_id);
-            String existInfo1 = this.goodsService.goodsCodeExist(corp_code, goods.getGoods_code());
-            String existInfo2 = this.goodsService.goodsNameExist(corp_code, goods.getGoods_name());
+            Goods existInfo1 = goodsService.getGoodsByCode(corp_code, goods.getGoods_code(),Common.IS_ACTIVE_Y);
 
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            if (existInfo1.contains(Common.DATABEAN_CODE_ERROR)) {
+            if (existInfo1 != null) {
                 dataBean.setMessage("商品编号已存在");
-//            } else if (existInfo2.contains(Common.DATABEAN_CODE_ERROR)) {
-//                dataBean.setMessage("商品名称已存在");
             } else {
                 this.goodsService.insertGoods(goods,match_goods);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -756,8 +753,8 @@ public class GoodsController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String goods_code = jsonObject.get("goods_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            String existInfo = goodsService.goodsCodeExist(corp_code, goods_code);
-            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
+            Goods existInfo = goodsService.getGoodsByCode(corp_code, goods_code,Common.IS_ACTIVE_Y);
+            if (existInfo != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
                 dataBean.setMessage("商品编号已被使用");
@@ -785,13 +782,17 @@ public class GoodsController {
         String id = "";
         try {
             String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
             String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            JSONObject jsonObject = new JSONObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
             String goods_code = jsonObject.get("goods_code").toString();
+            String brand_code = "";
+            if (jsonObject.has("brand_code")) {
+                brand_code = jsonObject.get("brand_code").toString();
+            }
             String search_value = jsonObject.get("searchValue").toString();
-            List<Goods> list = goodsService.selectBySearch(corp_code, search_value,goods_code);
+            List<Goods> list = goodsService.matchGoodsList(corp_code, search_value,goods_code,brand_code);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
