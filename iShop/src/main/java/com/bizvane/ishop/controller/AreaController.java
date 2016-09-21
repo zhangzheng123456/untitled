@@ -349,7 +349,7 @@ public class AreaController {
                 if (area != null) {
                     String area_code = area.getArea_code();
                     String corp_code = area.getCorp_code();
-                    List<Store> stores = areaService.getAreaStore(corp_code, area_code);
+                    List<Store> stores = storeService.selectStoreCountByArea(corp_code,area_code,"");
                     if (stores.size() == 0) {
                         areaService.delete(Integer.valueOf(ids[i]));
                     } else {

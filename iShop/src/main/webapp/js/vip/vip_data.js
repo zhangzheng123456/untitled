@@ -3,6 +3,7 @@ var page=1;
 var param={};//定义传值对象
 $(function(){
     getConsumCount();
+    upLoadAlbum();
 });
 function getConsumCount(){
     //whir.loading.add("",0.5);//加载等待框
@@ -44,12 +45,12 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
 }
-$("#fenLei").click(function(){
+$("#fenLei").click(function(){//点击查看更多调到编辑资料
    $("#VIP_Message").hide();
    $("#VIP_edit").show();
     gethotVIPlabel();
 });
-$("#VIP_message_back").click(function(){
+$("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
 });
@@ -179,7 +180,39 @@ $(".labeladd_btn").click(function () {
     $("#label_box span i").click(function () {
         $(this).parent("span").remove();
     })
-})
+});
 $("#label_box span i").click(function () {
     $(this).parent("span").remove();
-})
+});
+function upLoadAlbum(){
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        bucket: 'products-image'
+    });
+    document.getElementById('upAlbum').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        //var corp_code=$("#OWN_CORP").val()//公司编号
+        //var user_code=$("#USERID").val()//员工编号
+        // console.log(corp_code);
+        // console.log(user_code);
+        //var storeAs="";
+        //if(user_code==""||user_code==undefined){
+        //    storeAs = '/Corp_logo/ishow/'+corp_code.trim()+'.jpg';
+        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
+        //}
+        //if(user_code!==""&&user_code!==undefined){
+        //    storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
+        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
+        //}
+        var storeAs='Album/Vip/iShow/C10141-123-20160920186524.jpg';
+        client.multipartUpload(storeAs, file).then(function (result) {
+            $("#imghead").attr("src",result.url);
+            $("#upAlbum").val("");
+            console.log(result.url);
+        }).catch(function (err) {
+             console.log(err);
+        });
+    });
+}

@@ -100,11 +100,6 @@ public class BrandServiceImpl implements BrandService {
         return brands;
     }
 
-    //获得品牌下店铺
-    @Override
-    public List<Store> getBrandStore(String corp_code, String brand_code) throws Exception {
-        return storeMapper.selectStoreBrandArea(corp_code, "%" + brand_code + "%", "","");
-    }
 
     @Override
     @Transactional

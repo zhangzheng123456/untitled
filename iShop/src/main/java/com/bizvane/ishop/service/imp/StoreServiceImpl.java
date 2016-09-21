@@ -477,7 +477,22 @@ public class StoreServiceImpl implements StoreService {
     }
 
     public List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception{
-        List<Store> stores = storeMapper.selectStoreCountByArea(corp_code, area_code, isactive);
+        String[] area_codes = area_code.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("array",area_codes);
+        params.put("isactive",isactive);
+        List<Store> stores = storeMapper.selectStoreCountByArea(params);
+        return stores;
+    }
+
+    public List<Store> selectStoreCountByBrand(String corp_code, String brand_code, String isactive) throws Exception{
+        String[] brand_codes = brand_code.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("array",brand_codes);
+        params.put("isactive",isactive);
+        List<Store> stores = storeMapper.selectStoreCountByBrand(params);
         return stores;
     }
 

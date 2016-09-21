@@ -21,10 +21,6 @@ public interface AreaService {
 
     PageInfo<Area> getAllAreaByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    List<Area> getAllArea(String corp_code) throws Exception;
-
-    List<Store> getAreaStore(String corp_code, String area_code) throws Exception;
-
     String insert(String message, String user_id) throws Exception;
 
     String update(String message, String user_id) throws Exception;

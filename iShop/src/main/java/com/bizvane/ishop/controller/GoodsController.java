@@ -776,43 +776,6 @@ public class GoodsController {
 
 
     /**
-     * 确保商品名称在其公司内的唯一性存在.
-     *
-     * @param request
-     * @return
-     */
-    @RequestMapping(value = "/FabNameExist", method = RequestMethod.POST)
-    @ResponseBody
-    public String FabNameExist(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-            String message = jsonObj.get("message").toString();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-            String goods_name = jsonObject.get("goods_name").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            String existInfo = goodsService.goodsNameExist(corp_code, goods_name);
-            if (existInfo.contains(Common.DATABEAN_CODE_ERROR)) {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setMessage("商品名称已被使用");
-            } else {
-                dataBean.setId(id);
-                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                dataBean.setMessage("商品名称不存在");
-            }
-        } catch (Exception ex) {
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-        }
-        return dataBean.getJsonStr();
-    }
-
-
-    /**
      * 获取企业商品（用于商品搭配）
      */
     @RequestMapping(value = "/corp_fab", method = RequestMethod.POST)

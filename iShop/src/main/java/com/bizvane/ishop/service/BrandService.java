@@ -20,8 +20,6 @@ public interface BrandService {
 
     List<Brand> getAllBrand(String corp_code) throws Exception;
 
-    List<Store> getBrandStore(String corp_code, String brand_code) throws Exception;
-
     String insert(String message, String user_id) throws Exception;
 
     String update(String message, String user_id) throws Exception;
