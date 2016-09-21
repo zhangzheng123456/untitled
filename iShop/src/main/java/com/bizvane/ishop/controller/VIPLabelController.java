@@ -4,8 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+
+import com.bizvane.ishop.entity.*;
+
 import com.bizvane.ishop.entity.Corp;
 import com.bizvane.ishop.entity.VipLabel;
+
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.MongoUtils;
@@ -36,6 +40,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
+import java.lang.System;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -811,4 +816,141 @@ public class VIPLabelController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/label/addRelViplabel", method = RequestMethod.POST)
+    @ResponseBody
+    public String checkRelViplablel(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String corp_code = jsonObject.getString("corp_code").toString();
+            String vip_code = jsonObject.getString("vip_code").toString();
+            String label_id = jsonObject.getString("label_id").toString();
+            String user_id = request.getSession().getAttribute("user_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            String result_add="";
+            List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code,vip_code,label_id);
+            if(relViplabels.size()>0){
+                result_add="该会员标签已存在";
+                int i=5/0;
+            }else{
+                RelViplabel relViplabel = WebUtils.JSON2Bean(jsonObject, RelViplabel.class);
+                //------------操作日期-------------
+                Date date = new Date();
+                relViplabel.setCreated_date(Common.DATETIME_FORMAT.format(date));
+                relViplabel.setCreater(user_id);
+                relViplabel.setModified_date(Common.DATETIME_FORMAT.format(date));
+                relViplabel.setModifier(user_id);
+                int i = vipLabelService.addRelViplabel(relViplabel);
+                if(i>0){
+                    result_add="新增成功";
+                }
+            }
+            result.put("list", JSON.toJSONString(result_add));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    @RequestMapping(value = "/label/delRelViplabel", method = RequestMethod.POST)
+    @ResponseBody
+    public String delRelViplabel(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String rid = jsonObject.getString("rid").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            String result_add="";
+            int i = vipLabelService.delRelViplabel(rid);
+            if(i>0){
+                result_add="删除成功";
+            }
+            result.put("list", JSON.toJSONString(result_add));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    @RequestMapping(value = "/label/addViplabel", method = RequestMethod.POST)
+    @ResponseBody
+    public String addViplabel(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
+            id = jsonObj.getString("id");
+            String message = jsonObj.get("message").toString();
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
+            String user_id = request.getSession().getAttribute("user_code").toString();
+            org.json.JSONObject result = new org.json.JSONObject();
+            VipLabel vipLabel = WebUtils.JSON2Bean(jsonObject, VipLabel.class);
+            Date now = new Date();
+            vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
+            vipLabel.setModifier(user_id);
+            vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
+            vipLabel.setCreater(user_id);
+            String role_code = request.getSession(false).getAttribute("role_code").toString();
+            if (Common.ROLE_SYS.equals(role_code)) {
+                vipLabel.setLabel_type("sys");
+            } else {
+                vipLabel.setLabel_type("org");
+            }
+            String existInfo = vipLabelService.insert(vipLabel);
+            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                String label_name = vipLabel.getLabel_name();
+                String corp_code = vipLabel.getCorp_code();
+                List<VipLabel> viplabelID = vipLabelService.findViplabelID(corp_code, label_name);
+                String label_id=viplabelID.get(0).getId()+"";
+                RelViplabel relViplabel = WebUtils.JSON2Bean(jsonObject, RelViplabel.class);
+                relViplabel.setLabel_id(label_id);
+                Date date = new Date();
+                relViplabel.setCreated_date(Common.DATETIME_FORMAT.format(date));
+                relViplabel.setCreater(user_id);
+                relViplabel.setModified_date(Common.DATETIME_FORMAT.format(date));
+                relViplabel.setModifier(user_id);
+                int i = vipLabelService.addRelViplabel(relViplabel);
+                if(i>0){
+                    System.out.println("---------------新增成功-------------------");
+                }
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                dataBean.setMessage("成功");
+            } else {
+                dataBean.setId(id);
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setMessage("标签名称已被使用");
+            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            log.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

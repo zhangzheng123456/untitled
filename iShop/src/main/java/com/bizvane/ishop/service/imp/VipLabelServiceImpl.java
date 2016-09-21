@@ -2,6 +2,7 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipLabelMapper;
+import com.bizvane.ishop.entity.RelViplabel;
 import com.bizvane.ishop.entity.ValidateCode;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.entity.ViplableGroup;
@@ -219,5 +220,25 @@ public class VipLabelServiceImpl implements VipLabelService {
         List<VipLabel> viplabels = vipLabelMapper.findViplabelByType(corp_code,label_type,search_value);
         PageInfo<VipLabel> page = new PageInfo<VipLabel>(viplabels);
         return page;
+    }
+
+    @Override
+    public List<RelViplabel> checkRelViplablel(String corp_code, String vip_code, String label_id) throws Exception {
+        return vipLabelMapper.checkRelViplablel(corp_code,vip_code,label_id);
+    }
+
+    @Override
+    public int delRelViplabel(String rid) throws Exception {
+        return vipLabelMapper.delRelViplabel(rid);
+    }
+
+    @Override
+    public int addRelViplabel(RelViplabel relViplabel) throws Exception {
+        return vipLabelMapper.addRelViplabel(relViplabel);
+    }
+
+    @Override
+    public List<VipLabel> findViplabelID(String corp_code, String label_name) throws Exception {
+        return vipLabelMapper.findViplabelID(corp_code,label_name);
     }
 }

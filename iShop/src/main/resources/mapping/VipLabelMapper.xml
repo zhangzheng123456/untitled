@@ -271,7 +271,8 @@
         vt.label_type,
         vt.corp_code,
         cc.corp_name,
-        vt.label_group_code
+        vt.label_group_code,
+        rvl.id  rid
         FROM
         def_vip_label vt,DEF_CORP cc,rel_vip_label rvl
         ,def_vip_label_group dvg
@@ -315,10 +316,7 @@
 <!--用户和官方标签-->
     <select id="findViplabelByType" resultType="com.bizvane.ishop.entity.VipLabel">
         SELECT
-        ID,
-        LABEL_NAME,
-        LABEL_TYPE,
-        CORP_CODE
+        *
         FROM def_vip_label
         WHERE CORP_CODE=#{corp_code}
         <if test="label_type!=null and label_type!=''">
@@ -328,5 +326,86 @@
             AND LABEL_NAME like concat('%',#{search_value},'%')
         </if>
         AND ISACTIVE ='Y'
+    </select>
+    <select id="checkRelViplablel" resultType="com.bizvane.ishop.entity.RelViplabel">
+        SELECT * FROM rel_vip_label
+        WHERE CORP_CODE=#{corp_code}
+        AND VIP_CODE=#{vip_code}
+        AND LABEL_ID=#{label_id}
+        AND ISACTIVE ='Y'
+    </select>
+    <insert id="addRelViplabel" parameterType="com.bizvane.ishop.entity.RelViplabel">
+        INSERT INTO rel_vip_label
+        <trim prefix="(" suffixOverrides="," suffix=")">
+
+            <if test="label_id!=null ">
+                label_id ,
+            </if>
+            <if test="vip_code!=null ">
+                vip_code,
+            </if>
+            <if test="corp_code!=null ">
+                corp_code ,
+            </if>
+            <if test="store_code!=null ">
+                store_code ,
+            </if>
+            <if test="modified_date!=null ">
+                modified_date ,
+            </if>
+            <if test="modifier!=null ">
+                modifier,
+            </if>
+            <if test="created_date!=null">
+                created_date ,
+            </if>
+            <if test="creater!=null ">
+                creater,
+            </if>
+            <if test="isactive!=null ">
+                isactive,
+            </if>
+        </trim>
+        <trim prefix="values(" suffix=")" suffixOverrides=",">
+            <if test="label_id!=null ">
+                #{label_id} ,
+            </if>
+            <if test="vip_code!=null ">
+                #{vip_code},
+            </if>
+            <if test="corp_code!=null ">
+                #{corp_code},
+            </if>
+            <if test="store_code!=null ">
+                #{store_code},
+            </if>
+            <if test="modified_date!=null">
+                #{modified_date} ,
+            </if>
+            <if test="modifier!=null ">
+                #{modifier},
+            </if>
+            <if test="created_date!=null">
+                #{created_date},
+            </if>
+            <if test="creater!=null ">
+                #{creater},
+            </if>
+            <if test="isactive!=null ">
+                #{isactive},
+            </if>
+        </trim>
+    </insert>
+    <delete id="delRelViplabel">
+        delete from rel_vip_label
+        WHERE id=#{rid}
+    </delete>
+
+    <!--根据lable_name查出rel_vip_label的lable_id-->
+    <select id="findViplabelID" resultType="com.bizvane.ishop.entity.VipLabel">
+        SELECT id FROM def_vip_label
+        WHERE corp_code=#{corp_code}
+        AND label_name=#{label_name}
+        AND isactive='Y'
     </select>
 </mapper>

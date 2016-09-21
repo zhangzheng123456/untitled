@@ -1,7 +1,10 @@
 package com.bizvane.ishop.service;
 
+import com.bizvane.ishop.entity.RelViplabel;
 import com.bizvane.ishop.entity.VipLabel;
 import com.github.pagehelper.PageInfo;
+import org.apache.ibatis.annotations.Param;
+
 import java.util.List;
 import java.util.Map;
 
@@ -78,4 +81,14 @@ public interface VipLabelService {
     List<VipLabel> findHotViplabel(String corp_code)throws Exception;
 
     PageInfo<VipLabel> findViplabelByType(int page_number, int page_size,String corp_code,String label_type,String search_value)throws Exception;
+
+    List<RelViplabel> checkRelViplablel(String corp_code,String vip_code,String label_id)throws Exception;
+
+    int addRelViplabel(RelViplabel relViplabel)throws Exception;
+
+    int delRelViplabel(String rid)throws Exception;
+
+    List<VipLabel> findViplabelID(String corp_code,String label_name)throws Exception;
+
+
 }
