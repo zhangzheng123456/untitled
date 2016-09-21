@@ -34,11 +34,24 @@
         AND def_brand.id=#{id}
     </select>
 
-    <select id="selectCorpBrand" resultType="com.bizvane.ishop.entity.Brand">
+    <select id="selectByBrandCode" resultType="com.bizvane.ishop.entity.Brand">
         select *
         from def_brand
         where corp_code = #{corp_code}
-        AND BRAND_CODE = #{brand_code}
+        AND brand_code = #{brand_code}
+        <if test="isactive != null and isactive !=''">
+            AND isactive=#{isactive}
+        </if>
+    </select>
+
+    <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
+        SELECT *
+        FROM  def_brand
+        WHERE corp_code=#{corp_code}
+        AND brand_name=#{brand_name}
+        <if test="isactive != null and isactive !=''">
+            AND isactive=#{isactive}
+        </if>
     </select>
 
     <select id="selectAllBrand" resultMap="Brand">
@@ -177,15 +190,9 @@
         WHERE id=#{id};
     </update>
 
-    <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
-        SELECT * FROM  def_brand
-        WHERE  corp_code=#{corp_code} AND brand_name=#{brand_name}
-    </select>
-
     <select id="getGoodsCount" resultType="java.lang.Integer">
         SELECT count(*) FROM def_goods WHERE brand_code=#{brand_code} AND corp_code=#{corp_code}
     </select>
-
 
     <select id="getStoresCount" resultType="java.lang.Integer">
         SELECT count(*) FROM def_store WHERE brand_code=#{brand_code} AND corp_code=#{corp_code}

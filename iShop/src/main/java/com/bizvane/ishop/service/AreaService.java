@@ -29,10 +29,6 @@ public interface AreaService {
 
     Area getAreaByName(String corp_code, String area_name, String isactive) throws Exception;
 
-    List<Area> getAreaByCorp(String corp_code) throws Exception;
-
-    Area selAreaByCorp(String corp_code, String area_code, String isactive) throws Exception;
-
     String insertExecl(Area area) throws Exception;
 
     PageInfo<Area> getAllAreaScreen(int page_number, int page_size, String corp_code, String area_codes, Map<String, String> map) throws Exception;

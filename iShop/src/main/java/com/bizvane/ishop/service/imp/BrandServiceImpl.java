@@ -76,8 +76,14 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Brand getBrandByCode(String corp_code, String brand_code) throws SQLException {
-        return brandMapper.selectCorpBrand(corp_code, brand_code);
+    public Brand getBrandByCode(String corp_code, String brand_code,String isactive) throws SQLException {
+        return brandMapper.selectByBrandCode(corp_code, brand_code,isactive);
+    }
+
+    @Override
+    public Brand getBrandByName(String corp_code, String brand_name,String isactive) throws Exception{
+        Brand brand = brandMapper.selectByBrandName(corp_code, brand_name,isactive);
+        return brand;
     }
 
     @Override
@@ -111,8 +117,8 @@ public class BrandServiceImpl implements BrandService {
         String brand_name = jsonObject.get("brand_name").toString();
 
 
-        Brand brand = getBrandByCode(corp_code, brand_code);
-        Brand brand1 = getBrandByName(corp_code, brand_name);
+        Brand brand = getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
+        Brand brand1 = getBrandByName(corp_code, brand_name,Common.IS_ACTIVE_Y);
         if (brand == null && brand1 == null) {
             brand = new Brand();
             Date now = new Date();
@@ -176,8 +182,8 @@ public class BrandServiceImpl implements BrandService {
 
         Brand brand = getBrandById(brand_id);
 
-        Brand brand1 = getBrandByCode(corp_code, brand_code);
-        Brand brand2 = getBrandByCode(corp_code, brand_name);
+        Brand brand1 = getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
+        Brand brand2 = getBrandByCode(corp_code, brand_name,Common.IS_ACTIVE_Y);
         if (brand.getCorp_code().equals(corp_code)) {
             if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
                     (brand.getBrand_name().equals(brand_name) || brand2 == null)) {
@@ -259,13 +265,6 @@ public class BrandServiceImpl implements BrandService {
     public int delete(int id) throws Exception {
         return brandMapper.deleteByBrandId(id);
     }
-
-    @Override
-    public Brand getBrandByName(String corp_code, String brand_name) throws Exception{
-        Brand brand = brandMapper.selectByBrandName(corp_code, brand_name);
-        return brand;
-    }
-
 
     @Override
     public PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{

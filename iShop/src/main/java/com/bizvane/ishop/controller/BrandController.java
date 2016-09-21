@@ -189,7 +189,7 @@ public class BrandController {
                         msg = "有使用品牌" + brand_code + "的商品，请先处理品牌下商品再删除";
                         break;
                     }
-                    count = storeService.selectStoreCountByBrand(corp_code, brand_code,"").size();
+                    count = storeService.selectStoreCountByBrand(corp_code, brand_code,"","").size();
                     if (count > 0) {
                         msg = "有使用品牌" + brand_code + "的店铺，请先处理品牌下店铺再删除";
                         break;
@@ -291,7 +291,7 @@ public class BrandController {
 
     @RequestMapping(value = "/brandCodeExist", method = RequestMethod.POST)
     @ResponseBody
-    public String Brand_codeExist(HttpServletRequest request) {
+    public String brandCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -301,7 +301,7 @@ public class BrandController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String brand_code = jsonObject.get("brand_code").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Brand brand = brandService.getBrandByCode(corp_code, brand_code);
+            Brand brand = brandService.getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
             if (brand != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -322,7 +322,7 @@ public class BrandController {
 
     @RequestMapping(value = "/brandNameExist", method = RequestMethod.POST)
     @ResponseBody
-    public String Brand_nameExist(HttpServletRequest request) {
+    public String brandNameExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -332,7 +332,7 @@ public class BrandController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String brand_name = jsonObject.get("brand_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-            Brand brand = brandService.getBrandByName(corp_code, brand_name);
+            Brand brand = brandService.getBrandByName(corp_code, brand_name,Common.IS_ACTIVE_Y);
             if (brand != null) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -512,7 +512,7 @@ public class BrandController {
                     int b = 5 / 0;
                     break;
                 }
-                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim());
+                Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (brand != null) {
                     result = "：第" + (i + 1) + "行品牌编号已存在";
                     int b = 5 / 0;
@@ -524,7 +524,7 @@ public class BrandController {
                 if(column1[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                Brand brand = brandService.getBrandByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim());
+                Brand brand = brandService.getBrandByName(column3[i].getContents().toString().trim(), column1[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (brand != null) {
                     result = "：第" + (i + 1) + "行品牌名称已存在";
                     int b = 5 / 0;
@@ -633,6 +633,49 @@ public class BrandController {
     }
 
     /**
+     * 获取登录人所拥有的品牌
+     */
+    @RequestMapping(value = "/getBrands", method = RequestMethod.POST)
+    @ResponseBody
+    public String getBrands(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String store_code = request.getSession().getAttribute("store_code").toString();
+
+        String id = "";
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String corp_code = jsonObject.get("corp_code").toString();
+
+            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
+                List<Brand> brand = brandService.getAllBrand(corp_code);
+            }else if (role_code.equals(Common.ROLE_AM)){
+
+            }else{
+
+            }
+            String search_value = jsonObject.get("search_value").toString();
+            JSONObject result = new JSONObject();
+            result.put("list", "");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
      * 获取所选品牌下的店铺
      */
     @RequestMapping(value = "/getStores", method = RequestMethod.POST)
@@ -647,10 +690,12 @@ public class BrandController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             String brand_code = jsonObject.get("brand_code").toString();
-
-            List<Store> stores = storeService.selectStoreCountByBrand(corp_code,brand_code,Common.IS_ACTIVE_Y);
+            String search_value = jsonObject.get("search_value").toString();
+            PageInfo<Store> stores = storeService.selectStoreByBrand(page_number,page_size,corp_code,brand_code,search_value,Common.IS_ACTIVE_Y);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(stores));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
