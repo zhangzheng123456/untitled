@@ -18,6 +18,7 @@ function getConsumCount(){
        var conSumData=JSON.parse(Data.Consum);
        var HTML="";
        var LABEL="";
+       var LABELALL="";
       $("#total_amount_Y").html(conSumData.total_amount_Y);
       $("#consume_times_Y").html(conSumData.consume_times_Y);
       $("#total_amount").html(conSumData.total_amount);
@@ -31,9 +32,11 @@ function getConsumCount(){
             }
         $("#images").html(HTML);
         for(var i=0;i<label.length;i++){
-                LABEL+="<span >"+label[i].label_name+"</span>"
+                LABEL+="<span >"+label[i].label_name+"</span>";
+                LABELALL+= "<span class='label_u_active' data-rid='"+label[i].rid+"'>"+label[i].label_name+"<i class='icon-ishop_6-12'></i></span>";
         }
         $("#labels").html(LABEL);
+        $("#label_box").html(LABELALL);
         lg_img()
     })
 
