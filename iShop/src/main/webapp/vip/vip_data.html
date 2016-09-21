@@ -13,7 +13,8 @@
 </head>
 <body>
 <div class="con_table" id="con_table">
-    <!-- 导航-->
+ <div id="VIP_Message">
+     <!-- 导航-->
     <div class="title">
         <span>会员管理</span>
         <span class="icon-ishop_8-03"></span>
@@ -59,10 +60,10 @@
           <div class="center">
               <div class="message-class">
                   <ul>
-                      <li><a class="active">消费</a></li>
-                      <li><a>积分</a></li>
-                      <li><a>相册</a></li>
-                      <li><a>标签</a></li>
+                      <li><a class="active" data-name="consume">消费</a></li>
+                      <li><a data-name="jifen">积分</a></li>
+                      <li><a data-name="Ablum">相册</a></li>
+                      <li><a data-name="label">标签</a></li>
                   </ul>
                   <div class="tabs-parent">
                       <div class="table">
@@ -187,7 +188,7 @@
                           </div>
                       </div>
                   </div>
-                  <div class="person-more">查看更多<i class="icon-ishop_8-03"></i></div>
+                  <div class="person-more"><label id="fenLei">查看更多<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
           <div class="right">
@@ -234,7 +235,7 @@
               <div class="datail-last">
                   <span class="detail-left">推荐人</span><span class="detail-right">吴燕</span>
               </div>
-                  <div class="person-more">详细资料<i class="icon-ishop_8-03"></i></div>
+                  <div class="person-more"><label>详细资料<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
        </div>
@@ -294,28 +295,28 @@
             </li>
         </ul>
     </div>
-    </div>
+    </div></div>
 
-    <div class="" style="display:none;">
+    <div id="VIP_edit" style="display:none;">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
             <span>会员列表</span>
             <span class="icon-ishop_8-03"></span>
-            <span>会员信息</span>
+            <span id="VIP_message_back">会员信息</span>
             <span class="icon-ishop_8-03"></span>
             <span>编辑会员资料</span>
         </div>
 
         <div>
             <div class="nav">
-                <ul class="nav_bar" id="nav_bar">
-                    <li>基本信息</li>
+                <ul class="nav_bar" id="nav_bar" style="position: relative">
+                    <li class="active1">基本信息</li>
                     <li>拓展信息</li>
-                    <li>衣橱</li>
-                    <li>积分</li>
-                    <li>相册</li>
-                    <li>标签</li>
+                    <li data-name="consume">衣橱</li>
+                    <li data-name="jifen">积分</li>
+                    <li data-name="Ablum">相册</li>
+                    <li data-name="label">标签</li>
                     <li>备注</li>
                     <div id="remark" style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
@@ -404,7 +405,7 @@
                     </form>
                 </div>
                 </div>
-                <!--拓展模块-->
+
                 <div class="expand" style="display: none">
                     <!--左侧-->
                     <ul>
@@ -762,7 +763,7 @@
                         </li>
                     </ul>
                     <span class="add_new_album" style="position: relative;">
-                        <input type="file">添加图片+
+                        <input type="file" id="upAlbum">添加图片+
                     </span>
                     <!--<div class="album_shade"></div>-->
                 </div>
@@ -770,8 +771,9 @@
                 <div class="viplabel">
                     <div class="label_left_box">
                         <div class="labeladd_box">
-                            <input type="text" placeholder="添加标签">
-                            <span class="labeladd_btn">贴上</span>
+                            <input type="text" id="search_input" placeholder="添加标签">
+                            <span class="labeladd_btn" id="search_label">搜索</span>
+                            <span class="labeladd_btn" id="labeladd_btn" style="display: none">贴上</span>
                         </div>
 
                         <div class="own_label">
@@ -789,52 +791,52 @@
 
                     <div class="all_label">
                         <ul class="label_nav">
-                            <li class="label_li_active">热门</li>
-                            <li>官方</li>
-                            <li>用户</li>
+                            <li class="label_li_active" id="hot_label">热门</li>
+                            <li id="label_li_org">官方</li>
+                            <li id="label_li_user">用户</li>
                         </ul>
 
-                        <div class="label_box">
-                            <span class="label_g">有钱</span>
-                            <span class="label_u_active">家有地暖</span>
-                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
-                            <span class="label_g_active">有品位</span>
-                            <span class="label_g">时尚</span>
-                            <span class="label_g">美女</span>
-                            <span class="label_g">会员卡丢失</span>
-                            <span class="label_g">小朋友</span>
-                            <span class="label_u">老人</span>
-                            <span class="label_u_active">8月31生日</span>
-                            <span class="label_u">非常有钱</span>
-                            <span class="label_u_active">喜欢红色</span>
+                        <div class="label_box" id="hotlabel">
+                            <!--<span class="label_g">有钱</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
                         </div>
-                        <div class="label_box" style="display: none">
-                            <span class="label_g">有钱2</span>
-                            <span class="label_u_active">家有地暖</span>
-                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
-                            <span class="label_g_active">有品位</span>
-                            <span class="label_g">时尚</span>
-                            <span class="label_g">美女</span>
-                            <span class="label_g">会员卡丢失</span>
-                            <span class="label_g">小朋友</span>
-                            <span class="label_u">老人</span>
-                            <span class="label_u_active">8月31生日</span>
-                            <span class="label_u">非常有钱</span>
-                            <span class="label_u_active">喜欢红色</span>
+                        <div class="label_box" id="label_org" style="display: none">
+                            <!--<span class="label_g">有钱2</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
                         </div>
-                        <div class="label_box" style="display: none">
-                            <span class="label_g">有钱3</span>
-                            <span class="label_u_active">家有地暖</span>
-                            <span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>
-                            <span class="label_g_active">有品位</span>
-                            <span class="label_g">时尚</span>
-                            <span class="label_g">美女</span>
-                            <span class="label_g">会员卡丢失</span>
-                            <span class="label_g">小朋友</span>
-                            <span class="label_u">老人</span>
-                            <span class="label_u_active">8月31生日</span>
-                            <span class="label_u">非常有钱</span>
-                            <span class="label_u_active">喜欢红色</span>
+                        <div class="label_box" id="label_user" style="display: none">
+                            <!--<span class="label_g">有钱3</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
                         </div>
                     </div>
                 <!--<div class="search">-->
@@ -884,11 +886,14 @@
 </div>
 </body>
 <script src="../table/js/jquery.min.js"></script>
+<!-- oss存储 -->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
 <script src="/js/loading.js"></script>
 <script src="../js/dist/echarts.js"></script>
+<!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js"></script>
 
 <script type="text/javascript">
@@ -1322,14 +1327,6 @@
                 });
             }
     );
-    $(".message-class ul li a").click(function(){
-        $(this).addClass("active");
-        $(this).parent().siblings().children().removeClass("active");
-       var nowIndex=$(this).parent().index();
-        $(".tabs-parent").children().eq(nowIndex).show();
-        $(".tabs-parent").children().eq(nowIndex).siblings().hide()
-    });
-
 //    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
 //    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
 //   扩展模块JS

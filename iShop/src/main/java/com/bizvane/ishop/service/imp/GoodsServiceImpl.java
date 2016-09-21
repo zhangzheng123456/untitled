@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.GoodsMapper;
 import com.bizvane.ishop.entity.Goods;
@@ -38,7 +39,7 @@ public class GoodsServiceImpl implements GoodsService {
 
         for (int i = 0; i < matches1.size(); i++) {
             String goods_code_match = matches1.get(i).getGoods_code_match();
-            Goods match = getGoodsByCode(corp_code,goods_code_match);
+            Goods match = getGoodsByCode(corp_code,goods_code_match,Common.IS_ACTIVE_Y);
             if (match != null) {
                 String goods_image = match.getGoods_image();
                 if (goods_image != null && !goods_image.isEmpty()) {
@@ -49,7 +50,7 @@ public class GoodsServiceImpl implements GoodsService {
         }
         for (int i = 0; i < matches2.size(); i++) {
             String good_code = matches2.get(i).getGoods_code();
-            Goods match = getGoodsByCode(corp_code,good_code);
+            Goods match = getGoodsByCode(corp_code,good_code,Common.IS_ACTIVE_Y);
             if (match != null) {
                 String goods_image = match.getGoods_image();
                 if (goods_image != null && !goods_image.isEmpty()) {
@@ -93,15 +94,13 @@ public class GoodsServiceImpl implements GoodsService {
 
     @Override
     public String update(Goods goods,String match_goods) throws Exception {
-        Goods old = this.goodsMapper.selectByPrimaryKey(goods.getId());
-        if (goods.getCorp_code().equals(old.getCorp_code())) {
-            if ((!old.getGoods_code().equals(goods.getGoods_code()))
-                    && (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR))) {
+        Goods old_goods = goodsMapper.selectByPrimaryKey(goods.getId());
+        Goods new_goods = getGoodsByCode(goods.getCorp_code(), goods.getGoods_code(),Common.IS_ACTIVE_Y);
+        if (goods.getCorp_code().equals(old_goods.getCorp_code())) {
+            if (old_goods.getId() != new_goods.getId() && new_goods != null) {
                 return "编号已经存在";
-//            } else if (!old.getGoods_name().equals(goods.getGoods_name()) && (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR))) {
-//                return "名称已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-                goodsMapper.deleteMatch(goods.getCorp_code(),old.getGoods_code());
+                goodsMapper.deleteMatch(goods.getCorp_code(),old_goods.getGoods_code());
                 Date now = new Date();
                 if (!match_goods.equals("")) {
                     String[] matches = match_goods.split(",");
@@ -121,15 +120,14 @@ public class GoodsServiceImpl implements GoodsService {
                 }
                 return Common.DATABEAN_CODE_SUCCESS;
             }
-        } else {
-            if (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR)) {
-                return "编号已经存在";
-//            } else if (this.goodsNameExist(goods.getCorp_code(), goods.getGoods_name()).equals(Common.DATABEAN_CODE_ERROR)) {
-//                return "名称已经存在";
-            } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-                return Common.DATABEAN_CODE_SUCCESS;
-            }
         }
+//        else {
+//            if (this.goodsCodeExist(goods.getCorp_code(), goods.getGoods_code()).equals(Common.DATABEAN_CODE_ERROR)) {
+//                return "编号已经存在";
+//            } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
+//                return Common.DATABEAN_CODE_SUCCESS;
+//            }
+//        }
         return Common.DATABEAN_CODE_ERROR;
     }
 
@@ -158,8 +156,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods> selectBySearch(String corp_code, String search_value,String goods_code) throws Exception{
-        List<Goods> list = goodsMapper.matchGoodsList(corp_code, search_value,goods_code,Common.IS_ACTIVE_Y);
+    public List<Goods> matchGoodsList(String corp_code, String search_value,String goods_code,String brand_code) throws Exception{
+        List<Goods> list = goodsMapper.matchGoodsList(corp_code, search_value,goods_code,brand_code,Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
             transter(list.get(i));
             String goods_image = list.get(i).getGoods_image();
@@ -196,7 +194,7 @@ public class GoodsServiceImpl implements GoodsService {
     private void transter(Goods goods) throws Exception{
         try {
             String jsString = goods.getGoods_image();
-            org.json.JSONObject jsonObject = new org.json.JSONObject(jsString);
+            JSONObject jsonObject = JSONObject.parseObject(jsString);
             Iterator<String> it = jsonObject.keySet().iterator();
             StringBuffer sb = new StringBuffer();
             while (it.hasNext()) {
@@ -215,30 +213,17 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public Goods getGoodsByCode(String corp_code, String goods_code) throws Exception{
-        Goods goods = this.goodsMapper.getGoodsByCode(corp_code, goods_code);
-        transter(goods);
+    public Goods getGoodsByCode(String corp_code, String goods_code,String isactive) throws Exception{
+        Goods goods = this.goodsMapper.getGoodsByCode(corp_code, goods_code,isactive);
+        if ( goods!= null)
+            transter(goods);
         return goods;
     }
 
     @Override
-    public String goodsCodeExist(String corp_code, String goods_code) throws Exception{
-        Goods good = goodsMapper.getGoodsByCode(corp_code, goods_code);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (good == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
-    }
-
-    @Override
-    public String goodsNameExist(String corp_code, String goods_name) throws Exception{
-        Goods good = goodsMapper.getGoodsByName(corp_code, goods_name);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (good == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
+    public Goods goodsNameExist(String corp_code, String goods_name,String isactive) throws Exception{
+        Goods goods = goodsMapper.getGoodsByName(corp_code, goods_name,isactive);
+        return goods;
     }
 
 }

@@ -4,7 +4,7 @@
     <!--查询table-->
     <select id="selAllByCode" resultType="com.bizvane.ishop.entity.TableManager">
         SELECT * FROM def_table_manager
-       WHERE FUNCTION_CODE=#{function_code}
+       WHERE function_code=#{function_code}
         and is_show = 'Y'
         and is_show !=''
         AND filter_weight IS NOT NULL
@@ -16,7 +16,7 @@
     <!--查询table-->
     <select id="selByCode" resultType="com.bizvane.ishop.entity.TableManager">
         SELECT * FROM def_table_manager
-        WHERE FUNCTION_CODE=#{function_code}
+        WHERE function_code=#{function_code}
         AND filter_weight IS NOT NULL
         AND filter_weight != ''
         ORDER BY filter_weight

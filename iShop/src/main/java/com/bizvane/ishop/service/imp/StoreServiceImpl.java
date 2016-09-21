@@ -67,7 +67,7 @@ public class StoreServiceImpl implements StoreService {
         if (brand_code != null && !brand_code.equals("")) {
             String[] ids = store.getBrand_code().split(",");
             for (int i = 0; i < ids.length; i++) {
-                Brand brand = brandMapper.selectCorpBrand(corp_code, ids[i]);
+                Brand brand = brandMapper.selectByBrandCode(corp_code, ids[i],Common.IS_ACTIVE_Y);
                 if (brand != null) {
                     String brand_name1 = brand.getBrand_name();
                     brand_name.append(brand_name1);
@@ -477,9 +477,39 @@ public class StoreServiceImpl implements StoreService {
     }
 
     public List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception{
-        List<Store> stores = storeMapper.selectStoreCountByArea(corp_code, area_code, isactive);
+        String[] area_codes = area_code.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("array",area_codes);
+        params.put("isactive",isactive);
+        List<Store> stores = storeMapper.selectStoreCountByArea(params);
         return stores;
     }
+
+    public List<Store> selectStoreCountByBrand(String corp_code, String brand_code,String search_value, String isactive) throws Exception{
+        String[] brand_codes = brand_code.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("array",brand_codes);
+        params.put("search_value",search_value);
+        params.put("isactive",isactive);
+        List<Store> stores = storeMapper.selectStoreCountByBrand(params);
+        return stores;
+    }
+
+    public PageInfo<Store> selectStoreByBrand(int page_number, int page_size,String corp_code, String brand_code,String search_value, String isactive) throws Exception{
+        String[] brand_codes = brand_code.split(",");
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code",corp_code);
+        params.put("array",brand_codes);
+        params.put("search_value",search_value);
+        params.put("isactive",isactive);
+        PageHelper.startPage(page_number, page_size);
+        List<Store> stores = storeMapper.selectStoreCountByBrand(params);
+        PageInfo<Store> page = new PageInfo<Store>(stores);
+        return page;
+    }
+
 
     public int selectCount(String created_date) throws Exception{
         return this.storeMapper.selectCount(created_date);

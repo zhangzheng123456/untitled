@@ -174,9 +174,9 @@
         </foreach>
         <if test="areas !=null">
             <!--拉取区经-->
-            or user_code in (select user_code from def_user,DEF_GROUP WHERE def_user.corp_code=#{corp_code}
-            and DEF_USER.group_code = DEF_GROUP.group_code
-            and DEF_GROUP.role_code='R4000' and
+            OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP WHERE def_user.corp_code=#{corp_code}
+            AND DEF_USER.group_code = DEF_GROUP.group_code
+            AND DEF_GROUP.role_code='R4000' AND
             <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
                 area_code REGEXP #{item}
             </foreach>

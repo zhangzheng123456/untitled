@@ -9,7 +9,8 @@
         <result column="user_target" property="user_target" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="target_type" property="target_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="target_time" property="target_time" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -26,7 +27,7 @@
     </resultMap>
 
     <select id="selectById" resultMap="userAchvGoals">
-        select ua.id,
+        SELECT ua.id,
         ua.user_code,
         u.user_name,
         ua.store_code,
@@ -41,8 +42,8 @@
         ua.isactive,
         s.store_name,
         c.corp_name
-        from
-        DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c,DEF_USER u
+        FROM
+        def_user_achv_goal ua,def_store s,def_corp c,def_user u
         WHERE ua.store_code=s.store_code
         AND ua.corp_code = c.corp_code
         AND c.corp_code = s.corp_code
@@ -51,7 +52,7 @@
     </select>
 
     <update id="update" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
-        update DEF_USER_ACHV_GOAL
+        UPDATE def_user_achv_goal
         <trim prefix="set" suffixOverrides=",">
             <if test="user_code!=null ">
                 user_code =#{user_code},
@@ -91,7 +92,7 @@
     </update>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.UserAchvGoal">
-        insert into DEF_USER_ACHV_GOAL
+        INSERT INTO def_user_achv_goal
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="user_code!=null ">
                 user_code,
@@ -166,7 +167,7 @@
     </insert>
 
     <delete id="delete" parameterType="java.lang.Integer">
-        DELETE FROM DEF_USER_ACHV_GOAL
+        DELETE FROM def_user_achv_goal
         WHERE id=#{id}
     </delete>
 
@@ -187,14 +188,14 @@
         s.store_name,
         c.corp_name
         FROM
-        DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c,DEF_USER u
+        def_user_achv_goal ua,def_store s,def_corp c,def_user u
         WHERE ua.store_code=s.store_code
         AND ua.corp_code = u.corp_code
         AND ua.corp_code = c.corp_code
         AND c.corp_code = s.corp_code
         AND ua.user_code = u.user_code
         <if test="corp_code !=null and corp_code!=''">
-            and ua.corp_code=#{corp_code}
+            AND ua.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
@@ -227,11 +228,11 @@
         s.store_name,
         c.corp_name
         FROM
-        DEF_USER_ACHV_GOAL ua,
-        DEF_STORE s,
-        DEF_CORP c,
-        DEF_USER u,
-        DEF_GROUP g
+        def_user_achv_goal ua,
+        def_store s,
+        def_corp c,
+        def_user u,
+        def_group g
         WHERE ua.corp_code = u.corp_code
         AND ua.corp_code = c.corp_code
         AND ua.corp_code = g.corp_code
@@ -242,27 +243,27 @@
         AND ua.corp_code=#{corp_code}
         AND g.role_code &lt; #{role_code}
         <if test="array !=null and array!=''">
-        AND ua.store_code IN
-          <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
-             #{item}
-          </foreach>
+            AND ua.store_code IN
+            <foreach collection="array" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
         </if>
         <if test="search_value!=null and search_value!=''">
             AND
-            (u.user_name like concat('%',#{search_value},'%')
-            OR ua.user_code like concat('%',#{search_value},'%')
-            OR s.store_name like concat('%',#{search_value},'%')
-            OR c.corp_name like concat('%',#{search_value},'%')
-            OR ua.user_target like concat('%',#{search_value},'%')
-            OR ua.target_type like concat('%',#{search_value},'%')
-            OR ua.target_time like concat('%',#{search_value},'%')
+            (u.user_name LIKE concat('%',#{search_value},'%')
+            OR ua.user_code LIKE concat('%',#{search_value},'%')
+            OR s.store_name LIKE concat('%',#{search_value},'%')
+            OR c.corp_name LIKE concat('%',#{search_value},'%')
+            OR ua.user_target LIKE concat('%',#{search_value},'%')
+            OR ua.target_type LIKE concat('%',#{search_value},'%')
+            OR ua.target_time LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY ua.id DESC
     </select>
 
     <select id="selectUserAchvCount" resultMap="userAchvGoals">
-         select ua.id,
+         SELECT ua.id,
         ua.user_code,
         u.user_name,
         ua.store_code,
@@ -277,18 +278,18 @@
         ua.isactive,
         s.store_name,
         c.corp_name
-        from
-        DEF_USER_ACHV_GOAL ua,DEF_STORE s,DEF_CORP c,DEF_USER u
+        FROM
+        def_user_achv_goal ua,def_store s,def_corp c,def_user u
         WHERE ua.store_code=s.store_code
         AND ua.corp_code = c.corp_code
         AND c.corp_code = s.corp_code
         AND ua.user_code = u.user_code
         AND ua.corp_code=#{corp_code}
-        and ua.user_code=#{user_code}
+        AND ua.user_code=#{user_code}
     </select>
 
     <delete id="deleteStoreUserAchv">
-        DELETE FROM DEF_USER_ACHV_GOAL
+        DELETE FROM def_user_achv_goal
         WHERE corp_code = #{corp_code}
         AND store_code = #{store_code}
         AND user_code = #{user_code}
@@ -296,7 +297,7 @@
 
 
     <select id="selectAllUserAchvScreen" resultMap="userAchvGoals">
-        select ua.id,
+        SELECT ua.id,
         u.user_code,
         u.user_name,
         ua.store_code,
@@ -311,12 +312,12 @@
         ua.isactive,
         s.store_name,
         c.corp_name
-        from
-        DEF_USER_ACHV_GOAL ua,
-        DEF_STORE s,
-        DEF_CORP c,
-        DEF_USER u,
-        DEF_GROUP g
+        FROM
+        def_user_achv_goal ua,
+        def_store s,
+        def_corp c,
+        def_user u,
+        def_group g
         WHERE
         ua.corp_code=s.corp_code
         AND ua.corp_code = u.corp_code
@@ -360,12 +361,12 @@
     </select>
 
     <select id="selectUserAchvCountType" resultType="java.lang.Integer">
-        select count(*)
-        from
-        DEF_USER_ACHV_GOAL duag
+        SELECT count(*)
+        FROM
+        def_user_achv_goal duag
         WHERE
          duag.corp_code=#{corp_code}
-        and duag.user_code=#{user_code}
+        AND duag.user_code=#{user_code}
         AND duag.target_type=#{target_type}
         AND  duag.target_time=#{target_time}
         AND  duag.isactive=#{isactive}

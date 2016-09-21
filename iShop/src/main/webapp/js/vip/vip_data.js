@@ -1,6 +1,9 @@
 var oc = new ObjectControl();
+var page=1;
+var param={};//定义传值对象
 $(function(){
     getConsumCount();
+    upLoadAlbum();
 });
 function getConsumCount(){
     //whir.loading.add("",0.5);//加载等待框
@@ -42,6 +45,140 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
 }
+$(".message-class ul li a").click(function(){
+    $(this).addClass("active");
+    $(this).parent().siblings().children().removeClass("active");
+    var nowIndex=$(this).parent().index();
+    $(".tabs-parent").children().eq(nowIndex).show();
+    $(".tabs-parent").children().eq(nowIndex).siblings().hide()
+});
+
+$("#fenLei").click(function(){//点击查看更多跳到编辑资料
+   var nowdataName=$(".message-class ul li .active").attr("data-name");
+   $("#VIP_Message").hide();
+   $("#VIP_edit").show();
+    $("#nav_bar").find("li").each(function(index){
+        if($(this).attr("data-name")==nowdataName){
+            var len=$(this).width();
+            $(this).addClass("active1");
+            $(this).siblings().removeClass("active1");
+            $(".all_list").children().eq(index).show();
+            $(".all_list").children().eq(index).siblings().hide();
+            $("#remark").animate({left:len*index},0.1);
+        }
+    });
+    gethotVIPlabel();
+});
+$("#VIP_message_back").click(function(){//回到会员信息
+   $("#VIP_Message").show();
+   $("#VIP_edit").hide();
+});
+
+function gethotVIPlabel() {
+    //热门标签
+    $("#hotlabel").empty();
+    var param={};
+    param["corp_code"]="C10000";
+    oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list);
+            var html="";
+            console.log(msg.length);
+            for(var i=0;i<msg.length;i++){
+                if(msg[i].label_type=="user"){
+                    html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
+                }else if(msg[i].label_type=="org"){
+                    html+="<span>"+msg[i].label_name+"</span>"
+                }
+            }
+            $("#hotlabel").append(html);
+        }
+    })
+}
+$("#hot_label").click(function () {
+    gethotVIPlabel();
+})
+//官方用户标签
+function getOtherlabel() {
+    oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+                msg=JSON.parse(msg.list)
+                msg=msg.list;
+            console.log(msg);
+            if(msg[0].label_type=="org"){
+                for(var i=0;i<msg.length;i++){
+                    var html="";
+                    html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                }
+                $("#label_org").append(html);
+            }else if(msg[0].label_type=="user"){
+                for(var j=0;j<msg.length;j++){
+                    var html="";
+                    html+="<span class="+'label_u'+">"+msg[j].label_name+"</span>"
+                }
+                $("#label_user").append(html);
+            }
+
+        }
+    })
+}
+$("#label_li_org").click(function () {
+    $("#label_org").empty();
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="2";
+    getOtherlabel();
+})
+$("#label_li_user").click(function () {
+    $("#label_user").empty();
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="3";
+    getOtherlabel();
+})
+
+//搜索热门标签
+function searchHotlabel() {
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']=$("#search_input").val();
+    param['type']="1";
+    oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            msg=JSON.parse(msg.list)
+            msg=msg.list;
+            var html="";
+            console.log(msg);
+            if(msg==""){
+                $("#search_label").hide();
+                $("#labeladd_btn").show();
+            }else if(msg!==""){
+                for(var i=0;i<msg.length;i++){
+                    if(msg[i].label_type=="user"){
+                        html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
+                    }else if(msg[i].label_type=="org"){
+                        html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                    }
+                }
+                $("#hotlabel").append(html);
+            }
+        }
+    })
+}
+$("#search_label").click(function () {
+    $("#hotlabel").empty();
+    searchHotlabel();
+    $(".label_nav li:first-child").addClass("label_li_active");
+    $(".label_nav li:first-child").siblings().removeClass("label_li_active");
+    $(".label_box").eq(1).show();
+    $(".label_box").eq(1).siblings("div").hide();
+})
+
 
 
 //回到会员列表
@@ -56,8 +193,8 @@ $("#nav_bar li").click(function () {
     $(".all_list").children().eq(index).show();
     $(".all_list").children().eq(index).siblings().hide();
 }).mouseover(function(){
-    var len=$(this).width();
     var index=$(this).index();
+    var len=$(this).width();
     $("#remark").animate({left:len*index},200);
 }).mouseout(function(){
     $("#remark").stop(true,true);
@@ -66,8 +203,9 @@ $(".nav_bar").mouseleave(function() {
     $("#remark").stop();
     var _this = $(".active1").index();
     $(this).children().eq(_this).addClass("active1");
-    var len = $(this).children().width();
-    $("#remark").animate({left: len * _this}, 200);})
+    var len = $(this).children().eq(_this).width();
+    $("#remark").animate({left: len * _this}, 200);
+});
 
 //相册关闭按钮显示
 $(".album img").mouseover(function () {
@@ -96,7 +234,9 @@ $(".label_nav li").click(function () {
     $(".label_box").eq(index).siblings("div").hide();
 })
 //添加，删除标签
-$(".labeladd_btn").click(function () {
+$("#labeladd_btn").click(function () {
+    $("#search_label").show();
+    $("#labeladd_btn").hide();
     var val=$(".labeladd_box input").val();
     console.log(val);
     if(val!==""){
@@ -105,7 +245,39 @@ $(".labeladd_btn").click(function () {
     $("#label_box span i").click(function () {
         $(this).parent("span").remove();
     })
-})
+});
 $("#label_box span i").click(function () {
     $(this).parent("span").remove();
-})
+});
+function upLoadAlbum(){
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        bucket: 'products-image'
+    });
+    document.getElementById('upAlbum').addEventListener('change', function (e) {
+        var file = e.target.files[0];
+        //var corp_code=$("#OWN_CORP").val()//公司编号
+        //var user_code=$("#USERID").val()//员工编号
+        // console.log(corp_code);
+        // console.log(user_code);
+        //var storeAs="";
+        //if(user_code==""||user_code==undefined){
+        //    storeAs = '/Corp_logo/ishow/'+corp_code.trim()+'.jpg';
+        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
+        //}
+        //if(user_code!==""&&user_code!==undefined){
+        //    storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
+        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
+        //}
+        var storeAs='Album/Vip/iShow/C10141-123-20160920186524.jpg';
+        client.multipartUpload(storeAs, file).then(function (result) {
+            $("#imghead").attr("src",result.url);
+            $("#upAlbum").val("");
+            console.log(result.url);
+        }).catch(function (err) {
+             console.log(err);
+        });
+    });
+}

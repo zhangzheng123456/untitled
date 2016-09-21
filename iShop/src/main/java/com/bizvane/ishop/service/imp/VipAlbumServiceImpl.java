@@ -42,10 +42,10 @@ public class VipAlbumServiceImpl implements VipAlbumService {
         JSONObject obj = new JSONObject(message);
         String vip_code = obj.get("vip_code").toString();
         String vip_name = obj.get("vip_name").toString();
-        String cardno = obj.get("vip_code").toString();
+        String cardno = obj.get("cardno").toString();
         String image_url = obj.get("image_url").toString();
         String corp_code = obj.get("corp_code").toString();
-        String isactive = obj.get("isactive").toString();
+//        String isactive = obj.get("isactive").toString();
         Date now = new Date();
         VipAlbum vipAlbum = new VipAlbum();
         vipAlbum.setCorp_code(corp_code);
@@ -57,7 +57,7 @@ public class VipAlbumServiceImpl implements VipAlbumService {
         vipAlbum.setModified_date(Common.DATETIME_FORMAT.format(now));
         vipAlbum.setCreater(user_code);
         vipAlbum.setModifier(user_code);
-        vipAlbum.setIsactive(isactive);
+        vipAlbum.setIsactive(Common.IS_ACTIVE_Y);
         return vipAlbumMapper.insertVipAlbum(vipAlbum);
     }
 

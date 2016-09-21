@@ -4,7 +4,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+
 import com.bizvane.ishop.entity.*;
+
+import com.bizvane.ishop.entity.Corp;
+import com.bizvane.ishop.entity.VipLabel;
+
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.MongoUtils;

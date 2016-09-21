@@ -8,17 +8,17 @@
         def_task.task_code,
         def_task.task_title,
         def_task_type.task_type_name,
-        def_task.TASK_DESCRIPTION,
+        def_task.task_description,
         def_task.corp_code,
-        DEF_CORP.corp_name,
+        def_corp.corp_name,
         def_task.target_start_time,
         def_task.target_end_time,
         def_task.modifier,
         def_task.ISACTIVE
-        FROM def_task,DEF_CORP,def_task_type
-        WHERE def_task.corp_code = DEF_CORP.corp_code
+        FROM def_task,def_corp,def_task_type
+        WHERE def_task.corp_code = def_corp.corp_code
         AND def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
-        AND DEF_CORP.corp_code = def_task_type.corp_code
+        AND def_corp.corp_code = def_task_type.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
@@ -32,9 +32,9 @@
             def_task.task_code LIKE concat('%', #{search_value},'%')
             or def_task.task_title LIKE concat ('%', #{search_value},'%')
             or def_task_type.task_type_name LIKE concat ('%', #{search_value},'%')
-            OR def_task.TASK_DESCRIPTION LIKE concat('%', #{search_value},'%')
+            OR def_task.task_description LIKE concat('%', #{search_value},'%')
             or def_task.target_start_time LIKE concat('%', #{search_value},'%')
-            or DEF_CORP.corp_name LIKE concat('%', #{search_value},'%')
+            or def_corp.corp_name LIKE concat('%', #{search_value},'%')
             OR def_task.target_end_time LIKE concat('%', #{search_value},'%')
             OR def_task.modifier LIKE concat('%', #{search_value},'%')
             OR def_task.ISACTIVE LIKE concat('%', #{search_value},'%')
@@ -49,17 +49,17 @@
         def_task.task_code,
         def_task.task_title,
         def_task_type.task_type_name,
-        def_task.TASK_DESCRIPTION,
+        def_task.task_description,
         def_task.corp_code,
-        DEF_CORP.corp_name,
+        def_corp.corp_name,
         def_task.target_start_time,
         def_task.target_end_time,
         def_task.modifier,
         def_task.ISACTIVE
-        from def_task,DEF_CORP,def_task_type
-        where def_task.corp_code = DEF_CORP.corp_code
+        from def_task,def_corp,def_task_type
+        where def_task.corp_code = def_corp.corp_code
         and def_task.TASK_TYPE_CODE =def_task_type.TASK_TYPE_CODE
-        and DEF_CORP.corp_code = def_task_type.corp_code
+        and def_corp.corp_code = def_task_type.corp_code
         <if test="corp_code != null and corp_code !=''">
             AND def_task.CORP_CODE = #{corp_code}
         </if>
@@ -71,7 +71,7 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
-                    DEF_CORP.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
                 </when>
                 <when test="entryValue!='' and entryKey=='task_type_name'">
                     def_task_type.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -101,7 +101,7 @@
          rel_task_allocation.id,
          rel_task_allocation.task_code,
          rel_task_allocation.corp_code,
-         DEF_CORP.corp_name,
+         def_corp.corp_name,
          rel_task_allocation.user_code,
          def_user.user_name,
          def_user.phone,
@@ -113,9 +113,9 @@
          rel_task_allocation.created_date,
          rel_task_allocation.creater,
          rel_task_allocation.isactive
-         FROM rel_task_allocation,DEF_CORP,def_user
-        WHERE  rel_task_allocation.corp_code=DEF_CORP.corp_code
-        AND def_user.USER_CODE = rel_task_allocation.user_code
+         FROM rel_task_allocation,def_corp,def_user
+        WHERE  rel_task_allocation.corp_code=def_corp.corp_code
+        AND def_user.user_code = rel_task_allocation.user_code
         AND rel_task_allocation.corp_code = def_user.corp_code
         AND  rel_task_allocation.corp_code =#{corp_code}
         AND rel_task_allocation.task_code=#{task_code}
@@ -125,7 +125,7 @@
         SELECT   rel_task_allocation.id,
          rel_task_allocation.task_code,
          rel_task_allocation.corp_code,
-         DEF_CORP.corp_name,
+         def_corp.corp_name,
          rel_task_allocation.user_code,
          def_user.user_name,
          rel_task_allocation.task_status,
@@ -136,27 +136,27 @@
          rel_task_allocation.created_date,
          rel_task_allocation.creater,
          rel_task_allocation.isactive
-         from rel_task_allocation,DEF_CORP,def_user
-        where  rel_task_allocation.corp_code=DEF_CORP.corp_code
-        AND def_user.USER_CODE = rel_task_allocation.user_code
+         FROM rel_task_allocation,def_corp,def_user
+        where  rel_task_allocation.corp_code=def_corp.corp_code
+        AND def_user.user_code = rel_task_allocation.user_code
         AND rel_task_allocation.corp_code = def_user.corp_code
         AND rel_task_allocation.corp_code =#{corp_code} AND rel_task_allocation.task_code=#{task_code}
         AND rel_task_allocation.user_code=#{user_code}
     </select>
     <!--删除任务-->
     <delete id="delTaskById">
-        delete from def_task where id =#{id}
+        DELETE FROM def_task WHERE id =#{id}
     </delete>
     <!--删除任务详情根据corpcode,taskcode-->
     <delete id="delTaskAllocation">
-        delete from rel_task_allocation where  corp_code =#{corp_code} and task_code =#{task_code}
+        DELETE FROM rel_task_allocation WHERE  corp_code =#{corp_code} AND task_code =#{task_code}
     </delete>
     <delete id="delTaskAllocationById">
-        delete from rel_task_allocation where id=#{id}
+        DELETE FROM rel_task_allocation WHERE id=#{id}
     </delete>
     <!--新增任务-->
     <insert id="addTask" parameterType="com.bizvane.ishop.entity.Task">
-        insert into def_task
+        INSERT INTO def_task
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="task_code!=null">
                 task_code,
@@ -236,7 +236,7 @@
     </insert>
     <!--新增任务详情-->
     <insert id="addTaskAllocation" parameterType="com.bizvane.ishop.entity.TaskAllocation">
-        insert into rel_task_allocation
+        INSERT INTO rel_task_allocation
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="task_code!=null">
                 task_code,
@@ -371,7 +371,7 @@
     </update>
     <!--编辑任务详情-->
     <update id="updTaskAllocation" parameterType="com.bizvane.ishop.entity.TaskAllocation">
-        update rel_task_allocation
+        UPDATE rel_task_allocation
         <trim prefix="SET" suffixOverrides=",">
             <if test="task_code!=null and task_code!=''">
                 task_code= #{task_code},
