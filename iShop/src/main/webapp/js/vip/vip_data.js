@@ -119,18 +119,34 @@ function getOtherlabel() {
             if(msg[0].label_type=="org"){
                 for(var i=0;i<msg.length;i++){
                     var html="";
-                    html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                    // html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(msg[0].label_type=="user"){
                 for(var j=0;j<msg.length;j++){
                     var html="";
-                    html+="<span class="+'label_u'+">"+msg[j].label_name+"</span>"
+                    // html+="<span class="+'label_u'+">"+msg[j].label_name+"</span>"
+                    html+="<span  draggable='true' class="+'label_u'+" id="+j+">"+msg[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
 
         }
+        //绑定拖拽事件
+        $('#label_org span').on('dragstart',function (event) {
+            var ev=event;
+            console.log('触发');
+            ev=ev.originalEvent;
+            ev.dataTransfer.setData("Text",ev.target.id);
+        });
+        //绑定拖拽事件
+        $('#label_user span').on('dragstart',function (event) {
+            var ev=event;
+            console.log('触发');
+            ev=ev.originalEvent;
+            ev.dataTransfer.setData("Text",ev.target.id);
+        });
     })
 }
 $("#label_li_org").click(function () {
@@ -331,17 +347,48 @@ function addVipAlbum(url){//上传照片到相册
         console.log(data)
     })
 }
-//拖拽
+//阻止拖拽默认事件
 function allowDrop(ev)
 {
     ev.preventDefault();
 }
+//拖拽事件
 function drop(ev)
 {
+    var param={};
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
     var clone= $(document.getElementById(data)).clone();
-    $(ev.target).append(clone)
+    var  val=$(clone).html();
+    // $(clone).append("<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>");
+    // $(ev.target).append(clone)
+    //调用借口
+    var id=sessionStorage.getItem("id");
+    var store_id=sessionStorage.getItem("store_id");
+    var val=$("#search_input").val().replace(/\s+/g,"");
+    val=val.substring(0,8);
+    param["corp_code"]="C10000";
+    param['label_name']=val;
+    param['vip_code']=id;
+    param['label_id']="";
+    param['store_code']=store_id;
+    oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            var rid=JSON.parse(msg.list);
+            var len=$("#label_box span").length;
+            var html= "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
+            if(len==0){
+                $(clone).append(html);
+                $(ev.target).append(clone)
+            }else {
+                $(clone).after(html);
+                $(ev.target).append(clone)
+            }
+            var total=parseInt($(".span_total").html())+1;
+            $(".span_total").html(total);
+        }
+    })
 }
 $(function(){
     getConsumCount();
