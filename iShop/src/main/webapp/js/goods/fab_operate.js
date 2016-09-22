@@ -574,7 +574,7 @@ function getmatchgoodsList() {
 	var pageSize
 	param["corp_code"]=corp_code;
 	param["goods_code"]=goods_code;
-	param["pageNumber"] = a;
+	param["pageNumber"] = 1;
     param["pageSize"] =150;
 	param["searchValue"]=searchValue;
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
