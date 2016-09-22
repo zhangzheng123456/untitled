@@ -743,7 +743,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/FabCodeExist", method = RequestMethod.POST)
     @ResponseBody
-    public String UserCodeExist(HttpServletRequest request) {
+    public String FabCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -775,7 +775,7 @@ public class GoodsController {
     /**
      * 获取企业商品（用于商品搭配）
      */
-    @RequestMapping(value = "/corp_fab", method = RequestMethod.POST)
+    @RequestMapping(value = "/matchGoodsList", method = RequestMethod.POST)
     @ResponseBody
     public String corpFab(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -785,6 +785,9 @@ public class GoodsController {
             JSONObject jsonObj = new JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+
             String corp_code = jsonObject.get("corp_code").toString();
             String goods_code = jsonObject.get("goods_code").toString();
             String brand_code = "";
@@ -792,7 +795,7 @@ public class GoodsController {
                 brand_code = jsonObject.get("brand_code").toString();
             }
             String search_value = jsonObject.get("searchValue").toString();
-            List<Goods> list = goodsService.matchGoodsList(corp_code, search_value,goods_code,brand_code);
+            PageInfo<Goods> list = goodsService.matchGoodsList(page_number, page_size,corp_code, search_value,goods_code,brand_code);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
