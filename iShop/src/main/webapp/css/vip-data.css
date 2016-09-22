@@ -844,12 +844,15 @@ hr{
     overflow: hidden;
 }
 .expand ul{
-    width: 33.33%;
-    float: left;
+    width: 100%;
+    /*float: left;*/
     padding-right: 20px;
+    overflow: hidden;
 }
 .expand ul li{
-    margin-bottom: 10px;
+    float: left;
+    margin-bottom: 20px;
+    width: 33.3%;
 }
 .expand ul li b{
     padding-top: 3px;
@@ -883,7 +886,7 @@ hr{
 .expand .input_select:hover{
     cursor: pointer;
 }
-.expand ul:last-child{
-    clear: both;
-    width: 100%;
-}
+/*.expand ul:last-child{*/
+    /*clear: both;*/
+    /*width: 100%;*/
+/*}*/
