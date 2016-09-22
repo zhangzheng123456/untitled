@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.sun.v1.common.Data;
@@ -160,7 +161,7 @@ public class VIPController {
 //            vip.put("amount","1000");
             vip.put("consume_times","5");
             vip.put("join_date","2016-04-11");
-//            vip.put("cardno","4444444444444444444");
+            vip.put("cardno","4444444444444444444");
             vip.put("vip_birthday","2016-04-11");
             vip.put("age","23");
             vip.put("sex","female");
@@ -169,21 +170,113 @@ public class VIPController {
             vip.put("dormant_time","2016-04-11");
             vip.put("store_name","第三家");
             vip.put("store_code","ABC02");
-            vip.put("vip_card_no","774205");
+//            vip.put("vip_card_no","774205");
 
             JSONArray extend = new JSONArray();
             JSONArray info = new JSONArray();
 
-            JSONObject extend_info = new JSONObject();
-            extend_info.put("name","性别");
-            extend_info.put("key","sex");
-            extend_info.put("is_must","Y");
-            extend.add(extend_info);
-//            extend_info.put("value","22");
-            JSONObject extend_info_sex = new JSONObject();
-            extend_info_sex.put("key","sex");
-            extend_info_sex.put("value","女");
-            info.add(extend_info_sex);
+            JSONObject extend_job = new JSONObject();
+            extend_job.put("name","职业");
+            extend_job.put("key","working");
+            extend_job.put("type",Common.DATE_SHOW_TYPE_TEXT);
+            extend_job.put("is_must","Y");
+            extend.add(extend_job);
+            JSONObject extend_mail = new JSONObject();
+            extend_mail.put("name","邮件");
+            extend_mail.put("key","mail");
+            extend_mail.put("type",Common.DATE_SHOW_TYPE_TEXT);
+            extend_mail.put("is_must","Y");
+            extend.add(extend_mail);
+            JSONObject extend_birth = new JSONObject();
+            extend_birth.put("name","生日");
+            extend_birth.put("key","birthday");
+            extend_birth.put("type",Common.DATE_SHOW_TYPE_DATE);
+            extend_birth.put("is_must","Y");
+            extend.add(extend_birth);
+            JSONObject extend_idno = new JSONObject();
+            extend_idno.put("name","身份证号码");
+            extend_idno.put("key","idno");
+            extend_idno.put("type",Common.DATE_SHOW_TYPE_TEXT);
+            extend_idno.put("is_must","Y");
+            extend.add(extend_idno);
+            JSONObject extend_height = new JSONObject();
+            extend_height.put("name","身高");
+            extend_height.put("key","height");
+            extend_height.put("type",Common.DATE_SHOW_TYPE_TEXT);
+            extend_height.put("is_must","Y");
+            extend.add(extend_height);
+            JSONObject extend_bust = new JSONObject();
+            extend_bust.put("name","胸围(cm)");
+            extend_bust.put("key","bust");
+            extend_bust.put("type",Common.DATE_SHOW_TYPE_TEXT);
+            extend_bust.put("is_must","Y");
+            extend.add(extend_bust);
+            JSONObject extend_waist = new JSONObject();
+            extend_waist.put("name","腰围(cm)");
+            extend_waist.put("key","waist");
+            extend_waist.put("type",Common.DATE_SHOW_TYPE_TEXT);
+            extend_waist.put("is_must","Y");
+            extend.add(extend_waist);
+            JSONObject extend_hip = new JSONObject();
+            extend_hip.put("name","臀围(cm)");
+            extend_hip.put("key","hip");
+            extend_hip.put("type",Common.DATE_SHOW_TYPE_TEXT);
+            extend_hip.put("is_must","Y");
+            extend.add(extend_hip);
+            JSONObject extend_constellation = new JSONObject();
+            extend_constellation.put("name","星座");
+            extend_constellation.put("key","constellation");
+            extend_constellation.put("type",Common.DATE_SHOW_TYPE_SELECT);
+            extend_constellation.put("values", CommonValue.VALUE_CONSTELLATION);
+            extend_constellation.put("is_must","Y");
+            extend.add(extend_constellation);
+            JSONObject extend_address = new JSONObject();
+            extend_address.put("name","通讯地址");
+            extend_address.put("key","address");
+            extend_address.put("type",Common.DATE_SHOW_TYPE_LONGTEXT);
+            extend_address.put("is_must","Y");
+            extend.add(extend_address);
+
+            JSONObject extend_info_job = new JSONObject();
+            extend_info_job.put("key","working");
+            extend_info_job.put("value","攻城狮");
+            info.add(extend_info_job);
+            JSONObject extend_info_mail = new JSONObject();
+            extend_info_mail.put("key","mail");
+            extend_info_mail.put("value","123@2.com");
+            info.add(extend_info_mail);
+            JSONObject extend_info_birth = new JSONObject();
+            extend_info_birth.put("key","birthday");
+            extend_info_birth.put("value","1993-07-07");
+            info.add(extend_info_birth);
+            JSONObject extend_info_height = new JSONObject();
+            extend_info_height.put("key","height");
+            extend_info_height.put("value","170");
+            info.add(extend_info_height);
+            JSONObject extend_info_constellation = new JSONObject();
+            extend_info_constellation.put("key","constellation");
+            extend_info_constellation.put("value","处女座");
+            info.add(extend_info_constellation);
+            JSONObject extend_info_address = new JSONObject();
+            extend_info_address.put("key","address");
+            extend_info_address.put("value","江苏省南京市软件大道118号");
+            info.add(extend_info_address);
+            JSONObject extend_info_idno = new JSONObject();
+            extend_info_idno.put("key","idno");
+            extend_info_idno.put("value","320811198810102245");
+            info.add(extend_info_idno);
+            JSONObject extend_info_bust = new JSONObject();
+            extend_info_bust.put("key","bust");
+            extend_info_bust.put("value","80");
+            info.add(extend_info_bust);
+            JSONObject extend_info_waist = new JSONObject();
+            extend_info_waist.put("key","waist");
+            extend_info_waist.put("value","65");
+            info.add(extend_info_waist);
+            JSONObject extend_info_hip = new JSONObject();
+            extend_info_hip.put("key","hip");
+            extend_info_hip.put("value","90");
+            info.add(extend_info_hip);
 
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list",vip);
@@ -203,12 +296,83 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-
-
-    //会员积分
+    /**
+     * 会员信息
+     * 会员积分记录
+     */
     @RequestMapping(value = "/vipPoints", method = RequestMethod.POST)
     @ResponseBody
     public String vipPoints(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
+
+            JSONArray pointLists = new JSONArray();
+            for (int i = 0; i < 18; i++) {
+                JSONObject record1 = new JSONObject();
+                record1.put("points",i+10);
+                record1.put("date","2016-01-02");
+                pointLists.add(record1);
+            }
+            JSONObject result_points = new JSONObject();
+            result_points.put("list",JSON.toJSONString(pointLists));
+            result_points.put("vip_card_type","直营合作会员卡");
+            result_points.put("cardno","4444444444444444444");
+            result_points.put("vip_name","罗晓珊");
+            result_points.put("points","1022");
+
+/*
+            JSONArray consumeLists = new JSONArray();
+            for (int i = 0; i < 18; i++) {
+                JSONObject record1 = new JSONObject();
+                record1.put("points",i+10);
+                record1.put("date","2016-01-02");
+                pointLists.add(record1);
+            }
+            JSONObject result_points = new JSONObject();
+            result_points.put("list",JSON.toJSONString(pointLists));
+            result_points.put("vip_card_type","直营合作会员卡");
+            result_points.put("cardno","4444444444444444444");
+            result_points.put("vip_name","罗晓珊");
+            result_points.put("points","1022");
+*/
+
+            JSONObject wardrobe = new JSONObject();
+            wardrobe.put("goods_id", "132");
+            wardrobe.put("goods_name", "无");
+            wardrobe.put("goods_img", "null");
+            wardrobe.put("goods_price", "1234");
+            wardrobe.put("buy_time", "无");
+            JSONObject result = new JSONObject();
+            result.put("result_points",result_points);
+            result.put("result_consumn",wardrobe);
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    //会员积分列表
+    @RequestMapping(value = "/allVipPointsRecord", method = RequestMethod.POST)
+    @ResponseBody
+    public String allVipPointsRecord(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");

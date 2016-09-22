@@ -45,6 +45,7 @@ function getConsumCount(){//获取会员信息
         $("#labels").html(LABEL);
         $("#label_box").html(LABELALL);
         lg_img();
+        img_hover();
     })
 
 }
@@ -58,6 +59,21 @@ function lg_img(){
     $(".album li").click(function () {
         var src=$(this).find("img").attr("src");
         whir.loading.add("",0.8,src);
+    })
+}
+function img_hover(){
+    //相册关闭按钮显示
+    $(".album img").mouseover(function () {
+        $(this).next(".cancel_img").show();
+    }).mouseout(function () {
+        $(this).next(".cancel_img").hide();
+    })
+    $(".cancel_img").mouseover(function () {
+        $(this).show();
+    }).mouseout(function () {
+        $(this).hide();
+    }).click(function(){
+        alert(2)
     })
 }
 $(".message-class ul li a").click(function(){
@@ -260,17 +276,6 @@ $(".nav_bar").mouseleave(function() {
     $("#remark").animate({left: len * _this}, 200);
 });
 
-//相册关闭按钮显示
-$(".album img").mouseover(function () {
-    $(this).next(".cancel_img").show();
-}).mouseleave(function () {
-    $(this).next(".cancel_img").hide();
-})
-$(".cancel_img").mouseover(function () {
-    $(this).show();
-}).mouseleave(function () {
-    $(this).hide();
-})
 
 
 

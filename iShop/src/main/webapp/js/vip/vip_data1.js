@@ -8,7 +8,63 @@ function getVipInfo(){
     oc.postRequire("post","/vip/vipInfo","",param_info,function(data){
         var vipData=JSON.parse(data.message);
         var vipDataList=vipData.list;
+        var extend=vipData.extend;
+        var extend_info=vipData.extend_info;
         var sex=vipDataList.sex;
+        var extendhtml="";
+        function getvalue(){
+            var VALUE="";
+            for(var a=0;a<extend_info.length;a++){
+                if(extend[i].key==extend_info[a].key){
+                    VALUE=extend_info[a].value
+                }
+            }
+            return VALUE;
+        }
+        for(var i=0;i<extend.length;i++){
+            console.log(extend[i].name+extend[i].key+"文本类型"+extend[i].type);
+            if(extend[i].type=="text"){
+                var value=getvalue();
+                extendhtml+="<li>"
+                    +"<b>"+extend[i].name+"</b>"
+                    +"<div>"
+                    +"<input type='text' value='"+value+"' />"
+                    +"</div>"
+                    +"</li>"
+            }
+            if(extend[i].type=="select"){
+                var value=getvalue();
+                extendhtml+='<li class="drop_down item_1">'
+                    +'<b>'+extend[i].name+'</b>'
+                    +'<div class="position" >'
+                    +'<input class="input_select" readonly value="'+value+'" type="text" />'
+                    +'<ul class="expand_selection">'
+                    +'<li>男</li>'
+                    +'<li>女</li>'
+                    +'</ul>'
+                    +'</div>'
+                    +'</li>'
+            }
+            if(extend[i].type=="date"){
+                var value=getvalue();
+                extendhtml+='<li >'
+                +'<b>'+extend[i].name+'</b>'
+                +'<div>'
+                +'<input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" value="'+value+'" onclick="laydate({istime: true, format: \'YYYY-MM-DD\'})">'
+                +'</div>'
+                +'</li>'
+            }
+            if(extend[i].type=="longtext"){
+                var value=getvalue();
+                extendhtml+='<li style="width: 100%">'
+                +'<b>'+extend[i].name+'</b>'
+                +'<div>'
+                +'<input type="text"  value="'+value+'"/>'
+                +'</div>'
+                +'</li>'
+            }
+        }
+        $("#extend ul").html(extendhtml);
         if(sex=="male"){
             $("#vip_name").next().addClass("icon-ishop_9-03");
             $("#USER_SEX").val("男");
@@ -31,7 +87,6 @@ function getVipInfo(){
         $("#vip_dormant_time").html(vipDataList.dormant_time);
         $("#vip_birthday").html(vipDataList.vip_birthday);
         $("#vip_birthday_edit").val(vipDataList.vip_birthday);
-
     })
 }
 $("#more_message").click(function(){
