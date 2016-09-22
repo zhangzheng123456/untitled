@@ -344,38 +344,66 @@ public class VIPController {
             result_points.put("vip_name","罗晓珊");
             result_points.put("points","1022");
 */
-
-            JSONObject wardrobe = new JSONObject();
-            wardrobe.put("goods_id", "367A0103");
-            wardrobe.put("goods_name", "无");
-            wardrobe.put("goods_img", "null");
-            wardrobe.put("goods_price", "889");
-            wardrobe.put("goods_num", "3");
-
-            JSONObject wardrobe2 = new JSONObject();
-            wardrobe2.put("goods_id", "26632146");
-            wardrobe2.put("goods_name", "无");
-            wardrobe2.put("goods_img", "null");
-            wardrobe2.put("goods_price", "1050");
-            wardrobe2.put("goods_num", "5");
-
-            JSONArray war=new JSONArray();
-            war.add(wardrobe);
-            war.add(wardrobe2);
-            JSONObject orders = new JSONObject();
-            orders.put("buy_time","2016-07-07");
-            orders.put("order_no","1665467899992");
-            orders.put("order_discount","9.5折");
-            orders.put("order_count","2件商品");
-            orders.put("order_total","￥1939");
-            orders.put("emp_name","陆之昂");
-
             JSONArray wardrobes=new JSONArray();
-            wardrobes.add(orders);
-            wardrobes.add(war);
+
+                JSONObject wardrobe = new JSONObject();
+                wardrobe.put("goods_id", "367A0103");
+                wardrobe.put("goods_name", "外套(毛衫外套)");
+                wardrobe.put("goods_img", "http://picttype1.jnby.com/2/6L840-2.jpg");
+                wardrobe.put("goods_price", "1099");
+                wardrobe.put("goods_num", "1");
+
+                JSONObject wardrobe2 = new JSONObject();
+                wardrobe2.put("goods_id", "26632146");
+                wardrobe2.put("goods_name", "外套(羊绒大衣)");
+                wardrobe2.put("goods_img", "http://picttype1.jnby.com/2/6L837-5.jpg");
+                wardrobe2.put("goods_price", "2499");
+                wardrobe2.put("goods_num", "1");
+
+                JSONArray war=new JSONArray();
+                war.add(wardrobe);
+                war.add(wardrobe2);
+                JSONObject orders = new JSONObject();
+                orders.put("buy_time","2016-02-07");
+                orders.put("order_no","1665467899992");
+                orders.put("order_discount","9.5折");
+                orders.put("order_count","2件商品");
+                orders.put("order_total","3418");
+                orders.put("emp_name","陆之昂");
+                orders.put("order",war);
+                wardrobes.add(orders);
+
+
+            JSONObject wardrobe11 = new JSONObject();
+            wardrobe11.put("goods_id", "367A0104");
+            wardrobe11.put("goods_name", "帽子");
+            wardrobe11.put("goods_img", "http://wx.jnby.com/WXDATA/less/image/2/367A0103001-2.jpg");
+            wardrobe11.put("goods_price", "259");
+            wardrobe11.put("goods_num", "3");
+
+            JSONObject wardrobe12 = new JSONObject();
+            wardrobe12.put("goods_id", "26632146");
+            wardrobe12.put("goods_name", "裤子(九分裤)");
+            wardrobe12.put("goods_img", "http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/26632146/12.jpg");
+            wardrobe12.put("goods_price", "499");
+            wardrobe12.put("goods_num", "2");
+
+            JSONArray war2=new JSONArray();
+            war2.add(wardrobe);
+            war2.add(wardrobe2);
+            JSONObject orders2 = new JSONObject();
+            orders2.put("buy_time","2016-02-07");
+            orders2.put("order_no","1665467899992");
+            orders2.put("order_discount","8.5折");
+            orders2.put("order_count","5件商品");
+            orders2.put("order_total","1458");
+            orders2.put("emp_name","陆之昂");
+            orders2.put("order",war);
+            wardrobes.add(orders2);
+
             JSONObject result = new JSONObject();
             result.put("result_points",result_points);
-            result.put("result_consumn",wardrobe);
+            result.put("result_consumn",wardrobes);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

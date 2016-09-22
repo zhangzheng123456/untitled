@@ -74,6 +74,45 @@
         ORDER BY g.id DESC
     </select>
 
+    <select id="selectAllGoodsForApp" resultMap="GoodsInfo">
+        SELECT g.id,
+        g.goods_code,
+        g.goods_name,
+        g.goods_image,
+        g.goods_price,
+        g.goods_time,
+        g.goods_quarter,
+        g.goods_wave,
+        g.modified_date,
+        g.modifier,
+        g.isactive,
+        g.created_date,
+        g.creater,
+        g.goods_description,
+        g.corp_code,
+        g.brand_code,
+        cp.corp_name,
+        db.brand_name
+        FROM def_goods g,def_corp cp,def_brand db
+        WHERE g.corp_code=cp.corp_code AND g.corp_code=db.corp_code AND g.brand_code=db.brand_code
+        <if test="corp_code!=null and corp_code!=''">
+            AND g.corp_code=#{corp_code}
+        </if>
+        <if test="search_value!=null and search_value!=''">
+            AND
+            (g.goods_code LIKE concat('%',#{search_value},'%')
+            OR g.goods_name LIKE concat('%',#{search_value},'%')
+            OR g.goods_price LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        <if test="isactive!=null and isactive!=''">
+            AND g.isactive=#{isactive}
+        </if>
+        AND cp.isactive = 'Y'
+        AND db.isactive = 'Y'
+        ORDER BY g.id DESC
+    </select>
+
     <select id="selectAllGoodsByBrand" resultMap="GoodsInfo">
         SELECT g.id,
         g.goods_code,

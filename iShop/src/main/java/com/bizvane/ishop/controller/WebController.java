@@ -194,13 +194,13 @@ public class WebController {
             String search_value = jsonObject.get("search_value").toString();
 
             JSONObject result = new JSONObject();
-            PageInfo<Goods> list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, search_value);
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
+            PageInfo<Goods> list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code, search_value);
+//            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+//                String goods_image = list.getList().get(i).getGoods_image();
+//                if (goods_image != null && !goods_image.isEmpty()) {
+//                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+//                }
+//            }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
