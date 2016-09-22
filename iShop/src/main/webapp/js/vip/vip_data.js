@@ -1,6 +1,9 @@
 var oc = new ObjectControl();
 var page=1;
 var param={};//定义传值对象
+var cls="";//标签搜索下class名
+var txt="";//标签搜索下标签名
+var val="";//贴上input值
 
 function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
@@ -190,13 +193,20 @@ function searchHotlabel() {
             console.log(msg);
                 for(var i=0;i<msg.length;i++){
                     if(msg[i].label_type=="user"){
-                        html+="<li class="+'label_u'+">"+msg[i].label_name+"</li>"
+                        html+="<li class="+'label_u'+" data-id="+msg[i].id+">"+msg[i].label_name+"</li>"
                     }else {
-                        html+="<li class="+'label_g'+">"+msg[i].label_name+"</li>"
+                        html+="<li class="+'label_g'+" data-id="+msg[i].id+">"+msg[i].label_name+"</li>"
                     }
                 }
                 $(".search_list").append(html);
         }
+        //搜索下拉点击事件
+        $(".search_list li").click(function () {
+            cls=$(this).attr("class");
+            txt=$(this).html();
+            param['label_name']=txt;
+            addViplabel();
+        })
     })
 }
 // $("#search_input").keydown()function () {
@@ -215,6 +225,9 @@ $("#search_input").blur(function () {
         $(".search_list").hide();
     }, 200)
 })
+$(function(){
+    $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"",cursoropacitymin:"0",boxzoom:false});
+});
 
 //回到会员列表
 $("#VIP_LIST_info").click(function(){
@@ -288,10 +301,7 @@ function labelDelete(obj) {
 function addViplabel() {
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
-    var val=$("#search_input").val().replace(/\s+/g,"");
-        val=val.substring(0,8);
     param["corp_code"]="C10000";
-    param['label_name']=val;
     param['vip_code']=id;
     param['label_id']="";
     param['store_code']=store_id;
@@ -299,19 +309,25 @@ function addViplabel() {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             var rid=JSON.parse(msg.list);
-            var len=$("#label_box span").length;
-            var html='<span class="label_g" data-rid="'+rid+'">'+val+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
-            if(len==0){
-                $("#label_box").append(html);
-            }else {
-                $("#label_box span:last-child").after(html);
+            var html=""
+            if(cls==""||cls==undefined){
+                html='<span class="label_g" data-rid="'+rid+'">'+val+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
+            }else{
+                html='<span class='+cls+' data-rid="'+rid+'">'+txt+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
             }
+            $("#label_box").append(html);
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
         }
     })
 }
 $("#labeladd_btn").click(function () {
+    val=$("#search_input").val().replace(/\s+/g,"");
+    val=val.substring(0,8);
+    if(val==""){
+        return;
+    }
+    param['label_name']=val;
     addViplabel();
 });
 function upLoadAlbum(){
