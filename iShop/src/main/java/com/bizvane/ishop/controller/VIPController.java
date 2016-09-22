@@ -346,11 +346,33 @@ public class VIPController {
 */
 
             JSONObject wardrobe = new JSONObject();
-            wardrobe.put("goods_id", "132");
+            wardrobe.put("goods_id", "367A0103");
             wardrobe.put("goods_name", "无");
             wardrobe.put("goods_img", "null");
-            wardrobe.put("goods_price", "1234");
-            wardrobe.put("buy_time", "无");
+            wardrobe.put("goods_price", "889");
+            wardrobe.put("goods_num", "3");
+
+            JSONObject wardrobe2 = new JSONObject();
+            wardrobe2.put("goods_id", "26632146");
+            wardrobe2.put("goods_name", "无");
+            wardrobe2.put("goods_img", "null");
+            wardrobe2.put("goods_price", "1050");
+            wardrobe2.put("goods_num", "5");
+
+            JSONArray war=new JSONArray();
+            war.add(wardrobe);
+            war.add(wardrobe2);
+            JSONObject orders = new JSONObject();
+            orders.put("buy_time","2016-07-07");
+            orders.put("order_no","1665467899992");
+            orders.put("order_discount","9.5折");
+            orders.put("order_count","2件商品");
+            orders.put("order_total","￥1939");
+            orders.put("emp_name","陆之昂");
+
+            JSONArray wardrobes=new JSONArray();
+            wardrobes.add(orders);
+            wardrobes.add(war);
             JSONObject result = new JSONObject();
             result.put("result_points",result_points);
             result.put("result_consumn",wardrobe);
