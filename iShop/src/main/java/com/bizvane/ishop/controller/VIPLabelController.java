@@ -901,6 +901,7 @@ public class VIPLabelController {
                     if (i > 0) {
                         List<RelViplabel> relViplabels1 = vipLabelService.checkRelViplablel(corp_code, vip_code, label_id);
                         id1 = String.valueOf(relViplabels1.get(0).getId());
+                        result_add=id1;
                     }
                     result.put("list", JSON.toJSONString(result_add));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
