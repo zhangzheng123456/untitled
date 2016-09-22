@@ -185,13 +185,9 @@ public class VipLabelServiceImpl implements VipLabelService {
 //    }
 
     @Override
-    public String VipLabelNameExist(String corp_code, String tag_name) throws Exception {
-        VipLabel VipLabel = vipLabelMapper.selectVipLabelName(corp_code, tag_name);
-        String result = Common.DATABEAN_CODE_ERROR;
-        if (VipLabel == null) {
-            result = Common.DATABEAN_CODE_SUCCESS;
-        }
-        return result;
+    public List<VipLabel> VipLabelNameExist(String corp_code, String tag_name) throws Exception {
+         return vipLabelMapper.selectVipLabelName(corp_code, tag_name);
+
     }
 
     @Override

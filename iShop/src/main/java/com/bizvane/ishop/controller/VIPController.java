@@ -157,10 +157,10 @@ public class VIPController {
             vip.put("vip_name","罗晓珊");
             vip.put("vip_phone","15915655912");
             vip.put("vip_card_type","直营合作会员卡");
-            vip.put("amount","1000");
+//            vip.put("amount","1000");
             vip.put("consume_times","5");
             vip.put("join_date","2016-04-11");
-            vip.put("cardno","4444444444444444444");
+//            vip.put("cardno","4444444444444444444");
             vip.put("vip_birthday","2016-04-11");
             vip.put("age","23");
             vip.put("sex","female");

@@ -246,8 +246,8 @@ public class VIPLabelController {
                 if(column[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                String existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim());
-                if (!existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+                List<VipLabel> existInfo = this.vipLabelService.VipLabelNameExist(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim());
+                if (existInfo.size()>0) {
                     result = "：第" + (i + 1) + "列的会员标签名称已存在";
                     int b = 5 / 0;
                     break;
@@ -322,8 +322,9 @@ public class VIPLabelController {
         DataBean dataBean = new DataBean();
         String id = "";
         String user_id = request.getSession(false).getAttribute("user_code").toString();
+        String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+        String role_code = request.getSession(false).getAttribute("role_code").toString();
         try {
-            String corp_code = request.getSession(false).getAttribute("corp_code").toString();
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
             id = jsonObj.getString("id");
@@ -335,8 +336,7 @@ public class VIPLabelController {
             vipLabel.setModifier(user_id);
             vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
             vipLabel.setCreater(user_id);
-            String role_code = request.getSession(false).getAttribute("role_code").toString();
-            if (Common.ROLE_SYS.equals(role_code)) {
+            if (Common.ROLE_SYS.equals(role_code) && corp_code.equals(vipLabel.getCorp_code())) {
                 vipLabel.setLabel_type("sys");
             } else {
                 vipLabel.setLabel_type("org");
@@ -531,9 +531,9 @@ public class VIPLabelController {
             org.json.JSONObject jsonObject2 = new org.json.JSONObject(message);
             String tag_name = jsonObject2.getString("tag_name");
             String corp_code = jsonObject2.getString("corp_code");
-            String existInfo = this.vipLabelService.VipLabelNameExist(corp_code, tag_name);
+            List<VipLabel> existInfo = this.vipLabelService.VipLabelNameExist(corp_code, tag_name);
 
-            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+            if (existInfo.size() == 0) {
                 dataBean.setId(id);
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setMessage("标签名称未被使用");
@@ -829,13 +829,13 @@ public class VIPLabelController {
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.getString("corp_code").toString();
             String vip_code = jsonObject.getString("vip_code").toString();
-            String label_id = jsonObject.getString("label_id").toString();
+//            String label_id = jsonObject.getString("label_id").toString();
             String label_name = jsonObject.getString("label_name").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             String result_add="";
-            String existInfo = this.vipLabelService.VipLabelNameExist(corp_code, label_name);
-            if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
+            List<VipLabel> vipLabelList = vipLabelService.VipLabelNameExist(corp_code, label_name);
+            if (vipLabelList.size() == 0) {
                 VipLabel vipLabel = WebUtils.JSON2Bean(jsonObject, VipLabel.class);
                 Date now = new Date();
                 vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -843,7 +843,7 @@ public class VIPLabelController {
                 vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 vipLabel.setCreater(user_id);
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
-                if (Common.ROLE_SYS.equals(role_code)) {
+                if (Common.ROLE_SYS.equals(role_code) && corp_code.equals(vipLabel.getCorp_code())) {
                     vipLabel.setLabel_type("sys");
                 } else {
                     vipLabel.setLabel_type("org");
@@ -864,7 +864,7 @@ public class VIPLabelController {
                     int i = vipLabelService.addRelViplabel(relViplabel);
                     if(i>0){
                         String vip_code2 = relViplabel.getVip_code();
-                        List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code,vip_code2,label_id);
+                        List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code,vip_code2,label_id2);
                         int id1 = relViplabels.get(0).getId();
                         result_add = id1+"";
                     }
@@ -874,6 +874,7 @@ public class VIPLabelController {
                     dataBean.setMessage(result.toString());
                 }
             }else {
+                String label_id = vipLabelList.get(0).getLabel_id();
                 List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code, vip_code, label_id);
                 if (relViplabels.size() > 0) {
                     result_add = "该会员标签已存在";
@@ -890,13 +891,14 @@ public class VIPLabelController {
                     relViplabel.setModified_date(Common.DATETIME_FORMAT.format(date));
                     relViplabel.setModifier(user_id);
                     int i = vipLabelService.addRelViplabel(relViplabel);
+                    String id1 = "";
                     if (i > 0) {
-                        int id1 = relViplabels.get(0).getId();
-                        result_add = id1 + "";
+                        List<RelViplabel> relViplabels1 = vipLabelService.checkRelViplablel(corp_code, vip_code, label_id);
+                        id1 = String.valueOf(relViplabels1.get(0).getId());
                     }
                     result.put("list", JSON.toJSONString(result_add));
                     dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
+                    dataBean.setId(id1);
                     dataBean.setMessage(result.toString());
                 }
             }

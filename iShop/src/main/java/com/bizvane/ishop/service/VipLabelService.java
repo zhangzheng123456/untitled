@@ -69,7 +69,7 @@ public interface VipLabelService {
      * @param tag_name  ： VIP标签名称
      * @return
      */
-    String VipLabelNameExist(String corp_code, String tag_name) throws Exception;
+    List<VipLabel> VipLabelNameExist(String corp_code, String tag_name) throws Exception;
 
 
     VipLabel countLable(String corp_code, String label_id)throws Exception;
