@@ -14,6 +14,7 @@ function getConsumCount(){//获取会员信息
        var label=JSON.parse(Data.Label);
        var conSumData=JSON.parse(Data.Consum);
        var HTML="";
+        var Ablum_all_html="";
        var LABEL="";
        var LABELALL="";
       $("#total_amount_Y").html(conSumData.total_amount_Y);
@@ -23,11 +24,15 @@ function getConsumCount(){//获取会员信息
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
         for(var i=0;i<album.length;i++){
-            if(i<16){
-                HTML+="<span><img src="+album[0].image_url+" /></span>"
-            }
+                HTML+="<span><img src="+album[i].image_url+" /></span>";
+                Ablum_all_html+="<li>"
+                +"<img src='"+album[i].image_url+"'>"
+                +"<div class='cancel_img'></div>"
+                +"<span class='album_date'>"+album[i].created_date+"</span>"
+                +"</li>"
             }
         $("#images").html(HTML);
+        $("#Ablum-all").html(Ablum_all_html);
         for(var i=0;i<label.length;i++){
                 LABEL+="<span >"+label[i].label_name+"</span>";
                 LABELALL+= "<span class='label_u_active' data-rid='"+label[i].rid+"'>"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>";
@@ -46,6 +51,11 @@ function lg_img(){
         var src=$(this).children().attr("src");
         whir.loading.add("",0.8,src);//显示图片
     });
+    //相册图片点击放大.关闭
+    $(".album li").click(function () {
+        var src=$(this).find("img").attr("src");
+        whir.loading.add("",0.8,src);
+    })
 }
 $(".message-class ul li a").click(function(){
     $(this).addClass("active");
@@ -188,7 +198,10 @@ $("#search_input").blur(function () {
     }, 200)
 })
 
-
+//回到会员列表
+$("#VIP_LIST_info").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+});
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
@@ -228,11 +241,7 @@ $(".cancel_img").mouseover(function () {
     $(this).hide();
 })
 
-//相册图片点击放大.关闭
-$(".album li").click(function () {
-  var src=$(this).find("img").attr("src");
-    whir.loading.add("",0.8,src);
-})
+
 
 //标签导航切换窗口
 $(".label_nav li").click(function () {
@@ -296,24 +305,12 @@ function upLoadAlbum(){
     });
     document.getElementById('upAlbum').addEventListener('change', function (e) {
         var file = e.target.files[0];
-        //var corp_code=$("#OWN_CORP").val()//公司编号
-        //var user_code=$("#USERID").val()//员工编号
-        // console.log(corp_code);
-        // console.log(user_code);
-        //var storeAs="";
-        //if(user_code==""||user_code==undefined){
-        //    storeAs = '/Corp_logo/ishow/'+corp_code.trim()+'.jpg';
-        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
-        //}
-        //if(user_code!==""&&user_code!==undefined){
-        //    storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
-        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
-        //}
-        var storeAs='Album/Vip/iShow/C10141-123-20160920186524.jpg';
+        var time=getNowFormatDate();
+        var storeAs='Album/Vip/iShow/C10000-15915655912-'+time+'.jpg';
         client.multipartUpload(storeAs, file).then(function (result) {
             $("#imghead").attr("src",result.url);
             $("#upAlbum").val("");
-            console.log(result.url);
+            console.log(result);
             addVipAlbum(result.url)
         }).catch(function (err) {
              console.log(err);
@@ -330,6 +327,23 @@ function addVipAlbum(url){//上传照片到相册
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
         console.log(data)
     })
+}
+function getNowFormatDate() {//获取当前日期
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    var H=date.getHours();
+    var M=date.getMinutes();
+    var S=date.getSeconds();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = year+month+strDate+H+M+S;
+    return currentdate
 }
 //拖拽
 function allowDrop(ev)
