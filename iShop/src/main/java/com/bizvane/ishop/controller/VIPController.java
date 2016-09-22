@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.sun.v1.common.Data;
@@ -202,6 +203,7 @@ public class VIPController {
             extend_constellation.put("name","星座");
             extend_constellation.put("key","constellation");
             extend_constellation.put("type",Common.DATE_SHOW_TYPE_SELECT);
+            extend_constellation.put("values", CommonValue.VALUE_CONSTELLATION);
             extend_constellation.put("is_must","Y");
             extend.add(extend_constellation);
             JSONObject extend_address = new JSONObject();
