@@ -170,10 +170,15 @@
         $("#tabs-all").mouseleave(function(){
             $("#remark").stop(true,true);
             var _this=$(".active").index();
-            $(this).children().eq(_this).addClass("active");
+//            $(this).children().eq(_this).addClass("active");
             var len=$(this).children().width();
             $("#remark").animate({left:len*_this},200);
         });
+        window.addEventListener("resize", function () {
+            var _this=$(".active").index();
+            var len=$(".active").parent().children().eq(_this).width();
+            $("#remark").animate({left:len*_this},0.1);
+        })
     </script>
 </body>
 
