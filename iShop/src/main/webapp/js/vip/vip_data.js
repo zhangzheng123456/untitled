@@ -89,7 +89,7 @@ function gethotVIPlabel() {
             console.log(msg.length);
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
-                    html+="<span  draggable='true' class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }else if(msg[i].label_type=="org"){
                     html+="<span>"+msg[i].label_name+"</span>"
                 }
@@ -120,7 +120,7 @@ function getOtherlabel() {
                 for(var i=0;i<msg.length;i++){
                     var html="";
                     // html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
-                    html+="<span  draggable='true' class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(msg[0].label_type=="user"){
@@ -192,12 +192,18 @@ function searchHotlabel() {
 }
 $("#search_input").keydown(function () {
     //键盘按下搜索
-    $(".search_list").show();
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
        searchHotlabel();
     }
 })
+//input输入框里面
+$('#search_input').bind('input propertychange', function() {
+    var value="";
+    value=$('#search_input').val().replace(/\s+/g,"");
+    $(".search_list").show();
+    searchHotlabel();
+});
 $("#search_input").blur(function () {
     setTimeout(function () {
         $(".search_list").hide();
@@ -359,18 +365,15 @@ function drop(ev)
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
     var clone= $(document.getElementById(data)).clone();
-    var  val=$(clone).html();
-    // $(clone).append("<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>");
-    // $(ev.target).append(clone)
+    var label_id=clone.attr("data-id");
+    var val=$(clone).html();
     //调用借口
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
-    var val=$("#search_input").val().replace(/\s+/g,"");
-    val=val.substring(0,8);
     param["corp_code"]="C10000";
     param['label_name']=val;
     param['vip_code']=id;
-    param['label_id']="";
+    param['label_id']=label_id;
     param['store_code']=store_id;
     oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
         if(data.code=="0"){
