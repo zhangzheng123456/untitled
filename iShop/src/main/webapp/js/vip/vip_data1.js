@@ -34,14 +34,18 @@ function getVipInfo(){
             }
             if(extend[i].type=="select"){
                 var value=getvalue();
+                var selectValue=extend[i].values;
+                selectValue=selectValue.split(",");
+                var ul="<ul class='expand_selection'>";
+                for(var b=0;b<selectValue.length;b++){
+                    ul+="<li>"+selectValue[b]+"</li>";
+                    console.log(selectValue[b])
+                }
                 extendhtml+='<li class="drop_down item_1">'
                     +'<b>'+extend[i].name+'</b>'
                     +'<div class="position" >'
                     +'<input class="input_select" readonly value="'+value+'" type="text" />'
-                    +'<ul class="expand_selection">'
-                    +'<li>男</li>'
-                    +'<li>女</li>'
-                    +'</ul>'
+                    +ul
                     +'</div>'
                     +'</li>'
             }
@@ -87,6 +91,7 @@ function getVipInfo(){
         $("#vip_dormant_time").html(vipDataList.dormant_time);
         $("#vip_birthday").html(vipDataList.vip_birthday);
         $("#vip_birthday_edit").val(vipDataList.vip_birthday);
+        showOption();
     })
 }
 $("#more_message").click(function(){
@@ -96,6 +101,9 @@ $("#edit_message").click(function(){
     gotovipallmessage();
 });
 function gotovipallmessage(){
+    $('html,body').animate({
+        'scrollTop': 0
+    },0);
     $("#VIP_Message").hide();
     $("#VIP_edit").show();
     $("#nav_bar").children().eq(0).addClass("active1");
@@ -103,4 +111,14 @@ function gotovipallmessage(){
     $(".all_list").children().eq(0).show();
     $(".all_list").children().eq(0).siblings().hide();
     $("#remark").animate({left:0},0.1);
+}
+function showOption(){
+    $(".drop_down input").click(function (){
+        var ul=$(this).next(".expand_selection");
+        if(ul.css("display")=="none"){
+            ul.show();
+        }else{
+            ul.hide();
+        }
+    });
 }

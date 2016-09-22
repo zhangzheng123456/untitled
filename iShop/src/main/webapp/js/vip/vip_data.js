@@ -82,6 +82,9 @@ $(".message-class ul li a").click(function(){
 });
 
 $("#fenLei").click(function(){//点击查看更多跳到编辑资料
+    $('html,body').animate({
+        'scrollTop': 0
+    },0);
    var nowdataName=$(".message-class ul li .active").attr("data-name");
    $("#VIP_Message").hide();
    $("#VIP_edit").show();
