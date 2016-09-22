@@ -92,7 +92,7 @@ public class LuploadHelper {
      * 把jxl.jar中日期类型进行转换
      */
     public  static String getCellTypeForDate(Cell cellObject,String target_type) {
-        String dateStr="";
+        String dateStr="格式错误";
 
         if(cellObject.getType()== CellType.DATE){
             DateCell cellValue   =   (DateCell)cellObject;
