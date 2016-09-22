@@ -22,4 +22,6 @@ public interface VipAlbumMapper {
 
     List<VipAlbum> selectAlbumByVip(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code) throws SQLException;
 
+    VipAlbum selectAlbumByUrl(@Param("image_url")String image_url) throws SQLException;
+
 }

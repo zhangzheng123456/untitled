@@ -112,11 +112,14 @@ public class VipAlbumController {
             JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            int result = vipAlbumService.insertVipAlbum(message, user_code);
+            JSONObject obj = JSONObject.parseObject(message);
+            String image_url = obj.get("image_url").toString();
+            int result = vipAlbumService.insertVipAlbum(obj, user_code);
             if (result > 0) {
+                String album_id = vipAlbumService.selectAlbumByUrl(image_url).getId();
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage("add success");
+                dataBean.setMessage(album_id);
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
