@@ -331,7 +331,6 @@ function addVipAlbum(url){//上传照片到相册
         console.log(data)
     })
 }
-<<<<<<< HEAD
 //拖拽
 function allowDrop(ev)
 {
@@ -339,16 +338,12 @@ function allowDrop(ev)
 }
 function drop(ev)
 {
-    console.log('OK');
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
-    var clone= document.getElementById(data).cloneNode();
-    target.appendChild(clone);
+    var clone= $(document.getElementById(data)).clone();
+    $(ev.target).append(clone)
 }
-=======
-
 $(function(){
     getConsumCount();
     upLoadAlbum();
 });
->>>>>>> 335d888f68ab611a70e7cef1b012b18c197e6007
