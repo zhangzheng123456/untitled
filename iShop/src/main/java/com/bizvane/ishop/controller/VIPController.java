@@ -346,11 +346,25 @@ public class VIPController {
 */
 
             JSONObject wardrobe = new JSONObject();
-            wardrobe.put("goods_id", "132");
+            wardrobe.put("goods_id", "367A0103");
             wardrobe.put("goods_name", "无");
             wardrobe.put("goods_img", "null");
-            wardrobe.put("goods_price", "1234");
-            wardrobe.put("buy_time", "无");
+            wardrobe.put("goods_price", "889");
+            JSONObject wardrobe2 = new JSONObject();
+            wardrobe2.put("goods_id", "26632146");
+            wardrobe2.put("goods_name", "无");
+            wardrobe2.put("goods_img", "null");
+            wardrobe2.put("goods_price", "1050");
+
+            JSONArray war=new JSONArray();
+            war.add(wardrobe);
+            war.add(wardrobe2);
+            JSONObject buy_time = new JSONObject();
+            buy_time.put("buy_time","2016-07-07");
+
+            JSONArray wardrobes=new JSONArray();
+            wardrobes.add(buy_time);
+            wardrobes.add(war);
             JSONObject result = new JSONObject();
             result.put("result_points",result_points);
             result.put("result_consumn",wardrobe);
