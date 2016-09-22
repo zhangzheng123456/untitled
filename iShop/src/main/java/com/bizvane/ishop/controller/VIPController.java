@@ -170,9 +170,9 @@ public class VIPController {
             vip.put("store_name","第三家");
             vip.put("store_code","ABC02");
             vip.put("vip_card_no","774205");
-            
+
             org.json.JSONObject result = new org.json.JSONObject();
-            result.put("list", JSON.toJSONString(vip));
+            result.put("list",vip);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
