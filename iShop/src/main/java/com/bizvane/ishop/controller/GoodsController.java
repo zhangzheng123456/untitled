@@ -456,12 +456,19 @@ public class GoodsController {
                 for (int j=0;j<splitGoods.length;j++){
                     Matcher matcher = pattern5.matcher(splitGoods[j]);
                     if(matcher.matches()==false){
+                        String onlyCell10 = LuploadHelper.CheckStringOnly(splitGoods);
+                        if(onlyCell10.equals("存在重复值")){
+                            result = "：Execl中关联的商品编号存在重复值";
+                            int b = 5 / 0;
+                        }
                         Goods good = goodsService.getGoodsByCode(column3[i].getContents().toString().trim(), splitGoods[j],Common.IS_ACTIVE_Y);
                         if (good == null) {
                             result = "：第" + (i + 1) + "行,第"+(j+1)+"个关联的商品编号不存在";
                             int b = 5 / 0;
                             break;
                         }
+
+
                     }
                 }
 
