@@ -200,13 +200,13 @@ function searchHotlabel() {
         }
     })
 }
-$("#search_input").keydown(function () {
-    //键盘按下搜索
-    var event=window.event||arguments[0];
-    if(event.keyCode == 13){
-       searchHotlabel();
-    }
-})
+// $("#search_input").keydown()function () {
+//     //键盘按下搜索
+//     var event=window.event||arguments[0];
+//     if(event.keyCode == 13){
+//        searchHotlabel();
+//     }
+// }
 //input输入框里面
 $('#search_input').bind('input propertychange', function() {
     var value="";
