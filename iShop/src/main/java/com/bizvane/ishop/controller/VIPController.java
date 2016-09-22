@@ -148,11 +148,35 @@ public class VIPController {
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
-
-
+            JSONObject vip = new JSONObject();
+            vip.put("corp_code","C10000");
+            vip.put("store_id","1570");
+            vip.put("user_id","无");
+            vip.put("vip_id","774205");
+            vip.put("vip_avatar","");
+            vip.put("vip_name","罗晓珊");
+            vip.put("vip_phone","15915655912");
+            vip.put("vip_card_type","直营合作会员卡");
+            vip.put("amount","1000");
+            vip.put("consume_times","5");
+            vip.put("join_date","2016-04-11");
+            vip.put("cardno","4444444444444444444");
+            vip.put("vip_birthday","2016-04-11");
+            vip.put("age","23");
+            vip.put("sex","female");
+            vip.put("user_name","10000");
+            vip.put("total_amount","2003");
+            vip.put("dormant_time","2016-04-11");
+            vip.put("store_name","第三家");
+            vip.put("store_code","ABC02");
+            vip.put("vip_card_no","774205");
+            
+            org.json.JSONObject result = new org.json.JSONObject();
+            result.put("list", JSON.toJSONString(vip));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
