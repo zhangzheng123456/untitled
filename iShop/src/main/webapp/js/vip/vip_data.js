@@ -14,6 +14,7 @@ function getConsumCount(){//获取会员信息
        var label=JSON.parse(Data.Label);
        var conSumData=JSON.parse(Data.Consum);
        var HTML="";
+        var Ablum_all_html="";
        var LABEL="";
        var LABELALL="";
       $("#total_amount_Y").html(conSumData.total_amount_Y);
@@ -23,11 +24,15 @@ function getConsumCount(){//获取会员信息
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
         for(var i=0;i<album.length;i++){
-            if(i<16){
-                HTML+="<span><img src="+album[0].image_url+" /></span>"
-            }
+                HTML+="<span><img src="+album[i].image_url+" /></span>";
+                Ablum_all_html+="<li>"
+                +"<img src='"+album[i].image_url+"'>"
+                +"<div class='cancel_img'></div>"
+                +"<span class='album_date'>"+album[i].created_date+"</span>"
+                +"</li>"
             }
         $("#images").html(HTML);
+        $("#Ablum-all").html(Ablum_all_html);
         for(var i=0;i<label.length;i++){
                 LABEL+="<span >"+label[i].label_name+"</span>";
                 LABELALL+= "<span class='label_u_active' data-rid='"+label[i].rid+"'>"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>";
@@ -46,6 +51,11 @@ function lg_img(){
         var src=$(this).children().attr("src");
         whir.loading.add("",0.8,src);//显示图片
     });
+    //相册图片点击放大.关闭
+    $(".album li").click(function () {
+        var src=$(this).find("img").attr("src");
+        whir.loading.add("",0.8,src);
+    })
 }
 $(".message-class ul li a").click(function(){
     $(this).addClass("active");
@@ -89,7 +99,7 @@ function gethotVIPlabel() {
             console.log(msg.length);
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
-                    html+="<span  draggable='true' class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }else if(msg[i].label_type=="org"){
                     html+="<span>"+msg[i].label_name+"</span>"
                 }
@@ -120,7 +130,7 @@ function getOtherlabel() {
                 for(var i=0;i<msg.length;i++){
                     var html="";
                     // html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
-                    html+="<span  draggable='true' class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(msg[0].label_type=="user"){
@@ -192,19 +202,28 @@ function searchHotlabel() {
 }
 $("#search_input").keydown(function () {
     //键盘按下搜索
-    $(".search_list").show();
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
        searchHotlabel();
     }
 })
+//input输入框里面
+$('#search_input').bind('input propertychange', function() {
+    var value="";
+    value=$('#search_input').val().replace(/\s+/g,"");
+    $(".search_list").show();
+    searchHotlabel();
+});
 $("#search_input").blur(function () {
     setTimeout(function () {
         $(".search_list").hide();
     }, 200)
 })
 
-
+//回到会员列表
+$("#VIP_LIST_info").click(function(){
+    $(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
+});
 
 //回到会员列表
 $("#VIP_LIST").click(function(){
@@ -244,11 +263,7 @@ $(".cancel_img").mouseover(function () {
     $(this).hide();
 })
 
-//相册图片点击放大.关闭
-$(".album li").click(function () {
-  var src=$(this).find("img").attr("src");
-    whir.loading.add("",0.8,src);
-})
+
 
 //标签导航切换窗口
 $(".label_nav li").click(function () {
@@ -312,24 +327,12 @@ function upLoadAlbum(){
     });
     document.getElementById('upAlbum').addEventListener('change', function (e) {
         var file = e.target.files[0];
-        //var corp_code=$("#OWN_CORP").val()//公司编号
-        //var user_code=$("#USERID").val()//员工编号
-        // console.log(corp_code);
-        // console.log(user_code);
-        //var storeAs="";
-        //if(user_code==""||user_code==undefined){
-        //    storeAs = '/Corp_logo/ishow/'+corp_code.trim()+'.jpg';
-        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
-        //}
-        //if(user_code!==""&&user_code!==undefined){
-        //    storeAs = '/Avatar/User/iShow/'+corp_code.trim()+user_code.trim()+'.jpg';
-        //    //Album/Vip/iShow/C10141-123-20160920186524.jpg
-        //}
-        var storeAs='Album/Vip/iShow/C10141-123-20160920186524.jpg';
+        var time=getNowFormatDate();
+        var storeAs='Album/Vip/iShow/C10000-15915655912-'+time+'.jpg';
         client.multipartUpload(storeAs, file).then(function (result) {
             $("#imghead").attr("src",result.url);
             $("#upAlbum").val("");
-            console.log(result.url);
+            console.log(result);
             addVipAlbum(result.url)
         }).catch(function (err) {
              console.log(err);
@@ -347,6 +350,24 @@ function addVipAlbum(url){//上传照片到相册
         console.log(data)
     })
 }
+function getNowFormatDate() {//获取当前日期
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    var H=date.getHours();
+    var M=date.getMinutes();
+    var S=date.getSeconds();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = year+month+strDate+H+M+S;
+    return currentdate
+}
+//拖拽
 //阻止拖拽默认事件
 function allowDrop(ev)
 {
@@ -359,16 +380,15 @@ function drop(ev)
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
     var clone= $(document.getElementById(data)).clone();
-    var  val=$(clone).html();
-    // $(clone).append("<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>");
-    // $(ev.target).append(clone)
+    var label_id=clone.attr("data-id");
+    var val=$(clone).html();
     //调用借口
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
     param["corp_code"]="C10000";
     param['label_name']=val;
     param['vip_code']=id;
-    param['label_id']="";
+    param['label_id']=label_id;
     param['store_code']=store_id;
     oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
         if(data.code=="0"){

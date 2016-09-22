@@ -171,8 +171,25 @@ public class VIPController {
             vip.put("store_code","ABC02");
             vip.put("vip_card_no","774205");
 
+            JSONArray extend = new JSONArray();
+            JSONArray info = new JSONArray();
+
+            JSONObject extend_info = new JSONObject();
+            extend_info.put("name","性别");
+            extend_info.put("key","sex");
+            extend_info.put("is_must","Y");
+            extend.add(extend_info);
+//            extend_info.put("value","22");
+            JSONObject extend_info_sex = new JSONObject();
+            extend_info_sex.put("key","sex");
+            extend_info_sex.put("value","女");
+            info.add(extend_info_sex);
+
             org.json.JSONObject result = new org.json.JSONObject();
             result.put("list",vip);
+            result.put("extend",extend);
+            result.put("extend_info",info);
+
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
@@ -185,6 +202,7 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
 
 
     //会员积分

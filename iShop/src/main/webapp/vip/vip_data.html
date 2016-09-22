@@ -216,44 +216,44 @@
                       </span>
                   </div>
                   <div  class="person-right">
-                      <span class="icon-ishop_9-01 edit" title="编辑资料"></span>
+                      <span class="icon-ishop_9-01 edit" title="编辑资料" id="edit_message"></span>
                       <span class="person-message">
-                          <i class="person-name">刘杨</i> <a class="icon-ishop_9-02"></a>
+                          <i class="person-name" id="vip_name"></i> <a></a>
                       </span>
                       <span class="vip">
-                          <span class="margin-right10">会员卡号</span><span>suda10900123103308</span>
+                          <span class="margin-right10">会员卡号</span><span id="vip_card_no"></span>
                       </span>
                       <span class="vip">
-                         <span class="margin-right10"> 会员等级</span><span class="vipClass">高级VIP</span>
+                         <span class="margin-right10">会员卡类型</span><span class="vipClass"  id="vip_card_type"></span>
                       </span>
                   </div>
               </div>
               <div class="person-detail">
                  <div class="datail-first">
-                  <span class="detail-left">手机号码</span><span class="detail-right">15565689372</span>
+                  <span class="detail-left">手机号码</span><span class="detail-right" id="vip_phone"></span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">所属导购</span><span class="detail-right">高圆圆</span>
+                  <span class="detail-left">所属导购</span><span class="detail-right" id="user_name"></span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">可用积分</span><span class="detail-right jifen">2658</span>
+                  <span class="detail-left">可用积分</span><span class="detail-right jifen" id="vip_total_amount"></span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">加入日期</span><span class="detail-right">2017-09-09</span>
+                  <span class="detail-left">开卡日期</span><span class="detail-right" id="join_date"></span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">截止日期</span><span class="detail-right">2016-10-09</span>
+                  <span class="detail-left">休眠时间</span><span class="detail-right" id="vip_dormant_time"></span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">会员状态</span><span class="detail-right">有效</span>
+                  <span class="detail-left">会员状态</span><span class="detail-right">暂无数据</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">会员生日</span><span class="detail-right">1960-08-12</span>
+                  <span class="detail-left">会员生日</span><span class="detail-right" id="vip_birthday"></span>
               </div>
               <div class="datail-last">
-                  <span class="detail-left">推荐人</span><span class="detail-right">吴燕</span>
+                  <span class="detail-left">推荐人</span><span class="detail-right">暂无数据</span>
               </div>
-                  <div class="person-more"><label>详细资料<i class="icon-ishop_8-03"></i></label></div>
+                  <div class="person-more"><label id="more_message">详细资料<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
        </div>
@@ -319,7 +319,7 @@
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
-            <span>会员列表</span>
+            <span id="VIP_LIST_info">会员列表</span>
             <span class="icon-ishop_8-03"></span>
             <span id="VIP_message_back">会员信息</span>
             <span class="icon-ishop_8-03"></span>
@@ -352,13 +352,13 @@
                         <input type="file" id="file" onchange="previewImage(this)" style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                         </div>
                         <div>
-                            <label>会员姓名</label><input class="disabled"  />
+                            <label>会员姓名</label><input class="disabled" id="vip_name_edit" />
                         </div>
                         <div>
-                            <label class="vip_color">会员卡号*</label><input class="disabled"   />
+                            <label class="vip_color">会员卡号*</label><input class="disabled"  id="vip_card_no_edit" />
                         </div>
                         <div class="drop_down item_1">
-                            <span><label class="vip_color">会员类型*</label><input class="input_select"  value="高级VIP" type="text"   readonly/>
+                            <span><label class="vip_color">会员类型*</label><input class="input_select"  id="vip_card_type_edit" value="高级VIP" type="text"   readonly/>
                             <ul>
                                 <li>高级VIP</li>
                                 <li>中级VIP</li>
@@ -366,15 +366,15 @@
                             </span>
                         </div>
                         <div>
-                            <label>手机号码</label><input  verify="Phone"/>
+                            <label>手机号码</label><input  verify="Phone" id="vip_phone_edit"/>
                             <div style="padding-left:125px" class="hint"><div  hintinfo="手机号为必填项,不能为空!"></div></div>
                         </div>
                         <div>
-                            <label>所属导购</label><input verify="Empty"/>
+                            <label>所属导购</label><input verify="Empty" id="user_name_edit"/>
                             <div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>
                         </div>
                         <div>
-                            <label>会员生日</label><input  verify='birthday'/>
+                            <label>会员生日</label><input  verify='birthday' id="vip_birthday_edit"/>
                         </div>
                         <div class="drop_down item_1">
                             <span><label>性别</label><input class="input_select"  value="男" type="text" id="USER_SEX" placeholder="请选择性别" readonly/>
@@ -771,21 +771,8 @@
                 </div>
 
                 <div class="album">
-                    <ul>
-                        <li>
-                            <img src="../img/vipImg.png">
-                            <div class="cancel_img"></div>
-                            <span class="album_date">2016-10-29</span>
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
-                        </li>
+                    <ul id="Ablum-all">
+
                     </ul>
                     <span class="add_new_album" style="position: relative;">
                         <input type="file" id="upAlbum">添加图片+
