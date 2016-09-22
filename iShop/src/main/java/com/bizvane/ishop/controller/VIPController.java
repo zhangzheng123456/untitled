@@ -287,23 +287,31 @@ public class VIPController {
             result_points.put("vip_name","罗晓珊");
             result_points.put("points","1022");
 
-//            JSONArray consumeLists = new JSONArray();
-//            for (int i = 0; i < 18; i++) {
-//                JSONObject record1 = new JSONObject();
-//                record1.put("points",i+10);
-//                record1.put("date","2016-01-02");
-//                pointLists.add(record1);
-//            }
-//            JSONObject result_points = new JSONObject();
-//            result_points.put("list",JSON.toJSONString(pointLists));
-//            result_points.put("vip_card_type","直营合作会员卡");
-//            result_points.put("cardno","4444444444444444444");
-//            result_points.put("vip_name","罗晓珊");
-//            result_points.put("points","1022");
+/*
+            JSONArray consumeLists = new JSONArray();
+            for (int i = 0; i < 18; i++) {
+                JSONObject record1 = new JSONObject();
+                record1.put("points",i+10);
+                record1.put("date","2016-01-02");
+                pointLists.add(record1);
+            }
+            JSONObject result_points = new JSONObject();
+            result_points.put("list",JSON.toJSONString(pointLists));
+            result_points.put("vip_card_type","直营合作会员卡");
+            result_points.put("cardno","4444444444444444444");
+            result_points.put("vip_name","罗晓珊");
+            result_points.put("points","1022");
+*/
 
+            JSONObject wardrobe = new JSONObject();
+            wardrobe.put("goods_id", "132");
+            wardrobe.put("goods_name", "无");
+            wardrobe.put("goods_img", "null");
+            wardrobe.put("goods_price", "1234");
+            wardrobe.put("buy_time", "无");
             JSONObject result = new JSONObject();
             result.put("result_points",result_points);
-            result.put("result_consumn","");
+            result.put("result_consumn",wardrobe);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
