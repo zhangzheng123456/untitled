@@ -365,8 +365,6 @@ function drop(ev)
     //调用借口
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
-    var val=$("#search_input").val().replace(/\s+/g,"");
-    val=val.substring(0,8);
     param["corp_code"]="C10000";
     param['label_name']=val;
     param['vip_code']=id;
