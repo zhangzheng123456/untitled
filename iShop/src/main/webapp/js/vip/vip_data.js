@@ -79,7 +79,7 @@ $("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
 });
-
+//热门标签
 function gethotVIPlabel() {
     //热门标签
     $("#hotlabel").empty();
@@ -93,13 +93,20 @@ function gethotVIPlabel() {
             console.log(msg.length);
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
-                    html+="<span class="+'label_u'+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }else if(msg[i].label_type=="org"){
                     html+="<span>"+msg[i].label_name+"</span>"
                 }
             }
             $("#hotlabel").append(html);
         }
+        //绑定拖拽事件
+        $('#hotlabel span').on('dragstart',function (event) {
+            var ev=event;
+            console.log('触发');
+            ev=ev.originalEvent;
+            ev.dataTransfer.setData("Text",ev.target.id);
+        });
     })
 }
 $("#hot_label").click(function () {
@@ -327,4 +334,17 @@ function addVipAlbum(url){//上传照片到相册
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
         console.log(data)
     })
+}
+//拖拽
+function allowDrop(ev)
+{
+    ev.preventDefault();
+}
+function drop(ev)
+{
+    console.log('OK');
+    ev.preventDefault();
+    var data=ev.dataTransfer.getData("Text");
+    var clone= document.getElementById(data).cloneNode();
+    target.appendChild(clone);
 }
