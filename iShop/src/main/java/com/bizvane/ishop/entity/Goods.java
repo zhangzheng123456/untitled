@@ -44,6 +44,15 @@ public class Goods {
     private String corp_name;
     private String brand_name;
     private List<Goods> matchgoods;
+    private String match_goods;
+
+    public String getMatch_goods() {
+        return match_goods;
+    }
+
+    public void setMatch_goods(String match_goods) {
+        this.match_goods = match_goods;
+    }
 
     public String getCorp_name() {
         return corp_name;
