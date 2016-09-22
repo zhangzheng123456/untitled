@@ -820,6 +820,7 @@ public class VIPLabelController {
     @ResponseBody
     public String checkRelViplablel(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String corp_code1 = request.getSession().getAttribute("corp_code").toString();
         String id = "";
         try {
             String jsString = request.getParameter("param");
@@ -831,6 +832,7 @@ public class VIPLabelController {
             String vip_code = jsonObject.getString("vip_code").toString();
 //            String label_id = jsonObject.getString("label_id").toString();
             String label_name = jsonObject.getString("label_name").toString();
+            String store_code = jsonObject.getString("store_code").toString();
             String user_id = request.getSession().getAttribute("user_code").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             String result_add="";
@@ -843,7 +845,7 @@ public class VIPLabelController {
                 vipLabel.setCreated_date(Common.DATETIME_FORMAT.format(now));
                 vipLabel.setCreater(user_id);
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
-                if (Common.ROLE_SYS.equals(role_code) && corp_code.equals(vipLabel.getCorp_code())) {
+                if (Common.ROLE_SYS.equals(role_code) && corp_code1.equals(corp_code)) {
                     vipLabel.setLabel_type("sys");
                 } else {
                     vipLabel.setLabel_type("org");
@@ -874,7 +876,7 @@ public class VIPLabelController {
                     dataBean.setMessage(result.toString());
                 }
             }else {
-                String label_id = vipLabelList.get(0).getLabel_id();
+                String label_id = String.valueOf(vipLabelList.get(0).getId());
                 List<RelViplabel> relViplabels = vipLabelService.checkRelViplablel(corp_code, vip_code, label_id);
                 if (relViplabels.size() > 0) {
                     result_add = "该会员标签已存在";
@@ -883,7 +885,11 @@ public class VIPLabelController {
                     dataBean.setId(id);
                     dataBean.setMessage(result.toString());
                 } else {
-                    RelViplabel relViplabel = WebUtils.JSON2Bean(jsonObject, RelViplabel.class);
+                    RelViplabel relViplabel = new RelViplabel();
+                    relViplabel.setLabel_id(label_id);
+                    relViplabel.setCorp_code(corp_code);
+                    relViplabel.setVip_code(vip_code);
+                    relViplabel.setStore_code(store_code);
                     //------------操作日期-------------
                     Date date = new Date();
                     relViplabel.setCreated_date(Common.DATETIME_FORMAT.format(date));
