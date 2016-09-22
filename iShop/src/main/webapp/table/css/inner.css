@@ -751,13 +751,12 @@ input::-webkit-input-placeholder{
 #file_close{
 	font-size: 25px;
 	letter-spacing: 2px;
-	color:#483737;
+	color:#999;
 	text-align: center;
 	cursor: pointer;
 	width: 40px;
 	height: 40px;
 	line-height: 40px;
-	background-color: #999999;
     float: right;
 }
 #file_list{
@@ -861,7 +860,7 @@ input::-webkit-input-placeholder{
 	height: 40px;
 	text-align: center;
 	line-height: 40px;
-	background: #999999;
+	color: #999;
 	float: right;
 	font-size: 25px;
 	cursor: pointer;
@@ -1095,3 +1094,111 @@ input::-webkit-input-placeholder{
 	background-color:#fff;
 	border: 1px solid #ccc;
 }
+/*******************筛选区域样式******************/
+.screen_area{
+	width: 700px;
+	height: 530px;
+	padding:0 20px 0 20px;
+	background-color: #fff;
+	box-shadow: 0 0 10px rgba(0,0,0,0.35);
+	border-radius: 5px;
+	position: absolute;
+	top:30px;
+	left: 139px;
+}
+.screen_area .screen_title{
+	height:39px;
+	line-height:40px;
+	border-bottom: 1px solid #cacaca;
+}
+.screen_area .screen_title h4{
+	float: left;
+	font-weight: normal;
+	color: #888;
+}
+.screen_area .screen_title .screen_close{
+	width: 40px;
+	height: 40px;
+	color: #888;
+	font-size: 25px;
+	cursor: pointer;
+	position: absolute;
+	top: 0;
+	right: 0;
+	text-align: center;
+}
+.screen_area .input_s{
+	height: 50px;
+	line-height: 50px;
+}
+.screen_area .input_s .input_search,.screen_area .input_s .s_center,.screen_area .input_s .s_pitch{
+	float: left;
+}
+.screen_area .input_s .input_search{
+	position: relative;
+}
+.screen_area .input_s .input_search span{
+	position: absolute;
+	right: 0;
+	top:10px;
+	color: #dcdcdc;
+	font-size:30px; 
+	cursor: pointer;
+}
+.screen_area .input_s .input_search input{
+	width: 268px;
+	height: 28px;
+	line-height: 30px;
+	outline: none;
+	border: 1px solid #d7d7d7;
+	border-radius:9px; 
+	padding-left: 10px;
+	padding-right: 30px;
+	color: #888;
+}
+.screen_area .input_s .s_center{
+	width: 80px;
+	height: 50px;
+}
+.screen_area .input_s .s_pitch{
+	width: 310px;
+	height: 50px;
+	color: #888;
+}
+.screen_area .screen_content{
+	height: 360px;
+}
+.screen_area .screen_content .screen_content_r,.screen_area .screen_content .screen_content_z,.screen_area .screen_content .screen_content_l{
+	float: left;
+	height: 360px;
+}
+.screen_area .screen_content .screen_content_r{
+	width: 310px;
+}
+.screen_area .screen_content .screen_content_z{
+	width: 80px;
+	padding-top:90px;
+	height: 270px;
+}
+.screen_area .screen_content .screen_content_l{
+	width: 310px;
+}
+.screen_area .screen_content .screen_content_l li,.screen_area .screen_content .screen_content_r li{
+	width: 100%;
+	height: 40px;
+	line-height: 40px;
+	cursor:pointer;
+}
+.screen_area .screen_que{
+	width:160px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	margin: 0 auto;
+	margin-top: 30px;
+	background-color: #6dc1c8;
+	color: #fff;
+	border-radius: 5px;
+	cursor: pointer;
+}
+

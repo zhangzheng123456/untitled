@@ -441,6 +441,31 @@ public class GoodsController {
                     break;
                 }
             }
+            Cell[] column10 = rs.getColumn(10);
+            for(int i=3;i<column10.length;i++){
+                if(column10[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
+                String goods = column10[i].getContents().toString().trim();
+                String[] splitGoods = goods.split(",");
+                if(splitGoods.length>10){
+                    result = "：第"+(i+1)+"行关联商品数量过多,上限10个";
+                    int b = 5 / 0;
+                    break;
+                }
+                for (int j=0;j<splitGoods.length;j++){
+                    Matcher matcher = pattern5.matcher(splitGoods[j]);
+                    if(matcher.matches()==false){
+                        Goods good = goodsService.getGoodsByCode(column3[i].getContents().toString().trim(), splitGoods[j],Common.IS_ACTIVE_Y);
+                        if (good == null) {
+                            result = "：第" + (i + 1) + "行,第"+(j+1)+"个关联的商品编号不存在";
+                            int b = 5 / 0;
+                            break;
+                        }
+                    }
+                }
+
+            }
             ArrayList<Goods> goodses=new ArrayList<Goods>();
             for (int i = 3; i < rows; i++) {
                 for (int j = 0; j < clos; j++) {
@@ -455,6 +480,7 @@ public class GoodsController {
                     String brand_code = rs.getCell(j++, i).getContents().toString().trim();
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i),"D");
                     String goods_description = rs.getCell(j++, i).getContents().toString().trim();
+                    String match_goods = rs.getCell(j++, i).getContents().toString().trim();
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
 //                    if(cellCorp.equals("")  && goods_code.equals("") && goods_name.equals("") && goods_price.equals("") && goods_image.equals("") && quarter.equals("") && wave.equals("")  && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("") && isactive.equals("")){
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
@@ -476,16 +502,20 @@ public class GoodsController {
                     goods.setGoods_name(goods_name);
                     goods.setGoods_price(goods_price);
                     goods.setGoods_image(goods_image+"  ");
-
                     if(quarter==null||quarter.equals("")) {
-                        goods.setGoods_quarter("第一季度");
-                    }else if(!quarter.equals("第一季度") && !quarter.equals("第二季度") && !quarter.equals("第三季度") && !quarter.equals("第四季度")){
-                        result = "：第" + (i + 1) + "行商品季度输入有误";
-                        int b = 5 / 0;
-                        break;
+                        goods.setGoods_quarter("");
                     }else{
                         goods.setGoods_quarter(quarter);
                     }
+//                    if(quarter==null||quarter.equals("")) {
+//                        goods.setGoods_quarter("第一季度");
+//                    }else if(!quarter.equals("第一季度") && !quarter.equals("第二季度") && !quarter.equals("第三季度") && !quarter.equals("第四季度")){
+//                        result = "：第" + (i + 1) + "行商品季度输入有误";
+//                        int b = 5 / 0;
+//                        break;
+//                    }else{
+//                        goods.setGoods_quarter(quarter);
+//                    }
                     if(wave==null||wave.equals("")){
                         goods.setGoods_wave("   ");
                     }else{
@@ -500,6 +530,7 @@ public class GoodsController {
                     }
                     goods.setGoods_time(cellTypeForDate);
                     goods.setGoods_description(goods_description);
+                    goods.setMatch_goods(match_goods);
                     if (isactive.toUpperCase().equals("N")) {
                         goods.setIsactive("N");
                     } else {
@@ -516,7 +547,7 @@ public class GoodsController {
             }
             for (Goods goods:goodses
                  ) {
-                result = String.valueOf(goodsService.insert(goods));
+                result = String.valueOf(goodsService.insertGoods(goods,goods.getMatch_goods()));
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -743,7 +774,7 @@ public class GoodsController {
      */
     @RequestMapping(value = "/FabCodeExist", method = RequestMethod.POST)
     @ResponseBody
-    public String UserCodeExist(HttpServletRequest request) {
+    public String FabCodeExist(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -775,7 +806,7 @@ public class GoodsController {
     /**
      * 获取企业商品（用于商品搭配）
      */
-    @RequestMapping(value = "/corp_fab", method = RequestMethod.POST)
+    @RequestMapping(value = "/matchGoodsList", method = RequestMethod.POST)
     @ResponseBody
     public String corpFab(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
@@ -785,6 +816,9 @@ public class GoodsController {
             JSONObject jsonObj = new JSONObject(jsString);
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+
             String corp_code = jsonObject.get("corp_code").toString();
             String goods_code = jsonObject.get("goods_code").toString();
             String brand_code = "";
@@ -792,7 +826,7 @@ public class GoodsController {
                 brand_code = jsonObject.get("brand_code").toString();
             }
             String search_value = jsonObject.get("searchValue").toString();
-            List<Goods> list = goodsService.matchGoodsList(corp_code, search_value,goods_code,brand_code);
+            PageInfo<Goods> list = goodsService.matchGoodsList(page_number, page_size,corp_code, search_value,goods_code,brand_code);
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
             dataBean.setId(id);
