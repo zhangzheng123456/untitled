@@ -100,8 +100,8 @@ function gethotVIPlabel() {
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
                     html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
-                }else if(msg[i].label_type=="org"){
-                    html+="<span>"+msg[i].label_name+"</span>"
+                }else if(msg[i].label_type=="org"||msg[i].label_type=="sys"){
+                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_g'+" id="+i+">"+msg[i].label_name+"</span>"
                 }
             }
             $("#hotlabel").append(html);
@@ -129,14 +129,12 @@ function getOtherlabel() {
             if(msg[0].label_type=="org"){
                 for(var i=0;i<msg.length;i++){
                     var html="";
-                    // html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
-                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].id+" class="+'label_g'+" id="+i+">"+msg[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(msg[0].label_type=="user"){
                 for(var j=0;j<msg.length;j++){
                     var html="";
-                    // html+="<span class="+'label_u'+">"+msg[j].label_name+"</span>"
                     html+="<span  draggable='true' class="+'label_u'+" id="+j+">"+msg[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
@@ -146,9 +144,8 @@ function getOtherlabel() {
         //绑定拖拽事件
         $('#label_org span').on('dragstart',function (event) {
             var ev=event;
-            console.log('触发');
-            ev=ev.originalEvent;
-            ev.dataTransfer.setData("Text",ev.target.id);
+                ev=ev.originalEvent;
+                ev.dataTransfer.setData("Text",ev.target.id);
         });
         //绑定拖拽事件
         $('#label_user span').on('dragstart',function (event) {
@@ -178,9 +175,11 @@ $("#label_li_user").click(function () {
 
 //搜索热门标签
 function searchHotlabel() {
+    $(".search_list").show();
+    $(".search_list").empty();
     param["corp_code"]="C10000";
     param['pageNumber']=page;
-    param['searchValue']=$("#search_input").val();
+    param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
     param['type']="1";
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
@@ -192,7 +191,7 @@ function searchHotlabel() {
                 for(var i=0;i<msg.length;i++){
                     if(msg[i].label_type=="user"){
                         html+="<li class="+'label_u'+">"+msg[i].label_name+"</li>"
-                    }else if(msg[i].label_type=="org"){
+                    }else {
                         html+="<li class="+'label_g'+">"+msg[i].label_name+"</li>"
                     }
                 }
@@ -200,18 +199,15 @@ function searchHotlabel() {
         }
     })
 }
-$("#search_input").keydown(function () {
-    //键盘按下搜索
-    var event=window.event||arguments[0];
-    if(event.keyCode == 13){
-       searchHotlabel();
-    }
-})
+// $("#search_input").keydown(function () {
+//     //键盘按下搜索
+//     var event=window.event||arguments[0];
+//     if(event.keyCode == 13){
+//        searchHotlabel();
+//     }
+// })
 //input输入框里面
 $('#search_input').bind('input propertychange', function() {
-    var value="";
-    value=$('#search_input').val().replace(/\s+/g,"");
-    $(".search_list").show();
     searchHotlabel();
 });
 $("#search_input").blur(function () {
@@ -381,7 +377,8 @@ function drop(ev)
     var data=ev.dataTransfer.getData("Text");
     var clone= $(document.getElementById(data)).clone();
     var label_id=clone.attr("data-id");
-    var val=$(clone).html();
+    var val=$(clone).text();
+
     //调用借口
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
@@ -394,15 +391,10 @@ function drop(ev)
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             var rid=JSON.parse(msg.list);
-            var len=$("#label_box span").length;
             var html= "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
-            if(len==0){
-                $(clone).append(html);
-                $(ev.target).append(clone)
-            }else {
-                $(clone).after(html);
-                $(ev.target).append(clone)
-            }
+                clone=$(clone).append(html);
+                $(clone).attr("data-rid",rid);
+                $(ev.target).append(clone);
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
         }
