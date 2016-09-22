@@ -292,7 +292,7 @@
 <!--热门标签-->
     <select id="findHotViplabel" resultMap="VipLabels">
     SELECT
-    tvl.LABEL_ID,
+    tvl.LABEL_ID id,
     dl.LABEL_NAME,
     dl.LABEL_TYPE,
     COUNT(1) cnt
