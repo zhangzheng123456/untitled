@@ -84,7 +84,7 @@ var oc = new ObjectControl();
 				var img_list=[];
 				var img_list_json={};
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
-				if(img_url_list.length<=5){
+				if(img_url_list.length<=20){
 					for(var i=0;i<img_url_list.length;i++){
 						if(img_url_list[i].src.indexOf("http")!==-1){
 							img_list.push(img_url_list[i].src);
@@ -101,7 +101,7 @@ var oc = new ObjectControl();
 						time: 1,
 						lock:true,
 						cancel: false,
-						content:"商品图片最多可以上传5张!"
+						content:"商品图片最多可以上传20张!"
 					});
 				}
 				var li=$(".match_goods ul").find("li");
@@ -570,10 +570,14 @@ function getmatchgoodsList() {
 	var corp_code=$("#OWN_CORP").val();
 	var searchValue=$("#search").val();
 	var goods_code=$("#GOODS_CODE").val();
+	var pageNumber=a;
+	var pageSize
 	param["corp_code"]=corp_code;
 	param["goods_code"]=goods_code;
+	param["pageNumber"] = a;
+    param["pageSize"] =150;
 	param["searchValue"]=searchValue;
-	oc.postRequire("post", "/goods/corp_fab", "",param, function(data){
+	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			var list=JSON.parse(msg.list);
