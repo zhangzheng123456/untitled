@@ -67,6 +67,28 @@ public class LuploadHelper {
     }
 
     /***
+     * 验证String数组是否有重复值
+     */
+    public  static  String CheckStringOnly(String[] strs){
+        String result="";
+        int strCount=0;
+        LinkedHashMap<String, Integer> map = new LinkedHashMap<String, Integer>();
+        for (String str: strs) {
+            if(str.trim().equals("")){
+                continue;
+            }
+            Integer num = map.get(str.trim());
+            num = null == num ? 1 : num + 1;
+            map.put(str.trim(), num);
+            strCount++;
+        }
+        if (strCount != map.size())
+        {
+            result="存在重复值";
+        }
+        return result;
+    }
+    /***
      * 把jxl.jar中日期类型进行转换
      */
     public  static String getCellTypeForDate(Cell cellObject,String target_type) {
