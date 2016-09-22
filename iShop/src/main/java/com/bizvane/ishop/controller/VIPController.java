@@ -1,6 +1,7 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
@@ -41,23 +42,45 @@ public class VIPController {
     /**
      * 会员列表
      */
-//    @RequestMapping(value = "/list", method = RequestMethod.GET)
-//    @ResponseBody
-//    public String VIPManage(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        try {
-//
-//        } catch (Exception ex) {
-//            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-//            dataBean.setId("1");
-//            dataBean.setMessage(ex.getMessage());
-//            logger.info(ex.getMessage());
-//        }
-//        return dataBean.getJsonStr();
-//    }
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @ResponseBody
+    public String VIPManage(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            JSONObject obj = new JSONObject();
+
+            JSONArray array = new JSONArray();
+            JSONObject vip = new JSONObject();
+            vip.put("corp_code","C10000");
+            vip.put("store_id","1570");
+            vip.put("user_id","无");
+            vip.put("vip_id","774205");
+            vip.put("vip_avatar","");
+            vip.put("vip_name","罗晓珊");
+            vip.put("vip_phone","15915655912");
+            vip.put("vip_card_type","直营合作会员卡");
+            vip.put("amount","1000");
+            vip.put("consume_times","5");
+            vip.put("join_date","2016-04-11");
+            vip.put("cardno","4444444444444444444");
+            vip.put("vip_birthday","2016-04-11");
+            array.add(vip);
+
+            obj.put("pages",10);
+            obj.put("pageSize",10);
+            obj.put("pageNum",1);
+            obj.put("all_vip_list",array);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 
     /**
-     * 会员列表
+     * 会员信息
      * 近一年消费和累计消费的接口+相册+标签
      */
     @RequestMapping(value = "/vipConsumCount", method = RequestMethod.POST)
@@ -108,11 +131,12 @@ public class VIPController {
 
 
     /**
-     * 会员相册和标签
+     * 会员信息
+     * 会员详细资料
      */
-    @RequestMapping(value = "/vipAlbumAndLabel", method = RequestMethod.POST)
+    @RequestMapping(value = "/vipInfo", method = RequestMethod.POST)
     @ResponseBody
-    public String vipAlbumAndLabel(HttpServletRequest request) {
+    public String vipInfo(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
@@ -124,15 +148,11 @@ public class VIPController {
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
-            List<VipAlbum> vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code,vip_id);
 
 
-            JSONObject obj = new JSONObject();
-            obj.put("album",JSON.toJSONString(vipAlbumList));
-            obj.put("vipInfo","");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage(obj.toString());
+            dataBean.setMessage("");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
