@@ -27,7 +27,7 @@
 	display: inline-block;
 	width: 120px;
 	height: 30px;
-	margin-left: -3px;
+	margin-left: 0px;
 	line-height: 30px;
 	border-radius: 7px;
 	color: #FFFFFF;
@@ -544,4 +544,10 @@ div.wx_app_new p{
 }
 .Acc_dropdown p{
 	margin: 0 !important;
+}
+.p{
+	position: absolute;
+	top: 0px;
+	left:-82px;
+	color: #434960!important;
 }

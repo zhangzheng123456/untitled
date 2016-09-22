@@ -53,11 +53,6 @@ public class AreaController {
     private AreaService areaService;
     @Autowired
     private StoreService storeService;
-
-    @Autowired
-    private FunctionService functionService;
-    @Autowired
-    private TableManagerService managerService;
     @Autowired
     private CorpService corpService;
     private static final Logger logger = Logger.getLogger(AreaController.class);
@@ -209,13 +204,6 @@ public class AreaController {
     }
 
 
-
-
-
-
-
-
-
     /**
      * 区域列表
      */
@@ -258,7 +246,7 @@ public class AreaController {
     }
 
     /**
-     * 品牌新增
+     * 区域新增
      */
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
@@ -292,7 +280,7 @@ public class AreaController {
     }
 
     /**
-     * 品牌编辑
+     * 区域编辑
      */
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
@@ -349,7 +337,7 @@ public class AreaController {
                 if (area != null) {
                     String area_code = area.getArea_code();
                     String corp_code = area.getCorp_code();
-                    List<Store> stores = areaService.getAreaStore(corp_code, area_code);
+                    List<Store> stores = storeService.selectStoreCountByArea(corp_code,area_code,"");
                     if (stores.size() == 0) {
                         areaService.delete(Integer.valueOf(ids[i]));
                     } else {
@@ -520,43 +508,6 @@ public class AreaController {
         return dataBean.getJsonStr();
     }
 
-//
-//    @RequestMapping(value = "", method = RequestMethod.POST)
-//    @ResponseBody
-//    public String getAreaByCorp(HttpServletRequest request) {
-//        DataBean dataBean = new DataBean();
-//        String id = "";
-//        try {
-//            String jsString = request.getParameter("param");
-//            org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
-//            id = jsonObj.get("id").toString();
-//            String message = jsonObj.get("message").toString();
-//            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
-//            String corp_code = jsonObject.getString("corp_code");
-//            List<Area> list = this.areaService.getAreaByCorp(corp_code);
-//            com.alibaba.fastjson.JSONArray array = new com.alibaba.fastjson.JSONArray();
-//            com.alibaba.fastjson.JSONObject json = null;
-//            for (int i = 0; list != null && i < list.size(); i++) {
-//                String area_code = list.get(i).getArea_code();
-//                String area_name = list.get(i).getArea_name();
-//                json = new com.alibaba.fastjson.JSONObject();
-//                json.put("area_code", area_code);
-//                json.put("area_name", area_name);
-//                array.add(json);
-//            }
-//            org.json.JSONObject result = new org.json.JSONObject();
-//            result.put("areas", array);
-//            dataBean.setId(id);
-//            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-//            dataBean.setMessage("success!!");
-//        } catch (Exception ex) {
-//
-//        }
-//        return "";
-//    }
-
-
-//
 
     /***
      * 导出数据
@@ -894,6 +845,8 @@ public class AreaController {
 
         return dataBean.getJsonStr();
     }
+
+
     @RequestMapping(value = "/stores/save", method = RequestMethod.POST)
     @ResponseBody
     public String saveStores(HttpServletRequest request) {

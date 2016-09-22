@@ -14,13 +14,13 @@ import java.util.Map;
 public interface BrandService {
     Brand getBrandById(int id) throws Exception;
 
-    Brand getBrandByCode(String corp_code, String brand_code) throws Exception;
+    Brand getBrandByCode(String corp_code, String brand_code,String isactive) throws Exception;
+
+    Brand getBrandByName(String corp_code, String brand_name,String isactive) throws Exception;
 
     PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
     List<Brand> getAllBrand(String corp_code) throws Exception;
-
-    List<Store> getBrandStore(String corp_code, String brand_code) throws Exception;
 
     String insert(String message, String user_id) throws Exception;
 
@@ -28,13 +28,9 @@ public interface BrandService {
 
     int delete(int id) throws Exception;
 
-    Brand getBrandByName(String corp_code, String brand_name) throws Exception;
-
     String insertExecl(Brand brand) throws Exception;
 
     int getGoodsCount(String corp_code, String brand_code) throws Exception;
-
-    int getStoresCount(String corp_code, String brand_code) throws Exception;
 
     PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception;
 }

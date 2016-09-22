@@ -26,4 +26,7 @@ public interface SignMapper{
         List<Sign> selectSignAllScreenUser(Map<String, Object> params) throws SQLException;
 
         int insert(Sign sign) throws SQLException;
+
+        List<Sign> selectUserRecord(@Param("corp_code")String corp_code,@Param("user_code")String user_code,@Param("today") String today,@Param("status") String status) throws SQLException;
+
 }

@@ -19,14 +19,16 @@ public interface GoodsMapper {
 
     List<Goods> selectAllGoods(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("isactive") String isactive) throws SQLException;
 
+    List<Goods> selectAllGoodsByBrand(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("brand_code") String brand_code) throws SQLException;
+
     List<Goods> matchGoodsList(@Param("corp_code") String corp_code, @Param("search_value") String search_value,
-                               @Param("goods_code") String goods_code, @Param("isactive") String isactive) throws SQLException;
+                               @Param("goods_code") String goods_code, @Param("brand_code") String brand_code, @Param("isactive") String isactive) throws SQLException;
 
     List<Goods> selectAllGoodsScreen(Map<String,Object> map) throws SQLException;
 
-    Goods getGoodsByCode(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
+    Goods getGoodsByCode(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code, @Param("isactive") String isactive) throws SQLException;
 
-    Goods getGoodsByName(@Param("corp_code") String corp_code,@Param("goods_name") String goods_name) throws SQLException;
+    Goods getGoodsByName(@Param("corp_code") String corp_code,@Param("goods_name") String goods_name, @Param("isactive") String isactive) throws SQLException;
 
     List<GoodsMatch> selectMatchGoods1(@Param("corp_code") String corp_code, @Param("goods_code") String goods_code) throws SQLException;
 

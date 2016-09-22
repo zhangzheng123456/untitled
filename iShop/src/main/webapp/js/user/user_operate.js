@@ -142,13 +142,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }else if(input.checked==false){
                 	can_login="N";
                 }
-                var isonline="";//签到状态
-                var input2=$("#isonline")[0];
-                if(input2.checked==true){
-                	isonline="Y";
-                }else if(input2.checked==false){
-                	isonline="N";
-                }
+                // var isonline="";//签到状态
+                // var input2=$("#isonline")[0];
+                // if(input2.checked==true){
+                // 	isonline="Y";
+                // }else if(input2.checked==false){
+                // 	isonline="N";
+                // }
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -191,7 +191,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["isactive"]=ISACTIVE;//是否可用
 				_params["corp_code"]=OWN_CORP;//公司编号
 				_params["can_login"]=can_login;//是否登录
-				_params["isonline"]=isonline;//签到状态
+				// _params["isonline"]=isonline;//签到状态
 				if(r_code=="R2000"){
 	            	_params["store_code"]=STORE_CODE;//店铺编号
 	            	_params["area_code"]="";//区域编号
@@ -215,7 +215,35 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 			}
 		});
 		$(".useredit_oper_btn ul li:nth-of-type(1)").click(function(){
+			var codeMark=$("#USERID").attr("data-mark");//编号是唯一的标志
+			var idMark=$("#user_id").attr("data-mark");//ID是否唯一的标志
+			var phoneMark=$("#USER_PHONE").attr("data-mark");//手机号码是否唯一的标志
+			var emailMark=$("#USER_EMAIL").attr("data-mark");//邮箱是否唯一的标志
 			if(useroperatejs.firstStep()){
+				if(idMark=="N"){
+					var div=$("#user_id").next('.hint').children();
+					div.html("员工ID已经存在！");
+					div.addClass("error_tips");
+					return;
+				}
+				if(phoneMark=="N"){
+					var div=$("#USER_PHONE").next('.hint').children();
+					div.html("该手机号码已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(emailMark=="N"){
+					var div=$("#USER_EMAIL").next('.hint').children();
+					div.html("该邮箱已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
+				if(codeMark=="N"){
+					var div=$("#USERID").next('.hint').children();
+					div.html("该编号已经存在！");
+		            div.addClass("error_tips");
+		            return;
+				}
 				var ID=sessionStorage.getItem("id");
 				var USERID=$("#USERID").val();
 				var user_id=$("#user_id").val();
@@ -264,13 +292,13 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 }else if(input1.checked==false){
                 	can_login="N";
                 }
-                var isonline="";//签到状态
-                var input2=$("#isonline")[0];
-                if(input2.checked==true){
-                	isonline="Y";
-                }else if(input2.checked==false){
-                	isonline="N";
-                }
+                // var isonline="";//签到状态
+                // var input2=$("#isonline")[0];
+                // if(input2.checked==true){
+                // 	isonline="Y";
+                // }else if(input2.checked==false){
+                // 	isonline="N";
+                // }
 				var STORE_CODE="";
 				var storelist_length=$(".shop_list .input_select");;
 				for(var i=0;i<storelist_length.length;i++){
@@ -323,7 +351,7 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
 				_params["isactive"]=ISACTIVE;//是否可用
 				_params["corp_code"]=OWN_CORP;//公司编号
 				_params["can_login"]=can_login;//是否登录
-				_params["isonline"]=isonline;//签到状态
+				// _params["isonline"]=isonline;//签到状态
 				// _params["password"]=PSW;//密码
 				_params["id"]=ID;//ID
 				if(r_code=="R2000"){
@@ -868,11 +896,11 @@ jQuery(document).ready(function(){
 				}else if(msg.can_login=="N"){
 					input1.checked=false;
 				}
-				if(msg.isonline=="Y"){
-					$("#isonline")[0].checked=true;
-				}else if(msg.isonline=="N"||msg.isonline==""){
-					$("#isonline")[0].checked=false;
-				}
+				// if(msg.isonline=="Y"){
+				// 	$("#isonline")[0].checked=true;
+				// }else if(msg.isonline=="N"||msg.isonline==""){
+				// 	$("#isonline")[0].checked=false;
+				// }
 				var qrcodeList=msg.qrcodeList;
 				if(qrcodeList.length>0) {
 					for (var i = 0; i < qrcodeList.length; i++) {
@@ -1053,10 +1081,30 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
+			$('.corp_select .searchable-select-input').keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					$("#USER_PHONE").val("");
+					$("#USER_EMAIL").val("");
+					$("#USERID").val("");
+					$("#user_id").val("");
+					$("#user_id").attr("data-mark","");
+					$("#USERID").attr("data-mark","");
+					$("#USER_PHONE").attr("data-mark","");
+					$("#USER_EMAIL").attr("data-mark","");
+					$("#OWN_RIGHT").val('');
+					$("#OWN_RIGHT").attr("data-myrcode","");
+					$("#OWN_STORE").val('');
+					$("#OWN_STORE").attr("data-myscode","");
+					$("#ownshop_list .per_type").nextAll().remove();
+				}
+			})
 			$('.searchable-select-item').click(function(){
 					$("#USER_PHONE").val("");
 					$("#USER_EMAIL").val("");
 					$("#USERID").val("");
+					$("#user_id").val("");
+					$("#user_id").attr("data-mark","");
 					$("#USERID").attr("data-mark","");
 					$("#USER_PHONE").attr("data-mark","");
 					$("#USER_EMAIL").attr("data-mark","");

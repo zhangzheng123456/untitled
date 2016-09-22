@@ -523,38 +523,37 @@ function clearAll(name){
         }
     }
 };
-//导出拉出list
-//$("#leading_out").click(function(){
-//    var l=$(window).width();
-//    var h=$(document.body).height();
-//    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
-//    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
-//    $(".file").css({"left":+left+"px","top":+tp+"px"});
-//    $("#p").show();
-//    $("#p").css({"width":+l+"px","height":+h+"px"});
-//    $('.file').show();
-//    $(".into_frame").hide();
-//    var param={};
-//    param["function_code"]=funcCode;
-//    whir.loading.add("",0.5);//加载等待框
-//    oc.postRequire("post","/list/getCols","0",param,function(data){
-//        if(data.code=="0"){
-//            var message=JSON.parse(data.message);
-//            var message=JSON.parse(message.tableManagers);
-//            console.log(message);
-//            $("#file_list_l ul").empty();
-//            for(var i=0;i<message.length;i++){
-//                $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
-//                    +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
-//            }
-//            bianse();
-//            $("#file_list_r ul").empty();
-//        }else if(data.code=="-1"){
-//            alert(data.message);
-//        }
-//        whir.loading.remove();//移除加载框
-//    })
-//})
+$("#leading_out").click(function(){
+    var l=$(window).width();
+    var h=$(document.body).height();
+    var left=($(window).width()-$(".file").width())/2;//弹框定位的left值
+    var tp=($(window).height()-$(".file").height())/2;//弹框定位的top值
+    $(".file").css({"left":+left+"px","top":+tp+"px"});
+    $("#p").show();
+    $("#p").css({"width":+l+"px","height":+h+"px"});
+    $('.file').show();
+    $(".into_frame").hide();
+    var param={};
+    param["function_code"]=funcCode;
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/list/getCols","0",param,function(data){
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var message=JSON.parse(message.tableManagers);
+            console.log(message);
+            $("#file_list_l ul").empty();
+            for(var i=0;i<message.length;i++){
+                $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                    +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
+            }
+            bianse();
+            $("#file_list_r ul").empty();
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+        whir.loading.remove();//移除加载框
+    })
+})
 function bianse(){
     $("#file_list_l li:odd").css("backgroundColor","#fff");
     $("#file_list_l li:even").css("backgroundColor","#ededed");
@@ -586,7 +585,7 @@ $("#file_submit").click(function(){
         param["list"]=list;
     }
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/userAction/exportExecl","0",param,function(data){
+    oc.postRequire("post","/productShare/exportExecl","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var path=message.path;

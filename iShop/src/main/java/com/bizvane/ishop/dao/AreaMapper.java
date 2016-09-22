@@ -12,15 +12,11 @@ public interface AreaMapper {
 
     List<Area> selectAllArea(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
-    List<Area> selectAreas(@Param("corp_code") String corp_code) throws SQLException;
-
     int insertArea(Area area) throws SQLException;
 
     int updateArea(Area area) throws SQLException;
 
     int deleteByAreaId(int id) throws SQLException;
-
-    List<Area> getAreaByCorp(@Param("corp_code") String corp_code) throws SQLException;
 
     //根据企业code和用户登录进来时的区域Code查询区域
     Area selectAreaByCode(@Param("corp_code") String corp_code, @Param("area_code") String area_code, @Param("isactive") String isactive) throws SQLException;

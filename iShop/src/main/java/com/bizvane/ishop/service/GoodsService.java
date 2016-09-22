@@ -54,7 +54,7 @@ public interface GoodsService {
      */
     PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws Exception;
 
-    List<Goods> selectBySearch(String corp_code, String search_value,String goods_code) throws Exception;
+    List<Goods> matchGoodsList(String corp_code, String search_value,String goods_code,String brand_code) throws Exception;
 
     PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map)throws Exception;
 
@@ -64,15 +64,7 @@ public interface GoodsService {
      * @param goods_code
      * @return
      */
-    Goods getGoodsByCode(String corp_code, String goods_code)throws Exception;
-
-    /**
-     * 判断企业编号信息是否在企业内唯一
-     * @param corp_code
-     * @param goods_code
-     * @return
-     */
-    String goodsCodeExist(String corp_code, String goods_code)throws Exception;
+    Goods getGoodsByCode(String corp_code, String goods_code,String isactive)throws Exception;
 
     /**
      * 判断商品名称是否在企业内唯一
@@ -80,5 +72,5 @@ public interface GoodsService {
      * @param goods_name
      * @return
      */
-    String goodsNameExist(String corp_code, String goods_name)throws Exception;
+    Goods goodsNameExist(String corp_code, String goods_name,String isactive)throws Exception;
 }

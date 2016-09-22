@@ -3,466 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>会员分析</title>
-    <link rel="stylesheet" href="../table/css/inner.css">
-    <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/vip_analyze.css">
     <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../table/css/inner.css">
+    <link rel="stylesheet" href="../css/font_style.css">
+    <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vip-data.css">
+
 </head>
-<style>
-     /*导航头部*/
-    .nav_bar li{
-        width:14.2865%;
-        height:30px;
-        line-height: 30px;
-        float: left;
-        font-size: 14px;
-        color: #888888;
-        text-align: center;
-        cursor: pointer;
-    }
-   .nav_bar .active1{
-        color: #6dc1c8;
-    }
-    .nav_bar{
-        height: 35px;
-        border-bottom: 1px solid #fff;
-        position: relative;
-        overflow: hidden;
-    }
-
-    /*基本信息*/
-     #basic_message{
-         overflow: hidden;
-         display: none;
-     }
-     #basic_message .editor_detail_em{
-         margin-top: 20px;
-         margin-left: -19px;
-     }
-     #basic_message .msg_detail{
-         margin-top: 10px;
-     }
-     #basic_message .msg_detail div{
-         float:right;
-     }
-     #basic_message .btn_margin{
-         marrgin-top:30px;
-     }
-    /*备注*/
-     .remark{
-         display: none;
-     }
-     .remark span{
-         display: inline-flex;
-         margin-top: 30px;
-         margin-left: 15%;
-     }
-    .remark textarea{
-        width: 410px;
-        height:350px;
-        margin-left: 10px;
-        padding: 10px;
-        resize: none;
-        border: none;
-        outline: none;
-        border-radius: 4px;
-    }
-    .remark_save{
-        width: 160px;
-        height: 30px;
-        margin-left: 18%;
-        margin-top: 20px;
-        background: #6dc1c8;
-        color: #ffffff;
-        line-height: 30px;
-        text-align: center;
-        border-radius: 4px;
-        font-size: 14px;
-        letter-spacing: 10px;
-    }
-    /*消费记录*/
-     .record{
-         display: none;
-         font-size: 14px;
-         color: #888888;
-     }
-     .record>div{
-         background: #fff;
-     }
-    .record_head{
-        height: 50px;
-        margin-top: 10px ;
-        padding: 10px;
-    }
-    .record em{
-        font-size: 16px;
-        color: #c26555;
-        text-decoration: none;
-    }
-    .record_head em{
-        margin-left: 10px;
-    }
-    .record_head .consume_total{
-        margin-right: 10px;
-    }
-    .record .consume_total{
-        font-size: 20px;
-        color: #c26555;
-    }
-    .record_head .amount{
-        font-size: 20px;
-        color: #58b4bc;
-    }
-    .record_head ul{
-        float: right;
-        line-height: 30px;
-    }
-    .record ul li{
-        float: left;
-        margin-left: 10px;
-        color: #434960;
-    }
-    .record_head ul li:first-child span{
-        font-size: 16px;
-        color: #c26555;
-    }
-    .record_head ul li:nth-child(2) span{
-        color: #888888;
-    }
-    hr{
-        margin: 0 10px;
-        color: #d7d7d7;
-    }
-    .record_head_down{
-        height: 50px;
-        padding: 10px;
-    }
-    .record_head_down .record_date input{
-        width: 130px;
-        height: 30px;
-        text-indent: 10px;
-        border: 1px solid #d7d7d7;
-        border-radius: 4px;
-        outline: none;
-    }
-    .record_date span{
-        margin: 0 10px 0 0;
-    }
-    .record_input{
-        float: right;
-    }
-    .record_input input{
-        width: 160px;
-        height: 30px;
-        text-indent: 10px;
-        margin: 0 20px 0 10px;
-        border: 1px solid #d7d7d7;
-        border-radius: 4px;
-        outline: none;
-    }
-    .order_list{
-        font-size: 14px;
-        color: #888888;
-        background: #fff;
-        margin-top: 10px;
-        padding: 0 20px;
-    }
-    .black_font{
-        color: #434960;
-    }
-    .order_list ul{
-        float: right;
-        height: 30px;
-        line-height: 30px;
-    }
-    .order_list ul li{
-        color: #888888;
-    }
-    .list_head{
-        height: 30px;
-        line-height: 30px;
-    }
-    .list_table{
-        width: 100%;
-        background: #fff;
-        font-size: 14px;
-    }
-    .list_table thead tr{
-        height: 50px;
-        line-height: 50px;
-        color: #434960;
-        font-size: 14px;
-        text-align: center;
-    }
-    .list_table thead tr th{
-         font-weight: normal;
-         text-align: center;
-     }
-    .list_table tbody tr{
-         height: 60px;
-     }
-    .list_table tbody tr td{
-         font-weight: normal;
-         text-align: center;
-     }
-    .list_table tbody tr:nth-child(odd){
-         background: #f4f4f4;
-     }
-    .list_table img{
-        width: 50px;
-        height: 50px;
-        border: 1px solid;
-        border-radius: 5px;
-    }
-    .list_table .money{
-        color: #c26555;
-    }
-    .list_table .product_name{
-         text-align: left;
-    }
-    .list_table .product_name span{
-        display: block;
-        width: 250px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-    .record_list{
-        margin-top: 10px;
-    }
-    .more_list{
-        display: none;
-        text-align: center;
-        cursor: pointer;
-    }
-
-     /*积分*/
-    .points{
-        display: none;
-        font-size: 14px;
-     }
-    .point_head{
-         height: 50px;
-         margin-top: 10px ;
-         padding: 10px;
-     }
-    .points .consume_total{
-        font-size: 20px;
-        color: #c26555;
-        margin-left: 10px;
-     }
-    .point_head{
-        background: #fff;
-    }
-    .point_head ul{
-        float: right;
-        line-height: 30px;
-    }
-    .point_head ul li{
-         float: left;
-         margin-left: 10px;
-         color: #434960;
-     }
-    .point_head ul li:first-child span{
-         font-size: 16px;
-         color: #c26555;
-     }
-    .point_head ul li:nth-child(2) span{
-         color: #888888;
-     }
-    .point_head_down{
-         height: 50px;
-         padding: 10px;
-        background: #fff;
-     }
-    .point_head_down .record_date input{
-         width: 130px;
-         height: 30px;
-         text-indent: 10px;
-         border: 1px solid #d7d7d7;
-         border-radius: 4px;
-         outline: none;
-     }
-    .point_head_down .record_date li{
-        float: left;
-    }
-    .record_date span{
-         margin: 0 10px;
-     }
-    .point_table{
-        width:100%;
-        margin-top: 10px;
-        color: #888888;
-        background: #fff;
-    }
-    .point_table thead tr{
-        height: 50px;
-        line-height: 50px;
-        color: #434960;
-        font-size: 14px;
-    }
-    .point_table tbody tr{
-        height: 50px;
-    }
-    .point_table tbody tr:nth-child(odd){
-        background: #f4f4f4;
-    }
-    .point_table tr th:nth-child(1){
-        padding-left: 20px;
-    }
-     .point_table tr td:nth-child(1){
-         padding-left: 20px;
-     }
-    .point_table thead tr th{
-        font-weight: normal;
-        text-align: left;
-    }
-
-    /*相册*/
-     .album{
-         width:100%;
-         overflow: hidden;
-         background: #e8e8e8;
-     }
-     .album ul li{
-         width:14%;
-         float: left;
-         text-align: center;
-         position: relative;
-     }
-     .album img{
-         margin-top: 20px;
-         cursor: pointer;
-     }
-     .album .cancel_img{
-         width: 30px;
-         height: 30px;
-         background: url('../img/x_alt.png') no-repeat right;
-         background-size:20px;
-         position: absolute;
-         top:5px;
-         right:5px;
-         z-index: 100;
-     }
-
-     /*标签*/
-     .viplabel{
-         font-size: 14px;
-         display: none;
-         overflow: hidden;
-     }
-    .viplabel .search{
-        float: left;
-        width: 320px;
-        height: 30px;
-        margin-top: 10px;
-    }
-    .input{
-        width: 265px;
-        height: 27px;
-        border: none;
-        outline: none;
-        border-radius: 18px;
-       text-indent: 10px;
-    }
-    .viplabel i{
-        position: relative;
-        left: -35px;
-        top: 8px;
-        z-index: 100;
-        font-size: 25px;
-    }
-    .viplabel ul{
-        float: right;
-    }
-    .viplabel ul li{
-        float: left;
-        width: 80px;
-        height: 30px;
-        line-height: 30px;
-        margin-top: 10px;
-        background-color: #fff;
-    }
-    .viplabel ul span{
-        display: inline-block;
-        width: 25px;
-        height: 20px;
-        font-size: 20px;
-        vertical-align: middle;
-        color: #6cc1c8;
-        margin-left: 8px;
-        line-height: 19px;
-    }
-    .viplabel .table{
-        margin-top: 50px;
-    }
-    .viplabel table tbody tr:nth-child(odd){
-        background: #f4f4f4;
-    }
-    .viplabel table tbody tr:nth-child(even){
-         background: #fff;
-     }
-    /*扩展模块*/
-     .all_list{
-         overflow: hidden;
-     }
-    .expand{
-        padding:20px 30px 0 30px;
-        overflow: hidden;
-    }
-     .expand ul{
-         width: 33.33%;
-         float: left;
-         padding-right: 20px;
-     }
-     .expand ul li{
-      margin-bottom: 10px;
-     }
-     .expand ul li b{
-         padding-top: 3px;
-         float: left;
-         width: 140px;
-         padding-right: 10px;
-         text-align: right;
-         font-weight: normal;
-     }
-     .expand ul li div{
-         margin-left: 140px;
-     }
-     .expand ul li div input{
-         width:100%;
-         height: 30px;
-         border-radius: 3px;
-         padding:5px 3px 5px 2px;
-     }
-     /*配合定位*/
-     .expand .position{
-         position: relative;
-     }
-    .expand .expand_selection{
-        position: absolute;
-        left:-124px;
-        top:26px;
-        width:100%;
-        border-radius: 3px;
-    }
-    .expand .input_select:hover{
-        cursor: pointer;
-    }
-    .expand ul:last-child{
-        clear: both;
-        width: 100%;
-    }
-
-</style>
 <body>
 <div class="con_table" id="con_table">
-    <!-- 导航-->
-    <div class="title" >
+ <div id="VIP_Message">
+     <!-- 导航-->
+    <div class="title">
         <span>会员管理</span>
+        <span class="icon-ishop_8-03"></span>
+        <span id="VIP_LIST">会员列表</span>
         <span class="icon-ishop_8-03"></span>
         <span id="vipAnalyze_return">会员信息</span>
     </div>
@@ -470,44 +27,44 @@
        <div class="header" style="overflow: hidden;">
           <div class="left">
               <div class="left-class">
-                  <div  class="content">
-                      <span class="Fsize-22" id="total_amount_Y">8956.99</span>
+                  <div  class="content1">
+                      <span class="Fsize-28" id="total_amount_Y"></span>
                       <span class="Fsize-12">近一年消费金额(元)</span>
                   </div>
               </div>
               <div  class="left-class left-color-1">
-                  <div class="content">
-                      <span class="Fsize-22" id="consume_times_Y">3</span>
+                  <div class="content1">
+                      <span class="Fsize-28" id="consume_times_Y"></span>
                       <span class="Fsize-12">近一年消费单数</span>
                   </div>
               </div>
               <div  class="left-class left-color-2">
-                  <div class="content">
-                      <span class="Fsize-22" id="total_amount">39617.28</span>
+                  <div class="content1">
+                      <span class="Fsize-28" id="total_amount"></span>
                       <span class="Fsize-12">累计消费金额(元)</span>
                   </div>
               </div>
               <div class="left-class left-color-3">
-                  <div class="content">
-                      <span class="Fsize-22" id="consume_times">24</span>
+                  <div class="content1">
+                      <span class="Fsize-28" id="consume_times"></span>
                       <span class="Fsize-12">累计消费单数</span>
                   </div>
               </div>
               <div class="left-bottom">
-                  <div class="content">
+                  <div class="content1">
                       <span class="Fsize-12">沉睡天数</span>
-                      <span class="Fsize-22" id="dormant_time">124</span>
-                      <span class="Fsize-12" id="last_date">最近消费：2016-09-09</span>
+                      <span class="Fsize-28" id="dormant_time"></span>
+                      <span class="Fsize-12" >最近消费：<span id="last_date"></span></span>
                   </div>
               </div>
           </div>
           <div class="center">
               <div class="message-class">
                   <ul>
-                      <li class="active">消费</li>
-                      <li>积分</li>
-                      <li>相册</li>
-                      <li>标签</li>
+                      <li><a class="active" data-name="consume">消费</a></li>
+                      <li><a data-name="jifen">积分</a></li>
+                      <li><a data-name="Ablum">相册</a></li>
+                      <li><a data-name="label">标签</a></li>
                   </ul>
                   <div class="tabs-parent">
                       <div class="table">
@@ -572,14 +129,12 @@
                                     <td>5</td>
                                     <td>9.6</td>
                                      <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr class="more">
-                                    <td colspan="4">查看更多<i class="icon-ishop_8-03"></i></td>
                                 </tr>
                               </tbody>
                           </table>
 
                       </div>
-                      <div style="display: none">
+                      <div style="display: none" class="table">
                           <table style="width: 100%" cellpadding="0" cellspacing="0">
                               <thead>
                               <tr class="TR">
@@ -619,227 +174,22 @@
                                   <td>5</td>
                                   <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
                               </tr>
-                              <tr class="more">
-                                  <td colspan="4">查看更多<i class="icon-ishop_8-03" ></i></td>
-                              </tr>
+
                               </tbody>
                           </table>
                       </div>
                       <div style="display: none" class="images">
-                          <div class="img-parent" style="overflow-x:hidden ;overflow-y:auto;" id="images">
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span> <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span> <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-                              <span >
-                                <img src="../img/vipImg.png" >
-                              </span>
-
+                          <div class="img-parent">
+                                <div id="images"></div>
                           </div>
-                          <div></div>
-                          <div></div>
                       </div>
                       <div style="display: none" class="vip-label" >
-                          <div class="label-parent" style="overflow-x:hidden;overflow-y: auto" id="label">
-                              <span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span><span >老同学</span>
-                              <span >加油地暖</span>
-                              <span >买2套毛巾送人</span>
-                              <span >请我喝咖啡</span>
-                              <span >老同学</span>
-                              <span >嗨起来</span>
-                              <span >come on</span>
+                          <div class="label-parent" >
+                                <div id="labels"></div>
                           </div>
                       </div>
                   </div>
+                  <div class="person-more"><label id="fenLei">查看更多<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
           <div class="right">
@@ -849,51 +199,44 @@
                       </span>
                   </div>
                   <div  class="person-right">
+                      <span class="icon-ishop_9-01 edit" title="编辑资料"></span>
                       <span class="person-message">
-                          <i class="person-name">刘杨</i> <a class="sex-girl"></a>
+                          <i class="person-name">刘杨</i> <a class="icon-ishop_9-02"></a>
                       </span>
                       <span class="vip">
-                          会员卡号 <span>suda10900123103308</span>
+                          <span class="margin-right10">会员卡号</span><span>suda10900123103308</span>
                       </span>
                       <span class="vip">
-                          会员等级 <span>高级VIP</span>
+                         <span class="margin-right10"> 会员等级</span><span class="vipClass">高级VIP</span>
                       </span>
                   </div>
               </div>
               <div class="person-detail">
                  <div class="datail-first">
-                  <span class="detail-left">手机号码</span>
-                  <span class="datail-right">15565689372</span>
+                  <span class="detail-left">手机号码</span><span class="detail-right">15565689372</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">所属导购</span>
-                  <span class="datail-right">高圆圆</span>
+                  <span class="detail-left">所属导购</span><span class="detail-right">高圆圆</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">所用积分</span>
-                  <span class="datail-right">2658</span>
+                  <span class="detail-left">可用积分</span><span class="detail-right jifen">2658</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">加入日期</span>
-                  <span class="datail-right">2017-09-09</span>
+                  <span class="detail-left">加入日期</span><span class="detail-right">2017-09-09</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">截止日期</span>
-                  <span class="datail-right">2016-10-09</span>
+                  <span class="detail-left">截止日期</span><span class="detail-right">2016-10-09</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">会员状态</span>
-                  <span class="datail-right">有效</span>
+                  <span class="detail-left">会员状态</span><span class="detail-right">有效</span>
               </div>
               <div style="height: 30px;line-height: 30px;">
-                  <span class="detail-left">会员生日</span>
-                  <span class="datail-right">1960-08-12</span>
+                  <span class="detail-left">会员生日</span><span class="detail-right">1960-08-12</span>
               </div>
               <div class="datail-last">
-                  <span class="detail-left">推荐人</span>
-                  <span class="datail-right">吴燕</span>
+                  <span class="detail-left">推荐人</span><span class="detail-right">吴燕</span>
               </div>
-                  <div class="person-more">详细资料<i class="icon-ishop_8-03"></i></div>
+                  <div class="person-more"><label>详细资料<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
        </div>
@@ -953,28 +296,28 @@
             </li>
         </ul>
     </div>
-    </div>
+    </div></div>
 
-    <div class="" style="display: none">
+    <div id="VIP_edit" style="display:none;">
         <div class="title">
             <span>会员管理</span>
             <span class="icon-ishop_8-03"></span>
             <span>会员列表</span>
             <span class="icon-ishop_8-03"></span>
-            <span>会员信息</span>
+            <span id="VIP_message_back">会员信息</span>
             <span class="icon-ishop_8-03"></span>
             <span>编辑会员资料</span>
         </div>
 
         <div>
             <div class="nav">
-                <ul class="nav_bar" id="nav_bar">
-                    <li>基本信息</li>
+                <ul class="nav_bar" id="nav_bar" style="position: relative">
+                    <li class="active1">基本信息</li>
                     <li>拓展信息</li>
-                    <li>衣橱</li>
-                    <li>积分</li>
-                    <li>相册</li>
-                    <li>标签</li>
+                    <li data-name="consume">衣橱</li>
+                    <li data-name="jifen">积分</li>
+                    <li data-name="Ablum">相册</li>
+                    <li data-name="label">标签</li>
                     <li>备注</li>
                     <div id="remark" style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
@@ -983,7 +326,7 @@
             <div class="all_list">
                 <div class="basic_message" id="basic_message">
                 <!--左侧个人信息-->
-                <div class="editor_em col-lg-7  animated fadeInRight">
+                    <div class="editor_em col-lg-7  animated fadeInRight">
                     <form class="conpany_msg">
                         <div>
                             <label>头像</label><span class="head_img" id="preview"><img src="" id="IMG"></span>
@@ -1042,7 +385,7 @@
                     </form>
                 </div>
                 <!--右侧保持信息-->
-                <div class="editor_detail_em col-lg-4  animated fadeInRight">
+                    <div class="editor_detail_em col-lg-4  animated fadeInRight">
                     <form class="msg_detail">
                         <div>
                             <span><label>创建时间</label><input type="text" id="created_time" /></span>
@@ -1062,8 +405,8 @@
                         </div>
                     </form>
                 </div>
-            </div>
-                <!--拓展模块-->
+                </div>
+
                 <div class="expand" style="display: none">
                     <!--左侧-->
                     <ul>
@@ -1404,18 +747,8 @@
                     <ul>
                         <li>
                             <img src="../img/vipImg.png">
-                            <div class="cancel_img">
-
-                            </div>
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
-                        </li>
-                        <li>
-                            <img src="../img/vipImg.png">
+                            <div class="cancel_img"></div>
+                            <span class="album_date">2016-10-29</span>
                         </li>
                         <li>
                             <img src="../img/vipImg.png">
@@ -1427,141 +760,139 @@
                             <img src="../img/vipImg.png">
                         </li>
                     </ul>
+                    <span class="add_new_album" style="position: relative;">
+                        <input type="file" id="upAlbum">添加图片+
+                    </span>
+                    <!--<div class="album_shade"></div>-->
                 </div>
 
                 <div class="viplabel">
-                <div class="search">
-                    <input type="text" class="input" id="search" placeholder="当前页面搜索">
-                    <i class="icon-ishop_3-05" id="d_search"></i>
-                </div>
-                <ul>
-                    <li id="add"><span class="icon-ishop_6-01"></span>新增</li>
-                    <li id="remove"><span class="icon-ishop_6-02"></span>删除</li>
-                </ul>
-                <div class="table">
-                    <table cellpadding="0" cellspacing="0" width="100%">
-                        <thead>
-                        <tr class="th">
-                            <th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>
-                            <th style="text-align: left;">序号</th>
-                            <th>标签名称</th>
-                            <th>添加人</th>
-                            <th>添加日期</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            <td width="50px" style="text-align: left;">
-                                <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                            </td>
-                            <td style="text-align: left;">1</td>
-                            <td>老同学</td>
-                            <td>张某某</td>
-                            <td>2016-02-23</td>
-                        </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                            <tr>
-                                <td width="50px" style="text-align: left;">
-                                    <div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>
-                                </td>
-                                <td style="text-align: left;">1</td>
-                                <td>老同学</td>
-                                <td>张某某</td>
-                                <td>2016-02-23</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                    <div class="label_left_box">
+                        <div class="labeladd_box">
+                            <input type="text" id="search_input" placeholder="添加标签">
+                            <ul class="search_list">
+                            </ul>
+                            <span class="labeladd_btn" id="labeladd_btn">贴上</span>
+                        </div>
+
+                        <div class="own_label">
+                            <label>已有标签<span class="span_total"></span>个</label>
+                            <div class="label_box" id="label_box">
+                                <!--<span class="label_u_active">老同学<i class="icon-ishop_6-12"></i></span>-->
+                                <!--<span class="label_u_active">家有地暖<i class="icon-ishop_6-12"></i></span>-->
+                                <!--<span class="label_u_active">买2套浴巾送人<i class="icon-ishop_6-12"></i></span>-->
+                                <!--<span class="label_g_active">有品位<i class="icon-ishop_6-12"></i></span>-->
+                                <!--<span class="label_u_active">8月31生日<i class="icon-ishop_6-12"></i></span>-->
+                                <!--<span class="label_u_active">喜欢红色<i class="icon-ishop_6-12"></i></span>-->
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="all_label">
+                        <ul class="label_nav">
+                            <li class="label_li_active" id="hot_label">热门</li>
+                            <li id="label_li_org">官方</li>
+                            <li id="label_li_user">用户</li>
+                        </ul>
+
+                        <div class="label_box" id="hotlabel">
+                            <!--<span class="label_g">有钱</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
+                        </div>
+                        <div class="label_box" id="label_org" style="display: none">
+                            <!--<span class="label_g">有钱2</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
+                        </div>
+                        <div class="label_box" id="label_user" style="display: none">
+                            <!--<span class="label_g">有钱3</span>-->
+                            <!--<span class="label_u_active">家有地暖</span>-->
+                            <!--<span class="label_g">豪爽<i class="icon-ishop_6-12"></i></span>-->
+                            <!--<span class="label_g_active">有品位</span>-->
+                            <!--<span class="label_g">时尚</span>-->
+                            <!--<span class="label_g">美女</span>-->
+                            <!--<span class="label_g">会员卡丢失</span>-->
+                            <!--<span class="label_g">小朋友</span>-->
+                            <!--<span class="label_u">老人</span>-->
+                            <!--<span class="label_u_active">8月31生日</span>-->
+                            <!--<span class="label_u">非常有钱</span>-->
+                            <!--<span class="label_u_active">喜欢红色</span>-->
+                        </div>
+                    </div>
+                <!--<div class="search">-->
+                    <!--<input type="text" class="input" id="search" placeholder="当前页面搜索">-->
+                    <!--<i class="icon-ishop_3-05" id="d_search"></i>-->
+                <!--</div>-->
+                <!--<ul>-->
+                    <!--<li id="add"><span class="icon-ishop_6-01"></span>新增</li>-->
+                    <!--<li id="remove"><span class="icon-ishop_6-02"></span>删除</li>-->
+                <!--</ul>-->
+                <!--<div class="table">-->
+                    <!--<table cellpadding="0" cellspacing="0" width="100%">-->
+                        <!--<thead>-->
+                        <!--<tr class="th">-->
+                            <!--<th width="50px;" style="text-align: left;"><div class="checkbox"><input onClick="if(this.checked==true) { checkAll('test'); } else { clearAll('test'); }" type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput0"/><label for="checkboxTwoInput0"></label></div></th>-->
+                            <!--<th style="text-align: left;">序号</th>-->
+                            <!--<th>标签名称</th>-->
+                            <!--<th>添加人</th>-->
+                            <!--<th>添加日期</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                            <!--<tr>-->
+                            <!--<td width="50px" style="text-align: left;">-->
+                                <!--<div class="checkbox"><input type="checkbox" value="" name="test" title="全选/取消" class="check"  id="checkboxTwoInput11"/><label for="checkboxTwoInput11"></label></div>-->
+                            <!--</td>-->
+                            <!--<td style="text-align: left;">1</td>-->
+                            <!--<td>老同学</td>-->
+                            <!--<td>张某某</td>-->
+                            <!--<td>2016-02-23</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
             </div>
 
                 <div class="remark">
-               <span>
-                     <label>备注</label>
-                     <textarea id=""></textarea>
-               </span>
-                <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
-            </div>
+                    <span>
+                        <label>备注</label>
+                        <textarea id=""></textarea>
+                    </span>
+                    <div class="remark_save"><i class="icon-ishop_6-04"></i>保存</div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 </body>
 <script src="../table/js/jquery.min.js"></script>
+<!-- oss存储 -->
+<script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
 <script type="text/javascript" src="../js/laydate/laydate.js"></script>
 <script type="text/javascript" src="/js/insidePostRequire.js"></script>
+<script src="/js/loading.js"></script>
 <script src="../js/dist/echarts.js"></script>
+<!--<script type="text/javascript" src="../js/upload_touxiang.js"></script>-->
 <script src="../js/vip/vip_data.js"></script>
 
 <script type="text/javascript">
@@ -1995,18 +1326,8 @@
                 });
             }
     );
-    $(".message-class ul li").click(function(){
-        $(this).addClass("active");
-        $(this).siblings().removeClass("active");
-
-       var nowIndex=$(this).index();
-
-        $(".tabs-parent").children().eq(nowIndex).show();
-        $(".tabs-parent").children().eq(nowIndex).siblings().hide()
-    })
-
-    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
-    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
+//    $("#images").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
+//    $("#label").niceScroll({cursorborder:"0 none",cursorcolor:"#666",cursoropacitymin:"0",boxzoom:false});
 //   扩展模块JS
     $(function(){
         $(".item_1 .input_select").click(function(e){

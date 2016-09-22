@@ -56,7 +56,7 @@
     <!--</select>-->
 
     <select id="selectAllMessageInfo" resultMap="MessageInfo">
-        select dum.id,
+        SELECT dum.id,
         dum.message_code,
         dum.message_sender ,
         dum.message_title,
@@ -66,36 +66,36 @@
         dum.modified_date,
         dum.modifier,
         dum.isactive
-        from def_user_message dum,def_corp c,def_message_type mt
-        where dum.corp_code = c.corp_code
+        FROM def_user_message dum,def_corp c,def_message_type mt
+        WHERE dum.corp_code = c.corp_code
         AND dum.message_type = mt.type_code
         <if test="corp_code!=null and corp_code!=''">
-            and dum.corp_code=#{corp_code}
+            AND dum.corp_code=#{corp_code}
         </if>
         <if test="user_code!=null and user_code!=''">
-            and dum.message_sender=#{user_code}
+            AND dum.message_sender=#{user_code}
         </if>
         <if test="search_value!=null and search_value!=''">
-            and
+            AND
             (
-            dum.message_sender like concat('%',#{search_value},'%')
-            OR dum.message_title like concat('%',#{search_value},'%')
-            OR dum.message_content like concat('%',#{search_value},'%')
-            OR c.corp_name like concat('%',#{search_value},'%')
-            OR mt.type_description like concat('%',#{search_value},'%')
+            dum.message_sender LIKE concat('%',#{search_value},'%')
+            OR dum.message_title LIKE concat('%',#{search_value},'%')
+            OR dum.message_content LIKE concat('%',#{search_value},'%')
+            OR c.corp_name LIKE concat('%',#{search_value},'%')
+            OR mt.type_description LIKE concat('%',#{search_value},'%')
             )
         </if>
         ORDER BY dum.id DESC
     </select>
 
     <select id="selectMessageDetail" resultMap="Message">
-    select rum.id,
+    SELECT rum.id,
     u1.user_name message_receiver,
     rum.receiver_type,
     rum.status,
     c.corp_name
-    from rel_user_message rum,def_user_message dum, def_corp c,def_user u1
-    where rum.message_code = #{message_code}
+    FROM rel_user_message rum,def_user_message dum, def_corp c,def_user u1
+    WHERE rum.message_code = #{message_code}
     AND rum.message_code = dum.message_code
     AND dum.corp_code = u1.corp_code
     AND c.corp_code = dum.corp_code
@@ -104,25 +104,25 @@
     </select>
 
     <select id="selectByPrimaryKey" resultMap="MessageInfo">
-        select dum.*,
+        SELECT dum.*,
         c.corp_name corp_name,
         mt.type_description
-        from def_user_message dum,def_corp c,def_message_type mt
-        where dum.corp_code = c.corp_code
+        FROM def_user_message dum,def_corp c,def_message_type mt
+        WHERE dum.corp_code = c.corp_code
         AND dum.message_type = mt.type_code
         AND dum.id=#{id}
     </select>
 
     <delete id="deleteMessageInfo">
-        DELETE  FROM  def_user_message where id=#{id}
+        DELETE  FROM  def_user_message WHERE id=#{id}
     </delete>
 
     <delete id="deleteMessage">
-        DELETE  FROM  rel_user_message where message_code=#{message_code}
+        DELETE  FROM  rel_user_message WHERE message_code=#{message_code}
     </delete>
 
     <insert id="insertMessageInfo" parameterType="com.bizvane.ishop.entity.MessageInfo">
-        insert into def_user_message
+        INSERT INTO def_user_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="message_code!=null">
                 message_code,
@@ -196,7 +196,7 @@
     </insert>
 
     <insert id="insertMessage" parameterType="com.bizvane.ishop.entity.Message">
-        insert into rel_user_message
+        INSERT INT rel_user_message
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="message_receiver!=null ">
                 message_receiver,
@@ -265,7 +265,7 @@
     </select>
 
     <select id="selectAllMessageInfoScreen" resultMap="MessageInfo">
-        select dum.id,
+        SELECT dum.id,
         dum.message_code,
         dum.message_sender,
         dum.message_title,
@@ -275,14 +275,14 @@
         dum.modified_date,
         dum.modifier,
         dum.isactive
-        from def_user_message dum,def_corp c,def_message_type mt
-        where dum.corp_code = c.corp_code
+        FROM def_user_message dum,def_corp c,def_message_type mt
+        WHERE dum.corp_code = c.corp_code
         AND dum.message_type = mt.type_code
         <if test="corp_code!=null and corp_code!=''">
-            and dum.corp_code=#{corp_code}
+            AND dum.corp_code=#{corp_code}
         </if>
         <if test="user_code!=null and user_code!=''">
-            and dum.message_sender=#{user_code}
+            AND dum.message_sender=#{user_code}
         </if>
         <if test="map!=null">
             AND

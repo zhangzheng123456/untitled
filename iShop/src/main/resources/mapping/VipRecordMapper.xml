@@ -7,7 +7,8 @@
         <result column="vip_code" property="vip_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="user_code" property="user_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="action" property="action" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
-        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date"
+                typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -23,7 +24,7 @@
     </resultMap>
 
     <select id="selecctById" resultMap="VipInfos">
-        select
+        SELECT
         dvc.id ,
         dvc.vip_code ,
         dvc.user_code,
@@ -37,11 +38,11 @@
         du.user_name,
         dc.corp_name,
         dvrt.type_name
-        from
-         DEF_VIP_RECORD dvc,
-         DEF_USER du,
-         DEF_VIP_RECORD_TYPE dvrt,
-         DEF_CORP dc
+        FROM
+         def_vip_record dvc,
+         def_user du,
+         def_vip_record_TYPE dvrt,
+         def_corp dc
         WHERE
         dvc.corp_code=du.corp_code AND
         dvc.corp_code=dc.corp_code  AND
@@ -51,7 +52,7 @@
      </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipRecord">
-        INSERT INTO DEF_VIP_RECORD
+        INSERT INTO def_vip_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="vip_code!=null and  vip_code!=''">
                 vip_code,
@@ -116,7 +117,7 @@
 
     <delete id="deleteByPrimary">
         DELETE FROM
-        DEF_VIP_RECORD
+        def_vip_record
         WHERE id=#{id}
     </delete>
 
@@ -133,10 +134,10 @@
         dc.corp_name,
         dvrt.type_name
         FROM
-        DEF_VIP_RECORD dvc,
-        DEF_USER du,
-        DEF_VIP_RECORD_TYPE dvrt,
-        DEF_CORP dc
+        def_vip_record dvc,
+        def_user du,
+        def_vip_record_TYPE dvrt,
+        def_corp dc
         WHERE
         dvc.corp_code=du.corp_code AND
         dvc.corp_code=dc.corp_code AND
@@ -170,10 +171,10 @@
         dc.corp_name,
         dvrt.type_name
         FROM
-        DEF_VIP_RECORD dvc,
-        DEF_USER du,
-        DEF_VIP_RECORD_TYPE dvrt,
-        DEF_CORP dc
+        def_vip_record dvc,
+        def_user du,
+        def_vip_record_TYPE dvrt,
+        def_corp dc
         WHERE
         dvc.corp_code=du.corp_code AND
         dvc.corp_code=dc.corp_code AND
@@ -203,7 +204,7 @@
     </select>
 
     <update id="updateByPrimaryKey" parameterType="com.bizvane.ishop.entity.VipRecord">
-        UPDATE DEF_VIP_RECORD
+        UPDATE def_vip_record
         <trim prefix="set" suffixOverrides=",">
             <if test="vip_code!=null and  vip_code!=''">
                 vip_code=#{vip_code},

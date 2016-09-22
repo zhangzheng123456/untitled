@@ -106,7 +106,7 @@ var message = JSON.parse(val.message);
                     list.push(wechat);
                 }
                 var ISACTIVE = "";
-                var input = $(".checkbox_isactive").find("input")[0];
+                var input = $("#is_active")[0];
                 if (input.checked == true) {
                     ISACTIVE = "Y";
                 } else if (input.checked == false) {
@@ -190,7 +190,6 @@ var message = JSON.parse(val.message);
                     var wechat={"app_id":app_id,"app_name":app_name}
                     list.push(wechat);
                 }
-                var input = $(".checkbox_isactive").find("input")[0];
                 var a=$('.xingming input');//所属客服
                 var cus_user_code="";
                 for(var i=0;i<a.length;i++){
@@ -201,6 +200,7 @@ var message = JSON.parse(val.message);
                         cus_user_code+=u;
                     }     
                 }
+                var input = $("#is_active")[0];
                 if (input.checked == true) {
                     ISACTIVE = "Y";
                 } else if (input.checked == false) {
@@ -355,13 +355,13 @@ jQuery(document).ready(function () {
                         + '</span>')
                     }
                 }
-                var input = $(".checkbox_isactive").find("input")[0];
                 var ul="";
                 for(var i=0;i<list.length;i++){
                     ul+="<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+list[i].cus_user_code+"' value='"+list[i].cus_user_name
                      +"'><span class='power remove_app_id' onclick='deleteName(this)'>删除</span></p>";
                 }
                 $('.xingming').html(ul);
+                var input = $("#is_active")[0];
                 if (msg.isactive == "Y") {
                     input.checked = true;
                 } else if (msg.isactive == "N") {

@@ -121,13 +121,8 @@ public class UserServiceImpl implements UserService {
     public PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
+            store_code = store_code.replace(Common.STORE_HEAD,"");
             stores = store_code.split(",");
-            for (int i = 0; i < stores.length; i++) {
-                if (!stores[i].startsWith(Common.STORE_HEAD)) {
-                    stores[i] = Common.STORE_HEAD + stores[i];
-                }
-                stores[i] = stores[i].substring(1, stores[i].length());
-            }
         }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("array", stores);
@@ -820,34 +815,38 @@ public class UserServiceImpl implements UserService {
         for (int i = 0; i < ids.length; i++) {
             logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
             User user = getById(Integer.parseInt(ids[i]));
-            if (user.getIsonline() == null || user.getIsonline().equals("") || user.getIsonline().equals("N")){
-                user.setIsonline("Y");
-                user.setModified_date(Common.DATETIME_FORMAT.format(now));
-                user.setModifier(user_code);
-                updateUser(user);
-                Sign sign = new Sign();
-                sign.setUser_code(user.getUser_code());
-                sign.setUser_name(user.getUser_name());
-                sign.setPhone(user.getPhone());
-                sign.setStatus(Common.STATUS_SIGN_IN);
-                sign.setSign_time(Common.DATETIME_FORMAT.format(now));
-                if (user.getStore_code()!=null && !user.getStore_code().equals("")){
-                    String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
-                    sign.setStore_code(store_code[0]);
+            String today = Common.DATETIME_FORMAT_DAY.format(now);
+            List<Sign> signs = signService.selectUserRecord(user.getCorp_code(),user.getUser_code(),today,Common.STATUS_SIGN_IN);
+            if (signs.size() == 0) {
+                if (user.getIsonline() == null || user.getIsonline().equals("") || user.getIsonline().equals("N")) {
+                    user.setIsonline("Y");
+                    user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    user.setModifier(user_code);
+                    updateUser(user);
+                    Sign sign = new Sign();
+                    sign.setUser_code(user.getUser_code());
+                    sign.setUser_name(user.getUser_name());
+                    sign.setPhone(user.getPhone());
+                    sign.setStatus(Common.STATUS_SIGN_IN);
+                    sign.setSign_time(Common.DATETIME_FORMAT.format(now));
+                    if (user.getStore_code() != null && !user.getStore_code().equals("")) {
+                        String[] store_code = user.getStore_code().replace(Common.STORE_HEAD, "").split(",");
+                        sign.setStore_code(store_code[0]);
+                    }
+                    if (user.getArea_code() != null && !user.getArea_code().equals("")) {
+                        String[] area_code = user.getArea_code().replace(Common.STORE_HEAD, "").split(",");
+                        List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(), area_code, Common.IS_ACTIVE_Y);
+                        if (stores.size() > 0)
+                            sign.setStore_code(stores.get(0).getStore_code());
+                    }
+                    sign.setCorp_code(user.getCorp_code());
+                    sign.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    sign.setModifier(user_code);
+                    sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    sign.setCreater(user_code);
+                    sign.setIsactive(Common.IS_ACTIVE_Y);
+                    signService.insert(sign);
                 }
-                if (user.getArea_code()!=null && !user.getArea_code().equals("")){
-                    String[] area_code = user.getArea_code().replace(Common.STORE_HEAD,"").split(",");
-                    List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(),area_code,Common.IS_ACTIVE_Y);
-                    if (stores.size()>0)
-                    sign.setStore_code(stores.get(0).getStore_code());
-                }
-                sign.setCorp_code(user.getCorp_code());
-                sign.setModified_date(Common.DATETIME_FORMAT.format(now));
-                sign.setModifier(user_code);
-                sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                sign.setCreater(user_code);
-                sign.setIsactive(Common.IS_ACTIVE_Y);
-                signService.insert(sign);
             }
         }
     }
@@ -860,34 +859,38 @@ public class UserServiceImpl implements UserService {
         for (int i = 0; i < ids.length; i++) {
             logger.info("-------------delete user--" + Integer.valueOf(ids[i]));
             User user = getById(Integer.parseInt(ids[i]));
-            if (user.getIsonline() != null && user.getIsonline().equals("Y")){
-                user.setIsonline("N");
-                user.setModified_date(Common.DATETIME_FORMAT.format(now));
-                user.setModifier(user_code);
-                updateUser(user);
-                Sign sign = new Sign();
-                sign.setUser_code(user.getUser_code());
-                sign.setUser_name(user.getUser_name());
-                sign.setPhone(user.getPhone());
-                sign.setStatus(Common.STATUS_SIGN_OUT);
-                sign.setSign_time(Common.DATETIME_FORMAT.format(now));
-                if (user.getStore_code()!=null && !user.getStore_code().equals("")){
-                    String[] store_code = user.getStore_code().replace(Common.STORE_HEAD,"").split(",");
-                    sign.setStore_code(store_code[0]);
+            String today = Common.DATETIME_FORMAT_DAY.format(now);
+            List<Sign> signs = signService.selectUserRecord(user.getCorp_code(), user.getUser_code(), today, Common.STATUS_SIGN_OUT);
+            if (signs.size() == 0) {
+                if (user.getIsonline() != null && user.getIsonline().equals("Y")) {
+                    user.setIsonline("N");
+                    user.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    user.setModifier(user_code);
+                    updateUser(user);
+                    Sign sign = new Sign();
+                    sign.setUser_code(user.getUser_code());
+                    sign.setUser_name(user.getUser_name());
+                    sign.setPhone(user.getPhone());
+                    sign.setStatus(Common.STATUS_SIGN_OUT);
+                    sign.setSign_time(Common.DATETIME_FORMAT.format(now));
+                    if (user.getStore_code() != null && !user.getStore_code().equals("")) {
+                        String[] store_code = user.getStore_code().replace(Common.STORE_HEAD, "").split(",");
+                        sign.setStore_code(store_code[0]);
+                    }
+                    if (user.getArea_code() != null && !user.getArea_code().equals("")) {
+                        String[] area_code = user.getArea_code().replace(Common.STORE_HEAD, "").split(",");
+                        List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(), area_code, Common.IS_ACTIVE_Y);
+                        if (stores.size() > 0)
+                            sign.setStore_code(stores.get(0).getStore_code());
+                    }
+                    sign.setCorp_code(user.getCorp_code());
+                    sign.setModified_date(Common.DATETIME_FORMAT.format(now));
+                    sign.setModifier(user_code);
+                    sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
+                    sign.setCreater(user_code);
+                    sign.setIsactive(Common.IS_ACTIVE_Y);
+                    signService.insert(sign);
                 }
-                if (user.getArea_code()!=null && !user.getArea_code().equals("")){
-                    String[] area_code = user.getArea_code().replace(Common.STORE_HEAD,"").split(",");
-                    List<Store> stores = storeService.selectByAreaCode(user.getCorp_code(),area_code,Common.IS_ACTIVE_Y);
-                    if (stores.size()>0)
-                        sign.setStore_code(stores.get(0).getStore_code());
-                }
-                sign.setCorp_code(user.getCorp_code());
-                sign.setModified_date(Common.DATETIME_FORMAT.format(now));
-                sign.setModifier(user_code);
-                sign.setCreated_date(Common.DATETIME_FORMAT.format(now));
-                sign.setCreater(user_code);
-                sign.setIsactive(Common.IS_ACTIVE_Y);
-                signService.insert(sign);
             }
         }
     }

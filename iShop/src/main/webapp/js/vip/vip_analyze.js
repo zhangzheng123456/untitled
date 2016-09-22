@@ -214,11 +214,11 @@ $(".vip_nav_bar li").click(function () {
     $(this).siblings().removeClass("liactive");
 })
 $(".date_btn span").click(function () {
-    $(this).css({"color":"#fff","background":"#6dc1c8"});
+    $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
 })
 $(".month_btn span").click(function () {
-    $(this).css({"color":"#fff","background":"#6dc1c8"});
+    $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
 })
 $(".more_data").click(function () {
@@ -1260,4 +1260,14 @@ $().ready(function(){
 });
 /*****************************************************************************************************************/
 
+//左侧业绩选择日周年月
+$(".choose").mouseover(function () {
+    $(".select_Date").show();
+}).mouseleave(function () {
+    $(".select_Date").hide();
+})
 
+$(".select_Date li").click(function () {
+    var content=$(this).html();
+    $(".title_l").html(content);
+})

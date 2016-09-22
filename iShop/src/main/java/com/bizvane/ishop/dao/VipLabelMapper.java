@@ -1,5 +1,6 @@
 package com.bizvane.ishop.dao;
 
+import com.bizvane.ishop.entity.RelViplabel;
 import com.bizvane.ishop.entity.VIPInfo;
 import com.bizvane.ishop.entity.VipLabel;
 import com.bizvane.ishop.entity.VipLabel;
@@ -40,4 +41,15 @@ public interface VipLabelMapper {
 
     List<VipLabel> selectLabelByVip(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code);
 
+    List<VipLabel> findHotViplabel(@Param("corp_code")String corp_code);
+
+    List<VipLabel> findViplabelByType(@Param("corp_code")String corp_code,@Param("label_type")String label_type,@Param("search_value")String search_value);
+
+    List<RelViplabel>  checkRelViplablel(@Param("corp_code")String corp_code,@Param("vip_code")String vip_code,@Param("label_id")String label_id);
+
+    int addRelViplabel(RelViplabel relViplabel);
+
+    int delRelViplabel(@Param("rid")String rid);
+
+    List<VipLabel> findViplabelID(@Param("corp_code")String corp_code,@Param("label_name")String label_name);
 }

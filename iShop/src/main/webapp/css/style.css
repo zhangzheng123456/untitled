@@ -7624,7 +7624,6 @@ ul,li{list-style:none;padding:0;margin:0;}
 .tempalte_area{
   width:420px;
   height:100px;
-  margin-left:5px;
   display:inline-block;
   background:#ffffff;
   border-radius:4px;
@@ -8021,7 +8020,7 @@ li.select_index>a>label>i{
    height: 50px;
    line-height: 50px;
    margin-top: 20px;;
-   margin-left: 120px;
+   margin-left: 123px;
    text-align: center;
    width: 420px;
    background: #f4f4f4;

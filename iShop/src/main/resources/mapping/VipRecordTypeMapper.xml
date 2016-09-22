@@ -20,11 +20,11 @@
 
 
     <select id="selectByPrimaryKey" resultType="com.bizvane.ishop.entity.VipRecordType">
-        select * from def_vip_record_type where  id=#{id}
+        SELECT * FROM def_vip_record_type WHERE  id=#{id}
     </select>
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.VipRecordType">
-        insert into def_vip_record_type
+        INSERT INTO def_vip_record_type
         <trim prefix="(" suffixOverrides="," suffix=")">
             <if test="type_code!=null and type_code!=''">
                 type_code,
@@ -118,11 +118,11 @@
     </update>
 
     <delete id="deleteByPrimaryKey">
-          delete FROM  def_vip_record_type WHERE id=#{id}
+          DELETE FROM  def_vip_record_type WHERE id=#{id}
     </delete>
 
     <select id="selectAllVipRecordType" resultMap="VipRecordTypeInfo">
-        select
+        SELECT
         vtt.id,
         vtt.type_code,
         vtt.type_name,
@@ -136,31 +136,31 @@
         FROM def_vip_record_type vtt,DEF_CORP dc
         WHERE vtt.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
-            and vtt.corp_code=#{corp_code}
+            AND vtt.corp_code=#{corp_code}
         </if>
         <if test="search_value!=null and search_value!=''">
-            and vtt.type_name like concat('%',#{search_value},'%')
+            AND vtt.type_name LIKE concat('%',#{search_value},'%')
         </if>
         ORDER BY vtt.id DESC
     </select>
 
     <select id="selectCode" resultMap="VipRecordTypeInfo">
-        select
+        SELECT
         *
         FROM def_vip_record_type vtt
         WHERE
         vtt.corp_code=#{corp_code}
-        and
+        AND
         vtt.type_code=#{type_code}
     </select>
 
     <select id="selectName" resultType="com.bizvane.ishop.entity.VipRecordType">
-        select
+        SECOND
         *
         FROM def_vip_record_type vtt
         WHERE
         vtt.corp_code=#{corp_code}
-        and
+        AND
         vtt.type_name=#{type_name}
     </select>
 

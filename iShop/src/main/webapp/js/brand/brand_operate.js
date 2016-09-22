@@ -19,21 +19,21 @@ var oc = new ObjectControl();
 			return false;
 		}
 	};
-	brandjs.checkCode=function(obj,hint){
-		var isCode=/^[B]{1}[0-9]{4}$/;
-		if(!this.isEmpty(obj)){
-			if(isCode.test(obj)){
-				this.hiddenHint(hint);
-				return true;
-			}else{
-				this.displayHint(hint,"品牌编号为必填项，支持以大写B开头必须是4位数字的组合！");
-				return false;
-			}
-		}else{
-			this.displayHint(hint);
-			return false;
-		}
-	};
+	// brandjs.checkCode=function(obj,hint){
+	// 	var isCode=/^[B]{1}[0-9]{4}$/;
+	// 	if(!this.isEmpty(obj)){
+	// 		if(isCode.test(obj)){
+	// 			this.hiddenHint(hint);
+	// 			return true;
+	// 		}else{
+	// 			this.displayHint(hint,"品牌编号为必填项，支持以大写B开头必须是4位数字的组合！");
+	// 			return false;
+	// 		}
+	// 	}else{
+	// 		this.displayHint(hint);
+	// 		return false;
+	// 	}
+	// };
 	brandjs.hiddenHint = function(hint){
 		hint.removeClass('error_tips');
 		hint.html("");//关闭，如果有友情提示则显示
@@ -72,8 +72,6 @@ var oc = new ObjectControl();
 				var BRAND_NAME=$("#BRAND_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
 				var app_id=$("#Accounts").attr("data-appid");
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
 				var a=$('.xingming input');
 				var cus_user_code="";
 				for(var i=0;i<a.length;i++){
@@ -84,6 +82,8 @@ var oc = new ObjectControl();
 			            cus_user_code+=u;
 			        }     
     			}
+				var ISACTIVE="";
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -129,8 +129,6 @@ var oc = new ObjectControl();
 				var BRAND_ID=$("#BRAND_ID").val();
 				var BRAND_NAME=$("#BRAND_NAME").val();
 				var OWN_CORP=$("#OWN_CORP").val();
-				var ISACTIVE="";
-				var input=$(".checkbox_isactive").find("input")[0];
 				var app_id=$("#Accounts").attr("data-appid");//公众号
 				var a=$('.xingming input');//所属客服
 				var cus_user_code="";
@@ -142,6 +140,8 @@ var oc = new ObjectControl();
 			            cus_user_code+=u;
 			        }     
     			}
+    			var ISACTIVE="";
+				var input=$("#is_active")[0];
 				if(input.checked==true){
 					ISACTIVE="Y";
 				}else if(input.checked==false){
@@ -257,7 +257,6 @@ jQuery(document).ready(function(){
 				$("#modifier").val(msg.modifier);
 				$("#Accounts").val(msg.app_name);
 				$("#Accounts").attr("data-appid",msg.app_id);
-				var input=$(".checkbox_isactive").find("input")[0];
 				if (msg.app_id!= "") {
                     if (msg.brand_code.indexOf(',') !== -1) {
                         checknow_data = msg.app_id.split(",");
@@ -273,6 +272,7 @@ jQuery(document).ready(function(){
                      +"'><span class='power remove_app_id' onclick='deleteName(this)'>删除</span></p>";
 		 		}
  				$('.xingming').html(ul);
+ 				var input=$("#is_active")[0];
 				if(msg.isactive=="Y"){
 					input.checked=true;
 				}else if(msg.isactive=="N"){
@@ -292,17 +292,17 @@ jQuery(document).ready(function(){
 	}else{
 		getcorplist();
 	}
-	$("input[verify='Code']").blur(function(){
-    	var isCode=/^[B]{1}[0-9]{4}$/;
+	$("#BRAND_ID").blur(function(){
+    	// var isCode=/^[B]{1}[0-9]{4}$/;
     	var _params={};
     	var brand_code=$(this).val();
     	var corp_code=$("#OWN_CORP").val();
     	var brand_code1=$(this).attr("data-name");
-		if(brand_code!==""&&brand_code!==brand_code1&&isCode.test(brand_code)==true){
+		if(brand_code!==""&&brand_code!==brand_code1){
 			_params["brand_code"]=brand_code;
 			_params["corp_code"]=corp_code;
 			var div=$(this).next('.hint').children();
-			oc.postRequire("post","/brand/Brand_codeExist","", _params, function(data){
+			oc.postRequire("post","/brand/brandCodeExist","", _params, function(data){
 	               if(data.code=="0"){
 	                    div.html("");
 	                    $("#BRAND_ID").attr("data-mark","Y");
@@ -323,7 +323,7 @@ jQuery(document).ready(function(){
 	    	var _params={};
 	    	_params["brand_name"]=brand_name;
 	    	_params["corp_code"]=corp_code;
-	    	oc.postRequire("post","/brand/Brand_nameExist","", _params, function(data){
+	    	oc.postRequire("post","/brand/brandNameExist","", _params, function(data){
 	            if(data.code=="0"){
 	            	div.html("");
 	            	$("#BRAND_NAME").attr("data-mark","Y");
@@ -444,10 +444,13 @@ function getcorplist(){
 			}
 			$("#OWN_CORP").append(corp_html);
 			$('.corp_select select').searchableSelect();
-			$('.corp_select .searchable-select-input').keydown(function(){
+			$('.corp_select .searchable-select-input').keydown(function(event){
 				var event=window.event||arguments[0];
-				if(event.code==13){
-					console.log(123123);
+				if(event.keyCode == 13){
+					$("input[verify='Code']").val("");
+					$("#BRAND_NAME").val("");
+					$("input[verify='Code']").attr("data-mark","");
+					$("#BRAND_NAME").attr("data-mark","");
 				}
 			})
 			$('.searchable-select-item').click(function(){

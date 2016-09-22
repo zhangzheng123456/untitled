@@ -34,55 +34,68 @@
         AND def_brand.id=#{id}
     </select>
 
-    <select id="selectCorpBrand" resultType="com.bizvane.ishop.entity.Brand">
+    <select id="selectByBrandCode" resultType="com.bizvane.ishop.entity.Brand">
         select *
-        from DEF_BRAND
-        where CORP_CODE = #{corp_code}
-        AND BRAND_CODE = #{brand_code}
+        from def_brand
+        where corp_code = #{corp_code}
+        AND brand_code = #{brand_code}
+        <if test="isactive != null and isactive !=''">
+            AND isactive=#{isactive}
+        </if>
+    </select>
+
+    <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
+        SELECT *
+        FROM  def_brand
+        WHERE corp_code=#{corp_code}
+        AND brand_name=#{brand_name}
+        <if test="isactive != null and isactive !=''">
+            AND isactive=#{isactive}
+        </if>
     </select>
 
     <select id="selectAllBrand" resultMap="Brand">
         select
-        DEF_BRAND.id,
+        def_brand.id,
         brand_code,
         brand_name,
-        DEF_BRAND.corp_code,
-        DEF_BRAND.modified_date,
-        DEF_BRAND.modifier,
-        DEF_BRAND.isactive,
-        DEF_CORP.CORP_NAME
-        from DEF_BRAND,DEF_CORP
-        where DEF_BRAND.CORP_CODE = DEF_CORP.CORP_CODE
+        def_brand.corp_code,
+        def_brand.modified_date,
+        def_brand.modifier,
+        def_brand.isactive,
+        def_corp.corp_name
+        FROM def_brand,def_corp
+        WHERE def_brand.corp_code = def_corp.corp_code
         <if test="corp_code != null and corp_code !=''">
-            AND DEF_BRAND.CORP_CODE = #{corp_code}
+            AND def_brand.corp_code = #{corp_code}
         </if>
         <if test="search_value != null and search_value !=''">
             AND
             (
-            BRAND_CODE like concat('%',#{search_value},'%')
-            OR BRAND_NAME like concat('%',#{search_value},'%')
-            OR DEF_CORP.CORP_NAME like concat('%',#{search_value},'%')
+            BRAND_CODE LIKE concat('%',#{search_value},'%')
+            OR BRAND_NAME LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
-        ORDER BY DEF_BRAND.id DESC
+        ORDER BY def_brand.id DESC
     </select>
 
     <select id="selectBrands" resultType="com.bizvane.ishop.entity.Brand">
-        select *
-        from DEF_BRAND
-        where CORP_CODE = #{corp_code}
-        and isactive = 'Y'
-        ORDER BY DEF_BRAND.id DESC
+        SELECT *
+        FROM def_brand
+        WHERE corp_code = #{corp_code}
+        AND  isactive = 'Y'
+        ORDER BY def_brand.id DESC
     </select>
 
     <delete id="deleteByBrandId">
-        delete from
-        DEF_BRAND
-        where ID=#{id}
+        DELETE FROM
+        def_brand
+        WHERE ID=#{id}
     </delete>
 
     <insert id="insertBrand" parameterType="com.bizvane.ishop.entity.Brand">
-        insert into DEF_BRAND
+        INSERT INTO def_brand
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="brand_code!=null">
                 brand_code,
@@ -144,7 +157,7 @@
     </insert>
 
     <update id="updateBrand" parameterType="com.bizvane.ishop.entity.Brand">
-        UPDATE DEF_BRAND
+        UPDATE def_brand
         <trim prefix="SET" suffixOverrides=",">
             <if test="brand_code!=null and brand_code!=''">
                 brand_code=#{brand_code},
@@ -177,26 +190,22 @@
         WHERE id=#{id};
     </update>
 
-    <select id="selectByBrandName" resultType="com.bizvane.ishop.entity.Brand">
-        select * from  DEF_BRAND
-        WHERE  corp_code=#{corp_code} and brand_name=#{brand_name}
-    </select>
-
     <select id="getGoodsCount" resultType="java.lang.Integer">
-        select count(*) from def_goods where brand_code=#{brand_code} and corp_code=#{corp_code}
+        SELECT count(*) FROM def_goods WHERE brand_code=#{brand_code} AND corp_code=#{corp_code}
     </select>
 
     <select id="getStoresCount" resultType="java.lang.Integer">
-        select count(*) from def_store where brand_code=#{brand_code} and corp_code=#{corp_code}
+        SELECT count(*) FROM def_store WHERE brand_code=#{brand_code} AND corp_code=#{corp_code}
     </select>
+
     <select id="selectAllBrandScreen" resultMap="Brand">
-        select
+        SELECT
         db.*,
         dc.corp_name
-        from
-        DEF_BRAND db,
-        DEF_CORP dc
-        where db.corp_code=dc.corp_code
+        FROM
+        def_brand db,
+        def_corp dc
+        WHERE db.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND db.corp_code=#{corp_code}
         </if>

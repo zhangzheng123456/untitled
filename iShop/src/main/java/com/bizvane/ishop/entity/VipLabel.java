@@ -27,6 +27,15 @@ public class VipLabel {
     private String label_group_name;
     private String countlable;
     private String label_id;
+private String rid;
+
+    public String getRid() {
+        return rid;
+    }
+
+    public void setRid(String rid) {
+        this.rid = rid;
+    }
 
     public String getCountlable() {
         return countlable;

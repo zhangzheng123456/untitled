@@ -403,6 +403,13 @@ function getcorplist(a,b,e){
 				$("#OWN_CORP option[value='"+a+"']").attr("selected","true");
 			}
 			$("#OWN_CORP").searchableSelect();
+			$("#corp_select .searchable-select-input").keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					var corp_code=$("#OWN_CORP").val();
+					store_data(corp_code,b,e);
+				}
+			})
 			var c=$('#corp_select .selected').attr("data-value");
 			store_data(c,b,e);
 			$("#corp_select .searchable-select-item").click(function(){
@@ -449,6 +456,14 @@ function store_data(c,b,e){
 			$("#SHOP_NAME").searchableSelect();
 			var store_code=$('#SHOP_NAME').val();
 			staff_data(c,store_code,b,e);
+			$("#shop_select .searchable-select-input").keydown(function(event){
+				var event=window.event||arguments[0];
+				if(event.keyCode == 13){
+					var store_code=$('#SHOP_NAME').val();
+					console.log(store_code);
+					staff_data(c,store_code,b,e);
+				}
+			})
 			$("#shop_select .searchable-select-item").click(function(){
 				var store_code=$(this).attr("data-value");
 				staff_data(c,store_code,b,e);

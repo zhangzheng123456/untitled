@@ -63,8 +63,6 @@ public class StoreController {
     private BrandService brandService;
     @Autowired
     private AreaService areaService;
-    @Autowired
-    private TableManagerService managerService;
 
     /***
      * 根据区域拉店铺
@@ -229,7 +227,7 @@ public class StoreController {
      */
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     @ResponseBody
-    public String shopManage(HttpServletRequest request) {
+    public String list(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String role_code = request.getSession().getAttribute("role_code").toString();
@@ -1169,7 +1167,7 @@ public class StoreController {
                         int b = 5 / 0;
                         break;
                     }
-                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitBrands[j]);
+                    Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitBrands[j],Common.IS_ACTIVE_Y);
                     if (brand == null) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号不存在";
                         int b = 5 / 0;
