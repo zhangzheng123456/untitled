@@ -199,7 +199,7 @@ function searchHotlabel() {
         }
     })
 }
-// $("#search_input").keydown(function () {
+// $("#search_input").keydown()function () {
 //     //键盘按下搜索
 //     var event=window.event||arguments[0];
 //     if(event.keyCode == 13){
