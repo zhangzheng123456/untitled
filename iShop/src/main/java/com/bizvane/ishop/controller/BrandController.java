@@ -632,48 +632,6 @@ public class BrandController {
         return dataBean.getJsonStr();
     }
 
-    /**
-     * 获取登录人所拥有的品牌
-     */
-    @RequestMapping(value = "/getBrands", method = RequestMethod.POST)
-    @ResponseBody
-    public String getBrands(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        String role_code = request.getSession().getAttribute("role_code").toString();
-        String store_code = request.getSession().getAttribute("store_code").toString();
-
-        String id = "";
-        try {
-            String jsString = request.getParameter("param");
-            logger.info("json---------------" + jsString);
-            JSONObject jsonObj = new JSONObject(jsString);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
-            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
-            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String corp_code = jsonObject.get("corp_code").toString();
-
-            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
-                List<Brand> brand = brandService.getAllBrand(corp_code);
-            }else if (role_code.equals(Common.ROLE_AM)){
-
-            }else{
-
-            }
-            String search_value = jsonObject.get("search_value").toString();
-            JSONObject result = new JSONObject();
-            result.put("list", "");
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result.toString());
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage() + ex.toString());
-        }
-        return dataBean.getJsonStr();
-    }
 
     /**
      * 获取所选品牌下的店铺

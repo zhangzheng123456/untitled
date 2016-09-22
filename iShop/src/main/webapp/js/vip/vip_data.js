@@ -33,14 +33,13 @@ function getConsumCount(){//获取会员信息
         $("#images").html(HTML);
         for(var i=0;i<label.length;i++){
                 LABEL+="<span >"+label[i].label_name+"</span>";
-                LABELALL+= "<span class='label_u_active' data-rid='"+label[i].rid+"'>"+label[i].label_name+"<i class='icon-ishop_6-12'></i></span>";
+                LABELALL+= "<span class='label_u_active' data-rid='"+label[i].rid+"'>"+label[i].label_name+"<i class='icon-ishop_6-12' onclick="+labelDelete(this)+"></i></span>";
         }
         //统计已有标签
         $(".span_total").html(label.length);
         $("#labels").html(LABEL);
         $("#label_box").html(LABELALL);
         lg_img();
-        labelDelete();
     })
 
 }
@@ -251,8 +250,10 @@ function addViplabel() {
     param['store_code']=store_id;
     oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
         if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            var rid=JSON.parse(msg.list);
             var len=$("#label_box span").length;
-            var html='<span class="label_g">'+val+'<i class="icon-ishop_6-12"></i></span>';
+            var html='<span class="label_g" data-rid="'+rid+'">'+val+'<i class="icon-ishop_6-12" onclick="+labelDelete(this)+"></i></span>';
             if(len==0){
                 $("#label_box").append(html);
             }else {
@@ -262,26 +263,25 @@ function addViplabel() {
             $(".span_total").html(total);
         }
     })
-    labelDelete();
 }
 $("#labeladd_btn").click(function () {
     //统计已有标签
     addViplabel();
 });
-function labelDelete() {
-    $("#label_box span i").click(function () {
+function labelDelete(obj) {
+    // $("#label_box span i").click(function () {
         var param={};
-        var span=$(this);
-        var rid=$(this).parent("span").attr("data-rid");
+        var span=$(obj);
+        var rid=$(obj).parent("span").attr("data-rid");
         param["rid"]=rid;
         oc.postRequire("post","/VIP/label/delRelViplabel","",param,function(data){
             if(data.code=="0"){
-                span.parent("span").remove();
+                obj.parent("span").remove();
                 var total=parseInt($(".span_total").html())-1;
                 $(".span_total").html(total);
             }
         })
-    });
+    // });
 }
 
 function upLoadAlbum(){
