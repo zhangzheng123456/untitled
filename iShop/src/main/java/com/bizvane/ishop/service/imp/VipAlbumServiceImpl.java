@@ -1,14 +1,13 @@
 package com.bizvane.ishop.service.imp;
 
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.VipAlbumMapper;
-import com.bizvane.ishop.entity.Area;
 import com.bizvane.ishop.entity.VipAlbum;
 import com.bizvane.ishop.service.VipAlbumService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -38,8 +37,7 @@ public class VipAlbumServiceImpl implements VipAlbumService {
     }
 
     @Override
-    public int insertVipAlbum(String message,String user_code) throws Exception {
-        JSONObject obj = new JSONObject(message);
+    public int insertVipAlbum(JSONObject obj, String user_code) throws Exception {
         String vip_code = obj.get("vip_code").toString();
         String vip_name = obj.get("vip_name").toString();
         String cardno = obj.get("cardno").toString();
@@ -86,5 +84,11 @@ public class VipAlbumServiceImpl implements VipAlbumService {
         List<VipAlbum> vipAlbumList = vipAlbumMapper.selectAlbumByVip(corp_code, vip_code);
 
         return vipAlbumList;
+    }
+
+    @Override
+    public VipAlbum selectAlbumByUrl(String image_url) throws Exception {
+        VipAlbum vipAlbum = vipAlbumMapper.selectAlbumByUrl(image_url);
+        return vipAlbum;
     }
 }

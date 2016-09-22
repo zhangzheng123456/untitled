@@ -54,7 +54,7 @@ public interface GoodsService {
      */
     PageInfo<Goods> selectBySearch(int page_number, int page_size, String corp_code, String search_value)throws Exception;
 
-    List<Goods> matchGoodsList(String corp_code, String search_value,String goods_code,String brand_code) throws Exception;
+    PageInfo<Goods> matchGoodsList(int page_number, int page_size,String corp_code, String search_value,String goods_code,String brand_code) throws Exception;
 
     PageInfo<Goods> selectAllGoodsScreen(int page_number, int page_size, String corp_code, Map<String,String> map)throws Exception;
 

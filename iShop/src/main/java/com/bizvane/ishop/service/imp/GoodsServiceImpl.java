@@ -156,7 +156,8 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public List<Goods> matchGoodsList(String corp_code, String search_value,String goods_code,String brand_code) throws Exception{
+    public PageInfo<Goods> matchGoodsList(int page_number, int page_size,String corp_code, String search_value,String goods_code,String brand_code) throws Exception{
+        PageHelper.startPage(page_number, page_size);
         List<Goods> list = goodsMapper.matchGoodsList(corp_code, search_value,goods_code,brand_code,Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
             transter(list.get(i));
@@ -165,7 +166,8 @@ public class GoodsServiceImpl implements GoodsService {
                 list.get(i).setGoods_image(goods_image.split(",")[0]);
             }
         }
-        return list;
+        PageInfo<Goods> page = new PageInfo<Goods>(list);
+        return page;
     }
 
     @Override

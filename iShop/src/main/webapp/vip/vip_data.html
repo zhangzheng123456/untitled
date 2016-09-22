@@ -461,17 +461,16 @@
                                 <input type="text" />
                             </div>
                         </li>
-                        <li id="gender">
-                            <b>性别</b>
-                            <div class="checkbox">
-                                <input type="radio" value="" name="gender"  class="check"  id="male"/>
-                                <label for="male"></label>
-                                <span>男</span>
-                                <!--<input type="radio" value="" name="gender"  class="check"  id="female"/>-->
-                                <!--<label for="male"></label>-->
-                                <!--<span>女</span>-->
-                            </div>
-                        </li>
+                        <!--<li id="gender"style="margin-left: 0px">-->
+                            <!--<b>性别</b>-->
+                            <!--<div>-->
+                                <!--<div class="checkbox">-->
+                                    <!--<input type="radio" value="" name="gender"  class="check"  id="male"/>-->
+                                    <!--<label for="male"></label>-->
+                                    <!--<span>男</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</li>-->
                     </ul>
                     <!--跨3列-->
                     <ul>
@@ -773,12 +772,13 @@
                     <div class="label_left_box">
                         <div class="labeladd_box">
                             <input type="text" id="search_input" placeholder="添加标签">
-                            <span class="labeladd_btn" id="search_label">搜索</span>
-                            <span class="labeladd_btn" id="labeladd_btn" style="display: none">贴上</span>
+                            <ul class="search_list">
+                            </ul>
+                            <span class="labeladd_btn" id="labeladd_btn">贴上</span>
                         </div>
 
                         <div class="own_label">
-                            <label>已有标签<span>6</span>个</label>
+                            <label>已有标签<span class="span_total"></span>个</label>
                             <div class="label_box" id="label_box">
                                 <!--<span class="label_u_active">老同学<i class="icon-ishop_6-12"></i></span>-->
                                 <!--<span class="label_u_active">家有地暖<i class="icon-ishop_6-12"></i></span>-->
