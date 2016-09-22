@@ -89,7 +89,7 @@ function gethotVIPlabel() {
             console.log(msg.length);
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
-                    html+="<span  draggable='true' class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }else if(msg[i].label_type=="org"){
                     html+="<span>"+msg[i].label_name+"</span>"
                 }
@@ -119,18 +119,34 @@ function getOtherlabel() {
             if(msg[0].label_type=="org"){
                 for(var i=0;i<msg.length;i++){
                     var html="";
-                    html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                    // html+="<span class="+'label_g'+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(msg[0].label_type=="user"){
                 for(var j=0;j<msg.length;j++){
                     var html="";
-                    html+="<span class="+'label_u'+">"+msg[j].label_name+"</span>"
+                    // html+="<span class="+'label_u'+">"+msg[j].label_name+"</span>"
+                    html+="<span  draggable='true' class="+'label_u'+" id="+j+">"+msg[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
 
         }
+        //绑定拖拽事件
+        $('#label_org span').on('dragstart',function (event) {
+            var ev=event;
+            console.log('触发');
+            ev=ev.originalEvent;
+            ev.dataTransfer.setData("Text",ev.target.id);
+        });
+        //绑定拖拽事件
+        $('#label_user span').on('dragstart',function (event) {
+            var ev=event;
+            console.log('触发');
+            ev=ev.originalEvent;
+            ev.dataTransfer.setData("Text",ev.target.id);
+        });
     })
 }
 $("#label_li_org").click(function () {
@@ -176,12 +192,18 @@ function searchHotlabel() {
 }
 $("#search_input").keydown(function () {
     //键盘按下搜索
-    $(".search_list").show();
     var event=window.event||arguments[0];
     if(event.keyCode == 13){
        searchHotlabel();
     }
 })
+//input输入框里面
+$('#search_input').bind('input propertychange', function() {
+    var value="";
+    value=$('#search_input').val().replace(/\s+/g,"");
+    $(".search_list").show();
+    searchHotlabel();
+});
 $("#search_input").blur(function () {
     setTimeout(function () {
         $(".search_list").hide();
@@ -331,17 +353,45 @@ function addVipAlbum(url){//上传照片到相册
         console.log(data)
     })
 }
-//拖拽
+//阻止拖拽默认事件
 function allowDrop(ev)
 {
     ev.preventDefault();
 }
+//拖拽事件
 function drop(ev)
 {
+    var param={};
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
     var clone= $(document.getElementById(data)).clone();
-    $(ev.target).append(clone)
+    var label_id=clone.attr("data-id");
+    var val=$(clone).html();
+    //调用借口
+    var id=sessionStorage.getItem("id");
+    var store_id=sessionStorage.getItem("store_id");
+    param["corp_code"]="C10000";
+    param['label_name']=val;
+    param['vip_code']=id;
+    param['label_id']=label_id;
+    param['store_code']=store_id;
+    oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
+        if(data.code=="0"){
+            var msg=JSON.parse(data.message);
+            var rid=JSON.parse(msg.list);
+            var len=$("#label_box span").length;
+            var html= "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
+            if(len==0){
+                $(clone).append(html);
+                $(ev.target).append(clone)
+            }else {
+                $(clone).after(html);
+                $(ev.target).append(clone)
+            }
+            var total=parseInt($(".span_total").html())+1;
+            $(".span_total").html(total);
+        }
+    })
 }
 $(function(){
     getConsumCount();
