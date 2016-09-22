@@ -56,4 +56,13 @@ public class Common {
     //签退
     public static final String STATUS_SIGN_OUT = "-1";
 
+    //数据显示类型——文本框
+    public static final String DATE_SHOW_TYPE_TEXT = "text";
+    //数据显示类型——下拉 框
+    public static final String DATE_SHOW_TYPE_SELECT = "select";
+    //数据显示类型——日历
+    public static final String DATE_SHOW_TYPE_DATE = "date";
+    //数据显示类型——长文本
+    public static final String DATE_SHOW_TYPE_LONGTEXT = "longtext";
+
 }
