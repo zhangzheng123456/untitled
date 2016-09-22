@@ -372,7 +372,7 @@ public class TaskController {
             }
             ObjectMapper mapper = new ObjectMapper();
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-            String json = mapper.writeValueAsString(tasks);
+            String json = mapper.writeValueAsString(list);
             LinkedHashMap<String,String> map = WebUtils.Json2ShowName(jsonObject);
             String pathname = OutExeclHelper.OutExecl(json,list, map, response, request);
             JSONObject result = new JSONObject();
