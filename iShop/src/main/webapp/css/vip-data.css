@@ -851,6 +851,21 @@ hr{
     display: block;
     line-height: 30px;
     text-align: center;
+    cursor: pointer;
+}
+#label_org{
+    max-height: 350px;
+    overflow-y: scroll;
+}
+#label_user{
+    max-height: 350px;
+    overflow-y: scroll;
+}
+.more_label{
+    border: 1px solid;
+    float: right;
+    background: #6dc1c8;
+    color: #fff;
 }
 
 

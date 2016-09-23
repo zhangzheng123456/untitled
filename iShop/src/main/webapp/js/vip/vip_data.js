@@ -168,18 +168,26 @@ function getOtherlabel() {
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
-                msg=JSON.parse(msg.list)
-                msg=msg.list;
+            var list=JSON.parse(msg.list)
+            var hasNextPage=list.hasNextPage;
+                list=list.list;
             var html="";
-            console.log(msg);
-            if(msg[0].label_type=="org"){
-                for(var i=0;i<msg.length;i++){
-                    html+="<span  draggable='true' data-id="+msg[i].id+" class='label_g' id='"+i+"g'>"+msg[i].label_name+"</span>"
+            console.log(hasNextPage);
+            if(hasNextPage==false){
+                $("#more_label_g").hide();
+                $("#more_label_u").hide();
+            }else {
+                $("#more_label_g").show();
+                $("#more_label_u").show();
+            }
+            if(list[0].label_type=="org"){
+                for(var i=0;i<list.length;i++){
+                    html+="<span  draggable='true' data-id="+list[i].id+" class='label_g' id='"+i+"g'>"+list[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
-            }else if(msg[0].label_type=="user"){
-                for(var j=0;j<msg.length;j++){
-                    html+="<span  draggable='true' data-id="+msg[j].id+" class='label_u' id='"+j+"u'>"+msg[j].label_name+"</span>"
+            }else if(list[0].label_type=="user"){
+                for(var j=0;j<list.length;j++){
+                    html+="<span  draggable='true' data-id="+list[j].id+" class='label_u' id='"+j+"u'>"+list[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
@@ -201,6 +209,7 @@ function getOtherlabel() {
     })
 }
 $("#label_li_org").click(function () {
+    page=1;
     $("#label_org").empty();
     param["corp_code"]="C10000";
     param['pageNumber']=page;
@@ -209,7 +218,26 @@ $("#label_li_org").click(function () {
     getOtherlabel();
 })
 $("#label_li_user").click(function () {
+    page=1;
     $("#label_user").empty();
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="3";
+    getOtherlabel();
+})
+
+//右侧加载更多标签
+$("#more_label_g").click(function () {
+        page=page+1;
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="2";
+    getOtherlabel();
+})
+$("#more_label_u").click(function () {
+    page=page+1;
     param["corp_code"]="C10000";
     param['pageNumber']=page;
     param['searchValue']="";
@@ -290,6 +318,8 @@ $('#search_input').bind('input propertychange', function() {
 });
 //隐藏下拉框滚动条
 $(function(){
+    $("#label_user").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
+    $("#label_org").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
     $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
 });
 
@@ -463,6 +493,7 @@ function drop(ev)
     var param={};
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
+    var span=$(document.getElementById(data));
     var clone= $(document.getElementById(data)).clone();
     var label_id=clone.attr("data-id");
     var val=$(clone).text();
@@ -487,6 +518,11 @@ function drop(ev)
                 $(ev.target).append(clone);
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
+            if(span.attr("class")=="label_u"){
+                $(span).addClass("label_u_active").removeClass("label_u");
+            }else {
+                $(span).addClass("label_g_active").removeClass("label_g");
+            }
         }
     })
 }
