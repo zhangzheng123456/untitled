@@ -27,7 +27,9 @@ function getConsumCount(){//获取会员信息
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
         for(var i=0;i<album.length;i++){
-                HTML+="<span><img src="+album[i].image_url+" /></span>";
+                if(i<16){
+                    HTML+="<span><img src="+album[i].image_url+" /></span>";
+                }
                 Ablum_all_html+="<li>"
                 +"<img src='"+album[i].image_url+"'>"
                 +"<div class='cancel_img'></div>"
@@ -56,8 +58,8 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
     //相册图片点击放大.关闭
-    $(".album li").click(function () {
-        var src=$(this).find("img").attr("src");
+    $(".album li img").click(function () {
+        var src=$(this).attr("src");
         whir.loading.add("",0.8,src);
     })
 }
@@ -73,7 +75,7 @@ function img_hover(){
     }).mouseout(function () {
         $(this).hide();
     }).click(function(){
-        alert(2)
+       $("#tk").show();
     })
 }
 $(".message-class ul li a").click(function(){

@@ -123,9 +123,15 @@ body{
     border-bottom:3px solid #6dc1c8;
     color:#6dc1c8;
 }
+.header .center .message-class .tabs-parent{
+    height: 330px;
+}
 .header .center .message-class .tabs-parent .table{
     padding:0 10px;
     margin-bottom: 0;
+}
+.header .center .message-class .tabs-parent .table tbody tr:nth-child(10){
+    border-bottom: none;
 }
 .header .center .message-class .tabs-parent table .TR{
     background-color: #efefef;
@@ -147,7 +153,6 @@ body{
     border-bottom:1px solid #e8e8e8;
     color:#888888
 }
-
 .icon-ishop_8-03.style{
     float: right;
     height: 29px;
@@ -174,21 +179,21 @@ body{
 .header .center .message-class .tabs-parent .vip-label .label-parent #labels{
     height:310px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #E8E8E8;
+    /*border-bottom: 1px solid #E8E8E8;*/
     padding-left: 10px;
 }
 .header .center .message-class .tabs-parent .images .img-parent #images{
     height:310px;
     padding-bottom: 5px;
     padding-left:10px;
-    border-bottom: 1px solid #E8E8E8;
+    /*border-bottom: 1px solid #E8E8E8;*/
     overflow: hidden;
 }
 .header .center .message-class .tabs-parent .images .img-parent #images span{
     width: 25%;
-    height: 25%;
+    height: 77px;
     box-sizing: border-box;
-    padding-right: 10px;
+    padding:0  10px 10px 0;
     z-index: 2;
     display: inline-block;
 }
@@ -286,8 +291,8 @@ padding:25px 15px 0 15px;
      height: 30px;
      line-height: 30px;
      box-sizing: border-box;
-     border-bottom:1px solid #E8E8E8;
-     line-height: 30px; "
+     /*border-bottom:1px solid #E8E8E8;*/
+     line-height: 30px;
 }
 .right .person-detail .detail-left{
     text-align: right;
@@ -309,6 +314,7 @@ padding:25px 15px 0 15px;
     color:#c26555;
 }
 .person-more {
+    border-top: 1px solid #e8e8e8;
     text-align: center;
     height: 30px;
     line-height: 30px;
@@ -657,8 +663,8 @@ hr{
 }
 .album .cancel_img{
     display: none;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background: url('../img/x_alt.png') no-repeat right;
     position: absolute;
     top:10px;
