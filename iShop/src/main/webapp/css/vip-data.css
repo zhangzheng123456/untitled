@@ -819,13 +819,17 @@ hr{
 }
 .search_list{
     padding: 5px 0;
+    width: 400px;
+    max-height: 200px;
+    overflow-y: scroll;
+}
+.search_box{
     display: none;
     position: absolute;
     top: 40px;
     left:10px;
     width: 400px;
-    max-height: 200px;
-    overflow-y: scroll;
+    max-height: 300px;
     border: 1px solid #ddd;
     background: #f7f7f7;
 }

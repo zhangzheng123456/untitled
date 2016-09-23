@@ -198,8 +198,7 @@ $("#label_li_user").click(function () {
 
 //搜索热门标签
 function searchHotlabel() {
-    $(".search_list").show();
-    $(".search_list").empty();
+    $(".search_box").show();
     param["corp_code"]="C10000";
     param['pageNumber']=page;
     param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
@@ -248,60 +247,19 @@ function searchHotlabel() {
 function moreSearch() {
     $("#more_search").click(function () {
         page=page+1;
-        $(".search_list").show();
-        param["corp_code"]="C10000";
-        param['pageNumber']=page;
-        param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
-        param['type']="1";
-        oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
-            if(data.code=="0"){
-                var msg=JSON.parse(data.message);
-                msg=JSON.parse(msg.list)
-                var hasNextPage=JSON.parse(msg.hasNextPage);
-                list=msg.list;
-                var html="";
-                console.log(hasNextPage);
-                if(hasNextPage==true){
-                    for(var i=0;i<list.length;i++){
-                        if(list[i].label_type=="user"){
-                            html+="<li class='label_u' data-id="+list[i].id+">"+list[i].label_name+"</li>"
-                        }else {
-                            html+="<li class='label_g' data-id="+list[i].id+">"+list[i].label_name+"</li>"
-                        }
-                    }
-                    $("#more_search").show();
-                    $(".search_list").append(html);
-                }else {
-                    for(var j=0;j<list.length;j++){
-                        if(list[j].label_type=="user"){
-                            html+="<li class='label_u' data-id="+list[j].id+">"+list[j].label_name+"</li>"
-                        }else {
-                            html+="<li class='label_g' data-id="+list[j].id+">"+list[j].label_name+"</li>"
-                        }
-                    }
-                    $("#more_search").hide();
-                    $(".search_list").append(html);
-                }
-            }
-            //搜索下拉点击事件
-            $(".search_list li").click(function () {
-                cls=$(this).attr("class");
-                txt=$(this).html();
-                param['label_name']=txt;
-                addViplabel();
-            })
-        })
+       searchHotlabel();
     })
 };
 $(document).click(function(e){
     if($(e.target).is("#more_search")){
         return;
     }else{
-        $(".search_list").hide();
+        $(".search_box").hide();
     }
-})
+});
 //input输入框里面
 $('#search_input').bind('input propertychange', function() {
+    $(".search_list").empty();
     searchHotlabel();
 });
 //隐藏下拉框滚动条
