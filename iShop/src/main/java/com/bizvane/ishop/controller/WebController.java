@@ -45,7 +45,8 @@ public class WebController {
     GroupService groupService;
     @Autowired
     StoreService storeService;
-
+    @Autowired
+    BrandService brandService;
     /**
      *
      */
@@ -178,7 +179,7 @@ public class WebController {
     }
 
     /**
-     * app获取FAB列表搜索接口
+     * app获取FAB列表搜索,筛选接口
      */
     @RequestMapping(value = "/api/fab/search", method = RequestMethod.POST)
     @ResponseBody
@@ -193,14 +194,28 @@ public class WebController {
             String corp_code = jsonObject.get("corp_code").toString();
             String search_value = jsonObject.get("search_value").toString();
 
+            String goods_quarter = "";
+            String goods_wave = "";
+            String brand_code = "";
+            String time_start = "";
+            String time_end = "";
+
+            if (jsonObject.containsKey("goods_quarter"))
+                goods_quarter = jsonObject.get("goods_quarter").toString();
+            if (jsonObject.containsKey("goods_wave"))
+                goods_wave = jsonObject.get("goods_wave").toString();
+            if (jsonObject.containsKey("brand_code"))
+                brand_code = jsonObject.get("brand_code").toString();
+
             JSONObject result = new JSONObject();
-            PageInfo<Goods> list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, search_value);
-            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
-                String goods_image = list.getList().get(i).getGoods_image();
-                if (goods_image != null && !goods_image.isEmpty()) {
-                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
-                }
-            }
+            PageInfo<Goods> list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code,goods_quarter,
+                    goods_wave,brand_code,time_start,time_end,search_value);
+//            for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
+//                String goods_image = list.getList().get(i).getGoods_image();
+//                if (goods_image != null && !goods_image.isEmpty()) {
+//                    list.getList().get(i).setGoods_image(goods_image.split(",")[0]);
+//                }
+//            }
             result.put("list", JSON.toJSONString(list));
             dataBean.setId("1");
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -218,7 +233,7 @@ public class WebController {
      */
     @RequestMapping(value = "/api/fab/select", method = RequestMethod.POST)
     @ResponseBody
-    public String selectGoodsTrain(HttpServletRequest request) {
+    public String fabDetail(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
         try {
@@ -242,12 +257,39 @@ public class WebController {
     }
 
     /**
-     * app获取FAB详细接口
+     * app获取FAB筛选侧边接口
      */
-    @RequestMapping(value = "/api/test", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/fab/screenValue", method = RequestMethod.GET)
     @ResponseBody
-    public String test(HttpServletRequest request) {
+    public String fabScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String corp_code = jsonObject.get("corp_code").toString();
 
-        return "111";
+            JSONObject result = new JSONObject();
+            //季度
+            List<Goods> quarters = goodsService.selectCorpGoodsQuarter(corp_code);
+            //波段
+            List<Goods> waves = goodsService.selectCorpGoodsWave(corp_code);
+            //品牌
+            List<Brand> brands = brandService.getAllBrand(corp_code);
+
+            result.put("quarters", JSON.toJSONString(quarters));
+            result.put("waves", JSON.toJSONString(waves));
+            result.put("brands", JSON.toJSONString(brands));
+
+            dataBean.setId("1");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
     }
 }

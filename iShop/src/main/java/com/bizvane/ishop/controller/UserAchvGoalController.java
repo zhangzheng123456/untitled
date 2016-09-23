@@ -569,10 +569,10 @@ public class UserAchvGoalController {
                     String target_type = rs.getCell(j++, i).getContents().toString().trim();
                     String cellTypeForDate = LuploadHelper.getCellTypeForDate(rs.getCell(j++, i), target_type);
                     String isactive = rs.getCell(j++, i).getContents().toString().trim();
-                    if (cellCorp.equals("") && store_code.equals("") && user_code.equals("") && user_target.equals("") && target_type.equals("") && cellTypeForDate.equals("")) {
+                    if (cellCorp.equals("") && store_code.equals("") && user_code.equals("") && user_target.equals("") && target_type.equals("")) {
                         continue;
                     }
-                    if (cellCorp.equals("") || store_code.equals("") || user_code.equals("") || user_target.equals("") || target_type.equals("") || cellTypeForDate.equals("")) {
+                    if (cellCorp.equals("") || store_code.equals("") || user_code.equals("") || user_target.equals("") || target_type.equals("")) {
                         result = "：第" + (i + 1) + "行信息不完整,请参照Execl中对应的批注";
                         int a = 5 / 0;
                     }

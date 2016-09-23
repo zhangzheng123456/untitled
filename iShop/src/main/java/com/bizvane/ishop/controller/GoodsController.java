@@ -10,6 +10,7 @@ import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
@@ -456,12 +457,19 @@ public class GoodsController {
                 for (int j=0;j<splitGoods.length;j++){
                     Matcher matcher = pattern5.matcher(splitGoods[j]);
                     if(matcher.matches()==false){
+                        String onlyCell10 = LuploadHelper.CheckStringOnly(splitGoods);
+                        if(onlyCell10.equals("存在重复值")){
+                            result = "：Execl中关联的商品编号存在重复值";
+                            int b = 5 / 0;
+                        }
                         Goods good = goodsService.getGoodsByCode(column3[i].getContents().toString().trim(), splitGoods[j],Common.IS_ACTIVE_Y);
                         if (good == null) {
                             result = "：第" + (i + 1) + "行,第"+(j+1)+"个关联的商品编号不存在";
                             int b = 5 / 0;
                             break;
                         }
+
+
                     }
                 }
 
@@ -486,7 +494,7 @@ public class GoodsController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && goods_image.equals("") && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
+                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && goods_image.equals("") && brand_code.equals("")   && goods_description.equals("")){
                         continue;
                     }
                     if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")){
@@ -588,6 +596,20 @@ public class GoodsController {
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
+         //   String goods_description = goods.getGoods_description();
+            String goods_description = "<p><img src=\"/upload/image/20160923/1474620296443045010.jpg\" style=\"\" title=\"1474620296443045010.jpg\"/></p><p><img src=\"/upload/image/20160923/1474620297324096703.jpg\" style=\"\" title=\"1474620297324096703.jpg\"/></p><p>大徐德松<br/></p>";
+            String replace="";
+            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(goods_description);
+            OssUtils ossUtils=new OssUtils();
+            String bucketName="products-image";
+            String path =   request.getSession().getServletContext().getRealPath("/");
+            for (int k = 0; k < htmlImageSrcList.size(); k++) {
+                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
+                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
+                ossUtils.putObject(bucketName,"testImage/"+System.currentTimeMillis()+corp_code+".jpg",path+"/"+htmlImageSrcList.get(k));
+                replace = goods_description.replaceAll(htmlImageSrcList.get(k),"http://testImage.oss-cn-hangzhou.aliyuncs.com/"+bucketName+"/"+htmlImageSrcList.get(k));
+            }
+            goods.setGoods_description(replace);
             Date now = new Date();
             goods.setGoods_price(jsonObject.getString("goods_price"));
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -606,6 +628,7 @@ public class GoodsController {
                 dataBean.setMessage("success");
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
@@ -828,7 +851,7 @@ public class GoodsController {
             String search_value = jsonObject.get("searchValue").toString();
             PageInfo<Goods> list = goodsService.matchGoodsList(page_number, page_size,corp_code, search_value,goods_code,brand_code);
             JSONObject result = new JSONObject();
-            result.put("list", JSON.toJSONString(list));
+            result.put("list", JSON.toJSONString(list.getList()));
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setMessage(result.toString());

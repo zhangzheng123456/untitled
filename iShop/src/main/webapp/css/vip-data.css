@@ -5,7 +5,7 @@ body{
     padding-top: 81px;
     background-color: #e8e8e8;
 }
-#VIP_LIST,#VIP_message_back{
+#VIP_LIST,#VIP_message_back,#VIP_LIST_info{
     cursor: pointer;
 }
 .header .left,.header .center,.header .right{
@@ -123,9 +123,15 @@ body{
     border-bottom:3px solid #6dc1c8;
     color:#6dc1c8;
 }
+.header .center .message-class .tabs-parent{
+    height: 330px;
+}
 .header .center .message-class .tabs-parent .table{
     padding:0 10px;
     margin-bottom: 0;
+}
+.header .center .message-class .tabs-parent .table tbody tr:nth-child(10){
+    border-bottom: none;
 }
 .header .center .message-class .tabs-parent table .TR{
     background-color: #efefef;
@@ -147,7 +153,6 @@ body{
     border-bottom:1px solid #e8e8e8;
     color:#888888
 }
-
 .icon-ishop_8-03.style{
     float: right;
     height: 29px;
@@ -174,26 +179,27 @@ body{
 .header .center .message-class .tabs-parent .vip-label .label-parent #labels{
     height:310px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #E8E8E8;
+    /*border-bottom: 1px solid #E8E8E8;*/
     padding-left: 10px;
 }
 .header .center .message-class .tabs-parent .images .img-parent #images{
     height:310px;
     padding-bottom: 5px;
     padding-left:10px;
-    border-bottom: 1px solid #E8E8E8;
+    /*border-bottom: 1px solid #E8E8E8;*/
     overflow: hidden;
 }
-.header .center .message-class .tabs-parent .images .img-parent #images span,.header .center .message-class .tabs-parent .images .img-parent #images span img{
+.header .center .message-class .tabs-parent .images .img-parent #images span{
     width: 25%;
-    height: 25%;
+    height: 77px;
     box-sizing: border-box;
-    padding-right: 10px;
+    padding:0  10px 10px 0;
     z-index: 2;
     display: inline-block;
 }
 .header .center .message-class .tabs-parent .images .img-parent img{
- width: 100%;
+     width: 100%;
+    height: 100%;
 }
 .header .center .message-class .tabs-parent .vip-label .label-parent #labels span{
     margin-bottom:10px;
@@ -285,8 +291,8 @@ padding:25px 15px 0 15px;
      height: 30px;
      line-height: 30px;
      box-sizing: border-box;
-     border-bottom:1px solid #E8E8E8;
-     line-height: 30px; "
+     /*border-bottom:1px solid #E8E8E8;*/
+     line-height: 30px;
 }
 .right .person-detail .detail-left{
     text-align: right;
@@ -308,6 +314,7 @@ padding:25px 15px 0 15px;
     color:#c26555;
 }
 .person-more {
+    border-top: 1px solid #e8e8e8;
     text-align: center;
     height: 30px;
     line-height: 30px;
@@ -656,8 +663,8 @@ hr{
 }
 .album .cancel_img{
     display: none;
-    width: 20px;
-    height: 20px;
+    width: 16px;
+    height: 16px;
     background: url('../img/x_alt.png') no-repeat right;
     position: absolute;
     top:10px;
@@ -764,6 +771,8 @@ hr{
     margin-left: 5px;
 }
 .label_box{
+    width: 470px;
+    height: 200px;
     margin: 20px 10px;
 }
 .label_u_active{
@@ -786,7 +795,7 @@ hr{
     width: 50%;
     min-height:500px;
     margin-bottom: 20px;
-    float: right;
+    float: left;
     padding: 0 20px;
     margin-top: 20px;
     margin-left: 20px;
@@ -810,12 +819,17 @@ hr{
 }
 .search_list{
     padding: 5px 0;
-    display: none;
-    position: absolute;
-    top: 40px;
     width: 400px;
     max-height: 200px;
     overflow-y: scroll;
+}
+.search_box{
+    display: none;
+    position: absolute;
+    top: 40px;
+    left:10px;
+    width: 400px;
+    max-height: 300px;
     border: 1px solid #ddd;
     background: #f7f7f7;
 }
@@ -833,22 +847,50 @@ hr{
 .span_total{
     margin: 0 3px;
 }
+#more_search{
+    display: block;
+    line-height: 30px;
+    text-align: center;
+}
+
 
 /*扩展模块*/
 .all_list{
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 .expand{
     padding:20px 30px 0 30px;
-    overflow: hidden;
 }
+/*.expand:after{*/
+    /*content: ",";*/
+    /*height: 0;*/
+    /*visibility: hidden;*/
+    /*display: block;*/
+    /*clear: both;*/
+/*}*/
 .expand ul{
-    width: 33.33%;
-    float: left;
+    width: 100%;
     padding-right: 20px;
 }
+.expand ul:after{
+    content: ",";
+    height: 0;
+    visibility: hidden;
+    display: block;
+    clear: both;
+}
 .expand ul li{
-    margin-bottom: 10px;
+    float: left;
+    margin-bottom: 20px;
+    width: 33.3%;
+}
+.expand ul li ul{
+    padding:0;
+}
+.expand ul li ul li{
+    cursor: pointer;
+    width:100%;
+    margin:0;padding: 0;
 }
 .expand ul li b{
     padding-top: 3px;
@@ -866,6 +908,7 @@ hr{
     height: 30px;
     border-radius: 3px;
     padding:5px 3px 5px 2px;
+    text-indent:10px;
 }
 /*配合定位*/
 .expand .position{
@@ -882,7 +925,7 @@ hr{
 .expand .input_select:hover{
     cursor: pointer;
 }
-.expand ul:last-child{
-    clear: both;
-    width: 100%;
-}
+/*.expand ul:last-child{*/
+    /*clear: both;*/
+    /*width: 100%;*/
+/*}*/

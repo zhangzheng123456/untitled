@@ -233,5 +233,7 @@
     <orderEntry type="library" name="Maven: de.undercouch:bson4jackson:2.7.0" level="project" />
     <orderEntry type="library" name="Maven: javax.persistence:persistence-api:1.0.2" level="project" />
     <orderEntry type="library" name="Maven: com.bizvane.sun:server_ice:1.0.3" level="project" />
+    <orderEntry type="library" name="Maven: com.aliyun.openservices:aliyun-openservices:1.0.10" level="project" />
+    <orderEntry type="library" name="Maven: org.jdom:jdom:1.1" level="project" />
   </component>
 </module>

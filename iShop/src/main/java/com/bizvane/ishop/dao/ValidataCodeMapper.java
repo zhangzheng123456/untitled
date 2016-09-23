@@ -1,6 +1,5 @@
 package com.bizvane.ishop.dao;
 
-import com.bizvane.ishop.entity.Feedback;
 import com.bizvane.ishop.entity.ValidateCode;
 import org.apache.ibatis.annotations.Param;
 
