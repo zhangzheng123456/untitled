@@ -156,10 +156,11 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
-    public PageInfo<Goods> selectBySearchForApp(int page_number, int page_size, String corp_code, String search_value) throws Exception{
+    public PageInfo<Goods> selectBySearchForApp(int page_number, int page_size, String corp_code,String goods_quarter,
+                                                String goods_wave,String brand_code, String time_start,String time_end,String search_value) throws Exception{
         List<Goods> list;
         PageHelper.startPage(page_number, page_size);
-        list = goodsMapper.selectAllGoodsForApp(corp_code, search_value,Common.IS_ACTIVE_Y);
+        list = goodsMapper.selectAllGoodsForApp(corp_code,goods_quarter, goods_wave,brand_code,time_start,time_end,search_value,Common.IS_ACTIVE_Y);
         for (int i = 0; list != null && i < list.size(); i++) {
             transter(list.get(i));
             String goods_image = list.get(i).getGoods_image();
@@ -245,4 +246,15 @@ public class GoodsServiceImpl implements GoodsService {
         return goods;
     }
 
+    //获取企业FAB季度
+    @Override
+    public List<Goods> selectCorpGoodsQuarter(String corp_code) throws Exception{
+        return goodsMapper.selectCorpGoodsQuarter(corp_code);
+    }
+
+    //获取企业FAB波段
+    @Override
+    public List<Goods> selectCorpGoodsWave(String corp_code) throws Exception{
+        return goodsMapper.selectCorpGoodsWave(corp_code);
+    }
 }
