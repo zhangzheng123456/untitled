@@ -92,6 +92,7 @@ function getVipInfo(){
         $("#vip_birthday").html(vipDataList.vip_birthday);
         $("#vip_birthday_edit").val(vipDataList.vip_birthday);
         showOption();
+        getoselectvalue();
     })
 }
 $("#more_message").click(function(){
@@ -121,4 +122,10 @@ function showOption(){
             ul.hide();
         }
     });
+}
+function getoselectvalue(){
+    $(".expand_selection li").click(function(){
+        $(this).parent().prev().val($(this).html());
+        $(this).parent().hide()
+    })
 }
