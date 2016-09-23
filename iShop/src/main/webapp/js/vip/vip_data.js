@@ -83,7 +83,7 @@ function img_hover(){
         $(this).hide();
     })
 }
-$("#Ablum-all").on("click","div",function(){
+$("#Ablum-all").on("click",".cancel_img",function(){
     var id=$(this).attr("id");
     $("#tk").show();
     $("#delete").attr("data-id",id);
