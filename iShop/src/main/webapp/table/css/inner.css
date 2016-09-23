@@ -1097,28 +1097,69 @@ input::-webkit-input-placeholder{
 /*******************筛选区域样式******************/
 .screen_area{
 	width: 700px;
-	height: 530px;
+	min-height: 530px;
 	padding:0 20px 0 20px;
 	background-color: #fff;
 	box-shadow: 0 0 10px rgba(0,0,0,0.35);
 	border-radius: 5px;
 	position: absolute;
-	top:30px;
-	left: 139px;
+	top:84px;
+	left: 239px;
+	display: none;
 }
 .screen_area .screen_title{
-	height:39px;
-	line-height:40px;
-	border-bottom: 1px solid #cacaca;
+	color: #888;
 }
 .screen_area .screen_title h4{
-	float: left;
+	height:40px;
+	line-height:40px;
 	font-weight: normal;
 	color: #888;
+}
+.screen_area .screen_title .xuanzhong{
+	height: 40px;
+	line-height: 40px;
+	margin-left: -20px;
+}
+.screen_area .xuanzhong .xuanzhong_p{
+	float: left;
+	margin-left: 20px;
+	position: relative;
+}
+.screen_area .xuanzhong .xuanzhong_p label{
+	color: #888;
+}
+.screen_area .xuanzhong .xuanzhong_p .icon_r{
+	width: 30px;
+	height: 30px;
+	background-color: #6CC1C8;
+	position: absolute;
+	right: 0;
+	top: 5px;
+	color: #fff;
+	line-height: 30px;
+	text-align:center;
+	border-radius: 0px 3px 3px 0;
+	cursor: pointer;
+}
+.screen_area .xuanzhong .xuanzhong_p input{
+	width: 140px;
+	height: 28px;
+	outline: none;
+	line-height: 26px;
+	margin-left: 10px;
+	padding-left: 10px;
+	border: 1px solid #d7d7d7;
+	border-radius: 3px;
+	color: #888;
+}
+.screen_area .screen_title .xian{
+	border-bottom: 1px solid #cacaca;
 }
 .screen_area .screen_title .screen_close{
 	width: 40px;
 	height: 40px;
+	line-height: 40px;
 	color: #888;
 	font-size: 25px;
 	cursor: pointer;
@@ -1196,9 +1237,135 @@ input::-webkit-input-placeholder{
 	text-align: center;
 	margin: 0 auto;
 	margin-top: 30px;
+	margin-bottom: 20px;
 	background-color: #6dc1c8;
 	color: #fff;
-	border-radius: 5px;
+	border-radius:5px;
 	cursor: pointer;
+}
+/********会员筛选首页弹出框********/
+.screen_wrapper{
+    width:480px;
+    height: 530px;
+    font-size: 14px;
+    color: #888888;
+    border-radius: 10px;
+    background: #fff;
+    padding: 0 10px 20px 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.35);
+    position: absolute;
+    top:85px;
+    left: 189px;
+    display: none;
+}
+.screen_head{
+    height: 39px;
+    line-height: 39px;
+    border-bottom: 1px solid #e8e8e8;
+}
+.screen_head i{
+    width: 40px;
+    height: 40px;
+    font-size: 25px;
+    color: #999999;
+    text-align: right;
+    float: right;
+    line-height: 40px;
+    cursor: pointer;
+}
+.contion{
+    max-height: 410px;
+    margin-top: 20px;
+    padding: 0 30px;
+    overflow-y: auto;
+}
+.contion label{
+    width: 70px;
+    text-align: right;
+    display:inline-block;
+}
+.contion .contion_input{
+	width: 420px;
+	height: 30px;
+	margin-bottom: 20px;
+	position: relative;
+}
+.contion .contion_input .icon_r{
+	width: 30px;
+	height: 30px;
+	position: absolute;
+	top:0px;
+	right: 0px;
+	background-color: #6dc1c8;
+	color: #fff;
+	text-align: center;
+	line-height:30px;
+	border-radius:0px 3px 3px 0px;
+	cursor: pointer;
+}
+.contion .input{
+    width: 328px;
+    height: 28px;
+    margin-left: 10px;
+    padding-left: 10px;
+    border: 1px solid #d7d7d7;
+    border-radius:3px 5px 5px 3px;
+    outline: none;
+    color: #888888;
+    background:url("../../img/btn_dropmenu.png")no-repeat 100% 50%;
+    background-size: 30px;
+}
+.contion .short_input{
+    width:148px;
+    height: 25px;
+    margin-left: 10px;
+    padding-left: 10px;
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    outline: none;
+    color: #888888;
+}
+.contion .jian{
+	width: 20px;
+	text-align: center;
+	height: 30px;
+	line-height: 30px;
+}
+.text_l{
+    position: absolute;
+    top: 6px;
+    left: 225px;
+}
+.text_r{
+    position: absolute;
+    top: 6px;
+    right: 10px;
+}
+.contion .laydate-icon{
+    padding-right: 0;
+}
+.contion s{
+    text-decoration: none;
+    margin-left: 10px;
+}
+.short_bg{
+    background:url("../img/btn_dropmenu.png")no-repeat 100% 50%;
+    background-size: 27px;
+}
+.ensure{
+    width: 100%;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 30px;
+    text-align: center;
+}
+.ensure span{
+    width: 140px;
+    border-radius: 5px;
+    margin: 0 auto;
+    display: block;
+    background: #6dc1c8;
+    color: #fff;
+    cursor: pointer;
 }
 

@@ -847,6 +847,11 @@ hr{
 .span_total{
     margin: 0 3px;
 }
+#more_search{
+    display: block;
+    line-height: 30px;
+    text-align: center;
+}
 
 
 /*扩展模块*/

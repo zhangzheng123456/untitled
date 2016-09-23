@@ -92,12 +92,12 @@ function showLi(){
 function hideLi(){
     $("#liebiao").hide();
 }
-$("#filtrate").click(function(){//点击筛选框弹出下拉框
-    $(".sxk").slideToggle();
-})
-$("#pack_up").click(function(){//点击收回 取消下拉框
-    $(".sxk").slideUp();
-})
+// $("#filtrate").click(function(){//点击筛选框弹出下拉框
+//     $(".sxk").slideToggle();
+// })
+// $("#pack_up").click(function(){//点击收回 取消下拉框
+//     $(".sxk").slideUp();
+// })
 //点击清空  清空input的value值
 $("#empty").click(function(){
     var input=$(".inputs input");

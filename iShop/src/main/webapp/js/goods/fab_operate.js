@@ -570,8 +570,8 @@ function getmatchgoodsList() {
 	var corp_code=$("#OWN_CORP").val();
 	var searchValue=$("#search").val();
 	var goods_code=$("#GOODS_CODE").val();
-	var pageNumber=a;
-	var pageSize
+	var pageNumber=1;
+	var pageSize=150;
 	param["corp_code"]=corp_code;
 	param["goods_code"]=goods_code;
 	param["pageNumber"] = 1;

@@ -42,7 +42,11 @@ function getConsumCount(){//获取会员信息
         $("#Ablum-all").html(Ablum_all_html);
         for(var i=0;i<label.length;i++){
                 LABEL+="<span >"+label[i].label_name+"</span>";
-                LABELALL+= "<span class='label_u_active' data-rid='"+label[i].rid+"'>"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>";
+             if(label[i].label_type=="user"){
+                 LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+            }else {
+                 LABELALL+="<span class='label_g' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+            }
         }
         //统计已有标签
         $(".span_total").html(label.length);
@@ -200,7 +204,6 @@ $("#label_li_user").click(function () {
 
 //搜索热门标签
 function searchHotlabel() {
-    $(".search_box").show();
     param["corp_code"]="C10000";
     param['pageNumber']=page;
     param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
@@ -213,6 +216,11 @@ function searchHotlabel() {
             list=msg.list;
             var html="";
             console.log(hasNextPage);
+            if(list.length!==0){
+                $(".search_box").show();
+            }else {
+                $(".search_box").hide();
+            }
             if(hasNextPage==true){
                 for(var i=0;i<list.length;i++){
                     if(list[i].label_type=="user"){
@@ -234,13 +242,13 @@ function searchHotlabel() {
                 $("#more_search").hide();
                 $(".search_list").append(html);
             }
-            moreSearch();
         }
         //搜索下拉点击事件
         $(".search_list li").click(function () {
             cls=$(this).attr("class");
             txt=$(this).html();
-            param['label_name']=txt;
+            param['label_name']=txt
+            $("#search_input").val("");
             addViplabel();
         })
     })
@@ -262,11 +270,12 @@ $(document).click(function(e){
 //input输入框里面
 $('#search_input').bind('input propertychange', function() {
     $(".search_list").empty();
+    page=1;
     searchHotlabel();
 });
 //隐藏下拉框滚动条
 $(function(){
-    $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"",cursoropacitymin:"0",boxzoom:false});
+    $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
 });
 
 //回到会员列表
@@ -306,8 +315,6 @@ $(".nav_bar").mouseleave(function() {
     var len = $(this).children().eq(_this).width();
     $("#remark").animate({left: len * _this}, 200);
 });
-
-
 
 
 //标签导航切换窗口
@@ -360,6 +367,7 @@ function addViplabel() {
     })
 }
 $("#labeladd_btn").click(function () {
+    cls="";
     val=$("#search_input").val().replace(/\s+/g,"");
     val=val.substring(0,8);
     if(val==""){
@@ -459,4 +467,5 @@ function drop(ev)
 $(function(){
     getConsumCount();
     upLoadAlbum();
+    moreSearch();
 });

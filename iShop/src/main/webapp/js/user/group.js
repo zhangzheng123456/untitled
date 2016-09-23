@@ -573,7 +573,7 @@ $("#leading_out").click(function(){
     $('.file').show();
     $(".into_frame").hide();
     var param={};
-    param["function_code"]=funcCode;
+    param["function_code"]="F0018";
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/list/getCols","0",param,function(data){
         if(data.code=="0"){

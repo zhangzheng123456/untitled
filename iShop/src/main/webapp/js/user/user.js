@@ -255,9 +255,9 @@ function superaddition(data,num){
                         + data[i].user_id
                         + "</td><td>"
                         +"<img src='"+avatar+"' alt=''>"
-                        + "</td><td>"
+                        + "</td><td><span title='"+data[i].user_name+"'>"
                         + data[i].user_name
-                        + "</td><td>"
+                        + "</span></td><td>"
                         + data[i].sex
                         +"</td><td>"
                         +data[i].phone
