@@ -70,6 +70,7 @@ function getVipInfo(){
         getVipPoints(vipDataList.corp_code);
         showOption();
         getoselectvalue();
+        upLoadAlbum(vipDataList);
     })
 }
 function getVipPoints(code,type){
@@ -239,9 +240,44 @@ function showOption(){
         }
     });
 }
-function getoselectvalue(){
+function getoselectvalue(){//点击模拟的select 获取值给input
     $(".expand_selection li").click(function(){
         $(this).parent().prev().val($(this).html());
         $(this).parent().hide()
     })
+}
+    $("#cancel").click(function(){//关闭删除相册时的提示框,取消删除相册
+        $("#tk").hide();
+        $("#delete").attr("data-id","");
+        return false;
+    });
+
+    $("#delete").click(function(){//确认删除相册
+        $("#tk").hide();
+        var id=$(this).attr("data-id");
+        var param={};
+        param["id"]=id;
+        oc.postRequire("post","/vipAlbum/delete","",param,function(data){
+            if(data.message="success"){
+                $("#"+id).parent().remove();
+                frame();
+                $('.frame').html('删除成功');
+            }else{
+                frame();
+                $('.frame').html('删除成功');
+            }
+        })
+    });
+
+
+function frame(){
+    var left=($(window).width())/2;//弹框定位的left值
+    var tp=($(window).height())/2;//弹框定位的top值
+    $('.frame').remove();
+    $('.con_table').append('<div class="frame" style="left:'+left+'px;top:'+tp+'px;"></div>');
+    $(".frame").animate({opacity:"1"},1000);
+    $(".frame").animate({opacity:"0"},1000);
+    setTimeout(function(){
+        $(".frame").hide();
+    },2000);
 }

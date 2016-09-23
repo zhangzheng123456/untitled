@@ -34,7 +34,7 @@ function getConsumCount(){//获取会员信息
                 }
                 Ablum_all_html+="<li>"
                 +"<img src='"+album[i].image_url+"'>"
-                +"<div class='cancel_img'></div>"
+                +"<div class='cancel_img' id='"+album[i].id+"'></div>"
                 +"<span class='album_date'>"+date+"</span>"
                 +"</li>"
             }
@@ -75,15 +75,30 @@ function img_hover(){
         $(this).next(".cancel_img").show();
     }).mouseout(function () {
         $(this).next(".cancel_img").hide();
-    })
+    });
+
     $(".cancel_img").mouseover(function () {
         $(this).show();
     }).mouseout(function () {
         $(this).hide();
-    }).click(function(){
-       $("#tk").show();
     })
 }
+$("#Ablum-all").on("click","div",function(){
+    var id=$(this).attr("id");
+    $("#tk").show();
+    $("#delete").attr("data-id",id);
+});
+$("#Ablum-all").on("mouseover","img",function(){
+   $(this).next().show()
+});$("#Ablum-all").on("mouseover","div",function(){
+   $(this).show()
+});
+$("#Ablum-all").on("mouseout","img",function(){
+   $(this).next().hide()
+});
+$("#Ablum-all").on("mouseout","div",function(){
+    $(this).hide()
+});
 $(".message-class ul li a").click(function(){
     $(this).addClass("active");
     $(this).parent().siblings().children().removeClass("active");
@@ -376,7 +391,7 @@ $("#labeladd_btn").click(function () {
     param['label_name']=val;
     addViplabel();
 });
-function upLoadAlbum(){
+function upLoadAlbum(data){
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
@@ -391,21 +406,32 @@ function upLoadAlbum(){
             $("#imghead").attr("src",result.url);
             $("#upAlbum").val("");
             console.log(result);
-            addVipAlbum(result.url)
+            addVipAlbum(result.url,data)
         }).catch(function (err) {
              console.log(err);
         });
     });
 }
-function addVipAlbum(url){//上传照片到相册
+function addVipAlbum(url,data){//上传照片到相册
      var param_addAblum={};
     param_addAblum["vip_code"]=sessionStorage.getItem("id");
-    param_addAblum["vip_name"]="罗晓珊";
-    param_addAblum["cardno"]="suda10900123103308";
+    param_addAblum["vip_name"]=data.vip_name;
+    param_addAblum["cardno"]=data.cardno;
     param_addAblum["image_url"]=url;
-    param_addAblum["corp_code"]="C10000";
+    param_addAblum["corp_code"]=data.corp_code;
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
-        console.log(data)
+        if(data.code=="0"){
+            frame();
+            $('.frame').html('添加成功');
+            $("#Ablum-all").append("<li>"
+                +"<img src='"+url+"'>"
+                +"<div class='cancel_img' id='"+data.message+"'></div>"
+                //+"<span class='album_date'>"+date+"</span>"
+                +"</li>");
+        }else{
+            frame();
+            $('.frame').html('添加失败');
+        }
     })
 }
 function getNowFormatDate() {//获取当前日期
@@ -466,6 +492,6 @@ function drop(ev)
 }
 $(function(){
     getConsumCount();
-    upLoadAlbum();
+    //upLoadAlbum();
     moreSearch();
 });
