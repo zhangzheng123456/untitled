@@ -67,24 +67,40 @@ function getVipInfo(){
         }
         $("#extend ul").html(extendhtml);
         fuzhi(vipDataList);
-        getVipPoints(vipDataList);
+        getVipPoints(vipDataList.corp_code);
         showOption();
         getoselectvalue();
     })
 }
-function getVipPoints(data,type){
+function getVipPoints(code,type){
     var parmam_jifen={};
     parmam_jifen['vip_id']=sessionStorage.getItem("id");
-    parmam_jifen['corp_code']=data.corp_code;
-    parmam_jifen['type']=null;
+    parmam_jifen['corp_code']=code;
+    if(type!==undefined){
+        parmam_jifen['type']=type;
+    }
+
     oc.postRequire("post","/vip/vipPoints","",parmam_jifen,function(data){
         var Data=JSON.parse(data.message);
-        var pointsData=Data.result_points;//积分
-        var consumnData=Data.result_consumn;//消费
-        var consumnlistData=JSON.parse(consumnData.list);//消费list
-        var listData=JSON.parse(pointsData.list);//积分list
-        jifenContent(listData,pointsData);
-        xiaofeiContent(consumnData,consumnlistData)
+        if(type=='1'){
+            var pointsData=Data.result_points;//积分
+            var listData=JSON.parse(pointsData.list);//积分list
+            jifenContent(listData,pointsData);
+        }
+        if(type=='2'){
+            var consumnData=Data.result_consumn;//消费
+            var consumnlistData=JSON.parse(consumnData.list);//消费list
+            xiaofeiContent(consumnData,consumnlistData)
+        }
+        if(type==undefined){
+            var pointsData=Data.result_points;//积分
+            var consumnData=Data.result_consumn;//消费
+            var consumnlistData=JSON.parse(consumnData.list);//消费list
+            var listData=JSON.parse(pointsData.list);//积分list
+            jifenContent(listData,pointsData);
+            xiaofeiContent(consumnData,consumnlistData)
+        }
+
     });
     console.log(type)
 }

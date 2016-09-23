@@ -27,13 +27,15 @@ function getConsumCount(){//获取会员信息
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
         for(var i=0;i<album.length;i++){
+            var date=album[i].created_date;
+                date=date.substring(0,11);
                 if(i<16){
                     HTML+="<span><img src="+album[i].image_url+" /></span>";
                 }
                 Ablum_all_html+="<li>"
                 +"<img src='"+album[i].image_url+"'>"
                 +"<div class='cancel_img'></div>"
-                +"<span class='album_date'>"+album[i].created_date+"</span>"
+                +"<span class='album_date'>"+date+"</span>"
                 +"</li>"
             }
         $("#images").html(HTML);
@@ -292,6 +294,13 @@ $("#nav_bar li").click(function () {
     $(this).siblings().removeClass("active1");
     $(".all_list").children().eq(index).show();
     $(".all_list").children().eq(index).siblings().hide();
+    if($(this).attr('data-name')=='jifen'){
+        getVipPoints($("#corp_code").html(),'1')
+    }
+    if($(this).attr('data-name')=='consume'){
+        getVipPoints($("#corp_code").html(),'2')
+    }
+
 }).mouseover(function(){
     var index=$(this).index();
     var len=$(this).width();
