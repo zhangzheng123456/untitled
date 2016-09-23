@@ -602,11 +602,12 @@ public class GoodsController {
             List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(goods_description);
             OssUtils ossUtils=new OssUtils();
             String bucketName="products-image";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String path =   request.getSession().getServletContext().getRealPath("/");
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
                 System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
                 System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
-                ossUtils.putObject(bucketName,"testImage/"+System.currentTimeMillis()+corp_code+".jpg",path+"/"+htmlImageSrcList.get(k));
+                ossUtils.putObject(bucketName,"testImage/"+corp_code+goods.getGoods_code()+sdf.format(new Date())+".jpg",path+"/"+htmlImageSrcList.get(k));
                 replace = goods_description.replaceAll(htmlImageSrcList.get(k),"http://testImage.oss-cn-hangzhou.aliyuncs.com/"+bucketName+"/"+htmlImageSrcList.get(k));
             }
             goods.setGoods_description(replace);
