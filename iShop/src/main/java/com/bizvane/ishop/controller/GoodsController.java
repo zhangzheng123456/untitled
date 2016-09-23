@@ -597,18 +597,20 @@ public class GoodsController {
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
          //   String goods_description = goods.getGoods_description();
-            String goods_description = "<p><img src=\"/upload/image/20160923/1474620296443045010.jpg\" style=\"\" title=\"1474620296443045010.jpg\"/></p><p><img src=\"/upload/image/20160923/1474620297324096703.jpg\" style=\"\" title=\"1474620297324096703.jpg\"/></p><p>大徐德松<br/></p>";
+            String goods_description = "<p><img src=\"/image/upload/20160923/1474624297069083036.jpg\" title=\"1474624297069083036.jpg\" alt=\"lovely.jpg\"/></p><p><img src=\"/image/upload/20160923/1474624387054042981.jpg\" title=\"1474624387054042981.jpg\"/></p><p>这是一段文本</p>";
             String replace="";
             List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(goods_description);
             OssUtils ossUtils=new OssUtils();
             String bucketName="products-image";
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             String path =   request.getSession().getServletContext().getRealPath("/");
+
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
+                String time="testImage/"+corp_code+goods.getGoods_code()+sdf.format(new Date())+".jpg";
                 System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
                 System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
-                ossUtils.putObject(bucketName,"testImage/"+corp_code+goods.getGoods_code()+sdf.format(new Date())+".jpg",path+"/"+htmlImageSrcList.get(k));
-                replace = goods_description.replaceAll(htmlImageSrcList.get(k),"http://testImage.oss-cn-hangzhou.aliyuncs.com/"+bucketName+"/"+htmlImageSrcList.get(k));
+                ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
+                replace = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
             }
             goods.setGoods_description(replace);
             Date now = new Date();
