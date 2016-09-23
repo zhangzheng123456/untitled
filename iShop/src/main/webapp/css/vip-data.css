@@ -765,6 +765,8 @@ hr{
     margin-left: 5px;
 }
 .label_box{
+    width: 470px;
+    height: 200px;
     margin: 20px 10px;
 }
 .label_u_active{

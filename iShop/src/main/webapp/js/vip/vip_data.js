@@ -147,17 +147,16 @@ function getOtherlabel() {
             var msg=JSON.parse(data.message);
                 msg=JSON.parse(msg.list)
                 msg=msg.list;
+            var html="";
             console.log(msg);
             if(msg[0].label_type=="org"){
                 for(var i=0;i<msg.length;i++){
-                    var html="";
                     html+="<span  draggable='true' data-id="+msg[i].id+" class="+'label_g'+" id="+i+">"+msg[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(msg[0].label_type=="user"){
                 for(var j=0;j<msg.length;j++){
-                    var html="";
-                    html+="<span  draggable='true' class="+'label_u'+" id="+j+">"+msg[j].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[j].id+" class="+'label_u'+" id="+j+">"+msg[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
@@ -402,6 +401,8 @@ function drop(ev)
     var clone= $(document.getElementById(data)).clone();
     var label_id=clone.attr("data-id");
     var val=$(clone).text();
+    console.log(clone);
+    console.log(val);
 
     //调用借口
     var id=sessionStorage.getItem("id");
@@ -409,7 +410,7 @@ function drop(ev)
     param["corp_code"]="C10000";
     param['label_name']=val;
     param['vip_code']=id;
-    param['label_id']=label_id;
+    param['label_id']="";
     param['store_code']=store_id;
     oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
         if(data.code=="0"){
