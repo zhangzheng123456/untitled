@@ -10,6 +10,7 @@ import com.bizvane.ishop.entity.Goods;
 import com.bizvane.ishop.entity.TableManager;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.LuploadHelper;
+import com.bizvane.ishop.utils.OssUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
@@ -493,7 +494,7 @@ public class GoodsController {
 //                        result = "：第"+(i+1)+"行存在空白行,请删除";
 //                        int a=5/0;
 //                    }
-                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && goods_image.equals("") && brand_code.equals("")  && cellTypeForDate.equals("") && goods_description.equals("")){
+                    if(cellCorp.equals("") && goods_code.equals("") && goods_name.equals("") && goods_price.equals("")  && goods_image.equals("") && brand_code.equals("")   && goods_description.equals("")){
                         continue;
                     }
                     if(cellCorp.equals("")||goods_code.equals("") || goods_name.equals("") || goods_price.equals("")   || brand_code.equals("")){
@@ -595,6 +596,18 @@ public class GoodsController {
             String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
             //goods.setGoods_time(sdf.parse);
+         //   String goods_description = goods.getGoods_description();
+            String goods_description = "<p>是哪个创的v是的v放到的分v才的v<a href=\\\"mailto:http://131486014@qq.com\\\" target=\\\"_blank\\\">mailto:http://131486014@qq.com</a><img src=\\\"lupload/a1.jpg\\\"/>v是的v放到的分v才</p>";
+            String replace="";
+            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(goods_description);
+            OssUtils ossUtils=new OssUtils();
+            String bucketName="products-image";
+            String path =   request.getSession().getServletContext().getRealPath("/");
+            for (int k = 0; k < htmlImageSrcList.size(); k++) {
+                ossUtils.putObject(bucketName,"testImage/"+System.currentTimeMillis()+corp_code+".jpg",path+"/"+htmlImageSrcList.get(k));
+                replace = goods_description.replaceAll(htmlImageSrcList.get(k),"http://testImage.oss-cn-hangzhou.aliyuncs.com/"+bucketName+"/"+htmlImageSrcList.get(k));
+            }
+            goods.setGoods_description(replace);
             Date now = new Date();
             goods.setGoods_price(jsonObject.getString("goods_price"));
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
@@ -613,6 +626,7 @@ public class GoodsController {
                 dataBean.setMessage("success");
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());

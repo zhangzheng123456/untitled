@@ -9,6 +9,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by ZhouZhou on 2016/9/23.
@@ -22,7 +26,7 @@ public class OssUtils {
      * @Param key 文件名
      * @Param filePath 需要上传文件的路径
      */
-    public void putObject(String bucketName, String key, String filePath) throws FileNotFoundException {
+    public  void putObject(String bucketName, String key, String filePath) throws FileNotFoundException {
         // 获取指定文件的输入流
         File file = new File(filePath);
         InputStream content = new FileInputStream(file);
@@ -38,5 +42,16 @@ public class OssUtils {
 
         // 打印ETag
         System.out.println(result.getETag());
+    }
+
+    public static List<String> getHtmlImageSrcList(String htmlText)
+    {
+        List<String> imgSrc = new ArrayList<String>();
+        Matcher m = Pattern.compile("src=\"?(.*?)(\"|>|\\s+)").matcher(htmlText);
+        while(m.find())
+        {
+            imgSrc.add(m.group(1));
+        }
+        return imgSrc;
     }
 }
