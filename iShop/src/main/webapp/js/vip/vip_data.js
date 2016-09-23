@@ -27,7 +27,9 @@ function getConsumCount(){//获取会员信息
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
         for(var i=0;i<album.length;i++){
-                HTML+="<span><img src="+album[i].image_url+" /></span>";
+                if(i<16){
+                    HTML+="<span><img src="+album[i].image_url+" /></span>";
+                }
                 Ablum_all_html+="<li>"
                 +"<img src='"+album[i].image_url+"'>"
                 +"<div class='cancel_img'></div>"
@@ -56,8 +58,8 @@ function lg_img(){
         whir.loading.add("",0.8,src);//显示图片
     });
     //相册图片点击放大.关闭
-    $(".album li").click(function () {
-        var src=$(this).find("img").attr("src");
+    $(".album li img").click(function () {
+        var src=$(this).attr("src");
         whir.loading.add("",0.8,src);
     })
 }
@@ -73,7 +75,7 @@ function img_hover(){
     }).mouseout(function () {
         $(this).hide();
     }).click(function(){
-        alert(2)
+       $("#tk").show();
     })
 }
 $(".message-class ul li a").click(function(){
@@ -147,17 +149,16 @@ function getOtherlabel() {
             var msg=JSON.parse(data.message);
                 msg=JSON.parse(msg.list)
                 msg=msg.list;
+            var html="";
             console.log(msg);
             if(msg[0].label_type=="org"){
                 for(var i=0;i<msg.length;i++){
-                    var html="";
-                    html+="<span  draggable='true' data-id="+msg[i].id+" class="+'label_g'+" id="+i+">"+msg[i].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[i].id+" class='label_g' id='"+i+"g'>"+msg[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(msg[0].label_type=="user"){
                 for(var j=0;j<msg.length;j++){
-                    var html="";
-                    html+="<span  draggable='true' class="+'label_u'+" id="+j+">"+msg[j].label_name+"</span>"
+                    html+="<span  draggable='true' data-id="+msg[j].id+" class='label_u' id='"+j+"u'>"+msg[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
@@ -197,8 +198,7 @@ $("#label_li_user").click(function () {
 
 //搜索热门标签
 function searchHotlabel() {
-    $(".search_list").show();
-    $(".search_list").empty();
+    $(".search_box").show();
     param["corp_code"]="C10000";
     param['pageNumber']=page;
     param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
@@ -207,17 +207,32 @@ function searchHotlabel() {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             msg=JSON.parse(msg.list)
-            msg=msg.list;
+            var hasNextPage=JSON.parse(msg.hasNextPage);
+            list=msg.list;
             var html="";
-            console.log(msg);
-                for(var i=0;i<msg.length;i++){
-                    if(msg[i].label_type=="user"){
-                        html+="<li class="+'label_u'+" data-id="+msg[i].id+">"+msg[i].label_name+"</li>"
+            console.log(hasNextPage);
+            if(hasNextPage==true){
+                for(var i=0;i<list.length;i++){
+                    if(list[i].label_type=="user"){
+                        html+="<li class='label_u' data-id="+list[i].id+">"+list[i].label_name+"</li>"
                     }else {
-                        html+="<li class="+'label_g'+" data-id="+msg[i].id+">"+msg[i].label_name+"</li>"
+                        html+="<li class='label_g' data-id="+list[i].id+">"+list[i].label_name+"</li>"
                     }
                 }
+                $("#more_search").show();
                 $(".search_list").append(html);
+            }else {
+                for(var j=0;j<list.length;j++){
+                    if(list[j].label_type=="user"){
+                        html+="<li class='label_u' data-id="+list[j].id+">"+list[j].label_name+"</li>"
+                    }else {
+                        html+="<li class='label_g' data-id="+list[j].id+">"+list[j].label_name+"</li>"
+                    }
+                }
+                $("#more_search").hide();
+                $(".search_list").append(html);
+            }
+            moreSearch();
         }
         //搜索下拉点击事件
         $(".search_list li").click(function () {
@@ -228,22 +243,26 @@ function searchHotlabel() {
         })
     })
 }
-// $("#search_input").keydown()function () {
-//     //键盘按下搜索
-//     var event=window.event||arguments[0];
-//     if(event.keyCode == 13){
-//        searchHotlabel();
-//     }
-// })
+//加载更多
+function moreSearch() {
+    $("#more_search").click(function () {
+        page=page+1;
+       searchHotlabel();
+    })
+};
+$(document).click(function(e){
+    if($(e.target).is("#more_search")){
+        return;
+    }else{
+        $(".search_box").hide();
+    }
+});
 //input输入框里面
 $('#search_input').bind('input propertychange', function() {
+    $(".search_list").empty();
     searchHotlabel();
 });
-$("#search_input").blur(function () {
-    setTimeout(function () {
-        $(".search_list").hide();
-    }, 200)
-})
+//隐藏下拉框滚动条
 $(function(){
     $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"",cursoropacitymin:"0",boxzoom:false});
 });
@@ -326,6 +345,8 @@ function addViplabel() {
             $("#label_box").append(html);
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
+        }else if(data.code=="-1"){
+            alert("请勿重复添加");
         }
     })
 }
@@ -402,6 +423,8 @@ function drop(ev)
     var clone= $(document.getElementById(data)).clone();
     var label_id=clone.attr("data-id");
     var val=$(clone).text();
+    console.log(clone);
+    console.log(val);
 
     //调用借口
     var id=sessionStorage.getItem("id");
@@ -409,7 +432,7 @@ function drop(ev)
     param["corp_code"]="C10000";
     param['label_name']=val;
     param['vip_code']=id;
-    param['label_id']=label_id;
+    param['label_id']="";
     param['store_code']=store_id;
     oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
         if(data.code=="0"){

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,13 +83,14 @@ public class VIPController {
 
     /**
      * 会员信息
-     * 近一年消费和累计消费的接口+相册+标签
+     * 消费累计+相册+标签
      */
     @RequestMapping(value = "/vipConsumCount", method = RequestMethod.POST)
     @ResponseBody
     public String vipConsumCount(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
+            JSONObject obj = new JSONObject();
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
             JSONObject jsonObj = JSONObject.parseObject(param);
@@ -106,15 +108,39 @@ public class VIPController {
             datalist.put(data_vip_id.key, data_vip_id);
             datalist.put(data_corp_code.key, data_corp_code);
 
-            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipMonetary", datalist);
-            String result = dataBox.data.get("message").value;
-            logger.info("----vip_id: "+vip_id+"---vipConsumCount:" + dataBox.data.get("message").value);
+//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipMonetary", datalist);
+//            String result = dataBox.data.get("message").value;
+//            logger.info("----vip_id: "+vip_id+"---vipConsumCount:" + dataBox.data.get("message").value);
 
-            List<VipAlbum> vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code,vip_id);
-            List<VipLabel> vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
+            List<VipAlbum> vipAlbumList = new ArrayList<VipAlbum>();
+            List<VipLabel> vipLabelList = new ArrayList<VipLabel>();
 
-            JSONObject obj = new JSONObject();
-            obj.put("Consum",result);
+            if (jsonObject.containsKey("type")){
+                if (jsonObject.get("type").equals("1")){
+                    //相册
+                    vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code,vip_id);
+                }else if (jsonObject.get("type").equals("2")){
+                    //标签
+                    vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
+                }
+            }else {
+                //消费累计
+                JSONObject consume = new JSONObject();
+                consume.put("consume_times", "2");
+                consume.put("total_amount_Y", "4876");
+                consume.put("dormant_time", "92");
+                consume.put("consume_times_Y", "2");
+                consume.put("total_amount", "4876");
+                consume.put("last_date", "2016-06-27");
+                String result = consume.toString();
+
+                //相册
+                vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code, vip_id);
+                //标签
+                vipLabelList = vipLabelService.selectLabelByVip(corp_code, vip_id);
+
+                obj.put("Consum",result);
+            }
             obj.put("Album",JSON.toJSONString(vipAlbumList));
             obj.put("Label",JSON.toJSONString(vipLabelList));
 
@@ -133,7 +159,7 @@ public class VIPController {
 
     /**
      * 会员信息
-     * 会员详细资料
+     * 会员详细资料+扩展信息
      */
     @RequestMapping(value = "/vipInfo", method = RequestMethod.POST)
     @ResponseBody
@@ -298,7 +324,7 @@ public class VIPController {
 
     /**
      * 会员信息
-     * 会员积分记录
+     * 会员积分记录+衣橱
      */
     @RequestMapping(value = "/vipPoints", method = RequestMethod.POST)
     @ResponseBody
@@ -314,38 +340,109 @@ public class VIPController {
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
-
-            JSONArray pointLists = new JSONArray();
-            for (int i = 0; i < 18; i++) {
-                JSONObject record1 = new JSONObject();
-                record1.put("points",i+10);
-                record1.put("date","2016-01-02");
-                pointLists.add(record1);
-            }
             JSONObject result_points = new JSONObject();
-            result_points.put("list",JSON.toJSONString(pointLists));
-            result_points.put("vip_card_type","直营合作会员卡");
-            result_points.put("cardno","4444444444444444444");
-            result_points.put("vip_name","罗晓珊");
-            result_points.put("points","1022");
+            JSONObject result_wardrobes = new JSONObject();
 
-/*
-            JSONArray consumeLists = new JSONArray();
-            for (int i = 0; i < 18; i++) {
-                JSONObject record1 = new JSONObject();
-                record1.put("points",i+10);
-                record1.put("date","2016-01-02");
-                pointLists.add(record1);
-            }
-            JSONObject result_points = new JSONObject();
-            result_points.put("list",JSON.toJSONString(pointLists));
-            result_points.put("vip_card_type","直营合作会员卡");
-            result_points.put("cardno","4444444444444444444");
-            result_points.put("vip_name","罗晓珊");
-            result_points.put("points","1022");
-*/
-            JSONArray wardrobes=new JSONArray();
+            if (jsonObject.containsKey("type")){
+                //获取积分列表
+                if (jsonObject.get("type").equals("1")){
 
+                    if (jsonObject.containsKey("time")){}
+                    JSONArray pointLists = new JSONArray();
+                    for (int i = 0; i < 18; i++) {
+                        JSONObject record1 = new JSONObject();
+                        record1.put("points", i + 10);
+                        record1.put("date", "2016-01-02");
+                        pointLists.add(record1);
+                    }
+                    result_points.put("list", JSON.toJSONString(pointLists));
+                    result_points.put("vip_card_type", "直营合作会员卡");
+                    result_points.put("cardno", "4444444444444444444");
+                    result_points.put("vip_name", "罗晓珊");
+                    result_points.put("points", "1022");
+                }else if(jsonObject.get("type").equals("2")){
+                    //获取衣橱列表
+                    if (jsonObject.containsKey("time")){}
+                    JSONArray wardrobes = new JSONArray();
+                    JSONObject wardrobe = new JSONObject();
+                    wardrobe.put("goods_id", "367A0103");
+                    wardrobe.put("goods_name", "外套(毛衫外套)");
+                    wardrobe.put("goods_img", "http://picttype1.jnby.com/2/6L840-2.jpg");
+                    wardrobe.put("goods_price", "1099");
+                    wardrobe.put("goods_num", "1");
+
+                    JSONObject wardrobe2 = new JSONObject();
+                    wardrobe2.put("goods_id", "26632146");
+                    wardrobe2.put("goods_name", "外套(羊绒大衣)");
+                    wardrobe2.put("goods_img", "http://picttype1.jnby.com/2/6L837-5.jpg");
+                    wardrobe2.put("goods_price", "2499");
+                    wardrobe2.put("goods_num", "1");
+
+                    JSONArray war = new JSONArray();
+                    war.add(wardrobe);
+                    war.add(wardrobe2);
+                    JSONObject orders = new JSONObject();
+                    orders.put("buy_time", "2016-02-07");
+                    orders.put("order_no", "1665467899992");
+                    orders.put("order_discount", "9.5");
+                    orders.put("order_count", "2");
+                    orders.put("order_total", "3418");
+                    orders.put("emp_name", "陆之昂");
+                    orders.put("order", war);
+                    wardrobes.add(orders);
+
+
+                    JSONObject wardrobe11 = new JSONObject();
+                    wardrobe11.put("goods_id", "367A0104");
+                    wardrobe11.put("goods_name", "帽子");
+                    wardrobe11.put("goods_img", "http://wx.jnby.com/WXDATA/less/image/2/367A0103001-2.jpg");
+                    wardrobe11.put("goods_price", "259");
+                    wardrobe11.put("goods_num", "3");
+
+                    JSONObject wardrobe12 = new JSONObject();
+                    wardrobe12.put("goods_id", "26632146");
+                    wardrobe12.put("goods_name", "裤子(九分裤)");
+                    wardrobe12.put("goods_img", "http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/26632146/12.jpg");
+                    wardrobe12.put("goods_price", "499");
+                    wardrobe12.put("goods_num", "2");
+
+                    JSONArray war2 = new JSONArray();
+                    war2.add(wardrobe11);
+                    war2.add(wardrobe12);
+                    JSONObject orders2 = new JSONObject();
+                    orders2.put("buy_time", "2016-06-27");
+                    orders2.put("order_no", "1665467899992");
+                    orders2.put("order_discount", "8.5");
+                    orders2.put("order_count", "5");
+                    orders2.put("order_total", "1458");
+                    orders2.put("emp_name", "陆之昂");
+                    orders2.put("order", war2);
+                    wardrobes.add(orders2);
+
+                    result_wardrobes.put("list", JSON.toJSONString(wardrobes));
+                    result_wardrobes.put("vip_card_type", "直营合作会员卡");
+                    result_wardrobes.put("cardno", "4444444444444444444");
+                    result_wardrobes.put("vip_name", "罗晓珊");
+                    result_wardrobes.put("amount", "4876");
+                    result_wardrobes.put("times", "2");
+                }
+            }else {
+                //获取积分和衣橱信息
+                JSONArray pointLists = new JSONArray();
+                for (int i = 0; i < 18; i++) {
+                    JSONObject record1 = new JSONObject();
+                    record1.put("points", i + 10);
+                    record1.put("date", "2016-01-02");
+                    pointLists.add(record1);
+                }
+                result_points.put("list", JSON.toJSONString(pointLists));
+                result_points.put("vip_card_type", "直营合作会员卡");
+                result_points.put("cardno", "4444444444444444444");
+                result_points.put("vip_name", "罗晓珊");
+                result_points.put("points", "1022");
+
+
+                JSONArray wardrobes = new JSONArray();
                 JSONObject wardrobe = new JSONObject();
                 wardrobe.put("goods_id", "367A0103");
                 wardrobe.put("goods_name", "外套(毛衫外套)");
@@ -360,50 +457,57 @@ public class VIPController {
                 wardrobe2.put("goods_price", "2499");
                 wardrobe2.put("goods_num", "1");
 
-                JSONArray war=new JSONArray();
+                JSONArray war = new JSONArray();
                 war.add(wardrobe);
                 war.add(wardrobe2);
                 JSONObject orders = new JSONObject();
-                orders.put("buy_time","2016-02-07");
-                orders.put("order_no","1665467899992");
-                orders.put("order_discount","9.5折");
-                orders.put("order_count","2件商品");
-                orders.put("order_total","3418");
-                orders.put("emp_name","陆之昂");
-                orders.put("order",war);
+                orders.put("buy_time", "2016-02-07");
+                orders.put("order_no", "1665467899992");
+                orders.put("order_discount", "9.5");
+                orders.put("order_count", "2");
+                orders.put("order_total", "3418");
+                orders.put("emp_name", "陆之昂");
+                orders.put("order", war);
                 wardrobes.add(orders);
 
 
-            JSONObject wardrobe11 = new JSONObject();
-            wardrobe11.put("goods_id", "367A0104");
-            wardrobe11.put("goods_name", "帽子");
-            wardrobe11.put("goods_img", "http://wx.jnby.com/WXDATA/less/image/2/367A0103001-2.jpg");
-            wardrobe11.put("goods_price", "259");
-            wardrobe11.put("goods_num", "3");
+                JSONObject wardrobe11 = new JSONObject();
+                wardrobe11.put("goods_id", "367A0104");
+                wardrobe11.put("goods_name", "帽子");
+                wardrobe11.put("goods_img", "http://wx.jnby.com/WXDATA/less/image/2/367A0103001-2.jpg");
+                wardrobe11.put("goods_price", "259");
+                wardrobe11.put("goods_num", "3");
 
-            JSONObject wardrobe12 = new JSONObject();
-            wardrobe12.put("goods_id", "26632146");
-            wardrobe12.put("goods_name", "裤子(九分裤)");
-            wardrobe12.put("goods_img", "http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/26632146/12.jpg");
-            wardrobe12.put("goods_price", "499");
-            wardrobe12.put("goods_num", "2");
+                JSONObject wardrobe12 = new JSONObject();
+                wardrobe12.put("goods_id", "26632146");
+                wardrobe12.put("goods_name", "裤子(九分裤)");
+                wardrobe12.put("goods_img", "http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/26632146/12.jpg");
+                wardrobe12.put("goods_price", "499");
+                wardrobe12.put("goods_num", "2");
 
-            JSONArray war2=new JSONArray();
-            war2.add(wardrobe);
-            war2.add(wardrobe2);
-            JSONObject orders2 = new JSONObject();
-            orders2.put("buy_time","2016-02-07");
-            orders2.put("order_no","1665467899992");
-            orders2.put("order_discount","8.5折");
-            orders2.put("order_count","5件商品");
-            orders2.put("order_total","1458");
-            orders2.put("emp_name","陆之昂");
-            orders2.put("order",war);
-            wardrobes.add(orders2);
+                JSONArray war2 = new JSONArray();
+                war2.add(wardrobe11);
+                war2.add(wardrobe12);
+                JSONObject orders2 = new JSONObject();
+                orders2.put("buy_time", "2016-02-07");
+                orders2.put("order_no", "1665467899992");
+                orders2.put("order_discount", "8.5");
+                orders2.put("order_count", "5");
+                orders2.put("order_total", "1458");
+                orders2.put("emp_name", "陆之昂");
+                orders2.put("order", war2);
+                wardrobes.add(orders2);
 
+                result_wardrobes.put("list", JSON.toJSONString(wardrobes));
+                result_wardrobes.put("vip_card_type", "直营合作会员卡");
+                result_wardrobes.put("cardno", "4444444444444444444");
+                result_wardrobes.put("vip_name", "罗晓珊");
+                result_wardrobes.put("amount", "4876");
+                result_wardrobes.put("times", "2");
+            }
             JSONObject result = new JSONObject();
             result.put("result_points",result_points);
-            result.put("result_consumn",wardrobes);
+            result.put("result_consumn",result_wardrobes);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");

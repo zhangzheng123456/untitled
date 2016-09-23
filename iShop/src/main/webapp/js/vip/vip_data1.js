@@ -10,7 +10,6 @@ function getVipInfo(){
         var vipDataList=vipData.list;
         var extend=vipData.extend;
         var extend_info=vipData.extend_info;
-        var sex=vipDataList.sex;
         var extendhtml="";
         function getvalue(){
             var VALUE="";
@@ -22,7 +21,6 @@ function getVipInfo(){
             return VALUE;
         }
         for(var i=0;i<extend.length;i++){
-            console.log(extend[i].name+extend[i].key+"文本类型"+extend[i].type);
             if(extend[i].type=="text"){
                 var value=getvalue();
                 extendhtml+="<li>"
@@ -69,32 +67,131 @@ function getVipInfo(){
             }
         }
         $("#extend ul").html(extendhtml);
-        if(sex=="male"){
-            $("#vip_name").next().addClass("icon-ishop_9-03");
-            $("#USER_SEX").val("男");
-        }else{
-            $("#vip_name").next().addClass("icon-ishop_9-02");
-            $("#USER_SEX").val("女");
-        }
-        $("#vip_name").html(vipDataList.vip_name);
-        $("#vip_name_edit").val(vipDataList.vip_name);
-        $("#vip_card_no").html(vipDataList.vip_card_no);
-        $("#vip_card_no_edit").val(vipDataList.vip_card_no);
-        $("#vip_card_type").html(vipDataList.vip_card_type);
-        $("#vip_card_type_edit").val(vipDataList.vip_card_type);
-        $("#vip_phone").html(vipDataList.vip_phone);
-        $("#vip_phone_edit").val(vipDataList.vip_phone);
-        $("#user_name").html(vipDataList.user_name);
-        $("#user_name_edit").val(vipDataList.user_name);
-        $("#vip_total_amount").html(vipDataList.total_amount);
-        $("#join_date").html(vipDataList.join_date);
-        $("#vip_dormant_time").html(vipDataList.dormant_time);
-        $("#vip_birthday").html(vipDataList.vip_birthday);
-        $("#vip_birthday_edit").val(vipDataList.vip_birthday);
+        fuzhi(vipDataList);
+        getVipPoints(vipDataList);
         showOption();
         getoselectvalue();
     })
 }
+
+function getVipPoints(data){
+    var parmam_jifen={};
+    parmam_jifen['vip_id']=sessionStorage.getItem("id");
+    parmam_jifen['corp_code']=data.corp_code;
+    parmam_jifen['type']=null;
+    oc.postRequire("post","/vip/vipPoints","",parmam_jifen,function(data){
+        var Data=JSON.parse(data.message);
+        var pointsData=Data.result_points;//积分
+        var consumnData=Data.result_consumn;//消费
+        var consumnlistData=JSON.parse(consumnData.list);//消费
+        var listData=JSON.parse(Data.result_points.list);//积分list
+        jifenContent(listData,pointsData);
+        var consumnHtml="";
+        var consumnHtmlall="";
+        $("#consume_total").html(consumnData.amount);
+        $("#amount_total").html(consumnData.times);
+        $("#vip_card_1").html(consumnData.vip_card_type);
+        $("#vip_card_num_1").html(consumnData.cardno);
+        $("#vip_name_1").html(consumnData.vip_name);
+        for(var i=0;i<consumnlistData.length;i++){
+            var TR="";
+            var orderdata=consumnlistData[i].order;
+            consumnHtml+='<tr>'
+            +'<td >'+consumnlistData[i].buy_time+'</td>'
+            +'<td>'+consumnlistData[i].order_count+'</td>'
+            +'<td>'+consumnlistData[i].order_discount+'</td>'
+            +'<td>'+consumnlistData[i].order_total+'<i class="icon-ishop_8-03 style"></i></td>'
+            +'</tr>';
+            for(var a=0;a<orderdata.length;a++){
+                var n=a+1;
+                    TR+='<tr>'
+                        +'<td>'+n+'</td>'
+                        +'<td><img src="'+orderdata[a].goods_img+'" /></td>'
+                        +'<td class="product_name"><span>'+orderdata[a].goods_name+'</span></td>'
+                        +'<td class="product_name">'+orderdata[a].goods_id+'</td>'
+                        +'<td>'+orderdata[a].goods_num+'</td>'
+                        +'<td class="money">￥'+orderdata[a].goods_price+'</td>'
+                        +'</tr>'
+            }
+            consumnHtmlall+='<div class="record_list">'
+                +'<div class="order_list">'
+                +'<div class="list_head"><span class="black_font">日期:</span> '+consumnlistData[i].buy_time+' <ul><li><em>￥</em><span class="consume_total">'+consumnlistData[i].order_total+'</span></li><li>'+consumnlistData[i].order_discount+'折</li><li>'+consumnlistData[i].order_count+'件商品</li></ul></p></div>'
+            +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].emp_name+'</ul></div>'
+            +'</div>'
+            +'<hr/>'
+            +'<table class="list_table">'
+                +'<thead>'
+                +'<tr>'
+                +'<th>序号</th>'
+                +'<th>商品图片</th>'
+                +'<th class="product_name">商品名称</th>'
+                +'<th class="product_name">商品编号</th>'
+                +'<th>件数</th>'
+                +'<th>价格</th>'
+                +'</tr>'
+                +'</thead>'
+                +'<tbody>'
+                +TR
+                +'</tbody>'
+                +'</table>'
+                +'</div>'
+        }
+        $("#consum tbody").html(consumnHtml);
+        $("#consum_all").html(consumnHtmlall)
+    })
+}
+function jifenContent(listData,pointsData){
+    $("#points_total").html(pointsData.points);
+    $("#vip_card").html(pointsData.vip_card_type);
+    $("#vip_card_num").html(pointsData.cardno);
+    $("#vip_name1").html(pointsData.vip_name);
+    var listHtml="";
+    var listHtmlAll="";
+    for(var i=0;i<listData.length;i++){
+        var a=i+1;
+        if(i<10){
+            listHtml+='<tr>'
+                +'<td>'+listData[i].points+'</td>'
+                +'<td>'+listData[i].date+'<i class="icon-ishop_8-03 style"></i></td>'
+                +'</tr>'
+        }
+        listHtmlAll+='<tr>'
+            +'<td>'
+            +a+'</td>'
+            +'<td>'+listData[i].points+'</td>'
+            +'<td>'+listData[i].date+'</td>'
+            +'</tr>'
+    }
+    $("#points tbody").html(listHtml);
+    $("#points_all tbody").html(listHtmlAll)
+}
+function fuzhi(data){
+    var sex=data.sex;
+    if(sex=="male"){
+        $("#vip_name").next().addClass("icon-ishop_9-03");
+        $("#USER_SEX").val("男");
+    }else{
+        $("#vip_name").next().addClass("icon-ishop_9-02");
+        $("#USER_SEX").val("女");
+    }
+    $("#vip_name").html(data.vip_name);
+    $("#vip_name_edit").val(data.vip_name);
+    $("#vip_card_no").html(data.cardno);
+    $("#vip_card_no_edit").val(data.cardno);
+    $("#vip_card_type").html(data.vip_card_type);
+    $("#vip_card_type_edit").val(data.vip_card_type);
+    $("#vip_phone").html(data.vip_phone);
+    $("#vip_phone_edit").val(data.vip_phone);
+    $("#user_name").html(data.user_name);
+    $("#user_name_edit").val(data.user_name);
+    $("#vip_total_amount").html(data.total_amount);
+    $("#join_date").html(data.join_date);
+    $("#vip_dormant_time").html(data.dormant_time);
+    $("#vip_birthday").html(data.vip_birthday);
+    $("#vip_birthday_edit").val(data.vip_birthday);
+}
+
+
 $("#more_message").click(function(){
     gotovipallmessage();
 });

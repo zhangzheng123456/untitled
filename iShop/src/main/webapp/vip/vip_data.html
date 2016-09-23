@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vip-data.css">
     <style>
+        <!--保持按钮样式-->
        .expand_btn button{
            width: 160px;
            cursor: pointer;
@@ -85,7 +86,7 @@
                   </ul>
                   <div class="tabs-parent">
                       <div class="table">
-                          <table style="width: 100%" cellpadding="0" cellspacing="0">
+                          <table style="width: 100%;" cellpadding="0" cellspacing="0" id="consum">
                               <thead>
                                 <tr class="TR">
                                     <th >购买日期</th>
@@ -95,64 +96,18 @@
                                 </tr>
                               </thead>
                               <tbody>
-                                <tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                    <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                    <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr><tr>
-                                    <td >2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr>
-                                <tr>
-                                    <td>2016-09-18</td>
-                                    <td>5</td>
-                                    <td>9.6</td>
-                                     <td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>
-                                </tr>
+                                <!--<tr>-->
+                                    <!--<td >2016-09-18</td>-->
+                                    <!--<td>5</td>-->
+                                    <!--<td>9.6</td>-->
+                                    <!--<td>￥1999.00  <i class="icon-ishop_8-03 style"></i></td>-->
+                                <!--</tr>-->
                               </tbody>
                           </table>
 
                       </div>
                       <div style="display: none" class="table">
-                          <table style="width: 100%" cellpadding="0" cellspacing="0">
+                          <table style="width: 100%" cellpadding="0" cellspacing="0" id="points">
                               <thead>
                               <tr class="TR">
                                   <th >积分</th>
@@ -160,38 +115,6 @@
                               </tr>
                               </thead>
                               <tbody>
-                              <tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr><tr >
-                                  <td>5</td>
-                                  <td>2016-09-18 <i class="icon-ishop_8-03 style"></i></td>
-                              </tr>
-
                               </tbody>
                           </table>
                       </div>
@@ -206,7 +129,7 @@
                           </div>
                       </div>
                   </div>
-                  <div class="person-more"><label id="fenLei">查看更多<i class="icon-ishop_8-03"></i></label></div>
+                  <div class="person-more" style="margin:0 10px;"><label id="fenLei">查看更多<i class="icon-ishop_8-03"></i></label></div>
               </div>
           </div>
           <div class="right">
@@ -314,7 +237,6 @@
         </ul>
     </div>
     </div></div>
-
     <div id="VIP_edit" style="display:none;">
         <div class="title">
             <span>会员管理</span>
@@ -325,7 +247,6 @@
             <span class="icon-ishop_8-03"></span>
             <span>编辑会员资料</span>
         </div>
-
         <div>
             <div class="nav">
                 <ul class="nav_bar" id="nav_bar" style="position: relative">
@@ -339,7 +260,6 @@
                     <div id="remark" style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
             </div>
-
             <div class="all_list">
                 <div class="basic_message" id="basic_message">
                 <!--左侧个人信息-->
@@ -423,22 +343,22 @@
                     </form>
                 </div>
                 </div>
-
                 <div class="expand" id="extend" style="display: none">
                     <!--左侧-->
                     <ul>
                     </ul>
                     <div style="height: 30px;line-height: 30px;text-align: center;border-radius: 4px;cursor: pointer;width: 160px;background-color: #6dc1c8;color: #fff;margin-left: 140px;">保存</div>
                 </div>
+
                 <div class="record">
                     <div>
                     <div class="record_head">
-                        总消费<em>￥</em><span class="consume_total">9600</span>共<span class="amount"> 24 </span>单
+                        总消费<em>￥</em><span class="consume_total" id="consume_total"></span>共<span class="amount" id="amount_total"></span>单
 
                         <ul>
-                            <li>会员等级:<span>高级VIP</span></li>
-                            <li>会员卡号:<span>suda10900123103208</span></li>
-                            <li>顾客:刘洋</li>
+                            <li>会员卡类型:<span id="vip_card_1"></span></li>
+                            <li>会员卡号:<span id="vip_card_num_1"></span></li>
+                            <li>顾客: <span id="vip_name_1"></span></li>
                         </ul>
                     </div>
                     <hr/>
@@ -454,124 +374,99 @@
                         </ul>
                     </div>
                 </div>
-                    <div class="record_list">
-                    <div class="order_list">
-                    <div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>
-                    <div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>
+                    <div id="consum_all"></div>
+                    <!--<div class="record_list">-->
+                    <!--<div class="order_list">-->
+                    <!--<div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>-->
+                    <!--<div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>-->
+                <!--</div>-->
+                    <!--<hr/>-->
+                    <!--<table class="list_table">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th>序号</th>-->
+                            <!--<th>商品图片</th>-->
+                            <!--<th class="product_name">商品名称</th>-->
+                            <!--<th class="product_name">商品编号</th>-->
+                            <!--<th>件数</th>-->
+                            <!--<th>价格</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                            <!--<td>1</td>-->
+                            <!--<td><img src="../img/vipImg.png" /></td>-->
+                            <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
+                            <!--<td class="product_name">1155404444</td>-->
+                            <!--<td>1</td>-->
+                            <!--<td class="money">￥9600</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+                    <!--<div class="record_list">-->
+                    <!--<div class="order_list">-->
+                        <!--<div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>-->
+                        <!--<div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>-->
+                    <!--</div>-->
+                    <!--<hr/>-->
+                    <!--<table class="list_table">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th>序号</th>-->
+                            <!--<th>商品图片</th>-->
+                            <!--<th class="product_name">商品名称</th>-->
+                            <!--<th class="product_name">商品编号</th>-->
+                            <!--<th>件数</th>-->
+                            <!--<th>价格</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr>-->
+                            <!--<td>1</td>-->
+                            <!--<td><img src="../img/vipImg.png" /></td>-->
+                            <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
+                            <!--<td class="product_name">1155404444</td>-->
+                            <!--<td>1</td>-->
+                            <!--<td class="money">￥9600</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>2</td>-->
+                            <!--<td><img src="../img/vipImg.png" /></td>-->
+                            <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
+                            <!--<td class="product_name">1155404444</td>-->
+                            <!--<td>1</td>-->
+                            <!--<td class="money">￥9600</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>3</td>-->
+                            <!--<td><img src="../img/vipImg.png" /></td>-->
+                            <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
+                            <!--<td class="product_name">1155404444</td>-->
+                            <!--<td>1</td>-->
+                            <!--<td class="money">￥9600</td>-->
+                        <!--</tr>-->
+                        <!--<tr>-->
+                            <!--<td>4</td>-->
+                            <!--<td><img src="../img/vipImg.png" /></td>-->
+                            <!--<td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>-->
+                            <!--<td class="product_name">1155404444</td>-->
+                            <!--<td>1</td>-->
+                            <!--<td class="money">￥9600</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                    <!--<div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>-->
+                <!--</div>-->
                 </div>
-                    <hr/>
-                    <table class="list_table">
-                        <thead>
-                        <tr>
-                            <th>序号</th>
-                            <th>商品图片</th>
-                            <th class="product_name">商品名称</th>
-                            <th class="product_name">商品编号</th>
-                            <th>件数</th>
-                            <th>价格</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>
-                </div>
-                    <div class="record_list">
-                    <div class="order_list">
-                        <div class="list_head"><span class="black_font">日期:</span> 2016-10-29 <ul><li><em>￥</em><span class="consume_total">9600</span></li><li>9.5折</li><li>4件商品</li></ul></p></div>
-                        <div class="list_head"><span class="black_font">订单号:</span> 1665467899992 <ul><span class="black_font">导购:</span> 吴媛媛</ul></div>
-                    </div>
-                    <hr/>
-                    <table class="list_table">
-                        <thead>
-                        <tr>
-                            <th>序号</th>
-                            <th>商品图片</th>
-                            <th class="product_name">商品名称</th>
-                            <th class="product_name">商品编号</th>
-                            <th>件数</th>
-                            <th>价格</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td><img src="../img/vipImg.png" /></td>
-                            <td class="product_name"><span>商品名称商品名称商品名称商品名称商品名称</span></td>
-                            <td class="product_name">1155404444</td>
-                            <td>1</td>
-                            <td class="money">￥9600</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                    <div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>
-                </div>
-                </div>
-
                 <div class="points">
                     <div>
                     <div class="point_head">
-                        总积分<s>￥</s><span class="consume_total">9600</span>
+                        总积分<s>￥</s><span class="consume_total" id="points_total"></span>
                         <ul>
-                            <li>会员等级:<span>高级VIP</span></li>
-                            <li>会员卡号:<span>suda10900123103208</span></li>
-                            <li>顾客:刘洋</li>
+                            <li>会员卡类型:<span id="vip_card"></span></li>
+                            <li>会员卡号:<span id="vip_card_num"></span></li>
+                            <li>顾客: <span id="vip_name1"></span></li>
                         </ul>
                     </div>
                     <hr/>
@@ -581,7 +476,7 @@
                             <li><span>至</span><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
                         </ul>
                     </div>
-                    <table class="point_table">
+                    <table class="point_table" id="points_all">
                         <thead>
                             <tr>
                                 <th width="35%">序号</th>
@@ -590,108 +485,58 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>4</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>6</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>7</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>8</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>9</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
-                            <tr>
-                                <td>10</td>
-                                <td>10</td>
-                                <td>2016-10-29</td>
-                            </tr>
+
                         </tbody>
                     </table>
-                    <div class="foot" >
-                        <ul>
-                            <li class="foot-jum">
-                                <span>跳转至</span>
-                                <input class="input-txt" value="36" id="input-txt">
-                                <em>页</em>
-                            </li>
-                            <li class="foot-num" >
-                                <ul id="foot-num">
-                                    <li class="icon-ishop_4-01" style="color: #afafaf">
-
-                                    </li>
-                                    <li>
-                                        <span class="p-bg">1</span>
-                                    </li>
-                                    <li>
-                                        <span>2</span>
-                                    </li>
-                                    <li>
-                                        <span>3</span>
-                                    </li>
-                                    <li>
-                                        <span>4</span>
-                                    </li>
-                                    <li>
-                                        <span>5</span>
-                                    </li>
-                                    <li class="icon-ishop_4-02">
-
-                                    </li>
-                                </ul>
-                            </li>
-                            <!--<li class="foot-sum">-->
-                                <!--<div class="page_p">-->
-                                    <!--<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">-->
-                                    <!--<ul class="liebiao" style="display:none;" id="liebiao">-->
-                                        <!--<li id="10">10行/页</li>-->
-                                        <!--<li id="30">30行/页</li>-->
-                                        <!--<li id="50">50行/页</li>-->
-                                        <!--<li id="100">100行/页</li>-->
-                                    <!--</ul>-->
-                                    <!--<span class="icon-ishop_8-02 icon"></span>-->
-                                <!--</div>-->
-                                <!--<span class="zy">共 75 页</span>-->
+                    <!--<div class="foot" >-->
+                        <!--<ul>-->
+                            <!--<li class="foot-jum">-->
+                                <!--<span>跳转至</span>-->
+                                <!--<input class="input-txt" value="36" id="input-txt">-->
+                                <!--<em>页</em>-->
                             <!--</li>-->
-                        </ul>
-                    </div>
-                </div>
-                </div>
+                            <!--<li class="foot-num" >-->
+                                <!--<ul id="foot-num">-->
+                                    <!--<li class="icon-ishop_4-01" style="color: #afafaf">-->
 
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<span class="p-bg">1</span>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<span>2</span>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<span>3</span>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<span>4</span>-->
+                                    <!--</li>-->
+                                    <!--<li>-->
+                                        <!--<span>5</span>-->
+                                    <!--</li>-->
+                                    <!--<li class="icon-ishop_4-02">-->
+
+                                    <!--</li>-->
+                                <!--</ul>-->
+                            <!--</li>-->
+                            <!--&lt;!&ndash;<li class="foot-sum">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<div class="page_p">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<ul class="liebiao" style="display:none;" id="liebiao">&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<li id="10">10行/页</li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<li id="30">30行/页</li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<li id="50">50行/页</li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<li id="100">100行/页</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<span class="icon-ishop_8-02 icon"></span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span class="zy">共 75 页</span>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                </div>
+                </div>
                 <div class="album">
                     <ul id="Ablum-all">
 
@@ -701,13 +546,15 @@
                     </span>
                     <!--<div class="album_shade"></div>-->
                 </div>
-
                 <div class="viplabel">
                     <div class="label_left_box">
                         <div class="labeladd_box">
                             <input type="text" id="search_input" placeholder="添加标签">
-                            <ul class="search_list">
-                            </ul>
+                            <div class="search_box">
+                                <ul class="search_list">
+                                </ul>
+                                <span id="more_search">..点击加载更多..</span>
+                            </div>
                             <span class="labeladd_btn" id="labeladd_btn">贴上</span>
                         </div>
 
@@ -807,7 +654,6 @@
                     <!--</table>-->
                 <!--</div>-->
             </div>
-
                 <div class="remark">
                     <span>
                         <label>备注</label>
@@ -817,6 +663,14 @@
                 </div>
             </div>
         </div>
+    </div>
+</div>
+<div class="tk" id="tk" style="display: none; left: 543px; top: 248px;">
+    <span class="icon-ishop_6-12" id="X"></span>
+    <p><i class="icon-ishop_6-14"></i>是否确认删除数据?</p>
+    <div class="btn">
+        <em class="cancel" id="cancel">取消</em>
+        <em class="delete" id="delete">删除</em>
     </div>
 </div>
 </body>
