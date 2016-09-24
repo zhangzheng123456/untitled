@@ -607,10 +607,16 @@ function getmatchgoodsList(a) {
 		goodsAddHide();
 	});
 }
-$("").scroll(function () {
-	totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());//浏览器的高度加上滚动条的高度 
-	if ($(document).height() <= totalheight) //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
-{
+$("#search_match_goods ul").scroll(function () {
+	// var ul_height= parseFloat($("#search_match_goods ul").height());s
+	var scroll_height=($("#search_match_goods ul").scrollTop());
+	// totalheight = parseFloat($($("#search_match_goods ul").scrollTop());("#search_match_goods ul").height())-parseFloat($("#search_match_goods ul").scrollTop());
+	// console.log(ul_height);
+	console.log(scroll_height);
+	// if ($("#search_match_goods ul").height() <= totalheight){
+	// 	console.log(123123);
+	// }
+})
 //点击添加匹配商品弹窗
 $("#add").click(function () {
 	$("#goods_box").show();

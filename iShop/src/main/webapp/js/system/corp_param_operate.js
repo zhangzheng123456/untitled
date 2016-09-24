@@ -195,6 +195,7 @@ jQuery(document).ready(function () {
                 $("#REMARK").val(msg.remark);
                 if(param_type!=="custom"){
                     $("#param_value").addClass("param_value");
+                    $("#param_value").attr("readonly","true");
                     param_values=param_values.split(",");
                     for(var j=0;j<param_values.length;j++){
                         $("#paramValue_down").append('<li>'+param_values[j]+'</li>')
