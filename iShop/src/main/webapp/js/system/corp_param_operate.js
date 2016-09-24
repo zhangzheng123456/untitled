@@ -184,6 +184,7 @@ jQuery(document).ready(function () {
                 var msg = JSON.parse(data.message);
                 var corp_code = msg.corp_code;
                 var param_id = msg.param_id;
+                var param_values=msg.param_values;
                 var param_type=msg.param_type;
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);
@@ -194,6 +195,7 @@ jQuery(document).ready(function () {
                 $("#REMARK").val(msg.remark);
                 if(param_type!=="custom"){
                     $("#param_value").addClass("param_value");
+                    $("#param_value").attr("readonly","true");
                     param_values=param_values.split(",");
                     for(var j=0;j<param_values.length;j++){
                         $("#paramValue_down").append('<li>'+param_values[j]+'</li>')
