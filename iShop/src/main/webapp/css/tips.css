@@ -533,6 +533,9 @@ div.wx_app_new p{
 	width: 100%;
 	border: 2px solid #ccc;
 }
+#search_match_goods ul p{
+	text-align: center;
+}
 /******多选下拉框样式******/
 .Acc_dropdown li{
 	height: 30px !important;

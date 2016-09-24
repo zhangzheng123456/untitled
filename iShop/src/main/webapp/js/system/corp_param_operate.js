@@ -189,7 +189,7 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);
                 $("#OWN_CORP option").text(msg.corp_name);
-                $("#PARAM_NAME").val(msg.param_name);
+                $("#PARAM_NAME").val(msg.param_desc);
                 $("#PARAM_NAME").attr("data-id", msg.param_id);
                 $("#REMARK").attr("data-name", msg.remark);
                 $("#REMARK").val(msg.remark);
@@ -203,7 +203,7 @@ jQuery(document).ready(function () {
                         $("#param_value").val($(this).html());
                     })
                 }
-                $("#param_value").val(msg.param_desc);
+                $("#param_value").val(msg.param_value);
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(msg.isactive=="Y"){
                     input.checked=true;
