@@ -4,6 +4,7 @@ package com.bizvane.ishop.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import java.security.MessageDigest;
+import java.util.*;
 
 public class CheckUtils {
     public  static String CheckPhone(String phone){
@@ -61,5 +62,61 @@ public class CheckUtils {
         }
         return result;
     }
-    
+
+    /***
+     * 比较两个list之间的元素
+     * @param lhs
+     * @param rhs
+     * @return
+     */
+    public static List comparator(List lhs, List rhs){
+//
+        Map map1 = new HashMap();
+        Map map2 = new HashMap();
+        Iterator iter1 = lhs.iterator();
+        Iterator iter2 = rhs.iterator();
+
+//
+        while(iter1.hasNext()){
+            Object worker = iter1.next();
+            map1.put(worker, worker);
+        }
+
+        while(iter2.hasNext()){
+            Object dutyTime = iter2.next();
+            map2.put(dutyTime, dutyTime);
+
+        }
+
+        List list1 = new ArrayList();
+        Set set = map1.keySet();
+        Iterator it1 = set.iterator();
+        while(it1.hasNext()){
+            String key = (String)it1.next();
+            list1.add(key);
+        }
+
+        List list2 = new ArrayList();
+
+        Set set2 = map2.keySet();
+        Iterator it2 = set2.iterator();
+        while(it2.hasNext()){
+            String key = (String)it2.next();
+            list2.add(key);
+        }
+
+        List list3 = new ArrayList();
+
+        for(int i = 0; i < list1.size(); i++){
+            if(list2.contains(list1.get(i))){
+                continue;
+            }else{
+                list3.add(list1.get(i));
+            }
+        }
+
+        return list3;
+    }
+
+
 }

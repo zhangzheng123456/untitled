@@ -762,8 +762,33 @@ public class VIPLabelController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.getString("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             List<VipLabel> hotViplabel = vipLabelService.findHotViplabel(corp_code);
+            List<VipLabel> vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
+
+        //    List<String> strlist3=new ArrayList<String>();
+            for (VipLabel vipLabel:hotViplabel) {
+              vipLabel.setLabel_sign("N");
+            }
+            for(int i=0;i<vipLabelList.size();i++){
+                for (int j=0;j<hotViplabel.size();j++){
+                    if(vipLabelList.get(i).getLabel_name().equals(hotViplabel.get(j).getLabel_name())){
+                        hotViplabel.get(j).setLabel_sign("Y");
+                    }
+                }
+            }
+//            strlist1.removeAll(strlist2);
+//            Iterator<String> it = strlist1.iterator();   //创建迭代器
+//            while (it.hasNext()) {       //循环遍历迭代器
+//             //   System.out.println(it.next());    //输出集合中
+//                strlist3.add(it.next());
+//            }
+//            for (int i=0;i<hotViplabel.size();i++){
+//                if(hotViplabel.get(i).getLabel_name().equals(strlist3.get(i))){
+//
+//                }
+//            }
             result.put("list", JSON.toJSONString(hotViplabel));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);

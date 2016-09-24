@@ -28,6 +28,15 @@ public class VipLabel {
     private String countlable;
     private String label_id;
 private String rid;
+private String label_sign;
+
+    public String getLabel_sign() {
+        return label_sign;
+    }
+
+    public void setLabel_sign(String label_sign) {
+        this.label_sign = label_sign;
+    }
 
     public String getRid() {
         return rid;
