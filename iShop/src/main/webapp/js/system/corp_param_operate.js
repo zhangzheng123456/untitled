@@ -184,7 +184,6 @@ jQuery(document).ready(function () {
                 var msg = JSON.parse(data.message);
                 var corp_code = msg.corp_code;
                 var param_id = msg.param_id;
-                var param_values=msg.param_values;
                 var param_type=msg.param_type;
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);

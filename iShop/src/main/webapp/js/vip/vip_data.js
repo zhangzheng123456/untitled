@@ -134,8 +134,10 @@ $("#VIP_message_back").click(function(){//回到会员信息
 function gethotVIPlabel() {
     //热门标签
     $("#hotlabel").empty();
+    var vip_id=sessionStorage.getItem("id");
     var param={};
     param["corp_code"]="C10000";
+    param["vip_id"]=vip_id;
     oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
