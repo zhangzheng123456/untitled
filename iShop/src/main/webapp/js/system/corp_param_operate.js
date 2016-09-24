@@ -171,7 +171,6 @@ var oc = new ObjectControl();
     obj.init = init;
     return obj;
 }));
-
 jQuery(document).ready(function () {
     window.param.init();
     if ($(".pre_title label").text() == "编辑企业参数") {

@@ -446,7 +446,7 @@ $("#cancel").click(function () {
         }
         var params= {};
         params["id"] = ID;
-        oc.postRequire("post", "/shop/delete", "0", params, function(data) {
+        oc.postRequire("post", "/message/delete", "0", params, function(data) {
             if (data.code == "0") {
                 if (value == "" && filtrate == "") {
                     frame();

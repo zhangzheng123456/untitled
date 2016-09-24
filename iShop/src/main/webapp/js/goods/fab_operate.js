@@ -571,12 +571,12 @@ function getmatchgoodsList(a) {
 	var corp_code=$("#OWN_CORP").val();
 	var searchValue=$("#search").val();
 	var goods_code=$("#GOODS_CODE").val();
-	var pageNumber=1;
-	var pageSize=150;
+	var pageNumber=a;
+	var pageSize=10;
 	param["corp_code"]=corp_code;
 	param["goods_code"]=goods_code;
-	param["pageNumber"] = a;
-    param["pageSize"] =150;
+	param["pageNumber"] =pageNumber;
+    param["pageSize"] =pageSize;
 	param["searchValue"]=searchValue;
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
@@ -585,6 +585,7 @@ function getmatchgoodsList(a) {
 			if(list.length<1){
 				jQuery('#search_match_goods ul').append("<p>找不到相关宝贝</p>")
 			}else{
+				num++;
 				for(var i=0;i<list.length;i++){
 					jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
 						+ list[i].goods_image
@@ -608,14 +609,12 @@ function getmatchgoodsList(a) {
 	});
 }
 $("#search_match_goods ul").scroll(function () {
-	// var ul_height= parseFloat($("#search_match_goods ul").height());s
-	var scroll_height=($("#search_match_goods ul").scrollTop());
-	// totalheight = parseFloat($($("#search_match_goods ul").scrollTop());("#search_match_goods ul").height())-parseFloat($("#search_match_goods ul").scrollTop());
-	// console.log(ul_height);
-	console.log(scroll_height);
-	// if ($("#search_match_goods ul").height() <= totalheight){
-	// 	console.log(123123);
-	// }
+	var nScrollHight = $(this)[0].scrollHeight;
+    var nScrollTop = $(this)[0].scrollTop;
+    var nDivHight=$(this).height();
+    if(nScrollTop + nDivHight >= nScrollHight){
+    	getmatchgoodsList(num);
+    };
 })
 //点击添加匹配商品弹窗
 $("#add").click(function () {
@@ -643,13 +642,13 @@ $("#close_match_goods").click(function () {
 //搜索相关商品
 $("#d_search").click(function () {
 	jQuery('#search_match_goods ul').empty();
-	getmatchgoodsList();
+	getmatchgoodsList(num);
 })
 $("#search_match_goods").keydown(function () {
 	var event=window.event||arguments[0];
 	if(event.keyCode == 13){
 		jQuery('#search_match_goods ul').empty();
-		getmatchgoodsList();
+		getmatchgoodsList(num);
 	}
 })
 
