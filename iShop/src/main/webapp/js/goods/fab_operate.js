@@ -607,6 +607,10 @@ function getmatchgoodsList(a) {
 		goodsAddHide();
 	});
 }
+$("").scroll(function () {
+	totalheight = parseFloat($(window).height()) + parseFloat($(window).scrollTop());//浏览器的高度加上滚动条的高度 
+	if ($(document).height() <= totalheight) //当文档的高度小于或者等于总的高度的时候，开始动态加载数据
+{
 //点击添加匹配商品弹窗
 $("#add").click(function () {
 	$("#goods_box").show();
