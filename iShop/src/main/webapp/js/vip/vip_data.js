@@ -1,9 +1,8 @@
 var oc = new ObjectControl();
 var page=1;
 var param={};//定义传值对象
-var cls="";//标签搜索下class名
-var txt="";//标签搜索下标签名
 var val="";//贴上input值
+var type="";//官方用户标签传值
 
 function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
@@ -45,7 +44,7 @@ function getConsumCount(){//获取会员信息
              if(label[i].label_type=="user"){
                  LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
             }else {
-                 LABELALL+="<span class='label_g' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+                 LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
             }
         }
         //统计已有标签
@@ -143,16 +142,29 @@ function gethotVIPlabel() {
             var msg=JSON.parse(data.message);
                 msg=JSON.parse(msg.list);
             var html="";
+            var classname="";
             console.log(msg.length);
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
-                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
+                    if(msg[i].label_sign=="Y"){
+                            classname="label_u_active";
+                        }
+                    if(msg[i].label_sign=="N"){
+                            classname="label_u";
+                        }
                 }else if(msg[i].label_type=="org"||msg[i].label_type=="sys"){
-                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_g'+" id="+i+">"+msg[i].label_name+"</span>"
+                    if(msg[i].label_sign=="Y"){
+                        classname="label_g_active";
+                    }
+                    if(msg[i].label_sign=="N"){
+                        classname="label_g";
+                    }
                 }
+                html+="<span  draggable='true' data-id="+msg[i].id+" class="+classname+" id="+i+">"+msg[i].label_name+"</span>"
             }
-            $("#hotlabel").append(html);
         }
+            $("#hotlabel").append(html);
+
         //绑定拖拽事件
         $('#hotlabel span').on('dragstart',function (event) {
             var ev=event;
@@ -167,6 +179,12 @@ $("#hot_label").click(function () {
 })
 //官方用户标签
 function getOtherlabel() {
+    var vip_id=sessionStorage.getItem("id");
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']=type;
+    param["vip_id"]=vip_id;
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -174,6 +192,7 @@ function getOtherlabel() {
             var hasNextPage=list.hasNextPage;
                 list=list.list;
             var html="";
+            var classname="";
             console.log(hasNextPage);
             if(hasNextPage==false){
                 $("#more_label_g").hide();
@@ -184,12 +203,24 @@ function getOtherlabel() {
             }
             if(list[0].label_type=="org"){
                 for(var i=0;i<list.length;i++){
-                    html+="<span  draggable='true' data-id="+list[i].id+" class='label_g' id='"+i+"g'>"+list[i].label_name+"</span>"
+                    if(list[i].label_sign=="Y"){
+                        classname="label_g_active";
+                    }
+                    if(list[i].label_sign=="N"){
+                        classname="label_g";
+                    }
+                    html+="<span  draggable='true' data-id="+list[i].id+" class="+classname+" id='"+page+i+"g'>"+list[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(list[0].label_type=="user"){
                 for(var j=0;j<list.length;j++){
-                    html+="<span  draggable='true' data-id="+list[j].id+" class='label_u' id='"+j+"u'>"+list[j].label_name+"</span>"
+                    if(list[j].label_sign=="Y"){
+                        classname="label_u_active";
+                    }
+                    if(list[j].label_sign=="N"){
+                        classname="label_u";
+                    }
+                    html+="<span  draggable='true' data-id="+list[j].id+" class="+classname+" id='"+page+j+"u'>"+list[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
@@ -204,7 +235,6 @@ function getOtherlabel() {
         //绑定拖拽事件
         $('#label_user span').on('dragstart',function (event) {
             var ev=event;
-            console.log('触发');
             ev=ev.originalEvent;
             ev.dataTransfer.setData("Text",ev.target.id);
         });
@@ -212,43 +242,31 @@ function getOtherlabel() {
 }
 $("#label_li_org").click(function () {
     page=1;
+    type="2";
     $("#label_org").empty();
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
-    param['type']="2";
     getOtherlabel();
 })
 $("#label_li_user").click(function () {
     page=1;
+    type="3";
     $("#label_user").empty();
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
-    param['type']="3";
     getOtherlabel();
 })
 
 //右侧加载更多标签
 $("#more_label_g").click(function () {
-        page=page+1;
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
-    param['type']="2";
+    page=page+1;
     getOtherlabel();
 })
 $("#more_label_u").click(function () {
     page=page+1;
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
-    param['type']="3";
     getOtherlabel();
 })
 
 //搜索热门标签
 function searchHotlabel() {
+    var vip_id=sessionStorage.getItem("id");
+    param["vip_id"]=vip_id;
     param["corp_code"]="C10000";
     param['pageNumber']=page;
     param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
@@ -290,11 +308,11 @@ function searchHotlabel() {
         }
         //搜索下拉点击事件
         $(".search_list li").click(function () {
-            cls=$(this).attr("class");
-            txt=$(this).html();
-            param['label_name']=txt
+            val=$(this).html();
+            param['label_name']=val
             $("#search_input").val("");
             addViplabel();
+            gethotVIPlabel();
         })
     })
 }
@@ -386,6 +404,7 @@ function labelDelete(obj) {
             $(".span_total").html(total);
         }
     })
+    gethotVIPlabel();
     // });
 }
 function addViplabel() {
@@ -399,12 +418,8 @@ function addViplabel() {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             var rid=JSON.parse(msg.list);
-            var html=""
-            if(cls==""||cls==undefined){
-                html='<span class="label_g" data-rid="'+rid+'">'+val+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
-            }else{
-                html='<span class='+cls+' data-rid="'+rid+'">'+txt+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
-            }
+            var html="";
+                html='<span class="label_u" data-rid="'+rid+'">'+val+'<i class="icon-ishop_6-12" onclick="labelDelete(this)"></i></span>';
             $("#label_box").append(html);
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
@@ -414,7 +429,6 @@ function addViplabel() {
     })
 }
 $("#labeladd_btn").click(function () {
-    cls="";
     val=$("#search_input").val().replace(/\s+/g,"");
     val=val.substring(0,8);
     if(val==""){
@@ -422,6 +436,7 @@ $("#labeladd_btn").click(function () {
     }
     param['label_name']=val;
     addViplabel();
+    gethotVIPlabel();
 });
 function upLoadAlbum(data){
     var client = new OSS.Wrapper({
@@ -501,6 +516,7 @@ function drop(ev)
     var val=$(clone).text();
     console.log(clone);
     console.log(val);
+    console.log(span);
 
     //调用借口
     var id=sessionStorage.getItem("id");
