@@ -203,7 +203,7 @@ jQuery(document).ready(function () {
                         $("#param_value").val($(this).html());
                     })
                 }
-                $("#param_value").val(msg.param_value);
+                $("#param_value").val(msg.param_desc);
                 var input=$(".checkbox_isactive").find("input")[0];
                 if(msg.isactive=="Y"){
                     input.checked=true;
@@ -292,7 +292,7 @@ function param_data(c, b) {
                         +'" data-value="'
                         +msg[i].param_values
                         +'"><span>'
-                        +msg[i].param_key
+                        +msg[i].param_desc
                         +'</span></li>')
                 }
                 $("#paramName_down li").click(function (e) {

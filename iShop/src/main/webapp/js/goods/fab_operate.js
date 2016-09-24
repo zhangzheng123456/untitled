@@ -564,7 +564,8 @@ function goodsAddHide() {
 		$("#"+goods_code).remove();
 	})
 }
-function getmatchgoodsList() {
+var num=1;
+function getmatchgoodsList(a) {
 	//获取相关商品搭配列表
 	var param={};
 	var corp_code=$("#OWN_CORP").val();
@@ -574,7 +575,7 @@ function getmatchgoodsList() {
 	var pageSize=150;
 	param["corp_code"]=corp_code;
 	param["goods_code"]=goods_code;
-	param["pageNumber"] = 1;
+	param["pageNumber"] = a;
     param["pageSize"] =150;
 	param["searchValue"]=searchValue;
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
@@ -606,7 +607,6 @@ function getmatchgoodsList() {
 		goodsAddHide();
 	});
 }
-
 //点击添加匹配商品弹窗
 $("#add").click(function () {
 	$("#goods_box").show();
@@ -617,9 +617,13 @@ $("#add").click(function () {
 		return;
 	}
 	$('#OWN_CORP').attr("corp_code",corp_code);
-	getmatchgoodsList();
+	var num=1;
+	getmatchgoodsList(num);
 })
-
+$("#more").click(function(){
+	num++;
+	getmatchgoodsList(num);
+})
 //关闭搜索匹配商品弹窗
 $("#close_match_goods").click(function () {
 	$("#goods_box").hide();

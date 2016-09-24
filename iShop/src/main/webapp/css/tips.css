@@ -551,3 +551,15 @@ div.wx_app_new p{
 	left:-82px;
 	color: #434960!important;
 }
+.more{
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	background-color: #6cc1c8;
+	color: #fff;
+	text-align: center;
+	border-radius: 5px;
+	margin: 0 auto;
+	cursor: pointer;
+	display: none;
+}

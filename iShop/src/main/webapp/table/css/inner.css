@@ -1166,6 +1166,7 @@ input::-webkit-input-placeholder{
 	position: absolute;
 	top: 0;
 	right: 0;
+	z-index: 3;
 	text-align: center;
 }
 .screen_area .input_s{
