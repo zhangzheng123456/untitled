@@ -34,7 +34,7 @@ function getConsumCount(){//获取会员信息
                 }
                 Ablum_all_html+="<li>"
                 +"<img src='"+album[i].image_url+"'>"
-                +"<div class='cancel_img'></div>"
+                +"<div class='cancel_img' id='"+album[i].id+"'></div>"
                 +"<span class='album_date'>"+date+"</span>"
                 +"</li>"
             }
@@ -75,15 +75,30 @@ function img_hover(){
         $(this).next(".cancel_img").show();
     }).mouseout(function () {
         $(this).next(".cancel_img").hide();
-    })
+    });
+
     $(".cancel_img").mouseover(function () {
         $(this).show();
     }).mouseout(function () {
         $(this).hide();
-    }).click(function(){
-       $("#tk").show();
     })
 }
+$("#Ablum-all").on("click",".cancel_img",function(){
+    var id=$(this).attr("id");
+    $("#tk").show();
+    $("#delete").attr("data-id",id);
+});
+$("#Ablum-all").on("mouseover","img",function(){
+   $(this).next().show()
+});$("#Ablum-all").on("mouseover","div",function(){
+   $(this).show()
+});
+$("#Ablum-all").on("mouseout","img",function(){
+   $(this).next().hide()
+});
+$("#Ablum-all").on("mouseout","div",function(){
+    $(this).hide()
+});
 $(".message-class ul li a").click(function(){
     $(this).addClass("active");
     $(this).parent().siblings().children().removeClass("active");
@@ -153,18 +168,26 @@ function getOtherlabel() {
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
-                msg=JSON.parse(msg.list)
-                msg=msg.list;
+            var list=JSON.parse(msg.list)
+            var hasNextPage=list.hasNextPage;
+                list=list.list;
             var html="";
-            console.log(msg);
-            if(msg[0].label_type=="org"){
-                for(var i=0;i<msg.length;i++){
-                    html+="<span  draggable='true' data-id="+msg[i].id+" class='label_g' id='"+i+"g'>"+msg[i].label_name+"</span>"
+            console.log(hasNextPage);
+            if(hasNextPage==false){
+                $("#more_label_g").hide();
+                $("#more_label_u").hide();
+            }else {
+                $("#more_label_g").show();
+                $("#more_label_u").show();
+            }
+            if(list[0].label_type=="org"){
+                for(var i=0;i<list.length;i++){
+                    html+="<span  draggable='true' data-id="+list[i].id+" class='label_g' id='"+i+"g'>"+list[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
-            }else if(msg[0].label_type=="user"){
-                for(var j=0;j<msg.length;j++){
-                    html+="<span  draggable='true' data-id="+msg[j].id+" class='label_u' id='"+j+"u'>"+msg[j].label_name+"</span>"
+            }else if(list[0].label_type=="user"){
+                for(var j=0;j<list.length;j++){
+                    html+="<span  draggable='true' data-id="+list[j].id+" class='label_u' id='"+j+"u'>"+list[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
@@ -186,6 +209,7 @@ function getOtherlabel() {
     })
 }
 $("#label_li_org").click(function () {
+    page=1;
     $("#label_org").empty();
     param["corp_code"]="C10000";
     param['pageNumber']=page;
@@ -194,7 +218,26 @@ $("#label_li_org").click(function () {
     getOtherlabel();
 })
 $("#label_li_user").click(function () {
+    page=1;
     $("#label_user").empty();
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="3";
+    getOtherlabel();
+})
+
+//右侧加载更多标签
+$("#more_label_g").click(function () {
+        page=page+1;
+    param["corp_code"]="C10000";
+    param['pageNumber']=page;
+    param['searchValue']="";
+    param['type']="2";
+    getOtherlabel();
+})
+$("#more_label_u").click(function () {
+    page=page+1;
     param["corp_code"]="C10000";
     param['pageNumber']=page;
     param['searchValue']="";
@@ -275,6 +318,8 @@ $('#search_input').bind('input propertychange', function() {
 });
 //隐藏下拉框滚动条
 $(function(){
+    $("#label_user").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
+    $("#label_org").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
     $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
 });
 
@@ -376,7 +421,7 @@ $("#labeladd_btn").click(function () {
     param['label_name']=val;
     addViplabel();
 });
-function upLoadAlbum(){
+function upLoadAlbum(data){
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
@@ -391,21 +436,32 @@ function upLoadAlbum(){
             $("#imghead").attr("src",result.url);
             $("#upAlbum").val("");
             console.log(result);
-            addVipAlbum(result.url)
+            addVipAlbum(result.url,data)
         }).catch(function (err) {
              console.log(err);
         });
     });
 }
-function addVipAlbum(url){//上传照片到相册
+function addVipAlbum(url,data){//上传照片到相册
      var param_addAblum={};
     param_addAblum["vip_code"]=sessionStorage.getItem("id");
-    param_addAblum["vip_name"]="罗晓珊";
-    param_addAblum["cardno"]="suda10900123103308";
+    param_addAblum["vip_name"]=data.vip_name;
+    param_addAblum["cardno"]=data.cardno;
     param_addAblum["image_url"]=url;
-    param_addAblum["corp_code"]="C10000";
+    param_addAblum["corp_code"]=data.corp_code;
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
-        console.log(data)
+        if(data.code=="0"){
+            frame();
+            $('.frame').html('添加成功');
+            $("#Ablum-all").append("<li>"
+                +"<img src='"+url+"'>"
+                +"<div class='cancel_img' id='"+data.message+"'></div>"
+                //+"<span class='album_date'>"+date+"</span>"
+                +"</li>");
+        }else{
+            frame();
+            $('.frame').html('添加失败');
+        }
     })
 }
 function getNowFormatDate() {//获取当前日期
@@ -437,6 +493,7 @@ function drop(ev)
     var param={};
     ev.preventDefault();
     var data=ev.dataTransfer.getData("Text");
+    var span=$(document.getElementById(data));
     var clone= $(document.getElementById(data)).clone();
     var label_id=clone.attr("data-id");
     var val=$(clone).text();
@@ -461,11 +518,16 @@ function drop(ev)
                 $(ev.target).append(clone);
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
+            if(span.attr("class")=="label_u"){
+                $(span).addClass("label_u_active").removeClass("label_u");
+            }else {
+                $(span).addClass("label_g_active").removeClass("label_g");
+            }
         }
     })
 }
 $(function(){
     getConsumCount();
-    upLoadAlbum();
+    //upLoadAlbum();
     moreSearch();
 });
