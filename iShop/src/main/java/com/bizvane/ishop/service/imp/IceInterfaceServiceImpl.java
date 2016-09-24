@@ -27,8 +27,19 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
     String[] arg = new String[]{"--Ice.Config=client.config"};
     Client client = new Client(arg);
 
+    //
     public DataBox iceInterface(String method ,Map datalist) throws Exception{
-        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", method, datalist, null, null, System.currentTimeMillis());
+        String methods = "com.bizvane.sun.app.method."+method;
+        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", methods, datalist, null, null, System.currentTimeMillis());
+        DataBox dataBox = client.put(dataBox1);
+
+        return dataBox;
+    }
+
+    //v2接口（数据类）
+    public DataBox iceInterfaceV2(String method ,Map datalist) throws Exception{
+        String methods = "com.bizvane.sun.app.method.v2."+method;
+        DataBox dataBox1 = new DataBox("1", Status.ONGOING, "", methods, datalist, null, null, System.currentTimeMillis());
         DataBox dataBox = client.put(dataBox1);
 
         return dataBox;

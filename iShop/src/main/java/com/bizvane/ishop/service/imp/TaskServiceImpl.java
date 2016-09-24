@@ -124,7 +124,7 @@ public class TaskServiceImpl implements TaskService{
                 datalist.put(data_task_title.key, data_task_title);
                 datalist.put(data_user.key, data_user);
                 datalist.put(data_user_id.key, data_user_id);
-                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
+                DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
                 String msg = dataBox.data.get("message").value;
                 System.out.println("APP："+msg);
             }
@@ -201,7 +201,7 @@ public class TaskServiceImpl implements TaskService{
                 datalist.put(data_task_title.key, data_task_title);
                 datalist.put(data_user.key, data_user);
                 datalist.put(data_user_id.key, data_user_id);
-                DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.TaskNotice", datalist);
+                DataBox dataBox = iceInterfaceService.iceInterface("TaskNotice", datalist);
                 String msg = dataBox.data.get("message").value;
                 System.out.println("App："+msg);
             }

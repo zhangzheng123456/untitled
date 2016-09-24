@@ -106,7 +106,7 @@ public class MessageServiceImpl implements MessageService {
         datalist.put(data_message_type.key, data_message_type);
         datalist.put(data_group_code.key, data_group_code);
 
-        DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.MessageForWeb", datalist);
+        DataBox dataBox = iceInterfaceService.iceInterface("MessageForWeb", datalist);
         String messgage1 = dataBox.data.get("message").value;
         if (messgage1.contains("发送成功")) {
             return Common.DATABEAN_CODE_SUCCESS;
@@ -120,8 +120,11 @@ public class MessageServiceImpl implements MessageService {
     @Override
     @Transactional
     public int delete(int id) throws Exception {
-        String message_code = getMessageById(id).getMessage_code();
-        messageMapper.deleteMessage(message_code);
+        MessageInfo message = getMessageById(id);
+        if (message != null) {
+            String message_code = message.getMessage_code();
+            messageMapper.deleteMessage(message_code);
+        }
         return messageMapper.deleteMessageInfo(id);
     }
 
