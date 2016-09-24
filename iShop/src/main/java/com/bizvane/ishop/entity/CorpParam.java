@@ -32,6 +32,8 @@ public class CorpParam {
 
     //参数值
     private String param_values;
+    //参数值
+    private String param_desc;
 
     public String getParam_values() {
         return param_values;
@@ -143,5 +145,13 @@ public class CorpParam {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getParam_desc() {
+        return param_desc;
+    }
+
+    public void setParam_desc(String param_desc) {
+        this.param_desc = param_desc;
     }
 }

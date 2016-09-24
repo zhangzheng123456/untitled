@@ -564,7 +564,7 @@ public class UserServiceImpl implements UserService {
         datalist.put(data_phone.key, data_phone);
         datalist.put(data_text.key, data_text);
 
-        DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.SendSMS", datalist);
+        DataBox dataBox = iceInterfaceService.iceInterface("SendSMS", datalist);
         logger.info("SendSMSMethod -->" + dataBox.data.get("message").value);
         String msg = dataBox.data.get("message").value;
         System.out.println("------------" + msg);
