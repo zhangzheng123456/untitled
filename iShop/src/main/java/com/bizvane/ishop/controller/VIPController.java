@@ -489,7 +489,7 @@ public class VIPController {
                 war2.add(wardrobe11);
                 war2.add(wardrobe12);
                 JSONObject orders2 = new JSONObject();
-                orders2.put("buy_time", "2016-02-07");
+                orders2.put("buy_time", "2016-06-27");
                 orders2.put("order_no", "1665467899992");
                 orders2.put("order_discount", "8.5");
                 orders2.put("order_count", "5");

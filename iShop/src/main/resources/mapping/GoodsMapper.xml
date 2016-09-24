@@ -101,13 +101,22 @@
             AND g.corp_code=#{corp_code}
         </if>
         <if test="goods_quarter!=null and goods_quarter!=''">
-            AND g.goods_quarter=#{goods_quarter}
+            AND
+            <foreach collection="goods_quarter" index="index" item="item" open="(" separator="or" close=")">
+            g.goods_quarter = #{item}
+            </foreach>
         </if>
         <if test="goods_wave!=null and goods_wave!=''">
-            AND g.goods_wave=#{goods_wave}
+            AND
+            <foreach collection="goods_wave" index="index" item="item" open="(" separator="or" close=")">
+            g.goods_wave = #{item}
+            </foreach>
         </if>
         <if test="brand_code!=null and brand_code!=''">
-            AND g.brand_code=#{brand_code}
+            AND
+            <foreach collection="brand_code" index="index" item="item" open="(" separator="or" close=")">
+            g.brand_code = #{item}
+            </foreach>
         </if>
         <if test="time_start!=null and time_start!=''">
             AND  g.goods_time &gt;= #{time_start}
@@ -119,7 +128,6 @@
             AND
             (g.goods_code LIKE concat('%',#{search_value},'%')
             OR g.goods_name LIKE concat('%',#{search_value},'%')
-            OR g.goods_price LIKE concat('%',#{search_value},'%')
             )
         </if>
         <if test="isactive!=null and isactive!=''">
