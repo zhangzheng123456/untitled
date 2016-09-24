@@ -298,6 +298,7 @@ public class ParamConfigureController {
                 obj.put("param_id", getParam_id);
                 obj.put("param_type", param_type);
                 obj.put("param_values", param_values);
+                obj.put("param_desc", paramConfigure.getParam_desc());
                 array.add(obj);
             }
             params.put("params", array);

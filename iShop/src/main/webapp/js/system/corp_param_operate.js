@@ -189,7 +189,7 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);
                 $("#OWN_CORP option").text(msg.corp_name);
-                $("#PARAM_NAME").val(msg.param_name);
+                $("#PARAM_NAME").val(msg.param_desc);
                 $("#PARAM_NAME").attr("data-id", msg.param_id);
                 $("#REMARK").attr("data-name", msg.remark);
                 $("#REMARK").val(msg.remark);
@@ -292,7 +292,7 @@ function param_data(c, b) {
                         +'" data-value="'
                         +msg[i].param_values
                         +'"><span>'
-                        +msg[i].param_key
+                        +msg[i].param_desc
                         +'</span></li>')
                 }
                 $("#paramName_down li").click(function (e) {
