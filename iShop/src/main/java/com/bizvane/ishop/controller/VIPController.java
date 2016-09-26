@@ -41,7 +41,8 @@ public class VIPController {
     VipAlbumService vipAlbumService;
     @Autowired
     VipLabelService vipLabelService;
-
+    @Autowired
+    BaseService baseService;
 
     /**
      * 会员信息
@@ -313,7 +314,7 @@ public class VIPController {
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             String store_id = jsonObject.get("store_id").toString();
-            String store_code = WebUtils.storeIdConvertStoreCode(corp_code,store_id);
+            String store_code = baseService.storeIdConvertStoreCode(corp_code,store_id);
 
             JSONObject result_points = new JSONObject();
             JSONObject result_wardrobes = new JSONObject();

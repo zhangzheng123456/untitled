@@ -15,4 +15,11 @@ public interface BaseService {
 
     PageInfo<HashMap<String,Object>> queryMetaList(int page_number, int page_size,Map<String, Object> params) throws SQLException;
 
+    String storeIdConvertStoreCode(String corp_code,String store_id)throws Exception;
+
+    String storeCodeConvertStoreId(String corp_code,String store_code)throws Exception;
+
+    String userIdConvertUserCode(String corp_code,String user_id)throws Exception;
+
+    String userCodeConvertUserId(String corp_code,String user_code)throws Exception;
 }
