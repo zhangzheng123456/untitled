@@ -179,6 +179,9 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     $("#page_row").val("10行/页");
     brithVipGet();
     jump=1;
+    //点击时，将第一个按钮设置class为btn_bg
+    console.log($($(".date_btn span")[0]).addClass('btn_bg').siblings())
+    $($(".date_btn span")[0]).addClass('btn_bg').siblings().removeClass('btn_bg');
 })
 $(".vip_nav_bar li:nth-child(2)").click(function () {
     $('.birthVip').hide();
@@ -247,7 +250,7 @@ $("#vipAnalyze_return").click(function () {
 });
 /******************生日会员****************************/
 function brithVipGet() {
-    whir.loading.add("",0.5);//加载等待框
+    // whir.loading.add("",0.5);//加载等待框
     var type='birth';
     $('.birthVip .vip_table tbody').empty();
     var param={};
@@ -298,7 +301,7 @@ function brithVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
     });
-    whir.loading.remove();//移除加载框
+    // whir.loading.remove();//移除加载框
 }
 function birthVipGet_sub(ali) {
     var ali=ali;//当前对象
@@ -311,7 +314,7 @@ function birthVipGet_sub(ali) {
 /******************新VIP会员****************************/
 //新VIP模块数据请求加载
 function newVipGet(){
-    whir.loading.add("",0.5);//加载等待框
+    // whir.loading.add("",0.5);//加载等待框
     var type='new';
     $('.newVip .vip_table tbody').empty();
     var param={};
@@ -354,17 +357,17 @@ function newVipGet(){
             }
         }else if(data.code=="-1"){
             console.log(data.message);
-            whir.loading.remove();//移除加载框
+            // whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
     });
-    whir.loading.remove();//移除加载框
+    // whir.loading.remove();//移除加载框
 }
 /*************活跃会员********************************/
 //获取活跃用户
 function sleepVipGet() {
-    whir.loading.add("",0.5);//加载等待框
+    // whir.loading.add("",0.5);//加载等待框
     var type='sleep';
     $('.activeVip .vip_table tbody').empty();
     var param={};
@@ -410,12 +413,12 @@ function sleepVipGet() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
-            whir.loading.remove();//移除加载框
+            // whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
-    whir.loading.remove();//移除加载框
+    // whir.loading.remove();//移除加载框
 }
 function sleepVipGet_sub(ali) {
     var ali=ali;//当前对象
@@ -429,7 +432,7 @@ function sleepVipGet_sub(ali) {
 }
 /*************消费排行****************/
 function consumeVipGet() {
-    whir.loading.add("",0.5);//加载等待框
+    // whir.loading.add("",0.5);//加载等待框
     var type='consume';
     $('.rank .vip_table tbody').empty();
     $('.rank .vip_table thead').empty();
@@ -480,15 +483,15 @@ function consumeVipGet() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
-            whir.loading.remove();//移除加载框
+            // whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
-    whir.loading.remove();//移除加载框
+    // whir.loading.remove();//移除加载框
 }
 function consumeVipGetre() {
-    whir.loading.add("",0.5);//加载等待框
+    // whir.loading.add("",0.5);//加载等待框
     var type='consume';
     $('.rank .vip_table tbody').empty();
     $('.rank .vip_table thead').empty();
@@ -539,15 +542,15 @@ function consumeVipGetre() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
-            whir.loading.remove();//移除加载框
+            // whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
-    whir.loading.remove();//移除加载框
+    // whir.loading.remove();//移除加载框
 }
 function consumeVipGetam() {
-    whir.loading.add("",0.5);//加载等待框
+    // whir.loading.add("",0.5);//加载等待框
     var type='consume';
     $('.rank .vip_table tbody').empty();
     $('.rank .vip_table thead').empty();
@@ -595,12 +598,12 @@ function consumeVipGetam() {
             }
         }else if(data.code=="-1"){
             console.log(data.message);
-            whir.loading.remove();//移除加载框
+            // whir.loading.remove();//移除加载框
         }
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
-    whir.loading.remove();//移除加载框
+    // whir.loading.remove();//移除加载框
 }
 function consumeVipGet_sub(ali) {
     var ali=ali;//当前对象
