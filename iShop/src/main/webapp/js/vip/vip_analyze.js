@@ -179,9 +179,16 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     $("#page_row").val("10行/页");
     brithVipGet();
     jump=1;
-    //点击时，将第一个按钮设置class为btn_bg
-    console.log($($(".date_btn span")[0]).addClass('btn_bg').siblings())
-    $($(".date_btn span")[0]).addClass('btn_bg').siblings().removeClass('btn_bg');
+    // //点击时，将第一个按钮设置class为btn_bg
+    // $($(".date_btn span")[0]).addClass('btn_bg');
+    // //取消其他的class;
+    // console.log( $($(".date_btn span")[0]).parent().nextAll());
+    // var lis= $($(".date_btn span")[0]).parent().nextAll();
+    // for(var i=0;i<lis.length;i++){
+    //     console.log($(lis[i]).find('span'));
+    //     $(lis[i]).find('span').removeClass('btn_bg');
+    // }
+    // $($(".date_btn span")[0]).parent().next('span').removeClass('btn_bg');
 })
 $(".vip_nav_bar li:nth-child(2)").click(function () {
     $('.birthVip').hide();
