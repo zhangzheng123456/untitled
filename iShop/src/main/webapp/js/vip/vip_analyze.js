@@ -76,6 +76,7 @@ function getStore(a){
         // newVipGet();//获取新会员
         // sleepVipGet();//获取活跃会员
         brithVipGet()//加载右侧默认项数据
+        $($(".date_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
     });
 }
 //点击li填充s中的数据显示
@@ -180,8 +181,13 @@ $(".vip_nav_bar li:nth-child(1)").click(function () {
     brithVipGet();
     jump=1;
     //点击时，将第一个按钮设置class为btn_bg
-    console.log($($(".date_btn span")[0]).addClass('btn_bg').siblings())
-    $($(".date_btn span")[0]).addClass('btn_bg').siblings().removeClass('btn_bg');
+    $($(".date_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
+    //取消其他的class;
+    var lis= $($(".date_btn span")[0]).parent().nextAll();
+    for(var i=0;i<lis.length;i++){
+        console.log($(lis[i]).find('span'));
+        $(lis[i]).find('span').css({"color":"","background":""});
+    }
 })
 $(".vip_nav_bar li:nth-child(2)").click(function () {
     $('.birthVip').hide();
@@ -200,6 +206,14 @@ $(".vip_nav_bar li:nth-child(3)").click(function () {
     $("#page_row").val("10行/页");
     sleepVipGet();
     jump=3;
+    //点击时，将第一个按钮设置class为btn_bg
+    $($(".month_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});;
+    //取消其他的class;
+    var lis= $($(".month_btn span")[0]).parent().nextAll();
+    for(var i=0;i<lis.length;i++){
+        console.log($(lis[i]).find('span'));
+        $(lis[i]).find('span').css({"color":"","background":""});
+    }
 })
 $(".vip_nav_bar li:nth-child(4)").click(function () {
     $('.birthVip').hide();
@@ -209,6 +223,14 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
     $("#page_row").val("10行/页");
     consumeVipGet();
     jump=4;
+    //点击时，将第一个按钮设置class为btn_bg
+    $($(".rank .month_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});;
+    //取消其他的class;
+    var lis= $($(".rank .month_btn span")[0]).parent().nextAll();
+    for(var i=0;i<lis.length;i++){
+        console.log($(lis[i]).find('span'));
+        $(lis[i]).find('span').css({"color":"","background":""});
+    }
 })
 $(".vip_nav_bar li").click(function () {
     // $(this).css("border-bottom","2px solid #6cc1c8");

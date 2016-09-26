@@ -232,7 +232,7 @@ function superaddition(data,num){//页面加载循环
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr data-storeId='"+data[i].store_id+"' id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -348,6 +348,7 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var id=$(this).children().eq(2).attr("id");
         var store_id=$(this).attr("data-storeId");
+        var corp_code=$(this).attr("id");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
@@ -358,6 +359,7 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
+        sessionStorage.setItem("corp_code",corp_code);
         sessionStorage.setItem("store_id",store_id);
         $(window.parent.document).find('#iframepage').attr("src","/vip/vip_data.html");
     })
