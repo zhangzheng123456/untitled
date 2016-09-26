@@ -58,7 +58,7 @@
             s.write(g.innerHTML)
         }
     }
-    m.setAttribute("content", "width=device-width,initial-scale=" + r + ", maximum-scale=" + r + ", minimum-scale=" + r + ", user-scalable=no");
+    m.setAttribute("content", "width=device-width,initial-scale=" + r + ", maximum-scale=" + r + ", minimum-scale=" + r + ", user-scalable=no , telephone=no");
 
     function i() {
         var t = b.getBoundingClientRect().width;

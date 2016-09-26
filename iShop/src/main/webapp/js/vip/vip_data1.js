@@ -239,6 +239,13 @@ function showOption(){
             ul.hide();
         }
     });
+    $(document).click(function(e){
+        if($(e.target).is(".drop_down input")){
+            return;
+        }else{
+            $(".expand .expand_selection").hide();
+        }
+    })
 }
 function getoselectvalue(){//点击模拟的select 获取值给input
     $(".expand_selection li").click(function(){
