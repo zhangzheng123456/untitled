@@ -333,7 +333,6 @@ $(function(){
     $("#label_org").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
     $(".search_list").niceScroll({cursorborder:"0 none",cursorcolor:"rgba(0,0,0,0.3)",cursoropacitymin:"0",boxzoom:false});
 });
-
 //回到会员列表
 $("#VIP_LIST_info").click(function(){
     $(window.parent.document).find('#iframepage').attr("src","/vip/vip.html");
