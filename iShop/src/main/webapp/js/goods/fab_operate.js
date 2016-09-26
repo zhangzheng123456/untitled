@@ -81,21 +81,33 @@ var oc = new ObjectControl();
 				/*
 				获取上传的图片地址
 				 */
-				var img_list=[];
-				var img_list_json={};
+				// var img_list=[];
+				var img_list_json="";
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
 				if(img_url_list.length<=20){
 					for(var i=0;i<img_url_list.length;i++){
-						if(img_url_list[i].src.indexOf("http")!==-1){
-							img_list.push(img_url_list[i].src);
-						}else{
-							img_list.push($(img_url_list[i]).attr("data-name"));
+						if(i<img_url_list.length-1){
+							if(img_url_list[i].src.indexOf("http")!==-1){
+								img_list_json+=img_url_list[i].src+",";
+								// img_list.push(img_url_list[i].src);
+							}else{
+								img_list_json+=$(img_url_list[i]).attr("data-name")+",";
+								// img_list.push($(img_url_list[i]).attr("data-name"));
+							}
+						}else {
+							if(img_url_list[i].src.indexOf("http")!==-1){
+								img_list_json+=img_url_list[i].src;
+								// img_list.push(img_url_list[i].src);
+							}else{
+								img_list_json+=$(img_url_list[i]).attr("data-name");
+								// img_list.push($(img_url_list[i]).attr("data-name"));
+							}
 						}
 					}
-					for(var j=0;j<img_list.length;j++){
-						img_list_json[j]=img_list[j];
-					}
-					img_list_json=JSON.stringify(img_list_json);
+					// for(var j=0;j<img_list.length;j++){
+					// 	img_list_json[j]=img_list[j];
+					// }
+					// img_list_json=JSON.stringify(img_list_json);
 				}else{
 					art.dialog({
 						time: 1,
@@ -170,22 +182,34 @@ var oc = new ObjectControl();
 				/*
 				获取上传的图片地址
 				 */
-				var img_list=[];
-				var isexit_flg=[];
-				var img_list_json={};
+				// var img_list=[];
+				// var isexit_flg=[];
+				var img_list_json="";
 				var img_url_list=$('.good_imgs .parentFileBox .fileBoxUl .diyUploadHover:visible .viewThumb img');
 				if(img_url_list.length<=20){
 					for(var i=0;i<img_url_list.length;i++){
-						if(img_url_list[i].src.indexOf("http")!==-1){
-							img_list.push(img_url_list[i].src);
-						}else{
-							img_list.push($(img_url_list[i]).attr("data-name"));
+						if(i<img_url_list.length-1){
+							if(img_url_list[i].src.indexOf("http")!==-1){
+								img_list_json+=img_url_list[i].src+",";
+								// img_list.push(img_url_list[i].src);
+							}else{
+								img_list_json+=$(img_url_list[i]).attr("data-name")+",";
+								// img_list.push($(img_url_list[i]).attr("data-name"));
+							}
+						}else {
+							if(img_url_list[i].src.indexOf("http")!==-1){
+								img_list_json+=img_url_list[i].src;
+								// img_list.push(img_url_list[i].src);
+							}else{
+								img_list_json+=$(img_url_list[i]).attr("data-name");
+								// img_list.push($(img_url_list[i]).attr("data-name"));
+							}
 						}
 					}
-					for(var j=0;j<img_list.length;j++){
-						img_list_json[j]=img_list[j];
-					}
-					img_list_json=JSON.stringify(img_list_json);
+					// for(var j=0;j<img_list.length;j++){
+					// 	img_list_json[j]=img_list[j];
+					// }
+					// img_list_json=JSON.stringify(img_list_json);
 				}else{
 					art.dialog({
 						time: 1,
@@ -522,9 +546,9 @@ function getvarbrandlist(c,d){
 		}
 	})
 }
-function goodsAddHide() {
+// function goodsAddHide() {
 //加号添加商品
-	$(".goods_add").click(function () {
+	$("#search_match_goods ul").on("click",".goods_add",function () {
 		$(this).hide();
 		$(this).next().show();
 		$(this).parent("#search_match_goods ul li").css("background","#cde6e8");
@@ -556,15 +580,16 @@ function goodsAddHide() {
 		})
 	})
 //叉号取消添加商品
-	$("#search_match_goods ul li i").click(function () {
+	$("#search_match_goods ul").on("click","li i",function () {
 		$(this).prev().show();
 		$(this).hide();
 		$(this).parent("#search_match_goods ul li").css("background","");
 		var goods_code=$(this).parent().find(".goods_code").html();
 		$("#"+goods_code).remove();
 	})
-}
+// }
 var num=1;
+var next=false;
 function getmatchgoodsList(a) {
 	//获取相关商品搭配列表
 	var param={};
@@ -572,7 +597,7 @@ function getmatchgoodsList(a) {
 	var searchValue=$("#search").val();
 	var goods_code=$("#GOODS_CODE").val();
 	var pageNumber=a;
-	var pageSize=10;
+	var pageSize=20;
 	param["corp_code"]=corp_code;
 	param["goods_code"]=goods_code;
 	param["pageNumber"] =pageNumber;
@@ -583,9 +608,11 @@ function getmatchgoodsList(a) {
 			var msg=JSON.parse(data.message);
 			var list=JSON.parse(msg.list);
 			if(list.length<1){
-				jQuery('#search_match_goods ul').append("<p>找不到相关宝贝</p>")
+				jQuery('#search_match_goods ul').append("<p>没有相关宝贝了</p>")
+				next=true;
 			}else{
 				num++;
+				a++;
 				for(var i=0;i<list.length;i++){
 					jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
 						+ list[i].goods_image
@@ -605,14 +632,18 @@ function getmatchgoodsList(a) {
 				content: data.message
 			});
 		}
-		goodsAddHide();
+		// goodsAddHide();
 	});
 }
 $("#search_match_goods ul").scroll(function () {
 	var nScrollHight = $(this)[0].scrollHeight;
     var nScrollTop = $(this)[0].scrollTop;
     var nDivHight=$(this).height();
+    
     if(nScrollTop + nDivHight >= nScrollHight){
+    	if(next){
+    		return;
+    	}
     	getmatchgoodsList(num);
     };
 })
@@ -627,10 +658,6 @@ $("#add").click(function () {
 	}
 	$('#OWN_CORP').attr("corp_code",corp_code);
 	var num=1;
-	getmatchgoodsList(num);
-})
-$("#more").click(function(){
-	num++;
 	getmatchgoodsList(num);
 })
 //关闭搜索匹配商品弹窗

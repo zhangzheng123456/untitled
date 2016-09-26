@@ -25,7 +25,6 @@ jQuery(function () {
     }
 
     var a = GetRequest();
-    console.log(a);
     var id = a.id;
     var corp_code = a.corp_code;
     var oc = new ObjectControl();
@@ -39,17 +38,13 @@ jQuery(function () {
         "corp_code": corp_code
     };
     oc.postRequire("post", "/api/fab/select", "", query, function (data) {
-        console.log(data);
-        console.log(data.message);
         var list = JSON.parse(data.message);
         var list = JSON.parse(list.goods);
-        console.log(list);
-        // console.log(list.selling_point);
-        var goodsImage = list.goods_image.split(",");
-        console.log(goodsImage);
-        for (var i = 0; i < goodsImage.length; i++) {
-            jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><img src="' + goodsImage[i] + '"></div>');
-            console.log(i);
+        if(list.goods_image.indexOf("http")!==-1){
+            var goodsImage = list.goods_image.split(",");
+            for (var i = 0; i < goodsImage.length; i++) {
+                jQuery('.header .swiper-wrapper').append('<div class="swiper-slide"><img src="' + goodsImage[i] + '"></div>');
+            }
         }
         document.title = list.goods_name;
         jQuery('.detail').html('<p class="product_code">货号:' + list.goods_code + '</p><p class="pice">价格:<span>￥' + list.goods_price + '</span></p><div class="total"><p>年份:' + list.goods_time + '</p><p>季度:' + list.goods_quarter + '</p><p>波段:' + list.goods_wave + '</p></div>');
