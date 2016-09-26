@@ -88,6 +88,9 @@ $("#Ablum-all").on("click",".cancel_img",function(){
     $("#tk").show();
     $("#delete").attr("data-id",id);
 });
+$("#X").click(function(){
+    $("#tk").hide();
+});
 $("#Ablum-all").on("mouseover","img",function(){
    $(this).next().show()
 });$("#Ablum-all").on("mouseover","div",function(){
@@ -106,14 +109,13 @@ $(".message-class ul li a").click(function(){
     $(".tabs-parent").children().eq(nowIndex).show();
     $(".tabs-parent").children().eq(nowIndex).siblings().hide()
 });
-
-$("#fenLei").click(function(){//点击查看更多跳到编辑资料
+function toall(){
     $('html,body').animate({
         'scrollTop': 0
     },0);
-   var nowdataName=$(".message-class ul li .active").attr("data-name");
-   $("#VIP_Message").hide();
-   $("#VIP_edit").show();
+    var nowdataName=$(".message-class ul li .active").attr("data-name");
+    $("#VIP_Message").hide();
+    $("#VIP_edit").show();
     $("#nav_bar").find("li").each(function(index){
         if($(this).attr("data-name")==nowdataName){
             var len=$(this).width();
@@ -125,6 +127,15 @@ $("#fenLei").click(function(){//点击查看更多跳到编辑资料
         }
     });
     gethotVIPlabel();
+}
+$("#fenLei").click(function(){//点击查看更多跳到编辑资料
+    toall();
+});
+$("#consum tbody").click(function(){
+    toall();
+});
+$("#points tbody").click(function(){
+    toall();
 });
 $("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
