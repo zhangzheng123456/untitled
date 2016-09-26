@@ -11,10 +11,10 @@ public interface StoreMapper {
     Store selectByStoreId(int id) throws SQLException;
 
     Store selectStoreById(int id) throws SQLException;
+
     Store selectByCode(@Param("corp_code") String corp_code, @Param("store_code") String store_code, @Param("isactive") String isactive) throws SQLException;
 
     Store selStoreByStroeId(@Param("corp_code") String corp_code, @Param("store_id") String store_id, @Param("isactive") String isactive) throws SQLException;
-
 
     List<Store> selectAllStore(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
@@ -33,8 +33,6 @@ public interface StoreMapper {
     int deleteStoreByUserid(@Param("user_id") String user_id, @Param("store_code") String store_code) throws SQLException;
 
     Store selectByStoreName(@Param("corp_code") String corp_code, @Param("store_name") String store_name, @Param("isactive") String isactive) throws SQLException;
-
-    Store storeIdExist(@Param("corp_code") String corp_code, @Param("store_id") String store_id) throws SQLException;
 
     int selectCount(@Param("created_date") String created_date) throws SQLException;
 

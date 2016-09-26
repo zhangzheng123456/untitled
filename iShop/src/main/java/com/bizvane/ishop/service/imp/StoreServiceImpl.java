@@ -415,7 +415,7 @@ public class StoreServiceImpl implements StoreService {
 
     @Override
     public Store storeIdExist(String corp_code, String store_id) throws Exception {
-        Store store = this.storeMapper.storeIdExist(corp_code, store_id);
+        Store store = this.storeMapper.selStoreByStroeId(corp_code, store_id,Common.IS_ACTIVE_Y);
         return store;
     }
 

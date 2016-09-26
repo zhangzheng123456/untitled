@@ -278,13 +278,6 @@
         AND isactive = 'Y'
     </select>
 
-    <select id="userIdExist" resultType="com.bizvane.ishop.entity.User">
-        SELECT * FROM def_user
-        WHERE user_id = #{user_id}
-        AND corp_code = #{corp_code}
-        AND isactive = 'Y'
-    </select>
-
     <!--获取店铺下员工-->
     <select id="selectStoreUser" resultMap="UserInfo">
         SELECT
