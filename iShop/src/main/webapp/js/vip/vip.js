@@ -221,6 +221,12 @@ function superaddition(data,num){//页面加载循环
         if(data[i].vip_avatar==''){
             data[i].vip_avatar='../img/head.png';
         }
+        //性别
+        if(data[i].sex=="F"){
+            data[i].sex="女"
+        }else if(data[i].sex=="M"){
+            data[i].sex="男"
+        }
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
@@ -239,17 +245,19 @@ function superaddition(data,num){//页面加载循环
         + data[i].vip_id
         + "</td><td>"
         + data[i].vip_name
-        //+ "</td><td>"
-        + "</td><td><img src='" + data[i].vip_avatar + "' alt=''>"
+        + "</td><td>"
+        + data[i].sex
         +"</td><td>"
         + data[i].vip_phone
         +"</td><td>"
         + data[i].vip_card_type
         +"</td><td>"
-        + data[i].amount
+        + data[i].cardno
         +"</td><td>"
-        + data[i].consume_times
-        +"</td><td>"
+        + data[i].user_name
+        +"</td><td><span>"
+        + data[i].store_name
+        +"</span></td><td>"
         + data[i].vip_birthday
         +"</td><td>"
         +data[i].join_date
