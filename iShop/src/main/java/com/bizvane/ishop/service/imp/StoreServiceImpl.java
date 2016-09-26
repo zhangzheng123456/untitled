@@ -454,10 +454,18 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws Exception {
+    public PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String[] brand_code, String search_value) throws Exception {
+
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-        params.put("area_code", area_code);
+        params.put("area_code", "");
+        params.put("brand_code", "");
+        if (area_code.length!=0){
+            params.put("area_code", area_code);
+        }
+        if (brand_code.length!=0){
+            params.put("brand_code", brand_code);
+        }
         params.put("search_value", search_value);
         params.put("isactive", "Y");
         PageHelper.startPage(page_number, page_size);

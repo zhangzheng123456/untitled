@@ -204,10 +204,19 @@
         AND def_store.corp_code = def_area.corp_code
         AND def_store.area_code = def_area.area_code
         AND def_store.corp_code = #{corp_code}
+        <if test="area_code != null and area_code !=''">
         AND def_store.area_code IN
-        <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
-            #{item}
-        </foreach>
+            <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <if test="brand_code != null and brand_code !=''">
+            AND
+            <foreach item="item" index="index" collection="brand_code" open="(" separator="or" close=")">
+                def_store.brand_code regexp #{item}
+            </foreach>
+        </if>
+
         <if test="search_value != null and search_value !=''">
             and def_store.STORE_NAME like concat('%',#{search_value},'%')
         </if>

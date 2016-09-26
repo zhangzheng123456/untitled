@@ -511,22 +511,22 @@ function drop(ev)
     console.log(val);
 
     //调用借口
-    var id=sessionStorage.getItem("id");
-    var store_id=sessionStorage.getItem("store_id");
-    param["corp_code"]="C10000";
-    param['label_name']=val;
-    param['vip_code']=id;
-    param['label_id']="";
-    param['store_code']=store_id;
-    oc.postRequire("post","/VIP/label/addRelViplabel","",param,function(data){
-        if(data.code=="0"){
-            var msg=JSON.parse(data.message);
-            var rid=JSON.parse(msg.list);
-            var html= "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
-                clone=$(clone).append(html);
-                $(clone).attr("data-rid",rid);
-                $(ev.target).append(clone);
-            var total=parseInt($(".span_total").html())+1;
+    var id = sessionStorage.getItem("id");
+    var store_id = sessionStorage.getItem("store_id");
+    param["corp_code"] = "C10000";
+    param['label_name'] = val;
+    param['vip_code'] = id;
+    param['label_id'] = "";
+    param['store_code'] = store_id;
+    oc.postRequire("post", "/VIP/label/addRelViplabel", "", param, function (data) {
+        if (data.code == "0") {
+            var msg = JSON.parse(data.message);
+            var rid = JSON.parse(msg.list);
+            var html = "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
+            clone = $(clone).append(html);
+            $(clone).attr("data-rid", rid);
+            $("#label_box").append(clone);
+            var total = parseInt($(".span_total").html()) + 1;
             $(".span_total").html(total);
             if(span.attr("class")=="label_u"){
                 $(span).addClass("label_u_active").removeClass("label_u");
