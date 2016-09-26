@@ -547,7 +547,7 @@ function drop(ev) {
             var html = "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
             clone = $(clone).append(html);
             $(clone).attr("data-rid", rid);
-            $(ev.target).append(clone);
+            $("#label_box").append(clone);
             var total = parseInt($(".span_total").html()) + 1;
             $(".span_total").html(total);
             if (span.attr("class") == "label_u") {
