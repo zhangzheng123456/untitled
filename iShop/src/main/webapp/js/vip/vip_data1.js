@@ -3,8 +3,8 @@ $(function(){
 });
 function getVipInfo(){
     var param_info={};
-    param_info["vip_id"]="1";
-    param_info["corp_code"]="2";
+    param_info["vip_id"]=sessionStorage.getItem("id");
+    param_info["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/vip/vipInfo","",param_info,function(data){
         var vipData=JSON.parse(data.message);
         var vipDataList=vipData.list;
