@@ -22,8 +22,6 @@ public interface UserMapper {
 
     List<User> userEmailExist(@Param("email") String email) throws SQLException;
 
-    List<User> userIdExist(@Param("user_id") String user_id,@Param("corp_code")String corp_code) throws SQLException;
-
     List<User> selectUserCode(@Param("user_code")String user_code, @Param("corp_code")String corp_code, @Param("isactive")String isactive) throws SQLException;
 
     List<User> selUserByUserId(@Param("user_id")String user_id, @Param("corp_code")String corp_code, @Param("isactive")String isactive) throws SQLException;

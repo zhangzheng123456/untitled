@@ -68,7 +68,7 @@ public interface StoreService {
 
     PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws Exception;
 
-    PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws Exception;
+    PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String[] brand_code, String search_value) throws Exception;
 
 
     List<Store> selByAreaCodeList(String corp_code, String[] area_code, String search_value) throws Exception;
