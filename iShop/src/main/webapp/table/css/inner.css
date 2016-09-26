@@ -9,6 +9,8 @@ body{
 	font-size: 14px;
 	font-family: "微软雅黑";
 	margin-top: 81px;
+	height: inherit;
+    background-color: #e8e8e8;
 }
 a{
 	text-decoration: none;

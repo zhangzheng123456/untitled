@@ -76,6 +76,7 @@ jQuery(function(){
 		param["goods_wave"]=goods_wave;
 		param["search_value"]="";
 		filtrate="sucess";
+		jQuery('.allShops').empty();
 		getSearchList(rowno);
 	})
 	$("#reset").click(function(){
@@ -131,6 +132,7 @@ jQuery(function(){
 		param["brand_code"]="";
 		param["goods_quarter"]="";
 		param["goods_wave"]="";
+		jQuery('.allShops').empty();
 		getSearchList(rowno);
 	});
 	//搜索加载list
@@ -138,6 +140,7 @@ jQuery(function(){
 		param["rowno"]=a;
 		param["corp_code"]=corp_code;
 		oc.postRequire("post","/api/fab/search","0",param,function(data){
+			$("#kong_img").hide();
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var hasNextPage=list.hasNextPage;
@@ -150,12 +153,11 @@ jQuery(function(){
             	$(".more").hide();
             }
 			if(list.length<=0){
-				jQuery('.allShops').empty();
-			    jQuery(".allShops").append("<p>没有收索结果</p><p class='p'>没有找到相关宝贝<p/>")
+				$("#kong_img").show();
 			}
-			if(a<20){
-				jQuery('.allShops').empty();
-			}
+			// if(a<20){
+				
+			// }
 			if(list.length>0){
 				superaddition(list);
 			}

@@ -133,6 +133,8 @@ a {
     .buy-match .content a {
       text-decoration: underline;
       color: #6cc1c8; }
+    .buy-match .content img {
+      width: 100%; }
   .buy-match .match-con {
     box-sizing: border-box;
     margin-top: 0.48309rem;
@@ -283,7 +285,9 @@ input::-webkit-input-placeholder {
   display: none;
   font-size: 15px;
   text-align: center;
-  color: #8e8e93; }
+  color: #8e8e93;
+  height: 30px;
+  line-height: 30px; }
 
 #cover {
   display: none;
