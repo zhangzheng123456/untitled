@@ -52,6 +52,11 @@ var oc = new ObjectControl();
 	};
 	fabjs.bindbutton=function(){
 		$(".fabadd_oper_btn ul li:nth-of-type(1)").click(function(){
+			function getContent() {
+				var arr = [];
+				arr.push(UE.getEditor('editor').getContent());
+				return arr.join("\n");
+			}
 			if(fabjs.firstStep()){
 				var OWN_CORP=$("#OWN_CORP").val();//公司编号
 				var GOODS_CODE=$("#GOODS_CODE").val().trim();//商品编号
@@ -60,7 +65,7 @@ var oc = new ObjectControl();
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();//季度
 				var GOODS_BAND=$("#GOODS_BAND").val();//波段
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();//发布时间
-				var GOODS_BUYPOINT=$("#edit .froala-element").html();//商品卖点
+				var GOODS_BUYPOINT= getContent();//商品卖点
 				var ISACTIVE="";//是否可用
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -140,6 +145,11 @@ var oc = new ObjectControl();
 			}
 		});
 		$("#edit_save").click(function(){
+			function getContent() {
+				var arr = [];
+				arr.push(UE.getEditor('editor').getContent());
+				return arr.join("\n");
+			}
 			if(fabjs.firstStep()){
 				var ID=sessionStorage.getItem("id");
 				var OWN_CORP=$("#OWN_CORP").val();
@@ -149,7 +159,7 @@ var oc = new ObjectControl();
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
-				var GOODS_BUYPOINT=$("#edit .froala-element").html();
+				var GOODS_BUYPOINT=getContent();
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
 				var input=$(".checkbox_isactive").find("input")[0];
@@ -302,11 +312,16 @@ jQuery(document).ready(function(){
 		var a="";
 		var b="";
 		oc.postRequire("post", _command,"", _params, function(data){
+			console.log('请求回的数据');
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
-				console.log(msg);
+				console.log(msg.goods_description
+			);
 				var goods_img=msg.goods_image;
+				ue.ready(function() {
+					ue.setContent(msg.goods_description);
+				});
 				var goods_arr=[];
 				var filename;//图片名
 				if(goods_img.indexOf(',')!==-1){
