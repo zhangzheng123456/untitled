@@ -564,18 +564,19 @@ function goodsAddHide() {
 		$("#"+goods_code).remove();
 	})
 }
-function getmatchgoodsList() {
+var num=1;
+function getmatchgoodsList(a) {
 	//获取相关商品搭配列表
 	var param={};
 	var corp_code=$("#OWN_CORP").val();
 	var searchValue=$("#search").val();
 	var goods_code=$("#GOODS_CODE").val();
-	var pageNumber=1;
-	var pageSize=150;
+	var pageNumber=a;
+	var pageSize=10;
 	param["corp_code"]=corp_code;
 	param["goods_code"]=goods_code;
-	param["pageNumber"] = 1;
-    param["pageSize"] =150;
+	param["pageNumber"] =pageNumber;
+    param["pageSize"] =pageSize;
 	param["searchValue"]=searchValue;
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
@@ -584,6 +585,7 @@ function getmatchgoodsList() {
 			if(list.length<1){
 				jQuery('#search_match_goods ul').append("<p>找不到相关宝贝</p>")
 			}else{
+				num++;
 				for(var i=0;i<list.length;i++){
 					jQuery('#search_match_goods ul').append('<li><img class="goodsImg" src="'
 						+ list[i].goods_image
@@ -606,7 +608,14 @@ function getmatchgoodsList() {
 		goodsAddHide();
 	});
 }
-
+$("#search_match_goods ul").scroll(function () {
+	var nScrollHight = $(this)[0].scrollHeight;
+    var nScrollTop = $(this)[0].scrollTop;
+    var nDivHight=$(this).height();
+    if(nScrollTop + nDivHight >= nScrollHight){
+    	getmatchgoodsList(num);
+    };
+})
 //点击添加匹配商品弹窗
 $("#add").click(function () {
 	$("#goods_box").show();
@@ -617,9 +626,13 @@ $("#add").click(function () {
 		return;
 	}
 	$('#OWN_CORP').attr("corp_code",corp_code);
-	getmatchgoodsList();
+	var num=1;
+	getmatchgoodsList(num);
 })
-
+$("#more").click(function(){
+	num++;
+	getmatchgoodsList(num);
+})
 //关闭搜索匹配商品弹窗
 $("#close_match_goods").click(function () {
 	$("#goods_box").hide();
@@ -629,13 +642,13 @@ $("#close_match_goods").click(function () {
 //搜索相关商品
 $("#d_search").click(function () {
 	jQuery('#search_match_goods ul').empty();
-	getmatchgoodsList();
+	getmatchgoodsList(num);
 })
 $("#search_match_goods").keydown(function () {
 	var event=window.event||arguments[0];
 	if(event.keyCode == 13){
 		jQuery('#search_match_goods ul').empty();
-		getmatchgoodsList();
+		getmatchgoodsList(num);
 	}
 })
 

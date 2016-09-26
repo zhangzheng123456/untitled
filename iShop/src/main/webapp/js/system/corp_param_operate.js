@@ -171,7 +171,6 @@ var oc = new ObjectControl();
     obj.init = init;
     return obj;
 }));
-
 jQuery(document).ready(function () {
     window.param.init();
     if ($(".pre_title label").text() == "编辑企业参数") {
@@ -189,12 +188,13 @@ jQuery(document).ready(function () {
                 console.log(msg);
                 $("#OWN_CORP option").val(msg.corp_code);
                 $("#OWN_CORP option").text(msg.corp_name);
-                $("#PARAM_NAME").val(msg.param_name);
+                $("#PARAM_NAME").val(msg.param_desc);
                 $("#PARAM_NAME").attr("data-id", msg.param_id);
                 $("#REMARK").attr("data-name", msg.remark);
                 $("#REMARK").val(msg.remark);
                 if(param_type!=="custom"){
                     $("#param_value").addClass("param_value");
+                    $("#param_value").attr("readonly","true");
                     param_values=param_values.split(",");
                     for(var j=0;j<param_values.length;j++){
                         $("#paramValue_down").append('<li>'+param_values[j]+'</li>')
@@ -292,7 +292,7 @@ function param_data(c, b) {
                         +'" data-value="'
                         +msg[i].param_values
                         +'"><span>'
-                        +msg[i].param_key
+                        +msg[i].param_desc
                         +'</span></li>')
                 }
                 $("#paramName_down li").click(function (e) {

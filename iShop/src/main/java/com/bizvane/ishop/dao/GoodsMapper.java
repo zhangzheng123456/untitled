@@ -19,8 +19,7 @@ public interface GoodsMapper {
 
     List<Goods> selectAllGoods(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("isactive") String isactive) throws SQLException;
 
-    List<Goods> selectAllGoodsForApp(@Param("corp_code") String corp_code,@Param("goods_quarter") String goods_quarter,@Param("goods_wave") String goods_wave,
-                                     @Param("brand_code") String brand_code,@Param("time_start") String time_start,@Param("time_end") String time_end, @Param("search_value") String search_value, @Param("isactive") String isactive) throws SQLException;
+    List<Goods> selectAllGoodsForApp(Map<String,Object> map) throws SQLException;
 
     List<Goods> selectAllGoodsByBrand(@Param("corp_code") String corp_code, @Param("search_value") String search_value, @Param("brand_code") String brand_code) throws SQLException;
 

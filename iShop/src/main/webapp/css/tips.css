@@ -533,6 +533,9 @@ div.wx_app_new p{
 	width: 100%;
 	border: 2px solid #ccc;
 }
+#search_match_goods ul p{
+	text-align: center;
+}
 /******多选下拉框样式******/
 .Acc_dropdown li{
 	height: 30px !important;
@@ -550,4 +553,16 @@ div.wx_app_new p{
 	top: 0px;
 	left:-82px;
 	color: #434960!important;
+}
+.more{
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	background-color: #6cc1c8;
+	color: #fff;
+	text-align: center;
+	border-radius: 5px;
+	margin: 0 auto;
+	cursor: pointer;
+	display: none;
 }

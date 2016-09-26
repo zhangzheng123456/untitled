@@ -234,6 +234,9 @@ public class MessageController {
                 logger.info("-------------delete message--" + Integer.valueOf(ids[i]));
                 messageService.delete(Integer.valueOf(ids[i]));
             }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

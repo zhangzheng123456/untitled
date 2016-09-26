@@ -554,7 +554,7 @@ public class UserAchvGoalController {
                 userAchvGoal.setTarget_time(column5[i].getContents().toString().trim());
                 int count = userAchvGoalService.checkUserAchvGoal(userAchvGoal);
                 if (count > 0) {
-                    result = "：用户" + userAchvGoal.getUser_code() + "业绩目标已经设定";
+                    result = "：第" + (i + 1) + "行,用户" + userAchvGoal.getUser_code() + "业绩目标已经设定";
                     int b = 5 / 0;
                 }
             }

@@ -242,7 +242,7 @@ function superaddition(data,num){
             + "</td><td>"
             + data[i].corp_name
             + "</td><td>"
-            + data[i].param_name
+            + data[i].param_desc
             +"</td><td><span title='"+data[i].param_value+"'>"
             +data[i].param_value
             +"</span></td><td>"

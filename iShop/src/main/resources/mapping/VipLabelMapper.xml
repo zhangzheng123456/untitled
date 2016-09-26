@@ -325,6 +325,9 @@
         <if test="search_value!=null and search_value!=''">
             AND LABEL_NAME like concat('%',#{search_value},'%')
         </if>
+        AND LABEL_TYPE !='sys'
+        AND LABEL_TYPE !=''
+        AND LABEL_TYPE is not null
         AND ISACTIVE ='Y'
     </select>
     <select id="checkRelViplablel" resultType="com.bizvane.ishop.entity.RelViplabel">

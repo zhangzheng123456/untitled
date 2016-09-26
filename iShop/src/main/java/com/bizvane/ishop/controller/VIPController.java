@@ -175,6 +175,14 @@ public class VIPController {
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
 
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_vip_id.key, data_vip_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipDetail", datalist);
+
             JSONObject vip = new JSONObject();
             vip.put("corp_code","C10000");
             vip.put("store_id","1570");
@@ -489,7 +497,7 @@ public class VIPController {
                 war2.add(wardrobe11);
                 war2.add(wardrobe12);
                 JSONObject orders2 = new JSONObject();
-                orders2.put("buy_time", "2016-02-07");
+                orders2.put("buy_time", "2016-06-27");
                 orders2.put("order_no", "1665467899992");
                 orders2.put("order_discount", "8.5");
                 orders2.put("order_count", "5");
@@ -536,7 +544,7 @@ public class VIPController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
-            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.VipDetailQuery", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterface("VipDetailQuery", datalist);
             logger.info("-------会员积分" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 

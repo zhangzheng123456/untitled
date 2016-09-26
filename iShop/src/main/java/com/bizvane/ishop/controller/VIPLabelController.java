@@ -762,8 +762,20 @@ public class VIPLabelController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String corp_code = jsonObject.getString("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
             org.json.JSONObject result = new org.json.JSONObject();
             List<VipLabel> hotViplabel = vipLabelService.findHotViplabel(corp_code);
+            List<VipLabel> vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
+            for (VipLabel vipLabel:hotViplabel) {
+              vipLabel.setLabel_sign("N");
+            }
+            for(int i=0;i<vipLabelList.size();i++){
+                for (int j=0;j<hotViplabel.size();j++){
+                    if(vipLabelList.get(i).getLabel_name().equals(hotViplabel.get(j).getLabel_name())){
+                        hotViplabel.get(j).setLabel_sign("Y");
+                    }
+                }
+            }
             result.put("list", JSON.toJSONString(hotViplabel));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
@@ -794,14 +806,37 @@ public class VIPLabelController {
             String search_value = jsonObject.getString("searchValue").toString();
             String type = jsonObject.getString("type").toString();
             String corp_code = jsonObject.getString("corp_code").toString();
+            String vip_id = jsonObject.get("vip_id").toString();
+            List<VipLabel> vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
             org.json.JSONObject result = new org.json.JSONObject();
             PageInfo<VipLabel> list=null;
+
           if(type.equals("1")){
               list= vipLabelService.findViplabelByType(page_Number,page_Size,corp_code,"",search_value);
           }else if(type.equals("2")){
               list= vipLabelService.findViplabelByType(page_Number,page_Size,corp_code,"org","");
+              for (VipLabel vipLabel:list.getList()) {
+                  vipLabel.setLabel_sign("N");
+              }
+              for(int i=0;i<vipLabelList.size();i++){
+                  for (int j=0;j<list.getList().size();j++){
+                      if(vipLabelList.get(i).getLabel_name().equals(list.getList().get(j).getLabel_name())){
+                          list.getList().get(j).setLabel_sign("Y");
+                      }
+                  }
+              }
           }else if(type.equals("3")){
               list= vipLabelService.findViplabelByType(page_Number,page_Size,corp_code,"user","");
+              for (VipLabel vipLabel:list.getList()) {
+                  vipLabel.setLabel_sign("N");
+              }
+              for(int i=0;i<vipLabelList.size();i++){
+                  for (int j=0;j<list.getList().size();j++){
+                      if(vipLabelList.get(i).getLabel_name().equals(list.getList().get(j).getLabel_name())){
+                          list.getList().get(j).setLabel_sign("Y");
+                      }
+                  }
+              }
           }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
