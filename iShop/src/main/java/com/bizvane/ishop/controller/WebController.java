@@ -259,7 +259,7 @@ public class WebController {
     /**
      * app获取FAB筛选侧边接口
      */
-    @RequestMapping(value = "/api/fab/screenValue", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/fab/screenValue", method = RequestMethod.POST)
     @ResponseBody
     public String fabScreen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();

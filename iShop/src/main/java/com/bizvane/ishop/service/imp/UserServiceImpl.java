@@ -430,7 +430,7 @@ public class UserServiceImpl implements UserService {
      */
     @Override
     public List<User> userIdExist(String user_id,String corp_code) throws Exception {
-        List<User> user = userMapper.userIdExist(user_id,corp_code);
+        List<User> user = userMapper.selUserByUserId(user_id,corp_code,Common.IS_ACTIVE_Y);
         return user;
     }
 

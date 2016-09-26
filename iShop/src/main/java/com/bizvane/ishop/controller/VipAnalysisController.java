@@ -50,7 +50,7 @@ public class VipAnalysisController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
-            DataBox dataBox = iceInterfaceService.iceInterface("AnalysisAllVip", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
             logger.info("-------vip列表" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
@@ -79,7 +79,7 @@ public class VipAnalysisController {
             JSONObject jsonObject = JSONObject.parseObject(message);
 
             Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
-            DataBox dataBox = iceInterfaceService.iceInterface("AnalysisVipNew", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipNew", datalist);
             logger.info("-------AnalysisNewVip:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
@@ -115,7 +115,7 @@ public class VipAnalysisController {
             Data data_query_type = new Data("query_type", query_type, ValueType.PARAM);
             datalist.put(data_query_type.key, data_query_type);
 
-            DataBox dataBox = iceInterfaceService.iceInterface("AnalysisVipBirth", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipBirth", datalist);
             logger.info("-------AnalysisBirthVip:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
@@ -148,7 +148,7 @@ public class VipAnalysisController {
             Data data_query_type = new Data("query_type", query_type, ValueType.PARAM);
             datalist.put(data_query_type.key, data_query_type);
 
-            DataBox dataBox = iceInterfaceService.iceInterface("AnalysisSleep", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisSleep", datalist);
             String result = dataBox.data.get("message").value;
             logger.info("----query_type: "+query_type+"---vipConsume:" + dataBox.data.get("message").value);
 
@@ -181,25 +181,25 @@ public class VipAnalysisController {
             Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
             if (query_type.equals("recent")){
                 //最近消费
-                dataBox = iceInterfaceService.iceInterface("AnalysisVipRecent", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipRecent", datalist);
             }else if (query_type.equals("freq")){
                 //消费频率
-                dataBox = iceInterfaceService.iceInterface("AnalysisVipFreq", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipFreq", datalist);
             }else if (query_type.equals("month")){
                 //本月消费
                 Data data_query_type = new Data("query_type", "1", ValueType.PARAM);
                 datalist.put(data_query_type.key, data_query_type);
-                dataBox = iceInterfaceService.iceInterface("AnlysisVipAmount", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnlysisVipAmount", datalist);
             }else if (query_type.equals("three_month")){
                 //前三月消费
                 Data data_query_type = new Data("query_type", "2", ValueType.PARAM);
                 datalist.put(data_query_type.key, data_query_type);
-                dataBox = iceInterfaceService.iceInterface("AnlysisVipAmount", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnlysisVipAmount", datalist);
             }else if (query_type.equals("history")){
                 //历史总额
                 Data data_query_type = new Data("query_type", "3", ValueType.PARAM);
                 datalist.put(data_query_type.key, data_query_type);
-                dataBox = iceInterfaceService.iceInterface("AnlysisVipAmount", datalist);
+                dataBox = iceInterfaceService.iceInterfaceV2("AnlysisVipAmount", datalist);
             }
             logger.info("----query_type: "+query_type+"---vipConsume:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;

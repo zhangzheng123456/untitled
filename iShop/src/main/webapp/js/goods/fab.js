@@ -224,6 +224,13 @@ function superaddition(data, num) {//页面加载循环
         } else {
             var a = i + 1;
         }
+        var goods_image="";
+        if(data[i].goods_image.indexOf("http")!==-1){
+            goods_image=data[i].goods_image;
+        }
+        if(data[i].goods_image.indexOf("http")==-1){
+             goods_image="../img/goods_default_image.png";
+        }
         $(".table tbody").append("<tr id='" + data[i].id + "''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
             + 1
@@ -237,7 +244,7 @@ function superaddition(data, num) {//页面加载循环
             + data[i].goods_code
             + "</td><td>"
             + data[i].goods_name
-            + "</td><td><img src='" + data[i].goods_image + "' alt=''>"
+            + "</td><td><img src='" + goods_image + "' alt=''>"
             + "</td><td>"
             + data[i].goods_price
             + "</td><td>"

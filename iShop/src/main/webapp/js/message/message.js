@@ -467,6 +467,7 @@ $("#cancel").click(function () {
                 thinput.checked = false;
             } else if (data.code == "-1") {
                 frame();
+                $('.frame').html('删除失败');
                 $('.frame').html(data.message);
             }
         })

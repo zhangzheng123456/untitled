@@ -103,6 +103,7 @@ textarea{
 .navbar-default {
   background-color: transparent;
   border-color: #2f4050;
+  height: inherit;
 }
 .navbar-top-links li {
   display: inline-block;
@@ -3152,6 +3153,7 @@ video {
   width: 100%;
   /*overflow-x: hidden;*/
   background-color:#434960;
+  height: inherit;
 }
 .wrapper {
   padding: 0 20px;
@@ -3165,6 +3167,7 @@ video {
   /*min-height: 568px;*/
   /*min-width:1160px;*/
   position: relative !important;
+  height: inherit;
 }
 /*@media (min-width: 768px) {
   #page-wrapper {
