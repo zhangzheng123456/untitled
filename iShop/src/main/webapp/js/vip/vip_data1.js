@@ -357,3 +357,27 @@ function frame(){
         $(".frame").hide();
     },2000);
 }
+$("#expand_send").click(function(){
+    var param=getexpandValue();
+    oc.postRequire("post","/vip/vipSaveInfo","",param,function(data){
+      console.log(data)
+    })
+});
+function getexpandValue(){
+    var param_expand={};
+         param_expand['vip_id']=sessionStorage.getItem("id");
+         param_expand['card_no']=$("#vip_card_no").text();
+         param_expand['phone']=$("#vip_phone").text();
+         param_expand['corp_code']=sessionStorage.getItem("corp_code");
+    var INPUT=$("#extend ul").find('input');
+    var list={};
+    for(var i=0;i<INPUT.length;i++){
+        var KEY="";
+        var VALUE="";
+        KEY=$(INPUT[i]).attr("data-key");
+        VALUE=$(INPUT[i]).val().trim();
+        list[KEY]=VALUE;
+    }
+    param_expand['extend']=list;
+    return param_expand;
+}
