@@ -126,7 +126,12 @@ function jifenContent(listData,pointsData){
             +'<td>'+listData[i].date+'</td>'
             +'</tr>'
     }
-    $("#points tbody").html(listHtml);
+    if(listHtml.length!==0){
+        $("#points tbody").html(listHtml);
+    }else {
+        listHtml='<span>暂无数据</span>'
+        $("#points tbody").html(listHtml);
+    }
     $("#points_all tbody").html(listHtmlAll)
 }
 function xiaofeiContent(consumnData,consumnlistData){
@@ -141,7 +146,7 @@ function xiaofeiContent(consumnData,consumnlistData){
     $("#vip_card_num_1").html(consumnData.vip_card_no);
     $("#vip_name_1").html(consumnData.vip_name);
     for(var i=0;i<consumnlistData.length;i++){
-        arr.push(consumnlistData[i].buy_time);
+        arr.push(consumnlistData[i].order_id);
     }
     for(var i=0;i<arr.length;i++){
         if(!hash[arr[i]]){
@@ -154,9 +159,11 @@ function xiaofeiContent(consumnData,consumnlistData){
         var total_money="0.0";
         var total_sug ="0.0";
         var discount = "";
+        var date="";
         for(var j=0;j<consumnlistData.length;j++){
-            if(consumnlistData[j].buy_time==unqiuearr[i]){
+            if(consumnlistData[j].order_id==unqiuearr[i]){
                 var n=$(TR).length+1;
+                date=consumnlistData[j].buy_time;
                 total_money = parseFloat(total_money)+parseFloat(consumnlistData[j].goods_price);
                 total_sug = parseFloat(total_sug)+parseFloat(consumnlistData[j].goods_sug)
                 TR+='<tr>'
@@ -180,8 +187,8 @@ function xiaofeiContent(consumnData,consumnlistData){
             +'</tr>';
         consumnHtmlall+='<div class="record_list">'
             +'<div class="order_list">'
-            +'<div class="list_head"><span class="black_font">日期:</span> '+unqiuearr[i]+' <ul><li><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>'+discount+'折</li><li>'+tr+'件商品</li></ul></div>'
-            +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].user_name+'</ul></div>'
+            +'<div class="list_head"><span class="black_font">日期:</span> '+date+' <ul><li><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>'+discount+'折</li><li>'+tr+'件商品</li></ul></div>'
+            +'<div class="list_head"><span class="black_font">订单号:</span> '+unqiuearr[i]+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].user_name+'</ul></div>'
             +'</div>'
             +'<hr/>'
             +'<table class="list_table">'
@@ -244,7 +251,11 @@ function xiaofeiContent(consumnData,consumnlistData){
     //         +'</table>'
     //         +'</div>'
     // }
-    $("#consum tbody").html(consumnHtml);
+    if(consumnHtml.length!==0){
+        $("#consum tbody").html(consumnHtml);
+    }else {
+        $("#consum tbody").html('<span>暂无数据</span>');
+    }
     $("#consum_all").html(consumnHtmlall)
 }
 function fuzhi(data){
