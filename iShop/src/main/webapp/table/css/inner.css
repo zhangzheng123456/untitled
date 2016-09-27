@@ -1108,6 +1108,7 @@ input::-webkit-input-placeholder{
 	top:84px;
 	left: 239px;
 	display: none;
+	z-index: 10001;
 }
 .screen_area .screen_title{
 	color: #888;
@@ -1190,7 +1191,7 @@ input::-webkit-input-placeholder{
 	cursor: pointer;
 }
 .screen_area .input_s .input_search input{
-	width: 268px;
+	width: 268px !important;
 	height: 28px;
 	line-height: 30px;
 	outline: none;
@@ -1215,6 +1216,7 @@ input::-webkit-input-placeholder{
 .screen_area .screen_content .screen_content_r,.screen_area .screen_content .screen_content_z,.screen_area .screen_content .screen_content_l{
 	float: left;
 	height: 360px;
+	overflow-y: auto;
 }
 .screen_area .screen_content .screen_content_r{
 	width: 310px;
