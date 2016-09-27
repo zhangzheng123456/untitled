@@ -43,6 +43,13 @@ var oc = new ObjectControl();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_DESC = $("#PARAM_DESC").val();
                 var PARAM_TYPE = $("#PARAM_TYPE").val();
+                var param_class = $("#param_class").val();
+                var required =$("#is_fill").val();
+                if(required=="是"){
+                    required="Y";
+                }else{
+                    required="N";
+                }
                 if(PARAM_TYPE=="开关"){
                     PARAM_TYPE="switch"
                 }else if(PARAM_TYPE=="选择列表"){
@@ -78,6 +85,8 @@ var oc = new ObjectControl();
                     "param_desc": PARAM_DESC,
                     "param_type": PARAM_TYPE,
                     "param_values":PARAM_VALUE,
+                    "required" : required,
+                    "param_class" : param_class,
                     "remark": REMARK,
                     "isactive":ISACTIVE
                 };
@@ -309,4 +318,20 @@ $(".paramType li").click(function () {
     }else if(val=="选择列表"){
         $("#PARAM_VALUE").removeAttr("disabled");
     }
+})
+
+$("#is_fill").click(function () {
+    if ($(".is_fill").css("display") == "none") {
+        $(".is_fill").show();
+    } else {
+        $(".is_fill").hide();
+    }
+})
+$("#is_fill").blur(function () {
+    setTimeout(function () {
+        $(".is_fill").hide();
+    }, 200)
+})
+$(".is_fill li").click(function () {
+    $("#is_fill").val($(this).html());
 })

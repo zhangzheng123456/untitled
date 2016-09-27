@@ -76,13 +76,15 @@ function getVipInfo(){
 function getVipPoints(code,type){
     var parmam_jifen={};
     parmam_jifen['vip_id']=sessionStorage.getItem("id");
-    parmam_jifen['corp_code']=code;
+    parmam_jifen['store_id']=sessionStorage.getItem("store_id");
+    parmam_jifen['corp_code']=sessionStorage.getItem("corp_code");
     if(type!==undefined){
         parmam_jifen['type']=type;
     }
 
     oc.postRequire("post","/vip/vipPoints","",parmam_jifen,function(data){
         var Data=JSON.parse(data.message);
+        console.log(Data);
         if(type=='1'){
             var pointsData=Data.result_points;//积分
             var listData=JSON.parse(pointsData.list);//积分list
@@ -90,13 +92,14 @@ function getVipPoints(code,type){
         }
         if(type=='2'){
             var consumnData=Data.result_consumn;//消费
-            var consumnlistData=JSON.parse(consumnData.list);//消费list
+            var consumnlistData=consumnData.list_wardrobe;//消费list
             xiaofeiContent(consumnData,consumnlistData)
         }
         if(type==undefined){
             var pointsData=Data.result_points;//积分
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=JSON.parse(consumnData.list);//消费list
+            console.log(consumnData);
             var listData=JSON.parse(pointsData.list);//积分list
             jifenContent(listData,pointsData);
             xiaofeiContent(consumnData,consumnlistData)
@@ -133,11 +136,63 @@ function jifenContent(listData,pointsData){
 function xiaofeiContent(consumnData,consumnlistData){
     var consumnHtml="";
     var consumnHtmlall="";
-    $("#consume_total").html(consumnData.amount);
-    $("#amount_total").html(consumnData.times);
+    var arr=[];
+    var unqiuearr=[];
+    var hash={};
+    $("#consume_total").html(consumnData.total_amount);
+    $("#amount_total").html(consumnData.consume_times);
     $("#vip_card_1").html(consumnData.vip_card_type);
-    $("#vip_card_num_1").html(consumnData.cardno);
+    $("#vip_card_num_1").html(consumnData.vip_card_no);
     $("#vip_name_1").html(consumnData.vip_name);
+    for(var i=0;i<consumnlistData.length;i++){
+        arr.push(consumnlistData[i].buy_time);
+    }
+    for(var i=0;i<arr.length;i++){
+        if(!hash[arr[i]]){
+            hash[arr[i]] = true; //存入hash表
+            unqiuearr.push(arr[i]);
+        }
+    }
+    console.log(arr);
+    console.log(unqiuearr);
+    for(var i=0;i<unqiuearr.length;i++){
+        for(var j=0;j<consumnlistData.length;j++){
+            var TR="";
+            if(consumnlistData[j].buy_time==unqiuearr[i]){
+                var n=j+1;
+                TR+='<tr>'
+                    +'<td>'+n+'</td>'
+                    +'<td><img src="'+consumnlistData[j].goods_img+'" /></td>'
+                    +'<td class="product_name"><span>'+consumnlistData[j].goods_name+'</span></td>'
+                    +'<td class="product_name">'+consumnlistData[j].goods_id+'</td>'
+                    +'<td>'+consumnlistData[j].goods_num+'</td>'
+                    +'<td class="money">￥'+consumnlistData[j].goods_price+'</td>'
+                    +'</tr>'
+            }
+            consumnHtmlall+='<div class="record_list">'
+                +'<div class="order_list">'
+                +'<div class="list_head"><span class="black_font">日期:</span> '+unqiuearr[i].buy_time+' <ul><li><em>￥</em><span class="consume_total">'+consumnlistData[i].order_total+'</span></li><li>'+consumnlistData[i].order_discount+'折</li><li>'+consumnlistData[i].order_count+'件商品</li></ul></div>'
+                +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].emp_name+'</ul></div>'
+                +'</div>'
+                +'<hr/>'
+                +'<table class="list_table">'
+                +'<thead>'
+                +'<tr>'
+                +'<th>序号</th>'
+                +'<th>商品图片</th>'
+                +'<th class="product_name">商品名称</th>'
+                +'<th class="product_name">商品编号</th>'
+                +'<th>件数</th>'
+                +'<th>价格</th>'
+                +'</tr>'
+                +'</thead>'
+                +'<tbody>'
+                +TR
+                +'</tbody>'
+                +'</table>'
+                +'</div>'
+        }
+    }
     for(var i=0;i<consumnlistData.length;i++){
         var TR="";
         var orderdata=consumnlistData[i].order;
