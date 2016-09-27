@@ -26,7 +26,7 @@ function getVipInfo(){
                 extendhtml+="<li>"
                     +"<b>"+extend[i].name+"</b>"
                     +"<div>"
-                    +"<input type='text' value='"+value+"' />"
+                    +"<input type='text' value='"+value+"' data-key='"+extend[i].key+"' />"
                     +"</div>"
                     +"</li>"
             }
@@ -41,7 +41,7 @@ function getVipInfo(){
                 extendhtml+='<li class="drop_down item_1">'
                     +'<b>'+extend[i].name+'</b>'
                     +'<div class="position" >'
-                    +'<input class="input_select" readonly value="'+value+'" type="text" />'
+                    +'<input class="input_select" readonly value="'+value+'" type="text" data-key="'+extend[i].key+'" />'
                     +ul
                     +'</div>'
                     +'</li>'
@@ -51,7 +51,7 @@ function getVipInfo(){
                 extendhtml+='<li >'
                 +'<b>'+extend[i].name+'</b>'
                 +'<div>'
-                +'<input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" value="'+value+'" onclick="laydate({istime: true, format: \'YYYY-MM-DD\'})">'
+                +'<input type="text" data-key="'+extend[i].key+'" readonly="true" placeholder="请输入日期" class="laydate-icon" value="'+value+'" onclick="laydate({istime: true, format: \'YYYY-MM-DD\'})">'
                 +'</div>'
                 +'</li>'
             }
@@ -60,7 +60,7 @@ function getVipInfo(){
                 extendhtml+='<li style="width: 100%">'
                 +'<b>'+extend[i].name+'</b>'
                 +'<div>'
-                +'<input type="text"  value="'+value+'"/>'
+                +'<input type="text"  value="'+value+'" data-key="'+extend[i].key+'"/>'
                 +'</div>'
                 +'</li>'
             }
