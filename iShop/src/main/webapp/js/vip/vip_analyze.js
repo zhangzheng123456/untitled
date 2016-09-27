@@ -87,7 +87,6 @@ function getStore(a){
 }
 //点击li填充s中的数据显示
 function showNameClick(e){
-    page=1;
     var e= e.target;
     var d=$(e).parent().parent().parent();
     console.log($(d).attr('id'));
@@ -357,7 +356,7 @@ function newVipGet(){
     var type='new';
     $('.newVip .vip_table tbody').empty();
     var param={};
-    var month_type=arguments[2]?arguments[2]:'today';
+    var month_type=arguments[2]?arguments[2]:' daily';
     var pageSize=arguments[1]?arguments[1]:10;
     var pageIndex=arguments[0]?arguments[0]:page;
     param['query_type']=month_type;
@@ -365,7 +364,7 @@ function newVipGet(){
     param['pageSize']=pageSize;
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
-    param["area_code"]=localStorage.getItem('area_code');
+    param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     oc.postRequire("post","/vipAnalysis/vipNew","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -394,23 +393,23 @@ function newVipGet(){
                 $(".vip_table tbody tr").click(function () {
                     vipTable_lg();
                 })
-
             }
         }else if(data.code=="-1"){
             console.log(data.message);
             // whir.loading.remove();//移除加载框
         }
         //调用生成页码
-        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
+        console.log(month_type);
+        setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
     });
     // whir.loading.remove();//移除加载框
 }
 function newVipGet_sub(ali) {
     var ali=ali;//当前对象
     switch($($(ali).html()).html()){
-        case '今日': month_type='today';newVipGet('','',month_type);break;
-        case '本月': month_type='current_month';newVipGet('','',month_type);break;
-        case '次月': month_type='next_month';newVipGet('','',month_type);break;
+        case '今日': month_type='daily';newVipGet('','',month_type);break;
+        case '本周': month_type='weekly';newVipGet('','',month_type);break;
+        case '本月': month_type='monthly';newVipGet('','',month_type);break;
     }
 }
 /*************活跃会员********************************/
@@ -773,7 +772,7 @@ $(function(){
             $(this).click(function(){
                 pageSize=$(this).attr('id');
                 var a=1;
-                jump==2&&(newVipGet(a,pageSize));
+                jump==2&&(newVipGet(a,pageSize,month_type));
                 jump==3&&(sleepVipGet(a,pageSize,query_type));
                 jump==1&&(brithVipGet(a,pageSize,month_type));
                 jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,month_type));
@@ -817,7 +816,7 @@ function dian(a,b,c,query_type){
     var b=b;
     var c=c;//页码请求类型
     var query_type=query_type;
-    c=='new'&&(newVipGet(a,b));
+    c=='new'&&(newVipGet(a,b,query_type));
     //当请求类型为sleep时
     //判断query_type的值执行不同的请求
     if(c=='sleep'&&(query_type==0)){
@@ -852,7 +851,7 @@ $("#input-txt").keydown(function() {
         if (event.keyCode == 13) {
             console.log(month_type,jump);
             console.log(jump_s);
-                jump==2&&(newVipGet(inx));
+                jump==2&&(newVipGet(inx,'',month_type));
                 jump==3&&(sleepVipGet(inx,'',query_type));
                 jump==1&&(brithVipGet(inx,'',month_type));
                 jump==4&&jump_s==0&&(consumeVipGet(inx,'',month_type));
