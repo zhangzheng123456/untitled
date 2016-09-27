@@ -62,9 +62,14 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
+//            for (int i = 0; i < 3; i++) {
+//                if(i==1){
+//                    continue;
+//                }
+//                System.out.println(i);
+//            }
 
-
-            LuploadHelper.deleteDirectory("E:\\Test");
+//            LuploadHelper.deleteDirectory("E:\\Test");
 //            List<String> list = new ArrayList<String>();
 //            list.add("保护环境");       //向列表中添加数据
 //            list.add("爱护地球");        //向列表中添加数据

@@ -613,7 +613,7 @@ public class GoodsController {
 //                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
                 ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
                 goods_description = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
-
+                LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
             }
             goods.setGoods_description(goods_description);
             Date now = new Date();
@@ -638,8 +638,6 @@ public class GoodsController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
-        }finally {
-            LuploadHelper.deleteDirectory(path + "image/upload");
         }
         return dataBean.getJsonStr();
     }
@@ -718,7 +716,7 @@ public class GoodsController {
 //                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
                 ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
                 goods_description = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
-
+                LuploadHelper.deleteFile(path+"/"+htmlImageSrcList.get(k));
             }
             goods.setGoods_description(goods_description);
             Date now = new Date();
@@ -736,8 +734,6 @@ public class GoodsController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error");
-        }finally {
-            LuploadHelper.deleteDirectory(path + "image/upload");
         }
         return dataBean.getJsonStr();
     }
