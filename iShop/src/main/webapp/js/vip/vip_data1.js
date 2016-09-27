@@ -98,11 +98,11 @@ function getVipPoints(code,type){
         if(type==undefined){
             var pointsData=Data.result_points;//积分
             var consumnData=Data.result_consumn;//消费
-            var consumnlistData=JSON.parse(consumnData.list);//消费list
+            var consumnlistData=consumnData.list_wardrobe;//消费list
             console.log(consumnData);
             var listData=JSON.parse(pointsData.list);//积分list
             jifenContent(listData,pointsData);
-            xiaofeiContent(consumnData,consumnlistData)
+            xiaofeiContent(consumnData,consumnlistData);
         }
 
     });
@@ -156,10 +156,15 @@ function xiaofeiContent(consumnData,consumnlistData){
     console.log(arr);
     console.log(unqiuearr);
     for(var i=0;i<unqiuearr.length;i++){
+        var TR="";
+        var total_money="0.0";
+        var total_sug ="0.0";
+        var discount = "";
         for(var j=0;j<consumnlistData.length;j++){
-            var TR="";
             if(consumnlistData[j].buy_time==unqiuearr[i]){
-                var n=j+1;
+                var n=$(TR).length+1;
+                total_money = parseFloat(total_money)+parseFloat(consumnlistData[j].goods_price);
+                total_sug = parseFloat(total_sug)+parseFloat(consumnlistData[j].goods_sug)
                 TR+='<tr>'
                     +'<td>'+n+'</td>'
                     +'<td><img src="'+consumnlistData[j].goods_img+'" /></td>'
@@ -169,54 +174,20 @@ function xiaofeiContent(consumnData,consumnlistData){
                     +'<td class="money">￥'+consumnlistData[j].goods_price+'</td>'
                     +'</tr>'
             }
-            consumnHtmlall+='<div class="record_list">'
-                +'<div class="order_list">'
-                +'<div class="list_head"><span class="black_font">日期:</span> '+unqiuearr[i].buy_time+' <ul><li><em>￥</em><span class="consume_total">'+consumnlistData[i].order_total+'</span></li><li>'+consumnlistData[i].order_discount+'折</li><li>'+consumnlistData[i].order_count+'件商品</li></ul></div>'
-                +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].emp_name+'</ul></div>'
-                +'</div>'
-                +'<hr/>'
-                +'<table class="list_table">'
-                +'<thead>'
-                +'<tr>'
-                +'<th>序号</th>'
-                +'<th>商品图片</th>'
-                +'<th class="product_name">商品名称</th>'
-                +'<th class="product_name">商品编号</th>'
-                +'<th>件数</th>'
-                +'<th>价格</th>'
-                +'</tr>'
-                +'</thead>'
-                +'<tbody>'
-                +TR
-                +'</tbody>'
-                +'</table>'
-                +'</div>'
         }
-    }
-    for(var i=0;i<consumnlistData.length;i++){
-        var TR="";
-        var orderdata=consumnlistData[i].order;
+        discount = parseFloat(total_money/total_sug*10);
+        discount = discount.toFixed(1);
+        var tr=$(TR).length; //统计单数
         consumnHtml+='<tr>'
-            +'<td >'+consumnlistData[i].buy_time+'</td>'
-            +'<td>'+consumnlistData[i].order_count+'</td>'
-            +'<td>'+consumnlistData[i].order_discount+'</td>'
-            +'<td>'+consumnlistData[i].order_total+'<i class="icon-ishop_8-03 style"></i></td>'
+            +'<td >'+unqiuearr[i]+'</td>'
+            +'<td>'+tr+'</td>'
+            +'<td>'+discount+'</td>'
+            +'<td>'+total_money+'<i class="icon-ishop_8-03 style"></i></td>'
             +'</tr>';
-        for(var a=0;a<orderdata.length;a++){
-            var n=a+1;
-            TR+='<tr>'
-                +'<td>'+n+'</td>'
-                +'<td><img src="'+orderdata[a].goods_img+'" /></td>'
-                +'<td class="product_name"><span>'+orderdata[a].goods_name+'</span></td>'
-                +'<td class="product_name">'+orderdata[a].goods_id+'</td>'
-                +'<td>'+orderdata[a].goods_num+'</td>'
-                +'<td class="money">￥'+orderdata[a].goods_price+'</td>'
-                +'</tr>'
-        }
         consumnHtmlall+='<div class="record_list">'
             +'<div class="order_list">'
-            +'<div class="list_head"><span class="black_font">日期:</span> '+consumnlistData[i].buy_time+' <ul><li><em>￥</em><span class="consume_total">'+consumnlistData[i].order_total+'</span></li><li>'+consumnlistData[i].order_discount+'折</li><li>'+consumnlistData[i].order_count+'件商品</li></ul></div>'
-            +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].emp_name+'</ul></div>'
+            +'<div class="list_head"><span class="black_font">日期:</span> '+unqiuearr[i]+' <ul><li><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>'+discount+'折</li><li>'+tr+'件商品</li></ul></div>'
+            +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].user_name+'</ul></div>'
             +'</div>'
             +'<hr/>'
             +'<table class="list_table">'
@@ -236,6 +207,49 @@ function xiaofeiContent(consumnData,consumnlistData){
             +'</table>'
             +'</div>'
     }
+    // for(var i=0;i<consumnlistData.length;i++){
+    //     var TR="";
+    //     var orderdata=consumnlistData[i].order;
+    //     consumnHtml+='<tr>'
+    //         +'<td >'+consumnlistData[i].buy_time+'</td>'
+    //         +'<td>'+consumnlistData[i].order_count+'</td>'
+    //         +'<td>'+consumnlistData[i].order_discount+'</td>'
+    //         +'<td>'+consumnlistData[i].order_total+'<i class="icon-ishop_8-03 style"></i></td>'
+    //         +'</tr>';
+    //     for(var a=0;a<orderdata.length;a++){
+    //         var n=a+1;
+    //         TR+='<tr>'
+    //             +'<td>'+n+'</td>'
+    //             +'<td><img src="'+orderdata[a].goods_img+'" /></td>'
+    //             +'<td class="product_name"><span>'+orderdata[a].goods_name+'</span></td>'
+    //             +'<td class="product_name">'+orderdata[a].goods_id+'</td>'
+    //             +'<td>'+orderdata[a].goods_num+'</td>'
+    //             +'<td class="money">￥'+orderdata[a].goods_price+'</td>'
+    //             +'</tr>'
+    //     }
+    //     consumnHtmlall+='<div class="record_list">'
+    //         +'<div class="order_list">'
+    //         +'<div class="list_head"><span class="black_font">日期:</span> '+consumnlistData[i].buy_time+' <ul><li><em>￥</em><span class="consume_total">'+consumnlistData[i].order_total+'</span></li><li>'+consumnlistData[i].order_discount+'折</li><li>'+consumnlistData[i].order_count+'件商品</li></ul></div>'
+    //         +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].emp_name+'</ul></div>'
+    //         +'</div>'
+    //         +'<hr/>'
+    //         +'<table class="list_table">'
+    //         +'<thead>'
+    //         +'<tr>'
+    //         +'<th>序号</th>'
+    //         +'<th>商品图片</th>'
+    //         +'<th class="product_name">商品名称</th>'
+    //         +'<th class="product_name">商品编号</th>'
+    //         +'<th>件数</th>'
+    //         +'<th>价格</th>'
+    //         +'</tr>'
+    //         +'</thead>'
+    //         +'<tbody>'
+    //         +TR
+    //         +'</tbody>'
+    //         +'</table>'
+    //         +'</div>'
+    // }
     $("#consum tbody").html(consumnHtml);
     $("#consum_all").html(consumnHtmlall)
 }
