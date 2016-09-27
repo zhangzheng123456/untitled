@@ -127,7 +127,7 @@ body{
     height: 330px;
     position: relative;
 }
-.header .center .message-class .tabs-parent span{
+.header .center .message-class .tabs-parent table span{
     position: absolute;
     top: 165px;
     left: 140px;

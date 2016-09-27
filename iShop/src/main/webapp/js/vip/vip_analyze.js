@@ -55,14 +55,12 @@ function getStore(a){
     param["area_code"]=area_code;
     oc.postRequire("post","/shop/findByAreaCode","",param,function(data){
         var ul='';
-        // var first_corp_name='';
-        // var first_corp_code='';
-        var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
-        var message=JSON.parse(data.message);//��ȡmessagejson�����DOM����
+        var message=JSON.parse(data.message);
+        var message=JSON.parse(data.message);
         var first_store_name='';
         var first_store_code='';
-        var message=JSON.parse(data.message);//???messagejson?????DOM????
-        var message=JSON.parse(data.message);//???messagejson?????DOM????
+        var message=JSON.parse(data.message);
+        var message=JSON.parse(data.message);
         var output=JSON.parse(message.list);
         var output_list=output.list;
         if(output_list.length<7){
