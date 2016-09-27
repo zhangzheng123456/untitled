@@ -77,8 +77,15 @@ public class VipAnalysisController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
+            String query_type = "today";
+            if (jsonObject.containsKey("query_type")){
+                query_type = jsonObject.get("query_type").toString();
+            }
 
             Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
+            Data data_query_type = new Data("query_type", query_type, ValueType.PARAM);
+            datalist.put(data_query_type.key, data_query_type);
+
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipNew", datalist);
             logger.info("-------AnalysisNewVip:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;

@@ -221,12 +221,18 @@ function superaddition(data,num){//页面加载循环
         if(data[i].vip_avatar==''){
             data[i].vip_avatar='../img/head.png';
         }
+        //性别
+        if(data[i].sex=="F"){
+            data[i].sex="女"
+        }else if(data[i].sex=="M"){
+            data[i].sex="男"
+        }
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
         }
-        $(".table tbody").append("<tr data-storeId='"+data[i].store_id+"' id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
+        $(".table tbody").append("<tr data-storeId='"+data[i].store_id+"' id='"+data[i].corp_code+"'><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
         + i
         + 1
         + "'/><label for='checkboxTwoInput"
@@ -239,17 +245,19 @@ function superaddition(data,num){//页面加载循环
         + data[i].vip_id
         + "</td><td>"
         + data[i].vip_name
-        //+ "</td><td>"
-        + "</td><td><img src='" + data[i].vip_avatar + "' alt=''>"
+        + "</td><td>"
+        + data[i].sex
         +"</td><td>"
         + data[i].vip_phone
         +"</td><td>"
         + data[i].vip_card_type
         +"</td><td>"
-        + data[i].amount
+        + data[i].cardno
         +"</td><td>"
-        + data[i].consume_times
-        +"</td><td>"
+        + data[i].user_name
+        +"</td><td><span>"
+        + data[i].store_name
+        +"</span></td><td>"
         + data[i].vip_birthday
         +"</td><td>"
         +data[i].join_date
@@ -340,6 +348,7 @@ function jumpBianse(){
     $(".table tbody tr").dblclick(function(){
         var id=$(this).children().eq(2).attr("id");
         var store_id=$(this).attr("data-storeId");
+        var corp_code=$(this).attr("id");
         var return_jump={};//定义一个对象
         return_jump["inx"]=inx;//跳转到第几页
         return_jump["value"]=value;//搜索的值;
@@ -350,6 +359,7 @@ function jumpBianse(){
         return_jump["pageSize"]=pageSize;//每页多少行
         sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
         sessionStorage.setItem("id",id);
+        sessionStorage.setItem("corp_code",corp_code);
         sessionStorage.setItem("store_id",store_id);
         $(window.parent.document).find('#iframepage').attr("src","/vip/vip_data.html");
     })

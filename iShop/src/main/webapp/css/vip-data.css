@@ -685,12 +685,20 @@ hr{
     width: 120px;
     height: 120px;
     margin-top: 20px;
-    line-height: 120px;
+    line-height: 100px;
     color: #888888;
-    font-size: 16px;
+    font-size: 80px;
     border: 2px #c3c3c3 dashed;
     display: inline-block;
     text-align: center;
+}
+.add_new_album em{
+    width: 120px;
+    line-height: 15px;
+    font-size: 14px;
+    position: absolute;
+    left: 0;
+    bottom: 7px;
 }
 .add_new_album input{
     position: absolute;

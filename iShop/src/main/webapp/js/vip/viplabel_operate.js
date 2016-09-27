@@ -282,6 +282,14 @@ function getlabelGroup(){
 			var msg=JSON.parse(data.message);
 			    msg=JSON.parse(msg.viplableGroups);
 			$("#labelgp_select").empty();
+			if(msg.length=="0"){
+				art.dialog({
+					time: 1,
+					lock:true,
+					cancel: false,
+					content: "该企业下暂无标签分组"
+				});
+			}
 			for(var i=0;i<msg.length;i++){
 				$("#labelgp_select").append('<li id="'+msg[i].label_group_code+'">'+msg[i].label_group_name+'</li>')
 			}

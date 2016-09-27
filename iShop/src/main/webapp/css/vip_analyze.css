@@ -198,7 +198,7 @@
     height:40px;
     cursor: pointer;
 }
-.date_btn li span{
+.date_btn li span,.new_btn li span{
     width: 100px;
     height: 30px;
     line-height: 30px;

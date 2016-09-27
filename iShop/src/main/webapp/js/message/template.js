@@ -290,7 +290,7 @@ function GET(a,b){
                 var message=JSON.parse(data.message);
                 var list=JSON.parse(message.list);
                 cout=list.pages;
-                var list=list.list;
+                    list=list.list;
                 superaddition(list,a);
                 jumpBianse();
                 setPage($("#foot-num")[0],cout,a,b,funcCode);
