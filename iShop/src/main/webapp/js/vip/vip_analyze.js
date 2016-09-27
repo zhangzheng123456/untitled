@@ -5,7 +5,7 @@ var jump_s="";//消费记录标签
 var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
-var un_push='';
+var un_push='';//记录是否加载请求
 /**********************左侧数据**************************************************************************************/
 //获取区域
 function GetArea(){
@@ -104,12 +104,12 @@ function showNameClick(e){
         $('#side_analyze ul li:nth-child(3) s').html($(e).html());
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
         $('#select_analyze_shop').toggle();
-        // sleepVipGet();//获取活跃会员
-        // newVipGet();//获取新会员
+        sleepVipGet();//获取活跃会员
+        newVipGet();//获取新会员
         brithVipGet();
-        // consumeVipGet();
-        // consumeVipGetam();
-        // consumeVipGetre();
+        consumeVipGet();
+        consumeVipGetam();
+        consumeVipGetre();
     }
 }
 //取消下拉框
@@ -357,8 +357,10 @@ function newVipGet(){
     var type='new';
     $('.newVip .vip_table tbody').empty();
     var param={};
+    var month_type=arguments[2]?arguments[2]:'today';
     var pageSize=arguments[1]?arguments[1]:10;
     var pageIndex=arguments[0]?arguments[0]:page;
+    param['query_type']=month_type;
     param['pageNumber']=pageIndex;
     param['pageSize']=pageSize;
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
@@ -402,6 +404,14 @@ function newVipGet(){
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type)
     });
     // whir.loading.remove();//移除加载框
+}
+function newVipGet_sub(ali) {
+    var ali=ali;//当前对象
+    switch($($(ali).html()).html()){
+        case '今日': month_type='today';newVipGet('','',month_type);break;
+        case '本月': month_type='current_month';newVipGet('','',month_type);break;
+        case '次月': month_type='next_month';newVipGet('','',month_type);break;
+    }
 }
 /*************活跃会员********************************/
 //获取活跃用户
@@ -1300,16 +1310,19 @@ $().ready(function(){
         birthVipGet_sub(this)
         $("#page_row").val("10行/页");
     });
+    //新会员切换
+    $('.newVip .new_btn li').click(function () {
+        newVipGet_sub(this)
+        $("#page_row").val("10行/页");
+    });
 });
 /*****************************************************************************************************************/
-
 //左侧业绩选择日周年月
 $(".choose").mouseover(function () {
     $(".select_Date").show();
 }).mouseleave(function () {
     $(".select_Date").hide();
 })
-
 $(".select_Date li").click(function () {
     var content=$(this).html();
     $(".title_l").html(content);
