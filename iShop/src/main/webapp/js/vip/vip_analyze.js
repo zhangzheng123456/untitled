@@ -204,6 +204,12 @@ $(".vip_nav_bar li:nth-child(2)").click(function () {
     $("#page_row").val("10行/页");
     newVipGet();
     jump=2;
+    $($(".new_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
+    var lis= $($(".new_btn span")[0]).parent().nextAll();
+    for(var i=0;i<lis.length;i++){
+        console.log($(lis[i]).find('span'));
+        $(lis[i]).find('span').css({"color":"","background":""});
+    }
 })
 $(".vip_nav_bar li:nth-child(3)").click(function () {
     $('.birthVip').hide();
@@ -246,6 +252,10 @@ $(".vip_nav_bar li").click(function () {
     $(this).siblings().removeClass("liactive");
 })
 $(".date_btn span").click(function () {
+    $(this).css({"color":"#fff","background":"#6cc1c8"});
+    $(this).parent("li").siblings().children("span").css({"color":"","background":""});
+})
+$(".new_btn span").click(function () {
     $(this).css({"color":"#fff","background":"#6cc1c8"});
     $(this).parent("li").siblings().children("span").css({"color":"","background":""});
 })
