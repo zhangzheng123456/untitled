@@ -279,6 +279,26 @@ $("#vipAnalyze_return").click(function () {
     $("#side_analyze").show();
     $("#table_analyze").css("background","#fff");
     $(".foot").hide();
+    $(".newVip .vip_table tbody tr").each(function(i){
+        if(i>9){
+            $(this).hide();
+        }
+    });
+    $(".birthVip .vip_table tbody tr").each(function(i){
+        if(i>9){
+            $(this).hide();
+        }
+    });
+    $(".activeVip .vip_table tbody tr").each(function(i){
+        if(i>9){
+            $(this).hide();
+        }
+    });
+    $(".rank .vip_table tbody tr").each(function(i){
+        if(i>9){
+            $(this).hide();
+        }
+    });
 });
 /******************生日会员****************************/
 function brithVipGet() {
@@ -344,7 +364,7 @@ function birthVipGet_sub(ali) {
         case '次月': month_type='next_month';brithVipGet('','',month_type);break;
     }
 }
-/******************新VIP会员****************************/
+/******************新VIP会员***************************/
 //新VIP模块数据请求加载
 function newVipGet(){
     whir.loading.add("",0.5);//加载等待框
@@ -408,7 +428,7 @@ function newVipGet_sub(ali) {
         case '本月': month_type='monthly';newVipGet('','',month_type);break;
     }
 }
-/*************活跃会员********************************/
+/******************活跃会员*****************************/
 //获取活跃用户
 function sleepVipGet() {
     whir.loading.add("",0.5);//加载等待框

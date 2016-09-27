@@ -180,7 +180,7 @@ function xiaofeiContent(consumnData,consumnlistData){
         discount = discount.toFixed(1);
         var tr=$(TR).length; //统计单数
         consumnHtml+='<tr>'
-            +'<td >'+unqiuearr[i]+'</td>'
+            +'<td >'+date+'</td>'
             +'<td>'+tr+'</td>'
             +'<td>'+discount+'</td>'
             +'<td>'+total_money+'<i class="icon-ishop_8-03 style"></i></td>'

@@ -9,7 +9,7 @@ function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
     var id=sessionStorage.getItem("id");
     var param={};
-    param["corp_code"]="C10000";
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     param["vip_id"]=id;
     oc.postRequire("post","/vip/vipConsumCount","",param,function(data){
        var Data=JSON.parse(data.message);
@@ -26,27 +26,35 @@ function getConsumCount(){//获取会员信息
       $("#consume_times").html(conSumData.consume_times);
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
-        for(var i=0;i<album.length;i++){
-            var date=album[i].created_date;
+        if(album.length!==0){
+            for(var i=0;i<album.length;i++){
+                var date=album[i].created_date;
                 date=date.substring(0,11);
                 if(i<16){
                     HTML+="<span><img src="+album[i].image_url+" /></span>";
                 }
                 Ablum_all_html+="<li>"
-                +"<img src='"+album[i].image_url+"'>"
-                +"<div class='cancel_img' id='"+album[i].id+"'></div>"
-                +"<span class='album_date'>"+date+"</span>"
-                +"</li>"
+                    +"<img src='"+album[i].image_url+"'>"
+                    +"<div class='cancel_img' id='"+album[i].id+"'></div>"
+                    +"<span class='album_date'>"+date+"</span>"
+                    +"</li>"
             }
+        }else {
+            HTML+="<p>暂无图片</p>";
+        }
         $("#images").html(HTML);
         $("#Ablum-all").html(Ablum_all_html);
-        for(var i=0;i<label.length;i++){
+        if(label.length!==0){
+            for(var i=0;i<label.length;i++){
                 LABEL+="<span >"+label[i].label_name+"</span>";
-             if(label[i].label_type=="user"){
-                 LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
-            }else {
-                 LABELALL+="<span class='label_g' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+                if(label[i].label_type=="user"){
+                    LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+                }else {
+                    LABELALL+="<span class='label_g' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+                }
             }
+        }else{
+            LABEL+="<p>暂无标签</p>";
         }
         //统计已有标签
         $(".span_total").html(label.length);
@@ -395,7 +403,7 @@ function labelDelete(obj) {
 function addViplabel() {
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
-    param["corp_code"]="C10000";
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     param['vip_code']=id;
     param['label_id']="";
     param['store_code']=store_id;
@@ -454,7 +462,7 @@ function addVipAlbum(url,data){//上传照片到相册
     param_addAblum["vip_name"]=data.vip_name;
     param_addAblum["cardno"]=data.cardno;
     param_addAblum["image_url"]=url;
-    param_addAblum["corp_code"]=data.corp_code;
+    param_addAblum["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
         if(data.code=="0"){
             frame();
@@ -509,7 +517,7 @@ function drop(ev)
     //调用借口
     var id = sessionStorage.getItem("id");
     var store_id = sessionStorage.getItem("store_id");
-    param["corp_code"] = "C10000";
+    param["corp_code"] = sessionStorage.getItem("corp_code");
     param['label_name'] = val;
     param['vip_code'] = id;
     param['label_id'] = "";
