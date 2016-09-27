@@ -103,7 +103,10 @@ function showNameClick(e){
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
         $('#select_analyze_shop').toggle();
         brithVipGet();
+        //添加店铺时，找到显示的DIV发起请求
     }
+    //找到那个显示的div
+    console.log($('#table_analyze div'));
 }
 //取消下拉框
 $(document).on('click',function(e){

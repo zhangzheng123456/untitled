@@ -21,7 +21,7 @@
     overflow: hidden;
 }
 #side_analyze{
-    min-width: 348px;
+    /*min-width: 348px;*/
     margin-right:0.5%;
     position: relative;
     height:100%;
@@ -29,7 +29,7 @@
 #table_analyze{
     background: #fff;
     color: #888888;
-    min-width: 704px;
+    /*min-width: 704px;*/
     height: 445px;
     position: relative;
 }

@@ -11,6 +11,7 @@ function getVipInfo(){
         var extend=vipData.extend;
         var extend_info=vipData.extend_info==""?{}:JSON.parse(vipData.extend_info);
         var extendhtml="";
+        $("#remark_value").html(vipData.remark);
         function getvalue(){
             var VALUE="";
             for(data in extend_info){
@@ -277,12 +278,22 @@ function fuzhi(data){
     $("#vip_phone_edit").val(data.vip_phone);
     $("#user_name").html(data.user_name);
     $("#user_name_edit").val(data.user_name);
-    $("#vip_total_amount").html(data.total_amount);
+    $("#vip_total_amount").html(data.total_amount+'&nbsp元');
     $("#join_date").html(data.join_date);
-    $("#vip_dormant_time").html(data.dormant_time);
     $("#vip_birthday").html(data.vip_birthday);
     $("#vip_birthday_edit").val(data.vip_birthday);
-    $("#corp_code").html(data.corp_code)
+    $("#corp_code").html(data.corp_code);
+    $("#vip_consume_times").html(data.consume_times+'&nbsp次');
+    if(data.dormant_time=='无'){
+        $("#vip_dormant_time").html(data.dormant_time);
+    }else{
+        $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
+    }
+    if(data.vip_avatar){
+        $(".person-img").css('background','url('+data.vip_avatar+')')
+    }else{
+        $(".person-img").css('backgroundImage','url(../img/head.png)')
+    }
 }
 
 
