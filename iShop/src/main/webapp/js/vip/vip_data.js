@@ -140,13 +140,16 @@ $("#points tbody").click(function(){
 $("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
+    getConsumCount();
+    getVipInfo();
 });
 //热门标签
 function gethotVIPlabel() {
     //热门标签
     $("#hotlabel").empty();
     var param={};
-    param["corp_code"]="C10000";
+    param['vip_id']=sessionStorage.getItem("id");
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -176,6 +179,10 @@ $("#hot_label").click(function () {
 })
 //官方用户标签
 function getOtherlabel() {
+    param['vip_id']=sessionStorage.getItem("id");
+    param["corp_code"]=sessionStorage.getItem("corp_code");
+    param['pageNumber']=page;
+    param['searchValue']="";
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -222,44 +229,33 @@ function getOtherlabel() {
 $("#label_li_org").click(function () {
     page=1;
     $("#label_org").empty();
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
     param['type']="2";
     getOtherlabel();
 })
 $("#label_li_user").click(function () {
     page=1;
     $("#label_user").empty();
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
     param['type']="3";
     getOtherlabel();
 })
 
 //右侧加载更多标签
 $("#more_label_g").click(function () {
-        page=page+1;
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
+    page=page+1;
     param['type']="2";
     getOtherlabel();
 })
 $("#more_label_u").click(function () {
     page=page+1;
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
     param['type']="3";
     getOtherlabel();
 })
 
 //搜索热门标签
 function searchHotlabel() {
-    param["corp_code"]="C10000";
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     param['pageNumber']=page;
+    param['vip_id']=sessionStorage.getItem("id");
     param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
     param['type']="1";
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
