@@ -639,7 +639,7 @@ public class GoodsController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
         }finally {
-            LuploadHelper.deleteDirectory(path + "\\image\\upload");
+            LuploadHelper.deleteDirectory(path + "image/upload");
         }
         return dataBean.getJsonStr();
     }
@@ -737,7 +737,7 @@ public class GoodsController {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error");
         }finally {
-            LuploadHelper.deleteDirectory(path + "\\image\\upload");
+            LuploadHelper.deleteDirectory(path + "image/upload");
         }
         return dataBean.getJsonStr();
     }
