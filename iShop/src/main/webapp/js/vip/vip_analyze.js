@@ -5,6 +5,7 @@ var jump_s="";//消费记录标签
 var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
+var un_push='';
 /**********************左侧数据**************************************************************************************/
 //获取区域
 function GetArea(){
@@ -64,7 +65,6 @@ function getStore(a){
         var message=JSON.parse(data.message);//???messagejson?????DOM????
         var output=JSON.parse(message.list);
         var output_list=output.list;
-        console.log(output_list.length);
         if(output_list.length<7){
             $('#select_analyze_shop s').attr('style','display:none')
         }else{
@@ -82,11 +82,12 @@ function getStore(a){
         $('#select_analyze_shop ul').append(ul);
         // newVipGet();//获取新会员
         // sleepVipGet();//获取活跃会员
-        brithVipGet()//加载右侧默认项数据
+       un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
     });
 }
 //点击li填充s中的数据显示
 function showNameClick(e){
+    page=1;
     var e= e.target;
     var d=$(e).parent().parent().parent();
     console.log($(d).attr('id'));
@@ -135,8 +136,8 @@ $(document).on('click',function(e){
 //加载更多
 function getMore(e){
     var e= e.target;
-    console.log(e)
     page+=1;
+    un_push=1;//赋值为1
     var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
     getStore(area_code);
 }
@@ -278,7 +279,6 @@ $("#vipAnalyze_return").click(function () {
 });
 /******************生日会员****************************/
 function brithVipGet() {
-    $($(".date_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
     // whir.loading.add("",0.5);//加载等待框
     var type='birth';
     $('.birthVip .vip_table tbody').empty();
@@ -1272,6 +1272,7 @@ require(
 );
 /*********************页面加载时*****************************************************/
 $().ready(function(){
+    $($(".date_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
     $('#select_analyze_shop ul').on('click','li',showNameClick);
