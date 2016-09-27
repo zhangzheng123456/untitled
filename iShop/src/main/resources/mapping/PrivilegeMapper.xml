@@ -95,7 +95,7 @@
 -->
 
     <insert id="insert" parameterType="com.bizvane.ishop.entity.Privilege">
-        INSERT INT def_privilege
+        INSERT INTO def_privilege
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="action_code!=null">
                 action_code,
