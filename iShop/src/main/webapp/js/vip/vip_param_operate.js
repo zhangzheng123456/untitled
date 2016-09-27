@@ -50,12 +50,14 @@ var oc = new ObjectControl();
                 }else{
                     required="N";
                 }
-                if(PARAM_TYPE=="开关"){
-                    PARAM_TYPE="switch"
+                if(PARAM_TYPE=="时间"){
+                    PARAM_TYPE="date"
                 }else if(PARAM_TYPE=="选择列表"){
-                    PARAM_TYPE="list"
+                    PARAM_TYPE="select"
                 }else if(PARAM_TYPE=="自定义"){
-                    PARAM_TYPE="custom"
+                    PARAM_TYPE="text"
+                }else if(PARAM_TYPE=="长文本"){
+                    PARAM_TYPE="longtext"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
                 if(PARAM_TYPE==""){

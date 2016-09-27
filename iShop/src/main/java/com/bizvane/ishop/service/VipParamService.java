@@ -24,4 +24,6 @@ public interface VipParamService {
     int delete(int id) throws Exception;
 
     PageInfo<VipParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception ;
+
+    List<VipParam> selectAllParam(String corp_code,String isactive) throws Exception;
 }

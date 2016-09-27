@@ -56,7 +56,8 @@ public class VipAlbumServiceImpl implements VipAlbumService {
         vipAlbum.setCreater(user_code);
         vipAlbum.setModifier(user_code);
         vipAlbum.setIsactive(Common.IS_ACTIVE_Y);
-        return vipAlbumMapper.insertVipAlbum(vipAlbum);
+        int i = vipAlbumMapper.insertVipAlbum(vipAlbum);
+        return i;
     }
 
     @Override

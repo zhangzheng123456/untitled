@@ -19,6 +19,10 @@ public class VipParam {
     private String corp_name;
     //备注
     private String remark;
+    //参数分类
+    private String param_class;
+    //是否必填
+    private String required;
     //修改时间
     private String modified_date;
     //修改人
@@ -132,5 +136,21 @@ public class VipParam {
 
     public void setIsactive(String isactive) {
         this.isactive = isactive;
+    }
+
+    public String getParam_class() {
+        return param_class;
+    }
+
+    public void setParam_class(String param_class) {
+        this.param_class = param_class;
+    }
+
+    public String getRequired() {
+        return required;
+    }
+
+    public void setRequired(String required) {
+        this.required = required;
     }
 }

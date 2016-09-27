@@ -98,6 +98,7 @@ public class VipParamController {
         }
         return dataBean.getJsonStr();
     }
+
     @RequestMapping(value = "/screen", method = RequestMethod.POST)
     @ResponseBody
     public String selectByScreen(HttpServletRequest request) {

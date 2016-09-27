@@ -2,20 +2,38 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.bizvane.ishop.dao.VipParamMapper">
 
-    <select id="selectById" resultType="com.bizvane.ishop.entity.VipParam">
+    <resultMap id="VipParam" type="com.bizvane.ishop.entity.VipParam">
+        <id column="id" property="id"/>
+        <result column="param_name" property="param_name"/>
+        <result column="param_type" property="param_type" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="param_values" property="param_values" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_name" property="corp_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="corp_code" property="corp_code" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="param_class" property="param_class" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="required" property="required" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+    </resultMap>
+    <select id="selectById" resultMap="VipParam">
         SELECT
         dvp.*
         FROM def_vip_param dvp
         WHERE  dvp.id=#{id}
     </select>
 
-    <select id="selectAllParam" resultType="com.bizvane.ishop.entity.VipParam">
+    <select id="selectAllParam" resultMap="VipParam">
         SELECT
         dvp.ID,
         dvp.param_name,
         dvp.param_type,
         dvp.param_values,
         dvp.param_desc,
+        dvp.param_class,
+        dvp.required,
         dc.corp_name,
         dvp.remark,
         dvp.modified_date,
@@ -32,12 +50,16 @@
             OR dvp.param_type like concat('%',#{search_value},'%')
             OR dvp.param_values like concat('%',#{search_value},'%')
             OR dvp.param_desc like concat('%',#{search_value},'%')
+            OR dvp.param_class like concat('%',#{search_value},'%')
             OR dc.corp_name like concat('%',#{search_value},'%')
             OR dvp.remark like concat('%',#{search_value},'%')
             OR dvp.modified_date like concat('%',#{search_value},'%')
             OR dvp.modifier like concat('%',#{search_value},'%')
             OR dvp.isactive like concat('%',#{search_value},'%')
             )
+        </if>
+        <if test="isactive != null and isactive !=''">
+            AND dvp.isactive = #{isactive}
         </if>
         ORDER BY dvp.id DESC
     </select>
@@ -78,6 +100,12 @@
             <if test="remark!=null">
                 remark,
             </if>
+            <if test="param_class!=null">
+                param_class,
+            </if>
+            <if test="required!=null">
+                required,
+            </if>
             <if test="modified_date!=null">
                 modified_date,
             </if>
@@ -114,6 +142,12 @@
             <if test="remark!=null">
                 #{remark},
             </if>
+            <if test="param_class!=null">
+                #{param_class},
+            </if>
+            <if test="required!=null">
+                #{required},
+            </if>
             <if test="modified_date">
                 #{modified_date},
             </if>
@@ -144,7 +178,6 @@
             <if test="param_values!=null">
                 param_values= #{param_values},
             </if>
-
             <if test="param_desc!=null">
                 param_desc= #{param_desc},
             </if>
@@ -153,6 +186,12 @@
             </if>
             <if test="remark!=null">
                 remark= #{remark},
+            </if>
+            <if test="param_class!=null">
+                param_class= #{param_class},
+            </if>
+            <if test="required!=null">
+                required= #{required},
             </if>
             <if test="modified_date">
                 modified_date= #{modified_date},
@@ -180,6 +219,8 @@
         dvp.param_type,
         dvp.param_values,
         dvp.param_desc,
+        dvp.param_class,
+        dvp.required,
         dc.corp_name,
         dvp.remark,
         dvp.modified_date,

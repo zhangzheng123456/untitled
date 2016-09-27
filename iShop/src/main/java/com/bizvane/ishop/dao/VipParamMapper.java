@@ -14,7 +14,7 @@ import java.util.Map;
 public interface VipParamMapper {
     VipParam selectById(int id) throws SQLException;
 
-    List<VipParam> selectAllParam(@Param("corp_code")String corp_code,@Param("search_value") String search_value) throws SQLException;
+    List<VipParam> selectAllParam(@Param("corp_code")String corp_code,@Param("search_value") String search_value,@Param("isactive") String isactive) throws SQLException;
 
     List<VipParam> checkParamName(@Param("corp_code") String corp_code,@Param("param_name") String param_name) throws SQLException;
 

@@ -40,7 +40,7 @@ public class VipParamServiceImpl implements VipParamService {
     @Override
     public PageInfo<VipParam> selectAllParam(int page_number, int page_size, String corp_code, String search_value) throws Exception {
         PageHelper.startPage(page_number, page_size);
-        List<VipParam> list = vipParamMapper.selectAllParam(corp_code,search_value);
+        List<VipParam> list = vipParamMapper.selectAllParam(corp_code,search_value,"");
         for (VipParam vipParam:list) {
             vipParam.setIsactive(CheckUtils.CheckIsactive(vipParam.getIsactive()));
         }
@@ -98,4 +98,12 @@ public class VipParamServiceImpl implements VipParamService {
         PageInfo<VipParam> page = new PageInfo<VipParam>(vipParams);
         return page;
     }
+
+    @Override
+    public List<VipParam> selectAllParam(String corp_code,String isactive) throws Exception {
+        List<VipParam> list = vipParamMapper.selectAllParam(corp_code,"",Common.IS_ACTIVE_Y);
+
+        return list;
+    }
+
 }
