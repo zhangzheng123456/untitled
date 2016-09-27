@@ -289,6 +289,11 @@ function fuzhi(data){
     }else{
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
     }
+    if(data.vip_avatar){
+        $(".person-img").css('background','url('+data.vip_avatar+')')
+    }else{
+        $(".person-img").css('backgroundImage','url(../img/head.png)')
+    }
 }
 
 
