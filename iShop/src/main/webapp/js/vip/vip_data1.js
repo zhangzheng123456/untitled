@@ -353,31 +353,37 @@ function frame(){
 }
 $("#expand_send").click(function(){
     var param=getexpandValue();
-    oc.postRequire("post","/vip/vipSaveInfo","",param,function(data){
-      if(data.code=="0"){
-          frame();
-          $('.frame').html('保存成功');
-      }else{
-          frame();
-          $('.frame').html('保存成功');
-      }
-    })
+    postInfo('expand',param);
 });
+$("#remark_keep").click(function(){
+    postInfo('remark',$("#remark_value").val())
+});
+function postInfo(type,value){//修改拓展信息和备注
+    var param_expand={};
+    param_expand['vip_id']=sessionStorage.getItem("id");
+    param_expand['card_no']=$("#vip_card_no").text();
+    param_expand['phone']=$("#vip_phone").text();
+    param_expand['corp_code']=sessionStorage.getItem("corp_code");
+    param_expand[type]=value;
+    oc.postRequire("post","/vip/vipSaveInfo","",param_expand,function(data){
+        if(data.code=="0"){
+            frame();
+            $('.frame').html('保存成功');
+        }else{
+            frame();
+            $('.frame').html('保存成功');
+        }
+    })
+}
 function getexpandValue(){
     var param_expand={};
-         param_expand['vip_id']=sessionStorage.getItem("id");
-         param_expand['card_no']=$("#vip_card_no").text();
-         param_expand['phone']=$("#vip_phone").text();
-         param_expand['corp_code']=sessionStorage.getItem("corp_code");
     var INPUT=$("#extend ul").find('input');
-    var list={};
     for(var i=0;i<INPUT.length;i++){
         var KEY="";
         var VALUE="";
         KEY=$(INPUT[i]).attr("data-key");
         VALUE=$(INPUT[i]).val().trim();
-        list[KEY]=VALUE;
+        param_expand[KEY]=VALUE;
     }
-    param_expand['extend']=list;
     return param_expand;
 }
