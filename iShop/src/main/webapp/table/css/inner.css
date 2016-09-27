@@ -1098,7 +1098,7 @@ input::-webkit-input-placeholder{
 }
 /*******************筛选区域样式******************/
 .screen_area{
-	width: 700px;
+	// width: 700px;
 	min-height: 530px;
 	padding:0 20px 0 20px;
 	background-color: #fff;

@@ -139,8 +139,9 @@ jQuery(function(){
 	function getSearchList(a){
 		param["rowno"]=a;
 		param["corp_code"]=corp_code;
+		$("#kong_img").hide();
+		$(".more").hide();
 		oc.postRequire("post","/api/fab/search","0",param,function(data){
-			$("#kong_img").hide();
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var hasNextPage=list.hasNextPage;
