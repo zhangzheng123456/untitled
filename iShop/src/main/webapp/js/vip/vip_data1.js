@@ -9,14 +9,14 @@ function getVipInfo(){
         var vipData=JSON.parse(data.message);
         var vipDataList=vipData.list;
         var extend=vipData.extend;
-        var extend_info=vipData.extend_info;
+        var extend_info=vipData.extend_info==""?{}:JSON.parse(vipData.extend_info);
         var extendhtml="";
         function getvalue(){
             var VALUE="";
-            for(var a=0;a<extend_info.length;a++){
-                if(extend[i].key==extend_info[a].key){
-                    VALUE=extend_info[a].value
-                }
+            for(data in extend_info){
+                if(extend[i].key==data){
+                   VALUE=extend_info[data]
+                 }
             }
             return VALUE;
         }
@@ -26,7 +26,7 @@ function getVipInfo(){
                 extendhtml+="<li>"
                     +"<b>"+extend[i].name+"</b>"
                     +"<div>"
-                    +"<input type='text' value='"+value+"' />"
+                    +"<input type='text' value='"+value+"' data-key='"+extend[i].key+"' />"
                     +"</div>"
                     +"</li>"
             }
@@ -41,7 +41,7 @@ function getVipInfo(){
                 extendhtml+='<li class="drop_down item_1">'
                     +'<b>'+extend[i].name+'</b>'
                     +'<div class="position" >'
-                    +'<input class="input_select" readonly value="'+value+'" type="text" />'
+                    +'<input class="input_select" readonly value="'+value+'" type="text" data-key="'+extend[i].key+'" />'
                     +ul
                     +'</div>'
                     +'</li>'
@@ -51,7 +51,7 @@ function getVipInfo(){
                 extendhtml+='<li >'
                 +'<b>'+extend[i].name+'</b>'
                 +'<div>'
-                +'<input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" value="'+value+'" onclick="laydate({istime: true, format: \'YYYY-MM-DD\'})">'
+                +'<input type="text" data-key="'+extend[i].key+'" readonly="true" placeholder="请输入日期" class="laydate-icon" value="'+value+'" onclick="laydate({istime: true, format: \'YYYY-MM-DD\'})">'
                 +'</div>'
                 +'</li>'
             }
@@ -60,7 +60,7 @@ function getVipInfo(){
                 extendhtml+='<li style="width: 100%">'
                 +'<b>'+extend[i].name+'</b>'
                 +'<div>'
-                +'<input type="text"  value="'+value+'"/>'
+                +'<input type="text"  value="'+value+'" data-key="'+extend[i].key+'"/>'
                 +'</div>'
                 +'</li>'
             }
@@ -84,7 +84,6 @@ function getVipPoints(code,type){
 
     oc.postRequire("post","/vip/vipPoints","",parmam_jifen,function(data){
         var Data=JSON.parse(data.message);
-        console.log(Data);
         if(type=='1'){
             var pointsData=Data.result_points;//积分
             var listData=JSON.parse(pointsData.list);//积分list
@@ -99,14 +98,11 @@ function getVipPoints(code,type){
             var pointsData=Data.result_points;//积分
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=consumnData.list_wardrobe;//消费list
-            console.log(consumnData);
             var listData=JSON.parse(pointsData.list);//积分list
             jifenContent(listData,pointsData);
             xiaofeiContent(consumnData,consumnlistData);
         }
-
     });
-    console.log(type)
 }
 function jifenContent(listData,pointsData){
     $("#points_total").html(pointsData.points);
@@ -158,8 +154,6 @@ function xiaofeiContent(consumnData,consumnlistData){
             unqiuearr.push(arr[i]);
         }
     }
-    console.log(arr);
-    console.log(unqiuearr);
     for(var i=0;i<unqiuearr.length;i++){
         var TR="";
         var total_money="0.0";
@@ -367,4 +361,34 @@ function frame(){
     setTimeout(function(){
         $(".frame").hide();
     },2000);
+}
+$("#expand_send").click(function(){
+    var param=getexpandValue();
+    oc.postRequire("post","/vip/vipSaveInfo","",param,function(data){
+      if(data.code=="0"){
+          frame();
+          $('.frame').html('保存成功');
+      }else{
+          frame();
+          $('.frame').html('保存成功');
+      }
+    })
+});
+function getexpandValue(){
+    var param_expand={};
+         param_expand['vip_id']=sessionStorage.getItem("id");
+         param_expand['card_no']=$("#vip_card_no").text();
+         param_expand['phone']=$("#vip_phone").text();
+         param_expand['corp_code']=sessionStorage.getItem("corp_code");
+    var INPUT=$("#extend ul").find('input');
+    var list={};
+    for(var i=0;i<INPUT.length;i++){
+        var KEY="";
+        var VALUE="";
+        KEY=$(INPUT[i]).attr("data-key");
+        VALUE=$(INPUT[i]).val().trim();
+        list[KEY]=VALUE;
+    }
+    param_expand['extend']=list;
+    return param_expand;
 }

@@ -101,7 +101,7 @@
                                 <!--</p>-->
                             </div>
                             <div id="test">
-                                <div id="add_app_id"style="margin-bottom: 0px;margin-top: 2px;color:#888888;margin-left: 0px">
+                                <div class="add_app_id" id="screen_add" style="margin-bottom: 0px;margin-top: 2px;color:#888888;margin-left: 0px">
                                     新增 <span>+</span>
                                 </div>
                             </div>
@@ -284,17 +284,16 @@
         </div>
     </div>
      <!-- 拉取区域 -->
-    <div id="screen_area" class="screen_area"style="display:none;">
+    <div id="screen_area" class="screen_area">
         <div class="screen_title">
             <h4>所属区域</h4>
-            <div></div>
             <div class="screen_close" id="screen_close_area"><span class="icon-ishop_6-12"></span></div>
             <div class="xian"></div>
         </div>
         <div class="input_s">
             <div class="input_search">
-                <input type="text" placeholder="搜索区域">
-                <span class="icon-ishop_3-05" class=""></span>
+                <input type="text" placeholder="搜索区域" id="area_search">
+                <span class="icon-ishop_3-05"></span>
             </div>
             <div class="s_center"></div>
             <div class="s_pitch">
@@ -304,54 +303,6 @@
         <div class="screen_content">
             <div class="screen_content_l">
                 <ul>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
-                    <li>
-                        <div class="checkbox1">
-                            <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
-                        </div>
-                        <span class="p16">店铺编号</span>
-                    </li>
                     <li>
                         <div class="checkbox1">
                             <input type="checkbox" value="" name="test" class="check" id="checkboxInput01"><label for="checkboxInput01"></label>
@@ -555,12 +506,12 @@
     <script type="text/javascript" src="../js/artDialog/jquery.artDialog.js"></script>
     <script type="text/javascript" src="../js/artDialog/plugins/iframeTools.js"></script>
     <!-- ajax -->
-    <!-- <script type="text/javascript" src="../js/insidePostRequire.js"></script> -->
+    <script type="text/javascript" src="../js/insidePostRequire.js"></script>
     <!-- 带搜索的下拉框 -->
     <script type="text/javascript" src="../js/jquery.searchableSelect.js"></script>
     <!-- error tips -->
     <script type="text/javascript" src="../js/user/user_operate.js"></script>
     <script src="/js/user/usercheck_power.js"></script>
-    <script src="/js/screen.js"></script>
+    <script src="/js/user/screen.js"></script>
 </body>
 </html>
