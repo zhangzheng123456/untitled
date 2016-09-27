@@ -6,6 +6,7 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.ParamConfigureMapper;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.imp.ParamConfigureServiceImpl;
+import com.bizvane.ishop.utils.LuploadHelper;
 import com.bizvane.ishop.utils.WebUtils;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
@@ -61,20 +62,23 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
-            List<String> list = new ArrayList<String>();
-            list.add("保护环境");       //向列表中添加数据
-            list.add("爱护地球");        //向列表中添加数据
-            list.add("从我做起");       //向列表中添加数据
-            list.add("从我ss起");       //向列表中添加数据
-            List<String> list1 = new ArrayList<String>();
-            list1.add("保护环境");        //向列表中添加数据
-            list1.add("爱护地球");       //向列表中添加数据
-            list1.add("cccccc");       //向列表中添加数据
-            boolean ret = list.remove(list1);    //从list中移除与list1相同的元素
-            Iterator<String> it = list.iterator();   //创建迭代器
-            while (it.hasNext()) {       //循环遍历迭代器
-                System.out.println(it.next());    //输出集合中元素
-            }
+
+
+            LuploadHelper.deleteDirectory("E:\\Test");
+//            List<String> list = new ArrayList<String>();
+//            list.add("保护环境");       //向列表中添加数据
+//            list.add("爱护地球");        //向列表中添加数据
+//            list.add("从我做起");       //向列表中添加数据
+//            list.add("从我ss起");       //向列表中添加数据
+//            List<String> list1 = new ArrayList<String>();
+//            list1.add("保护环境");        //向列表中添加数据
+//            list1.add("爱护地球");       //向列表中添加数据
+//            list1.add("cccccc");       //向列表中添加数据
+//            boolean ret = list.remove(list1);    //从list中移除与list1相同的元素
+//            Iterator<String> it = list.iterator();   //创建迭代器
+//            while (it.hasNext()) {       //循环遍历迭代器
+//                System.out.println(it.next());    //输出集合中元素
+//            }
 
 
 

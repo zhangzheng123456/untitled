@@ -37,6 +37,7 @@ import java.io.File;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -585,6 +586,7 @@ public class GoodsController {
         DataBean dataBean = new DataBean();
         String user_id = request.getSession(false).getAttribute("user_code").toString();
         String id = "";
+        String path="";
         try {
             String jsString = request.getParameter("param");
             org.json.JSONObject jsonObj = new org.json.JSONObject(jsString);
@@ -603,14 +605,15 @@ public class GoodsController {
             OssUtils ossUtils=new OssUtils();
             String bucketName="products-image";
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
-            String path =   request.getSession().getServletContext().getRealPath("/");
+             path =   request.getSession().getServletContext().getRealPath("/");
 
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
                 String time="testImage/"+corp_code+goods.getGoods_code()+sdf.format(new Date())+".jpg";
-                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
-                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
+//                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
+//                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
                 ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
                 goods_description = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
+
             }
             goods.setGoods_description(goods_description);
             Date now = new Date();
@@ -635,6 +638,8 @@ public class GoodsController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage(ex.getMessage());
+        }finally {
+            LuploadHelper.deleteDirectory(path + "\\image\\upload");
         }
         return dataBean.getJsonStr();
     }
@@ -682,6 +687,7 @@ public class GoodsController {
     public String editGoodsTrain(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String id = "";
+        String path="";
         try {
             String user_id = request.getSession(false).getAttribute("user_code").toString();
             String jsString = request.getParameter("param");
@@ -691,7 +697,30 @@ public class GoodsController {
             String message = jsonObj.get("message").toString();
             org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             String match_goods = jsonObject.get("match_goods").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
             Goods goods = WebUtils.JSON2Bean(jsonObject, Goods.class);
+            //goods.setGoods_time(sdf.parse);
+            String goods_description = goods.getGoods_description();
+            //String goods_description = "<p><img src=\"/image/upload/20160923/1474624297069083036.jpg\" title=\"1474624297069083036.jpg\" alt=\"lovely.jpg\"/></p><p><img src=\"/image/upload/20160923/1474624387054042981.jpg\" title=\"1474624387054042981.jpg\"/></p><p>这是一段文本</p>";
+
+            List<String> htmlImageSrcList = OssUtils.getHtmlImageSrcList(goods_description);
+            OssUtils ossUtils=new OssUtils();
+            String bucketName="products-image";
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
+            path =   request.getSession().getServletContext().getRealPath("/");
+
+            for (int k = 0; k < htmlImageSrcList.size(); k++) {
+                String time="testImage/"+corp_code+goods.getGoods_code()+sdf.format(new Date())+".jpg";
+                if(htmlImageSrcList.get(k).startsWith("http://")){
+                    continue;
+                }
+//                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
+//                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
+                ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
+                goods_description = goods_description.replace(htmlImageSrcList.get(k),"http://"+bucketName+".oss-cn-hangzhou.aliyuncs.com/"+time);
+
+            }
+            goods.setGoods_description(goods_description);
             Date now = new Date();
             goods.setModified_date(Common.DATETIME_FORMAT.format(now));
             goods.setModifier(user_id);
@@ -707,6 +736,8 @@ public class GoodsController {
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error");
+        }finally {
+            LuploadHelper.deleteDirectory(path + "\\image\\upload");
         }
         return dataBean.getJsonStr();
     }
