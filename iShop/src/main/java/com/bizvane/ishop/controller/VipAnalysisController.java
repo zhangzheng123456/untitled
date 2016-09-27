@@ -77,7 +77,7 @@ public class VipAnalysisController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String query_type = "today";
+            String query_type = "daily";
             if (jsonObject.containsKey("query_type")){
                 query_type = jsonObject.get("query_type").toString();
             }
