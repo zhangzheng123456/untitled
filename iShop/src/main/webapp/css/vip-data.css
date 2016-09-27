@@ -125,6 +125,13 @@ body{
 }
 .header .center .message-class .tabs-parent{
     height: 330px;
+    position: relative;
+}
+.header .center .message-class .tabs-parent span{
+    position: absolute;
+    top: 165px;
+    left: 140px;
+    font-size: 15px;
 }
 .header .center .message-class .tabs-parent .table{
     cursor: pointer;
