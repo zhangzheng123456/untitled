@@ -63,7 +63,13 @@ function getStore(a){
         var message=JSON.parse(data.message);//???messagejson?????DOM????
         var output=JSON.parse(message.list);
         var output_list=output.list;
-        output_list.length<7&&($('#select_analyze_shop s').attr('style','display:none'));
+        console.log(output_list.length);
+        if(output_list.length<7){
+            $('#select_analyze_shop s').attr('style','display:none')
+        }else{
+            $('#select_analyze_shop s').attr('style','display:block')
+        }
+        // output_list.length<7&&($('#select_analyze_shop s').attr('style','display:none'));
         first_store_name=output_list[0].store_name;
         first_store_code=output_list[0].store_code;
         for(var i= 0;i<output_list.length;i++){
