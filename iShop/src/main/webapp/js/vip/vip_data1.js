@@ -400,7 +400,7 @@ function postInfo(type,value){//修改拓展信息和备注
             $('.frame').html('保存成功');
         }else{
             frame();
-            $('.frame').html('保存成功');
+            $('.frame').html('保存失败');
         }
     })
 }
