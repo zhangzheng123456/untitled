@@ -200,7 +200,6 @@ $(".vip_nav_bar li:nth-child(2)").click(function () {
     $($(".new_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
     var lis= $($(".new_btn span")[0]).parent().nextAll();
     for(var i=0;i<lis.length;i++){
-        console.log($(lis[i]).find('span'));
         $(lis[i]).find('span').css({"color":"","background":""});
     }
 })
@@ -239,8 +238,6 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
     }
 })
 $(".vip_nav_bar li").click(function () {
-    // $(this).css("border-bottom","2px solid #6cc1c8");
-    // $(this).siblings().css("border-bottom","");
     $(this).addClass("liactive");
     $(this).siblings().removeClass("liactive");
 })
@@ -366,7 +363,6 @@ function birthVipGet_sub(ali) {
 /******************新VIP会员***************************/
 //新VIP模块数据请求加载
 function newVipGet(){
-    $('#table_analyze no_data').empty();
     whir.loading.add("",0.5);//加载等待框
     var type='new';
     $('.newVip .vip_table tbody').empty();
@@ -386,10 +382,6 @@ function newVipGet(){
              count=msg.pages;
             var pageIndex=msg.pageNum;
             msg=msg.new_vip_list;
-            console.log(msg.length);
-            // if(!msg.length){
-            //     $("#table_analyze").append('<span class="no_data'+'">暂无数据</span>');
-            // }
             if(msg.length){
                 for(var i=0;i<msg.length;i++){
                     if(pageIndex>=2){
@@ -418,11 +410,11 @@ function newVipGet(){
             // whir.loading.remove();//移除加载框
         }
         //调用生成页码
-        console.log(month_type);
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
         whir.loading.remove();//移除加载框
+        //如果页面没有数据，设置提示信息
+        $('.newVip .vip_table tbody').html()?'':$('.newVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
     });
-
 }
 function newVipGet_sub(ali) {
     var ali=ali;//当前对象
@@ -487,7 +479,6 @@ function sleepVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
-    // whir.loading.remove();//移除加载框
 }
 function sleepVipGet_sub(ali) {
     var ali=ali;//当前对象

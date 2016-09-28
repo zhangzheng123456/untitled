@@ -15,17 +15,10 @@ function getConsumCount(){//获取会员信息
        var Data=JSON.parse(data.message);
        var album=JSON.parse(Data.Album);
        var label=JSON.parse(Data.Label);
-       var conSumData=JSON.parse(Data.Consum);
        var HTML="";
-        var Ablum_all_html="";
+       var Ablum_all_html="";
        var LABEL="";
        var LABELALL="";
-      $("#total_amount_Y").html(conSumData.total_amount_Y);
-      $("#consume_times_Y").html(conSumData.consume_times_Y);
-      $("#total_amount").html(conSumData.total_amount);
-      $("#consume_times").html(conSumData.consume_times);
-      $("#dormant_time").html(conSumData.dormant_time);
-      $("#last_date").html(conSumData.last_date);
         if(album.length!==0){
             for(var i=0;i<album.length;i++){
                 var date=album[i].created_date;
@@ -46,7 +39,7 @@ function getConsumCount(){//获取会员信息
         $("#Ablum-all").html(Ablum_all_html);
         if(label.length!==0){
             for(var i=0;i<label.length;i++){
-                LABEL+="<span >"+label[i].label_name+"</span>";
+                LABEL+="<span>"+label[i].label_name+"</span>";
                 if(label[i].label_type=="user"){
                     LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
                 }else {
