@@ -136,6 +136,7 @@ public class VIPController {
 
             String extend_info = "";
             String remark = "";
+            String avatar = "";
             JSONArray extend = new JSONArray();
 
             List<VipParam> vipParams = vipParamService.selectAllParam(corp_code,Common.IS_ACTIVE_Y);
@@ -163,8 +164,11 @@ public class VIPController {
                     extend_info = obj.get("extend").toString();
                 if (obj.containsField("remark"))
                     remark = obj.get("remark").toString();
+                if (obj.containsField("avatar"))
+                    remark = obj.get("avatar").toString();
             }
 
+            vip.put("vip_avatar",avatar);
             JSONObject result = new JSONObject();
             result.put("list",vip);
             result.put("extend",extend);
@@ -279,7 +283,8 @@ public class VIPController {
             if (role_code.equals(Common.ROLE_SYS)){
                 corp_code = jsonObject.get("corp_code").toString();
             }
-            String search_value = jsonObject.get("search_value").toString();
+            String search_value = jsonObject.get("searchValue").toString();
+            logger.info("json--------------corp_code-" + corp_code);
 
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
@@ -287,7 +292,7 @@ public class VIPController {
             datalist.put(data_search_value.key, data_search_value);
             datalist.put(data_corp_code.key, data_corp_code);
 
-            DataBox dataBox = iceInterfaceService.iceInterfaceV2("VipSearch", datalist);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
@@ -346,6 +351,10 @@ public class VIPController {
                     String remark = jsonObject.get("remark").toString();
                     updatedValue.put("remark", remark);
                 }
+                if (jsonObject.containsKey("avatar")) {
+                    String avatar = jsonObject.get("avatar").toString();
+                    updatedValue.put("avatar", avatar);
+                }
                 DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
                 cursor.update(updateCondition, updateSetValue);
             }else {
@@ -364,6 +373,10 @@ public class VIPController {
                 if (jsonObject.containsKey("remark")) {
                     String remark = jsonObject.get("remark").toString();
                     saveData.put("remark", remark);
+                }
+                if (jsonObject.containsKey("avatar")) {
+                    String avatar = jsonObject.get("avatar").toString();
+                    saveData.put("avatar", avatar);
                 }
                 cursor.save(saveData);
             }
