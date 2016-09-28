@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
 import com.bizvane.ishop.utils.*;
@@ -76,7 +77,7 @@ public class UserActionController {
             System.out.println("======vipActionLogger===== ");
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_action);
 
             DBCursor dbCursor = null;
             // 读取数据
@@ -222,7 +223,7 @@ public class UserActionController {
             String search_value = jsonObject.get("searchValue").toString();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_action);
 
             String[] column_names = new String[]{"emp_id","emp_name","corp_name","url","time","vip_id","action"};
             BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
@@ -285,7 +286,7 @@ public class UserActionController {
             BasicDBObject queryCondition = MongoUtils.andOperation(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_action);
 
             DBCursor dbCursor = null;
             // 读取数据
@@ -342,7 +343,7 @@ public class UserActionController {
             ArrayList list = new ArrayList();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_person_action");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_user_action);
             DBObject sort_obj = new BasicDBObject("time", -1);
 
             if (screen.equals("")) {
