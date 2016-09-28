@@ -500,18 +500,18 @@ public class BrandController {
                 result = "：Execl中品牌名称存在重复值";
                 int b = 5 / 0;
             }
-            Pattern pattern = Pattern.compile("B\\d{4}");
+         //   Pattern pattern = Pattern.compile("B\\d{4}");
             Cell[] column = rs.getColumn(1);
             for (int i = 3; i < column.length; i++) {
                 if(column[i].getContents().toString().trim().equals("")){
                     continue;
                 }
-                Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
-                if (matcher.matches() == false) {
-                    result = "：第" + (i + 1) + "行品牌编号格式有误";
-                    int b = 5 / 0;
-                    break;
-                }
+//                Matcher matcher = pattern.matcher(column[i].getContents().toString().trim());
+//                if (matcher.matches() == false) {
+//                    result = "：第" + (i + 1) + "行品牌编号格式有误";
+//                    int b = 5 / 0;
+//                    break;
+//                }
                 Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), column[i].getContents().toString().trim(),Common.IS_ACTIVE_Y);
                 if (brand != null) {
                     result = "：第" + (i + 1) + "行品牌编号已存在";
