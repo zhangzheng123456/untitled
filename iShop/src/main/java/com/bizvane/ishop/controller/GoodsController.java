@@ -334,7 +334,7 @@ public class GoodsController {
                     }
                 }
             }
-            for (int i = 3; i < column3.length; i++) {
+            for (int i = 3; i < rows; i++) {
 //                if(column3[i].getContents().toString().trim().equals("")){
 //                    continue;
 //                }
@@ -608,7 +608,7 @@ public class GoodsController {
              path =   request.getSession().getServletContext().getRealPath("/");
 
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
-                String time="testImage/"+corp_code+goods.getGoods_code()+sdf.format(new Date())+".jpg";
+                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
 //                System.out.println("-------------pppppp-----------------------"+htmlImageSrcList.get(k));
 //                System.out.println("-------------path-----------------------"+path+htmlImageSrcList.get(k));
                 ossUtils.putObject(bucketName,time,path+"/"+htmlImageSrcList.get(k));
@@ -708,7 +708,7 @@ public class GoodsController {
             path =   request.getSession().getServletContext().getRealPath("/");
 
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
-                String time="testImage/"+corp_code+goods.getGoods_code()+sdf.format(new Date())+".jpg";
+                String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
                 if(htmlImageSrcList.get(k).startsWith("http://")){
                     continue;
                 }

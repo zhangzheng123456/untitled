@@ -3,7 +3,6 @@ package com.bizvane.ishop.utils;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.mongodb.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -42,8 +41,17 @@ public class MongoUtils {
         return queryCondition;
     }
 
-//    //多条件查询
-//    public static BasicDBObject orOperation(BasicDBObject queryCondition,){}
+    //in查询
+    public static BasicDBObject inOperation(String[] args,String condition){
+        BasicDBObject queryCondition = new BasicDBObject();
+        //age in [13, 47]
+        BasicDBList values = new BasicDBList();
+        for (int i = 0; i < args.length; i++) {
+            values.add(args[i]);
+        }
+        queryCondition.put(condition, new BasicDBObject("$in", values));
+        return queryCondition;
+    }
 
     //获取总页数
     public static int getPages(DBCursor dbCursor,int page_size){
@@ -78,21 +86,21 @@ public class MongoUtils {
 
 //mongodb插入、删除模板
 
-    //save方式插入数据
-    private static void saveData(DBCollection collection){
-        DBObject saveData=new BasicDBObject();
-        saveData.put("userName", "iwtxokhtd");
-        saveData.put("age", "26");
-        saveData.put("gender", "m");
-
-        DBObject infoData=new BasicDBObject();
-        infoData.put("height", 16.3);
-        infoData.put("weight", 22);
-
-        saveData.put("info", infoData);
-
-        collection.save(saveData);
-    }
+    //save方式插入数据(id相同会覆盖)
+//    public static void saveData(DBCollection collection, Entity entity){
+//        DBObject saveData=new BasicDBObject();
+//        saveData.put("userName", "iwtxokhtd");
+//        saveData.put("age", "26");
+//        saveData.put("gender", "m");
+//
+//        DBObject infoData=new BasicDBObject();
+//        infoData.put("height", 16.3);
+//        infoData.put("weight", 22);
+//
+//        saveData.put("info", infoData);
+//
+//        collection.save(entity);
+//    }
 
     //insert方式插入数据
     private static void insertData(DBCollection collection){
@@ -128,4 +136,22 @@ public class MongoUtils {
         deletePig.put("name", "pig");
         collection.remove(deletePig);
     }
+
+
+    //DBCursor排序分页（优化版本）
+    //sort_type（1：正序，-1：倒序）
+//    public static DBCursor sortAndPageNew(DBCursor dbCursor,int page_num,int page_size,String sort_key,int sort_type){
+//        DBObject sort_obj = new BasicDBObject(sort_key, sort_type);
+//        if (page_num>1){
+//            DBCursor dbCursor1 = dbCursor.sort(sort_obj).limit(page_num * page_size);
+//            DBObject latestDB = dbCursor1.next();
+//            String value = latestDB.get(sort_key).toString();
+//
+//        }else {\
+//            dbCursor = dbCursor.sort(sort_obj).limit(page_size);
+//        }
+//        dbCursor = dbCursor.sort(sort_obj).skip((page_num - 1) * page_size).limit(page_size);
+//        return dbCursor;
+//    }
+
 }

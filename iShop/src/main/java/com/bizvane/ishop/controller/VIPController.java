@@ -8,13 +8,20 @@ import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.entity.*;
 import com.bizvane.ishop.service.*;
+import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.WebUtils;
+import com.bizvane.sun.common.service.mongodb.MongoDBClient;
 import com.bizvane.sun.v1.common.Data;
 import com.bizvane.sun.v1.common.DataBox;
 import com.bizvane.sun.v1.common.ValueType;
 import com.github.pagehelper.PageInfo;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBCursor;
+import com.mongodb.DBObject;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -42,11 +49,16 @@ public class VIPController {
     @Autowired
     VipLabelService vipLabelService;
     @Autowired
+    VipParamService vipParamService;
+    @Autowired
     BaseService baseService;
+    @Autowired
+    MongoDBClient mongodbClient;
+
 
     /**
      * 会员信息
-     * 消费累计+相册+标签
+     * 相册+标签
      */
     @RequestMapping(value = "/vipConsumCount", method = RequestMethod.POST)
     @ResponseBody
@@ -62,22 +74,9 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String vip_id = jsonObject.get("vip_id").toString();
             String corp_code = jsonObject.get("corp_code").toString();
-//            String store_code = jsonObject.get("store_id").toString();
-
-            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-
-            Map datalist = new HashMap<String, Data>();
-            datalist.put(data_vip_id.key, data_vip_id);
-            datalist.put(data_corp_code.key, data_corp_code);
-
-//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnalysisVipMonetary", datalist);
-//            String result = dataBox.data.get("message").value;
-//            logger.info("----vip_id: "+vip_id+"---vipConsumCount:" + dataBox.data.get("message").value);
 
             List<VipAlbum> vipAlbumList = new ArrayList<VipAlbum>();
             List<VipLabel> vipLabelList = new ArrayList<VipLabel>();
-
             if (jsonObject.containsKey("type")){
                 if (jsonObject.get("type").equals("1")){
                     //相册
@@ -87,26 +86,13 @@ public class VIPController {
                     vipLabelList = vipLabelService.selectLabelByVip(corp_code,vip_id);
                 }
             }else {
-                //消费累计
-                JSONObject consume = new JSONObject();
-                consume.put("consume_times", "2");
-                consume.put("total_amount_Y", "4876");
-                consume.put("dormant_time", "92");
-                consume.put("consume_times_Y", "2");
-                consume.put("total_amount", "4876");
-                consume.put("last_date", "2016-06-27");
-                String result = consume.toString();
-
                 //相册
                 vipAlbumList = vipAlbumService.selectAlbumByVip(corp_code, vip_id);
                 //标签
                 vipLabelList = vipLabelService.selectLabelByVip(corp_code, vip_id);
-
-                obj.put("Consum",result);
             }
             obj.put("Album",JSON.toJSONString(vipAlbumList));
             obj.put("Label",JSON.toJSONString(vipLabelList));
-
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(obj.toString());
@@ -122,7 +108,7 @@ public class VIPController {
 
     /**
      * 会员信息
-     * 会员详细资料+扩展信息
+     * 会员详细资料+扩展信息+备注
      */
     @RequestMapping(value = "/vipInfo", method = RequestMethod.POST)
     @ResponseBody
@@ -144,144 +130,46 @@ public class VIPController {
             datalist.put(data_vip_id.key, data_vip_id);
             datalist.put(data_corp_code.key, data_corp_code);
 
-            JSONObject vip = new JSONObject();
-
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipDetail", datalist);
             String vip_info = dataBox.data.get("message").value;
-            vip = JSONObject.parseObject(vip_info);
+            JSONObject vip = JSONObject.parseObject(vip_info);
 
-//            vip.put("corp_code","C10000");
-//            vip.put("store_id","1570");
-//            vip.put("user_id","无");
-//            vip.put("vip_id","774205");
-//            vip.put("vip_avatar","");
-//            vip.put("vip_name","罗晓珊");
-//            vip.put("vip_phone","15915655912");
-//            vip.put("vip_card_type","直营合作会员卡");
-////            vip.put("amount","1000");
-//            vip.put("consume_times","5");
-//            vip.put("join_date","2016-04-11");
-//            vip.put("cardno","4444444444444444444");
-//            vip.put("vip_birthday","2016-04-11");
-//            vip.put("age","23");
-//            vip.put("sex","female");
-//            vip.put("user_name","10000");
-//            vip.put("total_amount","2003");
-//            vip.put("dormant_time","2016-04-11");
-//            vip.put("store_name","第三家");
-//            vip.put("store_code","ABC02");
-////            vip.put("vip_card_no","774205");
-
+            String extend_info = "";
+            String remark = "";
             JSONArray extend = new JSONArray();
-            JSONArray info = new JSONArray();
 
-            JSONObject extend_job = new JSONObject();
-            extend_job.put("name","职业");
-            extend_job.put("key","working");
-            extend_job.put("type",Common.DATE_SHOW_TYPE_TEXT);
-            extend_job.put("is_must","Y");
-            extend.add(extend_job);
-            JSONObject extend_mail = new JSONObject();
-            extend_mail.put("name","邮件");
-            extend_mail.put("key","mail");
-            extend_mail.put("type",Common.DATE_SHOW_TYPE_TEXT);
-            extend_mail.put("is_must","Y");
-            extend.add(extend_mail);
-            JSONObject extend_birth = new JSONObject();
-            extend_birth.put("name","生日");
-            extend_birth.put("key","birthday");
-            extend_birth.put("type",Common.DATE_SHOW_TYPE_DATE);
-            extend_birth.put("is_must","Y");
-            extend.add(extend_birth);
-            JSONObject extend_idno = new JSONObject();
-            extend_idno.put("name","身份证号码");
-            extend_idno.put("key","idno");
-            extend_idno.put("type",Common.DATE_SHOW_TYPE_TEXT);
-            extend_idno.put("is_must","Y");
-            extend.add(extend_idno);
-            JSONObject extend_height = new JSONObject();
-            extend_height.put("name","身高");
-            extend_height.put("key","height");
-            extend_height.put("type",Common.DATE_SHOW_TYPE_TEXT);
-            extend_height.put("is_must","Y");
-            extend.add(extend_height);
-            JSONObject extend_bust = new JSONObject();
-            extend_bust.put("name","胸围(cm)");
-            extend_bust.put("key","bust");
-            extend_bust.put("type",Common.DATE_SHOW_TYPE_TEXT);
-            extend_bust.put("is_must","Y");
-            extend.add(extend_bust);
-            JSONObject extend_waist = new JSONObject();
-            extend_waist.put("name","腰围(cm)");
-            extend_waist.put("key","waist");
-            extend_waist.put("type",Common.DATE_SHOW_TYPE_TEXT);
-            extend_waist.put("is_must","Y");
-            extend.add(extend_waist);
-            JSONObject extend_hip = new JSONObject();
-            extend_hip.put("name","臀围(cm)");
-            extend_hip.put("key","hip");
-            extend_hip.put("type",Common.DATE_SHOW_TYPE_TEXT);
-            extend_hip.put("is_must","Y");
-            extend.add(extend_hip);
-            JSONObject extend_constellation = new JSONObject();
-            extend_constellation.put("name","星座");
-            extend_constellation.put("key","constellation");
-            extend_constellation.put("type",Common.DATE_SHOW_TYPE_SELECT);
-            extend_constellation.put("values", CommonValue.VALUE_CONSTELLATION);
-            extend_constellation.put("is_must","Y");
-            extend.add(extend_constellation);
-            JSONObject extend_address = new JSONObject();
-            extend_address.put("name","通讯地址");
-            extend_address.put("key","address");
-            extend_address.put("type",Common.DATE_SHOW_TYPE_LONGTEXT);
-            extend_address.put("is_must","Y");
-            extend.add(extend_address);
+            List<VipParam> vipParams = vipParamService.selectAllParam(corp_code,Common.IS_ACTIVE_Y);
+            for (int i = 0; i < vipParams.size(); i++) {
+                JSONObject extend_obj = new JSONObject();
+                extend_obj.put("name",vipParams.get(i).getParam_desc());
+                extend_obj.put("key",vipParams.get(i).getParam_name());
+                extend_obj.put("type",vipParams.get(i).getParam_type());
+                extend_obj.put("values",vipParams.get(i).getParam_values());
+                extend_obj.put("is_must",vipParams.get(i).getRequired());
+                extend_obj.put("class",vipParams.get(i).getParam_class());
+                extend.add(extend_obj);
+            }
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
 
-            JSONObject extend_info_job = new JSONObject();
-            extend_info_job.put("key","working");
-            extend_info_job.put("value","攻城狮");
-            info.add(extend_info_job);
-            JSONObject extend_info_mail = new JSONObject();
-            extend_info_mail.put("key","mail");
-            extend_info_mail.put("value","123@2.com");
-            info.add(extend_info_mail);
-            JSONObject extend_info_birth = new JSONObject();
-            extend_info_birth.put("key","birthday");
-            extend_info_birth.put("value","1993-07-07");
-            info.add(extend_info_birth);
-            JSONObject extend_info_height = new JSONObject();
-            extend_info_height.put("key","height");
-            extend_info_height.put("value","170");
-            info.add(extend_info_height);
-            JSONObject extend_info_constellation = new JSONObject();
-            extend_info_constellation.put("key","constellation");
-            extend_info_constellation.put("value","处女座");
-            info.add(extend_info_constellation);
-            JSONObject extend_info_address = new JSONObject();
-            extend_info_address.put("key","address");
-            extend_info_address.put("value","江苏省南京市软件大道118号");
-            info.add(extend_info_address);
-            JSONObject extend_info_idno = new JSONObject();
-            extend_info_idno.put("key","idno");
-            extend_info_idno.put("value","320811198810102245");
-            info.add(extend_info_idno);
-            JSONObject extend_info_bust = new JSONObject();
-            extend_info_bust.put("key","bust");
-            extend_info_bust.put("value","80");
-            info.add(extend_info_bust);
-            JSONObject extend_info_waist = new JSONObject();
-            extend_info_waist.put("key","waist");
-            extend_info_waist.put("value","65");
-            info.add(extend_info_waist);
-            JSONObject extend_info_hip = new JSONObject();
-            extend_info_hip.put("key","hip");
-            extend_info_hip.put("value","90");
-            info.add(extend_info_hip);
+            DBCollection cursor = mongoTemplate.getCollection("vip_info");
+            BasicDBObject dbObject=new BasicDBObject();
+            dbObject.put("vip_id",vip_id);
+            dbObject.put("corp_code",corp_code);
+            DBCursor dbCursor= cursor.find(dbObject);
+
+            while (dbCursor.hasNext()) {
+                DBObject obj = dbCursor.next();
+                if (obj.containsField("extend"))
+                    extend_info = obj.get("extend").toString();
+                if (obj.containsField("remark"))
+                    remark = obj.get("remark").toString();
+            }
 
             JSONObject result = new JSONObject();
             result.put("list",vip);
             result.put("extend",extend);
-            result.put("extend_info",info);
+            result.put("extend_info",extend_info);
+            result.put("remark",remark);
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
@@ -523,6 +411,116 @@ public class VIPController {
         }
         return dataBean.getJsonStr();
     }
+
+    /**
+     * 会员列表
+     * 筛选
+     */
+    @RequestMapping(value = "/vipScreen", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            
+
+
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("");
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+
+    /**
+     * 会员信息
+     * 保存mongodb
+     */
+    @RequestMapping(value = "/vipSaveInfo", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipSaveInfo(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String vip_id = jsonObject.get("vip_id").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String card_no = jsonObject.get("card_no").toString();
+            String phone = jsonObject.get("phone").toString();
+
+            MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
+            DBCollection cursor = mongoTemplate.getCollection("vip_info");
+            Map keyMap = new HashMap();
+            keyMap.put("_id", corp_code+card_no);
+            BasicDBObject queryCondition = new BasicDBObject();
+            queryCondition.putAll(keyMap);
+            DBCursor dbCursor1 = cursor.find(queryCondition);
+            if (dbCursor1.size()>0){
+                //记录存在，更新
+                DBObject updateCondition=new BasicDBObject();
+                updateCondition.put("_id", corp_code+card_no);
+
+                DBObject updatedValue=new BasicDBObject();
+                if (jsonObject.containsKey("extend")) {
+                    String extend = jsonObject.get("extend").toString();
+                    updatedValue.put("extend", extend);
+                }
+                if (jsonObject.containsKey("remark")) {
+                    String remark = jsonObject.get("remark").toString();
+                    updatedValue.put("remark", remark);
+                }
+                DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
+                cursor.update(updateCondition, updateSetValue);
+            }else {
+                //记录不存在，插入
+                DBObject saveData = new BasicDBObject();
+                saveData.put("_id", corp_code + card_no);
+                saveData.put("vip_id", vip_id);
+                saveData.put("corp_code", corp_code);
+                saveData.put("card_no", card_no);
+                saveData.put("phone", phone);
+                saveData.put("corp_code", corp_code);
+                if (jsonObject.containsKey("extend")) {
+                    String extend = jsonObject.get("extend").toString();
+                    saveData.put("extend", extend);
+                }
+                if (jsonObject.containsKey("remark")) {
+                    String remark = jsonObject.get("remark").toString();
+                    saveData.put("remark", remark);
+                }
+                cursor.save(saveData);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage("save success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
 
 
     //会员积分列表
