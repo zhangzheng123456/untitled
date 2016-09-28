@@ -96,13 +96,13 @@ function showNameClick(e){
         $('#select_analyze_shop ul').html('');
         getStore(area_code);
         $('#select_analyze').toggle();
+        $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
     }else{
         var store_code=$(e).attr('data_store');
         $('#side_analyze ul li:nth-child(3) s').html($(e).html());
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
         $('#select_analyze_shop').toggle();
         //添加店铺时，找到显示的DIV发起请求
-        console.log($('.vip_nav_bar li[class="liactive"]')[0]);
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
     }
 }
@@ -322,7 +322,6 @@ function brithVipGet() {
             console.log(count);
             var pageIndex=msg.pageNum;
             msg=msg.birthday_vip_list;
-            console.log(msg);
             if(msg.length) {
                 for (var i = 0; i < msg.length; i++) {
                     if (pageIndex >= 2) {
@@ -367,6 +366,7 @@ function birthVipGet_sub(ali) {
 /******************新VIP会员***************************/
 //新VIP模块数据请求加载
 function newVipGet(){
+    $('#table_analyze no_data').empty();
     whir.loading.add("",0.5);//加载等待框
     var type='new';
     $('.newVip .vip_table tbody').empty();
@@ -386,6 +386,10 @@ function newVipGet(){
              count=msg.pages;
             var pageIndex=msg.pageNum;
             msg=msg.new_vip_list;
+            console.log(msg.length);
+            // if(!msg.length){
+            //     $("#table_analyze").append('<span class="no_data'+'">暂无数据</span>');
+            // }
             if(msg.length){
                 for(var i=0;i<msg.length;i++){
                     if(pageIndex>=2){
@@ -510,7 +514,7 @@ function consumeVipGet() {
     param['query_type']=query_type;
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
-    param["area_code"]=localStorage.getItem('area_code');
+    param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -569,7 +573,7 @@ function consumeVipGetre() {
     param['query_type']=query_type;
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
-    param["area_code"]=localStorage.getItem('area_code');
+    param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -629,7 +633,7 @@ function consumeVipGetam() {
     param['query_type']=query_type;
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
-    param["area_code"]=localStorage.getItem('area_code');
+    param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
     oc.postRequire("post","/vipAnalysis/vipConsume","",param,function(data) {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -878,7 +882,7 @@ $("#input-txt").keydown(function() {
             }
         };
 })
-/***************************图表分析数据*****************************************************************************/
+/***************************图表分析数据***************************************/
 //图表
 require.config({
     paths: {
@@ -1307,7 +1311,7 @@ require(
         });
     }
 );
-/*********************页面加载时*****************************************************/
+/*********************页面加载时**********************************************/
 $().ready(function(){
     //页面加载时，异步加载显示的数据
     $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
