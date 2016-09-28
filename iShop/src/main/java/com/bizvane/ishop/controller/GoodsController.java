@@ -295,7 +295,7 @@ public class GoodsController {
         try {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos = rs.getColumns();//得到所有的列
+            int clos = 12;//得到所有的列
             int rows = rs.getRows();//得到所有的行
      //       int actualRows = LuploadHelper.getRightRows(rs);
 //            if(actualRows != rows){
@@ -318,9 +318,9 @@ public class GoodsController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i = 3; i < column3.length; i++) {
-//                    if(column3[i].getContents().toString().trim().equals("")){
-//                        continue;
-//                    }
+                    if(column3[i].getContents().toString().trim().equals("")){
+                        continue;
+                    }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -334,11 +334,11 @@ public class GoodsController {
                     }
                 }
             }
-            for (int i = 3; i < rows; i++) {
-//                if(column3[i].getContents().toString().trim().equals("")){
-//                    continue;
-//                }
-                Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
+            for (int i = 3; i < column3.length; i++) {
+                if(column3[i].getContents().toString().trim().equals("")){
+                    continue;
+                }
+                Matcher matcher = pattern1.matcher(String.valueOf(column3[i].getContents().toString().trim()));
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";
                     int b = 5 / 0;

@@ -251,6 +251,7 @@
 
 	//创建文件操作div;
 	function createBox( $fileInput, file, webUploader ) {
+		    console.log(file);
 			var file_id = file.id;
 			var $parentFileBox =$('.parentFileBox').insertBefore($fileInput.parent());
 
@@ -301,18 +302,18 @@
 			// }
 
 			//添加子容器;
-			var li = '<li id="fileBox_'+file_id+'" class="diyUploadHover"> \
-						<div class="viewThumb"></div> \
-						<div class="diyCancel"></div> \
-						<div class="diySuccess"></div> \
-						<div class="diyFileName">'+file.name+'</div>\
-						<div class="diyBar"> \
-								<div class="diyProgress"></div> \
-								<div class="diyProgressText">0%</div> \
-						</div> \
-					</li>';
+			// var li = '<li id="fileBox_'+file_id+'" class="diyUploadHover"> \
+			// 			<div class="viewThumb"></div> \
+			// 			<div class="diyCancel"></div> \
+			// 			<div class="diySuccess"></div> \
+			// 			<div class="diyFileName">'+file.name+'</div>\
+			// 			<div class="diyBar"> \
+			// 					<div class="diyProgress"></div> \
+			// 					<div class="diyProgressText">0%</div> \
+			// 			</div> \
+			// 		</li>';
 
-			$parentFileBox.children('.fileBoxUl').append( li );
+			// $parentFileBox.children('.fileBoxUl').append( li );
 
 			//父容器宽度;
 			// var $width = $('.fileBoxUl>li').length * 180;

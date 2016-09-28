@@ -11,6 +11,13 @@ function getVipInfo(){
         var extend=vipData.extend;
         var extend_info=vipData.extend_info==""?{}:JSON.parse(vipData.extend_info);
         var extendhtml="";
+        var conSumData=vipData.list;
+        $("#total_amount_Y").html(conSumData.amount_Y);
+        $("#consume_times_Y").html(conSumData.times_Y);
+        $("#total_amount").html(conSumData.total_amount);
+        $("#consume_times").html(conSumData.consume_times);
+        $("#dormant_time").html(conSumData.dormant_time);
+        $("#last_date").html(conSumData.last_date);
         $("#remark_value").html(vipData.remark);
         function getvalue(){
             var VALUE="";
@@ -290,9 +297,11 @@ function fuzhi(data){
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
     }
     if(data.vip_avatar){
-        $(".person-img").css('background','url('+data.vip_avatar+')')
+        $(".person-img").css('background','url('+data.vip_avatar+')');
+        $("#IMG").attr("src",data.vip_avatar);
     }else{
-        $(".person-img").css('backgroundImage','url(../img/head.png)')
+        $(".person-img").css('backgroundImage','url(../img/head.png)');
+        $("#IMG").attr("src",'../img/head.png');
     }
 }
 
@@ -393,7 +402,7 @@ function postInfo(type,value){//修改拓展信息和备注
             $('.frame').html('保存成功');
         }else{
             frame();
-            $('.frame').html('保存成功');
+            $('.frame').html('保存失败');
         }
     })
 }

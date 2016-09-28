@@ -101,9 +101,9 @@ textarea{
   border: 0;
 }
 .navbar-default {
-  background-color: transparent;
+  background-color: #434960;
   border-color: #2f4050;
-  height: inherit;
+  height: 100%;
 }
 .navbar-top-links li {
   display: inline-block;
@@ -3024,7 +3024,7 @@ body {
 }
 html,
 body {
-  height: 100%;
+  // height: 100%;
 }
 body.full-height-layout #wrapper,
 body.full-height-layout #page-wrapper {
@@ -3153,7 +3153,7 @@ video {
   width: 100%;
   /*overflow-x: hidden;*/
   background-color:#434960;
-  height: inherit;
+  height:100%;
 }
 .wrapper {
   padding: 0 20px;

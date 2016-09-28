@@ -1058,8 +1058,10 @@ public class StoreController {
         try {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos = rs.getColumns();//得到所有的列
+            int clos = 8;//得到所有的列
             int rows = rs.getRows();//得到所有的行
+            System.out.println("----------------clos--------------------------"+clos);
+            System.out.println("----------------rows--------------------------"+rows);
 //            int actualRows = LuploadHelper.getRightRows(rs);
 //            if (actualRows != rows) {
 //                if (rows - actualRows == 1) {
@@ -1218,6 +1220,7 @@ public class StoreController {
                     String cellCorp = rs.getCell(j++, i).getContents().toString().trim();
                     String store_code = rs.getCell(j++, i).getContents().toString().trim();
                     String store_id = rs.getCell(j++, i).getContents().toString().trim();
+                    System.out.println("-----------------------store_id----------------------:"+store_id);
                     if(store_id.equals("")){
                         store_id=store_code;
                     }
