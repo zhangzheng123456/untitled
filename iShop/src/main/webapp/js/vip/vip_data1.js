@@ -11,6 +11,13 @@ function getVipInfo(){
         var extend=vipData.extend;
         var extend_info=vipData.extend_info==""?{}:JSON.parse(vipData.extend_info);
         var extendhtml="";
+        var conSumData=vipData.list
+        $("#total_amount_Y").html(conSumData.total_amount_Y);
+        $("#consume_times_Y").html(conSumData.consume_times_Y);
+        $("#total_amount").html(conSumData.total_amount);
+        $("#consume_times").html(conSumData.consume_times);
+        $("#dormant_time").html(conSumData.dormant_time);
+        $("#last_date").html(conSumData.last_date);
         $("#remark_value").html(vipData.remark);
         function getvalue(){
             var VALUE="";
