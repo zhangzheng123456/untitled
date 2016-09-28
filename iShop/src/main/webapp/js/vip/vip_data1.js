@@ -382,7 +382,7 @@ function frame(){
 }
 $("#expand_send").click(function(){
     var param=getexpandValue();
-    postInfo('expand',param);
+    postInfo('extend',param);
 });
 $("#remark_keep").click(function(){
     postInfo('remark',$("#remark_value").val())
