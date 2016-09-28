@@ -9,14 +9,15 @@ function getVipInfo(){
         var vipData=JSON.parse(data.message);
         var vipDataList=vipData.list;
         var extend=vipData.extend;
-        var extend_info=vipData.extend_info;
+        var extend_info=vipData.extend_info==""?{}:JSON.parse(vipData.extend_info);
         var extendhtml="";
+        $("#remark_value").html(vipData.remark);
         function getvalue(){
             var VALUE="";
-            for(var a=0;a<extend_info.length;a++){
-                if(extend[i].key==extend_info[a].key){
-                    VALUE=extend_info[a].value
-                }
+            for(data in extend_info){
+                if(extend[i].key==data){
+                   VALUE=extend_info[data]
+                 }
             }
             return VALUE;
         }
@@ -84,7 +85,6 @@ function getVipPoints(code,type){
 
     oc.postRequire("post","/vip/vipPoints","",parmam_jifen,function(data){
         var Data=JSON.parse(data.message);
-        console.log(Data);
         if(type=='1'){
             var pointsData=Data.result_points;//积分
             var listData=JSON.parse(pointsData.list);//积分list
@@ -99,14 +99,11 @@ function getVipPoints(code,type){
             var pointsData=Data.result_points;//积分
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=consumnData.list_wardrobe;//消费list
-            console.log(consumnData);
             var listData=JSON.parse(pointsData.list);//积分list
             jifenContent(listData,pointsData);
             xiaofeiContent(consumnData,consumnlistData);
         }
-
     });
-    console.log(type)
 }
 function jifenContent(listData,pointsData){
     $("#points_total").html(pointsData.points);
@@ -130,7 +127,12 @@ function jifenContent(listData,pointsData){
             +'<td>'+listData[i].date+'</td>'
             +'</tr>'
     }
-    $("#points tbody").html(listHtml);
+    if(listHtml.length!==0){
+        $("#points tbody").html(listHtml);
+    }else {
+        listHtml='<span>暂无数据</span>'
+        $("#points tbody").html(listHtml);
+    }
     $("#points_all tbody").html(listHtmlAll)
 }
 function xiaofeiContent(consumnData,consumnlistData){
@@ -145,7 +147,7 @@ function xiaofeiContent(consumnData,consumnlistData){
     $("#vip_card_num_1").html(consumnData.vip_card_no);
     $("#vip_name_1").html(consumnData.vip_name);
     for(var i=0;i<consumnlistData.length;i++){
-        arr.push(consumnlistData[i].buy_time);
+        arr.push(consumnlistData[i].order_id);
     }
     for(var i=0;i<arr.length;i++){
         if(!hash[arr[i]]){
@@ -153,16 +155,16 @@ function xiaofeiContent(consumnData,consumnlistData){
             unqiuearr.push(arr[i]);
         }
     }
-    console.log(arr);
-    console.log(unqiuearr);
     for(var i=0;i<unqiuearr.length;i++){
         var TR="";
         var total_money="0.0";
         var total_sug ="0.0";
         var discount = "";
+        var date="";
         for(var j=0;j<consumnlistData.length;j++){
-            if(consumnlistData[j].buy_time==unqiuearr[i]){
+            if(consumnlistData[j].order_id==unqiuearr[i]){
                 var n=$(TR).length+1;
+                date=consumnlistData[j].buy_time;
                 total_money = parseFloat(total_money)+parseFloat(consumnlistData[j].goods_price);
                 total_sug = parseFloat(total_sug)+parseFloat(consumnlistData[j].goods_sug)
                 TR+='<tr>'
@@ -179,15 +181,15 @@ function xiaofeiContent(consumnData,consumnlistData){
         discount = discount.toFixed(1);
         var tr=$(TR).length; //统计单数
         consumnHtml+='<tr>'
-            +'<td >'+unqiuearr[i]+'</td>'
+            +'<td >'+date+'</td>'
             +'<td>'+tr+'</td>'
             +'<td>'+discount+'</td>'
             +'<td>'+total_money+'<i class="icon-ishop_8-03 style"></i></td>'
             +'</tr>';
         consumnHtmlall+='<div class="record_list">'
             +'<div class="order_list">'
-            +'<div class="list_head"><span class="black_font">日期:</span> '+unqiuearr[i]+' <ul><li><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>'+discount+'折</li><li>'+tr+'件商品</li></ul></div>'
-            +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].user_name+'</ul></div>'
+            +'<div class="list_head"><span class="black_font">日期:</span> '+date+' <ul><li><em>￥</em><span class="consume_total">'+total_money+'</span></li><li>'+discount+'折</li><li>'+tr+'件商品</li></ul></div>'
+            +'<div class="list_head"><span class="black_font">订单号:</span> '+unqiuearr[i]+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].user_name+'</ul></div>'
             +'</div>'
             +'<hr/>'
             +'<table class="list_table">'
@@ -250,7 +252,11 @@ function xiaofeiContent(consumnData,consumnlistData){
     //         +'</table>'
     //         +'</div>'
     // }
-    $("#consum tbody").html(consumnHtml);
+    if(consumnHtml.length!==0){
+        $("#consum tbody").html(consumnHtml);
+    }else {
+        $("#consum tbody").html('<span>暂无数据</span>');
+    }
     $("#consum_all").html(consumnHtmlall)
 }
 function fuzhi(data){
@@ -272,12 +278,22 @@ function fuzhi(data){
     $("#vip_phone_edit").val(data.vip_phone);
     $("#user_name").html(data.user_name);
     $("#user_name_edit").val(data.user_name);
-    $("#vip_total_amount").html(data.total_amount);
+    $("#vip_total_amount").html(data.total_amount+'&nbsp元');
     $("#join_date").html(data.join_date);
-    $("#vip_dormant_time").html(data.dormant_time);
     $("#vip_birthday").html(data.vip_birthday);
     $("#vip_birthday_edit").val(data.vip_birthday);
-    $("#corp_code").html(data.corp_code)
+    $("#corp_code").html(data.corp_code);
+    $("#vip_consume_times").html(data.consume_times+'&nbsp次');
+    if(data.dormant_time=='无'){
+        $("#vip_dormant_time").html(data.dormant_time);
+    }else{
+        $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
+    }
+    if(data.vip_avatar){
+        $(".person-img").css('background','url('+data.vip_avatar+')')
+    }else{
+        $(".person-img").css('backgroundImage','url(../img/head.png)')
+    }
 }
 
 
@@ -356,4 +372,40 @@ function frame(){
     setTimeout(function(){
         $(".frame").hide();
     },2000);
+}
+$("#expand_send").click(function(){
+    var param=getexpandValue();
+    postInfo('expand',param);
+});
+$("#remark_keep").click(function(){
+    postInfo('remark',$("#remark_value").val())
+});
+function postInfo(type,value){//修改拓展信息和备注
+    var param_expand={};
+    param_expand['vip_id']=sessionStorage.getItem("id");
+    param_expand['card_no']=$("#vip_card_no").text();
+    param_expand['phone']=$("#vip_phone").text();
+    param_expand['corp_code']=sessionStorage.getItem("corp_code");
+    param_expand[type]=value;
+    oc.postRequire("post","/vip/vipSaveInfo","",param_expand,function(data){
+        if(data.code=="0"){
+            frame();
+            $('.frame').html('保存成功');
+        }else{
+            frame();
+            $('.frame').html('保存成功');
+        }
+    })
+}
+function getexpandValue(){
+    var param_expand={};
+    var INPUT=$("#extend ul").find('input');
+    for(var i=0;i<INPUT.length;i++){
+        var KEY="";
+        var VALUE="";
+        KEY=$(INPUT[i]).attr("data-key");
+        VALUE=$(INPUT[i]).val().trim();
+        param_expand[KEY]=VALUE;
+    }
+    return param_expand;
 }

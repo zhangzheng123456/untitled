@@ -56,6 +56,8 @@ public class VIPLabelController {
     @Autowired
     private VipLabelService vipLabelService;
     @Autowired
+    private ViplableGroupService viplableGroupService;
+    @Autowired
     private CorpService corpService;
     @Autowired
     MongoDBClient mongodbClient;
@@ -875,6 +877,19 @@ public class VIPLabelController {
             String result_add="";
             List<VipLabel> vipLabelList = vipLabelService.VipLabelNameExist(corp_code, label_name);
             if (vipLabelList.size() == 0) {
+                List<ViplableGroup> viplableGroups1 = viplableGroupService.checkNameOnly(corp_code, "默认分组", Common.IS_ACTIVE_Y);
+                List<ViplableGroup> viplableGroups2 = viplableGroupService.checkCodeOnly(corp_code, "0001", Common.IS_ACTIVE_Y);
+                if(viplableGroups1.size()==0 && viplableGroups2.size()==0){
+                    ViplableGroup viplableGroup=new ViplableGroup();
+                    viplableGroup.setLabel_group_code("0001");
+                    viplableGroup.setLabel_group_name("默认分组");
+                    Date date = new Date();
+                    viplableGroup.setCreated_date(Common.DATETIME_FORMAT.format(date));
+                    viplableGroup.setCreater(user_id);
+                    viplableGroup.setModified_date(Common.DATETIME_FORMAT.format(date));
+                    viplableGroup.setModifier(user_id);
+                    viplableGroupService.addViplableGroup(viplableGroup);
+                }
                 VipLabel vipLabel = WebUtils.JSON2Bean(jsonObject, VipLabel.class);
                 Date now = new Date();
                 vipLabel.setModified_date(Common.DATETIME_FORMAT.format(now));

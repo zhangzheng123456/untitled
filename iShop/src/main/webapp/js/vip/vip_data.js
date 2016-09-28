@@ -9,7 +9,7 @@ function getConsumCount(){//获取会员信息
     //whir.loading.add("",0.5);//加载等待框
     var id=sessionStorage.getItem("id");
     var param={};
-    param["corp_code"]="C10000";
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     param["vip_id"]=id;
     oc.postRequire("post","/vip/vipConsumCount","",param,function(data){
        var Data=JSON.parse(data.message);
@@ -26,27 +26,35 @@ function getConsumCount(){//获取会员信息
       $("#consume_times").html(conSumData.consume_times);
       $("#dormant_time").html(conSumData.dormant_time);
       $("#last_date").html(conSumData.last_date);
-        for(var i=0;i<album.length;i++){
-            var date=album[i].created_date;
+        if(album.length!==0){
+            for(var i=0;i<album.length;i++){
+                var date=album[i].created_date;
                 date=date.substring(0,11);
                 if(i<16){
                     HTML+="<span><img src="+album[i].image_url+" /></span>";
                 }
                 Ablum_all_html+="<li>"
-                +"<img src='"+album[i].image_url+"'>"
-                +"<div class='cancel_img' id='"+album[i].id+"'></div>"
-                +"<span class='album_date'>"+date+"</span>"
-                +"</li>"
+                    +"<img src='"+album[i].image_url+"'>"
+                    +"<div class='cancel_img' id='"+album[i].id+"'></div>"
+                    +"<span class='album_date'>"+date+"</span>"
+                    +"</li>"
             }
+        }else {
+            HTML+="<p>暂无图片</p>";
+        }
         $("#images").html(HTML);
         $("#Ablum-all").html(Ablum_all_html);
-        for(var i=0;i<label.length;i++){
+        if(label.length!==0){
+            for(var i=0;i<label.length;i++){
                 LABEL+="<span >"+label[i].label_name+"</span>";
-             if(label[i].label_type=="user"){
-                 LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
-            }else {
-                 LABELALL+="<span class='label_g' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+                if(label[i].label_type=="user"){
+                    LABELALL+="<span class='label_u' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+                }else {
+                    LABELALL+="<span class='label_g' data-rid="+label[i].rid+">"+label[i].label_name+"<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i></span>"
+                }
             }
+        }else{
+            LABEL+="<p>暂无标签</p>";
         }
         //统计已有标签
         $(".span_total").html(label.length);
@@ -140,13 +148,16 @@ $("#points tbody").click(function(){
 $("#VIP_message_back").click(function(){//回到会员信息
    $("#VIP_Message").show();
    $("#VIP_edit").hide();
+    getConsumCount();
+    getVipInfo();
 });
 //热门标签
 function gethotVIPlabel() {
     //热门标签
     $("#hotlabel").empty();
     var param={};
-    param["corp_code"]="C10000";
+    param['vip_id']=sessionStorage.getItem("id");
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/VIP/label/findHotViplabel","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -176,6 +187,10 @@ $("#hot_label").click(function () {
 })
 //官方用户标签
 function getOtherlabel() {
+    param['vip_id']=sessionStorage.getItem("id");
+    param["corp_code"]=sessionStorage.getItem("corp_code");
+    param['pageNumber']=page;
+    param['searchValue']="";
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
@@ -222,44 +237,33 @@ function getOtherlabel() {
 $("#label_li_org").click(function () {
     page=1;
     $("#label_org").empty();
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
     param['type']="2";
     getOtherlabel();
 })
 $("#label_li_user").click(function () {
     page=1;
     $("#label_user").empty();
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
     param['type']="3";
     getOtherlabel();
 })
 
 //右侧加载更多标签
 $("#more_label_g").click(function () {
-        page=page+1;
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
+    page=page+1;
     param['type']="2";
     getOtherlabel();
 })
 $("#more_label_u").click(function () {
     page=page+1;
-    param["corp_code"]="C10000";
-    param['pageNumber']=page;
-    param['searchValue']="";
     param['type']="3";
     getOtherlabel();
 })
 
 //搜索热门标签
 function searchHotlabel() {
-    param["corp_code"]="C10000";
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     param['pageNumber']=page;
+    param['vip_id']=sessionStorage.getItem("id");
     param['searchValue']=$('#search_input').val().replace(/\s+/g,"");
     param['type']="1";
     oc.postRequire("post","/VIP/label/findViplabelByType ","",param,function(data){
@@ -399,7 +403,7 @@ function labelDelete(obj) {
 function addViplabel() {
     var id=sessionStorage.getItem("id");
     var store_id=sessionStorage.getItem("store_id");
-    param["corp_code"]="C10000";
+    param["corp_code"]=sessionStorage.getItem("corp_code");
     param['vip_code']=id;
     param['label_id']="";
     param['store_code']=store_id;
@@ -458,7 +462,7 @@ function addVipAlbum(url,data){//上传照片到相册
     param_addAblum["vip_name"]=data.vip_name;
     param_addAblum["cardno"]=data.cardno;
     param_addAblum["image_url"]=url;
-    param_addAblum["corp_code"]=data.corp_code;
+    param_addAblum["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
         if(data.code=="0"){
             frame();
@@ -513,7 +517,7 @@ function drop(ev)
     //调用借口
     var id = sessionStorage.getItem("id");
     var store_id = sessionStorage.getItem("store_id");
-    param["corp_code"] = "C10000";
+    param["corp_code"] = sessionStorage.getItem("corp_code");
     param['label_name'] = val;
     param['vip_code'] = id;
     param['label_id'] = "";
@@ -533,6 +537,8 @@ function drop(ev)
             }else {
                 $(span).addClass("label_g_active").removeClass("label_g");
             }
+        }else if(data.code =="-1"){
+            alert("请勿重复添加!");
         }
     })
 }
