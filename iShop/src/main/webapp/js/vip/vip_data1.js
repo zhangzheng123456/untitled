@@ -257,7 +257,7 @@ function fuzhi(data){
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
     }
     if(data.vip_avatar){
-        $(".person-img").css('background','url('+data.vip_avatar+')');
+        $(".person-img").css('backgroundImage','url('+data.vip_avatar+')');
         $("#IMG").attr("src",data.vip_avatar);
     }else{
         $(".person-img").css('backgroundImage','url(../img/head.png)');
@@ -395,6 +395,7 @@ $("#VIP_avatar").change(function(e){
     client.multipartUpload(storeAs, file).then(function (result) {
         var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
         $("#IMG").attr("src",url+'?'+Math.random());
+        $(".person-img").css('backgroundImage','url('+url+'?'+Math.random()+')');
         postInfo('avatar',url);
     }).catch(function (err) {
          console.log(err);
