@@ -337,30 +337,30 @@
 			//生成预览缩略图;
 			webUploader.makeThumb( file, function( error, dataSrc ) {
 				if ( !error ) {
-					var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/'+$("#GOODS_CODE").val()+'/'+file.name.replace(/,/g,'');
-					$fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" data-name="'+storeAs+'"/>');
+					// var storeAs='http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/'+$("#GOODS_CODE").val()+'/'+file.name.replace(/,/g,'');
+					// $fileBox.find('.viewThumb').append('<img src="'+dataSrc+'" data-name="'+storeAs+'"/>');
 			    }
 			});
 	}
 })( jQuery );
-function li_remove(){
-	var original_li=$('.parentFileBox ul li');
-	for(var i=0;i<original_li.length;i++){
-		if(original_li[i].id.replace(/[^\d]/g,'')>=10){
-			$(original_li[i]).children('.diyCancel').one('click',function(){
-				var len=$('.parentFileBox ul li').length;
-				if(len<=1){
-					$(this).parent().parent().parent().remove();
-				}else{
-					$(this).parent().remove();
-				}
-			});
-		}
-	}
-}
-$(function(){
-	li_remove();
-	$('.add_new_touxiang').click(function() {
-		li_remove();
-	});
-});
+// function li_remove(){
+// 	var original_li=$('.parentFileBox ul li');
+// 	for(var i=0;i<original_li.length;i++){
+// 		if(original_li[i].id.replace(/[^\d]/g,'')>=10){
+// 			$(original_li[i]).children('.diyCancel').one('click',function(){
+// 				var len=$('.parentFileBox ul li').length;
+// 				if(len<=1){
+// 					$(this).parent().parent().parent().remove();
+// 				}else{
+// 					$(this).parent().remove();
+// 				}
+// 			});
+// 		}
+// 	}
+// }
+// $(function(){
+// 	li_remove();
+// 	$('.add_new_touxiang').click(function() {
+// 		li_remove();
+// 	});
+// });
