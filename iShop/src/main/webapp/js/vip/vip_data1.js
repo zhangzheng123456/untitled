@@ -106,31 +106,31 @@ function getVipPoints(code,type){
             var pointsData=Data.result_points;//积分
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=consumnData.list_wardrobe;//消费list
-            var listData=JSON.parse(pointsData.list);//积分list
+            var listData=pointsData.date_current_score;//积分list
             jifenContent(listData,pointsData);
             xiaofeiContent(consumnData,consumnlistData);
         }
     });
 }
 function jifenContent(listData,pointsData){
-    $("#points_total").html(pointsData.points);
-    $("#vip_card").html(pointsData.vip_card_type);
-    $("#vip_card_num").html(pointsData.cardno);
-    $("#vip_name1").html(pointsData.vip_name);
+    $("#points_total").html(pointsData.score);
+    $("#vip_card").html(pointsData.vip_info["card_type_id"]);
+    $("#vip_card_num").html(pointsData.vip_info["card_no_vip"]);
+    $("#vip_name1").html(pointsData.vip_info["name_vip"]);
     var listHtml="";
     var listHtmlAll="";
     for(var i=0;i<listData.length;i++){
         var a=i+1;
         if(i<10){
             listHtml+='<tr>'
-                +'<td>'+listData[i].points+'</td>'
+                +'<td>'+listData[i].current_score+'</td>'
                 +'<td>'+listData[i].date+'<i class="icon-ishop_8-03 style"></i></td>'
                 +'</tr>'
         }
         listHtmlAll+='<tr>'
             +'<td>'
             +a+'</td>'
-            +'<td>'+listData[i].points+'</td>'
+            +'<td>'+listData[i].current_score+'</td>'
             +'<td>'+listData[i].date+'</td>'
             +'</tr>'
     }
