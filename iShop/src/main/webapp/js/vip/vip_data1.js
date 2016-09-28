@@ -181,7 +181,7 @@ function xiaofeiContent(consumnData,consumnlistData){
         discount = discount.toFixed(1);
         var tr=$(TR).length; //统计单数
         consumnHtml+='<tr>'
-            +'<td >'+unqiuearr[i]+'</td>'
+            +'<td >'+date+'</td>'
             +'<td>'+tr+'</td>'
             +'<td>'+discount+'</td>'
             +'<td>'+total_money+'<i class="icon-ishop_8-03 style"></i></td>'
@@ -288,6 +288,11 @@ function fuzhi(data){
         $("#vip_dormant_time").html(data.dormant_time);
     }else{
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
+    }
+    if(data.vip_avatar){
+        $(".person-img").css('background','url('+data.vip_avatar+')')
+    }else{
+        $(".person-img").css('backgroundImage','url(../img/head.png)')
     }
 }
 
