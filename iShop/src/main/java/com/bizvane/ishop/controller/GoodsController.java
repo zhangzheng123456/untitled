@@ -318,9 +318,9 @@ public class GoodsController {
             Pattern pattern1 = Pattern.compile("C\\d{5}");
             if(!role_code.equals(Common.ROLE_SYS)){
                 for (int i = 3; i < column3.length; i++) {
-                    if(column3[i].getContents().toString().trim().equals("")){
-                        continue;
-                    }
+//                    if(column3[i].getContents().toString().trim().equals("")){
+//                        continue;
+//                    }
                     if (!column3[i].getContents().toString().trim().equals(corp_code)) {
                         result = "：第" + (i + 1) + "行企业编号不存在";
                         int b = 5 / 0;
@@ -335,9 +335,9 @@ public class GoodsController {
                 }
             }
             for (int i = 3; i < column3.length; i++) {
-                if(column3[i].getContents().toString().trim().equals("")){
-                    continue;
-                }
+//                if(column3[i].getContents().toString().trim().equals("")){
+//                    continue;
+//                }
                 Matcher matcher = pattern1.matcher(column3[i].getContents().toString().trim());
                 if (matcher.matches() == false) {
                     result = "：第" + (i + 1) + "行企业编号格式有误";

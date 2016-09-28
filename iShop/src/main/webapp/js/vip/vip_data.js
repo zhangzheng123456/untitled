@@ -537,6 +537,8 @@ function drop(ev)
             }else {
                 $(span).addClass("label_g_active").removeClass("label_g");
             }
+        }else if(data.code =="-1"){
+            alert("请勿重复添加!");
         }
     })
 }

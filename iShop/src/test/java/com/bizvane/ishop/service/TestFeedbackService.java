@@ -250,32 +250,32 @@ public class TestFeedbackService {
 
 //======================================消费排行===================================================
 
-//
-//            String ss="§SHBS0001,";
-//            String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
-//            Data data_user_id = new Data("user_id", "ABC123", ValueType.PARAM);
-//            Data data_corp_code = new Data("corp_code", "C10141", ValueType.PARAM);
-//            Data role_code = new Data("role_code", "R4000", ValueType.PARAM);
-//            Data page_num = new Data("page_num", "1", ValueType.PARAM);
-//            Data area_code = new Data("area_code", "A0116", ValueType.PARAM);
-//            Data page_size = new Data("page_size", "10", ValueType.PARAM);
-//            Data query_type = new Data("query_type", "1", ValueType.PARAM);
-//            Data data_store_id = new Data("store_id", "", ValueType.PARAM);
-//            // 751400901
-//            Map datalist = new HashMap<String, Data>();
-//            datalist.put(data_user_id.key, data_user_id);
-//            datalist.put(data_corp_code.key, data_corp_code);
-//            datalist.put(role_code.key, role_code);
-//            datalist.put(page_num.key, page_num);
-//            datalist.put(area_code.key, area_code);
-//            datalist.put(page_size.key, page_size);
-//            datalist.put(query_type.key, query_type);
-//            datalist.put(data_store_id.key, data_store_id);
-//            //     datalist.put(data_store_code.key, data_store_code);
-//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.AnlysisVipAmount",datalist);
-//
-//            String result = dataBox.data.get("message").value;
-//            System.out.println(result);
+
+            String ss="§902102501,";
+            String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
+            Data data_user_id = new Data("user_id", "1221", ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", "C10141", ValueType.PARAM);
+            Data role_code = new Data("role_code", "R3000", ValueType.PARAM);
+            Data page_num = new Data("page_num", "1", ValueType.PARAM);
+            Data area_code = new Data("area_code", "A0116", ValueType.PARAM);
+            Data page_size = new Data("page_size", "200", ValueType.PARAM);
+            Data query_type = new Data("query_type", "3", ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_ids[0], ValueType.PARAM);
+            // 751400901
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(role_code.key, role_code);
+            datalist.put(page_num.key, page_num);
+            datalist.put(area_code.key, area_code);
+            datalist.put(page_size.key, page_size);
+            datalist.put(query_type.key, query_type);
+            datalist.put(data_store_id.key, data_store_id);
+            //     datalist.put(data_store_code.key, data_store_code);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnlysisVipAmount",datalist);
+
+            String result = dataBox.data.get("message").value;
+            System.out.println(result);
 
 
 
