@@ -566,3 +566,16 @@ div.wx_app_new p{
 	cursor: pointer;
 	display: none;
 }
+.add_app_id{
+	height: 50px;
+    line-height: 50px;
+    margin-top: 20px;
+    margin-left: 123px;
+    text-align: center;
+    width: 420px;
+    background: #f4f4f4;
+    border-radius: 5px;
+    color: #6dc1c8!important;
+    font-size: 14px;
+    cursor: pointer;
+}
