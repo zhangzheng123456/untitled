@@ -12,8 +12,8 @@ function getVipInfo(){
         var extend_info=vipData.extend_info==""?{}:JSON.parse(vipData.extend_info);
         var extendhtml="";
         var conSumData=vipData.list;
-        $("#total_amount_Y").html(conSumData.total_amount_Y);
-        $("#consume_times_Y").html(conSumData.consume_times_Y);
+        $("#total_amount_Y").html(conSumData.amount_Y);
+        $("#consume_times_Y").html(conSumData.times_Y);
         $("#total_amount").html(conSumData.total_amount);
         $("#consume_times").html(conSumData.consume_times);
         $("#dormant_time").html(conSumData.dormant_time);

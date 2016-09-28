@@ -52,8 +52,8 @@ function getConsumCount(){//获取会员信息
         $("#label_box").html(LABELALL);
         lg_img();
         img_hover();
+        whir.loading.remove();
     })
-    whir.loading.add("",0.5);//加载等待框
 }
 function lg_img(){
     //点击图片放大
