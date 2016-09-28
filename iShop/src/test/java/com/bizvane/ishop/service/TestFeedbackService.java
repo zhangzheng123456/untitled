@@ -160,12 +160,12 @@ public class TestFeedbackService {
 //            datalist.put(data_store_name.key, data_store_name);
 //            datalist.put(data_area_code.key, data_area_code);
 //
-//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStoreRanking",datalist);
+//            DataBox dataBox = iceInterfaceService.iceInterface("ACHVStoreRanking",datalist);
 //
-
+//
 //            String result = dataBox.data.get("message").value;
 //            System.out.println(result+"--");
-//
+////
 //            String ss="§SHBS0001,";
 //        String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
 //            Data data_user_id = new Data("user_id", "AZ0007841", ValueType.PARAM);
@@ -180,7 +180,7 @@ public class TestFeedbackService {
 //            datalist.put(data_time_id.key, data_time_id);
 //            datalist.put(data_store_id.key, data_store_id);
 //       //     datalist.put(data_store_code.key, data_store_code);
-//            DataBox dataBox = iceInterfaceService.iceInterface("com.bizvane.sun.app.method.ACHVStaffRanking",datalist);
+//            DataBox dataBox = iceInterfaceService.iceInterfaceV2("ACHVStaffRanking",datalist);
 //
 //            String result = dataBox.data.get("message").value;
 //            System.out.println(result);
@@ -250,7 +250,7 @@ public class TestFeedbackService {
 
 //======================================消费排行===================================================
 
-
+//
             String ss="§902102501,";
             String[] store_ids = ss.replace(Common.STORE_HEAD,"").split(",");
             Data data_user_id = new Data("user_id", "1221", ValueType.PARAM);
@@ -259,7 +259,7 @@ public class TestFeedbackService {
             Data page_num = new Data("page_num", "1", ValueType.PARAM);
             Data area_code = new Data("area_code", "A0116", ValueType.PARAM);
             Data page_size = new Data("page_size", "200", ValueType.PARAM);
-            Data query_type = new Data("query_type", "3", ValueType.PARAM);
+            Data query_type = new Data("query_type", "2", ValueType.PARAM);
             Data data_store_id = new Data("store_id", store_ids[0], ValueType.PARAM);
             // 751400901
             Map datalist = new HashMap<String, Data>();
