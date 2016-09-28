@@ -5,7 +5,6 @@ var jump_s="";//消费记录标签
 var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
-var un_push='';//记录是否加载请求
 /**********************左侧数据**************************************************************************************/
 //获取区域
 function GetArea(){
@@ -80,7 +79,7 @@ function getStore(a){
         $('#select_analyze_shop ul').append(ul);
         // newVipGet();//获取新会员
         // sleepVipGet();//获取活跃会员
-       un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
+       // un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
     });
     page=1;
 }
@@ -102,11 +101,10 @@ function showNameClick(e){
         $('#side_analyze ul li:nth-child(3) s').html($(e).html());
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',store_code);
         $('#select_analyze_shop').toggle();
-        brithVipGet();
         //添加店铺时，找到显示的DIV发起请求
+        console.log($('.vip_nav_bar li[class="liactive"]')[0]);
+        $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
     }
-    //找到那个显示的div
-    console.log($('#table_analyze div'));
 }
 //取消下拉框
 $(document).on('click',function(e){
@@ -133,7 +131,6 @@ $(document).on('click',function(e){
 function getMore(e){
     var e= e.target;
     page+=1;
-    un_push=1;//赋值为1
     var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
     getStore(area_code);
 }
@@ -1292,6 +1289,8 @@ require(
 );
 /*********************页面加载时*****************************************************/
 $().ready(function(){
+    //页面加载时，异步加载显示的数据
+    $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
     $($(".date_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
