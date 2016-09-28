@@ -531,7 +531,7 @@ public class GoodsController {
                         goods.setGoods_wave(wave);
                     }
                     if(brand_code==null || brand_code.equals("")){
-                        result = "：第" + (i + 1) + "行品牌编号格式有误";
+                        result = "：第" + (i + 1) + "行品牌编号不能为空";
                         int b = 5 / 0;
                         break;
                     }else{

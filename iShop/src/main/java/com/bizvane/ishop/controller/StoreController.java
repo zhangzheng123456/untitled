@@ -1161,7 +1161,7 @@ public class StoreController {
                     break;
                 }
             }
-            Pattern pattern = Pattern.compile("B\\d{4}");
+        //    Pattern pattern = Pattern.compile("B\\d{4}");
             for (int i = 3; i < column5.length; i++) {
                 if(column5[i].getContents().toString().trim().equals("")){
                     continue;
@@ -1169,12 +1169,12 @@ public class StoreController {
                 String brands = column5[i].getContents().toString().trim();
                 String[] splitBrands = brands.split(",");
                 for (int j = 0; j < splitBrands.length; j++) {
-                    Matcher matcher = pattern.matcher(splitBrands[j]);
-                    if (matcher.matches() == false) {
-                        result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号格式有误";
-                        int b = 5 / 0;
-                        break;
-                    }
+//                    Matcher matcher = pattern.matcher(splitBrands[j]);
+//                    if (matcher.matches() == false) {
+//                        result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号格式有误";
+//                        int b = 5 / 0;
+//                        break;
+//                    }
                     Brand brand = brandService.getBrandByCode(column3[i].getContents().toString().trim(), splitBrands[j],Common.IS_ACTIVE_Y);
                     if (brand == null) {
                         result = "：第" + (i + 1) + "行,第" + (j + 1) + "个品牌编号不存在";
