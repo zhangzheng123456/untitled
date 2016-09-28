@@ -644,7 +644,7 @@ input::-webkit-input-placeholder{
 	min-height: 50px;
 	background:rgba(0,0,0,0.5);
 	position: absolute;
-	z-index: 8999;
+	z-index: 10003;
 	border-radius: 5px;
 	color:#fff;
 	text-align: center;

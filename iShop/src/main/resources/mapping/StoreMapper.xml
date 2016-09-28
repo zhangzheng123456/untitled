@@ -572,8 +572,9 @@
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = da.corp_code
         AND ds.corp_code = #{corp_code}
+        AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            ds.area_code = #{area_code}
+            ds.area_code = #{item}
         </foreach>
         <if test="isactive != null and isactive !=''">
         AND ds.isactive = #{isactive}
