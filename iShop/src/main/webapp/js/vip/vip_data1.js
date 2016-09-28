@@ -106,31 +106,31 @@ function getVipPoints(code,type){
             var pointsData=Data.result_points;//积分
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=consumnData.list_wardrobe;//消费list
-            var listData=JSON.parse(pointsData.list);//积分list
+            var listData=pointsData.date_current_score;//积分list
             jifenContent(listData,pointsData);
             xiaofeiContent(consumnData,consumnlistData);
         }
     });
 }
 function jifenContent(listData,pointsData){
-    $("#points_total").html(pointsData.points);
-    $("#vip_card").html(pointsData.vip_card_type);
-    $("#vip_card_num").html(pointsData.cardno);
-    $("#vip_name1").html(pointsData.vip_name);
+    $("#points_total").html(pointsData.score);
+    $("#vip_card").html(pointsData.vip_info["card_type_id"]);
+    $("#vip_card_num").html(pointsData.vip_info["card_no_vip"]);
+    $("#vip_name1").html(pointsData.vip_info["name_vip"]);
     var listHtml="";
     var listHtmlAll="";
     for(var i=0;i<listData.length;i++){
         var a=i+1;
         if(i<10){
             listHtml+='<tr>'
-                +'<td>'+listData[i].points+'</td>'
+                +'<td>'+listData[i].current_score+'</td>'
                 +'<td>'+listData[i].date+'<i class="icon-ishop_8-03 style"></i></td>'
                 +'</tr>'
         }
         listHtmlAll+='<tr>'
             +'<td>'
             +a+'</td>'
-            +'<td>'+listData[i].points+'</td>'
+            +'<td>'+listData[i].current_score+'</td>'
             +'<td>'+listData[i].date+'</td>'
             +'</tr>'
     }
@@ -176,7 +176,7 @@ function xiaofeiContent(consumnData,consumnlistData){
                 total_sug = parseFloat(total_sug)+parseFloat(consumnlistData[j].goods_sug)
                 TR+='<tr>'
                     +'<td>'+n+'</td>'
-                    +'<td><img src="'+consumnlistData[j].goods_img+'" /></td>'
+                    +'<td><img src="'+consumnlistData[j].goods_img+'" onerror="imgError(this);" /></td>'
                     +'<td class="product_name"><span>'+consumnlistData[j].goods_name+'</span></td>'
                     +'<td class="product_name">'+consumnlistData[j].goods_id+'</td>'
                     +'<td>'+consumnlistData[j].goods_num+'</td>'
@@ -216,49 +216,6 @@ function xiaofeiContent(consumnData,consumnlistData){
             +'</table>'
             +'</div>'
     }
-    // for(var i=0;i<consumnlistData.length;i++){
-    //     var TR="";
-    //     var orderdata=consumnlistData[i].order;
-    //     consumnHtml+='<tr>'
-    //         +'<td >'+consumnlistData[i].buy_time+'</td>'
-    //         +'<td>'+consumnlistData[i].order_count+'</td>'
-    //         +'<td>'+consumnlistData[i].order_discount+'</td>'
-    //         +'<td>'+consumnlistData[i].order_total+'<i class="icon-ishop_8-03 style"></i></td>'
-    //         +'</tr>';
-    //     for(var a=0;a<orderdata.length;a++){
-    //         var n=a+1;
-    //         TR+='<tr>'
-    //             +'<td>'+n+'</td>'
-    //             +'<td><img src="'+orderdata[a].goods_img+'" /></td>'
-    //             +'<td class="product_name"><span>'+orderdata[a].goods_name+'</span></td>'
-    //             +'<td class="product_name">'+orderdata[a].goods_id+'</td>'
-    //             +'<td>'+orderdata[a].goods_num+'</td>'
-    //             +'<td class="money">￥'+orderdata[a].goods_price+'</td>'
-    //             +'</tr>'
-    //     }
-    //     consumnHtmlall+='<div class="record_list">'
-    //         +'<div class="order_list">'
-    //         +'<div class="list_head"><span class="black_font">日期:</span> '+consumnlistData[i].buy_time+' <ul><li><em>￥</em><span class="consume_total">'+consumnlistData[i].order_total+'</span></li><li>'+consumnlistData[i].order_discount+'折</li><li>'+consumnlistData[i].order_count+'件商品</li></ul></div>'
-    //         +'<div class="list_head"><span class="black_font">订单号:</span> '+consumnlistData[i].order_no+' <ul><span class="black_font">导购:</span> '+consumnlistData[i].emp_name+'</ul></div>'
-    //         +'</div>'
-    //         +'<hr/>'
-    //         +'<table class="list_table">'
-    //         +'<thead>'
-    //         +'<tr>'
-    //         +'<th>序号</th>'
-    //         +'<th>商品图片</th>'
-    //         +'<th class="product_name">商品名称</th>'
-    //         +'<th class="product_name">商品编号</th>'
-    //         +'<th>件数</th>'
-    //         +'<th>价格</th>'
-    //         +'</tr>'
-    //         +'</thead>'
-    //         +'<tbody>'
-    //         +TR
-    //         +'</tbody>'
-    //         +'</table>'
-    //         +'</div>'
-    // }
     if(consumnHtml.length!==0){
         $("#consum tbody").html(consumnHtml);
     }else {
@@ -305,6 +262,9 @@ function fuzhi(data){
     }
 }
 
+function imgError(image){//图片404默认图片
+    $(image).attr("src", "../img/bg1.png");
+}
 
 $("#more_message").click(function(){
     gotovipallmessage();

@@ -235,9 +235,9 @@ function superaddition(data,num){//页面加载循环
             + data[i].param_name
             + "</td><td>"
             + data[i].param_type
-            + "</td><td>"
+            + "</td><td><span title="+data[i].param_values+">"
             + data[i].param_values
-            + "</td><td>"
+            + "</span></td><td>"
             + data[i].param_desc
             + "</td><td>"
             + data[i].corp_name

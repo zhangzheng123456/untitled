@@ -335,6 +335,7 @@ jQuery(document).ready(function(){
 		var img_html='';
 		var a="";
 		var b="";
+		whir.loading.add("",0.5);
 		oc.postRequire("post", _command,"", _params, function(data){
 			console.log('请求回的数据');
 			if(data.code=="0"){
@@ -412,6 +413,7 @@ jQuery(document).ready(function(){
 					content: data.message
 				});
 			}
+			whir.loading.remove();//移除加载框
 		});
 	}else{
 		getcorplist(a,b);
@@ -467,9 +469,11 @@ jQuery(document).ready(function(){
 
 });
 // 删除加载的已存在的商品图片
-function img_del(obj) {
-	$(obj).parent().remove();
-}
+// function img_del(obj) {
+// 	$(obj).parent().remove();
+// }
+var num=1;
+var next=false;
 function getcorplist(a,b){
 	//获取所属企业列表
 	var corp_command="/user/getCorpByUser";
@@ -501,6 +505,7 @@ function getcorplist(a,b){
 					$("#search_match_goods ul").empty();
 					$("#search").empty();
 					$(".match_goods ul").empty();
+
 				}
 			})
 			$('.searchable-select-item').click(function(){
@@ -603,8 +608,10 @@ function getvarbrandlist(c,d){
 		$("#"+goods_code).remove();
 	})
 // }
-var num=1;
-var next=false;
+//删除图片
+$(".good_imgs").on("click",".diyCancel",function(){
+	$(this).parent().remove();
+})
 function getmatchgoodsList(a) {
 	//获取相关商品搭配列表
 	var param={};
@@ -618,12 +625,13 @@ function getmatchgoodsList(a) {
 	param["pageNumber"] =pageNumber;
     param["pageSize"] =pageSize;
 	param["searchValue"]=searchValue;
+	whir.loading.add("",0.5);//加载等待框
 	oc.postRequire("post", "/goods/matchGoodsList","",param, function(data){
 		if(data.code=="0"){
 			var msg=JSON.parse(data.message);
 			var list=JSON.parse(msg.list);
-			if(list.length<1){
-				jQuery('#search_match_goods ul').append("<p>没有相关宝贝了</p>")
+			if(list.length<=0){
+				jQuery('#search_match_goods ul').append("<p>没有相关商品了</p>")
 				next=true;
 			}else{
 				num++;
@@ -636,6 +644,7 @@ function getmatchgoodsList(a) {
 						+ list[i].goods_name + '</span><span class="goods_add">'
 						+'+</span><i class="icon-ishop_6-12"></i></li>');
 				}
+				next=false;
 			}
 
 
@@ -647,6 +656,7 @@ function getmatchgoodsList(a) {
 				content: data.message
 			});
 		}
+		whir.loading.remove();//移除加载框
 		// goodsAddHide();
 	});
 }
@@ -673,6 +683,7 @@ $("#add").click(function () {
 	}
 	$('#OWN_CORP').attr("corp_code",corp_code);
 	var num=1;
+	next=false;
 	getmatchgoodsList(num);
 })
 //关闭搜索匹配商品弹窗
@@ -684,12 +695,14 @@ $("#close_match_goods").click(function () {
 //搜索相关商品
 $("#d_search").click(function () {
 	jQuery('#search_match_goods ul').empty();
+	num=1;
 	getmatchgoodsList(num);
 })
 $("#search_match_goods").keydown(function () {
 	var event=window.event||arguments[0];
 	if(event.keyCode == 13){
 		jQuery('#search_match_goods ul').empty();
+		num=1;
 		getmatchgoodsList(num);
 	}
 })

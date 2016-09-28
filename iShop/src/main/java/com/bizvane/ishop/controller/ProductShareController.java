@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.constant.Common;
+import com.bizvane.ishop.constant.CommonValue;
 import com.bizvane.ishop.utils.MongoUtils;
 import com.bizvane.ishop.utils.OutExeclHelper;
 import com.bizvane.ishop.utils.WebUtils;
@@ -61,7 +62,7 @@ public class ProductShareController {
             System.out.println("======productShareLogger===== ");
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_product_share");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_production_share);
 
             DBCursor dbCursor = null;
             // 读取数据
@@ -119,7 +120,7 @@ public class ProductShareController {
             String search_value = jsonObject.get("searchValue").toString();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_product_share");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_production_share);
 
             String[] column_names = new String[]{"product_image","product_url","product_title","corp_name","operator_id","time"};
             BasicDBObject queryCondition = MongoUtils.orOperation(column_names,search_value);
@@ -186,7 +187,7 @@ public class ProductShareController {
             BasicDBObject queryCondition = MongoUtils.andOperation(array);
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_product_share");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_production_share);
 
 
             DBCursor dbCursor = null;
@@ -243,7 +244,7 @@ public class ProductShareController {
             ArrayList list = new ArrayList();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("log_product_share");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_log_production_share);
             DBObject sort_obj = new BasicDBObject("time", -1);
 
             if (screen.equals("")) {

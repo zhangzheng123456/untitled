@@ -12,6 +12,12 @@ public class CommonValue {
     //OSS请求访问的Bucket名字
     public final static String bucketName = "products-image";
 
-    //十二星座
-    public static final String VALUE_CONSTELLATION = "白羊座,金牛座,双子座,巨蟹座,狮子座,处女座,天秤座,天蝎座,射手座,摩羯座,水瓶座,双鱼座";
+    //table名（mongodb）
+
+    public final static String table_log_user_action = "log_person_action";
+
+    public final static String table_log_production_share = "log_product_share";
+
+    public final static String table_vip_info = "vip_info";
+
 }

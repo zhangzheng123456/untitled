@@ -136,6 +136,7 @@ public class VIPController {
 
             String extend_info = "";
             String remark = "";
+            String avatar = "";
             JSONArray extend = new JSONArray();
 
             List<VipParam> vipParams = vipParamService.selectAllParam(corp_code,Common.IS_ACTIVE_Y);
@@ -151,7 +152,7 @@ public class VIPController {
             }
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
 
-            DBCollection cursor = mongoTemplate.getCollection("vip_info");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
             BasicDBObject dbObject=new BasicDBObject();
             dbObject.put("vip_id",vip_id);
             dbObject.put("corp_code",corp_code);
@@ -163,8 +164,11 @@ public class VIPController {
                     extend_info = obj.get("extend").toString();
                 if (obj.containsField("remark"))
                     remark = obj.get("remark").toString();
+                if (obj.containsField("avatar"))
+                    remark = obj.get("avatar").toString();
             }
 
+            vip.put("vip_avatar",avatar);
             JSONObject result = new JSONObject();
             result.put("list",vip);
             result.put("extend",extend);
@@ -204,100 +208,28 @@ public class VIPController {
             String store_id = jsonObject.get("store_id").toString();
             String store_code = baseService.storeIdConvertStoreCode(corp_code,store_id);
 
+            Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_store_code = new Data("store_id", store_code, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_vip_id.key, data_vip_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_code.key, data_store_code);
+
             JSONObject result_points = new JSONObject();
             JSONObject result_wardrobes = new JSONObject();
 
             if (jsonObject.containsKey("type")){
                 //获取积分列表
                 if (jsonObject.get("type").equals("1")){
-
-                    if (jsonObject.containsKey("time")){}
-                    JSONArray pointLists = new JSONArray();
-                    for (int i = 0; i < 18; i++) {
-                        JSONObject record1 = new JSONObject();
-                        record1.put("points", i + 10);
-                        record1.put("date", "2016-01-02");
-                        pointLists.add(record1);
-                    }
-                    result_points.put("list", JSON.toJSONString(pointLists));
-                    result_points.put("vip_card_type", "直营合作会员卡");
-                    result_points.put("cardno", "4444444444444444444");
-                    result_points.put("vip_name", "罗晓珊");
-                    result_points.put("points", "1022");
+//                    if (jsonObject.containsKey("time")){}
+                    DataBox dataBox_points = iceInterfaceService.iceInterfaceV2("VipInfoScoreDetail", datalist);
+                    logger.info("-------VipInfoScoreDetail:" + dataBox_points.data.get("message").value);
+                    String points = dataBox_points.data.get("message").value;
+                    result_points = JSONObject.parseObject(points);
                 }else if(jsonObject.get("type").equals("2")){
                     //获取衣橱列表
-                    if (jsonObject.containsKey("time")){}
-//                    JSONArray wardrobes = new JSONArray();
-//                    JSONObject wardrobe = new JSONObject();
-//                    wardrobe.put("goods_id", "367A0103");
-//                    wardrobe.put("goods_name", "外套(毛衫外套)");
-//                    wardrobe.put("goods_img", "http://picttype1.jnby.com/2/6L840-2.jpg");
-//                    wardrobe.put("goods_price", "1099");
-//                    wardrobe.put("goods_num", "1");
-//
-//                    JSONObject wardrobe2 = new JSONObject();
-//                    wardrobe2.put("goods_id", "26632146");
-//                    wardrobe2.put("goods_name", "外套(羊绒大衣)");
-//                    wardrobe2.put("goods_img", "http://picttype1.jnby.com/2/6L837-5.jpg");
-//                    wardrobe2.put("goods_price", "2499");
-//                    wardrobe2.put("goods_num", "1");
-//
-//                    JSONArray war = new JSONArray();
-//                    war.add(wardrobe);
-//                    war.add(wardrobe2);
-//                    JSONObject orders = new JSONObject();
-//                    orders.put("buy_time", "2016-02-07");
-//                    orders.put("order_no", "1665467899992");
-//                    orders.put("order_discount", "9.5");
-//                    orders.put("order_count", "2");
-//                    orders.put("order_total", "3418");
-//                    orders.put("emp_name", "陆之昂");
-//                    orders.put("order", war);
-//                    wardrobes.add(orders);
-//
-//
-//                    JSONObject wardrobe11 = new JSONObject();
-//                    wardrobe11.put("goods_id", "367A0104");
-//                    wardrobe11.put("goods_name", "帽子");
-//                    wardrobe11.put("goods_img", "http://wx.jnby.com/WXDATA/less/image/2/367A0103001-2.jpg");
-//                    wardrobe11.put("goods_price", "259");
-//                    wardrobe11.put("goods_num", "3");
-//
-//                    JSONObject wardrobe12 = new JSONObject();
-//                    wardrobe12.put("goods_id", "26632146");
-//                    wardrobe12.put("goods_name", "裤子(九分裤)");
-//                    wardrobe12.put("goods_img", "http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/26632146/12.jpg");
-//                    wardrobe12.put("goods_price", "499");
-//                    wardrobe12.put("goods_num", "2");
-//
-//                    JSONArray war2 = new JSONArray();
-//                    war2.add(wardrobe11);
-//                    war2.add(wardrobe12);
-//                    JSONObject orders2 = new JSONObject();
-//                    orders2.put("buy_time", "2016-06-27");
-//                    orders2.put("order_no", "1665467899992");
-//                    orders2.put("order_discount", "8.5");
-//                    orders2.put("order_count", "5");
-//                    orders2.put("order_total", "1458");
-//                    orders2.put("emp_name", "陆之昂");
-//                    orders2.put("order", war2);
-//                    wardrobes.add(orders2);
-//
-//                    result_wardrobes.put("list", JSON.toJSONString(wardrobes));
-//                    result_wardrobes.put("vip_card_type", "直营合作会员卡");
-//                    result_wardrobes.put("cardno", "4444444444444444444");
-//                    result_wardrobes.put("vip_name", "罗晓珊");
-//                    result_wardrobes.put("amount", "4876");
-//                    result_wardrobes.put("times", "2");
-
-                    Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-                    Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                    Data data_store_code = new Data("store_id", store_code, ValueType.PARAM);
-
-                    Map datalist = new HashMap<String, Data>();
-                    datalist.put(data_vip_id.key, data_vip_id);
-                    datalist.put(data_corp_code.key, data_corp_code);
-                    datalist.put(data_store_code.key, data_store_code);
+//                    if (jsonObject.containsKey("time")){}
                     DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipMoneyRecord", datalist);
                     logger.info("-------AnalysisVipMoneyRecord:" + dataBox.data.get("message").value);
                     String result = dataBox.data.get("message").value;
@@ -305,95 +237,15 @@ public class VIPController {
                 }
             }else {
                 //获取积分和衣橱信息
-                JSONArray pointLists = new JSONArray();
-                for (int i = 0; i < 18; i++) {
-                    JSONObject record1 = new JSONObject();
-                    record1.put("points", i + 10);
-                    record1.put("date", "2016-01-02");
-                    pointLists.add(record1);
-                }
-                result_points.put("list", JSON.toJSONString(pointLists));
-                result_points.put("vip_card_type", "直营合作会员卡");
-                result_points.put("cardno", "4444444444444444444");
-                result_points.put("vip_name", "罗晓珊");
-                result_points.put("points", "1022");
+                DataBox dataBox_points = iceInterfaceService.iceInterfaceV2("VipInfoScoreDetail", datalist);
+                logger.info("-------VipInfoScoreDetail:" + dataBox_points.data.get("message").value);
+                String points = dataBox_points.data.get("message").value;
+                result_points = JSONObject.parseObject(points);
 
-
-//                JSONArray wardrobes = new JSONArray();
-//                JSONObject wardrobe = new JSONObject();
-//                wardrobe.put("goods_id", "367A0103");
-//                wardrobe.put("goods_name", "外套(毛衫外套)");
-//                wardrobe.put("goods_img", "http://picttype1.jnby.com/2/6L840-2.jpg");
-//                wardrobe.put("goods_price", "1099");
-//                wardrobe.put("goods_num", "1");
-//
-//                JSONObject wardrobe2 = new JSONObject();
-//                wardrobe2.put("goods_id", "26632146");
-//                wardrobe2.put("goods_name", "外套(羊绒大衣)");
-//                wardrobe2.put("goods_img", "http://picttype1.jnby.com/2/6L837-5.jpg");
-//                wardrobe2.put("goods_price", "2499");
-//                wardrobe2.put("goods_num", "1");
-//
-//                JSONArray war = new JSONArray();
-//                war.add(wardrobe);
-//                war.add(wardrobe2);
-//                JSONObject orders = new JSONObject();
-//                orders.put("buy_time", "2016-02-07");
-//                orders.put("order_no", "1665467899992");
-//                orders.put("order_discount", "9.5");
-//                orders.put("order_count", "2");
-//                orders.put("order_total", "3418");
-//                orders.put("emp_name", "陆之昂");
-//                orders.put("order", war);
-//                wardrobes.add(orders);
-//
-//
-//                JSONObject wardrobe11 = new JSONObject();
-//                wardrobe11.put("goods_id", "367A0104");
-//                wardrobe11.put("goods_name", "帽子");
-//                wardrobe11.put("goods_img", "http://wx.jnby.com/WXDATA/less/image/2/367A0103001-2.jpg");
-//                wardrobe11.put("goods_price", "259");
-//                wardrobe11.put("goods_num", "3");
-//
-//                JSONObject wardrobe12 = new JSONObject();
-//                wardrobe12.put("goods_id", "26632146");
-//                wardrobe12.put("goods_name", "裤子(九分裤)");
-//                wardrobe12.put("goods_img", "http://products-image.oss-cn-hangzhou.aliyuncs.com/testImage/26632146/12.jpg");
-//                wardrobe12.put("goods_price", "499");
-//                wardrobe12.put("goods_num", "2");
-//
-//                JSONArray war2 = new JSONArray();
-//                war2.add(wardrobe11);
-//                war2.add(wardrobe12);
-//                JSONObject orders2 = new JSONObject();
-//                orders2.put("buy_time", "2016-06-27");
-//                orders2.put("order_no", "1665467899992");
-//                orders2.put("order_discount", "8.5");
-//                orders2.put("order_count", "5");
-//                orders2.put("order_total", "1458");
-//                orders2.put("emp_name", "陆之昂");
-//                orders2.put("order", war2);
-//                wardrobes.add(orders2);
-//
-//                result_wardrobes.put("list", JSON.toJSONString(wardrobes));
-//                result_wardrobes.put("vip_card_type", "直营合作会员卡");
-//                result_wardrobes.put("cardno", "4444444444444444444");
-//                result_wardrobes.put("vip_name", "罗晓珊");
-//                result_wardrobes.put("amount", "4876");
-//                result_wardrobes.put("times", "2");
-
-                Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
-                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
-                Data data_store_code = new Data("store_id", store_code, ValueType.PARAM);
-
-                Map datalist = new HashMap<String, Data>();
-                datalist.put(data_vip_id.key, data_vip_id);
-                datalist.put(data_corp_code.key, data_corp_code);
-                datalist.put(data_store_code.key, data_store_code);
-                DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipMoneyRecord", datalist);
-                logger.info("-------AnalysisVipMoneyRecord:" + dataBox.data.get("message").value);
-                String result = dataBox.data.get("message").value;
-                result_wardrobes = JSONObject.parseObject(result);
+                DataBox dataBox_wardrobes = iceInterfaceService.iceInterfaceV2("AnalysisVipMoneyRecord", datalist);
+                logger.info("-------AnalysisVipMoneyRecord:" + dataBox_wardrobes.data.get("message").value);
+                String wardrobes = dataBox_wardrobes.data.get("message").value;
+                result_wardrobes = JSONObject.parseObject(wardrobes);
             }
             JSONObject result = new JSONObject();
             result.put("result_points",result_points);
@@ -402,7 +254,6 @@ public class VIPController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
             dataBean.setMessage(result.toString());
-
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId("1");
@@ -414,12 +265,14 @@ public class VIPController {
 
     /**
      * 会员列表
-     * 筛选
+     * 搜索
      */
-    @RequestMapping(value = "/vipScreen", method = RequestMethod.POST)
+    @RequestMapping(value = "/vipSearch", method = RequestMethod.POST)
     @ResponseBody
-    public String vipScreen(HttpServletRequest request) {
+    public String vipSearch(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -427,15 +280,25 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String vip_id = jsonObject.get("vip_id").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            
+            if (role_code.equals(Common.ROLE_SYS)){
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            String search_value = jsonObject.get("searchValue").toString();
+            logger.info("json--------------corp_code-" + corp_code);
 
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_search_value.key, data_search_value);
+            datalist.put(data_corp_code.key, data_corp_code);
 
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
+            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage("");
+            dataBean.setMessage(result);
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -468,7 +331,7 @@ public class VIPController {
             String phone = jsonObject.get("phone").toString();
 
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
-            DBCollection cursor = mongoTemplate.getCollection("vip_info");
+            DBCollection cursor = mongoTemplate.getCollection(CommonValue.table_vip_info);
             Map keyMap = new HashMap();
             keyMap.put("_id", corp_code+card_no);
             BasicDBObject queryCondition = new BasicDBObject();
@@ -487,6 +350,10 @@ public class VIPController {
                 if (jsonObject.containsKey("remark")) {
                     String remark = jsonObject.get("remark").toString();
                     updatedValue.put("remark", remark);
+                }
+                if (jsonObject.containsKey("avatar")) {
+                    String avatar = jsonObject.get("avatar").toString();
+                    updatedValue.put("avatar", avatar);
                 }
                 DBObject updateSetValue=new BasicDBObject("$set",updatedValue);
                 cursor.update(updateCondition, updateSetValue);
@@ -507,6 +374,10 @@ public class VIPController {
                     String remark = jsonObject.get("remark").toString();
                     saveData.put("remark", remark);
                 }
+                if (jsonObject.containsKey("avatar")) {
+                    String avatar = jsonObject.get("avatar").toString();
+                    saveData.put("avatar", avatar);
+                }
                 cursor.save(saveData);
             }
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -521,33 +392,4 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-
-
-    //会员积分列表
-    @RequestMapping(value = "/allVipPointsRecord", method = RequestMethod.POST)
-    @ResponseBody
-    public String allVipPointsRecord(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String param = request.getParameter("param");
-            logger.info("json---------------" + param);
-            JSONObject jsonObj = JSONObject.parseObject(param);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
-            DataBox dataBox = iceInterfaceService.iceInterface("VipDetailQuery", datalist);
-            logger.info("-------会员积分" + dataBox.data.get("message").value);
-            String result = dataBox.data.get("message").value;
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
 }
