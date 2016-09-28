@@ -261,12 +261,14 @@ public class VIPController {
 
     /**
      * 会员列表
-     * 筛选
+     * 搜索
      */
-    @RequestMapping(value = "/vipScreen", method = RequestMethod.POST)
+    @RequestMapping(value = "/vipSearch", method = RequestMethod.POST)
     @ResponseBody
-    public String vipScreen(HttpServletRequest request) {
+    public String vipSearch(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -274,15 +276,24 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String vip_id = jsonObject.get("vip_id").toString();
-            String corp_code = jsonObject.get("corp_code").toString();
-            
+            if (role_code.equals(Common.ROLE_SYS)){
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            String search_value = jsonObject.get("search_value").toString();
 
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_search_value.key, data_search_value);
+            datalist.put(data_corp_code.key, data_corp_code);
 
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("VipSearch", datalist);
+            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
 
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId("1");
-            dataBean.setMessage("");
+            dataBean.setMessage(result);
 
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
@@ -368,33 +379,4 @@ public class VIPController {
         return dataBean.getJsonStr();
     }
 
-
-
-    //会员积分列表
-    @RequestMapping(value = "/allVipPointsRecord", method = RequestMethod.POST)
-    @ResponseBody
-    public String allVipPointsRecord(HttpServletRequest request) {
-        DataBean dataBean = new DataBean();
-        try {
-            String param = request.getParameter("param");
-            logger.info("json---------------" + param);
-            JSONObject jsonObj = JSONObject.parseObject(param);
-            id = jsonObj.get("id").toString();
-            String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = JSONObject.parseObject(message);
-            Map datalist = iceInterfaceService.vipBasicMethod(jsonObject,request);
-            DataBox dataBox = iceInterfaceService.iceInterface("VipDetailQuery", datalist);
-            logger.info("-------会员积分" + dataBox.data.get("message").value);
-            String result = dataBox.data.get("message").value;
-
-            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-            dataBean.setId(id);
-            dataBean.setMessage(result);
-        } catch (Exception ex) {
-            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-            dataBean.setId(id);
-            dataBean.setMessage(ex.getMessage());
-        }
-        return dataBean.getJsonStr();
-    }
 }
