@@ -8,6 +8,7 @@ var count='';
 /**********************左侧数据**************************************************************************************/
 //获取区域
 function GetArea(){
+    var search_param=arguments.length;
     var searchValue=$('#select_analyze input').val();
     var param={};
     param['pageNumber']=page;
@@ -29,8 +30,10 @@ function GetArea(){
             for(var i= 0;i<output_list.length;i++){
                 ul+="<li data_area='"+output_list[i].area_code+"'>"+output_list[i].area_name+"</li>";
             }
-            $('#side_analyze ul li:nth-child(2) s').html(first_area);
-            $('#side_analyze ul li:nth-child(2) s').attr('data_area',first_area_code);
+            if(search_param==0){
+                $('#side_analyze ul li:nth-child(2) s').html(first_area);
+                $('#side_analyze ul li:nth-child(2) s').attr('data_area',first_area_code);
+            }
             var area_code=output_list[0].area_code;
             // console.log(area_code);
             // localStorage.setItem('area_code',area_code);
@@ -136,6 +139,8 @@ function getMore(e){
 }
 //搜索
 function searchValue(e){
+    //页面搜索
+    var search=2;
     //page初始化
     page=1;
     //进入搜索清空内容
@@ -148,9 +153,9 @@ function searchValue(e){
     var parent=$(e.target).parent().parent().parent();
     //判断是区域搜索还是店铺搜索
       if($(parent).attr('id')=='select_analyze'){
-          GetArea();
+          GetArea(search);
       }else{
-          getStore(localStorage.getItem('area_code'));
+          getStore( $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area'));
       }
 }
 //页面加载前加载区域
@@ -166,8 +171,19 @@ $('#side_analyze>ul:nth-child(1) li:gt(0)').click(function(){
         if($(this).find('b').html()=='区域'){
             $('#select_analyze').toggle();
             $('#select_analyze_shop').hide();
+            if($('#select_analyze input').val()){
+                $('#select_analyze input').val('');
+                $('#select_analyze ul').html('');
+                GetArea();
+            }
         }else{
-            $('#select_analyze_shop').toggle()
+            $('#select_analyze_shop').toggle();
+            //下拉搜索内容重置
+            if($('#select_analyze_shop input').val()){
+                $('#select_analyze_shop input').val('');
+                $('#select_analyze_shop ul').html('');
+                getStore( $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area'));
+            }
         }
     });
 /******************************表格分析数据*************************************************************************/
@@ -412,7 +428,7 @@ function newVipGet(){
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
         whir.loading.remove();//移除加载框
-        //如果页面没有数据，设置提示信息
+        //如果页面没有数据
         $('.newVip .vip_table tbody').html()?'':$('.newVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
     });
 }
@@ -479,6 +495,7 @@ function sleepVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
     });
+    // whir.loading.remove();//移除加载框
 }
 function sleepVipGet_sub(ali) {
     var ali=ali;//当前对象
@@ -515,7 +532,7 @@ function consumeVipGet() {
             if(msg.length){
                 $(".rank thead").append('<tr>'
                     + '<th>序号</th>'
-                    + '<th>会员</th>'
+                    + '<th>会员名称</th>'
                     + '<th>会员等级</th>'
                     + '<th>消费总额</th>'
                     + '<th>最近消费日期</th></tr>')
@@ -575,7 +592,7 @@ function consumeVipGetre() {
             if(msg.length>0){
                 $(".rank thead").append('<tr>'
                     + '<th>序号</th>'
-                    + '<th>会员</th>'
+                    + '<th>会员名称</th>'
                     + '<th>会员等级</th>'
                     + '<th>平均消费</th>'
                     + '<th>月消费次数</th></tr>')
@@ -634,7 +651,7 @@ function consumeVipGetam() {
             if(msg.length>0){
                 $(".rank thead").append('<tr>'
                     + '<th>序号</th>'
-                    + '<th>会员</th>'
+                    + '<th>会员名称</th>'
                     + '<th>会员等级</th>'
                     + '<th>消费总额</th></tr>')
                 for(var i=0;i<msg.length;i++){
@@ -668,6 +685,8 @@ function consumeVipGetam() {
 }
 function consumeVipGet_sub(ali) {
     var ali=ali;//当前对象
+    query_type='';//创建活跃会员的标签请求
+    month_type='';//会员生日月份类型
     switch($($(ali).html()).html()){
         case '最近消费': query_type="recent";consumeVipGet('','',query_type);break;
         case '消费频率': query_type="freq";consumeVipGetre('','',query_type);break;
@@ -788,7 +807,8 @@ $(function(){
                 jump==2&&(newVipGet(a,pageSize,month_type));
                 jump==3&&(sleepVipGet(a,pageSize,query_type));
                 jump==1&&(brithVipGet(a,pageSize,month_type));
-                jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,month_type));
+                // jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,month_type));
+                jump==4&&jump_s==0&&(consumeVipGet(a,pageSize,query_type));
                 jump==4&&jump_s==1&&(consumeVipGetre(a,pageSize,query_type));
                 jump==4&&jump_s>1&&(consumeVipGetam(a,pageSize,query_type));
                 // if(value==""&&filtrate==""){
