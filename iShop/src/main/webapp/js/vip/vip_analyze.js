@@ -239,8 +239,6 @@ $(".vip_nav_bar li:nth-child(4)").click(function () {
     }
 })
 $(".vip_nav_bar li").click(function () {
-    // $(this).css("border-bottom","2px solid #6cc1c8");
-    // $(this).siblings().css("border-bottom","");
     $(this).addClass("liactive");
     $(this).siblings().removeClass("liactive");
 })
