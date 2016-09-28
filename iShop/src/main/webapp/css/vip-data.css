@@ -5,6 +5,9 @@ body{
     padding-top: 81px;
     background-color: #e8e8e8;
 }
+html{
+    height:100%;
+}
 #VIP_LIST,#VIP_message_back,#VIP_LIST_info{
     cursor: pointer;
 }
