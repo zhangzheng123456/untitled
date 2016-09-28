@@ -64,7 +64,7 @@ var oc = new ObjectControl();
                     alert("参数不能为空！");
                     return;
                 }
-                if(PARAM_TYPE=="list" && PARAM_VALUE==""){
+                if(PARAM_TYPE=="select" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
                 }
@@ -105,15 +105,17 @@ var oc = new ObjectControl();
                 var PARAM_DESC = $("#PARAM_DESC").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_TYPE = $("#PARAM_TYPE").val();
-                if(PARAM_TYPE=="开关"){
-                    PARAM_TYPE="switch"
+                if(PARAM_TYPE=="时间"){
+                    PARAM_TYPE="date"
                 }else if(PARAM_TYPE=="选择列表"){
-                    PARAM_TYPE="list"
+                    PARAM_TYPE="select"
                 }else if(PARAM_TYPE=="自定义"){
-                    PARAM_TYPE="custom"
+                    PARAM_TYPE="text"
+                }else if(PARAM_TYPE=="长文本"){
+                    PARAM_TYPE="longtext"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
-                if(PARAM_TYPE=="list" && PARAM_VALUE==""){
+                if(PARAM_TYPE=="select" && PARAM_VALUE==""){
                     alert("参数值不能为空！");
                     return;
                 }
@@ -225,13 +227,16 @@ jQuery(document).ready(function () {
                     input.checked=false;
                 }
                 var param_type=msg.param_type
-                if(param_type=="switch"){
-                    param_type="开关";
+                if(param_type=="date"){
+                    param_type="时间";
                     $("#PARAM_VALUE").attr("disabled","true");
-                }else if(param_type=="list"){
+                }else if(param_type=="select"){
                     param_type="选择列表";
-                }else if(param_type=="custom"){
+                }else if(param_type=="text"){
                     param_type="自定义";
+                    $("#PARAM_VALUE").attr("disabled","true");
+                }else if(param_type=="longtext"){
+                    param_type="长文本";
                     $("#PARAM_VALUE").attr("disabled","true");
                 }
                 $("#PARAM_TYPE").val(param_type);
@@ -315,7 +320,7 @@ $(".paramType li").click(function () {
     var val = $(this).html();
     console.log(val);
     $("#PARAM_TYPE").val(val);
-    if(val=="自定义"||val=="开关"){
+    if(val=="自定义"||val=="时间"||val=="长文本"){
         $("#PARAM_VALUE").attr("disabled","true");
     }else if(val=="选择列表"){
         $("#PARAM_VALUE").removeAttr("disabled");
