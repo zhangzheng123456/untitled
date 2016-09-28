@@ -8,27 +8,17 @@ import java.util.Date;
 public class VIPInfo {
     private int id;
     //会员编号
-    private String vip_code;
-    //会员名称
-    private String vip_name;
+    private String vip_id;
     //会员电话
     private String phone;
-    //会员生日
-    private String birthday;
-    //会员类型
-    private String vip_type;
     //会员卡片号码
-    private String vip_card_number;
-    //性别
-    private String sex;
-    //注册时间
-    private String register_time;
-    //用户编号
-    private String user_code;
-    //店仓编号
-    private String store_code;
+    private String card_no;
     //企业编号
     private String corp_code;
+    //扩展信息
+    private String extend;
+    //备注
+    private String remark;
     //修改日期
     private String modified_date;
     //修改人
@@ -40,17 +30,6 @@ public class VIPInfo {
     //是否可用
     private String isactive;
 
-    public String getCorp_code() {
-        return corp_code;
-    }
-
-    public void setCorp_code(String corp_code) {
-        this.corp_code = corp_code;
-    }
-
-    public VIPInfo() {
-    }
-
     public int getId() {
         return id;
     }
@@ -59,20 +38,12 @@ public class VIPInfo {
         this.id = id;
     }
 
-    public String getVip_code() {
-        return vip_code;
+    public String getVip_id() {
+        return vip_id;
     }
 
-    public void setVip_code(String vip_code) {
-        this.vip_code = vip_code;
-    }
-
-    public String getVip_name() {
-        return vip_name;
-    }
-
-    public void setVip_name(String vip_name) {
-        this.vip_name = vip_name;
+    public void setVip_id(String vip_id) {
+        this.vip_id = vip_id;
     }
 
     public String getPhone() {
@@ -83,71 +54,36 @@ public class VIPInfo {
         this.phone = phone;
     }
 
-
-    public String getVip_type() {
-        return vip_type;
+    public String getCard_no() {
+        return card_no;
     }
 
-    public void setVip_type(String vip_type) {
-        this.vip_type = vip_type;
+    public void setCard_no(String card_no) {
+        this.card_no = card_no;
     }
 
-    public String getVip_card_number() {
-        return vip_card_number;
+    public String getCorp_code() {
+        return corp_code;
     }
 
-    public void setVip_card_number(String vip_card_number) {
-        this.vip_card_number = vip_card_number;
+    public void setCorp_code(String corp_code) {
+        this.corp_code = corp_code;
     }
 
-    public String getSex() {
-        return sex;
+    public String getExtend() {
+        return extend;
     }
 
-    public void setSex(String sex) {
-        this.sex = sex;
+    public void setExtend(String extend) {
+        this.extend = extend;
     }
 
-
-    public String getUser_code() {
-        return user_code;
+    public String getRemark() {
+        return remark;
     }
 
-    public void setUser_code(String user_code) {
-        this.user_code = user_code;
-    }
-
-    public String getStore_code() {
-        return store_code;
-    }
-
-    public void setStore_code(String store_code) {
-        this.store_code = store_code;
-    }
-
-    public String getModifier() {
-        return modifier;
-    }
-
-    public void setModifier(String modifier) {
-        this.modifier = modifier;
-    }
-
-
-    public String getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(String birthday) {
-        this.birthday = birthday;
-    }
-
-    public String getRegister_time() {
-        return register_time;
-    }
-
-    public void setRegister_time(String register_time) {
-        this.register_time = register_time;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     public String getModified_date() {
@@ -156,6 +92,14 @@ public class VIPInfo {
 
     public void setModified_date(String modified_date) {
         this.modified_date = modified_date;
+    }
+
+    public String getModifier() {
+        return modifier;
+    }
+
+    public void setModifier(String modifier) {
+        this.modifier = modifier;
     }
 
     public String getCreated_date() {

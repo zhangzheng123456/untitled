@@ -338,8 +338,10 @@ public class VIPLabelController {
             vipLabel.setCreater(user_id);
             if (Common.ROLE_SYS.equals(role_code) && corp_code.equals(vipLabel.getCorp_code())) {
                 vipLabel.setLabel_type("sys");
-            } else {
+            } else if(role_code.equals(Common.ROLE_GM)){
                 vipLabel.setLabel_type("org");
+            }else {
+                vipLabel.setLabel_type("user");
             }
             String existInfo = vipLabelService.insert(vipLabel);
             if (existInfo.contains(Common.DATABEAN_CODE_SUCCESS)) {
@@ -882,8 +884,10 @@ public class VIPLabelController {
                 String role_code = request.getSession(false).getAttribute("role_code").toString();
                 if (Common.ROLE_SYS.equals(role_code) && corp_code1.equals(corp_code)) {
                     vipLabel.setLabel_type("sys");
-                } else {
+                } else if (role_code.equals(Common.ROLE_GM)){
                     vipLabel.setLabel_type("org");
+                }else {
+                    vipLabel.setLabel_type("user");
                 }
                 String existInfo2 = vipLabelService.insert(vipLabel);
                 if (existInfo2.contains(Common.DATABEAN_CODE_SUCCESS)) {

@@ -18,6 +18,7 @@
         <result column="creater" property="creater" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="isactive" property="isactive" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
     </resultMap>
+
     <select id="selectById" resultMap="VipParam">
         SELECT
         dvp.*
