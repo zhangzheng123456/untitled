@@ -438,7 +438,7 @@ public class UserAchvGoalController {
         try {
             rwb = Workbook.getWorkbook(targetFile);
             Sheet rs = rwb.getSheet(0);//或者rwb.getSheet(0)
-            int clos = rs.getColumns();//得到所有的列
+            int clos = 7;//得到所有的列
             int rows = rs.getRows();//得到所有的行
 //            int actualRows = LuploadHelper.getRightRows(rs);
 //            if(actualRows != rows){
