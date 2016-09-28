@@ -11,7 +11,7 @@ function getVipInfo(){
         var extend=vipData.extend;
         var extend_info=vipData.extend_info==""?{}:JSON.parse(vipData.extend_info);
         var extendhtml="";
-        var conSumData=vipData.list
+        var conSumData=vipData.list;
         $("#total_amount_Y").html(conSumData.total_amount_Y);
         $("#consume_times_Y").html(conSumData.consume_times_Y);
         $("#total_amount").html(conSumData.total_amount);
@@ -297,9 +297,11 @@ function fuzhi(data){
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
     }
     if(data.vip_avatar){
-        $(".person-img").css('background','url('+data.vip_avatar+')')
+        $(".person-img").css('background','url('+data.vip_avatar+')');
+        $("#IMG").attr("src",data.vip_avatar);
     }else{
-        $(".person-img").css('backgroundImage','url(../img/head.png)')
+        $(".person-img").css('backgroundImage','url(../img/head.png)');
+        $("#IMG").attr("src",'../img/head.png');
     }
 }
 
