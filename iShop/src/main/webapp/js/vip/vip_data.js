@@ -377,7 +377,6 @@ $("#nav_bar li").click(function () {
     if($(this).attr('data-name')=='label'){
         gethotVIPlabel();
     }
-
 }).mouseover(function(){
     var index=$(this).index();
     var len=$(this).width();
@@ -393,15 +392,6 @@ $(".nav_bar").mouseleave(function() {
     $("#remark").animate({left: len * _this}, 200);
 });
 
-
-//标签导航切换窗口
-$(".label_nav li").click(function () {
-    var index=$(this).index()+1;
-    $(this).addClass("label_li_active");
-    $(this).siblings().removeClass("label_li_active");
-    $(".label_box").eq(index).show();
-    $(".label_box").eq(index).siblings("div").hide();
-})
 //添加，删除标签
 function labelDelete(obj) {
     // $("#label_box span i").click(function () {
@@ -487,6 +477,54 @@ function clickLabeladd() {
         }
     })
 }
+//拖拽
+//阻止拖拽默认事件
+function allowDrop(ev)
+{
+    ev.preventDefault();
+}
+//拖拽事件
+function drop(ev)
+{
+    var param={};
+    ev.preventDefault();
+    var data=ev.dataTransfer.getData("Text");
+    var span=$(document.getElementById(data));
+    var clone= $(document.getElementById(data)).clone();
+    var label_id=clone.attr("data-id");
+    var val=$(clone).text();
+    console.log(clone);
+    console.log(val);
+
+    //调用借口
+    var id = sessionStorage.getItem("id");
+    var store_id = sessionStorage.getItem("store_id");
+    param["corp_code"] = sessionStorage.getItem("corp_code");
+    param['label_name'] = val;
+    param['vip_code'] = id;
+    param['label_id'] = "";
+    param['store_code'] = store_id;
+    oc.postRequire("post", "/VIP/label/addRelViplabel", "", param, function (data) {
+        if (data.code == "0") {
+            var msg = JSON.parse(data.message);
+            var rid = JSON.parse(msg.list);
+            var html = "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
+            clone = $(clone).append(html);
+            $(clone).attr("data-rid", rid);
+            $("#label_box").append(clone);
+            var total = parseInt($(".span_total").html()) + 1;
+            $(".span_total").html(total);
+            if(span.attr("class")=="label_u"){
+                $(span).addClass("label_u_active").removeClass("label_u");
+            }else {
+                $(span).addClass("label_g_active").removeClass("label_g");
+            }
+        }else if(data.code =="-1"){
+            frame();
+            $('.frame').html('请勿重复添加');
+        }
+    })
+}
 
 function upLoadAlbum(data){
     var client = new OSS.Wrapper({
@@ -547,54 +585,6 @@ function getNowFormatDate() {//获取当前日期
     }
     var currentdate = year+month+strDate+H+M+S;
     return currentdate
-}
-//拖拽
-//阻止拖拽默认事件
-function allowDrop(ev)
-{
-    ev.preventDefault();
-}
-//拖拽事件
-function drop(ev)
-{
-    var param={};
-    ev.preventDefault();
-    var data=ev.dataTransfer.getData("Text");
-    var span=$(document.getElementById(data));
-    var clone= $(document.getElementById(data)).clone();
-    var label_id=clone.attr("data-id");
-    var val=$(clone).text();
-    console.log(clone);
-    console.log(val);
-
-    //调用借口
-    var id = sessionStorage.getItem("id");
-    var store_id = sessionStorage.getItem("store_id");
-    param["corp_code"] = sessionStorage.getItem("corp_code");
-    param['label_name'] = val;
-    param['vip_code'] = id;
-    param['label_id'] = "";
-    param['store_code'] = store_id;
-    oc.postRequire("post", "/VIP/label/addRelViplabel", "", param, function (data) {
-        if (data.code == "0") {
-            var msg = JSON.parse(data.message);
-            var rid = JSON.parse(msg.list);
-            var html = "<i class='icon-ishop_6-12' onclick='labelDelete(this);'></i>";
-            clone = $(clone).append(html);
-            $(clone).attr("data-rid", rid);
-            $("#label_box").append(clone);
-            var total = parseInt($(".span_total").html()) + 1;
-            $(".span_total").html(total);
-            if(span.attr("class")=="label_u"){
-                $(span).addClass("label_u_active").removeClass("label_u");
-            }else {
-                $(span).addClass("label_g_active").removeClass("label_g");
-            }
-        }else if(data.code =="-1"){
-            frame();
-            $('.frame').html('请勿重复添加');
-        }
-    })
 }
 $(function(){
     getConsumCount();

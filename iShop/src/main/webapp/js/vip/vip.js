@@ -412,24 +412,28 @@ function jumpBianse(){
 $("#search").keydown(function() {
     var event=window.event||arguments[0];
     value=this.value.replace(/\s+/g,"");
-    inx=1;
-    param["searchValue"]=value;
-    param["pageNumber"]=inx;
-    param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
-    if(event.keyCode == 13){
-        POST(inx,pageSize);
+    if(value!==""){
+        inx=1;
+        param["searchValue"]=value;
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        if(event.keyCode == 13){
+            POST(inx,pageSize);
+        }
     }
 });
 //点击放大镜触发搜索
 $("#d_search").click(function(){
     value=$("#search").val().replace(/\s+/g,"");
-    inx=1;
-    param["searchValue"]=value;
-    param["pageNumber"]=inx;
-    param["pageSize"]=pageSize;
-    param["funcCode"]=funcCode;
-    POST(inx,pageSize);
+    if(value!==""){
+        inx=1;
+        param["searchValue"]=value;
+        param["pageNumber"]=inx;
+        param["pageSize"]=pageSize;
+        param["funcCode"]=funcCode;
+        POST(inx,pageSize);
+    }
 })
 //搜索的请求函数
 function POST(a,b){
@@ -438,9 +442,8 @@ function POST(a,b){
     oc.postRequire("post","/vip/vipSearch","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
-            var list=JSON.parse(message.list);
-            cout=list.pages;
-            var list=list.list;
+            var list=message.all_vip_list;
+            cout=message.pages;
             var actions=message.actions;
             $(".table tbody").empty();
             if(list.length<=0){
