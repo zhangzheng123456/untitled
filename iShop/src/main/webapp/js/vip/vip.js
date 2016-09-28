@@ -433,8 +433,9 @@ $("#d_search").click(function(){
 })
 //搜索的请求函数
 function POST(a,b){
+    param["corp_code"]="C10000";
     whir.loading.add("",0.5);//加载等待框
-    oc.postRequire("post","/area/search","0",param,function(data){
+    oc.postRequire("post","/vip/vipSearch","0",param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);

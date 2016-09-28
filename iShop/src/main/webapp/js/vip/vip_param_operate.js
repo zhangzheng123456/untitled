@@ -105,6 +105,13 @@ var oc = new ObjectControl();
                 var PARAM_DESC = $("#PARAM_DESC").val();
                 var PARAM_NAME = $("#PARAM_NAME").val();
                 var PARAM_TYPE = $("#PARAM_TYPE").val();
+                var param_class = $("#param_class").val();
+                var required =$("#is_fill").val();
+                if(required=="是"){
+                    required="Y";
+                }else{
+                    required="N";
+                }
                 if(PARAM_TYPE=="时间"){
                     PARAM_TYPE="date"
                 }else if(PARAM_TYPE=="选择列表"){
@@ -139,6 +146,8 @@ var oc = new ObjectControl();
                     "param_desc": PARAM_DESC,
                     "param_type": PARAM_TYPE,
                     "param_values":PARAM_VALUE,
+                    "required" : required,
+                    "param_class" : param_class,
                     "remark": REMARK,
                     "isactive":ISACTIVE
                 };
@@ -215,9 +224,9 @@ jQuery(document).ready(function () {
             console.log(data);
             if (data.code == "0") {
                 var msg = JSON.parse(data.message);
+                    msg = JSON.parse(msg.vipParam);
                 console.log(msg);
-                $("#OWN_CORP option").val(msg.corp_code);
-                $("#OWN_CORP option").text(msg.corp_name);
+                var corp_code=msg.corp_code;//公司编号
                 $("#PARAM_NAME").val(msg.param_name);
                 $("#PARAM_DESC").val(msg.param_desc);
                 var input=$(".checkbox_isactive").find("input")[0];
@@ -239,13 +248,22 @@ jQuery(document).ready(function () {
                     param_type="长文本";
                     $("#PARAM_VALUE").attr("disabled","true");
                 }
+                var required=msg.required;
+                if(required=="Y"){
+                    required="是";
+                }else if(required=="N"){
+                    required="否"
+                }
+                $("#is_fill").val(required);
                 $("#PARAM_TYPE").val(param_type);
                 $("#PARAM_VALUE").val(msg.param_values);
+                $("#param_class").val(msg.param_class);
                 $("#REMARK").val(msg.remark);
                 $("#created_time").val(msg.created_date);
                 $("#creator").val(msg.creater);
                 $("#modify_time").val(msg.modified_date);
                 $("#modifier").val(msg.modifier);
+                getcorplist(corp_code);
             } else if (data.code == "-1") {
                 art.dialog({
                     time: 1,
@@ -287,12 +305,12 @@ function getcorplist(a, b) {
                 $("#OWN_CORP option[value='" + a + "']").attr("selected", "true");
             }
             $("#OWN_CORP").searchableSelect();
-            var c = $('#corp_select .selected').attr("data-value");
-            param_data(c, b);
-            $("#corp_select .searchable-select-item").click(function () {
-                var c = $(this).attr("data-value");
-                param_data(c, b);
-            })
+            // var c = $('#corp_select .selected').attr("data-value");
+            // param_data(c, b);
+            // $("#corp_select .searchable-select-item").click(function () {
+            //     var c = $(this).attr("data-value");
+            //     param_data(c, b);
+            // })
         } else if (data.code == "-1") {
             art.dialog({
                 time: 1,

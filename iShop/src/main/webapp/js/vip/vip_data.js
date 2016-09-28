@@ -153,13 +153,23 @@ function gethotVIPlabel() {
             var msg=JSON.parse(data.message);
                 msg=JSON.parse(msg.list);
             var html="";
+            var classname="";
             console.log(msg.length);
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
-                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_u'+" id="+i+">"+msg[i].label_name+"</span>"
-                }else if(msg[i].label_type=="org"||msg[i].label_type=="sys"){
-                    html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+'label_g'+" id="+i+">"+msg[i].label_name+"</span>"
+                    if(msg[i].label_sign=="Y"){
+                        classname="label_u_active";
+                    }else {
+                        classname="label_u";
+                    }
+                }else{
+                    if(msg[i].label_sign=="Y"){
+                        classname="label_g_active";
+                    }else {
+                        classname="label_g";
+                    }
                 }
+                html+="<span  draggable='true' data-id="+msg[i].label_id+" class="+classname+" id="+i+">"+msg[i].label_name+"</span>"
             }
             $("#hotlabel").append(html);
         }
@@ -190,6 +200,7 @@ function getOtherlabel() {
             var hasNextPage=list.hasNextPage;
                 list=list.list;
             var html="";
+            var classname="";
             console.log(hasNextPage);
             if(hasNextPage==false){
                 $("#more_label_g").hide();
@@ -200,12 +211,22 @@ function getOtherlabel() {
             }
             if(list[0].label_type=="org"){
                 for(var i=0;i<list.length;i++){
-                    html+="<span  draggable='true' data-id="+list[i].id+" class='label_g' id='"+i+"g'>"+list[i].label_name+"</span>"
+                    if(list[i].label_sign=="Y"){
+                        classname="label_g_active";
+                    }else {
+                        classname="label_g";
+                    }
+                    html+="<span  draggable='true' data-id="+list[i].id+" class="+classname+" id='"+i+"g'>"+list[i].label_name+"</span>"
                 }
                 $("#label_org").append(html);
             }else if(list[0].label_type=="user"){
                 for(var j=0;j<list.length;j++){
-                    html+="<span  draggable='true' data-id="+list[j].id+" class='label_u' id='"+j+"u'>"+list[j].label_name+"</span>"
+                    if(list[j].label_sign=="Y"){
+                        classname="label_u_active";
+                    }else {
+                        classname="label_u";
+                    }
+                    html+="<span  draggable='true' data-id="+list[j].id+" class="+classname+" id='"+j+"u'>"+list[j].label_name+"</span>"
                 }
                 $("#label_user").append(html);
             }
@@ -418,7 +439,8 @@ function addViplabel() {
             var total=parseInt($(".span_total").html())+1;
             $(".span_total").html(total);
         }else if(data.code=="-1"){
-            alert("请勿重复添加");
+            frame();
+            $('.frame').html('请勿重复添加');
         }
     })
 }
@@ -569,7 +591,8 @@ function drop(ev)
                 $(span).addClass("label_g_active").removeClass("label_g");
             }
         }else if(data.code =="-1"){
-            alert("请勿重复添加!");
+            frame();
+            $('.frame').html('请勿重复添加');
         }
     })
 }
