@@ -319,6 +319,8 @@ function getoselectvalue(){//点击模拟的select 获取值给input
     $("#delete").click(function(){//确认删除相册
         $("#tk").hide();
         var id=$(this).attr("data-id");
+        var url=$("#"+id).prev().attr("src");
+        console.log(url);
         var param={};
         param["id"]=id;
         oc.postRequire("post","/vipAlbum/delete","",param,function(data){
@@ -332,6 +334,19 @@ function getoselectvalue(){//点击模拟的select 获取值给input
             }
         })
     });
+function deleteAblum(){
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        bucket: 'products-image'
+    });
+    client.delete(storeAs).then(function (result) {
+        console.log(result)
+    }).catch(function (err) {
+        console.log(err);
+    });
+}
 function frame(){
     var left=($(window).width())/2;//弹框定位的left值
     var tp=($(window).height())/2;//弹框定位的top值
