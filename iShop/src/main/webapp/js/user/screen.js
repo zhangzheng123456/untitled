@@ -358,24 +358,46 @@ function getarealist(a){
 			var area_html_left = '';
 			var area_html_right='';
 			if (list.length == 0) {
+				if(a==1){
+					for(var h=0;h<9;h++){
+						area_html_left+="<li></li>";
+					}
+				}
 				area_next=true;
 			} else {
-				for (var i = 0; i < list.length; i++) {
-				    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+				if(list.length<9&&a==1){
+					for (var i = 0; i < list.length; i++) {
+					    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'/><label for='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+					}
+					for(var j=0;j<9-list.length;j++){
+						area_html_left+="<li></li>"
+					}
+				}else if(list.length>=9||list.length<9&&a>1){
+					for (var i = 0; i < list.length; i++) {
+					    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'/><label for='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+					}
 				}
+				area_num++;
 				area_next=false;
-				$("#screen_area .screen_content_l ul").append(area_html_left);
-				bianse();
 			}
-			area_num++;
+			$("#screen_area .screen_content_l ul").append(area_html_left);
+			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -414,9 +436,15 @@ function getstorelist(a){
             var list=list.list;
 			var store_html = '';
 			if (list.length == 0){
+				if(a==1){
+					for(var h=0;h<9;h++){
+						store_html+="<li></li>";
+					}
+				}
 				shop_next=true;
 			} else {
-				for (var i = 0; i < list.length; i++) {
+				if(list.length<9&&a==1){
+					for (var i = 0; i < list.length; i++) {
 				    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
                         + i
                         + a
@@ -426,12 +454,28 @@ function getstorelist(a){
                         + a
                         + 1
                         + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+					}
+					for(var j=0;j<9-list.length;j++){
+						store_html+="<li></li>"
+					}
+				}else if(list.length>=9||list.length<9&&a>1){
+					for (var i = 0; i < list.length; i++) {
+				    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
+                        + i
+                        + a
+                        + 1
+                        + "'/><label for='checkboxTowInput"
+                        + i
+                        + a
+                        + 1
+                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+					}
 				}
 				shop_num++;
 				shop_next=false;
-				$("#screen_shop .screen_content_l ul").append(store_html);
-				bianse();
 			}
+			$("#screen_shop .screen_content_l ul").append(store_html);
+			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
