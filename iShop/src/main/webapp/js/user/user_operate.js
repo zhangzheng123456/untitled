@@ -149,16 +149,16 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 // }else if(input2.checked==false){
                 // 	isonline="N";
                 // }
+                var a=$('.xingming input');
 				var STORE_CODE="";
-				var storelist_length=$(".shop_list .input_select");;
-				for(var i=0;i<storelist_length.length;i++){
-					var r=$(storelist_length[i]).attr("data-myscode");
-					if(i<storelist_length.length-1){
-						STORE_CODE +=r+",";
-					}else{
-						STORE_CODE +=r;
-					}
-				}
+				for(var i=0;i<a.length;i++){
+			        var u=$(a[i]).attr("data-code");
+			        if(i<a.length-1){
+			            STORE_CODE+=u+",";
+			        }else{
+			             STORE_CODE+=u;
+			        }     
+			    }
 				//如果角色是导购，店长，区经的时候
 				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
 					if(STORE_CODE==""){
@@ -299,16 +299,16 @@ $.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
                 // }else if(input2.checked==false){
                 // 	isonline="N";
                 // }
+				var a=$('.xingming input');
 				var STORE_CODE="";
-				var storelist_length=$(".shop_list .input_select");;
-				for(var i=0;i<storelist_length.length;i++){
-					var r=$(storelist_length[i]).attr("data-myscode");
-					if(i<storelist_length.length-1){
-						STORE_CODE +=r+",";
-					}else{
-						STORE_CODE +=r;
-					}
-				}
+				for(var i=0;i<a.length;i++){
+			        var u=$(a[i]).attr("data-code");
+			        if(i<a.length-1){
+			            STORE_CODE+=u+",";
+			        }else{
+			             STORE_CODE+=u;
+			        }     
+			    }
 				// var PSW=$("#init_password").val();
 				//如果角色是导购，店长，区经的时候
 				if(r_code=="R2000"||r_code=="R3000"||r_code=="R4000"){
@@ -684,7 +684,6 @@ function addareaselect(){//区域
             +'</span>'
             +' <span class="minus_per_icon" onclick="minusareaselect(this)"><i class="icon-ishop_6-12"></i>删除区域</span>'
         +'</div>');
-
 }
 function minusareaselect(obj){//区域  删除
 	$(obj).parent().remove();
@@ -743,111 +742,22 @@ jQuery(document).ready(function(){
 				$("#OWN_RIGHT").val(msg.group.group_name);
 				$("#OWN_RIGHT").attr("data-myrcode",msg.group.group_code);//编辑的时候赋值给群组编号
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
-				if(j_code=="R2000"){
-	            	$('#sidename label').html("所属店铺");
-	            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
-	            	$('#sidedown').attr("onclick","selectownshop(this)");
-	            	$('#add_per_icon').attr("onclick","addshopselect()");
-	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
-	            	// $('#add_per_icon').css({"backgroundColor":"#ddd"});
-	            	$("#ownshop_list").show();
+				if(j_code=="R2000"||j_code=="R3000"){
+					$('.task_allot').html("所属店铺");
 		            var store_lists=msg.store_name.split(",");
 					var storecode_list=msg.store_code.split(",");
-					if(store_lists.length==0){
-						$("#OWN_STORE").val("");
-					}else if(store_lists==1){
-						$("#OWN_STORE").val(store_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",msg.store_code);
-					}else{
-						$("#OWN_STORE").val(store_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",storecode_list[0]);
-						var html='';
-						for(var i=1;i<store_lists.length;i++){
-							html +='<div id="per_type">'
-						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'">'
-							        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" onclick="selectownshop(this)" readonly/>'
-							        +'<div class="store_list_kuang">'
-	                				+'<input class="search" type="text" placeholder="请输入搜索内容">'
-	                				+'<ul style="margin-left:0px" id="store_list">'
-	                				+'</ul>'
-	                				+'</div>'
-						        +'</span>'
-						        +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
-						        +'</div>';
-						}
-						$(".shop_list").append(html);
-					}	
-            	}else if(j_code=="R3000"){
-	            	$('#sidename label').html("所属店铺");
-	            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
-	            	$('#sidedown').attr("onclick","selectownshop(this)");
-	            	$('#add_per_icon').attr("onclick","addshopselect()");
-	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
-	            	$("#ownshop_list").show();
-	            	var store_lists=msg.store_name.split(",");
-					var storecode_list=msg.store_code.split(",");
-	            	if(store_lists.length==0){
-						$("#OWN_STORE").val("");
-					}else if(store_lists==1){
-						$("#OWN_STORE").val(store_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",msg.store_code);
-					}else{
-						$("#OWN_STORE").val(store_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",storecode_list[0]);
-						var html='';
-						for(var i=1;i<store_lists.length;i++){
-							html +='<div id="per_type">'
-						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'">'
-						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+storecode_list[i]+'"  value="'+store_lists[i]+'" placeholder="请选择所属店铺" onclick="selectownshop(this)" readonly/>'
-						        +'<div class="store_list_kuang">'
-	                				+'<input class="search" type="text" placeholder="请输入搜索内容">'
-	                				+'<ul style="margin-left:0px" id="store_list">'
-	                				+'</ul>'
-	                			+'</div>'
-						        +'</span>'
-						        +' <span class="minus_per_icon" onclick="minusshopselect(this)"><i class="icon-ishop_6-12"></i>删除店铺</span>'
-						        +'</div>';
-						}
-						$(".shop_list").append(html);
-					}	
+					for(var i=0;i<store_lists.length;i++){
+						$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+storecode_list[i]+"'  value='"+store_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+					}
             	}else if(j_code=="R4000"){
-	            	$('#sidename label').html("所属区域");
-	            	$('#OWN_STORE').attr("placeholder","请选择所属区域");
-	            	$('#OWN_STORE').attr("onclick","selectownarea(this)");
-	            	$('#add_per_icon').attr("onclick","addareaselect()");
-	            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
-	            	$("#ownshop_list").show();
+	            	$('.task_allot').html("所属区域");
 	            	var area_lists=msg.area_name.split(",");
 					var areacode_list=msg.area_code.split(",");
-	            	if(area_lists.length==0){
-						$("#OWN_STORE").val("");
-					}else if(area_lists==1){
-						$("#OWN_STORE").val(area_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",msg.area_code);
-					}else{
-						$("#OWN_STORE").val(area_lists[0]);
-						$("#OWN_STORE").attr("data-myscode",areacode_list[0]);
-						var html='';
-						for(var i=1;i<area_lists.length;i++){
-							html +='<div id="per_type">'
-						        +'<span style="display:inline-block;" data-i="1" id="store_lists_'+i+'">'
-						        +'<input class="input_select" style="width:280px" type="text" data-myscode="'+areacode_list[i]+'"  value="'+area_lists[i]+'" placeholder="请选择所属店铺" onclick="selectownarea(this)" readonly/>'
-						        +'<div class="store_list_kuang">'
-	                				+'<input class="search" type="text" placeholder="请输入搜索内容">'
-	                				+'<ul style="margin-left:0px" id="store_list">'
-	                				+'</ul>'
-	                				+'</div>'
-						        +'</span>'
-						        +' <span class="minus_per_icon" onclick="minusareaselect(this)"><i class="icon-ishop_6-12"></i>删除区域</span>'
-						        +'</div>';
-						}
-						$(".shop_list").append(html);
-					}	
-            	}
-	            else if(j_code=="R5000"){
-            		$("#ownshop_list").hide();
-            	}else if(j_code=="R6000"){
-            		$("#ownshop_list").hide();
+					for(var i=0;i<area_lists.length;i++){
+						$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+areacode_list[i]+"'  value='"+area_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+					}
+            	}else if(j_code=="R5000"||j_code=="R6000"){
+            		$('.task_allot').parent().hide();
             	}	
 				$("#register_time").val(msg.created_date);//创建时间
 				$("#recently_login").val(msg.login_time_recently);//是否登录
@@ -1068,6 +978,8 @@ function getcorplist(){
 					$("#OWN_RIGHT").attr("data-myrcode","");
 					$("#OWN_STORE").val('');
 					$("#OWN_STORE").attr("data-myscode","");
+					$('.xingming').empty();
+					$('.task_allot').html("所属店铺");
 					$("#ownshop_list .per_type").nextAll().remove();
 				}
 			})
@@ -1084,6 +996,8 @@ function getcorplist(){
 					$("#OWN_RIGHT").attr("data-myrcode","");
 					$("#OWN_STORE").val('');
 					$("#OWN_STORE").attr("data-myscode","");
+					$('.xingming').empty();
+					$('.task_allot').html("所属店铺");
 					$("#ownshop_list .per_type").nextAll().remove();
 			})
 		}else if(data.code=="-1"){

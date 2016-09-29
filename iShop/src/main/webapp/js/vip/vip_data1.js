@@ -1,8 +1,11 @@
 $(function(){
     getVipInfo();
 });
-var dataghy="";
-var list="";
+var text_first="";
+var text_second="";
+var text_third="";
+var time_start="";
+var time_end="";
 function getVipInfo(){
     var param_info={};
     param_info["vip_id"]=sessionStorage.getItem("id");
@@ -88,6 +91,11 @@ function getVipInfo(){
 }
 function getVipPoints(code,type){
     var parmam_jifen={};
+    parmam_jifen['time_start']=time_start;
+    parmam_jifen['time_end']=time_end;
+    parmam_jifen['order_id']=text_first;
+    parmam_jifen['goods_code']=text_second;
+    parmam_jifen['goods_name']=text_third;
     parmam_jifen['vip_id']=sessionStorage.getItem("id");
     parmam_jifen['store_id']=sessionStorage.getItem("store_id");
     parmam_jifen['corp_code']=sessionStorage.getItem("corp_code");
@@ -105,7 +113,6 @@ function getVipPoints(code,type){
         if(type=='2'){
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=consumnData.list_wardrobe;//消费list
-                dataghy=consumnData;
             xiaofeiContent(consumnData,consumnlistData)
         }
         if(type==undefined){
@@ -181,9 +188,9 @@ function xiaofeiContent(consumnData,consumnlistData){
                 total_money = parseFloat(total_money)+parseFloat(consumnlistData[j].goods_price);
                 total_sug = parseFloat(total_sug)+parseFloat(consumnlistData[j].goods_sug)
                 TR+='<tr>'
-                    +'<td>'+n+'</td>'
-                    +'<td><img src="'+consumnlistData[j].goods_img+'" onerror="imgError(this);" /></td>'
-                    +'<td class="product_name"><span>'+consumnlistData[j].goods_name+'</span></td>'
+                    +'<td style="width:5%">'+n+'</td>'
+                    +'<td style="width:10%"><img src="'+consumnlistData[j].goods_img+'" onerror="imgError(this);" /></td>'
+                    +'<td class="product_name">'+consumnlistData[j].goods_name+'</td>'
                     +'<td class="product_name">'+consumnlistData[j].goods_id+'</td>'
                     +'<td>'+consumnlistData[j].goods_num+'</td>'
                     +'<td class="money">￥'+consumnlistData[j].goods_price+'</td>'
@@ -260,10 +267,10 @@ function fuzhi(data){
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
     }
     if(data.vip_avatar){
-        $(".person-img").css('backgroundImage','url('+data.vip_avatar+')');
+        $("#person-img").attr("src",data.vip_avatar);
         $("#IMG").attr("src",data.vip_avatar);
     }else{
-        $(".person-img").css('backgroundImage','url(../img/head.png)');
+        $("#person-img").attr("src",'../img/head.png');
         $("#IMG").attr("src",'../img/head.png');
     }
 }
@@ -323,11 +330,13 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         $("#tk").hide();
         var id=$(this).attr("data-id");
         var url=$("#"+id).prev().attr("src");
+            url=url.substring(url.indexOf("Album"));
         console.log(url);
         var param={};
         param["id"]=id;
         oc.postRequire("post","/vipAlbum/delete","",param,function(data){
             if(data.message="success"){
+                //deleteAblum(url);
                 $("#"+id).parent().remove();
                 frame();
                 $('.frame').html('删除成功');
@@ -337,14 +346,16 @@ function getoselectvalue(){//点击模拟的select 获取值给input
             }
         })
     });
-function deleteAblum(){
+function deleteAblum(key){
+    //var co = require('co');
+    //var OSS = require('ali-oss');
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
         accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
         bucket: 'products-image'
     });
-    client.delete(storeAs).then(function (result) {
+    client.delete(key).then(function (result) {
         console.log(result)
     }).catch(function (err) {
         console.log(err);
@@ -420,45 +431,23 @@ $("#VIP_avatar").change(function(e){
     });
 });
 
-$.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
-    return function( elem ) {
-        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
-    };
+//消费记录搜索
+$(".record_input input").keydown(function () {
+    var event=window.event||arguments[0];
+    time_start=$(".record_date li:nth-child(1) input").val().trim();
+    time_end=$(".record_date li:nth-child(2) input").val().trim();
+    text_first=$(".record_input li:nth-child(1) input").val().trim();
+    text_second=$(".record_input li:nth-child(2) input").val().trim();
+    text_third=$(".record_input li:nth-child(3) input").val().trim();
+    if(event.keyCode == 13){
+        getVipPoints();
+    }
 });
-$(".record_input li:nth-child(1) input").on('keyup', function(event){
-    var text=$(this).val();
-    if(text!==""){
-        console.log(text);
-        $(".record_list").hide();
-        $('.record_list .list_head:nth-child(2):searchableSelectContains('+text+')').parents(".record_list").show();
-    }else{
-        $(".record_list").show();
-    }
-})
-$(".record_input li:gt(0) input").on('keyup', function(event){
-    var text=$(this).val();
-    if(text!==""){
-        console.log(text);
-        $(".record_list").hide();
-        $('.record_list .list_table tbody:searchableSelectContains('+text+')').parents(".record_list").show();
-    }else{
-        $(".record_list").show();
-    }
-})
-
-$(".ghy").click(function () {
-    var text=$(".record_input li:nth-child(1) input").val();
-    var text2=$(".record_input li:nth-child(2) input").val();
-    var text3=$(".record_input li:nth-child(3) input").val();
-    if(text!==""&&text2==""&&text3==""){
-        var arr=[];
-        console.log(dataghy);
-        for(var i=0;i<dataghy.length;i++){
-             var  str=dataghy[i].order_id;
-                if(str.indexOf(text)>0){
-                    list=dataghy[i];
-                }
-            console.log(list);
-        }
-    }
+$(".record_search").click(function () {
+    time_start=$(".record_date li:nth-child(1) input").val().trim();
+    time_end=$(".record_date li:nth-child(2) input").val().trim();
+    text_first=$(".record_input li:nth-child(1) input").val().trim();
+    text_second=$(".record_input li:nth-child(2) input").val().trim();
+    text_third=$(".record_input li:nth-child(3) input").val().trim();
+    getVipPoints();
 })

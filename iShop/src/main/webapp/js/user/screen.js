@@ -35,6 +35,11 @@ $("#screen_add").click(function(){
 		shop_num=1;
 		$("#screen_shop .screen_content_l ul").empty();
 		$("#screen_shop .screen_content_r ul").empty();
+		$("#area_num").val("全部");
+		$("#area_num").attr("data-areacode","");
+		$("#brand_num").val("全部");
+		$(".s_pitch span").html("0");
+		$("#brand_num").attr("data-brandcode","");
 		getstorelist(shop_num);
 		bianse();
 	}
@@ -47,6 +52,7 @@ $("#screen_add").click(function(){
 		area_num=1;
 		$("#screen_area .screen_content_l ul").empty();
 		$("#screen_area .screen_content_r ul").empty();
+		$(".s_pitch span").html("0");
 		getarealist(area_num);
 		bianse();
 	}
@@ -70,6 +76,10 @@ $("#shop_area").click(function(){
 	$("#screen_area").show();
 	$("#screen_area").css({"left":+left+"px","top":+tp+"px"});
 	var area_num=1;
+	$("#screen_area .screen_content_l ul").empty();
+	$("#screen_area .screen_content_r ul").empty();
+	$("#screen_area .s_pitch span").html("0");
+	$("#area_search").val("");
 	getarealist(area_num);
 })
 //点击店铺的品牌
@@ -80,6 +90,8 @@ $("#shop_brand").click(function(){
 	$("#screen_shop").hide();
 	$("#screen_brand").show();
 	$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_brand .screen_content_l ul").empty();
+	$("#screen_brand .screen_content_r ul").empty();
 	getbrandlist();
 })
 //移到右边
@@ -97,7 +109,7 @@ function removeRight(a,b){
 		return;
 	}
 	if(li.length>0){
-		for(var i=li.length-1;i>=0;i--){
+		for(var i=0;i<li.length;i++){
 			var html=$(li[i]).html();
 			var id=$(li[i]).find("input[type='checkbox']").val();
 			var input=$(b).parents(".screen_content").find(".screen_content_r li");
@@ -229,7 +241,7 @@ $("#screen_shop .screen_content_l").scroll(function () {
     var nScrollTop = $(this)[0].scrollTop;
     var nDivHight=$(this).height();
     if(nScrollTop + nDivHight >= nScrollHight){
-    	if(area_next){
+    	if(shop_next){
     		return;
     	}
     	getstorelist(shop_num);
@@ -237,13 +249,7 @@ $("#screen_shop .screen_content_l").scroll(function () {
 })
 //点击区域确定追加节点
 $("#screen_que_area").click(function(){
-	console.log(123);
 	var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
-	if(li.length=="0"){
-		frame();
-		$(".frame").html("请把左边的列移到右边");
-		return;
-	}
 	var area_codes="";
 	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
 	for(var i=0;i<li.length;i++){
@@ -273,6 +279,10 @@ $("#screen_que_area").click(function(){
 		$("#screen_shop").show();
 		var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
 		$("#area_num").val("已选"+num+"家");
+		var shop_num=1;
+		$("#screen_shop .screen_content_l ul").empty();
+	    $("#screen_shop .screen_content_r ul").empty();
+		getstorelist(shop_num);
 	}
 	if(r_code=="R4000"){
 		$("#screen_area").hide();
@@ -282,10 +292,6 @@ $("#screen_que_area").click(function(){
 //点击店铺确定追加节点
 $("#screen_que_shop").click(function(){
 	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
-	if(li.length=="0"){
-		frame();
-		$(".frame").html("请把左边的列移到右边");
-	}
 	for(var i=0;i<li.length;i++){
 		var a=$('.xingming input');
 		for(var j=0;j<a.length;j++){
@@ -296,6 +302,33 @@ $("#screen_que_shop").click(function(){
 		$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
 	}
 	$("#screen_shop").hide();
+	whir.loading.remove();//移除遮罩层
+})
+//点击品牌确定追加节点
+$("#screen_que_brand").click(function(){
+	var li=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li");
+	var brand_codes="";
+	for(var i=0;i<li.length;i++){
+		var r=$(li[i]).attr("id");
+        if(i<li.length-1){
+            brand_codes+=r+",";
+        }else{
+            brand_codes+=r;
+        }
+	}
+	$("#brand_num").attr("data-brandcode",brand_codes);
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+	$("#screen_brand").hide();
+	$("#screen_shop").show();
+	var num=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li").length;
+	var shop_num=1;
+	$("#brand_num").val("已选"+num+"家");
+	$("#screen_shop .screen_content_l ul").empty();
+	$("#screen_shop .screen_content_r ul").empty();
+	getstorelist(shop_num);
 	whir.loading.remove();//移除遮罩层
 })
 //删除
@@ -325,24 +358,46 @@ function getarealist(a){
 			var area_html_left = '';
 			var area_html_right='';
 			if (list.length == 0) {
+				if(a==1){
+					for(var h=0;h<9;h++){
+						area_html_left+="<li></li>";
+					}
+				}
 				area_next=true;
 			} else {
-				for (var i = 0; i < list.length; i++) {
-				    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxOneInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+				if(list.length<9&&a==1){
+					for (var i = 0; i < list.length; i++) {
+					    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'/><label for='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+					}
+					for(var j=0;j<9-list.length;j++){
+						area_html_left+="<li></li>"
+					}
+				}else if(list.length>=9||list.length<9&&a>1){
+					for (var i = 0; i < list.length; i++) {
+					    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].area_code+"' data-areaname='"+list[i].area_name+"' name='test'  class='check'  id='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'/><label for='checkboxOneInput"
+	                        + i
+	                        + a
+	                        + 1
+	                        + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
+					}
 				}
+				area_num++;
 				area_next=false;
-				$("#screen_area .screen_content_l ul").append(area_html_left);
-				bianse();
 			}
-			area_num++;
+			$("#screen_area .screen_content_l ul").append(area_html_left);
+			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -357,8 +412,8 @@ function getarealist(a){
 //获取店铺列表
 function getstorelist(a){
 	var corp_code = $('#OWN_CORP').val();
-	var area_code =$('#area_num').attr("data-areacode");
-	var brand_code=$('#area_num').attr("data-brandcode");
+	var area_code =$('#area_num').attr("data-areacode");//
+	var brand_code=$('#brand_num').attr("data-brandcode");
 	var searchValue=$("#store_search").val();
 	var pageSize=20;
 	var pageNumber=a;
@@ -380,10 +435,16 @@ function getstorelist(a){
             var cout=list.pages;
             var list=list.list;
 			var store_html = '';
-			if (list.length == 0) {
+			if (list.length == 0){
+				if(a==1){
+					for(var h=0;h<9;h++){
+						store_html+="<li></li>";
+					}
+				}
 				shop_next=true;
 			} else {
-				for (var i = 0; i < list.length; i++) {
+				if(list.length<9&&a==1){
+					for (var i = 0; i < list.length; i++) {
 				    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
                         + i
                         + a
@@ -393,12 +454,28 @@ function getstorelist(a){
                         + a
                         + 1
                         + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+					}
+					for(var j=0;j<9-list.length;j++){
+						store_html+="<li></li>"
+					}
+				}else if(list.length>=9||list.length<9&&a>1){
+					for (var i = 0; i < list.length; i++) {
+				    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
+                        + i
+                        + a
+                        + 1
+                        + "'/><label for='checkboxTowInput"
+                        + i
+                        + a
+                        + 1
+                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+					}
 				}
 				shop_num++;
 				shop_next=false;
-				$("#screen_shop .screen_content_l ul").append(store_html);
-				bianse();
 			}
+			$("#screen_shop .screen_content_l ul").append(store_html);
+			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
@@ -415,26 +492,43 @@ function getbrandlist(){
 	var corp_code = $('#OWN_CORP').val();
 	var _param={};
 	_param["corp_code"]=corp_code;
+	whir.loading.add("",0.5);//加载等待框
+	$("#mask").css("z-index","10002");
 	oc.postRequire("post","/shop/brand", "",_param, function(data){
 		if (data.code == "0") {
 			var message=JSON.parse(data.message);
-            var list=message.brand;
+            var list=message.brands;
 			var brand_html_left = '';
 			var brand_html_right='';
 			if (list.length == 0){
-			} else {
-				for (var i = 0; i < list.length; i++) {
-				    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
-                        + i
-                        + a
-                        + 1
-                        + "'/><label for='checkboxThreeInput"
-                        + i
-                        + a
-                        + 1
-                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+				for(var h=0;h<9;h++){
+					brand_html_left+="<li></li>"
 				}
-				area_next=false;
+			} else {
+				if(list.length<9){
+					for (var i = 0; i < list.length; i++) {
+					    brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
+	                        + i
+	                        + 1
+	                        + "'/><label for='checkboxThreeInput"
+	                        + i
+	                        + 1
+	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+					}
+					for(var j=0;j<9-list.length;j++){
+						brand_html_left+="<li></li>"
+					}
+				}else if(list.length>=9){
+					for (var i = 0; i < list.length; i++) {
+					    brand_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
+	                        + i
+	                        + 1
+	                        + "'/><label for='checkboxThreeInput"
+	                        + i
+	                        + 1
+	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+					}
+				}
 				$("#screen_brand .screen_content_l ul").append(brand_html_left);
 				bianse();
 			}

@@ -238,8 +238,6 @@ padding:25px 15px 0 15px;
     width: 60px;
     height: 60px;
     border-radius: 30px;
-    background-size:cover ;
-    background-repeat:no-repeat
 }
 .right .person  .person-right{
     position: relative;
@@ -486,8 +484,20 @@ hr{
 .record_date span{
     margin: 0 10px 0 0;
 }
-.record_input{
+/*.record_input{*/
+    /*float: right;*/
+/*}*/
+.record_search{
+    display: block;
+    font-size: 13px;
+    width: 35px;
+    text-align: center;
+    border-radius: 5px;
+    color: #fff;
+    background: #6dc1c8;
+    line-height: 28px;
     float: right;
+    cursor: pointer;
 }
 .record_input input{
     width: 160px;
@@ -556,7 +566,8 @@ hr{
     color: #c26555;
 }
 .list_table .product_name{
-    text-align: left;
+    width: 30%;
+    text-align: center;
 }
 .list_table .product_name span{
     display: block;

@@ -395,8 +395,6 @@ $(".nav_bar").mouseleave(function() {
     var len = $(this).children().eq(_this).width();
     $("#remark").animate({left: len * _this}, 200);
 });
-
-
 //标签导航切换窗口
 $(".label_nav li").click(function () {
     var index=$(this).index()+1;

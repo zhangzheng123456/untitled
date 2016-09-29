@@ -860,7 +860,7 @@ function UpladFile() {
         whir.loading.remove();//移除加载框
         if(data.code=="0"){
             alert('导入成功');
-            window.location.reload();
+            // window.location.reload();
         }else if(data.code=="-1"){
              alert("导入失败"+data.message);
         }

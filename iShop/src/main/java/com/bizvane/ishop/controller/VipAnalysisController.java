@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -234,21 +235,93 @@ public class VipAnalysisController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String query_type = jsonObject.get("query_type").toString();
-            String time = jsonObject.get("time").toString();
+            String query_type = jsonObject.get("type").toString();
+            Date now = new Date();
+            String time = Common.DATETIME_FORMAT_DAY.format(now);
+            if (jsonObject.containsKey("time") && !jsonObject.get("time").toString().equals("")) {
+                time = jsonObject.get("time").toString();
+            }
+
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_id = "";
+            String area_code = "";
+            String store_id = "";
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            } else if (role_code.equals(Common.ROLE_GM)){
+                if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }
+            } else if (role_code.equals(Common.ROLE_AM) ){
+                if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }else {
+                    area_code = request.getSession().getAttribute("area_code").toString().replace(Common.SPECIAL_HEAD,"");
+                    String[] area_codes = area_code.split(",");
+                    area_code = area_codes[0];
+                }
+                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
+                    store_id = jsonObject.get("store_code").toString();
+                }
+            } else if (role_code.equals(Common.ROLE_SM)){
+                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
+                    store_id = jsonObject.get("store_code").toString();
+                }else {
+                    String store_code = request.getSession().getAttribute("store_code").toString().replace(Common.SPECIAL_HEAD, "");
+                    String[] store_codes = store_code.split(",");
+                    store_id = store_codes[0];
+                }
+            } else if (role_code.equals(Common.ROLE_STAFF)){
+                user_id = user_code;
+                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
+                    store_id = jsonObject.get("store_code").toString();
+                }
+            }
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+
+            Map datalist = new HashMap<String, Data>();
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_id.key, data_store_id);
+            datalist.put(data_area_code.key, data_area_code);
+            datalist.put(data_role_code.key, data_role_code);
+
 
             JSONObject all = new JSONObject();
-            all.put("count","");
-            all.put("achv","");
-            all.put("","");
+            all.put("count","15675");
+            all.put("scale","36.1%");
+            all.put("vip_amount","6989");
+            all.put("vip_price","1399");
+            all.put("price","569");
+
+            JSONObject old_vip = new JSONObject();
+            all.put("count","10678");
+            all.put("scale","78.8%");
+            all.put("vip_amount","3452");
+            all.put("vip_price","1099");
+            all.put("price","546");
+
+            JSONObject new_vip = new JSONObject();
+            all.put("count","467");
+            all.put("scale","25.8%");
+            all.put("vip_amount","4533");
+            all.put("vip_price","1553");
+            all.put("price","657");
 
             JSONObject obj = new JSONObject();
-            obj.put("all","");
-            obj.put("old","");
-            obj.put("new","");
+            obj.put("all",all);
+            obj.put("old",old_vip);
+            obj.put("new",new_vip);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

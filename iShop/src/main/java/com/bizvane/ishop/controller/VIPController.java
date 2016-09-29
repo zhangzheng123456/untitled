@@ -402,7 +402,18 @@ public class VIPController {
 
                 dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
             }else {
+                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+                Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
 
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_user_id.key, data_user_id);
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_page_num.key, data_page_num);
+                datalist.put(data_page_size.key, data_page_size);
+
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisEmpsVip", datalist);
             }
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;

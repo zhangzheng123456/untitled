@@ -192,7 +192,7 @@
     margin-left: 10px;
     cursor: pointer;
 }
-.date_btn li{
+.date_btn li,.new_btn li{
     width:33.3333%;
     float: left;
     height:40px;
@@ -411,5 +411,16 @@
 .vip_table_lg .vip_table thead tr{
     background: #fff;
     line-height: 45px;
+}
+
+#vipAnalyze_return{
+    cursor: pointer;
+}
+.no_data{
+    position: absolute;
+    left: 40%;
+    top: 55%;
+    font-size: 15px;
+    letter-spacing: 20px;
 }
 
