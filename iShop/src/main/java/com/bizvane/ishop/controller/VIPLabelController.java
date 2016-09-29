@@ -881,8 +881,11 @@ public class VIPLabelController {
                 List<ViplableGroup> viplableGroups2 = viplableGroupService.checkCodeOnly(corp_code, "0001", Common.IS_ACTIVE_Y);
                 if(viplableGroups1.size()==0 && viplableGroups2.size()==0){
                     ViplableGroup viplableGroup=new ViplableGroup();
+                    viplableGroup.setCorp_code(corp_code);
                     viplableGroup.setLabel_group_code("0001");
                     viplableGroup.setLabel_group_name("默认分组");
+                    viplableGroup.setRemark("默认分组");
+                    viplableGroup.setIsactive("Y");
                     Date date = new Date();
                     viplableGroup.setCreated_date(Common.DATETIME_FORMAT.format(date));
                     viplableGroup.setCreater(user_id);
