@@ -54,7 +54,7 @@ public class VipLabelServiceImpl implements VipLabelService {
 
     @Override
     public String insert(VipLabel vipLabel) throws Exception {
-        if (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+        if (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).size()>0) {
             return "名称已经存在";
         } else if (vipLabelMapper.insert(vipLabel) >= 0) {
             return Common.DATABEAN_CODE_SUCCESS;
@@ -71,13 +71,13 @@ public class VipLabelServiceImpl implements VipLabelService {
     public String update(VipLabel vipLabel) throws Exception {
         VipLabel old = this.vipLabelMapper.selectByPrimaryKey(vipLabel.getId());
         if (old.getCorp_code().equals(vipLabel.getCorp_code())) {
-            if (!old.getLabel_name().equals(vipLabel.getLabel_name()) && (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR))) {
+            if (!old.getLabel_name().equals(vipLabel.getLabel_name()) && (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).size()>0)) {
                 return "名称已经存在";
             } else if (this.vipLabelMapper.updateByPrimaryKey(vipLabel) >= 0) {
                 return Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
-            if (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).equals(Common.DATABEAN_CODE_ERROR)) {
+            if (this.VipLabelNameExist(vipLabel.getCorp_code(), vipLabel.getLabel_name()).size()>0) {
                 return "名称已经存在";
             } else if (this.vipLabelMapper.updateByPrimaryKey(vipLabel) >= 0) {
                 return Common.DATABEAN_CODE_SUCCESS;
