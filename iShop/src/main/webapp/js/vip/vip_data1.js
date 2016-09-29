@@ -260,10 +260,10 @@ function fuzhi(data){
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
     }
     if(data.vip_avatar){
-        $(".person-img").css('backgroundImage','url('+data.vip_avatar+')');
+        $("#person-img").attr("src",data.vip_avatar);
         $("#IMG").attr("src",data.vip_avatar);
     }else{
-        $(".person-img").css('backgroundImage','url(../img/head.png)');
+        $("#person-img").attr("src",'../img/head.png');
         $("#IMG").attr("src",'../img/head.png');
     }
 }
@@ -323,11 +323,13 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         $("#tk").hide();
         var id=$(this).attr("data-id");
         var url=$("#"+id).prev().attr("src");
+            url=url.substring(url.indexOf("Album"));
         console.log(url);
         var param={};
         param["id"]=id;
         oc.postRequire("post","/vipAlbum/delete","",param,function(data){
             if(data.message="success"){
+                //deleteAblum(url);
                 $("#"+id).parent().remove();
                 frame();
                 $('.frame').html('删除成功');
@@ -337,14 +339,16 @@ function getoselectvalue(){//点击模拟的select 获取值给input
             }
         })
     });
-function deleteAblum(){
+function deleteAblum(key){
+    //var co = require('co');
+    //var OSS = require('ali-oss');
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
         accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
         bucket: 'products-image'
     });
-    client.delete(storeAs).then(function (result) {
+    client.delete(key).then(function (result) {
         console.log(result)
     }).catch(function (err) {
         console.log(err);

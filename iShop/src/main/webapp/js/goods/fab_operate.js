@@ -157,12 +157,20 @@ var oc = new ObjectControl();
 			}
 		});
 		$("#edit_save").click(function(){
+			var delete_image=[];//需要删除的数据
 			console.log(sessionStorage.getItem('goods_description'));
 			console.log(getContent()==sessionStorage.getItem('goods_description'))
 			console.log('抓取图片')
-			var load_image=sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig)
-			console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
-			console.log('保存时的图片'+getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
+			var load_image=sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
+			var save_image=getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
+			// console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
+			// console.log('保存时的图片'+getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
+			console.log(load_image)
+			console.log(save_image)
+			for(var i=0;i<load_image.length;i++){
+				load_image[i]=save_image[i]?"":delete_image.push(load_image[i]);
+			}
+
 			//如果有内容则进行比较
 			function getContent() {
 				var arr = [];
@@ -178,15 +186,6 @@ var oc = new ObjectControl();
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
-				//如果ueditor是否有内容
-				/*
-				 function hasContent() {
-				 var arr = [];
-				 arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
-				 arr.push("判断结果为：");
-				 arr.push(UE.getEditor('editor').hasContents());
-				 alert(arr.join("\n"));
-				 }*/
 				var GOODS_BUYPOINT=getContent();
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
@@ -272,7 +271,8 @@ var oc = new ObjectControl();
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
 					"isactive": ISACTIVE,
-					"match_goods":matchgoods
+					"match_goods":matchgoods,
+					'delImgPath':delete_image.join('')
 				};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
