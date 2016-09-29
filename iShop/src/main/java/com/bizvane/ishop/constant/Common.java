@@ -48,7 +48,7 @@ public class Common {
     //目标时间类型（年）
     public static final String TIME_TYPE_YEAR = "Y";
 
-    public static final String STORE_HEAD = "§";
+    public static final String SPECIAL_HEAD = "§";
 
     public static final String VIP_LABEL_TYPE_SYS = "sys";
     //签到

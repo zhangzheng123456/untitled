@@ -282,7 +282,7 @@ public class UserController {
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, "", "", area_code, role_code);
                 }
             } else {
-                list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD + Common.STORE_HEAD + "###", "");
+                list = userService.selectBySearch(request, page_number, page_size, Common.SPECIAL_HEAD + Common.SPECIAL_HEAD + "###", "");
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
@@ -568,7 +568,7 @@ public class UserController {
                         String[] areas = area_code.split(",");
                         area_code = "";
                         for (int i2 = 0; i2 < areas.length; i2++) {
-                            areas[i2] = Common.STORE_HEAD + areas[i2] + ",";
+                            areas[i2] = Common.SPECIAL_HEAD + areas[i2] + ",";
                             area_code = area_code + areas[i2];
                         }
                     }
@@ -581,7 +581,7 @@ public class UserController {
                         String[] codes = store_code.split(",");
                         store_code = "";
                         for (int i2 = 0; i2 < codes.length; i2++) {
-                            codes[i2] = Common.STORE_HEAD + codes[i2] + ",";
+                            codes[i2] = Common.SPECIAL_HEAD + codes[i2] + ",";
                             store_code = store_code + codes[i2];
                         }
                     }
@@ -681,7 +681,7 @@ public class UserController {
                     if (WebUtils.checkRepeat(areas)) {
                         area_code = "";
                         for (int i = 0; i < areas.length; i++) {
-                            areas[i] = Common.STORE_HEAD + areas[i] + ",";
+                            areas[i] = Common.SPECIAL_HEAD + areas[i] + ",";
                             area_code = area_code + areas[i];
                         }
                     } else {
@@ -701,7 +701,7 @@ public class UserController {
                     if (WebUtils.checkRepeat(codes)) {
                         store_code = "";
                         for (int i = 0; i < codes.length; i++) {
-                            codes[i] = Common.STORE_HEAD + codes[i] + ",";
+                            codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
                             store_code = store_code + codes[i];
                         }
                     } else {
@@ -790,7 +790,7 @@ public class UserController {
                     if (WebUtils.checkRepeat(areas)) {
                         area_code = "";
                         for (int i = 0; i < areas.length; i++) {
-                            areas[i] = Common.STORE_HEAD + areas[i] + ",";
+                            areas[i] = Common.SPECIAL_HEAD + areas[i] + ",";
                             area_code = area_code + areas[i];
                         }
                     } else {
@@ -808,7 +808,7 @@ public class UserController {
                     if (WebUtils.checkRepeat(codes)) {
                         store_code = "";
                         for (int i = 0; i < codes.length; i++) {
-                            codes[i] = Common.STORE_HEAD + codes[i] + ",";
+                            codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
                             store_code = store_code + codes[i];
                         }
                     } else {
@@ -976,7 +976,7 @@ public class UserController {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, "", area_code, role_code);
                 } else {
-                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD + Common.STORE_HEAD + "###", "");
+                    list = userService.selectBySearch(request, page_number, page_size, Common.SPECIAL_HEAD + Common.SPECIAL_HEAD + "###", "");
                 }
             }
             result.put("list", JSON.toJSONString(list));
@@ -1570,7 +1570,7 @@ public class UserController {
                     String area_code = request.getSession().getAttribute("area_code").toString();
                     list = userService.getScreenPart(page_number, page_size, corp_code, map, "", area_code, role_code);
                 } else {
-                    list = userService.selectBySearch(request, page_number, page_size, Common.STORE_HEAD + Common.STORE_HEAD + "###", "");
+                    list = userService.selectBySearch(request, page_number, page_size, Common.SPECIAL_HEAD + Common.SPECIAL_HEAD + "###", "");
                 }
             }
             result.put("list", JSON.toJSONString(list));

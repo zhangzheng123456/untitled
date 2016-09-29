@@ -512,8 +512,8 @@ public class StoreController {
                 list = storeService.getAllStore(request, page_number, page_size, corp_code, search_value);
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String area_code = request.getSession().getAttribute("area_code").toString();
-                if (area_code.contains(Common.STORE_HEAD))
-                    area_code = area_code.replace(Common.STORE_HEAD, "");
+                if (area_code.contains(Common.SPECIAL_HEAD))
+                    area_code = area_code.replace(Common.SPECIAL_HEAD, "");
                 String[] areaCodes = area_code.split(",");
                 list = storeService.selectByAreaCode(page_number, page_size, corp_code, areaCodes, search_value);
             } else {

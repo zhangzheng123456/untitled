@@ -15,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashMap;
@@ -236,8 +235,8 @@ public class AreaServiceImpl implements AreaService {
     public PageInfo<Area> selectByAreaCode(int page_number, int page_size, String corp_code, String area_codes, String search_value) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
-            if (area_codes.contains(Common.STORE_HEAD))
-                area_codes = area_codes.replace(Common.STORE_HEAD, "");
+            if (area_codes.contains(Common.SPECIAL_HEAD))
+                area_codes = area_codes.replace(Common.SPECIAL_HEAD, "");
             areaArray = area_codes.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
@@ -257,8 +256,8 @@ public class AreaServiceImpl implements AreaService {
     public List<Area> selectArea(String corp_code, String area_codes) throws SQLException {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
-            if (area_codes.contains(Common.STORE_HEAD))
-                area_codes = area_codes.replace(Common.STORE_HEAD, "");
+            if (area_codes.contains(Common.SPECIAL_HEAD))
+                area_codes = area_codes.replace(Common.SPECIAL_HEAD, "");
                 areaArray = area_codes.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
@@ -272,13 +271,13 @@ public class AreaServiceImpl implements AreaService {
     public PageInfo<Area> selAreaByCorpCode(int page_number, int page_size, String corp_code, String area_codes, String store_code, String search_value) throws SQLException {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
-            area_codes = area_codes.replace(Common.STORE_HEAD,"");
+            area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
             areaArray = area_codes.split(",");
         }
 
         String[] storeArray = null;
         if (null != store_code && !store_code.isEmpty()) {
-            store_code = store_code.replace(Common.STORE_HEAD,"");
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             storeArray = store_code.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();
@@ -299,13 +298,13 @@ public class AreaServiceImpl implements AreaService {
     public List<Area> selAreaByCorpCode(String corp_code, String area_codes, String store_code) throws Exception {
         String[] areaArray = null;
         if (null != area_codes && !area_codes.isEmpty()) {
-            area_codes = area_codes.replace(Common.STORE_HEAD,"");
+            area_codes = area_codes.replace(Common.SPECIAL_HEAD,"");
             areaArray = area_codes.split(",");
         }
 
         String[] storeArray = null;
         if (null != store_code && !store_code.isEmpty()) {
-            store_code = store_code.replace(Common.STORE_HEAD,"");
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             storeArray = store_code.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();

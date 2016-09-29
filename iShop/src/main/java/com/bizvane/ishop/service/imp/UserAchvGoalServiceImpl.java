@@ -3,7 +3,6 @@ package com.bizvane.ishop.service.imp;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.UserAchvGoalMapper;
 import com.bizvane.ishop.entity.Store;
-import com.bizvane.ishop.entity.TaskType;
 import com.bizvane.ishop.entity.UserAchvGoal;
 import com.bizvane.ishop.service.StoreService;
 import com.bizvane.ishop.service.UserAchvGoalService;
@@ -15,7 +14,6 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,13 +68,13 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
                                                      String area_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
-            if (store_code.contains(Common.STORE_HEAD))
-                store_code = store_code.replace(Common.STORE_HEAD,"");
+            if (store_code.contains(Common.SPECIAL_HEAD))
+                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             stores = store_code.split(",");
         }
         if (!area_code.equals("")) {
-            if (area_code.contains(Common.STORE_HEAD))
-                area_code = area_code.replace(Common.STORE_HEAD,"");
+            if (area_code.contains(Common.SPECIAL_HEAD))
+                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
 
             String[] areas = area_code.split(",");
             List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");

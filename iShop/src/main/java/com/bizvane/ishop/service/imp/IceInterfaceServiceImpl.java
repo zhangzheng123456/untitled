@@ -62,10 +62,10 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
 
         } else if (role_code.equals(Common.ROLE_AM)){
             area_code = request.getSession().getAttribute("area_code").toString();
-            area_code = area_code.replace(Common.STORE_HEAD,"");
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
         } else if (role_code.equals(Common.ROLE_SM)){
             String store_code = request.getSession().getAttribute("store_code").toString();
-            store_id = store_code.replace(Common.STORE_HEAD,"");
+            store_id = store_code.replace(Common.SPECIAL_HEAD,"");
         } else if (role_code.equals(Common.ROLE_STAFF)){
             user_id = user_code;
         }
@@ -112,7 +112,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
                 area_code = jsonObject.get("area_code").toString();
             }else {
-                area_code = request.getSession().getAttribute("area_code").toString().replace(Common.STORE_HEAD,"");
+                area_code = request.getSession().getAttribute("area_code").toString().replace(Common.SPECIAL_HEAD,"");
                 String[] area_codes = area_code.split(",");
                 area_code = area_codes[0];
             }
@@ -123,7 +123,7 @@ public class IceInterfaceServiceImpl implements IceInterfaceService {
             if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
                 store_id = jsonObject.get("store_code").toString();
             }else {
-                String store_code = request.getSession().getAttribute("store_code").toString().replace(Common.STORE_HEAD, "");
+                String store_code = request.getSession().getAttribute("store_code").toString().replace(Common.SPECIAL_HEAD, "");
                 String[] store_codes = store_code.split(",");
                 store_id = store_codes[0];
             }

@@ -198,7 +198,7 @@ public class HomeController {
                     area_code = jsonObject.get("area_code").toString();
                 } else {
                     String code = request.getSession().getAttribute("area_code").toString();
-                    String[] area_codes = code.replace(Common.STORE_HEAD, "").split(",");
+                    String[] area_codes = code.replace(Common.SPECIAL_HEAD, "").split(",");
                     area_code = area_codes[0];
                 }
                 Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
@@ -258,7 +258,7 @@ public class HomeController {
                 store_id = jsonObject.get("store_code").toString();
             } else {
                 String store_code = request.getSession().getAttribute("store_code").toString();
-                String[] store_ids = store_code.replace(Common.STORE_HEAD, "").split(",");
+                String[] store_ids = store_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 store_id = store_ids[0];
             }
             Map datalist = new HashMap<String, Data>();
@@ -267,7 +267,7 @@ public class HomeController {
                     area_code = jsonObject.get("area_code").toString();
                 } else {
                     String code = request.getSession().getAttribute("area_code").toString();
-                    String[] area_codes = code.replace(Common.STORE_HEAD, "").split(",");
+                    String[] area_codes = code.replace(Common.SPECIAL_HEAD, "").split(",");
                     area_code = area_codes[0];
                 }
                 Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
@@ -327,14 +327,14 @@ public class HomeController {
                 store_code = jsonObject.get("store_code").toString();
             } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 store_code = request.getSession().getAttribute("store_code").toString();
-                String[] store_ids = store_code.replace(Common.STORE_HEAD, "").split(",");
+                String[] store_ids = store_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 store_code = store_ids[0];
             }
             if (jsonObject.has("area_code")) {
                 area_code = jsonObject.get("area_code").toString();
             } else if (role_code.equals(Common.ROLE_AM)) {
                 area_code = request.getSession().getAttribute("area_code").toString();
-                String[] area_ids = area_code.replace(Common.STORE_HEAD, "").split(",");
+                String[] area_ids = area_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 area_code = area_ids[0];
             }
 
@@ -420,14 +420,14 @@ public class HomeController {
                 store_code = jsonObject.get("store_code").toString();
             } else if (role_code.equals(Common.ROLE_SM) || role_code.equals(Common.ROLE_STAFF)) {
                 store_code = request.getSession().getAttribute("store_code").toString();
-                String[] store_ids = store_code.replace(Common.STORE_HEAD, "").split(",");
+                String[] store_ids = store_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 store_code = store_ids[0];
             }
             if (jsonObject.has("area_code")) {
                 area_code = jsonObject.get("area_code").toString();
             } else if (role_code.equals(Common.ROLE_AM)) {
                 area_code = request.getSession().getAttribute("area_code").toString();
-                String[] area_ids = area_code.replace(Common.STORE_HEAD, "").split(",");
+                String[] area_ids = area_code.replace(Common.SPECIAL_HEAD, "").split(",");
                 area_code = area_ids[0];
             }
 
@@ -496,7 +496,7 @@ public class HomeController {
                 store_code = jsonObject.get("store_code").toString();
             } else {
                 String code = request.getSession().getAttribute("store_code").toString();
-                String[] store_codes = code.replace(Common.STORE_HEAD, "").split(",");
+                String[] store_codes = code.replace(Common.SPECIAL_HEAD, "").split(",");
                 store_code = store_codes[0];
             }
 

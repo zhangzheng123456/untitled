@@ -519,7 +519,7 @@
                     </when>
                     <when test="entryKey=='brand_name' and entryValue!=''">
                         db.${entryKey} LIKE concat('%',#{entryValue},'%')
-                        AND ds.brand_code LIKE concat('%',db.brand_code,'%')
+                        AND ds.brand_code LIKE concat('%§',db.brand_code,',%')
                     </when>
                     <when test="entryValue!=''">
                         ds.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -589,7 +589,7 @@
         SELECT ds.id,
         ds.store_code,
         ds.store_name
-        FROM def_store ds,def_corp dc,def_brand db
+        FROM def_store ds,def_corp dc
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = db.corp_code
         AND ds.corp_code=#{corp_code}

@@ -2,19 +2,16 @@ package com.bizvane.ishop.service.imp;
 
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.StoreAchvGoalMapper;
-import com.bizvane.ishop.entity.Interfacers;
 import com.bizvane.ishop.entity.StoreAchvGoal;
 import com.bizvane.ishop.service.StoreAchvGoalService;
 import com.bizvane.ishop.utils.CheckUtils;
 import com.bizvane.ishop.utils.TimeUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.apache.ibatis.ognl.ObjectElementsAccessor;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -68,13 +65,13 @@ public class StoreAchvGoalServiceImpl implements StoreAchvGoalService {
         String[] store_codes = null;
 
         if (!area_code.equals("")) {
-            if (area_code.contains(Common.STORE_HEAD))
-                area_code = area_code.replace(Common.STORE_HEAD,"");
+            if (area_code.contains(Common.SPECIAL_HEAD))
+                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             area_codes = area_code.split(",");
         }
         if (!store_code.equals("")) {
-            if (store_code.contains(Common.STORE_HEAD))
-                store_code = store_code.replace(Common.STORE_HEAD,"");
+            if (store_code.contains(Common.SPECIAL_HEAD))
+                store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             store_codes = store_code.split(",");
         }
         Map<String, Object> params = new HashMap<String, Object>();

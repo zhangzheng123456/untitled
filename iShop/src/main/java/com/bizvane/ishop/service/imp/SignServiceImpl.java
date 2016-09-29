@@ -11,7 +11,6 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,18 +29,18 @@ public class SignServiceImpl implements SignService {
     public PageInfo<Sign> selectSignByInp(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
         String[] stores = null;
         if (!store_code.equals("")) {
-            store_code = store_code.replace(Common.STORE_HEAD,"");
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
             stores = store_code.split(",");
 //            for (int i = 0; i < stores.length; i++) {
-//                if (!stores[i].startsWith(Common.STORE_HEAD)) {
-//                    stores[i] = Common.STORE_HEAD + stores[i];
+//                if (!stores[i].startsWith(Common.SPECIAL_HEAD)) {
+//                    stores[i] = Common.SPECIAL_HEAD + stores[i];
 //                }
 //                stores[i] = stores[i].substring(1, stores[i].length());
 //
 //            }
         }
         if (!area_code.equals("")) {
-            area_code = area_code.replace(Common.STORE_HEAD,"");
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
             String[] areas = area_code.split(",");
 //            for (int i = 0; i < areas.length; i++) {
 //                areas[i] = areas[i].substring(1, areas[i].length());
