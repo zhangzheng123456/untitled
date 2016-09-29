@@ -6,6 +6,7 @@ var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
 var un_push='';
+var proportion_list={};
 /**********************左侧数据**************************************************************************************/
 //获取区域
 function GetArea(){
@@ -469,8 +470,19 @@ function sleepVipGet() {
         if(data.code=="0"){
             var msg=JSON.parse(data.message);
             count=msg.pages;
+            proportion_list = msg.proportion_list;
+            console.log(proportion_list);
+            //循环添加页面的百分比
+            var spans=$('.activeVip .month_btn span');
+            $($('.activeVip .month_btn span')[0]).html('活跃会员'+proportion_list.active_vip_proportion+'%');
+            $($('.activeVip .month_btn span')[1]).html('3个月'+proportion_list.three_vip_proportion+"%");
+            $($('.activeVip .month_btn span')[2]).html('6个月'+proportion_list.six_vip_proportion+'%');
+            $($('.activeVip .month_btn span')[3]).html('9个月'+proportion_list.nine_vip_proportion+"%");
+            $($('.activeVip .month_btn span')[4]).html('12个月'+proportion_list.year_vip_proportion+'%');
+            console.log($('.activeVip .month_btn span'))
             var pageIndex=msg.pageNum;
             msg=msg.sleep_vip_list;
+            console.log( msg.length)
             if(msg.length){
                 for(var i=0;i<msg.length;i++){
                     if(pageIndex>=2){
@@ -511,11 +523,11 @@ function sleepVipGet() {
 function sleepVipGet_sub(ali) {
     var ali=ali;//当前对象
     switch($($(ali).html()).html()){
-        case '活跃会员1.26%': query_type=0;sleepVipGet('','',query_type);break;
-        case '3个月23.95%': query_type=1;sleepVipGet('','',query_type);break;
-        case '6个月31.09%': query_type=2;sleepVipGet('','',query_type);break;
-        case '9个月26.05%': query_type=3;sleepVipGet('','',query_type);break;
-        case '12个月20.01%': query_type=4;sleepVipGet('','',query_type);break;
+        case '活跃会员'+proportion_list.active_vip_proportion+'%': query_type=0;sleepVipGet('','',query_type);break;
+        case '3个月'+proportion_list.three_vip_proportion+"%": query_type=1;sleepVipGet('','',query_type);break;
+        case '6个月'+proportion_list.six_vip_proportion+'%': query_type=2;sleepVipGet('','',query_type);break;
+        case '9个月'+proportion_list.nine_vip_proportion+"%": query_type=3;sleepVipGet('','',query_type);break;
+        case '12个月'+proportion_list.year_vip_proportion+'%': query_type=4;sleepVipGet('','',query_type);break;
     }
 }
 /*************消费排行****************/
