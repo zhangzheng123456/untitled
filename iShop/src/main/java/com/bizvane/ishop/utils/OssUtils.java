@@ -54,4 +54,9 @@ public class OssUtils {
         }
         return imgSrc;
     }
+
+    public void deleteObject(String bucketName, String key) {
+        // 删除Object
+        client.deleteObject(bucketName, key);
+    }
 }

@@ -1377,6 +1377,12 @@ $().ready(function(){
     $('#side_analyze div s').click(getMore);
     //添加搜索
     $('#side_analyze div b span').click(searchValue);
+    $('#side_analyze div b input').keydown(function () {
+        var event=window.event||arguments[0];
+        if(event.keyCode==13){
+            searchValue(event);
+        }
+    });
     //活跃用户切换
     $('.activeVip .month_btn li').click(function () {
         sleepVipGet_sub(this);
