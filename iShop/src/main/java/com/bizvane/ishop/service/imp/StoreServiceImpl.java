@@ -269,6 +269,14 @@ public class StoreServiceImpl implements StoreService {
     }
 
     public String insertExecl(Store store) throws Exception{
+        String brand_code = store.getBrand_code();
+        String[] codes = brand_code.split(",");
+        String brand_code1 = "";
+        for (int i = 0; i < codes.length; i++) {
+            codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
+            brand_code1 = brand_code1 + codes[i];
+        }
+        store.setBrand_code(brand_code1);
         storeMapper.insertStore(store);
         return "add success";
     }
