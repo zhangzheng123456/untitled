@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -235,7 +236,11 @@ public class VipAnalysisController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String query_type = jsonObject.get("type").toString();
-            String time = jsonObject.get("time").toString();
+            Date now = new Date();
+            String time = Common.DATETIME_FORMAT_DAY.format(now);
+            if (jsonObject.containsKey("time") && !jsonObject.get("time").toString().equals("")) {
+                time = jsonObject.get("time").toString();
+            }
 
             String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
