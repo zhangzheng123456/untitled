@@ -709,7 +709,10 @@ public class GoodsController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             path =   request.getSession().getServletContext().getRealPath("/");
             for (int i = 0; i < delImgPaths.size(); i++) {
-                ossUtils.deleteObject(bucketName,delImgPaths.get(i));
+              //  System.out.println("------------path-----------------:"+delImgPaths.get(i));
+                String replace = delImgPaths.get(i).replace("http://" + bucketName + ".oss-cn-hangzhou.aliyuncs.com/", "");
+               // System.out.println("------------replace-----------------:"+replace);
+                ossUtils.deleteObject(bucketName,replace);
             }
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
                 String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
