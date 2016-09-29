@@ -744,17 +744,21 @@ jQuery(document).ready(function(){
 				$("#OWN_RIGHT").attr("data-myjcode",j_code);//编辑的时候赋值给角色编号
 				if(j_code=="R2000"||j_code=="R3000"){
 					$('.task_allot').html("所属店铺");
-		            var store_lists=msg.store_name.split(",");
-					var storecode_list=msg.store_code.split(",");
-					for(var i=0;i<store_lists.length;i++){
-						$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+storecode_list[i]+"'  value='"+store_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+					if(msg.store_name!==""){
+			            var store_lists=msg.store_name.split(",");
+						var storecode_list=msg.store_code.split(",");
+						for(var i=0;i<store_lists.length;i++){
+							$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+storecode_list[i]+"'  value='"+store_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+						}
 					}
             	}else if(j_code=="R4000"){
 	            	$('.task_allot').html("所属区域");
-	            	var area_lists=msg.area_name.split(",");
-					var areacode_list=msg.area_code.split(",");
-					for(var i=0;i<area_lists.length;i++){
-						$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+areacode_list[i]+"'  value='"+area_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+	            	if(msg.area_lists!==""){
+		            	var area_lists=msg.area_name.split(",");
+						var areacode_list=msg.area_code.split(",");
+						for(var i=0;i<area_lists.length;i++){
+							$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+areacode_list[i]+"'  value='"+area_lists[i]+"'><span class='power remove_app_id'>删除</span></p>");
+						}
 					}
             	}else if(j_code=="R5000"||j_code=="R6000"){
             		$('.task_allot').parent().hide();
