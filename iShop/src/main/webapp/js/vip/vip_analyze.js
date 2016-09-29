@@ -5,6 +5,7 @@ var jump_s="";//消费记录标签
 var query_type='';//创建活跃会员的标签请求
 var month_type='';//会员生日月份类型
 var count='';
+var un_push='';
 /**********************左侧数据**************************************************************************************/
 //获取区域
 function GetArea(){
@@ -82,13 +83,14 @@ function getStore(a){
         $('#select_analyze_shop ul').append(ul);
         // newVipGet();//获取新会员
         // sleepVipGet();//获取活跃会员
-       // un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
-        brithVipGet();
+       un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
+       //  brithVipGet();
     });
     page=1;
 }
 //点击li填充s中的数据显示
 function showNameClick(e){
+    un_push=1;
     var e= e.target;
     var d=$(e).parent().parent().parent();
     console.log($(d).attr('id'));
@@ -135,6 +137,7 @@ $(document).on('click',function(e){
 function getMore(e){
     var e= e.target;
     page+=1;
+    un_push=1;
     var area_code=$('#side_analyze ul li:nth-child(2) s').attr('data_area');
     getStore(area_code);
 }
@@ -369,6 +372,7 @@ function brithVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
         $('.birthVip .vip_table tbody').html()?'':$('.birthVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
+        pageShow($('.birthVip .vip_table tbody'));
     });
 }
 function birthVipGet_sub(ali) {
@@ -384,6 +388,7 @@ function birthVipGet_sub(ali) {
 function newVipGet(){
     whir.loading.add("",0.5);//加载等待框
     var type='new';
+    var page_show='';
     $('.newVip .vip_table tbody').empty();
     var param={};
     var month_type=arguments[2]?arguments[2]:'daily';
@@ -432,7 +437,8 @@ function newVipGet(){
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,month_type)
         whir.loading.remove();//移除加载框
         //如果页面没有数据
-        $('.newVip .vip_table tbody').html()?'':$('.newVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
+        $('.newVip .vip_table tbody').html()?page_show=1:$('.newVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>'),page_show=0;
+        pageShow($('.newVip .vip_table tbody'));
     });
 }
 function newVipGet_sub(ali) {
@@ -498,6 +504,7 @@ function sleepVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         $('.activeVip .vip_table tbody').html()?'':$('.activeVip .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
+        pageShow($('.activeVip .vip_table tbody'));
     });
     // whir.loading.remove();//移除加载框
 }
@@ -569,6 +576,7 @@ function consumeVipGet() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         $('.rank .vip_table tbody').html()?'':$('.rank .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
+        pageShow($('.rank .vip_table tbody'));
         whir.loading.remove();//移除加载框
     });
 }
@@ -630,6 +638,7 @@ function consumeVipGetre() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         $('.rank .vip_table tbody').html()?'':$('.rank .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
+        pageShow($('.rank .vip_table tbody'));
         whir.loading.remove();//移除加载框
     });
 }
@@ -687,6 +696,7 @@ function consumeVipGetam() {
         //调用生成页码
         setPage($('#table_analyze .foot .foot-num')[0],count,pageIndex,pageSize,type,query_type)
         $('.rank .vip_table tbody').html()?'':$('.rank .vip_table tbody').append('<span class="no_data'+'">暂无数据</span>');
+        pageShow($('.rank .vip_table tbody'));
         whir.loading.remove();//移除加载框
     });
 }
@@ -900,6 +910,20 @@ $("#input-txt").keydown(function() {
             }
         };
 })
+//页码显示或隐藏
+function pageShow(table) {
+    if( $(table).text()=='暂无数据'){
+        console.log('无内容')
+        $($('#table_analyze .foot .foot-jum')[0]).hide();
+        $($('#table_analyze .foot .foot-num')[0]).hide();
+        $($('#table_analyze .foot .foot-sum')[0]).hide();
+    }else{
+        console.log('有内容')
+        $($('#table_analyze .foot .foot-jum')[0]).show();
+        $($('#table_analyze .foot .foot-num')[0]).show();
+        $($('#table_analyze .foot .foot-sum')[0]).show();
+    }
+}
 /***************************图表分析数据***************************************/
 //图表
 require.config({
