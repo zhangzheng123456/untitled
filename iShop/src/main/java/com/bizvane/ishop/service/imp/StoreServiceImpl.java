@@ -93,9 +93,7 @@ public class StoreServiceImpl implements StoreService {
     public Store getById(int id) throws Exception {
         return storeMapper.selectByStoreId(id);
     }
-    public Store getStoresById(int id) throws Exception {
-        return storeMapper.selectStoreById(id);
-    }
+
     //list获取企业店铺
     public List<Store> getCorpStore(String corp_code) throws Exception {
         List<Store> stores = storeMapper.selectStores(corp_code);
@@ -491,7 +489,10 @@ public class StoreServiceImpl implements StoreService {
         }
         if (!brand_code.equals("")){
             String[] brandCodes = brand_code.split(",");
-            params.put("brand_code", Common.SPECIAL_HEAD +brandCodes+",");
+            for (int i = 0; i < brandCodes.length; i++) {
+                brandCodes[i] = Common.SPECIAL_HEAD +brandCodes[i]+",";
+            }
+            params.put("brand_code", brandCodes);
         }
         params.put("search_value", search_value);
         params.put("isactive", "Y");

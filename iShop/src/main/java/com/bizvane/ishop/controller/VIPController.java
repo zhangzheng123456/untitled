@@ -281,6 +281,8 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
             if (role_code.equals(Common.ROLE_SYS)){
                 corp_code = jsonObject.get("corp_code").toString();
             }
@@ -289,11 +291,87 @@ public class VIPController {
 
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
+            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_search_value.key, data_search_value);
             datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_page_num.key, data_page_num);
+            datalist.put(data_page_size.key, data_page_size);
 
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
+            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result);
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 会员列表（目前只支持导购店铺）
+     * 筛选
+     */
+    @RequestMapping(value = "/vipScreen", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String user_code = jsonObject.get("user_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            String area_code = jsonObject.get("corp_code").toString();
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+
+            String role_code = "";
+            if (role_code.equals(Common.ROLE_SYS)){
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            logger.info("json--------------corp_code-" + corp_code);
+            DataBox dataBox = null;
+            if (user_code.equals("")) {
+                if (!store_code.equals("")) {
+                    role_code = Common.ROLE_SM;
+                }
+                if (store_code.equals("")) {
+                    role_code = Common.ROLE_AM;
+                }
+                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+                Data data_store_id = new Data("store_id", store_code, ValueType.PARAM);
+                Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+                Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+                Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_user_id.key, data_user_id);
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_store_id.key, data_store_id);
+                datalist.put(data_area_code.key, data_area_code);
+                datalist.put(data_role_code.key, data_role_code);
+                datalist.put(data_page_num.key, data_page_num);
+                datalist.put(data_page_size.key, data_page_size);
+
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+            }else {
+
+            }
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 
