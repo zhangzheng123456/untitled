@@ -203,13 +203,13 @@ function superaddition(data,num){//页面加载循环
                         + data[i].platform
                         + "</td><td><span title='"+data[i].download_addr+"'>"
                         + data[i].download_addr
-                        + "</span></td><td><span>"
+                        + "</span></td><td><span title='"+data[i].version_id+"'>"
                         + data[i].version_id
-                        + "</span></td><td>"
+                        + "</span></td><td><span>"
                         + data[i].is_force_update
-                        +"</td><td>"
+                        +"</span></td><td><span title='"+data[i].corp_code+"'>"
                         +data[i].corp_code
-                        + "</td><td><span title='"+data[i].version_describe+"'>"
+                        + "<span></td><td><span title='"+data[i].version_describe+"'>"
                         +data[i].version_describe
                         + "</span></td><td>"
                         +data[i].modified_date
