@@ -282,6 +282,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code", corp_code);
         params.put("area_codes", areas);
         params.put("store_codes", stores);
+//            map.remove("brand_name");
         params.put("map", map);
 
         PageHelper.startPage(page_number, page_size);
@@ -454,17 +455,19 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String[] brand_code, String search_value) throws Exception {
+    public PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value) throws Exception {
 
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", "");
         params.put("brand_code", "");
-        if (area_code.length!=0){
-            params.put("area_code", area_code);
+        if (!area_code.equals("")){
+            String[] areaCodes = area_code.split(",");
+            params.put("area_code", areaCodes);
         }
-        if (brand_code.length!=0){
-            params.put("brand_code", brand_code);
+        if (!brand_code.equals("")){
+            String[] brandCodes = brand_code.split(",");
+            params.put("brand_code", brandCodes);
         }
         params.put("search_value", search_value);
         params.put("isactive", "Y");

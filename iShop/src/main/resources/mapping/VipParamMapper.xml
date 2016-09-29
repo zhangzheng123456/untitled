@@ -12,6 +12,7 @@
         <result column="remark" property="remark" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="param_class" property="param_class" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="required" property="required" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="show_order" property="show_order" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="modifier" property="modifier" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="created_date" property="created_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -37,6 +38,7 @@
         dvp.required,
         dc.corp_name,
         dvp.remark,
+        dvp.show_order,
         dvp.modified_date,
         dvp.modifier,
         dvp.isactive
@@ -122,6 +124,9 @@
             <if test="isactive!=null">
                 isactive,
             </if>
+            <if test="show_order!=null">
+                show_order,
+            </if>
         </trim>
         <trim prefix="values(" suffix=")" suffixOverrides=",">
             <if test="param_name!=null">
@@ -163,6 +168,9 @@
             </if>
             <if test="isactive!=null">
                 #{isactive},
+            </if>
+            <if test="show_order!=null">
+                #{show_order},
             </if>
         </trim>
     </insert>
@@ -209,6 +217,9 @@
             <if test="isactive!=null">
                 isactive= #{isactive},
             </if>
+            <if test="show_order!=null">
+                show_order= #{show_order},
+            </if>
         </trim>
         WHERE id=#{id};
     </update>
@@ -222,6 +233,7 @@
         dvp.param_desc,
         dvp.param_class,
         dvp.required,
+        dvp.show_order,
         dc.corp_name,
         dvp.remark,
         dvp.modified_date,
@@ -247,5 +259,23 @@
             </choose>
         </foreach>
         ORDER BY dvp.id DESC
+    </select>
+
+    <select id="selectParamByCorp" resultMap="VipParam">
+        SELECT
+        dvp.id,
+        dvp.param_name,
+        dvp.param_type,
+        dvp.param_values,
+        dvp.param_desc,
+        dvp.param_class,
+        dvp.required,
+        dvp.remark,
+        dvp.show_order
+        FROM def_vip_param dvp,def_corp dc
+        WHERE dvp.corp_code = dc.corp_code
+        AND dvp.corp_code = #{corp_code}
+        AND dvp.isactive = 'Y'
+        ORDER BY dvp.show_order DESC
     </select>
 </mapper>

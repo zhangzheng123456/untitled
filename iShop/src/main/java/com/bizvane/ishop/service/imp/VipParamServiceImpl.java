@@ -100,9 +100,8 @@ public class VipParamServiceImpl implements VipParamService {
     }
 
     @Override
-    public List<VipParam> selectAllParam(String corp_code,String isactive) throws Exception {
-        List<VipParam> list = vipParamMapper.selectAllParam(corp_code,"",Common.IS_ACTIVE_Y);
-
+    public List<VipParam> selectParamByCorp(String corp_code) throws Exception {
+        List<VipParam> list = vipParamMapper.selectParamByCorp(corp_code);
         return list;
     }
 

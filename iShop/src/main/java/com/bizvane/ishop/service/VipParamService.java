@@ -25,5 +25,5 @@ public interface VipParamService {
 
     PageInfo<VipParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception ;
 
-    List<VipParam> selectAllParam(String corp_code,String isactive) throws Exception;
+    List<VipParam> selectParamByCorp(String corp_code) throws Exception;
 }

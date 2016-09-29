@@ -139,7 +139,7 @@ public class VIPController {
             String avatar = "";
             JSONArray extend = new JSONArray();
 
-            List<VipParam> vipParams = vipParamService.selectAllParam(corp_code,Common.IS_ACTIVE_Y);
+            List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
             for (int i = 0; i < vipParams.size(); i++) {
                 JSONObject extend_obj = new JSONObject();
                 extend_obj.put("name",vipParams.get(i).getParam_desc());
@@ -148,6 +148,7 @@ public class VIPController {
                 extend_obj.put("values",vipParams.get(i).getParam_values());
                 extend_obj.put("is_must",vipParams.get(i).getRequired());
                 extend_obj.put("class",vipParams.get(i).getParam_class());
+                extend_obj.put("show_order",vipParams.get(i).getShow_order());
                 extend.add(extend_obj);
             }
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();
@@ -165,7 +166,7 @@ public class VIPController {
                 if (obj.containsField("remark"))
                     remark = obj.get("remark").toString();
                 if (obj.containsField("avatar"))
-                    remark = obj.get("avatar").toString();
+                    avatar = obj.get("avatar").toString();
             }
 
             vip.put("vip_avatar",avatar);
@@ -264,7 +265,7 @@ public class VIPController {
     }
 
     /**
-     * 会员列表
+     * 会员列表（目前只支持姓名，手机号，会员卡号）
      * 搜索
      */
     @RequestMapping(value = "/vipSearch", method = RequestMethod.POST)
@@ -311,7 +312,7 @@ public class VIPController {
 
 
     /**
-     * 会员信息
+     * 会员信息(头像，扩展信息，备注)
      * 保存mongodb
      */
     @RequestMapping(value = "/vipSaveInfo", method = RequestMethod.POST)

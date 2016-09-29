@@ -74,6 +74,10 @@ function getVipInfo(){
             }
         }
         $("#extend ul").html(extendhtml);
+        if(extendhtml==''){
+            $("#expand_send").hide();
+            $("#expand_send").html("暂无数据");
+        }
         fuzhi(vipDataList);
         getVipPoints(vipDataList.corp_code);
         showOption();
@@ -137,7 +141,7 @@ function jifenContent(listData,pointsData){
     if(listHtml.length!==0){
         $("#points tbody").html(listHtml);
     }else {
-        listHtml='<span>暂无数据</span>'
+        listHtml='<span>暂无数据</span>';
         $("#points tbody").html(listHtml);
     }
     $("#points_all tbody").html(listHtmlAll)
@@ -254,7 +258,7 @@ function fuzhi(data){
         $("#vip_dormant_time").html(data.dormant_time+'&nbsp天');
     }
     if(data.vip_avatar){
-        $(".person-img").css('background','url('+data.vip_avatar+')');
+        $(".person-img").css('backgroundImage','url('+data.vip_avatar+')');
         $("#IMG").attr("src",data.vip_avatar);
     }else{
         $(".person-img").css('backgroundImage','url(../img/head.png)');
@@ -329,8 +333,6 @@ function getoselectvalue(){//点击模拟的select 获取值给input
             }
         })
     });
-
-
 function frame(){
     var left=($(window).width())/2;//弹框定位的left值
     var tp=($(window).height())/2;//弹框定位的top值
@@ -378,3 +380,25 @@ function getexpandValue(){
     }
     return param_expand;
 }
+$("#VIP_avatar").change(function(e){
+    //$("#IMG").attr("src",$(this).val())
+    //console.log($(this).val());
+    var corp_code=sessionStorage.getItem("corp_code");
+    var id=sessionStorage.getItem("id");
+    var file = e.target.files[0];
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        bucket: 'products-image'
+    });
+    var storeAs = 'Avatar/Vip/iShow/'+corp_code.trim()+'-'+id.trim()+'.jpg';
+    client.multipartUpload(storeAs, file).then(function (result) {
+        var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
+        $("#IMG").attr("src",url+'?'+Math.random());
+        $(".person-img").css('backgroundImage','url('+url+'?'+Math.random()+')');
+        postInfo('avatar',url);
+    }).catch(function (err) {
+         console.log(err);
+    });
+});

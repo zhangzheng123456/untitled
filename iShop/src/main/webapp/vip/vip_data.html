@@ -80,7 +80,7 @@
               <div class="message-class">
                   <ul>
                       <li><a class="active" data-name="consume">消费</a></li>
-                      <li><a data-name="jifen">积分</a></li>
+                      <!--<li><a data-name="jifen">积分</a></li>-->
                       <li><a data-name="Ablum">相册</a></li>
                       <li><a data-name="label">标签</a></li>
                   </ul>
@@ -106,18 +106,18 @@
                           </table>
 
                       </div>
-                      <div style="display: none" class="table">
-                          <table style="width: 100%" cellpadding="0" cellspacing="0" id="points">
-                              <thead>
-                              <tr class="TR">
-                                  <th >积分</th>
-                                  <th >日期</th>
-                              </tr>
-                              </thead>
-                              <tbody>
-                              </tbody>
-                          </table>
-                      </div>
+                      <!--<div style="display: none" class="table">-->
+                          <!--<table style="width: 100%" cellpadding="0" cellspacing="0" id="points">-->
+                              <!--<thead>-->
+                              <!--<tr class="TR">-->
+                                  <!--<th >积分</th>-->
+                                  <!--<th >日期</th>-->
+                              <!--</tr>-->
+                              <!--</thead>-->
+                              <!--<tbody>-->
+                              <!--</tbody>-->
+                          <!--</table>-->
+                      <!--</div>-->
                       <div style="display: none" class="images">
                           <div class="img-parent">
                                 <div id="images"></div>
@@ -254,11 +254,11 @@
                     <li class="active1">基本信息</li>
                     <li>拓展信息</li>
                     <li data-name="consume">衣橱</li>
-                    <li data-name="jifen">积分</li>
+                    <!--<li data-name="jifen">积分</li>-->
                     <li data-name="Ablum">相册</li>
                     <li data-name="label">标签</li>
                     <li>备注</li>
-                    <div id="remark" style="width: 14.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
+                    <div id="remark" style="width: 16.28%;height: 3px;background-color: #6dc1c8;position: absolute;bottom: 0px;"></div>
                 </ul>
             </div>
             <div class="all_list">
@@ -267,10 +267,10 @@
                     <div class="editor_em col-lg-7  animated fadeInRight">
                     <form class="conpany_msg">
                         <div>
-                            <label>头像</label><span class="head_img" id="preview"><img src="" id="IMG" style="max-width: 50px;"></span>
+                            <label>头像</label><span class="head_img" id="preview"><img src="" id="IMG" style="height:50px;width: 50px;"></span>
                         <span class="change_touxiang" style="position: relative;">
                         <i class="icon-ishop_6-09"></i>
-                        <input type="file" id="file" onchange="previewImage(this)" style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
+                        <input type="file" id="VIP_avatar" style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                         </div>
                         <div>
                             <label>会员姓名</label><input class="disabled" id="vip_name_edit" />
@@ -460,84 +460,84 @@
                     <!--<div class="more_list">打开更多商品<i class="icon-ishop_8-02"></i></div>-->
                 <!--</div>-->
                 </div>
-                <div class="points">
-                    <div>
-                    <div class="point_head">
-                        总积分<s>￥</s><span class="consume_total" id="points_total"></span>
-                        <ul>
-                            <li>会员卡类型:<span id="vip_card"></span></li>
-                            <li>会员卡号:<span id="vip_card_num"></span></li>
-                            <li>顾客: <span id="vip_name1"></span></li>
-                        </ul>
-                    </div>
-                    <hr/>
-                    <div class="point_head_down">
-                        <ul class="record_date">
-                            <li><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
-                            <li><span>至</span><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
-                        </ul>
-                    </div>
-                    <table class="point_table" id="points_all">
-                        <thead>
-                            <tr>
-                                <th width="35%">序号</th>
-                                <th width="40%">积分</th>
-                                <th>日期</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                    </table>
-                    <!--<div class="foot" >-->
+                <!--<div class="points">-->
+                    <!--<div>-->
+                    <!--<div class="point_head">-->
+                        <!--总积分<s>￥</s><span class="consume_total" id="points_total"></span>-->
                         <!--<ul>-->
-                            <!--<li class="foot-jum">-->
-                                <!--<span>跳转至</span>-->
-                                <!--<input class="input-txt" value="36" id="input-txt">-->
-                                <!--<em>页</em>-->
-                            <!--</li>-->
-                            <!--<li class="foot-num" >-->
-                                <!--<ul id="foot-num">-->
-                                    <!--<li class="icon-ishop_4-01" style="color: #afafaf">-->
-
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<span class="p-bg">1</span>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<span>2</span>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<span>3</span>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<span>4</span>-->
-                                    <!--</li>-->
-                                    <!--<li>-->
-                                        <!--<span>5</span>-->
-                                    <!--</li>-->
-                                    <!--<li class="icon-ishop_4-02">-->
-
-                                    <!--</li>-->
-                                <!--</ul>-->
-                            <!--</li>-->
-                            <!--&lt;!&ndash;<li class="foot-sum">&ndash;&gt;-->
-                                <!--&lt;!&ndash;<div class="page_p">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<ul class="liebiao" style="display:none;" id="liebiao">&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<li id="10">10行/页</li>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<li id="30">30行/页</li>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<li id="50">50行/页</li>&ndash;&gt;-->
-                                        <!--&lt;!&ndash;<li id="100">100行/页</li>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
-                                    <!--&lt;!&ndash;<span class="icon-ishop_8-02 icon"></span>&ndash;&gt;-->
-                                <!--&lt;!&ndash;</div>&ndash;&gt;-->
-                                <!--&lt;!&ndash;<span class="zy">共 75 页</span>&ndash;&gt;-->
-                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                            <!--<li>会员卡类型:<span id="vip_card"></span></li>-->
+                            <!--<li>会员卡号:<span id="vip_card_num"></span></li>-->
+                            <!--<li>顾客: <span id="vip_name1"></span></li>-->
                         <!--</ul>-->
                     <!--</div>-->
-                </div>
-                </div>
+                    <!--<hr/>-->
+                    <!--<div class="point_head_down">-->
+                        <!--<ul class="record_date">-->
+                            <!--<li><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>-->
+                            <!--<li><span>至</span><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>-->
+                        <!--</ul>-->
+                    <!--</div>-->
+                    <!--<table class="point_table" id="points_all">-->
+                        <!--<thead>-->
+                            <!--<tr>-->
+                                <!--<th width="35%">序号</th>-->
+                                <!--<th width="40%">积分</th>-->
+                                <!--<th>日期</th>-->
+                            <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+
+                        <!--</tbody>-->
+                    <!--</table>-->
+                    <!--&lt;!&ndash;<div class="foot" >&ndash;&gt;-->
+                        <!--&lt;!&ndash;<ul>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li class="foot-jum">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<span>跳转至</span>&ndash;&gt;-->
+                                <!--&lt;!&ndash;<input class="input-txt" value="36" id="input-txt">&ndash;&gt;-->
+                                <!--&lt;!&ndash;<em>页</em>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<li class="foot-num" >&ndash;&gt;-->
+                                <!--&lt;!&ndash;<ul id="foot-num">&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li class="icon-ishop_4-01" style="color: #afafaf">&ndash;&gt;-->
+
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<span class="p-bg">1</span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<span>2</span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<span>3</span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<span>4</span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li>&ndash;&gt;-->
+                                        <!--&lt;!&ndash;<span>5</span>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                    <!--&lt;!&ndash;<li class="icon-ishop_4-02">&ndash;&gt;-->
+
+                                    <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                                <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                            <!--&lt;!&ndash;</li>&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;<li class="foot-sum">&ndash;&gt;&ndash;&gt;-->
+                                <!--&lt;!&ndash;&lt;!&ndash;<div class="page_p">&ndash;&gt;&ndash;&gt;-->
+                                    <!--&lt;!&ndash;&lt;!&ndash;<input type="text" value="10行/页" class="page_row" id="page_row" readonly="readonly">&ndash;&gt;&ndash;&gt;-->
+                                    <!--&lt;!&ndash;&lt;!&ndash;<ul class="liebiao" style="display:none;" id="liebiao">&ndash;&gt;&ndash;&gt;-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;<li id="10">10行/页</li>&ndash;&gt;&ndash;&gt;-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;<li id="30">30行/页</li>&ndash;&gt;&ndash;&gt;-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;<li id="50">50行/页</li>&ndash;&gt;&ndash;&gt;-->
+                                        <!--&lt;!&ndash;&lt;!&ndash;<li id="100">100行/页</li>&ndash;&gt;&ndash;&gt;-->
+                                    <!--&lt;!&ndash;&lt;!&ndash;</ul>&ndash;&gt;&ndash;&gt;-->
+                                    <!--&lt;!&ndash;&lt;!&ndash;<span class="icon-ishop_8-02 icon"></span>&ndash;&gt;&ndash;&gt;-->
+                                <!--&lt;!&ndash;&lt;!&ndash;</div>&ndash;&gt;&ndash;&gt;-->
+                                <!--&lt;!&ndash;&lt;!&ndash;<span class="zy">共 75 页</span>&ndash;&gt;&ndash;&gt;-->
+                            <!--&lt;!&ndash;&lt;!&ndash;</li>&ndash;&gt;&ndash;&gt;-->
+                        <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--</div>-->
+                <!--</div>-->
                 <div class="album">
                     <ul id="Ablum-all">
 

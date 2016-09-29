@@ -571,6 +571,7 @@
         FROM def_store ds,def_corp dc,def_area da
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = da.corp_code
+        AND ds.area_code = da.area_code
         AND ds.corp_code = #{corp_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
