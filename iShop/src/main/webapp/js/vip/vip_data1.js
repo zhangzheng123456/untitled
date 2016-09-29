@@ -76,6 +76,7 @@ function getVipInfo(){
         $("#extend ul").html(extendhtml);
         if(extendhtml==''){
             $("#expand_send").hide();
+            $("#expand_send").html("暂无数据");
         }
         fuzhi(vipDataList);
         getVipPoints(vipDataList.corp_code);
