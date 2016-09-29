@@ -84,7 +84,6 @@ function getVipInfo(){
         getVipPoints(vipDataList.corp_code);
         showOption();
         getoselectvalue();
-        upLoadAlbum(vipDataList);
     })
 }
 function getVipPoints(code,type){

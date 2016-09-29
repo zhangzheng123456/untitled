@@ -540,7 +540,7 @@ function drop(ev)
     })
 }
 
-function upLoadAlbum(data){
+function upLoadAlbum(){
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
@@ -550,22 +550,24 @@ function upLoadAlbum(data){
     document.getElementById('upAlbum').addEventListener('change', function (e) {
         var file = e.target.files[0];
         var time=getNowFormatDate();
-        var storeAs='Album/Vip/iShow/C10000-15915655912-'+time+'.jpg';
+        var corp_code=sessionStorage.getItem("corp_code");
+        var vip_id=sessionStorage.getItem("id");
+        var storeAs='Album/Vip/iShow/'+corp_code+'-'+vip_id+'-'+time+'.jpg';
         client.multipartUpload(storeAs, file).then(function (result) {
-            $("#imghead").attr("src",result.url);
+            var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
             $("#upAlbum").val("");
             console.log(result);
-            addVipAlbum(result.url,data)
+            addVipAlbum(url)
         }).catch(function (err) {
              console.log(err);
         });
     });
 }
-function addVipAlbum(url,data){//上传照片到相册
+function addVipAlbum(url){//上传照片到相册
      var param_addAblum={};
     param_addAblum["vip_code"]=sessionStorage.getItem("id");
-    param_addAblum["vip_name"]=data.vip_name;
-    param_addAblum["cardno"]=data.cardno;
+    param_addAblum["vip_name"]=$("#vip_name").html();
+    param_addAblum["cardno"]=$("#vip_card_no").html();
     param_addAblum["image_url"]=url;
     param_addAblum["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
@@ -602,6 +604,6 @@ function getNowFormatDate() {//获取当前日期
 }
 $(function(){
     getConsumCount();
-    //upLoadAlbum();
+    upLoadAlbum();
     moreSearch();
 });
