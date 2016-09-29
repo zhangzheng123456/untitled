@@ -282,11 +282,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("corp_code", corp_code);
         params.put("area_codes", areas);
         params.put("store_codes", stores);
-        if (map.get("brand_name").equals("")){
-            map.remove("brand_name");
-        }else {
-//            brandMapper.selectAllBrand()
-        }
+//            map.remove("brand_name");
         params.put("map", map);
 
         PageHelper.startPage(page_number, page_size);

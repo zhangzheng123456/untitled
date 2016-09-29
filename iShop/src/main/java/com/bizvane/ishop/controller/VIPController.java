@@ -139,7 +139,7 @@ public class VIPController {
             String avatar = "";
             JSONArray extend = new JSONArray();
 
-            List<VipParam> vipParams = vipParamService.selectAllParam(corp_code,Common.IS_ACTIVE_Y);
+            List<VipParam> vipParams = vipParamService.selectParamByCorp(corp_code);
             for (int i = 0; i < vipParams.size(); i++) {
                 JSONObject extend_obj = new JSONObject();
                 extend_obj.put("name",vipParams.get(i).getParam_desc());
@@ -148,6 +148,7 @@ public class VIPController {
                 extend_obj.put("values",vipParams.get(i).getParam_values());
                 extend_obj.put("is_must",vipParams.get(i).getRequired());
                 extend_obj.put("class",vipParams.get(i).getParam_class());
+                extend_obj.put("show_order",vipParams.get(i).getShow_order());
                 extend.add(extend_obj);
             }
             MongoTemplate mongoTemplate = this.mongodbClient.getMongoTemplate();

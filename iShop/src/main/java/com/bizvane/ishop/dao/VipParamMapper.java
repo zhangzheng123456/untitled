@@ -25,4 +25,7 @@ public interface VipParamMapper {
     int deleteById(int id) throws SQLException;
 
     List<VipParam> selectAllParamScreen(Map<String, Object> params) throws SQLException;
+
+    List<VipParam> selectParamByCorp(@Param("corp_code")String corp_code) throws SQLException;
+
 }

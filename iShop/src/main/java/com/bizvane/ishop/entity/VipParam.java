@@ -23,6 +23,8 @@ public class VipParam {
     private String param_class;
     //是否必填
     private String required;
+    //显示顺序
+    private String show_order;
     //修改时间
     private String modified_date;
     //修改人
@@ -152,5 +154,13 @@ public class VipParam {
 
     public void setRequired(String required) {
         this.required = required;
+    }
+
+    public String getShow_order() {
+        return show_order;
+    }
+
+    public void setShow_order(String show_order) {
+        this.show_order = show_order;
     }
 }
