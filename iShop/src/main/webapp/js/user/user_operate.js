@@ -541,47 +541,19 @@ function role_data(c){//
             $(this_).parent().parent().children(".input_select").attr('data-myrcode',r_code);
             $(this_).parent().parent().children(".input_select").attr('data-myjcode',j_code);//角色编号
             $(this_).addClass('rel').siblings().removeClass('rel');
-            if(j_code=="R2000"){
-            	$('#sidename label').html("所属店铺");
-            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
-            	$('#OWN_STORE').attr("data-myscode","");
-            	$("#OWN_STORE").attr("corp_code","");
-            	$('#OWN_STORE').val("");
-            	$('#OWN_STORE').attr("onclick","selectownshop(this)");
-            	$('#add_per_icon').attr("onclick","addshopselect()");
-            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
-            	// $('#add_per_icon').css({"backgroundColor":"#ddd"});
-            	$("#ownshop_list").show();
-            	$("#ownshop_list .per_type").nextAll().remove();
-            }else if(j_code=="R3000"){
-            	$('#sidename label').html("所属店铺");
-            	$('#OWN_STORE').attr("placeholder","请选择所属店铺");
-            	$('#OWN_STORE').attr("data-myscode","");
-            	$("#OWN_STORE").attr("corp_code","");
-            	$('#OWN_STORE').val("");
-            	$('#OWN_STORE').attr("onclick","selectownshop(this)");
-            	$('#add_per_icon').attr("onclick","addshopselect()");
-            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增店铺");
-            	$('#add_per_icon').css({"backgroundColor":"#6cc1c8"});
-            	$("#ownshop_list").show();
-            	$("#ownshop_list .per_type").nextAll().remove();
+            if(j_code=="R2000"||j_code=="R3000"){
+            	$('.task_allot').html("所属店铺");
+            	$('.task_allot').parent().show();
+            	$('.xingming').empty();
             }else if(j_code=="R4000"){
-            	$('#sidename label').html("所属区域");
-            	$('#OWN_STORE').attr("placeholder","请选择所属区域");
-            	$('#OWN_STORE').attr("data-myscode","");
-            	$('#OWN_STORE').val("");
-            	$('#OWN_STORE').attr("onclick","selectownarea(this)");
-            	$('#add_per_icon').attr("onclick","addareaselect()");
-            	$('#add_per_icon').html("<i class='icon-ishop_6-01'></i>新增区域");
-            	$('#add_per_icon').css({"backgroundColor":"#6cc1c8"});
-            	$("#ownshop_list").show();
-            	$("#OWN_STORE").attr("corp_code","");
-            	$("#ownshop_list .per_type").nextAll().remove();
+            	$('.task_allot').html("所属区域");
+            	$('.task_allot').parent().show();
+            	$('.xingming').empty();
             }
             else if(j_code=="R5000"){
-            	$("#ownshop_list").hide();
+            	$('.task_allot').parent().hide();
             }else if(j_code=="R6000"){
-            	$("#ownshop_list").hide();
+            	$('.task_allot').parent().hide();
             }
         });
 	});

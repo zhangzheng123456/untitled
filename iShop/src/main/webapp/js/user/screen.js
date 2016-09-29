@@ -1,6 +1,8 @@
 var oc = new ObjectControl();
 var area_num=1;
 var area_next=false;
+var shop_num=1;
+var shop_next=false;
 //提示弹框
 function frame(){
     var left=($(window).width()-$(".frame").width())/2;//弹框定位的left值
@@ -30,6 +32,10 @@ $("#screen_add").click(function(){
 		$("#screen_shop").show();
 		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
 		$("#screen_area").hide();
+		shop_num=1;
+		$("#screen_shop .screen_content_l ul").empty();
+		$("#screen_shop .screen_content_r ul").empty();
+		getstorelist(shop_num);
 		bianse();
 	}
 	if(r_code=="R4000"){
@@ -41,7 +47,6 @@ $("#screen_add").click(function(){
 		area_num=1;
 		$("#screen_area .screen_content_l ul").empty();
 		$("#screen_area .screen_content_r ul").empty();
-		area_next=false;
 		getarealist(area_num);
 		bianse();
 	}
@@ -56,7 +61,28 @@ $(".screen_content").on("click","li",function(){
         input.checked = false;
     }
 })
-//
+//点击店铺的区域
+$("#shop_area").click(function(){
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	$("#screen_shop").hide();
+	$("#screen_area").show();
+	$("#screen_area").css({"left":+left+"px","top":+tp+"px"});
+	var area_num=1;
+	getarealist(area_num);
+})
+//点击店铺的品牌
+$("#shop_brand").click(function(){
+	var arr=whir.loading.getPageSize();
+	var left=(arr[0]-$("#screen_shop").width())/2;
+	var tp=(arr[1]-$("#screen_shop").height())/2+80;
+	$("#screen_shop").hide();
+	$("#screen_brand").show();
+	$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
+	getbrandlist();
+})
+//移到右边
 function removeRight(a,b){
 	var li="";
 	if(a=="only"){
@@ -80,11 +106,14 @@ function removeRight(a,b){
 					$(input[j]).remove();
 				}
 			}
-			$(b).parents(".screen_content").find(".screen_content_r ul li").before("<li id='"+id+"'>"+html+"</li>")
+			$(b).parents(".screen_content").find(".screen_content_r ul").prepend("<li id='"+id+"'>"+html+"</li>")
 		}
 	}
+	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+	$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
 	bianse();
 }
+//移到左边
 function removeLeft(a,b){
 	var li="";
 	if(a=="only"){
@@ -103,6 +132,8 @@ function removeLeft(a,b){
 			$(li[i]).remove();
 		}
 	}
+	var num=$(b).parents(".screen_content").find(".screen_content_r input[type='checkbox']").parents("li").length;
+	$(b).parents(".screen_content").siblings(".input_s").find(".s_pitch span").html(num);
 	bianse();
 }
 //点击右移
@@ -138,6 +169,21 @@ $("#area_search").keydown(function(){
         getarealist(area_num);
     }
 });
+//店铺搜索
+$("#store_search").keydown(function(){
+	var event=window.event||arguments[0];
+	shop_num=1;
+	if(event.keyCode==13){
+		$("#screen_shop .screen_content_l ul").empty();
+		getstorelist(shop_num);
+	}
+})
+//店铺放大镜搜索
+$("#store_search_f").click(function(){
+	shop_num=1;
+	$("#screen_shop .screen_content_l ul").empty();
+	getstorelist(shop_num);
+})
 //区域放大镜收索
 $("#area_search_f").click(function(){
 	area_num=1;
@@ -149,12 +195,113 @@ $("#screen_close_area").click(function(){
 	$("#screen_area").hide();
 	whir.loading.remove();//移除遮罩层
 })
+//店铺关闭
+$("#screen_close_shop").click(function(){
+	$("#screen_shop").hide();
+	whir.loading.remove();//移除遮罩层
+})
+//品牌关闭
+$("#screen_close_brand").click(function(){
+	$("#screen_brand").hide();
+	whir.loading.remove();//移除遮罩层
+})
 function bianse(){
     $(".screen_content_l li:odd").css("backgroundColor","#fff");
     $(".screen_content_l li:even").css("backgroundColor","#ededed");
     $(".screen_content_r li:odd").css("backgroundColor","#fff");
     $(".screen_content_r li:even").css("backgroundColor","#ededed");
 }
+//区域滚动事件
+$("#screen_area .screen_content_l").scroll(function () {
+	var nScrollHight = $(this)[0].scrollHeight;
+    var nScrollTop = $(this)[0].scrollTop;
+    var nDivHight=$(this).height();
+    if(nScrollTop + nDivHight >= nScrollHight){
+    	if(area_next){
+    		return;
+    	}
+    	getarealist(area_num);
+    };
+})
+//店铺滚动事件
+$("#screen_shop .screen_content_l").scroll(function () {
+	var nScrollHight = $(this)[0].scrollHeight;
+    var nScrollTop = $(this)[0].scrollTop;
+    var nDivHight=$(this).height();
+    if(nScrollTop + nDivHight >= nScrollHight){
+    	if(area_next){
+    		return;
+    	}
+    	getstorelist(shop_num);
+    };
+})
+//点击区域确定追加节点
+$("#screen_que_area").click(function(){
+	console.log(123);
+	var li=$("#screen_area .screen_content_r input[type='checkbox']").parents("li");
+	if(li.length=="0"){
+		frame();
+		$(".frame").html("请把左边的列移到右边");
+		return;
+	}
+	var area_codes="";
+	var r_code=$("#OWN_RIGHT").attr("data-myjcode");//角色编号
+	for(var i=0;i<li.length;i++){
+		var a=$('.xingming input');
+		var r=$(li[i]).attr("id");
+        if(i<li.length-1){
+            area_codes+=r+",";
+        }else{
+            area_codes+=r;
+        }
+        if(r_code=="R4000"){
+        	for(var j=0;j<a.length;j++){
+				if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+					$(a[j]).parent("p").remove();
+				}
+		    }
+			$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
+		}
+	}
+	if(r_code=="R2000"||r_code=="R3000"){
+		$("#area_num").attr("data-areacode",area_codes);
+		var arr=whir.loading.getPageSize();
+		var left=(arr[0]-$("#screen_shop").width())/2;
+		var tp=(arr[1]-$("#screen_shop").height())/2+80;
+		$("#screen_shop").css({"left":+left+"px","top":+tp+"px"});
+		$("#screen_area").hide();
+		$("#screen_shop").show();
+		var num=$("#screen_area .screen_content_r input[type='checkbox']").parents("li").length;
+		$("#area_num").val("已选"+num+"家");
+	}
+	if(r_code=="R4000"){
+		$("#screen_area").hide();
+	}
+	whir.loading.remove();//移除遮罩层
+})
+//点击店铺确定追加节点
+$("#screen_que_shop").click(function(){
+	var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
+	if(li.length=="0"){
+		frame();
+		$(".frame").html("请把左边的列移到右边");
+	}
+	for(var i=0;i<li.length;i++){
+		var a=$('.xingming input');
+		for(var j=0;j<a.length;j++){
+			if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+				$(a[j]).parent("p").remove();
+			}
+		}
+		$('.xingming').append("<p><input type='text'readonly='readonly'style='width: 348px;margin-right: 10px' data-code='"+$(li[i]).attr("id")+"'  value='"+$(li[i]).find(".p16").html()+"'><span class='power remove_app_id'>删除</span></p>");
+	}
+	$("#screen_shop").hide();
+	whir.loading.remove();//移除遮罩层
+})
+//删除
+$(".xingming").on("click",".remove_app_id",function(){
+	$(this).parent().remove();
+})
 //拉取区域
 function getarealist(a){
 	var corp_code = $('#OWN_CORP').val();
@@ -191,11 +338,8 @@ function getarealist(a){
                         + 1
                         + "'></label></div><span class='p16'>"+list[i].area_name+"</span></li>"
 				}
-				for(var i=0;i<6;i++){
-					area_html_right+="<li></li>"
-				}
+				area_next=false;
 				$("#screen_area .screen_content_l ul").append(area_html_left);
-				$("#screen_area .screen_content_r ul").append(area_html_right);
 				bianse();
 			}
 			area_num++;
@@ -210,16 +354,98 @@ function getarealist(a){
 		}
 	})
 }
-//区域滚动事件
-$("#screen_area .screen_content_l").scroll(function () {
-	var nScrollHight = $(this)[0].scrollHeight;
-    var nScrollTop = $(this)[0].scrollTop;
-    var nDivHight=$(this).height();
-    if(nScrollTop + nDivHight >= nScrollHight){
-    	if(area_next){
-    		return;
-    	}
-    	getarealist(area_num);
-    };
-})
-
+//获取店铺列表
+function getstorelist(a){
+	var corp_code = $('#OWN_CORP').val();
+	var area_code =$('#area_num').attr("data-areacode");
+	var brand_code=$('#area_num').attr("data-brandcode");
+	var searchValue=$("#store_search").val();
+	var pageSize=20;
+	var pageNumber=a;
+	var _param={};
+	var checknow_data=[];
+    var checknow_namedata=[];
+	_param['corp_code']=corp_code;
+	_param['area_code']=area_code;
+	_param['brand_code']=brand_code;
+	_param['searchValue']=searchValue;
+	_param['pageNumber']=pageNumber;
+	_param['pageSize']=pageSize;
+	whir.loading.add("",0.5);//加载等待框
+	$("#mask").css("z-index","10002");
+	oc.postRequire("post","/shop/selectByAreaCode", "", _param, function(data) {
+		if (data.code == "0") {
+			var message=JSON.parse(data.message);
+            var list=JSON.parse(message.list);
+            var cout=list.pages;
+            var list=list.list;
+			var store_html = '';
+			if (list.length == 0) {
+				shop_next=true;
+			} else {
+				for (var i = 0; i < list.length; i++) {
+				    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
+                        + i
+                        + a
+                        + 1
+                        + "'/><label for='checkboxTowInput"
+                        + i
+                        + a
+                        + 1
+                        + "'></label></div><span class='p16'>"+list[i].store_name+"</span></li>"
+				}
+				shop_num++;
+				shop_next=false;
+				$("#screen_shop .screen_content_l ul").append(store_html);
+				bianse();
+			}
+			whir.loading.remove();//移除加载框
+		} else if (data.code == "-1") {
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	})
+}
+//获取品牌列表
+function getbrandlist(){
+	var corp_code = $('#OWN_CORP').val();
+	var _param={};
+	_param["corp_code"]=corp_code;
+	oc.postRequire("post","/shop/brand", "",_param, function(data){
+		if (data.code == "0") {
+			var message=JSON.parse(data.message);
+            var list=message.brand;
+			var brand_html_left = '';
+			var brand_html_right='';
+			if (list.length == 0){
+			} else {
+				for (var i = 0; i < list.length; i++) {
+				    area_html_left+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].brand_code+"' data-areaname='"+list[i].brand_name+"' name='test'  class='check'  id='checkboxThreeInput"
+                        + i
+                        + a
+                        + 1
+                        + "'/><label for='checkboxThreeInput"
+                        + i
+                        + a
+                        + 1
+                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
+				}
+				area_next=false;
+				$("#screen_brand .screen_content_l ul").append(brand_html_left);
+				bianse();
+			}
+			whir.loading.remove();//移除加载框
+		} else if (data.code == "-1") {
+			art.dialog({
+				time: 1,
+				lock: true,
+				cancel: false,
+				content: data.message
+			});
+		}
+	})
+}
