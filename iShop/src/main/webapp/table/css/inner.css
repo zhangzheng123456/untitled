@@ -985,7 +985,6 @@ input::-webkit-input-placeholder{
 	background-size:30px;
 
 }
-
 .sxk .inputs .isActive_select_down{
 	display: none;
 	position: absolute;
@@ -1098,7 +1097,7 @@ input::-webkit-input-placeholder{
 }
 /*******************筛选区域样式******************/
 .screen_area{
-	// width: 700px;
+	width: 740px;
 	min-height: 530px;
 	padding:0 20px 0 20px;
 	background-color: #fff;
@@ -1109,6 +1108,9 @@ input::-webkit-input-placeholder{
 	left: 239px;
 	display: none;
 	z-index: 10001;
+	box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 .screen_area .screen_title{
 	color: #888;
@@ -1147,14 +1149,17 @@ input::-webkit-input-placeholder{
 }
 .screen_area .xuanzhong .xuanzhong_p input{
 	width: 140px;
-	height: 28px;
+	height: 30px;
 	outline: none;
-	line-height: 26px;
+	line-height: 30px;
 	margin-left: 10px;
 	padding-left: 10px;
 	border: 1px solid #d7d7d7;
 	border-radius: 3px;
 	color: #888;
+	box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 .screen_area .screen_title .xian{
 	border-bottom: 1px solid #cacaca;
@@ -1177,6 +1182,9 @@ input::-webkit-input-placeholder{
 	line-height: 50px;
 }
 .screen_area .input_s .input_search,.screen_area .input_s .s_center,.screen_area .input_s .s_pitch{
+	box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 	float: left;
 }
 .screen_area .input_s .input_search{
@@ -1191,7 +1199,7 @@ input::-webkit-input-placeholder{
 	cursor: pointer;
 }
 .screen_area .input_s .input_search input{
-	width: 268px !important;
+	width: 310px !important;
 	height: 28px;
 	line-height: 30px;
 	outline: none;
@@ -1200,6 +1208,9 @@ input::-webkit-input-placeholder{
 	padding-left: 10px;
 	padding-right: 30px;
 	color: #888;
+	box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
 }
 .screen_area .input_s .s_center{
 	width: 80px;

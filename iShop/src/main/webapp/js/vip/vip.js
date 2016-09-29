@@ -421,6 +421,10 @@ $("#search").keydown(function() {
         if(event.keyCode == 13){
             POST(inx,pageSize);
         }
+    }else{
+        if(event.keyCode == 13){
+            GET(inx,pageSize);
+        }
     }
 });
 //点击放大镜触发搜索
@@ -433,6 +437,8 @@ $("#d_search").click(function(){
         param["pageSize"]=pageSize;
         param["funcCode"]=funcCode;
         POST(inx,pageSize);
+    }else{
+        GET(inx,pageSize);
     }
 })
 //搜索的请求函数
