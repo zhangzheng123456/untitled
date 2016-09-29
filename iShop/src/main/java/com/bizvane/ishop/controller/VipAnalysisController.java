@@ -234,21 +234,39 @@ public class VipAnalysisController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
-            String query_type = jsonObject.get("query_type").toString();
+            String query_type = jsonObject.get("type").toString();
             String time = jsonObject.get("time").toString();
 
+            Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
+
             JSONObject all = new JSONObject();
-            all.put("count","");
-            all.put("achv","");
-            all.put("","");
+            all.put("count","15675");
+            all.put("scale","36.1%");
+            all.put("vip_amount","6989");
+            all.put("vip_price","1399");
+            all.put("price","569");
+
+            JSONObject old_vip = new JSONObject();
+            all.put("count","10678");
+            all.put("scale","78.8%");
+            all.put("vip_amount","3452");
+            all.put("vip_price","1099");
+            all.put("price","546");
+
+            JSONObject new_vip = new JSONObject();
+            all.put("count","467");
+            all.put("scale","25.8%");
+            all.put("vip_amount","4533");
+            all.put("vip_price","1553");
+            all.put("price","657");
 
             JSONObject obj = new JSONObject();
-            obj.put("all","");
-            obj.put("old","");
-            obj.put("new","");
+            obj.put("all",all);
+            obj.put("old",old_vip);
+            obj.put("new",new_vip);
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
-            dataBean.setMessage("");
+            dataBean.setMessage(obj.toString());
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

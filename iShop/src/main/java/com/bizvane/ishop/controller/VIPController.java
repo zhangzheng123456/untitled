@@ -209,13 +209,45 @@ public class VIPController {
             String store_id = jsonObject.get("store_id").toString();
             String store_code = baseService.storeIdConvertStoreCode(corp_code,store_id);
 
+            String goods_code = "";
+            String goods_name = "";
+            String order_id = "";
+            String time_start = "";
+            String time_end = "";
+
+            if (jsonObject.containsKey("goods_code")){
+                goods_code = jsonObject.get("goods_code").toString();
+            }
+            if (jsonObject.containsKey("goods_name")){
+                goods_name = jsonObject.get("goods_name").toString();
+            }
+            if (jsonObject.containsKey("order_id")){
+                order_id = jsonObject.get("order_id").toString();
+            }
+            if (jsonObject.containsKey("time_start")){
+                time_start = jsonObject.get("time_start").toString();
+            }
+            if (jsonObject.containsKey("time_end")){
+                time_end = jsonObject.get("time_end").toString();
+            }
             Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_store_code = new Data("store_id", store_code, ValueType.PARAM);
+            Data data_goods_code = new Data("good_code", goods_code, ValueType.PARAM);
+            Data data_goods_name = new Data("good_name", goods_name, ValueType.PARAM);
+            Data data_order_id = new Data("order_id", order_id, ValueType.PARAM);
+            Data data_time_start = new Data("time_start", time_start, ValueType.PARAM);
+            Data data_time_end = new Data("time_end", time_end, ValueType.PARAM);
+
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_vip_id.key, data_vip_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_goods_code.key, data_goods_code);
+            datalist.put(data_goods_name.key, data_goods_name);
+            datalist.put(data_order_id.key, data_order_id);
+            datalist.put(data_time_start.key, data_time_start);
+            datalist.put(data_time_end.key, data_time_end);
 
             JSONObject result_points = new JSONObject();
             JSONObject result_wardrobes = new JSONObject();

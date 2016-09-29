@@ -157,6 +157,21 @@ var oc = new ObjectControl();
 			}
 		});
 		$("#edit_save").click(function(){
+			var delete_image=[];//需要删除的数据
+			console.log(sessionStorage.getItem('goods_description'));
+			console.log(getContent()==sessionStorage.getItem('goods_description'))
+			console.log('抓取图片')
+			var load_image=sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
+			var save_image=getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
+			// console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
+			// console.log('保存时的图片'+getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
+			console.log(load_image)
+			console.log(save_image)
+			for(var i=0;i<load_image.length;i++){
+				load_image[i]=save_image[i]?"":delete_image.push(load_image[i]);
+			}
+
+			//如果有内容则进行比较
 			function getContent() {
 				var arr = [];
 				arr.push(UE.getEditor('editor').getContent());
@@ -256,7 +271,8 @@ var oc = new ObjectControl();
 					"goods_time": GOODS_RELEASETIME,
 					"goods_description": GOODS_BUYPOINT,
 					"isactive": ISACTIVE,
-					"match_goods":matchgoods
+					"match_goods":matchgoods,
+					'delImgPath':delete_image.join('')
 				};
 				fabjs.ajaxSubmit(_command,_params,opt);
 			}else{
@@ -341,8 +357,9 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
-				console.log(msg.goods_description
-			);
+				console.log(msg.goods_description);
+				//将读取到的卖点信息保存在本地
+				sessionStorage.setItem('goods_description',msg.goods_description)
 				var goods_img=msg.goods_image;
 				ue.ready(function() {
 					ue.setContent(msg.goods_description);
