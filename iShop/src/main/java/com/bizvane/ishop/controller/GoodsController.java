@@ -709,7 +709,7 @@ public class GoodsController {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmssSSS");
             path =   request.getSession().getServletContext().getRealPath("/");
             for (int i = 0; i < delImgPaths.size(); i++) {
-                ossUtils.deleteObject(bucketName,htmlImageSrcList.get(i));
+                ossUtils.deleteObject(bucketName,delImgPaths.get(i));
             }
             for (int k = 0; k < htmlImageSrcList.size(); k++) {
                 String time="FAB/"+corp_code+"/"+goods.getGoods_code()+"_"+sdf.format(new Date())+".jpg";
@@ -736,6 +736,7 @@ public class GoodsController {
                 dataBean.setMessage(result);
             }
         } catch (Exception ex) {
+            ex.printStackTrace();
             dataBean.setId(id);
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setMessage("edit error");
