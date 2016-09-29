@@ -386,7 +386,13 @@ padding:25px 15px 0 15px;
 .remark span{
     display: inline-flex;
     margin-top: 20px;
-    margin-left:280px;
+    margin-left:20px;
+}
+.remark label{
+    width: 170px;
+    text-align: right;
+    font-size: 14px;
+    color: #434960;
 }
 .remark textarea{
     width: 380px;
@@ -401,7 +407,7 @@ padding:25px 15px 0 15px;
 .remark_save{
     width: 160px;
     height: 30px;
-    margin-left: 430px;
+    margin-left: 210px;
     margin-top: 20px;
     background: #6dc1c8;
     color: #ffffff;

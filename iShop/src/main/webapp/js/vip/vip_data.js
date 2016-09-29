@@ -396,6 +396,15 @@ $(".nav_bar").mouseleave(function() {
     $("#remark").animate({left: len * _this}, 200);
 });
 
+
+//标签导航切换窗口
+$(".label_nav li").click(function () {
+    var index=$(this).index()+1;
+    $(this).addClass("label_li_active");
+    $(this).siblings().removeClass("label_li_active");
+    $(".label_box").eq(index).show();
+    $(".label_box").eq(index).siblings("div").hide();
+})
 //添加，删除标签
 function labelDelete(obj) {
     // $("#label_box span i").click(function () {
@@ -447,6 +456,7 @@ $("#labeladd_btn").click(function () {
     }
     param['label_name']=val;
     addViplabel();
+    $("#search_input").val("");
 });
 //右侧点击添加标签
 function clickLabeladd() {

@@ -1,6 +1,8 @@
 $(function(){
     getVipInfo();
 });
+var dataghy="";
+var list="";
 function getVipInfo(){
     var param_info={};
     param_info["vip_id"]=sessionStorage.getItem("id");
@@ -103,6 +105,7 @@ function getVipPoints(code,type){
         if(type=='2'){
             var consumnData=Data.result_consumn;//消费
             var consumnlistData=consumnData.list_wardrobe;//消费list
+                dataghy=consumnData;
             xiaofeiContent(consumnData,consumnlistData)
         }
         if(type==undefined){
@@ -319,6 +322,8 @@ function getoselectvalue(){//点击模拟的select 获取值给input
     $("#delete").click(function(){//确认删除相册
         $("#tk").hide();
         var id=$(this).attr("data-id");
+        var url=$("#"+id).prev().attr("src");
+        console.log(url);
         var param={};
         param["id"]=id;
         oc.postRequire("post","/vipAlbum/delete","",param,function(data){
@@ -332,6 +337,19 @@ function getoselectvalue(){//点击模拟的select 获取值给input
             }
         })
     });
+function deleteAblum(){
+    var client = new OSS.Wrapper({
+        region: 'oss-cn-hangzhou',
+        accessKeyId: 'O2zXL39br8rSn1zC',
+        accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
+        bucket: 'products-image'
+    });
+    client.delete(storeAs).then(function (result) {
+        console.log(result)
+    }).catch(function (err) {
+        console.log(err);
+    });
+}
 function frame(){
     var left=($(window).width())/2;//弹框定位的left值
     var tp=($(window).height())/2;//弹框定位的top值
@@ -348,7 +366,7 @@ $("#expand_send").click(function(){
     postInfo('extend',param);
 });
 $("#remark_keep").click(function(){
-    postInfo('remark',$("#remark_value").val())
+    postInfo('remark',$("#remark_value").val());
 });
 function postInfo(type,value){//修改拓展信息和备注
     var param_expand={};
@@ -401,3 +419,46 @@ $("#VIP_avatar").change(function(e){
          console.log(err);
     });
 });
+
+$.expr[":"].searchableSelectContains = $.expr.createPseudo(function(arg) {
+    return function( elem ) {
+        return $(elem).text().toUpperCase().indexOf(arg.toUpperCase()) >= 0;
+    };
+});
+$(".record_input li:nth-child(1) input").on('keyup', function(event){
+    var text=$(this).val();
+    if(text!==""){
+        console.log(text);
+        $(".record_list").hide();
+        $('.record_list .list_head:nth-child(2):searchableSelectContains('+text+')').parents(".record_list").show();
+    }else{
+        $(".record_list").show();
+    }
+})
+$(".record_input li:gt(0) input").on('keyup', function(event){
+    var text=$(this).val();
+    if(text!==""){
+        console.log(text);
+        $(".record_list").hide();
+        $('.record_list .list_table tbody:searchableSelectContains('+text+')').parents(".record_list").show();
+    }else{
+        $(".record_list").show();
+    }
+})
+
+$(".ghy").click(function () {
+    var text=$(".record_input li:nth-child(1) input").val();
+    var text2=$(".record_input li:nth-child(2) input").val();
+    var text3=$(".record_input li:nth-child(3) input").val();
+    if(text!==""&&text2==""&&text3==""){
+        var arr=[];
+        console.log(dataghy);
+        for(var i=0;i<dataghy.length;i++){
+             var  str=dataghy[i].order_id;
+                if(str.indexOf(text)>0){
+                    list=dataghy[i];
+                }
+            console.log(list);
+        }
+    }
+})
