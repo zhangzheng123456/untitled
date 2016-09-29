@@ -342,9 +342,13 @@ $(document).click(function(e){
 });
 //input输入框里面
 $('#search_input').bind('input propertychange', function() {
+    var thatFun=arguments.callee;
+    var that=this;
+    $(this).unbind("input propertychange",thatFun);
     $(".search_list").empty();
     page=1;
     searchHotlabel();
+    setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
 });
 //隐藏下拉框滚动条
 $(function(){
