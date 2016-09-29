@@ -38,7 +38,6 @@ public interface StoreService {
     Store getStoreById(int id) throws Exception;
 
     Store getById(int id) throws Exception;
-    Store getStoresById(int id) throws Exception ;
 
     PageInfo<Store> getAllStore(HttpServletRequest request, int page_number, int page_size, String corp_code, String search_value) throws Exception;
 

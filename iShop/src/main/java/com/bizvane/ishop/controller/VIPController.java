@@ -209,13 +209,45 @@ public class VIPController {
             String store_id = jsonObject.get("store_id").toString();
             String store_code = baseService.storeIdConvertStoreCode(corp_code,store_id);
 
+            String goods_code = "";
+            String goods_name = "";
+            String order_id = "";
+            String time_start = "";
+            String time_end = "";
+
+            if (jsonObject.containsKey("goods_code")){
+                goods_code = jsonObject.get("goods_code").toString();
+            }
+            if (jsonObject.containsKey("goods_name")){
+                goods_name = jsonObject.get("goods_name").toString();
+            }
+            if (jsonObject.containsKey("order_id")){
+                order_id = jsonObject.get("order_id").toString();
+            }
+            if (jsonObject.containsKey("time_start")){
+                time_start = jsonObject.get("time_start").toString();
+            }
+            if (jsonObject.containsKey("time_end")){
+                time_end = jsonObject.get("time_end").toString();
+            }
             Data data_vip_id = new Data("vip_id", vip_id, ValueType.PARAM);
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_store_code = new Data("store_id", store_code, ValueType.PARAM);
+            Data data_goods_code = new Data("good_code", goods_code, ValueType.PARAM);
+            Data data_goods_name = new Data("good_name", goods_name, ValueType.PARAM);
+            Data data_order_id = new Data("order_id", order_id, ValueType.PARAM);
+            Data data_time_start = new Data("time_start", time_start, ValueType.PARAM);
+            Data data_time_end = new Data("time_end", time_end, ValueType.PARAM);
+
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_vip_id.key, data_vip_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_code.key, data_store_code);
+            datalist.put(data_goods_code.key, data_goods_code);
+            datalist.put(data_goods_name.key, data_goods_name);
+            datalist.put(data_order_id.key, data_order_id);
+            datalist.put(data_time_start.key, data_time_start);
+            datalist.put(data_time_end.key, data_time_end);
 
             JSONObject result_points = new JSONObject();
             JSONObject result_wardrobes = new JSONObject();
@@ -281,6 +313,8 @@ public class VIPController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
             if (role_code.equals(Common.ROLE_SYS)){
                 corp_code = jsonObject.get("corp_code").toString();
             }
@@ -289,11 +323,87 @@ public class VIPController {
 
             Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
             Data data_search_value = new Data("phone_or_id", search_value, ValueType.PARAM);
+            Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+            Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
             Map datalist = new HashMap<String, Data>();
             datalist.put(data_search_value.key, data_search_value);
             datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_page_num.key, data_page_num);
+            datalist.put(data_page_size.key, data_page_size);
 
             DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipSearch", datalist);
+            logger.info("-------VipSearch:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result);
+
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage());
+            logger.info(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 会员列表（目前只支持导购店铺）
+     * 筛选
+     */
+    @RequestMapping(value = "/vipScreen", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipScreen(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String user_code = jsonObject.get("user_code").toString();
+            String store_code = jsonObject.get("store_code").toString();
+            String area_code = jsonObject.get("corp_code").toString();
+            String page_num = jsonObject.get("pageNumber").toString();
+            String page_size = jsonObject.get("pageSize").toString();
+
+            String role_code = "";
+            if (role_code.equals(Common.ROLE_SYS)){
+                corp_code = jsonObject.get("corp_code").toString();
+            }
+            logger.info("json--------------corp_code-" + corp_code);
+            DataBox dataBox = null;
+            if (user_code.equals("")) {
+                if (!store_code.equals("")) {
+                    role_code = Common.ROLE_SM;
+                }
+                if (store_code.equals("")) {
+                    role_code = Common.ROLE_AM;
+                }
+                Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
+                Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+                Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+                Data data_store_id = new Data("store_id", store_code, ValueType.PARAM);
+                Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+                Data data_page_num = new Data("page_num", page_num, ValueType.PARAM);
+                Data data_page_size = new Data("page_size", page_size, ValueType.PARAM);
+
+                Map datalist = new HashMap<String, Data>();
+                datalist.put(data_user_id.key, data_user_id);
+                datalist.put(data_corp_code.key, data_corp_code);
+                datalist.put(data_store_id.key, data_store_id);
+                datalist.put(data_area_code.key, data_area_code);
+                datalist.put(data_role_code.key, data_role_code);
+                datalist.put(data_page_num.key, data_page_num);
+                datalist.put(data_page_size.key, data_page_size);
+
+                dataBox = iceInterfaceService.iceInterfaceV2("AnalysisAllVip", datalist);
+            }else {
+
+            }
             logger.info("-------VipSearch:" + dataBox.data.get("message").value);
             String result = dataBox.data.get("message").value;
 

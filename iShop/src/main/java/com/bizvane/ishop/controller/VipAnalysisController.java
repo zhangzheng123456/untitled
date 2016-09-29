@@ -221,4 +221,39 @@ public class VipAnalysisController {
         }
         return dataBean.getJsonStr();
     }
+
+    //vip消费占比
+    @RequestMapping(value = "/vipScale", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipScale(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String query_type = jsonObject.get("query_type").toString();
+            String time = jsonObject.get("time").toString();
+
+            JSONObject all = new JSONObject();
+            all.put("count","");
+            all.put("achv","");
+            all.put("","");
+
+            JSONObject obj = new JSONObject();
+            obj.put("all","");
+            obj.put("old","");
+            obj.put("new","");
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
 }

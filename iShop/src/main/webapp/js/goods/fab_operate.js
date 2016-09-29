@@ -157,6 +157,13 @@ var oc = new ObjectControl();
 			}
 		});
 		$("#edit_save").click(function(){
+			console.log(sessionStorage.getItem('goods_description'));
+			console.log(getContent()==sessionStorage.getItem('goods_description'))
+			console.log('抓取图片')
+			var load_image=sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig)
+			console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
+			console.log('保存时的图片'+getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
+			//如果有内容则进行比较
 			function getContent() {
 				var arr = [];
 				arr.push(UE.getEditor('editor').getContent());
@@ -171,6 +178,15 @@ var oc = new ObjectControl();
 				var GOODS_QUARTER=$("#GOODS_QUARTER").val();
 				var GOODS_BAND=$("#GOODS_BAND").val();
 				var GOODS_RELEASETIME=$("#GOODS_RELEASETIME").val();
+				//如果ueditor是否有内容
+				/*
+				 function hasContent() {
+				 var arr = [];
+				 arr.push("使用editor.hasContents()方法判断编辑器里是否有内容");
+				 arr.push("判断结果为：");
+				 arr.push(UE.getEditor('editor').hasContents());
+				 alert(arr.join("\n"));
+				 }*/
 				var GOODS_BUYPOINT=getContent();
 				var brand_code=$("#OWN_BRAND").val();//品牌编号
 				var ISACTIVE="";
@@ -341,8 +357,9 @@ jQuery(document).ready(function(){
 			if(data.code=="0"){
 				var m=JSON.parse(data.message);
 				var msg=JSON.parse(m.goods);
-				console.log(msg.goods_description
-			);
+				console.log(msg.goods_description);
+				//将读取到的卖点信息保存在本地
+				sessionStorage.setItem('goods_description',msg.goods_description)
 				var goods_img=msg.goods_image;
 				ue.ready(function() {
 					ue.setContent(msg.goods_description);
