@@ -336,7 +336,7 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         param["id"]=id;
         oc.postRequire("post","/vipAlbum/delete","",param,function(data){
             if(data.message="success"){
-                //deleteAblum(url);
+                deleteAblum(url);
                 $("#"+id).parent().remove();
                 frame();
                 $('.frame').html('删除成功');
@@ -347,15 +347,14 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         })
     });
 function deleteAblum(key){
-    //var co = require('co');
-    //var OSS = require('ali-oss');
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
         accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
         bucket: 'products-image'
     });
-    client.delete(key).then(function (result) {
+    var storeAs=key;
+    client.delete(storeAs).then(function (result) {
         console.log(result)
     }).catch(function (err) {
         console.log(err);

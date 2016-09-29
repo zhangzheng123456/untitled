@@ -550,7 +550,7 @@ function upLoadAlbum(){
         var time=getNowFormatDate();
         var corp_code=sessionStorage.getItem("corp_code");
         var vip_id=sessionStorage.getItem("id");
-        var storeAs='Album/Vip/iShow/'+corp_code+'-'+vip_id+'-'+time+'.jpg';
+        var storeAs='Album/Vip/iShow/'+corp_code+'_'+vip_id+'_'+time+'.jpg';
         client.multipartUpload(storeAs, file).then(function (result) {
             var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
             $("#upAlbum").val("");

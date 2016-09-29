@@ -86,6 +86,7 @@ function getStore(a){
         // sleepVipGet();//获取活跃会员
        un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
        //  brithVipGet();
+        getDate();
     });
     page=1;
 }
@@ -191,6 +192,46 @@ $('#side_analyze>ul:nth-child(1) li:gt(0)').click(function(){
             }
         }
     });
+//按时间查看数据
+function getDate(){
+    var param={};
+    param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
+    param['corp_code']=localStorage.getItem('corp_code');
+    param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
+    param["type"]=$('.date_title .title_l').html();
+    param["time"]=$($('.date_title .date input')[0]).html();
+    //console.log($('.date_title .title_l').html())
+    //vipAnalysis/vipScale 系统管理员，写死的corp_code
+    //area_code
+    // store_code
+    //type:day
+   // time:yyyy-MM-dd
+    console.log($($('.date_title .date input')[0]).html());
+    oc.postRequire("post","/vipAnalysis/vipScale","",param,function(data){
+        var message=JSON.parse(data.message);
+        var message=JSON.parse(data.message);
+        console.log(message)
+        for(var key in message){
+            switch (key){
+                case 'all':fillVip(message[key],$('.all_vip span b'),$('.all_vip table tbody tr'));break;
+                case 'new':console.log('填充新会员');break;
+                case 'old':console.log('填充老会员');break;
+            }
+        }
+    })
+}
+//会员填充数据
+function fillVip(data,count,container){
+    $(count).empty();
+    $(container).empty();
+    var html='';
+    $(count).html('总数：'+data['count']);
+    html+="<td>"+data['scale']+"</td>"
+        +"<td>"+data['vip_amount']+"</td>"
+        +"<td>"+data['vip_price']+"</td>"
+        +"<td>"+data['price']+"</td>";
+    $(container).html(html);
+}
 /******************************表格分析数据*************************************************************************/
 // 列表点击效果
 $(".vip_nav_bar li:nth-child(1)").click(function () {
