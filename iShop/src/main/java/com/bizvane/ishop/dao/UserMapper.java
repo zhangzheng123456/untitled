@@ -59,4 +59,6 @@ public interface UserMapper {
 
     int deleteUserQrcodeOne(@Param("corp_code") String corp_code, @Param("user_code") String user_code, @Param("app_id") String app_id) throws SQLException;
 
+    List<User> selectUsersByRole(Map<String, Object> params) throws SQLException;
+
 }
