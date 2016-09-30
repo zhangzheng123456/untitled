@@ -1442,13 +1442,13 @@ $().ready(function(){
 });
 /*****************************************************************************************************************/
 //左侧业绩选择日周年月
-$(".choose").mouseover(function () {
-    $(".select_Date").show();
-}).mouseleave(function () {
-    $(".select_Date").hide();
-})
-$(".select_Date li").click(function () {
-    var content=$(this).html();
-    $(".title_l").html(content);
-    $($(this).parent()).toggle()
-})
+// $(".choose").mouseover(function () {
+//     $(".select_Date").show();
+// }).mouseleave(function () {
+//     $(".select_Date").hide();
+// })
+// $(".select_Date li").click(function () {
+//     var content=$(this).html();
+//     $(".title_l").html(content);
+//     $($(this).parent()).toggle()
+// })

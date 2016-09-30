@@ -364,8 +364,8 @@
                     <hr/>
                     <div class="record_head_down">
                         <ul class="record_date">
-                            <li><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
-                            <li><span>至</span><input type="text" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"></li>
+                            <li><input type="text" id="start" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#start',istime: true, format: 'YYYY-MM-DD'})"></li>
+                            <li><span>至</span><input type="text" id="end" readonly="true" placeholder="请输入日期" class="laydate-icon" onclick="laydate({elem: '#end',istime: true, format: 'YYYY-MM-DD'})"></li>
                         </ul>
                         <ul class="record_input">
                             <li>订单号<input></li>
