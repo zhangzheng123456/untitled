@@ -133,6 +133,113 @@ public class UserController {
     }
 
     /***
+     * 根据企业，店铺拉取员工
+     */
+    @RequestMapping(value = "/selectUsersByRole", method = RequestMethod.POST)
+    @ResponseBody
+    public String selectUsersByRole(HttpServletRequest request, HttpServletResponse response) {
+        DataBean dataBean = new DataBean();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+
+        int user_id = Integer.parseInt(request.getSession().getAttribute("user_id").toString());
+
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json---------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+            String searchValue = jsonObject.get("searchValue").toString();
+
+            String area_code = "";
+            String store_code = "";
+            PageInfo<User> list = null;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+                if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }
+                if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
+                    store_code = jsonObject.get("store_code").toString();
+                }
+                if (area_code.equals("")) {
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
+                }else {
+                    String[] areas = area_code.split(",");
+                    list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
+            } else if (role_code.equals(Common.ROLE_GM)) {
+                if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }
+                if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
+                    store_code = jsonObject.get("store_code").toString();
+                }
+                if (area_code.equals("")) {
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
+                }else {
+                    String[] areas = area_code.split(",");
+                    list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
+
+            } else if (role_code.equals(Common.ROLE_STAFF)) {
+                User user = userService.getUserById(user_id);
+                List<User> users = new ArrayList<User>();
+                users.add(user);
+                list = new PageInfo<User>();
+                list.setList(users);
+            } else if (role_code.equals(Common.ROLE_SM)) {
+                if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
+                    store_code = jsonObject.get("store_code").toString();
+                }else {
+                    store_code = request.getSession().getAttribute("store_code").toString();
+                    store_code = store_code.replace(Common.SPECIAL_HEAD,"");
+                }
+                list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,role_code);
+                List<User> users = list.getList();
+                User self = userService.getUserById(user_id);
+                users.add(self);
+            } else if (role_code.equals(Common.ROLE_AM)) {
+                if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }else {
+                    area_code = request.getSession().getAttribute("area_code").toString();
+                    area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                }
+                if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
+                    store_code = jsonObject.get("store_code").toString();
+                }
+                list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,role_code);
+                List<User> users = list.getList();
+                User self = userService.getUserById(user_id);
+                users.add(self);
+            }
+
+            JSONObject result = new JSONObject();
+            result.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId("1");
+            dataBean.setMessage(result.toString());
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId("1");
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /***
      * 导出数据
      */
     @RequestMapping(value = "/exportExecl", method = RequestMethod.POST)

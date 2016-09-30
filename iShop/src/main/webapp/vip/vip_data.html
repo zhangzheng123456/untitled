@@ -272,13 +272,13 @@
                         <input type="file" id="VIP_avatar" style="position: absolute;top:0;filter:alpha(opacity:0);opacity: 0;width:100px;height: 30px">更换头像</span>
                         </div>
                         <div>
-                            <label>会员姓名</label><input class="disabled" id="vip_name_edit" readonly/>
+                            <label>会员姓名</label><input class="disabled" id="vip_name_edit" style="background: #dfdfdf" readonly/>
                         </div>
                         <div>
-                            <label class="vip_color">会员卡号*</label><input class="disabled"  id="vip_card_no_edit" readonly/>
+                            <label class="vip_color">会员卡号*</label><input class="disabled"  id="vip_card_no_edit" style="background: #dfdfdf"  readonly/>
                         </div>
                         <div class="item_1">
-                            <span><label class="vip_color">会员类型*</label><input class="input_select"  id="vip_card_type_edit" value="高级VIP" type="text"   readonly/>
+                            <span><label class="vip_color">会员类型*</label><input class="input_select"  id="vip_card_type_edit" style="background: #dfdfdf" value="高级VIP" type="text"   readonly/>
                             <!--<ul>-->
                                 <!--<li>高级VIP</li>-->
                                 <!--<li>中级VIP</li>-->
@@ -286,18 +286,18 @@
                             </span>
                         </div>
                         <div>
-                            <label>手机号码</label><input  verify="Phone" id="vip_phone_edit" readonly/>
+                            <label>手机号码</label><input  verify="Phone" id="vip_phone_edit" style="background: #dfdfdf" readonly/>
                             <!--<div style="padding-left:125px" class="hint"><div  hintinfo="手机号为必填项,不能为空!"></div></div>-->
                         </div>
                         <div>
-                            <label>所属导购</label><input verify="Empty" id="user_name_edit" readonly/>
+                            <label>所属导购</label><input verify="Empty" id="user_name_edit" style="background: #dfdfdf" readonly/>
                             <!--<div style="padding-left:125px" class="hint"><div  hintinfo="姓名为必填项,不能为空!"></div></div>-->
                         </div>
                         <div>
-                            <label>会员生日</label><input  verify='birthday' id="vip_birthday_edit" readonly/>
+                            <label>会员生日</label><input  verify='birthday' id="vip_birthday_edit" style="background: #dfdfdf" readonly/>
                         </div>
                         <div class="item_1">
-                            <span><label>性别</label><input class="input_select"  value="男" type="text" id="USER_SEX" placeholder="" readonly/>
+                            <span><label>性别</label><input class="input_select"  value="男" type="text" id="USER_SEX" placeholder="" style="background: #dfdfdf" readonly/>
                             <!--<ul>-->
                                 <!--<li>男</li>-->
                                 <!--<li>女</li>-->
@@ -305,7 +305,7 @@
                             </span>
                         </div>
                         <div class="item_1">
-                            <span><label>会员状态</label><input class="input_select"  value="正常" type="text"   readonly/>
+                            <span><label>会员状态</label><input class="input_select"  value="正常" type="text" style="background: #dfdfdf"  readonly/>
                             <!--<ul>-->
                                 <!--<li>正常</li>-->
                                 <!--<li>异常</li>-->
@@ -540,11 +540,13 @@
                 <!--</div>-->
                 <div class="album">
                     <ul id="Ablum-all">
-
-                    </ul>
-                    <span class="add_new_album" style="position: relative;">
+                    <li>
+                        <span class="add_new_album" style="position: relative;">
                         <input type="file" id="upAlbum">+<em>添加图片</em>
-                    </span>
+                        </span>
+                    </li>
+                    </ul>
+
                     <!--<div class="album_shade"></div>-->
                 </div>
                 <div class="viplabel">
