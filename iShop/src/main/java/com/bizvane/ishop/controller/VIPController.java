@@ -366,7 +366,7 @@ public class VIPController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             String user_code = jsonObject.get("user_code").toString();
             String store_code = jsonObject.get("store_code").toString();
-            String area_code = jsonObject.get("corp_code").toString();
+            String area_code = jsonObject.get("area_code").toString();
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
 

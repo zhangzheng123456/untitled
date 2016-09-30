@@ -126,6 +126,9 @@ jQuery(function(){
 	}
 	//input输入框里面
 	$('#input').bind('input propertychange', function() {
+	    var thatFun=arguments.callee;
+        var that=this;
+        $(this).unbind("input propertychange",thatFun);
 		value=$('#input').val().replace(/\s+/g,"");
 		$(".screen_content .list li").attr("class","");
 		param["search_value"]=value;
@@ -134,6 +137,7 @@ jQuery(function(){
 		param["goods_wave"]="";
 		jQuery('.allShops').empty();
 		getSearchList(rowno);
+		setTimeout(function(){$(that).bind("input propertychange",thatFun)},0);
 	});
 	//搜索加载list
 	function getSearchList(a){

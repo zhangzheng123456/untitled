@@ -335,7 +335,6 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         var id=$(this).attr("data-id");
         var url=$("#"+id).prev().attr("src");
             url=url.substring(url.indexOf("Album"));
-        console.log(url);
         var param={};
         param["id"]=id;
         oc.postRequire("post","/vipAlbum/delete","",param,function(data){

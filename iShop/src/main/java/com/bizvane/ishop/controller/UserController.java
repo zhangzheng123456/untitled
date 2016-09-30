@@ -1039,6 +1039,97 @@ public class UserController {
      * 输入的企业编号
      * 查找该企业，该用户可选择的所有店铺
      */
+    @RequestMapping(value = "/stores", method = RequestMethod.POST)
+    @ResponseBody
+    public String userStores(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            logger.info("json--user store-------------" + jsString);
+            System.out.println("json--user store-------------" + jsString);
+            JSONObject jsonObj = new JSONObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = new JSONObject(message);
+            JSONObject stores = new JSONObject();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+            String searchValue = jsonObject.get("searchValue").toString();
+            int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
+            int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
+
+//            List<Store> list;
+//            if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
+//                //登录用户为admin或企业管理员
+//                list = storeService.getCorpStore(corp_code);
+//            } else if (role_code.equals(Common.ROLE_AM)) {
+//                //登录用户为区经
+//                String area_code = request.getSession().getAttribute("area_code").toString();
+//                String corp_code1 = request.getSession().getAttribute("corp_code").toString();
+//                String[] areaCodes = area_code.split(",");
+//                for (int i = 0; i < areaCodes.length; i++) {
+//                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
+//                }
+//                list = storeService.selectByAreaCode(corp_code1, areaCodes, Common.IS_ACTIVE_Y);
+//            } else {
+//                //登录用户为店长或导购
+//                String store_code = request.getSession().getAttribute("store_code").toString();
+//                list = storeService.selectAll(store_code, corp_code, Common.IS_ACTIVE_Y);
+//            }
+
+            String area_code = "";
+            String brand_code = "";
+
+            if (jsonObject.has("brand_code")){
+                brand_code = jsonObject.get("brand_code").toString();
+            }
+            PageInfo<Store> list;
+            if (role_code.equals(Common.ROLE_SYS)) {
+                //系统管理员
+                if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }
+                list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
+            } else {
+                if (role_code.equals(Common.ROLE_GM)) {
+                    if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
+                        area_code = jsonObject.get("area_code").toString();
+                    }
+                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                } else if (role_code.equals(Common.ROLE_AM)) {
+                    if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
+                        area_code = jsonObject.get("area_code").toString();
+                    }else {
+                        area_code = request.getSession().getAttribute("area_code").toString();
+                        area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+                    }
+                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, area_code,brand_code,searchValue);
+                } else {
+                    String store_code = request.getSession().getAttribute("store_code").toString();
+                    list = storeService.selStoreByUserCode(page_number, page_size, store_code, corp_code, searchValue);
+                }
+            }
+
+            stores.put("list", JSON.toJSONString(list));
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(stores.toString());
+//            }
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage() + ex.toString());
+            logger.info(ex.getMessage() + ex.toString());
+        }
+        return dataBean.getJsonStr();
+    }
+
+    /**
+     * 根据登录用户的角色类型
+     * 输入的企业编号
+     * 查找该企业，该用户可选择的所有店铺
+     */
     @RequestMapping(value = "/store", method = RequestMethod.POST)
     @ResponseBody
     public String userStore(HttpServletRequest request) {
@@ -1052,8 +1143,9 @@ public class UserController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             JSONObject stores = new JSONObject();
-            String corp_code = jsonObject.get("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = jsonObject.get("corp_code").toString();
+
             List<Store> list;
             if (role_code.equals(Common.ROLE_SYS) || role_code.equals(Common.ROLE_GM)) {
                 //登录用户为admin或企业管理员
