@@ -321,7 +321,9 @@ public class VipAnalysisController {
             obj.put("old",old_vip);
             obj.put("new",new_vip);*/
 
-            Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
+//            Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
+            Map datalist = new HashMap<String, Data>();
+
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_id.key, data_store_id);
