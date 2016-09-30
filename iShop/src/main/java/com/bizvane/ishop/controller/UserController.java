@@ -168,10 +168,7 @@ public class UserController {
                 }
                 if (!area_code.equals("") && !store_code.equals("")) {
                     String[] areas = area_code.split(",");
-                    list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
-                    List<User> users = list.getList();
-                    User self = userService.getUserById(user_id);
-                    users.add(self);
+                    list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
                 }else{
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
                 }
@@ -184,10 +181,7 @@ public class UserController {
                 }
                 if (!area_code.equals("") && !store_code.equals("")) {
                     String[] areas = area_code.split(",");
-                    list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
-                    List<User> users = list.getList();
-                    User self = userService.getUserById(user_id);
-                    users.add(self);
+                    list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
                 }else {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
                 }
