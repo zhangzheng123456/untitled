@@ -533,9 +533,16 @@ function getbrandlist(){
 	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
 					}
 				}
+
 				$("#screen_brand .screen_content_l ul").append(brand_html_left);
-				bianse();
 			}
+			if($("#screen_brand .screen_content_r ul li").length<=0){
+				for(var i=0;i<9;i++){
+					brand_html_right+="<li></li>";
+				}
+				$("#screen_brand .screen_content_r ul").html(brand_html_right);
+			}
+			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({
