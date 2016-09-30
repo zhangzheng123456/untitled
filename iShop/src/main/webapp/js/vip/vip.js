@@ -1099,13 +1099,34 @@ $("#screen_que_brand").click(function(){
         }
     }
     var num=$("#screen_brand .screen_content_r input[type='checkbox']").parents("li").length;
-    var shop_num=1;
     $("#brand_num").attr("data-brandcode",brand_codes);
     $("#brand_num").val("已选"+num+"家");
     $("#screen_brand_num").val(brand_name);
     $("#screen_brand_num").attr("data-code",brand_codes);
-    $("#screen_brand_num").val()
+    $("#staff_brand_num").val("已选"+num+"家");
+    $("#staff_brand_num").attr("data-brandcode",brand_codes);
     $("#screen_brand").hide();
+    $("#screen_wrapper").show();
+})
+//点击员工确定追加节点
+$("#screen_que_staff").click(function(){
+    var li=$("#screen_staff .screen_content_r input[type='checkbox']").parents("li");
+    var staff_codes="";
+    var staff_name="";
+    for(var i=0;i<li.length;i++){
+        var r=$(li[i]).attr("id");
+        var p=$(li[i]).find(".p16").html();
+        if(i<li.length-1){
+            staff_codes+=r+",";
+            staff_name+=p+",";
+        }else{
+            staff_codes+=r;
+            staff_name+=p;
+        }
+    }
+    $("#screen_stff_num").val(staff_name);
+    $("#screen_stff_num").attr("data-code",staff_codes);
+    $("#screen_staff").hide();
     $("#screen_wrapper").show();
 })
 //拉取区域
@@ -1337,7 +1358,7 @@ function getstafflist(a){
     whir.loading.add("",0.5);//加载等待框
     $("#mask").css("z-index","10002");
     oc.postRequire("post","/user/selectUsersByRole","", _param, function(data) {
-        if (data.code == "0") {
+        if (data.code == "0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
             var cout=list.pages;
@@ -1390,4 +1411,22 @@ function getstafflist(a){
         }
     })
 }
+//点击会员确定
+$("#screen_vip_que").click(function(){
+    var tr= $('#table tbody tr');
+    var corp_code=$(tr[0]).attr("id");
+    var area_code =$('#screen_area_num').attr("data-code");//区域
+    var brand_code=$('#screen_brand_num').attr("data-code");//品牌
+    var store_code=$("#screen_shop_num").attr("data-code");//店铺
+    var user_code=$("#screen_stff_num").attr("data-code");//员工
+    var _param={};
+    _param["corp_code"]=corp_code;
+    _param["brand_code"]=brand_code;
+    _param["store_code"]=store_code;
+    _param["area_code"]=area_code;
+    _param["user_code"]=user_code;
+    oc.postRequire("post","/vip/vipScreen","", _param, function(data) {
+        console.log(data);
+    })
+})
 
