@@ -243,7 +243,7 @@ public class VipAnalysisController {
             if (jsonObject.containsKey("time") && !jsonObject.get("time").toString().equals("")) {
                 date_time = jsonObject.get("time").toString();
             }
-
+            String type = jsonObject.get("type").toString();
             String user_code = request.getSession().getAttribute("user_code").toString();
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
@@ -290,7 +290,7 @@ public class VipAnalysisController {
             Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
             Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
             Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
-            Data data_query_type=new Data("query_type", "D", ValueType.PARAM);
+            Data data_query_type=new Data("query_type", type, ValueType.PARAM);
             Data data_date_time=new Data("date_time",date_time, ValueType.PARAM);
 
 
