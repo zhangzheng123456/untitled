@@ -166,14 +166,14 @@ public class UserController {
                 if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
                     store_code = jsonObject.get("store_code").toString();
                 }
-                if (area_code.equals("")) {
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
-                }else {
+                if (!area_code.equals("") && !store_code.equals("")) {
                     String[] areas = area_code.split(",");
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
                     List<User> users = list.getList();
                     User self = userService.getUserById(user_id);
                     users.add(self);
+                }else{
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
                 }
             } else if (role_code.equals(Common.ROLE_GM)) {
                 if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
@@ -182,14 +182,14 @@ public class UserController {
                 if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
                     store_code = jsonObject.get("store_code").toString();
                 }
-                if (area_code.equals("")) {
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
-                }else {
+                if (!area_code.equals("") && !store_code.equals("")) {
                     String[] areas = area_code.split(",");
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
                     List<User> users = list.getList();
                     User self = userService.getUserById(user_id);
                     users.add(self);
+                }else {
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
                 }
 
             } else if (role_code.equals(Common.ROLE_STAFF)) {

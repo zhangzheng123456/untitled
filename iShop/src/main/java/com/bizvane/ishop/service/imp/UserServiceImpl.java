@@ -88,7 +88,7 @@ public class UserServiceImpl implements UserService {
      */
     public PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
         String[] stores = null;
-
+        String[] areas = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
             for (int i = 0; i < stores.length; i++) {
@@ -96,7 +96,7 @@ public class UserServiceImpl implements UserService {
             }
         }
         if (!area_code.equals("")) {
-            String[] areas = area_code.split(",");
+            areas = area_code.split(",");
             List<Store> store = storeService.selectByAreaCode(corp_code, areas,Common.IS_ACTIVE_Y);
             String a = "";
             if (store.size()>0) {
@@ -113,6 +113,7 @@ public class UserServiceImpl implements UserService {
         params.put("search_value", search_value);
         params.put("role_code", role_code);
         params.put("corp_code", corp_code);
+        params.put("areas", areas);
         PageHelper.startPage(page_number, page_size);
         List<User> users = userMapper.selectUsersByRole(params);
 //        conversion(users);

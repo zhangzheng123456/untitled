@@ -168,6 +168,7 @@
         AND def_user.corp_code = def_group.corp_code
         AND def_user.corp_code = #{corp_code}
         AND def_group.role_code &gt;= #{role_code}
+        <if test="array !=null">
         AND (
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
@@ -183,6 +184,7 @@
             )
         </if>
         )
+        </if>
         AND def_corp.isactive = 'Y'
         AND def_group.isactive = 'Y'
         <if test="search_value != null and search_value !=''">
@@ -730,10 +732,23 @@
         AND def_group.isactive = 'Y'
         AND def_corp.isactive = 'Y'
         <if test="array != null">
-            AND
-            <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-                def_user.store_code regexp #{item}
-            </foreach>
+            AND(
+                <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                    def_user.store_code regexp #{item}
+                </foreach>
+
+                <if test="areas !=null">
+                <!--拉取区经-->
+                OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP
+                    WHERE def_user.corp_code=#{corp_code}
+                    AND DEF_USER.group_code = DEF_GROUP.group_code
+                    AND DEF_GROUP.role_code='R4000'
+                    AND
+                    <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
+                        area_code REGEXP #{item}
+                    </foreach>)
+                </if>
+            )
         </if>
         <if test="search_value != null and search_value !=''">
             AND
