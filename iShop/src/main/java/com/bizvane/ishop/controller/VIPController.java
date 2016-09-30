@@ -357,6 +357,8 @@ public class VIPController {
     public String vipScreen(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
+
         try {
             String param = request.getParameter("param");
             logger.info("json---------------" + param);
@@ -370,7 +372,7 @@ public class VIPController {
             String page_num = jsonObject.get("pageNumber").toString();
             String page_size = jsonObject.get("pageSize").toString();
 
-            String role_code = "";
+//            String role_code = "";
             if (role_code.equals(Common.ROLE_SYS)){
                 corp_code = jsonObject.get("corp_code").toString();
             }
@@ -379,8 +381,7 @@ public class VIPController {
             if (user_code.equals("")) {
                 if (!store_code.equals("")) {
                     role_code = Common.ROLE_SM;
-                }
-                if (store_code.equals("")) {
+                }else {
                     role_code = Common.ROLE_AM;
                 }
                 Data data_user_id = new Data("user_id", user_code, ValueType.PARAM);
