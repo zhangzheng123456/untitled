@@ -1262,7 +1262,7 @@ input::-webkit-input-placeholder{
 /********会员筛选首页弹出框********/
 .screen_wrapper{
     width:480px;
-    height: 530px;
+    // height: 330px;
     font-size: 14px;
     color: #888888;
     border-radius: 10px;
@@ -1273,6 +1273,7 @@ input::-webkit-input-placeholder{
     top:85px;
     left: 189px;
     display: none;
+    z-index: 10001
 }
 .screen_head{
     height: 39px;
