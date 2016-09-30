@@ -227,6 +227,125 @@ public class VipAnalysisController {
     @RequestMapping(value = "/vipScale", method = RequestMethod.POST)
     @ResponseBody
     public String vipScale(HttpServletRequest request) {
+     DataBean dataBean = new DataBean();
+        try {
+            String param = request.getParameter("param");
+            logger.info("json---------------" + param);
+            JSONObject jsonObj = JSONObject.parseObject(param);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+
+
+            Date now = new Date();
+            //String date_time="";
+            String date_time = Common.DATETIME_FORMAT_DAY.format(now);
+            if (jsonObject.containsKey("time") && !jsonObject.get("time").toString().equals("")) {
+                date_time = jsonObject.get("time").toString();
+            }
+
+            String user_code = request.getSession().getAttribute("user_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+            String role_code = request.getSession().getAttribute("role_code").toString();
+            String user_id = "";
+            String area_code = "";
+            String store_id = "";
+
+
+
+            if (role_code.equals(Common.ROLE_SYS)) {
+                corp_code = jsonObject.get("corp_code").toString();
+            } else if (role_code.equals(Common.ROLE_GM)){
+                if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }
+            } else if (role_code.equals(Common.ROLE_AM) ){
+                if (jsonObject.containsKey("area_code") && !jsonObject.get("area_code").toString().trim().equals("")){
+                    area_code = jsonObject.get("area_code").toString();
+                }else {
+                    area_code = request.getSession().getAttribute("area_code").toString().replace(Common.SPECIAL_HEAD,"");
+                    String[] area_codes = area_code.split(",");
+                    area_code = area_codes[0];
+                }
+                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
+                    store_id = jsonObject.get("store_code").toString();
+                }
+            } else if (role_code.equals(Common.ROLE_SM)){
+                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
+                    store_id = jsonObject.get("store_code").toString();
+                }else {
+                    String store_code = request.getSession().getAttribute("store_code").toString().replace(Common.SPECIAL_HEAD, "");
+                    String[] store_codes = store_code.split(",");
+                    store_id = store_codes[0];
+                }
+            } else if (role_code.equals(Common.ROLE_STAFF)){
+                user_id = user_code;
+                if (jsonObject.containsKey("store_code") && !jsonObject.get("store_code").toString().trim().equals("")){
+                    store_id = jsonObject.get("store_code").toString();
+                }
+            }
+
+            Data data_user_id = new Data("user_id", user_id, ValueType.PARAM);
+            Data data_corp_code = new Data("corp_code", corp_code, ValueType.PARAM);
+            Data data_role_code = new Data("role_code", role_code, ValueType.PARAM);
+            Data data_store_id = new Data("store_id", store_id, ValueType.PARAM);
+            Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
+            Data data_query_type=new Data("query_type", "D", ValueType.PARAM);
+            Data data_date_time=new Data("date_time",date_time, ValueType.PARAM);
+
+
+
+        /*    JSONObject all = new JSONObject();
+            all.put("count","15675");
+            all.put("scale","36.1%");
+            all.put("vip_amount","6989");
+            all.put("vip_price","1399");
+            all.put("price","569");
+
+            JSONObject old_vip = new JSONObject();
+            all.put("count","10678");
+            all.put("scale","78.8%");
+            all.put("vip_amount","3452");
+            all.put("vip_price","1099");
+            all.put("price","546");
+
+            JSONObject new_vip = new JSONObject();
+            all.put("count","467");
+            all.put("scale","25.8%");
+            all.put("vip_amount","4533");
+            all.put("vip_price","1553");
+            all.put("price","657");
+
+            JSONObject obj = new JSONObject();
+            obj.put("all",all);
+            obj.put("old",old_vip);
+            obj.put("new",new_vip);*/
+
+            Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
+            datalist.put(data_user_id.key, data_user_id);
+            datalist.put(data_corp_code.key, data_corp_code);
+            datalist.put(data_store_id.key, data_store_id);
+            datalist.put(data_area_code.key, data_area_code);
+           datalist.put(data_role_code.key, data_role_code);
+            datalist.put(data_query_type.key, data_query_type);
+            datalist.put(data_date_time.key, data_date_time);
+            DataBox dataBox = iceInterfaceService.iceInterfaceV2("AnalysisVipCostDetail", datalist);
+            logger.info("-------AnalysisNewVip:" + dataBox.data.get("message").value);
+            String result = dataBox.data.get("message").value;
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage(result);
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+        }
+        return dataBean.getJsonStr();
+    }
+    //vip消费占比
+    @RequestMapping(value = "/vipScales", method = RequestMethod.POST)
+    @ResponseBody
+    public String vipScales(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
         try {
             String param = request.getParameter("param");
