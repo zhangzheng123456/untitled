@@ -86,9 +86,9 @@ public class UserServiceImpl implements UserService {
      * 用户拥有店铺下的员工
      * （属于自己拥有的店铺，且角色级别比自己低）
      */
-    public PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception {
+    public PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String[] areas,String role_code) throws Exception {
         String[] stores = null;
-        String[] areas = null;
+//        String[] areas = null;
         if (!store_code.equals("")) {
             stores = store_code.split(",");
             for (int i = 0; i < stores.length; i++) {
@@ -96,8 +96,8 @@ public class UserServiceImpl implements UserService {
             }
         }
         if (!area_code.equals("")) {
-            areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas,Common.IS_ACTIVE_Y);
+            String[] area_codes = area_code.split(",");
+            List<Store> store = storeService.selectByAreaCode(corp_code, area_codes,Common.IS_ACTIVE_Y);
             String a = "";
             if (store.size()>0) {
                 for (int i = 0; i < store.size(); i++) {

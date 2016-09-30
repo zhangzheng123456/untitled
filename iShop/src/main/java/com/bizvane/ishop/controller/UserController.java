@@ -169,8 +169,11 @@ public class UserController {
                 if (!area_code.equals("") && !store_code.equals("")) {
                     String[] areas = area_code.split(",");
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                }else{
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
+                }else if(!area_code.equals("") && store_code.equals("")){
+                    String[] areas = area_code.split(",");
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,areas, "");
+                }else {
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
                 }
             } else if (role_code.equals(Common.ROLE_GM)) {
                 if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
@@ -182,10 +185,12 @@ public class UserController {
                 if (!area_code.equals("") && !store_code.equals("")) {
                     String[] areas = area_code.split(",");
                     list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
+                }else if(!area_code.equals("") && store_code.equals("")){
+                    String[] areas = area_code.split(",");
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,areas, "");
                 }else {
-                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, "");
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null, "");
                 }
-
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 User user = userService.getUserById(user_id);
                 List<User> users = new ArrayList<User>();
@@ -199,7 +204,7 @@ public class UserController {
                     store_code = request.getSession().getAttribute("store_code").toString();
                     store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                 }
-                list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,role_code);
+                list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null,role_code);
                 List<User> users = list.getList();
                 User self = userService.getUserById(user_id);
                 users.add(self);
@@ -213,10 +218,15 @@ public class UserController {
                 if (jsonObject.has("store_code") && !jsonObject.get("store_code").equals("")){
                     store_code = jsonObject.get("store_code").toString();
                 }
-                list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,role_code);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
+                if (!store_code.equals("")){
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",null,role_code);
+                }else {
+                    list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, null, role_code);
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
+
             }
 
             JSONObject result = new JSONObject();
