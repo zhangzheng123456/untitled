@@ -20,6 +20,8 @@ public interface UserService {
 
     User getUserById(int id) throws Exception;
 
+    User selectUserById(int id) throws Exception;
+
     User getById(int id) throws Exception;
 
     String insert(User user) throws Exception;
@@ -85,4 +87,5 @@ public interface UserService {
 
     void signOut(JSONObject jsonObject, String user_code) throws Exception;
 
+    List<String> getBrandCodeByUser(int userId,String corp_code) throws Exception;
 }

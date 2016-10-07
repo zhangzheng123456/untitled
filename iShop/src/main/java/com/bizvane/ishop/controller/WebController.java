@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -157,9 +159,47 @@ public class WebController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             int rowno = Integer.parseInt(jsonObject.get("rowno").toString());
             String corp_code = jsonObject.get("corp_code").toString();
+            String user_code = jsonObject.get("user_id").toString();
 
+//            List<String> brand_codes = new ArrayList<String>();
+
+            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
+            if (users.size() < 1){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("用户不存在");
+                return dataBean.getJsonStr();
+            }
+            List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(),corp_code);
+
+//            User user = userService.selectUserById(users.get(0).getId());
+//            String role_code = user.getRole_code();
+//            List<Store> stores = new ArrayList<Store>();
+//            if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)){
+//                String store_code = user.getStore_code();
+//                stores = storeService.selectAll(store_code,corp_code,Common.IS_ACTIVE_Y);
+//            }else {
+//                String area_code = user.getArea_code();
+//                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+//                String[] areas = area_code.split(",");
+//                stores = storeService.selectByAreaCode(corp_code,areas,Common.IS_ACTIVE_Y);
+//            }
+//            for (int i = 0; i < stores.size(); i++) {
+//                String brand_code = stores.get(i).getBrand_code();
+//                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+//                String[] brands = brand_code.split(",");
+//                for (int j = 0; j < brands.length; j++) {
+//                    if (!brand_codes.contains(brands[j])){
+//                        brand_codes.add(brands[j]);
+//                    }
+//                }
+//            }
+            String brand_code = "";
+            for (int i = 0; i < brand_codes.size(); i++) {
+                brand_code = brand_code + brand_codes.get(i).toString() + ",";
+            }
             JSONObject result = new JSONObject();
-            PageInfo<Goods> list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, "");
+            PageInfo<Goods> list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code,"","",brand_code,"","","");
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
                 String goods_image = list.getList().get(i).getGoods_image();
                 if (goods_image != null && !goods_image.isEmpty()) {
@@ -193,7 +233,40 @@ public class WebController {
             int rowno = Integer.parseInt(jsonObject.get("rowno").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             String search_value = jsonObject.get("search_value").toString();
+            String user_code = jsonObject.get("user_id").toString();
 
+
+            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
+            if (users.size() < 1){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("用户不存在");
+                return dataBean.getJsonStr();
+            }
+//            User user = userService.selectUserById(users.get(0).getId());
+            List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(),corp_code);
+
+//            String role_code = user.getRole_code();
+//            List<Store> stores = new ArrayList<Store>();
+//            if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)){
+//                String store_code = user.getStore_code();
+//                stores = storeService.selectAll(store_code,corp_code,Common.IS_ACTIVE_Y);
+//            }else {
+//                String area_code = user.getArea_code();
+//                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+//                String[] areas = area_code.split(",");
+//                stores = storeService.selectByAreaCode(corp_code,areas,Common.IS_ACTIVE_Y);
+//            }
+//            for (int i = 0; i < stores.size(); i++) {
+//                String brand_code = stores.get(i).getBrand_code();
+//                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+//                String[] brands = brand_code.split(",");
+//                for (int j = 0; j < brands.length; j++) {
+//                    if (!brand_codes.contains(brands[j])){
+//                        brand_codes.add(brands[j]);
+//                    }
+//                }
+//            }
             String goods_quarter = "";
             String goods_wave = "";
             String brand_code = "";
@@ -204,8 +277,13 @@ public class WebController {
                 goods_quarter = jsonObject.get("goods_quarter").toString();
             if (jsonObject.containsKey("goods_wave"))
                 goods_wave = jsonObject.get("goods_wave").toString();
-            if (jsonObject.containsKey("brand_code"))
+            if (jsonObject.containsKey("brand_code")) {
                 brand_code = jsonObject.get("brand_code").toString();
+            }else {
+                for (int i = 0; i < brand_codes.size(); i++) {
+                    brand_code = brand_code + brand_codes.get(i).toString() + ",";
+                }
+            }
 
             JSONObject result = new JSONObject();
             PageInfo<Goods> list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code,goods_quarter,
@@ -269,6 +347,18 @@ public class WebController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
+            String user_code = jsonObject.get("user_id").toString();
+
+            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
+            if (users.size() < 1){
+                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                dataBean.setId("1");
+                dataBean.setMessage("用户不存在");
+                return dataBean.getJsonStr();
+            }
+
+            List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(),corp_code);
+
 
             JSONObject result = new JSONObject();
             //季度
@@ -276,8 +366,12 @@ public class WebController {
             //波段
             List<Goods> waves = goodsService.selectCorpGoodsWave(corp_code);
             //品牌
-            List<Brand> brands = brandService.getAllBrand(corp_code);
-
+//            List<Brand> brands = brandService.getAllBrand(corp_code);
+            List<Brand> brands = new ArrayList<Brand>();
+            for (int i = 0; i < brand_codes.size(); i++) {
+                Brand brand = brandService.getBrandByCode(corp_code,brand_codes.get(i).toString(),Common.IS_ACTIVE_Y);
+                brands.add(brand);
+            }
             result.put("quarters", JSON.toJSONString(quarters));
             result.put("waves", JSON.toJSONString(waves));
             result.put("brands", JSON.toJSONString(brands));
