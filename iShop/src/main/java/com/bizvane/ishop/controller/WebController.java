@@ -370,7 +370,8 @@ public class WebController {
             List<Brand> brands = new ArrayList<Brand>();
             for (int i = 0; i < brand_codes.size(); i++) {
                 Brand brand = brandService.getBrandByCode(corp_code,brand_codes.get(i).toString(),Common.IS_ACTIVE_Y);
-                brands.add(brand);
+                if (brand != null)
+                    brands.add(brand);
             }
             result.put("quarters", JSON.toJSONString(quarters));
             result.put("waves", JSON.toJSONString(waves));
