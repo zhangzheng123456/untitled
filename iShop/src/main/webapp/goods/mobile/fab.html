@@ -7,31 +7,33 @@
 	<link rel="stylesheet" href="css/goods.css">
 	<script src="js/flexible.js"></script><meta name="viewport" content="width=device-width,initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
 	<script src="js/jquery-1.11.1.js"></script>
+	<script src="js/jquery.nicescroll.min.js"></script>
 	<script src="js/gqrequest.js"></script>
 	<script src="js/recommend.js"></script>
-	<style>
-		body {
-			margin-top:58px;
-		}
-	</style>
 </head>
 <body style="font-size: 12px;">
 <div class="header_line">
 	<div class="search">
 		<input id="input" type="text" value="" placeholder="搜索商品">
 	</div>
-	<div class="screen" id="screen" onclick="_system._guide(true)">筛选</div>
+	<div class="screen" id="screen">筛选</div>
 </div>
-<div class="allShops">
-	<!-- <div class="shop">
-    <div class="img">
-    <a href="goods.html"><img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FnThG0ZZ9QH5hKlA4cSw6AoSdEec.jpg?imageView2/2/w/600/h/600/q/75/format/webp" alt=""></a>
-    </div>
-    <div class="shop-t"><h1>123</h1><p>货号:123</p><p class="pice">价格:<span>￥12</span></p></div>
-    </div> -->
+<div class="allShops_p">
+	<div class="allShops">
+		<!-- <div class="shop">
+		    <div class="img">
+		    <a href="goods.html"><img src="https://dn-kdt-img.qbox.me/upload_files/2016/01/04/FnThG0ZZ9QH5hKlA4cSw6AoSdEec.jpg?imageView2/2/w/600/h/600/q/75/format/webp" alt=""></a>
+		    </div>
+		    <div class="shop-t"><h1>123</h1><p>货号:123</p><p class="pice">价格:<span>￥12</span></p></div>
+	    </div> -->
+	</div>
+	<div class="more">点击加载更多</div>
 </div>
-<div id="kong_img" style="width: 58%; margin:0 auto;display: none;"><img src="image/img_kong.png" width="100%" style="margin-top: 1.42512rem;" alt=""></div>
-<div class="more">点击加载更多</div>
+<div id="kong_img">
+	<div class="kong">
+		<img src="image/img_kong.png" alt="">
+	</div>
+</div>
 <div id="cover"></div>
 <div id="guide" class="screen_list">
 	<div class="screen_content">
@@ -59,7 +61,7 @@
 			</div>
 			<div class="xian"></div>
 		</div>
-		<div id="goods_quarter" class="parent">
+		<div id="goods_quarter" class="parent row-last">
 			<h4>筛选季度</h4>
 			<div class="list">
 				<ul>
@@ -78,44 +80,15 @@
 </div>
 </body>
 <script>
-   var _system={
-      $:function(id){return document.getElementById(id);},
-  _client:function(){
-      return {w:document.documentElement.scrollWidth,h:document.documentElement.scrollHeight,bw:document.documentElement.clientWidth,bh:document.documentElement.clientHeight};
-  },
-  _scroll:function(){
-      return {x:document.documentElement.scrollLeft?document.documentElement.scrollLeft:document.body.scrollLeft,y:document.documentElement.scrollTop?document.documentElement.scrollTop:document.body.scrollTop};
-  },
-  _cover:function(show){
-      if(show){
-          this.$("cover").style.display="block";
-          this.$("cover").style.width=(this._client().bw>this._client().w?this._client().bw:this._client().w)+"px";
-          this.$("cover").style.height=(this._client().bh>this._client().h?this._client().bh:this._client().h)+"px";
-      }else{
-          this.$("cover").style.display="none";
-      }
-  },
-   _guide:function(click){
-      this._cover(true);
-      this.$("guide").style.display="block";
-      window.onresize=function(){_system._cover(true);_system.$("guide").style.top=(_system._scroll().y+5)+"px";};
-  if(click){_system.$("complete").onclick=function(){
-      _system._cover();
-      _system.$("guide").style.display="none";
-      _system.$("cover").onclick=null;
-      window.onresize=null;
-  };
-  if(click){_system.$("cover").onclick=function(){
-  	  _system._cover();
-      _system.$("guide").style.display="none";
-      _system.$("cover").onclick=null;
-      window.onresize=null;
-  };}
-   }
-   },
-      _zero:function(n){
-      return n<0?0:n;
-   }
-  }
+	$("#screen").click(function(){
+		$("#guide").show();
+		$("#cover").show();
+		$("html").addClass("sift-move");
+	})
+	$("#cover").click(function(){
+		$("#guide").hide();
+		$("#cover").hide();
+		$("html").removeClass("sift-move");
+	})
 </script>
 </html>

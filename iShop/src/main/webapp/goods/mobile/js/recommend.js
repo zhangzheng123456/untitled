@@ -1,10 +1,19 @@
 jQuery(function(){
-	var url = location.search; //获取url中"?"符后的字串   
-        if (url.indexOf("?") != -1) {   
-	        var str = url.substr(1);   
-	        strs = str.split("=")[1];
-		}
-	var corp_code=strs;
+	function GetRequest() {
+        var url = location.search; //获取url中"?"符后的字串
+        var theRequest = new Object();
+        if (url.indexOf("?") != -1) {
+            var str = url.substr(1);
+            strs = str.split("&");
+            for (var i = 0; i < strs.length; i++) {
+                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
+            }
+        }
+        return theRequest;
+    }
+    var a = GetRequest();
+    var corp_code = a.corp_code;
+    var user_id=a.user_id;
 	var oc = new ObjectControl();
 	var param={};
 	var rowno=0;
@@ -16,6 +25,7 @@ jQuery(function(){
 	function getScreen(){
 		var param={};
 		param["corp_code"]=corp_code;
+		param["user_id"]=user_id;
 		oc.postRequire("post","/api/fab/screenValue","0",param,function(data){
 			var message=JSON.parse(data.message);
 			var waves=JSON.parse(message.waves);
@@ -44,6 +54,9 @@ jQuery(function(){
 		$(this).toggleClass("active");
 	})
 	$("#complete").click(function(){
+		$("#guide").hide();
+		$("#cover").hide();
+		$("html").removeClass("sift-move");
 		var brand=$("#brand .list .active");
 		var quarter=$("#goods_quarter .list .active");
 		var wave=$("#waves .list .active");
@@ -76,6 +89,7 @@ jQuery(function(){
 		param["goods_wave"]=goods_wave;
 		param["search_value"]="";
 		filtrate="sucess";
+		jQuery('#input').val("");
 		jQuery('.allShops').empty();
 		getSearchList(rowno);
 	})
@@ -102,6 +116,7 @@ jQuery(function(){
 		var param={};
 		param["rowno"]=a;
 		param["corp_code"]=corp_code;
+		param["user_id"]=user_id;
 		oc.postRequire("post","/api/fab/","0",param,function(data){
 			console.log(data);
 			var message=JSON.parse(data.message);
@@ -143,6 +158,7 @@ jQuery(function(){
 	function getSearchList(a){
 		param["rowno"]=a;
 		param["corp_code"]=corp_code;
+		param["user_id"]=user_id;
 		$("#kong_img").hide();
 		$(".more").hide();
 		oc.postRequire("post","/api/fab/search","0",param,function(data){
@@ -160,10 +176,8 @@ jQuery(function(){
 			if(list.length<=0){
 				$("#kong_img").show();
 			}
-			// if(a<20){
-				
-			// }
 			if(list.length>0){
+				$("#kong_img").hide();
 				superaddition(list);
 			}
 		})

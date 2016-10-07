@@ -92,20 +92,6 @@ function showLi(){
 function hideLi(){
     $("#liebiao").hide();
 }
-//点击清空  清空input的value值
-$("#empty").click(function(){
-    var input=$(".inputs input");
-    for(var i=0;i<input.length;i++){
-        input[i].value="";
-        $(input[i]).attr("data-code","");
-    }
-    value="";
-    filtrate="";
-    inx=1;
-    $('#search').val("");
-    $(".table p").remove();
-    GET(inx,pageSize);
-})
 function setPage(container, count, pageindex,pageSize,funcCode){
     var container = container;
     var count = count;
@@ -306,6 +292,7 @@ function GET(a,b){
             //var list=list.list;
             superaddition(list,a);
             jumpBianse();
+            filtrate="";
             setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
@@ -456,13 +443,7 @@ function POST(a,b){
                 superaddition(list,a);
                 jumpBianse();
             }
-            var input=$(".inputs input");
-            for(var i=0;i<input.length;i++){
-                input[i].value="";
-            }
             filtrate="";
-            list="";
-            $(".sxk").slideUp();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
         }else if(data.code=="-1"){
             alert(data.message);
@@ -1413,20 +1394,52 @@ function getstafflist(a){
 }
 //点击会员确定
 $("#screen_vip_que").click(function(){
+    inx=1;
     var tr= $('#table tbody tr');
     var corp_code=$(tr[0]).attr("id");
     var area_code =$('#screen_area_num').attr("data-code");//区域
     var brand_code=$('#screen_brand_num').attr("data-code");//品牌
     var store_code=$("#screen_shop_num").attr("data-code");//店铺
     var user_code=$("#screen_stff_num").attr("data-code");//员工
-    var _param={};
     _param["corp_code"]=corp_code;
     _param["brand_code"]=brand_code;
     _param["store_code"]=store_code;
     _param["area_code"]=area_code;
     _param["user_code"]=user_code;
-    oc.postRequire("post","/vip/vipScreen","", _param, function(data) {
-        console.log(data);
-    })
+    _param["pageNumber"] = inx;
+    _param["pageSize"] = pageSize;
+    if(area_code==""&&brand_code==""&&store_code==""&&user_code==""){
+        GET(inx,pageSize);
+    }
+    if(area_code!==""||brand_code!==""||store_code!==""||user_code!==""){
+        filtrate="sucess";
+        filtrates(inx,pageSize);
+    }
+    $("#screen_wrapper").hide();
+    $("#p").hide();
 })
+//筛选调接口
+function filtrates(a,b){
+    whir.loading.add("",0.5);//加载等待框
+    oc.postRequire("post","/vip/vipScreen","", _param, function(data) {
+        if(data.code=="0"){
+            var message=JSON.parse(data.message);
+            var list=message.all_vip_list;
+            cout=message.pages;
+            $(".table tbody").empty();
+            if(list.length<=0){
+                $(".table p").remove();
+                $(".table").append("<p>没有找到信息,请重新搜索</p>");
+                whir.loading.remove();//移除加载框
+            }else if(list.length>0){
+                $(".table p").remove();
+                superaddition(list,a);
+                jumpBianse();
+            }
+            setPage($("#foot-num")[0],cout,a,b,funcCode);
+        }else if(data.code=="-1"){
+            alert(data.message);
+        }
+    })
+}
 
