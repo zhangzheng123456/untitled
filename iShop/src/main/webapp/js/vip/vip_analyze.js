@@ -195,7 +195,7 @@ function getData(){
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
-    param["type"]="day";
+    param["type"]="D";
     param["time"]=$($('.date_title .date input')[0]).val();
     console.log($($('.date_title .date input')[0]).html());
     oc.postRequire("post","/vipAnalysis/vipScale","",param,function(data){
