@@ -21,6 +21,8 @@ public interface VipParamService {
 
     String update(VipParam vipParam) throws Exception;
 
+    void updateShowOrder(int id,String show_order) throws Exception ;
+
     int delete(int id) throws Exception;
 
     PageInfo<VipParam> selectAllParamScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception ;

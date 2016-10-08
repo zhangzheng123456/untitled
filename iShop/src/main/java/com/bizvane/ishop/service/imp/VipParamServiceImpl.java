@@ -80,6 +80,16 @@ public class VipParamServiceImpl implements VipParamService {
 
     @Override
     @Transactional
+    public void updateShowOrder(int id,String show_order) throws Exception {
+        VipParam vipParam = selectById(id);
+        if (vipParam != null) {
+            vipParam.setShow_order(show_order);
+            vipParamMapper.update(vipParam);
+        }
+    }
+
+    @Override
+    @Transactional
     public int delete(int id) throws Exception {
         return vipParamMapper.deleteById(id);
     }

@@ -1,6 +1,8 @@
 package com.bizvane.ishop.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.bizvane.ishop.bean.DataBean;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.entity.VipParam;
@@ -10,7 +12,6 @@ import com.bizvane.ishop.utils.WebUtils;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.pagehelper.PageInfo;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,10 +71,10 @@ public class VipParamController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = request.getSession().getAttribute("corp_code").toString();
             String role_code = request.getSession().getAttribute("role_code").toString();
             //-------------------------------------------------------
@@ -105,10 +106,10 @@ public class VipParamController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
             Map<String, String> map = WebUtils.Json2Map(jsonObject);
@@ -145,10 +146,10 @@ public class VipParamController {
         String result="";
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String app_id = jsonObject.get("id").toString();
             String[] ids = app_id.split(",");
 //            for (int i=0;i<ids.length;i++){
@@ -184,10 +185,10 @@ public class VipParamController {
         String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipParam vipParam = WebUtils.JSON2Bean(jsonObject, VipParam.class);
             //------------操作日期-------------
             Date date = new Date();
@@ -222,10 +223,10 @@ public class VipParamController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String app_id = jsonObject.get("id").toString();
             final VipParam vipParam = vipParamService.selectById(Integer.parseInt(app_id));
             JSONObject result = new JSONObject();
@@ -253,10 +254,10 @@ public class VipParamController {
         String user_id = request.getSession().getAttribute("user_code").toString();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            org.json.JSONObject jsonObject = new org.json.JSONObject(message);
             VipParam vipParam = WebUtils.JSON2Bean(jsonObject, VipParam.class);
             //------------操作日期-------------
             Date date = new Date();
@@ -286,10 +287,10 @@ public class VipParamController {
         DataBean dataBean = new DataBean();
         try {
             String jsString = request.getParameter("param");
-            JSONObject jsonObj = new JSONObject(jsString);
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
-            JSONObject jsonObject = new JSONObject(message);
+            JSONObject jsonObject = JSONObject.parseObject(message);
             String param_name = jsonObject.get("param_name").toString();
             String corp_code = jsonObject.get("corp_code").toString();
             List<VipParam> vipParams = vipParamService.checkParamName(corp_code, param_name);
@@ -311,6 +312,37 @@ public class VipParamController {
         return dataBean.getJsonStr();
     }
 
+    @RequestMapping(value = "/updateShowOrder", method = RequestMethod.POST)
+    @ResponseBody
+    public String updateShowOrder(HttpServletRequest request) {
+        DataBean dataBean = new DataBean();
+        try {
+            String jsString = request.getParameter("param");
+            JSONObject jsonObj = JSONObject.parseObject(jsString);
+            id = jsonObj.get("id").toString();
+            String message = jsonObj.get("message").toString();
+            JSONObject jsonObject = JSONObject.parseObject(message);
+            String params = jsonObject.get("param").toString();
+
+            JSONArray array = JSONArray.parseArray(params);
+            for (int i = 0; i < array.size(); i++) {
+                String object = array.get(i).toString();
+                JSONObject obj = JSONObject.parseObject(object);
+                int id = Integer.parseInt(obj.get("id").toString());
+                String show_order = obj.get("show_order").toString();
+                vipParamService.updateShowOrder(id,show_order);
+            }
+            dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+            dataBean.setId(id);
+            dataBean.setMessage("success");
+        } catch (Exception ex) {
+            dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+            dataBean.setId(id);
+            dataBean.setMessage(ex.getMessage());
+            return dataBean.getJsonStr();
+        }
+        return dataBean.getJsonStr();
+    }
 
     /***
      * 导出数据
