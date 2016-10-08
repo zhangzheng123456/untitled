@@ -121,7 +121,7 @@ public class StoreServiceImpl implements StoreService {
                 if(qrcodeList.get(j)!=null){
                     String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    if (i != qrcodeList.size() - 1) {
+                    if (j != qrcodeList.size() - 1) {
                         qrcode.append("、");
                     }
                 }
@@ -172,7 +172,7 @@ public class StoreServiceImpl implements StoreService {
                 if(qrcodeList.get(j)!=null){
                     String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    if (i != qrcodeList.size() - 1) {
+                    if (j != qrcodeList.size() - 1) {
                         qrcode.append("、");
                     }
                 }
@@ -359,7 +359,7 @@ public class StoreServiceImpl implements StoreService {
                 if(qrcodeList.get(j)!=null){
                     String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    if (i != qrcodeList.size() - 1) {
+                    if (j != qrcodeList.size() - 1) {
                         qrcode.append("、");
                     }
                 }
@@ -548,7 +548,7 @@ public class StoreServiceImpl implements StoreService {
                 if(qrcodeList.get(j)!=null){
                     String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    if (i != qrcodeList.size() - 1) {
+                    if (j != qrcodeList.size() - 1) {
                         qrcode.append("、");
                     }
                 }
