@@ -1455,6 +1455,12 @@ $(".choose").mouseover(function () {
 $(".select_Date li").click(function () {
     var content=$(this).html();
     $("input.title_l").val(content);
+    switch (content){
+        case '按日查看':console.log('按日查看');break;
+        case '按周查看':console.log('按周查看');break;
+        case '按月查看':console.log('按月查看');break;
+        case '按年查看':console.log('按年查看');break;
+    }
     getData();
     $($(this).parent()).toggle()
 })
