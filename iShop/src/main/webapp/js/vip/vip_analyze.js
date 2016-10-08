@@ -214,8 +214,8 @@ function getDate(){
         for(var key in message){
             switch (key){
                 case 'all':fillVip(message[key],$('.all_vip span b'),$('.all_vip table tbody tr'));break;
-                case 'new':console.log('填充新会员');break;
-                case 'old':console.log('填充老会员');break;
+                case 'new':fillVip(message[key],$('.new_vip span b'),$('.new_vip table tbody tr'));break;
+                case 'old':fillVip(message[key],$('.old_vip span b'),$('.old_vip table tbody tr'));break;
             }
         }
     })
