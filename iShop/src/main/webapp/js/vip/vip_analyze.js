@@ -82,17 +82,7 @@ function getStore(a){
         $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
         $('#select_analyze_shop ul').append(ul);
-        $('#select_analyze_shop ul li').click(function () {
-            getDate();
-        });
-        $(".date_title .date input").on("input propertychange",function () {
-            getDate();
-        })
-        // newVipGet();//获取新会员
-        // sleepVipGet();//获取活跃会员
-       un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
-       //  brithVipGet();
-        getDate();
+       un_push?un_push=0:brithVipGet();getData();//正常调用当为加载更多时不调用
     });
     page=1;
 }
@@ -118,6 +108,7 @@ function showNameClick(e){
         $('#select_analyze_shop').toggle();
         //添加店铺时，找到显示的DIV发起请求
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
+        getData();
     }
 }
 //取消下拉框
@@ -199,19 +190,13 @@ $('#side_analyze>ul:nth-child(1) li:gt(0)').click(function(){
         }
     });
 //按时间查看数据
-function getDate(){
+function getData(){
     var param={};
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
-    param["type"]="D";
+    param["type"]="day";
     param["time"]=$($('.date_title .date input')[0]).val();
-    //console.log($('.date_title .title_l').html())
-    //vipAnalysis/vipScale 系统管理员，写死的corp_code
-    //area_code
-    // store_code
-    //type:day
-   // time:yyyy-MM-dd
     console.log($($('.date_title .date input')[0]).html());
     oc.postRequire("post","/vipAnalysis/vipScale","",param,function(data){
         var message=JSON.parse(data.message);
@@ -972,12 +957,10 @@ $("#input-txt").keydown(function() {
 //页码显示或隐藏
 function pageShow(table) {
     if( $(table).text()=='暂无数据'){
-        console.log('无内容')
         $($('#table_analyze .foot .foot-jum')[0]).hide();
         $($('#table_analyze .foot .foot-num')[0]).hide();
         $($('#table_analyze .foot .foot-sum')[0]).hide();
     }else{
-        console.log('有内容')
         $($('#table_analyze .foot .foot-jum')[0]).show();
         $($('#table_analyze .foot .foot-num')[0]).show();
         $($('#table_analyze .foot .foot-sum')[0]).show();
@@ -1415,7 +1398,6 @@ require(
 /*********************页面加载时**********************************************/
 $().ready(function(){
     //页面加载时，异步加载显示的数据
-    // $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
     $($(".date_btn span")[0]).css({"color":"#fff","background":"#6cc1c8"});
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
@@ -1459,19 +1441,20 @@ var achv={
     istime: true,
     istoday: false,
     choose: function(datas) {
-      getDate();
+      getData();
     }
 }
 laydate(achv);
 /*****************************************************************************************************************/
 //左侧业绩选择日周年月
-// $(".choose").mouseover(function () {
-//     $(".select_Date").show();
-// }).mouseleave(function () {
-//     $(".select_Date").hide();
-// })
-// $(".select_Date li").click(function () {
-//     var content=$(this).html();
-//     $(".title_l").html(content);
-//     $($(this).parent()).toggle()
-// })
+$(".choose").mouseover(function () {
+    $(".select_Date").show();
+}).mouseleave(function () {
+    $(".select_Date").hide();
+})
+$(".select_Date li").click(function () {
+    var content=$(this).html();
+    $("input.title_l").val(content);
+    getData();
+    $($(this).parent()).toggle()
+})
