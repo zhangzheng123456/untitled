@@ -152,6 +152,7 @@ public class WebController {
     @ResponseBody
     public String fab(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        JSONObject result = new JSONObject();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = JSONObject.parseObject(jsString);
@@ -159,23 +160,27 @@ public class WebController {
             JSONObject jsonObject = JSONObject.parseObject(message);
             int rowno = Integer.parseInt(jsonObject.get("rowno").toString());
             String corp_code = jsonObject.get("corp_code").toString();
-            String user_code = jsonObject.get("user_id").toString();
 
-            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
-            if (users.size() < 1){
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId("1");
-                dataBean.setMessage("用户不存在");
-                return dataBean.getJsonStr();
-            }
-            List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(),corp_code);
+            PageInfo<Goods> list;
+            if (jsonObject.containsKey("user_id") && !jsonObject.get("user_id").toString().equals("")) {
+                String user_code = jsonObject.get("user_id").toString();
 
-            String brand_code = "";
-            for (int i = 0; i < brand_codes.size(); i++) {
-                brand_code = brand_code + brand_codes.get(i).toString() + ",";
+                List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
+                if (users.size() < 1) {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("用户不存在");
+                    return dataBean.getJsonStr();
+                }
+                List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
+                String brand_code = "";
+                for (int i = 0; i < brand_codes.size(); i++) {
+                    brand_code = brand_code + brand_codes.get(i).toString() + ",";
+                }
+                list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code, "", "", brand_code, "", "", "");
+            }else {
+                list = goodsService.selectBySearch(1 + rowno / 20, 20, corp_code, "");
             }
-            JSONObject result = new JSONObject();
-            PageInfo<Goods> list = goodsService.selectBySearchForApp(1 + rowno / 20, 20, corp_code,"","",brand_code,"","","");
             for (int i = 0; list.getList() != null && list.getList().size() > i; i++) {
                 String goods_image = list.getList().get(i).getGoods_image();
                 if (goods_image != null && !goods_image.isEmpty()) {
@@ -209,17 +214,6 @@ public class WebController {
             int rowno = Integer.parseInt(jsonObject.get("rowno").toString());
             String corp_code = jsonObject.get("corp_code").toString();
             String search_value = jsonObject.get("search_value").toString();
-            String user_code = jsonObject.get("user_id").toString();
-
-
-            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
-            if (users.size() < 1){
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId("1");
-                dataBean.setMessage("用户不存在");
-                return dataBean.getJsonStr();
-            }
-            List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(),corp_code);
 
             String goods_quarter = "";
             String goods_wave = "";
@@ -227,16 +221,28 @@ public class WebController {
             String time_start = "";
             String time_end = "";
 
+            if (jsonObject.containsKey("user_id") && !jsonObject.get("user_id").toString().equals("")) {
+                String user_code = jsonObject.get("user_id").toString();
+                List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
+                if (users.size() < 1) {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("用户不存在");
+                    return dataBean.getJsonStr();
+                }
+                List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
+
+                for (int i = 0; i < brand_codes.size(); i++) {
+                    brand_code = brand_code + brand_codes.get(i).toString() + ",";
+                }
+            }
+
             if (jsonObject.containsKey("goods_quarter"))
                 goods_quarter = jsonObject.get("goods_quarter").toString();
             if (jsonObject.containsKey("goods_wave"))
                 goods_wave = jsonObject.get("goods_wave").toString();
             if (jsonObject.containsKey("brand_code") && !jsonObject.get("brand_code").toString().equals("")) {
                 brand_code = jsonObject.get("brand_code").toString();
-            }else {
-                for (int i = 0; i < brand_codes.size(); i++) {
-                    brand_code = brand_code + brand_codes.get(i).toString() + ",";
-                }
             }
 
             JSONObject result = new JSONObject();
@@ -296,32 +302,34 @@ public class WebController {
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = JSONObject.parseObject(message);
             String corp_code = jsonObject.get("corp_code").toString();
-            String user_code = jsonObject.get("user_id").toString();
 
-            List<User> users = userService.userCodeExist(user_code,corp_code,Common.IS_ACTIVE_Y);
-            if (users.size() < 1){
-                dataBean.setCode(Common.DATABEAN_CODE_ERROR);
-                dataBean.setId("1");
-                dataBean.setMessage("用户不存在");
-                return dataBean.getJsonStr();
+            //品牌
+            List<Brand> brands = new ArrayList<Brand>();
+            if (jsonObject.containsKey("user_id") && !jsonObject.get("user_id").toString().equals("")) {
+                String user_code = jsonObject.get("user_id").toString();
+                List<User> users = userService.userCodeExist(user_code, corp_code, Common.IS_ACTIVE_Y);
+                if (users.size() < 1) {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("用户不存在");
+                    return dataBean.getJsonStr();
+                }
+                List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(), corp_code);
+                for (int i = 0; i < brand_codes.size(); i++) {
+                    Brand brand = brandService.getBrandByCode(corp_code,brand_codes.get(i).toString(),Common.IS_ACTIVE_Y);
+                    if (brand != null)
+                        brands.add(brand);
+                }
+            }else {
+                brands = brandService.getAllBrand(corp_code);
             }
-
-            List<String> brand_codes = userService.getBrandCodeByUser(users.get(0).getId(),corp_code);
-
 
             JSONObject result = new JSONObject();
             //季度
             List<Goods> quarters = goodsService.selectCorpGoodsQuarter(corp_code);
             //波段
             List<Goods> waves = goodsService.selectCorpGoodsWave(corp_code);
-            //品牌
-//            List<Brand> brands = brandService.getAllBrand(corp_code);
-            List<Brand> brands = new ArrayList<Brand>();
-            for (int i = 0; i < brand_codes.size(); i++) {
-                Brand brand = brandService.getBrandByCode(corp_code,brand_codes.get(i).toString(),Common.IS_ACTIVE_Y);
-                if (brand != null)
-                    brands.add(brand);
-            }
+
             result.put("quarters", JSON.toJSONString(quarters));
             result.put("waves", JSON.toJSONString(waves));
             result.put("brands", JSON.toJSONString(brands));
