@@ -571,6 +571,29 @@ public class StoreServiceImpl implements StoreService {
         return page;
     }
 
+    @Override
+    public List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value) throws Exception {
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("corp_code", corp_code);
+        params.put("area_code", "");
+        params.put("brand_code", "");
+        if (!area_code.equals("")){
+            String[] areaCodes = area_code.split(",");
+            params.put("area_code", areaCodes);
+        }
+        if (!brand_code.equals("")){
+            String[] brandCodes = brand_code.split(",");
+            for (int i = 0; i < brandCodes.length; i++) {
+                brandCodes[i] = Common.SPECIAL_HEAD +brandCodes[i]+",";
+            }
+            params.put("brand_code", brandCodes);
+        }
+        params.put("search_value", search_value);
+        params.put("isactive", "Y");
+        List<Store> stores = storeMapper.selStoreByAreaCode(params);
+        return stores;
+    }
+
     public List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);

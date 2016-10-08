@@ -61,7 +61,7 @@ public interface UserService {
 
     String getAuthCode(String phone, String platform)throws Exception;
 
-    void ProcessStoreCode(User user)throws Exception;
+//    void ProcessCodeToSpecial(User user) throws Exception;
 
     List<UserAchvGoal> selectUserAchvCount(String corp_code, String user_code) throws Exception;
 

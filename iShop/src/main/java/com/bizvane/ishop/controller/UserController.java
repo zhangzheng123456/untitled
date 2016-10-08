@@ -97,8 +97,10 @@ public class UserController {
                 String store_code = jsonObject.get("store_code").toString();
                 list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, areas, Common.ROLE_STAFF);
                 List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
+                if (page_number == 1) {
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
             } else if (role_code.equals(Common.ROLE_STAFF)) {
                 User user = userService.getUserById(user_id);
                 List<User> users = new ArrayList<User>();
@@ -108,15 +110,19 @@ public class UserController {
             } else if (role_code.equals(Common.ROLE_SM)) {
                 String store_code = request.getSession().getAttribute("store_code").toString();
                 list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
+                if (page_number == 1) {
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
             } else if (role_code.equals(Common.ROLE_AM)) {
                 String store_code = jsonObject.get("store_code").toString();
                 list = userService.selUserByStoreCode(page_number, page_size, corp_code, searchValue, store_code, null, Common.ROLE_STAFF);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
+                if (page_number == 1) {
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
             }
             JSONObject result = new JSONObject();
             result.put("list", JSON.toJSONString(list));
@@ -207,9 +213,11 @@ public class UserController {
                     store_code = store_code.replace(Common.SPECIAL_HEAD,"");
                 }
                 list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code,null,role_code);
-                List<User> users = list.getList();
-                User self = userService.getUserById(user_id);
-                users.add(self);
+                if (page_number == 1) {
+                    List<User> users = list.getList();
+                    User self = userService.getUserById(user_id);
+                    users.add(self);
+                }
             } else if (role_code.equals(Common.ROLE_AM)) {
                 if (jsonObject.has("area_code") && !jsonObject.get("area_code").equals("")){
                     area_code = jsonObject.get("area_code").toString();
@@ -224,9 +232,11 @@ public class UserController {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, "",null,role_code);
                 }else {
                     list = userService.selectUsersByRole(page_number, page_size, corp_code, searchValue, store_code, area_code, null, role_code);
-                    List<User> users = list.getList();
-                    User self = userService.getUserById(user_id);
-                    users.add(self);
+                    if (page_number == 1) {
+                        List<User> users = list.getList();
+                        User self = userService.getUserById(user_id);
+                        users.add(self);
+                    }
                 }
 
             }
@@ -381,6 +391,23 @@ public class UserController {
                     dataBean.setMessage("您还没有所属店铺");
                     return dataBean.getJsonStr();
                 } else {
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
+                }
+            }else if (role_code.equals(Common.ROLE_BM)) {
+                //品牌管理员
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                if (brand_code == null || brand_code.equals("")) {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId("1");
+                    dataBean.setMessage("您还没有所属品牌");
+                    return dataBean.getJsonStr();
+                } else {
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code,"",brand_code,"");
+                    String store_code = "";
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code +  Common.SPECIAL_HEAD +stores.get(i).getStore_code() + ",";
+                    }
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, "", store_code, "", role_code);
                 }
             } else if (role_code.equals(Common.ROLE_AM)) {
@@ -826,6 +853,24 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
+            if (role_code.equals(Common.ROLE_BM)){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+                String brand_code = jsonObject.get("brand_code").toString();
+                String[] codes = brand_code.split(",");
+                if (WebUtils.checkRepeat(codes)) {
+                    brand_code = "";
+                    for (int i = 0; i < codes.length; i++) {
+                        codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
+                        brand_code = brand_code + codes[i];
+                    }
+                } else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("请勿选择重复的品牌");
+                    return dataBean.getJsonStr();
+                }
+                user.setBrand_code(brand_code);
+            }
             String password = CheckUtils.encryptMD5Hash(phone);
             user.setPassword(password);
             Date now = new Date();
@@ -933,6 +978,25 @@ public class UserController {
                 }
                 user.setStore_code(store_code);
             }
+            if (role_code.equals(Common.ROLE_BM)){
+                user.setGroup_code(jsonObject.get("group_code").toString());
+                String brand_code = jsonObject.get("brand_code").toString();
+                String[] codes = brand_code.split(",");
+                if (WebUtils.checkRepeat(codes)) {
+                    brand_code = "";
+                    for (int i = 0; i < codes.length; i++) {
+                        codes[i] = Common.SPECIAL_HEAD + codes[i] + ",";
+                        brand_code = brand_code + codes[i];
+                    }
+                } else {
+                    dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                    dataBean.setId(id);
+                    dataBean.setMessage("请勿选择重复的品牌");
+                    return dataBean.getJsonStr();
+                }
+                user.setBrand_code(brand_code);
+            }
+
             Date now = new Date();
             user.setModified_date(Common.DATETIME_FORMAT.format(now));
             user.setModifier(user_code);
