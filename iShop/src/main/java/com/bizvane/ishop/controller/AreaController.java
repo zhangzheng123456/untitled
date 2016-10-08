@@ -70,17 +70,22 @@ public class AreaController {
             String jsString = request.getParameter("param");
             logger.info("json---------------" + jsString);
             String role_code = request.getSession().getAttribute("role_code").toString();
+            String corp_code = request.getSession().getAttribute("corp_code").toString();
+
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
             int page_number = Integer.valueOf(jsonObject.get("pageNumber").toString());
             int page_size = Integer.valueOf(jsonObject.get("pageSize").toString());
-            String corp_code = jsonObject.get("corp_code").toString();
+
             String searchValue = jsonObject.get("searchValue").toString();
             PageInfo<Area> list = null;
             if (role_code.equals(Common.ROLE_SYS)) {
                 //系统管理员
+                if (jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
+                    corp_code = jsonObject.get("corp_code").toString();
+                }
                 list = areaService.selAreaByCorpCode(page_number, page_size, corp_code, "","", searchValue);
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
