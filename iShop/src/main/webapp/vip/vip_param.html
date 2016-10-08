@@ -171,6 +171,7 @@
 <script src="../js/insidePostRequire.js"></script>
 <script src="../js/vip/vip_param.js"></script>
 <script src="../js/jquery.dad.min.js"></script>
+<script src="../js/jquery.dragsort-0.5.2.js"></script>
 <!-- <script src="../table/js/inner.js"></script> -->
 <script type="text/javascript">
     $(function(){
@@ -179,7 +180,7 @@
         $('#sidebar ul>li:eq(6)').find('dl').show();
         $('#sidebar ul>li:eq(6)').find('dl>dd:eq(2) a').css({color:"#6cc1c8"});
         $('#sidebar ul>li:eq(6)').find('dl>dd:eq(2) span').addClass('icon-ishop_8-01');
-    })
+    });
 
     $(function(){
         $(window).scroll(function(){
@@ -198,8 +199,6 @@
             $('html,body').animate({'scrollTop':btm},500);
         })
     });
-
-        $('.table tbody').dad();//调用拖拽tr方法
 </script>
 </body>
 </html>
