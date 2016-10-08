@@ -153,7 +153,6 @@ function gethotVIPlabel() {
                 msg=JSON.parse(msg.list);
             var html="";
             var classname="";
-            console.log(msg.length);
             for(var i=0;i<msg.length;i++){
                 if(msg[i].label_type=="user"){
                     if(msg[i].label_sign=="Y"){
@@ -175,7 +174,7 @@ function gethotVIPlabel() {
         //绑定拖拽事件
         $('#hotlabel span').on('dragstart',function (event) {
             var ev=event;
-            console.log('触发');
+            //console.log('触发');
             ev=ev.originalEvent;
             ev.dataTransfer.setData("Text",ev.target.id);
         });
@@ -200,7 +199,7 @@ function getOtherlabel() {
                 list=list.list;
             var html="";
             var classname="";
-            console.log(hasNextPage);
+            //console.log(hasNextPage);
             if(hasNextPage==false){
                 $("#more_label_g").hide();
                 $("#more_label_u").hide();
@@ -240,7 +239,7 @@ function getOtherlabel() {
         //绑定拖拽事件
         $('#label_user span').on('dragstart',function (event) {
             var ev=event;
-            console.log('触发');
+            //console.log('触发');
             ev=ev.originalEvent;
             ev.dataTransfer.setData("Text",ev.target.id);
         });
@@ -287,7 +286,7 @@ function searchHotlabel() {
             var hasNextPage=JSON.parse(msg.hasNextPage);
             list=msg.list;
             var html="";
-            console.log(hasNextPage);
+            //console.log(hasNextPage);
             if(list.length!==0){
                 $(".search_box").show();
             }else {
@@ -504,8 +503,8 @@ function drop(ev)
     var clone= $(document.getElementById(data)).clone();
     var label_id=clone.attr("data-id");
     var val=$(clone).text();
-    console.log(clone);
-    console.log(val);
+    //console.log(clone);
+    //console.log(val);
 
     //调用借口
     var id = sessionStorage.getItem("id");
@@ -553,7 +552,7 @@ function upLoadAlbum(){
         client.multipartUpload(storeAs, file).then(function (result) {
             var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
             $("#upAlbum").val("");
-            console.log(result);
+            //console.log(result);
             addVipAlbum(url)
         }).catch(function (err) {
              console.log(err);
@@ -568,13 +567,14 @@ function addVipAlbum(url){//上传照片到相册
     param_addAblum["image_url"]=url;
     param_addAblum["corp_code"]=sessionStorage.getItem("corp_code");
     oc.postRequire("post","/vipAlbum/add","",param_addAblum,function(data){
+        var AlbumData=JSON.parse(data.message);
         if(data.code=="0"){
             frame();
             $('.frame').html('添加成功');
             $("#upAlbum").parent().parent().before("<li>"
                 +"<img src='"+url+"'>"
-                +"<div class='cancel_img' id='"+data.message+"'></div>"
-                    //+"<span class='album_date'>"+date+"</span>"
+                +"<div class='cancel_img' id='"+AlbumData.id+"'></div>"
+                    +"<span class='album_date'>"+AlbumData.date.substring(0,11)+"</span>"
                 +"</li>")
         }else{
             frame();
