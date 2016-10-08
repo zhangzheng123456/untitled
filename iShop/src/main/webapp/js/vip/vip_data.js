@@ -21,6 +21,7 @@ function getConsumCount(){//获取会员信息
        var LABEL="";
        var LABELALL="";
         if(album.length!==0){
+            $("#upAlbum").parent().parent().siblings().remove();
             for(var i=0;i<album.length;i++){
                 var date=album[i].created_date;
                 date=date.substring(0,11);
@@ -31,7 +32,7 @@ function getConsumCount(){//获取会员信息
                     +"<img src='"+album[i].image_url+"'>"
                     +"<div class='cancel_img' id='"+album[i].id+"'></div>"
                     +"<span class='album_date'>"+date+"</span>"
-                    +"</li>"
+                    +"</li>";
                 $("#upAlbum").parent().parent().before(Ablum_all_html)
             }
         }else {
@@ -51,23 +52,20 @@ function getConsumCount(){//获取会员信息
         $(".span_total").html(label.length);
         $("#labels").html(LABEL);
         $("#label_box").html(LABELALL);
-        lg_img();
         img_hover();
         whir.loading.remove();
     })
 }
-function lg_img(){
     //点击图片放大
-    $("#images span").click(function(){
+    $("#images").on("click","span",function(){
         var src=$(this).children().attr("src");
         whir.loading.add("",0.8,src);//显示图片
     });
-    //相册图片点击放大.关闭
-    $(".album li img").click(function () {
+
+    $(".album").on("click","li img",function(){
         var src=$(this).attr("src");
         whir.loading.add("",0.8,src);
-    })
-}
+    });
 function img_hover(){
     //相册关闭按钮显示
     $(".album img").mouseover(function () {
