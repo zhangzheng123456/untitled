@@ -1447,11 +1447,11 @@ var achv={
 laydate(achv);
 /*****************************************************************************************************************/
 //左侧业绩选择日周年月
-$(".choose").mouseover(function () {
-    $(".select_Date").show();
-}).mouseleave(function () {
-    $(".select_Date").hide();
-})
+// $(".choose").mouseover(function () {
+//     $(".select_Date").show();
+// }).mouseleave(function () {
+//     $(".select_Date").hide();
+// })
 $(".select_Date li").click(function () {
     var content=$(this).html();
     $("input.title_l").val(content);
