@@ -195,7 +195,7 @@ function getData(){
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
-    param["type"]="day";
+    param["type"]="D";
     param["time"]=$($('.date_title .date input')[0]).val();
     console.log($($('.date_title .date input')[0]).html());
     oc.postRequire("post","/vipAnalysis/vipScale","",param,function(data){
@@ -1447,14 +1447,20 @@ var achv={
 laydate(achv);
 /*****************************************************************************************************************/
 //左侧业绩选择日周年月
-$(".choose").mouseover(function () {
-    $(".select_Date").show();
-}).mouseleave(function () {
-    $(".select_Date").hide();
-})
+// $(".choose").mouseover(function () {
+//     $(".select_Date").show();
+// }).mouseleave(function () {
+//     $(".select_Date").hide();
+// })
 $(".select_Date li").click(function () {
     var content=$(this).html();
     $("input.title_l").val(content);
+    switch (content){
+        case '按日查看':console.log('按日查看');break;
+        case '按周查看':console.log('按周查看');break;
+        case '按月查看':console.log('按月查看');break;
+        case '按年查看':console.log('按年查看');break;
+    }
     getData();
     $($(this).parent()).toggle()
 })

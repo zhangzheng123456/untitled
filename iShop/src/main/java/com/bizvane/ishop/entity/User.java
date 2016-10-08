@@ -46,8 +46,12 @@ public class User {
 	private String position;
 	//是否在线
 	private String isonline;
+	//品牌编号
+	private String brand_code;
 
 	private String area_name;
+
+	private String brand_name;
 
 	private String store_name;
 
@@ -284,6 +288,14 @@ public class User {
 		this.isonline = isonline;
 	}
 
+	public String getBrand_code() {
+		return brand_code;
+	}
+
+	public void setBrand_code(String brand_code) {
+		this.brand_code = brand_code;
+	}
+
 	public Group getGroup() {
 		return group;
 	}
@@ -298,6 +310,14 @@ public class User {
 
 	public void setStore_name(String store_name) {
 		this.store_name = store_name;
+	}
+
+	public String getBrand_name() {
+		return brand_name;
+	}
+
+	public void setBrand_name(String brand_name) {
+		this.brand_name = brand_name;
 	}
 
 	public String getRole_code() {

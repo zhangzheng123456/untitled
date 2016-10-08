@@ -13,13 +13,11 @@ html{
 }
 .header .left,.header .center,.header .right{
     height:390px;
-    width: 33%;
+    width: 32.833%;
     /*min-width: 348px;*/
+    margin-right: 0.5%;
     float: left;
     background-color:#fff ;
-}
-.header .left,.header .center {
-    margin-right: 0.5%;
 }
 .header .left .left-class{
     width:50%;
@@ -195,7 +193,7 @@ html{
 }
 .header .center .message-class .tabs-parent .images .img-parent #images{
     height:310px;
-    padding-bottom: 5px;
+    padding-top: 5px;
     padding-left:10px;
     /*border-bottom: 1px solid #E8E8E8;*/
     overflow: hidden;
@@ -340,7 +338,7 @@ padding:25px 15px 0 15px;
 }
 /*导航头部*/
 .nav_bar li{
-    width:16.28%;
+    width:16.66%;
     height:30px;
     line-height: 30px;
     float: left;

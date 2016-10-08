@@ -537,13 +537,17 @@ public class StoreController {
     @ResponseBody
     public String getBrand(HttpServletRequest request) {
         DataBean dataBean = new DataBean();
+        String corp_code = request.getSession().getAttribute("corp_code").toString();
+        String role_code = request.getSession().getAttribute("role_code").toString();
         try {
             String jsString = request.getParameter("param");
             JSONObject jsonObj = new JSONObject(jsString);
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
-            String corp_code = jsonObject.get("corp_code").toString();
+            if (role_code.equals(Common.ROLE_SYS) && jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
+                corp_code = jsonObject.get("corp_code").toString();
+            }
             List<Brand> brand = brandService.getAllBrand(corp_code);
             JSONArray array = new JSONArray();
             JSONObject brands = new JSONObject();
