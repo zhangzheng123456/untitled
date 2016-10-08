@@ -193,7 +193,7 @@ html{
 }
 .header .center .message-class .tabs-parent .images .img-parent #images{
     height:310px;
-    padding-bottom: 5px;
+    padding-top: 5px;
     padding-left:10px;
     /*border-bottom: 1px solid #E8E8E8;*/
     overflow: hidden;
