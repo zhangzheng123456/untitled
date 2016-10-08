@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vip-data.css">
+    <link rel="stylesheet" href="/css/jquery.dad.css">
     <style>
         <!--保持按钮样式-->
        .expand_btn button{
@@ -196,7 +197,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module" style="margin-right: 0px">
+        <div class="chart_module" >
             <ul>
                 <span class="chart_head">价格偏好</span>
                 <li id="main2" style="height: 270px;">
@@ -217,7 +218,7 @@
                 </li>
             </ul>
         </div>
-        <div class="chart_module"style="margin-right: 0px">
+        <div class="chart_module" >
             <ul>
                 <span class="chart_head">系列偏好</span>
                 <li id="main5" style="height: 270px;padding-left: 10px;">
@@ -229,7 +230,7 @@
             <li id="main6" style="height: 270px;padding-left: 10px;">
             </li>
         </ul>
-    </div>     <div class="chart_module"style="margin-right: 0px">
+    </div>     <div class="chart_module">
         <ul>
             <span class="chart_head">地域分布</span>
             <li id="main7" style="height:270px;">
@@ -1104,5 +1105,12 @@
                 ul.hide();
             }
         })});
+    $("#ceshi").html("q1213123")
+</script>
+<script src="/js/jquery.dad.min.js"></script>
+<script type="text/javascript">
+    $("#chart_analyze").dad({
+        draggable:'span'
+    })
 </script>
 </html>
