@@ -47,7 +47,7 @@ public class Store {
     private Corp corp;
 
     private Brand brand;
-
+    private String qrcode;
     private Area area;
     private List<StoreQrcode> qrcodeList;
     public Store(){}
@@ -57,6 +57,14 @@ public class Store {
     }
     public String getStore_id() {
         return store_id;
+    }
+
+    public String getQrcode() {
+        return qrcode;
+    }
+
+    public void setQrcode(String qrcode) {
+        this.qrcode = qrcode;
     }
 
     public void setStore_id(String store_id) {

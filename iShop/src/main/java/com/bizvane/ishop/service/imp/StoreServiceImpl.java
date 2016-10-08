@@ -21,6 +21,8 @@ import java.sql.SQLException;
 
 import java.util.*;
 
+import static com.sun.tools.classfile.Opcode.get;
+
 /**
  * Created by zhou on 2016/5/25.
  */
@@ -106,14 +108,25 @@ public class StoreServiceImpl implements StoreService {
         List<Store> shops;
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectAllStore(corp_code, search_value);
-        for (Store store:shops) {
-            Store storeBrandName = getStoreById(store.getId());
+        StringBuilder qrcode = new StringBuilder("");
+
+        for (int i=0;i<shops.size();i++) {
+            Store storeBrandName = getStoreById(shops.get(i).getId());
             if (storeBrandName.getBrand_name()!=null) {
-                store.setBrand_name(storeBrandName.getBrand_name());
+                shops.get(i).setBrand_name(storeBrandName.getBrand_name());
             }else {
-                store.setBrand_name("");
+                shops.get(i).setBrand_name("");
             }
-            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
+            List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            for (StoreQrcode storeQrcode:qrcodeList) {
+                if (storeQrcode != null) {
+                    String qrcode1 = storeQrcode.getQrcode();
+                    qrcode.append(qrcode1);
+                    qrcode.append(",");
+                }
+            }
+            shops.get(i).setQrcode(qrcode.toString());
+            shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
         }
         PageInfo<Store> page = new PageInfo<Store>(shops);
         return page;
@@ -136,10 +149,25 @@ public class StoreServiceImpl implements StoreService {
         params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectByUserId(params);
-        for (Store store:shops) {
-            Store storeBrandName = getStoreById(store.getId());
-            store.setBrand_name(storeBrandName.getBrand_name());
-            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
+        StringBuilder qrcode = new StringBuilder("");
+
+        for (int i=0;i<shops.size();i++) {
+            Store storeBrandName = getStoreById(shops.get(i).getId());
+            if (storeBrandName.getBrand_name()!=null) {
+                shops.get(i).setBrand_name(storeBrandName.getBrand_name());
+            }else {
+                shops.get(i).setBrand_name("");
+            }
+            List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            for (StoreQrcode storeQrcode:qrcodeList) {
+                if (storeQrcode != null) {
+                    String qrcode1 = storeQrcode.getQrcode();
+                    qrcode.append(qrcode1);
+                    qrcode.append(",");
+                }
+            }
+            shops.get(i).setQrcode(qrcode.toString());
+            shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
         }
         PageInfo<Store> page = new PageInfo<Store>(shops);
 
@@ -304,13 +332,28 @@ public class StoreServiceImpl implements StoreService {
         params.put("map", map);
 
         PageHelper.startPage(page_number, page_size);
-        List<Store> list1 = storeMapper.selectAllStoreScreen(params);
-        for (Store store:list1) {
-            Store storeBrandName = getStoreById(store.getId());
-            store.setBrand_name(storeBrandName.getBrand_name());
-            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
+        List<Store> shops = storeMapper.selectAllStoreScreen(params);
+        StringBuilder qrcode = new StringBuilder("");
+
+        for (int i=0;i<shops.size();i++) {
+            Store storeBrandName = getStoreById(shops.get(i).getId());
+            if (storeBrandName.getBrand_name()!=null) {
+                shops.get(i).setBrand_name(storeBrandName.getBrand_name());
+            }else {
+                shops.get(i).setBrand_name("");
+            }
+            List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            for (StoreQrcode storeQrcode:qrcodeList) {
+                if (storeQrcode != null) {
+                    String qrcode1 = storeQrcode.getQrcode();
+                    qrcode.append(qrcode1);
+                    qrcode.append(",");
+                }
+            }
+            shops.get(i).setQrcode(qrcode.toString());
+            shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
         }
-        PageInfo<Store> page = new PageInfo<Store>(list1);
+        PageInfo<Store> page = new PageInfo<Store>(shops);
         return page;
     }
 
@@ -476,13 +519,27 @@ public class StoreServiceImpl implements StoreService {
         params.put("search_value", search_value);
         params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
-        List<Store> stores = storeMapper.selectByAreaCode(params);
-        for (Store store:stores) {
-            Store storeBrandName = getStoreById(store.getId());
-            store.setBrand_name(storeBrandName.getBrand_name());
-            store.setIsactive(CheckUtils.CheckIsactive(store.getIsactive()));
+        List<Store> shops = storeMapper.selectByAreaCode(params);
+        StringBuilder qrcode = new StringBuilder("");
+        for (int i=0;i<shops.size();i++) {
+            Store storeBrandName = getStoreById(shops.get(i).getId());
+            if (storeBrandName.getBrand_name()!=null) {
+                shops.get(i).setBrand_name(storeBrandName.getBrand_name());
+            }else {
+                shops.get(i).setBrand_name("");
+            }
+            List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            for (StoreQrcode storeQrcode:qrcodeList) {
+                if (storeQrcode != null) {
+                    String qrcode1 = storeQrcode.getQrcode();
+                    qrcode.append(qrcode1);
+                    qrcode.append(",");
+                }
+            }
+            shops.get(i).setQrcode(qrcode.toString());
+            shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
         }
-        PageInfo<Store> page = new PageInfo<Store>(stores);
+        PageInfo<Store> page = new PageInfo<Store>(shops);
         return page;
     }
 
