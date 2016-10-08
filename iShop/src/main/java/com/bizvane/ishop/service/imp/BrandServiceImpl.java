@@ -108,7 +108,7 @@ public class BrandServiceImpl implements BrandService {
         params.put("search_value",search_value);
 
         PageHelper.startPage(page_number, page_size);
-        brands = brandMapper.selectAllBrand(corp_code, search_value);
+        brands = brandMapper.selectPartBrand(params);
         for (Brand brand:brands) {
             brand.setIsactive(CheckUtils.CheckIsactive(brand.getIsactive()));
         }
@@ -285,12 +285,12 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code, Map<String, String> map) throws Exception{
+    public PageInfo<Brand> getAllBrandScreen(int page_number, int page_size, String corp_code,String[] brand_code,Map<String, String> map) throws Exception{
         List<Brand> brands;
         PageHelper.startPage(page_number, page_size);
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
-
+        params.put("brand_code", brand_code);
         params.put("map", map);
         brands = brandMapper.selectAllBrandScreen(params);
         for (Brand brand:brands) {

@@ -282,7 +282,7 @@ public class BrandController {
                 String brand_code = request.getSession().getAttribute("brand_code").toString();
                 brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
                 String[] codes = brand_code.split(",");
-                list = brandService.getPartBrandByPage(page_number,page_size,corp_code,codes,"");
+                list = brandService.getPartBrandByPage(page_number,page_size,corp_code,codes,search_value);
             } else {
                 String corp_code = request.getSession().getAttribute("corp_code").toString();
                 list = brandService.getAllBrandByPage(page_number, page_size, corp_code, search_value);
@@ -390,9 +390,9 @@ public class BrandController {
             }else{
                 Map<String, String> map = WebUtils.Json2Map(jsonObject);
                 if (role_code.equals(Common.ROLE_SYS)) {
-                    list = brandService.getAllBrandScreen(1, 30000, "", map);
+                    list = brandService.getAllBrandScreen(1, 30000, "",null, map);
                 } else {
-                    list = brandService.getAllBrandScreen(1, 30000, corp_code, map);
+                    list = brandService.getAllBrandScreen(1, 30000, corp_code,null, map);
                 }
             }
             List<Brand> brands = list.getList();
@@ -626,10 +626,16 @@ public class BrandController {
             JSONObject result = new JSONObject();
             PageInfo<Brand> list;
             if (role_code.equals(Common.ROLE_SYS)) {
-                list = brandService.getAllBrandScreen(page_number, page_size, "", map);
+                list = brandService.getAllBrandScreen(page_number, page_size, "",null, map);
+            }else if (role_code.equals(Common.ROLE_BM)){
+                String corp_code = request.getSession(false).getAttribute("corp_code").toString();
+                String brand_code = request.getSession().getAttribute("brand_code").toString();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                String[] codes = brand_code.split(",");
+                list = brandService.getAllBrandScreen(page_number,page_size,corp_code,codes,map);
             } else {
                 String corp_code = request.getSession(false).getAttribute("corp_code").toString();
-                list = brandService.getAllBrandScreen(page_number, page_size, corp_code, map);
+                list = brandService.getAllBrandScreen(page_number, page_size, corp_code,null, map);
             }
             result.put("list", JSON.toJSONString(list));
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
