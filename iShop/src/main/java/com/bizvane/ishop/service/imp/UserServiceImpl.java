@@ -55,7 +55,8 @@ public class UserServiceImpl implements UserService {
     CodeUpdateMapper codeUpdateMapper;
     @Autowired
     private PrivilegeMapper privilegeMapper;
-
+    @Autowired
+    private BrandService brandService;
 
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -79,6 +80,47 @@ public class UserServiceImpl implements UserService {
         List<User> users;
         users = userMapper.selectAllUser(corp_code, "");
         return users;
+    }
+
+
+    /**
+     * 用户拥有店铺下的员工
+     * （属于自己拥有的店铺，且角色级别比自己低）
+     */
+    public PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String[] areas,String role_code) throws Exception {
+        String[] stores = null;
+//        String[] areas = null;
+        if (!store_code.equals("")) {
+            stores = store_code.split(",");
+            for (int i = 0; i < stores.length; i++) {
+                stores[i] = Common.SPECIAL_HEAD+stores[i]+",";
+            }
+        }
+        if (!area_code.equals("")) {
+            String[] area_codes = area_code.split(",");
+            List<Store> store = storeService.selectByAreaCode(corp_code, area_codes,Common.IS_ACTIVE_Y);
+            String a = "";
+            if (store.size()>0) {
+                for (int i = 0; i < store.size(); i++) {
+                    a = a + Common.SPECIAL_HEAD + store.get(i).getStore_code() + ",";
+                }
+            }else {
+                a = Common.SPECIAL_HEAD+Common.SPECIAL_HEAD+"zxcvbnmmnbvcxz11223344";
+            }
+            stores = a.split(",");
+        }
+        Map<String, Object> params = new HashMap<String, Object>();
+        params.put("array", stores);
+        params.put("search_value", search_value);
+        params.put("role_code", role_code);
+        params.put("corp_code", corp_code);
+        params.put("areas", areas);
+        PageHelper.startPage(page_number, page_size);
+        List<User> users = userMapper.selectUsersByRole(params);
+//        conversion(users);
+
+        PageInfo<User> page = new PageInfo<User>(users);
+        return page;
     }
 
     /**
@@ -208,6 +250,11 @@ public class UserServiceImpl implements UserService {
         }
         List<UserQrcode> qrcodeList = userMapper.selectByUserCode(corp_code, user.getUser_code());
         user.setQrcodeList(qrcodeList);
+        return user;
+    }
+
+    public User selectUserById(int id) throws Exception {
+        User user = userMapper.selectUserById(id);
         return user;
     }
 
@@ -893,5 +940,49 @@ public class UserServiceImpl implements UserService {
                 }
             }
         }
+    }
+
+    public List<String> getBrandCodeByUser(int userId,String corp_code) throws Exception{
+        List<String> brand_codes = new ArrayList<String>();
+        User user = selectUserById(userId);
+        String role_code = user.getRole_code();
+        List<Store> stores = new ArrayList<Store>();
+        if (role_code.equals(Common.ROLE_STAFF) || role_code.equals(Common.ROLE_SM)){
+            String store_code = user.getStore_code();
+            stores = storeService.selectAll(store_code,corp_code,Common.IS_ACTIVE_Y);
+            for (int i = 0; i < stores.size(); i++) {
+                String brand_code = stores.get(i).getBrand_code();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                String[] brands = brand_code.split(",");
+                for (int j = 0; j < brands.length; j++) {
+                    if (!brand_codes.contains(brands[j])){
+                        brand_codes.add(brands[j]);
+                    }
+                }
+            }
+        }else if (role_code.equals(Common.ROLE_AM)){
+            String area_code = user.getArea_code();
+            area_code = area_code.replace(Common.SPECIAL_HEAD,"");
+            String[] areas = area_code.split(",");
+            stores = storeService.selectByAreaCode(corp_code,areas,Common.IS_ACTIVE_Y);
+            for (int i = 0; i < stores.size(); i++) {
+                String brand_code = stores.get(i).getBrand_code();
+                brand_code = brand_code.replace(Common.SPECIAL_HEAD,"");
+                String[] brands = brand_code.split(",");
+                for (int j = 0; j < brands.length; j++) {
+                    if (!brand_codes.contains(brands[j])){
+                        brand_codes.add(brands[j]);
+                    }
+                }
+            }
+        }else {
+            List<Brand> brands = brandService.getAllBrand(corp_code);
+            for (int i = 0; i < brands.size(); i++) {
+                if (!brand_codes.contains(brands.get(i).getBrand_code())){
+                    brand_codes.add(brands.get(i).getBrand_code());
+                }
+            }
+        }
+        return brand_codes;
     }
 }

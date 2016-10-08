@@ -168,6 +168,7 @@
         AND def_user.corp_code = def_group.corp_code
         AND def_user.corp_code = #{corp_code}
         AND def_group.role_code &gt;= #{role_code}
+        <if test="array !=null">
         AND (
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
             store_code regexp #{item}
@@ -183,6 +184,7 @@
             )
         </if>
         )
+        </if>
         AND def_corp.isactive = 'Y'
         AND def_group.isactive = 'Y'
         <if test="search_value != null and search_value !=''">
@@ -706,4 +708,55 @@
         ORDER BY def_user.id DESC
     </select>
 
+    <select id="selectUsersByRole" resultType="com.bizvane.ishop.entity.User">
+        SELECT
+        def_user.id,
+        user_id,
+        user_code,
+        user_name,
+        phone,
+        store_code,
+        def_user.area_code,
+        def_user.group_code,
+        def_user.corp_code,
+        def_group.group_name,
+        def_group.role_code
+        FROM def_user,def_group,def_corp
+        WHERE def_user.group_code = def_group.group_code
+        AND def_user.corp_code = def_corp.corp_code
+        AND def_user.corp_code = def_group.corp_code
+        AND def_user.corp_code = #{corp_code}
+        <if test="role_code != null and role_code != ''">
+            AND def_group.role_code &lt; #{role_code}
+        </if>
+        AND def_group.isactive = 'Y'
+        AND def_corp.isactive = 'Y'
+        <if test="array != null">
+            AND(
+                <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
+                    def_user.store_code regexp #{item}
+                </foreach>
+
+                <if test="areas !=null">
+                <!--拉取区经-->
+                OR user_code IN (SELECT user_code FROM def_user,DEF_GROUP
+                    WHERE def_user.corp_code=#{corp_code}
+                    AND DEF_USER.group_code = DEF_GROUP.group_code
+                    AND DEF_GROUP.role_code='R4000'
+                    AND
+                    <foreach collection="areas" index="index" item="item" open="(" separator="or" close=")">
+                        area_code REGEXP #{item}
+                    </foreach>)
+                </if>
+            )
+        </if>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (def_user.user_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        AND def_user.isactive = 'Y'
+        GROUP BY def_user.id
+        ORDER BY def_user.id DESC
+    </select>
 </mapper>

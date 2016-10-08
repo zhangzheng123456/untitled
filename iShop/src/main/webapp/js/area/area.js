@@ -789,7 +789,7 @@ function getInputValue(){
 //筛选发送请求
 function filtrates(a,b){
     whir.loading.add("",0.5);//加载等待框
-   oc.postRequire("post","/area/screen","0",_param,function(data){
+    oc.postRequire("post","/area/screen","0",_param,function(data){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);

@@ -165,12 +165,11 @@ var oc = new ObjectControl();
 			var save_image=getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig);
 			// console.log('加载时的图片'+sessionStorage.getItem('goods_description').match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
 			// console.log('保存时的图片'+getContent().match(/<img\b[^>]*src\s*=\s*"[^>"]*\.(?:png|jpg|bmp|gif)"[^>]*>/ig));
-			console.log(load_image)
-			console.log(save_image)
-			for(var i=0;i<load_image.length;i++){
-				load_image[i]=save_image[i]?"":delete_image.push(load_image[i]);
+			if(load_image==!null){
+				for(var i=0;i<load_image.length;i++){
+					load_image[i]=save_image[i]?"":delete_image.push(load_image[i]);
+				}
 			}
-
 			//如果有内容则进行比较
 			function getContent() {
 				var arr = [];

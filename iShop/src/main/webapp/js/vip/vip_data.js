@@ -27,17 +27,18 @@ function getConsumCount(){//获取会员信息
                 if(i<16){
                     HTML+="<span><img src="+album[i].image_url+" /></span>";
                 }
-                Ablum_all_html+="<li>"
+                Ablum_all_html="<li>"
                     +"<img src='"+album[i].image_url+"'>"
                     +"<div class='cancel_img' id='"+album[i].id+"'></div>"
                     +"<span class='album_date'>"+date+"</span>"
                     +"</li>"
+                $("#upAlbum").parent().parent().before(Ablum_all_html)
             }
         }else {
             HTML+="<p>暂无图片</p>";
         }
         $("#images").html(HTML);
-        $("#Ablum-all").html(Ablum_all_html);
+        //$("#Ablum-all").html(Ablum_all_html);
         if(label.length!==0){
             for(var i=0;i<label.length;i++){
                 LABEL+="<span>"+label[i].label_name+"</span>";
@@ -550,7 +551,7 @@ function upLoadAlbum(){
         var time=getNowFormatDate();
         var corp_code=sessionStorage.getItem("corp_code");
         var vip_id=sessionStorage.getItem("id");
-        var storeAs='Album/Vip/iShow/'+corp_code+'-'+vip_id+'-'+time+'.jpg';
+        var storeAs='Album/Vip/iShow/'+corp_code+'_'+vip_id+'_'+time+'.jpg';
         client.multipartUpload(storeAs, file).then(function (result) {
             var url="http://products-image.oss-cn-hangzhou.aliyuncs.com/"+result.name;
             $("#upAlbum").val("");
@@ -572,11 +573,11 @@ function addVipAlbum(url){//上传照片到相册
         if(data.code=="0"){
             frame();
             $('.frame').html('添加成功');
-            $("#Ablum-all").append("<li>"
+            $("#upAlbum").parent().parent().before("<li>"
                 +"<img src='"+url+"'>"
                 +"<div class='cancel_img' id='"+data.message+"'></div>"
-                //+"<span class='album_date'>"+date+"</span>"
-                +"</li>");
+                    //+"<span class='album_date'>"+date+"</span>"
+                +"</li>")
         }else{
             frame();
             $('.frame').html('添加失败');

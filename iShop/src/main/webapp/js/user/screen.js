@@ -35,6 +35,8 @@ $("#screen_add").click(function(){
 		shop_num=1;
 		$("#screen_shop .screen_content_l ul").empty();
 		$("#screen_shop .screen_content_r ul").empty();
+		$("#screen_area .screen_content_l ul").empty();
+		$("#screen_area .screen_content_r ul").empty();
 		$("#area_num").val("全部");
 		$("#area_num").attr("data-areacode","");
 		$("#brand_num").val("全部");
@@ -52,6 +54,8 @@ $("#screen_add").click(function(){
 		area_num=1;
 		$("#screen_area .screen_content_l ul").empty();
 		$("#screen_area .screen_content_r ul").empty();
+		$("#screen_shop .screen_content_l ul").empty();
+		$("#screen_shop .screen_content_r ul").empty();
 		$(".s_pitch span").html("0");
 		getarealist(area_num);
 		bianse();
@@ -77,8 +81,8 @@ $("#shop_area").click(function(){
 	$("#screen_area").css({"left":+left+"px","top":+tp+"px"});
 	var area_num=1;
 	$("#screen_area .screen_content_l ul").empty();
-	$("#screen_area .screen_content_r ul").empty();
-	$("#screen_area .s_pitch span").html("0");
+	// $("#screen_area .screen_content_r ul").empty();
+	// $("#screen_area .s_pitch span").html("0");
 	$("#area_search").val("");
 	getarealist(area_num);
 })
@@ -91,7 +95,7 @@ $("#shop_brand").click(function(){
 	$("#screen_brand").show();
 	$("#screen_brand").css({"left":+left+"px","top":+tp+"px"});
 	$("#screen_brand .screen_content_l ul").empty();
-	$("#screen_brand .screen_content_r ul").empty();
+	// $("#screen_brand .screen_content_r ul").empty();
 	getbrandlist();
 })
 //移到右边
@@ -428,7 +432,7 @@ function getstorelist(a){
 	_param['pageSize']=pageSize;
 	whir.loading.add("",0.5);//加载等待框
 	$("#mask").css("z-index","10002");
-	oc.postRequire("post","/shop/selectByAreaCode", "", _param, function(data) {
+	oc.postRequire("post","/user/stores","", _param, function(data) {
 		if (data.code == "0") {
 			var message=JSON.parse(data.message);
             var list=JSON.parse(message.list);
@@ -529,9 +533,16 @@ function getbrandlist(){
 	                        + "'></label></div><span class='p16'>"+list[i].brand_name+"</span></li>"
 					}
 				}
+
 				$("#screen_brand .screen_content_l ul").append(brand_html_left);
-				bianse();
 			}
+			if($("#screen_brand .screen_content_r ul li").length<=0){
+				for(var i=0;i<9;i++){
+					brand_html_right+="<li></li>";
+				}
+				$("#screen_brand .screen_content_r ul").html(brand_html_right);
+			}
+			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {
 			art.dialog({

@@ -20,6 +20,8 @@ public interface UserService {
 
     User getUserById(int id) throws Exception;
 
+    User selectUserById(int id) throws Exception;
+
     User getById(int id) throws Exception;
 
     String insert(User user) throws Exception;
@@ -39,6 +41,8 @@ public interface UserService {
     PageInfo<User> selectBySearchPart(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String role_code) throws Exception;
 
     PageInfo<User> selUserByStoreCode(int page_number, int page_size, String corp_code, String search_value, String store_code, String[] area,String role_code) throws Exception;
+
+    PageInfo<User> selectUsersByRole(int page_number, int page_size, String corp_code, String search_value, String store_code, String area_code, String[] areas, String role_code) throws Exception;
 
     PageInfo<User> selectGroupUser(int page_number, int page_size, String corp_code, String group_code,String search_value) throws Exception;
 
@@ -83,4 +87,5 @@ public interface UserService {
 
     void signOut(JSONObject jsonObject, String user_code) throws Exception;
 
+    List<String> getBrandCodeByUser(int userId,String corp_code) throws Exception;
 }

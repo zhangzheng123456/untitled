@@ -234,7 +234,11 @@ function xiaofeiContent(consumnData,consumnlistData){
     }else {
         $("#consum tbody").html('<span>暂无数据</span>');
     }
-    $("#consum_all").html(consumnHtmlall)
+    if(consumnHtmlall.length==0){
+        $("#consum_all").html("<p>暂无相关消费记录</p>");
+    }else {
+        $("#consum_all").html(consumnHtmlall);
+    }
 }
 function fuzhi(data){
     var sex=data.sex;
@@ -331,12 +335,11 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         var id=$(this).attr("data-id");
         var url=$("#"+id).prev().attr("src");
             url=url.substring(url.indexOf("Album"));
-        console.log(url);
         var param={};
         param["id"]=id;
         oc.postRequire("post","/vipAlbum/delete","",param,function(data){
             if(data.message="success"){
-                //deleteAblum(url);
+                deleteAblum(url);
                 $("#"+id).parent().remove();
                 frame();
                 $('.frame').html('删除成功');
@@ -347,15 +350,14 @@ function getoselectvalue(){//点击模拟的select 获取值给input
         })
     });
 function deleteAblum(key){
-    //var co = require('co');
-    //var OSS = require('ali-oss');
     var client = new OSS.Wrapper({
         region: 'oss-cn-hangzhou',
         accessKeyId: 'O2zXL39br8rSn1zC',
         accessKeySecret: 'XvHmCScXX9CiuMBRJ743yJdPoEiKTe',
         bucket: 'products-image'
     });
-    client.delete(key).then(function (result) {
+    var storeAs=key;
+    client.delete(storeAs).then(function (result) {
         console.log(result)
     }).catch(function (err) {
         console.log(err);

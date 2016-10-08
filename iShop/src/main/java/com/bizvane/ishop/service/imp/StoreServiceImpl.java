@@ -169,11 +169,13 @@ public class StoreServiceImpl implements StoreService {
      */
     @Override
     public List<Store> selectAll(String store_code, String corp_code, String isactive) throws Exception{
-        List<Store> shops;
+//        List<Store> shops;
+        if (store_code.contains(Common.SPECIAL_HEAD))
+            store_code = store_code.replace(Common.SPECIAL_HEAD,"");
         String[] ids = store_code.split(",");
-        for (int i = 0; i < ids.length; i++) {
-            ids[i] = ids[i].substring(1, ids[i].length());
-        }
+//        for (int i = 0; i < ids.length; i++) {
+//            ids[i] = ids[i].substring(1, ids[i].length());
+//        }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("store_codes", ids);
         params.put("corp_code", corp_code);

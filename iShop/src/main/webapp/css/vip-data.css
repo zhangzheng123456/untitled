@@ -490,7 +490,7 @@ hr{
 .record_search{
     display: block;
     font-size: 13px;
-    width: 35px;
+    width: 40px;
     text-align: center;
     border-radius: 5px;
     color: #fff;
@@ -503,7 +503,7 @@ hr{
     width: 160px;
     height: 30px;
     text-indent: 10px;
-    margin: 0 20px 0 10px;
+    margin: 0 10px;
     border: 1px solid #d7d7d7;
     border-radius: 4px;
     outline: none;
@@ -807,7 +807,7 @@ hr{
     margin-left: 5px;
 }
 .label_box{
-    width: 470px;
+    /*width: 470px;*/
     height: 200px;
     margin: 20px 10px;
 }
@@ -982,3 +982,9 @@ hr{
     /*clear: both;*/
     /*width: 100%;*/
 /*}*/
+#expand_send{
+height: 30px;line-height: 30px;text-align: center;border-radius: 4px;cursor: pointer;width: 160px;background-color: #6dc1c8;color: #fff;margin-left: 140px;
+}
+#expand_send i{
+    margin-right: 10px;
+}

@@ -82,6 +82,12 @@ function getStore(a){
         $('#side_analyze ul li:nth-child(3) s').html( first_store_name);
         $('#side_analyze ul li:nth-child(3) s').attr('data_store',first_store_code);
         $('#select_analyze_shop ul').append(ul);
+        $('#select_analyze_shop ul li').click(function () {
+            getDate();
+        });
+        $(".date_title .date input").on("input propertychange",function () {
+            getDate();
+        })
         // newVipGet();//获取新会员
         // sleepVipGet();//获取活跃会员
        un_push?un_push=0:brithVipGet();//正常调用当为加载更多时不调用
@@ -198,8 +204,8 @@ function getDate(){
     param['store_code']=$($('#side_analyze ul li:nth-child(3) s')[0]).attr('data_store');
     param['corp_code']=localStorage.getItem('corp_code');
     param["area_code"]= $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area');
-    param["type"]=$('.date_title .title_l').html();
-    param["time"]=$($('.date_title .date input')[0]).html();
+    param["type"]="D";
+    param["time"]=$($('.date_title .date input')[0]).val();
     //console.log($('.date_title .title_l').html())
     //vipAnalysis/vipScale 系统管理员，写死的corp_code
     //area_code
@@ -1439,16 +1445,33 @@ $().ready(function(){
         newVipGet_sub(this)
         $("#page_row").val("10行/页");
     });
+    var date = new Date();
+    var year = date.getFullYear();
+    var month = date.getMonth()+ 1 ;
+    var strDate = date.getDate();
+    date=year+"-"+month+"-"+strDate
+    $(".date_title .date input").val(date);
 });
+var achv={
+    elem: '#date',
+    format: 'YYYY-MM-DD',
+    max: laydate.now(), //最大日期
+    istime: true,
+    istoday: false,
+    choose: function(datas) {
+      getDate();
+    }
+}
+laydate(achv);
 /*****************************************************************************************************************/
 //左侧业绩选择日周年月
-$(".choose").mouseover(function () {
-    $(".select_Date").show();
-}).mouseleave(function () {
-    $(".select_Date").hide();
-})
-$(".select_Date li").click(function () {
-    var content=$(this).html();
-    $(".title_l").html(content);
-    $($(this).parent()).toggle()
-})
+// $(".choose").mouseover(function () {
+//     $(".select_Date").show();
+// }).mouseleave(function () {
+//     $(".select_Date").hide();
+// })
+// $(".select_Date li").click(function () {
+//     var content=$(this).html();
+//     $(".title_l").html(content);
+//     $($(this).parent()).toggle()
+// })
