@@ -252,11 +252,31 @@ function superaddition(data,num){//页面加载循环
         dragSelectorExclude : "tr .th",
         dragEnd : function(){
             var len=$("#table tbody tr");
-            var dic={};
-            for(var i=0;i++;i<len.length){
-                dic[len[i].attr("id")]=i;
+            var params=[];
+            for(var i=0;i<len.length;i++){
+                if(num>=2){
+                    a=i+1+(num-1)*pageSize;;
+                    var id=$(len[a]).attr("id");
+                    var list={
+                        "id":id,
+                        "show_order":a
+                    }
+                }else{
+                    a=i+1;
+                    var id=$(len[a]).attr("id");
+                    var list={
+                        "id":id,
+                        "show_order":a
+                    }
+                }
+                params.push(list);
             }
-            console.log(dic);
+            var param={};
+            param['param']=params;
+            console.log(params);
+            oc.postRequire("post","/vipparam/updateShowOrder","0",param,function(data) {
+                console.log(data);
+            })
             console.log($(len[0]).attr("id"));  //拖动完成的回调函数，$(this)当前拖动对象
         },
         scrollSpeed:0 //默认为5，数值越大拖动的速度越快，为0则拖动时页面不会滚动
