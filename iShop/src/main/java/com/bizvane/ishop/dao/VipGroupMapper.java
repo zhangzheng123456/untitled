@@ -13,13 +13,9 @@ import java.util.Map;
 public interface VipGroupMapper {
     VipGroup selectVipGroupById(int id) throws SQLException;
 
-    List<VipGroup> selectVipGroupByCorp(@Param("corp_code") String corp_code) throws SQLException;
-
-
-    List<VipGroup> selectVipGroups(@Param("corp_code") String corp_code) throws SQLException;
+    List<VipGroup> selectCorpVipGroups(@Param("corp_code") String corp_code) throws SQLException;
 
     List<VipGroup> selectAllVipGroup(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
-
 
     int insertVipGroup(VipGroup vipGroup) throws SQLException;
 

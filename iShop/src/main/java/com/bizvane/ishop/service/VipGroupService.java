@@ -17,15 +17,13 @@ public interface VipGroupService {
 
     PageInfo<VipGroup> getAllVipGroupByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
-    List<VipGroup> getAllVipGroup(String corp_code) throws Exception;
+    List<VipGroup> selectCorpVipGroups(String corp_code) throws Exception;
 
     String insert(String message, String user_id) throws Exception;
 
     String update(String message, String user_id) throws Exception;
 
     int delete(int id) throws Exception;
-
-    List<VipGroup> selectVipGroupByCorp(String corp_code) throws Exception ;
 
     VipGroup   getVipGroupByCode(String corp_code, String code,String isactive) throws Exception;
 

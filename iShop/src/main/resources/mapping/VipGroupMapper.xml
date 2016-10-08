@@ -62,7 +62,7 @@
         </if>
         ORDER BY dvg.id DESC
     </select>
-    <select id="selectVipGroups" resultType="com.bizvane.ishop.entity.VipGroup">
+    <select id="selectCorpVipGroups" resultType="com.bizvane.ishop.entity.VipGroup">
         SELECT 
         dvg.id,
         dvg.vip_group_code,
@@ -74,18 +74,8 @@
         dvg.isactive
         FROM def_vip_group dvg
         WHERE dvg.corp_code = #{corp_code}
-        ORDER BY def_vip_group.id DESC
-    </select>
-
-    <select id="selectVipGroupByCorp" resultType="com.bizvane.ishop.entity.VipGroup">
-        SELECT
-        dvg.id,
-        dvg.vip_group_code,
-        dvg.vip_group_name,
-       dvg.corp_code,
-       dvg.isactive
-        FROM def_vip_group dvg
-        WHERE dvg.corp_code = #{corp_code}
+        AND dvg.isactive = 'Y'
+        ORDER BY dvg.id DESC
     </select>
 
     <select id="selectByVipGroupCode" resultType="com.bizvane.ishop.entity.VipGroup">
