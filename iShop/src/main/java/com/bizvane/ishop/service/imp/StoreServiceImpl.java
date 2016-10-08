@@ -122,7 +122,7 @@ public class StoreServiceImpl implements StoreService {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append(",");
+                    qrcode.append("、");
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
@@ -163,7 +163,7 @@ public class StoreServiceImpl implements StoreService {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append(",");
+                    qrcode.append("、");
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
@@ -347,7 +347,7 @@ public class StoreServiceImpl implements StoreService {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append(",");
+                    qrcode.append("、");
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
@@ -533,7 +533,7 @@ public class StoreServiceImpl implements StoreService {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append(",");
+                    qrcode.append("、");
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
