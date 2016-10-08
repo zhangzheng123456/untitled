@@ -106,7 +106,7 @@ public class StoreServiceImpl implements StoreService {
         List<Store> shops;
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectAllStore(corp_code, search_value);
-        StringBuilder qrcode = new StringBuilder("");
+
 
         for (int i=0;i<shops.size();i++) {
             Store storeBrandName = getStoreById(shops.get(i).getId());
@@ -116,6 +116,7 @@ public class StoreServiceImpl implements StoreService {
                 shops.get(i).setBrand_name("");
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            StringBuilder qrcode = new StringBuilder("");
             for (StoreQrcode storeQrcode:qrcodeList) {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
@@ -147,7 +148,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
         shops = storeMapper.selectByUserId(params);
-        StringBuilder qrcode = new StringBuilder("");
+
 
         for (int i=0;i<shops.size();i++) {
             Store storeBrandName = getStoreById(shops.get(i).getId());
@@ -157,6 +158,7 @@ public class StoreServiceImpl implements StoreService {
                 shops.get(i).setBrand_name("");
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            StringBuilder qrcode = new StringBuilder("");
             for (StoreQrcode storeQrcode:qrcodeList) {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
@@ -331,7 +333,7 @@ public class StoreServiceImpl implements StoreService {
 
         PageHelper.startPage(page_number, page_size);
         List<Store> shops = storeMapper.selectAllStoreScreen(params);
-        StringBuilder qrcode = new StringBuilder("");
+
 
         for (int i=0;i<shops.size();i++) {
             Store storeBrandName = getStoreById(shops.get(i).getId());
@@ -341,6 +343,7 @@ public class StoreServiceImpl implements StoreService {
                 shops.get(i).setBrand_name("");
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            StringBuilder qrcode = new StringBuilder("");
             for (StoreQrcode storeQrcode:qrcodeList) {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
@@ -518,7 +521,7 @@ public class StoreServiceImpl implements StoreService {
         params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
         List<Store> shops = storeMapper.selectByAreaCode(params);
-        StringBuilder qrcode = new StringBuilder("");
+
         for (int i=0;i<shops.size();i++) {
             Store storeBrandName = getStoreById(shops.get(i).getId());
             if (storeBrandName.getBrand_name()!=null) {
@@ -527,6 +530,7 @@ public class StoreServiceImpl implements StoreService {
                 shops.get(i).setBrand_name("");
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
+            StringBuilder qrcode = new StringBuilder("");
             for (StoreQrcode storeQrcode:qrcodeList) {
                 if (storeQrcode != null) {
                     String qrcode1 = storeQrcode.getQrcode();
