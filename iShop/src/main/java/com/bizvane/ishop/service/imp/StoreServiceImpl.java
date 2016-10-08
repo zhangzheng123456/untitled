@@ -119,13 +119,22 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (i != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
+//            for (StoreQrcode storeQrcode:qrcodeList) {
+//                if (storeQrcode != null) {
+//                    String qrcode1 = storeQrcode.getQrcode();
+//                    qrcode.append(qrcode1);
+//                    qrcode.append("、");
+//                }
+//            }
             shops.get(i).setQrcode(qrcode.toString());
             shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
         }
@@ -161,11 +170,13 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (i != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
@@ -346,11 +357,13 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (i != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
@@ -533,11 +546,13 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (i != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
