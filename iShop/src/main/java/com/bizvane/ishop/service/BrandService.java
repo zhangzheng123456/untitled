@@ -20,6 +20,8 @@ public interface BrandService {
 
     PageInfo<Brand> getAllBrandByPage(int page_number, int page_size, String corp_code, String search_value) throws Exception;
 
+    PageInfo<Brand> getPartBrandByPage(int page_number, int page_size, String corp_code,String[] brand_code, String search_value) throws SQLException;
+
     List<Brand> getAllBrand(String corp_code) throws Exception;
 
     String insert(String message, String user_id) throws Exception;

@@ -1144,7 +1144,18 @@ public class UserController {
                 if (role_code.equals(Common.ROLE_GM)) {
                     //企业管理员
                     list = userService.selectBySearch(request, page_number, page_size, corp_code, search_value);
-                } else if (role_code.equals(Common.ROLE_SM)) {
+                }else if (role_code.equals(Common.ROLE_BM)) {
+                    //品牌管理员
+                    String brand_code = request.getSession().getAttribute("brand_code").toString();
+                    brand_code = brand_code.replace(Common.SPECIAL_HEAD, "");
+                    List<Store> stores = storeService.selStoreByAreaBrandCode(corp_code, "", brand_code, "");
+                    String store_code = "";
+                    for (int i = 0; i < stores.size(); i++) {
+                        store_code = store_code + Common.SPECIAL_HEAD + stores.get(i).getStore_code() + ",";
+                    }
+                    list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", role_code);
+
+                }else if (role_code.equals(Common.ROLE_SM)) {
                     //店长
                     String store_code = request.getSession().getAttribute("store_code").toString();
                     list = userService.selectBySearchPart(page_number, page_size, corp_code, search_value, store_code, "", role_code);

@@ -228,7 +228,7 @@ public class AreaController {
                 //系统管理员
                 list = areaService.getAllAreaByPage(page_number, page_size, "", "");
             } else {
-                if (role_code.equals(Common.ROLE_GM)) {
+                if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_BM) ) {
                     list = areaService.selectByAreaCode(page_number, page_size, corp_code, "", "");
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     String area_code = request.getSession(false).getAttribute("area_code").toString();
