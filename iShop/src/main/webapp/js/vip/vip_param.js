@@ -255,18 +255,18 @@ function superaddition(data,num){//页面加载循环
             var params=[];
             for(var i=0;i<len.length;i++){
                 if(num>=2){
-                    a=i+1+(num-1)*pageSize;;
-                    var id=$(len[a]).attr("id");
+                    console.log(num);
+                    a=i+(num-1)*pageSize;
+                    var id=$(len[i]).attr("id");
                     var list={
                         "id":id,
                         "show_order":a
                     }
                 }else{
-                    a=i+1;
-                    var id=$(len[a]).attr("id");
+                    var id=$(len[i]).attr("id");
                     var list={
                         "id":id,
-                        "show_order":a
+                        "show_order":i
                     }
                 }
                 params.push(list);
@@ -275,8 +275,8 @@ function superaddition(data,num){//页面加载循环
             param['param']=params;
             console.log(params);
             oc.postRequire("post","/vipparam/updateShowOrder","0",param,function(data) {
-                console.log(data);
-            })
+                $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");
+            });
             console.log($(len[0]).attr("id"));  //拖动完成的回调函数，$(this)当前拖动对象
         },
         scrollSpeed:0 //默认为5，数值越大拖动的速度越快，为0则拖动时页面不会滚动
@@ -835,3 +835,7 @@ $(function(){
         $('html,body').animate({'scrollTop':btm},500);
     })
 });
+
+window.onload(function () {
+
+})
