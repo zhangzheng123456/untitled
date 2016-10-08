@@ -1148,7 +1148,7 @@ public class UserController {
     /**
      * 根据登录用户的角色类型
      * 输入的企业编号
-     * 查找该企业，该用户可选择的所有店铺
+     * 选择的区域和品牌，获取该用户可选择的所有店铺
      */
     @RequestMapping(value = "/stores", method = RequestMethod.POST)
     @ResponseBody

@@ -292,38 +292,7 @@ public class VipAnalysisController {
             Data data_area_code = new Data("area_code", area_code, ValueType.PARAM);
             Data data_query_type=new Data("query_type", type, ValueType.PARAM);
             Data data_date_time=new Data("date_time",date_time, ValueType.PARAM);
-
-
-
-        /*    JSONObject all = new JSONObject();
-            all.put("count","15675");
-            all.put("scale","36.1%");
-            all.put("vip_amount","6989");
-            all.put("vip_price","1399");
-            all.put("price","569");
-
-            JSONObject old_vip = new JSONObject();
-            all.put("count","10678");
-            all.put("scale","78.8%");
-            all.put("vip_amount","3452");
-            all.put("vip_price","1099");
-            all.put("price","546");
-
-            JSONObject new_vip = new JSONObject();
-            all.put("count","467");
-            all.put("scale","25.8%");
-            all.put("vip_amount","4533");
-            all.put("vip_price","1553");
-            all.put("price","657");
-
-            JSONObject obj = new JSONObject();
-            obj.put("all",all);
-            obj.put("old",old_vip);
-            obj.put("new",new_vip);*/
-
-//            Map datalist = iceInterfaceService.vipAnalysisBasicMethod(jsonObject,request);
             Map datalist = new HashMap<String, Data>();
-
             datalist.put(data_user_id.key, data_user_id);
             datalist.put(data_corp_code.key, data_corp_code);
             datalist.put(data_store_id.key, data_store_id);
