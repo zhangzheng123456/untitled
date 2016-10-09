@@ -77,7 +77,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
                 area_code = area_code.replace(Common.SPECIAL_HEAD,"");
 
             String[] areas = area_code.split(",");
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";
@@ -182,7 +182,7 @@ public class UserAchvGoalServiceImpl implements UserAchvGoalService {
             for (int i = 0; i < areas.length; i++) {
                 areas[i] = areas[i].substring(1, areas[i].length());
             }
-            List<Store> store = storeService.selectByAreaCode(corp_code, areas, "");
+            List<Store> store = storeService.selectByAreaBrand(corp_code, areas, "");
             String a = "";
             for (int i = 0; i < store.size(); i++) {
                 a = a + store.get(i).getStore_code() + ",";

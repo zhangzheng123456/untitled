@@ -873,13 +873,23 @@ public class AreaController {
                 logger.info("--------check-------" + Integer.valueOf(ids[i]));
                 Store store=storeService.getById(Integer.valueOf(ids[i]));
                 if(store!=null){
-                    store.setArea_code(area_code);
-                    store.setModified_date(Common.DATETIME_FORMAT.format(now));
-                    store.setModifier(user_id);
-                    storeService.updateStore(store);
-                    dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
-                    dataBean.setId(id);
-                    dataBean.setMessage("success");
+                    String area_code1 = store.getArea_code();
+                    String[] codes = area_code1.split(",");
+                    if (!Arrays.asList(codes).contains(Common.SPECIAL_HEAD+area_code)){
+                        area_code1 = area_code1 +Common.SPECIAL_HEAD+area_code+",";
+                        store.setArea_code(area_code1);
+                        store.setModified_date(Common.DATETIME_FORMAT.format(now));
+                        store.setModifier(user_id);
+                        storeService.updateStore(store);
+                        dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
+                        dataBean.setId(id);
+                        dataBean.setMessage("success");
+                    }else {
+                        dataBean.setCode(Common.DATABEAN_CODE_ERROR);
+                        dataBean.setId(id);
+                        dataBean.setMessage(store.getStore_name()+"已在该区域，请勿重复选择");
+                    }
+
                 }
             }
         } catch (Exception ex) {

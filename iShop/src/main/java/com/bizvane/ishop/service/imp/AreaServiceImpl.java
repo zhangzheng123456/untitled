@@ -326,8 +326,15 @@ public class AreaServiceImpl implements AreaService {
         List<Store> stores1 = page.getList();
         for (int i = 0; i < stores1.size(); i++) {
             Store store = stores1.get(i);
-            if (store.getArea_code() != null && store.getArea_code().equals(area_code)) {
-                store.setIs_this_area("Y");
+            if (store.getArea_code() != null) {
+                String area = store.getArea_code();
+                if (area.contains(Common.SPECIAL_HEAD+area_code+",")){
+                    store.setIs_this_area("Y");
+                }
+                area = area.replace(Common.SPECIAL_HEAD,"");
+                if (area.endsWith(","))
+                    area = area.substring(0,area.length()-1);
+                store.setArea_code(area);
             } else {
                 if (store.getArea_code() == null) {
                     store.setArea_code("");

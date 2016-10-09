@@ -9,6 +9,8 @@
         <result column="store_name" property="store_name"/>
         <result column="brand_code" property="brand_code"/>
         <result column="area_code" property="area_code"/>
+        <result column="area_name" property="area_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
+        <result column="brand_name" property="brand_name" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="flg_tob" property="flg_tob" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
         <result column="corp_code" property="corp_code"/>
         <result column="modified_date" property="modified_date" typeHandler="com.bizvane.ishop.utils.EmptyStringIfNull"/>
@@ -17,36 +19,9 @@
         <association property="corp" javaType="com.bizvane.ishop.entity.Corp">
             <result column="corp_name" property="corp_name"/>
         </association>
-        <association property="area" javaType="com.bizvane.ishop.entity.Area">
-            <result column="area_name" property="area_name"/>
-        </association>
     </resultMap>
 
     <select id="selectByStoreId" resultMap="Store">
-        SELECT
-        def_store.id,
-        store_id,
-        store_code,
-        store_name,
-        brand_code,
-        flg_tob,
-        def_store.area_code,
-        def_store.corp_code,
-        def_store.modified_date,
-        def_store.modifier,
-        def_store.created_date,
-        def_store.creater,
-        def_store.isactive,
-        def_corp.corp_name,
-        def_area.area_name
-        FROM def_store,def_corp,def_area
-        WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = def_area.corp_code
-        AND def_store.area_code = def_area.area_code
-        AND def_store.id=#{id}
-    </select>
-
-    <select id="selectStoreById" resultMap="Store">
         SELECT
         def_store.id,
         store_id,
@@ -100,14 +75,9 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
-        def_corp.corp_name,
-        def_area.area_name
-        FROM def_store,def_corp,def_area
+        def_corp.corp_name
+        FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = def_area.corp_code
-        AND def_store.area_code = def_area.area_code
---         AND def_store.corp_code = def_brand.corp_code
---         AND def_store.brand_code LIKE concat('%',def_brand.brand_code,'%')
         <if test="corp_code != null and corp_code !=''">
             AND def_store.corp_code = #{corp_code}
         </if>
@@ -116,13 +86,10 @@
             (store_code LIKE concat('%',#{search_value},'%')
             OR store_id LIKE concat('%',#{search_value},'%')
             OR store_name LIKE concat('%',#{search_value},'%')
-            OR def_area.area_name LIKE concat('%',#{search_value},'%')
             OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
             )
         </if>
         AND def_corp.isactive = 'Y'
-        AND def_area.isactive = 'Y'
---         AND def_brand.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
@@ -131,19 +98,16 @@
         select
         def_store.store_code,
         def_store.store_name
-        FROM def_store,def_corp,def_area
+        FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = def_area.corp_code
-        AND def_store.area_code = def_area.area_code
         AND def_store.corp_code = #{corp_code}
         AND def_store.isactive = 'Y'
         AND def_corp.isactive = 'Y'
-        AND def_area.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
 
-    <select id="selectByAreaCode" resultMap="Store">
+    <select id="selectByAreaBrand" resultMap="Store">
         select
         def_store.id,
         store_id,
@@ -156,18 +120,15 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
-        def_corp.corp_name,
-        def_area.area_name
-        FROM def_store,def_corp,def_area
+        def_corp.corp_name
+        FROM def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = def_area.corp_code
-        AND def_store.area_code = def_area.area_code
         AND def_store.corp_code = #{corp_code}
         <if test="area_code != null">
-          AND def_store.area_code IN
-          <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
-              #{item}
-          </foreach>
+            AND
+            <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
+                def_store.area_code REGEXP #{item}
+            </foreach>
         </if>
         <if test="brand_code != null">
             AND
@@ -181,7 +142,6 @@
             OR def_store.ID like concat('%',#{search_value},'%')
             OR store_id LIKE concat('%',#{search_value},'%')
             OR store_name like concat('%',#{search_value},'%')
-            OR def_area.area_name like concat('%',#{search_value},'%')
             OR def_corp.corp_name like concat('%',#{search_value},'%')
             OR def_store.modified_date like concat('%',#{search_value},'%')
             OR def_store.modifier like concat('%',#{search_value},'%')
@@ -192,30 +152,26 @@
             AND def_store.isactive = #{isactive}
         </if>
         AND def_corp.isactive = 'Y'
-        AND def_area.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
 
 <!--下拉框，根据区域拉店铺(区经，企业管理员)-->
-    <select id="selStoreByAreaCode" resultMap="Store">
+    <select id="selStoreByAreaBrand" resultMap="Store">
         select
         def_store.id,
         store_code,
         store_name,
         def_store.area_code,
         def_store.corp_code,
-        def_corp.corp_name,
-        def_area.area_name
-        from def_store,def_corp,def_area
+        def_corp.corp_name
+        from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = def_area.corp_code
-        AND def_store.area_code = def_area.area_code
         AND def_store.corp_code = #{corp_code}
         <if test="area_code != null and area_code !=''">
-        AND def_store.area_code IN
-            <foreach item="item" index="index" collection="area_code" open="(" separator="," close=")">
-                #{item}
+            AND
+            <foreach item="item" index="index" collection="area_code" open="(" separator="or" close=")">
+                def_store.area_code regexp #{item}
             </foreach>
         </if>
         <if test="brand_code != null and brand_code !=''">
@@ -226,13 +182,12 @@
         </if>
 
         <if test="search_value != null and search_value !=''">
-            and def_store.STORE_NAME like concat('%',#{search_value},'%')
+            and def_store.store_name like concat('%',#{search_value},'%')
         </if>
         <if test="isactive != null and isactive !=''">
             AND def_store.isactive = #{isactive}
         </if>
         AND def_corp.isactive = 'Y'
-        AND def_area.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
@@ -250,19 +205,16 @@
         AND isactive = 'Y'
     </select>
     <!--下拉框，根据店铺编号拉店铺（店长，导购）-->
-    <select id="selStoreByUserCode" resultMap="Store">
+    <select id="selStoreByStoreCodes" resultMap="Store">
         select
         def_store.id,
         store_code,
         store_name,
         def_store.area_code,
         def_store.corp_code,
-        def_corp.corp_name,
-        def_area.area_name
-        from def_store,def_corp,def_area
+        def_corp.corp_name
+        from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = def_area.corp_code
-        AND def_store.area_code = def_area.area_code
         AND def_store.store_code IN
         <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
             #{item}
@@ -275,7 +227,6 @@
             AND def_store.isactive = #{isactive}
         </if>
         AND def_corp.isactive = 'Y'
-        AND def_area.isactive = 'Y'
         GROUP BY def_store.id
         ORDER BY def_store.id DESC
     </select>
@@ -293,12 +244,9 @@
         def_store.modified_date,
         def_store.modifier,
         def_store.isactive,
-        def_corp.corp_name,
-        def_area.area_name
-        from def_store,def_corp,def_area
+        def_corp.corp_name
+        from def_store,def_corp
         WHERE def_store.corp_code = def_corp.corp_code
-        AND def_store.corp_code = def_area.corp_code
-        AND def_store.area_code = def_area.area_code
         AND def_store.store_code IN
         <foreach item="item" index="index" collection="store_codes" open="(" separator="," close=")">
             #{item}
@@ -307,21 +255,15 @@
         <if test="search_value != null and search_value !=''">
             AND
             (store_code like concat('%',#{search_value},'%')
-            OR def_store.ID like concat('%',#{search_value},'%')
             OR def_store.store_id like concat('%',#{search_value},'%')
-            OR STORE_NAME like concat('%',#{search_value},'%')
-            OR def_area.area_name like concat('%',#{search_value},'%')
+            OR store_name like concat('%',#{search_value},'%')
             OR def_corp.corp_name like concat('%',#{search_value},'%')
-            OR def_store.MODIFIED_DATE like concat('%',#{search_value},'%')
-            OR def_store.MODIFIER like concat('%',#{search_value},'%')
-            OR def_store.isactive like concat('%',#{search_value},'%')
             )
         </if>
         <if test="isactive != null and isactive !=''">
             AND def_store.isactive = #{isactive}
         </if>
         AND def_corp.isactive = 'Y'
-        AND def_area.isactive = 'Y'
         ORDER BY def_store.id DESC
     </select>
 
@@ -458,7 +400,7 @@
     </delete>
 
     <!--删除店铺下员工-->
-    <update id="deleteStoreByUserid">
+    <update id="deleteStoreUser">
         UPDATE def_user
         SET store_code=replace(store_code,#{store_code},'')
         WHERE id=#{user_id}
@@ -492,21 +434,24 @@
     <select id="selectAllStoreScreen" resultMap="Store">
         SELECT
         ds.*,
-        dc.corp_name,
-        da.area_name
+        dc.corp_name
         FROM def_store ds,def_corp dc ,def_area da,def_brand db
         WHERE ds.corp_code = dc.corp_code
         AND ds.corp_code = da.corp_code
         AND ds.corp_code = db.corp_code
-        AND ds.area_code = da.area_code
---         AND ds.brand_code LIKE concat('%',db.brand_code,'%')
         <if test="corp_code!=null and corp_code!=''">
             AND ds.corp_code=#{corp_code}
         </if>
         <if test="area_codes!=null and area_codes!=''">
-            AND ds.area_code IN
-            <foreach collection="area_codes" index="index" item="item" open="(" separator="," close=")">
-                #{item}
+            AND
+            <foreach collection="area_codes" index="index" item="item" open="(" separator="or" close=")">
+                ds.area_code REGEXP #{item}
+            </foreach>
+        </if>
+        <if test="brand_codes != null and brand_codes!=''">
+            AND
+            <foreach collection="brand_codes" item="item" index="index" open="(" separator="or" close=")">
+                ds.brand_code REGEXP #{item}
             </foreach>
         </if>
         <if test="store_codes!=null and store_codes!=''">
@@ -524,6 +469,7 @@
                     </when>
                     <when test="entryKey=='area_name' and entryValue!=''">
                         da.${entryKey} LIKE concat('%',#{entryValue},'%')
+                        AND ds.area_code LIKE concat('%§',da.area_code,',%')
                     </when>
                     <when test="entryKey=='brand_name' and entryValue!=''">
                         db.${entryKey} LIKE concat('%',#{entryValue},'%')
@@ -576,20 +522,17 @@
         store_name,
         ds.area_code,
         ds.corp_code
-        FROM def_store ds,def_corp dc,def_area da
+        FROM def_store ds,def_corp dc
         WHERE ds.corp_code = dc.corp_code
-        AND ds.corp_code = da.corp_code
-        AND ds.area_code = da.area_code
         AND ds.corp_code = #{corp_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
-            ds.area_code = #{item}
+            ds.area_code REGEXP #{item}
         </foreach>
         <if test="isactive != null and isactive !=''">
         AND ds.isactive = #{isactive}
         </if>
         AND dc.isactive = 'Y'
-        AND da.isactive = 'Y'
         ORDER BY ds.id DESC
     </select>
 

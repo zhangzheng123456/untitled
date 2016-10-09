@@ -1262,14 +1262,14 @@ public class UserController {
                 if (jsonObject.has("area_code") && !jsonObject.get("area_code").toString().equals("")){
                     area_code = jsonObject.get("area_code").toString();
                 }
-                list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
                 // list = storeService.getAllStore(request, page_number, page_size, "", searchValue);
             } else {
                 if (role_code.equals(Common.ROLE_GM)) {
                     if (jsonObject.has("area_code") && !jsonObject.get("area_code").toString().equals("")){
                         area_code = jsonObject.get("area_code").toString();
                     }
-                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
+                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code, searchValue);
                 } else if (role_code.equals(Common.ROLE_AM)) {
                     if (jsonObject.has("area_code") && !jsonObject.get("area_code").toString().equals("")){
                         area_code = jsonObject.get("area_code").toString();
@@ -1277,10 +1277,10 @@ public class UserController {
                         area_code = request.getSession().getAttribute("area_code").toString();
                         area_code = area_code.replace(Common.SPECIAL_HEAD,"");
                     }
-                    list = storeService.selStoreByAreaCode(page_number, page_size, corp_code, area_code,brand_code,searchValue);
+                    list = storeService.selStoreByAreaBrandCode(page_number, page_size, corp_code, area_code,brand_code,searchValue);
                 } else {
                     String store_code = request.getSession().getAttribute("store_code").toString();
-                    list = storeService.selStoreByUserCode(page_number, page_size, store_code, corp_code, searchValue);
+                    list = storeService.selStoreByStoreCodes(page_number, page_size, store_code, corp_code, searchValue);
                 }
             }
 
@@ -1327,11 +1327,10 @@ public class UserController {
                 //登录用户为区经
                 String area_code = request.getSession().getAttribute("area_code").toString();
                 String corp_code1 = request.getSession().getAttribute("corp_code").toString();
+                area_code = area_code.replace(Common.SPECIAL_HEAD,"");
                 String[] areaCodes = area_code.split(",");
-                for (int i = 0; i < areaCodes.length; i++) {
-                    areaCodes[i] = areaCodes[i].substring(1, areaCodes[i].length());
-                }
-                list = storeService.selectByAreaCode(corp_code1, areaCodes, Common.IS_ACTIVE_Y);
+
+                list = storeService.selectByAreaBrand(corp_code1, areaCodes, Common.IS_ACTIVE_Y);
             } else {
                 //登录用户为店长或导购
                 String store_code = request.getSession().getAttribute("store_code").toString();
@@ -1341,7 +1340,6 @@ public class UserController {
             dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
             dataBean.setId(id);
             dataBean.setMessage(stores.toString());
-//            }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);
             dataBean.setId(id);

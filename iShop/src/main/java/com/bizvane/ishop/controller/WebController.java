@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -96,7 +95,7 @@ public class WebController {
                                 areaCodes[0] = areaCodes[0].substring(1, areaCodes[0].length());
                             }
                             String[] ids = new String[]{areaCodes[0]};
-                            List<Store> list = storeService.selectByAreaCode(corp_code, ids, Common.IS_ACTIVE_Y);
+                            List<Store> list = storeService.selectByAreaBrand(corp_code, ids, Common.IS_ACTIVE_Y);
                             array.add(list.get(0).getStore_code());
                         } else if (role_code.equals(Common.ROLE_GM) || role_code.equals(Common.ROLE_SYS)) {
                             String store_code = storeService.getCorpStore(corp_code).get(0).getStore_code();

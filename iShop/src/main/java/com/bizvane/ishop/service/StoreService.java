@@ -28,8 +28,7 @@ public interface StoreService {
      */
     PageInfo<Store> selectByUserId(int page_number, int page_size, String store_code, String corp_code, String search_value) throws Exception;
 
-    PageInfo<Store> selStoreByUserCode(int page_number, int page_size, String store_code, String corp_code, String search_value) throws Exception;
-
+    PageInfo<Store> selStoreByStoreCodes(int page_number, int page_size, String store_code, String corp_code, String search_value) throws Exception;
 
     List<Store> selectAll(String store_code, String corp_code, String isactive) throws Exception;
 
@@ -65,13 +64,13 @@ public interface StoreService {
 
     int selectCount(String created_date) throws Exception;
 
-    PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code,String[] brand_code, String search_value) throws Exception;
+    PageInfo<Store> selectByAreaBrand(int page_number, int page_size, String corp_code, String[] area_code, String[] brand_code, String search_value) throws Exception;
 
-    PageInfo<Store> selStoreByAreaCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value) throws Exception;
+    PageInfo<Store> selStoreByAreaBrandCode(int page_number, int page_size, String corp_code, String area_code, String brand_code, String search_value) throws Exception;
 
     List<Store> selStoreByAreaBrandCode(String corp_code, String area_code, String brand_code, String search_value) throws Exception ;
 
-    List<Store> selectByAreaCode(String corp_code, String[] area_code, String isactive) throws Exception;
+    List<Store> selectByAreaBrand(String corp_code, String[] area_code, String isactive) throws Exception;
 
     List<Store> selectStoreCountByArea(String corp_code, String area_code, String isactive) throws Exception;
 
@@ -81,11 +80,7 @@ public interface StoreService {
 
     String insertExecl(Store store) throws Exception;
 
-    PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String store_codes, Map<String, String> map) throws Exception;
-
-     List<Store> selectAllStores(String corp_code, String search_value) throws Exception;
-
-     JSONArray selectStoresByAreaCode(String corp_code,String search_value) throws Exception;
+    PageInfo<Store> getAllStoreScreen(int page_number, int page_size, String corp_code, String area_codes, String brand_codes,String store_codes, Map<String, String> map) throws Exception;
 
     int deleteStoreQrcode(String corp_code,String store_code) throws Exception;
 
