@@ -1,6 +1,6 @@
 jQuery(function(){
 	function GetRequest() {
-        var url = location.search; //获取url中"?"符后的字串
+        var url = decodeURI(location.search); //获取url中"?"符后的字串
         var theRequest = new Object();
         if (url.indexOf("?") != -1) {
             var str = url.substr(1);
@@ -99,12 +99,15 @@ jQuery(function(){
 	//页面加载循环
 	function superaddition(list){
 		for (var i = 0; i < list.length; i++){
-			jQuery('.allShops').append('<div class="shop"><a href="goods.html?corp_code='
-			+ corp_code 
-			+ '&id='
-			+ list[i].id
-			+ '"><div class="img"><img src="' 
-			+ list[i].goods_image 
+			var goods_image="";
+	        if(list[i].goods_image.indexOf("http")!==-1){
+	            goods_image=list[i].goods_image;
+	        }
+	        if(list[i].goods_image.indexOf("http")==-1){
+	            goods_image="image/goods_default_image.png";
+	        }
+			jQuery('.allShops').append('<div class="shop" data-id="'+list[i].id+'"><a href="javascript:void(0);"><div class="img"><img src="' 
+			+ goods_image
 			+ '"></div><div class="shop-t"><h1>' 
 			+ list[i].goods_name + '</h1><p>货号:' 
 			+ list[i].goods_code + '</p><p class="pice">价格:<span>￥' 
@@ -193,5 +196,18 @@ jQuery(function(){
         }
     	
     })
+    $(".allShops").on("click",".shop",function(e){
+    	var id=$(this).attr("data-id");
+    	var return_jump={};//定义一个对象
+            return_jump["inx"]=inx;//跳转到第几页
+            return_jump["value"]=value;//搜索的值;
+            return_jump["filtrate"]=filtrate;//筛选的值
+            return_jump["param"]=JSON.stringify(param);//搜索定义的值
+            return_jump["_param"]=JSON.stringify(_param)//筛选定义的值
+            return_jump["list"]=list;//筛选的请求的list;
+            return_jump["pageSize"]=pageSize;//每页多少行
+            sessionStorage.setItem("return_jump",JSON.stringify(return_jump));
+    	window.location.href="/goods/mobile/goods.html?corp_code="+corp_code+"&id="+id+"";
+	})
 });
 

@@ -24,7 +24,7 @@ $(function(){
     $('#left_shift').click(function(){
         //先判断是否有选中
         var li=$("#file_list_l input[type='checkbox']:checked").parents("li");
-        var input=$("#file_list_r input[type='checkbox']:checked");
+        var input=$("#file_list_l input[type='checkbox']:checked");
         if(li.length=="0"){
             frame();
             $('.frame').html('请先选择'); 
@@ -83,3 +83,12 @@ function bianse(){
     $("#file_list_r li:odd").css("backgroundColor","#fff");
     $("#file_list_r li:even").css("backgroundColor","#ededed");
 }
+$("#file_list").on("click","li",function(){
+    var input=$(this).find("input")[0];
+    var thinput=$("thead input")[0];
+    if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
+        input.checked = true;
+    }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
+        input.checked = false;
+    }
+})

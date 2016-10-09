@@ -23,7 +23,6 @@ jQuery(function () {
         }
         return theRequest;
     }
-
     var a = GetRequest();
     var id = a.id;
     var corp_code = a.corp_code;
