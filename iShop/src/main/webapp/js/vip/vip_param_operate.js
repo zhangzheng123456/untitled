@@ -58,6 +58,8 @@ var oc = new ObjectControl();
                     PARAM_TYPE="text"
                 }else if(PARAM_TYPE=="长文本"){
                     PARAM_TYPE="longtext"
+                }else if(PARAM_TYPE=="分割线"){
+                    PARAM_TYPE="rule"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
                 if(PARAM_TYPE==""){
@@ -120,6 +122,8 @@ var oc = new ObjectControl();
                     PARAM_TYPE="text"
                 }else if(PARAM_TYPE=="长文本"){
                     PARAM_TYPE="longtext"
+                }else if(PARAM_TYPE=="分割线"){
+                    PARAM_TYPE="rule"
                 }
                 var PARAM_VALUE= $("#PARAM_VALUE").val();
                 // if(PARAM_TYPE=="select" && PARAM_VALUE==""){
@@ -247,6 +251,9 @@ jQuery(document).ready(function () {
                 }else if(param_type=="longtext"){
                     param_type="长文本";
                     $("#PARAM_VALUE").attr("disabled","true");
+                }else if(param_type=="rule"){
+                    param_type="分割线";
+                    $("#PARAM_VALUE").attr("disabled","true");
                 }
                 var required=msg.required;
                 if(required=="Y"){
@@ -338,7 +345,7 @@ $(".paramType li").click(function () {
     var val = $(this).html();
     console.log(val);
     $("#PARAM_TYPE").val(val);
-    if(val=="自定义"||val=="时间"||val=="长文本"){
+    if(val=="自定义"||val=="时间"||val=="长文本"||val=="分割线"){
         $("#PARAM_VALUE").attr("disabled","true");
     }else if(val=="选择列表"){
         $("#PARAM_VALUE").removeAttr("disabled");

@@ -403,7 +403,6 @@ $(".label_nav li").click(function () {
 })
 //添加，删除标签
 function labelDelete(obj) {
-    // $("#label_box span i").click(function () {
     var param={};
     var span=$(obj);
     var rid=$(obj).parent("span").attr("data-rid");
@@ -414,8 +413,38 @@ function labelDelete(obj) {
             var total=parseInt($(".span_total").html())-1;
             $(".span_total").html(total);
         }
-    })
-    // });
+    });
+    var that=span.parent("span").text();
+    console.log(that);
+    var len=$("#hotlabel span").length;
+    var len_o=$("#label_org span").length;
+    var len_u=$("#label_user span").length;
+    for(var i=0;i<len;i++){
+        if($($("#hotlabel span")[i]).html()==that){
+           var classname=$($("#hotlabel span")[i]).attr("class");
+            if(classname=="label_u_active"){
+                $($("#hotlabel span")[i]).removeClass().addClass("label_u");
+            }
+            if(classname=="label_g_active"){
+                $($("#hotlabel span")[i]).removeClass().addClass("label_g");
+            }
+        }
+    }
+    for(var i=0;i<len_o;i++){
+        if($($("#label_org span")[i]).html()==that){
+            $($("#label_org span")[i]).removeClass().addClass("label_g")
+        }
+    }
+    for(var i=0;i<len_o;i++){
+        if($($("#label_org span")[i]).html()==that){
+            $($("#label_org span")[i]).removeClass().addClass("label_g")
+        }
+    }
+    for(var i=0;i<len_u;i++){
+        if($($("#label_user span")[i]).html()==that){
+            $($("#label_user span")[i]).removeClass().addClass("label_u")
+        }
+    }
 }
 function addViplabel() {
     var id=sessionStorage.getItem("id");
