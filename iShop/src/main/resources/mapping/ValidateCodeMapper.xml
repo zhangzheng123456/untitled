@@ -19,7 +19,14 @@
     FROM def_validate_code
     WHERE 1 = 1
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-            ${entryKey} REGEXP #{entryValue}
+            <choose>
+                <when test="entryValue!=''">
+                    ${entryKey} REGEXP #{entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY id DESC
     </select>

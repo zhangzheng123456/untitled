@@ -236,10 +236,10 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     dc.${entryKey} REGEXP #{entryValue}
                 </when>
-                <when test="entryKey=='store_name'">
+                <when test="entryValue!='' and entryKey=='store_name'">
                     ds.${entryKey} REGEXP #{entryValue}
                 </when>
                 <when test="entryValue!=''">

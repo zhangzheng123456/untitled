@@ -343,17 +343,20 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryKey=='user_name'">
+                <when test="entryValue!='' and entryKey=='user_name'">
                     u.${entryKey} REGEXP #{entryValue}
                 </when>
-                <when test="entryKey=='store_name'">
+                <when test="entryValue!='' and entryKey=='store_name'">
                     s.${entryKey} REGEXP #{entryValue}
                 </when>
-                <when test="entryKey=='corp_name'">
+                <when test="entryValue!='' and entryKey=='corp_name'">
                     c.${entryKey} REGEXP #{entryValue}
                 </when>
-                <otherwise>
+                <when test="entryValue!=''">
                     ua.${entryKey} REGEXP #{entryValue}
+                </when>
+                <otherwise>
+                   1=1
                 </otherwise>
             </choose>
         </foreach>
