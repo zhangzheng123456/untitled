@@ -216,11 +216,27 @@ function superaddition(data,num){//页面加载循环
     }else{
         pageNumber=num;
     }
+    var paramType="";
     for (var i = 0; i < data.length; i++) {
         if(num>=2){
             var a=i+1+(num-1)*pageSize;
         }else{
             var a=i+1;
+        }
+        if(data[i].param_type=="text"){
+            paramType="自定义";
+        }
+        if(data[i].param_type=="select"){
+            paramType="选择列表";
+        }
+        if(data[i].param_type=="date"){
+            paramType="时间";
+        }
+        if(data[i].param_type=="longtext"){
+            paramType="长文本";
+        }
+        if(data[i].param_type=="rule"){
+            paramType="分割线";
         }
         $(".table tbody").append("<tr id='"+data[i].id+"''><td width='50px;' style='text-align: left;'><div class='checkbox'><input  type='checkbox' value='' name='test' title='全选/取消' class='check'  id='checkboxTwoInput"
             + i
@@ -234,7 +250,7 @@ function superaddition(data,num){//页面加载循环
             + "</td><td>"
             + data[i].param_name
             + "</td><td>"
-            + data[i].param_type
+            + paramType
             + "</td><td><span title="+data[i].param_values+">"
             + data[i].param_values
             + "</span></td><td>"
@@ -255,19 +271,25 @@ function superaddition(data,num){//页面加载循环
             var params=[];
             for(var i=0;i<len.length;i++){
                 if(num>=2){
-                    a=i+1+(num-1)*pageSize;;
-                    var id=$(len[a]).attr("id");
+                    console.log(num);
+                    a=i+(num-1)*pageSize;
+                    var id=$(len[i]).attr("id");
                     var list={
                         "id":id,
                         "show_order":a
                     }
+                    $(len[i]).children("td:nth-child(2)").html(a+1);
+                    $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+                    $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
                 }else{
-                    a=i+1;
-                    var id=$(len[a]).attr("id");
+                    var id=$(len[i]).attr("id");
                     var list={
                         "id":id,
-                        "show_order":a
+                        "show_order":i
                     }
+                    $(len[i]).children("td:nth-child(2)").html(i+1);
+                    $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+                    $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
                 }
                 params.push(list);
             }
@@ -275,9 +297,9 @@ function superaddition(data,num){//页面加载循环
             param['param']=params;
             console.log(params);
             oc.postRequire("post","/vipparam/updateShowOrder","0",param,function(data) {
-                console.log(data);
-            })
-            console.log($(len[0]).attr("id"));  //拖动完成的回调函数，$(this)当前拖动对象
+
+                // $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");
+            });
         },
         scrollSpeed:0 //默认为5，数值越大拖动的速度越快，为0则拖动时页面不会滚动
     });
@@ -835,3 +857,4 @@ $(function(){
         $('html,body').animate({'scrollTop':btm},500);
     })
 });
+

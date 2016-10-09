@@ -119,7 +119,11 @@ public class VipAlbumController {
                 String album_id = vipAlbumService.selectAlbumByUrl(image_url).getId();
                 dataBean.setCode(Common.DATABEAN_CODE_SUCCESS);
                 dataBean.setId(id);
-                dataBean.setMessage(album_id);
+                JSONObject results = new JSONObject();
+                Date now = new Date();
+                results.put("id",album_id);
+                results.put("date",Common.DATETIME_FORMAT.format(now));
+                dataBean.setMessage(results.toString());
             }
         } catch (Exception ex) {
             dataBean.setCode(Common.DATABEAN_CODE_ERROR);

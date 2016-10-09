@@ -10,9 +10,9 @@
     <link rel="stylesheet" href="../css/font_style.css">
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/vip-data.css">
+    <!--<link rel="stylesheet" href="../css/jquery.dad.css">-->
     <link rel="stylesheet" href="../css/jquery.dad.css">
     <style>
-        <!--保持按钮样式-->
        .expand_btn button{
            width: 160px;
            cursor: pointer;
@@ -651,6 +651,7 @@
 </div>
 </body>
 <script src="../table/js/jquery.min.js"></script>
+<script src="../js/jquery.dad.min.js"></script>
 <!-- oss存储 -->
 <script src="http://gosspublic.alicdn.com/aliyun-oss-sdk-4.3.0.min.js"></script>
 <script type="text/javascript" src="../table/js/jquery.nicescroll.min.js"></script>
@@ -1103,12 +1104,14 @@
             }else{
                 ul.hide();
             }
-        })});
+        });
+        $("#chart_analyze").dad()
+    });
 </script>
-<script src="../js/jquery.dad.min.js"></script>
-<script type="text/javascript">
-    $("#chart_analyze").dad({
-        draggable:'span'
-    })
-</script>
+<!--<script src="../js/jquery.dad.min.js"></script>-->
+<!--<script type="text/javascript">-->
+    <!--$("#chart_analyze").dad({-->
+        <!--draggable:'span'-->
+    <!--})-->
+<!--</script>-->
 </html>

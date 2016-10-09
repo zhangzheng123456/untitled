@@ -8,6 +8,35 @@ var count='';
 var un_push='';
 var proportion_list={};
 /**********************左侧数据**************************************************************************************/
+//获取品牌
+function getBrand(){
+    var search_param=arguments.length;
+    var param={};
+    param["corp_code"]= localStorage.getItem('corp_code');
+    oc.postRequire("post","/shop/brand", "",param, function(data){
+        console.log(data);
+        var message=JSON.parse(data.message)
+        var brands=message.brands;//数组
+        console.log(brands);
+        //遍历数组添加页面元素
+        if(brands.length<7){
+            $('#select_analyze_brand s').attr('style','display:none')
+        }else{
+            $('#select_analyze_brand s').attr('style','display:block')
+        }
+        for(var i=0,ul='';i<brands.length;i++){
+            ul+="<li brand_cord='"+brands[i].brand_code+"'>"+brands[i].brand_name+"</li>";
+        }
+        var brand_name=brands[0].brand_name;
+        var brand_code=brands[0].brand_code;//区域号
+        if(search_param==0){
+            $('#side_analyze ul li:nth-child(1) s').html(brand_name);
+            $('#side_analyze ul li:nth-child(1) s').attr('brand_code',brand_code);
+        }
+        $('#select_analyze_brand ul').append(ul);
+    })
+}
+getBrand();
 //获取区域
 function GetArea(){
     var search_param=arguments.length;
@@ -101,6 +130,12 @@ function showNameClick(e){
         getStore(area_code);
         $('#select_analyze').toggle();
         $($('.vip_nav_bar li[class="liactive"]')[0]).trigger('click')
+    }else if($(d).attr('id')=='select_analyze_brand'){
+        console.log('OK');
+        var brand_code=$(e).attr('brand_code');
+        $('#side_analyze ul li:nth-child(1) s').html($(e).html());
+        $('#side_analyze ul li:nth-child(1) s').attr('brand_code',brand_code);
+        $('#select_analyze_brand').toggle();
     }else{
         var store_code=$(e).attr('data_store');
         $('#side_analyze ul li:nth-child(3) s').html($(e).html());
@@ -157,6 +192,8 @@ function searchValue(e){
     //判断是区域搜索还是店铺搜索
       if($(parent).attr('id')=='select_analyze'){
           GetArea(search);
+      }else if($(parent).attr('id')=='select_analyze_brand'){
+          getBrand();
       }else{
           getStore( $($('#side_analyze ul li:nth-child(2) s')[0]).attr('data_area'));
       }
@@ -164,7 +201,7 @@ function searchValue(e){
 //页面加载前加载区域
 GetArea();
 //绑定事件下拉事件
-$('#side_analyze>ul:nth-child(1) li:gt(0)').click(function(){
+$('#side_analyze>ul:nth-child(1) li').click(function(){
         var event=window.event||arguments[0];
         if(event.stopPropagation){
             event.stopPropagation();
@@ -177,6 +214,15 @@ $('#side_analyze>ul:nth-child(1) li:gt(0)').click(function(){
             if($('#select_analyze input').val()){
                 $('#select_analyze input').val('');
                 $('#select_analyze ul').html('');
+                GetArea();
+            }
+        }else if($(this).find('b').html()=='品牌'){
+            $('#select_analyze_brand').toggle();
+            $('#select_analyze_shop').hide();
+            $('#select_analyze').hide();
+            if($('#select_analyze_brand input').val()){
+                $('#select_analyze_brand input').val('');
+                $('#select_analyze_brand ul').html('');
                 GetArea();
             }
         }else{
@@ -1402,6 +1448,7 @@ $().ready(function(){
     $('#select_analyze s').click(getMore);
     $('#select_analyze ul').on('click','li',showNameClick);
     $('#select_analyze_shop ul').on('click','li',showNameClick);
+    $('#select_analyze_brand ul').on('click','li',showNameClick);
     //加载更多
     $('#side_analyze div s').click(getMore);
     //添加搜索

@@ -165,6 +165,7 @@
     background: #FFFFFF;
 }
 #chart_analyze .chart_head{
+    cursor: move;
     display: block;
     width: 100%;
     font-size: 14px;
@@ -264,7 +265,7 @@
 }
 
 /*/!*下拉框定位*!/*/
-#select_analyze,#select_analyze_shop{
+#select_analyze,#select_analyze_shop,#select_analyze_brand{
     position: absolute;
     display:none;
     left: 2%;
@@ -274,11 +275,21 @@
     border: 1px solid #e8e8e8;
     color: #888888;
 }
-#select_analyze>div,#select_analyze_shop>div{
+#select_analyze_brand{
+    position: absolute;
+    display:none;
+    left: 2%;
+    top:39px;
+    z-index: 100;
+    background: #E8E8E8;
+    border: 1px solid #e8e8e8;
+    color: #888888;
+}
+#select_analyze>div,#select_analyze_shop>div,#select_analyze_brand>div{
     width: 273px;
     background: #f5f5f5;
 }
-#select_analyze>div,#select_analyze_shop>div{
+#select_analyze>div,#select_analyze_shop>div,#select_analyze_brand>div{
     width: 349px;
     left: 132px;
     top:130px;
@@ -287,7 +298,7 @@
     background: #f5f5f5;
     border-radius:4px;
 }
-#select_analyze input,#select_analyze_shop input{
+#select_analyze input,#select_analyze_shop input,#select_analyze_brand input{
     width: 90%;
     height: 30px;
     border-radius: 8px;
@@ -296,35 +307,35 @@
     padding-right: 15px;
     margin-left: 5%;
 }
-#select_analyze b,#select_analyze_shop b{
+#select_analyze b,#select_analyze_shop b,#select_analyze_brand b{
     display: block;
     width: 100%;
     position: relative;
 }
-#select_analyze span,#select_analyze_shop span{
+#select_analyze span,#select_analyze_shop span,#select_analyze_brand span{
     position: absolute;
     right: 5%;
     top: 0px;
     color:#f5f5f5;
     font-size: 30px;
 }
-#select_analyze ul,#select_analyze_shop ul{
+#select_analyze ul,#select_analyze_shop ul,#select_analyze_brand ul{
     overflow-y: auto;
     width:100%;
     max-height:207px;
 }
-#select_analyze ul li,#select_analyze_shop ul li{
+#select_analyze ul li,#select_analyze_shop ul li,#select_analyze_brand ul li{
     padding: 5px 5px 5px 20px;
     margin-left: 5%;
     margin-right: 5%;
 }
-#select_analyze ul li:hover,#select_analyze_shop ul li:hover{
+#select_analyze ul li:hover,#select_analyze_shop ul li:hover,#select_analyze_brand ul li:hover{
     background:#4a5f7c;
     color: #fff;
     border-radius: 8px;
     cursor: pointer;
 }
-#select_analyze s,#select_analyze_shop s{
+#select_analyze s,#select_analyze_shop s,#select_analyze_brand s{
     text-decoration: none;
     text-align: center;
     display: block;
@@ -332,7 +343,7 @@
     border-radius: 8px;
     background: #eee;
 }
-#select_analyze s:hover,#select_analyze_shop s:hover {
+#select_analyze s:hover,#select_analyze_shop s:hover ,#select_analyze_brand s:hover{
     cursor: pointer;
     background: #888888;
     color: #fff;
