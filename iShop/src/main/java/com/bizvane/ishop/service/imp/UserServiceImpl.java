@@ -309,10 +309,10 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = false, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED)
     public String insert(User user) throws Exception {
         String result = "";
-        String phone = user.getPhone();
-        String user_code = user.getUser_code();
-        String corp_code = user.getCorp_code();
-        String email = user.getEmail();
+        String phone = user.getPhone().trim();
+        String user_code = user.getUser_code().trim();
+        String corp_code = user.getCorp_code().trim();
+        String email = user.getEmail().trim();
         List<User> phone_exist = new ArrayList<User>();
         if (!phone.equals("")) {
             phone_exist = userPhoneExist(phone);
@@ -340,35 +340,35 @@ public class UserServiceImpl implements UserService {
         String result = "";
         int user_id = user.getId();
         User old_user = getUserById(user_id);
-        String[] store_code1 = old_user.getStore_code().split(",");
+        String[] store_code1 = old_user.getStore_code().trim().split(",");
         List<User> phone_exist = new ArrayList<User>();
-        if (!user.getPhone().equals("")) {
-            phone_exist = userPhoneExist(user.getPhone());
+        if (!user.getPhone().trim().equals("")) {
+            phone_exist = userPhoneExist(user.getPhone().trim());
         }
         List<User> email_exist = userEmailExist(user.getEmail());
-        if (old_user.getCorp_code().equalsIgnoreCase(user.getCorp_code())) {
+        if (old_user.getCorp_code().trim().equalsIgnoreCase(user.getCorp_code().trim())) {
             List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(), Common.IS_ACTIVE_Y);
             if (phone_exist.size() > 0 && user_id != phone_exist.get(0).getId()) {
                 result = "手机号已存在";
             } else if (code_exist.size() > 0 && user_id != code_exist.get(0).getId()) {
                 result = "员工编号已存在";
-            } else if (!user.getEmail().equals("") && email_exist.size() > 0 && user_id != email_exist.get(0).getId()) {
+            } else if (!user.getEmail().trim().equals("") && email_exist.size() > 0 && user_id != email_exist.get(0).getId()) {
                 result = "邮箱已存在";
             } else {
-                if (old_user.getUser_code() != null && !old_user.getUser_code().equalsIgnoreCase(user.getUser_code())) {
-                    updateCauseCodeChange(user.getCorp_code(), user.getUser_code(), old_user.getUser_code());
+                if (old_user.getUser_code().trim() != null && !old_user.getUser_code().equalsIgnoreCase(user.getUser_code().trim())) {
+                    updateCauseCodeChange(user.getCorp_code().trim(), user.getUser_code().trim(), old_user.getUser_code().trim());
                 }
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
                 for (int i = 0; i < store_code1.length; i++) {
                     if (!user.getStore_code().contains(store_code1[i])) {
-                        userAchvGoalMapper.deleteStoreUserAchv(user.getCorp_code(), store_code1[i], user.getUser_code());
+                        userAchvGoalMapper.deleteStoreUserAchv(user.getCorp_code().trim(), store_code1[i], user.getUser_code().trim());
                     }
                 }
                 userMapper.updateByUserId(user);
                 result = Common.DATABEAN_CODE_SUCCESS;
             }
         } else {
-            List<User> code_exist = userCodeExist(user.getUser_code(), user.getCorp_code(), Common.IS_ACTIVE_Y);
+            List<User> code_exist = userCodeExist(user.getUser_code().trim(), user.getCorp_code().trim(), Common.IS_ACTIVE_Y);
             if (phone_exist.size() > 0) {
                 result = "手机号已存在";
             } else if (code_exist.size() > 0) {
@@ -378,8 +378,8 @@ public class UserServiceImpl implements UserService {
             } else {
                 //若用户修改所属店铺，则删除该店铺员工的业绩目标
                 for (int i = 0; i < store_code1.length; i++) {
-                    if (!user.getStore_code().contains(store_code1[i])) {
-                        userAchvGoalMapper.deleteStoreUserAchv(user.getCorp_code(), store_code1[i], user.getUser_code());
+                    if (!user.getStore_code().trim().contains(store_code1[i])) {
+                        userAchvGoalMapper.deleteStoreUserAchv(user.getCorp_code().trim(), store_code1[i].trim(), user.getUser_code().trim());
                     }
                 }
                 userMapper.updateByUserId(user);

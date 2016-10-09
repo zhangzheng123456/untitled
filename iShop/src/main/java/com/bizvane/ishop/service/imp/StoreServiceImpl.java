@@ -294,10 +294,10 @@ public class StoreServiceImpl implements StoreService {
     public String insert(String message, String user_id) throws Exception {
         JSONObject jsonObject = new JSONObject(message);
         String result = Common.DATABEAN_CODE_ERROR;
-        String store_code = jsonObject.get("store_code").toString();
-        String store_id = jsonObject.get("store_id").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
-        String store_name = jsonObject.get("store_name").toString();
+        String store_code = jsonObject.get("store_code").toString().trim();
+        String store_id = jsonObject.get("store_id").toString().trim();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
+        String store_name = jsonObject.get("store_name").toString().trim();
         Store store = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
         Store store1 = getStoreByName(corp_code, store_name, Common.IS_ACTIVE_Y);
         if (store == null && store1 == null) {
@@ -309,9 +309,9 @@ public class StoreServiceImpl implements StoreService {
                 shop.setStore_id(store_id);
             }
             shop.setStore_name(store_name);
-            shop.setArea_code(jsonObject.get("area_code").toString());
+            shop.setArea_code(jsonObject.get("area_code").toString().trim());
             shop.setCorp_code(corp_code);
-            String brand_code = jsonObject.get("brand_code").toString();
+            String brand_code = jsonObject.get("brand_code").toString().trim();
             String[] codes = brand_code.split(",");
             String brand_code1 = "";
             for (int i = 0; i < codes.length; i++) {
@@ -319,7 +319,7 @@ public class StoreServiceImpl implements StoreService {
                 brand_code1 = brand_code1 + codes[i];
             }
             shop.setBrand_code(brand_code1);
-            shop.setFlg_tob(jsonObject.get("flg_tob").toString());
+            shop.setFlg_tob(jsonObject.get("flg_tob").toString().trim());
             Date now = new Date();
             shop.setCreated_date(Common.DATETIME_FORMAT.format(now));
             shop.setCreater(user_id);
@@ -447,22 +447,22 @@ public class StoreServiceImpl implements StoreService {
     public String update(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
-        int store_id = Integer.valueOf(jsonObject.get("id").toString());
-        String store_code = jsonObject.get("store_code").toString();
-        String store_id1 = jsonObject.get("store_id").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
-        String store_name = jsonObject.get("store_name").toString();
+        int store_id = Integer.valueOf(jsonObject.get("id").toString().trim());
+        String store_code = jsonObject.get("store_code").toString().trim();
+        String store_id1 = jsonObject.get("store_id").toString().trim();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
+        String store_name = jsonObject.get("store_name").toString().trim();
 
         Store store = getStoreById(store_id);
         Store store1 = getStoreByCode(corp_code, store_code, Common.IS_ACTIVE_Y);
         Store store2 = getStoreByName(corp_code, store_name,Common.IS_ACTIVE_Y);
-        if (store.getCorp_code().equalsIgnoreCase(corp_code)) {
+        if (store.getCorp_code().trim().equalsIgnoreCase(corp_code)) {
             if (store1 != null && store_id != store1.getId()){
                 result = "店铺编号已存在";
             }else if (store2 != null && store_id != store2.getId()) {
                 result = "店铺名称已存在";
             }else {
-                if (!store.getStore_code().equalsIgnoreCase(store_code)) {
+                if (!store.getStore_code().trim().equalsIgnoreCase(store_code)) {
                     updateCauseCodeChange(corp_code, store_code, store.getStore_code());
                 }
                 store = new Store();
@@ -474,9 +474,9 @@ public class StoreServiceImpl implements StoreService {
                 }
                 store.setStore_code(store_code);
                 store.setStore_name(store_name);
-                store.setArea_code(jsonObject.get("area_code").toString());
+                store.setArea_code(jsonObject.get("area_code").toString().trim());
                 store.setCorp_code(corp_code);
-                String brand_code = jsonObject.get("brand_code").toString();
+                String brand_code = jsonObject.get("brand_code").toString().trim();
                 String[] codes = brand_code.split(",");
                 String brand_code1 = "";
                 for (int i = 0; i < codes.length; i++) {
@@ -484,7 +484,7 @@ public class StoreServiceImpl implements StoreService {
                     brand_code1 = brand_code1 + codes[i];
                 }
                 store.setBrand_code(brand_code1);
-                store.setFlg_tob(jsonObject.get("flg_tob").toString());
+                store.setFlg_tob(jsonObject.get("flg_tob").toString().trim());
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);
@@ -494,7 +494,7 @@ public class StoreServiceImpl implements StoreService {
             }
         } else {
             if (store1 == null && store2 == null) {
-                if (!store.getStore_code().equalsIgnoreCase(store_code)) {
+                if (!store.getStore_code().trim().equalsIgnoreCase(store_code)) {
                     updateCauseCodeChange(corp_code, store_code, store.getStore_code());
                 }
                 store = new Store();
@@ -506,9 +506,9 @@ public class StoreServiceImpl implements StoreService {
                     store.setStore_id(store_id1);
                 }
                 store.setStore_name(store_name);
-                store.setArea_code(jsonObject.get("area_code").toString());
+                store.setArea_code(jsonObject.get("area_code").toString().trim());
                 store.setCorp_code(corp_code);
-                String brand_code = jsonObject.get("brand_code").toString();
+                String brand_code = jsonObject.get("brand_code").toString().trim();
                 String[] codes = brand_code.split(",");
                 String brand_code1 = "";
                 for (int i = 0; i < codes.length; i++) {
@@ -516,7 +516,7 @@ public class StoreServiceImpl implements StoreService {
                     brand_code1 = brand_code1 + codes[i];
                 }
                 store.setBrand_code(brand_code1);
-                store.setFlg_tob(jsonObject.get("flg_tob").toString());
+                store.setFlg_tob(jsonObject.get("flg_tob").toString().trim());
                 Date now = new Date();
                 store.setModified_date(Common.DATETIME_FORMAT.format(now));
                 store.setModifier(user_id);

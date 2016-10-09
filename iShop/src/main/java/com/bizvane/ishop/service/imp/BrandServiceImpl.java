@@ -130,9 +130,9 @@ public class BrandServiceImpl implements BrandService {
     public String insert(String message, String user_code) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = JSONObject.parseObject(message);
-        String brand_code = jsonObject.get("brand_code").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
-        String brand_name = jsonObject.get("brand_name").toString();
+        String brand_code = jsonObject.get("brand_code").toString().trim();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
+        String brand_name = jsonObject.get("brand_name").toString().trim();
 
 
         Brand brand = getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
@@ -144,10 +144,10 @@ public class BrandServiceImpl implements BrandService {
             brand.setBrand_name(brand_name);
             brand.setCorp_code(corp_code);
             if (jsonObject.containsKey("cus_user_code")){
-                brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
+                brand.setCus_user_code(jsonObject.get("cus_user_code").toString().trim());
             }
             if (jsonObject.containsKey("app_id")){
-                String app_id = jsonObject.get("app_id").toString();
+                String app_id = jsonObject.get("app_id").toString().trim();
                 if (!app_id.equals("")) {
                     String[] app_ids = app_id.split(",");
                     for (int i = 0; i < app_ids.length; i++) {
@@ -194,18 +194,18 @@ public class BrandServiceImpl implements BrandService {
         JSONObject jsonObject = JSONObject.parseObject(message);
         int brand_id = Integer.parseInt(jsonObject.get("id").toString());
 
-        String brand_code = jsonObject.get("brand_code").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
-        String brand_name = jsonObject.get("brand_name").toString();
+        String brand_code = jsonObject.get("brand_code").toString().trim();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
+        String brand_name = jsonObject.get("brand_name").toString().trim();
 
         Brand brand = getBrandById(brand_id);
 
         Brand brand1 = getBrandByCode(corp_code, brand_code,Common.IS_ACTIVE_Y);
         Brand brand2 = getBrandByCode(corp_code, brand_name,Common.IS_ACTIVE_Y);
-        if (brand.getCorp_code().equals(corp_code)) {
+        if (brand.getCorp_code().trim().equals(corp_code)) {
             if ((brand.getBrand_code().equals(brand_code) || brand1 == null) &&
-                    (brand.getBrand_name().equals(brand_name) || brand2 == null)) {
-                if (!brand.getBrand_code().equals(brand_code)) {
+                    (brand.getBrand_name().trim().equals(brand_name) || brand2 == null)) {
+                if (!brand.getBrand_code().trim().equals(brand_code)) {
                     updateCauseCodeChange(corp_code, brand_code, brand.getBrand_code());
                 }
                 brand = new Brand();
@@ -215,10 +215,10 @@ public class BrandServiceImpl implements BrandService {
                 brand.setBrand_name(brand_name);
                 brand.setCorp_code(corp_code);
                 if (jsonObject.containsKey("cus_user_code")){
-                    brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
+                    brand.setCus_user_code(jsonObject.get("cus_user_code").toString().trim());
                 }
                 if (jsonObject.containsKey("app_id")){
-                    String app_id = jsonObject.get("app_id").toString();
+                    String app_id = jsonObject.get("app_id").toString().trim();
                     if (!app_id.equals("")) {
                         String[] app_ids = app_id.split(",");
                         for (int i = 0; i < app_ids.length; i++) {
@@ -235,7 +235,7 @@ public class BrandServiceImpl implements BrandService {
                 brand.setIsactive(jsonObject.get("isactive").toString());
                 brandMapper.updateBrand(brand);
                 result = Common.DATABEAN_CODE_SUCCESS;
-            } else if (!brand.getBrand_code().equals(brand_code) && brand1 != null) {
+            } else if (!brand.getBrand_code().trim().equals(brand_code) && brand1 != null) {
                 result = "品牌编号已存在";
             } else {
                 result = "品牌名称已存在";
@@ -249,10 +249,10 @@ public class BrandServiceImpl implements BrandService {
                 brand.setBrand_name(brand_name);
                 brand.setCorp_code(corp_code);
                 if (jsonObject.containsKey("cus_user_code")){
-                    brand.setCus_user_code(jsonObject.get("cus_user_code").toString());
+                    brand.setCus_user_code(jsonObject.get("cus_user_code").toString().trim());
                 }
                 if (jsonObject.containsKey("app_id")){
-                    String app_id = jsonObject.get("app_id").toString();
+                    String app_id = jsonObject.get("app_id").toString().trim();
                     if (!app_id.equals("")) {
                         String[] app_ids = app_id.split(",");
                         for (int i = 0; i < app_ids.length; i++) {

@@ -1,5 +1,6 @@
 package com.bizvane.ishop.service.imp;
 
+import Ice.Exception;
 import com.bizvane.ishop.constant.Common;
 import com.bizvane.ishop.dao.AreaMapper;
 import com.bizvane.ishop.dao.CodeUpdateMapper;
@@ -65,9 +66,9 @@ public class AreaServiceImpl implements AreaService {
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
-        String area_code = jsonObject.get("area_code").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
-        String area_name = jsonObject.get("area_name").toString();
+        String area_code = jsonObject.get("area_code").toString().trim();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
+        String area_name = jsonObject.get("area_name").toString().trim();
         Area area = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
         Area area1 = getAreaByName(corp_code, area_name, Common.IS_ACTIVE_Y);
         if (area == null && area1 == null) {
@@ -98,16 +99,16 @@ public class AreaServiceImpl implements AreaService {
         String new_area_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
-        int area_id = Integer.parseInt(jsonObject.get("id").toString());
+        int area_id = Integer.parseInt(jsonObject.get("id").toString().trim());
 
-        String area_code = jsonObject.get("area_code").toString();
+        String area_code = jsonObject.get("area_code").toString().trim();
         new_area_code = area_code;
-        String corp_code = jsonObject.get("corp_code").toString();
-        String area_name = jsonObject.get("area_name").toString();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
+        String area_name = jsonObject.get("area_name").toString().trim();
 
         Area old_area = getAreaById(area_id);
         old_area_code = old_area.getArea_code();
-        if (old_area.getCorp_code().equals(corp_code)) {
+        if (old_area.getCorp_code().trim().equals(corp_code)) {
             Area areaByCode = getAreaByCode(corp_code, area_code, Common.IS_ACTIVE_Y);
             Area areaByName = getAreaByName(corp_code, area_code, Common.IS_ACTIVE_Y);
             if (areaByCode != null && areaByCode.getId() != area_id) {
