@@ -34,6 +34,10 @@ function getVipInfo(){
             return VALUE;
         }
         for(var i=0;i<extend.length;i++){
+                if(extend[i].type=='rule'){
+                    extendhtml+="<li style='border:1px dashed #999;display: block'>"
+                        +"</li>"
+                }
             if(extend[i].type=="text"){
                 var value=getvalue();
                 extendhtml+="<li>"
