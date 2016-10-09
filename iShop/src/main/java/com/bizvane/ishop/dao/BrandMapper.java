@@ -18,7 +18,7 @@ public interface BrandMapper {
 
     List<Brand> selectPartBrand(Map<String, Object> params) throws SQLException;
 
-    List<Brand> selectBrands(@Param("corp_code") String corp_code) throws SQLException;
+    List<Brand> selectBrands(@Param("corp_code") String corp_code, @Param("search_value") String search_value) throws SQLException;
 
     int insertBrand(Brand brand) throws SQLException;
 

@@ -112,6 +112,13 @@
         SELECT *
         FROM def_brand
         WHERE corp_code = #{corp_code}
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            BRAND_CODE LIKE concat('%',#{search_value},'%')
+            OR BRAND_NAME LIKE concat('%',#{search_value},'%')
+            )
+        </if>
         AND  isactive = 'Y'
         ORDER BY def_brand.id DESC
     </select>

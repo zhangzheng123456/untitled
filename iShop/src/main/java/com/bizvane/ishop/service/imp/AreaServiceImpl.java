@@ -176,8 +176,8 @@ public class AreaServiceImpl implements AreaService {
     }
 
     private void updateAreaCode(String corp_code, String new_area_code, String old_area_code) throws Exception {
-        codeUpdateMapper.updateUser("", corp_code, "", "", "", "", new_area_code, old_area_code);
-        codeUpdateMapper.updateStore("", corp_code, "", "", new_area_code, old_area_code);
+        codeUpdateMapper.updateUser("", corp_code, "", "", "", "", Common.SPECIAL_HEAD+new_area_code+",", Common.SPECIAL_HEAD+old_area_code+",");
+        codeUpdateMapper.updateStore("", corp_code, "", "", Common.SPECIAL_HEAD+new_area_code+",", Common.SPECIAL_HEAD+old_area_code+",");
     }
 
     @Override

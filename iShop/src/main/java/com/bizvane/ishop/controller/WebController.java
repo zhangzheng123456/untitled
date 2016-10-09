@@ -320,7 +320,7 @@ public class WebController {
                         brands.add(brand);
                 }
             }else {
-                brands = brandService.getAllBrand(corp_code);
+                brands = brandService.getAllBrand(corp_code,"");
             }
 
             JSONObject result = new JSONObject();
