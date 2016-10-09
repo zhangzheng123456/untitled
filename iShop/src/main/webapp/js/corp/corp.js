@@ -551,12 +551,12 @@ $("#leading_out").click(function(){
         if(data.code=="0"){
             var message=JSON.parse(data.message);
             var message=JSON.parse(message.tableManagers);
-            console.log(message);
-            $("#file_list_l ul").empty();
+            var html="";
             for(var i=0;i<message.length;i++){
-                 $("#file_list_l ul").append("<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
-                +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>")
+                html+="<li data-name='"+message[i].column_name+"'><div class='checkbox1'><input type='checkbox' value='' name='test'  class='check'  id='checkboxInput"
+                +i+1+"'/><label for='checkboxInput"+i+1+"'></label></div><span class='p15'>"+message[i].show_name+"</span></li>";
             }
+            $("#file_list_l ul").html(html);
             bianse();
             $("#file_list_r ul").empty();
             whir.loading.remove();//移除加载框

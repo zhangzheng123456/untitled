@@ -43,7 +43,7 @@
                 brand_code = replace(brand_code,#{old_brand_code},#{new_brand_code}),
             </if>
             <if test="new_area_code!=null and new_area_code!='' ">
-                area_code = #{new_area_code},
+                area_code = replace(area_code,#{old_area_code},#{new_area_code}),
             </if>
         </trim>
         WHERE 1=1
@@ -54,7 +54,7 @@
             AND brand_code regexp #{old_brand_code}
         </if>
         <if test="old_area_code!=null and old_area_code!='' ">
-            AND area_code = #{old_area_code}
+            AND area_code regexp #{old_area_code}
         </if>
     </update>
 

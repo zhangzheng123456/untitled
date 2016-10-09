@@ -258,6 +258,8 @@ var oc = new ObjectControl();
 }));
 var checknow_data = [];
 var checknow_namedata = [];
+var areaData=[];
+var areaDataCode=[];
 var flg_index = 0;
 jQuery(document).ready(function () {
     window.shop.init();//初始化
@@ -294,6 +296,17 @@ jQuery(document).ready(function () {
                         checknow_namedata.push(msg.brand_name);
                     }
                 }
+                if (msg.area_code != "") {
+                    if (msg.area_code.indexOf(',') !== -1) {
+                        areaDataCode= msg.area_code.split(",");
+                        areaData = msg.area_name.split(",");
+                    } else {
+                        areaDataCode.push(msg.area_code);
+                        areaData.push(msg.area_name);
+                    }
+                }
+                console.log(areaDataCode);
+                console.log(areaData);
                 $("#OWN_CORP option").val(msg.corp.corp_code);
                 $("#OWN_CORP option").text(msg.corp.corp_name);
                 $("#OWN_BRAND").val(msg.brand_name);
@@ -447,18 +460,54 @@ jQuery(document).ready(function () {
                 } else {
                     for (var i = 0; i < msg.areas.length; i++) {
                         a = msg.areas[i];
-                        area_html += '<li data-areacode="' + a.area_code + '">' + a.area_name + '</li>';
+                        area_html += '<li style="margin-bottom: 20px;" data-areacode="' + a.area_code + '"><input type="checkbox" style="width: 14px;height: 14px;border: 1px solid #ddd;border-radius: 4px;color:#888;vertical-align: middle;margin-top: -2px;-webkit-appearance: checkbox">' + a.area_name + '</li>';
                     }
                     $("#area_select").append(area_html);
-                    $("#area_select li").click(function (event) {
+                    $("#area_select li input").click(function (event) {
                         var this_ = this;
                         var txt = $(this_).text();
                         var a_code = $(this_).attr("data-areacode");
-                        $(this_).parent().parent().children(".input_select").val(txt);
-                        $(this_).parent().parent().children(".input_select").attr('data-myacode', a_code);
-                        $(this_).addClass('rel').siblings().removeClass('rel');
-                        $(this_).parent().toggle();
+                        //$(this_).parent().parent().children(".input_select").val(txt);
+                        //$(this_).parent().parent().children(".input_select").attr('data-myacode', a_code);
+                        //$(this_).addClass('rel').siblings().removeClass('rel');
+                        //$(this_).parent().toggle();
+                        console.log(this_.checked);
+                        if(this_.checked){
+                            $(this_).checked=true;
+                            areaData.push($(this_).parent().text());
+                            areaDataCode.push($(this_).parent().attr('data-areacode'));
+                            console.log(areaData);
+                            console.log(areaDataCode)
+                            $("#OWN_AREA").val(areaData.toString());
+                            $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
+                        }else {
+                            $(this_).checked=false;
+                            areaData.remove($(this_).parent().text());
+                            areaDataCode.remove($(this_).parent().attr('data-areacode'));
+                            console.log(areaData);
+                            console.log(areaDataCode)
+                            $("#OWN_AREA").val(areaData.toString());
+                            $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
+                        }
                     });
+                    var areaCode=$("#OWN_AREA").attr("data-myacode");
+                    var allSelectData=$("#area_select li input");
+                    if(areaCode.indexOf(",")!=-1){
+                        var areaCodetoArray=areaCode.split(",");
+                        for(var a=0;a<areaCodetoArray.length;a++){
+                            for(var b= 0;b<allSelectData.length;b++){
+                                if(areaCodetoArray[a]==$(allSelectData[b]).parent().attr("data-areacode")){
+                                    $(allSelectData[i]).attr("checked",true);
+                                }
+                            }
+                        }
+                    }else{
+                        for(var i=0;i<allSelectData.length;i++){
+                            if($(allSelectData[i]).parent().attr("data-areacode")==areaCode){
+                                $(allSelectData[i]).attr("checked",true);
+                            }
+                        }
+                    }
                 }
             } else if (data.code == "-1") {
                 art.dialog({
@@ -481,7 +530,12 @@ jQuery(document).ready(function () {
         $("#OWN_BRAND").parent().children("#brand_data").toggle();
     });
     $(document).click(function (e) {
-        $("#OWN_AREA").parent().children('ul').css("display", "none");
+
+        if($(e.target).is("li")||$(e.target).is("#area_select")||$(e.target).is('input')){
+            return;
+        }else {
+            $("#OWN_AREA").parent().children('ul').css("display", "none");
+        }
         if ($(e.target).is('#brand_data') || $(e.target).is('#OWN_BRAND') || $(e.target).is('.checkboxselect-item') || $(e.target).is('.checkboxselect-item input')) {
             return;
         } else {

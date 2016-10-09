@@ -101,7 +101,7 @@ public class WebUtils {
                 if (name == null) {
                     continue;
                 }
-                Object value = jsonObject.get(name).toString();
+                Object value = jsonObject.get(name).toString().trim();
                 map.put(name, value);
             }
             ConvertUtils.register(new Converter() {

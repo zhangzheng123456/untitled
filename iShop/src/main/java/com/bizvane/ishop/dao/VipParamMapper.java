@@ -28,4 +28,5 @@ public interface VipParamMapper {
 
     List<VipParam> selectParamByCorp(@Param("corp_code")String corp_code) throws SQLException;
 
+    String selectMaxOrderByCorp(@Param("corp_code")String corp_code) throws SQLException;
 }

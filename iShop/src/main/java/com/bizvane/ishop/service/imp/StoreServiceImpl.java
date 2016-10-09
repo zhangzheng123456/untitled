@@ -82,6 +82,8 @@ public class StoreServiceImpl implements StoreService {
                 }
             }
             store.setBrand_name(brand_name.toString());
+            if (brand_code.endsWith(","))
+                brand_code = brand_code.substring(0,brand_code.length()-1);
             store.setBrand_code(brand_code);
         }else {
             store.setBrand_name("");
@@ -101,6 +103,8 @@ public class StoreServiceImpl implements StoreService {
                 }
             }
             store.setArea_name(area_name.toString());
+            if (area_code.endsWith(","))
+                area_code = area_code.substring(0,area_code.length()-1);
             store.setArea_code(area_code);
         }else {
             store.setArea_code("");
