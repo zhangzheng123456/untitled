@@ -6,11 +6,11 @@
  	
 }
 html{
-	height: 100%;
+	// height: 100%;
 }
 body{
 	font-family:"Microsoft YaHei","Helvetica Neue", Helvetica, Arial, sans-serif;
-	height: 100%;
+	// height: 100%;
 }
 a{
 	text-decoration: none;
@@ -35,8 +35,20 @@ a{
 			}
 		}
 	}
-	& img{
-		width: 100%;
+	.swiper-wrapper{
+		.swiper-slide{
+			position: relative;
+			text-align: center;
+			 display:table;overflow:hidden;
+		}
+		& img{
+			max-width: 100%;
+	    	max-height: 100%;
+	    	display:table-cell;
+	        vertical-align:middle;
+	    	margin: 0 auto;
+	    	// -webkit-transform: translate3d(-50%,-50%,0);
+		}
 	}
 	.gradex{
 		width: 100%;
@@ -199,11 +211,6 @@ input::-webkit-input-placeholder{
 		margin-top: 12px;
 	}
 }
-.allShops_p{
-	width: 100%;
-	height: 100%;
-	overflow-y:auto;
-	-webkit-overflow-scrolling: touch;
 	.allShops{
 		width: 100%;
 		padding-left: 10px;
@@ -258,10 +265,9 @@ input::-webkit-input-placeholder{
 			}
 		}
 	}
-}
 .screen_list{
 	width: 66.6%;
-	position:absolute;
+	position:fixed;
 	top: 0;
 	right:0;
 	background-color:#fff;
@@ -345,7 +351,7 @@ input::-webkit-input-placeholder{
 #kong_img{
 	width: 100%;
 	position: absolute;
-	top: 58px;
+	top: 120px;
 	margin: 0 auto;
 	display: none;
 	.kong{
@@ -357,4 +363,4 @@ input::-webkit-input-placeholder{
 	}
 }
 .more{display: none;font-size: 15px;text-align: center;color: #8e8e93;height: 30px;line-height: 30px;}
-#cover{width:100%;height:100%;display:none;position:absolute;left:0;top:0;z-index:3;background-color:#000000;opacity:0.5;}
+#cover{width:100%;height:100%;display:none;position:fixed;left:0;top:0;z-index:3;background-color:#000000;opacity:0.5;}

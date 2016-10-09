@@ -491,7 +491,7 @@ function clickLabeladd() {
         addViplabel();
         if($(this).attr("class")=="label_u"){
             $(this).addClass("label_u_active").removeClass("label_u");
-        }else {
+        }else if($(this).attr("class")=="label_g") {
             $(this).addClass("label_g_active").removeClass("label_g");
         }
     })

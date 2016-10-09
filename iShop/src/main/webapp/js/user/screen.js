@@ -285,7 +285,7 @@ $("#screen_que_area").click(function(){
 		$("#area_num").val("已选"+num+"家");
 		var shop_num=1;
 		$("#screen_shop .screen_content_l ul").empty();
-	    $("#screen_shop .screen_content_r ul").empty();
+	    // $("#screen_shop .screen_content_r ul").empty();
 		getstorelist(shop_num);
 	}
 	if(r_code=="R4000"){
@@ -331,7 +331,7 @@ $("#screen_que_brand").click(function(){
 	var shop_num=1;
 	$("#brand_num").val("已选"+num+"家");
 	$("#screen_shop .screen_content_l ul").empty();
-	$("#screen_shop .screen_content_r ul").empty();
+	// $("#screen_shop .screen_content_r ul").empty();
 	getstorelist(shop_num);
 	whir.loading.remove();//移除遮罩层
 })
@@ -449,6 +449,12 @@ function getstorelist(a){
 			} else {
 				if(list.length<9&&a==1){
 					for (var i = 0; i < list.length; i++) {
+						var a=$('.xingming input');
+						for(var j=0;j<a.length;j++){
+							if($(a[j]).attr("data-code")==$(li[i]).attr("id")){
+								$(a[j]).parent("p").remove();
+							}
+						}
 				    store_html+="<li><div class='checkbox1'><input  type='checkbox' value='"+list[i].store_code+"' data-storename='"+list[i].store_name+"' name='test'  class='check'  id='checkboxTowInput"
                         + i
                         + a
@@ -479,6 +485,10 @@ function getstorelist(a){
 				shop_next=false;
 			}
 			$("#screen_shop .screen_content_l ul").append(store_html);
+			var li=$("#screen_shop .screen_content_r input[type='checkbox']").parents("li");
+			for(var i=0;i<li.length;i++){
+				$("input[value='"+$(li[i]).attr("id")+"']")[0].checked=true; 
+			}
 			bianse();
 			whir.loading.remove();//移除加载框
 		} else if (data.code == "-1") {

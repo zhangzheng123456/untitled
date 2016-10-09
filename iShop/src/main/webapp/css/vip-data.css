@@ -132,7 +132,8 @@ html{
     position: absolute;
     top: 165px;
     left: 140px;
-    font-size: 15px;
+    font-size: 14px;
+    color:#888888;
 }
 .header .center .message-class .tabs-parent .table{
     cursor: pointer;

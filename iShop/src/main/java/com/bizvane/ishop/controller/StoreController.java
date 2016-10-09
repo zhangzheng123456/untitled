@@ -572,10 +572,15 @@ public class StoreController {
             id = jsonObj.get("id").toString();
             String message = jsonObj.get("message").toString();
             JSONObject jsonObject = new JSONObject(message);
+
+            String search_value = "";
             if (role_code.equals(Common.ROLE_SYS) && jsonObject.has("corp_code") && !jsonObject.get("corp_code").toString().equals("")) {
                 corp_code = jsonObject.get("corp_code").toString();
             }
-            List<Brand> brand = brandService.getAllBrand(corp_code);
+            if (jsonObject.has("search_value")){
+                search_value = jsonObject.get("search_value").toString();
+            }
+            List<Brand> brand = brandService.getAllBrand(corp_code, search_value);
             JSONArray array = new JSONArray();
             JSONObject brands = new JSONObject();
             for (int i = 0; i < brand.size(); i++) {

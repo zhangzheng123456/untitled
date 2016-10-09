@@ -259,13 +259,6 @@
     <script src="/js/corp/corp.js"></script>
     <script src="/js/silide.js"></script>
 <script type="text/javascript">
-    function bianse(){
-        $(".screen_content_l li:odd").css("backgroundColor","#fff");
-        $(".screen_content_l li:even").css("backgroundColor","#ededed");
-        $(".screen_content_r li:odd").css("backgroundColor","#fff");
-        $(".screen_content_r li:even").css("backgroundColor","#ededed");
-    }
-    bianse()
     $("#file_list").niceScroll({
         cursorcolor:"#999",
         cursoropacitymax:1,
@@ -274,15 +267,5 @@
         cursorborder:"0",
         cursorborderradius:"5px"
     });
-    $(".screen_content li").click(function(){
-        var input=$(this).find("input")[0];
-        var thinput=$("thead input")[0];
-        $(this).toggleClass("tr");  
-        if(input.type=="checkbox"&&input.name=="test"&&input.checked==false){
-            input.checked = true;
-        }else if(input.type=="checkbox"&&input.name=="test"&&input.checked==true){
-            input.checked = false;
-        }
-    })
 </script>
 </html>

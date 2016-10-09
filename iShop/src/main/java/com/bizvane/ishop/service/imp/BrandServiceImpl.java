@@ -118,9 +118,9 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public List<Brand> getAllBrand(String corp_code) throws Exception {
+    public List<Brand> getAllBrand(String corp_code,String search_value) throws Exception {
         List<Brand> brands;
-        brands = brandMapper.selectBrands(corp_code);
+        brands = brandMapper.selectBrands(corp_code,search_value);
         return brands;
     }
 
@@ -310,6 +310,6 @@ public class BrandServiceImpl implements BrandService {
         codeUpdateMapper.updateGoods("", corp_code, new_brand_code, old_brand_code);
 
         //店铺列表级联修改
-        codeUpdateMapper.updateStore("", corp_code, new_brand_code, old_brand_code, "", "");
+        codeUpdateMapper.updateStore("", corp_code, Common.SPECIAL_HEAD+new_brand_code+",", Common.SPECIAL_HEAD+old_brand_code+",", "", "");
     }
 }

@@ -1112,14 +1112,14 @@ $("#screen_que_staff").click(function(){
 })
 //拉取区域
 function getarealist(a){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var area_command = "/area/selAreaByCorpCode";
     var searchValue=$("#area_search").val().trim();
     var pageSize=20;
     var pageNumber=a;
     var _param = {};
-    _param["corp_code"] = corp_code;
+    _param["corp_code"]="C10000";
     _param["searchValue"]=searchValue;
     _param["pageSize"]=pageSize;
     _param["pageNumber"]=pageNumber;
@@ -1176,19 +1176,14 @@ function getarealist(a){
             bianse();
             whir.loading.remove();//移除加载框
         } else if (data.code == "-1") {
-            art.dialog({
-                time: 1,
-                lock: true,
-                cancel: false,
-                content: data.message
-            });
+            alert(data.message);
         }
     })
 }
 //获取店铺列表
 function getstorelist(a){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var area_code =$('#screen_area_num').attr("data-code");//
     var brand_code=$('#screen_brand_num').attr("data-code");
     var searchValue=$("#store_search").val();
@@ -1197,7 +1192,7 @@ function getstorelist(a){
     var _param={};
     var checknow_data=[];
     var checknow_namedata=[];
-    _param['corp_code']=corp_code;
+    _param["corp_code"]="C10000";
     _param['area_code']=area_code;
     _param['brand_code']=brand_code;
     _param['searchValue']=searchValue;
@@ -1261,10 +1256,10 @@ function getstorelist(a){
 }
 //获取品牌列表
 function getbrandlist(){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var _param={};
-    _param["corp_code"]=corp_code;
+    _param["corp_code"]="C10000";
     whir.loading.add("",0.5);//加载等待框
     $("#mask").css("z-index","10002");
     oc.postRequire("post","/shop/brand", "",_param, function(data){
@@ -1320,8 +1315,8 @@ function getbrandlist(){
 }
 //获取员工列表
 function getstafflist(a){
-    var tr= $('#table tbody tr');
-    var corp_code=$(tr[0]).attr("id");
+    // var tr= $('#table tbody tr');
+    // var corp_code=$(tr[0]).attr("id");
     var area_code =$('#screen_area_num').attr("data-code");//区域
     var brand_code=$('#screen_brand_num').attr("data-code");//品牌
     var store_code=$("#screen_shop_num").attr("data-code");//员工
@@ -1329,7 +1324,7 @@ function getstafflist(a){
     var pageSize=20;
     var pageNumber=a;
     var _param={};
-    _param['corp_code']=corp_code;
+    _param["corp_code"]="C10000";
     _param['area_code']=area_code;
     _param['brand_code']=brand_code;
     _param['store_code']=store_code;
@@ -1401,7 +1396,7 @@ $("#screen_vip_que").click(function(){
     var brand_code=$('#screen_brand_num').attr("data-code");//品牌
     var store_code=$("#screen_shop_num").attr("data-code");//店铺
     var user_code=$("#screen_stff_num").attr("data-code");//员工
-    _param["corp_code"]=corp_code;
+    _param["corp_code"]="C10000";
     _param["brand_code"]=brand_code;
     _param["store_code"]=store_code;
     _param["area_code"]=area_code;
@@ -1414,7 +1409,9 @@ $("#screen_vip_que").click(function(){
     if(area_code!==""||brand_code!==""||store_code!==""||user_code!==""){
         filtrate="sucess";
         filtrates(inx,pageSize);
+
     }
+    $("#search").val("");
     $("#screen_wrapper").hide();
     $("#p").hide();
 })
