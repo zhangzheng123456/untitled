@@ -22,6 +22,10 @@
         .searchable-select-items div:nth-of-type(1){
           display:none;
         }
+        #area_select li:hover{
+            background: #e8f5fe;!important;
+            color: #807a62 !important;
+        }
     </style>
 </head>
 
@@ -59,7 +63,7 @@
                         <span><label>店铺名称</label><input type="text" id="STORE_NAME" verify="Empty"/><div style="padding-left:80px" class="hint"><div  hintinfo="店仓名称不能为空！"></div></div></span>
                     </div>
                     <div class="drop_down">
-                        <span><label>所属区域</label><input data-myacode="" type="text" id="OWN_AREA"  class="input_select" readonly />
+                        <span><label>所属区域</label><input data-myacode="" type="text" id="OWN_AREA"  class="input_select" readonly  title=""  style="padding-right: 30px;"/>
                          <ul id="area_select" style="overflow-y: auto;height: 144px;moz-user-select: -moz-none;
                             -moz-user-select: none;
                             -o-user-select:none;
@@ -82,7 +86,7 @@
                             </ul>
                         </span>
                     </div>
-                    <label for="">二维码</label>
+                    <label>二维码</label>
                     <div class="er_code">
                         <!--<li>-->
                             <!--<input onclick="select_down(this)" readonly="readonly">-->

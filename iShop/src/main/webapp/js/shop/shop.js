@@ -319,6 +319,7 @@ jQuery(document).ready(function () {
                 $("#storeId").attr("data-name", msg.store_id);
                 $("#OWN_AREA").val(msg.area_name);
                 $("#OWN_AREA").attr("data-myacode", msg.area_code);
+                $("#OWN_AREA").attr("title",msg.area_name);
                 if (msg.flg_tob == "Y") {
                     $("#FLG_TOB").val("是");
                 } else if (msg.flg_tob == "N") {
@@ -476,28 +477,27 @@ jQuery(document).ready(function () {
                             $(this_).checked=true;
                             areaData.push($(this_).parent().text());
                             areaDataCode.push($(this_).parent().attr('data-areacode'));
-                            console.log(areaData);
-                            console.log(areaDataCode)
                             $("#OWN_AREA").val(areaData.toString());
                             $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
+                            $("#OWN_AREA").attr("title",areaData.toString());
                         }else {
                             $(this_).checked=false;
                             areaData.remove($(this_).parent().text());
                             areaDataCode.remove($(this_).parent().attr('data-areacode'));
-                            console.log(areaData);
-                            console.log(areaDataCode)
                             $("#OWN_AREA").val(areaData.toString());
                             $("#OWN_AREA").attr("data-myacode",areaDataCode.toString())
+                            $("#OWN_AREA").attr("title",areaData.toString());
                         }
                     });
                     var areaCode=$("#OWN_AREA").attr("data-myacode");
                     var allSelectData=$("#area_select li input");
                     if(areaCode.indexOf(",")!=-1){
                         var areaCodetoArray=areaCode.split(",");
+                        console.log(areaCodetoArray);
                         for(var a=0;a<areaCodetoArray.length;a++){
                             for(var b= 0;b<allSelectData.length;b++){
                                 if(areaCodetoArray[a]==$(allSelectData[b]).parent().attr("data-areacode")){
-                                    $(allSelectData[i]).attr("checked",true);
+                                    $(allSelectData[b]).attr("checked",true);
                                 }
                             }
                         }
