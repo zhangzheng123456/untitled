@@ -19,7 +19,14 @@
     FROM def_interface
     WHERE 1 = 1
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+            <choose>
+                <when test="entryValue!=''">
+                    ${entryKey} REGEXP #{entryValue}
+                </when>
+                <otherwise>
+                    1=1
+                </otherwise>
+            </choose>
         </foreach>
         ORDER BY ID DESC
     </select>

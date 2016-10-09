@@ -179,11 +179,14 @@
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
-                <when test="entryKey=='corp_name'">
-                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                <when test="entryValue!='' and entryKey=='corp_name'">
+                    dc.${entryKey} REGEXP #{entryValue}
+                </when>
+                <when test="entryValue!=''">
+                    dt.${entryKey} REGEXP #{entryValue}
                 </when>
                 <otherwise>
-                    dt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    1=1
                 </otherwise>
             </choose>
         </foreach>

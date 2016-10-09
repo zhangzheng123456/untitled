@@ -184,7 +184,7 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
                 <when test="entryValue!=''and entryKey!=''">
-                    dcc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    dcc.${entryKey} REGEXP #{entryValue}
                 </when>
                 <otherwise>
                     1=1

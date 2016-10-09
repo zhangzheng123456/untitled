@@ -231,13 +231,13 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="AND" close=")">
             <choose>
                 <when test="entryValue!='' and entryKey=='corp_name'">
-                    dc.${entryKey} like concat('%',#{entryValue},'%')
+                    dc.${entryKey} REGEXP #{entryValue}
                 </when>
                 <when test="entryValue!='' and entryKey=='template_type_name'">
-                    dstt.${entryKey} like concat('%',#{entryValue},'%')
+                    dstt.${entryKey} REGEXP #{entryValue}
                 </when>
                 <when test="entryValue!='' and entryValue!=''">
-                    dmt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    dmt.${entryKey} REGEXP #{entryValue}
                 </when>
                 <otherwise>
                     1=1
