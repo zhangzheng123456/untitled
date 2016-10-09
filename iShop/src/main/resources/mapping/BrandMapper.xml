@@ -80,6 +80,34 @@
         ORDER BY def_brand.id DESC
     </select>
 
+    <select id="selectPartBrand" resultMap="Brand">
+        select
+        def_brand.id,
+        brand_code,
+        brand_name,
+        def_brand.corp_code,
+        def_brand.modified_date,
+        def_brand.modifier,
+        def_brand.isactive,
+        def_corp.corp_name
+        FROM def_brand,def_corp
+        WHERE def_brand.corp_code = def_corp.corp_code
+        AND def_brand.corp_code = #{corp_code}
+        AND def_brand.brand_code IN
+        <foreach collection="brand_code" index="index" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        <if test="search_value != null and search_value !=''">
+            AND
+            (
+            BRAND_CODE LIKE concat('%',#{search_value},'%')
+            OR BRAND_NAME LIKE concat('%',#{search_value},'%')
+            OR def_corp.corp_name LIKE concat('%',#{search_value},'%')
+            )
+        </if>
+        ORDER BY def_brand.id DESC
+    </select>
+
     <select id="selectBrands" resultType="com.bizvane.ishop.entity.Brand">
         SELECT *
         FROM def_brand
@@ -208,6 +236,12 @@
         WHERE db.corp_code=dc.corp_code
         <if test="corp_code!=null and corp_code!=''">
             AND db.corp_code=#{corp_code}
+        </if>
+        <if test="brand_code!=null">
+            AND db.brand_code IN
+            <foreach collection="brand_code" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
         </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">

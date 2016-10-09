@@ -117,13 +117,22 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (j != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
+//            for (StoreQrcode storeQrcode:qrcodeList) {
+//                if (storeQrcode != null) {
+//                    String qrcode1 = storeQrcode.getQrcode();
+//                    qrcode.append(qrcode1);
+//                    qrcode.append("、");
+//                }
+//            }
             shops.get(i).setQrcode(qrcode.toString());
             shops.get(i).setIsactive(CheckUtils.CheckIsactive(shops.get(i).getIsactive()));
         }
@@ -159,11 +168,13 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (j != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
@@ -197,13 +208,9 @@ public class StoreServiceImpl implements StoreService {
      */
     @Override
     public List<Store> selectAll(String store_code, String corp_code, String isactive) throws Exception{
-//        List<Store> shops;
         if (store_code.contains(Common.SPECIAL_HEAD))
             store_code = store_code.replace(Common.SPECIAL_HEAD,"");
         String[] ids = store_code.split(",");
-//        for (int i = 0; i < ids.length; i++) {
-//            ids[i] = ids[i].substring(1, ids[i].length());
-//        }
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("store_codes", ids);
         params.put("corp_code", corp_code);
@@ -344,11 +351,13 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (j != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());
@@ -502,21 +511,11 @@ public class StoreServiceImpl implements StoreService {
     }
 
     @Override
-    public List<Store> selByAreaCodeList(String corp_code, String[] area_code, String search_value) throws Exception{
+    public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code,String[] brand_code, String search_value) throws Exception{
         Map<String, Object> params = new HashMap<String, Object>();
         params.put("corp_code", corp_code);
         params.put("area_code", area_code);
-        params.put("search_value", search_value);
-        params.put("isactive", "");
-        List<Store> stores = storeMapper.selectByAreaCode(params);
-        return stores;
-    }
-
-    @Override
-    public PageInfo<Store> selectByAreaCode(int page_number, int page_size, String corp_code, String[] area_code, String search_value) throws Exception{
-        Map<String, Object> params = new HashMap<String, Object>();
-        params.put("corp_code", corp_code);
-        params.put("area_code", area_code);
+        params.put("brand_code", brand_code);
         params.put("search_value", search_value);
         params.put("isactive", "");
         PageHelper.startPage(page_number, page_size);
@@ -531,11 +530,13 @@ public class StoreServiceImpl implements StoreService {
             }
             List<StoreQrcode> qrcodeList = storeBrandName.getQrcodeList();
             StringBuilder qrcode = new StringBuilder("");
-            for (StoreQrcode storeQrcode:qrcodeList) {
-                if (storeQrcode != null) {
-                    String qrcode1 = storeQrcode.getQrcode();
+            for(int j=0;j<qrcodeList.size();j++){
+                if(qrcodeList.get(j)!=null){
+                    String qrcode1 = qrcodeList.get(j).getQrcode();
                     qrcode.append(qrcode1);
-                    qrcode.append("、");
+                    if (j != qrcodeList.size() - 1) {
+                        qrcode.append("、");
+                    }
                 }
             }
             shops.get(i).setQrcode(qrcode.toString());

@@ -165,6 +165,7 @@
     background: #FFFFFF;
 }
 #chart_analyze .chart_head{
+    cursor: move;
     display: block;
     width: 100%;
     font-size: 14px;
