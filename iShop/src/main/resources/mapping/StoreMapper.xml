@@ -542,7 +542,6 @@
         ds.store_name
         FROM def_store ds,def_corp dc
         WHERE ds.corp_code = dc.corp_code
-        AND ds.corp_code = db.corp_code
         AND ds.corp_code=#{corp_code}
         AND
         <foreach collection="array" index="index" item="item" open="(" separator="or" close=")">
@@ -555,7 +554,6 @@
             AND ds.isactive = #{isactive}
         </if>
         AND dc.isactive = 'Y'
-        AND db.isactive = 'Y'
         ORDER BY ds.id DESC
     </select>
 

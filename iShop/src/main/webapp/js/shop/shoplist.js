@@ -239,12 +239,12 @@ function superaddition(data,num){//页面加载循环
                         + data[i].store_name
                         + "</span></td><td class='staff' data-code='"+data[i].corp_code+"'><a href='javascript:void(0)'>"
                         +"查看"
-                        + "</a></td><td><span title='"+data[i].area.area_name+"'>"
-                        + data[i].area.area_name
+                        + "</a></td><td><span title='"+data[i].area_name+"'>"
+                        + data[i].area_name
                         + "</td><td><span title='"+data[i].brand_name+"'>"
                         +data[i].brand_name
-                        + "</span></td><td><span title='"+data[i].corp.corp_name+"'>"
-                        +data[i].corp.corp_name
+                        + "</span></td><td><span title='"+data[i].corp_name+"'>"
+                        +data[i].corp_name
                         + "</span></td><td>"
                         +data[i].modifier
                         + "</td><td>"
