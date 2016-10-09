@@ -110,6 +110,7 @@ $("#empty").click(function(){
     inx=1;
     $('#search').val("");
     $(".table p").remove();
+    $(".table tbody").sortable('enable');
     GET(inx,pageSize);
 })
 function setPage(container, count, pageindex,pageSize) {
@@ -263,46 +264,6 @@ function superaddition(data,num){//页面加载循环
             + data[i].isactive
             + "</td></tr>");
     }
-    $("#table tbody").dragsort({
-        dragSelector : "tr",  //可以不用设置，他会根据$("#tableid")的类型来决定是tr还是li
-        dragSelectorExclude : "tr .th",
-        dragEnd : function(){
-            var len=$("#table tbody tr");
-            var params=[];
-            for(var i=0;i<len.length;i++){
-                if(num>=2){
-                    console.log(num);
-                    a=i+(num-1)*pageSize;
-                    var id=$(len[i]).attr("id");
-                    var list={
-                        "id":id,
-                        "show_order":a
-                    }
-                    $(len[i]).children("td:nth-child(2)").html(a+1);
-                    $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-                    $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-                }else{
-                    var id=$(len[i]).attr("id");
-                    var list={
-                        "id":id,
-                        "show_order":i
-                    }
-                    $(len[i]).children("td:nth-child(2)").html(i+1);
-                    $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
-                    $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
-                }
-                params.push(list);
-            }
-            var param={};
-            param['param']=params;
-            console.log(params);
-            oc.postRequire("post","/vipparam/updateShowOrder","0",param,function(data) {
-
-                // $(window.parent.document).find('#iframepage').attr("src", "/vip/vip_param.html");
-            });
-        },
-        scrollSpeed:0 //默认为5，数值越大拖动的速度越快，为0则拖动时页面不会滚动
-    });
     whir.loading.remove();//移除加载框
     sessionStorage.removeItem("return_jump");
 };
@@ -349,6 +310,41 @@ function GET(a,b){
             superaddition(list,a);
             jumpBianse();
             setPage($("#foot-num")[0],cout,a,b,funcCode);
+            $(".table tbody").sortable({axis: 'y' , update: function(event, ui) {
+                var len=$("#table tbody tr");
+                var params=[];
+                for(var i=0;i<len.length;i++){
+                    if(inx>=2){
+                        console.log(inx);
+                        a=i+(inx-1)*pageSize;
+                        var id=$(len[i]).attr("id");
+                        var list={
+                            "id":id,
+                            "show_order":a
+                        }
+                        $(len[i]).children("td:nth-child(2)").html(a+1);
+                        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+                        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+                    }else{
+                        var id=$(len[i]).attr("id");
+                        var list={
+                            "id":id,
+                            "show_order":i
+                        }
+                        $(len[i]).children("td:nth-child(2)").html(i+1);
+                        $(".table tbody tr:odd").css("backgroundColor","#e8e8e8");
+                        $(".table tbody tr:even").css("backgroundColor","#f4f4f4");
+                    }
+                    params.push(list);
+                }
+                var param={};
+                param['param']=params;
+                console.log(params);
+                oc.postRequire("post","/vipparam/updateShowOrder","0",param,function(data) {
+                    console.log(data.message);
+                });
+            } });
+            $( ".table tbody" ).disableSelection();
         }else if(data.code=="-1"){
             // alert(data.message);
         }
@@ -451,7 +447,12 @@ $("#search").keydown(function() {
     param["pageSize"]=pageSize;
     //param["funcCode"]=funcCode;
     if(event.keyCode == 13){
-        POST(inx,pageSize);
+        if(value!==""){
+            POST(inx,pageSize);
+        }else {
+            $(".table tbody").sortable('enable');
+            GET(inx,pageSize);
+        }
     }
 });
 //点击放大镜触发搜索
@@ -462,10 +463,16 @@ $("#d_search").click(function(){
     param["pageNumber"]=inx;
     param["pageSize"]=pageSize;
     //param["funcCode"]=funcCode;
-    POST(inx,pageSize);
+    if(value!==""){
+        POST(inx,pageSize);
+    }else {
+        $(".table tbody").sortable('enable');
+        GET(inx,pageSize);
+    }
 })
 //搜索的请求函数
 function POST(a,b){
+    $(".table tbody").sortable('disable');
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/vipparam/search","0",param,function(data){
         if(data.code=="0"){
@@ -726,6 +733,9 @@ oc.postRequire("get","/list/filter_column?funcCode="+funcCode+"","0","",function
             var event=window.event||arguments[0];
             if(event.keyCode == 13){
                 getInputValue();
+                if(filtrate==""){
+                    $(".table tbody").sortable('enable');
+                }
             }
         })
     }
@@ -757,7 +767,10 @@ function filtrateDown(){
 //筛选查找
 $("#find").click(function(){
     getInputValue();
-})
+    if(filtrate==""){
+        $(".table tbody").sortable('enable');
+    }
+});
 function getInputValue(){
     var input=$('#sxk .inputs input');
     inx=1;
@@ -793,6 +806,7 @@ function getInputValue(){
 }
 //筛选发送请求
 function filtrates(a,b){
+    $(".table tbody").sortable('disable');
     whir.loading.add("",0.5);//加载等待框
     oc.postRequire("post","/vipparam/screen","0",_param,function(data){
         if(data.code=="0"){
@@ -857,4 +871,5 @@ $(function(){
         $('html,body').animate({'scrollTop':btm},500);
     })
 });
+
 
