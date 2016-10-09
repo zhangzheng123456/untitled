@@ -187,16 +187,16 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryKey=='corp_name'">
-                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    dc.${entryKey} REGEXP #{entryValue}
                 </when>
                 <when test="entryKey=='user_name'">
-                    du.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    du.${entryKey} REGEXP #{entryValue}
                 </when>
                 <when test="entryKey=='type_name'">
-                    dvrt.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    dvrt.${entryKey} REGEXP #{entryValue}
                 </when>
                 <otherwise>
-                    dvc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    dvc.${entryKey} REGEXP #{entryValue}
                 </otherwise>
             </choose>
         </foreach>

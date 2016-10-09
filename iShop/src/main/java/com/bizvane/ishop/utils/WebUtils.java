@@ -155,6 +155,12 @@ public class WebUtils {
             JSONObject json = new JSONObject(info);
             String screen_key = json.get("screen_key").toString();
             String screen_value = json.get("screen_value").toString();
+            if(screen_value.startsWith("|")){
+                screen_value= screen_value.substring(1);
+            }
+            if(screen_value.endsWith("|")){
+                screen_value= screen_value.substring(0,screen_value.length()-1);
+            }
             map.put(screen_key, screen_value);
         }
 //        Map result = new HashMap();

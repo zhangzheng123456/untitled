@@ -194,13 +194,13 @@
             </foreach>
         </if>
         AND
-        <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
+        <foreach collection="map" index="entryKey" item="entryValue" open="" separator="and" close="">
             <choose>
                 <when test="entryKey=='corp_name'">
-                    dc.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    dc.${entryKey} REGEXP #{entryValue}
                 </when>
                 <otherwise>
-                    da.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    da.${entryKey} REGEXP #{entryValue}
                 </otherwise>
             </choose>
         </foreach>

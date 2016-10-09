@@ -129,13 +129,13 @@
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")" separator="and">
             <choose>
                 <when test="entryKey=='corp_name'">
-                    def_corp.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_corp.${entryKey} REGEXP #{entryValue}
                 </when>
                 <when test="entryKey=='role_name'">
-                    def_role.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_role.${entryKey} REGEXP #{entryValue}
                 </when>
                 <otherwise>
-                    def_group.${entryKey} LIKE concat('%',#{entryValue},'%')
+                    def_group.${entryKey} REGEXP #{entryValue}
                 </otherwise>
             </choose>
         </foreach>

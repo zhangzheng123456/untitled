@@ -23,7 +23,7 @@
     FROM def_feedback
     WHERE 1 = 1
         <foreach collection="map" index="entryKey" item="entryValue" open="(" close=")"  separator="and" >
-            ${entryKey}  LIKE concat('%', #{entryValue},'%')
+            ${entryKey} REGEXP #{entryValue}
         </foreach>
         ORDER BY id DESC
     </select>

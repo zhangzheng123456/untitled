@@ -62,6 +62,37 @@ public class TestFeedbackService {
     @Test
     public void testselectAllFeedback() {
         try {
+//            Area area2=new Area();
+//            area2.setCorp_code("C10141");
+//            area2.setArea_code("98656");
+//            area2.setArea_name("自营|南通");
+//            area2.setIsactive("Y");
+//            Date now = new Date();
+//            area2.setCreater("ly");
+//            area2.setCreated_date(Common.DATETIME_FORMAT.format(now));
+//            area2.setModified_date(Common.DATETIME_FORMAT.format(now));
+//            area2.setModifier("ly");
+//            areaService.insertExecl(area2);
+
+
+            String screen="|";
+            if(screen.startsWith("|")){
+                screen= screen.substring(1);
+            }
+            if(screen.endsWith("|")){
+                screen= screen.substring(0,screen.length()-1);
+            }
+            System.out.println(screen);
+//
+//            Map<String, String> map =new HashMap<String, String>();
+//            map.put("area_name","南通|自营");
+//            map.put("area_code","A012");
+//            PageInfo<Area> pageInfo = areaService.getAllAreaScreen(1, 20, "C10141", null, map);
+//            List<Area> list = pageInfo.getList();
+//            for (Area area:list
+//                 ) {
+//                System.out.println(area.getArea_name());
+//            }
 //            for (int i = 0; i < 3; i++) {
 //                if(i==1){
 //                    continue;
