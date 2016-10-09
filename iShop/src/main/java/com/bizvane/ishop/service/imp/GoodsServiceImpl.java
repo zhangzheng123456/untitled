@@ -78,8 +78,8 @@ public class GoodsServiceImpl implements GoodsService {
             for (int i = 0; i < matches.length; i++) {
                 String goods_code_match = matches[i];
                 GoodsMatch match = new GoodsMatch();
-                match.setCorp_code(goods.getCorp_code());
-                match.setGoods_code(goods.getGoods_code());
+                match.setCorp_code(goods.getCorp_code().trim());
+                match.setGoods_code(goods.getGoods_code().trim());
                 match.setGoods_code_match(goods_code_match);
                 match.setModified_date(Common.DATETIME_FORMAT.format(now));
                 match.setModifier(goods.getCreater());
@@ -95,20 +95,20 @@ public class GoodsServiceImpl implements GoodsService {
     @Override
     public String update(Goods goods,String match_goods) throws Exception {
         Goods old_goods = goodsMapper.selectByPrimaryKey(goods.getId());
-        Goods new_goods = getGoodsByCode(goods.getCorp_code(), goods.getGoods_code(),Common.IS_ACTIVE_Y);
-        if (goods.getCorp_code().equals(old_goods.getCorp_code())) {
+        Goods new_goods = getGoodsByCode(goods.getCorp_code().trim(), goods.getGoods_code().trim(),Common.IS_ACTIVE_Y);
+        if (goods.getCorp_code().trim().equals(old_goods.getCorp_code().trim())) {
             if (old_goods.getId() != new_goods.getId() && new_goods != null) {
                 return "编号已经存在";
             } else if (this.goodsMapper.updateByPrimaryKey(goods) >= 0) {
-                goodsMapper.deleteMatch(goods.getCorp_code(),old_goods.getGoods_code());
+                goodsMapper.deleteMatch(goods.getCorp_code().trim(),old_goods.getGoods_code().trim());
                 Date now = new Date();
                 if (!match_goods.equals("")) {
                     String[] matches = match_goods.split(",");
                     for (int i = 0; i < matches.length; i++) {
                         String goods_code_match = matches[i];
                         GoodsMatch match = new GoodsMatch();
-                        match.setCorp_code(goods.getCorp_code());
-                        match.setGoods_code(goods.getGoods_code());
+                        match.setCorp_code(goods.getCorp_code().trim());
+                        match.setGoods_code(goods.getGoods_code().trim());
                         match.setGoods_code_match(goods_code_match);
                         match.setModified_date(Common.DATETIME_FORMAT.format(now));
                         match.setModifier(goods.getModifier());

@@ -51,10 +51,10 @@ public class VipParamServiceImpl implements VipParamService {
     @Override
     @Transactional
     public String insert(VipParam vipParam) throws Exception {
-        List<VipParam> vipParams= checkParamName(vipParam.getCorp_code(), vipParam.getParam_name());
+        List<VipParam> vipParams= checkParamName(vipParam.getCorp_code().trim(), vipParam.getParam_name().trim());
         String result=Common.DATABEAN_CODE_ERROR;
         if(vipParams.size()==0){
-            String order = vipParamMapper.selectMaxOrderByCorp(vipParam.getCorp_code());
+            String order = vipParamMapper.selectMaxOrderByCorp(vipParam.getCorp_code().trim());
             vipParam.setShow_order(order);
             vipParamMapper.insert(vipParam);
             result=Common.DATABEAN_CODE_SUCCESS;
@@ -68,10 +68,10 @@ public class VipParamServiceImpl implements VipParamService {
     @Override
     @Transactional
     public String update(VipParam vipParam) throws Exception {
-        List<VipParam> vipParams= checkParamName(vipParam.getCorp_code(), vipParam.getParam_name());
+        List<VipParam> vipParams= checkParamName(vipParam.getCorp_code().trim(), vipParam.getParam_name().trim());
         String result=Common.DATABEAN_CODE_ERROR;
         VipParam vipParam1 = selectById(vipParam.getId());
-        if(vipParams.size()==0||vipParam1.getParam_name().equals(vipParam.getParam_name())){
+        if(vipParams.size()==0||vipParam1.getParam_name().trim().equals(vipParam.getParam_name().trim())){
             vipParamMapper.update(vipParam);
             result=Common.DATABEAN_CODE_SUCCESS;
         }else if(vipParams.size()>0){

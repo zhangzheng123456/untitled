@@ -60,9 +60,9 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
-        String template_type_code = jsonObject.get("template_type_code").toString();
-        String template_type_name = jsonObject.get("template_type_name").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
+        String template_type_code = jsonObject.get("template_type_code").toString().trim();
+        String template_type_name = jsonObject.get("template_type_name").toString().trim();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
        SmsTemplateType smsTemplateType1=getSmsTemplateTypeByCode(corp_code,template_type_code, Common.IS_ACTIVE_Y);
         SmsTemplateType smsTemplateType2=getSmsTemplateTypeByName(corp_code,template_type_name, Common.IS_ACTIVE_Y);
 
@@ -80,7 +80,7 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
             smsTemplateType.setCreater(user_id);
             smsTemplateType.setModified_date(Common.DATETIME_FORMAT.format(now));
             smsTemplateType.setModifier(user_id);
-            smsTemplateType.setIsactive(jsonObject.get("isactive").toString());
+            smsTemplateType.setIsactive(jsonObject.get("isactive").toString().trim());
             smsTemplateTypeMapper.insertSmsTemplateType(smsTemplateType);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
@@ -94,9 +94,9 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
         JSONObject jsonObject = new JSONObject(message);
         String vipGroup_id = jsonObject.get("id").toString();
         int id = Integer.parseInt(vipGroup_id);
-        String template_type_code = jsonObject.get("template_type_code").toString();
-        String template_type_name = jsonObject.get("template_type_name").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
+        String template_type_code = jsonObject.get("template_type_code").toString().trim();
+        String template_type_name = jsonObject.get("template_type_name").toString().trim();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
         SmsTemplateType smsTemplateType1=getSmsTemplateTypeByCode(corp_code,template_type_code, Common.IS_ACTIVE_Y);
         SmsTemplateType smsTemplateType2=getSmsTemplateTypeByName(corp_code,template_type_name, Common.IS_ACTIVE_Y);
 
@@ -106,7 +106,7 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
             result = "该消息模板分组名称已存在";
         } else {
             SmsTemplateType smsTemplateType3 = getSmsTemplateTypeById(id);
-            if (!smsTemplateType3.getTemplate_type_code().equals(template_type_code)){
+            if (!smsTemplateType3.getTemplate_type_code().trim().equals(template_type_code)){
                 codeUpdateMapper.updateTemplateType(template_type_code,smsTemplateType3.getTemplate_type_code(),smsTemplateType3.getCorp_code());
             }
             SmsTemplateType smsTemplateType = new SmsTemplateType();
@@ -117,7 +117,7 @@ public class SmsTemplateTypeServiceImpl implements SmsTemplateTypeService {
             smsTemplateType.setCorp_code(corp_code);
             smsTemplateType.setModified_date(Common.DATETIME_FORMAT.format(now));
             smsTemplateType.setModifier(user_id);
-            smsTemplateType.setIsactive(jsonObject.get("isactive").toString());
+            smsTemplateType.setIsactive(jsonObject.get("isactive").toString().trim());
             smsTemplateTypeMapper.updateSmsTemplateType(smsTemplateType);
             result = Common.DATABEAN_CODE_SUCCESS;
         }

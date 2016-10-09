@@ -74,10 +74,10 @@ public class VipGroupServiceImpl implements VipGroupService {
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
-        String vip_group_code = jsonObject.get("vip_group_code").toString();
-        String vip_group_name = jsonObject.get("vip_group_name").toString();
+        String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
+        String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
         String remark = jsonObject.get("remark").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
@@ -96,7 +96,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             vipGroup.setCreater(user_id);
             vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setModifier(user_id);
-            vipGroup.setIsactive(jsonObject.get("isactive").toString());
+            vipGroup.setIsactive(jsonObject.get("isactive").toString().trim());
             vipGroupMapper.insertVipGroup(vipGroup);
             result = Common.DATABEAN_CODE_SUCCESS;
         }
@@ -108,12 +108,12 @@ public class VipGroupServiceImpl implements VipGroupService {
     public String update(String message, String user_id) throws Exception {
         String result = "";
         JSONObject jsonObject = new JSONObject(message);
-        String vipGroup_id = jsonObject.get("id").toString();
+        String vipGroup_id = jsonObject.get("id").toString().trim();
         int id = Integer.parseInt(vipGroup_id);
-        String vip_group_code = jsonObject.get("vip_group_code").toString();
-        String vip_group_name = jsonObject.get("vip_group_name").toString();
+        String vip_group_code = jsonObject.get("vip_group_code").toString().trim();
+        String vip_group_name = jsonObject.get("vip_group_name").toString().trim();
         String remark = jsonObject.get("remark").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
         VipGroup vipGroup1 = getVipGroupByCode(corp_code, vip_group_code, Common.IS_ACTIVE_Y);
         VipGroup vipGroup2 = getVipGroupByName(corp_code, vip_group_name, Common.IS_ACTIVE_Y);
 
@@ -131,7 +131,7 @@ public class VipGroupServiceImpl implements VipGroupService {
             vipGroup.setCorp_code(corp_code);
             vipGroup.setModified_date(Common.DATETIME_FORMAT.format(now));
             vipGroup.setModifier(user_id);
-            vipGroup.setIsactive(jsonObject.get("isactive").toString());
+            vipGroup.setIsactive(jsonObject.get("isactive").toString().trim());
             vipGroupMapper.updateVipGroup(vipGroup);
             result = Common.DATABEAN_CODE_SUCCESS;
         }

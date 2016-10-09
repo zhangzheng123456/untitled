@@ -63,30 +63,30 @@ public class CorpServiceImpl implements CorpService {
     public String insert(String message, String user_id) throws Exception {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = JSONObject.parseObject(message);
-        String corp_code = jsonObject.get("corp_code").toString();
-        String corp_name = jsonObject.get("corp_name").toString();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
+        String corp_name = jsonObject.get("corp_name").toString().trim();
         Corp corp = selectByCorpId(0, corp_code, Common.IS_ACTIVE_Y);
         String exist = getCorpByCorpName(corp_name, Common.IS_ACTIVE_Y);
         if (corp == null && exist.equals(Common.DATABEAN_CODE_SUCCESS)) {
             corp = new Corp();
             corp.setCorp_code(corp_code);
             corp.setCorp_name(corp_name);
-            corp.setAddress(jsonObject.get("address").toString());
-            corp.setContact(jsonObject.get("contact").toString());
-            corp.setContact_phone(jsonObject.get("phone").toString());
+            corp.setAddress(jsonObject.get("address").toString().trim());
+            corp.setContact(jsonObject.get("contact").toString().trim());
+            corp.setContact_phone(jsonObject.get("phone").toString().trim());
             if (jsonObject.containsKey("cus_user_code")){
-                corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
+                corp.setCus_user_code(jsonObject.get("cus_user_code").toString().trim());
             }
-            JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
+            JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString().trim());
             for (int i = 0; i < wechat.size(); i++) {
-                JSONObject object = JSONObject.parseObject(wechat.get(i).toString());
-                String app_id = object.get("app_id").toString();
+                JSONObject object = JSONObject.parseObject(wechat.get(i).toString().trim());
+                String app_id = object.get("app_id").toString().trim();
                 if (!app_id.equals("")) {
                     CorpWechat corpWechat = getCorpByAppId(app_id);
                     if (corpWechat == null) {
                         corpWechat = new CorpWechat();
                         corpWechat.setApp_id(app_id);
-                        corpWechat.setApp_name(object.get("app_name").toString());
+                        corpWechat.setApp_name(object.get("app_name").toString().trim());
                         corpWechat.setCorp_code(corp_code);
                         corpWechat.setIs_authorize(Common.IS_AUTHORIZE_N);
                         Date now = new Date();
@@ -107,7 +107,7 @@ public class CorpServiceImpl implements CorpService {
             corp.setCreater(user_id);
             corp.setModified_date(Common.DATETIME_FORMAT.format(now));
             corp.setModifier(user_id);
-            corp.setIsactive(jsonObject.get("isactive").toString());
+            corp.setIsactive(jsonObject.get("isactive").toString().trim());
             corpMapper.insertCorp(corp);
             result = Common.DATABEAN_CODE_SUCCESS;
         } else if (corp != null) {
@@ -124,11 +124,11 @@ public class CorpServiceImpl implements CorpService {
         String old_code = null;
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = JSONObject.parseObject(message);
-        int corp_id = Integer.parseInt(jsonObject.get("id").toString());
+        int corp_id = Integer.parseInt(jsonObject.get("id").toString().trim());
 
-        String corp_code = jsonObject.get("corp_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
         new_code = corp_code;
-        String corp_name = jsonObject.get("corp_name").toString();
+        String corp_name = jsonObject.get("corp_name").toString().trim();
 
         Corp old_corp = selectByCorpId(corp_id, "", "");
         old_code = old_corp.getCorp_code();
@@ -141,20 +141,20 @@ public class CorpServiceImpl implements CorpService {
             old_corp.setId(corp_id);
             old_corp.setCorp_code(corp_code);
             old_corp.setCorp_name(corp_name);
-            old_corp.setAddress(jsonObject.get("address").toString());
-            old_corp.setContact(jsonObject.get("contact").toString());
-            old_corp.setContact_phone(jsonObject.get("phone").toString());
-            old_corp.setAvater(jsonObject.get("avater").toString());
+            old_corp.setAddress(jsonObject.get("address").toString().trim());
+            old_corp.setContact(jsonObject.get("contact").toString().trim());
+            old_corp.setContact_phone(jsonObject.get("phone").toString().trim());
+            old_corp.setAvater(jsonObject.get("avater").toString().trim());
             if (jsonObject.containsKey("cus_user_code")){
-                old_corp.setCus_user_code(jsonObject.get("cus_user_code").toString());
+                old_corp.setCus_user_code(jsonObject.get("cus_user_code").toString().trim());
             }
             Date now = new Date();
-            JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString());
+            JSONArray wechat = JSONArray.parseArray(jsonObject.get("wechat").toString().trim());
             result = updateCorpWechat(wechat,corp_code,user_id);
             if (!result.equals(Common.DATABEAN_CODE_SUCCESS)){
                 return result;
             }
-            old_corp.setIsactive(jsonObject.get("isactive").toString());
+            old_corp.setIsactive(jsonObject.get("isactive").toString().trim());
             old_corp.setModified_date(Common.DATETIME_FORMAT.format(now));
             old_corp.setModifier(user_id);
 

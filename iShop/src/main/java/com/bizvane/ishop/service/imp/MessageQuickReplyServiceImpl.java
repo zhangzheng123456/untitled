@@ -62,7 +62,7 @@ public class MessageQuickReplyServiceImpl implements MessageQuickReplyService {
         String result = Common.DATABEAN_CODE_ERROR;
         JSONObject jsonObject = new JSONObject(message);
         String content = jsonObject.get("content").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
         MessageQuickReply messageQuickReply1 = getQuickReplyByCode(corp_code, content, Common.IS_ACTIVE_Y);
 
         if (messageQuickReply1 != null) {
@@ -87,10 +87,10 @@ public class MessageQuickReplyServiceImpl implements MessageQuickReplyService {
     public String update(String message, String user_id) throws Exception {
         String result = "";
         JSONObject jsonObject = new JSONObject(message);
-        String quickReply_id = jsonObject.get("id").toString();
+        String quickReply_id = jsonObject.get("id").toString().trim();
         int id = Integer.parseInt(quickReply_id);
         String content = jsonObject.get("content").toString();
-        String corp_code = jsonObject.get("corp_code").toString();
+        String corp_code = jsonObject.get("corp_code").toString().trim();
         MessageQuickReply messageQuickReply1 = getQuickReplyByCode(corp_code, content, Common.IS_ACTIVE_Y);
 
         if (messageQuickReply1 != null && messageQuickReply1.getId() != id) {
