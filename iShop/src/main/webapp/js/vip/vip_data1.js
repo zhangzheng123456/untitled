@@ -35,7 +35,7 @@ function getVipInfo(){
         }
         for(var i=0;i<extend.length;i++){
                 if(extend[i].type=='rule'){
-                    extendhtml+="<li style='border:1px dashed #999;display: block'>"
+                    extendhtml+="<li style='border:1px dashed #999;width:100%;display: block'>"
                         +"</li>"
                 }
             if(extend[i].type=="text"){
