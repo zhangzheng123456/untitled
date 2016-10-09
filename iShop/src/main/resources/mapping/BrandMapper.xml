@@ -237,6 +237,12 @@
         <if test="corp_code!=null and corp_code!=''">
             AND db.corp_code=#{corp_code}
         </if>
+        <if test="brand_code!=null">
+            AND db.brand_code IN
+            <foreach collection="brand_code" index="index" item="item" separator="," open="(" close=")">
+                #{item}
+            </foreach>
+        </if>
         AND
         <foreach collection="map" index="entryKey" item="entryValue" open="(" separator="and" close=")">
             <choose>
