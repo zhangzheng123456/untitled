@@ -27,7 +27,7 @@ if(data.length!=0) {
     for (var i = 0; i < data.length; i++) {
         var a = i + 1;
         var avatar="";
-        if(data[i].avatar==undefined){
+        if(data[i].avatar==undefined||data[i].avatar==""){
             avatar="../img/head.png";
         }
         if(data[i].avatar!==""&&data[i].avatar!==undefined){
